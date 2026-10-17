@@ -19,6 +19,11 @@ namespace DOL.GS
             int radius = Radius(tight);
             return Vector3.DistanceSquared(position, slot) <= radius * radius;
         }
+        /// <summary>Deaths on the way that make a member a no-show at once (in-game check 2026-10-17: a
+        /// level 1-3 group died about 70 times near its meetup point during the full fifteen-minute wait).</summary>
+        public const int MeetupDeathLimit = 3;
+        private readonly Dictionary<long, int> _deathsAtStart = new();
+        private readonly HashSet<long> _deathLimited = new();
         private readonly Dictionary<long, long> _due = new();
         private readonly HashSet<long> _arrived = new();
         private readonly Dictionary<long, DateTime> _dueUtc = new();
@@ -60,6 +65,27 @@ namespace DOL.GS
             return !_arrived.Contains(memberId) && now >= _due[memberId];
         }
 
+        /// <summary>
+        /// True once, when a member has died <see cref="MeetupDeathLimit"/> times since its wait began
+        /// (deathCount is its lifetime death count). Its deadline is then now: dying on the way again
+        /// and again is a no-show, not fifteen more minutes of corpse runs.
+        /// </summary>
+        public bool ReachedDeathLimit(long memberId, int deathCount, long now, DateTime? utcNow = null)
+        {
+            if (!_deathsAtStart.TryGetValue(memberId, out int start))
+            {
+                _deathsAtStart[memberId] = deathCount;
+                return false;
+            }
+            if (deathCount - start < MeetupDeathLimit || !_deathLimited.Add(memberId))
+                return false;
+            LimitDeadline(memberId, now, 0, utcNow);
+            return true;
+        }
+
+        public int DeathsSinceStart(long memberId, int deathCount) =>
+            _deathsAtStart.TryGetValue(memberId, out int start) ? Math.Max(0, deathCount - start) : 0;
+
         public long WaitedMilliseconds(long memberId, long now) =>
             _due.TryGetValue(memberId, out long due) ? now - (due - TimeoutMilliseconds) : 0;
 
@@ -74,6 +100,8 @@ namespace DOL.GS
             _due.Clear();
             _arrived.Clear();
             _dueUtc.Clear();
+            _deathsAtStart.Clear();
+            _deathLimited.Clear();
             Revision++;
             foreach (long memberId in memberIds)
                 Add(memberId, now, utcNow);
@@ -86,8 +114,12 @@ namespace DOL.GS
         public void RebaseAfterRosterReduction(IEnumerable<long> memberIds, long now, DateTime? utcNow = null)
         {
             var previous = new Dictionary<long, long>(_due);
+            var deathsAtStart = new Dictionary<long, int>(_deathsAtStart);   // the same wait goes on: keep counting
             DateTime utc = utcNow ?? DateTime.UtcNow;
             Rebase(memberIds, now, utc);
+            foreach (long memberId in _due.Keys)
+                if (deathsAtStart.TryGetValue(memberId, out int start))
+                    _deathsAtStart[memberId] = start;
             foreach (long memberId in _due.Keys.ToArray())
             {
                 if (!previous.TryGetValue(memberId, out long formerDeadline)) continue;
@@ -102,6 +134,8 @@ namespace DOL.GS
             _due.Clear();
             _arrived.Clear();
             _dueUtc.Clear();
+            _deathsAtStart.Clear();
+            _deathLimited.Clear();
             Revision++;
         }
     }

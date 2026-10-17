@@ -9,6 +9,41 @@ namespace DOL.GS.Tests
     public sealed class UT_AutonomousRendezvousRecovery
     {
         [Test]
+        public void DyingThreeTimesOnTheWayToAMeetupIsANoShow()
+        {
+            // In-game check 2026-10-17: five level 1-3 bots died about 70 times near their meetup point
+            // during the full fifteen-minute wait, then the group was dropped anyway.
+            var attendance = new AutonomousRendezvousAttendance();
+            var utc = new DateTime(2026, 10, 17, 18, 28, 0, DateTimeKind.Utc);
+            const long start = 1_000_000;
+            Assert.That(attendance.ReachedDeathLimit(7, 15, start, utc), Is.False, "The first look only notes the count.");
+            Assert.That(attendance.Observe(7, start, false), Is.False);
+            Assert.That(attendance.ReachedDeathLimit(7, 17, start + 60_000, utc), Is.False, "Two deaths: keep waiting.");
+            Assert.That(attendance.Observe(7, start + 60_000, false), Is.False);
+            Assert.That(attendance.ReachedDeathLimit(7, 18, start + 90_000, utc), Is.True);
+            Assert.That(attendance.DeathsSinceStart(7, 18), Is.EqualTo(3));
+            Assert.That(attendance.Observe(7, start + 90_000, false), Is.True, "A no-show now, not after fifteen minutes.");
+            Assert.That(attendance.ReachedDeathLimit(7, 19, start + 95_000, utc), Is.False, "Reported once.");
+        }
+
+        [Test]
+        public void MeetupDeathsCarryOverASmallerPartyButNotANewMeetup()
+        {
+            var attendance = new AutonomousRendezvousAttendance();
+            const long start = 1_000_000;
+            attendance.ReachedDeathLimit(1, 0, start);
+            attendance.ReachedDeathLimit(2, 0, start);
+            attendance.ReachedDeathLimit(1, 2, start + 10_000);
+            attendance.RebaseAfterRosterReduction(new long[] { 1 }, start + 20_000);
+            Assert.That(attendance.ReachedDeathLimit(1, 3, start + 30_000), Is.True, "The same wait: the count goes on.");
+
+            attendance.Rebase(new long[] { 1 }, start + 40_000);
+            Assert.That(attendance.ReachedDeathLimit(1, 3, start + 40_000), Is.False, "A new meetup starts a new count.");
+            Assert.That(attendance.ReachedDeathLimit(1, 5, start + 50_000), Is.False);
+            Assert.That(attendance.ReachedDeathLimit(1, 6, start + 60_000), Is.True);
+        }
+
+        [Test]
         public void GenericBindRadiusIsNotAdvertisedAsATown()
         {
             var bind = new Area.BindArea("bind point", new DOL.Database.DbBindPoint
