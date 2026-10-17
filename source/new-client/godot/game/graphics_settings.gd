@@ -21,6 +21,7 @@ const DEFAULTS := {
 	"ssao": 3,                     # -1 off, 0 very low .. 4 ultra
 	"ssil": false,                 # screen-space indirect light
 	"glow": false,                 # bloom on bright spell effects and lights
+	"tonemap": 0,                  # 0 filmic (the client's look until now), 1 AgX (Godot 4.4+: richer highlights)
 	"msaa": 2,                     # 0 / 2 / 4 / 8 samples
 	"screen_aa": 1,                # 0 off, 1 FXAA, 2 SMAA
 	"taa": false,
@@ -105,7 +106,7 @@ func current_preset() -> String:
 		var p: Dictionary = PRESETS[n]
 		var same := true
 		for k in DEFAULTS:
-			if not _same(values.get(k), p.get(k)):
+			if not _same(values.get(k), p.get(k, DEFAULTS[k])):
 				same = false
 				break
 		if same:
@@ -209,6 +210,7 @@ func apply_scene(scene: Node) -> void:
 		env.ssao_enabled = int(value("ssao")) >= 0
 		env.ssil_enabled = bool(value("ssil"))
 		env.glow_enabled = bool(value("glow"))
+		env.tonemap_mode = Environment.TONE_MAPPER_AGX if int(value("tonemap")) == 1 else Environment.TONE_MAPPER_FILMIC
 		if env.glow_enabled:
 			env.glow_intensity = 0.6
 			env.glow_bloom = 0.05
