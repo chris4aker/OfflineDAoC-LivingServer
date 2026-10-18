@@ -22479,8 +22479,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "on my way to {zone}, long walk",
-   "id": "cbe2878d2df0"
+   "text": "on my way to {destination}, long walk",
+   "id": "c6e35d9e5aa5"
   },
   {
    "kind": "ambient",
@@ -22499,8 +22499,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "ask_anyone",
-   "text": "heading to {zone}, anyone want to travel together?",
-   "id": "c26fd9cac414"
+   "text": "heading to {destination}, anyone want to travel together?",
+   "id": "dfd8a425e295"
   },
   {
    "kind": "ambient",
@@ -22519,8 +22519,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "none",
-   "text": "taking the horse to {zone}, back in a few",
-   "id": "6a32b4fbc83c"
+   "text": "taking the horse to {destination}, back in a few",
+   "id": "2a6931b563fc"
   },
   {
    "kind": "ambient",
@@ -22539,8 +22539,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "joke",
-   "text": "walking to {zone} because i spent my coin on armor",
-   "id": "bb2c1cdf3f44"
+   "text": "walking to {destination} because i spent my coin on armor",
+   "id": "ba54d5cb26b7"
   },
   {
    "kind": "ambient",
@@ -22559,8 +22559,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "road trip to {zone}, wish me luck",
-   "id": "0dd02c742de1"
+   "text": "road trip to {destination}, wish me luck",
+   "id": "8018ef59307f"
   },
   {
    "kind": "ambient",
@@ -22579,8 +22579,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "ask_where",
-   "text": "anyone know the fastest way to {zone}?",
-   "id": "9cd89e32c942"
+   "text": "anyone know the fastest way to {destination}?",
+   "id": "ff3b783ef100"
   },
   {
    "kind": "ambient",

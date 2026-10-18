@@ -62,8 +62,13 @@ meetup fix drop two no-shows (in the server log).
   - A bow fires from the Ranged Weapon key (`,`), not the target window's ATTACK button. There's no
     quiver window, so arrows in a bag can't be moved into the quiver slots.
   - The group window still shows your base class after you choose your class at level 5.
-- **Bot chat (0.36-se.4):** reworked and not played in game yet. Replies now follow what a line
-  invites, but some will still read oddly:
+- **Bot chat (0.36-se.4):** reworked and not played in game yet. It was tested live with a scripted player
+  (see [bot-voices/SE4-CHECKS.md](bot-voices/SE4-CHECKS.md)) and what it found was fixed, but a script
+  doesn't play like a person. Some replies will still read oddly:
+  - A bot that remembers you may ask your level right after you said it ("i would group with you again,
+    what level are you now?").
+  - Questions with no answer set of their own get general answers ("how much xp to 6?" -> "depends on the
+    bonuses").
   - A bot answering your "lfg" prefers bots in your zone and near your level, but one from elsewhere
     may still answer.
   - A bot in the frontier may answer your "inc" with "omw" without coming.

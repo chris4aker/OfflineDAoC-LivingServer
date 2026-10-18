@@ -79,16 +79,16 @@ full bags of materials, best kind of full
 @topic travel
 @who *
 @needs traveling
-on my way to {zone}, long walk
-heading to {zone}, anyone want to travel together?
+on my way to {destination}, long walk
+heading to {destination}, anyone want to travel together?
 @invites none
-taking the horse to {zone}, back in a few
+taking the horse to {destination}, back in a few
 @invites joke
-walking to {zone} because i spent my coin on armor
+walking to {destination} because i spent my coin on armor
 @invites
-road trip to {zone}, wish me luck
+road trip to {destination}, wish me luck
 @invites ask_where
-anyone know the fastest way to {zone}?
+anyone know the fastest way to {destination}?
 
 @kind ambient
 @topic town

@@ -59,8 +59,8 @@ SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'cou
          'capital', 'enemy', 'keep', 'frontier', 'player', 'player_class', 'place', 'q',
          # Living Server
          'target', 'what', 'size', 'classes', 'killer', 'killer_class',
-         # 0.36-se.4: the plural of {monster} ("2 hill cats")
-         'monsters'}
+         # 0.36-se.4: the plural of {monster} ("2 hill cats"), and where a travelling bot is going
+         'monsters', 'destination'}
 MEMORY_SLOTS = {'player', 'player_class', 'place'}
 MAX_RAW = 140
 

@@ -518,6 +518,8 @@ namespace DOL.GS.Tests
         [TestCase("should i roll a cleric or a friar?", "ask_choice")]
         [TestCase("lfg or something?", null)]
         [TestCase("where to next?", "ask_next")]
+        [TestCase("what level are you?", "ask_level")]
+        [TestCase("how close are you to a level?", "ask_xp")]
         [TestCase("hows it going", "ask_howareyou")]
         [TestCase("so where are we heading?", "ask_next")]
         [TestCase("lol", null)]
@@ -589,6 +591,22 @@ namespace DOL.GS.Tests
         [TestCase("Jordheim", null)]
         public void CapitalsAreFoundByTheirShortName(string name, string shortName) =>
             Assert.That(Knowledge.ShortCityName(name), Is.EqualTo(shortName));
+
+        [TestCase("tell me about it")]
+        [TestCase("story of my life")]
+        [TestCase("been like that all night")]
+        public void SympathyAnswersOnlyComplaints(string text) =>
+            Assert.That(Corpus.Lines.Single(l => l.Kind == "reply" && l.Text == text).Answers, Is.EqualTo(new[] { "complaint" }),
+                "\"picked up new spells, cant wait to try them\" drew \"tell me about it\".");
+
+        [Test]
+        public void TravelLinesNameWhereTheBotIsGoing()
+        {
+            // "heading to {zone}" named the zone the bot was in ("any1 know the fastest way to City of Camelot?" in Camelot).
+            var travel = Corpus.Lines.Where(l => l.Needs.Contains("traveling") && l.Text.Contains(" to {")).ToList();
+            Assert.That(travel, Is.Not.Empty);
+            Assert.That(travel.Select(l => l.Text), Has.All.Contains("{destination}"));
+        }
 
         [Test]
         public void UnpromptedFactionLinesWaitAfterAPlayerSpeaks()

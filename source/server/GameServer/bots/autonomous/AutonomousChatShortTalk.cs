@@ -124,6 +124,12 @@ public static class AutonomousChatShortTalk
         if (AsksWhoIsOn(text))
             return "ask_on";
         string[] words = AutonomousChatIntentModel.Words(text).Select(word => word.Replace("'", string.Empty)).ToArray();
+        // "what level are you?" in /group drew "sure Wrenfield, what do you need?" (live test 2026-10-18).
+        if (HasPhrase(words, "what level are you", "what lvl are you", "what level r u", "what lvl r u", "whats your level", "whats ur level",
+                "what level is everyone", "what lvl is everyone", "what level are you all", "how high are you"))
+            return "ask_level";
+        if (HasPhrase(words, "how close are you to", "how close r u to", "how close is everyone to", "how far to your next level"))
+            return "ask_xp";
         // "where to next?" in a group: the next hunt, not directions (live test 2026-10-18).
         if (HasPhrase(words, "where to next", "where now", "where next", "where are we heading", "where are we going", "where should we go",
                 "where should we head", "where we going", "where we heading"))

@@ -105,7 +105,7 @@ public static class AutonomousBotVoices
             // 0.36-se.4: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia, Cathal Valley) or the frontier proper
             flags.Add(IsBattlegroundRegion(bot.CurrentRegionID) ? "in_battleground" : "in_frontier");
         }
-        if (!string.IsNullOrEmpty(record?.TravelDestination)) flags.Add("traveling");
+        if (TravelingTo(bot) != null) flags.Add("traveling");
         else if (!string.IsNullOrEmpty(record?.CurrentCampId)) flags.Add("at_camp");
         if (record != null && AutonomousObjectiveAssignments.IsIntentionalTownIdle(record, DateTime.UtcNow)) flags.Add("in_town");
         if (LeveledAt.TryGetValue(bot.DatabaseID, out long leveled) && GameLoop.GameLoopTime - leveled < JustLeveledMs) flags.Add("just_leveled");
@@ -127,6 +127,18 @@ public static class AutonomousBotVoices
 
     /// <summary>Camelot City, Jordheim and Tir na Nog.</summary>
     public static bool IsCapitalRegion(ushort regionId) => regionId is 10 or 101 or 201;
+
+    /// <summary>Where a bot is travelling, or null when it has no destination or is already there (live test 2026-10-18: bots
+    /// at the Realm Exchange in Camelot "travel" to Camelot, and "heading to {zone}" named the zone they were in).</summary>
+    public static string TravelingTo(GameBot bot)
+    {
+        string destination = bot?.PersistentRecord?.TravelDestination;
+        if (string.IsNullOrWhiteSpace(destination) ||
+            string.Equals(destination, bot.CurrentZone?.Description, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(destination, bot.CurrentRegion?.Description, StringComparison.OrdinalIgnoreCase))
+            return null;
+        return destination;
+    }
 
     /// <summary>Whether a bot is in a dungeon. The capitals are one zone at the dungeon offset, so the server calls them
     /// dungeons; in the live test of se.4 a bot in Camelot said "lfg City of Camelot".</summary>
@@ -206,6 +218,7 @@ public static class AutonomousBotVoices
             ["zone"] = zone,
             ["monster"] = monster,
             ["monsters"] = monster == null ? null : VC.Plural(monster),
+            ["destination"] = TravelingTo(bot),
             ["item"] = item,
             ["count"] = random.Next(2, 5).ToString(),
             ["q"] = VC.Openers[random.Next(VC.Openers.Length)],
@@ -268,7 +281,7 @@ public static class AutonomousBotVoices
         // "hows it going" may read as no intent at all: it is still a how-are-you (live test 2026-10-18: it drew "hm?").
         if (shape == "ask_howareyou")
             return TryGreetingReply(bot, incoming, out result, slots, relax, requireVoices);
-        return shape is "ask_on" or "ask_permission" or "ask_choice" or "ask_guild" or "ask_next" &&
+        return shape is "ask_on" or "ask_permission" or "ask_choice" or "ask_guild" or "ask_next" or "ask_level" or "ask_xp" &&
                TryLine(bot, "reply", out result, answers: shape, slots: slots, relax: relax, requireVoices: requireVoices);
     }
 

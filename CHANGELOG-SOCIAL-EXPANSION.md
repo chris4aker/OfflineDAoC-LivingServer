@@ -42,7 +42,7 @@ needs **bot voices** on (the launcher's Social Expansion tab); what changes with
   *(With bot guilds on, voices on or off.)*
 
 **More to say**
-- The corpus has grown from 979 lines to 2,219. New lines: replies to short chat, replies for each kind
+- The corpus has grown from 979 lines to 2,296. New lines: replies to short chat, replies for each kind
   of opener, closings, dungeon talk (there was none), four more lines for every class, battlegrounds,
   group and guild talk, the frontier and the capitals.
 - Lines know where and when they are said. "tonight" reads "today" in the daytime, bedtime talk waits
@@ -55,10 +55,27 @@ needs **bot voices** on (the launcher's Social Expansion tab); what changes with
 - Removed later internet phrases ("change my mind", "fight me") and fixed lines that named another
   realm's class.
 
+**Found in a live test, then fixed** (the se.4 server with a scripted player typing in every channel; see
+[SE4-CHECKS.md](docs/bot-voices/SE4-CHECKS.md))
+- Bots in a capital no longer think they are in a dungeon ("lfg City of Camelot", "this place is a maze").
+- Your own /group lines get answers from your groupmates. A group standing in a capital talks about selling and
+  heading out, not "pull?" and "oom".
+- Questions get answers of their kind: "anyone on?" ("here o/"), "how is everyone?" / "hows it going"
+  ("good, slow night though"), "mind if i hunt here?", "cleric or friar?", "where to next?" ("your call"),
+  "anyone know if x is ours?" ("last i saw, yes"), "what level is everyone?", "tell me your best death
+  story", and "what does lfg mean?" (a short list of chat words). A plain "hi all" gets a hello.
+- A reply doesn't ask what was just said ("paladin 6 here" -> "what lvl?"), and "tell me about it" answers
+  complaints, not good news.
+- A /faction scene and unprompted lines wait a moment after you speak, so they don't read as answers. Scene
+  roles can require levels: a level 50 no longer says "i am not 50 yet".
+- In /faction the realm answers you, not just your groupmate, and the same few bots don't answer everything.
+- "where is camelot?" finds Camelot; trainer answers name the nearest trainer.
+
 **Tested**
-- **Automated:** the full server suite (3,067 tests, 109 new) and the corpus checks pass locally.
-- **In game:** not played yet. A re-run of the chat simulation and an independent code review are in
-  [docs/bot-voices/SE4-CHECKS.md](docs/bot-voices/SE4-CHECKS.md).
+- **Automated:** the full server suite (3,139 tests, about 180 for se.4) and the corpus checks pass locally.
+- **Live, scripted (not a person playing):** four sessions on the real server with a scripted player, about
+  95 minutes in all; what it found is above and in [docs/bot-voices/SE4-CHECKS.md](docs/bot-voices/SE4-CHECKS.md).
+- **In game:** not played yet.
 
 ## 0.36-se.3 — 2026-10-18
 
