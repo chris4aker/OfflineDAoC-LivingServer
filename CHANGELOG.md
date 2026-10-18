@@ -8,7 +8,25 @@ The newest version is first. For the full detail of every earlier update, see
 Changes made after 0.36 are listed here as they are made, and will be in the 0.37 / 0.37b download. Until then,
 0.36 / 0.36b / 0.36c is the latest release.
 
+**Guilds**
+- You can form a guild on your own. Stand near a Guild Registrar (Brit in Jordheim, Lord Christopher in Camelot,
+  Filidh Fadywn in Tir na Nog) and type /gc form <guild name>; it costs 1 gold. Before, forming a guild needed a
+  group of other players to accept, so on your own server it could never be done.
+- Gamebots can join your guild. Target one of your realm's gamebots (or name it) and use /gc invite; it joins at
+  once. Guild gamebots appear in the guild and alliance social window, show the guild name under their name to
+  their own realm, wear the guild emblem on their cloak and shield, and chat in guild chat (and answer you there).
+  Enemy players still see only their realm rank title under the name, but they can see the emblem.
+- The emblem stays on through every gear upgrade, changes at once when the guild changes its emblem, and
+  disappears when the gamebot is removed (/gc remove <name>), when the guild disbands, or when the gamebot is
+  removed from the launcher's roster (which also takes it out of the guild).
+- /spawn companions never join a guild (they are temporary), but while they are with you they show your guild
+  name and emblem, and drop them when you leave the guild.
+
 **Bots and raids**
+- 22 weapons, shields and pieces of armour that were drawn as a bag now look like what they are: among them Luso's
+  Claws (which a level 47 Savage companion carried in its left hand), Morvalt Bladed Ericril, Master Smed's Eye
+  Remover, the Savage's Stoneheart Claw quest reward, Gulak's, Snaebjorn's and Silistar's Claws, the Staff of Mourning
+  and the Shield of Lifeless Dreams. Each now uses the look of similar items of its kind and level.
 - Automatic raid rallies give their army time to arrive. A rally used to fail if its army was not staged within 90
   minutes of opening, counting the time spent gathering at the hub town: the Tuscaran Glacier rally needed 84 minutes
   to gather at Hagall and had six left for the trip. A slow hub now sets out after 30 minutes once 120 have arrived
@@ -39,15 +57,54 @@ Changes made after 0.36 are listed here as they are made, and will be in the 0.3
   raiders at once.
 - Less lag from bots trying to sell loot to merchants they can't reach. Bots picked Kel and Kuz, the giant merchants
   on top of the hill at Grimspound in Dartmoor, which they have no way up to. They searched for a way there every
-  turn for 20 minutes or more. A bot that can't reach a merchant now chooses another one, and once two bots have
-  failed, every bot skips that merchant for half an hour.
+  turn for 20 minutes or more. A bot that has tried for a minute without getting any closer to a merchant now
+  chooses another one, and once two bots have given up on it, every bot skips that merchant for half an hour. Bots
+  that are simply far away, such as across Camelot from the Realm Exchange, still walk there.
 - Less lag at keep sieges. Pets and group members whose way was blocked by a closed keep door looked for a way
   around it twice a second. When there is no way around, they now wait a few seconds before looking again.
+- Less lag overall: the server creates far less short-lived data while bots choose hunting spots, look after their
+  pets and plan paths, so memory clean-up pauses come less often.
+- Battlegrounds with only a few bots of a realm no longer announce keep sieges that go nowhere. A realm with too few
+  bots in a battleground for an assault (Thidranki often had one or two) now fights in the open field instead of
+  waiting forever for an assault group. Sieges that involve a player are still announced.
+- Battleground assaults on a keep whose gates are all shut now march on the nearest gate and batter it, instead of
+  trying to walk straight to the keep lord through the closed keep.
+- Relic and keep sieges: the attacking army's healers now raise any fallen comrade near them, not only members
+  of their own group, and the fallen wait for that raise. Before, a dead attacker came back on foot from its realm's
+  frontier muster, so the army at Dun Dagda melted away even while it was winning the fight.
+- Midgard and Hibernia bots can leave the battlegrounds again. Their own portal keep's door blocked the way out, so
+  they could not go home to train (Albion's way out has no door).
+- Warbands no longer pick meeting spots around Castle Sauvage that are cut off from the keep; bots that arrived by
+  teleporter used to get stuck walking to them.
+- Bots that drop into the sunken patch near the Realm Exchange in Camelot are put back on the street at once.
+- Bots take a town teleporter only when it really is quicker: the walk to it is now judged by the actual route, not
+  the straight line, so they no longer head for a teleporter that is only reachable by a long detour.
 - Town teleporter trips fail less often. A bot that planned a teleporter trip and then joined a group, or got a new
   task, kept walking to the teleporter for its old plan; that was a quarter of the failed trips.
 - Galladoria: the Earthmenders keep their wounds while raiders are in their room, and they fight back. Each one
   healed to full half a minute after the primals pulled the raid away, and because they never attacked, raiders
   busy with the primals never turned on them, so every Earthmender was given up in turn.
+- Bots no longer walk into the tower wall at Vindsaul Faste. The keep's ground on the Yggdra Forest border is a narrow
+  strip along a tower, and the bots' route planner took a crossing point just behind the wall, inside the sealed
+  tower room, for one it could reach. Bots stood at the wall and gave up their trip, 74 times in one evening.
+- Parties no longer stall at zone borders. When the leader crossed into the next zone, the other members' places in
+  the formation lay over the border, where the members' route planning does not reach, and they stood still until
+  the leader was far enough in. They now step over the border right behind the leader.
+- Realm armies and siege parties march to keeps without stopping at every waypoint of their route. Each bot walked
+  into the waypoint it had just reached, stopped there and waited for its next decision before walking on. Bots
+  walking to a stable master for a horse turn for it at once in the same way.
+- Group travel is smoother where a party member's place in the formation cannot be reached (behind a wall, over a
+  ledge, the far side of a narrow bridge): the member now walks just behind the leader for a few seconds instead of
+  standing still until its place moved somewhere it could reach.
+- Town teleporter trips no longer walk away from the teleporter. A bot already on its way somewhere (to its camp)
+  that decided to take a teleporter kept walking its old way, away from the teleporter, until the trip failed and
+  the bot avoided that teleporter for ten minutes: 162 of the 175 failed trips in one evening. It now turns for the
+  teleporter at once, and a trip the bot is led away from (by its party) is dropped without blaming the teleporter.
+- Battleground stormers turn for the keep gate, and then for the lord, the moment their step changes, instead of
+  first finishing the walk they were on.
+- Galladoria: the Organic-Energy Mechanism no longer breaks spell casting on the server. It casts its damage shield
+  each time it is hit, and with a raid hitting it at once these casts overran the spell queue (an error on every hit,
+  42 in one fight), so its fight never played out. Every scripted monster that casts when struck is fixed with it.
 - Caer Sidi: raids no longer get stuck clearing Lich Lord Sanguis's blood mages after he is dead. They kept
   appearing, and the raid fought them for 40 minutes instead of moving on to Apocalypse.
 - Caer Sidi: the Skeletal Sacristan stops walking while he is being hit and walks on 10 seconds after the last
@@ -67,6 +124,10 @@ Changes made after 0.36 are listed here as they are made, and will be in the 0.3
   checking their abilities and skill timers.
 
 **Quests**
+- Bounties count every monster with the bounty's name. With a svartalf foister bounty, any svartalf foister you
+  kill counts, whatever its level and wherever it is. Before, Hard and Very Hard bounties ignored ones more than a
+  level below the target, and only ones in the bounty's own lands or dungeon counted. How bounties are picked, how
+  many kills they need and their rewards are unchanged.
 - Every classic quest can now be started by talking to its giver. In 20 of them one line of the giver's
   conversation was missing, so the giver showed a quest marker but nothing you could click led to the quest (Aegan
   in Mularn only said "You have learned much since I spoke to you last."). The missing lines are back, word for
@@ -159,7 +220,27 @@ Changes made after 0.36 are listed here as they are made, and will be in the 0.3
   on top.
 - Savages' claw and fang greaves sit on the forearms the way the original client draws them: the right-hand one no
   longer floats off the hand, the off-hand one faces the right way, and a Savage with a greave in each hand shows
-  both (the left one was dropped). Moon claws and other fist weapons were already right and are unchanged.
+  both (the left one was dropped).
+- Monsters, horses and pets no longer turn solid black (and fire smoke pink) partway through a session. Loading the
+  next zone in the background read a ground texture back from the graphics card in the middle of a frame, which
+  broke drawing for every texture loaded after it; that value is now read from the texture file instead.
+- Clicking something on the ground (your gravestone, loot, a relic) targets it, as in the original client, instead of
+  trying to pick it up straight away. Your own grave can be targeted for /pray again; it used to answer "too far away
+  to pick up" or "You can't get that!". Pick up what you have targeted with the Get Item key (G), and target the
+  nearest loot within range with the Nearest Loot key (F7; graves are skipped). Both can be changed under Options >
+  CONTROLS.
+- Fist weapons stab forward: fang greaves, moon claws, moon fangs and the slash fist weapons used to stick out
+  sideways or upward from the fist; they now point along the arm in both hands. The Pict fist weapons stood straight
+  up and are fixed too.
+- Gamebots' and companions' weapons show their dyes and weapon glows; they were always drawn plain.
+- Guilds (with the server's gamebot guilds):
+  - A guild window (Shift+G, can be changed under Options > CONTROLS): your guild's and alliance's members with
+    level, class, rank, group, zone or last seen and note, sortable, ten to a page, online only or everyone, with
+    Send, Invite, Promote, Demote, Remove, Guild Info, MOTD and Leave Guild. Gamebot members are listed too.
+  - Guild emblems are drawn on cloaks and shields the way the original client draws them (its colours, patterns and
+    logos): on your own gear, other players', gamebots' and companions', and on the character select screen.
+  - The emblem picker (the emblemer, /gc emblem) has the original window with a turning shield to preview the
+    emblem and every logo to choose from.
 
 ## 0.36 / 0.36b / 0.36c — 2026-10-16
 
