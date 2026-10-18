@@ -21,6 +21,12 @@ public static class AutonomousBotChatCoordinator
     private static readonly Dictionary<eRealm, long> FactionGap = new();
     private static readonly Dictionary<ushort, long> LocalGap = new();
     private static readonly Dictionary<eRealm, long> LastFactionPlayerResponse = new();
+    /// <summary>When a player of the realm last spoke in /faction. Unprompted lines wait <see cref="PlayerQuietMs"/> after it, so
+    /// they aren't read as answers (live test 2026-10-18: "lf group, minstrel 50" right after "mind if i hunt near cotswold?").</summary>
+    private static readonly Dictionary<eRealm, long> LastPlayerFactionLine = new();
+    public const int PlayerQuietMs = 15_000;
+
+    public static bool QuietAfterPlayer(long lastPlayerLine, long now) => lastPlayerLine > 0 && now - lastPlayerLine < PlayerQuietMs;
     private static readonly Dictionary<ushort, long> LastLocalPlayerResponse = new();
     private static readonly Dictionary<string, long> LastTellResponse = new(StringComparer.OrdinalIgnoreCase);
 
@@ -64,6 +70,8 @@ public static class AutonomousBotChatCoordinator
             long now = GameLoop.GameLoopTime;
             if (faction)
             {
+                if (QuietAfterPlayer(LastPlayerFactionLine.GetValueOrDefault(starter.Realm), now))
+                    return false;
                 long gap = FactionGap.GetValueOrDefault(starter.Realm, 180_000);
                 if (LastFactionAmbient.TryGetValue(starter.Realm, out long last) && now - last < gap)
                     return false;
@@ -126,6 +134,8 @@ public static class AutonomousBotChatCoordinator
             return;
         BroadcastFaction(player.Name, player.Realm, message);
         AutonomousBotDebates.PlayerSpoke(player.Realm);
+        lock (Sync)
+            LastPlayerFactionLine[player.Realm] = GameLoop.GameLoopTime;
         if (AutonomousBotGuildSocial.TryAnswerGuildRequest(player, message, true))
             return;
         lock (Sync)
@@ -741,6 +751,8 @@ public static class AutonomousBotChatCoordinator
         var slots = player == null ? null : new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name };
         // Only a bot that will really come says "omw" to "rez pls" ("will_rez"); one that can't rez at all says so ("!can_rez").
         string[] with = value == eAutonomousChatIntent.Rez && WillComeRez(responder, player) ? ["will_rez"] : null;
+        if (AutonomousBotVoices.TryShapedReply(responder, incoming, out VC.Picked shaped, slots, relax: player != null))
+            return shaped.Text;
         // Class talk is about the class asked about, or about no class in particular (re-run 2026-10-18: "is friar good?"
         // drew "necro pets do all the work").
         if (value == eAutonomousChatIntent.ClassTalk)
@@ -756,13 +768,7 @@ public static class AutonomousBotChatCoordinator
         }
         else if (value == eAutonomousChatIntent.Greeting)
         {
-            // "how is everyone?" gets "not bad, you?"; a plain "hi all" gets a hello, not an answer to a question nobody asked.
-            bool asked = AutonomousChatShortTalk.AsksHowAreYou(incoming);
-            if (asked && AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked howAreYou, answers: "ask_howareyou", slots: slots,
-                    relax: player != null))
-                return howAreYou.Text;
-            if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked hello, intent, slots: slots, relax: player != null,
-                    filter: line => asked || !line.Answers.Contains("ask_howareyou", StringComparer.Ordinal)))
+            if (AutonomousBotVoices.TryGreetingReply(responder, incoming, out VC.Picked hello, slots, relax: player != null))
                 return hello.Text;
         }
         else if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked voiced, intent, slots: slots, flags: with, relax: player != null))

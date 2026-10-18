@@ -7,10 +7,14 @@
 @topic leveling
 @who *
 {level} {class} here, anyone close in level?
+@invites lfg
 who is leveling tonight? could use the company
+@invites
 anyone know a good camp around {level}?
 anyone else stuck in the slow levels?
+@invites lfg
 {dungeon} anyone? heard its good at our level
+@invites
 anyone free to heal for a couple hours of xp?
 @invites ask_anyone
 guild group in 20 at {camp}?
@@ -56,9 +60,13 @@ met a friendly {enemy} out there, he bowed and walked off
 @invites joke
 who has the worst luck with drops? pretty sure its me
 my cat walked on the keyboard and nearly pulled a red con
-who is the best healer in this guild? be honest
+@invites chat
+our healers carried us again last night, just saying
+@invites joke
 remember when we wiped three times at {camp}? good times
+@invites none
 somebody tell a joke, too quiet in here
+@invites joke
 @invites none
 brb food
 @invites chat

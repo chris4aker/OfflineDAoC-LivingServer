@@ -599,7 +599,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "chat",
    "text": "the 20s feel slow, anyone else hit the wall around here?",
    "id": "8d09e7c49f8f"
   },
@@ -805,7 +805,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone know if {monsters} drop anything worth keeping?",
    "id": "2609d0a6f3f0"
   },
@@ -1153,7 +1153,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "chat",
    "text": "anyone else pick up a few last levels in the frontier?",
    "id": "b191f7080b81"
   },
@@ -1207,7 +1207,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "ask_know",
    "text": "anyone know who camps {monster} at {camp}? want to take turns",
    "id": "d00a8f9d8830"
   },
@@ -1359,7 +1359,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "heard there is a named that wanders near {camp}, anyone seen it?",
    "id": "c2e23f65a080"
   },
@@ -2173,7 +2173,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "anybody seen a good group in vendo? lfm or lfg either way",
    "id": "ea945acda6ed"
   },
@@ -2885,7 +2885,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "joke",
+   "invites": "lfg",
    "text": "valley of bri leith anyone? siogs keep stealing my gear, i swear",
    "id": "36405565437f"
   },
@@ -2939,7 +2939,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone know if the den is busy right now?",
    "id": "a2256bdc48a4"
   },
@@ -3127,7 +3127,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "abermenai later? want to try rvr before 20",
    "id": "4d2873af0d94"
   },
@@ -3431,7 +3431,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "murd tonight? short a couple for a group",
    "id": "1af2973e87c4"
   },
@@ -3659,7 +3659,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "cathal valley tonight? last chance before 50",
    "id": "cb9109954af1"
   },
@@ -11262,7 +11262,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "chat",
    "text": "anyone else up way too late?",
    "id": "455e259720d7"
   },
@@ -11714,7 +11714,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone know if the stories about {zone} at night are true?",
    "id": "0e9cf1497117"
   },
@@ -13019,7 +13019,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone know what is past this room?",
    "id": "5e7bb1de510a"
   },
@@ -14634,7 +14634,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "ask",
    "text": "same group tomorrow? this works",
    "id": "2ad31ea7404c"
   },
@@ -14817,7 +14817,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "who is leveling tonight? could use the company",
    "id": "4db72893402f"
   },
@@ -14835,7 +14835,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone know a good camp around {level}?",
    "id": "a5e459313aad"
   },
@@ -14853,7 +14853,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "chat",
    "text": "anyone else stuck in the slow levels?",
    "id": "e0b7269c2230"
   },
@@ -14871,7 +14871,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "{dungeon} anyone? heard its good at our level",
    "id": "2ac638d36343"
   },
@@ -15431,9 +15431,9 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "joke",
-   "text": "who is the best healer in this guild? be honest",
-   "id": "da0f72a1129b"
+   "invites": "chat",
+   "text": "our healers carried us again last night, just saying",
+   "id": "98ef06c457b8"
   },
   {
    "kind": "guild",
@@ -15467,7 +15467,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "joke",
+   "invites": "none",
    "text": "somebody tell a joke, too quiet in here",
    "id": "b0b506e2c089"
   },
@@ -16510,7 +16510,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "ask_anyone",
    "text": "anyone near a forge? i could use the company while i grind",
    "id": "da36684c4511"
   },
@@ -16528,7 +16528,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone know what spellcraft gems sell for these days?",
    "id": "bd2c802b91fe"
   },
@@ -16798,7 +16798,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anybody seen {keep} change hands lately?",
    "id": "f3a73c19b2c7"
   },
@@ -16816,7 +16816,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone know a good spot for a {class} at {level}?",
    "id": "d83e9e8b12c8"
   },
@@ -22937,7 +22937,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "anyone up for jamtland tonight? keeps are swapping",
    "id": "a209dcf10db9"
   },
@@ -23153,7 +23153,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "chat",
    "text": "anyone else just sit by the forge in jordheim and listen?",
    "id": "e1c80a6470a1"
   },
@@ -23583,7 +23583,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "chat",
    "text": "anyone else track how long each level takes?",
    "id": "bd73d6718c92"
   },
@@ -24251,7 +24251,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "chat",
    "text": "anyone else stay up too late because the group was fun?",
    "id": "db9939c59509"
   },
@@ -24442,7 +24442,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone know what is at the far end of {zone}?",
    "id": "a3473f53349a"
   },
@@ -35187,6 +35187,554 @@
     50
    ],
    "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "not sure, havent been that way",
+   "id": "1997b1ebc1dc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "last i saw, yes",
+   "id": "5cdf84a8a7e4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "was earlier, not sure now",
+   "id": "ec9cc73122ed"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "someone was there an hour ago",
+   "id": "b4549ffa4fdc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "havent seen anyone",
+   "id": "0625350272e7"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "i think so? dont quote me",
+   "id": "a20872c72e95"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "dunno, ask in a bit",
+   "id": "0803d953a755"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "no idea, check the map",
+   "id": "398e99f9e4ff"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "pretty sure, yeah",
+   "id": "63fe528c4c06"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "heard the same, no idea if its true",
+   "id": "f95891163eb4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "dont think so",
+   "id": "fbb6fd6bb0ae"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "was there earlier, looked fine",
+   "id": "f1cc85a810da"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "yes, been watching it all night",
+   "id": "265ad74f47d9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "here o/",
+   "id": "96920a78b2a4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "yep, on",
+   "id": "2d9bce1c34f5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "o/ hi",
+   "id": "edef08c602cd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "just got on",
+   "id": "5d685a45e890"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "still here",
+   "id": "c5a06997c727"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "around, kinda",
+   "id": "3c017f5058f5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "half here lol",
+   "id": "6b250ea36eda"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "here, at the bind",
+   "id": "dd034802fb5f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "me",
+   "id": "d31572cd974f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "present",
+   "id": "aa408d441550"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "on and grinding",
+   "id": "be38f77690da"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "here, whats up?",
+   "id": "fffd91cf5fec"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "always on",
+   "id": "58b67ccfc29b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "here!! whats going on",
+   "id": "854d7d9131a0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
    "intent": "thanks",
    "mood": "",
    "weight": 1.0,
@@ -40204,7 +40752,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_know",
    "text": "anyone seen enemies near {keep}?",
    "id": "a8978fe41e81"
   },
@@ -40575,7 +41123,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "darkness falls run anyone? need seals for gear",
    "id": "7c480dd9cd79"
   },
@@ -40629,7 +41177,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "lfg",
    "text": "anyone going to thidranki? need a few more friendlies",
    "id": "304b11adf711"
   },
@@ -40861,7 +41409,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "ask_anyone",
    "text": "anyone have speed? long run to {keep}",
    "id": "9940f3d7f5fa"
   },

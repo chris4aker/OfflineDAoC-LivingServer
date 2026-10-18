@@ -127,3 +127,46 @@ eh, rather be killing things
 ask me after this pull
 lol whatever you say
 dunno, been here all day
+
+# "anyone know if Caer Sursbrooke is ours?", "anyone know who camps x?": a question about the world.
+# Live test of se.4 (2026-10-18): these drew "ask again in a bit". New writing.
+@kind reply
+@answers ask_know
+@who *
+not sure, havent been that way
+last i saw, yes
+was earlier, not sure now
+someone was there an hour ago
+havent seen anyone
+i think so? dont quote me
+dunno, ask in a bit
+no idea, check the map
+pretty sure, yeah
+heard the same, no idea if its true
+dont think so
+@who Explorer
+was there earlier, looked fine
+@who NoLifer
+yes, been watching it all night
+
+# "anyone on?", "whos around": who is here. Live test of se.4 (2026-10-18): /gu "anyone on?" drew "good question,
+# someone else might know". New writing.
+@kind reply
+@answers ask_on
+@who *
+here o/
+yep, on
+o/ hi
+just got on
+still here
+around, kinda
+half here lol
+here, at the bind
+me
+present
+on and grinding
+here, whats up?
+@who NoLifer
+always on
+@who Socialite
+here!! whats going on

@@ -244,6 +244,31 @@ public static class AutonomousBotVoices
 
     #endregion
 
+    /// <summary>
+    /// A reply to a greeting: "how is everyone?" gets "not bad, you?", a plain "hi all" a hello and never an answer to a
+    /// question nobody asked (live test 2026-10-18: "hi all" drew "not bad, and you?" in /faction and "good just dinged
+    /// actually" in /gu).
+    /// </summary>
+    public static bool TryGreetingReply(GameBot bot, string incoming, out VC.Picked result, IReadOnlyDictionary<string, string> slots = null,
+        bool relax = false, bool requireVoices = true)
+    {
+        bool asked = AutonomousChatShortTalk.AsksHowAreYou(incoming);
+        if (asked && TryLine(bot, "reply", out result, answers: "ask_howareyou", slots: slots, relax: relax, requireVoices: requireVoices))
+            return true;
+        return TryLine(bot, "reply", out result, IntentName(eAutonomousChatIntent.Greeting), slots: slots, relax: relax,
+            requireVoices: requireVoices, filter: line => asked || !line.Answers.Contains("ask_howareyou", StringComparer.Ordinal));
+    }
+
+    /// <summary>A reply for the kind of question a player asked ("anyone on?" -> "here"), before replies by topic.</summary>
+    public static bool TryShapedReply(GameBot bot, string incoming, out VC.Picked result, IReadOnlyDictionary<string, string> slots = null,
+        bool relax = false, bool requireVoices = true)
+    {
+        result = null;
+        string shape = AutonomousChatShortTalk.QuestionShape(incoming);
+        return shape is "ask_on" or "ask_permission" or "ask_choice" or "ask_guild" &&
+               TryLine(bot, "reply", out result, answers: shape, slots: slots, relax: relax, requireVoices: requireVoices);
+    }
+
     /// <summary>A corpus line of a kind for this bot, or false (the caller keeps its old line).</summary>
     public static bool TryLine(GameBot bot, string kind, out string text, string intent = null, Random random = null)
     {

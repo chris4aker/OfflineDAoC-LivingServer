@@ -508,6 +508,42 @@ namespace DOL.GS.Tests
                 Is.SupersetOf(new[] { "rvr_guild_recruit", "rvr_relic_retake", "hib_gen_relic_night" }));
         }
 
+        [TestCase("anyone on?", "ask_on")]
+        [TestCase("whos around", "ask_on")]
+        [TestCase("anybody here?", "ask_on")]
+        [TestCase("how is everyone?", "ask_howareyou")]
+        [TestCase("anyone on for a group at the pikemen camp near the bridge?", null)]
+        [TestCase("lf guild", "ask_guild")]
+        [TestCase("mind if i hunt near cotswold?", "ask_permission")]
+        [TestCase("should i roll a cleric or a friar?", "ask_choice")]
+        [TestCase("lfg or something?", null)]
+        [TestCase("lol", null)]
+        public void APlayersQuestionTypeIsRead(string text, string shape) =>
+            Assert.That(AutonomousChatShortTalk.QuestionShape(text), Is.EqualTo(shape));
+
+        [Test]
+        public void QuestionsAboutTheWorldAndWhoIsOnHaveFittingAnswers()
+        {
+            // /gu "anyone on?" drew "good question, someone else might know"; "anyone know if Caer Sursbrooke is ours?" drew
+            // "ask again in a bit".
+            Assert.That(Corpus.Lines.Count(l => l.Kind == "reply" && l.Answers.Contains("ask_on")), Is.GreaterThanOrEqualTo(10));
+            Assert.That(Corpus.Lines.Count(l => l.Kind == "reply" && l.Answers.Contains("ask_know")), Is.GreaterThanOrEqualTo(10));
+            Assert.That(Corpus.Lines.Single(l => l.Text.StartsWith("anyone know who camps")).Invites, Is.EqualTo("ask_know"));
+            Assert.That(Corpus.Lines.Single(l => l.Text == "anyone else up at this hour? i never sleep").Invites, Is.EqualTo("chat"),
+                "\"anyone else...?\" is company, not a request: \"same here\", not \"sorry, busy\".");
+            Assert.That(Corpus.Lines.Single(l => l.Text == "murd tonight? short a couple for a group").Invites, Is.EqualTo("lfg"));
+            Assert.That(Corpus.Lines.Where(l => l.Text.Contains('?') && l.Invites is "joke" or "boast").Select(l => l.Text),
+                Is.All.Not.StartWith("who is the best"));
+        }
+
+        [Test]
+        public void UnpromptedFactionLinesWaitAfterAPlayerSpeaks()
+        {
+            Assert.That(Chat.QuietAfterPlayer(10_000, 10_000 + Chat.PlayerQuietMs - 1), Is.True);
+            Assert.That(Chat.QuietAfterPlayer(10_000, 10_000 + Chat.PlayerQuietMs), Is.False);
+            Assert.That(Chat.QuietAfterPlayer(0, 5_000), Is.False, "No player has spoken yet.");
+        }
+
         [Test]
         public void ARunningSceneWaitsWhenAPlayerSpeaks()
         {

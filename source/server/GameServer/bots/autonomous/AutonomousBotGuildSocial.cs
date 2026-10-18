@@ -283,9 +283,13 @@ public static class AutonomousBotGuildSocial
             // A corpus reply for what the player said ("ty" -> "np", "lol" -> "heh", "ding" -> "gz"), else today's lines
             // (0.36-se.4: "haha true" answered any guild line that wasn't a question).
             // Unknown and real-world lines keep today's guild replies; nobody here says "omw" to a rez ask.
+            VC.Picked picked = null;
             string line = intent is not (eAutonomousChatIntent.Unknown or eAutonomousChatIntent.IgnoreOutOfWorld) &&
-                          AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked picked, AutonomousBotVoices.IntentName(intent),
-                              slots: slots, relax: true, requireVoices: false)
+                          (AutonomousBotVoices.TryShapedReply(bot, message, out picked, slots, relax: true, requireVoices: false) ||
+                           intent == eAutonomousChatIntent.Greeting
+                              ? AutonomousBotVoices.TryGreetingReply(bot, message, out picked, slots, relax: true, requireVoices: false)
+                              : AutonomousBotVoices.TryLine(bot, "reply", out picked, AutonomousBotVoices.IntentName(intent),
+                                  slots: slots, relax: true, requireVoices: false))
                 ? picked.Text
                 : Lines.Reply(kind, player.Name, bot.Level, bot.CurrentZone?.Description, Random.Shared);
             if (!AutonomousBotChatCoordinator.TryAddDistinctResponse(used, line, out line))

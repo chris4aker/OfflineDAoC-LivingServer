@@ -105,6 +105,37 @@ public static class AutonomousChatShortTalk
             "hows everyone", "hows everybody", "hows it going", "how is it going", "how are things", "hows things", "how you doing",
             "how u doing", "how ya doing", "how goes it", "whats up", "wassup", "sup");
 
+    /// <summary>"anyone on?", "anybody here?", "whos on": asks who is around, answered "here" or "im on" (live test
+    /// 2026-10-18: /gu "anyone on?" drew "good question, someone else might know").</summary>
+    public static bool AsksWhoIsOn(string text)
+    {
+        string[] words = AutonomousChatIntentModel.Words(text).Select(word => word.Replace("'", string.Empty)).ToArray();
+        return words.Length <= 5 && HasPhrase(words, "anyone on", "anybody on", "any1 on", "anyone here", "anybody here", "anyone around",
+            "anybody around", "anyone awake", "anyone online", "anybody online", "who is on", "whos on", "whos around", "who is around",
+            "anyone still on", "anyone still up", "anyone up");
+    }
+
+    /// <summary>The question type a player's line asks, answered from that reply set before replies by topic: "ask_howareyou",
+    /// "ask_on", or null.</summary>
+    public static string QuestionShape(string text)
+    {
+        if (AsksHowAreYou(text))
+            return "ask_howareyou";
+        if (AsksWhoIsOn(text))
+            return "ask_on";
+        string[] words = AutonomousChatIntentModel.Words(text).Select(word => word.Replace("'", string.Empty)).ToArray();
+        // "lf guild" that no bot guild took up (already in a guild, bot guilds off) drew "i could use a group too".
+        if (AutonomousBotGuildChatLines.AsksForGuild(text, false))
+            return "ask_guild";
+        // "mind if i hunt near cotswold?" drew "what?" and "yeah?" (live test 2026-10-18).
+        if (HasPhrase(words, "mind if i", "ok if i", "okay if i", "is it ok if", "alright if i", "anyone mind if"))
+            return "ask_permission";
+        // "should i roll a cleric or a friar?"
+        if (text.Contains('?') && words.Contains("or") && !HasPhrase(words, "or something", "or anything", "or what", "or so", "or not"))
+            return "ask_choice";
+        return null;
+    }
+
     public static bool HasPhrase(string[] words, params string[] phrases)
     {
         string text = " " + string.Join(' ', words) + " ";

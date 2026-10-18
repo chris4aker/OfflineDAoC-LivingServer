@@ -168,6 +168,10 @@ def fresh_tags():
 def infer_invites(text, kind):
     """What an opener without @invites invites: questions by their shape, otherwise a light reaction."""
     t = SLOT_RE.sub('x', text.lower()).strip()
+    # "anyone know who camps x? want to take turns": the question is what comes before the last "?" (live test 2026-10-18).
+    # lfg and trade lines keep their own answers ("want to join us? sending an invite").
+    if '?' in t and kind not in ('lfg', 'trade'):
+        t = t[:t.rfind('?') + 1]
     if t.endswith('?'):
         if re.search(r"^((hey|hi|so|ok|yo)[ ,]+)?(how (is|are|r) (every|you|u|ya|yall|things|it)|hows (every|it|things)|how goes|"
                      r"what did i miss|whats new|whats up|what is everyone (up to|doing))", t):
@@ -178,8 +182,14 @@ def infer_invites(text, kind):
             return 'ask_choice'
         if re.search(r"\bwhere\b|\bwheres\b|how do (i|you) get|which way|how far", t):
             return 'ask_where'
-        if re.search(r"\b(best|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):
+        if re.search(r"\b(best(?! (thing|part|moment|day))|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):
             return 'ask_opinion'
+        # "anyone know if x is ours?": a question about the world, answered "no idea" or "last i saw" (live test 2026-10-18).
+        if re.search(r"\b(anyone|anybody|any1|does anyone|someone) (know|knows|seen|heard)\b", t):
+            return 'ask_know'
+        # "anyone else up at this hour?": company, answered "same here", not "sorry, busy".
+        if re.search(r"\b(anyone|anybody|any1) else\b", t):
+            return 'chat'
         if re.match(r"(anyone|any1|anybody|who|any )", t) or re.search(r"\b(anyone|anybody|any1)\b", t):
             return 'ask_anyone'
         if re.search(r"\b(how|what|why|when|which)\b", t):
