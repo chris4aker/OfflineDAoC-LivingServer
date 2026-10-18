@@ -284,9 +284,11 @@ public static class AutonomousBotGuildSocial
             // (0.36-se.4: "haha true" answered any guild line that wasn't a question).
             // Unknown and real-world lines keep today's guild replies; nobody here says "omw" to a rez ask.
             VC.Picked picked = null;
-            string line = intent is not (eAutonomousChatIntent.Unknown or eAutonomousChatIntent.IgnoreOutOfWorld) &&
-                          (AutonomousBotVoices.TryShapedReply(bot, message, out picked, slots, relax: true, requireVoices: false) ||
-                           intent == eAutonomousChatIntent.Greeting
+            // The question type first, whatever the intent ("anyone on?" reads as none; live test 2026-10-18: it drew
+            // "hmm, i would ask a trainer").
+            string line = AutonomousBotVoices.TryShapedReply(bot, message, out picked, slots, relax: true, requireVoices: false) ||
+                          intent is not (eAutonomousChatIntent.Unknown or eAutonomousChatIntent.IgnoreOutOfWorld) &&
+                          (intent == eAutonomousChatIntent.Greeting
                               ? AutonomousBotVoices.TryGreetingReply(bot, message, out picked, slots, relax: true, requireVoices: false)
                               : AutonomousBotVoices.TryLine(bot, "reply", out picked, AutonomousBotVoices.IntentName(intent),
                                   slots: slots, relax: true, requireVoices: false))
