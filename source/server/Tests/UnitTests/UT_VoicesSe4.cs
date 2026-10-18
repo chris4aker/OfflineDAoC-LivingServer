@@ -460,5 +460,61 @@ namespace DOL.GS.Tests
         }
 
         #endregion
+
+        #region Live test 2026-10-18
+
+        [TestCase("how is everyone?", true)]
+        [TestCase("hey all, hows it going", true)]
+        [TestCase("how's everyone doing", true)]
+        [TestCase("sup all", true)]
+        [TestCase("how are you?", true)]
+        [TestCase("hi all", false)]
+        [TestCase("hello", false)]
+        [TestCase("how much xp to 6?", false)]
+        [TestCase("how do i get to camelot", false)]
+        public void AHowAreYouIsToldFromAPlainHello(string text, bool asks) =>
+            Assert.That(AutonomousChatShortTalk.AsksHowAreYou(text), Is.EqualTo(asks));
+
+        [Test]
+        public void HowAreYouGreetingsHaveAnswersOfTheirOwn()
+        {
+            // "hi all" drew "not bad, and you?": those lines answer "how are you" and are kept out of plain hellos.
+            var answers = Corpus.Lines.Where(l => l.Kind == "reply" && l.Answers.Contains("ask_howareyou")).ToList();
+            Assert.That(answers, Has.Count.GreaterThanOrEqualTo(5));
+            Assert.That(Corpus.Lines.Count(l => l.Kind == "reply" && l.Intent == "greeting" && !l.Answers.Contains("ask_howareyou")),
+                Is.GreaterThanOrEqualTo(10), "Plain hellos are left for a plain hello.");
+            Assert.That(Model.Predict("how is everyone?"), Is.EqualTo(Intent.Greeting));
+        }
+
+        [TestCase((ushort)10)]
+        [TestCase((ushort)101)]
+        [TestCase((ushort)201)]
+        public void TheCapitalsAreCapitals(ushort region) =>
+            Assert.That(AutonomousBotVoices.IsCapitalRegion(region), Is.True,
+                "The capitals are one zone at the dungeon offset; chat must not call them dungeons (\"lfg City of Camelot\").");
+
+        [Test]
+        public void ARoleThatSaysItIsNot50IsNotPlayedByA50()
+        {
+            VC.Scene scene = Corpus.Scenes.Single(s => s.Id == "rvr_guild_recruit");
+            Assert.That(scene.Roles["D"].LevelHigh, Is.EqualTo(49), "D says \"i am not 50 yet, can i join\".");
+            var random = new Random(4);
+            var fifties = Enumerable.Range(1, 8).Select(i => new AutonomousBotDebates.Candidate(i, BotPersonalityType.Socialite, "Cleric", 50)).ToList();
+            Assert.That(AutonomousBotDebates.Cast(scene, fifties, random), Is.Null, "Nobody below 50 to play D: the scene isn't cast.");
+            var mixed = fifties.Append(new AutonomousBotDebates.Candidate(99, BotPersonalityType.Socialite, "Cleric", 42)).ToList();
+            for (int i = 0; i < 20; i++)
+                Assert.That(AutonomousBotDebates.Cast(scene, mixed, random)?["D"], Is.EqualTo(99));
+            Assert.That(Corpus.Scenes.Where(s => s.Roles.Values.Any(r => r.LevelLow != 1 || r.LevelHigh != 50)).Select(s => s.Id),
+                Is.SupersetOf(new[] { "rvr_guild_recruit", "rvr_relic_retake", "hib_gen_relic_night" }));
+        }
+
+        [Test]
+        public void ARunningSceneWaitsWhenAPlayerSpeaks()
+        {
+            Assert.That(AutonomousBotDebates.AfterPlayerSpoke(1_000, 5_000), Is.EqualTo(5_000 + AutonomousBotDebates.PlayerPauseMs));
+            Assert.That(AutonomousBotDebates.AfterPlayerSpoke(90_000, 5_000), Is.EqualTo(90_000), "A longer pause is kept.");
+        }
+
+        #endregion
     }
 }

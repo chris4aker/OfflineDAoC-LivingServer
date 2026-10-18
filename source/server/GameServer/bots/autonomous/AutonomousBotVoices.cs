@@ -98,7 +98,7 @@ public static class AutonomousBotVoices
         var flags = new HashSet<string>(StringComparer.Ordinal);
         OfflineWorldBotRecord record = bot.PersistentRecord;
         flags.Add(bot.Group != null ? "in_group" : "solo");
-        if (bot.CurrentRegion?.IsDungeon == true || bot.CurrentZone?.IsDungeon == true) flags.Add("in_dungeon");
+        if (InDungeon(bot)) flags.Add("in_dungeon");
         if (bot.CurrentZone?.IsRvR == true || bot.CurrentRegion?.IsRvR == true)
         {
             flags.Add("in_rvr");
@@ -127,6 +127,11 @@ public static class AutonomousBotVoices
 
     /// <summary>Camelot City, Jordheim and Tir na Nog.</summary>
     public static bool IsCapitalRegion(ushort regionId) => regionId is 10 or 101 or 201;
+
+    /// <summary>Whether a bot is in a dungeon. The capitals are one zone at the dungeon offset, so the server calls them
+    /// dungeons; in the live test of se.4 a bot in Camelot said "lfg City of Camelot".</summary>
+    public static bool InDungeon(GameBot bot) =>
+        !IsCapitalRegion(bot.CurrentRegionID) && (bot.CurrentRegion?.IsDungeon == true || bot.CurrentZone?.IsDungeon == true);
 
     /// <summary>A realm dungeon a bot of this level would use (Kirstena's 2002 ranges, checked against the world database).</summary>
     public static string DungeonFor(eRealm realm, int level)
@@ -212,7 +217,7 @@ public static class AutonomousBotVoices
         }
         else
         {
-            foreach (var pair in SharedSlots(bot.Realm, bot.Level, random, bot.CurrentRegion?.IsDungeon == true ? zone : null))
+            foreach (var pair in SharedSlots(bot.Realm, bot.Level, random, InDungeon(bot) ? zone : null))
                 slots[pair.Key] = pair.Value;
             // A bot at a camp names where it really is, not a dungeon for its level (audit 2026-10-16).
             if (!string.IsNullOrEmpty(record?.CurrentCampId) && !string.IsNullOrEmpty(zone))

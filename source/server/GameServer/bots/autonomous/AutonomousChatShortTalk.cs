@@ -97,6 +97,14 @@ public static class AutonomousChatShortTalk
     public static bool SameClassWord(string a, string b) =>
         string.Equals(a.TrimEnd('s'), b.TrimEnd('s'), StringComparison.OrdinalIgnoreCase);
 
+    /// <summary>"how are you?", "hows everyone", "sup": a greeting that asks back, answered "not bad, you?" rather than "hi"
+    /// (live test 2026-10-18: "hi all" drew "not bad, and you?").</summary>
+    public static bool AsksHowAreYou(string text) =>
+        HasPhrase(AutonomousChatIntentModel.Words(text).Select(word => word.Replace("'", string.Empty)).ToArray(),
+            "how are you", "how are u", "how r u", "how r you", "how are ya", "how are yall", "how is everyone", "how is everybody",
+            "hows everyone", "hows everybody", "hows it going", "how is it going", "how are things", "hows things", "how you doing",
+            "how u doing", "how ya doing", "how goes it", "whats up", "wassup", "sup");
+
     public static bool HasPhrase(string[] words, params string[] phrases)
     {
         string text = " " + string.Join(' ', words) + " ";

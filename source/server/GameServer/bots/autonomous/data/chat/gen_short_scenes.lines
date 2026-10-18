@@ -622,7 +622,7 @@ A: trying | hurry | the door is not going to last
 @role C type=Socialite
 A: lost in jordheim, where are the trainers? | jordheim is huge, where is my trainer | how do i find anything in jordheim
 B: the trainers are spread around the city, walk the halls | follow the main hall, you will find them | which class? i can tell you where to look
-C: everyone gets lost in jordheim the first time | the layout is a maze, give it a week | i still get lost and i am 50
+C: everyone gets lost in jordheim the first time | the layout is a maze, give it a week | i still get lost and i have been here for ages
 ?A: i have been walking for ages | found the bank but no trainer | i am going in circles
 B: keep at it, its there | look for your class in the name | try the other side of the hall
 A: found it! | ty | ok found him finally

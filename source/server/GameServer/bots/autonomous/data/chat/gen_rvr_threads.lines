@@ -178,7 +178,7 @@ D: wake me when it is time | ok now i am really going to bed
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Explorer,NoLifer
-@role F type=Leveler
+@role F type=Leveler levels=35-49
 A: {q} its been a week without our relic, i miss the bonus | a week since we lost the relic and i can feel it in every fight
 B: you dont feel it, its in your head | the difference is smaller than people think
 C: tell that to my damage | my melee says otherwise
@@ -715,7 +715,7 @@ D: meet at {keep} | same place, {keep}?
 @scene rvr_guild_recruit
 @role B type=NoLifer
 @role C type=Leveler
-@role D type=Socialite
+@role D type=Socialite levels=30-49
 @role E type=Crafter,Explorer
 A: {q} our guild is recruiting for rvr, anyone who wants regular raids | small rvr guild looking for people who like fighting more than leveling
 B: what time do you raid | when do you play

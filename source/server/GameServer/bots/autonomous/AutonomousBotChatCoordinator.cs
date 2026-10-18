@@ -125,6 +125,7 @@ public static class AutonomousBotChatCoordinator
         if (player == null || string.IsNullOrWhiteSpace(message))
             return;
         BroadcastFaction(player.Name, player.Realm, message);
+        AutonomousBotDebates.PlayerSpoke(player.Realm);
         if (AutonomousBotGuildSocial.TryAnswerGuildRequest(player, message, true))
             return;
         lock (Sync)
@@ -752,6 +753,17 @@ public static class AutonomousBotChatCoordinator
             if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked general, intent, slots: slots, relax: player != null,
                     filter: line => !AutonomousChatShortTalk.NamesAClass(line.Text)))
                 return general.Text;
+        }
+        else if (value == eAutonomousChatIntent.Greeting)
+        {
+            // "how is everyone?" gets "not bad, you?"; a plain "hi all" gets a hello, not an answer to a question nobody asked.
+            bool asked = AutonomousChatShortTalk.AsksHowAreYou(incoming);
+            if (asked && AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked howAreYou, answers: "ask_howareyou", slots: slots,
+                    relax: player != null))
+                return howAreYou.Text;
+            if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked hello, intent, slots: slots, relax: player != null,
+                    filter: line => asked || !line.Answers.Contains("ask_howareyou", StringComparer.Ordinal)))
+                return hello.Text;
         }
         else if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked voiced, intent, slots: slots, flags: with, relax: player != null))
             return voiced.Text;

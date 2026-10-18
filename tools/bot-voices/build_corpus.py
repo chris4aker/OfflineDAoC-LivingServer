@@ -224,6 +224,9 @@ def parse_file(path, problems):
                     if c not in ALL_CLASSES:
                         problems.append(f'{where}: unknown class {c}')
                 scene['roles'][role] = dict(type=split_list(req.get('type', '')), **{'class': split_list(req.get('class', ''))})
+                # levels=35-49: a role whose lines only fit some levels ("i am not 50 yet"; live test 2026-10-18).
+                if 'levels' in req:
+                    scene['roles'][role]['levels'] = parse_levels(req['levels'], where)
             elif key == 'end':
                 scene = None
             else:

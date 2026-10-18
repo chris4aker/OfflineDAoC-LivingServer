@@ -566,7 +566,7 @@ B: see you all saturday :)
 @role B type=NoLifer
 @role C type=Daredevil
 @role D class=Cleric,Friar
-@role E type=Leveler
+@role E type=Leveler levels=30-49
 @role F class=Armsman,Paladin
 A: anyone at Caer Berkstead? the lord has been hit twice tonight | {q} Caer Berkstead got hit again, anyone nearby
 B: we lost Caer Erasleigh an hour ago and nobody even noticed | Erasleigh fell earlier, the claim is gone too
@@ -738,7 +738,7 @@ C: and that is how recruiting actually works. one person at a time | this is why
 @role B type=Crafter
 @role C type=Crafter
 @role D type=NoLifer
-@role E type=Leveler
+@role E type=Leveler levels=20-49
 A: hit legendary armorcraft tonight. took months | {q} finally legendary in armorcraft, my bank account is crying
 B: gz! that is a huge grind | congrats, i remember that feeling. and that empty purse
 C: welcome to the poor house, population all of us crafters | grats. now begins the part where you try to earn it back

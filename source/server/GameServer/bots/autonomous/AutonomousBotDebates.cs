@@ -38,6 +38,9 @@ public static class AutonomousBotDebates
     public const int MaximumGapMs = 45 * 60_000;
     public const int FirstSceneDelayMs = 5 * 60_000;
     public const int LevelSlack = 5;
+    /// <summary>A scene holds its next line this long after a player speaks in /faction, so the replies to the player come
+    /// first and a scene line isn't read as one (live test 2026-10-18: "lfg 5 scout" was followed by the scene's "me too").</summary>
+    public const int PlayerPauseMs = 10_000;
 
     private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -84,12 +87,24 @@ public static class AutonomousBotDebates
     /// <summary>Typing pace: 3 seconds plus about 60 ms a character, within 3-10 seconds.</summary>
     public static int BeatDelayMs(string text) => Math.Clamp(3_000 + (text?.Length ?? 0) * 60, 3_000, 10_000);
 
+    public static long AfterPlayerSpoke(long nextAt, long now) => Math.Max(nextAt, now + PlayerPauseMs);
+
+    /// <summary>A player of the realm spoke in /faction: the running scene, if any, waits a moment.</summary>
+    public static void PlayerSpoke(eRealm realm)
+    {
+        lock (Sync)
+        {
+            if (Scenes.TryGetValue(realm, out Running running))
+                running.NextAt = AfterPlayerSpoke(running.NextAt, GameLoop.GameLoopTime);
+        }
+    }
+
     public static int NextGapMs(Random random) => MinimumGapMs + random.Next(MaximumGapMs - MinimumGapMs + 1);
 
     public static bool LevelFits(VC.Scene scene, int level) => level >= scene.LevelLow - LevelSlack && level <= scene.LevelHigh + LevelSlack;
 
     public static bool Fits(VC.RoleSpec spec, Candidate candidate) =>
-        spec == null || VC.TypeFits(spec.Types, candidate.Type) && VC.ClassFits(spec.Classes, candidate.ClassName);
+        spec == null || VC.TypeFits(spec.Types, candidate.Type) && VC.ClassFits(spec.Classes, candidate.ClassName) && spec.LevelFits(candidate.Level);
 
     /// <summary>
     /// Casts a scene's speaking roles from distinct candidates. A role's class requirement is kept;
@@ -105,12 +120,12 @@ public static class AutonomousBotDebates
             .ThenBy(_ => random.Next()).ToArray();
         // Roles with requirements first, so the open roles don't take the only fitting bot.
         foreach (string role in scene.SpeakingRoles.OrderByDescending(r => scene.Roles.TryGetValue(r, out var s) ?
-                     s.Classes.Length * 2 + s.Types.Length : 0))
+                     s.Classes.Length * 2 + s.Types.Length + (s.LevelLow > 1 || s.LevelHigh < 50 ? 4 : 0) : 0))
         {
             scene.Roles.TryGetValue(role, out VC.RoleSpec spec);
             Candidate chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && Fits(spec, c));
             if (chosen.Id == 0 && spec != null && spec.Types.Length > 0)
-                chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && VC.ClassFits(spec.Classes, c.ClassName));
+                chosen = pool.FirstOrDefault(c => !used.Contains(c.Id) && VC.ClassFits(spec.Classes, c.ClassName) && spec.LevelFits(c.Level));
             if (chosen.Id == 0)
                 return null;
             cast[role] = chosen.Id;

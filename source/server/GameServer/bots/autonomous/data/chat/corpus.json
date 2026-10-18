@@ -51711,7 +51711,11 @@
      "type": [
       "Leveler"
      ],
-     "class": []
+     "class": [],
+     "levels": [
+      30,
+      49
+     ]
     },
     "F": {
      "type": [],
@@ -52956,7 +52960,11 @@
      "type": [
       "Leveler"
      ],
-     "class": []
+     "class": [],
+     "levels": [
+      20,
+      49
+     ]
     }
    },
    "beats": [
@@ -57711,7 +57719,11 @@
      "type": [
       "Socialite"
      ],
-     "class": []
+     "class": [],
+     "levels": [
+      35,
+      44
+     ]
     },
     "F": {
      "type": [],
@@ -57797,18 +57809,18 @@
     },
     {
      "role": "E",
-     "text": "i am level 22, i will just die",
+     "text": "i am way too low for this, i will just die",
      "variants": [
-      "i am level 22, i will just die",
-      "i am 22, what am i going to do"
+      "i am way too low for this, i will just die",
+      "i am not 50, what am i going to do"
      ],
      "optional": false
     },
     {
      "role": "C",
-     "text": "a 22 can still stand on the wall and yell inc",
+     "text": "a lowbie can still stand on the wall and yell inc",
      "variants": [
-      "a 22 can still stand on the wall and yell inc",
+      "a lowbie can still stand on the wall and yell inc",
       "you can still count them from the wall"
      ],
      "optional": false
@@ -66904,7 +66916,11 @@
      "type": [
       "Leveler"
      ],
-     "class": []
+     "class": [],
+     "levels": [
+      35,
+      49
+     ]
     }
    },
    "beats": [
@@ -70912,7 +70928,11 @@
      "type": [
       "Socialite"
      ],
-     "class": []
+     "class": [],
+     "levels": [
+      30,
+      49
+     ]
     },
     "E": {
      "type": [
@@ -75577,7 +75597,7 @@
      "variants": [
       "everyone gets lost in jordheim the first time",
       "the layout is a maze, give it a week",
-      "i still get lost and i am 50"
+      "i still get lost and i have been here for ages"
      ],
      "optional": false
     },

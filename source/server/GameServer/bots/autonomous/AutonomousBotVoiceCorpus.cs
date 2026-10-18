@@ -32,7 +32,11 @@ public sealed class AutonomousBotVoiceCorpus
         public bool IsPause => Role == "~";
     }
 
-    public sealed record RoleSpec(string[] Types, string[] Classes);
+    /// <summary>Who may play a scene role: personality types, classes and, for lines like "i am not 50 yet", levels.</summary>
+    public sealed record RoleSpec(string[] Types, string[] Classes, int LevelLow = 1, int LevelHigh = 50)
+    {
+        public bool LevelFits(int level) => level >= LevelLow && level <= LevelHigh;
+    }
 
     public sealed record Scene(string Id, string Topic, string Realm, int LevelLow, int LevelHigh,
         IReadOnlyDictionary<string, RoleSpec> Roles, Beat[] Beats)
@@ -123,7 +127,10 @@ public sealed class AutonomousBotVoiceCorpus
         var roles = new Dictionary<string, RoleSpec>(StringComparer.Ordinal);
         if (e.TryGetProperty("roles", out JsonElement r) && r.ValueKind == JsonValueKind.Object)
             foreach (JsonProperty role in r.EnumerateObject())
-                roles[role.Name] = new RoleSpec(Strs(role.Value, "type"), Strs(role.Value, "class"));
+            {
+                (int roleLow, int roleHigh) = Levels(role.Value);
+                roles[role.Name] = new RoleSpec(Strs(role.Value, "type"), Strs(role.Value, "class"), roleLow, roleHigh);
+            }
         var beats = e.GetProperty("beats").EnumerateArray().Select(b =>
         {
             string role = Str(b, "role");
