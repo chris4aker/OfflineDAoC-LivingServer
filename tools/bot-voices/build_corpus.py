@@ -187,6 +187,9 @@ def infer_invites(text, kind):
             return 'ask_where'
         if re.search(r"\b(best(?! (thing|part|moment|day))|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):
             return 'ask_opinion'
+        # "tell me your best death story": a story, not "pretty sure yes" (live test 2026-10-18).
+        if re.search(r"\b(tell me|whats|what is) your (best|worst|favorite|funniest|dumbest)\b|\bbest thing that happened\b", t):
+            return 'ask_story'
         # "what level is everyone at?", "how close are you to a level?", "what are we doing this weekend?"
         if re.search(r"\bwhat level (is|are) (every|you|u|yall)", t):
             return 'ask_level'

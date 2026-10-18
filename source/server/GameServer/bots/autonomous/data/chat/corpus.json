@@ -15396,7 +15396,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_story",
    "text": "best thing that happened to you this week? go",
    "id": "a244908ef566"
   },
@@ -24330,7 +24330,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_story",
    "text": "tell me your best death story, i have three",
    "id": "ace5114b3268"
   },
@@ -36625,6 +36625,190 @@
    ],
    "text": "wherever the xp is best, dont care where",
    "id": "ce2882a5eccf"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "too many to pick one lol",
+   "id": "67192d3bb969"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "pulled a whole room once, never again",
+   "id": "5868671045f9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "a guard killed me once, still not sure why",
+   "id": "04a4786d949a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "fell off a cliff running from a grey con",
+   "id": "f7786c9935b2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "drowned in a pond, a tiny one",
+   "id": "daabc0862960"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "a named spawned on top of us at the bind",
+   "id": "b9e37dc8ffcc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "my pet ran off and brought the whole camp back",
+   "id": "d698a6a4e80d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "tried to solo an orange, it went about how youd think",
+   "id": "aff92f27eb39"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_story"
+   ],
+   "text": "best thing this week? this group honestly",
+   "id": "ee3b35a1a1b4"
   },
   {
    "kind": "reply",
