@@ -42,7 +42,7 @@ needs **bot voices** on (the launcher's Social Expansion tab); what changes with
   *(With bot guilds on, voices on or off.)*
 
 **More to say**
-- The corpus has grown from 979 lines to 2,142. New lines: replies to short chat, replies for each kind
+- The corpus has grown from 979 lines to 2,219. New lines: replies to short chat, replies for each kind
   of opener, closings, dungeon talk (there was none), four more lines for every class, battlegrounds,
   group and guild talk, the frontier and the capitals.
 - Lines know where and when they are said. "tonight" reads "today" in the daytime, bedtime talk waits
