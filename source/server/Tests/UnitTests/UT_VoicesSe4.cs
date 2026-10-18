@@ -389,6 +389,38 @@ namespace DOL.GS.Tests
             }
         }
 
+        [Test]
+        public void SocialQuestionsGetSocialAnswers()
+        {
+            // Re-run 2026-10-18: "hey all, how is everyone?" got "couldnt tell you", "anyone on?" only refusals.
+            Assert.That(Corpus.Lines.Where(line => line.Kind == "reply" && line.Answers.Contains("ask_howareyou")).Count(), Is.GreaterThanOrEqualTo(10));
+            Assert.That(Corpus.Lines.Where(line => line.Kind == "reply" && line.Answers.Contains("ask_choice")).Count(), Is.GreaterThanOrEqualTo(8));
+            Assert.That(Corpus.Lines.Where(line => line.Kind == "reply" && line.Answers.Contains("ask_anyone") && !line.Text.Contains("sorry") &&
+                !line.Text.StartsWith("not") && !line.Text.StartsWith("cant")).Count(), Is.GreaterThanOrEqualTo(8), "Not every answer is a no.");
+            Assert.That(Corpus.Lines.Where(line => line.Invites == "ask_howareyou").Select(line => line.Text),
+                Has.Some.Contains("how is everyone"));
+        }
+
+        [Test]
+        public void ClassTalkCanBeAboutTheClassAsked()
+        {
+            Assert.That(AutonomousChatShortTalk.ClassWordsIn("is friar good?"), Is.EqualTo(new[] { "friar" }));
+            Assert.That(AutonomousChatShortTalk.SameClassWord("friars", "friar"), Is.True);
+            Assert.That(AutonomousChatShortTalk.NamesAClass("depends on your spec"), Is.False);
+            string[] aboutFriars = Corpus.Lines.Where(line => line.Kind == "reply" && line.Intent == "classtalk" &&
+                AutonomousChatShortTalk.ClassWordsIn(line.Text).Any(w => AutonomousChatShortTalk.SameClassWord(w, "friar"))).Select(l => l.Text).ToArray();
+            Assert.That(aboutFriars, Is.Not.Empty);
+            Assert.That(Corpus.Lines.Count(line => line.Kind == "reply" && line.Intent == "classtalk" && !AutonomousChatShortTalk.NamesAClass(line.Text)),
+                Is.GreaterThanOrEqualTo(10), "General answers for a class nobody wrote about.");
+        }
+
+        [Test]
+        public void TheWindowIsThreeDaysWithASixHourFallback()
+        {
+            Assert.That(VC.RecentLines.Window, Is.EqualTo(TimeSpan.FromDays(3)));
+            Assert.That(VC.RecentLines.Relaxed, Is.EqualTo(TimeSpan.FromHours(6)));
+        }
+
         #endregion
 
         #region Knowledge and group turns

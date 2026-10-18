@@ -267,7 +267,11 @@ ding in /faction gets 1-3, a "lol" usually none, a named bot always answers. A s
 - About one bot in seven is a regular who talks 2.5 times as often; about a third talk half as often.
 - Replies take longer to type when longer (about 40-60 ms a character after a moment to read).
 - Typo-prone writers send a "*word" correction for about half their typos.
-- The six-hour no-repeat window is saved in `offline_bot_lines_heard` and read back at start-up.
+- The no-repeat window is three days (it was six hours, which had expired by the next evening), saved in
+  `offline_bot_lines_heard` and read back at start-up. When a kind's pool is used up within three days, lines
+  not heard for six hours may come back; a short reply to a player, after 40 minutes.
+- A bot that is fighting when its reply is due hands it to another bot that could have answered.
+- Class talk answers with lines about the class asked about, or with class-neutral lines.
 
 ## 4. Rates
 

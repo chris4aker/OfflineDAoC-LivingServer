@@ -47,14 +47,18 @@ needs **bot voices** on (the launcher's Social Expansion tab); what changes with
   group and guild talk, the frontier and the capitals.
 - Lines know where and when they are said. "tonight" reads "today" in the daytime, bedtime talk waits
   for the night, and "anyone want to duo?" isn't said by a grouped bot.
-- A line isn't repeated across server restarts: the six-hour no-repeat window is now saved.
+- Lines repeat far less: the no-repeat window is three days instead of six hours (six hours still apply when
+  a kind of line runs out), and it is saved across server restarts. A player who plays every evening heard
+  about a third of the last evening's lines again before.
+- A question whose answering bot got pulled into a fight is answered by another bot. "is friar good?" is
+  answered about friars, or in general, not about necromancers.
 - Removed later internet phrases ("change my mind", "fight me") and fixed lines that named another
   realm's class.
 
 **Tested**
 - **Automated:** the full server suite (3,067 tests, 109 new) and the corpus checks pass locally.
 - **In game:** not played yet. A re-run of the chat simulation and an independent code review are in
-  the docs.
+  [docs/bot-voices/SE4-CHECKS.md](docs/bot-voices/SE4-CHECKS.md).
 
 ## 0.36-se.3 — 2026-10-18
 

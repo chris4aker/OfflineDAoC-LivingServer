@@ -28,7 +28,7 @@ small groups beat the zerg if you play it right
 chain-killed three {enemy} stealthers tonight, feeling good
 @invites
 @who *
-@needs in_rvr
+@needs in_frontier
 @invites news
 inc! enemies on the road to {keep}
 anyone near {keep}? i see a group headed that way

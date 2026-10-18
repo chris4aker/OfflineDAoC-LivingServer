@@ -65,7 +65,6 @@ gz {player}
 grats {player}
 gratz
 ooh nice
-grats! what level?
 gz gz
 nice one, gz
 woo gz
@@ -171,12 +170,12 @@ wb, bags emptied?
 @intent rez
 @who *
 ouch, where did you die?
-ask in faction, someone might be close
+shout, someone might be close
 oof, what got you?
 ouch
 rip
 that sucks, sorry
-where are you? ill ask around
+where are you?
 release and run back maybe, bind isnt far
 been there, gl
 @needs !can_rez
@@ -218,7 +217,7 @@ which keep?
 zerg or a small group?
 {enemy} again?
 careful
-call it in faction
+call it out
 any healers with them?
 @needs !in_rvr
 im nowhere near the frontier, sorry
@@ -395,7 +394,7 @@ what is it?
 sure, whats up?
 shoot
 try your trainer
-ask in faction, someone will know
+ask around, someone will know
 happy to help if i can
 whats wrong?
 stuck?

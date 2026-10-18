@@ -86,6 +86,17 @@ public static class AutonomousChatShortTalk
         return false;
     }
 
+    /// <summary>The class words in a text ("friar", "zerkers", "sm").</summary>
+    public static string[] ClassWordsIn(string text) =>
+        AutonomousChatIntentModel.Words(text).Where(ClassWords.Contains).Distinct().ToArray();
+
+    /// <summary>True when a text names any class.</summary>
+    public static bool NamesAClass(string text) => AutonomousChatIntentModel.Words(text).Any(ClassWords.Contains);
+
+    /// <summary>"friar" and "friars", "zerker" and "zerkers": the same class word, singular or plural.</summary>
+    public static bool SameClassWord(string a, string b) =>
+        string.Equals(a.TrimEnd('s'), b.TrimEnd('s'), StringComparison.OrdinalIgnoreCase);
+
     public static bool HasPhrase(string[] words, params string[] phrases)
     {
         string text = " " + string.Join(' ', words) + " ";

@@ -259,7 +259,7 @@ public static class AutonomousBotVoices
     public static bool TryLine(GameBot bot, string kind, out VC.Picked result, string intent = null, string answers = null,
         string topic = null, IReadOnlyDictionary<string, string> slots = null, IEnumerable<string> flags = null,
         IEnumerable<string> withoutFlags = null, bool relax = false, bool requireVoices = true, Random random = null,
-        string requireNeed = null)
+        string requireNeed = null, Func<VC.Line, bool> filter = null)
     {
         result = null;
         if ((requireVoices ? !Enabled : Corpus == null) || bot == null || !bot.IsAutonomousWorldBot || bot.DatabaseID <= 0)
@@ -287,7 +287,10 @@ public static class AutonomousBotVoices
                 Answers = answers,
                 Topic = topic,
                 RequireNeed = requireNeed,
-                RelaxTo = relax ? ShortReplyRest : null,
+                Filter = filter,
+                // Answering a player: a short reply may come back after 40 minutes. Anything else: after six hours,
+                // once the three-day pool for its kind is used up.
+                RelaxTo = relax ? ShortReplyRest : VC.RecentLines.Relaxed,
                 LocalHour = DateTime.Now.Hour,
             }, out result);
         }
@@ -334,6 +337,7 @@ public static class AutonomousBotVoices
                 Intent = intent,
                 Topic = topic,
                 Mood = mood,
+                RelaxTo = VC.RecentLines.Relaxed,
                 LocalHour = DateTime.Now.Hour,
             }, out VC.Picked result);
             text = result?.Text;

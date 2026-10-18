@@ -254,6 +254,9 @@ public sealed class AutonomousBotVoiceCorpus
         /// <summary>Only lines that need this flag (an advert for a listed item uses only the "has_listing" lines).</summary>
         public string RequireNeed { get; init; }
 
+        /// <summary>Only lines this accepts (for example, class talk about the class that was asked about).</summary>
+        public Func<Line, bool> Filter { get; init; }
+
         /// <summary>
         /// When every fitting line was heard within the six-hour window, a line not heard for this long may
         /// be used again (short, common replies: "np", "lol", "where?"), so a player is never left unanswered
@@ -285,6 +288,7 @@ public sealed class AutonomousBotVoiceCorpus
         Random random = request.Random;
         var pool = Candidates(request.Kind, speaker, request.Intent, request.Topic, request.Mood, request.Answers)
             .Where(line => request.RequireNeed == null || line.Needs.Contains(request.RequireNeed, StringComparer.Ordinal))
+            .Where(line => request.Filter == null || request.Filter(line))
             .Where(allowed)
             .Select(line => (Line: line, Weight: WeightFor(line, speaker)))
             .Where(entry => entry.Weight > 0)
@@ -520,7 +524,15 @@ public sealed class AutonomousBotVoiceCorpus
     /// </summary>
     public sealed class RecentLines
     {
-        public static readonly TimeSpan Window = TimeSpan.FromHours(6);
+        /// <summary>
+        /// Three days (0.36-se.4; six hours before): a player who plays each evening heard 17-29% of the previous
+        /// evenings' lines in the re-run simulation, because a six-hour window had expired by the next evening.
+        /// Callers fall back to six hours (<see cref="Relaxed"/>) when a pool is used up, so nobody goes quiet.
+        /// </summary>
+        public static readonly TimeSpan Window = TimeSpan.FromDays(3);
+
+        /// <summary>The old six-hour window, still kept when the three-day pool for a kind is used up.</summary>
+        public static readonly TimeSpan Relaxed = TimeSpan.FromHours(6);
         public const int Capacity = 5000;
         private readonly Dictionary<eRealm, Dictionary<string, DateTime>> _byRealm = new();
 

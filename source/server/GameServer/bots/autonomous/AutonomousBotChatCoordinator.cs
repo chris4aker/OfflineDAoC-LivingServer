@@ -675,19 +675,28 @@ public static class AutonomousBotChatCoordinator
                 continue;
             lastReply = response;
             due = ReplyDelayMs(response, due, Random.Shared);
-            Schedule(responder, due, () =>
+            // A bot that is fighting when its reply is due hands it to another bot that could have said it
+            // (re-run 2026-10-18: 26% of questions went unanswered because the one chosen bot was busy).
+            GameBot[] standIns = eligible.Skip(index + 1).Take(3).ToArray();
+            string text = response;
+            _ = new ECSGameTimer(responder, _ =>
             {
-                if (faction && HasFactionAudience(responder.Realm))
+                GameBot speaker = Eligible(responder) && !responder.InCombat ? responder
+                    : standIns.FirstOrDefault(bot => Eligible(bot) && !bot.InCombat && (faction || HasLocalAudience(bot)));
+                if (speaker == null)
+                    return 0;
+                if (faction && HasFactionAudience(speaker.Realm))
                 {
-                    BroadcastFaction(responder.Name, responder.Realm, response);
+                    BroadcastFaction(speaker.Name, speaker.Realm, text);
                     said.Add();
                 }
-                else if (!faction && HasLocalAudience(responder))
+                else if (!faction && HasLocalAudience(speaker))
                 {
-                    responder.Say(response);
+                    speaker.Say(text);
                     said.Add();
                 }
-            });
+                return 0;
+            }, due);
         }
         if (scheduled.Count == 0 || lastReply == null || lastReply.TrimEnd().EndsWith('?') || Random.Shared.NextDouble() >= ClosingChance(invites))
             return;
@@ -731,11 +740,25 @@ public static class AutonomousBotChatCoordinator
         var slots = player == null ? null : new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name };
         // Only a bot that will really come says "omw" to "rez pls" ("will_rez"); one that can't rez at all says so ("!can_rez").
         string[] with = value == eAutonomousChatIntent.Rez && WillComeRez(responder, player) ? ["will_rez"] : null;
-        if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked voiced, intent, slots: slots, flags: with, relax: player != null))
+        // Class talk is about the class asked about, or about no class in particular (re-run 2026-10-18: "is friar good?"
+        // drew "necro pets do all the work").
+        if (value == eAutonomousChatIntent.ClassTalk)
+        {
+            string[] asked = AutonomousChatShortTalk.ClassWordsIn(incoming);
+            bool AboutAsked(VC.Line line) => AutonomousChatShortTalk.ClassWordsIn(line.Text).Any(w => asked.Any(a => AutonomousChatShortTalk.SameClassWord(w, a)));
+            if (asked.Length > 0 && AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked about, intent, slots: slots, relax: player != null,
+                    filter: AboutAsked))
+                return about.Text;
+            if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked general, intent, slots: slots, relax: player != null,
+                    filter: line => !AutonomousChatShortTalk.NamesAClass(line.Text)))
+                return general.Text;
+        }
+        else if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked voiced, intent, slots: slots, flags: with, relax: player != null))
             return voiced.Text;
+        VC.Picked fallbackLine;
         if (player != null && value is not (eAutonomousChatIntent.Unknown or eAutonomousChatIntent.IgnoreOutOfWorld or eAutonomousChatIntent.Abuse) &&
-            AutonomousBotVoices.TryLine(responder, "reply", out voiced, "unknown", slots: slots, relax: true))
-            return voiced.Text;
+            AutonomousBotVoices.TryLine(responder, "reply", out fallbackLine, "unknown", slots: slots, relax: true))
+            return fallbackLine.Text;
         return fallback();
     }
 

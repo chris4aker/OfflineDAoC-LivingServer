@@ -324,7 +324,9 @@ namespace DOL.GS.Tests
             for (int i = 0; i < 1500; i++)
                 recent.Use(eRealm.Hibernia, "line" + i, now.AddSeconds(i));
             Assert.That(recent.WasUsed(eRealm.Hibernia, "line0", now.AddHours(5)), Is.True, "the first of 1,500 lines is still held");
-            Assert.That(recent.WasUsed(eRealm.Hibernia, "line0", now.AddHours(6).AddSeconds(1)), Is.False);
+            // The window is three days since 0.36-se.4 (six hours before).
+            Assert.That(recent.WasUsed(eRealm.Hibernia, "line0", now.Add(VC.RecentLines.Window).AddHours(-1)), Is.True);
+            Assert.That(recent.WasUsed(eRealm.Hibernia, "line0", now.Add(VC.RecentLines.Window).AddSeconds(1)), Is.False);
             Assert.That(recent.WasUsed(eRealm.Albion, "line0", now), Is.False, "realms are separate");
             for (int i = 0; i < VC.RecentLines.Capacity + 10; i++)
                 recent.Use(eRealm.Midgard, "m" + i, now);

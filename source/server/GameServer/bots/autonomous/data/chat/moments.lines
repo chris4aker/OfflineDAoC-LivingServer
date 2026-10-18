@@ -18,7 +18,7 @@ ding {level}, on schedule
 ding {level}. next.
 
 @kind reply
-@intent banter
+@intent ding
 @topic congrats
 @who *
 grats!

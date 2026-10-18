@@ -1,0 +1,129 @@
+# More replies for 0.36-se.4, from the chat simulation re-run (2026-10-18): openers asked "anyone on?",
+# "how is everyone?", "mind if i hunt here?" or "x or y?", and got a refusal or "no idea". Also more
+# replies for the player intents with the smallest pools. New writing (see docs/bot-voices).
+
+@kind reply
+@answers ask_anyone
+@who *
+here
+im on
+me, kind of
+maybe, what time?
+depends, what level?
+might be up for it later
+im around, whats up?
+could be, tell me more
+@who Socialite
+me me me
+@who NoLifer
+always
+
+@kind reply
+@answers ask_howareyou
+@intent greeting
+@who *
+not bad, and you?
+good, slow night though
+cant complain, xp is coming
+tired but still going
+not much happening, you?
+same old, killing things
+good, just dinged actually
+alive, mostly
+@who Socialite
+great now that people are on!
+@who Leveler
+fine, would be better with a camp
+
+@kind reply
+@answers ask_permission
+@who *
+go for it, plenty of mobs
+sure, plenty of room
+np, go ahead
+fine by me
+sure, just dont take the named
+all yours
+yep, we are leaving soon anyway
+sure, holler if you get adds
+
+@kind reply
+@answers ask_choice
+@who *
+depends what you like
+the first one
+second one imo
+both are fine honestly
+go with your gut
+whichever is more fun
+the first, no contest
+flip a coin lol
+tried both, liked the second
+
+@kind reply
+@intent travel
+@who *
+long run, take a horse
+the stable master saves you half the walk
+follow the road, cant miss it
+its a bit of a trek
+past the bridge and keep going
+check your map, its marked
+get a horse in {capital}
+bring speed if you have it
+
+@kind reply
+@intent rvr
+@who *
+frontier is busy tonight
+been quiet out there lately
+the zerg moved on i think
+who holds {keep} now?
+stealthers everywhere, careful
+i might head out later
+need more healers out there
+saw {enemy} near {keep} earlier
+
+@kind reply
+@intent dungeon
+@who *
+bring a group, the pulls stack
+watch the pathing in there
+good xp if you can hold the camp
+been ages since i went in there
+dont split up in there
+take a healer, trust me
+the named in there hits hard
+{dungeon} is decent for your level
+
+@kind reply
+@intent grinding
+@who *
+blues and yellows, keep it steady
+camp something that cons yellow
+{camp} was good for me
+try {zone}, worked for me
+xp is better in a group
+anything that doesnt add
+stay near the guards if solo
+slow and steady, rest a lot
+
+@kind reply
+@intent farewell
+@who *
+night, have a good one
+cya around
+take it easy
+later, take care
+safe travels, see ya
+gn, good hunting tomorrow
+
+@kind reply
+@intent ignoreoutofworld
+@who *
+heh, no idea
+not following that stuff lately
+eh, rather be killing things
+ask me after this pull
+lol whatever you say
+dunno, been here all day

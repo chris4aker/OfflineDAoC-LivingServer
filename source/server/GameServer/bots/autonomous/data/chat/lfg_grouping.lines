@@ -22,7 +22,9 @@ lfg near {zone}, {level} {class}
 @needs solo
 @levels 20-50
 lfg {dungeon}, {level} {class}, know the pulls
+@levels 20-49
 lfg xp, {level} {class}, been soloing too long
+@levels 20-50
 @class Healer,Cleric,Druid,Shaman,Bard,Friar,Mentalist,Warden
 {level} {class} lfg, i heal, you pull, everyone wins
 healer lfg, {level}, wont let you die (much)

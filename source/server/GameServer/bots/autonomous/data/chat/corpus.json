@@ -292,7 +292,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_opinion",
+   "invites": "ask_choice",
    "text": "is it worth doing the town quests or just grind?",
    "id": "c4f254647a62"
   },
@@ -859,7 +859,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_opinion",
+   "invites": "ask_choice",
    "text": "is it better to quest or grind in the 20s?",
    "id": "96d8a734f054"
   },
@@ -2373,7 +2373,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_choice",
    "text": "anyone level on aegir? munin sound or gripklosa?",
    "id": "1738d8406c56"
   },
@@ -3064,7 +3064,7 @@
     19
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3084,7 +3084,7 @@
     19
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3104,7 +3104,7 @@
     19
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3178,7 +3178,7 @@
     24
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3198,7 +3198,7 @@
     24
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3218,7 +3218,7 @@
     24
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3238,7 +3238,7 @@
     24
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3258,7 +3258,7 @@
     24
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3368,7 +3368,7 @@
     29
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3388,7 +3388,7 @@
     29
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3408,7 +3408,7 @@
     29
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3482,7 +3482,7 @@
     35
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3502,7 +3502,7 @@
     35
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3522,7 +3522,7 @@
     35
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3596,7 +3596,7 @@
     49
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3616,7 +3616,7 @@
     49
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -3636,7 +3636,7 @@
     49
    ],
    "needs": [
-    "in_rvr"
+    "in_battleground"
    ],
    "intent": "",
    "mood": "",
@@ -9472,8 +9472,8 @@
    "answers": [
     "lfg"
    ],
-   "text": "ty, will ask around",
-   "id": "cc3bea3cc390"
+   "text": "ty, worth a try",
+   "id": "37299bbff473"
   },
   {
    "kind": "closing",
@@ -11394,7 +11394,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_advice",
    "text": "just got home, what did i miss?",
    "id": "5ab1ee5e3a0a"
   },
@@ -11626,7 +11626,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_anyone",
+   "invites": "ask_choice",
    "text": "anyone else waiting on a group or just me?",
    "id": "16493e9354e2"
   },
@@ -14032,7 +14032,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_advice",
    "text": "how close are you to a level?",
    "id": "73a674ffd5b8"
   },
@@ -14943,7 +14943,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_advice",
    "text": "what level is everyone at now?",
    "id": "a37c70945d4c"
   },
@@ -15161,7 +15161,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_advice",
    "text": "hey all, how is everyone?",
    "id": "9baec8922678"
   },
@@ -15179,7 +15179,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_howareyou",
    "text": "what is everyone doing tonight?",
    "id": "519d8517d7ba"
   },
@@ -15944,7 +15944,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -15964,7 +15964,7 @@
     50
    ],
    "needs": [
-    "in_rvr",
+    "in_frontier",
     "in_group"
    ],
    "intent": "",
@@ -16960,7 +16960,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_howareyou",
    "text": "how is everyone's night going?",
    "id": "92a2e4d26954"
   },
@@ -16978,7 +16978,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_advice",
    "text": "what are we doing this weekend?",
    "id": "a58222a107dd"
   },
@@ -17516,7 +17516,7 @@
    "class": [],
    "levels": [
     20,
-    50
+    49
    ],
    "needs": [
     "solo"
@@ -21749,7 +21749,7 @@
     50
    ],
    "needs": [],
-   "intent": "banter",
+   "intent": "ding",
    "mood": "",
    "weight": 1.0,
    "text": "grats!",
@@ -21766,7 +21766,7 @@
     50
    ],
    "needs": [],
-   "intent": "banter",
+   "intent": "ding",
    "mood": "",
    "weight": 1.0,
    "text": "gz",
@@ -21783,7 +21783,7 @@
     50
    ],
    "needs": [],
-   "intent": "banter",
+   "intent": "ding",
    "mood": "",
    "weight": 1.0,
    "text": "nice, grats",
@@ -21800,7 +21800,7 @@
     50
    ],
    "needs": [],
-   "intent": "banter",
+   "intent": "ding",
    "mood": "",
    "weight": 1.0,
    "text": "gz, long road",
@@ -21817,7 +21817,7 @@
     50
    ],
    "needs": [],
-   "intent": "banter",
+   "intent": "ding",
    "mood": "",
    "weight": 1.0,
    "text": "grats, now go train",
@@ -25953,8 +25953,8 @@
    "answers": [
     "ask_camps"
    ],
-   "text": "ask in faction, someone always knows a spot",
-   "id": "6bfb23f1c04e"
+   "text": "ask around, someone always knows a spot",
+   "id": "5348ab7c09ad"
   },
   {
    "kind": "reply",
@@ -27502,23 +27502,6 @@
    "intent": "banter",
    "mood": "",
    "weight": 1.0,
-   "text": "that is the most realm thing i have heard all day",
-   "id": "b316b59b77f4"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "banter",
-   "mood": "",
-   "weight": 1.0,
    "text": "same here honestly",
    "id": "062182a086d6"
   },
@@ -27831,8 +27814,8 @@
    "intent": "grouping",
    "mood": "",
    "weight": 1.0,
-   "text": "need a healer still? i know one",
-   "id": "59f4a49a3e14"
+   "text": "need a healer still?",
+   "id": "b61514379d49"
   },
   {
    "kind": "reply",
@@ -28028,8 +28011,8 @@
    "intent": "grinding",
    "mood": "",
    "weight": 1.0,
-   "text": "try {camp}, ask in faction if it is taken",
-   "id": "c080bcd0b8f7"
+   "text": "try {camp}, ask around if it is taken",
+   "id": "8e8d0288069c"
   },
   {
    "kind": "reply",
@@ -28300,8 +28283,8 @@
    "intent": "dungeon",
    "mood": "",
    "weight": 1.0,
-   "text": "anyone who has been there knows the pulls, ask in faction",
-   "id": "60901c5659db"
+   "text": "anyone who has been there knows the pulls, ask around",
+   "id": "00c2b7de9cf6"
   },
   {
    "kind": "reply",
@@ -28436,8 +28419,8 @@
    "intent": "rvr",
    "mood": "",
    "weight": 1.0,
-   "text": "if you see the zerg coming, call it in faction",
-   "id": "7f112796275f"
+   "text": "if you see the zerg coming, call it out",
+   "id": "d97a1873d141"
   },
   {
    "kind": "reply",
@@ -30119,8 +30102,8 @@
    "answers": [
     "boast"
    ],
-   "text": "screenshot or it didnt happen",
-   "id": "5bff9e668f88"
+   "text": "pics or it didnt happen",
+   "id": "38a0a6b051b8"
   },
   {
    "kind": "reply",
@@ -32109,8 +32092,8 @@
     "ask_where",
     "ask_advice"
    ],
-   "text": "ask in faction maybe",
-   "id": "2371c5209300"
+   "text": "ask around maybe",
+   "id": "6a9da03b097e"
   },
   {
    "kind": "reply",
@@ -33708,6 +33691,1502 @@
     50
    ],
    "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "here",
+   "id": "a10912a0e0a4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "im on",
+   "id": "2bf2ab7b33aa"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "me, kind of",
+   "id": "d4e88bca1bda"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "maybe, what time?",
+   "id": "3167857a1728"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "depends, what level?",
+   "id": "e4d9746e6b74"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "might be up for it later",
+   "id": "9a0008ec9f9c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "im around, whats up?",
+   "id": "0afcccfc2712"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "could be, tell me more",
+   "id": "acdfa97a2871"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "me me me",
+   "id": "41ab42e061ad"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_anyone"
+   ],
+   "text": "always",
+   "id": "c7504575430b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "not bad, and you?",
+   "id": "b08ddda154f3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "good, slow night though",
+   "id": "592fdc48f8f7"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "cant complain, xp is coming",
+   "id": "32ef1c88dd7d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "tired but still going",
+   "id": "3d65841b9885"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "not much happening, you?",
+   "id": "522a36d0d5a8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "same old, killing things",
+   "id": "afb14a614fce"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "good, just dinged actually",
+   "id": "e7d872297bb0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "alive, mostly",
+   "id": "fdfb4ffdbb11"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "great now that people are on!",
+   "id": "c4ff2e818de4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "fine, would be better with a camp",
+   "id": "074ae6bffcff"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_permission"
+   ],
+   "text": "go for it, plenty of mobs",
+   "id": "ea43b5900a27"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_permission"
+   ],
+   "text": "sure, plenty of room",
+   "id": "dd0848864da6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_permission"
+   ],
+   "text": "np, go ahead",
+   "id": "ff0e3afed31b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_permission"
+   ],
+   "text": "fine by me",
+   "id": "fb21364a8fc3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_permission"
+   ],
+   "text": "sure, just dont take the named",
+   "id": "7c5b0753d6ac"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_permission"
+   ],
+   "text": "all yours",
+   "id": "17a7ba654a5c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_permission"
+   ],
+   "text": "yep, we are leaving soon anyway",
+   "id": "126a98892010"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_permission"
+   ],
+   "text": "sure, holler if you get adds",
+   "id": "2988e472a7b8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "depends what you like",
+   "id": "6688d885fc2f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "the first one",
+   "id": "214350a0b76f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "second one imo",
+   "id": "fb1787bc4a6e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "both are fine honestly",
+   "id": "ef89e0966fff"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "go with your gut",
+   "id": "6edf399053fc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "whichever is more fun",
+   "id": "dfe348398f28"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "the first, no contest",
+   "id": "4eb2bcea8bcd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "flip a coin lol",
+   "id": "146c14c4fda4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "tried both, liked the second",
+   "id": "a3f21cb8c85c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "long run, take a horse",
+   "id": "6f309780cec2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "the stable master saves you half the walk",
+   "id": "7eef59c9f00a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "follow the road, cant miss it",
+   "id": "5f30538a9d80"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "its a bit of a trek",
+   "id": "51a0e1ba083a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "past the bridge and keep going",
+   "id": "28e3631f76d2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "check your map, its marked",
+   "id": "d83b78da2ea4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "get a horse in {capital}",
+   "id": "ce2b6c60929f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "bring speed if you have it",
+   "id": "92c7d3674a01"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "rvr",
+   "mood": "",
+   "weight": 1.0,
+   "text": "frontier is busy tonight",
+   "id": "0d6aaa67f307"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "rvr",
+   "mood": "",
+   "weight": 1.0,
+   "text": "been quiet out there lately",
+   "id": "2a6c4570648a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "rvr",
+   "mood": "",
+   "weight": 1.0,
+   "text": "the zerg moved on i think",
+   "id": "c59b45f2dcd0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "rvr",
+   "mood": "",
+   "weight": 1.0,
+   "text": "who holds {keep} now?",
+   "id": "c6a88e66510d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "rvr",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stealthers everywhere, careful",
+   "id": "b589a76c453d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "rvr",
+   "mood": "",
+   "weight": 1.0,
+   "text": "i might head out later",
+   "id": "c45d2865f5b8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "rvr",
+   "mood": "",
+   "weight": 1.0,
+   "text": "need more healers out there",
+   "id": "fb4c86483efa"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "rvr",
+   "mood": "",
+   "weight": 1.0,
+   "text": "saw {enemy} near {keep} earlier",
+   "id": "6850e9eddb7a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "dungeon",
+   "mood": "",
+   "weight": 1.0,
+   "text": "bring a group, the pulls stack",
+   "id": "9daebed606fe"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "dungeon",
+   "mood": "",
+   "weight": 1.0,
+   "text": "watch the pathing in there",
+   "id": "93ac7b8ff374"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "dungeon",
+   "mood": "",
+   "weight": 1.0,
+   "text": "good xp if you can hold the camp",
+   "id": "ba0c09b0ef00"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "dungeon",
+   "mood": "",
+   "weight": 1.0,
+   "text": "been ages since i went in there",
+   "id": "5242ea42c9bc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "dungeon",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont split up in there",
+   "id": "76ed887e64a8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "dungeon",
+   "mood": "",
+   "weight": 1.0,
+   "text": "take a healer, trust me",
+   "id": "d6fdcdcc5206"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "dungeon",
+   "mood": "",
+   "weight": 1.0,
+   "text": "the named in there hits hard",
+   "id": "3c09934724b6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "dungeon",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{dungeon} is decent for your level",
+   "id": "aff6849be5c1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "grinding",
+   "mood": "",
+   "weight": 1.0,
+   "text": "blues and yellows, keep it steady",
+   "id": "a3760e20e600"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "grinding",
+   "mood": "",
+   "weight": 1.0,
+   "text": "camp something that cons yellow",
+   "id": "a7062911d3a6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "grinding",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{camp} was good for me",
+   "id": "6ad59895b6d2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "grinding",
+   "mood": "",
+   "weight": 1.0,
+   "text": "try {zone}, worked for me",
+   "id": "95462a4fb365"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "grinding",
+   "mood": "",
+   "weight": 1.0,
+   "text": "xp is better in a group",
+   "id": "478fb4626fd8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "grinding",
+   "mood": "",
+   "weight": 1.0,
+   "text": "anything that doesnt add",
+   "id": "2edb3983ba0f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "grinding",
+   "mood": "",
+   "weight": 1.0,
+   "text": "stay near the guards if solo",
+   "id": "0ef52b21b941"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "grinding",
+   "mood": "",
+   "weight": 1.0,
+   "text": "slow and steady, rest a lot",
+   "id": "8eec8b0f39d6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "farewell",
+   "mood": "",
+   "weight": 1.0,
+   "text": "night, have a good one",
+   "id": "d4567448224c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "farewell",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cya around",
+   "id": "0d0cc994805d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "farewell",
+   "mood": "",
+   "weight": 1.0,
+   "text": "take it easy",
+   "id": "f883d4c9c43c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "farewell",
+   "mood": "",
+   "weight": 1.0,
+   "text": "later, take care",
+   "id": "060b920a621a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "farewell",
+   "mood": "",
+   "weight": 1.0,
+   "text": "safe travels, see ya",
+   "id": "82b1d9aec5cd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "farewell",
+   "mood": "",
+   "weight": 1.0,
+   "text": "gn, good hunting tomorrow",
+   "id": "560e9bffccab"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "ignoreoutofworld",
+   "mood": "",
+   "weight": 1.0,
+   "text": "heh, no idea",
+   "id": "280e09397d6a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "ignoreoutofworld",
+   "mood": "",
+   "weight": 1.0,
+   "text": "not following that stuff lately",
+   "id": "989288eba70a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "ignoreoutofworld",
+   "mood": "",
+   "weight": 1.0,
+   "text": "eh, rather be killing things",
+   "id": "1790ef047195"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "ignoreoutofworld",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ask me after this pull",
+   "id": "24f9a324b6f6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "ignoreoutofworld",
+   "mood": "",
+   "weight": 1.0,
+   "text": "lol whatever you say",
+   "id": "914991cab193"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "ignoreoutofworld",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dunno, been here all day",
+   "id": "3bcb7a3a1030"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
    "intent": "thanks",
    "mood": "",
    "weight": 1.0,
@@ -34426,23 +35905,6 @@
    "weight": 1.0,
    "text": "ooh nice",
    "id": "32722f46b19d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "ding",
-   "mood": "",
-   "weight": 1.0,
-   "text": "grats! what level?",
-   "id": "a67274f267e0"
   },
   {
    "kind": "reply",
@@ -35640,8 +37102,8 @@
    "intent": "rez",
    "mood": "",
    "weight": 1.0,
-   "text": "ask in faction, someone might be close",
-   "id": "c53112a4ac93"
+   "text": "shout, someone might be close",
+   "id": "9b19970af271"
   },
   {
    "kind": "reply",
@@ -35725,8 +37187,8 @@
    "intent": "rez",
    "mood": "",
    "weight": 1.0,
-   "text": "where are you? ill ask around",
-   "id": "2d81ac2ba4a3"
+   "text": "where are you?",
+   "id": "6dbce62d15fb"
   },
   {
    "kind": "reply",
@@ -36231,8 +37693,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "call it in faction",
-   "id": "0a656608de91"
+   "text": "call it out",
+   "id": "c86302db3bac"
   },
   {
    "kind": "reply",
@@ -38533,8 +39995,8 @@
    "intent": "help",
    "mood": "",
    "weight": 1.0,
-   "text": "ask in faction, someone will know",
-   "id": "5f64db262168"
+   "text": "ask around, someone will know",
+   "id": "1c298b8b5f6c"
   },
   {
    "kind": "reply",
@@ -38894,7 +40356,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -38914,7 +40376,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -38934,7 +40396,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -38954,7 +40416,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -38974,7 +40436,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -38994,7 +40456,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39014,7 +40476,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39034,7 +40496,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39054,7 +40516,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39254,7 +40716,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39274,7 +40736,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39294,7 +40756,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39314,7 +40776,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39334,12 +40796,12 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
+   "invites": "news",
    "text": "{enemy} 8man roaming near {keep}",
    "id": "c1a992694054"
   },
@@ -39354,7 +40816,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39374,7 +40836,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39394,7 +40856,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39414,7 +40876,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39434,7 +40896,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39454,7 +40916,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39474,7 +40936,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39494,7 +40956,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39514,7 +40976,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39534,7 +40996,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39554,7 +41016,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39574,7 +41036,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39594,7 +41056,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39614,7 +41076,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39634,7 +41096,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39654,7 +41116,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39674,7 +41136,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39694,7 +41156,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39714,7 +41176,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -39734,7 +41196,7 @@
     50
    ],
    "needs": [
-    "in_rvr"
+    "in_frontier"
    ],
    "intent": "",
    "mood": "",
@@ -40611,7 +42073,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_opinion",
+   "invites": "ask_choice",
    "text": "is crafting worth it or just a money sink?",
    "id": "a967cd533a35"
   },

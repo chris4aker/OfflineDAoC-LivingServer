@@ -31,7 +31,7 @@ OPENER_KINDS = {'ambient', 'lfg', 'trade', 'rvr', 'camp', 'group', 'guild'}
 # What an opener invites; replies say what they answer (@answers). "ask_<topic>" is a specific question that
 # falls back to the "ask" replies; "none" gets no reply.
 INVITES = {'none', 'chat', 'joke', 'boast', 'complaint', 'news', 'lfg', 'trade', 'ask', 'ask_where', 'ask_advice',
-           'ask_opinion', 'ask_anyone'}
+           'ask_opinion', 'ask_anyone', 'ask_howareyou', 'ask_permission', 'ask_choice'}
 INVITE_RE = re.compile(r'(none|chat|joke|boast|complaint|news|lfg|trade|ask(_[a-z0-9]+)*)')
 TYPES = {'Leveler', 'Crafter', 'Socialite', 'Explorer', 'Daredevil', 'NoLifer'}
 REALMS = {'alb', 'mid', 'hib'}
@@ -169,6 +169,13 @@ def infer_invites(text, kind):
     """What an opener without @invites invites: questions by their shape, otherwise a light reaction."""
     t = SLOT_RE.sub('x', text.lower()).strip()
     if t.endswith('?'):
+        if re.search(r"^((hey|hi|so|ok|yo)[ ,]+)?(how (is|are|r) (every|you|u|ya|yall|things|it)|hows (every|it|things)|how goes|"
+                     r"what did i miss|whats new|whats up|what is everyone (up to|doing))", t):
+            return 'ask_howareyou'
+        if re.search(r"\b(mind if i|ok if i|okay if i|is it ok if)\b", t):
+            return 'ask_permission'
+        if re.search(r"\bor\b", t) and not re.search(r"\bor (something|so|anything|what)\b", t):
+            return 'ask_choice'
         if re.search(r"\bwhere\b|\bwheres\b|how do (i|you) get|which way|how far", t):
             return 'ask_where'
         if re.search(r"\b(best|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):
@@ -279,6 +286,9 @@ def parse_file(path, problems):
         line = dict(tags, text=text, where=where, **{'class': list(tags['class'])})
         if tags['kind'] in OPENER_KINDS:
             line['invites'] = tags['invites'] or infer_invites(text, tags['kind'])
+            # A plain "ask" tag takes a more specific question type when the words show one ("how is everyone?").
+            if line['invites'] == 'ask' and infer_invites(text, tags['kind']).startswith('ask_'):
+                line['invites'] = infer_invites(text, tags['kind'])
         else:
             line.pop('invites')
         if not line['answers']:
