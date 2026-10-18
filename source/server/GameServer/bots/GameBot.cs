@@ -1631,11 +1631,11 @@ namespace DOL.GS
                 {
                     long zoneBonus = baseExperience * CurrentZone.BonusExperience / 100;
                     if (zoneBonus > 0)
-                        experienceGained += ScaleAutonomousExperience(zoneBonus, false);
+                        experienceGained += ScaleAutonomousExperience(zoneBonus, false, Level);
                 }
 
                 baseExperience = ScaleAutonomousExperience(baseExperience,
-                    CurrentRegion?.IsRvR == true || CurrentZone?.IsRvR == true);
+                    CurrentRegion?.IsRvR == true || CurrentZone?.IsRvR == true, Level);
 
                 long itemExperienceBonus = GetModified(eProperty.XpPoints);
                 if (itemExperienceBonus != 0)
@@ -1686,9 +1686,10 @@ namespace DOL.GS
             }
         }
 
-        private static long ScaleAutonomousExperience(long experience, bool isRvR)
+        private static long ScaleAutonomousExperience(long experience, bool isRvR, int level)
         {
-            double rate = ServerProperties.Properties.BOT_XP_RATE;
+            // bot_xp_rate, or the bot_xp_rate_by_level rate for this level when that setting is used.
+            double rate = LevelRangeXpRates.BotRate(level);
             if (isRvR)
                 rate *= ServerProperties.Properties.RvR_XP_RATE;
             return (long)(experience * rate);

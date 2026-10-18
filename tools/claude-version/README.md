@@ -11,6 +11,7 @@ Close the launcher, the game and the server before running any of them.
 | `cross_realm_gear_audit.py [--write]` | Read-only report of item templates whose realm doesn't match their model's realm (for example a Midgard hat on a Hibernia-only mesh). `--write` regenerates the bot skip list `source/server/GameServer/bots/BotCrossRealmGear.cs`. Run it from an installed game folder |
 | `pet_spell_changes.py` | Sluaghbinder pet spell values (priest heals, Cairnheart heals over time and so on). Checks the value at each stage, so it's safe to re-run |
 | `seed_sluaghbinder.py`, `Add-SluaghbinderEpicSpells.py` | Class, trainer and epic-spell seeding used by the Sluaghbinder builds |
+| `set_xp_by_level.py [--player RANGES] [--bots RANGES] [--off] [--apply]` | Sets or clears XP rates by level range (`xp_rate_by_level`, `bot_xp_rate_by_level`), for example `--player "1-19:3;20-34:5;35-50:12"`. Shows the current settings with no options. Dry run by default; `--apply` writes after a backup. Needs a server build with these settings. Not yet in a download |
 | `clean_slate.py <db>` | Clears characters, bots and auctions from a copy of a database |
 | `cleanup_orphan_unique_items.py` | Removes loot definitions that no inventory references (writes a backup) |
 | `coif_head_mode.py`, `si_portal_visuals.py` | Earlier client catalog experiments (helmet head mode, SI portal visuals) |
