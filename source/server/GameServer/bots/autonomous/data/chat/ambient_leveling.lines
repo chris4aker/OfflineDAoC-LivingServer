@@ -38,8 +38,9 @@ need a few more {monsters} for my quest, anyone seen them?
 @invites
 been soloing {monsters} for an hour, slow but steady
 @needs
-@invites ask_advice
+@invites ask_train
 my trainer said to check back at {count} levels, what does that mean
+@invites ask_advice
 @invites
 is it worth doing the town quests or just grind?
 @invites ask_anyone

@@ -274,7 +274,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_train",
    "text": "my trainer said to check back at {count} levels, what does that mean",
    "id": "0f30da7009f8"
   },
@@ -29409,26 +29409,6 @@
    "answers": [
     "chat"
    ],
-   "text": "story of my life",
-   "id": "6235a1bba23a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "chat"
-   ],
    "text": "pretty much",
    "id": "ee3a7f876723"
   },
@@ -29487,7 +29467,27 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
-    "chat"
+    "complaint"
+   ],
+   "text": "story of my life",
+   "id": "6235a1bba23a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "complaint"
    ],
    "text": "been like that all night",
    "id": "00cc800d571b"
@@ -29507,7 +29507,6 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
-    "chat",
     "complaint"
    ],
    "text": "tell me about it",

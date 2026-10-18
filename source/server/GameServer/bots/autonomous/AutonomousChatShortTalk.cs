@@ -149,7 +149,11 @@ public static class AutonomousChatShortTalk
             return true;
         string[] words = AutonomousChatIntentModel.Words(reply);
         bool asksLevel = HasPhrase(words, "what lvl", "what level", "level range", "what level are you", "what lvl are you", "how high are you");
-        return !asksLevel || !incoming.Any(char.IsDigit);
+        if (asksLevel && incoming.Any(char.IsDigit))
+            return false;
+        // "lfg 50 reaver will travel" drew "what class are u?".
+        bool asksClass = HasPhrase(words, "what class", "which class", "what are you playing", "what r u playing");
+        return !asksClass || !NamesAClass(incoming);
     }
 
     public static bool HasPhrase(string[] words, params string[] phrases)

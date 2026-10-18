@@ -578,6 +578,8 @@ namespace DOL.GS.Tests
         [TestCase("any guild running groups today? paladin 6 here", "what lvl?", false)]
         [TestCase("lfg 5 scout", "what level range?", false)]
         [TestCase("lfg, anyone?", "what lvl?", true)]
+        [TestCase("lfg 50 reaver will travel", "what class are u?", false)]
+        [TestCase("lfg 50 will travel", "what class are u?", true)]
         [TestCase("lfg 5 scout", "im free, what are you hunting?", true)]
         public void AReplyDoesntAskWhatWasSaid(string incoming, string reply, bool fits) =>
             Assert.That(AutonomousChatShortTalk.ReplyFits(incoming, reply), Is.EqualTo(fits));
