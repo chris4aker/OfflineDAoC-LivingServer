@@ -23,7 +23,11 @@ public static class AutonomousBotGroupChatter
     private sealed class Next
     {
         public long At;
+        public long LastPlayerReply;
     }
+
+    /// <summary>A player's /group lines are answered at most this often per group.</summary>
+    public const int PlayerReplyCooldownMs = 5_000;
 
     private static readonly ConditionalWeakTable<Group, Next> Groups = new();
 
@@ -91,6 +95,54 @@ public static class AutonomousBotGroupChatter
             int delay = AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared);
             AutonomousLivingServer.Later(mate, delay, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () => Send(mate, reply.Text));
             return;
+        }
+    }
+
+    /// <summary>
+    /// The player said something in /group: a groupmate answers in /group, as /faction and /say do (live test 2026-10-18:
+    /// "hi" and "where to next?" in /group got no answer). Bots that are fighting or casting stay quiet.
+    /// </summary>
+    public static void OnPlayerGroupChat(GamePlayer player, string message)
+    {
+        if (!AutonomousBotVoices.Enabled || player?.Group == null || string.IsNullOrWhiteSpace(message))
+            return;
+        Group group = player.Group;
+        GameBot[] mates = group.GetMembersInTheGroup().OfType<GameBot>()
+            .Where(mate => mate.IsAutonomousWorldBot && !mate.IsTemporaryGroupHelper && mate.IsAlive && !mate.InCombat && !mate.IsCasting)
+            .OrderBy(_ => Random.Shared.Next()).ToArray();
+        if (mates.Length == 0)
+            return;
+        Next next = Groups.GetValue(group, _ => new Next());
+        lock (next)
+        {
+            if (next.LastPlayerReply > 0 && GameLoop.GameLoopTime - next.LastPlayerReply < PlayerReplyCooldownMs)
+                return;
+            next.LastPlayerReply = GameLoop.GameLoopTime;
+        }
+        GameBot[] named = mates.Where(mate => AutonomousBotChatCoordinator.ContainsMention(message, mate.Name)).ToArray();
+        GameBot[] pool = named.Length > 0 ? named : mates;
+        if (AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge))
+        {
+            GameBot answerer = pool[0];
+            AutonomousLivingServer.Later(answerer, AutonomousBotChatCoordinator.ReplyDelayMs(knowledge, 0, Random.Shared),
+                () => answerer.Group == group && answerer.IsAlive, () => Send(answerer, knowledge));
+            return;
+        }
+        eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
+        // A group is small: one answer, two for a hello or a ding.
+        int count = Math.Min(AutonomousBotChatCoordinator.PlayerReplyCount(intent, false, named.Length > 0, pool.Length, Random.Shared),
+            intent is eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Ding ? 2 : 1);
+        var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        int due = 0;
+        for (int i = 0; i < pool.Length && used.Count < count; i++)
+        {
+            GameBot mate = pool[i];
+            string reply = AutonomousBotChatCoordinator.ReplyToPlayer(mate, player, message);
+            if (string.IsNullOrEmpty(reply) || !AutonomousBotChatCoordinator.TryAddDistinctResponse(used, reply, out reply))
+                continue;
+            due = AutonomousBotChatCoordinator.ReplyDelayMs(reply, due, Random.Shared);
+            string text = reply;
+            AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () => Send(mate, text));
         }
     }
 

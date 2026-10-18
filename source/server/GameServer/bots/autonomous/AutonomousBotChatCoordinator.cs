@@ -780,6 +780,10 @@ public static class AutonomousBotChatCoordinator
         return fallback();
     }
 
+    /// <summary>A bot's voiced reply to a player's line, or null (the /group answers use it; 0.36-se.4).</summary>
+    internal static string ReplyToPlayer(GameBot responder, GamePlayer player, string message) =>
+        VoicedReply(responder, message, () => null, player);
+
     /// <summary>How many of a conversation's scheduled replies were actually said (they run on timers).</summary>
     private sealed class ReplyTally
     {

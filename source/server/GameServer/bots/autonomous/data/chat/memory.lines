@@ -141,7 +141,7 @@ not bad {player}, still grinding away
 @needs knows_player
 @who *
 {player}, stablemaster is your friend, saves a lot of running
-not sure {player}, ask in /faction, someone will know
+not sure {player}, someone else might know
 @kind reply
 @topic player
 @intent help

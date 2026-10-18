@@ -210,3 +210,24 @@ whatever gets the most people on
 dunno, bring ideas
 dungeon run maybe
 i am in for anything
+
+# "where to next?", "so where are we heading?": the group's next hunt. Live test of se.4 (2026-10-18): it drew
+# directions ("follow the road"). New writing.
+@kind reply
+@answers ask_next
+@who *
+your call
+you lead, i follow
+somewhere with more xp
+{camp} maybe?
+back to {camp}?
+anywhere but here lol
+stay a bit longer?
+wherever has blues for us
+@levels 1-45
+{dungeon} could be good for us
+@levels 1-50
+@who Explorer
+somewhere new, i am bored of this place
+@who Leveler
+wherever the xp is best, dont care where

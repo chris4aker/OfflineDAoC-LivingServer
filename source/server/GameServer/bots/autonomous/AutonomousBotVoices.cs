@@ -265,7 +265,7 @@ public static class AutonomousBotVoices
     {
         result = null;
         string shape = AutonomousChatShortTalk.QuestionShape(incoming);
-        return shape is "ask_on" or "ask_permission" or "ask_choice" or "ask_guild" &&
+        return shape is "ask_on" or "ask_permission" or "ask_choice" or "ask_guild" or "ask_next" &&
                TryLine(bot, "reply", out result, answers: shape, slots: slots, relax: relax, requireVoices: requireVoices);
     }
 

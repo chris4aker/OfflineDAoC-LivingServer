@@ -51,6 +51,8 @@ namespace DOL.GS.Commands
 				}
 
 				client.Player.Group.SendMessageToGroupMembers(client.Player, msg, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+				// Offline DAoC: bots in the group answer (0.36-se.4).
+				AutonomousBotGroupChatter.OnPlayerGroupChat(client.Player, msg.Trim());
 			}
 			else
 			{

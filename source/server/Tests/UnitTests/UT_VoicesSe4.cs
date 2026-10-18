@@ -517,6 +517,8 @@ namespace DOL.GS.Tests
         [TestCase("mind if i hunt near cotswold?", "ask_permission")]
         [TestCase("should i roll a cleric or a friar?", "ask_choice")]
         [TestCase("lfg or something?", null)]
+        [TestCase("where to next?", "ask_next")]
+        [TestCase("so where are we heading?", "ask_next")]
         [TestCase("lol", null)]
         public void APlayersQuestionTypeIsRead(string text, string shape) =>
             Assert.That(AutonomousChatShortTalk.QuestionShape(text), Is.EqualTo(shape));
@@ -550,6 +552,27 @@ namespace DOL.GS.Tests
         [TestCase("what does a friar do")]
         [TestCase("lfg")]
         public void OtherQuestionsAreNotGlossary(string text) => Assert.That(Knowledge.TryExplainTerm(text, out _), Is.False);
+
+        [Test]
+        public void RepliesDontNameAChannel()
+        {
+            // A reply can be sent in /faction, /say, /group or /gu: "ask in /faction, someone will know" was said in /faction.
+            Assert.That(Corpus.Lines.Where(l => l.Kind == "reply").Select(l => l.Text),
+                Has.None.Matches(@"\b(try|ask in|post in|someone in) /?faction\b"),
+                "Advice that teaches the channel (\"say lfg in faction with your level\") is fine.");
+        }
+
+        [Test]
+        public void AGroupInACapitalDoesntTalkAboutPulls()
+        {
+            var inCamelot = new VC.Speaker(1, "Theaenorelle", eRealm.Albion, "Cleric", 8, BotPersonalityType.Socialite,
+                new HashSet<string> { "in_group", "in_player_group", "in_capital", "evening" });
+            var lines = Corpus.Candidates("group", inCamelot).Select(l => l.Text).ToList();
+            Assert.That(lines, Is.Not.Empty);
+            Assert.That(lines, Has.None.Contains("pull").And.None.Contains("oom").And.None.Contains("camp"));
+            Assert.That(Corpus.Lines.Single(l => l.Text == "where to next?").Invites, Is.EqualTo("ask_next"));
+            Assert.That(Corpus.Lines.Count(l => l.Kind == "reply" && l.Answers.Contains("ask_next")), Is.GreaterThanOrEqualTo(8));
+        }
 
         [Test]
         public void UnpromptedFactionLinesWaitAfterAPlayerSpeaks()

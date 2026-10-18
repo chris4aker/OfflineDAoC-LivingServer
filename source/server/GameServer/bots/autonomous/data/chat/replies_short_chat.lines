@@ -185,13 +185,13 @@ not a rezzer, sorry
 wish i could, no rez spell
 @realm alb
 @needs !can_rez
-need a cleric or a friar, try faction
+need a cleric or a friar for that, sorry
 @realm mid
 @needs !can_rez
-need a healer or shaman, try faction
+need a healer or a shaman for that, sorry
 @realm hib
 @needs !can_rez
-need a druid or a warden, try faction
+need a druid or a warden for that, sorry
 @realm *
 @needs will_rez
 coming
@@ -332,7 +332,7 @@ really?
 @intent grouping
 @who *
 sorry, solo for now
-post in faction, someone will bite
+keep at it, someone will bite
 what level range?
 i might be free later
 pst me when you form up

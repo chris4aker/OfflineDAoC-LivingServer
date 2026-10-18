@@ -8,7 +8,8 @@
 @kind group
 @topic group
 @who *
-@needs in_player_group
+# Hunting talk: not in a capital (live test 2026-10-18: "oom, give me a minute" in Camelot).
+@needs in_player_group,!in_capital
 nice pull, smooth as anything
 good spot, this camp suits us
 these {monsters} are good xp for us
@@ -31,15 +32,18 @@ glad i grouped with you, honestly
 i can stay about an hour more
 ty for the invite by the way, this is great
 the drop rate on {monsters} is awful, but the xp makes up for it
+@needs in_player_group
 @invites joke
 you lead, i follow, we level. simple plan
-@invites ask_where
+@invites ask_next
 where to next?
 @invites ask
 how close are you to a level?
+@needs in_player_group,!in_capital
 @invites ask_opinion
 your call, stay here or move on?
 should we push on or stay here a bit?
+@needs in_player_group
 @invites chat
 lead the way, i will follow
 {me} needs to log in 20, just a heads up
@@ -47,6 +51,17 @@ lead the way, i will follow
 brb sec
 brb, getting a drink
 one sec, phone
+@invites chat
+@needs in_player_group,in_capital
+@invites chat
+need to sell first, one sec
+i always get lost in here lol
+lets get out of the city, xp is waiting
+grabbing potions, then ready
+@invites ask_next
+so where are we heading?
+@invites ask
+anything you need from the vendors before we go?
 @invites chat
 @needs in_player_group,bag_full
 my bags are full, might need town soon

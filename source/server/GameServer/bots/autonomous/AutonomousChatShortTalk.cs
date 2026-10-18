@@ -124,6 +124,10 @@ public static class AutonomousChatShortTalk
         if (AsksWhoIsOn(text))
             return "ask_on";
         string[] words = AutonomousChatIntentModel.Words(text).Select(word => word.Replace("'", string.Empty)).ToArray();
+        // "where to next?" in a group: the next hunt, not directions (live test 2026-10-18).
+        if (HasPhrase(words, "where to next", "where now", "where next", "where are we heading", "where are we going", "where should we go",
+                "where should we head", "where we going", "where we heading"))
+            return "ask_next";
         // "lf guild" that no bot guild took up (already in a guild, bot guilds off) drew "i could use a group too".
         if (AutonomousBotGuildChatLines.AsksForGuild(text, false))
             return "ask_guild";

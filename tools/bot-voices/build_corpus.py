@@ -180,6 +180,9 @@ def infer_invites(text, kind):
             return 'ask_permission'
         if re.search(r"\bor\b", t) and not re.search(r"\bor (something|so|anything|what)\b", t):
             return 'ask_choice'
+        # "where to next?": where the group goes, answered "your call" or "somewhere with more xp", not directions.
+        if re.search(r"\bwhere (to next|now|next|are we (heading|going|off to)|should we (go|head)|we (going|heading))\b", t):
+            return 'ask_next'
         if re.search(r"\bwhere\b|\bwheres\b|how do (i|you) get|which way|how far", t):
             return 'ask_where'
         if re.search(r"\b(best(?! (thing|part|moment|day))|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):

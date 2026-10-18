@@ -345,6 +345,9 @@ public static class AutonomousChatKnowledge
             {
                 bool capital = AutonomousBotVoices.IsCapitalRegion(region.ID); // the capitals look like dungeons to the server
                 Add(building, region.Description, new(region.Description, region.Description, region.ID, region.IsDungeon && !capital, false, 0));
+                // "where is camelot?": nobody types "city of camelot" (live test 2026-10-18).
+                if (region.Description?.StartsWith("City of ", StringComparison.OrdinalIgnoreCase) == true)
+                    Add(building, region.Description["City of ".Length..], new(region.Description, region.Description, region.ID, false, false, 0));
                 foreach (Zone zone in region.Zones.Where(zone => zone != null))
                     Add(building, zone.Description, new(zone.Description, region.Description, region.ID, zone.IsDungeon && !capital, false, 0));
 

@@ -11895,8 +11895,8 @@
    "intent": "help",
    "mood": "",
    "weight": 1.0,
-   "text": "ask in faction, people usually answer",
-   "id": "a5245455be73"
+   "text": "someone usually answers, give it a minute",
+   "id": "854da981e8c7"
   },
   {
    "kind": "reply",
@@ -12347,7 +12347,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12367,7 +12368,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12387,7 +12389,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12407,7 +12410,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12427,7 +12431,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12447,7 +12452,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12467,7 +12473,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12487,7 +12494,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12507,7 +12515,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12527,7 +12536,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12547,7 +12557,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12567,7 +12578,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12587,7 +12599,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12607,7 +12620,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12627,7 +12641,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12647,7 +12662,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12667,7 +12683,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12687,7 +12704,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12770,7 +12788,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12832,7 +12851,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12900,7 +12920,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -12968,7 +12989,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13034,7 +13056,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13053,7 +13076,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13072,7 +13096,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13091,7 +13116,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13110,7 +13136,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13129,7 +13156,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13148,7 +13176,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13167,7 +13196,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13186,7 +13216,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13205,7 +13236,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13224,7 +13256,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13243,7 +13276,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13262,7 +13296,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13281,7 +13316,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13300,7 +13336,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13319,7 +13356,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13338,7 +13376,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13357,7 +13396,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13376,7 +13416,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13395,7 +13436,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13414,7 +13456,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13433,7 +13476,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13452,7 +13496,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13471,7 +13516,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13490,7 +13536,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13509,7 +13556,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13528,7 +13576,8 @@
     50
    ],
    "needs": [
-    "in_group"
+    "in_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13547,7 +13596,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13567,7 +13617,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13587,7 +13638,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13607,7 +13659,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13627,7 +13680,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13647,7 +13701,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13667,7 +13722,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13687,7 +13743,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13707,7 +13764,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13727,7 +13785,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13747,7 +13806,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13767,7 +13827,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13787,7 +13848,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13807,7 +13869,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13827,7 +13890,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13847,7 +13911,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13867,7 +13932,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13887,7 +13953,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13907,7 +13974,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13927,7 +13995,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13947,7 +14016,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -13967,7 +14037,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -14012,7 +14083,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_where",
+   "invites": "ask_next",
    "text": "where to next?",
    "id": "49f3bfa4ae67"
   },
@@ -14047,7 +14118,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -14067,7 +14139,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!in_capital"
    ],
    "intent": "",
    "mood": "",
@@ -14175,6 +14248,132 @@
    "invites": "none",
    "text": "one sec, phone",
    "id": "e8fbf5071683"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "need to sell first, one sec",
+   "id": "f030444dc8f6"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "i always get lost in here lol",
+   "id": "a0df23eb06f9"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "lets get out of the city, xp is waiting",
+   "id": "e97336d45100"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "grabbing potions, then ready",
+   "id": "f67203195154"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask_next",
+   "text": "so where are we heading?",
+   "id": "3a8a4015e68a"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask",
+   "text": "anything you need from the vendors before we go?",
+   "id": "2d09bcd59d27"
   },
   {
    "kind": "group",
@@ -21194,8 +21393,8 @@
    "intent": "travel",
    "mood": "",
    "weight": 1.0,
-   "text": "not sure {player}, ask in /faction, someone will know",
-   "id": "cc7c3050a15e"
+   "text": "not sure {player}, someone else might know",
+   "id": "7dd0864beb53"
   },
   {
    "kind": "reply",
@@ -31280,8 +31479,8 @@
    "answers": [
     "lfg"
    ],
-   "text": "post in faction too",
-   "id": "693e83563b5c"
+   "text": "keep asking, someone will be up for it",
+   "id": "b096b341117a"
   },
   {
    "kind": "reply",
@@ -31666,8 +31865,8 @@
    "answers": [
     "trade"
    ],
-   "text": "someone in faction might want it",
-   "id": "ca8e0f4c8130"
+   "text": "someone will want it, keep asking",
+   "id": "7e7b3659aabc"
   },
   {
    "kind": "reply",
@@ -36215,6 +36414,230 @@
     50
    ],
    "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "your call",
+   "id": "2980d68dc3a1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "you lead, i follow",
+   "id": "cd5bd2cd3bb1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "somewhere with more xp",
+   "id": "09af9297215d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "{camp} maybe?",
+   "id": "04d866836179"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "back to {camp}?",
+   "id": "07bc65145820"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "anywhere but here lol",
+   "id": "a03ff8c53d9f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "stay a bit longer?",
+   "id": "29ae2aaca7bd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "wherever has blues for us",
+   "id": "c288cb49c8e9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    45
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "{dungeon} could be good for us",
+   "id": "2c755aca54b8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "somewhere new, i am bored of this place",
+   "id": "9b6d12ab3a36"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_next"
+   ],
+   "text": "wherever the xp is best, dont care where",
+   "id": "ce2882a5eccf"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
    "intent": "thanks",
    "mood": "",
    "weight": 1.0,
@@ -38344,8 +38767,8 @@
    "intent": "rez",
    "mood": "",
    "weight": 1.0,
-   "text": "need a cleric or a friar, try faction",
-   "id": "790b4826b0bd"
+   "text": "need a cleric or a friar for that, sorry",
+   "id": "1d8d69019430"
   },
   {
    "kind": "reply",
@@ -38363,8 +38786,8 @@
    "intent": "rez",
    "mood": "",
    "weight": 1.0,
-   "text": "need a healer or shaman, try faction",
-   "id": "ce5059714be8"
+   "text": "need a healer or a shaman for that, sorry",
+   "id": "7dd44663c52b"
   },
   {
    "kind": "reply",
@@ -38382,8 +38805,8 @@
    "intent": "rez",
    "mood": "",
    "weight": 1.0,
-   "text": "need a druid or a warden, try faction",
-   "id": "9b4b59a1df72"
+   "text": "need a druid or a warden for that, sorry",
+   "id": "6b509a3b8c17"
   },
   {
    "kind": "reply",
@@ -40245,8 +40668,8 @@
    "intent": "grouping",
    "mood": "",
    "weight": 1.0,
-   "text": "post in faction, someone will bite",
-   "id": "b45a74b68b93"
+   "text": "keep at it, someone will bite",
+   "id": "84267f200a72"
   },
   {
    "kind": "reply",

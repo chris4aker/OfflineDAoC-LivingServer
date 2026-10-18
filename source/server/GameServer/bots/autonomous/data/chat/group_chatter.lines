@@ -5,7 +5,7 @@
 @kind group
 @topic group
 @who *
-@needs in_group
+@needs in_group,!in_capital
 @invites ask
 pull?
 @invites
@@ -14,7 +14,7 @@ ready when you are
 need a sec, sitting for power
 oom, give me a minute
 med break
-@needs in_group
+@needs in_group,!in_capital
 buffs dropping soon
 @invites
 clean pull, ty
@@ -39,37 +39,37 @@ one more pull then i need a break
 camp bonus is nice here
 xp is great tonight
 half a bubble per kill, love it
-@needs in_group
+@needs in_group,!in_capital
 who is main assist?
 @needs in_group,in_dungeon
 @invites none
 stick on me, moving to the next room
 regroup at the entrance
-@needs in_group
+@needs in_group,!in_capital
 everyone here? pulling in 5
 @invites
 @who Socialite
 @needs in_group,in_player_group
 best group i have had all week honestly
 anyone want to stay in touch after this?
-@needs in_group
+@needs in_group,!in_capital
 @who Daredevil
 @invites boast
 pull two, we can take it
 @needs in_group,in_dungeon
 @invites
 lets try the room past the corner, i think we can do it
-@needs in_group
+@needs in_group,!in_capital
 @who Leveler
 @needs in_group,at_camp
 keep the pulls coming, xp is great
-@needs in_group
+@needs in_group,!in_capital
 no breaks, we are on a roll
 @who NoLifer
 @needs in_group,at_camp
 @invites joke
 pull faster, the respawn is waiting for us
-@needs in_group
+@needs in_group,!in_capital
 @invites
 @who Explorer
 @needs in_group,in_dungeon
@@ -80,7 +80,7 @@ anyone know what is past this room?
 @kind combat
 @topic group
 @who *
-@needs in_group
+@needs in_group,!in_capital
 inc
 inc, two of them
 add!
