@@ -173,7 +173,7 @@ def infer_invites(text, kind):
     if '?' in t and kind not in ('lfg', 'trade'):
         t = t[:t.rfind('?') + 1]
     if t.endswith('?'):
-        if re.search(r"^((hey|hi|so|ok|yo)[ ,]+)?(how (is|are|r) (every|you|u|ya|yall|things|it)|hows (every|it|things)|how goes|"
+        if re.search(r"^((hey|hi|hello|heya|so|ok|yo|evening|morning)( all| everyone| guys| guildies| folks)?[ ,!]+|just got (home|on|back|in)[ ,]+)?(how (is|are|r) (every|you|u|ya|yall|things|it)|hows (every|it|things)|how goes|"
                      r"what did i miss|whats new|whats up|what is everyone (up to|doing))", t):
             return 'ask_howareyou'
         if re.search(r"\b(mind if i|ok if i|okay if i|is it ok if)\b", t):
@@ -184,6 +184,16 @@ def infer_invites(text, kind):
             return 'ask_where'
         if re.search(r"\b(best(?! (thing|part|moment|day))|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):
             return 'ask_opinion'
+        # "what level is everyone at?", "how close are you to a level?", "what are we doing this weekend?"
+        if re.search(r"\bwhat level (is|are) (every|you|u|yall)", t):
+            return 'ask_level'
+        if re.search(r"\bhow close (are|r) (you|u|yall|every)", t):
+            return 'ask_xp'
+        if re.search(r"\bwhat (are|r) we (doing|up to)\b", t):
+            return 'ask_plans'
+        # "castle excalibur still ours?", "how much do merchants pay for x?": what someone may know
+        if re.search(r"\b(still ours|still holding|ours right now|did we lose|how much do (merchants|vendors) pay)\b", t):
+            return 'ask_know'
         # "anyone know if x is ours?": a question about the world, answered "no idea" or "last i saw" (live test 2026-10-18).
         if re.search(r"\b(anyone|anybody|any1|does anyone|someone) (know|knows|seen|heard)\b", t):
             return 'ask_know'

@@ -170,3 +170,43 @@ here, whats up?
 always on
 @who Socialite
 here!! whats going on
+
+# Guild and group questions about levels and plans ("what level is everyone at now?", "how close are you to a
+# level?", "what are we doing this weekend?"). Before, they drew advice ("practice on blues first"). New writing.
+@kind reply
+@answers ask_level
+@who *
+{level} here
+just hit {level}
+{level} and grinding
+@levels 1-49
+{level}, slowly
+{level}, halfway to the next
+still {level}, dont ask
+@levels 50-50
+50, finally
+capped, just rps now
+@kind reply
+@answers ask_xp
+@levels 1-49
+@who *
+about halfway
+two bubbles
+one more pull i hope
+not even close lol
+just dinged, so far
+almost, few more kills
+three bubbles, ugh
+@levels 50-50
+im 50, no more bubbles
+capped, its all realm points now
+@kind reply
+@answers ask_plans
+@who *
+rvr if enough of us show
+leveling probably
+keep raid sunday?
+whatever gets the most people on
+dunno, bring ideas
+dungeon run maybe
+i am in for anything

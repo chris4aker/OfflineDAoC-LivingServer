@@ -536,6 +536,21 @@ namespace DOL.GS.Tests
                 Is.All.Not.StartWith("who is the best"));
         }
 
+        [TestCase("what does lfg mean?", "looking for group")]
+        [TestCase("whats pbae", "point blank")]
+        [TestCase("noob question, what is a con?", "tough")]
+        [TestCase("what does inc mean", "incoming")]
+        public void ChatWordsAreExplained(string text, string part)
+        {
+            Assert.That(Knowledge.TryExplainTerm(text, out string answer), Is.True);
+            Assert.That(answer, Does.Contain(part));
+        }
+
+        [TestCase("what is the best class?")]
+        [TestCase("what does a friar do")]
+        [TestCase("lfg")]
+        public void OtherQuestionsAreNotGlossary(string text) => Assert.That(Knowledge.TryExplainTerm(text, out _), Is.False);
+
         [Test]
         public void UnpromptedFactionLinesWaitAfterAPlayerSpeaks()
         {

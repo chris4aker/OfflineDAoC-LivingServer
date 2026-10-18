@@ -11394,7 +11394,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_howareyou",
    "text": "just got home, what did i miss?",
    "id": "5ab1ee5e3a0a"
   },
@@ -14032,7 +14032,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_xp",
    "text": "how close are you to a level?",
    "id": "73a674ffd5b8"
   },
@@ -14943,7 +14943,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_level",
    "text": "what level is everyone at now?",
    "id": "a37c70945d4c"
   },
@@ -15161,7 +15161,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_howareyou",
    "text": "hey all, how is everyone?",
    "id": "9baec8922678"
   },
@@ -16978,7 +16978,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_plans",
    "text": "what are we doing this weekend?",
    "id": "a58222a107dd"
   },
@@ -22865,7 +22865,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_know",
    "text": "castle excalibur still ours? checking before i log off",
    "id": "4f47abde194a"
   },
@@ -22955,7 +22955,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_know",
    "text": "mjollner faste still holding? relic is there",
    "id": "726ec370fd58"
   },
@@ -23063,7 +23063,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_know",
    "text": "dun dagda still ours? relic check",
    "id": "94cd43daf327"
   },
@@ -35735,6 +35735,486 @@
     50
    ],
    "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_level"
+   ],
+   "text": "{level} here",
+   "id": "1e86744f4d14"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_level"
+   ],
+   "text": "just hit {level}",
+   "id": "347c5f005e5f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_level"
+   ],
+   "text": "{level} and grinding",
+   "id": "52ab10de0926"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_level"
+   ],
+   "text": "{level}, slowly",
+   "id": "fe0fe6c3d7a9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_level"
+   ],
+   "text": "{level}, halfway to the next",
+   "id": "98527f3bb07b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_level"
+   ],
+   "text": "still {level}, dont ask",
+   "id": "3d9ec784f136"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_level"
+   ],
+   "text": "50, finally",
+   "id": "e0eaa430221a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_level"
+   ],
+   "text": "capped, just rps now",
+   "id": "3840fd5bc5e4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "about halfway",
+   "id": "4c1a647c06f0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "two bubbles",
+   "id": "f88971994359"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "one more pull i hope",
+   "id": "016fb2d450c8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "not even close lol",
+   "id": "2e8cc2272c52"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "just dinged, so far",
+   "id": "e6a25b2f20c5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "almost, few more kills",
+   "id": "84b709605d45"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "three bubbles, ugh",
+   "id": "e79678fee21a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "im 50, no more bubbles",
+   "id": "7e03574613c8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_xp"
+   ],
+   "text": "capped, its all realm points now",
+   "id": "acca338d0f32"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_plans"
+   ],
+   "text": "rvr if enough of us show",
+   "id": "b8878af45253"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_plans"
+   ],
+   "text": "leveling probably",
+   "id": "a85b691ac364"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_plans"
+   ],
+   "text": "keep raid sunday?",
+   "id": "5bdd2cb36b99"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_plans"
+   ],
+   "text": "whatever gets the most people on",
+   "id": "0cd50704bbe8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_plans"
+   ],
+   "text": "dunno, bring ideas",
+   "id": "474833050a7a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_plans"
+   ],
+   "text": "dungeon run maybe",
+   "id": "2403adbdd21f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_plans"
+   ],
+   "text": "i am in for anything",
+   "id": "83c54c649e81"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
    "intent": "thanks",
    "mood": "",
    "weight": 1.0,
@@ -41141,7 +41621,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_know",
    "text": "is darkness falls ours right now? want to grind there",
    "id": "6481c6561a3b"
   },
@@ -41857,7 +42337,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_know",
    "text": "did we lose {keep} again?",
    "id": "d056acee0ff2"
   },

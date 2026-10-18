@@ -26,6 +26,8 @@ public static class AutonomousChatKnowledge
             return false;
 
         string query = message.Trim();
+        if (TryExplainTerm(query, out answer))
+            return true;
         if (LooksLikeStableQuestion(query) && TryAnswerStable(player.Realm, query, out answer))
             return true;
         if (LooksLikeSpellQuestion(query) && TryAnswerSpell(player, query, out answer))
@@ -51,6 +53,41 @@ public static class AutonomousChatKnowledge
             return true;
         return LooksLikeLocationQuestion(query) && TryAnswerLocation(realm, query, out answer);
     }
+
+    #region Chat words (0.36-se.4)
+
+    // What period chat words mean. Live test 2026-10-18: "what does lfg mean?" drew "what level range?".
+    private static readonly Dictionary<string, string> Terms = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["lfg"] = "looking for group", ["lfm"] = "looking for more, a group wants people", ["lf1m"] = "looking for one more",
+        ["gz"] = "congrats", ["grats"] = "congrats", ["inc"] = "incoming, enemies or adds coming", ["oom"] = "out of mana",
+        ["oop"] = "out of power", ["brb"] = "be right back", ["afk"] = "away from keyboard", ["bio"] = "bathroom break lol",
+        ["ks"] = "kill steal, taking someone elses mob", ["pbae"] = "point blank area effect, the caster blows up everything around him",
+        ["pbaoe"] = "point blank area effect, the caster blows up everything around him", ["rp"] = "realm points, you get them in rvr",
+        ["rps"] = "realm points, you get them in rvr", ["rr"] = "realm rank, from realm points", ["rvr"] = "realm vs realm, the frontier",
+        ["wts"] = "want to sell", ["wtb"] = "want to buy", ["wtt"] = "want to trade", ["pst"] = "please send tell",
+        ["pc"] = "price check", ["con"] = "how tough a mob looks, by its color", ["add"] = "another mob joining the fight",
+        ["adds"] = "more mobs joining the fight", ["ding"] = "level up", ["rez"] = "resurrect", ["aggro"] = "a mob that attacks on sight",
+        ["df"] = "darkness falls, the big dungeon", ["ml"] = "master level", ["ra"] = "realm ability", ["np"] = "no problem",
+        ["ty"] = "thank you", ["lol"] = "laughing out loud", ["imo"] = "in my opinion", ["mez"] = "mesmerize, it holds a mob still",
+        ["stun"] = "they cant move or act for a bit", ["zerg"] = "a huge mob of players running together", ["gank"] = "killing someone who cant fight back",
+    };
+
+    /// <summary>"what does lfg mean?", "whats pbae", "what is a con": a short meaning.</summary>
+    public static bool TryExplainTerm(string text, out string answer)
+    {
+        answer = string.Empty;
+        string t = (text ?? string.Empty).Trim().TrimEnd('?', '!', '.').ToLowerInvariant();
+        var m = System.Text.RegularExpressions.Regex.Match(t,
+            @"^(?:so |um |hey |sorry |noob question,? |dumb question,? )?(?:what does|what do|wat does|what is|whats|what's|wat is|wats) (?:an? )?([a-z0-9]+)(?: mean| stand for| means)?$");
+        if (!m.Success || !Terms.TryGetValue(m.Groups[1].Value, out string meaning))
+            return false;
+        string word = m.Groups[1].Value;
+        answer = Pick($"{word} = {meaning}", $"{meaning}", $"it means {meaning}", $"{meaning} :)");
+        return true;
+    }
+
+    #endregion
 
     #region Trainers (0.36-se.4)
 
