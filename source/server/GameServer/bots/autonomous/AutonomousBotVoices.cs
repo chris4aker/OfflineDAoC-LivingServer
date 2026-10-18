@@ -265,6 +265,9 @@ public static class AutonomousBotVoices
     {
         result = null;
         string shape = AutonomousChatShortTalk.QuestionShape(incoming);
+        // "hows it going" may read as no intent at all: it is still a how-are-you (live test 2026-10-18: it drew "hm?").
+        if (shape == "ask_howareyou")
+            return TryGreetingReply(bot, incoming, out result, slots, relax, requireVoices);
         return shape is "ask_on" or "ask_permission" or "ask_choice" or "ask_guild" or "ask_next" &&
                TryLine(bot, "reply", out result, answers: shape, slots: slots, relax: relax, requireVoices: requireVoices);
     }

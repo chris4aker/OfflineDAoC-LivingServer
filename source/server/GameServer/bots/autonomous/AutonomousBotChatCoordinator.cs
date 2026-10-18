@@ -675,7 +675,8 @@ public static class AutonomousBotChatCoordinator
             {
                 foreach (string answers in chain)
                 {
-                    if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked picked, answers: answers, slots: slots))
+                    if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked picked, answers: answers, slots: slots,
+                            filter: line => AutonomousChatShortTalk.ReplyFits(opening, line.Text)))
                     {
                         response = picked.Text;
                         break;
@@ -771,7 +772,8 @@ public static class AutonomousBotChatCoordinator
             if (AutonomousBotVoices.TryGreetingReply(responder, incoming, out VC.Picked hello, slots, relax: player != null))
                 return hello.Text;
         }
-        else if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked voiced, intent, slots: slots, flags: with, relax: player != null))
+        else if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked voiced, intent, slots: slots, flags: with, relax: player != null,
+                     filter: line => AutonomousChatShortTalk.ReplyFits(incoming, line.Text)))
             return voiced.Text;
         VC.Picked fallbackLine;
         if (player != null && value is not (eAutonomousChatIntent.Unknown or eAutonomousChatIntent.IgnoreOutOfWorld or eAutonomousChatIntent.Abuse) &&

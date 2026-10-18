@@ -518,6 +518,7 @@ namespace DOL.GS.Tests
         [TestCase("should i roll a cleric or a friar?", "ask_choice")]
         [TestCase("lfg or something?", null)]
         [TestCase("where to next?", "ask_next")]
+        [TestCase("hows it going", "ask_howareyou")]
         [TestCase("so where are we heading?", "ask_next")]
         [TestCase("lol", null)]
         public void APlayersQuestionTypeIsRead(string text, string shape) =>
@@ -573,6 +574,13 @@ namespace DOL.GS.Tests
             Assert.That(Corpus.Lines.Single(l => l.Text == "where to next?").Invites, Is.EqualTo("ask_next"));
             Assert.That(Corpus.Lines.Count(l => l.Kind == "reply" && l.Answers.Contains("ask_next")), Is.GreaterThanOrEqualTo(8));
         }
+
+        [TestCase("any guild running groups today? paladin 6 here", "what lvl?", false)]
+        [TestCase("lfg 5 scout", "what level range?", false)]
+        [TestCase("lfg, anyone?", "what lvl?", true)]
+        [TestCase("lfg 5 scout", "im free, what are you hunting?", true)]
+        public void AReplyDoesntAskWhatWasSaid(string incoming, string reply, bool fits) =>
+            Assert.That(AutonomousChatShortTalk.ReplyFits(incoming, reply), Is.EqualTo(fits));
 
         [Test]
         public void UnpromptedFactionLinesWaitAfterAPlayerSpeaks()

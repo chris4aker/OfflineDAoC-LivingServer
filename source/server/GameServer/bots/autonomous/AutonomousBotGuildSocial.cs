@@ -372,7 +372,7 @@ public static class AutonomousBotGuildSocial
             foreach (string answers in VC.AnswerChain(voiced.Line.Invites))
             {
                 if (!AutonomousBotVoices.TryLine(other, "reply", out VC.Picked reply, answers: answers, slots: slots,
-                        requireVoices: false))
+                        requireVoices: false, filter: line => AutonomousChatShortTalk.ReplyFits(voiced.Text, line.Text)))
                     continue;
                 ScheduleGuildLine(other, guild, AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared) + 1_500, () => reply.Text);
                 break;

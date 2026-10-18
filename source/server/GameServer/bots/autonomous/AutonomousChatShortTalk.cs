@@ -140,6 +140,18 @@ public static class AutonomousChatShortTalk
         return null;
     }
 
+    /// <summary>
+    /// False for a reply that asks what the line already said: "what lvl?" to "paladin 6 here" (live test 2026-10-18).
+    /// </summary>
+    public static bool ReplyFits(string incoming, string reply)
+    {
+        if (string.IsNullOrEmpty(incoming) || string.IsNullOrEmpty(reply))
+            return true;
+        string[] words = AutonomousChatIntentModel.Words(reply);
+        bool asksLevel = HasPhrase(words, "what lvl", "what level", "level range", "what level are you", "what lvl are you", "how high are you");
+        return !asksLevel || !incoming.Any(char.IsDigit);
+    }
+
     public static bool HasPhrase(string[] words, params string[] phrases)
     {
         string text = " " + string.Join(' ', words) + " ";
