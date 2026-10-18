@@ -738,6 +738,20 @@ namespace DOL.GS.ServerProperties
 		public static double BOT_XP_RATE;
 
 		/// <summary>
+		/// Optional XP rates by level range for real players, replacing XP_RATE inside each listed
+		/// range (see LevelRangeXpRates). Empty keeps the flat rate.
+		/// </summary>
+		[ServerProperty("rates", "xp_rate_by_level", "Optional XP rate by level range for real player characters, for example 1-19:3;20-34:5;35-50:12. Inside a listed range its rate replaces xp_rate; other levels keep xp_rate. RvR zones keep rvr_zones_xp_rate. Empty (the default) or an invalid value keeps the flat xp_rate.", "")]
+		public static string XP_RATE_BY_LEVEL;
+
+		/// <summary>
+		/// Optional XP rates by level range for autonomous gamebots, replacing BOT_XP_RATE inside each
+		/// listed range (see LevelRangeXpRates). Empty keeps the flat rate.
+		/// </summary>
+		[ServerProperty("rates", "bot_xp_rate_by_level", "Optional XP rate by level range for autonomous gamebots, for example 1-19:1.5;20-34:2.5;35-50:6. Inside a listed range its rate replaces bot_xp_rate; other levels keep bot_xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate, as bot_xp_rate is. Empty (the default) or an invalid value keeps the flat bot_xp_rate. Companion bots and real players are not affected.", "")]
+		public static string BOT_XP_RATE_BY_LEVEL;
+
+		/// <summary>
 		/// The CL Experience Rate
 		/// </summary>
 		[ServerProperty("rates", "cl_xp_rate", "The Champion Level Experience Points Rate Modifier - Edit this to change the rate at which you gain CL experience points e.g 1.5 is 50% more 2.0 is twice the amount (100%) 0.5 is half the amount (50%)", 1.0)]

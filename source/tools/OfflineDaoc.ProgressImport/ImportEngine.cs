@@ -296,7 +296,7 @@ public static class ImportEngine
                     set.Parameters.AddWithValue("@hash",HashPassword(password));set.Parameters.AddWithValue("@name",account);
                     if(set.ExecuteNonQuery()!=1)throw new InvalidDataException("Could not set the kept account's new password.");
                 }
-                Exec(c,"UPDATE Account SET PrivLevel=1; INSERT OR REPLACE INTO offline_local_options(Key,Value) VALUES('MakeMeGM','false'); UPDATE ServerProperty SET Value='1' WHERE lower(Key) IN ('xp_rate','bot_xp_rate'); UPDATE offline_world_bots SET IsOnline=0;");
+                Exec(c,"UPDATE Account SET PrivLevel=1; INSERT OR REPLACE INTO offline_local_options(Key,Value) VALUES('MakeMeGM','false'); UPDATE ServerProperty SET Value='1' WHERE lower(Key) IN ('xp_rate','bot_xp_rate'); UPDATE ServerProperty SET Value='' WHERE lower(Key) IN ('xp_rate_by_level','bot_xp_rate_by_level'); UPDATE offline_world_bots SET IsOnline=0;");
                 Exec(c,"UPDATE offline_population_settings SET Value=CAST((SELECT count(*) FROM offline_world_bots WHERE IsRetired=0) AS TEXT) WHERE Key='ActiveTarget'; UPDATE offline_population_settings SET Value='true' WHERE Key='PopulationEnabled';");
                 string Missing(string schema) => $"SELECT i.Inventory_ID FROM {schema}.Inventory i WHERE (COALESCE(i.UTemplate_Id,'')<>'' AND NOT EXISTS(SELECT 1 FROM {schema}.ItemUnique u WHERE u.Id_nb=i.UTemplate_Id)) OR (COALESCE(i.UTemplate_Id,'')='' AND COALESCE(i.ITemplate_Id,'')<>'' AND NOT EXISTS(SELECT 1 FROM {schema}.ItemTemplate t WHERE t.Id_nb=i.ITemplate_Id))";
                 existingMissing=Scalar(c,$"SELECT count(*) FROM ({Missing("old")})");

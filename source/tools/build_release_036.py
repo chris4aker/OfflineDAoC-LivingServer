@@ -138,6 +138,7 @@ def clean_world(database: Path, policy: dict, defaults: dict) -> dict:
         assert changed == 1, f"door {door_id}"
     con.execute("UPDATE Relic SET Realm=OriginalRealm,LastRealm=OriginalRealm WHERE OriginalRealm IN (1,2,3)")
     con.execute("UPDATE ServerProperty SET Value='1' WHERE lower(`Key`) IN ('xp_rate','bot_xp_rate')")
+    con.execute("UPDATE ServerProperty SET Value='' WHERE lower(`Key`) IN ('xp_rate_by_level','bot_xp_rate_by_level')")
     con.execute("UPDATE ServerProperty SET Value='True' WHERE lower(`Key`)='allow_auto_account_creation'")
     con.execute("INSERT OR REPLACE INTO offline_local_options(Key,Value) VALUES('MakeMeGM','false')")
     # Public zero-bot start: the player creates bots from the launcher buttons.
@@ -197,6 +198,8 @@ def verify_clean(con: sqlite3.Connection, policy: dict, defaults: dict) -> dict:
     assert settings["StartupRampMinutes"] == "15", settings
     assert con.execute("SELECT Value FROM offline_local_options WHERE Key='MakeMeGM'").fetchone()[0] == "false"
     assert con.execute("SELECT Value FROM ServerProperty WHERE lower(`Key`)='allow_auto_account_creation'").fetchone()[0] == "True"
+    assert con.execute("SELECT COUNT(*) FROM ServerProperty WHERE lower(`Key`) IN ('xp_rate_by_level','bot_xp_rate_by_level') "
+                       "AND Value<>''").fetchone()[0] == 0, "XP rates by level must be off in a public package"
     keeps = {str(k): (realm, level, claim) for k, realm, level, claim in
              con.execute("SELECT KeepID,Realm,Level,COALESCE(ClaimedGuildName,'') FROM Keep")}
     assert set(keeps) == set(defaults["Keep"]), "the keep list differs from release-world-defaults.json"

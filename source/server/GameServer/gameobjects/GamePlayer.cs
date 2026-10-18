@@ -4351,7 +4351,7 @@ namespace DOL.GS
 
                     if (zoneBonus > 0)
                     {
-                        zoneBonus = (long) (zoneBonus * Properties.XP_RATE);
+                        zoneBonus = (long) (zoneBonus * LevelRangeXpRates.PlayerRate(Level));
                         Out.SendMessage(ZoneBonus.GetBonusMessage(this, (int) zoneBonus, ZoneBonusType.Xp), eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                         GainExperience(new(zoneBonus, 0, 0, 0, 0, 0, false, false, eXPSource.Other), false);
                     }
@@ -4360,7 +4360,7 @@ namespace DOL.GS
                 if (CurrentRegion.IsRvR || CurrentZone.IsRvR)
                     baseXp = (long) (baseXp * Properties.RvR_XP_RATE);
                 else
-                    baseXp = (long) (baseXp * Properties.XP_RATE);
+                    baseXp = (long) (baseXp * LevelRangeXpRates.PlayerRate(Level));
 
                 long xpBonus = GetModified(eProperty.XpPoints);
 
