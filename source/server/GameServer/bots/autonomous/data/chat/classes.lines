@@ -7,48 +7,81 @@
 @realm alb
 @who *
 @class Armsman
+@invites ask_opinion
 polearm or two handed? i keep going back and forth
+@invites joke
 armsman life: stand in front, get hit, be happy
+@invites
 nothing feels better than a big polearm style landing
 @class Paladin
+@invites complaint
 chant twisting is harder than it looks
+@invites
 paladin endurance chant, the group's best friend
 @class Mercenary
 dual wield merc, more swings more fun
+@invites chat
 merc tip: evade is your friend, train it
+@invites
 @class Reaver
 flex is weird at first but the reach is nice
+@invites boast
 soulrending feels like cheating sometimes
+@invites ask_advice
 still figuring out reaver, anyone have advice?
+@invites
 @class Scout
 longbow and patience, that is the whole class
+@invites joke
 people complain about scout range, they should try aiming
+@invites
 @class Infiltrator
 quiet night, just me and my envenom
+@invites ask_opinion
 crit strike or envenom first, cant decide
+@invites
 @class Minstrel
+@invites boast
 minstrel speed song, my gift to the realm
+@invites joke
 charm a pet, play a song, collect compliments
+@invites
 @class Cleric
+@invites ask_opinion
 smite cleric or rejuv, the eternal question
+@invites complaint
 cleric life: heal, rez, get blamed, repeat
+@invites
 @class Friar
+@invites joke
 staff friar here, i heal and i hit, both badly some nights
 nobody expects the friar to tank
+@invites
 @class Wizard
+@invites joke
 fire wizard, i solve problems from far away
+@invites ask_opinion
 earth or fire, every wizard argues about it
+@invites
 @class Theurgist
+@invites joke
 theurg pets everywhere, sorry about the lag
 wind theurg, the art of throwing pets at things
+@invites
 @class Sorcerer
+@invites joke
 mez, pet, nap. sorc life
+@invites
 mind sorc tip: mez first, ask questions later
 @class Cabalist
 cabalist dots stack up nicely if you are patient
+@invites joke
 my simulacrum takes more hits than i do, as intended
+@invites
 @class Necromancer
+@invites joke
 necro tip: the pet is you, you are the pet
+@invites
 painworking necro, the slow kill is the best kill
 
 # ---------------- Midgard ----------------
@@ -57,22 +90,34 @@ painworking necro, the slow kill is the best kill
 @realm mid
 @who *
 @class Warrior
+@invites joke
 warrior: shield up, face first, no regrets
+@invites
 throwing weapons on a warrior, more useful than it sounds
 @class Thane
+@invites boast
 stormcalling thane, i bring the thunder
+@invites
 thane life: half caster, half tank, all fun
 @class Skald
+@invites boast
 skald speed is the best gift in midgard
+@invites
 battlesongs up, everyone run faster
 @class Berserker
+@invites joke
 zerker, two axes, no plan
+@invites
 left axe zerker, the berserk style never gets old
 @class Savage
+@invites boast
 savage buffs cost me health but look at those numbers
+@invites
 hand to hand savage, punching things since level 5
 @class Hunter
+@invites boast
 hunter and pet, best duo in the realm
+@invites
 composite bow at range, spear up close, i like options
 @class Shadowblade
 shadowblade, stealthed and waiting
@@ -80,18 +125,29 @@ envenom and patience, that is the whole job
 @class Healer
 pac healer here, mez on demand
 mending healer, keeping groups alive since forever
+@invites complaint
 healer life: everyone loves you until the group wipes
+@invites
 @class Shaman
-cave shaman, diseases and dots, it is a lifestyle
+@invites joke
+cave shaman, diseases and dots, everything rots eventually
+@invites
 mending shaman, the group's quiet backbone
 @class Runemaster
+@invites boast
 runemaster damage is no joke when it lands
+@invites ask_opinion
 darkness or suppression rm? asking for my build
+@invites
 @class Spiritmaster
+@invites joke
 spiritmaster pet is tankier than half my groups
+@invites
 summoning sm, i let the spirit do the talking
 @class Bonedancer
+@invites joke
 bonedancer army ready, three pets and a dream
+@invites
 bone army bd, the pet that commands pets
 
 # ---------------- Hibernia ----------------
@@ -103,37 +159,55 @@ bone army bd, the pet that commands pets
 hero tank, celtic spear and a stubborn streak
 large weapons hero, slow swings big hits
 @class Champion
+@invites boast
 champion debuffs make everyone else look good
+@invites
 valor champ, the unsung hero of every group
 @class Blademaster
-blademaster, celtic dual, two blades, no thoughts
+@invites joke
+blademaster, celtic dual, two blades, no plan b
+@invites
 @class Warden
 warden, the healer who can also take a hit
 regrowth warden here, i keep the tank up
 @class Druid
+@invites boast
 druid pet and heals, i am a small army
+@invites
 nature druid, i let the pet tank while i heal
 @class Bard
+@invites boast
 bard speed, bard heals, bard mez. bards do it all
+@invites joke
 music bard here, twisting songs like a pro, mostly
+@invites
 @class Ranger
 ranger, recurve bow, pathfinding, nature friend
+@invites boast
 celtic dual ranger, surprised people when i come out swinging
+@invites
 @class Nightshade
 nightshade, critical strike and a lot of waiting
 ns life: hide, wait, strike, run
 @class Eldritch
+@invites boast
 void eld, the big numbers hibernia is proud of
+@invites
 light eld here, bright and painful
 @class Enchanter
+@invites boast
 enchanter pet and pbaoe, everything in range dies
+@invites
 enchantments line, the buffs everyone wants
 @class Mentalist
 mentalist, heals and mez in one robe
 mana ment, damage and a bit of everything
 @class Animist
+@invites joke
 animist shrooms everywhere, please do not step on them
+@invites
 creeping path animist, the forest fights for me
 @class Valewalker
 valewalker, scythe in hand, still learning it
+@invites joke
 arboreal path vw, nobody knows what i do until i do it

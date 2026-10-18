@@ -540,6 +540,7 @@ B: good luck and do not get lost again | welcome to tir na nog, officially
 
 @topic hib_relic_night
 @levels 40-50
+@needs night
 @scene hib_gen_relic_night
 @role B type=NoLifer
 @role C type=Daredevil
@@ -572,6 +573,7 @@ E: is it over? did we win? | did we win?
 B: we held. the relic stays home | the relic stays. good night hibernia
 E: best thing i have seen at 4am | worth staying up for
 ?A: they will be back tomorrow night | same time tomorrow, i bet
+@needs
 
 @topic hib_emain_brawl
 @levels 40-50

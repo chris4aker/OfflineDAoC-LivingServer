@@ -6,6 +6,7 @@ using DOL.Events;
 using DOL.GS.PacketHandler;
 using DOL.GS.ServerProperties;
 using Lines = DOL.GS.AutonomousBotGuildChatLines;
+using VC = DOL.GS.AutonomousBotVoiceCorpus;
 
 namespace DOL.GS;
 
@@ -265,7 +266,8 @@ public static class AutonomousBotGuildSocial
             return;
         }
 
-        Lines.ReplyKind kind = Lines.Classify(message, AutonomousChatIntentModel.Predict(message));
+        eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
+        Lines.ReplyKind kind = Lines.Classify(message, intent);
         GameBot[] pool = mentioned.Length > 0 ? mentioned : speakers;
         if (kind == Lines.ReplyKind.Grouping)
             pool = pool.OrderBy(bot => Math.Abs(bot.Level - player.Level)).ToArray();
@@ -273,14 +275,36 @@ public static class AutonomousBotGuildSocial
             ? 1
             : ResponderCount(kind, pool.Length, Random.Shared.NextDouble());
         var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name };
+        int due = 0;
         for (int i = 0; i < count; i++)
         {
             GameBot bot = pool[i];
-            string line = Lines.Reply(kind, player.Name, bot.Level, bot.CurrentZone?.Description, Random.Shared);
+            // A corpus reply for what the player said ("ty" -> "np", "lol" -> "heh", "ding" -> "gz"), else today's lines
+            // (0.36-se.4: "haha true" answered any guild line that wasn't a question).
+            string line = AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked picked, AutonomousBotVoices.IntentName(intent),
+                    slots: slots, relax: true, requireVoices: false)
+                ? picked.Text
+                : Lines.Reply(kind, player.Name, bot.Level, bot.CurrentZone?.Description, Random.Shared);
             if (!AutonomousBotChatCoordinator.TryAddDistinctResponse(used, line, out line))
                 continue;
-            ScheduleGuildLine(bot, guild, 2_000 + i * 2_200 + Random.Shared.Next(2_500), () => line);
+            due = AutonomousBotChatCoordinator.ReplyDelayMs(line, due, Random.Shared) + 600;
+            ScheduleGuildLine(bot, guild, due, () => line);
         }
+    }
+
+    /// <summary>
+    /// An idle guild line from the corpus (kind "guild", by charter, with the no-repeat window), or null. The
+    /// audit (2026-10-18) found a 12-member guild said about 34 idle lines in 3 hours and only 11 distinct ones.
+    /// </summary>
+    private static VC.Picked CorpusIdle(GameBot bot, BotGuildCharter charter)
+    {
+        string own = charter.ToString().ToLowerInvariant();
+        string[] topics = Random.Shared.NextDouble() < 0.65 ? [own, "general"] : ["general", own];
+        foreach (string topic in topics)
+            if (AutonomousBotVoices.TryLine(bot, "guild", out VC.Picked picked, topic: topic, requireVoices: false))
+                return picked;
+        return null;
     }
 
     /// <summary>
@@ -318,22 +342,39 @@ public static class AutonomousBotGuildSocial
                 return false;
             LastIdleByGuild[guild.GuildID] = GameLoop.GameLoopTime;
         }
-        string idle = Lines.Idle(charter, bot.ClassName, bot.Level, bot.CurrentZone?.Description, Random.Shared);
+        VC.Picked voiced = CorpusIdle(bot, charter);
+        string idle = voiced?.Text ?? Lines.Idle(charter, bot.ClassName, bot.Level, bot.CurrentZone?.Description, Random.Shared);
         if (allianceLine)
         {
             AutonomousBotGuildAlliances.SendLine(alliance, bot.Name, idle);
             return true;
         }
         SendGuildLine(guild, bot.Name, idle);
+        if (!string.IsNullOrEmpty(voiced?.Correction))
+            ScheduleGuildLine(bot, guild, 1_200 + Random.Shared.Next(1_400), () => voiced.Correction);
 
-        // Sometimes a guildmate picks it up.
-        if (Random.Shared.NextDouble() < 0.3)
+        // A guildmate picks it up: a corpus line answers what it invites (a question nearly always, a remark
+        // sometimes); today's lines keep their old 30% "lol" or "haha true".
+        GameBot other = Speakers(guild).FirstOrDefault(candidate => candidate != bot);
+        if (other == null)
+            return true;
+        if (voiced != null)
         {
-            GameBot other = Speakers(guild).FirstOrDefault(candidate => candidate != bot);
-            if (other != null)
-                ScheduleGuildLine(other, guild, 3_500 + Random.Shared.Next(4_000),
-                    () => Lines.Reply(Lines.ReplyKind.Banter, bot.Name, other.Level, other.CurrentZone?.Description, Random.Shared));
+            if (AutonomousBotChatCoordinator.BotReplyCount(voiced.Line.Invites, 1, Random.Shared) == 0)
+                return true;
+            var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name };
+            foreach (string answers in VC.AnswerChain(voiced.Line.Invites))
+            {
+                if (!AutonomousBotVoices.TryLine(other, "reply", out VC.Picked reply, answers: answers, slots: slots, relax: true,
+                        requireVoices: false))
+                    continue;
+                ScheduleGuildLine(other, guild, AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared) + 1_500, () => reply.Text);
+                break;
+            }
         }
+        else if (Random.Shared.NextDouble() < 0.3)
+            ScheduleGuildLine(other, guild, 3_500 + Random.Shared.Next(4_000),
+                () => Lines.Reply(Lines.ReplyKind.Banter, bot.Name, other.Level, other.CurrentZone?.Description, Random.Shared));
         return true;
     }
 

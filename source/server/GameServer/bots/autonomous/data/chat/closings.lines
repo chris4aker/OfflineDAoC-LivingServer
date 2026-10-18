@@ -1,0 +1,86 @@
+# What an opener's own speaker says after someone answered it (0.36-se.4). Never a question.
+# New writing (see docs/bot-voices).
+
+@kind closing
+@who *
+
+# ---- ask (and every ask_<topic>) ----------------------------------------------------------
+@answers ask
+ty
+ah ok
+k will try that
+thx, makes sense
+ok thx
+good to know
+ah, ty
+will do
+makes sense
+ok, ill figure it out
+hm ok, ty anyway
+
+# ---- lfg ----------------------------------------------------------------------------------
+@answers lfg
+k ty
+will try that
+ok, ill check there
+thx, ill keep looking
+k, gl to you too
+ty, will ask around
+ok, worth a shot
+
+# ---- trade --------------------------------------------------------------------------------
+@answers trade
+k
+might hold onto it then
+ok, ill check the exchange
+k, ty anyway
+ill keep it then
+fair, ill think about it
+ok np
+
+# ---- chat ---------------------------------------------------------------------------------
+@answers chat
+heh yeah
+right
+yep yep
+exactly
+glad its not just me
+ha, figured
+thought so
+
+# ---- joke ---------------------------------------------------------------------------------
+@answers joke
+heh
+i try
+thank you, thank you
+ill be here all week
+glad someone laughed
+i have more where that came from
+
+# ---- boast --------------------------------------------------------------------------------
+@answers boast
+ty ty
+:)
+heh thanks
+cheers
+ty, feels good
+ty, was a long time coming
+
+# ---- complaint ----------------------------------------------------------------------------
+@answers complaint
+yeah...
+always the way
+ugh, yeah
+oh well
+back at it i guess
+thx, needed to vent
+such is life
+
+# ---- news ---------------------------------------------------------------------------------
+@answers news
+yep
+yep, saw it myself
+thats what i heard
+we will see
+just passing it on
+figured youd want to know

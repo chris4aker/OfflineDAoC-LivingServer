@@ -152,7 +152,7 @@ A: what happened after
 E: two of them made a guild together, the rest scattered | someone moved to an alt and it fell apart
 ~ 30
 B: thats the thing, strangers are a gamble. guildies are a promise
-D: a promise to show up late lol | a promise that comes with drama
+D: a promise to show up an hour late lol | a promise that comes with drama
 C: and guildmates can be bad too, you just cant say it | at least with a stranger you can leave, with a guildie you have to be polite
 B: ok that is true
 ?F: i just answer whoever says lfm first
@@ -162,10 +162,11 @@ C: pst me if nobody bites
 
 @topic midnight_healer
 @levels 20-50
+@needs night
 @scene soc_midnight_healer
 @role B type=NoLifer
 @role E type=Leveler
-A: lf healer, anyone, its almost midnight and we are stuck | any healer awake? we have a full camp and nobody to keep us up
+A: lf healer, anyone, its late and we are stuck | any healer awake? we have a full camp and nobody to keep us up
 B: every healer in the realm went to bed an hour ago
 A: at this point i will take anything with a heal spell
 B: i can heal a bit, but i am a hybrid with a tiny heal | i have a small heal. it is a small heal. a very small one
@@ -177,7 +178,7 @@ E: im up, but im leveling my alt. what level is your camp | my main is a healer 
 A: low 30s, {camp}
 E: ugh, my healer is way past that. greys
 B: come anyway, we wont tell anyone | you could just come heal for fun, no xp though
-E: heal for no xp at midnight. what a pitch | sell it harder lol
+E: heal for no xp at this hour. what a pitch | sell it harder lol
 ~ 35
 A: we will share the loot, all of it | you get first pick on every drop
 E: ...ok, the loot offer is tempting
@@ -186,6 +187,7 @@ B: buying healers with loot, the oldest trade in the game
 E: fine, swapping chars, give me a few | logging over. if i fall asleep at the keyboard dont be mad
 A: you are a hero | best person in the realm
 ?B: nobody tell my guild i was the backup healer
+@needs
 
 @topic failed_crafts
 @levels 25-50
@@ -644,6 +646,7 @@ E: i am in | count me in | sure, why not
 
 @topic real_life
 @levels 10-50
+@needs evening
 @scene soc_real_life
 @role B type=Socialite
 @role C type=Crafter
@@ -671,9 +674,11 @@ D: famous last words of every player | one more pull, the biggest lie in the gam
 E: ok it has been three more pulls. logging. night all | logging for real, gn everyone
 A: gn | night | sleep well
 F: hours to go for me lol | marathon continues. see you all at breakfast
+@needs
 
 @topic first_character
 @levels 10-50
+@needs night
 @scene soc_first_char
 @role B type=Daredevil
 @role C type=Crafter
@@ -703,6 +708,7 @@ D: these stories are why i stay up too late | its 2am and we are telling stories
 A: same, should sleep | this is the best part of the night
 C: one more story then bed
 B: no, that is how it starts | that is how it gets to sunrise
+@needs
 
 @topic leveling_pace
 @levels 20-50

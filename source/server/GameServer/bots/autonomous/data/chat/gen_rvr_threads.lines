@@ -120,7 +120,7 @@ A: the realm still holds it, the guild just puts its name on it | still the real
 B: and get blamed when it falls | and get the angry tells when it falls
 ~ 30
 D: honestly i like seeing guild names on keeps, makes it feel real | a keep with a guild name on it feels like someone lives there
-B: until the guild logs off and the keep falls with nobody home | it feels real until that guild goes to bed
+B: until the guild logs off and the keep falls with nobody home | it feels real until that guild logs off for the weekend
 E: our guild had one for a week. most stressful week of my life | we claimed one once and argued about it for days
 ?A: why only a week, what went wrong | only a week? what went wrong
 E: lost it at 3am to a ram group, nobody was on | night raid, everyone asleep, it was gone by breakfast
@@ -139,6 +139,7 @@ A: and if it falls, it was {enemy}'s fault, not ours :P | if we lose it, blame t
 
 @topic relic_4am
 @levels 40-50
+@needs night
 @scene rvr_relic_4am
 @role B type=NoLifer
 @role C type=Daredevil
@@ -168,6 +169,7 @@ B: we just make it expensive for them | then we make them pay for every step
 C: well. its gone | relic is gone, it was a good try | relic is on the road to their side now
 A: we take it back at a real hour | tomorrow at prime time, they wont be so lucky
 D: wake me when it is time | ok now i am really going to bed
+@needs
 
 @topic relic_retake
 @levels 40-50
@@ -274,7 +276,7 @@ C: depends on your class, what are you | what class? that changes everything
 A: {class} | i am {class}, if that helps
 C: then maybe not purge first | hmm, then it depends on your group
 B: purge is never wrong. stun, mez, root, you just walk out | everything stops you in rvr, purge lets you leave
-D: ignore pain saved my life more times than purge | ignore pain is the best panic button, fight me
+D: ignore pain saved my life more times than purge | ignore pain is the best panic button, nothing comes close
 ?E: i went determination, i hated being stunned | determination for me, stuns were ruining my nights
 B: determination is fine, purge is better | shorter stuns are nice, no stun is nicer
 ~ 30

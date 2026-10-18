@@ -14,7 +14,7 @@ namespace DOL.GS.Tests
     {
         // Slots the server fills (AutonomousBotVoices.SlotsFor and SharedSlots).
         private static readonly string[] KnownSlots =
-            ["me", "class", "level", "realm", "zone", "monster", "item", "count", "q", "keep", "frontier", "enemy", "capital", "dungeon", "camp"];
+            ["me", "class", "level", "realm", "zone", "monster", "item", "count", "q", "keep", "frontier", "enemy", "capital", "dungeon", "camp", "monsters"];
 
         // Slots that need bot memory of the player; general callers never fill them, so those lines are skipped
         // unless the Living Server memory or rez code passes them in.
@@ -258,7 +258,9 @@ namespace DOL.GS.Tests
                     VC.Line line = byId[id];
                     Assert.That(line.Realm, Is.AnyOf("*", "mid"), id);
                     Assert.That(12, Is.InRange(line.LevelLow, line.LevelHigh), id);
-                    Assert.That(line.Needs.All(need => need == "solo"), Is.True, id);
+                    // Only "solo" may be required; "!flag" needs are met by a speaker without that flag (0.36-se.4).
+                    Assert.That(line.Needs.Where(need => !need.StartsWith('!')).All(need => need == "solo"), Is.True, id);
+                    Assert.That(VC.NeedsMet(line.Needs, speaker.Flags), Is.True, id);
                     Assert.That(VC.ClassFits(line.Classes, "Healer"), Is.True, id);
                     Assert.That(text, Does.Not.Contain("{").And.Not.Contain("}"), id);
                     Assert.That(text.Length, Is.InRange(1, VC.MaxLength), id);

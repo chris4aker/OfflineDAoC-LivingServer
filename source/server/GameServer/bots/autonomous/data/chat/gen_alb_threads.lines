@@ -116,7 +116,7 @@ A: ...i will think about it while i level | ok i will just flip a coin at the tr
 @role E type=Socialite
 A: paladins, how many chants do you actually keep going at once | {q} how do paladins juggle chants without going crazy | is chant twisting on a paladin worth learning or just a show off thing
 B: one steady, and i twist more in between swings | depends on the fight. endurance always, then i weave in the heal and the damage
-C: minstrel here, welcome to the twisting club, we have headaches | twisting is a lifestyle, ask any minstrel
+C: minstrel here, welcome to the twisting club, we have headaches | twisting is a full time job, ask any minstrel
 D: i have grouped with paladins who twist and ones who dont. night and day difference
 A: what makes it so hard?
 B: timing. you lose a beat and the whole group feels it | one late key press and the endurance drops right when the tank needs it
@@ -543,7 +543,7 @@ C: i can make you furniture if you pay for the wood | furniture orders open, i w
 D: houses are a coin sink. that gold could be spellcraft gems | a house is just gold that could have gone into your template
 B: some of us like having somewhere to sit that is not a camp | not everything has to make you stronger, sometimes you want a porch
 ~ 30
-E: where is the best neighborhood? i like Old Sarum myself | Old Sarum is the prettiest housing zone, change my mind
+E: where is the best neighborhood? i like Old Sarum myself | Old Sarum is the prettiest housing zone, not even close
 A: Caerwent was what i could afford lol | i picked the one where i could find a free lot
 ?C: Rilan always looks busy whenever i ride through | rilan has the busiest streets i have seen
 D: housing zones are quiet, Camelot is where the trade happens | for trading nothing beats standing in Camelot shouting
@@ -595,13 +595,14 @@ B: here we go | told you they would come back
 
 @topic relic_raid
 @levels 40-50
+@needs day
 @scene alb_relic_at_dawn
 @role B type=NoLifer
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Leveler
 A: woke up, logged in, and our relic is gone from Castle Excalibur | {q} who was awake at 5am? because the mids were, and our relic is gone
-B: they hit Castle Excalibur at five in the morning with a full zerg | 5am raid on Excalibur. nobody was online to stop it
+B: they hit Castle Excalibur at five am with a full zerg | 5am raid on Excalibur. nobody was online to stop it
 C: classic. nobody defends at five | of course they came at dawn. they always come at dawn
 D: a guildmate told me when i got up for coffee | heard it from my guild this morning, thought it was a joke
 ~ 25
@@ -626,6 +627,7 @@ E: first relic raid, i am excited and nervous | my first relic raid. what do i b
 B: potions, patience and a bind point near the front | bring potions and a lot of patience
 ?D: and snacks. relic raids take forever
 A: see everyone tonight | tonight then. albion wakes up
+@needs
 
 @topic dragon_raid
 @levels 45-50
@@ -767,6 +769,7 @@ E: one thing at a time lol
 
 @topic late_night
 @levels 20-50
+@needs night
 @scene alb_three_am
 @role B type=Explorer
 @role C type=Daredevil
@@ -782,7 +785,7 @@ C: i made it to the guards with a sliver of health left | made it. the guards fi
 ~ 30
 B: my best one is still getting lost in Tomb of Mithra at level 9 for an hour | my favorite memory is being lost in Tomb of Mithra as a newbie, total panic
 D: everyone has a Tomb of Mithra story | ah, the tomb. everyone has been lost in there once
-E: i remember my first death in Cornwall to a moor den mother | my first real death was a moor den mother in Cornwall, still salty
+E: i remember my first death in Cornwall to a moor den mother | my first real death was a moor den mother in Cornwall, still not over it
 ?C: the den mothers have no mercy
 ~ 30
 A: anyone else hear the rumor about a named in Campacorentin that only spawns at night | remember that rumor about a secret night spawn in Campacorentin
@@ -799,6 +802,7 @@ D: same. quiet, friendly, everyone a little silly | it is the nicest time of nig
 ~ 25
 A: ok, i should sleep too | i suppose i should log as well
 D: night all :)
+@needs
 
 @topic realm_pride
 @levels 20-50

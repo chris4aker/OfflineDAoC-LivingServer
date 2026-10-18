@@ -151,11 +151,15 @@ that {killer} {killer_class} is down! told you i would
 @kind session
 @topic logon
 @who *
+@needs evening
 evening all
+@needs
 hey all
 back on
 hi all, what did i miss
+@needs day
 morning everyone
+@needs
 @who Socialite
 hey everyone!! who is up for something
 @who Leveler
@@ -165,18 +169,24 @@ on for a couple hours, need a group
 @topic logoff
 @who *
 gn all
+@needs !day
 night all
+@needs
 calling it, gn
 logging, cya tomorrow
+@needs !day
 off to bed, gn
 work in the morning, gn
+@needs
 @who NoLifer
 one more pull... ok gn
 
 @kind session
 @topic brb
 @who *
+@needs evening
 brb dinner
+@needs
 brb
 afk a few
 brb kids

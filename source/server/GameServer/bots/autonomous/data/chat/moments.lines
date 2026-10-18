@@ -31,7 +31,7 @@ grats, now go train
 @who *
 @needs just_died
 well that went badly
-note to self: do not pull two {monster}
+note to self: do not pull two {monsters}
 that {monster} was not blue
 oops
 back to my bind, see you in a bit
@@ -47,24 +47,31 @@ there goes my xp, ugh
 @needs at_camp
 anyone else camping here? happy to share
 camp check, anyone at {camp}?
+@invites ask_anyone
 mind if i hunt nearby? wont take your pulls
+@invites none
 this spot is taken, i think, will move on
-been here an hour, {monster} respawn nice and fast
+@invites
+been here an hour, {monsters} respawn nice and fast
 room for one more here if anyone needs it
 @needs at_camp,in_group
 holding {camp}, we pull left, you can have the right side
 @who Daredevil
 @needs at_camp
+@invites boast
 pulling the whole room, stand back
 
 @kind ambient
 @topic bags
 @who *
 @needs bag_full
+@invites complaint
 bags are full again, heading to town
 how do my bags fill up this fast
+@invites none
 off to the merchant, back in a bit
 selling junk, then right back to it
+@invites
 @who Crafter
 full bags of materials, best kind of full
 
@@ -74,21 +81,32 @@ full bags of materials, best kind of full
 @needs traveling
 on my way to {zone}, long walk
 heading to {zone}, anyone want to travel together?
+@invites none
 taking the horse to {zone}, back in a few
+@invites joke
 walking to {zone} because i spent my coin on armor
+@invites
 road trip to {zone}, wish me luck
+@invites ask_where
 anyone know the fastest way to {zone}?
 
 @kind ambient
 @topic town
 @who *
 @needs in_town
+@invites none
 taking a break in {capital}, legs need it
+@invites
 town is busy tonight
+@invites joke
 sitting by the trainer pretending to be busy
+@invites
 anyone in town want to group after this?
+@invites none
 just restocked, heading back out soon
+@invites
 @who Socialite
 best part of the night is hanging out in town honestly
 @who Crafter
+@invites joke
 the forge is warm and the coin is cold

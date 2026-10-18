@@ -16,6 +16,10 @@ public static partial class AutonomousLivingServer
     private static readonly ConcurrentDictionary<string, long> LastGratsFor = new(StringComparer.OrdinalIgnoreCase);
     public const long GratsCooldownMs = 20_000;
 
+    /// <summary>True when bots already said grats for this character's level-up within the last <paramref name="ms"/> milliseconds.</summary>
+    internal static bool GratsSaidRecently(string name, long ms) =>
+        GratsOn && name != null && LastGratsFor.TryGetValue(name, out long last) && GameLoop.GameLoopTime - last < ms;
+
     private static void OnPlayerLevelUp(DOLEvent e, object sender, EventArgs args)
     {
         if (sender is GamePlayer player)

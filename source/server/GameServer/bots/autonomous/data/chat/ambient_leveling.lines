@@ -6,42 +6,85 @@
 @who *
 @levels 1-19
 anyone know where the good xp is for {level}s these days?
+@invites ask_findgroup
 first time out of {capital}, how do people find groups?
-ok {monster} hit way harder than the con said
+@invites complaint
+ok {monsters} hit way harder than the con said
+@invites ask_power
 is it normal to run out of power this fast? asking for a friend
+@invites
 just figured out what /stick does. game changer
+@needs outdoors
+@invites complaint
 anyone else get lost on the way to {zone}? the roads all look the same
+@needs
+@invites boast
 got my first real weapon drop, feeling dangerous now
+@invites ask_con
 what does grey con even mean, do i still get xp
-{monster} keeps adding on me, is there a trick to pulling them
+@invites ask_pulling
+{monsters} keep adding on me, is there a trick to pulling them
+@invites complaint
 learning the hard way that blue con is not always easy
+@needs outdoors
+@invites ask_advice
 is {zone} safe for a {level}?
+@needs
+@invites ask_opinion
 how long did 20 take everyone? feels like forever
-need a few more {monster} for my quest, anyone seen them?
-been soloing {monster} for an hour, slow but steady
+@invites ask_where
+need a few more {monsters} for my quest, anyone seen them?
+@needs solo
+@invites
+been soloing {monsters} for an hour, slow but steady
+@needs
+@invites ask_advice
 my trainer said to check back at {count} levels, what does that mean
+@invites
 is it worth doing the town quests or just grind?
+@invites ask_anyone
 does anyone else talk to every npc just in case
+@needs just_died
+@invites complaint
 just died to a {monster} i was sure i could take
+@needs
+@invites ask_opinion
 should i sell my old armor or keep it for later
+@invites ask_merchant
 anyone know which merchant buys {item}?
+@invites
 @who Explorer
+@needs outdoors
 went wandering past {zone} and found a whole camp nobody uses
+@needs
 there is a waterfall past the hills, worth the walk just to see it
+@needs outdoors
+@invites news
 saw something huge walking the road near {zone}, ran the other way
+@needs
+@invites ask_anyone
 anyone ever been all the way to the edge of the map? what is out there
+@invites
 @who Socialite
 hello everyone, new here, be nice :)
 @who Socialite
 @class Cleric,Friar,Healer,Shaman,Druid,Bard
+@needs solo
+@invites lfg
 anyone want to duo? i talk a lot but i heal ok
+@needs
+@invites
 @class *
 @who Daredevil
+@invites boast
 pulled a yellow and an orange at once, somehow lived
+@needs solo
 who says you cant solo oranges at {level}
+@needs
+@invites
 @who Leveler
 3 bubbles from ding, staying up till i get it
-sticking to {monster} till {count} more levels, xp is steady
+sticking to {monsters} till {count} more levels, xp is steady
 
 @kind ambient
 @topic leveling
@@ -50,61 +93,146 @@ sticking to {monster} till {count} more levels, xp is steady
 the 20s feel slow, anyone else hit the wall around here?
 thinking of trying {dungeon}, anyone been at this level?
 camp check, anyone at {camp} right now?
+@needs outdoors
 how is {zone} for a {level} {class}?
+@needs solo
+@invites joke
 tried soloing at {camp}, came back with a lot less health
-anyone else notice {monster} drop more coin than they used to
+@needs
+@invites ask_anyone
+anyone else notice {monsters} drop more coin than they used to
+@needs solo
+@invites complaint
 spent half an hour looking for a group, gave up and soloed
+@needs
+@invites ask_opinion
 does anyone actually like the 20s or do we all just survive them
+@needs outdoors
+@invites complaint
 ok who left a train on the road to {zone}
-need a break from {monster}, thinking about {dungeon} instead
+@needs
+@invites
+need a break from {monsters}, thinking about {dungeon} instead
+@invites news
 camp bonus at {camp} is nice right now, nobody has been there for a while
-anyone know if {monster} drop anything worth keeping?
+@invites
+anyone know if {monsters} drop anything worth keeping?
+@invites boast
 got two levels at {camp} tonight, best session in a week
+@invites
 how do people level a {class} past 30 without losing their mind
 is it better to quest or grind in the 20s?
 @who Explorer
+@needs outdoors
 finally made it to {zone}, the view from the ridge is something
+@invites news
 there is a cave near {zone} that nobody seems to camp
-found a quiet spot with {monster} and no competition, not telling where :)
+@needs
+@invites boast
+found a quiet spot with {monsters} and no competition, not telling where :)
+@invites
 @who Daredevil
+@invites boast
 pulled {count} at once and lived. healer may hate me
 {dungeon} was full of reds today. we went in anyway
+@invites
 @who Leveler
 logged in early to beat the crowd to {camp}
 {count} more levels and i can finally train what i need
 @who NoLifer
+@invites boast
 already mapped out my spec to 50, starting to plan the suit
+@invites
 @who Socialite
+@needs solo
+@invites ask_anyone
 anyone want company at {camp}? i bring snacks and bad jokes
 
 @kind ambient
 @topic leveling
 @who *
 @levels 35-50
+@invites complaint
 the push from 40 to 50 is a real grind
+@invites
 anyone running {dungeon} tonight?
 {camp} is still the best xp i have found at this level
 level 4x and still learning how to play this class properly
 starting to feel like 50 is actually reachable
 anyone else pick up a few last levels in the frontier?
 spent all night at {camp}, half a level. worth it though
+@invites ask_opinion
 is it just me or do the 40s go faster than the 30s
+@invites
 anyone know who camps {monster} at {camp}? want to take turns
+@invites complaint
 almost 50 and my gear is still a mess
+@invites
 thinking about rerolling an alt once this one hits 50
 how does everyone fill the time at 50 besides the frontier?
+@needs !day
+@invites complaint
 {dungeon} groups are hard to fill this late at night
+@needs
+@invites boast
 got a level from a single run of {dungeon}, nice group
+@invites lfg
 anybody up for a few hours at {camp}? need pull help
+@invites
 @who Explorer
+@needs outdoors
 went to {zone} just to look around, ended up staying for the xp
+@needs
 heard there is a named that wanders near {camp}, anyone seen it?
 @who Daredevil
+@invites boast
 three purples in {dungeon} and we did not wipe. legendary night
+@invites
 @who NoLifer
 once i hit 50 it is straight to the frontier, no stops
 mapping out which realm abilities to buy first at 50
 @who Leveler
+@invites joke
 2 levels to go, nobody talk to me until i ding
+@invites
 @who Crafter
 taking a break from leveling to work on crafting, my bags thank me
+
+# Answers to the specific questions above (0.36-se.4).
+@kind reply
+@answers ask_findgroup
+@who *
+say lfg in faction with your level and class, someone usually bites
+ask at a busy camp, groups often need one more
+lfg in faction, and check the dungeon entrance for your level
+just ask around, most groups at your level want more people
+@kind reply
+@answers ask_power
+@who *
+yes, at low levels everyone goes oom fast
+sit between fights, power comes back a lot faster sitting
+use your lower spells on easy pulls, they cost less
+it gets better as you level, sit and med between pulls
+@kind reply
+@answers ask_con
+@who *
+grey means too low, no xp at all
+grey is no xp, green is a little, blue and yellow are the good stuff
+blue is a bit under you, yellow is even, orange is a fight
+grey, green, blue, yellow, orange, red, purple. easy to hard
+anything red or purple will kill you, grey is a waste of time
+@kind reply
+@answers ask_pulling
+@who *
+pull with a bow or a spell so it comes to you alone
+back way off first, some monsters bring their friends
+pull from the edge of the camp, never the middle
+if two come anyway, mez or root one and kill the other
+watch which ones stand close together, those come as a pack
+@kind reply
+@answers ask_merchant
+@who *
+any merchant buys it, they all pay the same
+every merchant takes everything, just sell it to the closest one
+try the exchange first, merchants pay less
+the nearest merchant will take it, price is the same everywhere

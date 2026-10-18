@@ -4,39 +4,59 @@
 @topic frontier
 @who *
 @levels 35-50
+@needs solo
 heading to the frontier, anyone want to run with me?
+@needs
+@invites news
 {frontier} was busy tonight, lots of fighting near {keep}
+@invites complaint
 got ganked by a stealther on the way in, again
+@invites
 anyone seen enemies near {keep}?
 first night in the frontier, keep me alive pls
+@invites complaint
 realm points are slow tonight, quiet out there
+@invites
 anyone up for a small group run in {frontier}?
 it is never quiet in {frontier} for long
 @who NoLifer,Daredevil
 small groups beat the zerg if you play it right
+@invites boast
+@needs in_group
 8man ready, looking for a fight
+@needs
 chain-killed three {enemy} stealthers tonight, feeling good
+@invites
 @who *
 @needs in_rvr
+@invites news
 inc! enemies on the road to {keep}
 anyone near {keep}? i see a group headed that way
 they are hitting the door at {keep}, need defenders
 heading back to {keep}, run home if you can
 watch out near {frontier}, stealthers about
+@invites
 @levels 20-50
 the zerg is rolling toward {keep}, anyone want to join?
+@invites news
 keep defense at {keep}, every body helps
+@invites ask_anyone
 relic raid tonight? i would show up for that
+@invites boast
 we hold {keep} again, nice work everyone
 
 @kind rvr
 @topic darkness_falls
 @who *
 @levels 20-50
+@invites news
 we have darkness falls this week, go get your seals
 lost darkness falls again, the other realms must be busy
+@invites
 darkness falls run anyone? need seals for gear
+@invites ask
 is darkness falls ours right now? want to grind there
+@invites joke
 the demons in darkness falls keep me humble
 
 @kind rvr
@@ -45,7 +65,11 @@ the demons in darkness falls keep me humble
 @levels 20-24
 anyone going to thidranki? need a few more friendlies
 thidranki is the most fun i have had at 20
+@invites complaint
 twinks in thidranki again, they hit like trucks
+@invites
 @levels 25-29
+@invites ask_anyone
 murdaigean tonight, who is in?
+@invites
 murdaigean keeps changing hands, love it

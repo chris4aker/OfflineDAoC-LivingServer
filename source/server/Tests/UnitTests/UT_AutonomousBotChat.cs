@@ -12,7 +12,8 @@ public class UT_AutonomousBotChat
     [TestCase("hey whats up", eAutonomousChatIntent.Greeting)]
     [TestCase("you guys suck", eAutonomousChatIntent.Banter)]
     [TestCase("you guys are shit and dumb", eAutonomousChatIntent.Abuse)]
-    [TestCase("anyone want a dungeon group", eAutonomousChatIntent.Dungeon)]
+    // 0.36-se.4: a group request comes first, whatever it is for (its replies ask the level and the camp).
+    [TestCase("anyone want a dungeon group", eAutonomousChatIntent.Grouping)]
     [TestCase("where can I sell this gear", eAutonomousChatIntent.Trading)]
     [TestCase("who won the presidential election", eAutonomousChatIntent.IgnoreOutOfWorld)]
     [TestCase("what are bitcoin stocks doing", eAutonomousChatIntent.IgnoreOutOfWorld)]

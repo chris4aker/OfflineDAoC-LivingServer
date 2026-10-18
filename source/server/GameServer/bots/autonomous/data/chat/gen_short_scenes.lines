@@ -14,7 +14,7 @@
 A: anyone at {camp}? | {q} is {camp} taken right now | camp check {camp}, anybody there
 B: we are, full group, sorry | yeah we have it, been here a while | taken, but we might pack up soon
 A: how long are you staying | any idea when you are done | ok, mind if i wait close by
-B: an hour maybe, our healer has a bedtime | until someone falls asleep at the keyboard | hard to say, we keep saying one more pull
+B: an hour maybe, our healer has to log soon | until someone falls asleep at the keyboard | hard to say, we keep saying one more pull
 ?C: try {zone}, it was empty when i left | {zone} was wide open a bit ago | nobody at all in {zone} when i rode through
 A: ty, heading over | cool thanks | ok np, gl with the pulls
 
@@ -188,6 +188,7 @@ A: pasta | leftovers, nothing exciting | something my mom made, cant complain
 
 @topic late_night
 @levels 1-50
+@needs night
 @scene sh_still_awake
 @role B type=Leveler
 @role C type=*
@@ -196,6 +197,7 @@ B: one more level, then sleep | the camp never sleeps so neither do i | always o
 C: the sun is coming up here lol | work in a few hours, this is fine | the birds are singing outside, i should log
 ?A: same | thats the spirit | lol same here
 B: night shift crew | real players log off at sunrise | last one awake turns off the realm
+@needs
 
 @topic newbie_greys
 @levels 1-15
@@ -333,7 +335,7 @@ B: seems better now | ok, smooth again | gone now
 A: my guild is recruiting all levels, pst | recruiting, friendly guild, pst for info | small guild looking for active people, pst
 B: what do you do | rvr or pve | how many are active
 A: a bit of everything | mostly leveling and a raid now and then | we try to do keep raids on weekends
-C: anyone ever on at night | are people on late | anyone around after midnight
+C: anyone ever on at night | are people on late | anyone around really late
 A: plenty of night owls | we have a few who never sleep | always someone on late
 ?B: will send you a tell | maybe, i will pst you | ok, sounds decent
 
@@ -478,6 +480,7 @@ A: wrong channel | oops | ugh, wrong window
 
 @topic morning
 @levels 1-50
+@needs day
 @scene sh_morning_all
 @role B type=*
 @role C type=*
@@ -486,6 +489,7 @@ B: morning | hey | mornin
 C: its nighttime here lol | have you even slept | its afternoon for me
 ?A: no sleep needed | i slept a bit | sleep is for the weak
 B: respect | lol | fair enough
+@needs
 
 @topic group_wipe
 @levels 15-50
@@ -495,7 +499,7 @@ B: respect | lol | fair enough
 A: wiped at {camp}, anyone near for a rez | full group wipe at {camp}, lol | we all died at {camp}, it was glorious
 B: how | what happened | who pulled
 A: two adds and a patrol | the puller grabbed the whole room | someone pulled the wrong one
-?C: was it the bard | it was the tank, it is always the tank | let me guess, nobody had aggro
+?C: was it the caster | it was the tank, it is always the tank | let me guess, nobody had aggro
 B: on my way | i can rez a couple, hold on | lol, coming
 A: ty | we will be here, lying down | great, we are not going anywhere
 

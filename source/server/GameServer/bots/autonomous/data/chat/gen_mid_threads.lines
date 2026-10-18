@@ -161,7 +161,7 @@ B: and you are never useless | never the best, never useless. thane motto
 C: just dont stand in my aggro and complain when the mob turns | if the mob turns on you, dont run to me
 ~ 20
 ?B: when has a thane ever run
-D: gtg, adds at my camp | two {monster} just walked into us, bbl | INC here, later all
+D: gtg, adds at my camp | two {monsters} just walked into us, bbl | INC here, later all
 C: same, my puller just came back with a train | and my group wants me back, puller is on the way
 B: lightning out, catch you all later | hammer up, see you
 
@@ -273,7 +273,7 @@ B: and we sit on our hills. it is an archer thing | every realm has hill archers
 ~ 25
 D: as a caster i die to archers more than anything | archers are the worst for us cloth wearers
 E: then dont travel alone. archers hate groups | an archer fears a group with a healer, travel with one
-A: easy to say at 3am | there is nobody to travel with at this hour
+A: easy to say when nobody is online | there is nobody to travel with at this hour
 ?E: fair point
 ~ 30
 D: random question, how good is the hunter pet in pve | hunters, is the pet worth putting points in beastcraft for
@@ -480,6 +480,7 @@ A: here. inv pls | at the door now
 
 @topic mularn_jordheim_life
 @levels 1-50
+@needs !day
 @scene mid_town_life
 @role B type=Socialite
 @role C type=Crafter
@@ -507,6 +508,7 @@ B: night! | sleep well
 ?D: gn
 C: guess it is just me and the forge again | back to smithing in the quiet
 A: ill keep you company for a bit | im still here for a while
+@needs
 
 @topic keep_defense_bledmeer
 @levels 35-50
@@ -569,7 +571,7 @@ A: we should set up a guild rotation | what if every guild took one night a week
 B: ive suggested that three times | tried, nobody signs up
 ?D: id sign up
 ~ 30
-C: sign up then. ill post a list in the morning | ok ill make a list tomorrow, ping me
+C: sign up then. ill post a list in guild chat | ok ill make a list tomorrow, ping me
 D: put me down for friday | friday nights, im in
 E: if anyone needs doors repaired, i can help with that | ill bring my tools for the doors
 ?A: everyone say your nights in tells
@@ -757,6 +759,7 @@ C: and dont quit in the middle. everyone quits in the middle | dont stop halfway
 
 @topic late_night_tales
 @levels 20-50
+@needs night
 @scene mid_late_tales
 @role B type=Explorer
 @role C type=Daredevil
@@ -785,3 +788,4 @@ A: ok, best part of the night so far | this beats the camp
 C: next pull just showed up, i gotta go | my group is calling, bye
 F: good stories, night all | gn midgard
 B: midgard at 3am is the best midgard | love these nights
+@needs

@@ -8,12 +8,16 @@ hey :)
 hail
 hi there
 hey, good to see someone else out here
+@needs evening
 evening
+@needs
 o/
 hey hey
 greetings, good hunting
 yo
+@needs !day
 hello! nice night for it
+@needs
 @who Socialite
 hey!! how is everyone doing tonight
 hi hi, welcome back
@@ -21,13 +25,19 @@ hi hi, welcome back
 @kind reply
 @intent farewell
 @who *
+@needs !day
 night!
+@needs
 take care
+@needs !day
 gn, safe travels
+@needs
 cya next time
 later
 see ya, have fun
+@needs !day
 sleep well, the mobs will still be here tomorrow
+@needs
 bye :)
 
 @kind reply
@@ -37,7 +47,7 @@ lol
 heh
 ha, fair
 true story
-i felt that one
+ouch, been there
 cant argue with that
 that is the most realm thing i have heard all day
 same here honestly
@@ -68,9 +78,13 @@ how many do you have?
 what level and class?
 i can help if you are near {zone}
 where are you camping?
+@needs in_group
 i am in a group right now but might be free soon
+@needs
 need a healer still? i know one
+@needs solo
 pst me if you still need someone
+@needs
 might be able to join in a bit
 @needs solo
 im free, what are you hunting?
@@ -85,7 +99,7 @@ try {camp}, there were people looking earlier
 {camp} has been good for me lately
 how is the xp where you are?
 i just came from {camp}, it was busy
-{monster} are decent xp if you can pull them clean
+{monsters} are decent xp if you can pull them clean
 try {camp}, ask in faction if it is taken
 dont forget the camp bonus, find a quiet spot
 i hear {dungeon} is good for that level
@@ -147,7 +161,7 @@ consider before you pull, saves a lot of deaths
 use /stick if you get lost following someone
 @levels 35-50
 spec for what you enjoy, the rest comes later
-dont forget your realm abilities at 50
+spend your realm points from rvr on realm abilities, they add up
 
 @kind reply
 @intent ignoreoutofworld

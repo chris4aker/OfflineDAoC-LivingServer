@@ -1,0 +1,408 @@
+# What a player says about their own class: a complaint, a boast, a joke and a question for each of
+# the 39 classes. Specialization names follow docs/bot-voices/RESEARCH-BRIEF.md section 5; reputations
+# are period knowledge. Adds to classes.lines. New writing (see docs/bot-voices).
+
+# ---------------- Albion ----------------
+@kind ambient
+@topic class
+@realm alb
+@who *
+@class Armsman
+@invites complaint
+armsman endurance runs out right when the fight gets good
+@invites boast
+held three yellows off the healer tonight, she barely had to heal me
+@invites joke
+my armsman has more armor than personality, and that is a lot of armor
+@invites ask_anyone
+anyone run crossbow on their arms or is that just me?
+
+@class Paladin
+@invites complaint
+everyone wants a paladin until they see our damage
+@invites boast
+four chants twisting and not one dropped, getting good at this
+@invites joke
+paladin: the only class that brings a choir to a sword fight
+@invites ask_opinion
+two handed or sword and board on a paladin, what do you think?
+
+@class Mercenary
+@invites complaint
+merc solo is rough, i run out of health before they do
+@invites boast
+landed a double crit on a yellow, took a third of its health
+@invites joke
+mercs never retreat, we just swing in the other direction
+@invites ask_advice
+how much parry do you put on a merc?
+
+@class Reaver
+@invites complaint
+nobody knows what a reaver does, including most reavers
+@invites boast
+soulrending lifetaps kept me up through a three add pull
+@invites joke
+flex whip, black armor, glowing eyes, but i am nice i promise
+@invites ask_anyone
+do reavers ever get group invites or is that a myth?
+
+@class Scout
+@invites complaint
+solo scout is slow, you shoot and hope it never reaches you
+@invites boast
+three arrows, one dead caster, he never looked up
+@invites joke
+a scout's favorite spot in the group is as far away as possible
+@invites ask_opinion
+is it worth putting points in shields on a scout?
+
+@class Infiltrator
+@invites complaint
+infil in a pve group is a lonely thing, nobody asks for us
+@invites boast
+perfect backstab chain, it never stood a chance
+@invites joke
+infils are shy, we prefer to stay out of sight
+@invites ask_anyone
+anyone else level their infil solo or am i doing it wrong?
+
+@class Minstrel
+@invites complaint
+every group wants my speed song, nobody wants my opinion
+@invites boast
+mezzed three adds at once, the group never even noticed
+@invites joke
+my lute has been out of tune since level one
+@invites ask_advice
+what do you charm on a minstrel at this level?
+
+@class Cleric
+@invites complaint
+whole group dead and my rez still on timer, story of my week
+@invites boast
+red con named, full group, nobody died. heals were on point
+@invites joke
+i was a smite cleric for one day, my group still talks about it
+@invites ask_opinion
+is enhancement worth it on a cleric or go full rejuv?
+
+@class Friar
+@invites complaint
+friars got nerfed again, or maybe i just miss more now
+@invites boast
+staff and robes, took a yellow con without a scratch
+@invites joke
+friar robes, no armor, all faith
+@invites ask_opinion
+is friar the most fun class in albion or is it just me?
+
+@class Wizard
+@invites complaint
+cloth armor, one add and i am a puddle
+@invites boast
+bolted a caster from max range, he never got a spell off
+@invites joke
+wizard rule one: set it on fire. rule two: run
+@invites ask_opinion
+cold spec wizard, worth it for the snare?
+
+@class Theurgist
+@invites complaint
+the pet aggro is mine, the pet blame is also mine
+@invites boast
+earth pets held the whole room while i cast, theurg is doing great
+@invites joke
+theurg pets are like kids, they run off and you get the blame
+@invites ask_opinion
+earth, cold or wind theurg for leveling? i keep switching
+
+@class Sorcerer
+@invites complaint
+my pet broke the mez again, i think it does that on purpose
+@invites boast
+mezzed the add, debuffed the pull, pet took the rest. clean
+@invites joke
+sorcerers put things to sleep, sometimes the group too
+@invites ask_advice
+how do you spec a body sorc for solo?
+
+@class Cabalist
+@invites complaint
+cabalist damage is slow and the pet is slower
+@invites boast
+simulacrum tanked a yellow while i drained it, perfect fight
+@invites joke
+cabalists build friends from spare parts, ask me how
+@invites ask_opinion
+matter or spirit cab, which helps a group more?
+
+@class Necromancer
+@invites complaint
+my real body just stands there while the shade does the work, nervous every time
+@invites boast
+soloed the whole camp with my pet, no healer needed
+@invites joke
+necromancer: not evil, just misunderstood. and a little bit dead
+@invites ask_advice
+what pet do you run at {level} as a necro?
+
+# ---------------- Midgard ----------------
+@kind ambient
+@topic class
+@realm mid
+@who *
+@class Warrior
+@invites complaint
+everyone wants a zerker, nobody remembers warriors exist
+@invites boast
+shield up, three adds, healer never had to look at me
+@invites joke
+warrior strategy: hit it until it stops moving
+@invites ask_opinion
+hammer or axe on a warrior?
+
+@class Thane
+@invites complaint
+thanes go oom halfway through a fight, then we just swing
+@invites boast
+stormcalling crit took half its health, love this class
+@invites joke
+thane: a tank that thinks it is a caster
+@invites ask_advice
+how much stormcalling do you put on a thane?
+
+@class Skald
+@invites complaint
+every group asks for speed first and hello second
+@invites boast
+nuke crit on a skald, they never see it coming
+@invites joke
+skalds sing, people run faster, nobody asks how
+@invites ask_opinion
+is a skald a real group class or just the speed?
+
+@class Berserker
+@invites complaint
+they nerfed zerkers again, i barely know my own class
+@invites boast
+berserk popped, the yellow was gone before the healer cast
+@invites joke
+zerker defense: kill it before it kills you
+@invites ask_opinion
+zerker or savage, which one has more fun?
+
+@class Savage
+@invites complaint
+savage buffs eat my health and then the healer yells at me
+@invites boast
+all buffs up, three kills in a row without sitting
+@invites joke
+savage: we punch first and ask about armor never
+@invites ask_advice
+how much parry does a savage really need?
+
+@class Hunter
+@invites complaint
+my pet ran off and pulled half the camp again
+@invites boast
+two shots and it never reached me, hunter is in a good spot
+@invites joke
+hunters dont lose pets, we lend them to the monsters
+@invites ask_opinion
+spear or bow for a leveling hunter?
+
+@class Shadowblade
+@invites complaint
+bring a shadowblade to a pve group and watch everyone sigh
+@invites boast
+evaded everything tonight, nothing touched me
+@invites joke
+shadowblades are always in the group, you just cant see us
+@invites ask_advice
+how do you level a sb without going mad?
+
+@class Healer
+@invites complaint
+group dies, healer gets blamed. group lives, tank gets thanked
+@invites boast
+mezzed four adds on one pull, best save of the night
+@invites joke
+healer motto: i can fix you, i cannot fix your pulling
+@invites ask_opinion
+pac or mending healer for groups, what do you all think?
+
+@class Shaman
+@invites complaint
+nobody remembers the shaman until the disease wears off
+@invites boast
+cave dots ticking on four mobs, they just melted
+@invites joke
+shamans, the only class that comes out of a cave on purpose
+@invites ask_opinion
+mending or cave shaman for a long leveling night?
+
+@class Runemaster
+@invites complaint
+runemaster and a wall of adds, that is a short story
+@invites boast
+bolted it twice before it even crossed the room
+@invites joke
+runemasters write runes, then we write our wills
+@invites ask_advice
+how much suppression do you put on a rm?
+
+@class Spiritmaster
+@invites complaint
+spirit pet died and left me holding a staff
+@invites boast
+mezzed two adds and the pet held the third, sm is doing great
+@invites joke
+spiritmasters talk to spirits, the spirits mostly ignore us
+@invites ask_opinion
+darkness or summoning sm for solo?
+
+@class Bonedancer
+@invites complaint
+rebuffing every pet after a death takes forever
+@invites boast
+three pets, one bd, zero healer, cleared the whole camp
+@invites joke
+bonedancer family dinner: me and my skeletons
+@invites ask_advice
+what pets do you run as a bd at {level}?
+
+# ---------------- Hibernia ----------------
+@kind ambient
+@topic class
+@realm hib
+@who *
+@class Hero
+@invites complaint
+everyone wants a hero to tank, nobody wants to heal one
+@invites boast
+spear style chain landed, it never got to swing back
+@invites joke
+hero, because tank was already taken
+@invites ask_opinion
+spear or large weapons on a hero?
+
+@class Champion
+@invites complaint
+nobody knows what a champ does until we leave the group
+@invites boast
+debuffed it, struck it, dropped it. champs are doing fine
+@invites joke
+champion: half fighter, half caster, fully confused
+@invites ask_advice
+how much valor do you put on a champ?
+
+@class Blademaster
+@invites complaint
+bm life: great damage, zero respect
+@invites boast
+triple attack on a blue con, it never had a chance
+@invites joke
+blademasters count to two a lot
+@invites ask_opinion
+is parry worth it on a blademaster or all in on dual?
+
+@class Warden
+@invites complaint
+wardens are the realm's best kept secret, way too well kept
+@invites boast
+kept the tank up through a three add pull, warden heals are plenty
+@invites joke
+warden: heals in one hand, sword in the other, no idea which to use
+@invites ask_opinion
+nurture or regrowth warden for groups?
+
+@class Druid
+@invites complaint
+my pet dies, i resummon, it dies again. druid life
+@invites boast
+pet tanked a yellow while i healed it, solo druid is easy mode
+@invites joke
+druids talk to trees, the trees mostly agree with us
+@invites ask_opinion
+regrowth or nature druid for leveling?
+
+@class Bard
+@invites complaint
+every group wants a bard, then complains when i mez the wrong one
+@invites boast
+mez on the adds, heal on the tank and speed home, all in one fight
+@invites joke
+bards do everything, mostly badly, always loudly
+@invites ask_advice
+how much music do you put on a bard?
+
+@class Ranger
+@invites complaint
+rangers get blamed for everything scouts did
+@invites boast
+pulled from max range, two arrows, dead before it arrived
+@invites joke
+rangers never get lost, we are pathfinding
+@invites ask_opinion
+bow ranger or dual ranger for groups?
+
+@class Nightshade
+@invites complaint
+nightshade in a pve group, nobody wants us and nobody says why
+@invites boast
+backstab crit on a blue con, gone in one hit
+@invites joke
+nightshades are great at hide and seek, mostly the hide part
+@invites ask_advice
+how do you solo a nightshade past 30?
+
+@class Eldritch
+@invites complaint
+one add and my eldritch is on the floor
+@invites boast
+light bolt took half its health before it even moved
+@invites joke
+eldritch: bright robes, brighter spells, very short life
+@invites ask_opinion
+void or light eld for leveling?
+
+@class Enchanter
+@invites complaint
+pbaoe enchanter means every add is my fault
+@invites boast
+pbaoe on six mobs and they all dropped together
+@invites joke
+enchanter rule: if we stand next to you, something bad is about to happen
+@invites ask_opinion
+is the enchanter pet worth leveling with or just a buffbot?
+
+@class Mentalist
+@invites complaint
+mentalist heals help a bit, mez helps a bit, nobody says thanks a bit
+@invites boast
+mezzed the add and healed the tank in the same fight, ment is underrated
+@invites joke
+mentalists read minds, mostly the minds of very hungry monsters
+@invites ask_opinion
+mentalism or mana ment for groups?
+
+@class Animist
+@invites complaint
+my shrooms take one hit and pop, i need more of them
+@invites boast
+five shrooms on a hill and nothing got past
+@invites joke
+animist strategy: plant mushrooms, hide behind mushrooms
+@invites ask_opinion
+arboreal or creeping animist for solo?
+
+@class Valewalker
+@invites complaint
+people think a valewalker is a druid with a farm tool
+@invites boast
+one scythe swing hit two mobs at once, vw is better than people think
+@invites joke
+valewalker: i bring the scythe, nature brings the harvest
+@invites ask_advice
+how do you build a valewalker for groups?

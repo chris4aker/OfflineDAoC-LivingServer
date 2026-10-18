@@ -5,40 +5,67 @@
 @who Leveler
 @levels 1-50
 xp per hour matters more than anything
-i timed it: {monster} at {camp} is the best xp for my level
+@invites boast
+i timed it: {monsters} at {camp} are the best xp for my level
+@invites joke
 no fun, just efficiency
 the trainer is my favorite npc
+@invites
 bubbles per kill, that is my metric
 ran the numbers, grouping beats solo by a lot
 i log in, i grind, i log out. perfect night
 anyone else track how long each level takes?
 camp bonus is free xp, never skip it
+@needs !day
+@invites joke
 one more level, then sleep. i say that every night
+@needs
+@invites
 i pick camps by respawn speed, nothing else matters
 already planning which camp to hit at {level}
+@needs !day
+@invites boast
 spent the evening at {camp}, got exactly what i wanted
+@needs
+@invites joke
 i skip the scenery, the scenery doesnt give xp
 whoever invented the camp bonus deserves a statue
+@invites
 another night, another level, another trainer visit
 
 @kind ambient
 @topic crafter
 @who Crafter
 @levels 1-50
+@invites complaint
 the price of metal bars went up again
+@needs !day
+@invites
 just spent my whole evening at the forge, worth it
+@needs
+@invites trade
 anyone need armor? my skill is finally high enough to be useful
+@invites
 crafting tip: buy materials in bulk, the merchants never run out
+@invites boast
 i know every merchant price in {capital} by heart
+@invites complaint
 failed three times in a row, the forge hates me tonight
+@invites
 my favorite sound is a successful craft
+@invites joke
 i keep a list of who ordered what, do not tell anyone
 there is no such thing as too many materials
 my bank is half materials, half regret
+@invites
 spellcrafting makes me nervous every single time
+@invites joke
 i craft, therefore i am poor
+@invites trade
 somebody please order something, i need the skill points
+@invites joke
 crafted a set for a friend, they wore it once and died, typical
+@invites
 if it has a quality number, i have opinions about it
 the exchange prices tonight are wild
 
@@ -46,17 +73,27 @@ the exchange prices tonight are wild
 @topic socialite
 @who Socialite
 @levels 1-50
+@invites ask_howareyou
 how is everyone tonight?
+@needs outdoors
+@invites
 love seeing new faces around {zone}
+@needs
+@invites ask
 tell me your best death story, i have three
+@invites
 anyone in a guild that takes chatty people?
-the realm feels alive tonight, good vibes
+the realm feels alive tonight, everyone is out
 i have met more friends here than at work
+@invites ask_opinion
 who is the funniest person you have grouped with?
-group invites are my love language
+@invites joke
+nothing makes my day like a group invite
+@invites
 anyone else stay up too late because the group was fun?
 we should all meet up in {capital} sometime
 sometimes i log in just to talk
+@invites joke
 i remember everyone i group with, it is a problem
 
 # Looking for company: only from a bot with no group (in game 2026-10-18 a Socialite grouped with the player asked
@@ -67,7 +104,9 @@ i remember everyone i group with, it is a problem
 @needs solo
 @levels 1-50
 anyone want to hang out in {capital} for a bit?
+@needs solo,!day
 i miss my old group, they all went to bed
+@needs solo
 who is up for a group just for the company?
 
 @kind ambient
@@ -75,39 +114,66 @@ who is up for a group just for the company?
 @who Explorer
 @levels 1-50
 i want to see every zone in the realm before i hit 50
+@needs outdoors
 there is a spot near {zone} where the sunset is perfect
 anyone know what is at the far end of {zone}?
+@needs
+@invites boast
 i found a path i have never seen on anyone's map
+@needs outdoors
+@invites
 walked to {zone} just to look around, no regrets
+@invites news
 heard a rumor about a named that wanders near {zone}
+@needs
+@invites
 the realm is so much bigger than people think
+@needs outdoors
 anyone ever climbed the hills behind {zone}?
+@needs
 i keep a journal of every camp i find
 got lost on purpose tonight, best night in a while
+@needs outdoors
+@invites news
 there is a ruin past {zone} that nobody talks about
+@needs
+@invites
 i explore first and level later, it works for me
-found a hidden camp with {monster}, telling only my friends
+@invites boast
+found a hidden camp with {monsters}, telling only my friends
+@invites
 every zone has a secret if you look long enough
 the maps lie, the roads go further than they show
+@needs outdoors
 i will be in {zone} if anyone wants to see something cool
 
 @kind ambient
 @topic daredevil
 @who Daredevil
 @levels 1-50
+@invites joke
 solo an orange, they said. it would be fine, they said
+@invites boast
 pulled a red by accident, killed it on purpose
+@invites
 i like my fights a little too close
+@invites boast
 yellow cons are for warming up
 i do not run from fights, i run toward them
+@invites
 who wants to try the deep room in {dungeon}?
-just took on {count} {monster} at once, still standing
+@invites boast
+just took on {count} {monsters} at once, still standing
+@invites joke
 if the healer is not nervous, i am not pulling hard enough
 my bind point knows me well
+@invites
 anyone want to see something stupid and brave?
 the best xp is on the edge of disaster
+@invites boast
 nearly died three times, best hour all week
 i pull what others walk around
+@invites
 dungeons are better when nobody knows the way
 if it cons purple, i want to know what it drops
 life is short, pull the big one
@@ -116,39 +182,130 @@ life is short, pull the big one
 @topic nolifer
 @who NoLifer
 @levels 20-50
+@invites boast
 already have my 50 template planned on paper
+@needs night
+@invites
 anyone else up at this hour? i never sleep
+@needs
+@invites boast
 i know every respawn timer at {camp}
-realm rank matters more than gear, change my mind
+@invites
+realm rank matters more than gear, not even close
 i have an alt for every realm and still want more
+@invites joke
 i log in before work and after work
-the meta right now is small groups, the zerg is for tourists
+@invites
+small groups are where it is at, the zerg is for tourists
+@invites ask_opinion
 max spec at 50 or spread points, the eternal question
+@invites
 if your spellcraft is not capped you are leaving power on the table
 realm abilities are where the real power is
+@invites complaint
 farming seals in darkness falls again, the grind never ends
+@invites boast
 i have the frontier map memorized
+@invites
 when this one hits 50 i start the next
 anyone want to talk group setups with me?
+@invites joke
 the respawn is the real enemy
+@invites
 i measure my nights in realm points
 
 @kind ambient
 @topic newbie
 @who *
 @levels 1-12
+@invites ask_xpneeded
 is there a way to see how much xp i need?
+@invites ask_con
 what does the con color mean exactly?
+@invites ask_bind
 how do i get back to my bind point?
+@invites ask_realmability
 what is a realm ability?
+@invites ask_train
 do i need to train every level?
+@invites ask_camps
 how do people know where the camps are?
+@invites ask_campshare
 is it ok to fight in someone else's camp?
+@needs bag_full
+@invites ask_bags
 my backpack is full already, what do i keep?
+@needs
+@invites ask_guards
 why do the guards attack monsters that chase me?
+@invites ask_lfg
 what does lfg mean?
+@invites ask_guild
 how do i join a guild?
+@invites ask_safezone
 are the other realms going to attack me here?
+
+# Answers to the newbie questions above (0.36-se.4: before, they got "hm" or a camp tip).
+@kind reply
+@who *
+@answers ask_xpneeded
+watch the xp bar, every bubble is a tenth of a level
+ten bubbles on the bar and you ding
+the xp bar fills up, a full bar is a level
+@answers ask_con
+grey gives no xp, green a little, blue and yellow are best
+yellow is your level, orange and red hurt, purple means run
+blue means a bit easier than you, thats the sweet spot solo
+@answers ask_bind
+release when you die and you wake up at your bind point
+there is no recall, either release or walk back
+bind at a bindstone in town, type /bind standing next to it
+take a horse from the stablemaster, saves the walk
+@answers ask_realmability
+special skills you buy at your trainer with realm points
+you earn realm points killing enemies in the frontier, then spend them at the trainer
+stuff like more health or faster casting, paid for with realm points
+dont worry about it yet, they come from rvr
+@answers ask_train
+you get spec points every level, spend them at your trainer
+you can save points up, but visit the trainer often
+yes, go see your trainer when you ding, points add up fast
+you dont have to, but unspent points do nothing for you
+@answers ask_camps
+ask in faction, someone always knows a spot
+look for monsters that con blue or yellow and settle in
+follow other people, wherever they hunt is a camp
+the roads out of town lead to most of them, just explore a bit
+@answers ask_campshare
+ask first, most people will share
+not without asking, thats rude
+ask in /say, if they say no find another spot
+fine if you ask and dont steal their pulls
+@answers ask_bags
+sell the junk to any merchant, keep only upgrades
+keep quest items and gear upgrades, sell the rest
+anything good, try the exchange, the rest goes to a merchant
+drop the grey loot, it adds up fast
+@answers ask_guards
+guards attack monsters near them, run to them when in trouble
+thats their job, free help when you are dying
+lead the bad pulls to the guards, they sort it out
+they protect the town, monsters that follow you in get killed
+@answers ask_lfg
+looking for group
+lfg means looking for group, lfm means looking for more
+it means looking for group, say it with your level and class
+looking for group. if someone says it, they want a group
+@answers ask_guild
+ask someone with a guild tag, an officer can invite you
+watch faction, guilds recruit there all the time
+find a guild you like and send them a tell
+an officer types /gc invite and you accept, easy
+@answers ask_safezone
+not here, enemies only show up in the frontier
+no, they cant get into our home zones
+you are safe here, the fighting is in the frontier and battlegrounds
+nope, only in rvr zones, relax and level
 
 @kind ambient
 @topic veteran
@@ -171,15 +328,30 @@ crafters are your friends, be nice to them
 @topic humor
 @who *
 @levels 1-50
+@invites joke
 my pet has better gear than me
 spent more time running back from my bind than fighting tonight
 i swear the monsters respawn faster when i am oom
+@invites complaint
 why is every useful merchant on the other side of town
+@invites joke
 my sense of direction is a grey con
 i took a wrong turn and found three new ways to die
 who put that cliff there
 somebody tell my healer i am sorry
 i was going to log off an hour ago
 the game says blue con. the game is lying
+@needs evening
 dinner is ready, says my family, for the third time
+@needs outdoors
 the road to {zone} is longer every time i walk it
+
+# Answers to "how is everyone tonight?" (0.36-se.4).
+@kind reply
+@answers ask_howareyou
+@who *
+good, slow xp but good
+not bad, you?
+tired but still leveling
+cant complain, the camp is quiet
+doing ok, just trying not to die

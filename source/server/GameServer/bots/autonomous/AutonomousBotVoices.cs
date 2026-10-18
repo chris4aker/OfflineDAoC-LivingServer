@@ -42,7 +42,8 @@ public static class AutonomousBotVoices
     [GameServerStartedEvent]
     public static void OnServerStarted(DOLEvent e, object sender, EventArgs args)
     {
-        if (Properties.BOT_VOICES_ENABLED || AutonomousLivingServer.AnyOn)
+        // Guild chat uses the corpus too (0.36-se.4), with or without bot voices.
+        if (Properties.BOT_VOICES_ENABLED || AutonomousLivingServer.AnyOn || Properties.BOT_GUILDS_ENABLED && Properties.BOT_GUILD_SOCIAL)
             Preload();
     }
 
@@ -82,6 +83,10 @@ public static class AutonomousBotVoices
             LeveledAt[bot.DatabaseID] = GameLoop.GameLoopTime;
     }
 
+    /// <summary>True when the bot levelled in the last few minutes (it is the one a "gz" is meant for).</summary>
+    public static bool JustLeveled(GameBot bot) =>
+        bot?.DatabaseID > 0 && LeveledAt.TryGetValue(bot.DatabaseID, out long leveled) && GameLoop.GameLoopTime - leveled < JustLeveledMs;
+
     public static void NoteDeath(GameBot bot)
     {
         if (bot?.DatabaseID > 0)
@@ -94,16 +99,34 @@ public static class AutonomousBotVoices
         OfflineWorldBotRecord record = bot.PersistentRecord;
         flags.Add(bot.Group != null ? "in_group" : "solo");
         if (bot.CurrentRegion?.IsDungeon == true || bot.CurrentZone?.IsDungeon == true) flags.Add("in_dungeon");
-        if (bot.CurrentZone?.IsRvR == true || bot.CurrentRegion?.IsRvR == true) flags.Add("in_rvr");
+        if (bot.CurrentZone?.IsRvR == true || bot.CurrentRegion?.IsRvR == true)
+        {
+            flags.Add("in_rvr");
+            // 0.36-se.4: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia, Cathal Valley) or the frontier proper
+            flags.Add(IsBattlegroundRegion(bot.CurrentRegionID) ? "in_battleground" : "in_frontier");
+        }
         if (!string.IsNullOrEmpty(record?.TravelDestination)) flags.Add("traveling");
         else if (!string.IsNullOrEmpty(record?.CurrentCampId)) flags.Add("at_camp");
         if (record != null && AutonomousObjectiveAssignments.IsIntentionalTownIdle(record, DateTime.UtcNow)) flags.Add("in_town");
         if (LeveledAt.TryGetValue(bot.DatabaseID, out long leveled) && GameLoop.GameLoopTime - leveled < JustLeveledMs) flags.Add("just_leveled");
         if (DiedAt.TryGetValue(bot.DatabaseID, out long died) && GameLoop.GameLoopTime - died < JustDiedMs) flags.Add("just_died");
         if (AutonomousBotEconomy.IsBackpackNearlyFull(bot)) flags.Add("bag_full");
+        // 0.36-se.4: where and when, and who the bot is with.
+        if (IsCapitalRegion(bot.CurrentRegionID)) flags.Add("in_capital");
+        if (!flags.Contains("in_dungeon") && !flags.Contains("in_capital")) flags.Add("outdoors");
+        flags.Add(VC.TimeFlag(DateTime.Now.Hour));
+        if (bot.IsPlayerLedGroup || AutonomousLivingServer.GroupHasPlayer(bot.Group)) flags.Add("in_player_group");
+        if (bot.ResurrectionSpell != null && bot.ResurrectionSpell.Level <= bot.Level) flags.Add("can_rez");
         return new VC.Speaker(bot.DatabaseID, bot.Name, bot.Realm, bot.CharacterClass?.Name ?? bot.ClassName ?? string.Empty,
             bot.Level, AutonomousBotPersonality.For(bot).Type, flags);
     }
+
+    /// <summary>The battlegrounds of this world (the Battleground table): Cathal Valley 165, Caledonia 250, Murdaigean 251,
+    /// Thidranki 252, Abermenai 253.</summary>
+    public static bool IsBattlegroundRegion(ushort regionId) => regionId is 165 or 250 or 251 or 252 or 253;
+
+    /// <summary>Camelot City, Jordheim and Tir na Nog.</summary>
+    public static bool IsCapitalRegion(ushort regionId) => regionId is 10 or 101 or 201;
 
     /// <summary>A realm dungeon a bot of this level would use (Kirstena's 2002 ranges, checked against the world database).</summary>
     public static string DungeonFor(eRealm realm, int level)
@@ -177,6 +200,7 @@ public static class AutonomousBotVoices
             ["realm"] = GlobalConstants.RealmToName(bot.Realm),
             ["zone"] = zone,
             ["monster"] = monster,
+            ["monsters"] = monster == null ? null : VC.Plural(monster),
             ["item"] = item,
             ["count"] = random.Next(2, 5).ToString(),
             ["q"] = VC.Openers[random.Next(VC.Openers.Length)],
@@ -218,14 +242,52 @@ public static class AutonomousBotVoices
     /// <summary>A corpus line of a kind for this bot, or false (the caller keeps its old line).</summary>
     public static bool TryLine(GameBot bot, string kind, out string text, string intent = null, Random random = null)
     {
-        text = null;
-        if (!Enabled || bot == null || !bot.IsAutonomousWorldBot || bot.DatabaseID <= 0)
+        bool picked = TryLine(bot, kind, out VC.Picked result, intent: intent, random: random);
+        text = result?.Text;
+        return picked;
+    }
+
+    /// <summary>How long a short, common reply ("np", "lol", "where?") rests before it may be said again once the
+    /// six-hour pool for its kind is used up (0.36-se.4: a player is never left unanswered because the pool ran dry).</summary>
+    public static readonly TimeSpan ShortReplyRest = TimeSpan.FromMinutes(40);
+
+    /// <summary>
+    /// A corpus line for this bot with everything the caller may need (the corpus line, so its invitation;
+    /// a typo correction). Extra slots and flags are merged in; <paramref name="answers"/> picks replies or
+    /// closings that fit an opener's invitation.
+    /// </summary>
+    public static bool TryLine(GameBot bot, string kind, out VC.Picked result, string intent = null, string answers = null,
+        string topic = null, IReadOnlyDictionary<string, string> slots = null, IEnumerable<string> flags = null,
+        IEnumerable<string> withoutFlags = null, bool relax = false, bool requireVoices = true, Random random = null)
+    {
+        result = null;
+        if ((requireVoices ? !Enabled : Corpus == null) || bot == null || !bot.IsAutonomousWorldBot || bot.DatabaseID <= 0)
             return false;
         random ??= Random.Shared;
         try
         {
-            return Corpus.TryPick(kind, SpeakerFor(bot), SlotsFor(bot, random), Recent, DateTime.UtcNow, random,
-                out text, out _, intent);
+            VC.Speaker speaker = SpeakerFor(bot);
+            if (flags != null || withoutFlags != null)
+            {
+                var merged = new HashSet<string>(speaker.Flags, StringComparer.Ordinal);
+                if (flags != null)
+                    merged.UnionWith(flags);
+                if (withoutFlags != null)
+                    merged.ExceptWith(withoutFlags);
+                speaker = speaker with { Flags = merged };
+            }
+            Dictionary<string, string> all = SlotsFor(bot, random);
+            if (slots != null)
+                foreach (var pair in slots)
+                    all[pair.Key] = pair.Value;
+            return Corpus.TryPick(new VC.Request(kind, speaker, all, Recent, DateTime.UtcNow, random)
+            {
+                Intent = intent,
+                Answers = answers,
+                Topic = topic,
+                RelaxTo = relax ? ShortReplyRest : null,
+                LocalHour = DateTime.Now.Hour,
+            }, out result);
         }
         catch (Exception exception)
         {
@@ -233,6 +295,10 @@ public static class AutonomousBotVoices
             return false;
         }
     }
+
+    /// <summary>A text in this bot's writing style (knowledge answers and other fixed text).</summary>
+    public static string StyleFor(GameBot bot, string text) =>
+        Corpus == null || bot == null || string.IsNullOrEmpty(text) ? text : VC.Style(text, Corpus.VoiceFor(bot.DatabaseID), Random.Shared);
 
     /// <summary>
     /// A line for a Living Server event (docs/LIVING-SERVER.md). Needs only the corpus, so it works
@@ -261,8 +327,15 @@ public static class AutonomousBotVoices
             if (slots != null)
                 foreach (var pair in slots)
                     all[pair.Key] = pair.Value;
-            return Corpus.TryPick(kind, speaker, all, noRepeat ? Recent : null, DateTime.UtcNow, random, out text, out _,
-                intent, topic, mood);
+            bool picked = Corpus.TryPick(new VC.Request(kind, speaker, all, noRepeat ? Recent : null, DateTime.UtcNow, random)
+            {
+                Intent = intent,
+                Topic = topic,
+                Mood = mood,
+                LocalHour = DateTime.Now.Hour,
+            }, out VC.Picked result);
+            text = result?.Text;
+            return picked;
         }
         catch (Exception exception)
         {
@@ -285,6 +358,9 @@ public static class AutonomousBotVoices
             options.Add(("rvr", speaker.Flags.Contains("in_rvr") ? 4 : 1));
         if (!faction && speaker.Flags.Contains("at_camp"))
             options.Add(("camp", 2));
+        // A bot group near the player talks among itself in /say (0.36-se.4: these lines went to /faction).
+        if (!faction && speaker.Flags.Contains("in_group") && !speaker.Flags.Contains("in_player_group"))
+            options.Add(("group", 3));
         double draw = random.NextDouble() * options.Sum(o => o.Weight);
         foreach ((string kind, double weight) in options)
         {

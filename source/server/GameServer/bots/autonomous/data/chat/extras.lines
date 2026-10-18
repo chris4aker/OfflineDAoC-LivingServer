@@ -4,42 +4,78 @@
 @topic night
 @who *
 @levels 1-50
+@needs night
 late night crew checking in
 anyone else up way too late?
+@needs !day
 quiet night, perfect for a long camp
+@needs
 the realm is busy tonight, love it
+@needs !day
+@invites joke
 one more pull, then bed. probably
+@needs
+@invites
 coffee and camping, the perfect combo
+@needs !day
+@invites none
 kids are asleep, time to level
+@needs
+@invites
 weekend at last, long session tonight
+@invites ask
 just got home, what did i miss?
+@invites
 everyone is out hunting tonight it seems
+@needs !day
 long day, short session, lets make it count
+@needs
+@invites joke
 logged in to check my bags, staying for hours apparently
 
 @kind ambient
 @topic waiting
 @who *
 @levels 1-50
+@needs at_camp
+@invites ask_anyone
 sitting for power, chat with me
+@invites joke
 waiting on a respawn, the most dangerous time to think
+@invites
 med break, anyone want to talk?
+@invites complaint
 my health bar is filling slower than the respawn
-waiting for my group to log in
-waiting on the boat, as usual
+@needs solo
+@invites none
+waiting for my usual group to log in
+@needs traveling
+waiting on the boat, could be a while
+@needs
 waiting for buffs to come back up
+@invites complaint
 standing around the bind stone again
+@needs solo
+@invites
 anyone else waiting on a group or just me?
 
 @kind ambient
 @topic rumor
 @who Explorer,Socialite
 @levels 1-50
+@needs outdoors
+@invites news
 heard someone saw a named near {zone} that drops something great
+@needs
 someone said there is a secret room in {dungeon}
-rumor is the {monster} at {camp} drop more than coin sometimes
+rumor is the {monsters} at {camp} drop more than coin sometimes
+@needs outdoors
+@invites
 anyone know if the stories about {zone} at night are true?
+@needs
+@invites news
 heard a group wiped in {dungeon} on a pull nobody expected
+@needs outdoors
 people say the old camps in {zone} still have the best spawns
 
 @kind reply
@@ -81,10 +117,16 @@ got materials for that, give me an hour
 @who *
 @needs solo
 @levels 1-50
+@needs solo,outdoors
+@invites lfg
 anyone near {zone} want to team up?
+@needs solo
+@invites
 looking for a duo partner, {level} {class}
 lfg or lf duo, {level} {class}, chill and patient
+@invites lfg
 any guild running groups tonight? {class} {level} here
+@invites
 {level} {class}, lfg, can stay a few hours
 
 @kind thanks

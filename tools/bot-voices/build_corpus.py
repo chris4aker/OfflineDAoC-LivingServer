@@ -23,7 +23,16 @@ KINDS = {'ambient', 'reply', 'lfg', 'trade', 'rvr', 'greet', 'thanks', 'grudge',
          'camp', 'debate',
          # Living Server (docs/LIVING-SERVER.md)
          'grats', 'rez_ask', 'rez_thanks', 'rez_offer', 'corpse', 'sickness', 'first', 'alarm', 'nemesis', 'revenge',
-         'session', 'linkdead', 'combat'}
+         'session', 'linkdead', 'combat',
+         # 0.36-se.4: group talk (/group with you, /say near you), a starter's closing line, guild idle chat
+         'group', 'closing', 'guild'}
+# Lines that start a conversation; each says what kind of answer it invites (@invites, or inferred below).
+OPENER_KINDS = {'ambient', 'lfg', 'trade', 'rvr', 'camp', 'group', 'guild'}
+# What an opener invites; replies say what they answer (@answers). "ask_<topic>" is a specific question that
+# falls back to the "ask" replies; "none" gets no reply.
+INVITES = {'none', 'chat', 'joke', 'boast', 'complaint', 'news', 'lfg', 'trade', 'ask', 'ask_where', 'ask_advice',
+           'ask_opinion', 'ask_anyone'}
+INVITE_RE = re.compile(r'(none|chat|joke|boast|complaint|news|lfg|trade|ask(_[a-z0-9]+)*)')
 TYPES = {'Leveler', 'Crafter', 'Socialite', 'Explorer', 'Daredevil', 'NoLifer'}
 REALMS = {'alb', 'mid', 'hib'}
 CLASSES = {
@@ -36,14 +45,21 @@ CLASSES = {
 }
 ALL_CLASSES = set().union(*CLASSES.values())
 FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'traveling', 'just_leveled',
-         'just_died', 'bag_full', 'has_listing', 'knows_player', 'player_nearby', 'player_guildless'}
+         'just_died', 'bag_full', 'has_listing', 'knows_player', 'player_nearby', 'player_guildless',
+         # 0.36-se.4: where and when (the PC's clock: day 6-17, evening 17-23, night 23-6), and who the bot is with
+         'outdoors', 'in_capital', 'day', 'evening', 'night', 'in_player_group', 'can_rez', 'in_battleground', 'in_frontier'}
+TIME_FLAGS = {'day', 'evening', 'night'}
 INTENTS = {'unknown', 'greeting', 'banter', 'abuse', 'grouping', 'grinding', 'travel', 'dungeon', 'rvr',
-           'trading', 'help', 'farewell', 'ignoreoutofworld'}
+           'trading', 'help', 'farewell', 'ignoreoutofworld',
+           # 0.36-se.4: short chat players type
+           'thanks', 'congrats', 'ding', 'laugh', 'away', 'back', 'rez', 'alarm', 'classtalk', 'botcheck'}
 MOODS = {'friendly', 'neutral', 'cool', 'rival'}
 SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'count', 'camp', 'dungeon',
          'capital', 'enemy', 'keep', 'frontier', 'player', 'player_class', 'place', 'q',
          # Living Server
-         'target', 'what', 'size', 'classes', 'killer', 'killer_class'}
+         'target', 'what', 'size', 'classes', 'killer', 'killer_class',
+         # 0.36-se.4: the plural of {monster} ("2 hill cats")
+         'monsters'}
 MEMORY_SLOTS = {'player', 'player_class', 'place'}
 MAX_RAW = 140
 
@@ -54,7 +70,16 @@ BANNED = [
     r'mauler', r'vampiir', r'bainshee', r'heretic', r'valkyr', r'warlock', r'frostalf', r'\bshar\b', r'deifrang',
     r'minotaur', r'sluagh', r'mythic', r'\bign\b', r'\bvault\b', r'allakhazam', r'everquest', r'world of warcraft',
     r'\bfuck', r'\bshit', r'\bbitch', r'\bdamn', r'\bass\b', r'\bcrap\b', r'\bhell\b',
+    # Later internet phrases (audit 2026-10-18)
+    r'change my mind', r'fight me', r'\bvibes?\b', r'love language', r'no thoughts', r'\blifestyle\b', r'\bsalty\b',
+    r'\bthe meta\b', r'i felt that', r'\bpog', r'\bbased\b', r'\bno cap\b', r'\bgg ez\b', r'\bsus\b', r'\bmain character\b',
 ]
+# A line that assumes a time of day needs a time flag (in game a noon session heard "late night crew checking in").
+# "tonight" and "all night" need none: by day the server says "today" and "all day" (AutonomousBotVoiceCorpus.ForTimeOfDay).
+TIME_WORDS_RE = re.compile(r"\b(late night|so late|up late|off to bed|to bed|bedtime|in the morning|"
+                           r"good morning|good evening|midnight|cant sleep|past my bedtime|wee hours)\b", re.IGNORECASE)
+# The {monster} slot is singular: "{count} {monster}" and "{monster} are" read "2 hill cat"; use {monsters}.
+PLURAL_MONSTER_RE = re.compile(r'\{count\} \{monster\}|\{monster\} (are|were|keep|give|drop|hit)\b')
 BANNED_RE = re.compile('|'.join(BANNED), re.IGNORECASE)
 SLOT_RE = re.compile(r'\{([^{}]*)\}')
 
@@ -83,13 +108,23 @@ def check_text(text, tags, where, problems):
         if slot not in SLOTS:
             problems.append(f'{where}: unknown slot {{{slot}}}')
         elif slot in MEMORY_SLOTS and 'knows_player' not in tags['needs'] and 'player_nearby' not in tags['needs'] and tags['kind'] not in (
-                'greet', 'thanks', 'grudge', 'gossip', 'alarm', 'nemesis', 'revenge'):
+                'greet', 'thanks', 'grudge', 'gossip', 'alarm', 'nemesis', 'revenge') and not (
+                slot == 'player' and tags['kind'] in ('reply', 'closing')):   # in a reply, {player} is whoever is answered
             problems.append(f'{where}: memory slot {{{slot}}} needs @needs knows_player or a memory kind')
     if text.count('{') != text.count('}'):
         problems.append(f'{where}: unbalanced braces')
     hit = BANNED_RE.search(SLOT_RE.sub('', text))
     if hit:
         problems.append(f'{where}: out-of-era or banned word "{hit.group(0)}": {text}')
+    if PLURAL_MONSTER_RE.search(text):
+        problems.append(f'{where}: {{monster}} is one monster; write {{monsters}} for the plural: {text}')
+    needs = set(tags.get('needs', []))
+    if TIME_WORDS_RE.search(text) and not any(f.lstrip('!') in TIME_FLAGS for f in needs):
+        problems.append(f'{where}: says a time of day; add @needs evening or night (or day, !day...): {text}')
+    if '{zone}' in text and tags['kind'] in OPENER_KINDS and not needs & {
+            'outdoors', 'in_dungeon', 'in_capital', 'in_rvr', 'at_camp', 'traveling', 'in_town', 'in_battleground', 'in_frontier'}:
+        problems.append(f'{where}: {{zone}} needs a place flag (outdoors, at_camp, in_dungeon...) so it is not said '
+                        f'from a city or a dungeon by mistake: {text}')
 
 
 def check_tags(tags, where, problems):
@@ -105,19 +140,48 @@ def check_tags(tags, where, problems):
         if c not in allowed:
             problems.append(f'{where}: class {c} is not in realm {tags["realm"]}')
     for f in tags['needs']:
-        if f not in FLAGS:
+        if f.lstrip('!') not in FLAGS:
             problems.append(f'{where}: unknown flag {f}')
     if tags['intent'] and tags['intent'] not in INTENTS:
         problems.append(f'{where}: unknown @intent {tags["intent"]}')
-    if tags['kind'] == 'reply' and not tags['intent']:
-        problems.append(f'{where}: reply lines need @intent')
+    if tags['kind'] == 'reply' and not tags['intent'] and not tags['answers']:
+        problems.append(f'{where}: reply lines need @intent (a player\'s line) or @answers (a bot\'s opener)')
+    if tags['kind'] == 'closing' and not tags['answers']:
+        problems.append(f'{where}: closing lines need @answers (what kind of opener they close)')
+    for a in tags['answers']:
+        if not INVITE_RE.fullmatch(a) or a == 'none':
+            problems.append(f'{where}: unknown @answers {a}')
+    if tags['invites'] and not INVITE_RE.fullmatch(tags['invites']):
+        problems.append(f'{where}: unknown @invites {tags["invites"]}')
+    if tags['invites'] and tags['kind'] not in OPENER_KINDS:
+        problems.append(f'{where}: @invites is for lines that start a conversation ({", ".join(sorted(OPENER_KINDS))})')
     if tags['mood'] and tags['mood'] not in MOODS:
         problems.append(f'{where}: unknown @mood {tags["mood"]}')
 
 
 def fresh_tags():
     return dict(kind='ambient', topic='general', who=[], realm='*', **{'class': []}, levels=[1, 50], needs=[],
-                intent='', mood='', weight=1.0)
+                intent='', mood='', weight=1.0, invites='', answers=[])
+
+
+def infer_invites(text, kind):
+    """What an opener without @invites invites: questions by their shape, otherwise a light reaction."""
+    t = SLOT_RE.sub('x', text.lower()).strip()
+    if t.endswith('?'):
+        if re.search(r"\bwhere\b|\bwheres\b|how do (i|you) get|which way|how far", t):
+            return 'ask_where'
+        if re.search(r"\b(best|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):
+            return 'ask_opinion'
+        if re.match(r"(anyone|any1|anybody|who|any )", t) or re.search(r"\b(anyone|anybody|any1)\b", t):
+            return 'ask_anyone'
+        if re.search(r"\b(how|what|why|when|which)\b", t):
+            return 'ask_advice'
+        return 'ask'
+    if kind == 'lfg':
+        return 'lfg'
+    if kind == 'trade':
+        return 'trade'
+    return 'chat'
 
 
 def parse_file(path, problems):
@@ -134,7 +198,10 @@ def parse_file(path, problems):
             value = value.split(' #', 1)[0].strip()
             if key == 'scene':
                 scene = dict(id=value, topic=tags['topic'], realm=tags['realm'], levels=tags['levels'], roles={},
-                             beats=[], where=where)
+                             beats=[], where=where, needs=[n for n in tags['needs'] if n.lstrip('!') in TIME_FLAGS])
+                bad = [n for n in tags['needs'] if n.lstrip('!') not in TIME_FLAGS]
+                if bad:
+                    problems.append(f'{where}: a scene can only need a time of day (day, evening, night), not {bad}')
                 scenes.append(scene)
             elif key == 'role':
                 if scene is None:
@@ -174,6 +241,10 @@ def parse_file(path, problems):
                         tags['mood'] = value
                     elif key == 'weight':
                         tags['weight'] = float(value)
+                    elif key == 'invites':
+                        tags['invites'] = value
+                    elif key == 'answers':
+                        tags['answers'] = split_list(value)
                     else:
                         problems.append(f'{where}: unknown directive @{key}')
                 except Problem as error:
@@ -196,7 +267,7 @@ def parse_file(path, problems):
             if any(not v for v in variants):
                 problems.append(f'{where}: empty alternative')
             for v in variants:
-                check_text(v, dict(kind='debate', needs=[]), where, problems)
+                check_text(v, dict(kind='debate', needs=scene['needs']), where, problems)
                 if re.match(r'\??[A-F]:\s', v):
                     problems.append(f'{where}: an alternative starts with a role marker: {v}')
             scene['beats'].append(dict(role=role, text=variants[0], variants=variants, optional=bool(optional),
@@ -204,7 +275,14 @@ def parse_file(path, problems):
             continue
         check_tags(tags, where, problems)
         check_text(text, tags, where, problems)
-        lines.append(dict(tags, text=text, where=where, **{'class': list(tags['class'])}))
+        line = dict(tags, text=text, where=where, **{'class': list(tags['class'])})
+        if tags['kind'] in OPENER_KINDS:
+            line['invites'] = tags['invites'] or infer_invites(text, tags['kind'])
+        else:
+            line.pop('invites')
+        if not line['answers']:
+            line.pop('answers')
+        lines.append(line)
     for s in scenes:
         roles_used = {b['role'] for b in s['beats'] if b['role'] != '~'}
         if sum(1 for b in s['beats'] if b['role'] != '~') < 3:
@@ -260,6 +338,19 @@ def main():
                    and x['levels'][0] <= hi and x['levels'][1] >= lo)
     bands = [(1, 19), (20, 34), (35, 50)]
     minimum = {'ambient': 60, 'lfg': 15, 'reply': 40, 'greet': 10, 'thanks': 10}
+    # Every invite a bot's opener can carry has replies, and every family has closings (0.36-se.4).
+    invited = collections.Counter(x['invites'] for x in lines if 'invites' in x)
+    answered = collections.Counter(a for x in lines if x['kind'] == 'reply' for a in x.get('answers', []))
+    closed = collections.Counter(a for x in lines if x['kind'] == 'closing' for a in x.get('answers', []))
+    for invite in sorted(invited):
+        if invite in ('none', 'chat'):
+            continue
+        family = invite.split('_')[0]
+        if answered[invite] + answered[family] < 5:
+            problems.append(f'coverage: openers invite "{invite}" ({invited[invite]} lines) but only '
+                            f'{answered[invite] + answered[family]} replies answer it or "{family}"')
+    if invited and sum(answered.values()) and sum(closed.values()) == 0:
+        problems.append('coverage: no closing lines')
     for realm in sorted(REALMS):
         for lo, hi in bands:
             for kind, need in minimum.items():
@@ -283,6 +374,8 @@ def main():
     print(f'{len(lines)} lines, {len(scenes)} debate scenes, {sum(spoken)} scene lines '
           f'(longest {max(spoken)}, {sum(1 for n in spoken if n >= 20)} scenes of 20+ lines)')
     print('by kind: ' + ', '.join(f'{k} {n}' for k, n in sorted(by_kind.items())))
+    print('openers invite: ' + ', '.join(f'{k} {n}' for k, n in sorted(collections.Counter(
+        x['invites'] for x in lines if 'invites' in x).items())))
     print('by realm: ' + ', '.join(f'{k} {n}' for k, n in sorted(collections.Counter(x["realm"] for x in lines).items())))
     print('by type (lines that name types): ' + ', '.join(
         f'{t} {sum(1 for x in lines if t in x["who"])}' for t in sorted(TYPES)))

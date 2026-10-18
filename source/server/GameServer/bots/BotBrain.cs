@@ -1598,10 +1598,16 @@ namespace DOL.AI.Brain
         {
             GameBot bot = BotBody;
             long nowTick = GameLoop.GameLoopTime;
-            if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup ||
-                nowTick < _nextAmbientChatCheckTick)
+            if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || nowTick < _nextAmbientChatCheckTick)
                 return;
             _nextAmbientChatCheckTick = nowTick + 15_000 + Random.Shared.Next(20_001) + bot.ObjectID % 4_000;
+            // In the real player's group a bot keeps its realm chat to itself and talks in /group instead,
+            // a line every few minutes out of combat (bot voices, 0.36-se.4; it used to say nothing at all).
+            if (bot.IsPlayerLedGroup)
+            {
+                AutonomousBotGroupChatter.TryGroupLine(bot);
+                return;
+            }
 
             DateTime now = DateTime.UtcNow;
             if (!AutonomousBotChat.ShouldSpeak(now, _lastIdleRoleplayUtc,

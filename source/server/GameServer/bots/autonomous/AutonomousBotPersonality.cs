@@ -319,7 +319,20 @@ public static class AutonomousBotPersonality
         return camp => CampWeightPercent(personality, camp.TypicalCon, IsZoneFresh(botId, camp.ZoneName, now), camp.LiveMobCount);
     }
 
-    public static double ChatRateFactor(GameBot bot) => Applies(bot) ? ChatRateFactor(For(bot)) : 1.0;
+    public static double ChatRateFactor(GameBot bot) =>
+        (Applies(bot) ? ChatRateFactor(For(bot)) : 1.0) * (AutonomousBotVoices.Enabled ? RegularFactor(bot.DatabaseID) : 1.0);
+
+    /// <summary>
+    /// With bot voices on, about one bot in seven is a "regular" who talks two and a half times as often, and
+    /// about a third talk half as often (0.36-se.4). Real chat is uneven: in one study the median visitor said
+    /// about 3 lines a day against a mean of 10-13, so the same few names come up, and players get to know them.
+    /// Fixed from the bot's id.
+    /// </summary>
+    public static double RegularFactor(long botId)
+    {
+        ulong roll = Mix(botId, 7) % 100;
+        return roll < 14 ? 2.5 : roll < 47 ? 0.5 : 1.0;
+    }
 
     #endregion
 

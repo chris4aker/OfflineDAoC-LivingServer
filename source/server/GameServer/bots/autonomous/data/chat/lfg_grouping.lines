@@ -8,14 +8,18 @@
 lfg {level} {class}, pst
 {level} {class} lfg, anywhere is fine
 lfg, {level} {class}, will travel
+@invites lfg
 any groups need a {level} {class}?
+@invites
 {level} {class} looking for a group, can be on in a minute
 lfg {camp} or anywhere with xp
 lf group, {class} {level}, have potions and patience
 lfg for a few hours, {level} {class}
 {level} {class} lfg, not picky about the camp
 looking for a group to level with, {class} {level}
+@needs solo,outdoors
 lfg near {zone}, {level} {class}
+@needs solo
 @levels 20-50
 lfg {dungeon}, {level} {class}, know the pulls
 lfg xp, {level} {class}, been soloing too long
@@ -37,9 +41,13 @@ lfm at {camp}, {count} spots open
 group at {camp} needs a healer, pst
 lf tank for {camp}, we have heals and dps
 lfm {dungeon}, need {count} more
+@invites lfg
 anyone want to join us at {camp}? xp is steady
-lf puller for {camp}, ours just went to bed
+@invites
+lf puller for {camp}, ours just logged
+@needs in_group,outdoors
 group has room near {zone}, all classes welcome
+@needs in_group
 need one more for {camp}, pst
 lfm, healer and tank found, need dps
 group forming for {dungeon}, meet at the entrance

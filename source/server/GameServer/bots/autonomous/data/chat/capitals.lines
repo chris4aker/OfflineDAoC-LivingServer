@@ -1,0 +1,69 @@
+# Town talk in the capitals (Camelot, Jordheim, Tir na Nog): trainers, merchants, the bank, crafting.
+# New writing (see docs/bot-voices).
+
+# ---------------- Any capital ----------------
+@kind ambient
+@topic capital
+@who *
+@needs in_capital
+{capital} is busy tonight
+trainer at last, three levels of points to spend
+selling off a whole bag of loot, the merchants love me
+spent ten minutes looking for the bank again
+repairs cost more than the loot was worth
+need to train and sell, then straight back out
+i love town breaks, nothing here tries to eat me
+people shouting wares everywhere, cant hear myself think
+picked up new spells at the trainer, cant wait to try them
+spent all my coin on spells, worth it
+the guards here never smile
+the dye merchant has new colors, or i never noticed them before
+so many crafters at the forge it sounds like a battle
+dropped half my bags at the bank, feels like a new character
+trying out a new spec, wish me luck
+@invites ask_anyone
+anyone near the forge?
+anyone selling cheap armor around {level}?
+anyone want to group from here? i am {level}
+@invites ask_where
+where is the armor merchant in here?
+@invites ask_advice
+how much do merchants pay for {item}?
+@invites ask_opinion
+bind here or out near the camp, what do you think?
+@who Crafter
+@invites chat
+back at the forge, my favorite part of the day
+@who Leveler
+@invites complaint
+every minute in town is a minute not leveling
+
+# ---------------- Camelot ----------------
+@kind ambient
+@topic capital
+@realm alb
+@who *
+@needs in_capital
+camelot market is louder than a keep siege
+the smiths in camelot never stop hammering
+camelot guards look at me like i stole something
+
+# ---------------- Jordheim ----------------
+@kind ambient
+@topic capital
+@realm mid
+@who *
+@needs in_capital
+jordheim is cold even indoors, how do the trolls stand it
+dwarves at the jordheim forges, best smithing in the realm
+the kobold merchants in jordheim drive a hard bargain
+
+# ---------------- Tir na Nog ----------------
+@kind ambient
+@topic capital
+@realm hib
+@who *
+@needs in_capital
+tir na nog is so green i keep walking past the merchants
+lurikeen merchants in tir na nog talk faster than i can read
+the lights in the trees of tir na nog never get old

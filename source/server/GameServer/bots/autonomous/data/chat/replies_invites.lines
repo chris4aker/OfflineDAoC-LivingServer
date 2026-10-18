@@ -1,0 +1,341 @@
+# Replies to another bot's opener, by what the opener invites (@answers). 0.36-se.4.
+# Every line must fit ANY opener of its type. New writing (see docs/bot-voices).
+
+# ---- chat: an observation, light reactions ------------------------------------------------
+@kind reply
+@answers chat
+@who *
+same
+yep
+for real
+agreed
+ha true
+right there with you
+cant disagree
+every time
+know what you mean
+noticed that too
+seems like it
+yup
+story of my life
+pretty much
+heh, sounds about right
+ha, same here
+been like that all night
+@answers chat,complaint
+tell me about it
+@answers chat,joke
+@intent banter
+lol so true
+@intent
+@who Socialite
+@answers chat
+haha yes, exactly this
+@who NoLifer
+@answers chat
+mhm. anyway, back to it
+
+# ---- joke ---------------------------------------------------------------------------------
+@kind reply
+@answers joke
+@who *
+groan
+lol stop
+that was bad
+lol i needed that
+heh, nice
+made me laugh
+ha! too true
+boo, terrible
+lol where do you get these
+heh, old one but good
+ha, im stealing that one
+you should do comedy at the inn
+lol painful
+that one was awful, i loved it
+heh, very funny
+@intent laugh
+haha oh no
+@who Socialite
+@intent
+hahaha ok that was good
+@who Daredevil
+lol ill try that next pull
+@who Crafter
+heh, ill tell that one at the forge
+
+# ---- boast --------------------------------------------------------------------------------
+@kind reply
+@answers boast
+@who *
+nice!
+gratz on that
+show off
+jealous
+not bad at all
+wow nice
+lucky
+well earned
+must be nice
+ok im impressed
+lucky you
+gz, worth the grind
+brag brag brag
+teach me
+very nice
+go you
+screenshot or it didnt happen
+@intent banter
+lol sure you did
+@intent
+@who Socialite
+yay, so happy for you!
+@who Leveler
+nice, now keep going
+@who Daredevil
+cute, try it on something red next
+
+# ---- complaint ----------------------------------------------------------------------------
+@kind reply
+@answers complaint
+@who *
+ugh, same
+rough
+been there
+happens to the best of us
+bad luck
+it gets better
+hang in there
+yep, happened to me too
+thats annoying
+sorry, that is rough
+take a break maybe
+the dice hate us all
+next one will go better
+bleh
+ugh, the worst
+@who Socialite
+aww, sorry, that is awful
+@who NoLifer
+part of the game. keep going
+@who Leveler
+log it and move on, xp waits for nobody
+@who Daredevil
+eh, still more fun than playing safe
+
+# ---- news ---------------------------------------------------------------------------------
+@kind reply
+@answers news
+@who *
+oh nice
+huh, didnt know that
+good to know
+no way
+since when?
+about time
+where did you hear that?
+makes sense
+oh wow
+ty for the heads up
+noted, thx
+huh, cool
+wonder how long that lasts
+figures
+is that right?
+ill keep an eye out
+that explains a lot
+@who Explorer
+oh, ill have to go see
+@who Socialite
+ooh, tell me more
+
+# ---- lfg: someone looking for a group (never claim to invite) -----------------------------
+@kind reply
+@answers lfg
+@who *
+what lvl?
+gl
+try {dungeon}, lots of groups there
+what class are you?
+gl, should find one fast
+try {camp}, saw people there
+what are you looking to hunt?
+might have room later, no promises
+good luck, its quiet tonight
+same, been looking for ages
+check {dungeon}, groups form there
+gl, its slow right now
+a healer will get snapped up quick
+how close to the next level?
+what level are you now?
+post in faction too
+lots of people were at {camp} earlier
+@needs in_group
+our group is full, sorry
+@needs solo
+same here, lf a group too
+@needs
+@who Socialite
+gl! someone will grab you soon
+
+# ---- trade: someone selling or buying -----------------------------------------------------
+@kind reply
+@answers trade
+@who *
+how much?
+check the exchange first
+whats the price?
+what stats?
+might be interested, pst
+too rich for me
+what level is it?
+try the exchange, it sells there
+not for my class sorry
+seen those go cheap on the exchange
+is it still up?
+maybe, what are you asking?
+pst me the details
+ill pass, gl selling
+someone in faction might want it
+nice, gl with the sale
+that would make a nice twink item
+@who Crafter
+a crafter could beat that price
+@who NoLifer
+already have one, gl though
+
+# ---- ask: any question --------------------------------------------------------------------
+@kind reply
+@answers ask
+@who *
+no idea sorry
+good question
+not sure
+dunno
+beats me
+no clue
+i was wondering that too
+hmm not sure
+someone said something about that earlier
+cant help there sorry
+no idea, i just got here
+pretty sure yes but dont quote me
+i think so?
+couldnt tell you
+not a clue honestly
+wish i knew
+@answers ask,ask_where,ask_advice
+ask in faction maybe
+@answers ask,ask_advice
+maybe ask a trainer
+@answers ask,ask_where
+try asking a guard
+
+# ---- ask_where ----------------------------------------------------------------------------
+@kind reply
+@answers ask_where
+@who *
+follow the road
+check your map
+ask a guard, they know the way
+no idea where that is
+near {zone} i think
+take the horse from {capital}
+the stable master can get you most of the way
+past the bridge i think
+north of town, keep going
+i got lost there too
+somewhere past {camp}
+its on the map i think
+cant remember the way sorry
+out the gate, then ask a guard
+same area as {camp} i think
+long way from here, bring a friend
+@who Explorer
+oh i know that one, follow the river
+@who NoLifer
+horse, then walk. like everything
+
+# ---- ask_advice: how / what / why ---------------------------------------------------------
+@kind reply
+@answers ask_advice
+@who *
+trial and error mostly
+i just winged it
+go slow, con everything
+what worked for me was grouping
+read your spell descriptions
+try it and see
+keep it simple
+dont overthink it
+practice on blues first
+i asked that once, nobody knew
+watch someone do it once
+whatever works for you
+slowly, very slowly
+patience mostly
+good luck with that one
+@answers ask_advice,ask_opinion
+@intent classtalk
+depends on what you want
+@intent
+@who Leveler
+whatever gets the most xp per hour
+@who Crafter
+lots of practice and lots of coin
+
+# ---- ask_opinion: best / worth it / should i ----------------------------------------------
+@kind reply
+@answers ask_opinion
+@who *
+depends
+imo yes
+imo no
+worth it imo
+not worth it
+yes, do it
+i would
+i wouldnt
+hard to say
+eh, either way
+go for it
+personal taste really
+honestly both are fine
+i liked it
+overrated imo
+underrated imo
+do what is fun
+@who Daredevil
+always the risky one
+@who Leveler
+whichever is faster
+@who Socialite
+whatever your friends are doing
+
+# ---- ask_anyone: "anyone want to...?" -----------------------------------------------------
+@kind reply
+@answers ask_anyone
+@who *
+not me sorry
+maybe later
+i might be, gimme 10
+cant, mid camp
+sorry, busy
+maybe in a bit
+not right now
+cant right now, sorry
+i would but im far away
+busy, gl though
+ask again in a bit
+wish i could
+might be free soon
+pass, sorry
+count me out this time
+nope, sorry
+depends, what for?
+@needs at_camp
+cant leave the camp right now
+@needs traveling
+on the road right now, sorry
+@needs bag_full
+after i sell, maybe

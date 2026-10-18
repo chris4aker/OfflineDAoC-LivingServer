@@ -1,0 +1,406 @@
+# Replies to a player's short chat (0.36-se.4 intents) plus more lines for thin older intents.
+# New writing (see docs/bot-voices). {player} is whoever is being answered.
+
+# ---- thanks: the player said "ty", "thx" -------------------------------------------------
+@kind reply
+@intent thanks
+@who *
+np
+yw
+anytime
+sure thing
+np gl
+no problem
+any time {player}
+np, have fun
+glad to help
+no worries
+np, good luck out there
+happy to help
+dont mention it
+np {player}
+yw, safe travels
+np, pay it forward
+@who Socialite
+aww np, anytime!
+@who NoLifer
+np. back to it
+@who Daredevil
+np, now go pull something big
+@who Crafter
+np, come back if it breaks
+
+# ---- congrats: someone congratulated the bot ---------------------------------------------
+@kind reply
+@intent congrats
+@who *
+ty!
+thanks
+finally
+ty ty
+took forever
+ty {player}
+thank you!
+heh thanks, about time
+ty, off to the trainer now
+appreciate it
+ty, the grind continues
+ty, that one hurt
+thx, slow and steady
+ty, next one is the hard one
+@who Socialite
+aww ty {player}!!
+@who Leveler
+ty, right on pace
+@who NoLifer
+ty. onward
+@who Daredevil
+ty, only died twice on the way
+
+# ---- ding: the player announced a level ---------------------------------------------------
+@kind reply
+@intent ding
+@who *
+gz {player}
+grats {player}
+gratz
+ooh nice
+grats! what level?
+gz gz
+nice one, gz
+woo gz
+gz, spend those points well
+about time, gz
+congrats {player}
+gratz! new spells?
+gz, the grind pays off
+big gz
+@who Socialite
+yay grats {player}!!
+@who Leveler
+gz, keep that pace up
+@who NoLifer
+gz. next one
+@who Daredevil
+gz, now go pull something orange
+@who Crafter
+gz, need anything made for the new level?
+@who Explorer
+gz, more of the map opens up now
+
+# ---- laugh: "lol", "haha", "rofl" ----------------------------------------------------------
+@kind reply
+@intent laugh
+@who *
+:)
+ikr
+haha
+hehe
+rofl
+lolol
+hah
+lol right
+haha yeah
+heh, it happens
+lol i know
+glad someone finds it funny
+@answers joke
+haha good one
+lol nice
+ok that got me
+@answers
+@who Socialite
+hahaha
+@who NoLifer
+heh. yep
+@who Daredevil
+lol, worth it
+
+# ---- away: "brb", "afk" -------------------------------------------------------------------
+@kind reply
+@intent away
+@who *
+k
+kk
+take ur time
+np, ill be here
+sure
+k, hurry back
+no rush
+kk see you in a bit
+alright
+k, dont get eaten while afk
+ok, ill be around
+go go
+k, ill med up
+@who Socialite
+k! dont be long
+@who NoLifer
+k. ill keep going
+@who Leveler
+k, ill keep killing
+@needs in_group
+k, we will hold here
+
+# ---- back: "back", "re" -------------------------------------------------------------------
+@kind reply
+@intent back
+@who *
+wb
+wb {player}
+welcome back
+wb, that was quick
+there you are
+wb wb
+oh wb
+wb, all good?
+re
+wb, you didnt miss much
+wb, ready to go?
+wb, still alive over here
+yay wb
+@who Socialite
+wb!! missed you
+@who Leveler
+wb, lets get moving
+@who Crafter
+wb, bags emptied?
+
+# ---- rez: "rez pls", "anyone rez?" --------------------------------------------------------
+@kind reply
+@intent rez
+@who *
+ouch, where did you die?
+ask in faction, someone might be close
+oof, what got you?
+ouch
+rip
+that sucks, sorry
+where are you? ill ask around
+release and run back maybe, bind isnt far
+been there, gl
+@needs !can_rez
+no rez on me, sorry
+cant rez, sorry {player}
+not a rezzer, sorry
+wish i could, no rez spell
+@realm alb
+@needs !can_rez
+need a cleric or a friar, try faction
+@realm mid
+@needs !can_rez
+need a healer or shaman, try faction
+@realm hib
+@needs !can_rez
+need a druid or a warden, try faction
+@realm *
+@needs can_rez
+coming
+omw, hold on
+sec, rezzing
+on it
+dont release, coming
+hang on, rez inc
+brt, stay put
+sec, almost there
+
+# ---- alarm: "inc", "inc 10 mids" ----------------------------------------------------------
+@kind reply
+@intent alarm
+@who *
+where?
+how many?
+what classes?
+where at?
+how many and where?
+stealthers or a group?
+which keep?
+zerg or a small group?
+{enemy} again?
+careful
+call it in faction
+any healers with them?
+@needs !in_rvr
+im nowhere near the frontier, sorry
+cant, im out in pve
+@needs in_rvr
+omw
+on my way
+coming from the mg
+omw, 30 sec out
+heading there now
+coming, hold the door
+omw, dont chase
+rgr, omw
+
+# ---- classtalk: class and spec questions and opinions -------------------------------------
+@kind reply
+@intent classtalk
+@who *
+depends on your spec
+fun but squishy
+every class is fine with a good group
+they got nerfed last patch
+ask one in /who, they love talking about it
+spec matters more than the class
+played one to 20, liked it
+solid in groups, rough solo
+never played one, sorry
+great in rvr, slow to level
+people complain but they are fine
+strong if played right
+go with whatever looks fun
+every class thinks they are the gimped one
+lol everyone says that
+get a respec if you hate it
+@realm alb
+friars are gimped, i love them anyway
+theurgist pets everywhere, cant see a thing
+clerics are always in demand
+minstrel speed is the best thing in the realm
+necro pets do all the work lol
+wizards hit hard and die harder
+infils in every bush lately
+paladins have so many chants
+armsmen are the backbone of any group
+@realm mid
+skald speed saves lives
+healers have mez too, people forget
+shamans are underrated
+berserkers hit like a falling tree
+bonedancers bring a whole army
+runemasters are glass cannons
+thanes can do a bit of everything
+shadowblades are in every bush lately
+hunters and their pets lol
+@realm hib
+bards heal, speed and mez, what cant they do
+druids keep this realm alive
+enchanter pets hit harder than me
+animist shrooms everywhere
+eldritch nukes hurt
+mentalists are underrated
+heroes with a shield are hard to kill
+blademasters are a blast
+nightshades are in every bush lately
+
+# ---- botcheck: "are you a bot?" -----------------------------------------------------------
+@kind reply
+@intent botcheck
+@who *
+lol no
+do i type like one?
+i wish, id level while i sleep
+only before coffee
+a bot would have better gear than this
+nah, just slow at typing
+are you?
+lol i get that a lot
+some nights it feels like it
+only when im grinding
+bots dont die this much
+if i was a bot id pull better
+ask me again in a few hours
+lol, my family asks the same thing
+would a bot get lost this often?
+@who NoLifer
+hard to tell after this many hours
+@who Socialite
+haha no, but thats a new one
+
+# ---- more for older intents ---------------------------------------------------------------
+@kind reply
+@intent unknown
+@who *
+what?
+lol ok
+true
+hmm
+eh?
+sure, why not
+oh?
+ok
+uh huh
+if you say so
+lol what
+right
+mhm
+heh, maybe
+@answers chat,news
+really?
+
+@kind reply
+@intent grouping
+@who *
+sorry, solo for now
+post in faction, someone will bite
+what level range?
+i might be free later
+pst me when you form up
+need a tank or a healer?
+what camp are you thinking?
+i could use a group too
+ask at {camp}, people were forming earlier
+lots of groups near {dungeon} lately
+@needs solo
+inv me if you have room
+{level} {class} here if you need one
+@needs in_group
+full up here, sorry
+@needs in_group,!in_player_group
+ask our leader, might be a spot
+
+@kind reply
+@intent greeting
+@who *
+hiya
+heya {player}
+hey all
+hi
+hello
+sup
+hey there
+hey {player}, how goes?
+hail {player}
+well met
+howdy
+hey, how is the hunting?
+yo {player}
+@needs evening
+evening all
+
+@kind reply
+@intent trading
+@who *
+no idea what its worth
+check the exchange
+pst me
+no clue on pc, sorry
+depends who is buying
+wts or wtb?
+how much are you asking?
+might be worth something to a twink
+no coin here sorry, just bought armor
+pst me the stats
+not my class, sorry
+post it on the exchange and wait a bit
+i would just vendor it
+@who Crafter
+pst me what you need made
+
+@kind reply
+@intent help
+@who *
+what is it?
+sure, whats up?
+shoot
+try your trainer
+ask in faction, someone will know
+happy to help if i can
+whats wrong?
+stuck?
+con everything before you pull
+rest after every pull, saves deaths
+run to the guards if it goes bad
+bind at the nearest town
+sell your junk and buy better armor

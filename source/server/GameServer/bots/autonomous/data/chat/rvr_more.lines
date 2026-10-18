@@ -1,0 +1,69 @@
+# More frontier talk (old frontiers only: Emain Macha, Odin's Gate, Hadrian's Wall and the rest; mile
+# gates, portal keeps, relic keeps). in_rvr lines are said out there now; the rest are plans.
+# Levels start at 36 so frontier-now lines stay out of the 15-35 battlegrounds. New writing (see docs/bot-voices).
+
+# ---------------- Out in the frontier now ----------------
+@kind rvr
+@topic frontier
+@who *
+@levels 36-50
+@needs in_rvr
+zerg at the mg, careful
+anyone near {keep}?
+stealthers out tonight, stick together
+lost my group, anyone near amg?
+{enemy} 8man roaming near {keep}
+ram on the door at {keep}!
+{frontier} is crawling with {enemy} tonight
+anyone have speed? long run to {keep}
+waiting at the portal keep for a group
+almost got ganked at the bridge, close one
+lots of {enemy} at the mile gate, dont go alone
+dead quiet near {keep}, i dont trust it
+realm points are flowing tonight
+{keep} lord is still up, we have time
+group up at the portal keep, safer that way
+saw a {enemy} stealther near the mg, heads up
+our realm owns {frontier} tonight
+stuck in the zerg, cant see a thing for the lag
+sitting by the mg waiting for a fight
+watch the hill near {keep}, archers up there
+@invites ask_where
+anyone know where the {enemy} zerg went?
+@invites ask_anyone
+small group heading toward {keep}, anyone want in?
+@invites boast
+got my first kill out here, heart still pounding
+@invites complaint
+died to a {enemy} archer i never even saw
+@invites chat
+keep fights in {frontier} are the best part of the game
+
+# ---------------- Planning to go ----------------
+@kind rvr
+@topic frontier
+@who *
+@levels 30-50
+@invites ask_anyone
+frontier later?
+relic raid this weekend?
+anyone going out to {frontier} tonight?
+anyone know if {keep} is ours right now?
+who wants to make an 8man for {frontier}?
+@invites ask
+did we lose {keep} again?
+@invites chat
+need a few more levels before i try the frontier
+saving realm points for my next realm ability, so close
+keep takes are fun but defending pays better rp
+@invites ask_advice
+thinking of trying rvr for the first time, any tips?
+@invites news
+heard the {enemy} took a relic, any truth to that?
+@invites complaint
+my realm points are pitiful, need a good night out there
+stealthers ruined my last frontier trip, trying again tonight
+@invites joke
+relic raid at some strange hour again, i bet
+@invites ask_opinion
+the frontier is the real game and leveling is just the road there, right?

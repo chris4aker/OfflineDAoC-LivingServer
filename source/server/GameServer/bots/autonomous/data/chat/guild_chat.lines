@@ -1,0 +1,226 @@
+# Idle guild chat between guildmates (kind guild), by the guild's charter (@topic). "general" fits any
+# guild. Replaces AutonomousBotGuildChatLines.Idle(). Lines ask and suggest; they never promise what a
+# guildmate will do. New writing (see docs/bot-voices).
+
+# ---------------- Leveling guilds ----------------
+@kind guild
+@topic leveling
+@who *
+{level} {class} here, anyone close in level?
+who is leveling tonight? could use the company
+anyone know a good camp around {level}?
+anyone else stuck in the slow levels?
+{dungeon} anyone? heard its good at our level
+anyone free to heal for a couple hours of xp?
+@invites ask_anyone
+guild group in 20 at {camp}?
+half a level to go, anyone want to help me push?
+@invites ask
+what level is everyone at now?
+@invites chat
+{camp} was good xp for me, worth a look around {level}
+whoever told me about {camp}, ty
+at {camp}, room for one more if you want the xp
+need two bubbles to ding, grinding solo till then
+leveling an alt tonight, dont mind me
+leveling with you lot makes the slow nights go faster
+@invites complaint
+i swear this level is twice as long as the last one
+solo xp is crawling tonight
+@invites boast
+got a full bubble on one pull, best camp yet
+new camp, everything cons yellow, xp is great
+@needs just_leveled
+dinged {level}, slowly getting there
+
+# ---------------- Social guilds ----------------
+@kind guild
+@topic social
+@who *
+@invites ask
+hey all, how is everyone?
+what is everyone doing tonight?
+best thing that happened to you this week? go
+need a name for my next alt, ideas?
+@invites ask_anyone
+anyone want to do something silly tonight?
+who wants to race to {capital} on foot?
+@invites chat
+quiet in here tonight
+this guild is the best part of my week, just saying
+hi everyone, long day, glad to be on
+guild chat is the best channel in the game
+i missed you all, it was a long week
+just watched someone run a train through a whole camp, poor group
+met a friendly {enemy} out there, he bowed and walked off
+@invites joke
+who has the worst luck with drops? pretty sure its me
+my cat walked on the keyboard and nearly pulled a red con
+who is the best healer in this guild? be honest
+remember when we wiped three times at {camp}? good times
+somebody tell a joke, too quiet in here
+@invites none
+brb food
+@invites chat
+@needs evening
+evening all, what did i miss
+@needs night
+gn all, see you tomorrow
+@invites ask_anyone
+who else is still up?
+@invites chat
+@needs day
+morning all, coffee first then xp
+@needs outdoors
+just sat down in {zone} to enjoy the view for a bit
+@needs in_capital
+hanging around {capital} chatting, come say hi
+
+# ---------------- RvR guilds ----------------
+@kind guild
+@topic rvr
+@who *
+@levels 20-50
+@invites ask_anyone
+who is up for the frontier tonight?
+anyone heard which keeps we hold right now?
+anyone want to run a small group out to {frontier}?
+realm points were good last night, again tonight?
+need more healers for rvr, any volunteers?
+relic raid this weekend, who is in?
+who has their first realm ability yet?
+8man practice tonight? we keep losing to the same group
+who wants darkness falls if we get it back?
+@invites ask_opinion
+we need a guild claim on a keep, thoughts?
+@invites chat
+{keep} changed hands again, i think
+frontier is quiet, might be a good time to try {keep}
+lost {keep}, we should take it back this week
+@invites complaint
+got ganked at the mile gate again, stealthers everywhere
+the {enemy} were everywhere last night
+@invites joke
+stealthers had a good night, my corpse can confirm
+@invites news
+{enemy} relic raid rumors again, keep an eye out
+@invites boast
+just got a realm rank, so happy
+@invites chat
+@needs in_rvr
+out by {keep}, quiet so far
+@needs in_rvr,in_group
+small group out in {frontier}, room for a healer if anyone is on
+
+# ---------------- Raiding guilds ----------------
+@kind guild
+@topic raiding
+@who *
+@levels 30-50
+@invites ask_anyone
+{dungeon} run this weekend, who is in?
+need a puller who knows {dungeon}, any volunteers?
+raid sign ups for saturday, who is in?
+we need two more healers for the dragon, any takers?
+who still needs seals from darkness falls?
+who has decent fire resists for the dragon?
+need a main assist for the next raid, volunteers?
+who is up for a darkness falls run tonight?
+anyone have notes on the named in {dungeon}?
+@invites ask_opinion
+loot rules for the raid, need before greed ok?
+@invites chat
+dragon raid soon, start saving potions
+last raid was a mess, lets plan better this time
+the named in {dungeon} drops a nice ring, i hear
+with eight more we could try the big room in {dungeon}
+lets do a practice run in {dungeon} first
+bring every rez class we have, we will need them
+@invites boast
+raid recap: two wipes, one kill, i call that a win
+@invites complaint
+we wiped on the named but we were so close
+@invites chat
+the last dragon raid was the most fun i have had in months
+@invites ask_anyone
+who has a full crafted suit for raids?
+
+# ---------------- Crafting guilds ----------------
+@kind guild
+@topic crafting
+@who *
+skilling up tonight if anyone wants to keep me company
+hit a new skill tier, finally
+found a dye color i actually like, finally
+fletching is quiet work, good for chatting
+making {level} gear to skill up, the merchants get most of it
+alchemy is finally paying off
+sold a full suit today, guild discount of course
+i need metal bars, lots of them
+anyone else grinding tailoring? misery loves company
+anyone near a forge? i could use the company while i grind
+anyone know what spellcraft gems sell for these days?
+@invites boast
+masterpiece! first one in weeks
+@invites complaint
+spellcraft is eating all my gold
+99 percent quality again, so close
+the merchants raised leather prices again
+crafting is a money pit but i love it
+@invites joke
+anyone want a slightly ugly helm? the dye went wrong
+two skill points in an hour, legendary by retirement at this rate
+@invites ask_anyone
+anyone have spare cloth lying around?
+@invites chat
+making arrows all night, my fingers hurt
+
+# ---------------- Any guild ----------------
+@kind guild
+@topic general
+@who *
+anyone on?
+hey guild
+slow night, anyone doing anything?
+heading to town to sell, then back out
+anyone heading to {capital}?
+anybody seen {keep} change hands lately?
+anyone know a good spot for a {class} at {level}?
+nothing beats a quiet night with the guild
+my {class} is finally starting to feel strong
+saving up for new armor, slowly
+ty all for the help earlier
+new spec feels good, glad i changed it
+found a named nobody was camping, best surprise all week
+@invites ask
+{class} at {level}, bored, ideas?
+how is everyone's night going?
+what are we doing this weekend?
+@invites ask_anyone
+who is around {level}? want to try {dungeon} at some point
+need a break from xp, anyone want to just chat?
+who wants to help a guildie with a named?
+@invites ask_opinion
+is it just me or is the lag bad tonight?
+@invites joke
+just died to a grey con, dont ask
+how does everyone have so much money
+got a nice drop, of course its for another class
+@invites none
+brb, someone at the door
+@invites chat
+@needs outdoors
+camping {zone} solo, its peaceful
+running around {zone} looking for trouble
+@invites ask_anyone
+anyone near {zone}? could use a hand
+@needs outdoors,just_died
+need a rez in {zone} if anyone is near, no rush
+@invites chat
+@needs bag_full
+bags full again, off to sell
+@needs just_leveled
+just dinged, ty for all the tips everyone
+@needs just_died
+@invites complaint
+lost a chunk of xp on that death, ugh

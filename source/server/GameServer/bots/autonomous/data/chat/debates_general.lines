@@ -170,7 +170,7 @@ A: you are not well
 A: group loot rules tonight? need before greed?
 B: need before greed, roll for anything nobody needs
 C: random loot is fair, everyone gets the same chance
-B: then a wizard gets the shield and sells it
+B: then a caster gets the shield and sells it
 C: and the tank buys it off him, everyone wins
 D: just do not ninja it and we are fine
 A: need before greed it is
@@ -228,11 +228,11 @@ A: guild night at {keep}, everyone come
 @scene off_hour_raids
 @role B type=Leveler,Socialite
 @role C type=NoLifer
-A: they took our relic at four in the morning again
+A: they took our relic at four am again
 B: hitting a keep when nobody is awake is not winning
 C: a relic left unguarded is a relic waiting to be taken
 B: there is no fight in that, just walking in
-C: then guard it. war has no bedtime
+C: then guard it. war does not sleep
 A: setting an alarm for the next one, apparently
 
 @topic bind_points

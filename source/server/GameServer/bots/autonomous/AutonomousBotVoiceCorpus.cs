@@ -18,7 +18,14 @@ public sealed class AutonomousBotVoiceCorpus
     public const int MaxLength = 160;
 
     public sealed record Line(string Id, string Kind, string Topic, string[] Who, string Realm, string[] Classes,
-        int LevelLow, int LevelHigh, string[] Needs, string Intent, string Mood, double Weight, string Text);
+        int LevelLow, int LevelHigh, string[] Needs, string Intent, string Mood, double Weight, string Text)
+    {
+        /// <summary>An opener's invitation: what kind of answer it asks for (none, chat, joke, boast, ask_where...).</summary>
+        public string Invites { get; init; } = string.Empty;
+
+        /// <summary>A reply's or closing's answers: the opener invitations it fits.</summary>
+        public string[] Answers { get; init; } = [];
+    }
 
     public sealed record Beat(string Role, string[] Variants, bool Optional, int PauseSeconds)
     {
@@ -30,6 +37,9 @@ public sealed class AutonomousBotVoiceCorpus
     public sealed record Scene(string Id, string Topic, string Realm, int LevelLow, int LevelHigh,
         IReadOnlyDictionary<string, RoleSpec> Roles, Beat[] Beats)
     {
+        /// <summary>Time-of-day flags the scene needs ("night", "!day"); empty for any time.</summary>
+        public string[] Needs { get; init; } = [];
+
         public string[] SpeakingRoles => Beats.Where(beat => !beat.IsPause).Select(beat => beat.Role).Distinct().ToArray();
     }
 
@@ -44,13 +54,20 @@ public sealed class AutonomousBotVoiceCorpus
     public Line[] Lines { get; }
     public Scene[] Scenes { get; }
     public Voice[] Voices { get; }
+    private readonly Dictionary<string, Line> _byId;
 
     private AutonomousBotVoiceCorpus(Line[] lines, Scene[] scenes, Voice[] voices)
     {
         Lines = lines;
         Scenes = scenes;
         Voices = voices;
+        _byId = new Dictionary<string, Line>(StringComparer.Ordinal);
+        foreach (Line line in lines)
+            _byId.TryAdd(line.Id, line);
     }
+
+    /// <summary>The corpus line with this id, or null.</summary>
+    public Line LineById(string id) => id != null && _byId.TryGetValue(id, out Line line) ? line : null;
 
     #region Parsing
 
@@ -93,7 +110,11 @@ public sealed class AutonomousBotVoiceCorpus
         (int low, int high) = Levels(e);
         string realm = Str(e, "realm");
         return new Line(Str(e, "id"), Str(e, "kind"), Str(e, "topic"), Strs(e, "who"), realm.Length == 0 ? "*" : realm,
-            Strs(e, "class"), low, high, Strs(e, "needs"), Str(e, "intent"), Str(e, "mood"), Num(e, "weight", 1.0), Str(e, "text"));
+            Strs(e, "class"), low, high, Strs(e, "needs"), Str(e, "intent"), Str(e, "mood"), Num(e, "weight", 1.0), Str(e, "text"))
+        {
+            Invites = Str(e, "invites"),
+            Answers = Strs(e, "answers"),
+        };
     }
 
     private static Scene ParseScene(JsonElement e)
@@ -112,7 +133,10 @@ public sealed class AutonomousBotVoiceCorpus
             return new Beat(role, variants, Bool(b, "optional"), (int)Num(b, "pause", 0));
         }).ToArray();
         string realm = Str(e, "realm");
-        return new Scene(Str(e, "id"), Str(e, "topic"), realm.Length == 0 ? "*" : realm, low, high, roles, beats);
+        return new Scene(Str(e, "id"), Str(e, "topic"), realm.Length == 0 ? "*" : realm, low, high, roles, beats)
+        {
+            Needs = Strs(e, "needs"),
+        };
     }
 
     private static Voice ParseVoice(JsonProperty p)
@@ -151,16 +175,54 @@ public sealed class AutonomousBotVoiceCorpus
     public static bool TypeFits(string[] types, BotPersonalityType type) =>
         types.Length == 0 || types.Any(t => string.Equals(t, type.ToString(), StringComparison.OrdinalIgnoreCase));
 
-    /// <summary>Lines of a kind this speaker may say now (realm, class, level band, needed context, intent).</summary>
-    public IEnumerable<Line> Candidates(string kind, Speaker speaker, string intent = null, string topic = null, string mood = null) =>
+    /// <summary>
+    /// True when the speaker's flags meet every need: "in_group" must be set, "!in_group" must not be
+    /// (0.36-se.4: lines could only ask for a flag, so "anyone want to duo?" was said by grouped bots too).
+    /// </summary>
+    public static bool NeedsMet(string[] needs, IReadOnlySet<string> flags)
+    {
+        foreach (string need in needs)
+        {
+            bool met = need.StartsWith('!') ? !flags.Contains(need[1..]) : flags.Contains(need);
+            if (!met)
+                return false;
+        }
+        return true;
+    }
+
+    /// <summary>Lines of a kind this speaker may say now (realm, class, level band, needed context, intent, answers).</summary>
+    public IEnumerable<Line> Candidates(string kind, Speaker speaker, string intent = null, string topic = null, string mood = null,
+        string answers = null) =>
         Lines.Where(line => line.Kind == kind &&
                             (topic == null || string.Equals(line.Topic, topic, StringComparison.Ordinal)) &&
                             (mood == null || string.Equals(line.Mood, mood, StringComparison.Ordinal)) &&
                             RealmFits(line.Realm, speaker.Realm) &&
                             ClassFits(line.Classes, speaker.ClassName) &&
                             speaker.Level >= line.LevelLow && speaker.Level <= line.LevelHigh &&
-                            line.Needs.All(need => speaker.Flags.Contains(need)) &&
-                            (string.IsNullOrEmpty(intent) || string.Equals(line.Intent, intent, StringComparison.OrdinalIgnoreCase)));
+                            NeedsMet(line.Needs, speaker.Flags) &&
+                            (string.IsNullOrEmpty(intent) || string.Equals(line.Intent, intent, StringComparison.OrdinalIgnoreCase)) &&
+                            (string.IsNullOrEmpty(answers) || line.Answers.Contains(answers, StringComparer.Ordinal)));
+
+    /// <summary>
+    /// The invitations a reply may answer, most specific first: "ask_where" is answered by "ask_where"
+    /// replies, then by "ask" replies. "none" (and an empty invitation) asks for no reply.
+    /// </summary>
+    public static string[] AnswerChain(string invites)
+    {
+        if (string.IsNullOrEmpty(invites) || invites == "none")
+            return [];
+        int cut = invites.IndexOf('_');
+        return cut > 0 ? [invites, invites[..cut]] : [invites];
+    }
+
+    /// <summary>The family of an invitation ("ask_where" -> "ask"), used for closings and reply counts.</summary>
+    public static string InviteFamily(string invites)
+    {
+        if (string.IsNullOrEmpty(invites))
+            return string.Empty;
+        int cut = invites.IndexOf('_');
+        return cut > 0 ? invites[..cut] : invites;
+    }
 
     /// <summary>A line's draw weight for this speaker: lines written for its personality type count triple.</summary>
     public static double WeightFor(Line line, Speaker speaker) =>
@@ -173,10 +235,53 @@ public sealed class AutonomousBotVoiceCorpus
     public bool TryPick(string kind, Speaker speaker, IReadOnlyDictionary<string, string> slots, RecentLines recent,
         DateTime now, Random random, out string text, out string lineId, string intent = null, string topic = null, string mood = null)
     {
-        text = null;
-        lineId = null;
-        var pool = Candidates(kind, speaker, intent, topic, mood)
-            .Where(line => recent == null || !recent.WasUsed(speaker.Realm, line.Id, now))
+        bool picked = TryPick(new Request(kind, speaker, slots, recent, now, random) { Intent = intent, Topic = topic, Mood = mood },
+            out Picked result);
+        text = result?.Text;
+        lineId = result?.Line.Id;
+        return picked;
+    }
+
+    /// <summary>What to pick: a kind for a speaker, with optional filters and the no-repeat rules.</summary>
+    public sealed record Request(string Kind, Speaker Speaker, IReadOnlyDictionary<string, string> Slots, RecentLines Recent,
+        DateTime Now, Random Random)
+    {
+        public string Intent { get; init; }
+        public string Topic { get; init; }
+        public string Mood { get; init; }
+        public string Answers { get; init; }
+
+        /// <summary>
+        /// When every fitting line was heard within the six-hour window, a line not heard for this long may
+        /// be used again (short, common replies: "np", "lol", "where?"), so a player is never left unanswered
+        /// because the pool ran dry. Null keeps the full window.
+        /// </summary>
+        public TimeSpan? RelaxTo { get; init; }
+
+        /// <summary>The local hour on the PC's clock, for "tonight" by day (null: no time adaptation).</summary>
+        public int? LocalHour { get; init; }
+    }
+
+    /// <summary>A picked line: its text as sent, the corpus line, and a typo correction the speaker may send after it ("*word").</summary>
+    public sealed record Picked(string Text, Line Line, string Correction);
+
+    public bool TryPick(Request request, out Picked result)
+    {
+        result = null;
+        if (TryPickFrom(request, line => request.Recent == null || !request.Recent.WasUsed(request.Speaker.Realm, line.Id, request.Now),
+                out result))
+            return true;
+        return request.RelaxTo is TimeSpan relax && request.Recent != null &&
+               TryPickFrom(request, line => !request.Recent.UsedWithin(request.Speaker.Realm, line.Id, request.Now, relax), out result);
+    }
+
+    private bool TryPickFrom(Request request, Func<Line, bool> allowed, out Picked result)
+    {
+        result = null;
+        Speaker speaker = request.Speaker;
+        Random random = request.Random;
+        var pool = Candidates(request.Kind, speaker, request.Intent, request.Topic, request.Mood, request.Answers)
+            .Where(allowed)
             .Select(line => (Line: line, Weight: WeightFor(line, speaker)))
             .Where(entry => entry.Weight > 0)
             .ToList();
@@ -193,14 +298,82 @@ public sealed class AutonomousBotVoiceCorpus
             }
             Line line = pool[index].Line;
             pool.RemoveAt(index);
-            if (!TryFill(line.Text, slots, out string filled))
+            if (!TryFill(line.Text, request.Slots, out string filled))
                 continue;
-            text = Style(filled, VoiceFor(speaker.Id), random);
-            lineId = line.Id;
-            recent?.Use(speaker.Realm, line.Id, now);
+            if (request.LocalHour is int hour)
+                filled = ForTimeOfDay(filled, hour);
+            string text = Style(filled, VoiceFor(speaker.Id), random, out string correction);
+            request.Recent?.Use(speaker.Realm, line.Id, request.Now);
+            result = new Picked(text, line, correction);
             return true;
         }
         return false;
+    }
+
+    #endregion
+
+    #region Time of day
+
+    /// <summary>"day" 6-17, "evening" 17-23, "night" 23-6, on the PC's local clock.</summary>
+    public static string TimeFlag(int localHour) => localHour is >= 6 and < 17 ? "day" : localHour is >= 17 and < 23 ? "evening" : "night";
+
+    /// <summary>
+    /// By day, "tonight" reads "today" and "all night" reads "all day", so the many lines that say
+    /// "tonight" fit a noon session too (0.36-se.4; lines that only fit the evening say so with @needs).
+    /// </summary>
+    public static string ForTimeOfDay(string text, int localHour)
+    {
+        if (string.IsNullOrEmpty(text) || TimeFlag(localHour) != "day")
+            return text;
+        string result = Regex.Replace(text, @"\b(tonight|tonite)\b", "today", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        return Regex.Replace(result, @"\ball night\b", "all day", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    }
+
+    #endregion
+
+    #region Plurals
+
+    private static readonly Dictionary<string, string> IrregularPlurals = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["wolf"] = "wolves", ["werewolf"] = "werewolves", ["dwarf"] = "dwarves", ["elf"] = "elves", ["thief"] = "thieves",
+        ["man"] = "men", ["woman"] = "women", ["child"] = "children", ["mouse"] = "mice", ["louse"] = "lice",
+        ["goose"] = "geese", ["ox"] = "oxen", ["deer"] = "deer", ["sheep"] = "sheep", ["fish"] = "fish",
+        ["boar"] = "boars", ["undead"] = "undead", ["kin"] = "kin", ["fungus"] = "fungi", ["cyclops"] = "cyclopes",
+        ["leaf"] = "leaves", ["knife"] = "knives", ["staff"] = "staffs", ["djinn"] = "djinn",
+    };
+
+    /// <summary>
+    /// The plural of a monster name for {monsters}: the last word changes ("hill cat" -> "hill cats",
+    /// "orc clanshacker" -> "orc clanshackers", "giant wolf" -> "giant wolves"). A name with "of" changes
+    /// the word before it ("bwca of the hills" -> "bwcas of the hills").
+    /// </summary>
+    public static string Plural(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return name;
+        string[] words = name.Trim().Split(' ');
+        int head = Array.FindIndex(words, w => w is "of" or "from" or "in" or "on");
+        int at = head > 0 ? head - 1 : words.Length - 1;
+        words[at] = PluralWord(words[at]);
+        return string.Join(' ', words);
+    }
+
+    private static string PluralWord(string word)
+    {
+        if (word.Length == 0)
+            return word;
+        if (IrregularPlurals.TryGetValue(word, out string irregular))
+            return char.IsUpper(word[0]) ? char.ToUpperInvariant(irregular[0]) + irregular[1..] : irregular;
+        string lower = word.ToLowerInvariant();
+        if (lower.EndsWith("man") && lower.Length > 4)
+            return word[..^3] + "men";
+        if (lower.EndsWith("s") || lower.EndsWith("x") || lower.EndsWith("z") || lower.EndsWith("ch") || lower.EndsWith("sh"))
+            return lower.EndsWith("us") || lower.EndsWith("ss") || !lower.EndsWith("s") ? word + "es" : word;
+        if (lower.EndsWith("y") && lower.Length > 1 && "aeiou".IndexOf(lower[^2]) < 0)
+            return word[..^1] + "ies";
+        if (lower.EndsWith("f") && !lower.EndsWith("ff") && !lower.EndsWith("ef"))
+            return word[..^1] + "ves";
+        return word + "s";
     }
 
     #endregion
@@ -247,26 +420,44 @@ public sealed class AutonomousBotVoiceCorpus
     }
 
     /// <summary>Applies a writing style (the server version of tools/bot-voices/preview.py's voice_apply).</summary>
-    public static string Style(string text, Voice voice, Random random)
+    public static string Style(string text, Voice voice, Random random) => Style(text, voice, random, out _);
+
+    /// <summary>Chance that a typo-prone writer sends a "*word" correction after a typo (0.36-se.4).</summary>
+    public const double CorrectionChance = 0.45;
+
+    /// <summary>
+    /// Applies a writing style. <paramref name="correction"/> is "*word" when the style made a typo and the
+    /// writer would fix it in a second line (typo-prone writers often did), else null.
+    /// </summary>
+    public static string Style(string text, Voice voice, Random random, out string correction)
     {
+        correction = null;
         if (string.IsNullOrEmpty(text) || voice == null)
             return text;
         string result = text;
+        // A "proper" writer still types chat words as chat words: "lol" and "ty ty", not "Lol." or "Thanks thanks."
+        // (audit 2026-10-18).
+        bool chatToken = IsChatToken(text);
         foreach ((string from, string to) in voice.Abbreviate)
             result = Regex.Replace(result, $@"(?<=^|\s){Regex.Escape(from)}(?=$|[\s,.?!])", to, RegexOptions.CultureInvariant);
-        if (voice.Expand.Count > 0)
+        if (voice.Expand.Count > 0 && !chatToken)
             result = string.Join(' ', result.Split(' ').Select(word => voice.Expand.TryGetValue(word, out string full) ? full : word));
         if (voice.StripPunctuation)
             result = result.TrimEnd('.', '!').Replace(",", string.Empty);
         if (voice.TypoChance > 0 && random.NextDouble() < voice.TypoChance)
-            result = SwapTypo(result, random);
+        {
+            string typed = SwapTypo(result, random, out string fixedWord);
+            if (typed != result && fixedWord != null && random.NextDouble() < CorrectionChance)
+                correction = "*" + fixedWord;
+            result = typed;
+        }
         if (voice.Emotes.Length > 0 && voice.EmoteChance > 0 && random.NextDouble() < voice.EmoteChance)
             result += " " + voice.Emotes[random.Next(voice.Emotes.Length)];
-        if (voice.Capitalize && result.Length > 0)
+        if (voice.Capitalize && result.Length > 0 && !chatToken)
             result = char.ToUpperInvariant(result[0]) + result[1..];
         if (voice.CapitalizeSentences)
             result = Regex.Replace(result, @"([.!?] )([a-z])", m => m.Groups[1].Value + m.Groups[2].Value.ToUpperInvariant());
-        if (voice.EndPeriod && result.Length > 0)
+        if (voice.EndPeriod && result.Length > 0 && !chatToken)
         {
             string[] after = voice.NoPeriodAfter.Length > 0 ? voice.NoPeriodAfter : new[] { ".", "!", "?" };
             if (!after.Any(end => result.EndsWith(end, StringComparison.Ordinal)))
@@ -276,8 +467,12 @@ public sealed class AutonomousBotVoiceCorpus
     }
 
     /// <summary>Swaps two neighboring letters in one word of four or more letters.</summary>
-    public static string SwapTypo(string text, Random random)
+    public static string SwapTypo(string text, Random random) => SwapTypo(text, random, out _);
+
+    /// <summary>Swaps two neighboring letters in one word of four or more letters; <paramref name="original"/> is that word as it should be.</summary>
+    public static string SwapTypo(string text, Random random, out string original)
     {
+        original = null;
         string[] words = text.Split(' ');
         int[] eligible = words.Select((word, index) => (word, index))
             .Where(x => x.word.Length >= 4 && x.word.All(char.IsLetter)).Select(x => x.index).ToArray();
@@ -286,9 +481,26 @@ public sealed class AutonomousBotVoiceCorpus
         int pick = eligible[random.Next(eligible.Length)];
         char[] letters = words[pick].ToCharArray();
         int at = random.Next(letters.Length - 1);
+        if (letters[at] == letters[at + 1])
+            return text;
+        original = words[pick];
         (letters[at], letters[at + 1]) = (letters[at + 1], letters[at]);
         words[pick] = new string(letters);
         return string.Join(' ', words);
+    }
+
+    private static readonly HashSet<string> ChatTokens = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "lol", "heh", "hehe", "haha", "ha", "rofl", "lmao", "gz", "grats", "gratz", "ty", "thx", "np", "k", "kk", "ok", "brb",
+        "afk", "wb", "gn", "gl", "omw", "inc", "re", "hm", "hmm", "huh", "yw", "sry", "nm", "nvm", "pst", "ding", "lfg", "lfm",
+        "oom", "med", "rez", "r", "y", "n", "yep", "nope", "ikr", "bah", "ugh", "doh", "w00t", "woot",
+    };
+
+    /// <summary>A line made only of chat words ("lol", "ty ty", "gz!"), which no writer capitalizes or ends with a period.</summary>
+    public static bool IsChatToken(string text)
+    {
+        string[] words = Regex.Replace(text ?? string.Empty, @"[^a-zA-Z0-9 ]", " ").Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return words.Length is > 0 and <= 3 && words.All(ChatTokens.Contains);
     }
 
     #endregion
@@ -332,6 +544,36 @@ public sealed class AutonomousBotVoiceCorpus
         {
             lock (_byRealm)
                 return _byRealm.TryGetValue(realm, out var used) ? used.Count : 0;
+        }
+
+        /// <summary>True when the line was used in this realm less than <paramref name="span"/> ago.</summary>
+        public bool UsedWithin(eRealm realm, string id, DateTime now, TimeSpan span)
+        {
+            lock (_byRealm)
+                return _byRealm.TryGetValue(realm, out var used) && used.TryGetValue(id, out DateTime when) && now - when < span;
+        }
+
+        /// <summary>
+        /// Lines used since <paramref name="since"/> (exclusive), for saving: 0.36-se.4 keeps the window across
+        /// server restarts (the audit found 31% of a session's lines had been heard the session before).
+        /// </summary>
+        public (eRealm Realm, string Id, DateTime When)[] UsedSince(DateTime since)
+        {
+            lock (_byRealm)
+                return _byRealm.SelectMany(realm => realm.Value.Where(entry => entry.Value > since)
+                    .Select(entry => (realm.Key, entry.Key, entry.Value))).ToArray();
+        }
+
+        /// <summary>Restores a saved use (the later time wins).</summary>
+        public void Restore(eRealm realm, string id, DateTime when)
+        {
+            lock (_byRealm)
+            {
+                if (!_byRealm.TryGetValue(realm, out var used))
+                    _byRealm[realm] = used = new Dictionary<string, DateTime>(StringComparer.Ordinal);
+                if (!used.TryGetValue(id, out DateTime known) || known < when)
+                    used[id] = when;
+            }
         }
     }
 

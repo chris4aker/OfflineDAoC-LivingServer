@@ -1,0 +1,105 @@
+# Dungeon talk, said from inside a dungeon (inside one, {zone} is the dungeon's name).
+# Named-dungeon lines are worded so they still read right from another dungeon of the same band
+# (a fact or a memory about the place, never "we are standing in it"). New writing (see docs/bot-voices).
+
+# ---------------- Any dungeon ----------------
+@kind ambient
+@topic dungeon
+@who *
+@needs in_dungeon
+this place is a maze, every corridor looks the same
+{zone} always makes me lose my sense of direction
+who has a map of this place?
+i swear we passed that torch already
+the adds in here come from nowhere
+corridors are tight, one bad pull and its over
+these {monsters} always bring a friend
+the respawn in {zone} is faster than outside, i swear
+nice and quiet down here, too quiet
+which way is out again?
+anyone know where the named spawns in {zone}?
+if we wipe down here its a long walk back
+that room past the stairs is a death trap
+i like dungeons, no weather and no zerg
+the echo in here makes everything sound closer
+{monster} pathing is so odd in these halls
+@who Explorer
+i want to see the bottom floor of {zone} at least once
+@who NoLifer
+been down here so long i forgot what the sun looks like
+@who Daredevil
+the deeper rooms have better xp, just saying
+@who *
+@needs in_dungeon,in_group
+stay close, its easy to get split up in {zone}
+someone remember the way back in case we wipe
+pull to the hallway, not the room
+lets clear back to the entrance before we push on
+@invites ask_where
+anyone remember which turn leads to the named camp?
+
+# ---------------- Albion ----------------
+@kind ambient
+@topic dungeon
+@realm alb
+@who *
+@needs in_dungeon
+@levels 7-17
+tomb of mithra still gives me the creeps
+the haunting gloom in mithra looks harmless until it hits
+@levels 16-24
+tepok's mine is a lot of tunnels for a little xp
+@levels 19-32
+keltoi fogou is cramped but the camps are good
+@levels 32-50
+stonehenge barrows, where good groups go to get humbled
+the goblins in the barrows never stop coming
+@invites ask_opinion
+barrows or avalon isle for the next few levels?
+
+# ---------------- Midgard ----------------
+@kind ambient
+@topic dungeon
+@realm mid
+@who *
+@needs in_dungeon
+@levels 8-21
+nisse's lair tomte are tougher than they look
+@levels 18-28
+cursed tomb draugr warriors, still hate them
+corpse crawlers in the cursed tomb, worst name worst monster
+@levels 20-35
+the goblins in vendo run for help every single time
+@levels 25-40
+varulvhamn werewolves hit like a falling tree
+@levels 33-50
+spindelhalla spiders give me the shivers
+spindel has the best group camps in midgard, no contest
+
+# ---------------- Hibernia ----------------
+@kind ambient
+@topic dungeon
+@realm hib
+@who *
+@needs in_dungeon
+@levels 12-20
+muire tomb mummy hags, nobody warned me
+@levels 15-25
+spraggon den rock sprites, cute until they hit
+@levels 20-30
+koalinth caverns are wet, cold and full of fish people
+@levels 27-40
+treibh caillte is a long walk for a short pull
+@levels 30-45
+coruscating mine is pretty, right up until something swings at you
+the crystal glow in coruscating mine makes it hard to see adds
+
+# ---------------- Darkness Falls (shared) ----------------
+@kind ambient
+@topic darkness_falls
+@who *
+@needs in_dungeon
+@levels 20-50
+darkness falls demons do not care how good your gear is
+darkness falls seals add up fast if you keep pulling
+the necyomancers in darkness falls are always casting at someone

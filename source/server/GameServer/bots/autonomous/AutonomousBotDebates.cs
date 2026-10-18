@@ -146,10 +146,13 @@ public static class AutonomousBotDebates
     /// when every fitting scene has been heard, the realm starts a fresh round (resetRound = true).
     /// </summary>
     public static VC.Scene ChooseScene(IReadOnlyList<VC.Scene> scenes, eRealm realm, ISet<string> heard,
-        IReadOnlyCollection<int> onlineLevels, Random random, out bool resetRound)
+        IReadOnlyCollection<int> onlineLevels, Random random, out bool resetRound, string timeFlag = null)
     {
         resetRound = false;
+        // A scene about bedtime plays at night only (0.36-se.4: scenes can need a time of day).
+        IReadOnlySet<string> now = timeFlag == null ? null : new HashSet<string>(StringComparer.Ordinal) { timeFlag };
         VC.Scene[] fitting = scenes.Where(scene => VC.RealmFits(scene.Realm, realm) &&
+            (now == null || VC.NeedsMet(scene.Needs, now)) &&
             onlineLevels.Count(level => LevelFits(scene, level)) >= 2).ToArray();
         if (fitting.Length == 0)
             return null;
@@ -297,7 +300,8 @@ public static class AutonomousBotDebates
         VC.Scene scene;
         bool reset;
         lock (heard)
-            scene = ChooseScene(AutonomousBotVoices.Corpus.Scenes, realm, heard, online.Select(bot => (int)bot.Level).ToArray(), Random.Shared, out reset);
+            scene = ChooseScene(AutonomousBotVoices.Corpus.Scenes, realm, heard, online.Select(bot => (int)bot.Level).ToArray(), Random.Shared, out reset,
+                VC.TimeFlag(DateTime.Now.Hour));
         Dictionary<string, long> cast = scene == null ? null : Cast(scene, online.Select(CandidateOf).ToArray(), Random.Shared);
         Dictionary<string, string> shared = null;
         if (cast != null)
@@ -368,7 +372,7 @@ public static class AutonomousBotDebates
             string[] filledVariants = FilledVariants(beat, AutonomousBotVoices.SlotsFor(speaker, Random.Shared, running.Shared));
             if (filledVariants.Length == 0)
                 continue;
-            string filled = filledVariants[Random.Shared.Next(filledVariants.Length)];
+            string filled = VC.ForTimeOfDay(filledVariants[Random.Shared.Next(filledVariants.Length)], DateTime.Now.Hour);
             string line = VC.Style(filled, AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID), Random.Shared);
             AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
             running.NextAt = now + BeatDelayMs(NextText(running));
