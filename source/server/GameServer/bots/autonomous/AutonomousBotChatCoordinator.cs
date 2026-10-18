@@ -470,7 +470,7 @@ public static class AutonomousBotChatCoordinator
             .Where(Eligible)
             .Where(bot => bot.Realm == player.Realm)
             .Where(bot => faction || bot.CurrentRegion == player.CurrentRegion && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE))
-            .OrderByDescending(bot => PlayerRelevance(bot, player, message, intent))
+            .OrderByDescending(bot => PlayerRelevance(bot, player, message, intent, faction) - (faction && AnsweredRecently(player.Realm, bot) ? 6 : 0))
             .ThenBy(_ => Random.Shared.Next())
             .ToArray();
         GameBot[] mentioned = eligible.Where(bot => ContainsMention(message, bot.Name)).ToArray();
@@ -508,6 +508,8 @@ public static class AutonomousBotChatCoordinator
             if (!TryAddDistinctResponse(scheduledResponses, response, out response))
                 continue;
             due = ReplyDelayMs(response, due, Random.Shared);
+            if (faction)
+                NoteFactionResponder(player.Realm, responder);
             Schedule(responder, due, () =>
             {
                 if (faction && HasFactionAudience(responder.Realm))
@@ -520,7 +522,7 @@ public static class AutonomousBotChatCoordinator
 
     /// <summary>Who answers a player first: a bot that can really help (a rezzer near a dead player, a bot in the
     /// frontier for "inc", a bot close in level for a group question), then bots whose task matches the words.</summary>
-    private static int PlayerRelevance(GameBot bot, GamePlayer player, string message, eAutonomousChatIntent intent)
+    private static int PlayerRelevance(GameBot bot, GamePlayer player, string message, eAutonomousChatIntent intent, bool faction = false)
     {
         int score = Relevance(bot, message);
         if (intent == eAutonomousChatIntent.Rez && WillComeRez(bot, player))
@@ -533,9 +535,33 @@ public static class AutonomousBotChatCoordinator
         // zone offered help to a level 3 near Cotswold).
         if (intent is eAutonomousChatIntent.Grouping or eAutonomousChatIntent.Grinding or eAutonomousChatIntent.Rez)
             score += bot.CurrentZone != null && bot.CurrentZone == player.CurrentZone ? 8 : bot.CurrentRegion == player.CurrentRegion ? 4 : 0;
-        if (bot.Group != null && bot.Group == player.Group)
+        // A groupmate answers first in /say, and for a rez or a "ty" anywhere; in /faction the realm answers (live test
+        // 2026-10-18: the player's one groupmate answered nearly every /faction line, 20 lines in 20 minutes).
+        if (bot.Group != null && bot.Group == player.Group && (!faction || intent is eAutonomousChatIntent.Rez or eAutonomousChatIntent.Thanks))
             score += 10;
         return score;
+    }
+
+    /// <summary>The last few bots that answered a player in /faction, by realm: they step back so others get a turn.</summary>
+    private static readonly Dictionary<eRealm, Queue<long>> RecentFactionResponders = new();
+    public const int RecentResponderMemory = 4;
+
+    private static bool AnsweredRecently(eRealm realm, GameBot bot)
+    {
+        lock (Sync)
+            return RecentFactionResponders.TryGetValue(realm, out var recent) && recent.Contains(bot.DatabaseID);
+    }
+
+    private static void NoteFactionResponder(eRealm realm, GameBot bot)
+    {
+        lock (Sync)
+        {
+            if (!RecentFactionResponders.TryGetValue(realm, out var recent))
+                RecentFactionResponders[realm] = recent = new Queue<long>();
+            recent.Enqueue(bot.DatabaseID);
+            while (recent.Count > RecentResponderMemory)
+                recent.Dequeue();
+        }
     }
 
     /// <summary>
