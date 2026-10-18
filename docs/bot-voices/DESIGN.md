@@ -5,7 +5,7 @@ chat system (`AutonomousBotChat`, `AutonomousBotChatCoordinator`, `AutonomousCha
 `AutonomousChatKnowledge`) and replaces its fixed phrase lists with a tagged corpus of new lines. It
 only affects autonomous gamebots; companions (`/spawn`, `/raid`) keep their current behavior.
 
-Material: [RESEARCH-BRIEF.md](RESEARCH-BRIEF.md). Lines: `source/server/GameServer/bots/autonomous/data/chat/`.
+Material: [RESEARCH-BRIEF.md](RESEARCH-BRIEF.md), [PERIOD-CHAT-RESEARCH.md](PERIOD-CHAT-RESEARCH.md) (2026-10-18). How to write lines: [WRITING-GUIDE.md](WRITING-GUIDE.md). Lines: `source/server/GameServer/bots/autonomous/data/chat/`.
 
 ## 1. Personalities and voices
 
@@ -116,14 +116,17 @@ Plain-text `.lines` files that anyone can read and edit. **Directives** set tags
 follow, until changed:
 
 ```
-@kind ambient            # ambient | reply | lfg | trade | rvr | greet | thanks | grudge | gossip | ding | death | camp | debate
+@kind ambient            # ambient | reply | lfg | trade | rvr | greet | thanks | grudge | gossip | ding | death | camp |
+                         # group | guild | closing (and the Living Server kinds, docs/LIVING-SERVER.md)
 @topic leveling          # free label for weighting and variety
 @who Leveler,Socialite   # personality types, or *
 @realm *                 # alb | mid | hib | *
 @class *                 # class names, or *
 @levels 20-34            # level band of the speaker
-@needs in_group          # context flags (see 3.3); several are allowed
-@intent grouping         # for replies: the chat intent the line answers
+@needs in_group,!in_dungeon  # context flags (see 3.3); "!flag" means the flag must not be set
+@intent grouping         # for replies to a player: the chat intent the line answers
+@invites boast           # for openers: what kind of answer the line invites (see 3.6)
+@answers boast,joke      # for replies and closings: the openers they fit (see 3.6)
 @mood friendly           # for memory lines: friendly | neutral | cool | rival
 @weight 1                # optional, default 1
 lfg {level} {class}, can heal and buff
@@ -157,11 +160,12 @@ the server like the camp catalog.
 | `{me}` | the speaker's name |
 | `{class}`, `{level}`, `{realm}` | the speaker's class, level and realm |
 | `{zone}`, `{monster}`, `{npc}`, `{item}`, `{count}` | as today, from the speaker's live task |
+| `{monsters}` | the plural of `{monster}` ("2 hill cats", "giant wolves") |
 | `{camp}` | a real camp from the catalog for the speaker's (or listener's) level and realm |
 | `{dungeon}` | a real dungeon of the speaker's realm, by level |
 | `{capital}`, `{enemy}` | its capital; an enemy realm |
 | `{keep}`, `{frontier}` | a real keep or frontier zone (from the world database) |
-| `{player}`, `{player_class}`, `{place}` | from memory: your name, your class, where the event happened |
+| `{player}`, `{player_class}`, `{place}` | from memory: your name, your class, where the event happened. In a reply, `{player}` is whoever is answered. |
 | `{q}` | an optional opener ("hey", "so", "random question but") |
 
 A line whose slot can't be filled is skipped, never sent half-empty.
@@ -169,7 +173,23 @@ A line whose slot can't be filled is skipped, never sent half-empty.
 ### 3.3 Context flags (`@needs`)
 
 `in_group`, `solo`, `in_town`, `in_dungeon`, `in_rvr`, `at_camp`, `traveling`, `just_leveled`,
-`just_died`, `bag_full`, `has_listing`, `knows_player`, `player_nearby`.
+`just_died`, `bag_full`, `has_listing`, `knows_player`, `player_nearby`, and since 0.36-se.4:
+
+| Flag | Set when |
+|---|---|
+| `outdoors` | not in a dungeon and not in a capital |
+| `in_capital` | in Camelot City, Jordheim or Tir na Nog |
+| `in_battleground`, `in_frontier` | in RvR: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia, Cathal Valley), or the frontier |
+| `day`, `evening`, `night` | the PC's clock: 6-17, 17-23, 23-6 |
+| `in_player_group` | the bot is in the real player's group |
+| `can_rez` | the bot has a resurrection spell it can cast |
+
+A flag with `!` in front must not be set (`@needs !in_group`).
+
+**Build checks** (`tools/bot-voices/build_corpus.py`): an opener with `{zone}` needs a place flag; a line
+with bedtime words ("late night", "off to bed", "midnight") needs a time flag; "{count} {monster}" must be
+`{monsters}`; later internet phrases ("change my mind", "fight me", "vibes") are banned with the out-of-era
+words. "tonight" and "all night" need no flag: by day the server says "today" and "all day".
 
 ### 3.4 Choosing a line
 
@@ -201,6 +221,53 @@ N seconds.
 - **Fresh wording each time:** every line has 2–3 alternative wordings (`|`), and optional lines
   (`?`) come and go. When a scene does come back, it reads differently: the median scene has about
   1,500 combinations.
+
+### 3.6 Conversations: what a line invites (0.36-se.4)
+
+Every opener (kinds ambient, lfg, trade, rvr, camp, group, guild) says what answer it invites:
+
+| `@invites` | Meaning | Who answers (when another bot can) |
+|---|---|---|
+| `none` | nobody would answer ("brb dinner") | nobody |
+| `chat` | a remark | one bot, 45% of the time |
+| `joke`, `boast` | | one bot 55%, two 15% |
+| `complaint` | | one bot 53%, two 12% |
+| `news` | | one bot 45%, two 15% |
+| `lfg`, `trade` | | one bot 55% |
+| `ask`, `ask_where`, `ask_advice`, `ask_opinion`, `ask_anyone`, `ask_<topic>` | a question | one bot 62%, two 30% |
+
+Without `@invites` the builder infers it: a line ending in "?" becomes ask_where, ask_opinion, ask_anyone,
+ask_advice or ask by its words; otherwise lfg (kind lfg), trade (kind trade) or chat.
+
+Replies say what they answer with `@answers`. A specific question (`@invites ask_bind`) is answered by
+`ask_bind` replies first, then by general `ask` replies. A question about a place or a trainer gets a real
+answer from the world (`AutonomousChatKnowledge`) before any written reply.
+
+After a reply was said, the opener's speaker may close in its own words (`@kind closing` with `@answers`
+by family: ask 50%, lfg and trade 35%, others 20%). Never after a reply that asks something.
+
+A player's line is read by `AutonomousChatShortTalk` (short chat and common requests) and then the
+classifier, and answered by `@intent` replies. How many bots answer depends on what was said: a hello or a
+ding in /faction gets 1-3, a "lol" usually none, a named bot always answers. A short reply heard more than
+40 minutes ago may be said again rather than leave a player unanswered.
+
+### 3.7 Group and guild talk (0.36-se.4)
+
+- **Your group:** out of combat, one bot in the real player's group says a `group` line in /group every
+  4-8 minutes (the first one or two minutes after the group forms). A groupmate may answer it as above.
+- **Bot groups near you** say `group` lines in /say; `group` lines never go to /faction.
+- **Guild chat** (bot guilds, `bot_guild_social`): idle lines are `guild` lines by `@topic` (leveling,
+  social, rvr, raiding, crafting, general), with the no-repeat window, voices on or off. A guildmate answers
+  when the line invites it. Player /gu lines are answered from `reply` lines by intent.
+
+### 3.8 Pacing (0.36-se.4, voices on)
+
+- Unprompted lines: 2-4 minutes apart per realm in /faction and 1-2 minutes per region in /say (they were a
+  fixed 3 minutes and 90 seconds).
+- About one bot in seven is a regular who talks 2.5 times as often; about a third talk half as often.
+- Replies take longer to type when longer (about 40-60 ms a character after a moment to read).
+- Typo-prone writers send a "*word" correction for about half their typos.
+- The six-hour no-repeat window is saved in `offline_bot_lines_heard` and read back at start-up.
 
 ## 4. Rates
 

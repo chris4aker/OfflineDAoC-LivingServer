@@ -25,6 +25,7 @@ Always on, even with every switch off (docs\KNOWN-ISSUES.md):
     on nearby bots
   - a dead bot's corpse stays where it fell until it releases (all bots, companions included)
   - a bot that dies 3 times on the way to its group's meetup stops waiting for it
+  - bots read short chat ("ty", "lol", "inc") and answer place and trainer questions like a player
 Everything else plays like the normal 0.36 while its switch is off.
 
 Known issues and what hasn't been tested in game yet: docs\KNOWN-ISSUES.md
@@ -47,7 +48,7 @@ copy. It also puts three settings helpers in tools\claude-version and these docs
 docs\fork-build-<name>.
 
 Check: start the game as usual. The server log shows a line like
-  FORK_BUILD name=0.36-se.3 commit=... bot_guilds=off xp_rate_by_level=off ... bot_voices=off living=off bot_schedule=off
+  FORK_BUILD name=0.36-se.4 commit=... bot_guilds=off xp_rate_by_level=off ... bot_voices=off living=off bot_schedule=off
 
 UNDO
 ----

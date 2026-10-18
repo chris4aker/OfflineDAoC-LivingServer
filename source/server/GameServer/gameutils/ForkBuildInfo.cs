@@ -15,7 +15,7 @@ namespace DOL.GS;
 public static class ForkBuildInfo
 {
     /// <summary>The fork's build name; bump it with each fork release.</summary>
-    public const string BuildName = "0.36-se.3";
+    public const string BuildName = "0.36-se.4";
 
     private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 

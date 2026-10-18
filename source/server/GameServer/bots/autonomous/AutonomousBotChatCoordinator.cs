@@ -512,6 +512,10 @@ public static class AutonomousBotChatCoordinator
             score += 20;
         if (intent == eAutonomousChatIntent.Grouping && Math.Abs(bot.Level - player.Level) <= 4)
             score += 5;
+        // A bot that could actually join answers a group question first (playtest 2026-10-18: a bot in another
+        // zone offered help to a level 3 near Cotswold).
+        if (intent is eAutonomousChatIntent.Grouping or eAutonomousChatIntent.Grinding or eAutonomousChatIntent.Rez)
+            score += bot.CurrentZone != null && bot.CurrentZone == player.CurrentZone ? 8 : bot.CurrentRegion == player.CurrentRegion ? 4 : 0;
         if (bot.Group != null && bot.Group == player.Group)
             score += 10;
         return score;

@@ -3,6 +3,59 @@
 What this fork adds to shadowofze's Offline DAoC. The base game's own changes are in
 [CHANGELOG.md](CHANGELOG.md). The newest version is first.
 
+## 0.36-se.4 — 2026-10-18
+
+Bot chat, reworked so the world feels alive and answers you. Same game versions as before (0.36 /
+0.36b, with or without 0.36c). Install it over 0.36-se.3 or earlier, or a clean game. Most of this
+needs **bot voices** on (the launcher's Social Expansion tab); what changes with it off is marked.
+
+**Bots understand what you type**
+- Short chat is read for what it is: "ty", "gz", "lol", "brb", "wb", "inc", "rez pls", "wts", "lfg",
+  "ding 20", "is friar good?", "are you a bot?". Before, most of these read as real-world talk, and in
+  /say they got no answer at all. On 260 test messages, 233 are now read right. *(Also with voices off.)*
+- Saying "dumb question" or "this camp is garbage" no longer counts as an insult that bots remember;
+  an insult has to be aimed at someone. *(Also with voices off.)*
+- "where is the scout trainer" names the trainer and the zone. Place answers match whole words
+  ("camelot" no longer finds a monster called Mel) and sound like a player, not a guidebook.
+  *(Also with voices off.)*
+
+**Answers that fit**
+- Every line a bot starts says what kind of answer it invites. A boast gets "nice, show off", a
+  complaint "ugh, same", a question an answer (a real one for places and trainers), and "brb dinner"
+  nothing. Before, replies were picked by guessing the topic from the words, and about two in three
+  didn't fit.
+- "Fair enough. Safe travels." is gone. The bot who started a talk sometimes closes it in its own
+  words ("ty", "k will try that", "heh yeah"), and never after a question.
+- What you say gets answers of the right size: a hello or a ding in /faction gets a few, a "lol" usually
+  none. "gz" is answered by the bot that just levelled. Only a bot that will really come and rez you
+  says "omw".
+- Replies take longer to type when they're longer. Unprompted lines come at uneven gaps (2-4 minutes
+  in /faction), and about one bot in seven is a regular who talks more, so you get to know names.
+- Typo-prone writers sometimes send a "*word" correction.
+
+**Your group and your guild talk**
+- Bots in your group chat in /group now and then, out of combat: pulls, breaks, loot, "where to next?",
+  jokes. They said nothing before. Bot groups near you talk among themselves in /say; their
+  "pull?" and "rez pls" no longer go to the whole realm in /faction.
+- Bot guild chat comes from the corpus: about 140 lines by guild type instead of a dozen, with the
+  no-repeat window. Guildmates answer a guild line when it asks something, not "haha true" to anything.
+  *(With bot guilds on, voices on or off.)*
+
+**More to say**
+- The corpus has grown from 979 lines to 2,142. New lines: replies to short chat, replies for each kind
+  of opener, closings, dungeon talk (there was none), four more lines for every class, battlegrounds,
+  group and guild talk, the frontier and the capitals.
+- Lines know where and when they are said. "tonight" reads "today" in the daytime, bedtime talk waits
+  for the night, and "anyone want to duo?" isn't said by a grouped bot.
+- A line isn't repeated across server restarts: the six-hour no-repeat window is now saved.
+- Removed later internet phrases ("change my mind", "fight me") and fixed lines that named another
+  realm's class.
+
+**Tested**
+- **Automated:** the full server suite (3,067 tests, 109 new) and the corpus checks pass locally.
+- **In game:** not played yet. A re-run of the chat simulation and an independent code review are in
+  the docs.
+
 ## 0.36-se.3 — 2026-10-18
 
 Fixes from a three-hour playtest (a new Albion Scout from level 1 to 5, every feature on). Same game

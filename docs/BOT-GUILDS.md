@@ -124,7 +124,10 @@ Protectors, Tir na Nog Adventurers).
 ### 3.5 Guild social life (phase 2)
 
 Bots only "talk" in a guild channel a real member can hear (rank with guild-chat hearing). Lines
-are short, lowercase and period-plain (`AutonomousBotGuildChatLines`).
+are short, lowercase and period-plain (`AutonomousBotGuildChatLines`). Since 0.36-se.4, idle lines and
+replies to your /gu come from the bot-voices corpus first (`@kind guild` by charter, about 140 lines, with
+the no-repeat window; voices on or off), and a guildmate answers a guild line only when it asks or invites
+something (docs/bot-voices/DESIGN.md 3.7). The lines in `AutonomousBotGuildChatLines` are the fallback.
 
 | Event | What happens |
 |---|---|

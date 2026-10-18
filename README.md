@@ -20,7 +20,7 @@
 They join guilds and recruit you, each has its own personality, and they talk the way players did in
 2002–2003, down to the build arguments in /faction.
 
-> **Latest release: 0.36-se.3**, for shadowofze's 0.36 / 0.36b, with or without the 0.36c new client.
+> **Latest release: 0.36-se.4**, for shadowofze's 0.36 / 0.36b, with or without the 0.36c new client.
 > Download it from this repository's [Releases](https://github.com/chris4aker/OfflineDAoC-SocialExpansion/releases).
 > Every change is in [CHANGELOG-SOCIAL-EXPANSION.md](CHANGELOG-SOCIAL-EXPANSION.md); known problems and
 > what hasn't been tested are in [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
@@ -38,7 +38,7 @@ Social Expansion makes them feel like a community, not just a population.
 |---|---|
 | **Bot guilds** | Each realm has its own bot guilds, a few big and many small, each with a purpose: leveling, social, RvR, raiding or crafting. Bots wear guild names, chat in /gu, group with guildmates, and recruit you when you ask "lf guild". Guilds claim and defend keeps, pay dues, earn merit, buy guild buffs and form alliances. You can also /ginvite bots into your own guild. |
 | **Bot personalities** | Every bot is one of six types: Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer. Each also has five traits (curiosity, risk, sociability, patience, chattiness). Personality tilts how a bot spends its time: who lingers in town, who chases orange cons, who goes looking for zones they haven't seen. Target any bot and type `/personality`. |
-| **Bot voices** | 979 lines written for the era and checked against period slang, chosen by realm, class, level, situation and personality. Each bot writes in one of five styles (plain, terse, chatty, proper or typo-prone). No line repeats in a realm within six hours. |
+| **Bot voices** | 2,142 lines written for the era, chosen by realm, class, level, situation, place, time of day and personality. Bots answer what you actually said ("ty" → "np", "ding" → "gz", "where is the scout trainer" → the trainer), answer each other in kind (a boast gets "show off", a question an answer), and talk in /group when they're in your group. Each bot writes in one of five styles (plain, terse, chatty, proper or typo-prone), and a few regulars talk more than the rest. No line repeats in a realm within six hours, across restarts too. |
 | **/faction debates** | 296 multi-bot conversations: class and spec arguments, relic and keep alerts, dragon raids, Darkness Falls, buffbots, zergs, realm pride and more. A different cast plays one every 30–45 minutes while you're online. |
 | **XP by level range** | Separate player and bot XP rates for level bands. The suggested setting keeps levels 1–34 worth playing and compresses the 35–50 grind. |
 | **Living Server** | Bots remember you: they greet you by name, thank you for an old rez and stay cool if you insulted them. Dings get grats chains, and the first to 50 in each class is announced server-wide. Dead bots ask you for a rez, and passing bot healers rez you. Frontier bots call incoming enemy groups in /faction, and bots hold grudges against the enemies who keep killing them. Bots can log on and off on a schedule (by session or by your clock), take "brb" breaks and now and then go linkdead. Each part has its own switch. |
@@ -49,10 +49,11 @@ Social Expansion makes them feel like a community, not just a population.
 
 - **Every feature above starts switched off,** apart from talking to bots by name. Turn each one on
   in the launcher's Social Expansion tab, and off again the same way.
-- **With everything off, a few changes still apply:** talking to bots by name, and two fixes to the
+- **With everything off, a few changes still apply:** talking to bots by name, two fixes to the
   base game's bots (a dead bot's corpse stays where it fell until it releases, and a bot that dies
-  three times on the way to its group's meetup stops trying). Everything else plays like the
-  normal 0.36.
+  three times on the way to its group's meetup stops trying), and bots reading short chat better
+  when they answer you ("ty", "lol", "inc"; place answers worded like a player). Everything else
+  plays like the normal 0.36.
 - **It never breaks the base game's rules.** Real loot, the Realm Exchange, stablemaster routes,
   bots earning their armor and the other owner rules are untouched.
 - **The install can be undone.** The installer checks that your game is the right version, backs
@@ -84,7 +85,7 @@ A fresh world has no bots yet, and most of these features need some.
    the first /faction debate comes 5–10 minutes after the server starts (while you're online),
    frontier alarms need bots in the frontier, and guilds form once enough bots are online.
 4. **Check it's running.** The server log (`runtime\server\logs\server.log`) has a line starting
-   `FORK_BUILD name=0.36-se.3` that lists which features are on.
+   `FORK_BUILD name=0.36-se.4` that lists which features are on.
 
 ## Undo and uninstall
 

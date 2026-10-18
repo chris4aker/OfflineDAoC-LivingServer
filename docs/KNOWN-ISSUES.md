@@ -15,6 +15,10 @@ These apply even with every Social Expansion switch off:
   including your `/spawn` companions.
 - **A bot that dies 3 times on the way to its group's meetup** counts as a no-show, so its group
   goes on without it instead of waiting 15 minutes.
+- **Bots read short chat (0.36-se.4).** Their answers to what you say in /say and /faction (which the
+  base game has too) now understand "ty", "lol", "brb", "inc", "rez pls" and the like; before, /say
+  ignored most of them. An insult has to be aimed at someone to count. Place answers match whole
+  words, name class trainers, and are worded like a player.
 
 ## How it was tested
 
@@ -58,8 +62,14 @@ meetup fix drop two no-shows (in the server log).
   - A bow fires from the Ranged Weapon key (`,`), not the target window's ATTACK button. There's no
     quiver window, so arrows in a bag can't be moved into the quiver slots.
   - The group window still shows your base class after you choose your class at level 5.
-- **Bot chat:** /faction replies are often generic and don't always fit the line they answer, and a
-  bot that offers to group with you can be anywhere in the realm.
+- **Bot chat (0.36-se.4):** reworked and not played in game yet. Replies now follow what a line
+  invites, but some will still read oddly:
+  - A bot answering your "lfg" prefers bots in your zone and near your level, but one from elsewhere
+    may still answer.
+  - A bot in the frontier may answer your "inc" with "omw" without coming.
+  - Bots don't know what you are doing beyond your words: a "gz" is answered only by a bot that just
+    levelled, and other replies guess from the words alone.
+  - Chat volume hasn't been tuned for very large rosters (1,000+ bots a realm).
 - **Added the 0.36c new client after installing this?** Run `INSTALL.cmd` again so the new client's
   launcher gets the Social Expansion tab too.
 - **0.37:** this build is for 0.36 / 0.36b only, and the installer refuses anything else. When
