@@ -148,7 +148,8 @@ A: fair points both. still wish i had one
 ```
 
 Roles are filled from different bots of the same realm. A role can require a class or type:
-`@role B type=Crafter,NoLifer`.
+`@role B type=Crafter,NoLifer`. A role whose lines only fit some levels ("i am not 50 yet") also takes
+`levels=`: `@role D type=Socialite levels=30-49`. Those roles are cast first.
 
 `tools/bot-voices/build_corpus.py` checks the files and writes `corpus.json`, which is embedded in
 the server like the camp catalog.
