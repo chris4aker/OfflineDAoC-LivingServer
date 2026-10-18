@@ -333,6 +333,16 @@ namespace DOL.GS.Commands
 
 						if (obj == null)
 						{
+							// An autonomous gamebot, targeted or by name, answers for itself (docs/BOT-GUILDS.md).
+							GameBot invitedBot = args.Length > 2
+								? (AutonomousBotRegistry.TryGetByName(args[2], out GameBot namedBot) ? namedBot : null)
+								: client.Player.TargetObject as GameBot;
+							if (invitedBot != null && AutonomousBotGuilds.TryInvite(client.Player, invitedBot))
+								return;
+						}
+
+						if (obj == null)
+						{
 							// Don't let slip whether a player from another realm is online.
 							client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.InviteNotThis"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 							return;
@@ -397,6 +407,13 @@ namespace DOL.GS.Commands
 						{
 							obj = ClientService.Instance.GetPlayerByExactName(playername);
 							obj ??= DOLDB<DbCoreCharacter>.SelectObject(DB.Column("Name").IsEqualTo(playername));
+						}
+						if (obj == null)
+						{
+							// A bot member is not a character row (docs/BOT-GUILDS.md).
+							string botName = playername == string.Empty ? (client.Player.TargetObject as GameBot)?.Name : playername;
+							if (AutonomousBotGuilds.TryRemove(client.Player, botName))
+								return;
 						}
 						if (obj == null)
 						{
@@ -1503,8 +1520,19 @@ namespace DOL.GS.Commands
 									client.Out.SendMessage(mesg, eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
 							}
 						}
-						if (ind > WhoCommandHandler.MAX_LIST_SIZE && ind < onlineGuildMembers.Count)
-							client.Out.SendMessage(string.Format(WhoCommandHandler.MESSAGE_LIST_TRUNCATED, onlineGuildMembers.Count), eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
+						// Online autonomous gamebot members (docs/BOT-GUILDS.md).
+						List<string> botLines = AutonomousBotGuilds.WhoLines(client.Player.Guild);
+						foreach (string botLine in botLines)
+						{
+							if (startInd + ind > startInd + WhoCommandHandler.MAX_LIST_SIZE)
+								break;
+							ind++;
+							if (ind >= startInd)
+								client.Out.SendMessage(ind.ToString() + ") " + botLine, eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
+						}
+						int onlineTotal = onlineGuildMembers.Count + botLines.Count;
+						if (ind > WhoCommandHandler.MAX_LIST_SIZE && ind < onlineTotal)
+							client.Out.SendMessage(string.Format(WhoCommandHandler.MESSAGE_LIST_TRUNCATED, onlineTotal), eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
 						else client.Out.SendMessage("total member online:        " + ind.ToString(), eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
 
 						break;

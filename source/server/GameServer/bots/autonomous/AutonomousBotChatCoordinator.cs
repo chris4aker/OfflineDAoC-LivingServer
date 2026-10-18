@@ -81,6 +81,8 @@ public static class AutonomousBotChatCoordinator
         if (player == null || string.IsNullOrWhiteSpace(message))
             return;
         BroadcastFaction(player.Name, player.Realm, message);
+        if (AutonomousBotGuildSocial.TryAnswerGuildRequest(player, message, true))
+            return;
         lock (Sync)
         {
             if (LastFactionPlayerResponse.TryGetValue(player.Realm, out long last) && GameLoop.GameLoopTime - last < 12_000)
@@ -95,6 +97,8 @@ public static class AutonomousBotChatCoordinator
         if (player == null || string.IsNullOrWhiteSpace(message) || player.CurrentRegion == null)
             return;
         if (AutonomousChatIntentModel.Predict(message) == eAutonomousChatIntent.IgnoreOutOfWorld)
+            return;
+        if (AutonomousBotGuildSocial.TryAnswerGuildRequest(player, message, false))
             return;
         lock (Sync)
         {

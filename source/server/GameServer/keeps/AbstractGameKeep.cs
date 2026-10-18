@@ -667,10 +667,21 @@ namespace DOL.GS.Keeps
 		/// <param name="player">the player who have claim the keep</param>
 		public virtual void Claim(GamePlayer player)
 		{
-			Guild = player.Guild;
+			ClaimForGuild(player.Guild);
+		}
+
+		/// <summary>
+		/// Claims the keep for a guild. Callers check the claim rules first (CheckForClaim for a
+		/// player; AutonomousBotGuildKeeps for a bot guild).
+		/// </summary>
+		public virtual void ClaimForGuild(Guild guild)
+		{
+			if (guild == null)
+				return;
+			Guild = guild;
 			
 			if (ServerProperties.Properties.GUILDS_CLAIM_LIMIT > 1)
-				player.Guild.SendMessageToGuildMembers("Your guild has currently claimed " + player.Guild.ClaimedKeeps.Count + " keeps of a maximum of " + ServerProperties.Properties.GUILDS_CLAIM_LIMIT, eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
+				guild.SendMessageToGuildMembers("Your guild has currently claimed " + guild.ClaimedKeeps.Count + " keeps of a maximum of " + ServerProperties.Properties.GUILDS_CLAIM_LIMIT, eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
 
 			ChangeLevel((byte)ServerProperties.Properties.STARTING_KEEP_CLAIM_LEVEL);
 

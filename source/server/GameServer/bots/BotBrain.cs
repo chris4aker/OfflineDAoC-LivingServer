@@ -1605,7 +1605,7 @@ namespace DOL.AI.Brain
                 bot.Name, bot.ClassName, bot.CurrentZone?.Description,
                 record?.TargetName, record?.TravelDestination, item, string.Empty,
                 bot.Level, Math.Max(1, (int)(bot.Group?.MemberCount ?? 1)), bot.Realm);
-            if (AutonomousBotChatCoordinator.TryStartAmbient(bot, context))
+            if (AutonomousBotGuildSocial.TryIdle(bot) || AutonomousBotChatCoordinator.TryStartAmbient(bot, context))
                 _lastIdleRoleplayUtc = now;
         }
 

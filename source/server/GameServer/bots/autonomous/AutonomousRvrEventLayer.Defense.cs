@@ -226,6 +226,7 @@ namespace DOL.GS
                     }
                     if (firstAlarm)
                     {
+                        AutonomousBotGuildSocial.OnClaimedKeepAttacked(alarm.Keep.Guild, alarm.Keep.Name);
                         RealmEventNotices.Queue(pair.Key, active.DefenderRealm, $"{alarm.Keep.Name} is under attack! {RallyLine(active.DefenseScale)} Rally to its defense immediately!");
                         RealmEventNotices.Queue(pair.Key, alarm.Player.Realm, $"Our forces are attacking {alarm.Keep.Name}. Nearby warbands, lend them aid!");
                         RealmEventNotices.Queue(pair.Key, OtherRealm(active), $"Enemy armies are clashing at {alarm.Keep.Name}. Scouts and warbands, seize your opportunity!");
@@ -274,7 +275,10 @@ namespace DOL.GS
                              .OrderByDescending(e => e.LastPressureTick).ToArray())
                 {
                     int before = active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum();
-                    foreach (var candidate in forces.OrderBy(f => f.Members.Min(b => b.CurrentRegionID == active.Target.RegionId ?
+                    // A bot guild's own warbands answer first when its claimed keep is attacked (docs/BOT-GUILDS.md, phase 4).
+                    string claimGuildId = active.DefenseReaction ? AutonomousBotGuildKeeps.ClaimGuildIdOf(active.Target.RegionId, active.Target.Name) : null;
+                    foreach (var candidate in forces.OrderBy(f => AutonomousBotGuildKeeps.ClaimDefenseRank(claimGuildId, f.Members))
+                                 .ThenBy(f => f.Members.Min(b => b.CurrentRegionID == active.Target.RegionId ?
                                  Vector2.DistanceSquared(new(b.X, b.Y), new(active.Target.X, active.Target.Y)) : float.MaxValue)))
                     {
                         Force force = candidate.Force;
@@ -283,7 +287,8 @@ namespace DOL.GS
                             CarrierEvents.Values.Any(c => c.Participants.Values.Any(r => r.ContainsKey(force.GroupId)))) continue;
                         // Keep a deterministic 30% reserve of whole warbands;
                         // incidental nearby combat remains handled by normal AI.
-                        if (ResponseReserve(candidate.Members.Min(b => b.DatabaseID))) continue;
+                        if (ResponseReserve(candidate.Members.Min(b => b.DatabaseID)) &&
+                            AutonomousBotGuildKeeps.ClaimDefenseRank(claimGuildId, candidate.Members) != 0) continue;
                         if (candidate.Members.Any(b => b.InCombat || b.IsAttacking || b.IsStunned || b.IsMezzed ||
                             (b.Brain as BotBrain)?.HasAggro == true || GameRelic.IsPlayerCarryingRelic(b))) continue;
                         // Missing/dead members may catch up. Only mixed-level,

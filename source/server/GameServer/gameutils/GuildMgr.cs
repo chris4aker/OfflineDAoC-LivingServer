@@ -64,10 +64,19 @@ namespace DOL.GS
             if (guild == null)
                 return null;
 
+            Dictionary<string, GuildMemberView> views;
+
             lock (_lock)
             {
-                return !_guildMemberViews.TryGetValue(guild, out Dictionary<string, GuildMemberView> value) ?  null : new(value);
+                if (!_guildMemberViews.TryGetValue(guild, out Dictionary<string, GuildMemberView> value))
+                    return null;
+
+                views = new(value);
             }
+
+            // Autonomous gamebot members are not character rows; add them from their own table.
+            AutonomousBotGuilds.AppendMemberViews(guild, views);
+            return views;
         }
 
         public static Guild CreateGuild(eRealm realm, string guildName, GamePlayer creator = null)
@@ -125,12 +134,14 @@ namespace DOL.GS
             if (string.IsNullOrEmpty(guildName))
                 return false;
 
+            Guild deleted;
             lock (_lock)
             {
                 Guild guild = GetGuildByName(guildName);
 
                 if (guild == null)
                     return false;
+                deleted = guild;
 
                 IList<DbGuild> dbGuilds = DOLDB<DbGuild>.SelectObjects(DB.Column("GuildID").IsEqualTo(guild.GuildID));
 
@@ -154,6 +165,13 @@ namespace DOL.GS
 
                 RemoveGuild(guild);
             }
+
+            // Social Expansion: guilded gamebots leave a deleted guild at once, so no dues go into a guild
+            // that no longer exists (audit 2026-10-16). Outside _lock: bot guild reconciles take their own
+            // lock first and then call into GuildMgr, so nesting them here could deadlock (review 2026-10-16).
+            foreach (GameBot bot in deleted.GetOnlineBotMembers())
+                deleted.RemoveBotMember(bot);
+            AutonomousBotGuilds.ForgetGuild(deleted.GuildID);
 
             return true;
         }

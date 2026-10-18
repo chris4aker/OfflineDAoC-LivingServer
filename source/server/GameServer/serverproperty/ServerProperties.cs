@@ -2331,6 +2331,54 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("guild", "guild_banner_lost_time", "When a banner is lost to the enemy how many minutes is the wait before purchase is allowed?", (ushort)1440)]
 		public static ushort GUILD_BANNER_LOST_TIME;
 
+		/// <summary>
+		/// Autonomous gamebots form realm guilds, carry guild names and can be invited into a player's guild.
+		/// </summary>
+		[ServerProperty("guild", "bot_guilds_enabled", "Autonomous gamebots form and join realm guilds (see docs/BOT-GUILDS.md), and players can /ginvite them. False keeps every gamebot guildless; saved memberships are kept.", false)]
+		public static bool BOT_GUILDS_ENABLED;
+
+		/// <summary>
+		/// Share of eligible autonomous gamebots placed in bot guilds.
+		/// </summary>
+		[ServerProperty("guild", "bot_guild_share", "Share (0 to 1) of eligible autonomous gamebots that bot guild formation places in guilds.", 0.70)]
+		public static double BOT_GUILD_SHARE;
+
+		/// <summary>
+		/// Lowest level at which an autonomous gamebot joins a bot guild.
+		/// </summary>
+		[ServerProperty("guild", "bot_guild_min_level", "Lowest level at which an autonomous gamebot is placed in a bot guild.", 5)]
+		public static int BOT_GUILD_MIN_LEVEL;
+
+		/// <summary>
+		/// Bot guild members talk in guild chat and recruit in /faction (when bot guilds are on).
+		/// </summary>
+		[ServerProperty("guild", "bot_guild_social", "When bot guilds are on: guild members greet, congratulate and chat in guild chat when a real member can hear, answer your /gu, and bot guild officers recruit in /faction.", true)]
+		public static bool BOT_GUILD_SOCIAL;
+
+		/// <summary>
+		/// Bot guild officers may invite a player into their guild with a yes/no dialog.
+		/// </summary>
+		[ServerProperty("guild", "bot_guild_recruit_player", "When bot guild social life is on: bot guild officers may invite you to their guild with a yes/no dialog (when you ask for a guild, or now and then when you are nearby and unguilded).", true)]
+		public static bool BOT_GUILD_RECRUIT_PLAYER;
+
+		/// <summary>
+		/// Bot guilds claim keeps and towers their realm takes, under the usual claim rules.
+		/// </summary>
+		[ServerProperty("guild", "bot_guild_claims_keeps", "When bot guilds are on: after a realm takes a keep or tower, a bot guild with enough members inside claims it (claim_num, half for towers; guilds_claim_limit), never while a real player of that realm is inside. Its warbands answer first when that keep is attacked.", true)]
+		public static bool BOT_GUILD_CLAIMS_KEEPS;
+
+		/// <summary>
+		/// Guilded gamebots pay dues from real looted coin, earn merit points, and bot guild leaders buy guild buffs.
+		/// </summary>
+		[ServerProperty("guild", "bot_guild_economy", "When bot guilds are on: guilded gamebots pay their guild's dues from the real coin they loot, their level-ups earn the guild merit points as a player's do, and bot guild leaders spend 1,000 merit points on a 24-hour guild buff.", true)]
+		public static bool BOT_GUILD_ECONOMY;
+
+		/// <summary>
+		/// Each realm's RvR and raiding bot guilds form one alliance.
+		/// </summary>
+		[ServerProperty("guild", "bot_guild_alliances", "When bot guilds are on: each realm's RvR and raiding bot guilds form one alliance (up to four guilds); a player in one of them hears its alliance chat. Alliances with a player's guild are never touched.", true)]
+		public static bool BOT_GUILD_ALLIANCES;
+
 
 
 		#endregion

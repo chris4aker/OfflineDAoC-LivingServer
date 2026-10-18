@@ -6,7 +6,9 @@ using System.Text.Json;
 
 namespace OfflineDaoc.ProgressImport;
 
-public sealed record Policy(string[] ProgressTables, string[] ClearTables);
+// OptionalProgressTables are carried like ProgressTables when both databases have them; a server
+// creates them on its first start, so an older or never-started database may lack them.
+public sealed record Policy(string[] ProgressTables, string[] ClearTables, string[]? OptionalProgressTables = null);
 
 /// <summary>What an old folder contains, shown before anything is changed.</summary>
 public sealed record ImportSummary(long Accounts, long Characters, long Bots, long InventoryItems)
@@ -246,9 +248,16 @@ public static class ImportEngine
                     if(Scalar(c,$"SELECT count(*) FROM old.{Q(unknown)}")>0)
                         notes.Add($"Not transferred: old table {unknown} is not used by {Release} ({Scalar(c,$"SELECT count(*) FROM old.{Q(unknown)}")} rows).");
                 Exec(c,"BEGIN IMMEDIATE");
-                foreach(string table in Rules.ProgressTables)
+                var optional=new HashSet<string>(Rules.OptionalProgressTables??Array.Empty<string>(),StringComparer.OrdinalIgnoreCase);
+                foreach(string table in Rules.ProgressTables.Concat(optional))
                 {
-                    if(!targetTables.Contains(table))throw new InvalidDataException($"New version is missing progress table {table}.");
+                    if(!targetTables.Contains(table))
+                    {
+                        if(!optional.Contains(table))throw new InvalidDataException($"New version is missing progress table {table}.");
+                        if(sourceTables.Contains(table)&&Scalar(c,$"SELECT count(*) FROM old.{Q(table)}")>0)
+                            notes.Add($"Not transferred: {table} ({Scalar(c,$"SELECT count(*) FROM old.{Q(table)}")} rows); start the new version's server once, then transfer again.");
+                        continue;
+                    }
                     Exec(c,$"DELETE FROM main.{Q(table)}");
                     if(!sourceTables.Contains(table))continue;
                     var oldColumns=Columns(c,table,"old");var newColumns=Columns(c,table);

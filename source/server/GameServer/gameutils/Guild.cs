@@ -87,6 +87,13 @@ namespace DOL.GS
 		protected readonly Dictionary<string, GamePlayer> m_onlineGuildPlayers = new Dictionary<string, GamePlayer>();
 
 		/// <summary>
+		/// Autonomous gamebots that are online and members of this guild (InternalID, GameBot).
+		/// Bots are not characters, so they are kept apart from the player list and never
+		/// receive packets. Adapted from stefanrows/OfflineDAoC (GPL-3), for realm-bound guilds.
+		/// </summary>
+		protected readonly Dictionary<string, GameBot> m_onlineGuildBots = new Dictionary<string, GameBot>();
+
+		/// <summary>
 		/// Use this object to lock the guild member list
 		/// </summary>
 		public readonly Lock m_memberListLock = new();
@@ -333,7 +340,8 @@ namespace DOL.GS
 
 		static Guild()
 		{
-			if (GameServer.Instance.Configuration.ServerType is EGameServerType.GST_PvP)
+			// Null-safe so the type can load without a running server (unit tests).
+			if (GameServer.Instance?.Configuration?.ServerType is EGameServerType.GST_PvP)
 				DummyGuild = GuildMgr.CreateGuild(0, "DummyGuildToMakePetsUntargetable") ?? GuildMgr.GetGuildByName("DummyGuildToMakePetsUntargetable");
 		}
 
@@ -526,13 +534,14 @@ namespace DOL.GS
 		}
 
 		/// <summary>
-		/// Returns the number of players online inside this guild
+		/// Returns the number of members online inside this guild (players and autonomous gamebots)
 		/// </summary>
 		public int MemberOnlineCount
 		{
 			get
 			{
-				return m_onlineGuildPlayers.Count;
+				lock (m_memberListLock)
+					return m_onlineGuildPlayers.Count + m_onlineGuildBots.Count;
 			}
 		}
 
@@ -560,6 +569,57 @@ namespace DOL.GS
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Adds an online autonomous gamebot to this guild with the given rank. The bot's
+		/// realm must match the guild's. Membership is stored by the caller
+		/// (AutonomousBotGuilds), not in a character row.
+		/// </summary>
+		public bool AddBotMember(GameBot bot, DbGuildRank rank)
+		{
+			if (bot == null || rank == null || string.IsNullOrEmpty(bot.InternalID))
+				return false;
+			if (bot.Guild != null && bot.Guild != this)
+				return false;
+			if (bot.Realm != Realm)
+				return false;
+
+			lock (m_memberListLock)
+				m_onlineGuildBots[bot.InternalID] = bot;
+
+			bot.Guild = this;
+			bot.GuildRank = rank;
+			if (bot.GuildName != Name)
+				bot.GuildName = Name;
+			return true;
+		}
+
+		/// <summary>Removes an autonomous gamebot from the online members and clears its guild fields.</summary>
+		public bool RemoveBotMember(GameBot bot)
+		{
+			if (bot == null || string.IsNullOrEmpty(bot.InternalID))
+				return false;
+
+			bool removed;
+			lock (m_memberListLock)
+				removed = m_onlineGuildBots.Remove(bot.InternalID);
+
+			if (bot.Guild == this)
+			{
+				bot.Guild = null;
+				bot.GuildRank = null;
+				if (!string.IsNullOrEmpty(bot.GuildName))
+					bot.GuildName = string.Empty;
+			}
+			return removed;
+		}
+
+		/// <summary>Online autonomous gamebot members (a copy).</summary>
+		public GameBot[] GetOnlineBotMembers()
+		{
+			lock (m_memberListLock)
+				return m_onlineGuildBots.Values.ToArray();
 		}
 
 		private void NotifyGuildMembers(GamePlayer member)
@@ -604,6 +664,7 @@ namespace DOL.GS
 			lock (m_memberListLock)
 			{
 				m_onlineGuildPlayers.Clear();
+				m_onlineGuildBots.Clear();
 			}
 		}
 

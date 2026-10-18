@@ -332,6 +332,9 @@ public static class AutonomousPopulationController
 
     private static volatile bool _populationSatisfied;
 
+    /// <summary>The non-retired roster as last read by the control plane (read-only; empty before the first read).</summary>
+    internal static OfflineWorldBotRecord[] CachedRoster => _cachedRoster;
+
     private static void QueueOwnerCommands(bool repairOrphans)
     {
         bool lockTaken = false;

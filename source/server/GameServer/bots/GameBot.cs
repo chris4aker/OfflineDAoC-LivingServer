@@ -501,6 +501,9 @@ namespace DOL.GS
             set => _guild = value;
         }
 
+        /// <summary>The bot's rank in its guild (set by <see cref="Guild.AddBotMember"/>), or null.</summary>
+        public DbGuildRank GuildRank { get; set; }
+
         #endregion
 
         #region IGamePlayer — Duel System
@@ -960,7 +963,10 @@ namespace DOL.GS
 
             base.ProcessDeath(killer);
             if (IsAutonomousWorldBot)
+            {
                 AutonomousBotStatusPersistence.Queue(this);
+                AutonomousBotGuildSocial.OnBotDeath(this);
+            }
             StartDeathRecoveryTimer();
         }
 
@@ -1491,9 +1497,15 @@ namespace DOL.GS
         public TryPickUpResult TryAutoPickUpMoney(GameMoney money)
         {
             money.AssertLockAcquisition();
+            long share = AutonomousBotGuildEconomy.ShareAfterDues(this, money.Value, out long dues);
+            // The whole coin must fit in the purse before it is split, so returned dues can never be lost (audit 2026-10-16).
             if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || DatabaseID <= 0 ||
-                !AutonomousBotEconomy.AddMoney(DatabaseID, money.Value))
+                PersistentRecord != null && PersistentRecord.MoneyCopper > long.MaxValue - money.Value ||
+                !AutonomousBotEconomy.AddMoney(DatabaseID, share))
                 return TryPickUpResult.DoesNotWant;
+            // Guild dues come out of the same real coin; a full bank leaves them with the bot.
+            if (!AutonomousBotGuildEconomy.DepositDues(this, dues))
+                AutonomousBotEconomy.AddMoney(DatabaseID, dues);
 
             money.RemoveFromWorld();
             AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.Loot);
@@ -1654,6 +1666,11 @@ namespace DOL.GS
                 Mana = MaxMana;
                 Endurance = MaxEndurance;
                 AutonomousBotStatusPersistence.Queue(this, true);
+                if (IsAutonomousWorldBot)
+                {
+                    AutonomousBotGuildEconomy.OnBotLevelsGained(this, previousLevel);
+                    AutonomousBotGuildSocial.OnBotLevelUp(this);
+                }
             }
             else
             {

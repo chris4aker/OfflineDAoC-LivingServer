@@ -48,8 +48,10 @@ namespace DOL.GS.Commands
 				return;
 			}
 
-			string message = "[Guild] " + client.Player.Name + ": \"" + string.Join(" ", args, 1, args.Length - 1) + "\"";
+			string text = string.Join(" ", args, 1, args.Length - 1);
+			string message = "[Guild] " + client.Player.Name + ": \"" + text + "\"";
 			client.Player.Guild.SendMessageToGuildMembers(message, eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
+			AutonomousBotGuildSocial.OnPlayerGuildChat(client.Player, text);
 		}
 	}
 

@@ -117,13 +117,19 @@ def clean_world(database: Path, policy: dict, defaults: dict) -> dict:
     tables = {row[0] for row in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     cleared = []
     extra = ["FactionAggroLevel"]   # per-character standings (clean_slate.py clears them too)
-    for table in policy["ProgressTables"] + policy["ClearTables"] + extra:
+    for table in policy["ProgressTables"] + policy.get("OptionalProgressTables", []) + policy["ClearTables"] + extra:
         if table in tables and table not in {"Guild", "GuildRank"}:
             con.execute(f'DELETE FROM "{table}"')
             cleared.append(table)
+    # Only the starting guilds are world data. Guilds made in play (by the player or by autonomous
+    # bots, docs/BOT-GUILDS.md) and their ranks never ship.
+    con.execute("DELETE FROM GuildRank WHERE GuildID NOT IN (SELECT GuildID FROM Guild WHERE IsStartingGuild=1)")
+    con.execute("DELETE FROM Guild WHERE IsStartingGuild<>1")
+    # Bot guilds ship off (server defaults); set_bot_guilds.py turns them on in a played install.
+    con.execute("DELETE FROM ServerProperty WHERE lower(`Key`) = 'bot_guilds_enabled' OR lower(`Key`) LIKE 'bot\\_guild\\_%' ESCAPE '\\'")
     # Starting guild definitions and ranks are world data; their earned state is not.
     con.execute("UPDATE Guild SET RealmPoints=0,BountyPoints=0,Bank=0,MeritPoints=0,Webpage='',Email='',"
-                "Motd='',oMotd='',HaveGuildHouse=0,GuildHouseNumber=0")
+                "Motd='',oMotd='',HaveGuildHouse=0,GuildHouseNumber=0,AllianceID=''")
     con.execute("UPDATE DBHouse SET OwnerID='',GuildName='',GuildHouse=0,HasConsignment=0,KeptMoney=0,Model=0,Name='' "
                 "WHERE COALESCE(OwnerID,'')<>''")
     # The default frontier: every keep (frontier, battleground, portal) with its original owner and level and no claim,
@@ -183,7 +189,12 @@ def set_edition(con: sqlite3.Connection, enabled: bool):
 
 def verify_clean(con: sqlite3.Connection, policy: dict, defaults: dict) -> dict:
     assert con.execute("PRAGMA quick_check").fetchone()[0] == "ok"
-    for table in policy["ProgressTables"] + policy["ClearTables"] + ["FactionAggroLevel"]:
+    assert con.execute("SELECT COUNT(*) FROM Guild WHERE IsStartingGuild<>1").fetchone()[0] == 0, "non-starting guilds"
+    assert con.execute("SELECT COUNT(*) FROM ServerProperty WHERE lower(`Key`) IN "
+                       "('bot_guilds_enabled') OR lower(`Key`) LIKE 'bot\\_guild\\_%' ESCAPE '\\'").fetchone()[0] == 0, "bot guild settings"
+    assert con.execute("SELECT COUNT(*) FROM GuildRank WHERE GuildID NOT IN "
+                       "(SELECT GuildID FROM Guild WHERE IsStartingGuild=1)").fetchone()[0] == 0, "orphan guild ranks"
+    for table in policy["ProgressTables"] + policy.get("OptionalProgressTables", []) + policy["ClearTables"] + ["FactionAggroLevel"]:
         if table in {"Guild", "GuildRank", "offline_local_options", "offline_runtime_status"}:
             continue
         exists = con.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?", (table,)).fetchone()[0]

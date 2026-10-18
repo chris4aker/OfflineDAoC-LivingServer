@@ -8,5 +8,6 @@
     "Guild", "GuildRank", "GuildAlliance", "DBHouseCharsXPerms", "DBHousePermissions", "DBIndoorItem", "DBOutdoorItem",
     "HouseConsignmentMerchant", "househookpointitem", "PlayerBoats"
   ],
+  "OptionalProgressTables": ["offline_bot_guilds", "offline_bot_guild_members"],
   "ClearTables": ["Appeal", "AuditEntry", "Ban", "BugReport", "KeepCaptureLog", "News", "PlayerInfo", "ServerInfo", "SinglePermission", "Voting", "serverstats", "offline_bot_commands", "offline_runtime_status", "offline_local_options"]
 }
