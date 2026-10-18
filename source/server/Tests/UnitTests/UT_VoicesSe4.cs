@@ -584,6 +584,12 @@ namespace DOL.GS.Tests
         public void AReplyDoesntAskWhatWasSaid(string incoming, string reply, bool fits) =>
             Assert.That(AutonomousChatShortTalk.ReplyFits(incoming, reply), Is.EqualTo(fits));
 
+        [TestCase("Camelot City", "Camelot")]
+        [TestCase("City of Camelot", "Camelot")]
+        [TestCase("Jordheim", null)]
+        public void CapitalsAreFoundByTheirShortName(string name, string shortName) =>
+            Assert.That(Knowledge.ShortCityName(name), Is.EqualTo(shortName));
+
         [Test]
         public void UnpromptedFactionLinesWaitAfterAPlayerSpeaks()
         {

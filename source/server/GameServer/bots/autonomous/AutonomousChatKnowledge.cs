@@ -345,11 +345,11 @@ public static class AutonomousChatKnowledge
             {
                 bool capital = AutonomousBotVoices.IsCapitalRegion(region.ID); // the capitals look like dungeons to the server
                 Add(building, region.Description, new(region.Description, region.Description, region.ID, region.IsDungeon && !capital, false, 0));
-                // "where is camelot?": nobody types "city of camelot" (live test 2026-10-18).
-                if (region.Description?.StartsWith("City of ", StringComparison.OrdinalIgnoreCase) == true)
-                    Add(building, region.Description["City of ".Length..], new(region.Description, region.Description, region.ID, false, false, 0));
                 foreach (Zone zone in region.Zones.Where(zone => zone != null))
                     Add(building, zone.Description, new(zone.Description, region.Description, region.ID, zone.IsDungeon && !capital, false, 0));
+                // "where is camelot?": nobody types "camelot city" or "city of camelot" (live test 2026-10-18).
+                if (capital && ShortCityName(region.Description) is string shortName)
+                    Add(building, shortName, new(region.Description, region.Description, region.ID, false, false, 0));
 
                 foreach (GameNPC npc in region.Objects.OfType<GameNPC>())
                 {
@@ -372,6 +372,18 @@ public static class AutonomousChatKnowledge
             _places = building.ToDictionary(entry => entry.Key, entry => entry.Value.Distinct().ToArray(), StringComparer.OrdinalIgnoreCase);
             return _places;
         }
+    }
+
+    /// <summary>"Camelot City" or "City of Camelot" -> "Camelot"; null for other names.</summary>
+    public static string ShortCityName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return null;
+        if (name.StartsWith("City of ", StringComparison.OrdinalIgnoreCase))
+            return name["City of ".Length..].Trim();
+        if (name.EndsWith(" City", StringComparison.OrdinalIgnoreCase))
+            return name[..^" City".Length].Trim();
+        return null;
     }
 
     private static void Add(Dictionary<string, List<Place>> index, string key, Place place)

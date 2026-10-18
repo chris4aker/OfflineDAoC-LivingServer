@@ -727,7 +727,8 @@ public static class AutonomousBotChatCoordinator
 
     /// <summary>A reply by name from a bot that remembers the player (Living Server memory), else the fallback.</summary>
     private static string KnownOr(GameBot responder, GamePlayer player, string incoming, Func<string> fallback) =>
-        AutonomousLivingServer.MemoryOn && Random.Shared.NextDouble() < 0.6 && AutonomousLivingServer.TryKnownReply(responder, player,
+        AutonomousLivingServer.MemoryOn && AutonomousChatShortTalk.QuestionShape(incoming) == null && Random.Shared.NextDouble() < 0.6 &&
+        AutonomousLivingServer.TryKnownReply(responder, player,
             AutonomousBotVoices.IntentName(AutonomousChatIntentModel.Predict(incoming)), out string known)
             ? known
             : fallback();
@@ -744,8 +745,10 @@ public static class AutonomousBotChatCoordinator
             return fallback();
         eAutonomousChatIntent value = knownIntent ?? AutonomousChatIntentModel.Predict(incoming);
         string intent = AutonomousBotVoices.IntentName(value);
-        // A bot that remembers this player answers by name, or coolly after abuse (Living Server memory).
-        if (player != null && Random.Shared.NextDouble() < 0.6 && AutonomousLivingServer.TryKnownReply(responder, player, intent, out string known))
+        // A bot that remembers this player answers by name, or coolly after abuse (Living Server memory). Not to a question
+        // with answers of its own: "where to next?" drew "Wrenfield?" (live test 2026-10-18).
+        if (player != null && AutonomousChatShortTalk.QuestionShape(incoming) == null && Random.Shared.NextDouble() < 0.6 &&
+            AutonomousLivingServer.TryKnownReply(responder, player, intent, out string known))
             return known;
         if (!AutonomousBotVoices.Enabled)
             return fallback();
