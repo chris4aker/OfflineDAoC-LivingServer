@@ -59,6 +59,8 @@ Older entries below keep the names they were written with.
   under water and swim faster for their duration, as before. Base game code; players only, as in the original handler.
   Not taken: the fork's default swim speed for everyone and its Nereid's Blessing buff. Checked: two new tests
   (`UT_WaterBreathingEffect`). Not yet tried in game.
+- **The gamebots' camp list no longer breaks on a monster with no zone** (by MoomoocowPlus). One such monster stopped
+  the whole list from being built, so every gamebot kept "Searching for a valid XP camp". It is now left out.
 
 ## Beta 1.1.1 — 2026-10-31
 

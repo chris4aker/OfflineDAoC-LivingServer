@@ -3694,6 +3694,12 @@ namespace DOL.GS
 
         private static CampCatalogCell[] BuildCampCatalogDraft(CampMonster[] snapshot)
         {
+                // Pruned test worlds (world-set gym) can serve mobs whose zone
+                // rows no longer exist: a null CurrentZone NRE'd the whole
+                // catalog draft, leaving every autonomous bot goalless
+                // ("Searching for a valid XP camp" forever). Drop them before
+                // any grouping touches CurrentZone.
+                snapshot = snapshot.Where(npc => npc?.CurrentZone != null).ToArray();
                 var cells = new List<CampCatalogCell>();
                 Dictionary<(ushort ZoneId, string Name), CampMonster[]> liveByZoneAndName = snapshot
                     .GroupBy(npc => (npc.CurrentZone.ID, npc.Name.Trim().ToLowerInvariant()))
