@@ -86,7 +86,7 @@ public static class AutonomousBotGroupChatter
         var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = speaker.Name };
         foreach (string answers in chain)
         {
-            if (!AutonomousBotVoices.TryLine(mate, "reply", out VC.Picked reply, answers: answers, slots: slots, relax: true))
+            if (!AutonomousBotVoices.TryLine(mate, "reply", out VC.Picked reply, answers: answers, slots: slots))
                 continue;
             int delay = AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared);
             AutonomousLivingServer.Later(mate, delay, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () => Send(mate, reply.Text));

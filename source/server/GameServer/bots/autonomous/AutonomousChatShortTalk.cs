@@ -46,8 +46,7 @@ public static class AutonomousChatShortTalk
         "keltoi", "fogou", "tepok", "tepoks", "mithra", "vendo", "nisse", "nisses", "muire", "spraggon", "koalinth", "catacombs");
     private static readonly HashSet<string> BanterWords = Set("same", "true", "ikr", "agreed", "yep", "yup", "indeed", "word", "truth",
         "exactly", "totally", "right", "ouch", "yikes", "oof", "ugh", "bah", "meh", "nice", "sweet", "cool", "awesome", "wow");
-    private static readonly HashSet<string> GankWords = Set("gank", "ganked", "ganking", "ganks", "stealthed", "stealther", "stealthers",
-        "camped", "killed");
+    private static readonly HashSet<string> GankWords = Set("gank", "ganked", "ganking", "ganks", "stealthed", "stealther", "stealthers");
     private static readonly HashSet<string> BotWords = Set("bot", "bots", "npc", "npcs", "ai", "program", "script", "scripted", "robot");
     private static readonly HashSet<string> SpecWords = Set("spec", "specs", "specced", "respec", "build", "nerf", "nerfed", "nerfs",
         "op", "overpowered", "gimped", "gimp", "uber", "underpowered");
@@ -67,6 +66,25 @@ public static class AutonomousChatShortTalk
         "bm", "bms", "warden", "wardens", "druid", "druids", "bard", "bards", "ranger", "rangers", "nightshade", "nightshades",
         "ns", "eldritch", "eldritches", "eld", "enchanter", "enchanters", "ench", "mentalist", "mentalists", "menta", "animist",
         "animists", "valewalker", "valewalkers", "vw");
+
+    private static readonly HashSet<string> ResistKinds = Set("heat", "cold", "matter", "body", "spirit", "energy", "crush", "slash", "thrust",
+        "magic", "melee", "resist", "resists");
+    private static readonly HashSet<string> ResistUses = Set("gear", "cap", "capped", "buff", "buffs", "cloak", "jewel", "jewelry", "item",
+        "items", "armor", "piece", "pieces");
+
+    /// <summary>"res" meaning a resist: "heat res gear", "what res should i cap" (review 2026-10-18).</summary>
+    private static bool IsResist(string[] words)
+    {
+        for (int i = 0; i < words.Length; i++)
+        {
+            if (words[i] is not ("res" or "ress"))
+                continue;
+            if (i > 0 && ResistKinds.Contains(words[i - 1]) || i + 1 < words.Length && ResistUses.Contains(words[i + 1]) ||
+                i + 3 < words.Length && (words[i + 2] is "cap" or "capped" || words[i + 3] is "cap" or "capped"))
+                return true;
+        }
+        return false;
+    }
 
     public static bool HasPhrase(string[] words, params string[] phrases)
     {
@@ -121,10 +139,12 @@ public static class AutonomousChatShortTalk
             return Is(eAutonomousChatIntent.BotCheck, out intent);
 
         bool thanks = Any(words, ThanksWords) || HasPhrase(words, "thank you", "much appreciated", "appreciate it");
-        // "ty for the rez" is thanks; "rez pls", "need a rez", "anyone rez?" ask for one.
+        // "ty for the rez" is thanks; "rez pls", "need a rez", "anyone rez?", "rez pls ty" ask for one. "heat res gear" is a resist.
         bool sickness = words.Contains("sick") || words.Contains("sickness");
-        if (!thanks && !sickness && Any(words, RezWords) && (n <= 6 || question || HasPhrase(words, "need a", "need rez", "can someone", "can anyone",
-                "anyone", "pls", "please", "plz", "rez me", "res me")))
+        bool rezWord = Any(words, RezWords) && !IsResist(words);
+        bool asking = question || HasPhrase(words, "need a", "need rez", "can someone", "can anyone", "anyone", "pls", "please", "plz",
+            "rez me", "res me", "rez pls", "rezz me");
+        if (rezWord && !sickness && (asking || !thanks && n <= 6))
             return Is(eAutonomousChatIntent.Rez, out intent);
         if (thanks)
             return Is(eAutonomousChatIntent.Thanks, out intent);
@@ -134,14 +154,15 @@ public static class AutonomousChatShortTalk
         if (praise && (Any(words, CongratsWords) || words.Contains("ding")))
             return Is(eAutonomousChatIntent.Congrats, out intent);
         if (words.Contains("ding") || words.Contains("dinged") || HasPhrase(words, "just dinged", "hit level", "made level") ||
-            words.Contains("finally") && words.Any(word => int.TryParse(word, out int level) && level is >= 2 and <= 50))
+            words.Contains("finally") && words.Any(word => int.TryParse(word, out int level) && level is >= 2 and <= 50) &&
+            (n <= 3 || words.Contains("level") || words.Contains("lvl")))
             return Is(eAutonomousChatIntent.Ding, out intent);
 
-        if (n <= 6 && (Any(words, AwayWords) || HasPhrase(words, "be right back", "be back", "one sec", "1 sec", "sec brb", "phone",
-                "door", "dinner", "afk for")) && !HasPhrase(words, "im back", "i'm back", "back now"))
+        if (n <= 6 && (Any(words, AwayWords) || HasPhrase(words, "be right back", "be back in", "one sec", "1 sec", "afk for")) &&
+            !HasPhrase(words, "im back", "i'm back", "back now"))
             return Is(eAutonomousChatIntent.Away, out intent);
         if (n <= 3 && Only(words, BackWords) || n <= 6 && (HasPhrase(words, "im back", "i'm back", "back now", "back again") ||
-                words[0] == "back" || n > 1 && words[0] is "ok" or "k" or "and" && words[1] == "back"))
+                words[0] == "back" && n <= 2 || n > 1 && words[0] is "ok" or "k" or "and" or "aaand" && words[1] == "back"))
             return Is(eAutonomousChatIntent.Back, out intent);
         if (words[0] == "wb" && n <= 3)
             return Is(eAutonomousChatIntent.Greeting, out intent);
@@ -197,7 +218,8 @@ public static class AutonomousChatShortTalk
             return Is(eAutonomousChatIntent.Grinding, out intent);
         if (HasPhrase(words, "how do i", "how does", "what do i", "what should i", "can someone help", "can anyone help", "need help",
                 "help me", "any tips", "any advice", "what level", "what lvl", "when do i", "trainer", "how do you", "what does",
-                "what is a", "whats a", "mean", "buff me", "buffs", "can i get"))
+                "what is a", "whats a", "buff me", "buffs", "can i get") ||
+            words.Contains("mean") && (words.Contains("what") || words.Contains("whats") || words.Contains("does")))
             return Is(eAutonomousChatIntent.Help, out intent);
 
         // "lol", "haha ok", "gg" with nothing else; "same", "true", "ouch" are a nod

@@ -194,7 +194,7 @@ need a healer or shaman, try faction
 @needs !can_rez
 need a druid or a warden, try faction
 @realm *
-@needs can_rez
+@needs will_rez
 coming
 omw, hold on
 sec, rezzing

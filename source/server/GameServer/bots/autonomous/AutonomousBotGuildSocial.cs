@@ -282,8 +282,10 @@ public static class AutonomousBotGuildSocial
             GameBot bot = pool[i];
             // A corpus reply for what the player said ("ty" -> "np", "lol" -> "heh", "ding" -> "gz"), else today's lines
             // (0.36-se.4: "haha true" answered any guild line that wasn't a question).
-            string line = AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked picked, AutonomousBotVoices.IntentName(intent),
-                    slots: slots, relax: true, requireVoices: false)
+            // Unknown and real-world lines keep today's guild replies; nobody here says "omw" to a rez ask.
+            string line = intent is not (eAutonomousChatIntent.Unknown or eAutonomousChatIntent.IgnoreOutOfWorld) &&
+                          AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked picked, AutonomousBotVoices.IntentName(intent),
+                              slots: slots, relax: true, requireVoices: false)
                 ? picked.Text
                 : Lines.Reply(kind, player.Name, bot.Level, bot.CurrentZone?.Description, Random.Shared);
             if (!AutonomousBotChatCoordinator.TryAddDistinctResponse(used, line, out line))
@@ -365,7 +367,7 @@ public static class AutonomousBotGuildSocial
             var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name };
             foreach (string answers in VC.AnswerChain(voiced.Line.Invites))
             {
-                if (!AutonomousBotVoices.TryLine(other, "reply", out VC.Picked reply, answers: answers, slots: slots, relax: true,
+                if (!AutonomousBotVoices.TryLine(other, "reply", out VC.Picked reply, answers: answers, slots: slots,
                         requireVoices: false))
                     continue;
                 ScheduleGuildLine(other, guild, AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared) + 1_500, () => reply.Text);

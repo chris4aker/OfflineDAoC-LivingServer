@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using DOL.Database;
 using DOL.GS.Movement;
 
@@ -44,7 +43,7 @@ public static class AutonomousChatKnowledge
         string query = message.Trim();
         // A bot's own line is answered only when it really asks something (in game "ranger, recurve bow, pathfinding"
         // drew a location answer about an NPC named Ranger; audit 2026-10-18).
-        if (!query.Contains('?'))
+        if (AutonomousBotVoices.Enabled && !query.Contains('?'))
             return false;
         if (LooksLikeStableQuestion(query) && TryAnswerStable(realm, query, out answer))
             return true;
@@ -79,19 +78,7 @@ public static class AutonomousChatKnowledge
             classId = askerClassId;
         if (classId == 0)
             return false;
-        var trainers = new List<(string Name, string Zone, ushort Region, bool Capital)>();
-        foreach (Region region in WorldMgr.GetAllRegions().Where(region => region != null &&
-                     AutonomousCapnBryGoalCatalog.IsClassicOrShroudedIslesExpansion(region.Expansion) && RegionIsAccessible(realm, region.ID)))
-        {
-            foreach (GameTrainer trainer in region.Objects.OfType<GameTrainer>())
-            {
-                if (trainer?.ObjectState is not GameObject.eObjectState.Active || (int)trainer.TrainedClass != classId ||
-                    trainer.Realm != realm && trainer.Realm != eRealm.None)
-                    continue;
-                trainers.Add((trainer.Name, trainer.CurrentZone?.Description ?? region.Description, region.ID,
-                    AutonomousBotVoices.IsCapitalRegion(region.ID)));
-            }
-        }
+        var trainers = TrainersOf(realm, classId);
         if (trainers.Count == 0)
             return false;
         // The asker's own region first, then the capital.
@@ -105,7 +92,50 @@ public static class AutonomousChatKnowledge
         return true;
     }
 
-    private static IEnumerable<ICharacterClass> AllClasses()
+    private static readonly object TrainerSync = new();
+    private static Dictionary<(eRealm Realm, int ClassId), List<(string Name, string Zone, ushort Region, bool Capital)>> _trainers;
+
+    /// <summary>The trainers of a class a realm can reach, indexed once on the first trainer question.</summary>
+    private static List<(string Name, string Zone, ushort Region, bool Capital)> TrainersOf(eRealm realm, int classId)
+    {
+        if (_trainers == null)
+        {
+            lock (TrainerSync)
+            {
+                if (_trainers == null)
+                {
+                    var index = new Dictionary<(eRealm, int), List<(string, string, ushort, bool)>>();
+                    foreach (Region region in WorldMgr.GetAllRegions().Where(region => region != null &&
+                                 AutonomousCapnBryGoalCatalog.IsClassicOrShroudedIslesExpansion(region.Expansion)))
+                    {
+                        foreach (GameTrainer trainer in region.Objects.OfType<GameTrainer>())
+                        {
+                            if (trainer?.ObjectState is not GameObject.eObjectState.Active || trainer.TrainedClass == eCharacterClass.Unknown)
+                                continue;
+                            foreach (eRealm reach in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
+                            {
+                                if (!RegionIsAccessible(reach, region.ID) || trainer.Realm != reach && trainer.Realm != eRealm.None)
+                                    continue;
+                                var key = (reach, (int)trainer.TrainedClass);
+                                if (!index.TryGetValue(key, out var list))
+                                    index[key] = list = new();
+                                list.Add((trainer.Name, trainer.CurrentZone?.Description ?? region.Description, region.ID,
+                                    AutonomousBotVoices.IsCapitalRegion(region.ID)));
+                            }
+                        }
+                    }
+                    _trainers = index;
+                }
+            }
+        }
+        return _trainers.TryGetValue((realm, classId), out var found) ? found : new();
+    }
+
+    private static ICharacterClass[] _classes;
+
+    private static ICharacterClass[] AllClasses() => _classes ??= LoadClasses().ToArray();
+
+    private static IEnumerable<ICharacterClass> LoadClasses()
     {
         foreach (eCharacterClass value in Enum.GetValues<eCharacterClass>())
         {
@@ -321,9 +351,21 @@ public static class AutonomousChatKnowledge
 
     /// <summary>The phrase as whole words (audit 2026-10-18: "cleric trainer" matched the NPC "Raine" in "tRAINEr",
     /// and "camelot" the monster "Mel").</summary>
-    public static bool ContainsPhrase(string text, string phrase) =>
-        !string.IsNullOrWhiteSpace(phrase) && !string.IsNullOrEmpty(text) && text.Contains(phrase.Trim(), StringComparison.OrdinalIgnoreCase) &&
-        Regex.IsMatch(text, $@"(?<![\p{{L}}\p{{N}}]){Regex.Escape(phrase.Trim())}(?![\p{{L}}\p{{N}}])", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    public static bool ContainsPhrase(string text, string phrase)
+    {
+        if (string.IsNullOrWhiteSpace(phrase) || string.IsNullOrEmpty(text))
+            return false;
+        string needle = phrase.Trim();
+        int start = 0;
+        while ((start = text.IndexOf(needle, start, StringComparison.OrdinalIgnoreCase)) >= 0)
+        {
+            int end = start + needle.Length;
+            if ((start == 0 || !char.IsLetterOrDigit(text[start - 1])) && (end == text.Length || !char.IsLetterOrDigit(text[end])))
+                return true;
+            start = end;
+        }
+        return false;
+    }
 
     private static bool HasWord(string text, string word) => ContainsPhrase(text, word);
 

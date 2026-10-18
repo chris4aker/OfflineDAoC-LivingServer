@@ -258,7 +258,8 @@ public static class AutonomousBotVoices
     /// </summary>
     public static bool TryLine(GameBot bot, string kind, out VC.Picked result, string intent = null, string answers = null,
         string topic = null, IReadOnlyDictionary<string, string> slots = null, IEnumerable<string> flags = null,
-        IEnumerable<string> withoutFlags = null, bool relax = false, bool requireVoices = true, Random random = null)
+        IEnumerable<string> withoutFlags = null, bool relax = false, bool requireVoices = true, Random random = null,
+        string requireNeed = null)
     {
         result = null;
         if ((requireVoices ? !Enabled : Corpus == null) || bot == null || !bot.IsAutonomousWorldBot || bot.DatabaseID <= 0)
@@ -285,6 +286,7 @@ public static class AutonomousBotVoices
                 Intent = intent,
                 Answers = answers,
                 Topic = topic,
+                RequireNeed = requireNeed,
                 RelaxTo = relax ? ShortReplyRest : null,
                 LocalHour = DateTime.Now.Hour,
             }, out result);
@@ -298,7 +300,7 @@ public static class AutonomousBotVoices
 
     /// <summary>A text in this bot's writing style (knowledge answers and other fixed text).</summary>
     public static string StyleFor(GameBot bot, string text) =>
-        Corpus == null || bot == null || string.IsNullOrEmpty(text) ? text : VC.Style(text, Corpus.VoiceFor(bot.DatabaseID), Random.Shared);
+        !Enabled || bot == null || string.IsNullOrEmpty(text) ? text : VC.Style(text, Corpus.VoiceFor(bot.DatabaseID), Random.Shared);
 
     /// <summary>
     /// A line for a Living Server event (docs/LIVING-SERVER.md). Needs only the corpus, so it works

@@ -97,6 +97,10 @@ namespace DOL.GS.Tests
         [TestCase("youre useless", Intent.Abuse)]
         [TestCase("learn to play", Intent.Abuse)]
         [TestCase("who won the presidential election", Intent.IgnoreOutOfWorld)]
+        // Review 2026-10-18
+        [TestCase("rez pls ty", Intent.Rez)]
+        [TestCase("can someone rez me? ty in advance", Intent.Rez)]
+        [TestCase("fuck you", Intent.Abuse)]
         public void ShortChatAndCommonRequestsAreRead(string message, Intent expected) =>
             Assert.That(Model.Predict(message), Is.EqualTo(expected), message);
 
@@ -106,6 +110,9 @@ namespace DOL.GS.Tests
         [TestCase("are scouts op")]
         [TestCase("yellow cons are for warming up")]
         [TestCase("ready when you are")]
+        [TestCase("where do u sell trash loot")]
+        [TestCase("terrible lag for everyone tonight")]
+        [TestCase("awful lot of people at the camp")]
         public void InnocentLinesAreNotInsults(string message) =>
             // Insults are remembered by bots (Living Server memory), so only an insult aimed at someone counts.
             Assert.That(Model.Predict(message), Is.Not.EqualTo(Intent.Abuse), message);
@@ -120,7 +127,21 @@ namespace DOL.GS.Tests
             // /say ignores real-world talk entirely; a classifier guess must never silence a player.
             Assert.That(Model.Predict(message), Is.Not.EqualTo(Intent.IgnoreOutOfWorld), message);
 
+        [TestCase("is the keep door down?", Intent.Away, false)]
+        [TestCase("my phone died", Intent.Away, false)]
+        [TestCase("anyone have heat res gear?", Intent.Rez, false)]
+        [TestCase("what res should i cap first", Intent.Rez, false)]
+        [TestCase("back to camp", Intent.Back, false)]
+        [TestCase("got killed by a bear", Intent.RvR, false)]
+        [TestCase("finally got 50 plat", Intent.Ding, false)]
+        [TestCase("i mean yeah", Intent.Help, false)]
+        [TestCase("brb phone", Intent.Away, true)]
+        public void WordsThatOnlySoundLikeShortChat(string message, Intent intent, bool expected) =>
+            Assert.That(Model.Predict(message) == intent, Is.EqualTo(expected), $"{message}: {Model.Predict(message)}");
+
         [TestCase("ty for the group", false)]
+        [TestCase("ty, inv pls", true)]
+        [TestCase("thanks! can i join?", true)]
         [TestCase("thanks for the invite", false)]
         [TestCase("anyone know a good xp spot for 25", false)]
         [TestCase("inv pls", true)]
@@ -226,6 +247,9 @@ namespace DOL.GS.Tests
         [TestCase("skeletal footman", "skeletal footmen")]
         [TestCase("wild boar", "wild boars")]
         [TestCase("spiders", "spiders")]
+        [TestCase("goblin shaman", "goblin shamans")]
+        [TestCase("human", "humans")]
+        [TestCase("roof", "roofs")]
         public void MonsterPlurals(string one, string many) => Assert.That(VC.Plural(one), Is.EqualTo(many));
 
         [Test]
@@ -309,9 +333,11 @@ namespace DOL.GS.Tests
         public void OnlyABotThatCanRezSaysItIsComing()
         {
             var lines = Corpus.Lines.Where(line => line.Kind == "reply" && line.Intent == "rez").ToArray();
-            Assert.That(lines.Where(line => line.Needs.Contains("can_rez")), Is.Not.Empty);
+            Assert.That(lines.Where(line => line.Needs.Contains("will_rez")), Is.Not.Empty);
             Assert.That(lines.Where(line => line.Text.Contains("omw") || line.Text.Contains("coming") || line.Text.Contains("rezzing"))
-                .All(line => line.Needs.Contains("can_rez")), Is.True);
+                .All(line => line.Needs.Contains("will_rez")), Is.True, "Set only when the bot will really come.");
+            Assert.That(Corpus.Lines.Where(line => line.Text is "rez pls" or "ty for the rez" && line.Kind == "group"), Is.Empty,
+                "Group talk runs while the bot is alive and nobody has rezzed it.");
         }
 
         [Test]

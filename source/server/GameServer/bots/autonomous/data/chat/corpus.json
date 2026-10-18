@@ -12447,48 +12447,6 @@
     50
    ],
    "needs": [
-    "in_group",
-    "just_died"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "none",
-   "text": "rez pls",
-   "id": "343a297646c9"
-  },
-  {
-   "kind": "group",
-   "topic": "group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_group",
-    "just_died"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "none",
-   "text": "ty for the rez",
-   "id": "67d6e9137b5f"
-  },
-  {
-   "kind": "group",
-   "topic": "group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
     "in_group"
    ],
    "intent": "",
@@ -35948,7 +35906,7 @@
     50
    ],
    "needs": [
-    "can_rez"
+    "will_rez"
    ],
    "intent": "rez",
    "mood": "",
@@ -35967,7 +35925,7 @@
     50
    ],
    "needs": [
-    "can_rez"
+    "will_rez"
    ],
    "intent": "rez",
    "mood": "",
@@ -35986,7 +35944,7 @@
     50
    ],
    "needs": [
-    "can_rez"
+    "will_rez"
    ],
    "intent": "rez",
    "mood": "",
@@ -36005,7 +35963,7 @@
     50
    ],
    "needs": [
-    "can_rez"
+    "will_rez"
    ],
    "intent": "rez",
    "mood": "",
@@ -36024,7 +35982,7 @@
     50
    ],
    "needs": [
-    "can_rez"
+    "will_rez"
    ],
    "intent": "rez",
    "mood": "",
@@ -36043,7 +36001,7 @@
     50
    ],
    "needs": [
-    "can_rez"
+    "will_rez"
    ],
    "intent": "rez",
    "mood": "",
@@ -36062,7 +36020,7 @@
     50
    ],
    "needs": [
-    "can_rez"
+    "will_rez"
    ],
    "intent": "rez",
    "mood": "",
@@ -36081,7 +36039,7 @@
     50
    ],
    "needs": [
-    "can_rez"
+    "will_rez"
    ],
    "intent": "rez",
    "mood": "",

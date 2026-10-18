@@ -112,9 +112,31 @@ public static partial class AutonomousChatIntentModel
     private static readonly HashSet<string> HardAbuse = new(StringComparer.OrdinalIgnoreCase)
         { "stfu", "shutup", "idiot", "idiots", "moron", "morons", "l2p", "dumbass" };
 
-    private static bool IsAbuse(string[] words) =>
-        words.Any(HardAbuse.Contains) || words.Any(Insults.Contains) && words.Any(Targets.Contains) ||
-        AutonomousChatShortTalk.HasPhrase(words, "shut up", "learn to play", "go away", "get out of my", "get lost");
+    /// <summary>Words that are insults only right after "you"/"ur" ("you are terrible", not "terrible lag for everyone").</summary>
+    private static readonly HashSet<string> WeakInsults = new(StringComparer.OrdinalIgnoreCase) { "trash", "awful", "terrible", "garbage", "ugly" };
+
+    private static bool IsAbuse(string[] words)
+    {
+        if (words.Any(HardAbuse.Contains) || AutonomousChatShortTalk.HasPhrase(words, "shut up", "learn to play", "go away", "get out of my",
+                "get lost", "fuck you", "f you", "screw you", "fuck off"))
+            return true;
+        if (!words.Any(Targets.Contains))
+            return false;
+        for (int i = 0; i < words.Length; i++)
+        {
+            if (!Insults.Contains(words[i]))
+                continue;
+            if (!WeakInsults.Contains(words[i]))
+                return true;
+            // "youre trash", "you are terrible", "ur so awful" (not "where do u sell trash loot")
+            static bool Target(string word) => word is "you" or "u" or "ur" or "youre" or "you're" or "yall";
+            if (i >= 1 && Target(words[i - 1]) ||
+                i >= 2 && Target(words[i - 2]) && words[i - 1] is "are" or "r" or "so" or "such" or "is" or "look" or "smell" ||
+                i >= 3 && Target(words[i - 3]) && words[i - 2] is "are" or "r" && words[i - 1] is "so" or "such" or "really" or "just")
+                return true;
+        }
+        return false;
+    }
 
     /// <summary>Words that carry no topic; the classifier ignores them ("are" made "yellow cons are for warming up" read as abuse).</summary>
     private static readonly HashSet<string> StopWords = new(StringComparer.OrdinalIgnoreCase)
@@ -185,7 +207,9 @@ public static partial class AutonomousChatIntentModel
         }
         // Real-world talk is decided by the hard word list alone: /say ignores it, so a guess must not silence a player
         // (0.36-se.4; "lol are you even real" read as real-world talk from the word "real").
-        return best - runnerUp < 0.18 || bestIntent == eAutonomousChatIntent.IgnoreOutOfWorld ? eAutonomousChatIntent.Unknown : bestIntent;
+        // Abuse too: bots remember an insult, so it must come from the word rules, not a guess ("terrible lag for everyone").
+        return best - runnerUp < 0.18 || bestIntent is eAutonomousChatIntent.IgnoreOutOfWorld or eAutonomousChatIntent.Abuse
+            ? eAutonomousChatIntent.Unknown : bestIntent;
     }
 
     private static Model Train()

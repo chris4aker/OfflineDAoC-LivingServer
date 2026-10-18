@@ -47,7 +47,8 @@ ALL_CLASSES = set().union(*CLASSES.values())
 FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'traveling', 'just_leveled',
          'just_died', 'bag_full', 'has_listing', 'knows_player', 'player_nearby', 'player_guildless',
          # 0.36-se.4: where and when (the PC's clock: day 6-17, evening 17-23, night 23-6), and who the bot is with
-         'outdoors', 'in_capital', 'day', 'evening', 'night', 'in_player_group', 'can_rez', 'in_battleground', 'in_frontier'}
+         'outdoors', 'in_capital', 'day', 'evening', 'night', 'in_player_group', 'can_rez', 'in_battleground', 'in_frontier',
+         'will_rez'}   # will_rez: set only when answering a rez ask the bot will really come to
 TIME_FLAGS = {'day', 'evening', 'night'}
 INTENTS = {'unknown', 'greeting', 'banter', 'abuse', 'grouping', 'grinding', 'travel', 'dungeon', 'rvr',
            'trading', 'help', 'farewell', 'ignoreoutofworld',

@@ -251,6 +251,9 @@ public sealed class AutonomousBotVoiceCorpus
         public string Mood { get; init; }
         public string Answers { get; init; }
 
+        /// <summary>Only lines that need this flag (an advert for a listed item uses only the "has_listing" lines).</summary>
+        public string RequireNeed { get; init; }
+
         /// <summary>
         /// When every fitting line was heard within the six-hour window, a line not heard for this long may
         /// be used again (short, common replies: "np", "lol", "where?"), so a player is never left unanswered
@@ -281,6 +284,7 @@ public sealed class AutonomousBotVoiceCorpus
         Speaker speaker = request.Speaker;
         Random random = request.Random;
         var pool = Candidates(request.Kind, speaker, request.Intent, request.Topic, request.Mood, request.Answers)
+            .Where(line => request.RequireNeed == null || line.Needs.Contains(request.RequireNeed, StringComparer.Ordinal))
             .Where(allowed)
             .Select(line => (Line: line, Weight: WeightFor(line, speaker)))
             .Where(entry => entry.Weight > 0)
@@ -339,8 +343,12 @@ public sealed class AutonomousBotVoiceCorpus
         ["man"] = "men", ["woman"] = "women", ["child"] = "children", ["mouse"] = "mice", ["louse"] = "lice",
         ["goose"] = "geese", ["ox"] = "oxen", ["deer"] = "deer", ["sheep"] = "sheep", ["fish"] = "fish",
         ["boar"] = "boars", ["undead"] = "undead", ["kin"] = "kin", ["fungus"] = "fungi", ["cyclops"] = "cyclopes",
-        ["leaf"] = "leaves", ["knife"] = "knives", ["staff"] = "staffs", ["djinn"] = "djinn",
+        ["leaf"] = "leaves", ["knife"] = "knives", ["staff"] = "staffs", ["djinn"] = "djinn", ["half"] = "halves",
+        ["calf"] = "calves", ["scarf"] = "scarves", ["loaf"] = "loaves", ["shelf"] = "shelves", ["wife"] = "wives",
     };
+
+    /// <summary>"-man" words that are not "-men" in the plural.</summary>
+    private static readonly string[] ManPluralExceptions = ["shaman", "human", "talisman", "caiman", "ottoman", "german", "brahman"];
 
     /// <summary>
     /// The plural of a monster name for {monsters}: the last word changes ("hill cat" -> "hill cats",
@@ -365,14 +373,12 @@ public sealed class AutonomousBotVoiceCorpus
         if (IrregularPlurals.TryGetValue(word, out string irregular))
             return char.IsUpper(word[0]) ? char.ToUpperInvariant(irregular[0]) + irregular[1..] : irregular;
         string lower = word.ToLowerInvariant();
-        if (lower.EndsWith("man") && lower.Length > 4)
+        if (lower.EndsWith("man") && lower.Length > 4 && !ManPluralExceptions.Any(lower.EndsWith))
             return word[..^3] + "men";
         if (lower.EndsWith("s") || lower.EndsWith("x") || lower.EndsWith("z") || lower.EndsWith("ch") || lower.EndsWith("sh"))
             return lower.EndsWith("us") || lower.EndsWith("ss") || !lower.EndsWith("s") ? word + "es" : word;
         if (lower.EndsWith("y") && lower.Length > 1 && "aeiou".IndexOf(lower[^2]) < 0)
             return word[..^1] + "ies";
-        if (lower.EndsWith("f") && !lower.EndsWith("ff") && !lower.EndsWith("ef"))
-            return word[..^1] + "ves";
         return word + "s";
     }
 
