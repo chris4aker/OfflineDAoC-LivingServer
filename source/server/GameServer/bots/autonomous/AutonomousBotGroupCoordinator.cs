@@ -2117,10 +2117,12 @@ public static partial class AutonomousBotGroupCoordinator
         foreach (GameBot member in members)
         {
             int deathCount = member.PersistentRecord?.DeathCount ?? 0;
+            // Read before ReachedDeathLimit moves the member's deadline to now; read after, it is always the full wait.
+            long waitedMs = session.Attendance.WaitedMilliseconds(member.DatabaseID, now);
             if (session.Attendance.ReachedDeathLimit(member.DatabaseID, deathCount, now))
                 Log.Warn($"AUTONOMOUS_GROUP_MEETUP_DEATHS group={session.Id} bot={member.Name} id={member.DatabaseID} " +
                          $"level={member.Level} deaths={session.Attendance.DeathsSinceStart(member.DatabaseID, deathCount)} " +
-                         $"waitedSeconds={session.Attendance.WaitedMilliseconds(member.DatabaseID, now) / 1000} region={member.CurrentRegionID} " +
+                         $"waitedSeconds={waitedMs / 1000} region={member.CurrentRegionID} " +
                          $"at={(int)member.X},{(int)member.Y} rendezvous={(int)session.Rendezvous.X},{(int)session.Rendezvous.Y}");
         }
         // Capture attendance before removals shift group indexes/formation slots.
