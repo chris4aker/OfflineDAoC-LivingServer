@@ -34,6 +34,7 @@ public static class AutonomousBotGuildSocial
     private static readonly Dictionary<eRealm, (string GuildId, long Tick)> OpenRecruit = new();
     private static readonly Dictionary<string, DateTime> DeclinedUntil = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, DateTime> LastNearbyOffer = new(StringComparer.Ordinal);
+    private static readonly Dictionary<string, long> LastTooLowAnswer = new(StringComparer.Ordinal);
 
     public static bool Enabled => AutonomousBotGuilds.Enabled && Properties.BOT_GUILD_SOCIAL;
 
@@ -342,8 +343,11 @@ public static class AutonomousBotGuildSocial
     /// </summary>
     public static bool TryAnswerGuildRequest(GamePlayer player, string message, bool faction)
     {
-        if (!InvitesEnabled || player == null || !CountsAsGuildless(player.Guild) || player.Level < Math.Max(1, Properties.BOT_GUILD_MIN_LEVEL))
+        if (!InvitesEnabled || player == null || !CountsAsGuildless(player.Guild))
             return false;
+        int minLevel = Math.Max(1, Properties.BOT_GUILD_MIN_LEVEL);
+        if (player.Level < minLevel)
+            return TryAnswerTooLow(player, message, faction, minLevel);
         string openGuildId;
         lock (Sync)
         {
@@ -387,6 +391,59 @@ public static class AutonomousBotGuildSocial
             // TryOfferNearby (audit 2026-10-17).
             ClientService.Instance.Post(static state => SendInviteDialog(state.Player, state.Officer, state.Guild),
                 (Player: player, Officer: officer, Guild: chosen));
+            return 0;
+        }, 2_000 + Random.Shared.Next(2_000));
+        return true;
+    }
+
+    public const long TooLowAnswerMs = 10 * 60_000;
+
+    /// <summary>One answer per player per 10 minutes to "lf guild" below the guild level.</summary>
+    public static bool ShouldAnswerTooLow(bool answeredBefore, long lastAnswered, long now) =>
+        !answeredBefore || now - lastAnswered >= TooLowAnswerMs;
+
+    /// <summary>
+    /// In game 2026-10-18 a level 3 asking "lf guild" in /faction got silence; at level 5 the same post got an invite
+    /// in 12 s. Below the guild level an officer now says when to come back, once per player every 10 minutes.
+    /// </summary>
+    private static bool TryAnswerTooLow(GamePlayer player, string message, bool faction, int minLevel)
+    {
+        if (!Lines.AsksForGuild(message, false))
+            return false;
+        long now = GameLoop.GameLoopTime;
+        lock (Sync)
+        {
+            bool before = LastTooLowAnswer.TryGetValue(player.Name, out long last);
+            if (!ShouldAnswerTooLow(before, last, now))
+                return true;                                  // asked again too soon: still handled, nothing said
+            LastTooLowAnswer[player.Name] = now;
+        }
+        GameBot officer = null;
+        Guild guild = null;
+        foreach (Guild candidate in BotGuildsOfRealm(player.Realm).OrderBy(_ => Random.Shared.Next()))
+        {
+            officer = candidate.GetOnlineBotMembers()
+                .Where(Eligible)
+                .Where(bot => faction || bot.CurrentRegion == player.CurrentRegion && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE))
+                .OrderBy(bot => bot.GuildRank?.RankLevel ?? AutonomousBotGuildPlanner.LowestRank)
+                .FirstOrDefault();
+            if (officer != null)
+            {
+                guild = candidate;
+                break;
+            }
+        }
+        if (officer == null)
+            return false;
+        string line = Lines.TooLowForGuild(player.Name, guild.Name, minLevel, Random.Shared);
+        _ = new ECSGameTimer(officer, _ =>
+        {
+            if (!Eligible(officer) || player.ObjectState != GameObject.eObjectState.Active)
+                return 0;
+            if (faction)
+                AutonomousBotChatCoordinator.BroadcastFaction(officer.Name, officer.Realm, line);
+            else
+                officer.Say(line);
             return 0;
         }, 2_000 + Random.Shared.Next(2_000));
         return true;

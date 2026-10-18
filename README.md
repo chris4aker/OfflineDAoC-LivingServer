@@ -20,7 +20,7 @@
 They join guilds and recruit you, each has its own personality, and they talk the way players did in
 2002–2003, down to the build arguments in /faction.
 
-> **Latest release: 0.36-se.2**, for shadowofze's 0.36 / 0.36b, with or without the 0.36c new client.
+> **Latest release: 0.36-se.3**, for shadowofze's 0.36 / 0.36b, with or without the 0.36c new client.
 > Download it from this repository's [Releases](https://github.com/chris4aker/OfflineDAoC-SocialExpansion/releases).
 > Every change is in [CHANGELOG-SOCIAL-EXPANSION.md](CHANGELOG-SOCIAL-EXPANSION.md); known problems and
 > what hasn't been tested are in [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
@@ -84,7 +84,7 @@ A fresh world has no bots yet, and most of these features need some.
    the first /faction debate comes 5–10 minutes after the server starts (while you're online),
    frontier alarms need bots in the frontier, and guilds form once enough bots are online.
 4. **Check it's running.** The server log (`runtime\server\logs\server.log`) has a line starting
-   `FORK_BUILD name=0.36-se.2` that lists which features are on.
+   `FORK_BUILD name=0.36-se.3` that lists which features are on.
 
 ## Undo and uninstall
 

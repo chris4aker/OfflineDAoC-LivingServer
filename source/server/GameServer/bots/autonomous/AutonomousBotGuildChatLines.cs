@@ -135,6 +135,12 @@ public static class AutonomousBotGuildChatLines
         $"{player}, sending you an invite to {guild}", $"sure {player}, invite coming from {guild}",
         $"{player} we would love to have you, check for an invite", $"inviting you now {player}");
 
+    /// <summary>To a player asking for a guild below the level bot guilds take members (BOT_GUILD_MIN_LEVEL).</summary>
+    public static string TooLowForGuild(string player, string guild, int minLevel, Random random) => Pick(random,
+        $"{player}, {guild} takes people from {minLevel} up, come find us then",
+        $"hit {minLevel} and send me a tell {player}, {guild} will have a spot",
+        $"{player} we invite at {minLevel}+, get a couple more levels and ask again");
+
     public static string OfferInviteNearby(string player, string playerClass, string guild, Random random)
     {
         string cls = string.IsNullOrWhiteSpace(playerClass) ? "good player" : playerClass.ToLowerInvariant();

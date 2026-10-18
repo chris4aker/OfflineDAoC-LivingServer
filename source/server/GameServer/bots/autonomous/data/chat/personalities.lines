@@ -47,10 +47,7 @@ the exchange prices tonight are wild
 @who Socialite
 @levels 1-50
 how is everyone tonight?
-anyone want to hang out in {capital} for a bit?
-i miss my old group, they all went to bed
 love seeing new faces around {zone}
-who is up for a group just for the company?
 tell me your best death story, i have three
 anyone in a guild that takes chatty people?
 the realm feels alive tonight, good vibes
@@ -61,6 +58,17 @@ anyone else stay up too late because the group was fun?
 we should all meet up in {capital} sometime
 sometimes i log in just to talk
 i remember everyone i group with, it is a problem
+
+# Looking for company: only from a bot with no group (in game 2026-10-18 a Socialite grouped with the player asked
+# "who is up for a group just for the company?").
+@kind ambient
+@topic socialite
+@who Socialite
+@needs solo
+@levels 1-50
+anyone want to hang out in {capital} for a bit?
+i miss my old group, they all went to bed
+who is up for a group just for the company?
 
 @kind ambient
 @topic explorer

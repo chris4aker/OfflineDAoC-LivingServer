@@ -23,15 +23,17 @@ These apply even with every Social Expansion switch off:
   on, using the **0.36c new client**. The **original game client wasn't tried**; it runs the same
   server, so the features should behave the same, but that hasn't been checked.
 
+A three-hour playtest on 2026-10-18 (a new Albion Scout from level 1 to 5, no GM powers) also saw a
+bot guild recruit the player, guild merit grow, a bot go linkdead in the player's group, and the
+meetup fix drop two no-shows (in the server log).
+
 **Not yet seen in game** (they have automated tests, but nobody has watched them happen yet):
-- bot guilds claiming keeps, and guild merit
+- bot guilds claiming keeps
 - `/ginvite` and `/gc remove` on a bot
 - the `clock` bot schedule (`session` was played)
-- linkdeads
 - nemesis lines in chat
-- you rezzing a dead bot
-- voice lines for dings and deaths
-- the meetup fix above
+- you rezzing a dead bot, or a passing bot rezzing you (no healer passed in five deaths)
+- grats on your own ding from nearby bots
 - the exact bot XP-by-level factor (bot XP does go up with it on; the exact rate wasn't measured)
 
 ## Known problems
@@ -51,6 +53,13 @@ These apply even with every Social Expansion switch off:
   - Rezzing a dead bot from it hasn't worked in testing (the corpse couldn't be targeted). It's not
     confirmed whether that's the client or slow clicking; the original client wasn't tried.
   - It has no guild window, so a bot guild's member list can't be browsed.
+  - `/face` keeps facing your target, and the turn keys do nothing until you type `/face` again.
+    `/faceloc` doesn't turn you.
+  - A bow fires from the Ranged Weapon key (`,`), not the target window's ATTACK button. There's no
+    quiver window, so arrows in a bag can't be moved into the quiver slots.
+  - The group window still shows your base class after you choose your class at level 5.
+- **Bot chat:** /faction replies are often generic and don't always fit the line they answer, and a
+  bot that offers to group with you can be anywhere in the realm.
 - **Added the 0.36c new client after installing this?** Run `INSTALL.cmd` again so the new client's
   launcher gets the Social Expansion tab too.
 - **0.37:** this build is for 0.36 / 0.36b only, and the installer refuses anything else. When

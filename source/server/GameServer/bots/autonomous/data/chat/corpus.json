@@ -12862,65 +12862,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "anyone want to hang out in {capital} for a bit?",
-   "id": "a5dce0d85bf0"
-  },
-  {
-   "kind": "ambient",
-   "topic": "socialite",
-   "who": [
-    "Socialite"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "i miss my old group, they all went to bed",
-   "id": "cbb26c98e7bc"
-  },
-  {
-   "kind": "ambient",
-   "topic": "socialite",
-   "who": [
-    "Socialite"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
    "text": "love seeing new faces around {zone}",
    "id": "bbfc7144f7ae"
-  },
-  {
-   "kind": "ambient",
-   "topic": "socialite",
-   "who": [
-    "Socialite"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "who is up for a group just for the company?",
-   "id": "bd8ad6bc3fc4"
   },
   {
    "kind": "ambient",
@@ -13111,6 +13054,69 @@
    "weight": 1.0,
    "text": "i remember everyone i group with, it is a problem",
    "id": "54ac58b63607"
+  },
+  {
+   "kind": "ambient",
+   "topic": "socialite",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "solo"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "anyone want to hang out in {capital} for a bit?",
+   "id": "a5dce0d85bf0"
+  },
+  {
+   "kind": "ambient",
+   "topic": "socialite",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "solo"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "i miss my old group, they all went to bed",
+   "id": "cbb26c98e7bc"
+  },
+  {
+   "kind": "ambient",
+   "topic": "socialite",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "solo"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "who is up for a group just for the company?",
+   "id": "bd8ad6bc3fc4"
   },
   {
    "kind": "ambient",

@@ -428,6 +428,10 @@ public static partial class AutonomousLivingServer
             .OrderBy(bot.GetDistanceTo).FirstOrDefault();
     }
 
+    /// <summary>A rez ask is logged at Info only when a player could have answered it.</summary>
+    public static bool RezAskWorthLogging(bool rezzerNear, bool rezClassNear, bool playerHears, bool inPlayerGroup) =>
+        rezzerNear || rezClassNear || playerHears || inPlayerGroup;
+
     private static void AskForRez(GameBot bot)
     {
         long deathTick = GameLoop.GameLoopTime;
@@ -441,12 +445,17 @@ public static partial class AutonomousLivingServer
                 // Says who could have rezzed, so a missing ask can be checked in game (in-game check 2026-10-17).
                 GamePlayer rezClass = rezzer ?? (bot.CurrentRegion == null ? null : ClientService.Instance.GetPlayersOfRegion(bot.CurrentRegion).FirstOrDefault(player =>
                     player.Realm == bot.Realm && IsRezClass(player) && bot.IsWithinRadius(player, 2_500)));
-                Log.Info($"LIVING_SERVER_REZ_ASK bot=\"{bot.Name}\" rezzer=\"{rezzer?.Name ?? "none"}\"" +
+                // Playtest 2026-10-18: 2,966 of these in three hours, nearly all for bots dying far from any player.
+                // Only a death a player could have answered is worth the line; the rest go to Debug.
+                if (RezAskWorthLogging(rezzer != null, rezClass != null, PlayerHears(bot), bot.Group != null && GroupHasPlayer(bot.Group)))
+                    Log.Info($"LIVING_SERVER_REZ_ASK bot=\"{bot.Name}\" rezzer=\"{rezzer?.Name ?? "none"}\"" +
                          (rezzer == null && rezClass != null
                              ? $" near_rez_class=\"{rezClass.Name}\" alive={rezClass.IsAlive} has_rez_spell={CanRez(rezClass)}"
                              : string.Empty) +
                          $" died_at={diedAt} now_at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} moving={bot.IsMoving}" +
                          $" region={bot.CurrentRegionID} players={DescribePlayersNear(bot)}");
+                else if (Log.IsDebugEnabled)
+                    Log.Debug($"LIVING_SERVER_REZ_ASK bot=\"{bot.Name}\" rezzer=\"none\" died_at={diedAt} no_player_near=true");
             }
             bool grouped = rezzer != null && bot.Group != null && bot.Group == rezzer.Group;
             Channel channel = grouped || bot.Group != null && GroupHasPlayer(bot.Group) ? Channel.Group : Channel.Say;

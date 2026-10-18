@@ -2691,16 +2691,22 @@ namespace DOL.GS
             // Audit 2026-10-17: this ran on every gamebot death with every feature off and captured a stack trace
             // each time. It now logs only with the Living Server death part on, and the normal release (the move
             // expected on every death) is named instead of walking the stack.
+            // Playtest 2026-10-18: 2,951 lines in three hours, almost all the normal release. That one is expected on
+            // every death, so it is Debug now; any other move of a dead gamebot (the bug this line is for) stays Info.
             if (!AutonomousLivingServer.DeathOn || !IsAutonomousWorldBot || IsAlive || _deadMoveLoggedForDeath == _deathTick ||
-                !log.IsInfoEnabled)
+                !(_releasingCorpse ? log.IsDebugEnabled : log.IsInfoEnabled))
                 return;
             _deadMoveLoggedForDeath = _deathTick;
             string stack = _releasingCorpse
                 ? $"{nameof(GameBot)}.{nameof(ReleaseToNearestBindAndReturn)}"
                 : string.Join(" <- ", new System.Diagnostics.StackTrace(2, false).GetFrames()
                     .Take(8).Select(frame => frame.GetMethod() is { } method ? $"{method.DeclaringType?.Name}.{method.Name}" : "?"));
-            log.Info($"LIVING_SERVER_DEAD_MOVE bot=\"{Name}\" id={DatabaseID} how={how} deadMs={GameLoop.GameLoopTime - _deathTick} " +
-                     $"from={CurrentRegionID}:{X},{Y},{Z} to={regionID}:{x},{y},{z} by={stack}");
+            string line = $"LIVING_SERVER_DEAD_MOVE bot=\"{Name}\" id={DatabaseID} how={how} deadMs={GameLoop.GameLoopTime - _deathTick} " +
+                          $"from={CurrentRegionID}:{X},{Y},{Z} to={regionID}:{x},{y},{z} by={stack}";
+            if (_releasingCorpse)
+                log.Debug(line);
+            else
+                log.Info(line);
         }
 
         public override bool MoveTo(ushort regionID, int x, int y, int z, ushort heading)

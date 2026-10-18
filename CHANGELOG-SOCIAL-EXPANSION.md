@@ -3,6 +3,29 @@
 What this fork adds to shadowofze's Offline DAoC. The base game's own changes are in
 [CHANGELOG.md](CHANGELOG.md). The newest version is first.
 
+## 0.36-se.3 — 2026-10-18
+
+Fixes from a three-hour playtest (a new Albion Scout from level 1 to 5, every feature on). Same game
+versions as before (0.36 / 0.36b, with or without 0.36c). Install it over 0.36-se.2, 0.36-se.1 or a
+clean game.
+
+**Bot chat**
+- A bot no longer seems to answer its own /faction line. Its closing "Fair enough. Safe travels." is
+  said only after somebody actually replied; before, it went out even when every reply was dropped.
+- A bot in a group no longer asks in chat who wants to group "just for the company".
+- Asking for a guild below the level bot guilds take members ("lf guild" at level 3) gets an answer
+  saying when to come back, once every 10 minutes, instead of silence.
+- "where are you?" by `/send` gets the bot's zone, level and class.
+
+**Logs**
+- The rez-ask line is written only when a player could have answered it, and a bot's normal release
+  is logged at Debug. Together they were about 8% of the playtest's server log.
+- `AUTONOMOUS_GROUP_MEETUP_DEATHS` gives the real wait; it always said 900 seconds.
+
+**Tested**
+- **Automated:** the full server suite on CI, with new tests for each fix.
+- **In game:** the playtest that found these is in the docs; the fixes themselves haven't been played yet.
+
 ## 0.36-se.2 — 2026-10-17
 
 Fixes from an audit of the first release. Same game versions as before (0.36 / 0.36b, with or

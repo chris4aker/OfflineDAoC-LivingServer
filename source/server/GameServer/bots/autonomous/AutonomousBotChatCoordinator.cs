@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using DOL.GS.PacketHandler;
 
 namespace DOL.GS;
@@ -137,6 +138,9 @@ public static class AutonomousBotChatCoordinator
             AutonomousLivingServer.RecordAbuse([bot], player);
         string reply = AsksToJoinGroup(message)
             ? JoinReply(bot, player, Random.Shared)
+            : AsksWhereYouAre(message)
+                ? WhereText(Clean(bot.CurrentZone?.Description, "the frontier"), bot.CurrentZone != null && bot.CurrentZone == player.CurrentZone,
+                    bot.Level, bot.CharacterClass?.Name ?? "adventurer", Random.Shared)
             : AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge)
                 ? knowledge
                 : KnownOr(bot, player, message, () => VoicedReply(bot, message, () => GenerateDirectedReply(message), player));
@@ -162,6 +166,36 @@ public static class AutonomousBotChatCoordinator
             return false;
         return new[] { " inv ", " invite ", " group ", " grp ", " join ", " lfg ", " room for ", " spot for " }
             .Any(text.Contains);
+    }
+
+    /// <summary>
+    /// "where are you?", "where r u", "wru", "where you at", "your loc?" - a question about the bot itself, not about
+    /// a place or a trainer (in game 2026-10-18 a bot asked "where are you?" by /send answered "What did you need?").
+    /// </summary>
+    public static bool AsksWhereYouAre(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+            return false;
+        string text = " " + new string(message.ToLowerInvariant().Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()) + " ";
+        while (text.Contains("  "))
+            text = text.Replace("  ", " ");
+        return new[] { " where are you ", " where r you ", " where are u ", " where r u ", " where you at ", " where u at ",
+                " wru ", " your loc ", " ur loc ", " where are ya ", " where you hunting ", " where are you hunting " }
+            .Any(text.Contains);
+    }
+
+    /// <summary>The bot's zone, level and class, the way a player would answer "where are you?".</summary>
+    public static string WhereText(string zone, bool sameZone, int level, string className, Random random)
+    {
+        string cls = (className ?? "adventurer").ToLowerInvariant();
+        if (sameZone)
+            return random.Next(2) == 0 ? $"in {zone} too, other end of it. {level} {cls}" : $"also in {zone}, {level} {cls}, come find me";
+        return random.Next(3) switch
+        {
+            0 => $"im in {zone}, {level} {cls}",
+            1 => $"{zone} right now, {level} {cls}",
+            _ => $"out in {zone}. you?",
+        };
     }
 
     public static string JoinReply(GameBot bot, GamePlayer player, Random random)
@@ -386,6 +420,7 @@ public static class AutonomousBotChatCoordinator
         int count = hasKnowledge ? Math.Min(1, eligible.Length) : RollResponseCount(eligible.Length);
         HashSet<string> scheduledResponses = new(StringComparer.OrdinalIgnoreCase);
         int scheduledCount = 0;
+        var said = new ReplyTally();
         for (int index = 0; index < count; index++)
         {
             GameBot responder = eligible[index];
@@ -396,9 +431,15 @@ public static class AutonomousBotChatCoordinator
             Schedule(responder, 1_700 + scheduledCount++ * 2_100 + Random.Shared.Next(1_300), () =>
             {
                 if (faction && HasFactionAudience(responder.Realm))
+                {
                     BroadcastFaction(responder.Name, responder.Realm, response);
+                    said.Add();
+                }
                 else if (!faction && HasLocalAudience(responder))
+                {
                     responder.Say(response);
+                    said.Add();
+                }
             });
         }
 
@@ -409,6 +450,10 @@ public static class AutonomousBotChatCoordinator
             string closing = faction ? "Fair enough. Safe travels." : "Understood. I will keep at it.";
             Schedule(starter, 5_500 + scheduledCount * 1_500, () =>
             {
+                // In game 2026-10-18 a bot "answered itself": its closing went out although none of the replies did
+                // (each responder was busy or gone when its turn came). The closing now follows a reply that was said.
+                if (!ClosingFollowsAReply(said.Count))
+                    return;
                 if (faction && HasFactionAudience(starter.Realm))
                     BroadcastFaction(starter.Name, starter.Realm, closing);
                 else if (!faction && HasLocalAudience(starter))
@@ -437,6 +482,17 @@ public static class AutonomousBotChatCoordinator
             return voiced;
         return fallback();
     }
+
+    /// <summary>How many of a conversation's scheduled replies were actually said (they run on timers).</summary>
+    private sealed class ReplyTally
+    {
+        private int _count;
+        public int Count => Volatile.Read(ref _count);
+        public void Add() => Interlocked.Increment(ref _count);
+    }
+
+    /// <summary>A starter's closing line ("Fair enough. Safe travels.") only after somebody answered it.</summary>
+    public static bool ClosingFollowsAReply(int repliesSaid) => repliesSaid > 0;
 
     private static void Schedule(GameBot speaker, int delay, Action action)
     {
