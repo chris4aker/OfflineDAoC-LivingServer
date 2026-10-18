@@ -1,0 +1,40 @@
+# Scratch check (deleted after): shadowofze/main + the four upstream-fix branches, his server tests.
+name: upstream-check
+on:
+  push:
+    branches: [ci/upstream-fixes-check]
+permissions:
+  contents: read
+jobs:
+  server:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Config
+        shell: bash
+        run: cp source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
+      - name: Build
+        run: dotnet build "source/server/Dawn of Light.sln" -c Release
+      - name: Test
+        shell: bash
+        run: |
+          filter=""
+          while IFS= read -r name; do
+            name="${name%$'\r'}"
+            [ -z "$name" ] && continue
+            filter="${filter:+$filter&}FullyQualifiedName!~.$name"
+          done < .github/ci-excluded-tests.txt
+          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --logger "trx;LogFileName=server.trx" | tail -n 30
+          trx=$(find . -path '*TestResults*' -name 'server.trx' | head -n 1)
+          counters=$(grep -o '<Counters [^>]*>' "$trx" | head -n 1 || true)
+          echo "::notice title=Upstream server tests::$counters"
+      - name: New client C# builds
+        shell: bash
+        run: |
+          proj=$(git ls-files 'source/new-client/**/*.csproj' | head -n 1)
+          echo "project: $proj"
+          if [ -n "$proj" ]; then dotnet build "$proj" -c Debug 2>&1 | tail -n 5; fi
