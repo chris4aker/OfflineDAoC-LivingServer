@@ -66,20 +66,22 @@ These later fixes are covered by unit tests but were not simulated again.
 The se.4 server ran in a cloud workspace on a copy of a played database (150 bots, every Social Expansion
 feature on). A scripted player (the 0.36c new client's network code without its window) logged in as a level
 5 Albion Scout, typed in /faction, /say, /send, /gu and /group on a timetable, and recorded every line it was
-sent. Four sessions: 40 minutes near Cotswold, then about 25, 20 and 10 minutes in Camelot, each later one on a
-build with the fixes from the one before. The scripted player didn't move or fight, and the server ran on Linux
+sent. Five sessions: 40 minutes near Cotswold, then about 25, 20, 10 and 6 minutes in Camelot, each later one on
+a build with the fixes from the one before. The scripted player didn't move or fight, and the server ran on Linux
 without its navigation library, so bots moved worse than they do on Windows; neither affects chat.
 
-| | Session 1: se.4 as merged (Cotswold) | Session 3: most fixes (Camelot) | Session 4: all fixes (Camelot) |
+| | Session 1: se.4 as merged (Cotswold) | Session 3: most fixes (Camelot) | Session 4: fixes from 1-3 (Camelot) |
 |---|---|---|---|
-| Player lines that got a fitting answer, or rightly none | 17 of 24 | 13 of 19, 1 passable | S4_FIT |
-| Unprompted lines heard a minute | 0.9 | 2.1 | S4_RATE |
-| Lines heard twice | none | none | S4_DUP |
-| Server errors after start | none | none | S4_ERR |
+| Player lines that got a fitting answer, or rightly none | 17 of 24 | 13 of 19, 1 passable | 8 of 9 |
+| Unprompted lines heard a minute | 0.9 | 2.1 | 2.2 |
+| Lines heard twice | none | none | none |
+| Server errors after start | none | none | none |
 
 Player lines that couldn't be tested (no bot in /say range, no group yet, or a test-client mistake) aren't
 counted. Session 2 (Camelot, 25 minutes) ran on a build between sessions 1 and 3 and is folded into the list
-below. The five answers still wrong in session 3 were fixed before session 4.
+below. The five answers still wrong in session 3 were fixed before session 4; the one wrong in session 4 ("what
+level are you?" in /group drew "sure Wrenfield, what do you need?") was fixed and got "8, slowly" in session 5,
+where all four player lines got fitting answers.
 
 Found and fixed (with unit tests, except the /group answers and the /faction answerer rotation, which only
 the live sessions checked):

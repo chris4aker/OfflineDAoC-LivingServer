@@ -72,9 +72,9 @@ needs **bot voices** on (the launcher's Social Expansion tab); what changes with
 - "where is camelot?" finds Camelot; trainer answers name the nearest trainer.
 
 **Tested**
-- **Automated:** the full server suite (3,139 tests, about 180 for se.4) and the corpus checks pass locally.
-- **Live, scripted (not a person playing):** four sessions on the real server with a scripted player, about
-  95 minutes in all; what it found is above and in [docs/bot-voices/SE4-CHECKS.md](docs/bot-voices/SE4-CHECKS.md).
+- **Automated:** the full server suite (3,144 tests, about 190 for se.4) and the corpus checks pass locally.
+- **Live, scripted (not a person playing):** five sessions on the real server with a scripted player, about
+  100 minutes in all; what it found is above and in [docs/bot-voices/SE4-CHECKS.md](docs/bot-voices/SE4-CHECKS.md).
 - **In game:** not played yet.
 
 ## 0.36-se.3 — 2026-10-18
