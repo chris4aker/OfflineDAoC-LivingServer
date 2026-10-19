@@ -258,7 +258,9 @@ class QuickSlot extends Control:
 		return prev
 
 	func _can_drop_data(_pos: Vector2, data: Variant) -> bool:
-		return data is Dictionary and String(data.get("kind", "")) in ["item", "quickslot", "skill", "spell", "style", "petcmd", "macro"]
+		# "ability": Sprint, Stealth, Quickcast ... from the skills sheet (panel_sheets.gd: "These drag onto the quickbar"),
+		# which use_skill already plays (abilities.gd); the bar refused them (owner 2026-10-18: Sprint showed a no-entry sign)
+		return data is Dictionary and String(data.get("kind", "")) in ["item", "quickslot", "skill", "spell", "style", "petcmd", "macro", "ability"]
 
 	func _drop_data(_pos: Vector2, data: Variant) -> void:
 		var e: Dictionary = data.get("entry", {}) if data.kind == "quickslot" else \
