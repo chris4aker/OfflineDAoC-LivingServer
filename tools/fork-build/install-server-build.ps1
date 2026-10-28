@@ -6,7 +6,7 @@
 #
 # Safe by design:
 # - refuses while the server, launcher or game runs;
-# - installs only into the release it was built for (BaseRelease in BUILD-INFO.txt), checked against
+# - installs only into the release(s) it was built for (BaseRelease in BUILD-INFO.txt, e.g. 0.37 or 0.37,0.38), checked against
 #   the game's own PACKAGE MANIFEST.sha256;
 # - replaces only a GameServer.dll that is the original release file or a fork build this script
 #   installed; anything else is refused unless -Force;
@@ -76,7 +76,8 @@ if ($null -eq $manifest) {
     if (!$Force) { Stop-WithMessage "No PACKAGE MANIFEST.sha256 in the game folder, so it can't be checked as Offline DAoC $base. (-Force skips this check.)" }
     $manifest = @{}
 } elseif (!(Test-ReleaseManifest $manifest $base)) {
-    if (!$Force) { Stop-WithMessage "This game folder isn't Offline DAoC $base (or $($base)b). This build only fits $base; installing it on another release would undo that release's server changes." }
+    $fits = (Get-BaseReleases $base) -join ' or '
+    if (!$Force) { Stop-WithMessage "This game folder isn't Offline DAoC $fits (or their b editions). This build only fits $fits; installing it on another release would undo that release's server changes." }
 }
 
 # 4. What is there now.

@@ -207,8 +207,14 @@ namespace DOL.AI.Brain
             ForceAddToAggroList(living, aggroAmount);
         }
 
+        // A player cannot target an NPC flagged CANTTARGET, so a bot does not fight one either. Run 27 (2026-10-19): Galladoria's
+        // Corrupt Primal of Fire leaves short-lived "trail of fire" patches (untargetable, 99% resists, gone in 6 s) that burn
+        // whoever stands in them; 145 raiders by the Magical Earthmender were swinging at them and 2 at the Earthmender.
+        public static bool IsUntargetable(GameLiving living) => living is GameNPC { Flags: var flags } && (flags & GameNPC.eFlags.CANTTARGET) != 0;
+
         public void ForceAddToAggroList(GameLiving living, long aggroAmount)
         {
+            if (IsUntargetable(living)) return;
             if (!CompanionEngagementMode.Allows(Body, living)) return;
             if (_autonomousWorldController?.IgnoresTarget(living) == true) return;
             if (CompanionRaidSiege.Ignores(Body as GameBot, living)) return;
@@ -311,6 +317,7 @@ namespace DOL.AI.Brain
         protected virtual bool ShouldBeRemovedFromAggroList(GameLiving living)
         {
             return !living.IsAlive ||
+                   IsUntargetable(living) ||
                    living.ObjectState != GameObject.eObjectState.Active ||
                    living.CurrentRegion != Body.CurrentRegion ||
                    !Body.IsWithinRadius(living, MAX_AGGRO_LIST_DISTANCE) ||
@@ -440,7 +447,10 @@ namespace DOL.AI.Brain
                 if (BotBody?.IsRecoveryResting == true)
                     BotBody.WakeRecoveryRest();
                 ConvertDamageToAggroAmount(ad.Attacker, Math.Max(1, ad.Damage + ad.CriticalDamage));
-                if (ad.Attacker?.IsAlive == true && ad.Attacker != Body)
+                // An autonomous gamebot reacts to a player-shaped attacker like a person (BotIncomingFireReaction): an
+                // area hit from a distance is threat but no personal call, and entering combat draws a reaction delay.
+                BotIncomingFireKind fire = BotIncomingFireReaction.KindOf(BotBody, ad);
+                if (ad.Attacker?.IsAlive == true && ad.Attacker != Body && BotIncomingFireReaction.IsPersonalCall(fire))
                 {
                     _recentDirectAttacker = ad.Attacker;
                     _recentDirectAttackTick = GameLoop.GameLoopTime;
@@ -453,7 +463,7 @@ namespace DOL.AI.Brain
                 if (ShouldEnterAggroStateAfterDirectAttack(
                         HasAggro,
                         FSM.GetCurrentState() == FSM.GetState(eFSMStateType.AGGRO)))
-                    FSM.SetCurrentState(eFSMStateType.AGGRO);
+                    EnterAggroFromIncomingFire(fire, ad.Attacker);
 
                 // Damage is an event, so wake combat immediately without
                 // increasing the ordinary idle/travel AI cadence.
@@ -589,8 +599,8 @@ namespace DOL.AI.Brain
                 if (BotBody?.IsRecoveryResting == true)
                     BotBody.WakeRecoveryRest();
                 NextThinkTick = GameLoop.GameLoopTime;
-                if (FSM.GetState(eFSMStateType.AGGRO) != FSM.GetCurrentState())
-                    FSM.SetCurrentState(eFSMStateType.AGGRO);
+                EnterAggroFromIncomingFire(
+                    BotIncomingFireReaction.MateKindOf(BotBody, attacker, BotIncomingFireReaction.IsAreaEffect(ad)), attacker);
             }
         }
 
@@ -1625,6 +1635,14 @@ namespace DOL.AI.Brain
 
             foreach (GameNPC npc in bot.GetNPCsInRadius(StandardMobBrain.MAX_AGGRO_DISTANCE))
             {
+                // A scripted encounter boss is woken by a raider nearby as by a player, aggressive or not: run 29 (2026-10-20),
+                // Galladoria's Olcasgean slept as a statue with all four primals dead and 264 raiders at its staging, because
+                // only its own (sleeping) brain starts the timer that wakes it.
+                if (npc is IGameEpicNpc && npc.IsAlive && npc.ObjectState == GameObject.eObjectState.Active && npc != bot)
+                {
+                    npc.OnAutonomousBotNearby();
+                    continue;
+                }
                 if (npc == bot || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active ||
                     npc is GameTaxi or GameTrainingDummy || npc.Brain is not StandardMobBrain brain ||
                     brain.AggroLevel <= 0 || brain.AggroRange <= 0 ||
@@ -2917,10 +2935,12 @@ namespace DOL.AI.Brain
                 // otherwise expired before the bot ever acted on it (run 9/10 pull loops, raid
                 // target calls that never landed on Summoner Cunovinda).
                 _aggroEndTime = long.MaxValue;
+                _brain.BeginIncomingFireHold();
             }
 
             public override void Exit()
             {
+                _brain.EndIncomingFireHold();
                 _brain.Body.StopAttack();
                 _brain.Body.TargetObject = null;
                 _brain.ClearAggroList();
@@ -2964,6 +2984,13 @@ namespace DOL.AI.Brain
 
                 // Passive stance: heals only, no attacking
                 if (_brain.BotBody.Stance == eBotStance.Passive)
+                {
+                    _brain.CheckHeals();
+                    return;
+                }
+
+                // Just hit by a player: a moment before answering (heals and cures go out at once).
+                if (_brain.HoldsIncomingFire())
                 {
                     _brain.CheckHeals();
                     return;
@@ -3043,7 +3070,7 @@ namespace DOL.AI.Brain
             if (protectionTarget != null)
                 AddToAggroList(protectionTarget, 10000);
 
-            GameLiving directAttacker = RecentDirectAttacker();
+            GameLiving directAttacker = KillOrderAttacker(RecentDirectAttacker());
 
             // Bow release is driven by AttackAction, not by this brain pulse.
             // Re-entering the general target/movement decision while Aim is
@@ -5241,6 +5268,19 @@ namespace DOL.AI.Brain
                         }
                     }
 
+                    // A dotted group is answered with the group cure, not one cure per member (BotIncomingFireReaction).
+                    if (spellToCast == null && nextCureTime < GameLoop.GameLoopTime && BotIncomingFireReaction.Applies(BotBody) &&
+                        CheckHealSpell(BotBody.CurePoisonGroup))
+                    {
+                        GameLiving[] dotted = cureGroup.GetMembersInTheGroup()
+                            .Where(member => member != null && member.IsAlive && member.IsPoisoned && InSupportReach(member)).ToArray();
+                        if (BotIncomingFireReaction.PrefersGroupCure(dotted.Length))
+                        {
+                            spellToCast = BotBody.CurePoisonGroup;
+                            spellTarget = dotted[0];
+                        }
+                    }
+
                     if (spellToCast == null && nextCureTime < GameLoop.GameLoopTime)
                     {
                         foreach (GameLiving member in cureGroup.GetMembersInTheGroup().OrderBy(member => member == AssistedPlayer ? 0 : 1))
@@ -5469,10 +5509,11 @@ namespace DOL.AI.Brain
             if (resurrection == null || now < _nextSiegeRaiseScanTick || Body.IsCasting)
                 return false;
             _nextSiegeRaiseScanTick = now + 3_000;
-            if (!AutonomousSiegeResurrection.IsSiegeAttacker(BotBody))
+            // An RvR healer of the realm that is not in the siege army itself (a roaming group at the battle) raises the
+            // army's dead too, as any realm-mate would (run 27: 20-100 such checks per 5 minutes with dead beside them).
+            if (!AutonomousSiegeResurrection.IsSiegeAttacker(BotBody) &&
+                !(AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR) && AutonomousSiegeResurrection.HasFallenComradeNear(BotBody)))
             {
-                if (AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR) && AutonomousSiegeResurrection.HasFallenComradeNear(BotBody))
-                    AutonomousSiegeResurrection.Note(AutonomousSiegeResurrection.Check.NotAttacker);
                 _nextSiegeRaiseScanTick = now + 15_000;
                 return false;
             }
@@ -5486,8 +5527,9 @@ namespace DOL.AI.Brain
                 AutonomousSiegeResurrection.Note(AutonomousSiegeResurrection.Check.CannotCast);
                 return false;
             }
-            GameBot corpse = AutonomousSiegeResurrection.ClaimCorpse(BotBody, fighting);
-            AutonomousSiegeResurrection.Note(corpse == null ? AutonomousSiegeResurrection.Check.NoCorpse : AutonomousSiegeResurrection.Check.Corpse);
+            GameBot corpse = AutonomousSiegeResurrection.ClaimCorpse(BotBody, fighting, out bool enemyBlocked);
+            AutonomousSiegeResurrection.Note(corpse != null ? AutonomousSiegeResurrection.Check.Corpse :
+                enemyBlocked ? AutonomousSiegeResurrection.Check.EnemyByCorpse : AutonomousSiegeResurrection.Check.NoCorpse);
             if (corpse == null)
                 return false;
             int range = BotBody.castingComponent.CalculateSpellRange(resurrection);

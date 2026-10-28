@@ -86,10 +86,23 @@ function Read-ManifestFile([string]$path) {
 # keeps the earlier ones, so the newest listed is the game's release (an updated 0.37 lists 0.36 and 0.37). An updated
 # game has no editions\ folder (the 0.37 update removes it), so that check, which the 0.36 full downloads pass, is only
 # the fallback for a manifest without release notes. Found on a real 0.36c game updated to 0.37c (2026-10-18).
+# A build may fit several releases (BaseRelease=0.37,0.38 in BUILD-INFO.txt): once its server code carries a newer
+# release's server changes, that release is added so the build installs on either. The game must be one of them.
+function Get-BaseReleases([string]$base) {
+    return @($base -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+}
+
 function Test-ReleaseManifest($manifest, [string]$base) {
+    $bases = Get-BaseReleases $base
     $versions = @($manifest.Keys | ForEach-Object { if ($_ -match '^docs/RELEASE-(\d+\.\d+)\.md$') { [version]$Matches[1] } })
-    if ($versions.Count -gt 0) { return (($versions | Sort-Object | Select-Object -Last 1) -eq [version]$base) }
-    return [bool]($manifest.Keys | Where-Object { $_ -like "editions/$base-no-custom-class/*" } | Select-Object -First 1)
+    if ($versions.Count -gt 0) {
+        $newest = $versions | Sort-Object | Select-Object -Last 1
+        return [bool]($bases | Where-Object { [version]$_ -eq $newest } | Select-Object -First 1)
+    }
+    foreach ($one in $bases) {
+        if ($manifest.Keys | Where-Object { $_ -like "editions/$one-no-custom-class/*" } | Select-Object -First 1) { return $true }
+    }
+    return $false
 }
 
 function Get-InstallRecords([string]$Game) {

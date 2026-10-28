@@ -704,7 +704,13 @@ namespace DOL.GS
 		/// outside their own view: Olcasgean's controller stands 4,300 units from its waterfall-bridge trigger, so its brain
 		/// slept while 250 raid bots waited on the bridge (run 13, 2026-10-16). They always think.</summary>
 		public const string EncounterControllerGuild = "DO NOT REMOVE!";
-		public bool IsEncounterController => GuildName == EncounterControllerGuild;
+		// Run 28 (2026-10-20): Caer Sidi's Apoc Initializator is loaded from the database with no guild (and the Olcasgean
+		// controller's row reads "DO NOT REMOVE", without the "!"), so it slept with 195 raiders at its trigger: bots only
+		// wake monsters that could aggro them, and the dialogue that starts the horsemen never came (picked=False). The
+		// hidden controllers are recognised by their class too.
+		public bool IsEncounterController =>
+			GuildName?.StartsWith("DO NOT REMOVE", System.StringComparison.Ordinal) == true ||
+			GetType().Name is "ApocInitializator" or "HostInitializator" or "OlcasgeanInitializator" or "BeliathanInit" or "EyesWatchingYouInit";
 
 		/// <summary>
 		/// Gets or sets the spawnposition of this npc
@@ -1703,21 +1709,22 @@ namespace DOL.GS
 		/// <returns>True if the NPC should show quest indicator, false otherwise</returns>
 		public virtual eQuestIndicator GetQuestIndicator(GamePlayer player)
 		{
-			// Available one ?
-			if (CanShowOneQuest(player))
-				return eQuestIndicator.Available;
-
-			// Finishing one ?
-			if (CanFinishOneQuest(player))
-				return eQuestIndicator.Finish;
-
-			return eQuestIndicator.None;
+			// One set of rules for every NPC (QuestIndicators.For, from HearthDAoC): turn in, then the current step, then a
+			// quest to take whose minimum level is at most 15 below the player's. The lists are copied under their locks.
+			AbstractQuest[] scripted;
+			lock (_questListToGiveLock)
+				scripted = m_questListToGive.Count == 0 ? Array.Empty<AbstractQuest>() : m_questListToGive.Cast<AbstractQuest>().ToArray();
+			DataQuest[] offered;
+			lock (_dataQuestsLock)
+				offered = DataQuestList.Count == 0 ? Array.Empty<DataQuest>() : DataQuestList.ToArray();
+			return QuestIndicators.For(this, player, scripted, offered);
 		}
 
 		/// <summary>
 		/// Sends this NPC's current quest marker to a player who already sees it. Markers are otherwise only sent when the
 		/// NPC is first shown, so a quest that opened at a new level had no marker until the player logged out (known
 		/// issues #4, 2026-10-16). NPCs without quests or a marker are skipped so a level-up does not message every bot.
+		/// The effect goes through QuestIndicators' table and last-sent store, so it agrees with QuestIndicators.Refresh.
 		/// </summary>
 		public void RefreshQuestIndicator(GamePlayer player)
 		{
@@ -1780,7 +1787,7 @@ namespace DOL.GS
 				AbstractQuest quest = pair.Key;
 
 				// Handle Data Quest here.
-				if (quest is DataQuest dataQuest && dataQuest.TargetName == Name && (dataQuest.TargetRegion == 0 || dataQuest.TargetRegion == CurrentRegionID))
+				if (quest is DataQuest dataQuest && QuestNames.Same(dataQuest.TargetName, Name) && (dataQuest.TargetRegion == 0 || dataQuest.TargetRegion == CurrentRegionID))
 				{
 					switch (dataQuest.StepType)
 					{
@@ -1822,12 +1829,22 @@ namespace DOL.GS
 			AbstractQuest quest = HasQuest(questType);
 			if (quest != null)
 			{
+				// Building the quest saves its record, so a full journal refuses first (HearthDAoC).
+				if (QuestJournal.IsFull(player.QuestList.Count))
+				{
+					player.Out.SendMessage(QuestJournal.FullText, eChatType.CT_System, eChatLoc.CL_SystemWindow);
+					return false;
+				}
+
 				AbstractQuest newQuest = (AbstractQuest)Activator.CreateInstance(questType, new object[] { player, startStep });
 				if (newQuest != null && player.AddQuest(newQuest))
 				{
 					player.Out.SendNPCsQuestEffect(this, GetQuestIndicator(player));
 					return true;
 				}
+
+				// A quest AddQuest refused leaves no record behind.
+				newQuest?.DeleteFromDatabase();
 			}
 			return false;
 		}

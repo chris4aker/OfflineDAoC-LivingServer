@@ -493,6 +493,11 @@ namespace DOL.GS.PacketHandler
 			if (m_gameClient.Player == null || npc == null)
 				return;
 
+			// The meaning becomes what the client draws, recorded as sent; nothing for an NPC out of the world or in another
+			// region, whose object ID is another object on this client (QuestIndicators).
+			if (!QuestIndicators.Sending(m_gameClient.Player, npc, ref indicator))
+				return;
+
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.VisualEffect)))
 			{
 

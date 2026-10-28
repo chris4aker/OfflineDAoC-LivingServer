@@ -2128,9 +2128,10 @@ namespace DOL.GS
                     spell.ClientEffect = 368;
                     spell.Icon = 368;
                     spell.TooltipId = 368;
-                    spell.Damage = 220;
+                    // Owner 2026-10-19: "nerf the fire patches" (was 220 in a 450 radius every 2 s, a new patch every 2.5 s).
+                    spell.Damage = 120;
                     spell.Range = 1200;
-                    spell.Radius = 450;
+                    spell.Radius = 300;
                     spell.SpellID = 11866;
                     spell.Target = eSpellTarget.AREA.ToString();
                     spell.Type = eSpellType.DirectDamageNoVariance.ToString();

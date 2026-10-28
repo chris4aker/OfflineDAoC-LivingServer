@@ -26,7 +26,7 @@ namespace DOL.GS.Quests
             foreach (var pair in player.QuestList) // not .Keys: that copies the keys on every aggro check
             {
                 if (pair.Key is DataQuest dataQuest && TalksTo(dataQuest.StepType) &&
-                    dataQuest.TargetName == npc.Name && (dataQuest.TargetRegion == 0 || dataQuest.TargetRegion == npc.CurrentRegionID))
+                    QuestNames.Same(dataQuest.TargetName, npc.Name) && (dataQuest.TargetRegion == 0 || dataQuest.TargetRegion == npc.CurrentRegionID))
                     return true;
             }
 
@@ -48,10 +48,10 @@ namespace DOL.GS.Quests
             DataQuest.eStepType.Interact or DataQuest.eStepType.InteractFinish or DataQuest.eStepType.Whisper or
             DataQuest.eStepType.WhisperFinish or DataQuest.eStepType.Collect or DataQuest.eStepType.CollectFinish;
 
-        /// <summary>Start NPCs and talk/whisper/hand-in targets of every data quest (names compared exactly, as DataQuest does).</summary>
+        /// <summary>Start NPCs and talk/whisper/hand-in targets of every data quest (names compared without case, as DataQuest does).</summary>
         private static HashSet<string> LoadQuestNpcNames()
         {
-            HashSet<string> names = new(StringComparer.Ordinal);
+            HashSet<string> names = new(StringComparer.OrdinalIgnoreCase);
 
             foreach (DbDataQuest quest in GameServer.Database.SelectAllObjects<DbDataQuest>())
             {

@@ -118,6 +118,11 @@ public static class AutonomousRouteHotspotRepair
         new(200, new(311024, 638475), 700, new(296110, 642245, 4853), new(318807, 629660, 4959)),
         new(200, new(340988, 469188), 700, ConnachtMainNetworkWitness, ConnachtMainRoad),
         new(181, new(423162, 443589), 700, new(423900, 440147, 5998), new(424924, 445575, 5977)),
+        // Odin's Gate: a walled-in floor south of Albion's portal keep (about 800 by 1,000 units at 5,971-5,980, ringed
+        // by connected ground at the same height) joins nothing. Albion siege bots walked into it and were sent home to
+        // Camelot after three failed recoveries (runs 24-27: 43 give-ups, 14 trips home). Escape: the portal arrival in
+        // the keep yard, which routes to the whole frontier.
+        new(100, new(596640, 632288), 650, new(596364, 631509, 5971), new(600862, 628700, 5769), 5976),
         new(200, new(312250, 472500), 4_000, ConnachtMainRoad, ConnachtMainNetworkWitness),
 
         // Four measured Lough Derg terrain pockets are locally present but do

@@ -73,6 +73,7 @@ namespace DOL.GS
                 {
                     GameClient client = clients[i];
                     client.Player?.RemoveFinishedQuests(x => x is Quests.MonthlyQuest);
+                    Quests.QuestIndicators.Refresh(client.Player); // the monthly givers show their knot again
                 }
 
                 IList<DbQuest> existingMonthlyQuests = GameServer.Database.SelectObjects<DbQuest>(DB.Column("Name").IsLike("%MonthlyQuest%"));

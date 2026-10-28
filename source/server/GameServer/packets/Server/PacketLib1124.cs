@@ -207,6 +207,8 @@ namespace DOL.GS.PacketHandler
 						flags2 |= 0x04;
 
 					eQuestIndicator questIndicator = npc.GetQuestIndicator(m_gameClient.Player);
+					// The meaning becomes what the client draws, recorded as sent to this player (QuestIndicators).
+					questIndicator = QuestIndicators.SendingCreate(m_gameClient.Player, npc, questIndicator);
 
 					if (questIndicator == eQuestIndicator.Available)
 						flags2 |= 0x08;

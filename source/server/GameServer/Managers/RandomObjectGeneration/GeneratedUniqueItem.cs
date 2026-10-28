@@ -7678,6 +7678,9 @@ namespace DOL.GS
 
 
             this.Name = name;
+            // A helmet never rolls a model the client draws nothing for (Albion cloth caps rolled 822, invisible, 70% of the time).
+            if (slot == eInventorySlot.HeadArmor)
+                model = HelmetModels.Visible(model, realm, type);
             this.Model = model;
 
             //

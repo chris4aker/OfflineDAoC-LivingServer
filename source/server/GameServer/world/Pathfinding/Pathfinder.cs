@@ -493,6 +493,35 @@ namespace DOL.GS
             _pathVisualization = new();
         }
 
+        /// <summary>Route state for a stall trace: status, nodes left, next node and each door on the path.</summary>
+        public string DescribeRoute()
+        {
+            var text = new System.Text.StringBuilder();
+            text.Append($"path={PathfindingStatus} nodes={_activePath.Nodes.Count}");
+            if (_activePath.Nodes.Count > 0)
+            {
+                Vector3 next = _activePath.Nodes.Peek(0).Position;
+                text.Append($" next={next.X:0},{next.Y:0},{next.Z:0}");
+            }
+            text.Append($" target={_lastTarget.X:0},{_lastTarget.Y:0},{_lastTarget.Z:0} doors=");
+            int listed = 0;
+            foreach (List<GameDoorBase> doors in _activePath.Doors.Values)
+            {
+                foreach (GameDoorBase door in doors)
+                {
+                    if (listed++ >= 4) break;
+                    GameKeepDoor keepDoor = door as GameKeepDoor;
+                    text.Append($"[{door.DoorId} {door.GetType().Name} {door.State} realm={door.Realm} " +
+                                $"keep={keepDoor?.Component?.Keep?.KeepID.ToString() ?? "-"} portal={keepDoor?.Component?.Keep?.IsPortalKeep} " +
+                                $"usable={(keepDoor != null && CanUseFriendlyKeepDoor(Owner, keepDoor))} interact={door.CanBeOpenedViaInteraction} " +
+                                $"dist={Owner.GetDistanceTo(door)}]");
+                }
+            }
+            if (Owner is GameBot bot)
+                text.Append($" doorPassIn={bot.TempProperties.GetProperty<long>("RvrDoorPassUntil") - GameLoop.GameLoopTime}");
+            return text.ToString();
+        }
+
         public override string ToString()
         {
             return $"{nameof(Pathfinder)}[Target={_lastTarget}, " +

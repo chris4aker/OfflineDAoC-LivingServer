@@ -17,7 +17,10 @@ public static class ForkBuildInfo
     /// <summary>The fork's build name (Living Server); bump it with each fork release.</summary>
     public const string BuildName = "1.1-beta";
 
-    /// <summary>The Offline DAoC release this build installs on (the installer checks the game against it).</summary>
+    /// <summary>
+    /// The Offline DAoC release(s) this build installs on; the installer checks the game against them. Comma-separated
+    /// once the server code carries a newer release's server changes (docs/UPSTREAM-RELEASES.md), e.g. "0.37,0.38".
+    /// </summary>
     public const string BaseRelease = "0.37";
 
     private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);

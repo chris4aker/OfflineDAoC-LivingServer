@@ -8,7 +8,14 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Beta 1.1 (in development): the talking update
+## Beta 1.1 (in development)
+
+Beta 1.1 is several pieces of work together: the talking update, Offline DAoC 0.38's server fixes ahead of their
+release, fixes taken from other forks of Offline DAoC, bots that react to attacks like players, quests that can be
+finished with their markers and epic chains, and the all-in-one Setup. The plan and its checklist are in
+[docs/RELEASE-1.1.md](docs/RELEASE-1.1.md).
+
+### The talking update
 
 A Reddit report from Beta 1.0 had a Hibernian bot in Ardee asking about an Albion dungeon. That led to a rework of how
 bots talk; the full design is in [docs/bot-voices/TALKING-UPDATE.md](docs/bot-voices/TALKING-UPDATE.md).
@@ -66,6 +73,137 @@ bots talk; the full design is in [docs/bot-voices/TALKING-UPDATE.md](docs/bot-vo
   plays an evening in each realm, a lost keep, a group fight and three conversations through the real corpus. An
   independent code review found eight defects; all are fixed. Not played in game yet; the list of checks is in
   TALKING-UPDATE.md.
+
+### Lag spikes with a large population (issue #25)
+
+- Reported and diagnosed by Krolgosh-web. A warband walking to a distant frontier medallion merchant searched for a
+  spot beside it from far away, proving up to 18 multi-zone routes every 15 seconds per bot. With many level 50s on
+  RvR, the server tick stalled for about a second and killed bots stood at 0 HP before they fell. Stock 0.37 never ran
+  this, because its far-off bots gave up on the medallion.
+- Bots now look for the spot only within 2,000 units of the merchant, and wait 30 seconds after a search that found
+  nothing.
+
+### Offline DAoC 0.38's server fixes, ahead of their release
+
+From shadowofze's 0.38 work, which isn't published yet (his `main` at `9da9091`, server code only). Thanks to
+shadowofze.
+
+- **Bot raids:**
+  - A bot raid can start Caer Sidi's four horsemen and kill Apocalypse: the hidden controller that starts their
+    challenge now runs whoever is near.
+  - Galladoria's Olcasgean wakes for a bot raid once the four primals are dead.
+  - Raiders no longer swing at things a player can't target (the Corrupt Primal of Fire's patches, which also hit
+    for less now).
+  - A raid target only a few are fighting draws some of the busy fighters over.
+- **Armies:**
+  - A relic or keep army's new leader is the marcher with most of the army around it, not a straggler far behind.
+  - Siege healers stay behind the line, walk out to their dead and raise them; a fallen attacker waits for a raise
+    while a healer of its army is within 5,000.
+- **Travel:**
+  - Hibernian bots no longer loop at their Odin's Gate portal keep door.
+  - Albion bots step off the walled-in floor beside theirs instead of being sent home.
+- **World code:**
+  - Random helmets never roll a model the client draws nothing for.
+  - A door the server has no record of opens again (and is logged as DOOR_NOT_IN_DATABASE).
+- **Not included:** the new-client changes, the patch tools and the world-data parts (Campacorentin patrols,
+  helmets already stored in a world). Those come with shadowofze's own 0.38 patch.
+
+### Fixes from other forks
+
+- **The effect leak.** An effect that ended before it had started was put back in the effect service and ticked
+  forever, so the server slowed the longer it ran. Such effects are no longer added, and any ended effect still there
+  is removed. From rambodolphin13's fork, which measured 30 million such effects and 326 ms per tick on a 3,000-bot
+  run.
+- **Siege timers.** Muster deadlines, the march after them, repels and the four-hour cap now run on the live clock.
+  A throttle that started at the lowest possible time overflowed and skipped every pass (found by stefanrows' fork;
+  the same code is in Offline DAoC 0.37). This had been off on every live server since the throttle was added, so
+  sieges will now end, march and repel on their timers where earlier builds did not. It is the biggest change here to
+  watch in play.
+- **Healers** let a cure they are already casting on the same member finish instead of restarting it every turn
+  (stefanrows, via rambodolphin13).
+- **Animists** below half power keep one damage shroom on the fight and skip vents and spores, so they regenerate
+  between pulls (rambodolphin13, from a tester report).
+- **A full bag at the medallion merchant.** A bot with a full bag and nothing to sell no longer waits at the merchant
+  until the watchdog sends it home. It stays away for five minutes (rambodolphin13).
+- **Siege weapons** no longer throw an error when a bot lets go of one on another thread (rambodolphin13).
+
+### Fewer failed routes
+
+From stefanrows' fork (their 0.314 to 0.328), for autonomous gamebots only.
+
+- A goal that failed because it lies just off the walkable ground moves onto its floor (dungeons and precise
+  arrivals are left alone; a big height change must still be walkable).
+- An enemy hunt inside another realm's keep courtyard with its outer gate closed is no longer offered. Bots pass the
+  gates of keeps their realm owns, and a force sieging a keep keeps its targets there.
+- A spot a bot gave up on is blocked for six minutes for the bot and its warband, so camp, roam and crossing choices
+  stop picking it again.
+- A bot standing on connected ground is no longer sent to its capital because its goal was off the walkable ground.
+- The existing floor search is budgeted: fewer repeated failed searches.
+- stefanrows measured route give-ups falling from 364 to 122 per game-hour in their world (not checked here). Their
+  evidence is in [docs/NAVMESH_HOTSPOTS.md](docs/NAVMESH_HOTSPOTS.md).
+
+### Bots react to attacks like players
+
+From stefanrows' fork (their 0.271). An autonomous gamebot hit by a player, a bot or their pet reacts like a person:
+
+- It answers after a moment: 0.3-0.8 s for melee, up to 1.2 s for a spell or arrow at it, up to 2.2 s for an area
+  splash, plus up to a second for an attacker it wasn't facing, never more than 2.5 s. Tanks turn first and pure
+  casters last.
+- With personalities on, bold bots (Daredevils, No-lifers) turn first and cautious ones (Crafters) last.
+- An area spell from a distance doesn't make its caster the bot's target. A bomber next to it does.
+- A far attacker doesn't pull a bot off another player it is fighting.
+- Healers heal while they turn, and cure a group with three or more members poisoned with the group cure.
+- Mobs still get the immediate reaction. Companions and bots in your group follow you, so they are left out.
+- Switch: `bot_incoming_fire_reaction` (on).
+
+### Quests
+
+From lometur's HearthDAoC fork.
+
+- **Quests you can now finish:**
+  - Quest targets and givers match a spawn's name whatever its capitals. Kills of "arawnite messenger" for "Path of
+    the Renegade" never counted before.
+  - Delivery items are handed once, on accept, and handed back when a step returns them. "Traveler's Way -- Supply
+    Run" gave two bundles, and quests that start with a delivery handed nothing.
+  - The quest journal holds 25 quests, as the client shows, and a quest you are on can't be given again.
+- **Quest markers.** Every NPC uses one set of rules and they stay current:
+  - a yellow knot over a giver with a quest for you (within 15 levels);
+  - a white knot over an NPC your current step needs;
+  - a blue knot over the one that finishes the quest.
+
+  Markers update as you take, move, finish or abandon a quest and as you level, not only at a level-up.
+- **Epic chains:**
+  - Quest dependencies can name quest IDs, so a chain's steps come in the right order even where two steps share a
+    name.
+  - The Guild of Shadows chain (levels 7 to 48, both the Camelot and Shrouded Isles routes) has its period dialogue.
+  - Every other guild's epic line has its steps pinned in order.
+  - The world part is `tools/claude-version/epic_chains.py`. It is a dry run by default, `--apply` writes after a
+    backup, `rollback --apply` puts the rows back, and saves are never touched.
+  - GMs get `/epic` to see and set a character's chain.
+
+### All-in-one Setup
+
+- `LivingServerSetup.exe` installs Offline DAoC and Living Server for someone who has nothing, or adds or updates
+  Living Server on a game they already have.
+- It runs shadowofze's own downloader (pinned by SHA-256) and the Living Server package's own install and rollback
+  scripts, so every safety check stays.
+- Details are in [tools/installer/README.md](tools/installer/README.md).
+
+### Ready for Offline DAoC 0.38
+
+- A build can now fit several releases (`BaseRelease`, e.g. `0.37,0.38`). The installer accepts a game updated to any
+  of them and refuses anything newer. It stays `0.37` until 0.38 is published and merged.
+- [docs/UPSTREAM-RELEASES.md](docs/UPSTREAM-RELEASES.md) is the checklist for that day.
+
+### Checked (Beta 1.1 so far)
+
+- **Automated:** every branch above merged into `release/1.1` with no conflicts. On Linux the combined tree builds,
+  and all 3,979 server tests pass. CI on Windows runs the full suite, the launcher and installer tests and builds the
+  package.
+- **Not checked here:** the epic chains' world script hasn't been run against a real clean 0.37b world (its test
+  needs one).
+- **Not played yet.** In game, watch sieges first (their timers now run), then raids, lag at your usual bot count,
+  quests and markers.
 
 ## Beta 1.0 — 2026-10-22
 

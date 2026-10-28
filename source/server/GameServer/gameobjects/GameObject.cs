@@ -784,7 +784,7 @@ namespace DOL.GS
 
 			static void LoadQuest(GameObject obj, DbDataQuest quest, GamePlayer loader)
 			{
-				if (quest.StartName != obj.Name)
+				if (!QuestNames.Same(quest.StartName, obj.Name))
 					return;
 
 				DataQuest dq = new(quest, obj);

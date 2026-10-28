@@ -75,6 +75,7 @@ namespace DOL.GS
                 {
                     GameClient client = clients[i];
                     client.Player?.RemoveFinishedQuests(x => x is Quests.WeeklyQuest);
+                    Quests.QuestIndicators.Refresh(client.Player); // the weekly givers show their knot again
                 }
 
                 IList<DbQuest> existingWeeklyQuests = GameServer.Database.SelectObjects<DbQuest>(DB.Column("Name").IsLike("%WeeklyQuest%"));

@@ -74,6 +74,7 @@ namespace DOL.GS
                 {
                     GameClient client = clients[i];
                     client.Player?.RemoveFinishedQuests(x => x is Quests.DailyQuest);
+                    Quests.QuestIndicators.Refresh(client.Player); // the daily givers show their knot again
                 }
 
                 IList<DbQuest> existingDailyQuests = GameServer.Database.SelectObjects<DbQuest>(DB.Column("Name").IsLike("%DailyQuest%"));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using DOL.AI.Brain;
 using DOL.Database;
@@ -62,6 +63,8 @@ namespace DOL.GS.Quests
 	/// StepItemTemplates - Any items that need to be given to the player for a step.  Every step can give an item to a player. All
 	/// steps give an item at the completion of the step except Delivery and DeliveryFinish.  If StepItemTemplates are defined for a 
 	/// Delivery step then the item is given at the beginning of the step and accepted by a target to end the step.
+	/// Not when the player already carries it (the copy being handed over doesn't count) or the finishing step hands it.
+	/// Accepting a quest whose first step is a delivery hands that item, unless it goes back to the giver (QuestDeliveryItems).
     /// For Kill and Search steps, StepItemTemplates can include a drop chance behind the template name.  Ex: |some_template_name;50|  
     /// If the item does not drop then the step is not advanced.
 	/// If no items are given to a player at any of the steps then this can be null, otherwise it must have values for each step. 
@@ -71,6 +74,7 @@ namespace DOL.GS.Quests
 	/// text must be provided for every step.  Empty values || are ok.
 	/// 
 	/// TargetName - Must be in the format Name;RegionID|Name;RegionID.... RegionID can be 0 to indicate any Target of the correct Name can advance the quest
+	/// TargetName and StartName match an object's name without case (QuestNames.Same).
 	/// 
 	/// TargetText - Text shown to player when current step ends.
 	/// 
@@ -238,9 +242,13 @@ namespace DOL.GS.Quests
 		protected int[] m_rewardItemsChosen = null;
 		protected List<DbItemTemplate> m_finalRewards = new List<DbItemTemplate>();
 		protected List<string> m_questDependencies = new List<string>();
+		// Quests whose malformed dependency entry was already logged.
+		private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, bool> s_badDependencyLogged = new();
 		protected List<byte> m_allowedClasses = new List<byte>();
 		string m_classType = string.Empty;
 		string m_additionalData = string.Empty;
+		// The item being handed over while its step advances; it doesn't count as carried.
+		DbInventoryItem m_handingOver;
 
 		#region Construction
 
@@ -562,6 +570,9 @@ namespace DOL.GS.Quests
 						if (str != string.Empty)
 						{
 							m_questDependencies.Add(str);
+							// An ID entry that doesn't parse is never met; say so once per quest.
+							if (!QuestDependencies.IsValid(str) && s_badDependencyLogged.TryAdd(m_dataQuest.ID, true))
+								log.Error($"DataQuest [{m_dataQuest.ID}] {m_dataQuest.Name}: dependency \"{str}\" is not valid and is never met");
 						}
 					}
 				}
@@ -943,6 +954,7 @@ namespace DOL.GS.Quests
 					if (m_charQuest.Step != oldStep)
 					{
 						GameServer.Database.SaveObject(m_charQuest);
+						QuestIndicators.Refresh(m_questPlayer); // markers change when a data quest moves
 					}
 				}
 			}
@@ -1047,26 +1059,29 @@ namespace DOL.GS.Quests
 			}
 
 			// check to see if this quest requires another to be done first
+			// An entry is a quest name or a quest ID form ("#id", "#a/b", "!#a/b"; QuestDependencies, from HearthDAoC).
 			if (m_questDependencies.Count > 0)
 			{
-				int numFound = 0;
-
-				foreach (string str in m_questDependencies)
+				var finishedNames = new List<string>();
+				var finishedIds = new HashSet<int>();
+				foreach (AbstractQuest quest in finishedQuests)
 				{
-					foreach (AbstractQuest quest in finishedQuests)
-					{
-						// A finished scripted quest of that name counts too: Master Torr's Commencement needs his own
-						// scripted "Immediate Resolution" (ImmediateResolutionVB), and only three class-locked classic quests
-						// of that name counted, so every other class could never be offered it (quest probe 2026-10-15).
-						if (string.Equals(quest.Name, str, StringComparison.OrdinalIgnoreCase))
-						{
-							numFound++;
-							break;
-						}
-					}
+					// A finished scripted quest of that name counts too: Master Torr's Commencement needs his own
+					// scripted "Immediate Resolution" (ImmediateResolutionVB), and only three class-locked classic quests
+					// of that name counted, so every other class could never be offered it (quest probe 2026-10-15).
+					finishedNames.Add(quest.Name);
+					if (quest is DataQuest dataQuest)
+						finishedIds.Add(dataQuest.ID);
 				}
 
-				if (numFound < m_questDependencies.Count)
+				var activeIds = new HashSet<int>();
+				foreach (AbstractQuest quest in player.QuestList.Keys)
+				{
+					if (quest is DataQuest dataQuest)
+						activeIds.Add(dataQuest.ID);
+				}
+
+				if (!QuestDependencies.AreMet(m_questDependencies, finishedNames, finishedIds, activeIds))
 					return false;
 			}
 
@@ -1649,9 +1664,11 @@ namespace DOL.GS.Quests
 					{
 						// Allow StepItemTemplate to be empty, assume quest player received item in a previous step or outside of the quest
 
-						if (!string.IsNullOrEmpty(m_stepItemTemplates[Step].Trim()))
+						// Not a second copy of an item the player carries or the finishing step hands (HearthDAoC).
+						string deliveryItem = m_stepItemTemplates[Step].Trim();
+						if (QuestDeliveryItems.ShouldHand(deliveryItem, CarriedItemIds(QuestPlayer), stepTemplates))
 						{
-							stepTemplates.Add(m_stepItemTemplates[Step].Trim());
+							stepTemplates.Add(deliveryItem);
 						}
 					}
 
@@ -1741,7 +1758,7 @@ namespace DOL.GS.Quests
 							foreach (GameNPC n in m_questPlayer.GetNPCsInRadius(WorldMgr.VISIBILITY_DISTANCE))
 					        {
 					         	GameNPC npc = n;
-					         	if (npc != null && (TargetName == npc.Name && (TargetRegion == 0 || TargetRegion == npc.CurrentRegionID)))
+					         	if (npc != null && (QuestNames.Same(TargetName, npc.Name) && (TargetRegion == 0 || TargetRegion == npc.CurrentRegionID)))
 					         		UpdateQuestIndicator(npc, m_questPlayer);
 					        }
 						break;
@@ -1778,6 +1795,98 @@ namespace DOL.GS.Quests
 			return false;
 		}
 
+		/// <summary>
+		/// Advances the step for an item the player hands over. The item is still in the backpack until the step has
+		/// advanced, so it is marked for CarriedItemIds, which leaves it out (HearthDAoC).
+		/// </summary>
+		protected bool AdvanceQuestStepHandingOver(GameObject obj, DbInventoryItem item)
+		{
+			m_handingOver = item;
+			try
+			{
+				return AdvanceQuestStep(obj);
+			}
+			finally
+			{
+				m_handingOver = null;
+			}
+		}
+
+		/// <summary>The backpack's item ids that count as carried: all but the item being handed over (HearthDAoC).</summary>
+		protected List<string> CarriedItemIds(GamePlayer player)
+		{
+			lock (player.Inventory.Lock)
+			{
+				return QuestDeliveryItems.CarriedIds(player.Inventory.AllItems
+					.Where(i => i.SlotPosition >= (int)eInventorySlot.FirstBackpack && i.SlotPosition <= (int)eInventorySlot.LastBackpack)
+					.Select(i => (i.Id_nb, i.Count, ReferenceEquals(i, m_handingOver) ? Math.Max(i.Count, 1) : 0)));
+			}
+		}
+
+		/// <summary>
+		/// For a turn-in that needs <paramref name="needed"/> items ("id;N"), the other backpack items to take with the one
+		/// handed over; empty when one is needed, null (and the player is told) when there are too few (HearthDAoC).
+		/// </summary>
+		protected static List<(DbInventoryItem Item, int Count)> OtherCollectItems(GamePlayer player, GameObject obj, DbInventoryItem item, string id, int needed)
+		{
+			List<(DbInventoryItem Item, int Count)> take = new();
+			if (needed < 2)
+				return take;
+
+			lock (player.Inventory.Lock)
+			{
+				List<DbInventoryItem> others = player.Inventory.AllItems
+					.Where(i => i.SlotPosition >= (int)eInventorySlot.FirstBackpack && i.SlotPosition <= (int)eInventorySlot.LastBackpack && !ReferenceEquals(i, item))
+					.ToList();
+				int[] counts = QuestDeliveryItems.OthersToTake(others.Select(i => (i.Id_nb, i.Count)).ToList(), id, needed, item.Count);
+				if (counts != null)
+				{
+					for (int k = 0; k < others.Count; k++)
+					{
+						if (counts[k] > 0)
+							take.Add((others[k], counts[k]));
+					}
+
+					return take;
+				}
+			}
+
+			player.Out.SendMessage($"{obj.GetName(0, true)} needs {needed} of them.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			return null;
+		}
+
+		/// <summary>Takes the items OtherCollectItems chose, after the step advanced; a stack loses only the copies wanted.</summary>
+		protected void RemoveCollectItems(GameObject obj, GamePlayer player, List<(DbInventoryItem Item, int Count)> take)
+		{
+			foreach ((DbInventoryItem other, int count) in take)
+			{
+				lock (player.Inventory.Lock)
+				{
+					if (other.OwnerID == null || other.SlotPosition < (int)eInventorySlot.FirstBackpack ||
+						other.SlotPosition > (int)eInventorySlot.LastBackpack || other.Count < count)
+					{
+						log.Warn("DataQuest [" + ID + "] " + Name + ": " + other.Id_nb + " was no longer in " + player.Name +
+							"'s backpack when step " + Step + " took it");
+						continue;
+					}
+				}
+
+				if (count >= other.Count)
+				{
+					RemoveItem(obj, player, other, true);
+					continue;
+				}
+
+				lock (player.Inventory.Lock)
+				{
+					if (player.Inventory.RemoveCountFromStack(other, count))
+					{
+						InventoryLogging.LogInventoryAction(player, obj, eInventoryActionType.Quest, other.Template, count);
+						player.Out.SendMessage($"You give {count} {other.Name} to {obj.GetName(0, false)}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+					}
+				}
+			}
+		}
 
 		#endregion Utility
 
@@ -1968,6 +2077,8 @@ namespace DOL.GS.Quests
 				{
 					if ((quest.ID + DATAQUEST_CLIENTOFFSET) == qargs.QuestID)
 					{
+						if (RefuseWhenJournalFull(player))
+							return;
 						DbCharacterXDataQuest charQuest = GetCharacterQuest(player, quest.ID, true);
 						DataQuest dq = new DataQuest(player, giver, quest, charQuest);
 						dq.Step = 1;
@@ -2085,6 +2196,7 @@ namespace DOL.GS.Quests
 								player.AddFinishedQuest(this);
 
 							player.Out.SendQuestListUpdate();
+							QuestIndicators.Refresh(player); // a quest finished on the spot can unlock another NPC's quest
 							player.Out.SendMessage(string.Format(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractQuest.FinishQuest.Completed", Name)), eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 							player.Out.SendMessage(string.Format(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractQuest.FinishQuest.Completed", Name)), eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 						}
@@ -2095,6 +2207,8 @@ namespace DOL.GS.Quests
 
 				if (StartType == eStartType.AutoStart)
 				{
+					if (RefuseWhenJournalFull(player))
+						return;
 					DbCharacterXDataQuest charQuest = GetCharacterQuest(player, ID, true);
 					DataQuest dq = new DataQuest(player, obj, DBDataQuest, charQuest);
 					dq.Step = 1;
@@ -2121,6 +2235,8 @@ namespace DOL.GS.Quests
 
                 if (StartType == eStartType.SearchStart)
                 {
+                    if (RefuseWhenJournalFull(player)) // before the start item or any record exists
+                        return;
                     if (m_searchStartItemTemplate != string.Empty)
                     {
                         lock (player.Inventory.Lock)
@@ -2355,6 +2471,19 @@ namespace DOL.GS.Quests
 
 
 		/// <summary>
+		/// Tells the player and returns true when the journal is full; checked before any record, item or text exists,
+		/// so a refused quest isn't half-started (HearthDAoC).
+		/// </summary>
+		private static bool RefuseWhenJournalFull(GamePlayer player)
+		{
+			if (!QuestJournal.IsFull(player.QuestList.Count))
+				return false;
+
+			player.Out.SendMessage(QuestJournal.FullText, eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			return true;
+		}
+
+		/// <summary>
 		/// Check offered quests to see if whisper should be processed
 		/// </summary>
 		/// <param name="player"></param>
@@ -2368,10 +2497,37 @@ namespace DOL.GS.Quests
 			{
 				TryTurnTo(living, player);
 
+				if (RefuseWhenJournalFull(player))
+					return;
+
+				// A quest whose first step is a delivery hands that item on accept (nothing "begins" step 1), unless the
+				// delivery goes back to the giver; with no free slot the quest does not start (HearthDAoC).
+				DbItemTemplate firstItem = null;
+				if (m_stepTypes.Count > 0 && (m_stepTypes[0] == eStepType.Deliver || m_stepTypes[0] == eStepType.DeliverFinish))
+				{
+					string firstTarget = m_targetNames.Count > 0 ? m_targetNames[0] : null;
+					string firstTemplate = QuestDeliveryItems.FirstStepItem(true, m_stepItemTemplates, CarriedItemIds(player), firstTarget, living?.Name);
+					if (firstTemplate != null)
+					{
+						if (!player.Inventory.IsSlotsFree(1, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack))
+						{
+							player.Out.SendMessage("You don't have enough inventory space to start this quest.  You need 1 free slot!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+							return;
+						}
+
+						firstItem = GameServer.Database.FindObjectByKey<DbItemTemplate>(firstTemplate);
+						if (firstItem == null)
+							log.Error("DataQuest [" + ID + "] " + Name + ": StepItemTemplate " + firstTemplate + " of step 1 not found in DB, the quest starts without it");
+					}
+				}
+
 				DbCharacterXDataQuest charQuest = GetCharacterQuest(player, ID, true);
 				DataQuest dq = new DataQuest(player, living, DBDataQuest, charQuest);
 				dq.Step = 1;
-				player.AddQuest(dq);
+				if (!player.AddQuest(dq))
+					return;
+				if (firstItem != null)
+					GiveItem(living, player, firstItem, false);
 				if (m_sourceTexts.Count > 0)
 				{
 					SendMessage(player, m_sourceTexts[0], 0, eChatType.CT_System, eChatLoc.CL_PopupWindow);
@@ -2396,7 +2552,7 @@ namespace DOL.GS.Quests
 		/// <param name="obj"></param>
 		protected virtual void OnPlayerInteract(GamePlayer player, GameObject obj)
 		{
-			if (TargetName == obj.Name && (TargetRegion == obj.CurrentRegionID || TargetRegion == 0))
+			if (QuestNames.Same(TargetName, obj.Name) && (TargetRegion == obj.CurrentRegionID || TargetRegion == 0))
 			{
 				switch (StepType)
 				{
@@ -2465,12 +2621,15 @@ namespace DOL.GS.Quests
 			if (item == null || item.OwnerID == null || m_collectItems.Count == 0)
 				return;
 
-			if (TargetName == obj.Name && (TargetRegion == obj.CurrentRegionID || TargetRegion == 0)
+			if (QuestNames.Same(TargetName, obj.Name) && (TargetRegion == obj.CurrentRegionID || TargetRegion == 0)
 			   && player.Level >= Level && player.Level <= MaxLevel)
 			{
-				if (m_collectItems.Count >= Step &&
-					!string.IsNullOrEmpty(m_collectItems[Step - 1]) &&
-					item.Id_nb.ToLower().Contains(m_collectItems[Step - 1].ToLower()) &&
+				// An entry "id;N" (N >= 2) needs N of the item; any other entry is read as before (HearthDAoC).
+				(string collectId, int collectNeeded) = (null, 1);
+				if (m_collectItems.Count >= Step)
+					(collectId, collectNeeded) = QuestDeliveryItems.CollectEntry(m_collectItems[Step - 1]);
+
+				if (QuestDeliveryItems.IsCollectItem(item.Id_nb, collectId) &&
 					ExecuteCustomQuestStep(player, Step, eStepCheckType.GiveItem))
 				{
 					switch (StepType)
@@ -2493,9 +2652,14 @@ namespace DOL.GS.Quests
 									}
 								}
 
-								if (AdvanceQuestStep(obj))
+								List<(DbInventoryItem Item, int Count)> others = OtherCollectItems(player, obj, item, collectId, collectNeeded);
+								if (others == null)
+									break;
+
+								if (AdvanceQuestStepHandingOver(obj, item))
 								{
 									RemoveItem(obj, player, item, true);
+									RemoveCollectItems(obj, player, others);
 								}
 							}
 							break;
@@ -2503,9 +2667,14 @@ namespace DOL.GS.Quests
 						case eStepType.DeliverFinish:
 						case eStepType.CollectFinish:
 							{
+								List<(DbInventoryItem Item, int Count)> others = OtherCollectItems(player, obj, item, collectId, collectNeeded);
+								if (others == null)
+									break;
+
 								if (FinishQuest(obj, true))
 								{
 									RemoveItem(obj, player, item, true);
+									RemoveCollectItems(obj, player, others);
 								}
 							}
 							break;
@@ -2534,7 +2703,7 @@ namespace DOL.GS.Quests
 							}
 						}
 
-						if (AdvanceQuestStep(obj))
+						if (AdvanceQuestStepHandingOver(obj, item))
 						{
 							RemoveItem(obj, player, item, true);
 						}
@@ -2603,7 +2772,7 @@ namespace DOL.GS.Quests
 		{
 			//log.DebugFormat("Whisper {0}, listening for {1}, on step type {2}", text, AdvanceText, m_stepTypes[Step - 1]);
 
-			if (TargetName == obj.Name && (TargetRegion == obj.CurrentRegionID || TargetRegion == 0) && AdvanceText == text)
+			if (QuestNames.Same(TargetName, obj.Name) && (TargetRegion == obj.CurrentRegionID || TargetRegion == 0) && AdvanceText == text)
 			{
 				switch (StepType)
 				{
@@ -2744,6 +2913,7 @@ namespace DOL.GS.Quests
 									player.AddFinishedQuest(this);
 
 								player.Out.SendQuestListUpdate();
+								QuestIndicators.Refresh(player); // a quest finished on the spot can unlock another NPC's quest
 								player.Out.SendMessage(string.Format(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractQuest.FinishQuest.Completed", Name)), eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 								player.Out.SendMessage(string.Format(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractQuest.FinishQuest.Completed", Name)), eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 							}
@@ -2760,7 +2930,7 @@ namespace DOL.GS.Quests
 		/// <param name="enemy"></param>
 		protected virtual void OnEnemyKilled(GamePlayer player, GameLiving living)
 		{
-			if (TargetName == living.Name && (TargetRegion == living.CurrentRegionID || TargetRegion == 0))
+			if (QuestNames.Same(TargetName, living.Name) && (TargetRegion == living.CurrentRegionID || TargetRegion == 0))
 			{
 				switch (StepType)
 				{
@@ -3157,6 +3327,7 @@ namespace DOL.GS.Quests
 				UpdateQuestIndicator(npc, m_questPlayer);
 			}
 
+			QuestIndicators.Refresh(m_questPlayer); // markers change when a data quest is finished
 			return true;
 		}
 
@@ -3193,12 +3364,20 @@ namespace DOL.GS.Quests
 				m_questPlayer.RemoveFinishedQuest(this);
 				DeleteFromDatabase();
 			}
+			else
+			{
+				// An abandoned repeat keeps its count but goes back to step 0, as a finish leaves it; with its step kept
+				// the next login put it back in the journal (HearthDAoC).
+				m_charQuest.Step = 0;
+				GameServer.Database.SaveObject(m_charQuest);
+			}
 
 			m_questPlayer.Out.SendQuestListUpdate();
 			m_questPlayer.Out.SendMessage(LanguageMgr.GetTranslation(m_questPlayer.Client, "AbstractQuest.AbortQuest"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 
 			if (m_startNPC != null)
 				UpdateQuestIndicator(m_startNPC, m_questPlayer);
+			QuestIndicators.Refresh(m_questPlayer); // markers change when a data quest is abandoned
 		}
 
 		/// <summary>

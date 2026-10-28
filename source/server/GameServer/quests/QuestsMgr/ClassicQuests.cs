@@ -608,6 +608,7 @@ namespace DOL.GS.Quests
         private static void GiveDeliveryItem(GamePlayer player, DataQuest quest)
         {
             if (quest.StepType is not (DataQuest.eStepType.Deliver or DataQuest.eStepType.DeliverFinish)) return;
+            if (QuestDeliveryItems.BringsToGiver(quest.Step, quest.TargetName, quest.DBDataQuest?.StartName)) return; // the player brings it
             string id = quest.CurrentStepItemTemplate;
             if (string.IsNullOrEmpty(id) || player.Inventory.GetFirstItemByID(id, eInventorySlot.Min_Inv, eInventorySlot.Max_Inv) != null) return;
             var key = (player, quest.ID, quest.Step * 100 + 99);
@@ -750,6 +751,12 @@ namespace DOL.GS.Quests
                 Log.Error("Classic quest refresh failed", ex);
             }
         }
+
+        /// <summary>The map marker of a quest's stage, or null. The GM's /epic goto uses it.</summary>
+        public static Point MarkerFor(int questId, int step) =>
+            _config.Quests.TryGetValue(questId, out QuestInfo info) && info.Steps != null && step > 0 && step < info.Steps.Count
+                ? info.Steps[step]?.Marker
+                : null;
 
         /// <summary>A classic quest's own marker id: MarkerId for the first quest id, one more per id after it (the
         /// bounty, reputation and Sluaghbinder markers sit below MarkerId).</summary>

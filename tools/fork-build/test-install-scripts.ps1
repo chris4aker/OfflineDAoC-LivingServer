@@ -63,7 +63,8 @@ function New-FakeGame([string]$root, [string]$edition, [switch]$NewClient, [stri
 
 $info = @{}
 foreach ($line in Get-Content -LiteralPath (Join-Path $BuildDir 'BUILD-INFO.txt')) { if ($line -match '^(.+?)=(.*)$') { $info[$Matches[1]] = $Matches[2] } }
-$base = $info['BaseRelease']
+# A build may list several releases (BaseRelease=0.37,0.38); the tests below use its first one.
+$base = @($info['BaseRelease'] -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })[0]
 $work = Join-Path ([IO.Path]::GetTempPath()) ('forkbuild-test-' + [guid]::NewGuid().ToString('N').Substring(0, 8))
 
 # Happy path: install, reinstall is a no-op, rollback restores the originals.
@@ -183,6 +184,30 @@ $newer = Join-Path $work 'newer'
 New-FakeGame $newer $base -ReleaseNotes @('0.36', $base, '9.99')
 $newerInstall = Run 'install-server-build.ps1' @('-GameFolder', $newer)
 Check ($newerInstall.Code -ne 0 -and (Sha (Join-Path $newer 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll']) 'a game updated past this release is refused'
+
+# A build that lists two releases (BaseRelease=<base>,9.98, as a build carrying the next release's server code will)
+# installs on a game updated to either, and still refuses one updated past both.
+$twoBuild = Join-Path $work 'two-release-build'
+Copy-Item -LiteralPath $BuildDir -Destination $twoBuild -Recurse
+$twoInfo = Join-Path $twoBuild 'BUILD-INFO.txt'
+Set-Content -LiteralPath $twoInfo -Encoding UTF8 -Value (Get-Content -LiteralPath $twoInfo | ForEach-Object {
+    if ($_ -match '^BaseRelease=') { "BaseRelease=$base,9.98" } else { $_ } })
+$onBase = Join-Path $work 'two-on-base'
+New-FakeGame $onBase $base -ReleaseNotes @('0.36', $base)
+$r = RunIn $twoBuild 'install-server-build.ps1' @('-GameFolder', $onBase)
+Check ($r.Code -eq 0 -and (Sha (Join-Path $onBase 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll']) "a two-release build installs on the first release`n$($r.Output)"
+$onNext = Join-Path $work 'two-on-next'
+New-FakeGame $onNext $base -ReleaseNotes @('0.36', $base, '9.98')
+$r = RunIn $twoBuild 'install-server-build.ps1' @('-GameFolder', $onNext)
+Check ($r.Code -eq 0 -and (Sha (Join-Path $onNext 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll']) "a two-release build installs on the second release`n$($r.Output)"
+$pastBoth = Join-Path $work 'two-past-both'
+New-FakeGame $pastBoth $base -ReleaseNotes @('0.36', $base, '9.98', '9.99')
+$r = RunIn $twoBuild 'install-server-build.ps1' @('-GameFolder', $pastBoth)
+Check ($r.Code -ne 0 -and (Sha (Join-Path $pastBoth 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll']) 'a two-release build refuses a game updated past both'
+$twoEdition = Join-Path $work 'two-edition'
+New-FakeGame $twoEdition '9.98'
+$r = RunIn $twoBuild 'install-server-build.ps1' @('-GameFolder', $twoEdition)
+Check ($r.Code -eq 0) "a two-release build accepts the second release's editions folder`n$($r.Output)"
 
 # Game files fixed in place (content-patches.json): a copy of this build with test patches. The released file is fixed
 # and backed up, a missing or changed file is left alone, rollback and -ToRelease put the released file back, and a

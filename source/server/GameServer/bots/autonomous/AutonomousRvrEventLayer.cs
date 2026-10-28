@@ -849,13 +849,44 @@ public static partial class AutonomousRvrEventLayer
             // replaced one every 30 seconds for an hour. Prefer a marcher that is actually taking march turns.
             GameBot[] candidates = active.Mustered.Values.Select(entry => entry.Bot)
                 .Where(bot => IsLiveArmyMember(active, bot) && !active.StaleLeaders.ContainsKey(bot.DatabaseID)).ToArray();
-            active.MarchLeader = candidates
+            // Run 28 (2026-10-20): the next leader was the marcher with the lowest id, wherever it stood. A straggler 64,000
+            // units behind the head of Dun Dagda's column became leader, the front walked back to it, and the siege opened
+            // with 62 of 170 at the keep. The leader is now the marcher with most of the army around it (the main body),
+            // then the one nearest the target.
+            GameBot[] turning = candidates
                 .Where(bot => active.MarchTurns.TryGetValue(bot.DatabaseID, out long turn) && now - turn < MarchLeaderSilenceMilliseconds)
-                .OrderBy(bot => bot.DatabaseID).FirstOrDefault() ?? candidates.OrderBy(bot => bot.DatabaseID).FirstOrDefault();
+                .ToArray();
+            active.MarchLeader = MainBodyLeader(turning.Length > 0 ? turning : candidates, active.Target);
             active.MarchLeaderSinceTick = now;
             return active.MarchLeader;
         }
     }
+
+    /// <summary>The marcher with the most of the column within <see cref="MainBodyRadius"/>, then the one nearest the target.</summary>
+    public static GameBot MainBodyLeader(GameBot[] marchers, LiveObjective target)
+    {
+        GameBot best = null;
+        int bestNear = -1;
+        long bestDistance = long.MaxValue;
+        foreach (GameBot bot in marchers)
+        {
+            int near = 0;
+            foreach (GameBot other in marchers)
+                if (other != bot && other.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(other, MainBodyRadius))
+                    near++;
+            long dx = bot.X - (target?.X ?? bot.X), dy = bot.Y - (target?.Y ?? bot.Y);
+            long distance = bot.CurrentRegionID == (target?.RegionId ?? bot.CurrentRegionID) ? dx * dx + dy * dy : long.MaxValue / 2;
+            if (near > bestNear || near == bestNear && (distance < bestDistance || distance == bestDistance && bot.DatabaseID < best.DatabaseID))
+            {
+                best = bot;
+                bestNear = near;
+                bestDistance = distance;
+            }
+        }
+        return best;
+    }
+
+    public const int MainBodyRadius = 2_500;
 
     public const long MarchLeaderSilenceMilliseconds = 30_000;
     public const long MarchLeaderStaleMilliseconds = 10 * 60_000;
