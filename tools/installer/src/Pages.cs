@@ -789,6 +789,13 @@ namespace LivingServerSetup
                 {
                     Directory.Delete(dir, true);
                     Log.Write("Deleted the downloaded setup files in " + dir);
+                    // and the "Offline DAoC setup files" folder itself once nothing else is in it
+                    var parent = Path.GetDirectoryName(dir);
+                    if (Directory.Exists(parent) && Directory.GetFileSystemEntries(parent).Length == 0)
+                    {
+                        Directory.Delete(parent);
+                        Log.Write("Removed the empty folder " + parent);
+                    }
                 }
             }
             catch (Exception e) { Log.Write("Couldn't delete the setup files: " + e.Message); }
