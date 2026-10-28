@@ -114,5 +114,12 @@ namespace DOL.UnitTests
         [TestCase(15_000, 0, false)] // about to expire: replace it
         public void VentRefreshWindow(long expiresAt, long now, bool covers) =>
             Assert.That(StillCovers(expiresAt, now), Is.EqualTo(covers));
+
+        [TestCase(6, 1000, 1000, 6)] // full power: plant what the fight needs
+        [TestCase(6, 500, 1000, 6)]  // half power still affords extras
+        [TestCase(6, 499, 1000, 1)]  // low power: one damage shroom only
+        [TestCase(0, 100, 1000, 0)]
+        public void DamageShroomsArePowerBudgeted(int desired, int mana, int maxMana, int budgeted) =>
+            Assert.That(BudgetedDamageShrooms(desired, mana, maxMana), Is.EqualTo(budgeted));
     }
 }

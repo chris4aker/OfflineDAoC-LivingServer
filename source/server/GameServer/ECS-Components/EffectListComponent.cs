@@ -486,7 +486,11 @@ namespace DOL.GS
                             if (start)
                                 effect.OnStartEffect();
 
-                            ServiceObjectStore.Add(effect);
+                            // An effect ended before this callback ran was already taken out of the store, and its stop callback is
+                            // queued behind this one. Adding it here left it ticking forever (30 million effects and 326 ms per tick
+                            // on a 3,000-bot run; fix from rambodolphin13/OfflineDAoC 7a8ae69).
+                            if (!effect.IsEnded && !effect.IsEnding)
+                                ServiceObjectStore.Add(effect);
                             effect.Owner.effectListComponent.RequestPlayerUpdate(EffectHelper.GetPlayerUpdateFromEffect(effect.EffectType));
 
                             // Animations must be sent after calling `OnStartEffect` to prevent interrupts from interfering with them.

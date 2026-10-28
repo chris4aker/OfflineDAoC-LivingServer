@@ -199,11 +199,14 @@ namespace DOL.GS
                 entry.Turret.IsWithinRadius(encounterTarget, Math.Max(500, entry.Turret.TurretSpell?.CalculateEffectiveRange(entry.Turret) ?? 1000)));
             bool crowded = fight.AwakeHostilesNear(bot, damageSpot, PayloadRange(kit.DamageField.Spell, bot)) >= 2;
             Spell damagePayload = Payload(kit.DamageField.Spell);
-            int desired = AnimistShroomPlanner.DesiredDamageShrooms(fight.EngagedHealth, damagePayload?.Damage ?? 0,
-                crowded ? AnimistShroomPlanner.CrowdedCampDamageCap : 10);
+            int desired = AnimistShroomPlanner.BudgetedDamageShrooms(
+                AnimistShroomPlanner.DesiredDamageShrooms(fight.EngagedHealth, damagePayload?.Damage ?? 0,
+                    crowded ? AnimistShroomPlanner.CrowdedCampDamageCap : 10),
+                bot.Mana, bot.MaxMana);
+            bool extras = AnimistShroomPlanner.AffordsExtraShrooms(bot.Mana, bot.MaxMana);
 
             (Spell Spell, SpellLine Line) vent = default;
-            if (fight.FightWorthBuffing)
+            if (fight.FightWorthBuffing && extras)
             {
                 bool group = bot.Group?.MemberCount > 1;
                 // Grouped: keep each resist vent up. Solo: one, the highest rank.
@@ -234,7 +237,7 @@ namespace DOL.GS
                 fight.EngagedNear(main, 350) && fight.AwakeHostilesNear(bot, Position(main), 450, anyCon: true) == 0;
 
             Vector3 sporeSpot = BehindSpot(bot, encounterTarget, kit.Spore.Spell);
-            bool sporeNeeded = kit.Spore.Spell != null && bot.Group?.MemberCount > 1 && beingHit != null &&
+            bool sporeNeeded = extras && kit.Spore.Spell != null && bot.Group?.MemberCount > 1 && beingHit != null &&
                 Affordable(bot, kit.Spore.Spell) && CanPlantAt(bot, sporeSpot) &&
                 fight.AwakeHostilesNear(bot, Position(encounterTarget), 750, anyCon: true) == 0 &&
                 !ownedShrooms.Any(entry => entry.Kind == AnimistShroomKind.MeleeDebuff &&

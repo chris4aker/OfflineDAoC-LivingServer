@@ -19,5 +19,7 @@ internal static class RvrEventTestState
         }
         typeof(AutonomousRvrEventLayer).GetField("_nextStragglerSweep", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, 0L);
         typeof(AutonomousRvrEventLayer).GetField("_nextDefensePulse", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, 0L);
+        // Each fixture gets its own first live Expire pass (the throttle now lets the first one through).
+        typeof(AutonomousRvrEventLayer).GetField("_lastExpireTick", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, long.MinValue);
     }
 }

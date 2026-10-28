@@ -610,13 +610,16 @@ namespace DOL.GS
 
 		public Boolean CanUse()
 		{
-			if (Owner == null)
+			// Read the owner once: a bot releasing the weapon on another thread cleared it between checks
+			// (NullReferenceException in the siege timer, 2026-10-27 overnight run).
+			GameLiving owner = Owner;
+			if (owner == null)
 				return false;
-			if (Owner is GamePlayer player)
+			if (owner is GamePlayer player)
 				player.Stealth(false);
-			else if (Owner is IGamePlayer playerLike)
+			else if (owner is IGamePlayer playerLike)
 				playerLike.Stealth(false);
-			if (Owner.IsIncapacitated)
+			if (owner.IsIncapacitated)
 			{
 				OwnerOut?.SendMessage("You can't use this siegeweapon now!", eChatType.CT_Say, eChatLoc.CL_SystemWindow);
 				return false;
@@ -626,13 +629,13 @@ namespace DOL.GS
 				OwnerOut?.SendMessage("The siegeweapon needs to be repaired!", eChatType.CT_Say, eChatLoc.CL_SystemWindow);
 				return false;
 			}
-			if (!this.IsWithinRadius(this.Owner, SIEGE_WEAPON_CONTROLE_DISTANCE))
+			if (!this.IsWithinRadius(owner, SIEGE_WEAPON_CONTROLE_DISTANCE))
 			{
 				OwnerOut?.SendMessage("You are too far from your siege equipment to control it any longer!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 				return false;
 			}
 
-			if (Owner.Realm != this.Realm)
+			if (owner.Realm != this.Realm)
 			{
 				OwnerOut?.SendMessage($"This siege equipment is owned by an enemy realm!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 				return false;

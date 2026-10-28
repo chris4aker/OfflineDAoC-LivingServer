@@ -1238,13 +1238,22 @@ public static partial class AutonomousRvrEventLayer
     public const long ExpireIntervalMilliseconds = 500;
     private static long _lastExpireTick = long.MinValue;
 
+    /// <summary>
+    /// True while the last live-clock pass is under <see cref="ExpireIntervalMilliseconds"/> old. Before the first pass
+    /// (<c>long.MinValue</c>) <c>now - last</c> overflowed to a negative number, so every live call returned early and
+    /// muster deadlines, the march after them, repels and the four-hour cap never ran on the live clock (found by
+    /// stefanrows/OfflineDAoC 0.345.0).
+    /// </summary>
+    public static bool ExpireThrottled(long nowTick, long lastTick) =>
+        lastTick != long.MinValue && nowTick >= lastTick && nowTick - lastTick < ExpireIntervalMilliseconds;
+
     private static void Expire(long nowTick)
     {
         // Only the live clock is throttled; a caller asking about another moment (tests step time by a millisecond) runs.
         if (nowTick == GameLoop.GameLoopTime)
         {
             long last = System.Threading.Interlocked.Read(ref _lastExpireTick);
-            if (nowTick >= last && nowTick - last < ExpireIntervalMilliseconds)
+            if (ExpireThrottled(nowTick, last))
                 return;
             if (System.Threading.Interlocked.CompareExchange(ref _lastExpireTick, nowTick, last) != last)
                 return;

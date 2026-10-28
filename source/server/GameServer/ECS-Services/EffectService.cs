@@ -79,8 +79,19 @@ namespace DOL.GS
             ownerIsNpc && ownerState == GameObject.eObjectState.Deleted ||
             isPulse && casterIsNpc && casterState == GameObject.eObjectState.Deleted;
 
+        /// <summary>An ended effect has no business in the service; only a restart (Starting / Enabling) may bring one back.</summary>
+        public static bool IsStaleEndedEffect(bool ended, bool starting, bool enabling) => ended && !starting && !enabling;
+
         private static void TickEffect(ECSGameEffect effect)
         {
+            // Last line of defence against any other path that re-adds an ended effect: it can't be ended again, so it would
+            // pulse forever (from rambodolphin13/OfflineDAoC 7a8ae69).
+            if (IsStaleEndedEffect(effect.IsEnded, effect.IsStarting, effect.IsEnabling))
+            {
+                ServiceObjectStore.Remove(effect);
+                return;
+            }
+
             GameLiving pulseCaster = (effect as ECSPulseEffect)?.SpellHandler?.Caster;
             if (effect.Owner != null && OutlivedItsLiving(effect.Owner.ObjectState, effect.Owner is GameNPC, effect is ECSPulseEffect,
                     pulseCaster?.ObjectState, pulseCaster is GameNPC))

@@ -13,6 +13,7 @@ public sealed partial class AutonomousWorldBotController
     private long _nextPorterSearch;
     private Vector3? _frontierWaitingPoint;
     private long _nextWaitingPointSearch;
+    private long _medallionNoRoomUntil;
 
     private bool TryReturnFromForeignFrontier(GameBot bot)
     {
@@ -63,6 +64,9 @@ public sealed partial class AutonomousWorldBotController
             _frontierPorter,passage,bot.TempProperties.GetProperty<string>("RvrEventForce") ?? $"rvr-{bot.DatabaseID}"));
         if (AutonomousFrontierTransport.Ticket(bot,passage) == null)
         {
+            // A full bag with nothing to sell: stop walking back to the merchant for a while (it looped between the
+            // merchant and its crossing), and let the bot's other plans and the watchdog take over.
+            if (GameLoop.GameLoopTime < _medallionNoRoomUntil) return false;
             if (_medallionMerchant?.ObjectState != GameObject.eObjectState.Active ||
                 !_medallionMerchant.TradeItems.GetAllItems().Values.OfType<DbItemTemplate>().Any(item=>item.Id_nb==passage.Medallion))
                 _medallionMerchant = _frontierPorter.GetNPCsInRadius(3000).OfType<GameMerchant>()
@@ -93,11 +97,14 @@ public sealed partial class AutonomousWorldBotController
                 // gates. Sell one ordinary disposable item at this real merchant;
                 // never delete an item or grant a free ticket/teleport.
                 var trash = AutonomousBotEconomy.FindVendorTrashCandidate(bot);
-                if (trash != null)
-                    AutonomousBotEconomy.TrySellToVendor(bot, _medallionMerchant, trash, out _);
-                SetRvrStatus(bot, "Making room for frontier medallion", destination.MonsterName,
-                    "At the real merchant; preserving equipped items and protected upgrades");
-                return true;
+                bool sold = trash != null && AutonomousBotEconomy.TrySellToVendor(bot, _medallionMerchant, trash, out _);
+                if (AutonomousFrontierTransport.KeepWaitingForMedallionRoom(true, sold))
+                {
+                    SetRvrStatus(bot, "Making room for frontier medallion", destination.MonsterName,
+                        "At the real merchant; preserving equipped items and protected upgrades");
+                    return true;
+                }
+                _medallionNoRoomUntil = GameLoop.GameLoopTime + AutonomousFrontierTransport.MedallionNoRoomBackoffMilliseconds;
             }
             if (slot==eInventorySlot.Invalid || template.Price<0 || template.Price>0 && !AutonomousBotEconomy.TrySpend(bot.DatabaseID,template.Price))
                 return false; // Existing legal dungeon itinerary remains available.
