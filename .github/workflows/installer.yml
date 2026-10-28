@@ -1,0 +1,124 @@
+# Builds the Living Server Setup exe and tests it on Windows: pictures of every page, then a real install of
+# Offline DAoC from shadowofze's releases and every path Setup takes (tools/installer/test-installer.ps1).
+name: installer
+
+on:
+  push:
+    paths:
+      - 'tools/installer/**'
+      - '.github/workflows/installer.yml'
+  workflow_dispatch:
+    inputs:
+      package_release:
+        description: "Living Server release tag whose package Setup embeds"
+        default: "v1.0-beta"
+      e2e:
+        description: "Run the real-download end-to-end tests (about 30-60 minutes)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build Setup
+        shell: bash
+        run: python tools/installer/build.py --release "${{ inputs.package_release || 'v1.0-beta' }}"
+      - name: Pictures of every page (100 % and 150 %)
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem tools/installer/dist/*.exe | Select-Object -First 1
+          foreach ($s in '1', '1.5') {
+            $p = Start-Process $exe.FullName -ArgumentList '--screenshots', "tools/installer/shots/scale-$s", '--scale', $s, '--log', "tools/installer/shots/scale-$s.log" -Wait -PassThru
+            Write-Host "scale $s exit $($p.ExitCode)"
+            Get-Content "tools/installer/shots/scale-$s.log" | Select-Object -Last 4
+          }
+          Get-ChildItem -Recurse tools/installer/shots/*.png | ForEach-Object { "$($_.Directory.Name)/$($_.Name)  $($_.Length)" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LivingServer-Setup
+          path: |
+            tools/installer/dist/*.exe
+            tools/installer/payload/LivingServer.zip
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: tools/installer/shots/
+          if-no-files-found: warn
+
+  e2e:
+    needs: build
+    if: ${{ github.event_name == 'push' || inputs.e2e }}
+    runs-on: windows-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingServer-Setup
+          path: setup
+      - name: Real install, re-run, remove, reinstall, forced replace, 0.36 update
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem setup -Recurse -Filter *.exe | Select-Object -First 1
+          $pkg = Get-ChildItem setup -Recurse -Filter LivingServer.zip | Select-Object -First 1
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/installer/test-installer.ps1 -Exe $exe.FullName -Package $pkg.FullName -Work C:\lstest
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-logs
+          path: C:\lstest\logs\
+          if-no-files-found: warn
+
+  # The rest run on the runners' larger second drive (D:, about 145 GB free), each on its own machine.
+  e2e-more:
+    needs: build
+    if: ${{ github.event_name == 'push' || inputs.e2e }}
+    runs-on: windows-latest
+    timeout-minutes: 170
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: client
+            scenarios: client,smoke
+          - name: resume
+            scenarios: resume,netfx,smoke
+          - name: import
+            scenarios: import,freshcopy
+          - name: ui
+            scenarios: ui
+    name: e2e-${{ matrix.name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingServer-Setup
+          path: setup
+      - name: ${{ matrix.scenarios }}
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem setup -Recurse -Filter *.exe | Select-Object -First 1
+          $pkg = Get-ChildItem setup -Recurse -Filter LivingServer.zip | Select-Object -First 1
+          $list = '${{ matrix.scenarios }}'
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& 'tools/installer/test-installer.ps1' -Exe '$($exe.FullName)' -Package '$($pkg.FullName)' -Work 'D:\lstest' -Shots 'D:\lstest\shots' -Scenario $list; exit `$LASTEXITCODE"
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-${{ matrix.name }}-logs
+          path: |
+            D:\lstest\logs\
+            D:\lstest\shots\
+          if-no-files-found: warn

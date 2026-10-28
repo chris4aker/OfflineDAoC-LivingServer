@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Living Server Setup: one exe that installs Offline DAoC and the Living Server add-on, or adds Living Server to a
+    game the player already has. .NET Framework 4.7.2 (part of every supported Windows 10 and 11), so it runs before
+    the game and its own .NET exist. Built by tools/installer/build.py, which supplies the two payloads:
+      payload/LivingServer.zip     the Living Server release package (its BUILD-INFO.txt names the build)
+      payload/Get-OfflineDAoC.ps1  shadowofze's official downloader, pinned by SHA-256 in build.py
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>LivingServerSetup</AssemblyName>
+    <RootNamespace>LivingServerSetup</RootNamespace>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Product>Offline DAoC Living Server Setup</Product>
+    <Company>Offline DAoC Living Server (fan project)</Company>
+    <Description>Installs Offline DAoC and the Living Server add-on</Description>
+    <Copyright>Free, non-commercial fan project. Not affiliated with Electronic Arts or Broadsword.</Copyright>
+    <Version>1.0.0</Version>
+    <Deterministic>true</Deterministic>
+    <PayloadDir Condition="'$(PayloadDir)' == ''">$(MSBuildThisFileDirectory)..\payload\</PayloadDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Management" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\hero.jpg" LogicalName="hero.jpg" />
+    <EmbeddedResource Include="Assets\header.jpg" LogicalName="header.jpg" />
+    <EmbeddedResource Include="Assets\shield.png" LogicalName="shield.png" />
+    <EmbeddedResource Include="Assets\stone.jpg" LogicalName="stone.jpg" />
+    <EmbeddedResource Include="Assets\app.ico" LogicalName="app.ico" />
+    <EmbeddedResource Include="$(PayloadDir)LivingServer.zip" LogicalName="LivingServer.zip" />
+    <EmbeddedResource Include="$(PayloadDir)Get-OfflineDAoC.ps1" LogicalName="Get-OfflineDAoC.ps1" />
+  </ItemGroup>
+</Project>

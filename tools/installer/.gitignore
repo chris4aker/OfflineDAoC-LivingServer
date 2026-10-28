@@ -1,0 +1,5 @@
+payload/
+dist/
+src/bin/
+src/obj/
+shots/
