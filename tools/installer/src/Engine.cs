@@ -1058,7 +1058,16 @@ namespace LivingServerSetup
             var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             var menu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs), "Offline DAoC");
             Directory.CreateDirectory(menu);
+            // Owner 2026-10-28: the shortcuts carry Living Server's own icon (the splash painting's three figures),
+            // written beside the launcher; shadowofze's launcher and its exe icon are left as they are.
             var icon = Path.Combine(game, "runtime", "OfflineDAoC.exe");
+            try
+            {
+                var ours = Path.Combine(game, "runtime", "living-server.ico");
+                using (var s = Theme.Resource("shortcut.ico")) using (var f = File.Create(ours)) s.CopyTo(f);
+                icon = ours;
+            }
+            catch (Exception e) { Log.Write("Shortcut icon: " + e.Message + " (the launcher's icon is used)"); }
             var targets = new List<(string name, string file)> { ("Offline DAoC", "START OFFLINE DAOC.cmd") };
             if (File.Exists(Path.Combine(game, "START OFFLINE DAOC - NEW CLIENT.cmd")))
                 targets.Add(("Offline DAoC - New Client", "START OFFLINE DAOC - NEW CLIENT.cmd"));
@@ -1084,7 +1093,7 @@ namespace LivingServerSetup
                 s.TargetPath = target;
                 s.WorkingDirectory = workDir;
                 s.Description = description;
-                if (icon != null) s.IconLocation = icon + ",0";
+                if (icon != null) s.IconLocation = icon.EndsWith(".ico", StringComparison.OrdinalIgnoreCase) ? icon : icon + ",0";
                 s.Save();
                 System.Runtime.InteropServices.Marshal.FinalReleaseComObject(s);
             }

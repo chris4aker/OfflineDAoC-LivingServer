@@ -47,6 +47,7 @@
     <EmbeddedResource Include="Assets\shield.png" LogicalName="shield.png" />
     <EmbeddedResource Include="Assets\stone.jpg" LogicalName="stone.jpg" />
     <EmbeddedResource Include="Assets\app.ico" LogicalName="app.ico" />
+    <EmbeddedResource Include="Assets\shortcut.ico" LogicalName="shortcut.ico" />
     <EmbeddedResource Include="$(PayloadDir)LivingServer.zip" LogicalName="LivingServer.zip" />
     <EmbeddedResource Include="$(PayloadDir)Get-OfflineDAoC.ps1" LogicalName="Get-OfflineDAoC.ps1" />
   </ItemGroup>

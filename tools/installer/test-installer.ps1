@@ -128,6 +128,8 @@ if ($Scenario -contains 'fresh') {
     $desk = [Environment]::GetFolderPath('DesktopDirectory')
     Check (Test-Path (Join-Path $desk 'Offline DAoC.lnk')) 'fresh: desktop shortcut'
     Check (Test-Path (Join-Path ([Environment]::GetFolderPath('Programs')) 'Offline DAoC\Offline DAoC.lnk')) 'fresh: Start menu shortcut'
+    $lnk = (New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path $desk 'Offline DAoC.lnk'))
+    Check ($lnk.IconLocation -like '*runtime\living-server.ico*' -and (Test-Path (Join-Path $fresh 'runtime\living-server.ico'))) "fresh: the shortcut has Living Server's icon ($($lnk.IconLocation))"
     $setupDir = Join-Path $root 'Offline DAoC setup files'
     Check (Test-Path (Join-Path $setupDir 'Get-OfflineDAoC.ps1')) 'fresh: the official downloader sits in the setup files folder'
     # the steps were recognised from the downloader's own output, not only marked done at the end

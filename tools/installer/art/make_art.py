@@ -6,7 +6,8 @@ Writes into tools/installer/src/Assets/:
   hero.jpg     welcome page background, 1920x1200 (drawn at 960x600 logical, sharp up to 200% scaling)
   header.jpg   page banner, 1920x220, with the Living Server title baked in on the left
   shield.png   the tri-realm shield, 256 px high, transparent
-  app.ico      the same shield as the exe/shortcut icon (16 to 256 px)
+  app.ico      the same shield as Setup's own exe icon (16 to 256 px)
+  shortcut.ico the game shortcuts' icon: the splash painting's three figures (16 to 256 px)
   stone.jpg    a 512x512 seamless dark stone tile for page backgrounds
 
 The welcome painting is Living Server's splash (living-server-splash-source.jpg, owner 2026-10-28); the header and
@@ -206,6 +207,27 @@ def make_icon(shield):
     return frames
 
 
+def make_shortcut_icon():
+    """The game shortcuts' icon (owner 2026-10-28): the three figures of the splash painting, a true square crop, in a
+    rounded gold frame. Drawn at 4x and reduced, so the frame and corners stay clean at every size."""
+    src = Image.open(Path(__file__).resolve().parent / "living-server-splash-source.jpg").convert("RGB")
+    crop = src.crop((205, 85, 865, 745))  # 660 x 660: the dwarf, the knight and the caster
+    frames = []
+    for n in [256, 128, 64, 48, 40, 32, 24, 20, 16]:
+        big = n * 4
+        im = ImageEnhance.Contrast(crop.resize((big, big), Image.LANCZOS)).enhance(1.1)
+        radius, width = big // 6, max(4, big // 36)
+        mask = Image.new("L", (big, big), 0)
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, big - 1, big - 1), radius=radius, fill=255)
+        frame = Image.new("RGBA", (big, big), (0, 0, 0, 0))
+        frame.paste(im, (0, 0), mask)
+        ImageDraw.Draw(frame).rounded_rectangle((width // 2, width // 2, big - 1 - width // 2, big - 1 - width // 2),
+                                                radius=radius - width // 2, outline=GOLD_MID + (255,), width=width)
+        frame = frame.resize((n, n), Image.LANCZOS)
+        frames.append(ImageEnhance.Sharpness(frame).enhance(1.3 if n <= 48 else 1.1))
+    return frames
+
+
 def make_stone():
     rnd = random.Random(1201)
     n = 512
@@ -244,6 +266,8 @@ def main():
     shield.save(OUT / "shield.png", optimize=True)
     frames = make_icon(shield)
     frames[0].save(OUT / "app.ico", sizes=[(f.width, f.height) for f in frames], append_images=frames[1:])
+    shortcut = make_shortcut_icon()
+    shortcut[0].save(OUT / "shortcut.ico", sizes=[(f.width, f.height) for f in shortcut], append_images=shortcut[1:])
     make_hero().save(OUT / "hero.jpg", quality=90, optimize=True, progressive=True)
     make_header(shield).save(OUT / "header.jpg", quality=90, optimize=True, progressive=True)
     make_stone().save(OUT / "stone.jpg", quality=88, optimize=True)
