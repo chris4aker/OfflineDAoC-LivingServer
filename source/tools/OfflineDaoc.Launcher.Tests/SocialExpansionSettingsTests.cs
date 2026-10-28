@@ -76,6 +76,24 @@ public class SocialExpansionSettingsTests
         Assert.That(SocialExpansionSettings.Defaults.PlayerXpByLevel + SocialExpansionSettings.Defaults.BotXpByLevel, Is.Empty);
     }
 
+    [Test] public void RecommendedTurnsEveryFeatureOnAndSavesAsIs()
+    {
+        // Setup applies these on a first install (owner 2026-10-28): every switch on, the suggested XP ranges.
+        var r = SocialExpansionSettings.Recommended;
+        var switches = typeof(SocialExpansionSettings).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.PropertyType == typeof(bool) && p.CanWrite).ToArray();
+        Assert.That(switches.Length, Is.GreaterThanOrEqualTo(24));
+        Assert.That(switches.Where(p => !(bool)p.GetValue(r)!).Select(p => p.Name), Is.Empty);
+        Assert.That(r.PlayerXpByLevel, Is.EqualTo(SocialExpansionSettings.SuggestedPlayerXp));
+        Assert.That(r.BotXpByLevel, Is.EqualTo(SocialExpansionSettings.SuggestedBotXp));
+        Assert.That(r.ScheduleMode, Is.EqualTo("clock"));
+        Assert.That(r.Validate(), Is.Null);
+        r.Save(_database, null, () => true);
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(r));
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void SaveWritesWhatTheServerReadsAndLoadsItBack()
     {
         AllOn.Save(_database, null, () => _stopped);

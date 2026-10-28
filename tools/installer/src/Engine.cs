@@ -23,6 +23,8 @@ namespace LivingServerSetup
         public bool Remove;             // take Living Server off (back to the released server and launcher)
         public bool Shortcuts = true;
         public bool EnableNetFx;
+        /// <summary>Turn every Living Server feature on at the suggested settings (the launcher's Recommended), after installing.</summary>
+        public bool RecommendedSettings;
         public GameInfo ImportFrom;     // new install: bring account, characters and bots from this older game
         public string LocalAssets;      // tests: the downloader reads release files from here instead of GitHub
 
@@ -55,10 +57,12 @@ namespace LivingServerSetup
         public long CacheBytes;
         public bool NetFxNeedsRestart;
         public bool NetFxSkipped;
+        /// <summary>Every Living Server feature was turned on at the suggested settings.</summary>
+        public bool SettingsApplied;
         public bool NewClient;
     }
 
-    internal enum StepId { Check, Release, DownloadGame, UnpackGame, Client, UpdateGame, UpdateClient, FreshCopy, Import, LivingServer, NetFx, Shortcuts, Remove }
+    internal enum StepId { Check, Release, DownloadGame, UnpackGame, Client, UpdateGame, UpdateClient, FreshCopy, Import, LivingServer, NetFx, Shortcuts, Remove, Settings }
 
     /// <summary>Runs an install plan step by step on a worker thread. The UI reads the public state on Changed.</summary>
     internal sealed class Engine
@@ -151,11 +155,82 @@ namespace LivingServerSetup
                 Add(StepId.LivingServer, "Check " + ls, 0.3 * GB, "every file compared with the package; anything missing is put back");
             else
                 Add(StepId.LivingServer, "Install " + ls, 0.5 * GB, "server, launcher tab and fixes; every file backed up first");
+            if (o.RecommendedSettings && !o.Remove)
+                Add(StepId.Settings, "Turn on every Living Server feature", 0.01 * GB,
+                    "at our suggested settings: bot guilds, personalities, voices, all of server life, XP by level");
             if (o.EnableNetFx) Add(StepId.NetFx, "Turn on .NET Framework 3.5", 0.4 * GB, "the original game client needs it; Windows asks your permission");
             if (o.Shortcuts) Add(StepId.Shortcuts, "Add shortcuts", 0.02 * GB, "on the desktop and in the Start menu");
         }
 
         Step Find(StepId id) => steps.FirstOrDefault(s => s.Id == id);
+
+        /// <summary>
+        /// Runs the game's own launcher (just installed from this package) in its settings mode, which writes the suggested
+        /// Living Server settings through the same save as its Living Server tab. Null when saved, else why not. Never fatal.
+        /// </summary>
+        /// <summary>The launcher's code holds the "--apply-recommended-settings" string (UTF-16, as .NET stores literals).</summary>
+        static bool LauncherHasSettingsMode(string dll)
+        {
+            try
+            {
+                if (!File.Exists(dll)) return false;
+                var needle = System.Text.Encoding.Unicode.GetBytes("--apply-recommended-settings");
+                var data = File.ReadAllBytes(dll);
+                for (int i = 0; i + needle.Length <= data.Length; i++)
+                {
+                    int k = 0;
+                    while (k < needle.Length && data[i + k] == needle[k]) k++;
+                    if (k == needle.Length) return true;
+                }
+            }
+            catch (Exception e) { Log.Write("Recommended settings: " + e.Message); }
+            return false;
+        }
+
+        static string ApplyRecommendedSettings(string game)
+        {
+            var launcher = Path.Combine(game, "runtime", "OfflineDAoC.exe");
+            if (!File.Exists(launcher)) return "no launcher in runtime";
+            // A launcher from before Beta 1.1 has no settings mode and would just open its window: look for the switch in it.
+            if (!LauncherHasSettingsMode(Path.Combine(game, "runtime", "OfflineDAoC.dll")))
+            {
+                Log.Write("Recommended settings: this launcher has no settings mode");
+                return "this launcher has no settings mode";
+            }
+            var dotnet = Path.Combine(game, "tools", "dotnet");
+            var psi = new ProcessStartInfo(launcher, "--apply-recommended-settings")
+            {
+                WorkingDirectory = Path.GetDirectoryName(launcher), UseShellExecute = false, CreateNoWindow = true,
+                RedirectStandardOutput = true, RedirectStandardError = true,
+            };
+            if (Directory.Exists(dotnet))
+            {
+                psi.EnvironmentVariables["DOTNET_ROOT"] = dotnet;
+                psi.EnvironmentVariables["DOTNET_ROOT_X64"] = dotnet;
+                psi.EnvironmentVariables["DOTNET_MULTILEVEL_LOOKUP"] = "0";
+            }
+            try
+            {
+                using (var p = Process.Start(psi))
+                {
+                    var output = p.StandardOutput.ReadToEndAsync();
+                    var error = p.StandardError.ReadToEndAsync();
+                    if (!p.WaitForExit(60_000))
+                    {
+                        try { p.Kill(); } catch { }
+                        return "the launcher didn't finish";
+                    }
+                    var text = (output.Result + " " + error.Result).Trim();
+                    Log.Write("Recommended settings: exit " + p.ExitCode + (text.Length > 0 ? ": " + text : ""));
+                    return p.ExitCode == 0 ? null : (text.Length > 0 ? text : "exit code " + p.ExitCode);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Write("Recommended settings: " + e.Message);
+                return e.Message;
+            }
+        }
 
         void Set(StepId id, StepState state, string detail = null)
         {
@@ -288,6 +363,15 @@ namespace LivingServerSetup
                 var args = "-GameFolder " + ScriptJob.Quote(gamePath) + (o.ForceLivingServer ? " -Force" : "");
                 RunPackageScript("install-server-build.ps1", args, r, extract: true);
                 Set(StepId.LivingServer, StepState.Done);
+
+                if (Find(StepId.Settings) != null)
+                {
+                    Activate(StepId.Settings, "Turning on Living Server at our suggested settings...");
+                    string why = ApplyRecommendedSettings(gamePath);
+                    r.SettingsApplied = why == null;
+                    if (why == null) Set(StepId.Settings, StepState.Done, "all on; change any of them in the launcher's Living Server tab");
+                    else Set(StepId.Settings, StepState.Skipped, "not turned on (" + why + "): turn them on in the launcher's Living Server tab");
+                }
 
                 if (Find(StepId.NetFx) != null)
                 {

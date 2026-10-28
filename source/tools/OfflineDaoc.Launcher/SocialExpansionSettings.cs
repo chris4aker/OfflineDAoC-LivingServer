@@ -52,6 +52,21 @@ public sealed record SocialExpansionSettings
     /// <summary>The server's defaults: since Beta 1.1 (the talking update) bot voices, bot memory and grats on, the rest off.</summary>
     public static SocialExpansionSettings Defaults { get; } = new();
 
+    /// <summary>
+    /// What Setup turns on for a first install (owner 2026-10-28: "every setting turned on and to our suggested level"):
+    /// every feature and Server life part on, the suggested XP ranges, and the real-clock bot schedule. The guild share and
+    /// lowest level keep their defaults.
+    /// </summary>
+    public static SocialExpansionSettings Recommended { get; } = new()
+    {
+        BotGuilds = true, GuildSocial = true, GuildRecruitPlayer = true, GuildClaims = true, GuildEconomy = true, GuildAlliances = true,
+        Personalities = true, Voices = true, Debates = true,
+        LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true, LivingNemesis = true,
+        ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingDeeds = true,
+        LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, LivingLeeroy = true,
+        PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
+    };
+
     // Key, category and description of each setting, as the server and the Python helpers write them.
     internal static readonly (string Key, string Category, string Description)[] Settings =
     [

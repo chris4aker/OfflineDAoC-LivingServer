@@ -15,6 +15,11 @@ Offline DAoC they already have.
 It also turns on .NET Framework 3.5 (the original client needs it; Windows asks permission) and adds desktop and
 Start menu shortcuts, both optional.
 
+A first install of Living Server (a new game, or a game without it) turns every Living Server feature on at the
+suggested settings: Setup runs the installed launcher's `OfflineDAoC.exe --apply-recommended-settings`, which saves
+`SocialExpansionSettings.Recommended` through the Living Server tab's own save. It is a ticked option on the prepare
+page; a game that already has Living Server keeps its own choices unless it is ticked.
+
 ## How it works
 
 Setup doesn't reimplement anything that already has a tested script. It embeds two payloads and runs them:
@@ -54,7 +59,7 @@ in Cinzel (SIL Open Font License): `python tools/installer/art/make_art.py` rebu
 ```
 LivingServerSetup.exe --silent --new [--dest DIR] [--classic] [--new-client] [--import-from OLD_GAME]
 LivingServerSetup.exe --silent --game DIR [--add-client] [--remove] [--force] [--fresh-copy]
-     common: [--no-shortcuts] [--netfx] [--local-assets DIR] [--log FILE]
+     common: [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--log FILE]
 LivingServerSetup.exe --scan [--game DIR] --log FILE       # what Setup finds, and how it reads each game
 LivingServerSetup.exe --screenshots DIR [--scale 1.5]      # pictures of every page with made-up data
 ```

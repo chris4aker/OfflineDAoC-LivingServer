@@ -134,6 +134,9 @@ if ($Scenario -contains 'fresh') {
     Check ($r.Log -match '\] Downloading Offline DAoC \| [\d.]+ (MB|GB) of ') 'fresh: download progress measured in bytes'
     Check ($r.Log -match '\] Unpacking the game \| [\d.]+ (MB|GB) of ') 'fresh: unpacking progress measured in bytes'
     Check ($r.Log -match '\] Updating the game to ') 'fresh: the official update step recognised from its output'
+    # A first install turns every Living Server feature on at the suggested settings (owner 2026-10-28).
+    # (A package from before Beta 1.1 has a launcher without the settings mode: Setup says so and goes on.)
+    Check (($r.Log -match 'Recommended settings: exit 0') -or ($r.Log -match 'Recommended settings: this launcher has no settings mode')) 'fresh: every Living Server feature turned on at the suggested settings (or skipped for an older launcher)'
 
     $r = Setup 'scan' @('--scan', '--game', $fresh)
     Check ($r.Log -match [regex]::Escape("GAME $fresh | $($base)b | LivingServer=ThisBuild")) 'scan: the game is found as this build'

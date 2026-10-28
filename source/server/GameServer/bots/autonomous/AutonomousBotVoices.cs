@@ -338,6 +338,12 @@ public static class AutonomousBotVoices
         bool relax = false, bool requireVoices = true)
     {
         bool asked = AutonomousChatShortTalk.AsksHowAreYou(incoming);
+        // A holiday wish gets the holiday's own answer when there is one today (in-game check 2026-10-28: "happy halloween all!"
+        // drew two plain hellos).
+        if (AutonomousChatIntentModel.IsHolidayWish(incoming) && TryLine(bot, "reply", out result, IntentName(eAutonomousChatIntent.Greeting),
+                slots: slots, relax: true, requireVoices: requireVoices,
+                filter: line => line.Needs.Any(need => need.StartsWith("holiday_", StringComparison.Ordinal))))
+            return true;
         if (asked && TryLine(bot, "reply", out result, answers: "ask_howareyou", slots: slots, relax: relax, requireVoices: requireVoices))
             return true;
         return TryLine(bot, "reply", out result, IntentName(eAutonomousChatIntent.Greeting), slots: slots, relax: relax,

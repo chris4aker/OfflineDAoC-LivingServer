@@ -177,6 +177,9 @@ public static partial class AutonomousChatIntentModel
 
     private static readonly Model Trained = Train();
 
+    /// <summary>True for a holiday wish ("happy halloween", "merry xmas", "god jul").</summary>
+    public static bool IsHolidayWish(string text) => !string.IsNullOrEmpty(text) && HolidayWish.IsMatch(text);
+
     /// <summary>"happy halloween", "merry xmas", "god jul": a holiday wish.</summary>
     private static readonly System.Text.RegularExpressions.Regex HolidayWish = new(
         @"\b((happy|merry|blessed)\s+(halloween|samhain|thanksgiving|turkey day|christmas|xmas|holidays|new year|easter|valentines?( day)?|st\.? ?patricks?( day)?|midsummer|yule|solstice)|god jul|nollaig shona)\b",

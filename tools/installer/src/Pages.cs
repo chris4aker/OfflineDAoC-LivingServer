@@ -304,7 +304,7 @@ namespace LivingServerSetup
     {
         readonly GameInfo game;
         readonly PathBox folder = new PathBox();
-        OptionToggle editionB, editionClassic, client, shortcuts, netfx, import, keep, remove;
+        OptionToggle editionB, editionClassic, client, shortcuts, netfx, import, keep, remove, recommended;
         GameInfo importFrom;
         List<StepItem> plan = new List<StepItem>();
         string download = "", need = "", free = "";
@@ -378,6 +378,12 @@ namespace LivingServerSetup
                     client.Checked = prev != null && !prev.NewInstall && prev.Game?.Path == game.Path && prev.AddClient;
                 }
             }
+            // Owner 2026-10-28: a first install comes with everything on at our suggested settings, not off until found in a tab.
+            // A game that already has Living Server keeps its own choices unless this is ticked.
+            recommended = Toggle(new OptionToggle("Turn on every Living Server feature at our suggested settings",
+                "Bot guilds, personalities, voices, all of server life and the suggested XP by level. Change any of them later in the launcher's Living Server tab."), ref y, 486);
+            recommended.Checked = prev != null && (prev.NewInstall ? game == null : prev.Game?.Path == game?.Path)
+                ? prev.RecommendedSettings : game == null || game.Ls == LsState.None;
             shortcuts = Toggle(new OptionToggle("Add desktop and Start menu shortcuts"), ref y, 486);
             shortcuts.Checked = prev?.Shortcuts ?? true;
             if (!NetFx35.IsOn())
@@ -417,7 +423,7 @@ namespace LivingServerSetup
 
         InstallOptions Build()
         {
-            var o = new InstallOptions { Shortcuts = shortcuts.Checked, EnableNetFx = netfx?.Checked == true };
+            var o = new InstallOptions { Shortcuts = shortcuts.Checked, EnableNetFx = netfx?.Checked == true, RecommendedSettings = recommended?.Checked == true };
             if (game == null)
             {
                 o.NewInstall = true;
@@ -431,7 +437,7 @@ namespace LivingServerSetup
                 o.Game = game;
                 o.AddClient = client?.Checked == true;
                 o.Remove = remove?.Checked == true;
-                if (o.Remove) { o.Shortcuts = false; o.EnableNetFx = false; o.AddClient = false; }
+                if (o.Remove) { o.Shortcuts = false; o.EnableNetFx = false; o.AddClient = false; o.RecommendedSettings = false; }
                 if (game.Ls == LsState.Modified) o.ForceLivingServer = false;
             }
             return o;
@@ -854,7 +860,9 @@ namespace LivingServerSetup
                     var tips = new[]
                     {
                         ("Start the server", "PLAY NOW opens the launcher. Click START SERVER, wait for RUNNING, then ENTER REALM. Your account is made the first time."),
-                        ("Switch Living Server on", "Its features start off. With the server stopped, open the launcher's Living Server tab and turn on bot voices, personalities, guilds and server life."),
+                        r.SettingsApplied
+                            ? ("Living Server is on", "Every feature is on at our suggested settings. To change one, stop the server and open the launcher's Living Server tab.")
+                            : ("Switch Living Server on", "With the server stopped, open the launcher's Living Server tab and turn on bot voices, personalities, guilds and server life."),
                         ("Fill the realms", "Use + Lv.1 and + Lv.50 on each realm's card. Raids need level 50s, and a realm needs 8 bots of level 5 or higher to form a guild."),
                     };
                     int y = Theme.S(226);

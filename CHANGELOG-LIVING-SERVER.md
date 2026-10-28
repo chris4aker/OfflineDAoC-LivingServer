@@ -246,6 +246,9 @@ Found by playing the Beta 1.1 test build on a fresh 0.37b install made by the ne
 **`/tele mob`** ranks camps by their average level and lands you at the spawn nearest your level.
 
 **Setup**
+- A first install turns every Living Server feature on at our suggested settings (bot guilds, personalities, voices,
+  all of server life, the suggested XP by level, the real-clock schedule), shown as a ticked option you can untick.
+  A game that already has Living Server keeps its own choices.
 - Shows the real error when the official download fails, and says when the connection dropped.
 - Names the folder of a game program that is still running, and points to Task Manager when it has no window.
 - Cleaning up after an install removes the "Offline DAoC setup files" folder too, with Setup's copy of the downloader.

@@ -1502,6 +1502,13 @@ public static class AutonomousBotChatCoordinator
         // memory reply below replaced it 60% of the time).
         if (AutonomousBotVoices.Enabled && AutonomousChatLiveAnswers.AnswerQuestion(responder, incoming, addressed, Random.Shared) is { } knownFact)
             return knownFact;
+        // A holiday wish is answered in kind before anything else, even by a bot that remembers the player (in-game check
+        // 2026-10-28: "happy halloween all!" drew "evening Claudetest, good to see you").
+        if (AutonomousBotVoices.Enabled && value == eAutonomousChatIntent.Greeting && AutonomousChatIntentModel.IsHolidayWish(incoming) &&
+            AutonomousBotVoices.TryGreetingReply(responder, incoming, out VC.Picked wish,
+                player == null ? null : new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name }, relax: true) &&
+            wish.Line?.Needs?.Any(need => need.StartsWith("holiday_", StringComparison.Ordinal)) == true)
+            return wish.Text;
         // A bot that remembers this player answers by name, or coolly after abuse (Living Server memory). Not to a question
         // with answers of its own: "where to next?" drew "Wrenfield?" (live test 2026-10-18).
         if (player != null && AutonomousChatShortTalk.QuestionShape(incoming) == null && Random.Shared.NextDouble() < 0.6 &&

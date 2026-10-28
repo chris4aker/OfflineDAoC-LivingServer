@@ -142,9 +142,12 @@ namespace LivingServerSetup
             }
             else
             {
-                Log.Write("Usage: LivingServerSetup.exe --silent (--new [--dest DIR] [--classic] [--new-client] [--import-from DIR] | --game DIR [--add-client] [--remove] [--force] [--fresh-copy]) [--no-shortcuts] [--netfx] [--local-assets DIR] [--log FILE]");
+                Log.Write("Usage: LivingServerSetup.exe --silent (--new [--dest DIR] [--classic] [--new-client] [--import-from DIR] | --game DIR [--add-client] [--remove] [--force] [--fresh-copy]) [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--log FILE]");
                 return 3;
             }
+            // As in the window: a first install of Living Server gets every feature on at the suggested settings.
+            o.RecommendedSettings = !o.Remove && !a.Has("--no-recommended-settings") &&
+                                    (a.Has("--recommended-settings") || o.NewInstall || o.Game?.Ls == LsState.None);
             if (!a.Has("--offline")) Manifests.TryRefresh();
             var engine = new Engine(o);
             string lastStatus = null;
