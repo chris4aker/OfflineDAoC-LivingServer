@@ -90,6 +90,15 @@ public static class AutonomousGoldSpammers
 
     #endregion
 
+    /// <summary>GM test (/lstest spammer): the realm's next wave starts on the next pulse. False when one is already running.</summary>
+    public static bool StartSoon(eRealm realm)
+    {
+        if (Waves.ContainsKey(realm))
+            return false;
+        NextWaveAt[realm] = 0;
+        return true;
+    }
+
     /// <summary>Starts, runs and bans the spam waves (AutonomousLivingWorld.Pulse, once a second).</summary>
     public static void Pulse(long now)
     {

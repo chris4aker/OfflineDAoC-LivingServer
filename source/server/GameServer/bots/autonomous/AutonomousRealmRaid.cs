@@ -345,7 +345,7 @@ namespace DOL.GS
                         GameBot leeroy = null;
                         GameLiving[] staged = null;
                         if (!ready && raid.LeeroyRolled && !raid.LeeroyDone && !raid.Definition.IsDungeon && DragonLanded(raid) &&
-                            AutonomousRaidLeeroy.ShouldChargeStaging(present, raid.Required, now - raid.Created))
+                            AutonomousRaidLeeroy.GoesNow(AutonomousRaidLeeroy.ShouldChargeStaging(present, raid.Required, now - raid.Created), present))
                         {
                             raid.LeeroyDone = true;
                             staged = StagedBots(raid);
@@ -518,7 +518,7 @@ namespace DOL.GS
                 if (raid == null) return false;
                 Raids[id] = raid;
                 // One raid in twenty has a raider who can't wait for the final encounter (bot_living_leeroy).
-                raid.LeeroyRolled = AutonomousRaidLeeroy.On && AutonomousRaidLeeroy.Rolls(Random.Shared.NextDouble());
+                raid.LeeroyRolled = AutonomousRaidLeeroy.On && AutonomousRaidLeeroy.RollForRaid(Random.Shared.NextDouble());
                 if (raid.DungeonRoute != null) raid.DungeonRoute.LeeroyRolled = raid.LeeroyRolled;
                 if (raid.LeeroyRolled) Log.Info($"RAID_LEEROY_ROLLED event={id}");
                 RealmEventRecords.Begin(id, definition.Name, definition.IsNeutral ? "Neutral raid" : definition.IsDungeon ? "Epic dungeon" : "Dragon",

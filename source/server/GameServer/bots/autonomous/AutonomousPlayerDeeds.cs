@@ -308,6 +308,30 @@ public static class AutonomousPlayerDeeds
         }
     }
 
+    /// <summary>
+    /// GM test (/lstest deed): a bot near the player tells /faction about a deed of that kind within about 10 seconds, as if
+    /// it had seen it. The player's reputation counts are not changed. False with the reason when no bot is near to tell it.
+    /// </summary>
+    public static bool TellForTest(GamePlayer player, Kind kind, string target, out string why)
+    {
+        why = null;
+        GameBot witness = WitnessOf(player, null);
+        if (witness == null)
+        {
+            why = "no gamebot of your realm is within 3,000 units to have seen it";
+            return false;
+        }
+        Reputations.TryGet(KeyOf(player.Realm, player.Name), out OfflinePlayerReputationRecord row);
+        var slots = SlotsOf(player, row);
+        slots["target"] = target ?? "a named monster";
+        slots["count"] = "5";
+        slots["enemy"] = AutonomousLivingServer.RealmPlural(player.Realm == eRealm.Albion ? eRealm.Midgard : eRealm.Albion);
+        Log.Info($"PLAYER_DEED player=\"{player.Name}\" kind={TopicOf(kind)} target=\"{target}\" witness=\"{witness.Name}\" forced=lstest");
+        Tell(witness, player, TopicOf(kind), slots, 5_000, 3);
+        why = witness.Name;
+        return true;
+    }
+
     private static Dictionary<string, string> SlotsOf(GamePlayer player, OfflinePlayerReputationRecord row)
     {
         var slots = new Dictionary<string, string>(StringComparer.Ordinal)

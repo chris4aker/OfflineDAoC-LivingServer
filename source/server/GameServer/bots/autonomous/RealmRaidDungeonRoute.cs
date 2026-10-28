@@ -509,7 +509,7 @@ namespace DOL.GS
             // Leeroy (bot_living_leeroy): part of the raid is here, not all of it, and he can't wait. The boss is in the fight,
             // so the whole muster goes in after him now, as an attempt like any other.
             if (LeeroyRolled && !_leeroyDone &&
-                AutonomousRaidLeeroy.ShouldCharge(mustered, needed, now - _musterSince, FailedAttempts(_target.Name), _regrouping))
+                AutonomousRaidLeeroy.GoesNow(AutonomousRaidLeeroy.ShouldCharge(mustered, needed, now - _musterSince, FailedAttempts(_target.Name), _regrouping), mustered))
             {
                 _leeroyDone = true;
                 if (AutonomousRaidLeeroy.Pick(musteredRaiders) is GameBot leeroy &&

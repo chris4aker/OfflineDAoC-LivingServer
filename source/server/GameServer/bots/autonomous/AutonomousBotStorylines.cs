@@ -280,6 +280,21 @@ public static class AutonomousBotStorylines
         return b.Id == 0 ? (0, 0) : (a.Id, b.Id);
     }
 
+    /// <summary>
+    /// GM test (/lstest storyline): the realm's rests are lifted and every unfinished arc is due, so the next /faction scene
+    /// is a storyline episode (a new arc when none is running). Returns how many arcs were already under way.
+    /// </summary>
+    public static int MakeDueNow(eRealm realm)
+    {
+        LastEpisodeUtc.TryRemove(realm, out _);
+        NextNewArcUtc.TryRemove(realm, out _);
+        string due = DateTime.UtcNow.AddMinutes(-1).ToString("O");
+        OfflineBotStorylineRecord[] open = Stories.Where(row => row.Realm == (int)realm && string.IsNullOrEmpty(row.DoneUtc));
+        foreach (OfflineBotStorylineRecord row in open)
+            Stories.Change(row.StoryKey, () => row, r => r.NextAtUtc = due);
+        return open.Length;
+    }
+
     /// <summary>A bot already a protagonist of an unfinished arc (one drama at a time).</summary>
     private static bool InAnotherStory(long botId) =>
         Stories.Where(row => string.IsNullOrEmpty(row.DoneUtc) && (row.BotA == botId || row.BotB == botId)).Length > 0;

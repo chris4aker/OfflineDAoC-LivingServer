@@ -74,6 +74,43 @@ public static partial class AutonomousLivingServer
             Remember(bot, player, "abuse");
     }
 
+    /// <summary>GM test (/lstest memory): every bot's memory of a player, most recent first.</summary>
+    public static OfflineBotMemoryRecord[] MemoriesOf(GamePlayer player) =>
+        Memories.Where(row => string.Equals(row.PlayerName, player.Name, StringComparison.OrdinalIgnoreCase))
+            .OrderByDescending(row => row.LastSeenUtc, StringComparer.Ordinal).ToArray();
+
+    /// <summary>
+    /// GM test (/lstest remember): the bot remembers a good group with the player (twice, so gossip about the player is
+    /// possible) and the player's greeting cooldowns are cleared, so walking up to the bot gets a greeting.
+    /// </summary>
+    public static bool RememberForTest(GameBot bot, GamePlayer player)
+    {
+        if (!MemoryOn || !IsSpeaker(bot) || player == null || player.Realm != bot.Realm)
+            return false;
+        Remember(bot, player, "group");
+        Remember(bot, player, "group");
+        GreetSoon(player);
+        return true;
+    }
+
+    /// <summary>GM test (/lstest greet): a remembered bot within greeting range greets the player on the next scan.</summary>
+    public static void GreetSoon(GamePlayer player)
+    {
+        lock (LastGreeted)
+        {
+            LastGreetOfPlayer.Remove(player.Name);
+            foreach (var key in LastGreeted.Keys.Where(k => string.Equals(k.Item2, player.Name, StringComparison.OrdinalIgnoreCase)).ToArray())
+                LastGreeted.Remove(key);
+        }
+    }
+
+    /// <summary>GM test (/lstest gossip): a bot that likes a player of the realm mentions them in /faction on the next scan.</summary>
+    public static void GossipSoon(eRealm realm)
+    {
+        lock (NextGossip)
+            NextGossip[realm] = 0;
+    }
+
     public static bool TryRecall(GameBot bot, GamePlayer player, out OfflineBotMemoryRecord row)
     {
         row = null;

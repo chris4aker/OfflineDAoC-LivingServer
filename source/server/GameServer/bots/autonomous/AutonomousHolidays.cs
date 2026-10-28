@@ -14,6 +14,26 @@ public static class AutonomousHolidays
 {
     public static bool On => Properties.BOT_LIVING_HOLIDAYS;
 
+    /// <summary>GM test (/lstest holiday): the date the bots treat as today, or null for the PC's real date.</summary>
+    public static DateTime? TestDate { get; set; }
+
+    /// <summary>The date holiday chatter goes by: the GM's test date when set, otherwise now.</summary>
+    public static DateTime Now => TestDate ?? DateTime.Now;
+
+    /// <summary>A day inside the named holiday in the year of <paramref name="from"/>, for /lstest (its main day). Null for an unknown name.</summary>
+    public static DateTime? DayOf(string name, DateTime from)
+    {
+        foreach (Window window in WindowsAround(new DateTime(from.Year, 6, 30)))
+            if (string.Equals(window.Name, name, StringComparison.OrdinalIgnoreCase) && window.Day.Year == from.Year)
+                return window.Day;
+        foreach (Window window in WindowsAround(new DateTime(from.Year, 1, 1)))
+            if (string.Equals(window.Name, name, StringComparison.OrdinalIgnoreCase))
+                return window.Day;
+        return null;
+    }
+
+    public static readonly string[] Names = ["newyear", "valentines", "stpatricks", "aprilfools", "easter", "midsummer", "halloween", "thanksgiving", "christmas"];
+
     /// <summary>A holiday's window: from <see cref="First"/> to <see cref="Last"/>, its own day(s) <see cref="Day"/> to <see cref="DayLast"/>.</summary>
     public sealed record Window(string Name, DateTime First, DateTime Last, DateTime Day, DateTime DayLast);
 

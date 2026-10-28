@@ -42,6 +42,13 @@ public static partial class AutonomousLivingServer
     public static bool FitsHelpOffer(int botLevel, int playerLevel, bool sameZone, double distance) =>
         sameZone && playerLevel < 20 && botLevel >= playerLevel + 8 && distance <= 4_000;
 
+    /// <summary>GM test (/lstest tell): the player's tell gap is skipped, so a bot starts a tell within a few seconds if one fits.</summary>
+    public static void TellSoon(GamePlayer player)
+    {
+        lock (NextTellTo)
+            NextTellTo[player.Name] = 0;
+    }
+
     private static void TryStartTell(GamePlayer player, long now)
     {
         if (!TellsOn)

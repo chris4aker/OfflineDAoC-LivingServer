@@ -307,6 +307,26 @@ Writes are batched off the game loop every 5 seconds, under the same database lo
 saves. The release builder deletes every `bot_living_*` setting and `bot_schedule_mode`, so
 releases ship with everything off.
 
+## Checking it in game: /lstest (GMs)
+
+Most of these parts are rare by design, so a play session may never show one. `/lstest` (GM accounts only: tick
+**Make me GM** in the launcher's Options with the server stopped) makes one part's next moment due now. It then runs
+through the part's own code, lines and logging, in your realm and around you.
+
+| Command | What happens |
+|---|---|
+| `/lstest list` | Every part, on or off |
+| `/lstest storyline`, `debate`, `dunce` | The next /faction scene starts within seconds: a storyline episode, any debate, or a dunce rage quit |
+| `/lstest spammer`, `roleplayer`, `rumour` | A gold spammer starts; a roleplayer speaks; a bot tells the realm about a rare named up in your region |
+| `/lstest tell` | A bot that fits starts a tell to you |
+| `/lstest memory` | What every bot remembers about you |
+| `/lstest remember` | Your target (or the nearest gamebot) remembers two good groups with you; walk away and back to be greeted |
+| `/lstest greet`, `gossip` | A remembered bot near you greets you; a bot that likes you mentions you in /faction |
+| `/lstest deed <solo, group, streak, ganked, silly, fell>` | A bot near you tells /faction it saw you do that (your reputation counts don't change) |
+| `/lstest holiday <name, off>` | Bots treat today as that holiday until `off` or a restart |
+| `/lstest leeroy` | The next realm raid has a Leeroy (start one from the launcher's Realm Events tab) |
+| `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once |
+
 ## Tests
 
 Automated (no running world):

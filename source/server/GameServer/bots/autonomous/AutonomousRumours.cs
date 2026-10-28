@@ -103,6 +103,36 @@ public static class AutonomousRumours
         }
     }
 
+    /// <summary>
+    /// GM test (/lstest rumour): a bot of the GM's realm tells /faction about a rare named monster that is up in the GM's
+    /// region, as it would after a respawn (the realm's rests are skipped). False with the reason when none is up.
+    /// </summary>
+    public static bool TellNow(GamePlayer player, out string about)
+    {
+        about = null;
+        if (player?.CurrentRegion == null)
+            return false;
+        GameNPC named = player.CurrentRegion.Objects.OfType<GameNPC>()
+            .Where(npc => npc.IsAlive && npc.ObjectState == GameObject.eObjectState.Active && npc.CurrentZone != null &&
+                          IsRareNamed(npc.Name, npc.Realm == eRealm.None, npc is GameBot, npc.RespawnInterval, npc.Level))
+            .OrderBy(npc => Math.Abs(npc.Level - player.Level)).FirstOrDefault();
+        if (named == null)
+        {
+            about = "no rare named monster is up in this region";
+            return false;
+        }
+        var slots = new Dictionary<string, string> { ["target"] = named.Name, ["place"] = named.CurrentZone.Description };
+        LastRumourAt.TryRemove(player.Realm, out _);
+        about = $"{named.Name} (level {named.Level}) in {named.CurrentZone.Description}";
+        if (!Say(player.Realm, "named_up", slots, GameLoop.GameLoopTime))
+        {
+            about += ": no bot had a line for it";
+            return false;
+        }
+        Log.Info($"RUMOUR_NAMED realm={GlobalConstants.RealmToName(player.Realm)} target=\"{named.Name}\" zone=\"{named.CurrentZone.Description}\" forced=lstest");
+        return true;
+    }
+
     /// <summary>Every five minutes: an undefended enemy keep (AutonomousLivingWorld.Pulse).</summary>
     public static void Pulse(long now)
     {

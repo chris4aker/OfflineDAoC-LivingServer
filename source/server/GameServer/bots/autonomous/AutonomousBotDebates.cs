@@ -234,6 +234,32 @@ public static class AutonomousBotDebates
     private static readonly object Sync = new();
     private static readonly Dictionary<eRealm, Running> Scenes = new();
     private static readonly Dictionary<eRealm, long> NextStartAt = new();
+    /// <summary>/lstest: the topic the next scene in a realm must have (null: any), used once.</summary>
+    private static readonly Dictionary<eRealm, string> ForcedTopic = new();
+
+    /// <summary>
+    /// GM test (/lstest): the realm's next /faction scene starts on the next tick, of the given topic when one is named
+    /// ("dunce"), or the due storyline episode when <paramref name="topic"/> is null and one is due. False with the reason
+    /// when a scene is already running.
+    /// </summary>
+    public static bool StartSoon(eRealm realm, string topic, out string why)
+    {
+        lock (Sync)
+        {
+            if (Scenes.ContainsKey(realm))
+            {
+                why = "a /faction scene is already running in that realm; wait for it to end";
+                return false;
+            }
+            NextStartAt[realm] = 0;
+            if (topic == null)
+                ForcedTopic.Remove(realm);
+            else
+                ForcedTopic[realm] = topic;
+        }
+        why = null;
+        return true;
+    }
     private static readonly ConcurrentDictionary<eRealm, HashSet<string>> Heard = new();
     private static Timer _timer;
     private static int _posted;
@@ -396,11 +422,21 @@ public static class AutonomousBotDebates
             if (cast == null)
                 story = null;   // not enough others to fill the scene: an ordinary debate instead, the episode waits
         }
+        string forcedTopic;
+        lock (Sync)
+        {
+            ForcedTopic.TryGetValue(realm, out forcedTopic);
+            ForcedTopic.Remove(realm);
+        }
+        if (forcedTopic != null)
+            story = null;   // /lstest asked for a topic: that, not the storyline
         if (story == null)
         {
+            IReadOnlyList<VC.Scene> pool = forcedTopic == null ? AutonomousBotVoices.Corpus.Scenes
+                : AutonomousBotVoices.Corpus.Scenes.Where(s => string.Equals(s.Topic, forcedTopic, StringComparison.OrdinalIgnoreCase)).ToArray();
             lock (heard)
-                scene = ChooseScene(AutonomousBotVoices.Corpus.Scenes, realm, heard, online.Select(bot => (int)bot.Level).ToArray(), Random.Shared, out reset,
-                    VC.TimeFlag(DateTime.Now.Hour));
+                scene = ChooseScene(pool, realm, heard, online.Select(bot => (int)bot.Level).ToArray(), Random.Shared, out reset,
+                    forcedTopic == null ? VC.TimeFlag(DateTime.Now.Hour) : null);
             cast = scene == null ? null : Cast(scene, online.Select(CandidateOf).ToArray(), Random.Shared);
         }
         Dictionary<string, string> shared = null;

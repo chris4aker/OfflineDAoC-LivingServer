@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using DOL.AI.Brain;
 using DOL.GS.ServerProperties;
 
@@ -28,6 +29,21 @@ public static class AutonomousRaidLeeroy
     public const int FewestFollowers = 8;
 
     public static bool Rolls(double draw) => draw < Chance;
+
+    private static int _forceNextRaid, _chargeNow;
+
+    /// <summary>GM test (/lstest leeroy): the next realm raid to form has a Leeroy.</summary>
+    public static void ForceNextRaid() => Volatile.Write(ref _forceNextRaid, 1);
+
+    /// <summary>The raid forming now has a Leeroy: the 5% roll, or once after /lstest leeroy.</summary>
+    public static bool RollForRaid(double draw) => Interlocked.Exchange(ref _forceNextRaid, 0) == 1 || Rolls(draw);
+
+    /// <summary>GM test (/lstest leeroy now): a raid with a Leeroy that is gathering for its final encounter charges at once.</summary>
+    public static void ChargeNow() => Volatile.Write(ref _chargeNow, 1);
+
+    /// <summary>Whether a raid with a Leeroy goes now: its own rules, or a GM's "now" with at least two raiders there (used once).</summary>
+    public static bool GoesNow(bool rulesSay, int present) =>
+        rulesSay || present >= 2 && Interlocked.Exchange(ref _chargeNow, 0) == 1;
 
     /// <summary>
     /// Whether he charges now: a first attempt at the encounter (never a regroup after a wipe), the muster standing for a
