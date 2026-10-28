@@ -1829,6 +1829,10 @@ namespace DOL.GS
             // target, with pressure spread over the closest visible enemies.
             if (TryRunSiegeJob(bot)) return true;
             GameLiving enemy = FindRvrTarget(bot);
+            if (enemy != null && battleActive && HoldSiegeBackLine(bot, enemy))
+                return true;
+            if (enemy != null && battleActive && KeepsSiegeBackLine(bot, enemy))
+                enemy = null;
             if (enemy != null)
             {
                 bot.StopMovingOnPath();
@@ -4440,6 +4444,7 @@ namespace DOL.GS
                 // forever. Arrival and combat holds were handled above, so this
                 // is still an active-route stall and uses the existing bounded
                 // side-step/same-service recovery before resuming the goal.
+                TraceRouteStall(bot, current, destination, now);
                 if (!TryBeginLocalRouteRecovery(bot, current, destination,
                         PathfindingStatus.NoPathFound, destination))
                     return false;
@@ -4549,6 +4554,62 @@ namespace DOL.GS
             Log.Info($"AUTONOMOUS_ROUTE_ORDER_KEPT total={counts.Sum(pair => pair.Value)} callers=\"" +
                      string.Join(", ", counts.OrderByDescending(pair => pair.Value).Take(10).Select(pair => $"{pair.Key}:{pair.Value}")) + "\"");
         }
+
+        // A route stall (no 96 units of progress in 12 s) says nothing of why the bot stands. Run 24: 47 Hibernian bots
+        // stood ~240 short of door 115000902 of their portal keep in Odin's Gate (292 give-ups) on a route that exists.
+        private static long _nextRouteStallTraceTick;
+        private static int _routeStallTraces;
+
+        private static void TraceRouteStall(GameBot bot, Vector3 current, Vector3 destination, long now)
+        {
+            if (now >= System.Threading.Interlocked.Read(ref _nextRouteStallTraceTick))
+            {
+                System.Threading.Interlocked.Exchange(ref _nextRouteStallTraceTick, now + 60_000);
+                System.Threading.Interlocked.Exchange(ref _routeStallTraces, 0);
+            }
+            if (System.Threading.Interlocked.Increment(ref _routeStallTraces) > 6) return;
+            string mover = bot.movementComponent is NpcMovementComponent npcMover ? npcMover.DescribeRouteState() : "-";
+            Log.Info($"AUTONOMOUS_ROUTE_STALL_TRACE bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
+                     $"region={bot.CurrentRegionID} position={(int)current.X},{(int)current.Y},{(int)current.Z} " +
+                     $"destination={(int)destination.X},{(int)destination.Y},{(int)destination.Z} {mover}");
+        }
+
+        // Run 29 (2026-10-20, Dun Dagda): the siege army's healers fought in the melee like everyone else, so they were
+        // under attack or dead whenever their army fell, and not one Midgard attacker was raised (the 57 raises there were
+        // Hibernian). Players kept their healers behind the line. A siege attacker that can raise, not hit for 5 seconds,
+        // stays out of the melee: it steps back from an enemy closer than SiegeBackLineDistance and picks no fight while
+        // its army is near, so its brain heals and raises (CheckHeals). Hit, it fights back as before.
+        public const int SiegeBackLineDistance = 900;
+        public const int SiegeBackLineArmyRadius = 2_500;
+
+        private static bool IsSiegeBackLineHealer(GameBot bot) =>
+            bot.ResurrectionSpell != null && GameLoop.GameLoopTime - bot.LastAttackedByEnemyTick >= AutonomousSiegeResurrection.QuietMilliseconds &&
+            AutonomousSiegeResurrection.IsSiegeAttacker(bot);
+
+        /// <summary>A back-line healer with an enemy close by steps away from it. True when it stepped.</summary>
+        private bool HoldSiegeBackLine(GameBot bot, GameLiving enemy)
+        {
+            if (!IsSiegeBackLineHealer(bot) || !bot.IsWithinRadius(enemy, SiegeBackLineDistance))
+                return false;
+            Vector3 here = new(bot.X, bot.Y, bot.Z);
+            Vector2 away = new(bot.X - enemy.X, bot.Y - enemy.Y);
+            if (away.LengthSquared() < 1) away = new(1, 0);
+            away = Vector2.Normalize(away) * 600;
+            AutonomousThreatAwarePathing.SafeStep step = AutonomousThreatAwarePathing.ChooseStep(bot, here,
+                new(bot.X + away.X, bot.Y + away.Y, bot.Z), 600);
+            if (Vector3.DistanceSquared(step.Position, here) < 100 * 100)
+                return false;
+            if (bot.Brain is BotBrain brain) brain.ClearAggroList();
+            bot.StopAttack();
+            bot.PathTo(step.Position, bot.MaxSpeed);
+            SetRvrStatus(bot, "Healing behind the line", "Siege back line", enemy.Name);
+            return true;
+        }
+
+        /// <summary>A back-line healer picks no fight of its own while its army is near; the brain heals and raises.</summary>
+        private static bool KeepsSiegeBackLine(GameBot bot, GameLiving enemy) =>
+            IsSiegeBackLineHealer(bot) && bot.GetNPCsInRadius(SiegeBackLineArmyRadius).OfType<GameBot>()
+                .Any(friend => friend != bot && friend.IsAlive && friend.Realm == bot.Realm && friend.IsAutonomousWorldBot);
 
         private bool TryBeginLocalRouteRecovery(
             GameBot bot,

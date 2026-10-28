@@ -287,7 +287,11 @@ WORLD_OBJECT_DROP = {
     (1, 'Statue of Flitzitina', 505080, 496334): 5.9,
     (1, 'building supplies', 387045, 721976): 7.8, (1, 'building supplies', 388601, 723658): 11.4,
     (1, 'building supplies', 386996, 721975): 7.3, (1, 'building supplies', 386989, 722014): 7.1,
-    (1, 'building supplies', 388732, 723583): 13.9}
+    (1, 'building supplies', 388732, 723583): 13.9,
+    # campfires (wardnode + campfire effect) hung over the ground (owner 2026-10-20: "a floating campfire" at Camelot
+    # Hills loc 51322 38985): the old DB's height against the client's ground at the object's origin
+    (1, 'New Object', 600246, 522344): 0.78, (1, 'New Object', 558213, 524362): 1.07,
+    (1, 'New Object', 489433, 437934): 0.54, (100, 'campfire', 747601, 757900): 3.91}
 # Old-DB props for post-1.65 buildings (owner 2026-10-10 "another missing tower"): the Cotswold pennant (New Object,
 # pennant_a, 29 m up) tops the New Frontiers guard tower the later client added at 13916, 26591 ("Guard tower
 # (Instance 2)", next to the NF fences); the 1.65 client has no tower there, so the pennant is left out.

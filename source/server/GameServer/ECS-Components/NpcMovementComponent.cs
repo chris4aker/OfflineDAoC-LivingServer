@@ -293,6 +293,11 @@ namespace DOL.GS
             _pathfinder.ForceReplot = true;
         }
 
+        /// <summary>Mover and path state for a route stall trace (diagnostics).</summary>
+        public string DescribeRouteState() =>
+            $"state={_movementState} speed={CurrentSpeed} dest={_destination.X:0},{_destination.Y:0},{_destination.Z:0} " +
+            $"casting={Owner.IsCasting} combat={Owner.InCombat} {_pathfinder.DescribeRoute()}";
+
         /// <summary>The pathfinder's last result (diagnostics).</summary>
         public PathfindingStatus LastPathfindingStatus => _pathfinder.PathfindingStatus;
 

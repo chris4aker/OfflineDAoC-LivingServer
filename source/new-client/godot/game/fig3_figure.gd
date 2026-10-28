@@ -279,6 +279,7 @@ func _apply_cloak() -> void:
 		var dyed: Color = armor_tints.get("cloak", Color.WHITE)
 		m.set_shader_parameter("tint", dyed)
 		m.set_shader_parameter("tint_mode", 1 if dyed != Color.WHITE else 0)
+		m.set_shader_parameter("view_pull", CLOAK_PULL)
 		# a guild emblem in place of the dye (the server sends one or the other; owner 2026-10-17: guild gamebots)
 		m.set_shader_parameter("has_emblem", cloak_emblem > 0)
 		if cloak_emblem > 0:
@@ -290,6 +291,9 @@ func _apply_cloak() -> void:
 			mi.material_override = m
 	_apply_full_helm()
 	_refresh_hair()
+
+
+const CLOAK_PULL := 1.0                     # NIF units (the figure shader's view_pull)
 
 
 ## Hood up (with the cloak showing) or a helm that covers the hair: the hair isn't drawn.
@@ -424,11 +428,18 @@ func _apply_armor() -> void:
 	var parts := armor
 	var variants: Dictionary = meta.get("variants", {})
 	var clothes: Dictionary = meta.get("clothes", {})
+	var robe := _robe_body()
 	for slot in ["body", "legs", "boots", "arms", "gloves"]:
 		var default_v := int(clothes.get(slot, {}).get("variant", 1))
 		var want: Array = parts.get(slot, [])
 		var v := int(want[0]) if want.size() > 0 else default_v
-		if not (variants.get(slot, []) as Array).has(v):
+		# under a robe (game.dll 0x424817): body mesh 7 hides the legs and arms and wears boots and gloves mesh 3;
+		# body mesh 8 hides the arms and wears gloves mesh 3 (variant 35, past the 25 fig3map columns: not drawn)
+		if robe > 0 and (slot == "arms" or (slot == "legs" and robe == 7)):
+			v = 0
+		elif (slot == "gloves" and robe > 0) or (slot == "boots" and robe == 7):
+			v = 3
+		if v > 0 and not _have(slot).has(v):
 			v = default_v                                    # this race lacks that mesh: keep the default shape
 		for k in (variants.get(slot, []) as Array):
 			var node: String = slot if int(k) == default_v else "%s_v%d" % [slot, int(k)]
@@ -436,7 +447,7 @@ func _apply_armor() -> void:
 				mi.visible = int(k) == v
 		var node_name: String = slot if v == default_v else "%s_v%d" % [slot, v]
 		var tex := String(want[1]) if want.size() > 1 else String(clothes.get(slot, {}).get("tex", ""))
-		if tex == "":
+		if tex == "" or v == 0:
 			continue
 		var m := _material(false)
 		m.set_shader_parameter("albedo_tex", _tex(tex))
@@ -454,6 +465,19 @@ func _apply_armor() -> void:
 			mi.material_override = m
 	_apply_kilt()
 	_apply_cloak()
+
+
+## The worn robe body mesh: 7 (a robe - armor.json from build_armor.robe_bodies) or 8, as the race has it; 0 otherwise.
+func _robe_body() -> int:
+	var want: Array = armor.get("body", [])
+	var v := int(want[0]) if want.size() > 0 else 0
+	return v if (v == 7 or v == 8) and _have("body").has(v) else 0
+
+
+## The race's mesh variants of a part as whole numbers: figure.json's lists parse as floats, and has(5) never matched
+## 5.0 - every armour piece fell back to mesh 1 (owner 2026-10-19, the troll's robe on the vest body; as _cloak_meshes).
+func _have(slot: String) -> Array:
+	return (meta.get("variants", {}).get(slot, []) as Array).map(func(x): return int(x))
 
 
 ## A skin tone as the client draws it (owner 2026-10-11, the old client's darkest Celt is a tan and its darkest Norse
@@ -483,9 +507,11 @@ func _apply_kilt() -> void:
 		return
 	var body_default := int(meta.get("clothes", {}).get("body", {}).get("variant", 1))
 	var want: Array = armor.get("body", [])
-	var bv := int(want[0]) if want.size() > 0 and (meta.get("variants", {}).get("body", []) as Array).has(int(want[0])) else body_default
+	var bv := int(want[0]) if want.size() > 0 and _have("body").has(int(want[0])) else body_default
 	var kilt_default := int(kilt.get("variant", 1))
-	var kv := bv if kilts.has(bv) else kilt_default
+	var kv := bv if _have("lbody").has(bv) else kilt_default
+	if _robe_body() > 0:
+		kv = 0                                                # no kilt under a robe (0x424817: lower body variant 35)
 	var m := _material(false)
 	m.set_shader_parameter("albedo_tex", _tex(String(kilt.get("tex", ""))))
 	m.set_shader_parameter("tint", Color.WHITE)
@@ -507,6 +533,22 @@ static func armor_parts(model: int, female: bool) -> Dictionary:
 		var parsed = JSON.parse_string(FileAccess.get_file_as_string(ROOT + "/armor.json"))
 		_armor = parsed.get("models", {}) if parsed is Dictionary else {"_": {}}
 	return _armor.get(str(model), {}).get("f" if female else "m", {})
+
+
+## A worn item's armour parts on the mesh the client picks for it (game.dll 0x41b5c1, from the equipment packet): a
+## robe's body mesh 7 (armor.json), arms and legs always mesh 1, any other piece - chest, gloves, boots - the item's
+## extension (0 = mesh 1). The textures stay armor.json's.
+static func item_armor(model: int, extension: int, female: bool) -> Dictionary:
+	var out := {}
+	var parts := armor_parts(model, female)
+	for k in parts:
+		var p: Array = (parts[k] as Array).duplicate()
+		if p.size() > 0 and k in ["body", "gloves", "boots"] and not (k == "body" and int(p[0]) == 7):
+			p[0] = maxi(1, extension)
+		elif p.size() > 0 and k in ["arms", "legs"]:
+			p[0] = 1
+		out[k] = p
+	return out
 
 
 ## Every animated character (player, NPC, monster, bot) gets this: a "RESET" animation holding every bone at its
@@ -644,10 +686,21 @@ uniform sampler2D pattern_tex : filter_linear, repeat_enable;
 uniform sampler2D logo_tex : filter_linear_mipmap, repeat_disable;
 uniform bool has_emblem = false;
 uniform bool has_logo = false;
+// a cloak drawn this far (in the figure's own NIF units) toward the camera: the spiked pauldrons of some chest meshes
+// (Kobold body 3 / 5) come 0.15 - 0.4 units through the cloak's inner edges in the idle, where the old client shows
+// the cloak over them (owner 2026-10-19); 0 = drawn where it is
+uniform float view_pull = 0.0;
 varying vec2 logo_uv;
 
 void vertex() {
 	logo_uv = CUSTOM0.xy;
+	// (POSITION written on every path: a shader that writes it anywhere no longer gets the default projection - the
+	// unpulled parts, body and head, were left unplaced and the character went invisible, owner 2026-10-19)
+	vec4 vp = MODELVIEW_MATRIX * vec4(VERTEX, 1.0);
+	if (view_pull > 0.0) {
+		vp.xyz -= normalize(vp.xyz) * view_pull * length(MODELVIEW_MATRIX[0].xyz);
+	}
+	POSITION = PROJECTION_MATRIX * vp;
 }
 
 void fragment() {

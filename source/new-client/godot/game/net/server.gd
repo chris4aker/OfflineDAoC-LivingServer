@@ -337,8 +337,12 @@ static func _overview_gear(nm: String, c: Dictionary) -> Dictionary:
 		# PacketLib1125: an item's guild emblem in its colour's place (owner 2026-10-17: no emblems on the select
 		# screen) - a dye is 0-143 (tints.csv), more is the emblem
 		var tex := int(colors.get(k, 0))
+		# the chest's, gloves' and boots' extensions (their meshes, Fig3Figure.item_armor): PacketLib1125's two
+		# bytes, boots << 4 | gloves and torso << 4 | hood
+		var ext := int({22: int(c.get("ext_boots_gloves", 0)) & 0xF, 23: int(c.get("ext_boots_gloves", 0)) >> 4,
+				25: int(c.get("ext_torso_hood", 0)) >> 4}.get(slots[k], 0))
 		ItemDb.add_runtime(id, {"id": id, "name": "", "model": m, "object_type": 42 if shield else 0, "hand": 0,
-				"color": tex if tex <= 0xFF else 0, "emblem": tex if tex > 0xFF else 0})
+				"color": tex if tex <= 0xFF else 0, "emblem": tex if tex > 0xFF else 0, "extension": ext})
 		inv[str(slots[k])] = {"id": id, "count": 1}
 	return inv
 
@@ -603,8 +607,11 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 					# a concentration / permanent effect: no time shown (the server sends its endless duration as ~18 h,
 					# 65535 s; owner 2026-10-11: no time for those) - nothing timed runs that long
 					var timed := int(e.seconds) > 0 and int(e.seconds) < NO_TIME_SECONDS
+					# its third byte: 1 = an immunity, or a buff another one overrides (the server's IsDisabled) - the old
+					# client draws it tinted red (owner 2026-10-19)
 					effects[int(e.index)] = {"icon": int(e.icon), "name": String(e.name), "negative": int(e.negative),
-							"until": Time.get_ticks_msec() + int(e.seconds) * 1000 if timed else 0}
+							"until": Time.get_ticks_msec() + int(e.seconds) * 1000 if timed else 0,
+							"disabled": (int(e.get("immune", 0)) & 1) != 0}
 			PlayerData.effects_changed.emit()
 		"map_marker":
 			map_markers[int(d.id)] = Vector4(float(d.region), float(d.x), float(d.y), float(d.z))
@@ -1097,7 +1104,8 @@ func effects_list() -> Array:
 		var e: Dictionary = effects[k]
 		var ic := skill_icon("spell", int(e.icon))
 		out.append({"icon": int(ic[0]), "border": int(ic[1]), "name": String(e.name), "fx": int(e.icon),
-				"seconds": maxf(0.001, (int(e.until) - now) / 1000.0) if int(e.until) > 0 else 1e9})
+				"seconds": maxf(0.001, (int(e.until) - now) / 1000.0) if int(e.until) > 0 else 1e9,
+				"disabled": bool(e.get("disabled", false))})
 	return out
 
 
@@ -1573,4 +1581,13 @@ func use(id: String) -> bool:
 	var v := viewer()
 	if v == null:
 		return false
-	return use_entry(id, v.player, current_zone_id(), not PlayerData.target.is_empty())
+	# the cast's "target in view" flag: whether you can see it, as the client worked it out (owner 2026-10-19: a spell at a
+	# target behind a wall cast in full, then "You can't see your target from here!" - the old client is refused at
+	# once). It was "you have a target", so the server's start-of-cast check (SpellHandler: HasLos = TargetInView)
+	# always passed and only the position updates' flag told it otherwise, at the end. A target that isn't a drawn
+	# living (yourself, a door, an object) keeps "a target" - the server's own range rule covers those.
+	var in_view := not PlayerData.target.is_empty()
+	var w = v.get("npcs")
+	if in_view and w is ServerWorld and (w as ServerWorld).target and is_instance_valid((w as ServerWorld).target):
+		in_view = (w as ServerWorld).target_in_view(v.player.global_position)
+	return use_entry(id, v.player, current_zone_id(), in_view)

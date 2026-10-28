@@ -554,7 +554,7 @@ static func dress(model: Node3D, item_at: Callable, active_weapon: String, comba
 		for slot in [22, 23, 25, 27, 28]:
 			var it: Dictionary = item_at.call(slot)
 			if not it.is_empty():
-				var p := Fig3Figure.armor_parts(int(it.get("model", 0)), female)
+				var p := Fig3Figure.item_armor(int(it.get("model", 0)), int(it.get("extension", 0)), female)
 				parts.merge(p, true)
 				for k in p:                                         # its dye on the parts it draws
 					tints[k] = Fig3Figure.dye(int(it.get("color", 0)))
@@ -578,11 +578,40 @@ static func dress(model: Node3D, item_at: Callable, active_weapon: String, comba
 	if skel == null:
 		return made
 	var sets := {"standard": [10, 11], "twohand": [12], "ranged": [13]}
-	for slot in sets.get(active_weapon, [10, 11]):
+	var active_slots: Array = sets.get(active_weapon, [10, 11])
+	# the other sets' weapons too, sheathed (owner 2026-10-19: the old client keeps your two-hander on your back while
+	# you fight with one hand and a shield). game.dll 0x42274a: a weapon outside the active set hangs at its slot's
+	# sheath - right hand Bip01 L Belt, left hand R Belt, two-hand L Back, ranged R Back - when objects.csv "On Belt"
+	# is set, else it is hidden (0x4227f3: the culled flag; shields, bows, staves, polearms). Race figures only: the
+	# client's figure records can switch it off (0xb77cd8), as for monsters.
+	var slots: Array = active_slots.duplicate()
+	if model is Fig3Figure:
+		for s in [10, 11, 12, 13]:
+			if not active_slots.has(s):
+				slots.append(s)
+	for slot in slots:
 		var it: Dictionary = item_at.call(slot)
 		if it.is_empty():
 			continue
 		var model_id := int(it.get("model", 0))
+		var inactive := not active_slots.has(slot)
+		if inactive:
+			if int(WeaponModels.info(model_id).get("belt", 1)) != 1 or int(it.get("object_type", 0)) == ItemDb.SHIELD_TYPE:
+				continue
+			var sheath: String = {10: "Bip01 L Belt", 11: "Bip01 R Belt", 12: "Bip01 L Back", 13: "Bip01 R Back"}[slot]
+			var si := skel.find_bone(sheath)
+			var sw := WeaponModels.make(model_id, false, false, "back" if slot >= 12 else "belt")
+			if si < 0 or sw == null:
+				continue
+			WeaponModels.dye(sw, int(it.get("color", 0)))
+			WeaponModels.set_emblem(sw, model_id, int(it.get("emblem", 0)))
+			var sat := BoneAttachment3D.new()
+			sat.bone_name = sheath
+			skel.add_child(sat)
+			sat.add_child(sw)
+			WeaponModels.add_effect(sw, int(it.get("effect", 0)))
+			made.append(sat)
+			continue
 		# an NPC with a shield model in its right hand too (shield merchants' NPCEquipment lists it in both hands): the
 		# client draws the right hand's one only (owner 2026-10-11: a shield in both hands; the old client: right arm)
 		var shield_model := int(WeaponModels.info(model_id).get("shield", 0)) > 0
@@ -607,11 +636,14 @@ static func dress(model: Node3D, item_at: Callable, active_weapon: String, comba
 			else:
 				bone = "Bip01 L Held" if slot == 11 or slot == 13 else "Bip01 R Held"
 		elif on_back:
-			bone = "Bip01 R Back"
+			bone = "Bip01 L Back" if slot == 12 else "Bip01 R Back"   # (game.dll's sheath table: two-hand L, ranged R)
 		else:
 			bone = "Bip01 R Belt" if slot == 11 else "Bip01 L Belt"
 		var idx := skel.find_bone(bone)
-		var w := WeaponModels.make(model_id, combat, bone == "Bip01 L Held" or bone == "Bip01 L Shield")
+		# sheathed: hung by the NIF's BACK / BELT node, as game.dll (its frame table: right / left hand BELT, two-hand /
+		# ranged BACK); in the hand, by the grip
+		var frame := "back" if bone.ends_with(" Back") else ("belt" if bone.ends_with(" Belt") else "")
+		var w := WeaponModels.make(model_id, combat, bone == "Bip01 L Held" or bone == "Bip01 L Shield", frame)
 		if idx < 0 or w == null:
 			push_warning("gear: no %s (bone %d) or no model %d" % [bone, idx, model_id])
 			continue

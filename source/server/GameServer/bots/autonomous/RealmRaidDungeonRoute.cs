@@ -673,7 +673,9 @@ namespace DOL.GS
             // Darkness Falls the succubi and ambassadors around Princess Nahemah kept every one of 65 raiders
             // busy for five minutes and she was skipped at 100% (run 17). Some of the fighters switch; the
             // rest keep the adds off them.
-            bool takeBusy = now - _targetProgressTick >= BusyCallAfterMilliseconds;
+            // A thin attack takes busy fighters too: the target keeps losing a little health, so the idle clock never runs out
+            // (run 27: 207 raiders by the Magical Earthmender, 100 on the Corrupt Primal of Earth it heals, 2 on it).
+            bool takeBusy = thin || now - _targetProgressTick >= BusyCallAfterMilliseconds;
             int busyLeft = takeBusy ? Math.Max(MinimumRaidersAtTarget, participants.Count(p => p.IsAlive && p.IsWithinRadius(_target, 1500)) / 3) : 0;
             foreach (GameLiving member in participants)
             {
@@ -719,9 +721,13 @@ namespace DOL.GS
                 _nextTargetStatusLog = now + 60_000;
                 int near = participants.Count(p => p.IsAlive && p.CurrentRegionID == target.CurrentRegionID && p.IsWithinRadius(target, 1_000));
                 int onIt = participants.Count(p => p.IsAlive && p.TargetObject == target);
+                // What the raiders by the target fight instead (run 26: 205 raiders within 1,000 of a Magical Earthmender, 3 on it).
+                string busyWith = string.Join(",", participants
+                    .Where(p => p.IsAlive && p.TargetObject is GameLiving other && other != target && p.IsWithinRadius(target, 1_000))
+                    .GroupBy(p => p.TargetObject.Name).OrderByDescending(g => g.Count()).Take(4).Select(g => $"{g.Key}:{g.Count()}"));
                 log.Info($"REALM_EXPEDITION_TARGET_STATUS region={_region} target=\"{target.Name}\" level={target.Level} " +
                          $"health={target.HealthPercent}% inCombat={target.InCombat} raidersWithin1000={near} targeting={onIt} " +
-                         $"at={target.X},{target.Y},{target.Z} spawnDistance={(int)target.GetDistanceTo(target.SpawnPoint)}");
+                         $"at={target.X},{target.Y},{target.Z} spawnDistance={(int)target.GetDistanceTo(target.SpawnPoint)} busyWith=\"{busyWith}\"");
             }
             if (!Hold || Complete) { _holdSince = 0; return; }
             if (_holdSince == 0) { _holdSince = now; return; }
@@ -729,7 +735,29 @@ namespace DOL.GS
             _nextHoldLog = now + HoldReportMilliseconds;
             int inside = participants.Count(p => p.IsAlive && p.CurrentRegionID == _region);
             log.Warn($"REALM_EXPEDITION_HOLD region={_region} minutes={(now - _holdSince) / 60_000} status=\"{Status}\" " +
-                     $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} target=\"{TargetName}\" inside={inside}");
+                     $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} target=\"{TargetName}\" inside={inside}" +
+                     (_region == 60 ? $" apoc={ApocInitializator.DescribeState()}" : "") +
+                     (_region == 191 ? $" galladoria={DescribeLiveEncounters()}" : ""));
+        }
+
+        // Run 28 (2026-10-20): Galladoria's raid waited 30 minutes at the Olcasgean staging with three primals dead and the
+        // Water primal never a target. Every living encounter NPC of the region, and why the raid passes it by.
+        private string DescribeLiveEncounters()
+        {
+            var parts = new System.Collections.Generic.List<string>();
+            foreach (GameNPC npc in WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>() ?? [])
+            {
+                if (npc is not IGameEpicNpc || !npc.IsAlive) continue;
+                string why = npc.ObjectState != GameObject.eObjectState.Active ? "inactive" :
+                    npc.Realm != eRealm.None ? $"realm{(int)npc.Realm}" :
+                    (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ? $"flags{(int)npc.Flags}" :
+                    _cleared.Contains(npc) ? "cleared" :
+                    _clearedNames.Contains(npc.Name) && !_finalTypes.Contains(npc.GetType().Name) ? "clearedName" :
+                    IsEncounterHazard(npc) ? "hazard" :
+                    _routeRetry.TryGetValue(npc, out long retry) ? $"retry{(retry - GameLoop.GameLoopTime) / 1000}s" : "candidate";
+                parts.Add($"{npc.Name}@{npc.X},{npc.Y},{npc.Z}:{npc.HealthPercent}%:{why}");
+            }
+            return $"deadPrimals={DOL.AI.Brain.OIBrain.DeadPrimalsCount} [{string.Join("; ", parts)}]";
         }
 
         private void AdvanceCore(GameLiving[] participants, long now)

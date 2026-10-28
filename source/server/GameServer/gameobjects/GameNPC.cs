@@ -704,7 +704,13 @@ namespace DOL.GS
 		/// outside their own view: Olcasgean's controller stands 4,300 units from its waterfall-bridge trigger, so its brain
 		/// slept while 250 raid bots waited on the bridge (run 13, 2026-10-16). They always think.</summary>
 		public const string EncounterControllerGuild = "DO NOT REMOVE!";
-		public bool IsEncounterController => GuildName == EncounterControllerGuild;
+		// Run 28 (2026-10-20): Caer Sidi's Apoc Initializator is loaded from the database with no guild (and the Olcasgean
+		// controller's row reads "DO NOT REMOVE", without the "!"), so it slept with 195 raiders at its trigger: bots only
+		// wake monsters that could aggro them, and the dialogue that starts the horsemen never came (picked=False). The
+		// hidden controllers are recognised by their class too.
+		public bool IsEncounterController =>
+			GuildName?.StartsWith("DO NOT REMOVE", System.StringComparison.Ordinal) == true ||
+			GetType().Name is "ApocInitializator" or "HostInitializator" or "OlcasgeanInitializator" or "BeliathanInit" or "EyesWatchingYouInit";
 
 		/// <summary>
 		/// Gets or sets the spawnposition of this npc

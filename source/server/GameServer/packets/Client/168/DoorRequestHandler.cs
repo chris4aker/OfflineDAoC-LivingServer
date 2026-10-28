@@ -167,6 +167,7 @@ namespace DOL.GS.PacketHandler.Client.v168
                         return;
 
                     player.Out.SendDebugMessage($"Door {doorId} not found in door list, opening via GM door hack.");
+                    ReportUnknownDoor(player, doorId, doorState);
 
                     GameDoor dummyDoor = new()
                     {
@@ -178,9 +179,28 @@ namespace DOL.GS.PacketHandler.Client.v168
                         CurrentRegion = player.CurrentRegion
                     };
 
-                    dummyDoor.Open(player);
+                    // A new door's state is Open (the enum's first value), so Open() changed nothing and no state packet was
+                    // ever sent: a door piece that is not in the database never moved (owner 2026-10-20: Snowdonia Fortress's
+                    // big gate stayed down when its lever was pulled; the border keep model has four door pieces, the
+                    // database only the first two). Start it closed so opening it reaches the clients.
+                    dummyDoor.State = eDoorState.Closed;
+                    if (doorState == 0x01)
+                        dummyDoor.Open(player);
                 }
             }
+        }
+
+        private static readonly DOL.Logging.Logger Log = DOL.Logging.LoggerManager.Create(typeof(DoorRequestHandler));
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, long> UnknownDoorReports = new();
+
+        /// <summary>A door the client asked to use that the database does not have (once per door per 10 minutes).</summary>
+        private static void ReportUnknownDoor(GamePlayer player, int doorId, byte doorState)
+        {
+            long now = GameLoop.GameLoopTime;
+            if (UnknownDoorReports.TryGetValue(doorId, out long last) && now - last < 600_000) return;
+            UnknownDoorReports[doorId] = now;
+            Log.Info($"DOOR_NOT_IN_DATABASE id={doorId} state={doorState} player={player.Name} region={player.CurrentRegionID} " +
+                     $"zone={player.CurrentZone?.ID} at={player.X},{player.Y},{player.Z}");
         }
 
         public static void AddDoor(GamePlayer player, byte response)

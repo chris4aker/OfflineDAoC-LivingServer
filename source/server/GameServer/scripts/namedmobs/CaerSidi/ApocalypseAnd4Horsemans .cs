@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using DOL.AI.Brain;
 using DOL.Database;
@@ -18,6 +19,19 @@ namespace DOL.GS
         public static bool StartEncounter = false;
         private long _encounterReadyAt;
         public long EncounterRespawnRemainingMilliseconds => Math.Max(0, _encounterReadyAt - GameLoop.GameLoopTime);
+        /// <summary>The encounter's state for the raid hold log (run 26, 2026-10-19: 116 raiders stood at this trigger for
+        /// half an hour after Fate's Chosen and no horseman came).</summary>
+        public static string DescribeState()
+        {
+            var initializer = WorldMgr.GetNPCsByNameFromRegion("Apoc Initializator", 60, (eRealm)0).FirstOrDefault() as ApocInitializator;
+            var pieces = WorldMgr.GetRegion(60)?.Objects.OfType<GameNPC>().Where(n => n is Fames or Bellum or Morbus or Funus or Apocalypse)
+                .Select(n => $"{n.Name}:{(n.IsAlive ? "alive" : "dead")}:{n.ObjectState}:peace={(n.Flags & eFlags.PEACE) != 0}").ToArray() ?? [];
+            return $"initializer={(initializer == null ? "none" : $"{initializer.IsAlive}/{initializer.ObjectState}/respawnIn={initializer.EncounterRespawnRemainingMilliseconds / 1000}s")} " +
+                   $"picked={PickedTarget} target={RandomTarget?.Name ?? "-"} others={OthersCanInteract} respawnCheck={start_respawn_check} " +
+                   $"up={Fames.FamesIsUp}/{Bellum.BellumUP}/{Morbus.MorbusUP}/{Funus.FunusUp}/{Apocalypse.ApocUP} " +
+                   $"started={FamesBrain.StartedFames}/{BellumBrain.StartedBellum}/{MorbusBrain.StartedMorbus}/{FunusBrain.StartedFunus}/{ApocalypseBrain.StartedApoc} " +
+                   $"famesInteract={Fames.CanInteract} pieces=[{string.Join(' ', pieces)}]";
+        }
 
         #region Timer cycling and repeatable dostuff
         public void DoStuff()

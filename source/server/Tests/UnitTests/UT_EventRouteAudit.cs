@@ -74,11 +74,21 @@ namespace DOL.UnitTests
                 }
                 foreach (var (name, points) in trips)
                 {
+                    if (name.StartsWith("raw:"))
+                    {
+                        // One plain Detour search with the door nodes on it, as the mover's first plot (no continuation).
+                        AutonomousNavigationSurface.TryFloor(nav, At(points[0]), points[0], out Vector3 rawFrom);
+                        PathfindingResult raw = nav.GetPathStraight(At(points[0]), rawFrom, points[1], nav.DefaultFilters, nodes);
+                        lines.Add($"{name}: {raw.Status} nodes={raw.NodeCount} from={P(rawFrom)} end={(raw.NodeCount > 0 ? P(nodes[raw.NodeCount - 1].Position) : "-")}");
+                        for (int i = 0; i < raw.NodeCount && i < 40; i++)
+                            lines.Add($"    {i}: {P(nodes[i].Position)} flags={nodes[i].Flags}");
+                        continue;
+                    }
                     if (name.StartsWith("road:"))
                     {
                         // The zone road graph's own route length between two points of one zone (no Detour walk).
                         bool routed = AutonomousZoneRoads.TryRoute(nav, At(points[0]), points[0], points[1], out Vector3[] via);
-                        lines.Add($"{name}: {(routed ? $"ROAD length={AutonomousTownTeleporters.RouteLength(points[0], via, points[1]):0} via={via.Length}" : "NO ROAD")} straight={Vector3.Distance(points[0], points[1]):0}");
+                        lines.Add($"{name}: {(routed ? $"ROAD length={AutonomousTownTeleporters.RouteLength(points[0], via, points[1]):0} via={via.Length} first={P(via[0])}" : "NO ROAD")} straight={Vector3.Distance(points[0], points[1]):0}");
                         continue;
                     }
                     Vector3 position = points[0];

@@ -112,6 +112,12 @@ public static class AutonomousZoneRoads
         var entries = new List<int>();
         foreach (int area in startAreas)
             if (endAreas.Contains(area)) entries.AddRange(Endpoints(nav, zone, roads, start, near, area, true));
+        // An entry reached only back through a door, and no nearer the goal than the start, is the way the bot just
+        // came out: run 24 (2026-10-18), 47 Hibernian bots stepped out of their portal keep in Odin's Gate through
+        // door 115000902, the route led back in to the yard's road anchor 143, and the yard led out again (292 give-ups).
+        float startToEnd = Vector3.DistanceSquared(start, end);
+        entries.RemoveAll(entry => Vector3.DistanceSquared(roads.Anchors[entry], end) >= startToEnd &&
+            CrossesDoor(nav, zone, start, roads.Anchors[entry]));
         if (entries.Count == 0) return null;
         var exits = new HashSet<int>();
         foreach (int area in startAreas)
@@ -151,6 +157,20 @@ public static class AutonomousZoneRoads
         for (int anchor = reached; anchor >= 0; anchor = previous[anchor]) path.Add(roads.Anchors[anchor]);
         path.Reverse();
         return path.ToArray();
+    }
+
+    /// <summary>The Detour path between the two points passes a door polygon.</summary>
+    public static bool CrossesDoor(IPathfindingMgr nav, Zone zone, Vector3 from, Vector3 to)
+    {
+        WrappedPathfindingNode[] nodes = System.Buffers.ArrayPool<WrappedPathfindingNode>.Shared.Rent(512);
+        try
+        {
+            PathfindingResult path = nav.GetPathStraight(zone, from, to, nav.DefaultFilters, nodes);
+            for (int i = 0; i < Math.Min(path.NodeCount, 512); i++)
+                if ((nodes[i].Flags & EDtPolyFlags.AnyDoor) != 0) return true;
+            return false;
+        }
+        finally { System.Buffers.ArrayPool<WrappedPathfindingNode>.Shared.Return(nodes); }
     }
 
     private static readonly ConcurrentDictionary<(ushort, int, int, int, int, bool, long), (int[] Anchors, long Until)> EndpointMemory = new();

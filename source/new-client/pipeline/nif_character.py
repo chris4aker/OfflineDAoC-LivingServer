@@ -59,7 +59,9 @@ def node_trs(b):
     r = b.get('rotation')
     rr = np.array([[r[f'm{i}{j}'] for j in (1, 2, 3)] for i in (1, 2, 3)]) if r is not None else np.identity(3)
     q = quat_from_matrix(rr.T)
-    return np.array([t['x'], t['y'], t['z']]), q / np.linalg.norm(q), float(b.get('scale', 1.0))
+    # NaN read as 0: dr_xaphan.nif's second 'Bip01 R / L Shield' nodes hold NaN translations (written as NaN the glTF
+    # would not load)
+    return np.nan_to_num(np.array([t['x'], t['y'], t['z']], float)), q / np.linalg.norm(q), float(b.get('scale', 1.0))
 
 
 def animation_tables():
@@ -312,8 +314,114 @@ def double_sided(*holders):
     return False
 
 
-def build(model, parts, clips, out_path, texture_uri):
-    """parts: {node name[@uvset]: texture basename}; clips: {glTF animation name: kfa file}."""
+def quat_matrix(q):
+    """Column-vector rotation matrix of a quaternion (x, y, z, w)."""
+    x, y, z, w = (float(c) for c in q)
+    return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+                     [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
+                     [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)]])
+
+
+def skinned_shapes(sp, by_name, parts):
+    """(node, shape) of every skinned shape the build exports."""
+    for part in parts:
+        node = by_name[part.partition('@')[0]]
+        for shape in [c for c in node.get('children') or [] if c is not None and sp.is_a(c.type, 'NiTriBasedGeom')]:
+            if shape.get('skin_instance') is not None:
+                yield node, shape
+
+
+def skin_binds(sp, by_name, parts, world):
+    """{id(bone): bind world} from the skin data - inv(bone_list skin transform) @ the shape's world - or None when the
+    shapes disagree on a bone or a skin's own transform isn't the inverse of its shape's (a few ambient critters)."""
+    binds = {}
+    for node, shape in skinned_shapes(sp, by_name, parts):
+        si = shape['skin_instance']
+        sm = nif_static.local_matrix(shape) @ world[id(node)]
+        if np.abs(nif_static.local_matrix(si['data']['skin_transform']) @ sm - np.identity(4)).max() > 0.05:
+            return None
+        for bone, bl in zip(si['bones'], si['data']['bone_list']):
+            if bone is None or id(bone) not in world:
+                continue
+            g = np.linalg.inv(nif_static.local_matrix(bl['skin_transform'])) @ sm
+            if id(bone) in binds and np.abs(binds[id(bone)] - g).max() > 0.05:
+                return None
+            binds[id(bone)] = g
+    return binds
+
+
+def bind_distortion(sp, nif, by_name, parts, world, bind, tracks):
+    """Mean |log| change of the skinned mesh's edge lengths at a clip's first frame, skinned with the bind worlds
+    `bind` - how far the clip stretches the mesh."""
+    lower = {str(k).lower(): v for k, v in by_name.items() if k}
+    pose = {}
+    for bone, tr in tracks.items():
+        nd = by_name.get(bone) or lower.get(str(bone).lower())
+        if nd is None:
+            continue
+        t, q, s = node_trs(nd)
+        if 'rot' in tr:
+            q = tr['rot'][1][0]
+        if 'pos' in tr and not borrowed_length(bone, tr['pos'][1], t):
+            t = tr['pos'][1][0]
+        if 'scale' in tr:
+            s = float(np.asarray(tr['scale'][1]).reshape(-1)[0])
+        m = np.identity(4)
+        m[:3, :3] = quat_matrix(q).T * s
+        m[3, :3] = t
+        pose[id(nd)] = m
+    posed = {}
+
+    def walk(b, pm):
+        m = pose.get(id(b), nif_static.local_matrix(b)) @ pm
+        posed[id(b)] = m
+        for c in b.get('children') or []:
+            if c is not None and c.type == 'NiNode':
+                walk(c, m)
+    for r in nif.roots:
+        if r is not None and r.type == 'NiNode':
+            walk(r, np.identity(4))
+    errs = []
+    for node, shape in skinned_shapes(sp, by_name, parts):
+        si, data = shape['skin_instance'], shape['data']
+        v = np.asarray(data['vertices'], np.float64)[:, :3]
+        rest = np.c_[v, np.ones(len(v))] @ (nif_static.local_matrix(shape) @ world[id(node)])
+        acc, wsum = np.zeros((len(v), 4)), np.zeros(len(v))
+        for bone, bl in zip(si['bones'], si['data']['bone_list']):
+            if bone is None or id(bone) not in posed or id(bone) not in bind:
+                continue
+            mat = np.linalg.inv(bind[id(bone)]) @ posed[id(bone)]
+            vws = bl.get('vertex_weights')
+            for row in (vws if vws is not None else []):
+                i, wt = int(row[0]), float(row[1])
+                acc[i] += wt * (rest[i] @ mat)
+                wsum[i] += wt
+        pos = np.where((wsum > 0)[:, None], acc[:, :3] / np.maximum(wsum, 1e-9)[:, None], rest[:, :3])
+        tri = nif_static.triangles_of(data).astype(int)
+        for a, b in ((0, 1), (1, 2), (2, 0)):
+            if len(tri) == 0:
+                continue
+            r0 = np.linalg.norm(rest[tri[:, a], :3] - rest[tri[:, b], :3], axis=1)
+            r1 = np.linalg.norm(pos[tri[:, a]] - pos[tri[:, b]], axis=1)
+            k = r0 > 1e-3
+            errs.append(np.abs(np.log(np.maximum(r1[k], 1e-6) / r0[k])))
+    return float(np.mean(np.concatenate(errs))) if errs else 0.0
+
+
+def nodes_by_name(nif, index):
+    """{name: NiNode}, the first of a name in tree order - the node the client's name lookup finds (a depth-first
+    search) when a skeleton names two alike (ava_m_skeleton.nif: 'R Cloak Control01' and, misnamed, its child -
+    the run's track went to the child, the right cloak panel's own control never moved and the legs went through
+    it; owner 2026-10-20)."""
+    out = {}
+    for b in sorted((b for b in nif.blocks if b.type == 'NiNode' and id(b) in index), key=lambda b: index[id(b)]):
+        out.setdefault(b.get('name'), b)
+    return out
+
+
+def build(model, parts, clips, out_path, texture_uri, file_bind=False):
+    """parts: {node name[@uvset]: texture basename}; clips: {glTF animation name: kfa file}. file_bind: skin by the NIF's
+    skin data where its bones were saved out of the skinned pose (see below)."""
     sp = spec()
     nif = read_nif((CLIENT / 'figures' / model).read_bytes())
     bone_names = (CLIENT / 'figures/animnode.dat').read_bytes().decode('latin1').split('\r\n')
@@ -325,7 +433,7 @@ def build(model, parts, clips, out_path, texture_uri):
 
     def add_node(b, parent_idx, parent_m):
         t, q, s = node_trs(b)
-        local = nif_static.local_matrix(b)                 # row-vector matrix for bind-pose maths
+        local = np.nan_to_num(nif_static.local_matrix(b))  # row-vector matrix for bind-pose maths (NaN: node_trs)
         m = local @ parent_m
         i = len(d.g['nodes'])
         d.g['nodes'].append({'name': b.get('name') or f'node{i}', 'translation': t.tolist(), 'rotation': q.tolist(),
@@ -340,7 +448,7 @@ def build(model, parts, clips, out_path, texture_uri):
     for r in nif.roots:
         if r is not None and r.type == 'NiNode':
             add_node(r, 0, np.identity(4))
-    by_name = {b.get('name'): b for b in nif.blocks if b.type == 'NiNode'}
+    by_name = nodes_by_name(nif, index)
     skeleton = [b for b in nif.blocks if b.type == 'NiNode' and (b.get('name') or '').startswith('Bip01')]
     # some monsters skin to helper bones outside Bip01 (Beetle: 'Dummy Head'): every skin bone is a joint too
     for b in nif.blocks:
@@ -351,7 +459,32 @@ def build(model, parts, clips, out_path, texture_uri):
     joint_of = {id(b): k for k, b in enumerate(skeleton)}
     # the inverse of a row-vector matrix, written row by row, is exactly the column-major layout glTF reads for
     # the column-vector inverse bind matrix (transposing here was the stretched-arms bug)
-    ibm = np.stack([np.linalg.inv(world[id(b)]) for b in skeleton]).astype(np.float32)
+    bind = {id(b): world[id(b)] for b in skeleton}
+    if file_bind:
+        # Some monster NIFs were saved with their bones out of the pose the mesh was skinned in (owner 2026-10-20: the
+        # Crafted Keeper - CWHuman.nif - has its arms straight out in a T while the mesh is skinned arms-down; bound to
+        # the saved pose its idle / walk pulled the arms into long strands). The client skins by the skin data's own
+        # bind (each bone's skin-to-bone transform) whatever pose the nodes were saved in. Used where that fits the
+        # figure's own idle / walk clearly better and no worse (a few files' skin data is a little off the other way)
+        binds = skin_binds(sp, by_name, parts, world)
+        if binds and any(np.abs(g - bind[k]).max() > 0.05 for k, g in binds.items() if k in bind):
+            filed = dict(bind)
+            filed.update({k: g for k, g in binds.items() if k in bind})
+            gains = []
+            for anim_name in ('idle', 'walk'):
+                kfa = clips.get(anim_name, (EMBEDDED_CLIP,))[0]
+                if kfa == EMBEDDED_CLIP:
+                    continue
+                try:
+                    tracks, _ = read_clip(kfa, bone_names)
+                except Exception:
+                    continue
+                gains.append(bind_distortion(sp, nif, by_name, parts, world, bind, tracks)
+                             - bind_distortion(sp, nif, by_name, parts, world, filed, tracks))
+            if gains and min(gains) > -0.005 and max(gains) > 0.01:
+                bind = filed
+                print(f'  {model}: skin-data bind (idle / walk stretch down {", ".join(f"{g:.3f}" for g in gains)})')
+    ibm = np.stack([np.linalg.inv(bind[id(b)]) for b in skeleton]).astype(np.float32)
     skin = {'joints': [index[id(b)] for b in skeleton], 'skeleton': index[id(skeleton[0])],
             'inverseBindMatrices': d.acc(ibm, 5126, 'MAT4')}
     d.g['skins'].append(skin)
@@ -392,6 +525,12 @@ def build(model, parts, clips, out_path, texture_uri):
             attrs = {'POSITION': d.acc(pos, 5126, 'VEC3', 34962, True), 'NORMAL': d.acc(nrm, 5126, 'VEC3', 34962),
                      'TEXCOORD_0': d.acc(uv, 5126, 'VEC2', 34962), 'JOINTS_0': d.acc(joints, 5123, 'VEC4', 34962),
                      'WEIGHTS_0': d.acc(weights, 5126, 'VEC4', 34962)}
+            # the shape's next UV set as TEXCOORD_1: a monster's glow map is laid out on it (owner 2026-10-20: the
+            # abomination's - Glowing Demon Knight's - glowing eye sat on its chest armour; its glow map on set 1 covers
+            # the helmet's eye slits, on set 0 the chest); build_monsters.add_look_maps points the glow at it
+            nxt = int(uvs or 0) + 1
+            if len(data['uv_sets']) > nxt and len(data['uv_sets'][nxt]) == len(v):
+                attrs['TEXCOORD_1'] = d.acc(np.asarray(data['uv_sets'][nxt], np.float32)[:, :2], 5126, 'VEC2', 34962)
             d.g['meshes'].append({'name': name, 'primitives': [{'attributes': attrs, 'indices': d.acc(tri.reshape(-1), 5125, 'SCALAR', 34963),
                                                               'material': len(d.g['materials']) - 1}]})
             d.g['nodes'].append({'name': f'{name}_mesh', 'mesh': len(d.g['meshes']) - 1, 'skin': 0})
@@ -509,7 +648,7 @@ def build_cata(skeleton, part_list, clips, out_path, texture_uri):
     for r in sk.roots:
         if r is not None and r.type == 'NiNode':
             add_node(r, 0, np.identity(4))
-    by_name = {b.get('name'): b for b in sk.blocks if b.type == 'NiNode'}
+    by_name = nodes_by_name(sk, index)
     skeleton_nodes = [b for b in sk.blocks if b.type == 'NiNode' and (b.get('name') or '').startswith('Bip01')]
     joint_of = {b.get('name'): k for k, b in enumerate(skeleton_nodes)}
     ibm = np.stack([np.linalg.inv(world[id(b)]) for b in skeleton_nodes]).astype(np.float32)

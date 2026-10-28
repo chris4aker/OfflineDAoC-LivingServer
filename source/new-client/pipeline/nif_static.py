@@ -1486,8 +1486,16 @@ def convert(raw, out_path, texture_uri='textures', node_anims=False):
             continue
         name = shape.get('name') or f'shape{i}'
         tp = props.get('NiTexturingProperty')
-        if not uv and texture_name(tp) is None:
-            hidden += len(tri)                            # untextured helper geometry (e.g. door 'collideeNN'): not drawn
+        # untextured helper geometry (e.g. door 'collideeNN'): not drawn - except an effect's untextured shape whose
+        # material is animated (NiAlphaController / NiMaterialColorController): drawn in its material's colour, fading
+        # as keyed (owner 2026-10-20: the paladin heal chant's chalice - alb_palgrpheal_hit's 1,104-triangle 'PolyMesh'
+        # - was left out as collision; so were blesshalo's halo and the Mjolnir / Gungnir weapons). The effects'
+        # unanimated untextured planes and boxes (alpha 0 helpers, emitter boxes) stay out.
+        mp_ = props.get('NiMaterialProperty')
+        keep = node_anims and mp_ is not None and 'collid' not in str(name).lower() and any(
+            _controller(mp_, t) is not None for t in ('NiAlphaController', 'NiMaterialColorController'))
+        if not uv and texture_name(tp) is None and not keep:
+            hidden += len(tri)
             continue
         spec, sets, names = material_spec(props, len(uv), col is not None, warnings, name, shape)
         if drop_billboard:

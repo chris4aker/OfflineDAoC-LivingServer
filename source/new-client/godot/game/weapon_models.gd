@@ -176,7 +176,7 @@ static func dye(w: Node3D, color: int) -> void:
 ## left: hung on a left-hand bone (Bip01 L Held / L Shield) - gripped by its NIF's HELD2 node when it has one, as the
 ## client (game.dll 0x47296a; weapons.json "held2", pipeline/add_weapon_held2.py): the claw greaves' HELD2 is turned
 ## 180 degrees, so the off-hand claw faces the same way as the main hand's (owner 2026-10-17, the Savage)
-static func make(model: int, drawn := false, left := false) -> Node3D:
+static func make(model: int, drawn := false, left := false, sheath := "") -> Node3D:
 	var i := info(model)
 	if i.is_empty():
 		return null
@@ -192,7 +192,13 @@ static func make(model: int, drawn := false, left := false) -> Node3D:
 	for c in w.find_children("collision*", "", true, false):
 		c.queue_free()                                    # the NIF's collidee shapes: not part of the held model
 	w.transform = TO_NIF
-	if left and i.has("held2"):
+	if sheath != "" and i.has(sheath + "_frame"):
+		# hung by the NIF's own BELT / BACK node, as game.dll sheathes (pipeline/add_sheath_frames.py; owner 2026-10-19:
+		# a two-hander hung out across the cloak by its grip)
+		var f: Array = i[sheath + "_frame"]
+		w.transform = Transform3D(Basis(Vector3(f[0], f[1], f[2]), Vector3(f[3], f[4], f[5]), Vector3(f[6], f[7], f[8])),
+				Vector3(f[9], f[10], f[11])) * TO_NIF
+	elif left and i.has("held2"):
 		var h2: Array = i.held2
 		w.transform = Transform3D(Basis(Vector3(h2[0], h2[1], h2[2]), Vector3(h2[3], h2[4], h2[5]), Vector3(h2[6], h2[7], h2[8])),
 				Vector3(h2[9], h2[10], h2[11])) * TO_NIF
@@ -246,6 +252,11 @@ static func add_effect(holder: Node3D, effect: int) -> Node3D:
 		return null
 	fx.name = "WeaponEffect"
 	fx.transform = (holder.get_child(0) as Node3D).transform   # the weapon's own frame (TO_NIF / its grip)
+	# the glow rides the blade: its particles live in the weapon's space (owner 2026-10-20: an abomination's and the
+	# gamebots' weapon glows trailed far behind the sword - emitted in world space, each particle stayed where it was
+	# born for its whole life while the blade swung on)
+	for ps in fx.find_children("*", "GPUParticles3D", true, false):
+		(ps as GPUParticles3D).local_coords = true
 	holder.add_child(fx)
 	AnimLod.keep_on_main(fx)                              # (its particles and timeline: the main thread)
 	NifParticles.fit_to_scale(fx)

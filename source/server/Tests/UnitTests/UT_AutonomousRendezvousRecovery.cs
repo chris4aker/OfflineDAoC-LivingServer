@@ -27,6 +27,20 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void TheWaitIsReadBeforeTheDeathLimitMovesTheDeadline()
+        {
+            // The meetup-deaths log line read the wait after the limit moved the deadline, so it always said 900 s.
+            var attendance = new AutonomousRendezvousAttendance();
+            const long start = 1_000_000;
+            attendance.ReachedDeathLimit(7, 15, start);
+            attendance.Observe(7, start, false);
+            long waited = attendance.WaitedMilliseconds(7, start + 90_000);
+            Assert.That(attendance.ReachedDeathLimit(7, 18, start + 90_000), Is.True);
+            Assert.That(waited, Is.EqualTo(90_000));
+            Assert.That(attendance.WaitedMilliseconds(7, start + 90_000), Is.EqualTo(AutonomousRendezvousAttendance.TimeoutMilliseconds));
+        }
+
+        [Test]
         public void MeetupDeathsCarryOverASmallerPartyButNotANewMeetup()
         {
             var attendance = new AutonomousRendezvousAttendance();

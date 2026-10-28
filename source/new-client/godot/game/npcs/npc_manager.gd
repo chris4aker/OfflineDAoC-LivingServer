@@ -256,6 +256,14 @@ static func _pack_model(path: String) -> PackedScene:
 	state.base_path = ProjectSettings.globalize_path(path.get_base_dir())
 	if doc.append_from_file(path, state) != OK:
 		return null
+	# a glow map laid out on the model's second UV set (build_monsters: emissiveTexture texCoord 1 - the Glowing Demon
+	# Knight's eye slits; owner 2026-10-20: its eye glowed on the chest): Godot's glTF import drops texCoord there
+	var mats_json: Array = state.json.get("materials", []) if state.json is Dictionary else []
+	var mats := state.get_materials()
+	for i in mini(mats_json.size(), mats.size()):
+		var et = (mats_json[i] as Dictionary).get("emissiveTexture", {})
+		if et is Dictionary and int(et.get("texCoord", 0)) == 1 and mats[i] is BaseMaterial3D:
+			(mats[i] as BaseMaterial3D).emission_on_uv2 = true
 	# the generated tree is only the template: free it once packed - a loose node is never freed for us, and
 	# every zone left all its monster models and their textures behind (owner 2026-10-10: 7-8 fps after a zone
 	# change, video memory full; ~970 MB more after Camelot Hills -> Shannon Estuary than a fresh start)

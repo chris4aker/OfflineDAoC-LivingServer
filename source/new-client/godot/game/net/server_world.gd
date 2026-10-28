@@ -349,6 +349,11 @@ func _add_npc(d: Dictionary) -> void:
 		_remove(oid, false)
 	var f := int(d.flags)
 	var f2 := int(d.flags2)
+	# no 0x02 (PacketLib1124: "mob has equipment ... the 0xBD packet" follows): this living has none - not the gear of
+	# whatever had this object id before (owner 2026-10-19: a necroservant, which has no inventory, showed the two-handed
+	# sword of an abomination released before it)
+	if f & 0x02 == 0:
+		data.equipment.erase("srv%d" % oid)
 	# the packet's flags -> the database's eFlags (what Npc / NamePlates read)
 	var flags := 0
 	if f & 0x01: flags |= 0x01                                  # ghost
@@ -678,7 +683,8 @@ func _equip(d: Dictionary) -> void:
 	var rows := []
 	for it in d.get("items", []):
 		rows.append({"slot": int(it.slot), "model": int(it.model), "color": int(it.get("color", 0)),
-				"effect": int(it.get("effect", 0)), "emblem": int(it.get("emblem", 0))})   # (a cloak / shield's guild emblem)
+				"effect": int(it.get("effect", 0)), "emblem": int(it.get("emblem", 0)),     # (a cloak / shield's guild emblem)
+				"extension": int(it.get("extension", 0))})                 # (an armour piece's mesh: Fig3Figure.item_armor)
 	var st: NpcState = by_oid.get(oid)
 	var gear := {"hood": (int(d.get("hood", 0)) & 1) != 0, "cloak_hidden": (int(d.get("hidden", 0)) & 1) != 0,
 			"helm_hidden": (int(d.get("hidden", 0)) & 2) != 0}
@@ -1192,10 +1198,43 @@ func _sounds_of(v: Node) -> CharacterSounds:
 	return null
 
 
+## The spell log (owner 2026-10-19: a /spawn bonedancer's pet buffs - "didn't see shield", two casts with no
+## animation): every cast and landing the server sends, with what the client did - user://spell_log.txt, the last
+## SPELL_LOG_MAX lines, written every few seconds.
+const SPELL_LOG_MAX := 600
+var _spell_log: Array = []
+var _spell_log_due := false
+
+
+func _slog(line: String) -> void:
+	_spell_log.append("%s %s" % [Time.get_time_string_from_system(), line])
+	if _spell_log.size() > SPELL_LOG_MAX:
+		_spell_log = _spell_log.slice(_spell_log.size() - SPELL_LOG_MAX)
+	if not _spell_log_due and is_inside_tree():
+		_spell_log_due = true
+		get_tree().create_timer(3.0).timeout.connect(func():
+			_spell_log_due = false
+			var f := FileAccess.open("user://spell_log.txt", FileAccess.WRITE)
+			if f:
+				f.store_string("
+".join(_spell_log) + "
+")
+				f.close())
+
+
+func _who(oid: int) -> String:
+	if oid == Server.me_oid:
+		return "you"
+	var st: NpcState = by_oid.get(oid)
+	return ("%s#%d" % [String(st.spawn.get("name", "?")), oid]) if st else "?#%d" % oid
+
+
 func _cast(d: Dictionary) -> void:
 	var oid := int(d.caster)
 	var v := _view_of(oid)
 	var ce := int(d.spell)
+	_slog("CAST  %s  %d %s  %.1fs  view=%s" % [_who(oid), ce, String(SpellFx.effect(ce).get("name", "")), int(d.get("time", 0)) / 10.0,
+			"yes" if v else "NOT YET"])
 	SpellFx.prefetch(ce)                                          # its effects load now, on a worker, not as it lands
 	_late_cast.erase(oid)
 	if v == null:
@@ -1282,6 +1321,9 @@ func _spell_effect(d: Dictionary) -> void:
 	var caster := _view_of(int(d.caster)) as Node3D
 	var target := _view_of(int(d.target)) as Node3D
 	var ce := int(d.spell)
+	_slog("LAND  %s -> %s  %d %s  cast=%s  target view=%s  %s" % [_who(int(d.caster)), _who(int(d.target)), ce,
+			String(SpellFx.effect(ce).get("name", "")), "yes" if _gathers.has(int(d.caster)) else "no",
+			"yes" if target else "NOT YET", "resisted" if int(d.success) == 0 else "ok"])
 	_late_cast.erase(int(d.caster))                              # (landed before its caster was drawn: no cast now)
 	var handles: Array = []
 	var g: Array = _gathers.get(int(d.caster), [])
@@ -1329,7 +1371,10 @@ func _spell_effect(d: Dictionary) -> void:
 			if c < anims.size() and String(anims[c]) != "":
 				clip = String(anims[c])
 				break
-		if clip != "" and caster.has_method("_one_shot") and not (caster is Player and (caster as Player).casting_spell):
+		# only a song's instrument (drums / lute / flute): a paladin's chant pulses with no motion (owner 2026-10-20:
+		# "paladins are doing animations for their chants") - as an instant spell shows none (owner 2026-10-15)
+		var instrument := clip.begins_with("cast_drums") or clip.begins_with("cast_lute") or clip.begins_with("cast_flute")
+		if instrument and caster.has_method("_one_shot") and not (caster is Player and (caster as Player).casting_spell):
 			caster.call("_one_shot", clip)
 		SpellFx.sound(_sounds_of(caster), int(SpellFx.effect(ce).get("sound_set", 0)), "gather")
 	# one burst, one sound: the server sends a spell's effect once per target (a group buff on eight: eight packets
@@ -1851,6 +1896,22 @@ func _ridden(st: NpcState) -> bool:
 		if by_oid.get(_riders[r]) == st:
 			return true
 	return false
+
+
+## The server's ChangeTarget (/target <name>, /assist): select that object as a click would - the client then sends
+## its Target packet, which is what sets the server's target. Missing until 2026-10-17: "/target Haralhelm" answered
+## "[GM] You target Haralhelm." but the target window stayed empty and /invite found no target.
+var _server_chose_target := false
+
+
+func _change_target(oid: int) -> void:
+	if oid <= 0:
+		if target or target_door:
+			clear_target()
+		return
+	_server_chose_target = true
+	target_oid(oid)
+	_server_chose_target = false
 
 
 ## A raid window slot clicked: target that member (its view if drawn, else straight on the server).
