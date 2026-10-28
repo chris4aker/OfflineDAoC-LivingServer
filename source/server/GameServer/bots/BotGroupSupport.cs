@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace DOL.GS
@@ -64,25 +65,80 @@ namespace DOL.GS
         public static bool SafeToRaisePlayer(int hostilesFightingNear, int aggressiveHostilesNear) =>
             hostilesFightingNear == 0 && aggressiveHostilesNear == 0;
 
-        /// <summary>The nearest hostile beside the caster that would hit a player raised there (null when it is clear).</summary>
-        public static GameNPC ThreatToRaisedPlayer(GameBot bot)
+        /// <summary>A hostile near a raise: where it is, whether it is fighting, and how close it aggroes (0: never).</summary>
+        public readonly record struct RaiseHostile(Vector3 Position, bool Fighting, int AggroReach);
+
+        /// <summary>Whether a player raised at <paramref name="point"/> would be safe from these hostiles. Pure.</summary>
+        public static bool PointIsSafeToRaise(Vector3 point, IEnumerable<RaiseHostile> hostiles)
         {
-            GameNPC nearest = null;
             int fighting = 0, aggressive = 0;
-            foreach (GameNPC npc in bot.GetNPCsInRadius(RaiseDangerRadius))
+            foreach (RaiseHostile hostile in hostiles)
+            {
+                float distance = Vector2.Distance(new(point.X, point.Y), new(hostile.Position.X, hostile.Position.Y));
+                if (hostile.Fighting && distance <= RaiseDangerRadius) fighting++;
+                else if (hostile.AggroReach > 0 && distance <= hostile.AggroReach) aggressive++;
+            }
+            return SafeToRaisePlayer(fighting, aggressive);
+        }
+
+        private static List<(GameNPC Npc, RaiseHostile Hostile)> RaiseHostiles(GameBot bot, int radius)
+        {
+            var list = new List<(GameNPC, RaiseHostile)>();
+            foreach (GameNPC npc in bot.GetNPCsInRadius((ushort)Math.Min(ushort.MaxValue, radius)))
             {
                 if (npc == null || npc == bot || npc is GameBot || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active ||
                     (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 || npc.Realm != eRealm.None ||
                     !GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
                     continue;
-                bool inFight = npc.InCombat;
-                bool wouldAggro = npc.Brain is DOL.AI.Brain.StandardMobBrain brain && brain.AggroLevel > 0 && brain.AggroRange > 0 &&
-                    npc.IsWithinRadius(bot, brain.AggroRange + 300);
-                if (!inFight && !wouldAggro) continue;
-                if (inFight) fighting++; else aggressive++;
-                if (nearest == null || bot.GetDistanceTo(npc) < bot.GetDistanceTo(nearest)) nearest = npc;
+                int reach = npc.Brain is DOL.AI.Brain.StandardMobBrain brain && brain.AggroLevel > 0 && brain.AggroRange > 0
+                    ? brain.AggroRange + 300 : 0;
+                if (!npc.InCombat && reach == 0) continue;
+                list.Add((npc, new RaiseHostile(new(npc.X, npc.Y, npc.Z), npc.InCombat, reach)));
             }
-            return SafeToRaisePlayer(fighting, aggressive) ? null : nearest;
+            return list;
+        }
+
+        /// <summary>The nearest hostile beside the caster that would hit a player raised there (null when it is clear).</summary>
+        public static GameNPC ThreatToRaisedPlayer(GameBot bot)
+        {
+            var hostiles = RaiseHostiles(bot, RaiseDangerRadius + 1_000);
+            Vector3 here = new(bot.X, bot.Y, bot.Z);
+            if (PointIsSafeToRaise(here, hostiles.Select(h => h.Hostile)))
+                return null;
+            return hostiles.OrderBy(h => bot.GetDistanceTo(h.Npc)).Select(h => h.Npc).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// A spot within rez range of <paramref name="corpse"/> where a raised player would be safe, nearest the caster first
+        /// (null when there is none). Players rez from the edge of a camp; the raised player stands where the caster is.
+        /// </summary>
+        public static Vector3? SafeRaiseSpot(GameBot bot, GameLiving corpse, int range)
+        {
+            if (bot?.CurrentZone == null || corpse == null || range < 300)
+                return null;
+            var hostiles = RaiseHostiles(bot, range + RaiseDangerRadius + 1_500).Select(h => h.Hostile).ToList();
+            Vector3 body = new(corpse.X, corpse.Y, corpse.Z);
+            Vector3 here = new(bot.X, bot.Y, bot.Z);
+            Vector3? best = null;
+            float bestDistance = float.MaxValue;
+            for (int ring = 400; ring <= range - 100; ring += 250)
+            {
+                for (int step = 0; step < 16; step++)
+                {
+                    double angle = step * Math.PI / 8;
+                    Vector3 raw = new(body.X + (float)Math.Cos(angle) * ring, body.Y + (float)Math.Sin(angle) * ring, body.Z);
+                    Vector3? ground = AutonomousNavigationSurface.MoveAlongGround(PathfindingProvider.Instance, bot.CurrentZone, body, raw);
+                    if (ground is not Vector3 spot || Vector3.Distance(spot, body) > range - 50 || !PointIsSafeToRaise(spot, hostiles))
+                        continue;
+                    if (bot.CurrentZone.IsDungeon && PathfindingProvider.Instance.IsAvailable &&
+                        !PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, spot, body, PathfindingProvider.Instance.DefaultFilters))
+                        continue;
+                    float distance = Vector3.Distance(spot, here);
+                    if (distance < bestDistance) { best = spot; bestDistance = distance; }
+                }
+                if (best != null) break;   // the nearest ring with a safe spot keeps the walk short
+            }
+            return best;
         }
 
         public const int DeclinedRezPauseMs = 60_000;

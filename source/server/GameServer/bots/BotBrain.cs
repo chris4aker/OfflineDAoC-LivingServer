@@ -5581,11 +5581,24 @@ namespace DOL.AI.Brain
                 }
                 // A real player is raised where the caster stands: clear what would hit them first (play test 2026-10-28).
                 int raiseRange = BotBody.castingComponent.CalculateSpellRange(resurrection);
-                if (Body.Group.GetMembersInTheGroup().Any(member => member is GamePlayer && !member.IsAlive &&
-                        member.ObjectState == GameObject.eObjectState.Active && member.CurrentRegionID == Body.CurrentRegionID &&
-                        Body.IsWithinRadius(member, raiseRange)) &&
-                    BotGroupSupport.ThreatToRaisedPlayer(BotBody) is GameNPC threat)
+                GameLiving playerCorpse = Body.Group.GetMembersInTheGroup().FirstOrDefault(member => member is GamePlayer && !member.IsAlive &&
+                    member.ObjectState == GameObject.eObjectState.Active && member.CurrentRegionID == Body.CurrentRegionID &&
+                    Body.IsWithinRadius(member, raiseRange));
+                if (playerCorpse != null && BotGroupSupport.ThreatToRaisedPlayer(BotBody) is GameNPC threat)
                 {
+                    // Back off to a clear spot within rez range, as players rez from the edge of a camp. In a camp that
+                    // respawns (in-game check 2026-10-28) clearing alone never ended. Nothing may be hitting the caster now
+                    // (InCombat lingers after each kill, so it never ended there either); at the spot, fight what is left.
+                    if (Body.attackComponent.AttackerTracker.Count == 0 &&
+                        BotGroupSupport.SafeRaiseSpot(BotBody, playerCorpse, raiseRange) is Vector3 spot &&
+                        Vector2.Distance(new(Body.X, Body.Y), new(spot.X, spot.Y)) > 80)
+                    {
+                        BotBody.attackComponent.StopAttack();
+                        BotBody.StopFollowing();
+                        BotBody.PathTo(spot, BotBody.MaxSpeed);
+                        ReportResurrectionBlock(resurrection, $"moving clear of {threat.Name} before raising a player");
+                        return true;
+                    }
                     if (!Body.InCombat && CanAggroTarget(threat))
                     {
                         AddToAggroList(threat, Math.Max(100, threat.EffectiveLevel * 10));

@@ -250,5 +250,22 @@ namespace DOL.GS.Tests
             Assert.That(BotGroupSupport.SafeToRaisePlayer(0, 1), Is.False, "an aggressive hostile in aggro range of the caster");
             Assert.That(BotGroupSupport.RaiseDangerRadius, Is.InRange(800, 2_000));
         }
+
+        [Test]
+        public void ARaiseSpotIsClearOfFightsAndAggroRange()
+        {
+            // In-game check 2026-10-28: in a camp that respawns, the cleric rezzes from its edge instead of clearing forever.
+            var camp = new[]
+            {
+                new BotGroupSupport.RaiseHostile(new System.Numerics.Vector3(0, 0, 0), false, 800),
+                new BotGroupSupport.RaiseHostile(new System.Numerics.Vector3(300, 0, 0), false, 800),
+            };
+            Assert.That(BotGroupSupport.PointIsSafeToRaise(new System.Numerics.Vector3(100, 0, 0), camp), Is.False, "inside the camp");
+            Assert.That(BotGroupSupport.PointIsSafeToRaise(new System.Numerics.Vector3(-900, 0, 0), camp), Is.True, "past every aggro reach");
+            var fight = new[] { new BotGroupSupport.RaiseHostile(new System.Numerics.Vector3(0, 0, 0), true, 0) };
+            Assert.That(BotGroupSupport.PointIsSafeToRaise(new System.Numerics.Vector3(BotGroupSupport.RaiseDangerRadius - 10, 0, 0), fight), Is.False);
+            Assert.That(BotGroupSupport.PointIsSafeToRaise(new System.Numerics.Vector3(BotGroupSupport.RaiseDangerRadius + 10, 0, 0), fight), Is.True);
+            Assert.That(BotGroupSupport.PointIsSafeToRaise(new System.Numerics.Vector3(0, 0, 0), new BotGroupSupport.RaiseHostile[0]), Is.True);
+        }
     }
 }
