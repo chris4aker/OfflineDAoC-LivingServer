@@ -52,6 +52,39 @@ namespace DOL.GS
                 state.Resurrection.ReleaseCaster(bot);
         }
 
+        /// <summary>How far from the resurrector a hostile counts as a danger to a raised player: they stand where the caster is.</summary>
+        public const int RaiseDangerRadius = 1_200;
+
+        /// <summary>
+        /// Whether a real player may be raised now. Play test 2026-10-28: a level 50 cleric raised a level 1 player in a
+        /// level 25 camp; a leech hit the raised player before the rez damage immunity could heal it back (that effect heals
+        /// after the hit, so a killing blow still kills) and he died again in two seconds, twice. Gamebot corpses keep the
+        /// combat rez budget; a human player is raised once nothing near the caster is fighting or would aggro. Pure.
+        /// </summary>
+        public static bool SafeToRaisePlayer(int hostilesFightingNear, int aggressiveHostilesNear) =>
+            hostilesFightingNear == 0 && aggressiveHostilesNear == 0;
+
+        /// <summary>The nearest hostile beside the caster that would hit a player raised there (null when it is clear).</summary>
+        public static GameNPC ThreatToRaisedPlayer(GameBot bot)
+        {
+            GameNPC nearest = null;
+            int fighting = 0, aggressive = 0;
+            foreach (GameNPC npc in bot.GetNPCsInRadius(RaiseDangerRadius))
+            {
+                if (npc == null || npc == bot || npc is GameBot || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active ||
+                    (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 || npc.Realm != eRealm.None ||
+                    !GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
+                    continue;
+                bool inFight = npc.InCombat;
+                bool wouldAggro = npc.Brain is DOL.AI.Brain.StandardMobBrain brain && brain.AggroLevel > 0 && brain.AggroRange > 0 &&
+                    npc.IsWithinRadius(bot, brain.AggroRange + 300);
+                if (!inFight && !wouldAggro) continue;
+                if (inFight) fighting++; else aggressive++;
+                if (nearest == null || bot.GetDistanceTo(npc) < bot.GetDistanceTo(nearest)) nearest = npc;
+            }
+            return SafeToRaisePlayer(fighting, aggressive) ? null : nearest;
+        }
+
         public const int DeclinedRezPauseMs = 60_000;
 
         /// <summary>Whether a resurrection was declined within the last minute (0: never). Pure.</summary>

@@ -5576,6 +5576,22 @@ namespace DOL.AI.Brain
                         BotBody.IsBeingInterruptedByOther ? "being interrupted" : "resurrection on recast");
                     return false;
                 }
+                // A real player is raised where the caster stands: clear what would hit them first (play test 2026-10-28).
+                int raiseRange = BotBody.castingComponent.CalculateSpellRange(resurrection);
+                if (Body.Group.GetMembersInTheGroup().Any(member => member is GamePlayer && !member.IsAlive &&
+                        member.ObjectState == GameObject.eObjectState.Active && member.CurrentRegionID == Body.CurrentRegionID &&
+                        Body.IsWithinRadius(member, raiseRange)) &&
+                    BotGroupSupport.ThreatToRaisedPlayer(BotBody) is GameNPC threat)
+                {
+                    if (!Body.InCombat && CanAggroTarget(threat))
+                    {
+                        AddToAggroList(threat, Math.Max(100, threat.EffectiveLevel * 10));
+                        FSM.SetCurrentState(eFSMStateType.AGGRO);
+                        AttackMostWanted();
+                    }
+                    ReportResurrectionBlock(resurrection, $"clearing {threat.Name} before raising a player");
+                    return false;
+                }
                 GameLiving corpse = BotGroupSupport.ReserveResurrection(BotBody, resurrection);
                 if (corpse != null)
                 {

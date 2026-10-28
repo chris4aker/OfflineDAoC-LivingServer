@@ -240,5 +240,15 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousSupplyMerchantSpace.ShouldResolveSpot(int.MaxValue), Is.False, "another region");
             Assert.That(AutonomousSupplyMerchantSpace.RetryAfterFailureMs, Is.GreaterThanOrEqualTo(15_000));
         }
+
+        [Test]
+        public void APlayerIsRaisedOnlyWhereNothingWillHitThem()
+        {
+            // Play test 2026-10-28: raised twice into a level 25 camp, killed again within two seconds each time.
+            Assert.That(BotGroupSupport.SafeToRaisePlayer(0, 0), Is.True);
+            Assert.That(BotGroupSupport.SafeToRaisePlayer(1, 0), Is.False, "a hostile still fighting beside the caster");
+            Assert.That(BotGroupSupport.SafeToRaisePlayer(0, 1), Is.False, "an aggressive hostile in aggro range of the caster");
+            Assert.That(BotGroupSupport.RaiseDangerRadius, Is.InRange(800, 2_000));
+        }
     }
 }
