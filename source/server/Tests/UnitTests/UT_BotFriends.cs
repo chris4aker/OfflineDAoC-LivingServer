@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using DOL.Database;
 using DOL.Database.Handlers;
 using DOL.GS;
 using DOL.GS.Friends;
+using DOL.GS.PacketHandler;
 using NUnit.Framework;
 
 namespace DOL.UnitTests
@@ -130,6 +135,41 @@ namespace DOL.UnitTests
         public void SocialLine_HasUpstreamsFormat()
         {
             Assert.That(BotFriends.SocialLine(3, "Haralhelm", 34, 22, "Vale of Mularn"), Is.EqualTo("F,3,Haralhelm,34,22,\"Vale of Mularn\""));
+        }
+
+        [TestCase(true, (byte)1)]
+        [TestCase(false, (byte)0)]
+        public void FriendNotice_HasTheOldClientsFormat(bool entered, byte flag)
+        {
+            // game.dll's 0xC6 handler: a byte (1 "just entered", 0 "just left"), then the name as a 4-byte length string.
+            using var pak = new GSTCPPacketOut().Init(0xC6);
+            long header = pak.Length;
+            BotFriends.WriteFriendNotice(pak, entered, "Haralhelm");
+
+            byte[] body = pak.ToArray().Skip((int)header).ToArray();
+            byte[] expected = new byte[] { flag, 10, 0, 0, 0 }.Concat("Haralhelm"u8.ToArray()).Append((byte)0).ToArray();
+            Assert.That(body, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public async Task EmptyFriendsList_StillGetsAStatusCacheEntry()
+        {
+            // Upstream returned before the status cache had an entry, so the first friend added got no offline status
+            // ("was not registered in Friends Manager Status Cache", in game 2026-10-28).
+            using var server = new EpicTestServerScope();
+            var manager = new FriendsManager(_database);
+            var player = (GamePlayer)RuntimeHelpers.GetUninitializedObject(typeof(GamePlayer));
+            typeof(GamePlayer).GetField("m_dbCharacter", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(player, new DbCoreCharacter { Name = "Dowie", SerializedFriendsList = string.Empty });
+
+            await manager.AddPlayerFriendsListToCache(player);
+
+            var statuses = (ConcurrentDictionary<GamePlayer, FriendStatus[]>)typeof(FriendsManager)
+                .GetProperty("PlayersFriendsStatusCache", BindingFlags.Instance | BindingFlags.NonPublic)
+                .GetValue(manager);
+            Assert.That(statuses.TryGetValue(player, out FriendStatus[] entry), Is.True);
+            Assert.That(entry, Is.Empty);
+            Assert.That(manager[player], Is.Empty);
         }
 
         private void AddBot(string name, eRealm realm, int level, int classId, bool retired = false, string lastSaved = "", string lastUpdate = "")

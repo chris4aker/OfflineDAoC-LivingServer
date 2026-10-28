@@ -74,7 +74,11 @@ namespace DOL.GS.Friends
 			PlayersFriendsListsCache.TryAdd(player, friends);
 
 			if (friends.Length == 0)
+			{
+				// Fork: an empty status list too, or the first friend added got no offline status ("was not registered").
+				PlayersFriendsStatusCache.TryAdd(player, []);
 				return;
+			}
 
 			IList<DbCoreCharacter> offlineFriends = await DOLDB<DbCoreCharacter>.SelectObjectsAsync(DB.Column("Name").IsIn(friends));
 			FriendStatus[] offlineFriendStatus = offlineFriends.Select(chr => new FriendStatus(chr.Name, chr.Level, chr.Class, chr.LastPlayed))

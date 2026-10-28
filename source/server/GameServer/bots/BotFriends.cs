@@ -5,6 +5,7 @@ using System.Linq;
 using DOL.Database;
 using DOL.GS.Friends;
 using DOL.GS.PacketHandler;
+using DOL.Network;
 
 namespace DOL.GS;
 
@@ -162,7 +163,7 @@ public static class BotFriends
             foreach (GamePlayer player in listeners)
             {
                 if (online)
-                    player.Out.SendAddFriends(update);
+                    SendEntered(player, bot.Name);
                 else
                     player.Out.SendRemoveFriends(update);
             }
@@ -171,6 +172,45 @@ public static class BotFriends
         {
             Log.Warn($"BotFriends: could not tell friends that {bot?.Name} went {(online ? "online" : "offline")}", exception);
         }
+    }
+
+    /// <summary>
+    /// A friend entered the game, told so that both clients show it once (in game 2026-10-28, old client: a one-name
+    /// AddFriend left only that bot in Friends Monitor and printed nothing).
+    /// - The old client (game.dll's 0xC6 handler) prints "Your friend %s just entered the game." and lists the name for a
+    ///   RemoveFriend whose first byte is 1 (0 is "just left"). Its AddFriend (0xC5) replaces the whole Friends Monitor
+    ///   list and prints nothing.
+    /// - The new client (server.gd) reads any RemoveFriend as "left", for a name it lists, which this one is not yet, and
+    ///   prints "just entered" for each name a later AddFriend adds.
+    /// So: RemoveFriend with 1 and the name first, then every friend online now as one AddFriend.
+    /// </summary>
+    private static void SendEntered(GamePlayer player, string name)
+    {
+        using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(AbstractPacketLib.GetPacketCode(eServerPackets.RemoveFriend)))
+        {
+            WriteFriendNotice(pak, true, name);
+            player.Out.SendTCP(pak);
+        }
+
+        player.Out.SendAddFriends(OnlineFriendNames(player));
+    }
+
+    /// <summary>The old client's friend notice: a byte, 1 entered or 0 left, then the name.</summary>
+    public static void WriteFriendNotice(PacketOut pak, bool entered, string name)
+    {
+        pak.WriteByte((byte)(entered ? 1 : 0));
+        pak.WritePascalStringIntLE(name);
+    }
+
+    /// <summary>Every friend online now, players and bots, as FriendsManager lists them on entering the game.</summary>
+    public static string[] OnlineFriendNames(GamePlayer player)
+    {
+        string[] friends = player.GetFriends();
+        string[] players = ClientService.Instance.GetPlayers()
+            .Where(other => other != player && !other.IsAnonymous && friends.Contains(other.Name))
+            .Select(other => other.Name)
+            .ToArray();
+        return WithOnlineBots(player, players);
     }
 
     public static bool IsListener(eRealm playerRealm, IEnumerable<string> friends, eRealm botRealm, string botName) =>
