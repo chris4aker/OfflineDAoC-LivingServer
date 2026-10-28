@@ -4358,10 +4358,7 @@ namespace DOL.GS
                     }
                 }
 
-                if (CurrentRegion.IsRvR || CurrentZone.IsRvR)
-                    baseXp = (long) (baseXp * Properties.RvR_XP_RATE);
-                else
-                    baseXp = (long) (baseXp * LevelRangeXpRates.PlayerRate(Level));
+                baseXp = (long) (baseXp * LevelRangeXpRates.PlayerRate(Level, CurrentRegion.IsRvR || CurrentZone.IsRvR));
 
                 long xpBonus = GetModified(eProperty.XpPoints);
 

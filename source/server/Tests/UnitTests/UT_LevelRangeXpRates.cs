@@ -9,12 +9,14 @@ namespace DOL.UnitTests
     public sealed class UT_LevelRangeXpRates
     {
         private double _playerRate;
+        private double _rvrRate;
         private string _playerByLevel;
 
         [SetUp]
         public void SaveRates()
         {
             _playerRate = Properties.XP_RATE;
+            _rvrRate = Properties.RvR_XP_RATE;
             _playerByLevel = Properties.XP_RATE_BY_LEVEL;
         }
 
@@ -22,6 +24,7 @@ namespace DOL.UnitTests
         public void RestoreRates()
         {
             Properties.XP_RATE = _playerRate;
+            Properties.RvR_XP_RATE = _rvrRate;
             Properties.XP_RATE_BY_LEVEL = _playerByLevel;
         }
 
@@ -106,6 +109,28 @@ namespace DOL.UnitTests
             Properties.XP_RATE_BY_LEVEL = "1-19:2";
             Assert.That(LevelRangeXpRates.PlayerRate(10), Is.EqualTo(2), "a changed setting is picked up");
             Assert.That(LevelRangeXpRates.PlayerRate(40), Is.EqualTo(1), "levels outside the ranges keep xp_rate");
+        }
+
+        [Test]
+        public void RvRZonesKeepThePlayerRate()
+        {
+            // A 10x world with the default rvr_zones_xp_rate: battlegrounds and DF are 10x too.
+            Properties.XP_RATE = 10;
+            Properties.RvR_XP_RATE = 1;
+            Properties.XP_RATE_BY_LEVEL = "";
+            Assert.That(LevelRangeXpRates.PlayerRate(20, true), Is.EqualTo(10));
+            Assert.That(LevelRangeXpRates.PlayerRate(20, false), Is.EqualTo(10));
+        }
+
+        [Test]
+        public void RvRZoneRateMultipliesThePlayerRate()
+        {
+            Properties.XP_RATE = 3;
+            Properties.RvR_XP_RATE = 2;
+            Properties.XP_RATE_BY_LEVEL = "35-50:12";
+            Assert.That(LevelRangeXpRates.PlayerRate(20, true), Is.EqualTo(6));
+            Assert.That(LevelRangeXpRates.PlayerRate(40, true), Is.EqualTo(24), "the level range rate is used in RvR too");
+            Assert.That(LevelRangeXpRates.PlayerRate(40, false), Is.EqualTo(12), "outside RvR the zone rate is not applied");
         }
     }
 }

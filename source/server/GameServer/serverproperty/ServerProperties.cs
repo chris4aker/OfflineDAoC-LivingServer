@@ -744,7 +744,7 @@ namespace DOL.GS.ServerProperties
 		/// Optional XP rates by level range for real players, replacing XP_RATE inside each listed
 		/// range (see LevelRangeXpRates). Empty keeps the flat rate.
 		/// </summary>
-		[ServerProperty("rates", "xp_rate_by_level", "Optional XP rate by level range for real player characters, for example 1-19:3;20-34:5;35-50:12. Inside a listed range its rate replaces xp_rate; other levels keep xp_rate. RvR zones keep rvr_zones_xp_rate. Empty (the default) or an invalid value keeps the flat xp_rate.", "")]
+		[ServerProperty("rates", "xp_rate_by_level", "Optional XP rate by level range for real player characters, for example 1-19:3;20-34:5;35-50:12. Inside a listed range its rate replaces xp_rate; other levels keep xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate. Empty (the default) or an invalid value keeps the flat xp_rate.", "")]
 		public static string XP_RATE_BY_LEVEL;
 
 		/// <summary>
@@ -763,7 +763,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// RvR Zones XP Rate
 		/// </summary>
-		[ServerProperty("rates", "rvr_zones_xp_rate", "The RvR zones Experience Points Rate Modifier", 1.0)]
+		[ServerProperty("rates", "rvr_zones_xp_rate", "An extra Experience Points multiplier in RvR zones (battlegrounds, frontiers, Darkness Falls), applied on top of xp_rate and bot_xp_rate. 1.0 gives RvR zones the same rate as everywhere else.", 1.0)]
 		public static double RvR_XP_RATE;
 
 		/// <summary>

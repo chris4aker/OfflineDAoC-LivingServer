@@ -27,6 +27,13 @@ Older entries below keep the names they were written with.
   client's Friends Monitor, and the first friend on an empty list gets its status. Tests: `UT_BotFriends`.
 - **`/allrelease`** (also `/grouprelease`) releases every dead bot in your group at once (issue #40; by Cancain).
   `/spawn` companions still wait while you are dead or a fight is near.
+- **On a world with a raised XP rate, Darkness Falls, battlegrounds and the frontiers get it too** (by rambodolphin13;
+  BeezKneezItem9 found the same bug).
+  - **The bug:** in RvR regions and zones a player's kill XP used `rvr_zones_xp_rate` (1 by default) in place of
+    `xp_rate`, so a 10× world was 1× in DF while gamebots there got 10×. The base game's rule (from OpenDAoC),
+    unchanged in 0.37b.
+  - **Now:** players get `xp_rate` (or `xp_rate_by_level`) times `rvr_zones_xp_rate`, the rule gamebots already had.
+  - **Checked:** two new tests in `UT_LevelRangeXpRates`. Not yet seen in game.
 
 ## Beta 1.1.1 — 2026-10-31
 
