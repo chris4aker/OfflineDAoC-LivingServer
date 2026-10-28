@@ -2077,7 +2077,7 @@ namespace DOL.GS.PacketHandler
 			}
 		}
 
-		public virtual void SendPlayerDied(GameLiving killedPlayer, GameObject killer)
+		public virtual void SendPlayerDied(GamePlayer killedPlayer, GameObject killer)
 		{
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.PlayerDeath)))
 			{
@@ -2086,6 +2086,21 @@ namespace DOL.GS.PacketHandler
 					pak.WriteShort(killer.ObjectID);
 				else
 					pak.WriteShort(0x00);
+				pak.Fill(0x0, 4);
+				SendTCP(pak);
+			}
+		}
+
+		/// <summary>
+		/// The death packet for any living, not only a player (a bot that keeps its corpse; BotCorpseVisuals).
+		/// Not on IPacketLib: CoreServer.dll, which ships with the base game, implements that interface.
+		/// </summary>
+		public virtual void SendLivingDied(GameLiving killed, GameObject killer)
+		{
+			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.PlayerDeath)))
+			{
+				pak.WriteShort(killed.ObjectID);
+				pak.WriteShort(killer != null ? (ushort)killer.ObjectID : (ushort)0x00);
 				pak.Fill(0x0, 4);
 				SendTCP(pak);
 			}

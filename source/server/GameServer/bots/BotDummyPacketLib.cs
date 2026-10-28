@@ -452,7 +452,7 @@ namespace DOL.GS
         {
         }
 
-        public void SendPlayerDied(GameLiving killedPlayer, GameObject killer)
+        public void SendPlayerDied(GamePlayer killedPlayer, GameObject killer)
         {
         }
 

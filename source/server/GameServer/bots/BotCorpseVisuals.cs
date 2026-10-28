@@ -18,7 +18,7 @@ namespace DOL.GS
                 return;
             foreach (GamePlayer viewer in bot.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
                 if (Sees(viewer, bot))
-                    viewer.Out.SendPlayerDied(bot, killer);
+                    SendDied(viewer, bot, killer);
         }
 
         /// <summary>The client was just sent the bot: a dead bot lies on the ground for it.</summary>
@@ -26,7 +26,7 @@ namespace DOL.GS
         {
             if (npc is GameBot bot && ShowsCorpseOnCreate(bot.IsAlive, bot.ObjectState == GameObject.eObjectState.Active,
                     bot.IsMovingCorpseForRevival))
-                viewer.Out.SendPlayerDied(bot, null);
+                SendDied(viewer, bot, null);
         }
 
         /// <summary>
@@ -52,6 +52,14 @@ namespace DOL.GS
 
         /// <summary>Whether a bot that was at <paramref name="oldHealth"/> and is now at <paramref name="newHealth"/> came back to life. Pure.</summary>
         public static bool CameBackToLife(int oldHealth, int newHealth) => oldHealth <= 0 && newHealth > 0;
+
+        // PacketLib168 (every real client's packet library) has the death packet for any living; IPacketLib keeps its
+        // player-only signature because CoreServer.dll, shipped with the base game, implements it.
+        private static void SendDied(GamePlayer viewer, GameBot bot, GameObject killer)
+        {
+            if (viewer.Out is PacketLib168 packets)
+                packets.SendLivingDied(bot, killer);
+        }
 
         private static bool Sees(GamePlayer viewer, GameBot bot) =>
             viewer?.Client?.ClientState == GameClient.eClientState.Playing && viewer.CanDetect(bot);
