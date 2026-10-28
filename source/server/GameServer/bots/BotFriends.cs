@@ -184,7 +184,9 @@ public static class BotFriends
     ///   prints "just entered" for each name a later AddFriend adds.
     /// So: RemoveFriend with 1 and the name first, then every friend online now as one AddFriend.
     /// </summary>
-    private static void SendEntered(GamePlayer player, string name)
+    private static void SendEntered(GamePlayer player, string name) => SendEntered(player, name, OnlineFriendNames(player));
+
+    private static void SendEntered(GamePlayer player, string name, string[] online)
     {
         using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(AbstractPacketLib.GetPacketCode(eServerPackets.RemoveFriend)))
         {
@@ -192,8 +194,25 @@ public static class BotFriends
             player.Out.SendTCP(pak);
         }
 
-        player.Out.SendAddFriends(OnlineFriendNames(player));
+        player.Out.SendAddFriends(online);
     }
+
+    /// <summary>
+    /// A friend was just added (FriendsManager.AddFriendToPlayerList; upstream sent AddFriend with that one name, even
+    /// offline, which left the old client's Friends Monitor with only that name). Friends Monitor gets every friend online
+    /// now, and the "just entered" notice comes only when the new friend really is online.
+    /// </summary>
+    public static void OnFriendAdded(GamePlayer player, string friend)
+    {
+        string[] online = OnlineFriendNames(player);
+        if (IsOnlineFriend(online, friend))
+            SendEntered(player, friend, online);
+        else
+            player.Out.SendAddFriends(online);
+    }
+
+    public static bool IsOnlineFriend(IEnumerable<string> online, string friend) =>
+        !string.IsNullOrWhiteSpace(friend) && online.Contains(friend.Trim(), StringComparer.OrdinalIgnoreCase);
 
     /// <summary>The old client's friend notice: a byte, 1 entered or 0 left, then the name.</summary>
     public static void WriteFriendNotice(PacketOut pak, bool entered, string name)

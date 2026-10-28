@@ -151,6 +151,16 @@ namespace DOL.UnitTests
             Assert.That(body, Is.EqualTo(expected));
         }
 
+        [TestCase("Haralhelm", true)]
+        [TestCase(" haralhelm ", true)]
+        [TestCase("Brenna", false)]
+        [TestCase("", false)]
+        public void AddedFriend_IsAnnouncedOnlyWhenOnline(string friend, bool announced)
+        {
+            // A friend just added gets the "just entered" notice only when it is in the online list Friends Monitor gets.
+            Assert.That(BotFriends.IsOnlineFriend(["Haralhelm", "Dowie"], friend), Is.EqualTo(announced));
+        }
+
         [Test]
         public async Task EmptyFriendsList_StillGetsAStatusCacheEntry()
         {

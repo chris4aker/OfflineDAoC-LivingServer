@@ -133,7 +133,7 @@ namespace DOL.GS.Friends
 				return false;
 			}
 
-			player.Out.SendAddFriends(new[] { friend });
+			BotFriends.OnFriendAdded(player, friend); // Fork: the whole online list; the old client's AddFriend replaces Friends Monitor.
 			player.SerializedFriendsList = this[player];
 			DbCoreCharacter offlineFriend = Database.SelectObjects<DbCoreCharacter>(DB.Column("Name").IsEqualTo(friend)).FirstOrDefault();
 			FriendStatus[] currentFriendsStatus;
