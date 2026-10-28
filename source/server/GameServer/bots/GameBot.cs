@@ -222,10 +222,15 @@ namespace DOL.GS
             set
             {
                 byte oldPercent = HealthPercent;
+                int oldHealth = base.Health;
                 base.Health = value;
 
                 if (oldPercent != HealthPercent)
                     Group?.UpdateMember(this, false, false);
+                // Owner 2026-10-28: a raised or released bot stands up again for the players who saw it fall.
+                if (BotCorpseVisuals.CameBackToLife(oldHealth, base.Health) && ObjectState == eObjectState.Active &&
+                    !_releasingCorpse)
+                    BotCorpseVisuals.OnRevived(this);
             }
         }
 
@@ -989,6 +994,8 @@ namespace DOL.GS
             }
 
             base.ProcessDeath(killer);
+            // Owner 2026-10-28: the players around it see it fall, as a player does (BotCorpseVisuals).
+            BotCorpseVisuals.OnDied(this, killer);
             if (IsAutonomousWorldBot)
             {
                 AutonomousBotStatusPersistence.Queue(this);
@@ -1104,8 +1111,18 @@ namespace DOL.GS
                 StopCurrentSpellcast();
                 (Brain as BotBrain)?.PrepareForTankPull();
                 StopMoving();
-                if (!MoveTo(Owner.CurrentRegionID, (int)Math.Round(destination.X),
-                    (int)Math.Round(destination.Y), (int)Math.Round(destination.Z), Owner.Heading))
+                bool helperMoved;
+                _releasingCorpse = true;
+                try
+                {
+                    helperMoved = MoveTo(Owner.CurrentRegionID, (int)Math.Round(destination.X),
+                        (int)Math.Round(destination.Y), (int)Math.Round(destination.Z), Owner.Heading);
+                }
+                finally
+                {
+                    _releasingCorpse = false;
+                }
+                if (!helperMoved)
                     return;
 
                 Health = Math.Max(1, MaxHealth);
@@ -2800,6 +2817,8 @@ namespace DOL.GS
 
         // True only while this bot's own release (ReleaseToNearestBindAndReturn) moves its corpse to the bind.
         private bool _releasingCorpse;
+        /// <summary>Its corpse is being moved to be revived at the other end (a release); BotCorpseVisuals does not lay it down there.</summary>
+        public bool IsMovingCorpseForRevival => _releasingCorpse;
 
         private void LogDeadMove(ushort regionID, int x, int y, int z, string how)
         {

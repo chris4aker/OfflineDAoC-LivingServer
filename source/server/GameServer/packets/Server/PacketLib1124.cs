@@ -293,7 +293,11 @@ namespace DOL.GS.PacketHandler
 			// NPC-backed riders need the same reattachment after either object is
 			// recreated, including explicit client requests outside ClientService.
 			if (npc is GameBot rider)
+			{
 				rider.SendStableRideAssociation(m_gameClient.Player, true);
+				// A dead bot lies where it fell for a player who comes into range (owner 2026-10-28, BotCorpseVisuals).
+				BotCorpseVisuals.OnCreatedFor(m_gameClient.Player, rider);
+			}
 			else if (npc is GameBotTaxi taxi && taxi.Rider?.StableRouteMountForClient == taxi)
 				taxi.Rider.SendStableRideAssociation(m_gameClient.Player, true);
 

@@ -2077,7 +2077,7 @@ namespace DOL.GS.PacketHandler
 			}
 		}
 
-		public virtual void SendPlayerDied(GamePlayer killedPlayer, GameObject killer)
+		public virtual void SendPlayerDied(GameLiving killedPlayer, GameObject killer)
 		{
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.PlayerDeath)))
 			{
