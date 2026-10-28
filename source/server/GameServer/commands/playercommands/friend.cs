@@ -32,6 +32,13 @@ namespace DOL.GS.Commands
 
             GamePlayer otherPlayer = ClientService.Instance.GetPlayerByPartialName(name, out ClientService.PlayerGuessResult result);
 
+            // Fork: no player found, so an autonomous bot of the realm by its exact name (online or parked).
+            if (result is ClientService.PlayerGuessResult.NOT_FOUND && BotFriends.TryResolveName(name, client.Player.Realm, out string botName))
+            {
+                AddFriend(botName, client.Player);
+                return;
+            }
+
             // abort if the returned player is from a hostile realm
             if (result is ClientService.PlayerGuessResult.FOUND_PARTIAL or ClientService.PlayerGuessResult.FOUND_EXACT)
             {
