@@ -9,7 +9,8 @@ Writes into tools/installer/src/Assets/:
   app.ico      the same shield as the exe/shortcut icon (16 to 256 px)
   stone.jpg    a 512x512 seamless dark stone tile for page backgrounds
 
-The pictures are the launcher's (Offline DAoC project art); only the "LIVING SERVER" lettering is added here, in Cinzel
+The welcome painting is Living Server's splash (living-server-splash-source.jpg, owner 2026-10-28); the header and
+shield are the launcher's (Offline DAoC project art). The lettering is added here, in Cinzel
 (SIL Open Font License, fonts/OFL-Cinzel.txt). Deterministic: the same inputs give the same files.
 """
 from pathlib import Path
@@ -126,26 +127,34 @@ def darken(img, mask, color=(10, 8, 6)):
 
 
 def make_hero():
-    src = Image.open(LAUNCHER_ART / "offline-daoc-splash-source.png").convert("RGB")
+    # Owner 2026-10-28: the welcome page uses Living Server's own splash painting (living-server-splash-source.jpg, the
+    # same picture as the game's loading screen). It has no lettering, so the whole title is set here, top left, over
+    # the dark storm clouds, clear of the three figures.
+    src = Image.open(Path(__file__).resolve().parent / "living-server-splash-source.jpg").convert("RGB")
     W, H = 1920, 1200
-    hero = cover(src, (W, H), focus=(0.5, 0.18))
-    hero = ImageEnhance.Contrast(hero).enhance(1.04)
-    hero = darken(hero, vignette((W, H), strength=0.45, bottom=0.55, right=0.25))
+    hero = cover(src, (W, H), focus=(0.5, 0.0))
+    hero = ImageEnhance.Contrast(hero).enhance(1.03)
+    hero = darken(hero, vignette((W, H), strength=0.42, bottom=0.6, right=0.0))
 
-    # The splash already says OFFLINE DAoC / Classic + Shrouded Isles across the top; Living Server goes under it.
-    title = gold_text("LIVING SERVER", cinzel(104, 800), tracking=10, stroke=3)
-    band_y = 410
-    # a soft dark band behind the new title so it reads over the castle and the sky
+    big = gold_text("OFFLINE DAoC", cinzel(88, 800), tracking=7, stroke=3)
+    sub = gold_text("CLASSIC + SHROUDED ISLES", cinzel(24, 700), tracking=5, stroke=2)
+    ls = gold_text("LIVING SERVER", cinzel(66, 800), tracking=7, stroke=3)
+    x, y = 72, 56
+    width = max(big.width, ls.width)
+    # a soft dark patch behind the title so it reads over the lightning
     band = Image.new("L", (W, H), 0)
-    ImageDraw.Draw(band).ellipse((W // 2 - title.width // 2 - 260, band_y - 60, W // 2 + title.width // 2 + 260, band_y + title.height + 70), fill=170)
-    band = band.filter(ImageFilter.GaussianBlur(60))
-    hero = darken(hero, band, (12, 9, 6))
+    ImageDraw.Draw(band).ellipse((x - 200, y - 130, x + width + 120, y + big.height + sub.height + ls.height + 190), fill=185)
+    band = band.filter(ImageFilter.GaussianBlur(70))
+    hero = darken(hero, band, (10, 8, 6))
     hero = hero.convert("RGBA")
-    r = rule(int(title.width * 1.15))
-    hero.alpha_composite(r, (W // 2 - r.width // 2, band_y - 26))
-    hero.alpha_composite(title, (W // 2 - title.width // 2, band_y))
-    r2 = rule(int(title.width * 0.8))
-    hero.alpha_composite(r2, (W // 2 - r2.width // 2, band_y + title.height + 20))
+    hero.alpha_composite(big, (x, y))
+    y += big.height + 16
+    hero.alpha_composite(sub, (x + (big.width - sub.width) // 2, y))
+    y += sub.height + 22
+    r = rule(width)
+    hero.alpha_composite(r, (x, y))
+    y += r.height + 18
+    hero.alpha_composite(ls, (x + (big.width - ls.width) // 2, y))
     return hero.convert("RGB")
 
 

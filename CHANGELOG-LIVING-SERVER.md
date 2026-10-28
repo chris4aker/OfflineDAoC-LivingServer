@@ -213,6 +213,15 @@ From lometur's HearthDAoC fork.
   scripts, so every safety check stays.
 - Details are in [tools/installer/README.md](tools/installer/README.md).
 
+### New loading screen and welcome art (owner 2026-10-28)
+
+- The game's loading screen and Setup's welcome page use a new Living Server painting: a Midgard dwarf, an Albion
+  knight with the chalice shield and a Hibernian caster (`tools/installer/art/living-server-splash-source.jpg`).
+- The loading screen (`pregame/splash.mpk`) is replaced only over shadowofze's exact file, and it is backed up first.
+  ROLLBACK.cmd and PREPARE-FOR-UPDATE.cmd put his back. Any other splash is left alone.
+- The package ships the new file whole under `content/`: a content-patch entry can now name a file ("File") instead of
+  byte changes, for files that are entirely Living Server's own. A damaged copy is refused before anything changes.
+
 ### Play-test fixes (2026-10-27 and 2026-10-28)
 
 Found by playing the Beta 1.1 test build on a fresh 0.37b install made by the new Setup.

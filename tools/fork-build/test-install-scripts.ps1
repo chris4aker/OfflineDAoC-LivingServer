@@ -223,7 +223,12 @@ $patches = @(
     [pscustomobject]@{ Path = 'new-client/godot/content/zones/zone998/models/gate.gltf'; Released = (TextSha 'x'); Fixed = (TextSha 'y'); Size = 1
         Ops = @(@{ data = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes('y')) }) },
     [pscustomobject]@{ Path = 'runtime/server/navmesh/zone997.nav'; Released = (TextSha 'r'); Fixed = (TextSha 'f'); Size = 1
-        Ops = @(@{ data = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes('f')) }) })
+        Ops = @(@{ data = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes('f')) }) },
+    # Beta 1.1: a file of ours shipped whole under content/ (the loading screen), not as byte ops.
+    [pscustomobject]@{ Path = 'runtime/client-opendaoc/app/pregame/splash996.mpk'; Released = (TextSha 'old splash'); Fixed = (TextSha 'new splash')
+        Size = 10; File = 'content/test-splash996.mpk' })
+New-Item -ItemType Directory -Path (Join-Path $patched 'content') -Force | Out-Null
+[IO.File]::WriteAllText((Join-Path $patched 'content\test-splash996.mpk'), 'new splash')
 [IO.File]::WriteAllText((Join-Path $patched 'content-patches.json'), (ConvertTo-Json -InputObject $patches -Depth 6))
 $infoLines = @(Get-Content -LiteralPath (Join-Path $patched 'BUILD-INFO.txt') | Where-Object { $_ -notlike 'content-patches.json=*' })
 $infoLines += "content-patches.json=$(Sha (Join-Path $patched 'content-patches.json'))"
@@ -233,6 +238,8 @@ function New-PatchedGame([string]$root) {
     New-Item -ItemType Directory -Path (Join-Path $root 'runtime\server\navmesh') -Force | Out-Null
     [IO.File]::WriteAllText((Join-Path $root 'runtime\server\navmesh\zone999.nav'), $releasedText)
     [IO.File]::WriteAllText((Join-Path $root 'runtime\server\navmesh\zone997.nav'), 'someone else''s mesh')
+    New-Item -ItemType Directory -Path (Join-Path $root 'runtime\client-opendaoc\app\pregame') -Force | Out-Null
+    [IO.File]::WriteAllText((Join-Path $root 'runtime\client-opendaoc\app\pregame\splash996.mpk'), 'old splash')
 }
 $fixGame = Join-Path $work 'content'
 New-PatchedGame $fixGame
@@ -241,12 +248,22 @@ $fixDry = RunIn $patched 'install-server-build.ps1' @('-GameFolder', $fixGame, '
 Check ($fixDry.Code -eq 0 -and [IO.File]::ReadAllText($nav) -eq $releasedText) "content: dry run changes nothing`n$($fixDry.Output)"
 $fixInstall = RunIn $patched 'install-server-build.ps1' @('-GameFolder', $fixGame)
 Check ($fixInstall.Code -eq 0 -and [IO.File]::ReadAllText($nav) -eq $fixedText) "content: the released file is fixed`n$($fixInstall.Output)"
+$splash = Join-Path $fixGame 'runtime\client-opendaoc\app\pregame\splash996.mpk'
+Check ([IO.File]::ReadAllText($splash) -eq 'new splash') "content: a whole file under content/ replaces the released one`n$($fixInstall.Output)"
 Check ([IO.File]::ReadAllText((Join-Path $fixGame 'runtime\server\navmesh\zone997.nav')) -eq 'someone else''s mesh' -and
        $fixInstall.Output -match 'not the released file, left alone' -and $fixInstall.Output -match 'not in this game, skipped') 'content: a changed or missing file is left alone'
 $fixAgain = RunIn $patched 'install-server-build.ps1' @('-GameFolder', $fixGame)
 Check ($fixAgain.Code -eq 0 -and $fixAgain.Output -match 'Already installed') "content: reinstall is a no-op`n$($fixAgain.Output)"
 $fixRollback = RunIn $patched 'rollback-server-build.ps1' @('-GameFolder', $fixGame)
 Check ($fixRollback.Code -eq 0 -and [IO.File]::ReadAllText($nav) -eq $releasedText) "content: rollback puts the released file back`n$($fixRollback.Output)"
+Check ([IO.File]::ReadAllText($splash) -eq 'old splash') "content: rollback puts the released whole file back`n$($fixRollback.Output)"
+$badSplash = Join-Path $work 'content-bad-splash'
+New-PatchedGame $badSplash
+[IO.File]::WriteAllText((Join-Path $patched 'content\test-splash996.mpk'), 'damaged!!!')
+$badSplashInstall = RunIn $patched 'install-server-build.ps1' @('-GameFolder', $badSplash)
+Check ($badSplashInstall.Code -ne 0 -and [IO.File]::ReadAllText((Join-Path $badSplash 'runtime\client-opendaoc\app\pregame\splash996.mpk')) -eq 'old splash' -and
+       (Sha (Join-Path $badSplash 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll']) "content: a damaged whole file is refused before anything changes`n$($badSplashInstall.Output)"
+[IO.File]::WriteAllText((Join-Path $patched 'content\test-splash996.mpk'), 'new splash')
 $fixRelease = Join-Path $work 'content-release'
 New-PatchedGame $fixRelease
 $null = RunIn $patched 'install-server-build.ps1' @('-GameFolder', $fixRelease)

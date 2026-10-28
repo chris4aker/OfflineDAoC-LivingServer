@@ -403,5 +403,12 @@
     ]
    }
   ]
+ },
+ {
+  "Path": "runtime/client-opendaoc/app/pregame/splash.mpk",
+  "Released": "f24460d2b064b86527b1800940d6d80c26b67ca3531d91b87c3b7a4d38455a9e",
+  "Fixed": "20c43b9d96c88bbd45ba88b32b8241370d46734341f3d18aa23956fb035554cf",
+  "Size": 18108908,
+  "File": "content/pregame-splash.mpk"
  }
 ]

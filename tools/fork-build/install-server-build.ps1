@@ -150,6 +150,12 @@ foreach ($patch in $contentPatches) {
         if ($hash -eq $patch.Fixed) { $state = 'fixed already' }
         elseif ($hash -eq $patch.Released) {
             $state = 'released file, will be fixed'
+            if ($patch.File) {
+                $shipped = Get-ContentPatchFile $patch $buildDir
+                if (!(Test-Path -LiteralPath $shipped) -or (Get-Sha256 $shipped) -ne $patch.Fixed) {
+                    Stop-WithMessage "$($patch.File) is missing or doesn't match content-patches.json (damaged download?). Download the build again."
+                }
+            }
             $contentPlan += [pscustomobject]@{ Patch = $patch; Path = $path; Hash = $hash }
         }
         else { $state = 'not the released file, left alone' }
@@ -256,7 +262,7 @@ try {
         }
     }
     foreach ($item in $contentPlan) {
-        $fixed = Expand-ContentPatch $item.Patch ([IO.File]::ReadAllBytes($item.Path))
+        $fixed = Expand-ContentPatch $item.Patch ([IO.File]::ReadAllBytes($item.Path)) $buildDir
         if ((Get-BytesSha256 $fixed) -ne $item.Patch.Fixed) { throw "The fix for $($item.Patch.Path) didn't come out right." }
         [IO.File]::WriteAllBytes($item.Path, $fixed)
         if ((Get-Sha256 $item.Path) -ne $item.Patch.Fixed) { throw "Writing $($item.Patch.Path) failed verification." }

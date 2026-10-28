@@ -125,14 +125,24 @@ function Get-BackupName([string]$Folder) { return ($Folder -replace '[\\/]', '_'
 
 # Game files this build fixes in place (content-patches.json, made by make_content_patch.py): byte patches against the
 # released file, so no game file ships whole. A file is changed only when it has the released fingerprint, and the
-# result must have the fixed one. Beta 1.0: Hall of the Corrupt's navmesh and eight new-client gate models.
+# result must have the fixed one. Beta 1.0: Hall of the Corrupt's navmesh and eight new-client gate models; Beta 1.1:
+# the game's loading screen (pregame/splash.mpk, shipped whole under content/).
 function Read-ContentPatches([string]$BuildDir) {
     $path = Join-Path $BuildDir 'content-patches.json'
     if (!(Test-Path -LiteralPath $path)) { return @() }
     return @(Get-Content -LiteralPath $path -Raw | ConvertFrom-Json)
 }
 
-function Expand-ContentPatch($Patch, [byte[]]$Released) {
+# An entry with "File" ships its fixed file whole in the build folder instead of byte ops (Living Server's own art, the
+# game's loading screen, owner 2026-10-28): only for files that are entirely ours, never a game file.
+function Get-ContentPatchFile($Patch, [string]$BuildDir) {
+    $relative = [string]$Patch.File
+    if ([IO.Path]::IsPathRooted($relative) -or $relative -match '(^|[\\/])\.\.([\\/]|$)') { throw "Bad content file path: $relative" }
+    return (Join-Path $BuildDir ($relative.Replace('/', [IO.Path]::DirectorySeparatorChar)))
+}
+
+function Expand-ContentPatch($Patch, [byte[]]$Released, [string]$BuildDir) {
+    if ($Patch.File) { return ,([IO.File]::ReadAllBytes((Get-ContentPatchFile $Patch $BuildDir))) }
     $out = New-Object IO.MemoryStream
     foreach ($op in @($Patch.Ops)) {
         if ($null -ne $op.copy) { $out.Write($Released, [int]$op.copy[0], [int]$op.copy[1]) }

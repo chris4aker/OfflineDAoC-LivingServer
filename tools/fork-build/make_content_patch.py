@@ -7,6 +7,10 @@ Each entry names the file (relative to the game folder, forward slashes), its re
 that turn one into the other: {"copy": [offset, length]} takes bytes of the released file, {"data": base64} inserts new
 bytes. The installer (fork-build-common.ps1, Expand-ContentPatch) changes a file only when it has the released
 fingerprint, checks the result against the fixed one, and backs the file up first.
+
+An entry may instead name a whole file shipped in the build folder ("File": "content/<name>", no "Ops"), for a file
+that is entirely Living Server's own (Beta 1.1: the game's loading screen, pregame/splash.mpk -> content/
+pregame-splash.mpk). Those entries are written by hand and kept when this script rewrites the list.
 """
 import base64
 import difflib
@@ -81,6 +85,13 @@ def main(argv):
         entries.append({'Path': rel.replace('\\', '/'), 'Released': hashlib.sha256(old).hexdigest(),
                         'Fixed': hashlib.sha256(new).hexdigest(), 'Size': len(new), 'Ops': ops})
         print(f'{rel}: {len(ops)} ops, {sum(len(base64.b64decode(o["data"])) for o in ops if "data" in o)} new bytes')
+    # Whole-file entries ("File") are not made here; keep the ones already in the list (paths given here win).
+    try:
+        with open(argv[1], encoding='utf-8') as f:
+            kept = [e for e in json.load(f) if 'File' in e and e['Path'] not in {x['Path'] for x in entries}]
+    except FileNotFoundError:
+        kept = []
+    entries += kept
     with open(argv[1], 'w', encoding='utf-8', newline='\n') as f:
         json.dump(entries, f, indent=1)
         f.write('\n')
