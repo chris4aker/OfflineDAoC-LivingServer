@@ -198,7 +198,7 @@ Not log errors, but found while playing and not yet fixed or verified:
 
 ## Classic-client play test, Midgard block (2026-10-27 evening, build db57318)
 
-Played as Claudemid (Viking, levels 1-3) from 19:52. **Fixed in code, not yet deployed** (in-game checks after the next
+Played as Claudemid (Viking, levels 1-3) from 19:52 to 22:11 (2 h 20 min, not the planned 3 h). **Fixed in code, not yet deployed** (in-game checks after the next
 install):
 
 - **Issue #25: NpcService stalls of 1-1.3 s.** Every slow tick credited to `AutonomousRvrRally.HasRoute` was "Collecting
@@ -239,8 +239,8 @@ install):
 
 ## Classic-client play test, Hibernia block (2026-10-27 night, build db57318)
 
-Played as Claudehib (Magician, level 1) from 22:52. The owner asked to keep playing, so the build was not
-reinstalled for this block. **Fixed in code, not yet deployed:**
+Played as Claudehib (Magician, level 1) from 22:11 to 23:08, when the owner stopped the test for an install. The build
+was not reinstalled for this block. **Fixed in code, not yet deployed:**
 
 - **Gamebot groupmates walked in a straight line to the player.** `FollowFormation` used `WalkTo` for any bot that
   isn't a companion, at any distance. Lorcinellan (Druid 17), asked to come from across Shannon Estuary, never
@@ -266,7 +266,7 @@ reinstalled for this block. **Fixed in code, not yet deployed:**
 - **New characters can barely fight.** A level 1 Magician (about 30 HP) dies in three hits to a level 1 grass spirit
   (about 10 damage a hit), while Gleam Ray lands for 2-5. A level 3 Viking hits for 1-4. This may be stock OpenDAoC
   numbers plus untrained skills; it needs a look before the alt system brings new low-level bots.
-- **The server log runs behind real time.** It was about 40 minutes behind from about 22:00, while the game stayed
-  responsive.
+- **Retracted: "the server log runs behind real time."** This came from my wrong estimate of the clock, not from the log;
+  at 23:09 the log was one minute behind. No change was made.
 - **`/mobs` lists every realm's monsters for a Midgard character but only Hibernian ones for a Hibernian.** For example,
   Midgard's `/mobs 4` showed dryad sprig and skeletal seafarer. Check the zone-access filter.
