@@ -25,6 +25,27 @@ namespace DOL.GS
             return true;
         }
 
+        /// <summary>
+        /// Whether a seam step is the one before it taken back: it crosses the border the opposite way (the two directions point
+        /// against each other) at a place within the tolerance of the first. Steps are short (the heights check allows 240 units),
+        /// so nearness alone would also take the same step twice for a reversal. A bot on a patch of ground that joins neither
+        /// zone's main ground gets such steps for ever (Vindsaul Faste, 2026-10-28: West Svealand to Yggdra Forest and back,
+        /// 130 units each way, five bots).
+        /// </summary>
+        public static bool IsReversal(Step previous, Step next, float tolerance = 300)
+        {
+            static Vector2 Plane(Vector3 point) => new(point.X, point.Y);
+            Vector2 first = Plane(previous.Outside) - Plane(previous.Inside);
+            Vector2 second = Plane(next.Outside) - Plane(next.Inside);
+            if (first.LengthSquared() < 1 || second.LengthSquared() < 1)
+                return false;
+            if (Vector2.Dot(first, second) / (first.Length() * second.Length()) > -0.7f)
+                return false;
+            Vector2 firstMiddle = (Plane(previous.Inside) + Plane(previous.Outside)) / 2;
+            Vector2 secondMiddle = (Plane(next.Inside) + Plane(next.Outside)) / 2;
+            return Vector2.Distance(firstMiddle, secondMiddle) <= tolerance;
+        }
+
         private static bool IsFinite(Vector3 p) => float.IsFinite(p.X) && float.IsFinite(p.Y) && float.IsFinite(p.Z);
     }
 }

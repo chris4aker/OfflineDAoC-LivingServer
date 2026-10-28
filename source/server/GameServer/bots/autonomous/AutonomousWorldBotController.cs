@@ -115,6 +115,12 @@ namespace DOL.GS
         private Vector3 _pathSegmentOrigin;
         private AutonomousZoneBoundaryRouting.Step? _resolvedBoundaryStep;
         private Zone _resolvedBoundaryZone;
+        // The last seam step handed out for the current goal and how many times the next one took it back (see IsReversal).
+        private AutonomousZoneBoundaryRouting.Step? _lastSeamStep;
+        private Vector3 _lastSeamGoal;
+        private long _lastSeamStepTick;
+        private int _seamReversals;
+        public const int MaximumSeamReversals = 3;
         private Vector3? _patrolDestination;
         // RvR uses the same collision-safe/stable/zone route machinery as PvE,
         // but never treats the destination as a monster camp.
@@ -4570,6 +4576,37 @@ namespace DOL.GS
                             return true;
                         RejectPendingBoarding(bot, "No safe connected zone seam on the approach");
                         AbandonCamp(bot, "No safe connected zone seam on the selected route");
+                        return false;
+                    }
+                    long seamNow = GameLoop.GameLoopTime;
+                    if (_lastSeamStep is { } lastSeam && seamNow - _lastSeamStepTick < 5 * 60_000 &&
+                        Vector3.DistanceSquared(_lastSeamGoal, destination) < 500f * 500f &&
+                        AutonomousZoneBoundaryRouting.IsReversal(lastSeam, resolved))
+                        _seamReversals++;
+                    else
+                        _seamReversals = 0;
+                    _lastSeamStep = resolved;
+                    _lastSeamGoal = destination;
+                    _lastSeamStepTick = seamNow;
+                    if (_seamReversals >= MaximumSeamReversals)
+                    {
+                        // Each zone sends the bot back to the other: it stands on ground that joins neither zone's main ground.
+                        // The planner never fails here, so the failure paths below never ran; take them now.
+                        _seamReversals = 0;
+                        _lastSeamStep = null;
+                        _resolvedBoundaryStep = null;
+                        _resolvedBoundaryZone = null;
+                        Log.Warn($"AUTONOMOUS_ZONE_SEAM_CYCLE bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                                 $"realm={GlobalConstants.RealmToName(bot.Realm)} region={bot.CurrentRegionID} zone={currentZone.ID} " +
+                                 $"position={bot.X},{bot.Y},{bot.Z} goalZone={destinationZone.ID} goal={(int)destination.X},{(int)destination.Y},{(int)destination.Z} " +
+                                 $"step={(int)resolved.Inside.X},{(int)resolved.Inside.Y}>{(int)resolved.Outside.X},{(int)resolved.Outside.Y} " +
+                                 $"activity=\"{bot.PersistentRecord?.Activity}\"");
+                        if (TryPlanCapitalTransit(bot, destination))
+                            return HandleCapitalTransit(bot);
+                        if (TryEscapeTerminalRoutePocket(bot, current))
+                            return true;
+                        RejectPendingBoarding(bot, "A zone seam route that turns back on itself");
+                        AbandonCamp(bot, "A zone seam route that turns back on itself");
                         return false;
                     }
                     _resolvedBoundaryStep = resolved;
