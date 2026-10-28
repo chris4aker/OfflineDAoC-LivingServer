@@ -385,8 +385,15 @@ namespace LivingServerSetup
         {
             var running = GameScanner.RunningGameProcesses();
             if (running.Count > 0)
+            {
+                var details = GameScanner.RunningGameProcessDetails();
+                foreach (var d in details) Log.Write("Still running: " + d);
+                bool hidden = details.Any(d => d.Contains(", no window"));
                 throw new StepFailed("Offline DAoC is still running (" + string.Join(", ", running) + ").",
-                    "Quit the game, click STOP SERVER in the launcher and close it, then click Try again.");
+                    "Quit the game, click STOP SERVER in the launcher and close it, then click Try again." +
+                    (hidden ? " One of them has no window: end it in Task Manager (Details: " +
+                        string.Join(", ", details.Where(d => d.Contains(", no window"))) + ")." : ""));
+            }
 
             if (o.NewInstall)
             {

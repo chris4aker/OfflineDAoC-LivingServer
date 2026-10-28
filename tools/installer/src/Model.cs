@@ -300,6 +300,28 @@ namespace LivingServerSetup
             }
             return names;
         }
+
+        /// <summary>Where each running Offline DAoC program was started from, so the message can name the game folder
+        /// (a launcher can stay behind with no window: play test 2026-10-28). "name (folder)" where Windows lets us read it.</summary>
+        public static List<string> RunningGameProcessDetails()
+        {
+            var details = new List<string>();
+            foreach (var n in GameProcesses)
+            {
+                Process[] found;
+                try { found = Process.GetProcessesByName(n); } catch { continue; }
+                foreach (var p in found)
+                {
+                    string where = null;
+                    try { where = Path.GetDirectoryName(p.MainModule.FileName); } catch { }
+                    bool window = false;
+                    try { window = p.MainWindowHandle != IntPtr.Zero; } catch { }
+                    details.Add(n + ".exe" + (where != null ? " in " + where : "") + (window ? "" : ", no window") + " (process " + p.Id + ")");
+                    p.Dispose();
+                }
+            }
+            return details;
+        }
     }
 
     /// <summary>Sizes of the official downloads, read from shadowofze's release manifests (with fallbacks measured on
