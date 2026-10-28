@@ -510,6 +510,12 @@ internal sealed partial class MainForm : Form
         var xpSettings = new TabPage("Options") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
         xpSettings.Controls.Add(BuildXpSettingsPanel());
         tabs.TabPages.Add(population);
+        // Living Server fork (chris4aker/OfflineDAoC-SocialExpansion): its settings tab, second in the list (owner
+        // 2026-10-28: it was second to last, after the Bot Goals tab). SocialExpansionSettingsControl.cs.
+        var socialExpansion = new TabPage("Living Server") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
+        _socialExpansionSettings = new SocialExpansionSettingsControl(_database, BotGoalsServerStopped);
+        socialExpansion.Controls.Add(_socialExpansionSettings);
+        tabs.TabPages.Add(socialExpansion);
         tabs.TabPages.Add(groups);
         tabs.TabPages.Add(rvr);
         var battlegrounds = new TabPage("Battlegrounds") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
@@ -529,11 +535,6 @@ internal sealed partial class MainForm : Form
             Path.Combine(_serverDirectory, OfflineDaoc.Configuration.BotGoalSettings.FileName), BotGoalsServerStopped);
         botGoals.Controls.Add(_botGoalsSettings);
         tabs.TabPages.Add(botGoals);
-        // Living Server fork (chris4aker/OfflineDAoC-SocialExpansion): its settings tab. SocialExpansionSettingsControl.cs.
-        var socialExpansion = new TabPage("Living Server") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
-        _socialExpansionSettings = new SocialExpansionSettingsControl(_database, BotGoalsServerStopped);
-        socialExpansion.Controls.Add(_socialExpansionSettings);
-        tabs.TabPages.Add(socialExpansion);
         tabs.TabPages.Add(auction);
         return tabs;
     }
