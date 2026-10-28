@@ -38,7 +38,9 @@ checklist for that day, written for 0.38.
      too), drop the patch. If it doesn't, make a patch against the 0.38 file with `make_content_patch.py` and keep
      both entries.
 5. **All-in-one installer** (`installer/all-in-one`, PR #26). It pins shadowofze's `Get-OfflineDAoC.ps1` by
-   SHA-256 and knows the 0.37 and 0.36 starting points. For 0.38 it needs:
+   SHA-256 and knows the 0.37 and 0.36 starting points. It already reads a `BaseRelease` list (2026-10-28): a game
+   on any listed release takes Living Server as it is, and new installs and updates go to the newest listed. For
+   0.38 it still needs:
    - the new downloader and its pin;
    - an "existing 0.38" path;
    - a "0.37 → official 0.38 update → Living Server" path.

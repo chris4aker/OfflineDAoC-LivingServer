@@ -17,9 +17,28 @@ namespace LivingServerSetup
     {
         public static Dictionary<string, string> BuildInfo = new Dictionary<string, string>();
         public static string BuildName => Get("BuildName");
-        /// <summary>The Offline DAoC release the package fits, e.g. 0.37 (its b and c editions too).</summary>
-        public static string BaseRelease => Get("BaseRelease");
+        /// <summary>
+        /// The newest Offline DAoC release the package fits, e.g. 0.37 (its b and c editions too): the one Setup downloads
+        /// and updates to. BUILD-INFO may list several ("0.37,0.38", docs/UPSTREAM-RELEASES.md) once a build carries a newer
+        /// release's server code; a game on any listed release then takes Living Server as it is.
+        /// </summary>
+        public static string BaseRelease => NewestRelease(Get("BaseRelease"));
+        /// <summary>Every release the package fits.</summary>
+        public static IReadOnlyList<string> BaseReleases => Releases(Get("BaseRelease"));
+        public static bool Fits(string release) => release != null && BaseReleases.Contains(release);
         public static string Commit => Get("Commit");
+        /// <summary>"0.37" or "0.37 / 0.38": for labels that name every release the package fits.</summary>
+        public static string FitsLabel => string.Join(" / ", BaseReleases.OrderBy(r => new Version(r)));
+        public static string ShortCommit => Commit.Length > 7 ? Commit.Substring(0, 7) : Commit;
+
+        public static List<string> Releases(string list) =>
+            (list ?? "").Split(',').Select(r => r.Trim()).Where(r => Regex.IsMatch(r, @"^\d+\.\d+$")).Distinct().ToList();
+
+        public static string NewestRelease(string list)
+        {
+            var all = Releases(list);
+            return all.Count == 0 ? "" : all.OrderBy(r => new Version(r)).Last();
+        }
         public static string ServerDll => Get("GameServer.dll").ToLowerInvariant();
         public static string RootFolder;
         static byte[] zipBytes;
@@ -138,7 +157,7 @@ namespace LivingServerSetup
             return new Version(Release).CompareTo(new Version(Payload.BaseRelease));
         }
 
-        public bool IsBase => Release == Payload.BaseRelease;
+        public bool IsBase => Payload.Fits(Release);
         /// <summary>The release the official update starts from (0.37's patch updates 0.36 / 0.36b / 0.36c).</summary>
         public bool IsUpdatable => Release != null && Manifests.UpdatableFrom.Contains(Release);
         /// <summary>Living Server fits it as it is: this release, with its new client (if any) updated too.</summary>

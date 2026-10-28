@@ -71,7 +71,7 @@ namespace LivingServerSetup
                 "Setup installs everything you need: Offline DAoC by shadowofze, and the Living Server add-on on top. " +
                 "Already playing Offline DAoC? It finds your game and adds Living Server, and your characters stay.",
                 Theme.Serif(9.75f), R(49, 496, 600, 48), Theme.Text);
-            Theme.DrawText(g, "Living Server " + Payload.DisplayName + " for Offline DAoC " + Payload.BaseRelease +
+            Theme.DrawText(g, "Living Server " + Payload.DisplayName + " for Offline DAoC " + Payload.FitsLabel +
                 "  ·  a free fan project, not affiliated with Electronic Arts or Broadsword", Theme.Serif(7.75f), R(49, 572, 760, 18), Theme.Faint,
                 TextFormatFlags.Left | TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis);
         }
@@ -195,7 +195,7 @@ namespace LivingServerSetup
             }
             else if (g.CompareToBase() > 0)
             {
-                c.Lines.Add(("Newer than this Living Server build, which is made for " + Payload.BaseRelease + ". Look for a newer Living Server release.", Theme.Danger));
+                c.Lines.Add(("Newer than this Living Server build, which is made for " + Payload.FitsLabel + ". Look for a newer Living Server release.", Theme.Danger));
                 c.Enabled = false; c.Stripe = Theme.Iron;
             }
             else if (g.IsBase)
@@ -210,7 +210,10 @@ namespace LivingServerSetup
                         c.Lines.Add(("Adds " + dn + ". Your characters, bots and settings stay.", Theme.Success));
                         c.Badge = "ADD LIVING SERVER"; c.BadgeColor = Theme.Success; break;
                     case LsState.OtherBuild:
-                        c.Lines.Add(("Has " + Wizard.BuildLabel(g.LsBuild) + ". Setup upgrades it to " + dn + "; everything you have stays.", Theme.Success));
+                        // Same name, another build (a test build, or a rebuilt release): "upgrades Beta 1.1 to Beta 1.1" read wrong.
+                        c.Lines.Add((g.LsBuild == Payload.BuildName
+                            ? "Has another " + dn + " build. Setup replaces it with this one (" + Payload.ShortCommit + "); everything you have stays."
+                            : "Has " + Wizard.BuildLabel(g.LsBuild) + ". Setup upgrades it to " + dn + "; everything you have stays.", Theme.Success));
                         c.Badge = "UPGRADE"; c.BadgeColor = Theme.Success; break;
                     case LsState.ThisBuild when !g.ClientBehind:
                         c.Lines.Add((dn + " is installed. Choose this to check it, add the new client, or remove Living Server.", Theme.Muted));
