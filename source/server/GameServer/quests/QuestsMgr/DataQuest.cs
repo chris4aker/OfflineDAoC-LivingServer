@@ -242,6 +242,8 @@ namespace DOL.GS.Quests
 		protected int[] m_rewardItemsChosen = null;
 		protected List<DbItemTemplate> m_finalRewards = new List<DbItemTemplate>();
 		protected List<string> m_questDependencies = new List<string>();
+		// Quests whose malformed dependency entry was already logged.
+		private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, bool> s_badDependencyLogged = new();
 		protected List<byte> m_allowedClasses = new List<byte>();
 		string m_classType = string.Empty;
 		string m_additionalData = string.Empty;
@@ -568,6 +570,9 @@ namespace DOL.GS.Quests
 						if (str != string.Empty)
 						{
 							m_questDependencies.Add(str);
+							// An ID entry that doesn't parse is never met; say so once per quest.
+							if (!QuestDependencies.IsValid(str) && s_badDependencyLogged.TryAdd(m_dataQuest.ID, true))
+								log.Error($"DataQuest [{m_dataQuest.ID}] {m_dataQuest.Name}: dependency \"{str}\" is not valid and is never met");
 						}
 					}
 				}
@@ -1054,26 +1059,29 @@ namespace DOL.GS.Quests
 			}
 
 			// check to see if this quest requires another to be done first
+			// An entry is a quest name or a quest ID form ("#id", "#a/b", "!#a/b"; QuestDependencies, from HearthDAoC).
 			if (m_questDependencies.Count > 0)
 			{
-				int numFound = 0;
-
-				foreach (string str in m_questDependencies)
+				var finishedNames = new List<string>();
+				var finishedIds = new HashSet<int>();
+				foreach (AbstractQuest quest in finishedQuests)
 				{
-					foreach (AbstractQuest quest in finishedQuests)
-					{
-						// A finished scripted quest of that name counts too: Master Torr's Commencement needs his own
-						// scripted "Immediate Resolution" (ImmediateResolutionVB), and only three class-locked classic quests
-						// of that name counted, so every other class could never be offered it (quest probe 2026-10-15).
-						if (string.Equals(quest.Name, str, StringComparison.OrdinalIgnoreCase))
-						{
-							numFound++;
-							break;
-						}
-					}
+					// A finished scripted quest of that name counts too: Master Torr's Commencement needs his own
+					// scripted "Immediate Resolution" (ImmediateResolutionVB), and only three class-locked classic quests
+					// of that name counted, so every other class could never be offered it (quest probe 2026-10-15).
+					finishedNames.Add(quest.Name);
+					if (quest is DataQuest dataQuest)
+						finishedIds.Add(dataQuest.ID);
 				}
 
-				if (numFound < m_questDependencies.Count)
+				var activeIds = new HashSet<int>();
+				foreach (AbstractQuest quest in player.QuestList.Keys)
+				{
+					if (quest is DataQuest dataQuest)
+						activeIds.Add(dataQuest.ID);
+				}
+
+				if (!QuestDependencies.AreMet(m_questDependencies, finishedNames, finishedIds, activeIds))
 					return false;
 			}
 

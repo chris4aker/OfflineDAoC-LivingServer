@@ -752,6 +752,12 @@ namespace DOL.GS.Quests
             }
         }
 
+        /// <summary>The map marker of a quest's stage, or null. The GM's /epic goto uses it.</summary>
+        public static Point MarkerFor(int questId, int step) =>
+            _config.Quests.TryGetValue(questId, out QuestInfo info) && info.Steps != null && step > 0 && step < info.Steps.Count
+                ? info.Steps[step]?.Marker
+                : null;
+
         /// <summary>A classic quest's own marker id: MarkerId for the first quest id, one more per id after it (the
         /// bounty, reputation and Sluaghbinder markers sit below MarkerId).</summary>
         public static uint QuestMarkerId(int questId) => MarkerId + (uint)Math.Max(0, questId - 20000);

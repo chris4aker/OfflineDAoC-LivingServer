@@ -121,7 +121,7 @@ jobs:
           if (!(Test-Path "$built/GameServer.dll")) { throw "No GameServer.dll in $built" }
           Copy-Item "$built/GameServer.dll", "$built/GameServer.pdb" $dir
           Copy-Item tools/fork-build/INSTALL.cmd, tools/fork-build/ROLLBACK.cmd, tools/fork-build/PREPARE-FOR-UPDATE.cmd, tools/fork-build/install-server-build.ps1, tools/fork-build/rollback-server-build.ps1, tools/fork-build/fork-build-common.ps1, tools/fork-build/README.txt, tools/fork-build/content-patches.json $dir
-          Copy-Item tools/claude-version/set_bot_guilds.py, tools/claude-version/set_bot_social.py, tools/claude-version/set_xp_by_level.py, tools/claude-version/carry_social_tables.py "$dir/tools/claude-version"
+          Copy-Item tools/claude-version/set_bot_guilds.py, tools/claude-version/set_bot_social.py, tools/claude-version/set_xp_by_level.py, tools/claude-version/carry_social_tables.py, tools/claude-version/epic_chains.py, tools/claude-version/epic_chains_data.json "$dir/tools/claude-version"
           Copy-Item docs/BOT-GUILDS.md, docs/BOT-PERSONALITIES.md, docs/XP-BY-LEVEL-RANGE.md, docs/LIVING-SERVER.md, docs/KNOWN-ISSUES.md "$dir/docs"
           $launcher = "source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows"
           New-Item -ItemType Directory -Path "$dir/launcher" -Force | Out-Null
