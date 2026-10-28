@@ -7,7 +7,7 @@ request; `release/1.1` goes to `main` (and is published) once it has been built,
 
 | Branch | Pull request | What it brings | State (2026-10-28) |
 |---|---|---|---|
-| `feature/talking-update` | #28 | The talking update; the issue #25 stall fix (064a387) | Merged at `29fdca8`; still being worked on, merge again for later commits |
+| `feature/talking-update` | #28 | The talking update and the living world, holiday chatter and Leeroy; the issue #25 stall fix (064a387) | Merged at `29fdca8`; still being worked on, merge again for later commits |
 | `fixes/fork-picks` | #27 | Fixes from other forks: effect leak, siege expiry, healer casts, low-power Animists, medallion full bag, siege weapon owner | Merged; CI passed |
 | `upstream/0.38-server` | #30 | Offline DAoC 0.38's server fixes; a build can fit several releases | Merged; CI passed |
 | `bots/stefanrows-routes-reactions` | (pushed) | stefanrows route-failure fixes; bots react to attacks like players | Merged; tests pass locally |
@@ -33,7 +33,7 @@ shadowofze, already in his 0.38 work where he took them) and the old `se`, `ci` 
 - [x] Every branch above merged into `release/1.1`, conflicts resolved (merge the talking update and installer again for later commits)
 - [x] One consolidated Beta 1.1 changelog section
 - [x] Build name set in `ForkBuildInfo.cs` (`1.1-beta`)
-- [ ] CI green on `release/1.1` (server, launcher and installer tests)
+- [x] CI green on `release/1.1` (server, launcher and installer tests; 2026-10-28, recheck after the last merges)
 - [ ] Played on the owner's PC at the normal bot count. Watch sieges: their expiry timers now run on the live
       clock, so musters, marches, repels and the four-hour cap will fire where earlier builds skipped them.
 - [ ] Reply on issue #25 once the release is out

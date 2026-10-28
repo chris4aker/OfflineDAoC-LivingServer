@@ -105,6 +105,9 @@ namespace DOL.GS
             public bool FinalKillCredited;
             /// <summary>Another realm's raid was credited with this raid's final encounter (a contested neutral dungeon).</summary>
             public eRealm BeatenBy = eRealm.None;
+            /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): a dragon raid's charge at staging, once.</summary>
+            public bool LeeroyRolled, LeeroyDone;
+            public string LeeroyName;
         }
         private sealed class Party
         {
@@ -338,6 +341,21 @@ namespace DOL.GS
                             Log.Info($"REALM_RAID_SHORT_START event={raid.Definition.Id} present={present} required={raid.Required} " +
                                      $"recruited={raid.Support.Length} minutes={(now - raid.Created) / 60_000}");
                         }
+                        // A dragon raid's Leeroy: half the raid is there, not all, and he goes; the raid goes in after him.
+                        GameBot leeroy = null;
+                        GameLiving[] staged = null;
+                        if (!ready && raid.LeeroyRolled && !raid.LeeroyDone && !raid.Definition.IsDungeon && DragonLanded(raid) &&
+                            AutonomousRaidLeeroy.ShouldChargeStaging(present, raid.Required, now - raid.Created))
+                        {
+                            raid.LeeroyDone = true;
+                            staged = StagedBots(raid);
+                            leeroy = AutonomousRaidLeeroy.Pick(staged);
+                            if (leeroy != null)
+                            {
+                                ready = true;
+                                Log.Info($"REALM_RAID_LEEROY_START event={raid.Definition.Id} bot=\"{leeroy.Name}\" present={present} required={raid.Required}");
+                            }
+                        }
                         if (ready)
                         {
                             raid.Started = true;
@@ -349,6 +367,8 @@ namespace DOL.GS
                             if (raid.Definition.IsDungeon && AutonomousEpicSpecialForces.ComesFromStart(raid.Definition.Id))
                                 AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm,
                                     "the last two expeditions here were defeated");
+                            if (leeroy != null && AutonomousRaidLeeroy.Charge(leeroy, raid.Boss, staged, raid.Definition.Name))
+                                raid.LeeroyName = leeroy.Name;
                         }
                         else if (expired)
                         { End(raid, now, $"Staging failed: {present} adventurers arrived; no undersized or airborne assault was ordered."); continue; }
@@ -497,6 +517,10 @@ namespace DOL.GS
                 }
                 if (raid == null) return false;
                 Raids[id] = raid;
+                // One raid in twenty has a raider who can't wait for the final encounter (bot_living_leeroy).
+                raid.LeeroyRolled = AutonomousRaidLeeroy.On && AutonomousRaidLeeroy.Rolls(Random.Shared.NextDouble());
+                if (raid.DungeonRoute != null) raid.DungeonRoute.LeeroyRolled = raid.LeeroyRolled;
+                if (raid.LeeroyRolled) Log.Info($"RAID_LEEROY_ROLLED event={id}");
                 RealmEventRecords.Begin(id, definition.Name, definition.IsNeutral ? "Neutral raid" : definition.IsDungeon ? "Epic dungeon" : "Dragon",
                     GlobalConstants.RealmToName(realm), (forced ? "Forced" : "Automatic") + " rally via " + raid.Hub.Name);
                 raid.ForcedParties.AddRange(recruits);
@@ -576,6 +600,11 @@ namespace DOL.GS
             p.Members.Count(b => IsEligible(b) && b.IsAlive && !b.IsOnStableMasterRoute && b.Group != null &&
                 b.CurrentRegionID == (raid.Definition.IsDungeon ? raid.DungeonRoute.Entrance.SourceRegion : raid.Definition.Region) &&
                 AtStaging(raid, b)));
+
+        private static GameLiving[] StagedBots(Raid raid) => raid.Parties.Values
+            .SelectMany(p => p.Members.Where(b => IsEligible(b) && b.IsAlive && !b.IsOnStableMasterRoute && b.Group != null &&
+                b.CurrentRegionID == raid.Definition.Region && AtStaging(raid, b)))
+            .Cast<GameLiving>().ToArray();
 
         private static bool AtStaging(Raid raid, GameBot bot)
         {
@@ -1305,6 +1334,9 @@ namespace DOL.GS
                 AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, bossName, newsTopic == "raid_won");
             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidOutcome(raid.Definition.Name, outcome),
                 newsTopic, RaidSlots(raid.Definition.Name, bossName));
+            string leeroyName = raid.LeeroyName ?? raid.DungeonRoute?.LeeroyName;
+            if (leeroyName != null && newsTopic != null)
+                AutonomousRaidLeeroy.AfterRaid(raid.Definition.Realm, leeroyName, bossName, newsTopic == "raid_won", raid.Support);
         }
 
         /// <summary>The names a raid's news lines use ({raid}, {boss}).</summary>

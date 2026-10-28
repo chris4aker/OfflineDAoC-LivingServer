@@ -91,7 +91,10 @@ FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'trav
          'recruiting',         # lfg: the bot's group is really looking for members ({need} is what it needs)
          'xp_low', 'xp_mid', 'xp_high',   # under 2 bubbles, 2-7, 8+ into the level ({bubbles})
          'is_healer', 'is_tank', 'is_caster', 'is_support',   # the bot's role in a group
-         'newbie', 'veteran'}  # level 1-14, level 40+ (voices.json experience tiers)
+         'newbie', 'veteran',  # level 1-14, level 40+ (voices.json experience tiers)
+         # Holiday chatter (AutonomousHolidays): the days around a holiday, and the day itself
+         'holiday', 'holiday_today', 'holiday_halloween', 'holiday_thanksgiving', 'holiday_christmas', 'holiday_newyear',
+         'holiday_valentines', 'holiday_stpatricks', 'holiday_aprilfools', 'holiday_easter', 'holiday_midsummer'}
 # Places a line may claim the speaker is at, heading to, or either (@needs at:<place>, going:<place>, near:<place>).
 PLACE_NEED_RE = re.compile(r'(at|going|near):(.+)')
 

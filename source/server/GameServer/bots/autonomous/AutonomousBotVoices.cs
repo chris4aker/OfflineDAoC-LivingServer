@@ -117,6 +117,8 @@ public static class AutonomousBotVoices
         flags.Add(VC.TimeFlag(DateTime.Now.Hour));
         if (bot.IsPlayerLedGroup || AutonomousLivingServer.GroupHasPlayer(bot.Group)) flags.Add("in_player_group");
         if (bot.ResurrectionSpell != null && bot.ResurrectionSpell.Level <= bot.Level) flags.Add("can_rez");
+        // Holiday chatter (bot_living_holidays): the PC's calendar, so the lines in holidays.lines can be said.
+        if (AutonomousHolidays.On) flags.UnionWith(AutonomousHolidays.Flags(DateTime.Now));
         AddTalkingUpdateFlags(bot, flags);
         return new VC.Speaker(bot.DatabaseID, bot.Name, bot.Realm, bot.CharacterClass?.Name ?? bot.ClassName ?? string.Empty,
             bot.Level, AutonomousBotPersonality.For(bot).Type, flags);

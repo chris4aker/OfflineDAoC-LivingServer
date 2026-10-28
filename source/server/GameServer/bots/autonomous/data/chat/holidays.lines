@@ -1,0 +1,289 @@
+# Holiday chatter (bot_living_holidays, AutonomousHolidays; owner 2026-10-28). Real holidays on the PC's calendar,
+# talked about the way players did in 2003. holiday_<name> is set for the days around a holiday, holiday_today on the
+# day itself. Openers carry @topic holiday (the ambient starter asks for that topic now and then in the window).
+# New writing (see docs/bot-voices).
+
+# ---------------------------------------------------------------- Halloween (Samhain in Hibernia)
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_halloween
+[anyone|who else is] dressing up for halloween this year?
+[got|bought] the halloween candy, now i just have to not eat it all before the kids show up
+[my wife|my sister|my roommate] wants me to carve pumpkins instead of [leveling|playing]. pumpkins are winning
+carved a pumpkin [with|of] a [{class}|healer] symbol on it. nobody gets it
+halloween party this weekend, going as a [necromancer|skeleton|zombie]. very original i know
+everything in this game is a skeleton anyway, its halloween all year for us
+[best|worst] time of year to be a necromancer
+@who Socialite
+[guild|realm] costume party at the bindstone, wear your ugliest armor
+@who NoLifer
+halloween means nobody else is online. more xp for me
+@who *
+@invites ask_plans
+any halloween plans, realm?
+anyone doing anything for halloween or just playing?
+@invites chat
+@realm hib
+samhain [already|is close]. the veil is thin, watch your back out there
+[my|our] old folks lit a bonfire for samhain every year. i just log in now
+@realm mid
+the long nights are back. good weather for killing draugr
+@realm alb
+all hallows eve soon. the dead dont need an invitation in albion, they just show up
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_halloween,holiday_today
+happy halloween realm!
+happy halloween all [:)|o/|]
+brb, trick or treaters at the door
+[third|fourth|fifth] time the doorbell rang. this pull is taking forever
+[kids|trick or treaters] keep ringing the bell mid fight, [im going to die|someone watch my back]
+ate half the candy bowl before the first trick or treater showed up
+@needs holiday_halloween,holiday_today,evening
+porch light off, candy bowl empty, back to leveling
+@realm hib
+@needs holiday_halloween,holiday_today
+blessed samhain, hibernia
+
+@kind group
+@topic holiday
+@who *
+@needs holiday_halloween,in_player_group,!in_combat
+these {monsters} are dressed up for halloween too. scary
+brb [10|5], trick or treaters
+happy halloween group [:)|]
+@needs holiday_halloween,in_group,!in_player_group,!in_combat
+happy halloween guys
+brb, doorbell
+
+@kind reply
+@intent greeting
+@who *
+@weight 8
+@needs holiday_halloween
+happy halloween!
+happy halloween to you too [:)|]
+boo! happy halloween
+hey, happy halloween. got your costume yet?
+@realm hib
+happy samhain [:)|]
+
+# ---------------------------------------------------------------- Thanksgiving
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_thanksgiving
+long weekend coming. [so much|four days of] leveling time
+thanksgiving at my [aunts|folks|in-laws]. hoping they have a phone line i can borrow
+[my mom|my grandma] says no computer during dinner. i said what about after
+@who Crafter
+black friday is for suckers. i do my shopping at the {capital} merchants
+@who *
+@invites ask_plans
+anyone else hiding from family and playing over the holiday?
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_thanksgiving,holiday_today
+happy thanksgiving realm
+[turkey|food] coma. ill be afk [a lot|half the night]
+ate way too much, cant feel my mouse hand
+happy turkey day all [:)|]
+@needs holiday_thanksgiving,holiday_today,evening
+back from dinner, [three|two] plates in. what did i miss
+
+@kind group
+@topic holiday
+@who *
+@needs holiday_thanksgiving,in_player_group,!in_combat
+brb, pie
+[so full|stuffed], might fall asleep on the keyboard. wake me if i die
+
+@kind reply
+@intent greeting
+@who *
+@weight 8
+@needs holiday_thanksgiving
+happy thanksgiving!
+happy turkey day [:)|]
+you too, hope you ate well
+
+# ---------------------------------------------------------------- Christmas (Yule in Midgard, midwinter in Albion)
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_christmas
+[christmas shopping done?|anyone done their christmas shopping?] i havent started
+[all i want for christmas|my christmas list] is a [good drop|full set of crafted armor|level 50]
+the {capital} merchants should put up some [lights|decorations] for christmas
+[got|bought] my [brother|sister|kid] this game for christmas. [now i need a healer in the family|dont tell them]
+asked for a new video card for christmas. [fingers crossed|probably getting socks]
+@who Crafter
+christmas sale at my stall, everything slightly less overpriced
+@who NoLifer
+two weeks off work. see you all at 50
+@who *
+@invites ask_plans
+anyone getting time off for the holidays?
+@invites chat
+@realm mid
+yule is coming. burn a log and hope the trolls stay home
+@realm alb
+midwinter feast soon. even the knights take a night off
+@realm hib
+long night of the year is close. good time for stories by the fire
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_christmas,holiday_today
+merry christmas realm!
+merry christmas all [:)|o/|]
+[snuck|sneaking] in a few levels before the family wakes up
+[got|got a] new [keyboard|mouse|headset] for christmas, first time playing with it
+just logged in to say merry christmas. back to the [family|wrapping paper]
+@realm mid
+god jul, midgard
+@realm hib
+nollaig shona, hibernia
+
+@kind group
+@topic holiday
+@who *
+@needs holiday_christmas,in_player_group,!in_combat
+merry christmas group [:)|]
+[best|only] christmas present is a group that doesnt wipe
+@needs holiday_christmas,holiday_today,in_player_group,!in_combat
+brb, family wants pictures
+
+@kind reply
+@intent greeting
+@who *
+@weight 8
+@needs holiday_christmas
+merry christmas!
+merry christmas to you too [:)|]
+happy holidays [:)|]
+@realm mid
+god jul! [:)|]
+
+# ---------------------------------------------------------------- New Year
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_newyear
+new years resolution: [hit 50|stop dying to adds|actually finish a set of armor|less time in game]. one of those is a lie
+[party at my place|going out] for new years, ill be [back on|online] after
+@invites ask_plans
+anyone ringing in the new year in game?
+@invites chat
+@who NoLifer
+[best|only] new years plan: double xp from nobody else being online
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_newyear,holiday_today
+happy new year realm!
+happy new year all [:)|o/|]
+[first|my first] death of the year. off to a great start
+[first|my first] ding of the year!
+@needs holiday_newyear,holiday_today,night
+happy new year from the realm, [dont drink and pull|stay safe out there]
+
+@kind reply
+@intent greeting
+@who *
+@weight 8
+@needs holiday_newyear
+happy new year!
+happy new year to you too [:)|]
+
+# ---------------------------------------------------------------- Valentine's Day, St Patrick's Day, April Fools
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_valentines
+[playing|in game] on valentines day. [dont tell my girlfriend|she thinks im at work]
+my valentine is my [healer|minstrel|tank]. [true love|they never let me die]
+@who Socialite
+roses are red, my health is too. heal me
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_stpatricks
+everyone is irish today
+@realm hib
+st patricks day. [finally|for once] the whole world wants to be hibernian
+@realm *
+@needs holiday_stpatricks,!day
+green beer tonight. if i pull a whole camp, thats why
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_aprilfools
+[heard|patch notes say] they are giving everyone free level 50s today. [april fools|lol]
+my guild leader said hes quitting. checked the date, back to leveling
+[relic raid|enemy zerg] at our gates!! [april fools|just kidding]
+
+@kind reply
+@intent greeting
+@who *
+@weight 6
+@needs holiday_valentines
+happy valentines day [:)|]
+@needs holiday_stpatricks
+happy st patricks!
+
+# ---------------------------------------------------------------- Easter and Midsummer
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_easter
+[family|easter] dinner tomorrow, getting my levels in tonight
+[hid|hiding] eggs for my [kids|nephews] this morning. found one i hid last year
+[too many|so many] chocolate bunnies. no regrets
+
+@kind ambient
+@topic holiday
+@who *
+@invites chat
+@needs holiday_midsummer
+[longest day of the year|midsummer] and im spending it [in game|indoors]. [no regrets|perfect]
+@realm mid
+midsummer bonfires tonight. someone keep the trolls away from the mead
+@realm hib
+the fae dance on midsummer night. or so my grandmother said
+
+@kind reply
+@intent greeting
+@who *
+@weight 6
+@needs holiday_easter
+happy easter [:)|]
+@needs holiday_midsummer
+happy midsummer!

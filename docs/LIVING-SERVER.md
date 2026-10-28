@@ -36,6 +36,8 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 | Storylines | `bot_living_storylines` | True |
 | Spammers and roleplayers | `bot_living_characters` | True |
 | True rumours | `bot_living_rumours` | True |
+| Holiday chatter | `bot_living_holidays` | True (Beta 1.1) |
+| Leeroy in raids | `bot_living_leeroy` | True (Beta 1.1) |
 | Bots remember each other | `bot_group_bonds` | True (server key only; not in the launcher tab yet) |
 
 **ALL OFF** in the tab switches every part off, along with the other Living Server features.
@@ -238,6 +240,37 @@ companion bots and real players are not.
 - **True rumours** (`bot_living_rumours`): a rare named monster that just spawned, or an enemy keep with its guards down.
 
 Details: [bot-voices/TALKING-UPDATE.md](bot-voices/TALKING-UPDATE.md) sections 12-15.
+
+### Holiday chatter (`bot_living_holidays`)
+Around a holiday on your PC's calendar, bots talk about it the way 2003 players did, in /faction, /say and your group:
+candy and trick-or-treaters, costume parties, turkey comas, Christmas lists, New Year resolutions. Each realm has its
+own flavour: Samhain in Hibernia, Yule and Midsummer in Midgard, All Hallows' Eve and midwinter in Albion. A "happy
+halloween" or "merry christmas" from you is answered in kind. About one realm line in ten is a holiday line in the days
+around a holiday, and about one in five on the day itself.
+
+| Holiday | Days | The day itself |
+|---|---|---|
+| New Year | 30 December - 2 January | 31 December, 1 January |
+| Valentine's Day | 12-14 February | 14 February |
+| St Patrick's Day | 15-17 March | 17 March |
+| April Fools | 1 April | 1 April |
+| Easter | Good Friday - Easter Monday | Easter Sunday |
+| Midsummer | 19-24 June | 21 June |
+| Halloween | 24 October - 1 November | 31 October |
+| Thanksgiving (US) | Tuesday - Sunday around the fourth Thursday of November | the Thursday |
+| Christmas | 18-26 December | 24-25 December |
+
+The lines are in `data/chat/holidays.lines`; the calendar is `AutonomousHolidays`.
+
+### Leeroy in raids (`bot_living_leeroy`)
+One end-game raid in twenty (dungeon raids and dragons) has a raider who can't wait. While the raid musters for its
+final encounter, once a quarter of the raid is there but not all of it (half, at a dragon), he yells
+"LEEEEROOOOOOY JENKINS!" and charges in alone. The boss is fighting now, so the raid goes in after him with whoever is
+there; a few raiders react in /say ("oh my god he just ran in", "stick to the plan!!") and one tells /faction. The
+raid's own rules take it from there: a wipe still regroups and tries again. After the raid a raider tells /faction how
+it went ("thanks a lot ..." or "cant believe that worked"). He is a damage dealer, never a healer or support class, and
+usually a Daredevil or No-lifer. Never on a retry after a wipe. Logs `RAID_LEEROY_ROLLED`, `RAID_LEEROY`,
+`REALM_EXPEDITION_LEEROY` (dungeons) and `REALM_RAID_LEEROY_START` (dragons).
 
 ## New client (0.36c)
 

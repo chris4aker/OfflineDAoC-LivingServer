@@ -60,6 +60,11 @@ namespace DOL.GS
         // Nobody stood at the muster since this tick (0 = someone is there).
         private long _musterEmptySince;
         private bool _musterUnreachable;
+        /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): he charges the first final encounter early, once.</summary>
+        public bool LeeroyRolled { get; set; }
+        private bool _leeroyDone;
+        /// <summary>The raider who charged, or null.</summary>
+        public string LeeroyName { get; private set; }
 
         /// <summary>
         /// 2026-10-20: Tuscaran Glacier's raid held "Mustering for Elder Council Birghir (0/xx)" for an hour while Elder
@@ -501,6 +506,23 @@ namespace DOL.GS
             }
             // After a wipe the survivors rest and rebuff for a few minutes even when enough are already there.
             bool rested = !_regrouping || regroupMilliseconds >= RegroupMinimumMilliseconds;
+            // Leeroy (bot_living_leeroy): part of the raid is here, not all of it, and he can't wait. The boss is in the fight,
+            // so the whole muster goes in after him now, as an attempt like any other.
+            if (LeeroyRolled && !_leeroyDone &&
+                AutonomousRaidLeeroy.ShouldCharge(mustered, needed, now - _musterSince, FailedAttempts(_target.Name), _regrouping))
+            {
+                _leeroyDone = true;
+                if (AutonomousRaidLeeroy.Pick(musteredRaiders) is GameBot leeroy &&
+                    AutonomousRaidLeeroy.Charge(leeroy, _target, musteredRaiders, _target.CurrentZone?.Description ?? _target.Name))
+                {
+                    LeeroyName = leeroy.Name;
+                    BeginAttempt(musteredRaiders, now);
+                    Destination = Front;
+                    log.Info($"REALM_EXPEDITION_LEEROY region={_region} target=\"{_target.Name}\" bot=\"{leeroy.Name}\" mustered={mustered} " +
+                             $"needed={needed} living={living} minutes={(now - _musterSince) / 60_000.0:0.0}");
+                    return false;
+                }
+            }
             if (mustered >= needed && rested)
             {
                 bool retry = _regrouping;

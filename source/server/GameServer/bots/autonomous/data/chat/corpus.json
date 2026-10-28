@@ -412920,6 +412920,4108 @@
    "id": "e91193b320e5"
   },
   {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "anyone dressing up for halloween this year?",
+   "id": "78ba65b71d81"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "who else is dressing up for halloween this year?",
+   "id": "490a7fe0c0c5"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "got the halloween candy, now i just have to not eat it all before the kids show up",
+   "id": "1fe21e13359b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "bought the halloween candy, now i just have to not eat it all before the kids show up",
+   "id": "ed023c877a12"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my wife wants me to carve pumpkins instead of leveling. pumpkins are winning",
+   "id": "4d1d503e5879"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my wife wants me to carve pumpkins instead of playing. pumpkins are winning",
+   "id": "0d144f928d97"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my sister wants me to carve pumpkins instead of leveling. pumpkins are winning",
+   "id": "b8618426dca3"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my sister wants me to carve pumpkins instead of playing. pumpkins are winning",
+   "id": "84708593df60"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my roommate wants me to carve pumpkins instead of leveling. pumpkins are winning",
+   "id": "13aa37675391"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my roommate wants me to carve pumpkins instead of playing. pumpkins are winning",
+   "id": "d0d71168b4ae"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "carved a pumpkin with a {class} symbol on it. nobody gets it",
+   "id": "561472907268"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "carved a pumpkin with a healer symbol on it. nobody gets it",
+   "id": "710115c0de1f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "carved a pumpkin of a {class} symbol on it. nobody gets it",
+   "id": "1b766cb32bdc"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "carved a pumpkin of a healer symbol on it. nobody gets it",
+   "id": "cca3efc798cc"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "halloween party this weekend, going as a necromancer. very original i know",
+   "id": "c51293a4a563"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "halloween party this weekend, going as a skeleton. very original i know",
+   "id": "a425b951da20"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "halloween party this weekend, going as a zombie. very original i know",
+   "id": "54a45e53ced4"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "everything in this game is a skeleton anyway, its halloween all year for us",
+   "id": "0d1314c8e1c2"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "best time of year to be a necromancer",
+   "id": "c52bc8e1ea8f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "worst time of year to be a necromancer",
+   "id": "2522ceb77276"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "guild costume party at the bindstone, wear your ugliest armor",
+   "id": "dbcf10d9c49f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "realm costume party at the bindstone, wear your ugliest armor",
+   "id": "23533892e23f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "halloween means nobody else is online. more xp for me",
+   "id": "65cc1c1486b7"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask_plans",
+   "text": "any halloween plans, realm?",
+   "id": "a349642cac82"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask_plans",
+   "text": "anyone doing anything for halloween or just playing?",
+   "id": "032b662357e6"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "samhain already. the veil is thin, watch your back out there",
+   "id": "93d1fa8ff308"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "samhain is close. the veil is thin, watch your back out there",
+   "id": "a0795f243d5f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "my old folks lit a bonfire for samhain every year. i just log in now",
+   "id": "430f1fc45295"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "our old folks lit a bonfire for samhain every year. i just log in now",
+   "id": "ff3199669ce0"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "the long nights are back. good weather for killing draugr",
+   "id": "0bc8fb9c7bdb"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "all hallows eve soon. the dead dont need an invitation in albion, they just show up",
+   "id": "bf51f53ee160"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "happy halloween realm!",
+   "id": "9bd4558ace06"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "happy halloween all :)",
+   "id": "e1d84a43d888"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "happy halloween all o/",
+   "id": "204e4cf5dfb3"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "brb, trick or treaters at the door",
+   "id": "eed250c192a4"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "third time the doorbell rang. this pull is taking forever",
+   "id": "d1e10ed76c92"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "fourth time the doorbell rang. this pull is taking forever",
+   "id": "964e5cca37fd"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "fifth time the doorbell rang. this pull is taking forever",
+   "id": "d03a1b8d0d11"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "kids keep ringing the bell mid fight, im going to die",
+   "id": "b0427eeacb00"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "kids keep ringing the bell mid fight, someone watch my back",
+   "id": "acf5383ad2a5"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "trick or treaters keep ringing the bell mid fight, im going to die",
+   "id": "e53593a3b9b3"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "trick or treaters keep ringing the bell mid fight, someone watch my back",
+   "id": "94a1f56a5873"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "ate half the candy bowl before the first trick or treater showed up",
+   "id": "dfb20a1aa5eb"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today",
+    "evening"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "porch light off, candy bowl empty, back to leveling",
+   "id": "dcf2de1da131"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "blessed samhain, hibernia",
+   "id": "3e5a0c5f66db"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "these {monsters} are dressed up for halloween too. scary",
+   "id": "7a134b6c4f0e"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "brb 10, trick or treaters",
+   "id": "f9332324f23e"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "brb 5, trick or treaters",
+   "id": "a9066f30cfb9"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "happy halloween group :)",
+   "id": "a436d0b8ceee"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "in_group",
+    "!in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "happy halloween guys",
+   "id": "38d8a2dab290"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween",
+    "in_group",
+    "!in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "brb, doorbell",
+   "id": "41d66ba0af9f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "happy halloween!",
+   "id": "23cfe6991e52"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "happy halloween to you too :)",
+   "id": "5aa4b760f06a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "boo! happy halloween",
+   "id": "0d473621fcfc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "hey, happy halloween. got your costume yet?",
+   "id": "ce244d6925a4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_halloween"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "happy samhain :)",
+   "id": "25502fc01631"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "long weekend coming. so much leveling time",
+   "id": "43036b5d0f39"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "long weekend coming. four days of leveling time",
+   "id": "3e34754c1bbc"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "thanksgiving at my aunts. hoping they have a phone line i can borrow",
+   "id": "81f9dae68aac"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "thanksgiving at my folks. hoping they have a phone line i can borrow",
+   "id": "f485227d29ab"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5774,
+   "invites": "chat",
+   "text": "thanksgiving at my in-laws. hoping they have a phone line i can borrow",
+   "id": "0fb34bde2481"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "my mom says no computer during dinner. i said what about after",
+   "id": "c381a16598d5"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "my grandma says no computer during dinner. i said what about after",
+   "id": "33b5d21cac21"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "black friday is for suckers. i do my shopping at the {capital} merchants",
+   "id": "4c1f0e5b2e09"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask_plans",
+   "text": "anyone else hiding from family and playing over the holiday?",
+   "id": "8c1bda449125"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "happy thanksgiving realm",
+   "id": "7c028173e2d3"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "turkey coma. ill be afk a lot",
+   "id": "afca4c9133c8"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "turkey coma. ill be afk half the night",
+   "id": "d2807e46fd5c"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "food coma. ill be afk a lot",
+   "id": "6c8acaafe55b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "food coma. ill be afk half the night",
+   "id": "1faa529757df"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "ate way too much, cant feel my mouse hand",
+   "id": "58ea75882e89"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "happy turkey day all :)",
+   "id": "51802ff2ccee"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today",
+    "evening"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "back from dinner, three plates in. what did i miss",
+   "id": "21df919e9c53"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "holiday_today",
+    "evening"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "back from dinner, two plates in. what did i miss",
+   "id": "07863b7c8deb"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "brb, pie",
+   "id": "8f5583d85eab"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "so full, might fall asleep on the keyboard. wake me if i die",
+   "id": "8cb23c949881"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "stuffed, might fall asleep on the keyboard. wake me if i die",
+   "id": "7fc308552ef4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "happy thanksgiving!",
+   "id": "691edd23b8ef"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "happy turkey day :)",
+   "id": "53900deb5db1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_thanksgiving"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "you too, hope you ate well",
+   "id": "a7b2dc6fd0d6"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "christmas shopping done? i havent started",
+   "id": "cef70ad19416"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "anyone done their christmas shopping? i havent started",
+   "id": "5fc008437ac2"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "all i want for christmas is a good drop",
+   "id": "12eedb4bb130"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "all i want for christmas is a full set of crafted armor",
+   "id": "40e6664aa324"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "all i want for christmas is a level 50",
+   "id": "478199918d21"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my christmas list is a good drop",
+   "id": "afd29e09907b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my christmas list is a full set of crafted armor",
+   "id": "797b023e4ced"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my christmas list is a level 50",
+   "id": "595a76496c7d"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "the {capital} merchants should put up some lights for christmas",
+   "id": "eb76dbfd5c3b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "the {capital} merchants should put up some decorations for christmas",
+   "id": "d3f5223a80e5"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "got my brother this game for christmas. now i need a healer in the family",
+   "id": "9efee0cf2ee4"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "got my brother this game for christmas. dont tell them",
+   "id": "7794552d2fea"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "got my sister this game for christmas. now i need a healer in the family",
+   "id": "04d78de1ef23"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "got my sister this game for christmas. dont tell them",
+   "id": "4970ee85963d"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "got my kid this game for christmas. now i need a healer in the family",
+   "id": "8f88e6560fa7"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "got my kid this game for christmas. dont tell them",
+   "id": "f14e81a1a5f4"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "bought my brother this game for christmas. now i need a healer in the family",
+   "id": "29d573cb8cc8"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "bought my brother this game for christmas. dont tell them",
+   "id": "c31cead7ce16"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "bought my sister this game for christmas. now i need a healer in the family",
+   "id": "f77a02ae1dfa"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "bought my sister this game for christmas. dont tell them",
+   "id": "65f0594f6ebf"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "bought my kid this game for christmas. now i need a healer in the family",
+   "id": "ceae330a0d67"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "chat",
+   "text": "bought my kid this game for christmas. dont tell them",
+   "id": "984e59af6f02"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "asked for a new video card for christmas. fingers crossed",
+   "id": "a74d3133c464"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "asked for a new video card for christmas. probably getting socks",
+   "id": "a7967d495bbd"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "christmas sale at my stall, everything slightly less overpriced",
+   "id": "4e42add6ec8a"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "two weeks off work. see you all at 50",
+   "id": "387b4329e900"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask_plans",
+   "text": "anyone getting time off for the holidays?",
+   "id": "c7fa12ab0e9a"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "yule is coming. burn a log and hope the trolls stay home",
+   "id": "1b1cb2302cd3"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "midwinter feast soon. even the knights take a night off",
+   "id": "90473761c818"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "long night of the year is close. good time for stories by the fire",
+   "id": "05c1c07af444"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "merry christmas realm!",
+   "id": "917dabc0b891"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "merry christmas all :)",
+   "id": "aa372cd4ecc3"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "merry christmas all o/",
+   "id": "65e363850ab9"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "snuck in a few levels before the family wakes up",
+   "id": "61dcbb07a941"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "sneaking in a few levels before the family wakes up",
+   "id": "58464febe614"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "got new keyboard for christmas, first time playing with it",
+   "id": "1625cc548509"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "got new mouse for christmas, first time playing with it",
+   "id": "54e7cbbfbd14"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "got new headset for christmas, first time playing with it",
+   "id": "706bd56b6846"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "got a new keyboard for christmas, first time playing with it",
+   "id": "a50bdc348789"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "got a new mouse for christmas, first time playing with it",
+   "id": "66697994d00e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "got a new headset for christmas, first time playing with it",
+   "id": "59f60d9a0271"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "just logged in to say merry christmas. back to the family",
+   "id": "b6659f28b877"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "just logged in to say merry christmas. back to the wrapping paper",
+   "id": "40495a833395"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "god jul, midgard",
+   "id": "f210f24e3183"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "nollaig shona, hibernia",
+   "id": "6780b54db0a3"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "merry christmas group :)",
+   "id": "d8bca3d7633b"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "best christmas present is a group that doesnt wipe",
+   "id": "84bee7f65883"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "only christmas present is a group that doesnt wipe",
+   "id": "28acc6686faf"
+  },
+  {
+   "kind": "group",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas",
+    "holiday_today",
+    "in_player_group",
+    "!in_combat"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "brb, family wants pictures",
+   "id": "317c9ca93696"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "merry christmas!",
+   "id": "068e64382c6a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "merry christmas to you too :)",
+   "id": "5d550e81b6ae"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "happy holidays :)",
+   "id": "462bca73b6ba"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_christmas"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "god jul! :)",
+   "id": "ef70d0dc3777"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "new years resolution: hit 50. one of those is a lie",
+   "id": "23196db03508"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "new years resolution: stop dying to adds. one of those is a lie",
+   "id": "ef624b1de929"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "new years resolution: actually finish a set of armor. one of those is a lie",
+   "id": "d249b7ee135f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "new years resolution: less time in game. one of those is a lie",
+   "id": "6e7f37a665e5"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "party at my place for new years, ill be back on after",
+   "id": "ed8b344e27b8"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "party at my place for new years, ill be online after",
+   "id": "52833b55ad95"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "going out for new years, ill be back on after",
+   "id": "87fa461005a6"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "going out for new years, ill be online after",
+   "id": "d7ceb16d0801"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask_plans",
+   "text": "anyone ringing in the new year in game?",
+   "id": "c8d09f8b46ba"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "best new years plan: double xp from nobody else being online",
+   "id": "10a8267a626b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "only new years plan: double xp from nobody else being online",
+   "id": "2cd06e600a90"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "happy new year realm!",
+   "id": "85dfe6907ef1"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "happy new year all :)",
+   "id": "e09ba4fc1804"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "happy new year all o/",
+   "id": "d5965a8f4fff"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "first death of the year. off to a great start",
+   "id": "d0a819fd163e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "my first death of the year. off to a great start",
+   "id": "a9d78109f8cb"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "first ding of the year!",
+   "id": "44d6ce3972a1"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "my first ding of the year!",
+   "id": "6ee033cfb37e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today",
+    "night"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "happy new year from the realm, dont drink and pull",
+   "id": "27c204f7287e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear",
+    "holiday_today",
+    "night"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "happy new year from the realm, stay safe out there",
+   "id": "769d8ecd1d27"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "happy new year!",
+   "id": "a55a35107902"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_newyear"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 8.0,
+   "text": "happy new year to you too :)",
+   "id": "6a72242b9033"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "playing on valentines day. dont tell my girlfriend",
+   "id": "6c3689ea6928"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "playing on valentines day. she thinks im at work",
+   "id": "1fb0579c8635"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "in game on valentines day. dont tell my girlfriend",
+   "id": "a56c3ec312dc"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "in game on valentines day. she thinks im at work",
+   "id": "584bf52887f7"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my valentine is my healer. true love",
+   "id": "b211224b6b0f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my valentine is my healer. they never let me die",
+   "id": "fa4a4e661faa"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my valentine is my minstrel. true love",
+   "id": "07fa2384e13a"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my valentine is my minstrel. they never let me die",
+   "id": "7d5eac3ad474"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my valentine is my tank. true love",
+   "id": "63644681eaf1"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "chat",
+   "text": "my valentine is my tank. they never let me die",
+   "id": "c519eeee76c0"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "roses are red, my health is too. heal me",
+   "id": "6f2543d92863"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_stpatricks"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "everyone is irish today",
+   "id": "6986ccfa3d9e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_stpatricks"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "st patricks day. finally the whole world wants to be hibernian",
+   "id": "785f0abb565b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_stpatricks"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "st patricks day. for once the whole world wants to be hibernian",
+   "id": "003213f5f3ae"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_stpatricks",
+    "!day"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "green beer tonight. if i pull a whole camp, thats why",
+   "id": "312650bca47c"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "heard they are giving everyone free level 50s today. april fools",
+   "id": "c461edf79652"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "heard they are giving everyone free level 50s today. lol",
+   "id": "5f20cfad6379"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "patch notes say they are giving everyone free level 50s today. april fools",
+   "id": "395c7d2b0773"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "patch notes say they are giving everyone free level 50s today. lol",
+   "id": "cefe103f6a9d"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "my guild leader said hes quitting. checked the date, back to leveling",
+   "id": "c0b9e409b958"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "relic raid at our gates!! april fools",
+   "id": "38c3cf78f06f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "relic raid at our gates!! just kidding",
+   "id": "a56d171ba7f1"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "enemy zerg at our gates!! april fools",
+   "id": "86d8eeda80e7"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_aprilfools"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "enemy zerg at our gates!! just kidding",
+   "id": "90467191c6f0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_valentines"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 6.0,
+   "text": "happy valentines day :)",
+   "id": "fe5d0fce93ef"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_stpatricks"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 6.0,
+   "text": "happy st patricks!",
+   "id": "f8bb52d5dc15"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "family dinner tomorrow, getting my levels in tonight",
+   "id": "dbd38504469d"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "easter dinner tomorrow, getting my levels in tonight",
+   "id": "8a9472914599"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "hid eggs for my kids this morning. found one i hid last year",
+   "id": "b0d22ccecab8"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "hid eggs for my nephews this morning. found one i hid last year",
+   "id": "af96d250cba7"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "hiding eggs for my kids this morning. found one i hid last year",
+   "id": "6482bfdc60d1"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "hiding eggs for my nephews this morning. found one i hid last year",
+   "id": "6168197fb78b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "too many chocolate bunnies. no regrets",
+   "id": "0adafc1ad139"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "chat",
+   "text": "so many chocolate bunnies. no regrets",
+   "id": "8eeeb9f1a02f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "chat",
+   "text": "longest day of the year and im spending it in game. no regrets",
+   "id": "6b14d72b3a40"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "chat",
+   "text": "longest day of the year and im spending it in game. perfect",
+   "id": "78792a9366a1"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "chat",
+   "text": "longest day of the year and im spending it indoors. no regrets",
+   "id": "d76f88e383f8"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "chat",
+   "text": "longest day of the year and im spending it indoors. perfect",
+   "id": "d6984ff04006"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "chat",
+   "text": "midsummer and im spending it in game. no regrets",
+   "id": "ee32c8853516"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "chat",
+   "text": "midsummer and im spending it in game. perfect",
+   "id": "3a020d92f580"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "chat",
+   "text": "midsummer and im spending it indoors. no regrets",
+   "id": "beaaa721936e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "chat",
+   "text": "midsummer and im spending it indoors. perfect",
+   "id": "457104a317aa"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "midsummer bonfires tonight. someone keep the trolls away from the mead",
+   "id": "128f0d6771b8"
+  },
+  {
+   "kind": "ambient",
+   "topic": "holiday",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "the fae dance on midsummer night. or so my grandmother said",
+   "id": "c3029b3c0613"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_easter"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 6.0,
+   "text": "happy easter :)",
+   "id": "d273a65ea0db"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "holiday_midsummer"
+   ],
+   "intent": "greeting",
+   "mood": "",
+   "weight": 6.0,
+   "text": "happy midsummer!",
+   "id": "22cdc83eb457"
+  },
+  {
    "kind": "lfg",
    "topic": "lfg",
    "who": [],

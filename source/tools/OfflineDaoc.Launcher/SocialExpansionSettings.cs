@@ -43,6 +43,9 @@ public sealed record SocialExpansionSettings
     public bool LivingStorylines { get; init; } = true;
     public bool LivingCharacters { get; init; } = true;
     public bool LivingRumours { get; init; } = true;
+    /// <summary>Holiday chatter and Leeroy in raids (Beta 1.1). On by default.</summary>
+    public bool LivingHolidays { get; init; } = true;
+    public bool LivingLeeroy { get; init; } = true;
     public string PlayerXpByLevel { get; init; } = "";
     public string BotXpByLevel { get; init; } = "";
 
@@ -77,6 +80,8 @@ public sealed record SocialExpansionSettings
         ("bot_living_storylines", "bots", "Server life: pairs of bots live out dramas in /faction over days: a kill steal, a guild split, a romance, a ninja-loot trial. The same two bots play every episode; take a side in faction and the ending follows you."),
         ("bot_living_characters", "bots", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them."),
         ("bot_living_rumours", "bots", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see."),
+        ("bot_living_holidays", "bots", "Server life: around Halloween, Thanksgiving, Christmas, New Year and other holidays on your PC's calendar, bots talk about them like 2003 players did and answer your holiday wishes."),
+        ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
     ];
@@ -109,6 +114,8 @@ public sealed record SocialExpansionSettings
         ["bot_living_storylines"] = Bool(LivingStorylines),
         ["bot_living_characters"] = Bool(LivingCharacters),
         ["bot_living_rumours"] = Bool(LivingRumours),
+        ["bot_living_holidays"] = Bool(LivingHolidays),
+        ["bot_living_leeroy"] = Bool(LivingLeeroy),
         ["xp_rate_by_level"] = PlayerXpByLevel.Trim(),
         ["bot_xp_rate_by_level"] = BotXpByLevel.Trim(),
     };
@@ -206,6 +213,8 @@ public sealed record SocialExpansionSettings
             LivingStorylines = ReadBool("bot_living_storylines", d.LivingStorylines),
             LivingCharacters = ReadBool("bot_living_characters", d.LivingCharacters),
             LivingRumours = ReadBool("bot_living_rumours", d.LivingRumours),
+            LivingHolidays = ReadBool("bot_living_holidays", d.LivingHolidays),
+            LivingLeeroy = ReadBool("bot_living_leeroy", d.LivingLeeroy),
             // Kept as written: an invalid range setting shows its own error in the tab (the server ignores it).
             PlayerXpByLevel = stored.TryGetValue("xp_rate_by_level", out string? player) ? player?.Trim() ?? "" : "",
             BotXpByLevel = stored.TryGetValue("bot_xp_rate_by_level", out string? bots) ? bots?.Trim() ?? "" : "",
@@ -218,7 +227,7 @@ public sealed record SocialExpansionSettings
     /// <summary>True when any Living Server part is on.</summary>
     public bool AnyLiving => LivingMemory || LivingGrats || LivingFirsts || LivingDeath || LivingAlarms || LivingNemesis ||
                              ScheduleMode != "off" || LivingBreaks || LivingBodyLanguage || LivingBeggars ||
-                             LivingDeeds || LivingStorylines || LivingCharacters || LivingRumours;
+                             LivingDeeds || LivingStorylines || LivingCharacters || LivingRumours || LivingHolidays || LivingLeeroy;
 
     /// <summary>
     /// "All off": the three features, every Living Server part and both XP ranges off. The share, lowest level and each part keep their
@@ -230,6 +239,7 @@ public sealed record SocialExpansionSettings
         LivingMemory = false, LivingGrats = false, LivingFirsts = false, LivingDeath = false, LivingAlarms = false,
         LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false, LivingBeggars = false,
         LivingDeeds = false, LivingStorylines = false, LivingCharacters = false, LivingRumours = false,
+        LivingHolidays = false, LivingLeeroy = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>

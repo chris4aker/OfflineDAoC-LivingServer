@@ -177,6 +177,11 @@ public static partial class AutonomousChatIntentModel
 
     private static readonly Model Trained = Train();
 
+    /// <summary>"happy halloween", "merry xmas", "god jul": a holiday wish.</summary>
+    private static readonly System.Text.RegularExpressions.Regex HolidayWish = new(
+        @"\b((happy|merry|blessed)\s+(halloween|samhain|thanksgiving|turkey day|christmas|xmas|holidays|new year|easter|valentines?( day)?|st\.? ?patricks?( day)?|midsummer|yule|solstice)|god jul|nollaig shona)\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
     public static eAutonomousChatIntent Predict(string text)
     {
         string[] tokens = Tokens(text).ToArray();
@@ -187,6 +192,9 @@ public static partial class AutonomousChatIntentModel
             return eAutonomousChatIntent.IgnoreOutOfWorld;
         if (IsAbuse(words))
             return eAutonomousChatIntent.Abuse;
+        // Holiday wishes are greetings (holiday chatter, 2026-10-28): bots answer them with the holiday's own lines.
+        if (HolidayWish.IsMatch(text))
+            return eAutonomousChatIntent.Greeting;
         if (AutonomousChatShortTalk.TryRead(text, words, out eAutonomousChatIntent shortTalk))
             return shortTalk;
         foreach ((eAutonomousChatIntent intent, HashSet<string> signals) in StrongGameSignals)

@@ -1672,7 +1672,9 @@ public static class AutonomousBotChatCoordinator
         picked = null;
         // Bot voices first (corpus lines by personality, situation and style); the old lines are the fallback.
         if (AutonomousBotVoices.Enabled)
-            return AutonomousBotVoices.TryLine(starter, AutonomousBotVoices.AmbientKind(starter, faction, Random.Shared), out picked) ||
+            return AutonomousHolidays.On && Random.Shared.NextDouble() < AutonomousHolidays.AmbientShare(DateTime.Now) &&
+                   AutonomousBotVoices.TryLine(starter, "ambient", out picked, topic: "holiday") ||
+                   AutonomousBotVoices.TryLine(starter, AutonomousBotVoices.AmbientKind(starter, faction, Random.Shared), out picked) ||
                    AutonomousBotVoices.TryLine(starter, "ambient", out picked)
                 ? picked.Text
                 : null;

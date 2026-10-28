@@ -60,6 +60,7 @@ public class SocialExpansionSettingsTests
         LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true,
         LivingNemesis = true, ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true,
         LivingDeeds = true, LivingStorylines = true, LivingCharacters = true, LivingRumours = true,
+        LivingHolidays = true, LivingLeeroy = true,
     };
 
     [Test] public void NoRowsMeansTheServerDefaults()
@@ -145,6 +146,7 @@ public class SocialExpansionSettingsTests
         Assert.That((SocialExpansionSettings.Defaults with { LivingBodyLanguage = true }).IsAllOff, Is.False);
         Assert.That(off.LivingBodyLanguage, Is.False);
         Assert.That(off.LivingBeggars || off.LivingDeeds || off.LivingStorylines || off.LivingCharacters || off.LivingRumours, Is.False);
+        Assert.That(off.LivingHolidays || off.LivingLeeroy, Is.False);
         Assert.That((SocialExpansionSettings.Defaults.AllOff() with { LivingBeggars = true }).IsAllOff, Is.False);
     }
 

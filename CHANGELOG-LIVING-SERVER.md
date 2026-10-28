@@ -10,7 +10,8 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1 (in development)
 
-Beta 1.1 is several pieces of work together: the talking update, Offline DAoC 0.38's server fixes ahead of their
+Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,
+spammers, roleplayers, rumours, holiday chatter, Leeroy), Offline DAoC 0.38's server fixes ahead of their
 release, fixes taken from other forks of Offline DAoC, bots that react to attacks like players, quests that can be
 finished with their markers and epic chains, and the all-in-one Setup. The plan and its checklist are in
 [docs/RELEASE-1.1.md](docs/RELEASE-1.1.md).
@@ -73,6 +74,29 @@ bots talk; the full design is in [docs/bot-voices/TALKING-UPDATE.md](docs/bot-vo
   plays an evening in each realm, a lost keep, a group fight and three conversations through the real corpus. An
   independent code review found eight defects; all are fixed. Not played in game yet; the list of checks is in
   TALKING-UPDATE.md.
+
+### Server life: the living world
+
+New Server life parts, on by default, each with its own switch in the launcher's Living Server tab. Details are in
+[docs/LIVING-SERVER.md](docs/LIVING-SERVER.md) and [docs/bot-voices/TALKING-UPDATE.md](docs/bot-voices/TALKING-UPDATE.md).
+
+- **Beggars** (`bot_living_beggars`): about 4% of each realm's Crafters beg in their capital, take the coin and items you
+  drag onto them and hoard every copper. Ask anyone for gold and they follow you around the city insulting you.
+- **Deeds and reputation** (`bot_living_deeds`): bots that see you solo a named monster, go on a kill streak, get zerged
+  or die to something silly tell /faction, and you earn a reputation and a nickname.
+- **Storylines** (`bot_living_storylines`): pairs of bots live out dramas in /faction over days (a kill steal, a guild
+  split, a romance, a ninja-loot trial). Take a side and the ending follows you.
+- **Spammers and roleplayers** (`bot_living_characters`): a gold spammer floods /faction until it is banned; a few bots
+  speak in thee and thou and get mocked for it.
+- **True rumours** (`bot_living_rumours`): a rare named monster that just spawned, or an enemy keep with its guards down.
+- **The Dunce Rage Quit:** now and then a bot asks something hopeless in /faction, the realm piles on and it rage quits.
+- **Bots remember each other** (`bot_group_bonds`): good runs make friends who group again, no-shows make grudges, and
+  bots talk about both in /faction.
+- **Holiday chatter** (`bot_living_holidays`): around New Year, Valentine's, St Patrick's, April Fools, Easter, Midsummer,
+  Halloween, Thanksgiving and Christmas on your PC's calendar, bots talk about the holiday the way 2003 players did, in
+  each realm's own flavour (Samhain, Yule, All Hallows' Eve), and answer your holiday wishes in kind.
+- **Leeroy in raids** (`bot_living_leeroy`): one end-game raid in twenty has a raider who charges the final boss before
+  the raid is ready, yelling his name; the raid has to follow him in, and /faction hears about it either way.
 
 ### Lag spikes with a large population (issue #25)
 
@@ -189,21 +213,83 @@ From lometur's HearthDAoC fork.
   scripts, so every safety check stays.
 - Details are in [tools/installer/README.md](tools/installer/README.md).
 
+### Play-test fixes (2026-10-27 and 2026-10-28)
+
+Found by playing the Beta 1.1 test build on a fresh 0.37b install made by the new Setup.
+
+**Resurrection**
+- A rez offer that ran out unanswered made the bot's next offer cancel itself: it said "You decline to be
+  resurrected", and accepting then said "No one is currently trying to resurrect you". Ten casts, no rez. Only the
+  offer you are answering can now accept or decline, and an expired one is dropped.
+- A gamebot no longer raises you into a live fight (you stand where it stands). As players do, it steps to a clear
+  spot within rez range and raises you from there; with no such spot it clears what is fighting or would aggro first.
+  Gamebot corpses keep the combat rez.
+- A bot doesn't queue a second rez while one is waiting, and waits a minute after you decline.
+- "You must wait 0 seconds" after an interrupt now shows the real wait.
+
+**Your group**
+- Groupmates beside you come along when you teleport, take a portal or release to your bind point, and a groupmate
+  far behind paths to you. A stuck groupmate is brought back to you instead of leaving the group.
+- "Come with me" gets an honest answer: on my way, or how far off the bot is.
+- Fight talk comes only from groupmates who saw the fight, hunting talk only after a recent fight, and a reaction to
+  you dying only from groupmates near you.
+- A bot in your group talks in /group, not /say to strangers ("anyone running Stonehenge Barrows today?").
+- A bot in your group no longer quotes its old solo hunt ("mountain algaes at Camelot Hills are the best xp").
+- `/invite` by name says when a far-off bot is busy (riding a stable route, a siege, a raid) instead of "too far
+  away".
+
+**Answers**
+- LFG with nobody near your level gets an honest reply; "where should I level" names your realm's starter zones; the
+  dragon, time to 50 and the realm's raid get real answers; a "wtb" gets a trade reply that fits; insulting a bot's
+  guild is read as abuse.
+
+**`/tele mob`** ranks camps by their average level and lands you at the spawn nearest your level.
+
+**Setup**
+- Shows the real error when the official download fails, and says when the connection dropped.
+- Names the folder of a game program that is still running, and points to Task Manager when it has no window.
+- Cleaning up after an install removes the "Offline DAoC setup files" folder too, with Setup's copy of the downloader.
+- A new install proposes a folder that is free (`playable-v0.37b-2` when you already have `playable-v0.37b`). Choosing
+  a folder that holds a game says so ("Offline DAoC 0.37b is already installed in ..."), and a folder problem offers
+  CHOOSE ANOTHER FOLDER instead of only Try again.
+- The log leaves out curl's progress fragments, which looked like errors.
+- Replacing another build with the same name says "replaces it with this one" instead of "upgrades Beta 1.1 to Beta
+  1.1".
+
 ### Ready for Offline DAoC 0.38
 
 - A build can now fit several releases (`BaseRelease`, e.g. `0.37,0.38`). The installer accepts a game updated to any
-  of them and refuses anything newer. It stays `0.37` until 0.38 is published and merged.
+  of them and refuses anything newer. It stays `0.37` until 0.38 is published and merged. Setup reads the same list:
+  a game on any listed release takes Living Server as it is, and new installs and updates go to the newest.
+- Beta 1.1 targets shadowofze's latest release, **0.37** (`v0.37`, `ab4df02`), and carries 0.38's server fixes from his
+  `main` (`9da9091`); 0.38 itself is not published yet (checked 2026-10-28).
 - [docs/UPSTREAM-RELEASES.md](docs/UPSTREAM-RELEASES.md) is the checklist for that day.
 
 ### Checked (Beta 1.1 so far)
 
-- **Automated:** every branch above merged into `release/1.1` with no conflicts. On Linux the combined tree builds,
-  and all 3,979 server tests pass. CI on Windows runs the full suite, the launcher and installer tests and builds the
-  package.
+- **Automated:** every branch above merged into `release/1.1`. On Linux the combined tree builds and all 4,079 server
+  tests pass. CI on Windows runs the full suite and the launcher and installer tests, and builds the package.
+- **In game (2026-10-27 and 28, test builds of this tree on a fresh 0.37b install made by Setup):**
+  - Setup's new-install, resume after a dropped connection, and update-in-place paths work.
+  - The server starts on the build, with no new error types against Beta 1.0.
+  - Checked play:
+    - LFG and starter-zone answers.
+    - A groupmate follows you, comes along through `/tele` and a release, and buffs you.
+    - `/tele mob` lands a level 1 at a starter camp.
+    - A rez accepted after an earlier offer ran out now works.
+    - A cleric in a respawning camp steps to a clear spot within range and raises you from there.
+  - A full new install with the release/1.1 Setup on 2026-10-28: 4.8 GB from shadowofze's release, unpacked, updated
+    to 0.37b and Living Server added in about 10 minutes with every step clean; cleanup; first server start
+    (`FORK_BUILD name=1.1-beta`, only the stock world-data errors), automatic account, a new character, into the world.
 - **Not checked here:** the epic chains' world script hasn't been run against a real clean 0.37b world (its test
   needs one).
-- **Not played yet.** In game, watch sieges first (their timers now run), then raids, lag at your usual bot count,
-  quests and markers.
+- **Not played yet:**
+  - holiday chatter (tested against the corpus: the right lines in each window, holiday wishes answered);
+  - Leeroy (its rules are tested; raids need many level 50 bots);
+  - sieges (their timers now run);
+  - raids (they need many level 50 bots);
+  - lag at your usual bot count;
+  - quests and markers.
 
 ## Beta 1.0 — 2026-10-22
 

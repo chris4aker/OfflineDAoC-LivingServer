@@ -2500,6 +2500,14 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_living_rumours", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see.", true)]
 		public static bool BOT_LIVING_RUMOURS;
 
+		/// <summary>Holiday chatter around real holidays on the PC's calendar (AutonomousHolidays).</summary>
+		[ServerProperty("bots", "bot_living_holidays", "Server life: around Halloween, Thanksgiving, Christmas, New Year and other holidays on your PC's calendar, bots talk about them like 2003 players did and answer your holiday wishes.", true)]
+		public static bool BOT_LIVING_HOLIDAYS;
+
+		/// <summary>Now and then a raider charges the final boss early (AutonomousRaidLeeroy).</summary>
+		[ServerProperty("bots", "bot_living_leeroy", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in.", true)]
+		public static bool BOT_LIVING_LEEROY;
+
 
 
 		#endregion
