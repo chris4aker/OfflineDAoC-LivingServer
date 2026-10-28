@@ -31,6 +31,14 @@ namespace DOL.GS.Commands
             if (args.Length >= 2 && ClientService.Instance.GetPlayerByPartialName(targetName, out _) == null &&
                 AutonomousBotRegistry.TryGetOnline(targetName, client.Player.Realm, out GameBot worldBot))
             {
+                // Busy first: a bot riding a stable route moves out of range within seconds of /tele, and "too far away" hid
+                // why (play test 2026-10-28).
+                string busy = BotGroupInvite.BusyMessage(worldBot.Name, BotGroupInvite.DutyOf(worldBot));
+                if (busy != null)
+                {
+                    client.Out.SendMessage(busy, eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    return;
+                }
                 if (!BotGroupInvite.CloseEnoughToInviteByName(client.Player, worldBot))
                 {
                     client.Out.SendMessage($"{worldBot.Name} is too far away to join you. Meet up first.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
