@@ -64,6 +64,7 @@ never bypassed.
 | Dungeon or outdoors | the configured dungeon preference | 60% (Crafter) to 170% (Daredevil) of it; a group uses its leader's |
 | Which outdoor camp | weighted by live spawns | also weighted by taste: Daredevils like yellow and orange cons, Explorers like zones they haven't visited in 6 hours, Levelers like full camps. Every legal camp keeps at least 10% weight |
 | How often it chats | the normal rate | ×0.25 to ×1.56 by chattiness (the realm average stays about the same) |
+| How fast it answers a player's attack (`bot_incoming_fire_reaction`) | a 0.3–2.5 s reaction delay by kind of hit and class | ×1.3 (risk 0) to ×0.75 (risk 9) of that delay, so Daredevils and No-lifers turn first and Crafters last |
 
 Zone memory is kept in memory only (32 zones per bot, forgotten when the server restarts).
 

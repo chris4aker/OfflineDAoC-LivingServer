@@ -2400,6 +2400,12 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_PERSONALITIES_ENABLED;
 
 		/// <summary>
+		/// Autonomous gamebots react to a player-shaped attacker like a player (stefanrows/OfflineDAoC 0.271).
+		/// </summary>
+		[ServerProperty("bots", "bot_incoming_fire_reaction", "Autonomous gamebots hit by a player, bot or pet react like a player: a 0.3-2.5 s reaction delay (healers heal meanwhile; shorter for tanks and bold personalities), an area spell from a distance doesn't make its caster the bot's target, and healers cure a dotted group with the group cure. Companions and bots in your group are not affected. False keeps the immediate reaction.", true)]
+		public static bool BOT_INCOMING_FIRE_REACTION;
+
+		/// <summary>
 		/// Autonomous gamebots speak lines from the bot-voices corpus in their own writing style.
 		/// </summary>
 		[ServerProperty("bots", "bot_voices_enabled", "Autonomous gamebots say pre-written, period lines (docs/bot-voices/DESIGN.md) chosen by personality, level, realm, class and situation, each in its own writing style, without repeating a line in a realm within 6 hours. False keeps today's lines.", false)]
