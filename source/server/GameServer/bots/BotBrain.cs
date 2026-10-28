@@ -1207,7 +1207,10 @@ namespace DOL.AI.Brain
 
         private void MaybeIdleRoleplay()
         {
-            if (!CanAmbientWander || Body.IsMoving || Body.IsCasting || Body.InCombat)
+            // In the player's group a bot talks in /group (MaybeAutonomousWorldChat), not to strangers. Play test 2026-10-28: an
+            // idle cleric in the player's group said a /say line every four or five minutes ("anyone running Stonehenge
+            // Barrows today?") on top of its /group talk.
+            if (!CanAmbientWander || BotBody?.IsPlayerLedGroup == true || Body.IsMoving || Body.IsCasting || Body.InCombat)
                 return;
 
             DateTime now = DateTime.UtcNow;
