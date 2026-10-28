@@ -574,7 +574,7 @@ namespace DOL.GS.Spells
 
 				if (interruptRemainingDuration > 0)
 				{
-					interruptRemainingDuration /= 1000 + 1;
+					interruptRemainingDuration = (interruptRemainingDuration + 999) / 1000; // whole seconds, rounded up ("/= 1000 + 1" divided by 1001: "wait 0 seconds")
 
 					if (playerCaster != null)
 					{

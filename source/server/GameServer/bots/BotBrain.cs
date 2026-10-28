@@ -5522,6 +5522,11 @@ namespace DOL.AI.Brain
                 if (Body.IsCasting && Body.castingComponent.SpellHandler?.Spell?.SpellType == eSpellType.Resurrect)
                     return BotGroupSupport.ContinueResurrection(BotBody);
                 if (resurrection == null) return false;
+                // A queued resurrection that hasn't started yet is not a reason to queue a second (play test 2026-10-27: two
+                // casts reached the player back to back, and the second dialog's arrival declined the first).
+                if (Body.castingComponent.HasPendingSkillRequests &&
+                    Body.Group.GetMembersInTheGroup().Any(member => member != Body && !member.IsAlive))
+                    return true;
                 if (Body.IsCasting || !CheckHealSpell(resurrection))
                 {
                     ReportResurrectionBlock(resurrection, Body.IsCasting ? "casting another spell" :
