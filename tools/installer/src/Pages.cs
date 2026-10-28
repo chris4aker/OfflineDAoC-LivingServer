@@ -380,8 +380,8 @@ namespace LivingServerSetup
             }
             // Owner 2026-10-28: a first install comes with everything on at our suggested settings, not off until found in a tab.
             // A game that already has Living Server keeps its own choices unless this is ticked.
-            recommended = Toggle(new OptionToggle("Turn on every Living Server feature at our suggested settings",
-                "Bot guilds, personalities, voices, all of server life and the suggested XP by level. Change any of them later in the launcher's Living Server tab."), ref y, 486);
+            recommended = Toggle(new OptionToggle("Turn on every Living Server feature",
+                "At our suggested settings: bot guilds, personalities, voices, all of server life and XP by level. Change any of them later in the launcher's Living Server tab."), ref y, 486);
             recommended.Checked = prev != null && (prev.NewInstall ? game == null : prev.Game?.Path == game?.Path)
                 ? prev.RecommendedSettings : game == null || game.Ls == LsState.None;
             shortcuts = Toggle(new OptionToggle("Add desktop and Start menu shortcuts"), ref y, 486);
