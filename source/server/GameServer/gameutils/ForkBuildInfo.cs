@@ -15,7 +15,7 @@ namespace DOL.GS;
 public static class ForkBuildInfo
 {
     /// <summary>The fork's build name (Living Server); bump it with each fork release.</summary>
-    public const string BuildName = "1.0-beta";
+    public const string BuildName = "1.1-beta";
 
     /// <summary>The Offline DAoC release this build installs on (the installer checks the game against it).</summary>
     public const string BaseRelease = "0.37";
