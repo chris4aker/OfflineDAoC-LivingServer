@@ -154,6 +154,19 @@ public sealed class LivingServerTable<TKey, TRow> where TRow : DataObject, ILivi
         }
     }
 
+    /// <summary>Removes one row (queued for deletion). False when there was none.</summary>
+    public bool Remove(TKey key)
+    {
+        lock (_sync)
+        {
+            if (!_rows.Remove(key, out TRow row))
+                return false;
+            _pending.Remove(key);
+            _deletes.Add(row);
+            return true;
+        }
+    }
+
     /// <summary>Adds a row only if the key is free (used to claim a server first exactly once).</summary>
     public bool TryAdd(TKey key, TRow row)
     {

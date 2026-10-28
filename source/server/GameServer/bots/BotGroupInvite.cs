@@ -9,7 +9,7 @@ public static class BotGroupInvite
         player?.CurrentRegion != null && bot?.CurrentRegion == player.CurrentRegion && player.IsWithinRadius(bot, InviteByNameRange);
 
     /// <summary>The duty that keeps an autonomous gamebot from answering an invitation (None when it is free).</summary>
-    public enum Duty { None, Dead, Siege, Relic, RvrEvent, RealmRaid, StableRoute, Helper }
+    public enum Duty { None, Dead, Siege, Relic, RvrEvent, RealmRaid, StableRoute, Helper, Begging }
 
     /// <summary>
     /// The first duty that rules out an invitation, in a fixed order. Pure, so the rules are tested without a world.
@@ -36,6 +36,7 @@ public static class BotGroupInvite
         Duty.RealmRaid => $"{name} is committed to a realm raid right now.",
         Duty.StableRoute => $"{name} is riding a stable master route right now.",
         Duty.Helper => $"{name} is already helping another player.",
+        Duty.Begging => $"{name} won't leave their corner.",
         _ => null,
     };
 
@@ -46,13 +47,15 @@ public static class BotGroupInvite
             return Duty.None;
         // The force tag is never cleared when an event ends, so it counts only while its event is still running.
         string force = bot.TempProperties.GetProperty<string>("RvrEventForce");
-        return DutyOf(bot.IsAlive,
+        Duty duty = DutyOf(bot.IsAlive,
             BotSiegeRuntime.Assigned(bot) || BotSiegeRuntime.HoldingPosition(bot),
             bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) != null,
             !string.IsNullOrEmpty(force) && AutonomousRvrEventLayer.IsEventForce(force, GameLoop.GameLoopTime),
             AutonomousRealmRaid.IsReserved(bot),
             bot.IsOnStableMasterRoute,
             bot.IsTemporaryGroupHelper);
+        // A beggar (bot_living_beggars) never groups.
+        return duty == Duty.None && AutonomousBeggars.Is(bot) ? Duty.Begging : duty;
     }
 
     public static bool TryInvite(GamePlayer player, GameBot bot)
@@ -108,6 +111,7 @@ public static class BotGroupInvite
 
         bot.PathTo(player, bot.MaxSpeed);
         ChatUtil.SendSystemMessage(player, $"{bot.Name} joins your group and starts moving to you.");
+        AutonomousBotGroupChatter.OnJoinedPlayerGroup(bot);
         return true;
     }
 }

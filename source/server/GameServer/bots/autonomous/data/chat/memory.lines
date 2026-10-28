@@ -17,7 +17,6 @@ hey {player}, still remember that run at {place}
 @who Socialite
 {player}!! hi hi, what are you up to tonight?
 @who Leveler
-hey {player}, i dinged twice since we grouped
 @kind greet
 @mood neutral
 @who *
@@ -193,10 +192,11 @@ yeah {player}?
 {player}?
 hm? what's up {player}
 
-# A friendly bot inviting you (the invite itself is a yes/no dialog).
+# A friendly bot inviting you. Dormant in the talking update: a bot cannot invite a player, so nothing sets "recruiting" and
+# these are never said (they were picked by solo bots: "we have room at {camp}" from a bot with no group).
 @kind lfg
 @topic invite
-@needs knows_player
+@needs knows_player,recruiting
 @who *
 {player}, we have room at {camp}, want in?
 hey {player}, want to join us? sending an invite

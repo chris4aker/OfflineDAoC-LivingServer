@@ -1,0 +1,300 @@
+# The talking update: reactions in /faction to a bot's news (kind reply, @answers news_<topic>; the last block
+# answers any news). A reaction that offers to go somewhere says so only with a place flag that makes it possible.
+# Replies use no news slots. New writing (see docs/bot-voices).
+
+# ---- siege_defend ----
+@kind reply
+@answers news_siege_defend
+@who *
+how many are there?
+again? they love that keep
+who is leading the defense?
+anyone got a ram count?
+cant, mid pull, sorry
+@needs in_frontier
+omw, two minutes out
+on my way, hold the inner door
+@needs in_capital
+porting out now
+@needs newbie
+too low to help, sorry. gl
+@needs
+@who Leveler
+wish i could, i have a group going
+
+# ---- siege_attack ----
+@kind reply
+@answers news_siege_attack
+@who *
+whats the door at?
+how many defenders?
+rams or just zerg?
+gl, take it fast before they wake up
+go get it
+@needs in_frontier
+coming, save me some rp
+@needs !in_frontier,!in_capital
+too far out, gl all
+@needs
+@who Daredevil
+rp! rp!
+@who Socialite
+go go go, i want to see that keep in our colors
+
+# ---- siege_held ----
+@kind reply
+@answers news_siege_held
+@who *
+ty defenders
+nice save
+ha, they will be back
+who came for that one?
+gj all, rest up
+good, they wasted their whole raid
+@who NoLifer
+they always break on the inner door
+@who Socialite
+yay, way to go all
+
+# ---- siege_failed ----
+@kind reply
+@answers news_siege_failed
+@who *
+next time
+regroup and try again?
+figures, they had the numbers
+who led that one?
+not our turn i guess
+rough, how long did it go?
+@who Daredevil
+should have waited for more people
+@who Leveler
+told you, xp is safer
+
+# ---- keep_won ----
+@kind reply
+@answers news_keep_won
+@who *
+gj realm!
+nice, gz all
+woot
+ty to everyone who went
+hope we can hold it
+how long till they want it back lol
+@who Socialite
+yay! go us
+@who NoLifer
+about time we took that one
+
+# ---- keep_lost ----
+@kind reply
+@answers news_keep_lost
+@who *
+again??
+ugh, that one again
+were there any defenders at all?
+lol of course
+we will take it back
+how did nobody see that coming
+@needs in_frontier
+anyone forming to take it back?
+@needs
+@who Daredevil
+lets take it back tonight
+@who Leveler
+oh well, not my keep
+
+# ---- keep_other ----
+@kind reply
+@answers news_keep_other
+@who *
+let them fight
+good, keep them busy
+ha, better them than us
+hope they are weak after that
+who has more keeps now?
+lol, they really do not like each other
+@who Daredevil
+they will be tired, good time to hit them
+@who NoLifer
+free keep for us later then
+
+# ---- relic_lost ----
+@kind reply
+@answers news_relic_lost
+@who *
+noooo
+how did they get past the guards?
+who was guarding it??
+that hurts
+relic raid when?
+we need it back fast
+ugh, my spells already feel weaker
+@who NoLifer
+told everyone to watch the relic keep
+@who Leveler
+there goes my damage
+
+# ---- relic_won ----
+@kind reply
+@answers news_relic_won
+@who *
+woohoo!
+huge, gj
+nice!! who carried?
+they will come for it hard
+guard it well
+free bonus, love it
+gz realm, big one
+@who Daredevil
+now we hold it
+
+# ---- relic_back ----
+@kind reply
+@answers news_relic_back
+@who *
+yes! ty to the carriers
+home sweet home
+took long enough
+gj, keep it there this time
+nice, damage back up
+best news all week
+@who Leveler
+good, kills go faster now
+@who NoLifer
+lets not lose it again please
+
+# ---- df_won ----
+@kind reply
+@answers news_df_won
+@who *
+seals time
+nice, who wants to farm df?
+ooh, df group anyone?
+yay, been waiting for that
+how many keeps do we have now?
+df! lfg there
+@who Crafter
+time to buy seals cheap
+@who Leveler
+df xp is so good, cant wait
+@who Explorer
+been meaning to see the deeper parts of df
+
+# ---- df_lost ----
+@kind reply
+@answers news_df_lost
+@who *
+there goes df
+bah, had plans for df
+how many keeps do they have now?
+we need to take some keeps back
+well that was short
+that did not last long
+@who NoLifer
+we need more people in the frontier
+@who Crafter
+seal prices going up then
+
+# ---- raid_forming ----
+@kind reply
+@answers news_raid_forming
+@who *
+where is the meet up?
+need healers?
+who is leading?
+how many so far?
+ill pass, cant sit that long
+gl all
+@who Leveler
+whats the loot like?
+@needs veteran
+bring resists, it hits hard
+@needs newbie
+is that for high levels only?
+
+# ---- raid_won ----
+@kind reply
+@answers news_raid_won
+@who *
+gz raid, what dropped?
+nice, first try?
+who got the loot?
+grats all, big kill
+wow nice, gz
+@who Leveler
+jealous, i never get raid spots
+@who Socialite
+woo! gz gz
+@needs veteran
+good, that one used to wipe us every week
+
+# ---- raid_wiped ----
+@kind reply
+@answers news_raid_wiped
+@who *
+that boss is mean
+what happened?
+who pulled?
+rough, gl next try
+long walk back from there
+lol, every time
+@who Daredevil
+try again, im sure it was close
+@needs veteran
+need more healers for that one
+
+# ---- enemy_seen ----
+@kind reply
+@answers news_enemy_seen
+@who *
+where are they heading?
+what classes did they have?
+stealthers with them?
+zerg or a real group?
+ty for the call
+thx, avoiding that area
+@needs in_frontier
+heading over, where exactly?
+@needs !in_rvr
+glad im nowhere near there
+@needs
+@who Daredevil
+sounds like fun
+
+# ---- any news ----
+@kind reply
+@answers news
+@who *
+not again
+who was on?
+gz all
+how many were there?
+busy out there today
+realm is busy tonight
+every time i log on something changes
+someone should post that on the boards
+that was fast
+thats twice tonight
+who called it?
+figured that would happen
+the frontier never sleeps
+well, there go my plans
+ok thx for the update
+wish i was there
+good grief
+that changes things
+i miss everything
+wait what
+heh, nice one realm
+crazy times
+@who NoLifer
+was waiting for that
+@who Socialite
+omg really?
+@who Leveler
+doesnt matter to me, back to my camp
+@who Daredevil
+need to be out there more
+@who Explorer
+huh, wonder what that looked like

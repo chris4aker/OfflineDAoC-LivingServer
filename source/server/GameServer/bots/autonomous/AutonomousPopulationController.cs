@@ -138,6 +138,8 @@ public static class AutonomousPopulationController
             List<OfflineWorldBotRecord> available = roster
                 .Where(record => !record.IsOnline && !AutonomousBotRegistry.Contains(record.BotId) && !PendingSpawns.ContainsKey(record.BotId))
                 .Where(record => !scheduled || AutonomousBotSchedule.WantsOnline(record, nowUtc))
+                // A rage quitter stays away even with schedules off.
+                .Where(record => !AutonomousBotSchedule.RageQuitting(record.BotId, nowUtc))
                 .ToList();
 
             // Ten thousand actors require about eleven scheduled logins per
@@ -235,6 +237,9 @@ public static class AutonomousPopulationController
                 PlaceAtCapitalFallback(bot, record);
                 bot.SynchronizePositionForLoginValidation();
             }
+            // A beggar (bot_living_beggars) always logs in in its own capital.
+            if (AutonomousBeggars.PlaceAtLogin(bot, record))
+                bot.SynchronizePositionForLoginValidation();
             if (string.IsNullOrWhiteSpace(record.LastSavedUtc) && record.Experience == 0)
             {
                 bot.Health = bot.MaxHealth;

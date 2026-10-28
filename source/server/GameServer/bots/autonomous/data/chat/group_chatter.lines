@@ -12,7 +12,6 @@ pull?
 ready when you are
 @invites none
 need a sec, sitting for power
-oom, give me a minute
 med break
 @needs in_group,!in_capital
 buffs dropping soon
@@ -25,7 +24,6 @@ good group tonight
 brb, door
 back
 @invites
-anyone need power?
 loot is yours, i dont need it
 anyone need this drop?
 @invites ask
@@ -75,36 +73,80 @@ pull faster, the respawn is waiting for us
 @needs in_group,in_dungeon
 anyone know what is past this room?
 
-# Said in the middle of a fight (audit 2026-10-16: these were idle chatter, which only runs out of combat).
-# No caller asks for @kind combat yet, so they are silent until combat chatter is built.
+# Said in the middle of a fight, by a bot in the player's group, at the moment its topic names (the talking update:
+# AutonomousBotGroupChatter.TryCombatCall picks the topic from what is happening in the fight).
 @kind combat
-@topic group
 @who *
-@needs in_group,!in_capital
+@needs in_player_group,!in_capital
+@topic pull
 inc
+pulling
+careful, that one is orange
+assisting you
+@topic add
 inc, two of them
 add!
-pulling
-hp low, careful on the next one
-rebuffing, hold the pull
-nice pull
 that one had friends
-wipe incoming, run!
-run run run
 watch the pat
 pat coming from the left
-careful, that one is orange
+@needs in_player_group,!in_capital,is_tank
+i got the adds
+@needs in_player_group,!in_capital
+@topic low_hp
+hp low, careful on the next one
+@topic rest
+rebuffing, hold the pull
+@topic kill
+nice pull
+@topic wipe
+wipe incoming, run!
+run run run
+@topic mez
+@needs in_player_group,!in_capital,is_support
 mez is on the caster
+@topic mez_broke
 mez broke!
+@needs in_player_group,!in_capital
+@topic root
 root is on, kill the other one
+kite it, kite it
+@topic stun
 stun up, go
+@topic taunt
+@needs in_player_group,!in_capital,is_tank
 taunting, get it off the healer
 i have aggro, keep healing me
-assisting you
-target the caster first
-switching to the healer
+@needs in_player_group,!in_capital
+@topic healer_oom
+@needs in_player_group,!in_capital,!is_healer
 healer is oom, wait
-i got the adds
-kite it, kite it
+@needs in_player_group,!in_capital
+@topic pull
+@class Cabalist,Theurgist,Necromancer,Spiritmaster,Bonedancer,Hunter,Druid,Enchanter,Animist
 pet has aggro, all good
+@class
+@topic heal_big
+@needs in_player_group,!in_capital,is_healer
 group heal coming
+
+# The talking update audit: only a power user goes oom
+@kind group
+@topic group
+@who *
+@realm *
+@class Wizard,Theurgist,Sorcerer,Cabalist,Necromancer,Cleric,Friar,Minstrel,Healer,Shaman,Runemaster,Spiritmaster,Bonedancer,Skald,Eldritch,Enchanter,Mentalist,Animist,Druid,Bard,Warden
+@levels 1-50
+@needs in_group,!in_capital
+@invites none
+oom, give me a minute
+
+# The talking update audit: a bot offering power is one that can give it
+@kind group
+@topic group
+@who *
+@realm *
+@class Cabalist,Necromancer,Spiritmaster,Bonedancer,Mentalist,Theurgist
+@levels 1-50
+@needs in_group,!in_capital
+@invites ask_anyone
+anyone need power?

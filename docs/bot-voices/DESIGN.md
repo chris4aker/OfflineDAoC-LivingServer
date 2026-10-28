@@ -136,6 +136,12 @@ anyone at {camp}? lf a few more
 - `@kind` starts a new block and resets every other tag to its default; the other directives change
   one tag and keep the rest.
 - Lines starting with `#` are comments, and empty lines are ignored.
+- **Lines built from parts** (2026-10-26): `[a|b|c]` is one of a, b or c, and `[a|]` is a or nothing:
+  `[ugh|man|heh], [this camp|this spot] is [slow|dead] tonight`. The build writes every way of saying the line as its
+  own line (all of them up to 48, else a fixed sample of 48), each checked like any other line, so the no-repeat window
+  works line by line. The family shares one line's weight times the square root of its size (48 ways weigh about 7
+  lines), so it comes up more often than a single line but rarely in the same words. Every combination must read
+  naturally on its own.
 
 **Debates** use scene blocks:
 
@@ -286,7 +292,11 @@ ding in /faction gets 1-3, a "lol" usually none, a named bot always answers. A s
   - **Greetings:** at most one per bot every 2 hours. Nearby greetings to you are capped at 1 a
     minute.
 
-## 5. Settings (all off by default until the playtest)
+## 5. Settings
+
+**Beta 1.1 (the talking update):** `bot_voices_enabled` is on by default, `bot_voices_chat_rate` (the planned
+`bot_voices_faction_rate`) and `bot_voices_tells` exist; see [TALKING-UPDATE.md](TALKING-UPDATE.md). The table below is
+the original plan.
 
 **Status (2026-10-12):** `bot_voices_enabled` and `bot_voices_debates` exist (see
 [../BOT-PERSONALITIES.md](../BOT-PERSONALITIES.md)). The others come with memory (step 3) and aren't

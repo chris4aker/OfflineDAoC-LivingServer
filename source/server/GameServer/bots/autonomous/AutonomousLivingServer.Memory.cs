@@ -117,6 +117,7 @@ public static partial class AutonomousLivingServer
             NoteGroupmates(player, now);
             if (player.IsAlive && !player.InCombat)
                 TryGreet(player, now);
+            TryStartTell(player, now);
         }
         TryGossip(now);
     }

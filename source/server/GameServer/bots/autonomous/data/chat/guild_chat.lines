@@ -25,7 +25,9 @@ what level is everyone at now?
 {camp} was good xp for me, worth a look around {level}
 whoever told me about {camp}, ty
 at {camp}, room for one more if you want the xp
+@needs xp_high, solo
 need two bubbles to ding, grinding solo till then
+@needs
 leveling an alt tonight, dont mind me
 leveling with you lot makes the slow nights go faster
 @invites complaint
@@ -98,13 +100,23 @@ need more healers for rvr, any volunteers?
 relic raid this weekend, who is in?
 who has their first realm ability yet?
 8man practice tonight? we keep losing to the same group
+@needs !df_ours
+@about place
 who wants darkness falls if we get it back?
+@needs
+@about
 @invites ask_opinion
 we need a guild claim on a keep, thoughts?
 @invites chat
+@needs keep_news
 {keep} changed hands again, i think
-frontier is quiet, might be a good time to try {keep}
+@needs
+@needs !defending, !attacking
+frontier is quiet, might be a good time to try for a keep
+@needs
+@needs keep_lost_recent
 lost {keep}, we should take it back this week
+@needs
 @invites complaint
 got ganked at the mile gate again, stealthers everywhere
 the {enemy} were everywhere last night
@@ -116,7 +128,9 @@ stealthers had a good night, my corpse can confirm
 just got a realm rank, so happy
 @invites chat
 @needs in_frontier
+@needs in_frontier, !defending
 out by {keep}, quiet so far
+@needs in_frontier
 @needs in_frontier,in_group
 small group out in {frontier}, room for a healer if anyone is on
 
@@ -130,10 +144,18 @@ small group out in {frontier}, room for a healer if anyone is on
 need a puller who knows {dungeon}, any volunteers?
 raid sign ups for saturday, who is in?
 we need two more healers for the dragon, any takers?
+@needs df_ours
+@about place
 who still needs seals from darkness falls?
+@needs
+@about
 who has decent fire resists for the dragon?
 need a main assist for the next raid, volunteers?
+@needs df_ours
+@about place
 who is up for a darkness falls run tonight?
+@needs
+@about
 anyone have notes on the named in {dungeon}?
 @invites ask_opinion
 loot rules for the raid, need before greed ok?
@@ -190,7 +212,6 @@ making arrows all night, my fingers hurt
 anyone on?
 hey guild
 slow night, anyone doing anything?
-heading to town to sell, then back out
 anyone heading to {capital}?
 anybody seen {keep} change hands lately?
 anyone know a good spot for a {class} at {level}?
@@ -211,7 +232,6 @@ who wants to help a guildie with a named?
 @invites ask_opinion
 is it just me or is the lag bad tonight?
 @invites joke
-just died to a grey con, dont ask
 how does everyone have so much money
 got a nice drop, of course its for another class
 @invites none
@@ -232,3 +252,23 @@ just dinged, ty for all the tips everyone
 @needs just_died
 @invites complaint
 lost a chunk of xp on that death, ugh
+
+# The talking update audit: said only right after the bot died
+@kind guild
+@topic general
+@who *
+@realm *
+@levels 1-50
+@needs just_died
+@invites joke
+just died to a grey con, dont ask
+
+# The talking update audit: only a bot with full bags heads to sell
+@kind guild
+@topic general
+@who *
+@realm *
+@levels 1-50
+@needs bag_full
+@invites chat
+heading to town to sell, then back out

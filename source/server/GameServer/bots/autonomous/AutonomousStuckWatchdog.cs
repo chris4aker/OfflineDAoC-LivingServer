@@ -439,6 +439,8 @@ public static class AutonomousStuckWatchdog
         bool moveLiveObject,
         string logMarker = "AUTONOMOUS_POSITION_RECOVERY")
     {
+        if (moveLiveObject && TryRecoverToPlayerLeader(bot, now, reason, logMarker))
+            return true;
         CapitalLocation capital = SafeCapitalFor(bot.Realm);
         if (capital.RegionId == 0)
             return false;
@@ -524,6 +526,53 @@ public static class AutonomousStuckWatchdog
             bot.MarkAutonomousStateDirty();
             AutonomousBotStatusPersistence.Queue(bot);
         }
+        return true;
+    }
+
+    /// <summary>
+    /// A gamebot in the player's group is recovered to the player and stays in the group. Play test 2026-10-27: Liviardis,
+    /// walking back to Claudemid after a release, ended up outside every zone; the recovery took it to Jordheim, removed it
+    /// from the player's group without a word, and the schedule logged it off a few seconds later. Companion bots already
+    /// rejoin their player this way (TryReturnTemporaryCompanionToLeader).
+    /// </summary>
+    private static bool TryRecoverToPlayerLeader(GameBot bot, DateTime now, string reason, string logMarker)
+    {
+        if (bot.PlayerGroupLeader is not { IsAlive: true, ObjectState: GameObject.eObjectState.Active } leader ||
+            leader.CurrentZone == null || bot.Group == null || bot.Group != leader.Group || leader.Realm != bot.Realm)
+            return false;
+        ushort oldRegion = bot.CurrentRegionID;
+        int oldX = bot.X, oldY = bot.Y, oldZ = bot.Z;
+        string oldActivity = bot.PersistentRecord?.Activity ?? string.Empty;
+        bot.CompleteStableMasterRoute();
+        bot.StopAttack();
+        bot.StopFollowing();
+        bot.StopMovingOnPath();
+        bot.StopMoving();
+        bot.StopCurrentSpellcast();
+        if (bot.Brain is BotBrain brain)
+            brain.ClearAggroList();
+        System.Numerics.Vector3 spot = TemporaryGroupStableTravel.FormationPoint(leader, bot.ObjectID % 6);
+        if (!bot.MoveTo(leader.CurrentRegionID, (int)Math.Round(spot.X), (int)Math.Round(spot.Y), (int)Math.Round(spot.Z), leader.Heading))
+            return false;
+        bot.EndReturnJourney();
+        if (bot.Brain is BotBrain followBrain)
+            followBrain.FSM.SetCurrentState(eFSMStateType.FOLLOW);
+        OfflineWorldBotRecord record = bot.PersistentRecord;
+        if (record != null)
+        {
+            record.RecoveryCount++;
+            record.Activity = "Following the player's group";
+            record.LastMeaningfulProgressUtc = now.ToString("O");
+        }
+        Log.Warn($"{logMarker} bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} level={bot.Level} " +
+                 $"realm={GlobalConstants.RealmToName(bot.Realm)} class=\"{ForLog(bot.ClassName)}\" reason=\"{ForLog(reason)}\" " +
+                 $"activity=\"{ForLog(oldActivity)}\" from={oldRegion}:{oldX},{oldY},{oldZ} " +
+                 $"to=player:{ForLog(leader.Name)} {leader.CurrentRegionID}:{leader.X},{leader.Y},{leader.Z}");
+        MarkProgress(bot, eAutonomousProgressKind.Recovery, now);
+        bot.MarkAutonomousStateDirty();
+        AutonomousBotStatusPersistence.Queue(bot);
+        AutonomousLivingServer.Speak(bot, AutonomousLivingServer.Channel.Group,
+            Random.Shared.Next(3) switch { 0 => "got stuck on something, back now", 1 => "ugh, stuck. ok here", _ => "had to /stuck, im back" });
         return true;
     }
 

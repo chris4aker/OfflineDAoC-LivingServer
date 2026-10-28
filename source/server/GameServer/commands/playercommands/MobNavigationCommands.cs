@@ -124,6 +124,10 @@ public static class PlayerMobNavigator
             .DistinctBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase)
             .OrderBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase).ToArray();
 
+    /// <summary>How far a camp's levels are from the player's (0 when the player's level is in its range). Pure.</summary>
+    public static int CampLevelGap(int minimumLevel, int maximumLevel, int playerLevel) =>
+        playerLevel < minimumLevel ? minimumLevel - playerLevel : playerLevel > maximumLevel ? playerLevel - maximumLevel : 0;
+
     public static bool TryStart(GamePlayer player, string exactName, out string message)
     {
         if (AutonomousPlayerPilot.IsActive(player))
@@ -176,9 +180,12 @@ public static class PlayerMobNavigator
             return true;
         }
 
+        // Play test 2026-10-27: "/tele mob myrkcat" (listed by /mobs 3) went to a camp of level 27 myrkcats, and "badger cub"
+        // (listed at 1) to level 5s; the biggest camp won whatever its level. The camp closest to the player's level wins now.
         GameNPC[] chosenCamp = matches
             .GroupBy(npc => (npc.CurrentRegionID, X: npc.X / CampCellSize, Y: npc.Y / CampCellSize))
-            .OrderByDescending(group => group.Count())
+            .OrderBy(group => CampLevelGap(group.Min(npc => npc.Level), group.Max(npc => npc.Level), player.Level))
+            .ThenByDescending(group => group.Count())
             .ThenBy(group => RouteBias(player, group.First()))
             .First()
             .ToArray();

@@ -1,0 +1,388 @@
+# The talking update: a bot tells /faction what just happened in the world (kind news, AutonomousChatNews).
+# One block per topic. "@needs witness" lines are said only by a bot that was there; "@needs !witness" lines
+# pass the news on. Each topic uses only the slots its event supplies (docs/bot-voices/TALKING-UPDATE-CONTENT.md).
+# New writing (see docs/bot-voices).
+
+# ---- siege_defend: {enemy} is attacking our {keep} now (keep, enemy) ----------------------------------
+@kind news
+@topic siege_defend
+@who *
+@realm *
+@invites news_siege_defend
+@needs witness
+they are on the door at {keep}, need bodies now
+{enemy} rams on the outer door at {keep}, get here
+inner door at {keep} is going, anyone??
+holding {keep} with like four people, we need more
+oil is up at {keep} but the rams keep coming, help
+@who Daredevil,NoLifer
+{keep} is full of {enemy}, come get some rp
+@who *
+@needs !witness
+{keep} under attack by {enemy}, anyone close?
+heard {enemy} is hitting {keep}, defenders needed
+{keep} is getting sieged, who can go?
+{enemy} at {keep} again, they never leave it alone
+defend {keep}! {enemy} on the doors
+@who Leveler
+@who *
+@needs !witness,newbie
+it says {keep} is under attack? is that one ours?
+@needs !witness,veteran
+{enemy} on {keep} again, everyone who is 40+ please go
+
+# ---- siege_attack: our army is hitting {keep}, an {enemy} keep (keep, enemy) ---------------------------
+@kind news
+@topic siege_attack
+@who *
+@realm *
+@invites news_siege_attack
+@needs witness
+rams on the door at {keep}, need more people hitting it
+outer door at {keep} is down, push in
+we are at {keep}, {enemy} barely defending, come get rp
+sieging {keep}, could use a few healers up here
+lord room at {keep} soon, hurry
+@needs !witness
+zerg is hitting {keep}, go go
+our army is on {keep}, anyone want in?
+heard we have rams on {keep}, free rp if you hurry
+big push on {keep} right now
+{keep} is under our siege, the {enemy} are slow to show
+@who Daredevil
+whole realm on {keep}, finally some action
+@who *
+@needs !witness,veteran
+taking {keep} from the {enemy} again, how many times is this now
+
+# ---- siege_held: we held {keep} against {enemy} (keep, enemy) ------------------------------------------
+@kind news
+@topic siege_held
+@who *
+@realm *
+@invites news_siege_held
+@needs witness
+held {keep}! {enemy} gave up and ran
+we held {keep}, gj everyone who came
+door held at {keep}, ty to the healers
+{enemy} broke on the inner door at {keep}, gg
+their rams are all dead at {keep}, they are pulling back
+@needs !witness
+heard we held {keep} vs {enemy}, nice
+{keep} held, {enemy} went home empty
+{keep} still ours, the {enemy} zerg fell apart
+good news, {keep} held
+@who Socialite
+whoever held {keep}, you guys rock
+@who *
+@needs !witness,veteran
+{enemy} tried {keep} again and bounced, every single time
+
+# ---- siege_failed: our attack on {keep} failed (keep, enemy) -------------------------------------------
+@kind news
+@topic siege_failed
+@who *
+@realm *
+@invites news_siege_failed
+@needs witness
+we got pushed off {keep}, too many {enemy} defenders
+wiped at the door of {keep}, releasing
+{keep} attack is over, they had casters on the walls the whole time
+lost the rams at {keep}, back to the portal keep
+{enemy} zerg showed up at {keep} and that was that
+@needs !witness
+heard the {keep} push failed
+attack on {keep} fell apart, {enemy} held it
+{keep} siege is done, didnt work out
+so much for taking {keep}
+{enemy} still has {keep}, our guys got wiped
+@who Leveler
+{keep} raid failed, back to xp i guess
+
+# ---- keep_won: we took {keep} from {loser} (keep, loser) -----------------------------------------------
+@kind news
+@topic keep_won
+@who *
+@realm *
+@invites news_keep_won
+@needs witness
+{keep} is ours! killed the lord just now
+lord down at {keep}, ty for coming
+{keep} taken from {loser}, ty all who showed
+just claimed {keep}, {loser} never saw us coming
+we took {keep}, gj all
+@needs !witness
+we took {keep} from {loser}!
+{keep} is ours now, nice work whoever was there
+heard we have {keep} again
+{loser} lost {keep} to us, gj realm
+{keep} flipped to us, finally
+@who NoLifer
+{keep} back where it belongs
+@who Socialite
+we took {keep}!! go realm
+
+# ---- keep_lost: {winner} took our {keep} (keep, winner) ------------------------------------------------
+@kind news
+@topic keep_lost
+@who *
+@realm *
+@invites news_keep_lost
+@needs witness
+{winner} just killed our lord at {keep}
+lost {keep}, there were too many of them
+{keep} fell, {winner} got through both doors
+we lost {keep}, i died on the inner door
+{winner} has {keep}, sorry all, we couldnt hold it
+@needs !witness
+heard {winner} took {keep}
+we lost {keep} to {winner}
+{keep} is gone, {winner} has it now
+{winner} took {keep}, again
+{keep} lost... anyone know how many they had?
+@who NoLifer
+{winner} on {keep} the minute nobody is looking, every time
+@who *
+@needs !witness,newbie
+um, it says {winner} took {keep}? is that bad?
+
+# ---- keep_other: {winner} took {keep} from {loser}, two other realms (keep, winner, loser) ------------
+@kind news
+@topic keep_other
+@who *
+@realm *
+@invites news_keep_other
+@needs witness
+{winner} just took {keep} off {loser}, watched it from the hill
+saw {winner} take {keep} from {loser}, big zerg
+{loser} lost {keep} to {winner}, i was hiding by the walls lol
+@needs !witness
+{winner} took {keep} from {loser}
+heard {loser} lost {keep} to {winner}
+{winner} and {loser} fighting over {keep}, let them
+{keep} went to {winner}, {loser} must be busy elsewhere
+{winner} has {keep} now, they are getting big
+keep map shows {keep} as {winner} now, {loser} lost it
+@who Daredevil
+{loser} lost {keep}, somebody should go clean up what is left
+@who *
+@needs !witness,veteran
+{winner} took {keep} from {loser}, good, they can wear each other out
+
+# ---- relic_lost: {enemy} took our relic {relic} (relic, enemy) -----------------------------------------
+@kind news
+@topic relic_lost
+@who *
+@realm *
+@invites news_relic_lost
+@needs witness
+{enemy} just walked off with {relic}, we couldnt stop them
+they got {relic} out the door, i saw the carrier run
+relic keep fell, {enemy} has {relic}
+@needs !witness
+{enemy} took {relic}!
+we lost {relic} to {enemy}
+{relic} is gone, {enemy} has it now
+heard {enemy} got {relic}, how
+{relic} is in {enemy} hands, relic raid anyone?
+@who NoLifer
+lost {relic}, nobody was watching the relic keep
+@who Leveler
+{enemy} has {relic}, there goes our bonus
+@who *
+@realm alb
+@about place
+{enemy} took {relic}, camelot is going to be grumpy for a week
+@realm hib
+@about place
+{enemy} has {relic}, tir na nog will be all doom and gloom
+@about
+@realm *
+
+# ---- relic_won: we took {relic} from {loser} (relic, loser) --------------------------------------------
+@kind news
+@topic relic_won
+@who *
+@realm *
+@invites news_relic_won
+@needs witness
+we have {relic}! carrier made it home
+{relic} is ours, i ran it back myself
+took {relic} from {loser}, carrier is on the way home
+@needs !witness
+we took {relic} from {loser}!
+{relic} is ours now, gj realm
+heard we grabbed {relic} off {loser}
+{loser} lost {relic} to us, wow
+relic raid worked, {relic} is ours
+@who Daredevil
+{relic} taken, {loser} will come for it, be ready
+@who Socialite
+{relic}!! we did it
+
+# ---- relic_back: our {relic} is back home (relic) ------------------------------------------------------
+@kind news
+@topic relic_back
+@who *
+@realm *
+@invites news_relic_back
+@needs witness
+{relic} is back in its keep, i saw it go in
+carried {relic} home myself, hands still shaking
+{relic} is home, gj everyone on the escort
+walked {relic} in the gate with half the realm behind me
+@needs !witness
+{relic} is back home
+we got {relic} back
+{relic} is back where it belongs
+heard {relic} is home, finally
+{relic} home again, bonus is back
+{relic} made it back, someone tell the guards to stay awake this time
+@who Leveler
+{relic} back, good, my damage was sad without it
+
+# ---- df_won: Darkness Falls is ours (no slots) ---------------------------------------------------------
+@kind news
+@topic df_won
+@who *
+@realm *
+@invites news_df_won
+@about place
+@needs witness
+we have df! watched the keep count tip just now
+df is ours, saw it flip while i was out at the keeps
+@needs !witness
+darkness falls is ours, go farm seals
+df is ours again
+heard we have df, anyone want to go?
+df open! who wants a group
+we got darkness falls back, nice
+df open again, the keep count finally went our way
+@who Explorer
+df is ours, finally get to see the lower levels
+@who Crafter
+df is ours, seal prices should drop now
+@who *
+@needs !witness,newbie
+everyone says df is ours, what is df?
+@about
+
+# ---- df_lost: {winner} has Darkness Falls now (winner) -------------------------------------------------
+@kind news
+@topic df_lost
+@who *
+@realm *
+@invites news_df_lost
+@about place
+@needs witness
+{winner} has df now, got kicked out mid pull
+just got ported out of df, {winner} has it
+{winner} took df, we all got booted out
+@needs !witness
+{winner} has darkness falls now
+lost df to {winner}
+df is gone, {winner} has it
+heard {winner} got df
+{winner} owns df now, there go my seals
+@who NoLifer
+{winner} has df, we need more keeps
+@who Leveler
+df lost, back to the old camps
+@about
+
+# ---- raid_forming: a realm raid is forming for {raid} (raid) -------------------------------------------
+@kind news
+@topic raid_forming
+@who *
+@realm *
+@invites news_raid_forming
+@needs witness
+forming for {raid} at the zone in, need more
+raid for {raid} at the entrance, pst the leader for an invite
+we are gathering for {raid}, healers please
+@needs !witness
+raid forming for {raid}, anyone?
+{raid} raid tonight, they need healers
+someone is putting together {raid}, pst the leader
+heard there is a {raid} raid forming
+{raid} raid going up, bring buffs and patience
+anyone 45+ want a {raid} spot? they are short a few
+@who Leveler
+{raid} raid? only if the loot is good
+@who *
+@needs !witness,veteran
+{raid} raid forming, been a while since my last one
+
+# ---- raid_won: the realm raid killed {boss} in {raid} (raid, boss) -------------------------------------
+@kind news
+@topic raid_won
+@who *
+@realm *
+@invites news_raid_won
+@needs witness
+{boss} is dead! gj raid
+we killed {boss}, waiting on the loot
+{boss} down in {raid}, ty all
+{boss} down, i only died twice
+@needs !witness
+{boss} down in {raid}, gz raid
+heard the raid killed {boss}
+{raid} raid got {boss}, nice
+{boss} is dead, wonder what dropped
+the raid finally put {boss} down, {raid} is clear
+realm killed {boss} in {raid}, good stuff
+@who Socialite
+they killed {boss}!! gz all
+
+# ---- raid_wiped: the raid wiped on {boss} in {raid} (raid, boss) ---------------------------------------
+@kind news
+@topic raid_wiped
+@who *
+@realm *
+@invites news_raid_wiped
+@needs witness
+wiped on {boss}, releasing
+{boss} wiped us, long run back
+raid down at {boss}, someone pulled early
+{boss} killed everyone, ugh
+@needs !witness
+raid wiped on {boss} in {raid}
+heard {boss} wiped the raid
+{raid} raid wipe, {boss} won that one
+{boss} 1, raid 0
+{raid} went bad, wiped on {boss}
+@who Daredevil
+wiped on {boss}? i want in on the next try
+
+# ---- enemy_seen: a {size}-strong {enemy} group seen in {zone} (enemy, zone, size) ----------------------
+# {zone} needs a place flag: lines that name the zone are said from RvR; a relay from elsewhere leaves it out.
+@kind news
+@topic enemy_seen
+@who *
+@realm *
+@invites news_enemy_seen
+@needs witness,in_rvr
+inc {size} {enemy} in {zone}
+{size} {enemy} just ran past me in {zone}
+{enemy} group in {zone}, about {size}, careful
+i see {size} {enemy} in {zone}, they are moving fast
+@needs !witness,in_rvr
+{size} {enemy} seen in {zone}, watch out
+heard {size} {enemy} are roaming {zone}
+{enemy} zerg in {zone}, {size} or so
+heads up, {size} {enemy} spotted in {zone}
+@needs !witness
+{size} {enemy} out roaming, stay sharp
+{enemy} group of {size} out there, careful
+@who Daredevil
+{size} {enemy}? lets go find them
+
+# The talking update audit: only a bot at a camp is stuck at one
+@kind news
+@topic siege_defend
+@who Leveler
+@realm *
+@levels 1-50
+@needs !witness,at_camp
+@invites news_siege_defend
+{keep} getting hit if anyone cares, im stuck at my camp

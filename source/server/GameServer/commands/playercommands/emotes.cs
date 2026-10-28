@@ -362,6 +362,9 @@ namespace DOL.GS.Commands
 			}
 
 			SendEmote(client.Player, client.Player.TargetObject, emoteID, emoteMessages);
+			// A /beg at a beggar bot is asking it for coin (AutonomousBeggars).
+			if (emoteID == eEmote.Beg)
+				AutonomousBeggars.OnPlayerBegs(client.Player, client.Player.TargetObject);
 		}
 
 

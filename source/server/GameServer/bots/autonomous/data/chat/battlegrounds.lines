@@ -8,17 +8,29 @@
 @who *
 @levels 15-19
 @needs in_battleground
+@needs in_battleground, at:abermenai
 first time in abermenai, everyone is tiny and furious
+@needs in_battleground
+@needs in_battleground, at:abermenai
 {enemy} group heading for the abermenai keep, anyone near?
+@needs in_battleground
+@needs in_battleground, at:abermenai
 abermenai keep is ours for now, stay close to the door
+@needs in_battleground
 @needs
 @invites lfg
+@about place
 abermenai later? want to try rvr before 20
+@about
 @invites
 @invites ask
+@about place
 is abermenai busy tonight? never been
+@about
 @invites complaint
+@about place
 abermenai twinks in full crafted gear at 18, why
+@about
 
 # ---------------- Thidranki 20-24 ----------------
 @kind rvr
@@ -26,23 +38,41 @@ abermenai twinks in full crafted gear at 18, why
 @who *
 @levels 20-24
 @needs in_battleground
+@needs in_battleground, at:thidranki
 {enemy} group headed for the keep in thid, anyone near?
+@needs in_battleground
+@needs in_battleground, at:thidranki
 thid keep door is down, everyone inside!
+@needs in_battleground
 that twink two shot me, his gear costs more than my house
+@needs in_battleground, at:thidranki
 got my first realm points in thid, i get it now
+@needs in_battleground
+@needs in_battleground, at:thidranki
 rr cap in thid is getting close, cant stay much longer
+@needs in_battleground
 @needs
 @invites ask_anyone
+@about place
 anyone in thid tonight? want to know before i run over
+@about
 @invites joke
+@about place
 thid twinks are the reason my alt is parked at 24
+@about
 @invites chat
 @realm alb
+@about place
 albs always turn up in thid, lets hold the keep this time
+@about
 @realm mid
+@about place
 mids are always last into thid and win anyway
+@about
 @realm hib
+@about place
 bards in thid, nobody can catch us
+@about
 
 # ---------------- Murdaigean 25-29 ----------------
 @kind rvr
@@ -50,16 +80,26 @@ bards in thid, nobody can catch us
 @who *
 @levels 25-29
 @needs in_battleground
+@needs in_battleground, at:murdaigean
 murdaigean is quiet, everyone must be in thid on alts
+@needs in_battleground
 {enemy} pushing the keep in murd, need bodies
 holding the murd keep with six people, more welcome
 @needs
 @invites lfg
 murd tonight? short a couple for a group
 @invites
+@about place
 murdaigean is where the twinks go when thid gets old
+@about
 @invites boast
+@needs just_leveled
+@about place
+@levels 25-25
 just hit 25, goodbye thid, hello murd
+@needs
+@about
+@levels 25-29
 
 # ---------------- Caledonia 30-35 ----------------
 @kind rvr
@@ -67,14 +107,20 @@ just hit 25, goodbye thid, hello murd
 @who *
 @levels 30-35
 @needs in_battleground
+@needs in_battleground, at:caledonia
 caledonia is huge, where is everyone?
+@needs in_battleground
 {enemy} healers in cale are hard to drop, focus them first
 cale keep is ours again, nice work
 @needs
+@about place
 anyone still run caledonia?
+@about
 cale before the frontier, good practice for the big fights
 @invites ask_opinion
+@about place
 caledonia at 30, worth it or skip straight to leveling?
+@about
 
 # ---------------- Cathal Valley 45-49 ----------------
 @kind rvr
@@ -99,10 +145,24 @@ cathal is the best rvr nobody talks about
 @who *
 @levels 25-26
 @invites complaint
+@about place
 outleveled thid, already miss it
+@about
+@needs just_leveled
+@about place
+@levels 25-25
 dinged 25 and got kicked out of thid, bittersweet
+@needs
+@about
+@levels 25-26
 @levels 30-31
 no more murd for me, 30 came too fast
 @levels 20-21
 @invites ask_anyone
+@needs just_leveled
+@about place
+@levels 20-20
 just hit 20, anyone want to show me around thid?
+@needs
+@about
+@levels 20-21

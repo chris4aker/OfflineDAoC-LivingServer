@@ -91,7 +91,7 @@ public static partial class AutonomousChatIntentModel
     {
         "politics", "political", "president", "election", "congress", "democrat", "republican", "government",
         "trump", "biden", "bitcoin", "crypto", "stock", "stocks", "football", "basketball", "netflix",
-        "twitter", "facebook", "instagram", "tiktok", "reddit", "headline", "headlines", "news", "taxes", "yankees", "nfl", "nba",
+        "twitter", "facebook", "instagram", "tiktok", "reddit", "headline", "headlines", "taxes", "yankees", "nfl", "nba",
         "mlb", "nhl", "superbowl", "senate", "senator", "mortgage",
     };
 
@@ -101,6 +101,8 @@ public static partial class AutonomousChatIntentModel
     {
         "dumb", "idiot", "idiots", "moron", "morons", "garbage", "worthless", "pathetic", "loser", "losers", "stupid",
         "dumbass", "trash", "ugly", "scrub", "scrubs", "noobs", "terrible", "awful", "useless",
+        // The talking update audit: "u suck", "ur a noob", "who invited this clown" (only aimed at someone, below).
+        "suck", "noob", "newb", "clown",
     };
 
     private static readonly HashSet<string> Targets = new(StringComparer.OrdinalIgnoreCase)
@@ -113,12 +115,23 @@ public static partial class AutonomousChatIntentModel
         { "stfu", "shutup", "idiot", "idiots", "moron", "morons", "l2p", "dumbass" };
 
     /// <summary>Words that are insults only right after "you"/"ur" ("you are terrible", not "terrible lag for everyone").</summary>
-    private static readonly HashSet<string> WeakInsults = new(StringComparer.OrdinalIgnoreCase) { "trash", "awful", "terrible", "garbage", "ugly" };
+    private static readonly HashSet<string> WeakInsults = new(StringComparer.OrdinalIgnoreCase)
+        { "trash", "awful", "terrible", "garbage", "ugly", "suck", "noob", "newb", "clown",
+          // The holdout check: "ppl say spiritmasters are useless in groups, agree?" is about a class, not an insult.
+          "useless" };
 
     private static bool IsAbuse(string[] words)
     {
         if (words.Any(HardAbuse.Contains) || AutonomousChatShortTalk.HasPhrase(words, "shut up", "learn to play", "go away", "get out of my",
-                "get lost", "fuck you", "f you", "screw you", "fuck off"))
+                "get lost", "fuck you", "f you", "screw you", "fuck off", "worst healer ever", "worst tank ever", "worst group ever",
+                "worst player ever", "who invited this clown", "ur a noob", "youre a noob", "you are a noob", "u r a noob",
+                // The holdout check: "ur the worst healer ive ever seen", "thanks for nothing", "wow great pull genius".
+                "ur the worst", "youre the worst", "you are the worst", "u r the worst", "u are the worst", "thanks for nothing",
+                "thx for nothing", "ty for nothing", "nice one genius", "great pull genius", "good job genius", "way to go genius",
+                "nice pull genius", "nice going genius", "great job genius", "real smooth genius",
+                // Play test 2026-10-27: "Duggreigan ur guild sucks lol" read as banter, and drew "Howth smells like salt and fresh bread."
+                "ur guild sucks", "your guild sucks", "ur guild is trash", "your guild is trash", "ur guild is garbage", "your guild is garbage",
+                "ur guild is terrible", "your guild is terrible", "ur guild is a joke", "your guild is a joke"))
             return true;
         if (!words.Any(Targets.Contains))
             return false;
@@ -126,12 +139,15 @@ public static partial class AutonomousChatIntentModel
         {
             if (!Insults.Contains(words[i]))
                 continue;
+            // "are you a noob friendly guild?", "u a newb too? just started" (review 2026-10-26)
+            if (i + 1 < words.Length && words[i + 1] is "friendly" or "too" or "like" or "guild" or "here" or "also" or "myself" or "either" or "zone" or "area")
+                continue;
             if (!WeakInsults.Contains(words[i]))
                 return true;
             // "youre trash", "you are terrible", "ur so awful" (not "where do u sell trash loot")
             static bool Target(string word) => word is "you" or "u" or "ur" or "youre" or "you're" or "yall";
             if (i >= 1 && Target(words[i - 1]) ||
-                i >= 2 && Target(words[i - 2]) && words[i - 1] is "are" or "r" or "so" or "such" or "is" or "look" or "smell" ||
+                i >= 2 && Target(words[i - 2]) && words[i - 1] is "are" or "r" or "so" or "such" or "is" or "look" or "smell" or "a" ||
                 i >= 3 && Target(words[i - 3]) && words[i - 2] is "are" or "r" && words[i - 1] is "so" or "such" or "really" or "just")
                 return true;
         }
@@ -155,7 +171,8 @@ public static partial class AutonomousChatIntentModel
             [eAutonomousChatIntent.Trading] = new(StringComparer.OrdinalIgnoreCase) { "buy", "sell", "price", "auction", "exchange", "merchant" },
             [eAutonomousChatIntent.Dungeon] = new(StringComparer.OrdinalIgnoreCase) { "dungeon", "tomb", "caves", "cave" },
             [eAutonomousChatIntent.RvR] = new(StringComparer.OrdinalIgnoreCase) { "rvr", "frontier", "relic" },
-            [eAutonomousChatIntent.Grouping] = new(StringComparer.OrdinalIgnoreCase) { "group", "party", "invite", "lfg" },
+            // Not a bare "group" or "party": "love this group" talks about one (review 2026-10-26). Requests are read by the word rules.
+            [eAutonomousChatIntent.Grouping] = new(StringComparer.OrdinalIgnoreCase) { "invite", "lfg" },
         };
 
     private static readonly Model Trained = Train();
@@ -208,7 +225,15 @@ public static partial class AutonomousChatIntentModel
         // Real-world talk is decided by the hard word list alone: /say ignores it, so a guess must not silence a player
         // (0.36-se.4; "lol are you even real" read as real-world talk from the word "real").
         // Abuse too: bots remember an insult, so it must come from the word rules, not a guess ("terrible lag for everyone").
-        return best - runnerUp < 0.18 || bestIntent is eAutonomousChatIntent.IgnoreOutOfWorld or eAutonomousChatIntent.Abuse
+        // The talking update audit (2026-10-26): a guess of a social intent or a group request answered lines that were neither
+        // ("whats the command to go anon" read as a greeting, "heading to the bindstone" as goodbye, "do i need SI to get to
+        // aegirhamn" as a group request that bots offered to join). Those come from the word rules alone; a guess may only be a
+        // topic (dungeon, rvr, travel, grinding, trading, class talk, banter, help).
+        return best - runnerUp < 0.18 || bestIntent is eAutonomousChatIntent.IgnoreOutOfWorld or eAutonomousChatIntent.Abuse or
+                   eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Grouping or
+                   eAutonomousChatIntent.Thanks or eAutonomousChatIntent.Congrats or eAutonomousChatIntent.Ding or
+                   eAutonomousChatIntent.Away or eAutonomousChatIntent.Back or eAutonomousChatIntent.Rez or eAutonomousChatIntent.Alarm or
+                   eAutonomousChatIntent.Laugh or eAutonomousChatIntent.BotCheck
             ? eAutonomousChatIntent.Unknown : bestIntent;
     }
 

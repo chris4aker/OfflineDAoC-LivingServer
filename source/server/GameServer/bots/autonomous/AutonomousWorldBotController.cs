@@ -3311,7 +3311,7 @@ namespace DOL.GS
                          .Where(cell => !rejectedDungeons.Contains(cell.Id) && reachableRegions.Contains(cell.RegionId) &&
                                         (sharedGroup || !_recentFailedSoloCamps.ContainsKey(cell.Id)) &&
                                         !AutonomousCampRouteQuarantine.IsQuarantined(cell.Id) &&
-                                        (sharedGroup || !AutonomousCampDangerBench.IsBenched(cell.Id)) &&
+                                        (sharedGroup || !AutonomousCampDangerBench.IsBenched(cell.Id, cell.RegionId, cell.MonsterName)) &&
                                         IsZoneAccessible(bot.Realm, cell.Zone, bot.CurrentRegionID) &&
                                         AutonomousOrdinaryPveRealmPolicy.CanAssignCamp(bot.Realm, cell.RegionId,
                                             cell.Zone?.ID ?? 0, planningLevel) &&
@@ -3889,6 +3889,10 @@ namespace DOL.GS
             if (AutonomousCampDangerBench.RecordDeath(_lastFailedCampId, bot.DatabaseID) is TimeSpan bench)
                 Log.Warn($"AUTONOMOUS_CAMP_DANGER_BENCH camp=\"{_lastFailedCampId}\" target=\"{failedTarget}\" " +
                          $"bots={AutonomousCampDangerBench.DistinctBotsToBench} hours={bench.TotalHours:0}");
+            string species = _camp == null ? null : AutonomousCampDangerBench.SpeciesKey(_camp.RegionId, _camp.MonsterName);
+            if (AutonomousCampDangerBench.RecordDeath(species, bot.DatabaseID) is TimeSpan speciesBench)
+                Log.Warn($"AUTONOMOUS_SPECIES_DANGER_BENCH species=\"{species}\" " +
+                         $"bots={AutonomousCampDangerBench.DistinctBotsToBench} hours={speciesBench.TotalHours:0}");
             if (_recentSoloDeathsWithoutExperience >= 2 && _camp != null &&
                 !string.IsNullOrWhiteSpace(_camp.MonsterName))
                 _recentFailedSoloTargets[_camp.MonsterName] = nowTick + AutonomousDeathRecoveryPolicy.FailureMemoryMilliseconds;

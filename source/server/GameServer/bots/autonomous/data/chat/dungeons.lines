@@ -45,17 +45,31 @@ anyone remember which turn leads to the named camp?
 @who *
 @needs in_dungeon
 @levels 7-17
+@needs in_dungeon, at:tomb of mithra
 tomb of mithra still gives me the creeps
+@needs in_dungeon
+@needs in_dungeon, at:tomb of mithra
 the haunting gloom in mithra looks harmless until it hits
+@needs in_dungeon
 @levels 16-24
+@needs in_dungeon, at:tepok's mine
 tepok's mine is a lot of tunnels for a little xp
+@needs in_dungeon
 @levels 19-32
+@needs in_dungeon, at:keltoi fogou
 keltoi fogou is cramped but the camps are good
+@needs in_dungeon
 @levels 32-50
+@needs in_dungeon, at:stonehenge barrows
 stonehenge barrows, where good groups go to get humbled
+@needs in_dungeon
+@needs in_dungeon, at:stonehenge barrows
 the goblins in the barrows never stop coming
+@needs in_dungeon
 @invites ask_opinion
+@about place
 barrows or avalon isle for the next few levels?
+@about
 
 # ---------------- Midgard ----------------
 @kind ambient
@@ -64,17 +78,31 @@ barrows or avalon isle for the next few levels?
 @who *
 @needs in_dungeon
 @levels 8-21
+@needs in_dungeon, at:nisse's lair
 nisse's lair tomte are tougher than they look
+@needs in_dungeon
 @levels 18-28
+@needs in_dungeon, at:cursed tomb
 cursed tomb draugr warriors, still hate them
+@needs in_dungeon
+@needs in_dungeon, at:cursed tomb
 corpse crawlers in the cursed tomb, worst name worst monster
+@needs in_dungeon
 @levels 20-35
+@needs in_dungeon, at:vendo caverns
 the goblins in vendo run for help every single time
+@needs in_dungeon
 @levels 25-40
+@needs in_dungeon, at:varulvhamn
 varulvhamn werewolves hit like a falling tree
+@needs in_dungeon
 @levels 33-50
+@needs in_dungeon, at:spindelhalla
 spindelhalla spiders give me the shivers
+@needs in_dungeon
+@needs in_dungeon, at:spindelhalla
 spindel has the best group camps in midgard, no contest
+@needs in_dungeon
 
 # ---------------- Hibernia ----------------
 @kind ambient
@@ -83,16 +111,28 @@ spindel has the best group camps in midgard, no contest
 @who *
 @needs in_dungeon
 @levels 12-20
+@needs in_dungeon, at:muire tomb
 muire tomb mummy hags, nobody warned me
+@needs in_dungeon
 @levels 15-25
+@needs in_dungeon, at:spraggon den
 spraggon den rock sprites, cute until they hit
+@needs in_dungeon
 @levels 20-30
+@needs in_dungeon, at:koalinth caverns
 koalinth caverns are wet, cold and full of fish people
+@needs in_dungeon
 @levels 27-40
+@needs in_dungeon, at:treibh caillte
 treibh caillte is a long walk for a short pull
+@needs in_dungeon
 @levels 30-45
+@needs in_dungeon, at:coruscating mine
 coruscating mine is pretty, right up until something swings at you
+@needs in_dungeon
+@needs in_dungeon, at:coruscating mine
 the crystal glow in coruscating mine makes it hard to see adds
+@needs in_dungeon
 
 # ---------------- Darkness Falls (shared) ----------------
 @kind ambient
@@ -100,6 +140,12 @@ the crystal glow in coruscating mine makes it hard to see adds
 @who *
 @needs in_dungeon
 @levels 20-50
+@needs in_dungeon, at:darkness falls
 darkness falls demons do not care how good your gear is
+@needs in_dungeon
+@needs in_dungeon, at:darkness falls
 darkness falls seals add up fast if you keep pulling
+@needs in_dungeon
+@needs in_dungeon, at:darkness falls
 the necyomancers in darkness falls are always casting at someone
+@needs in_dungeon

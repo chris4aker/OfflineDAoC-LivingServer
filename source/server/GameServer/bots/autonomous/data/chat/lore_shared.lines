@@ -1,0 +1,671 @@
+# Lore any realm can talk about: Darkness Falls and Legion's court, the tunnels under the three frontiers,
+# the dragons compared, con colours, drop superstitions, the world still finding itself, swimming to the
+# edge of the world, old maps, hidden rooms, GM nights and player legends, and promised things that never
+# came. Classic and Shrouded Isles (up to 1.65) only. New writing for this project.
+#
+# Truth rules for this file: documented lore is said plainly; rumours, superstitions and inventions are
+# framed as hearsay, belief, memory or argument. No bot claims to have killed Legion, Behemoth, Govannon
+# or a dragon. Realm * only: no place names except Darkness Falls and the battlegrounds, and every line
+# that compares the realms treats all three the same.
+
+@kind ambient
+@topic lore
+@realm *
+@about place
+
+# ---------------------------------------------------------------- Darkness Falls: Legion's court
+@who NoLifer
+@levels 30-50
+legion keeps a court down there like a king. princes, high lords, dukes, earls, marquises, and every demon knows its rank
+[three demon princes|three princes] [sit|stand] under legion, and [each one|every one] of them would wipe a careless group
+prince abdin, prince asmoien, prince ba'alorien. say them three times and see who shows up
+the dukes in df are where most raids [find out|learn] [how big the gap is|they were not ready]
+i like to think grand chancellor adremal keeps legion's books. even demons need clerks
+field marshal nebir drills legion's army, or so the old raiders say
+gatekeeper dommel has not left that door since df opened, or so the story goes
+[heard|i hear] the chthonic knights stop [most raids|whole raids] long before anyone sees legion
+legion takes less damage than you would think, or so every raid leader says after the wipe
+[word is|heard] legion can send people straight into behemoth's room, and [that is the end of your evening|nobody walks back out]
+even legion has a chamberlain. somebody has to sweep the floors
+mutilator xagalith has the most honest title in the whole of darkness falls
+i have walked past the dukes so often i know them by name. [alloc, aypol, bimure|sallis, satori, zepor], old neighbours
+the earls down there have names no bard could rhyme. zh'alzhak, glassalab, ipostian, i ask you
+back when df first opened nobody knew what a duke was. we learned on our corpses
+i remember the first time someone typed legion in faction. the whole realm went quiet for a minute
+nobody i know has seen every room in darkness falls, and i know some very stubborn people
+
+@who NoLifer,Explorer
+@levels 30-50
+behemoth [cant be killed|does not die]. [every guild that tried says the same|i have heard it from three guilds], nothing sticks to him
+people say behemoth takes no damage at all. others say nobody has brought enough people yet
+level ninety nine and parked in a room doing nothing. behemoth is either guarding something or bored
+[i think|my guess is] behemoth is not a monster at all, he is a lock, and nobody has found the key
+
+@who *
+@levels 20-50
+the imps in df rob the bigger demons and trade the loot for seals. little thieves with a proper trade
+a bright seal is worth more than a dull one, [even the imps know that|that is the whole df economy]
+whoever holds the most keeps opens df. count the keeps before you pack
+[df|darkness falls] changes hands [more often than the weather|like the weather]. check before you ride out
+darkness falls was a story long before it was a dungeon. a few old timers swear they fought there in another life
+[i like to think|i think] the demons were down there ages before any of us found the portal
+[some say|people say] df feeds on the realm war. the more keeps change hands, the deeper it runs
+they say the demons crawled up out of the deep once the three realms went to war with each other
+ask an imp and i bet the realm war is the best thing that ever happened to them
+
+# ---------------------------------------------------------------- the Summoner's Hall and Govannon
+@who NoLifer,Explorer
+@levels 35-50
+grand summoner govannon starts the fight as an elf and finishes it as a demon. nobody knows which one is the real him
+[the old raiders say|word is], leave govannon's shield node alone or [every hit does one damage|your swords might as well be sticks]
+heard a govannon fight runs forty minutes. bring food, and a spare healer
+aidon the archwizard waits in the summoner's hall like he owns it, and nobody can say whose side he is on
+three summoners, an archwizard and sidhe guards, all in one hall. someone planned that
+the summoners in that hall keep calling something. nobody i know has asked them what
+[heard|people say] the deepest rooms of df lead to the summoner's hall, where all three realms come together
+i heard the summoner's hall was a sidhe place before legion's lot moved in
+
+# ---------------------------------------------------------------- the tunnels and the third power
+@who Explorer,NoLifer
+@levels 20-50
+someone dug tunnels under all three frontiers and filled them with undead. [who is the third power|nobody ever says who]
+the tunnels under the frontier were not dug by albs, mids or hibs. something else wants all three of us
+[i think|my guess is] the tunnels and the summoner's hall are one plan. someone is calling the dead from all three realms at once
+the dead in the tunnels serve a power nobody has named, and i do not think it is legion
+while three realms fight over keeps, something is digging under all of us. funny how that goes
+every realm found tunnels under its own frontier, and every realm swears it found them first
+i followed a tunnel [until my torch ran low|as far as i dared], and it went further than any map said
+i bet whoever dug the tunnels also drew the old maps. explains a lot
+
+# ---------------------------------------------------------------- the dragons compared
+@who *
+@levels 30-50
+wolf, stone or glimmer, which dragon is oldest? every realm says its own
+three realms, three dragons. a wolf, a stone and a glimmer, and every realm thinks theirs is the worst
+golestandt, gjalpinulva, cuuldurach. one for each realm, and every bard has a song for theirs
+[heard|people say] the dragons have never met. probably for the best, one of them would eat the other two
+[i think|my guess is] the three dragons are kin, scattered [across the realms|to the three realms] long before any of us
+an old raid leader told me never nuke a dragon early. let the tanks get it settled first
+half of every raid comes for the respec stones, not the loot. fifty stones a dragon
+[those|the] luminescent stones are the real hoard. the dragon is only the lock on the chest
+dragons drop nothing but coin, or so the bitter ones say
+[heard|i hear] bring over a hundred people to a dragon and it [goes berserk|loses its temper]. so leave the cousins home
+i heard dragons talk to your corpse after they kill you. not sure i want to know what they say
+some swear killing the big giants nearby takes a dragon's fire away. i swear they are drunk
+a dragon is just a big lizard until it breathes on you. then it is a religion
+dragon lairs [smell of old coin and bad decisions|reek of burnt hair and regret]
+i asked a town guard about the dragon once. he told me to go home. very helpful
+heard the three dragons dream about each other. a bard probably made that up, but i like it
+legend says the first group to find a dragon was a lost explorer who took a wrong turn
+ask [an alb|a mid|a hib] and their dragon is the oldest. ask anyone else and you get two more answers
+i remember when nobody knew the dragons existed, until some fool wandered into a lair
+
+# ---------------------------------------------------------------- the frontier giants
+@who Explorer,Daredevil
+@levels 25-50
+each frontier has an old giant that belongs to no realm: a green knight, a glacier giant and evern. walk around them
+[heard|people say] the glacier giant throws people [half a zone|clear across the frontier], and folks used to bet on where they land
+the green knight leaves you alone unless you start it. wise people keep riding
+[heard|i hear] evern gets healed by fairies landing on [its|the] stones. fairies first, always
+
+# ---------------------------------------------------------------- con colours
+@who *
+@levels 10-50
+the con colours lie. i once saw [an orange|a yellow] gut a full group
+never trust a con on anything with a name. the colour is a mood, not a level
+half the named mobs show one colour and hit like another, and the bestiaries cant agree either
+purple is purple. there is no colour for run now, and there should be
+my theory is the con colours were set by someone who never pulled anything
+blue cons have killed more of us than reds ever did. nobody respects a blue
+
+# ---------------------------------------------------------------- drop superstitions
+@who Crafter
+never say the item's name in chat while you camp it. my old guild swore the mob hears
+[my old guild|an old guildmate] swore drops are better if you /bow to the corpse before looting
+some people think rare drops come right after a server reset. i think they just remember the good nights
+i knew a crafter who would not loot with a full bag. said the rare could tell
+first kill after you log in [always|never] drops the good stuff, depending who you ask
+[old wisdom says|they say] drops improve the moment the whole camp stops talking about them
+i keep a lucky ring in my pack for rare drops. it has not worked once. still wont sell it
+dragon scales would make amazing armor, if only someone would let crafters near one
+@who *
+the stealth folk claim drops come better if you open from behind. of course they would
+a healer friend never loots first. says the luck follows whoever was humble
+if the named pops right as you go afk, [that is not luck, that is a curse|that is a curse], and everyone knows it
+never camp one spot too long after dark. old superstition says the camp starts noticing
+
+# ---------------------------------------------------------------- the world finding itself
+@who Explorer
+the islands just turned up one autumn, [as if they had always been there|like they were always there]. bet there are more
+every realm has a story about a pass that came out of the mist one day where no pass had been
+there is always one more dungeon nobody has found yet. always
+every year someone finds a new cave and [everyone acts surprised|acts surprised]. i stopped being surprised
+[i bet|i think] the world goes further than any map they sell
+[the old maps|my old map] [show|shows] roads that are not there anymore. either the mapmaker was drunk or the world moved
+i still keep a first map with half the coast missing. it was more honest
+the old maps had whole stretches marked unknown. best part of the map
+half the fun early on was not knowing what was over the next hill
+nobody charted the far corners properly. i swear there are caves nobody mentions
+i keep a journal of spots i stumbled into that show up on no map
+every realm has a tale about a lost place that the older maps almost show
+some sages say the gods are still drawing the world, one island at a time
+the bards claim the land was half the size at the start, and it grows a little each year
+heard there is a vendor out in the wilds who sells maps of places that do not exist yet
+when i see a ledge nobody talks about, in i go. usually it is just a bear
+found a ruined wall once that nobody could name. still wondering whose it was
+every ridge looks climbable right up until you slide back down
+i could swear the fog out past the coast moves when nobody is looking
+a sage told me the fog at the edge of the world is the gods' unfinished work. makes sense to me
+real explorers never ask directions. we get lost on purpose
+best kind of evening: no group, no plans, just riding toward a coastline nobody bothered with
+i still wonder who carved the old markers out in the wilds. half of them point at nothing
+[an old|a] [hunter|ranger|scout] swore the wild beasts remember the old roads the maps forgot
+heard of a guy who logged out on a rock at the edge of the world and logged in somewhere nobody recognised
+
+# ---------------------------------------------------------------- the edge of the world
+@who Explorer
+every map ends in water, but the water does not end. swim far enough and you hit the wall the gods put there
+i once swam out until the water went dark. then nothing, just a wall you cannot see
+[heard|people say] if you swim far enough out the [fog gets thicker|water turns grey], and then there is just a wall
+a friend swam to the edge of the world and came back saying the sky just stops
+[i think|my theory is] the wall at the edge is there to keep something out, not to keep us in
+the edge of the world is real, i swam into it. like cold glass under the sea
+nobody can say what is beyond the wall. i asked a sage once, he told me to go level
+a swim to the edge takes forever. bring patience, the view is worth it
+heard there is an island out past the last map's edge that you can see but never reach
+@who Daredevil
+[i dare|dare] anyone to swim to the edge [in full plate|in their armor] and back
+one day i will swim to the edge with no speed buff, just to say i did
+
+# ---------------------------------------------------------------- hidden rooms
+@who Explorer
+every dungeon has a room behind the room. never found one myself, but i check every wall
+[heard|people say] there is a wall in one of the old dungeons that only opens [when nobody is watching|for a group of one class]
+i once walked along every wall of a dungeon hunting a secret door. all i found was [a rat|a spider]
+some corners in the old dungeons look built for something that never moved in. gives me chills
+an old bard told me every crypt has one sealed room nobody opens. i half believe it
+
+# ---------------------------------------------------------------- GM nights and player legends
+@who Socialite
+i remember a gm night where the whole town turned out for a poetry contest. weirdest evening in years
+heard a gm once held a funeral for a player right out in the frontier. i like to think nobody attacked
+every realm has a legend about one player who held a bridge alone. i believe all of them
+heard of a [bard|minstrel|skald] who dragged a whole camp across a zone and lived. [probably a lie|i want it to be true]
+you hear about healers who never died once all the way to fifty. nobody i know has met one
+old raid leaders turn into legends faster than the dragons do
+some names in the old herald rankings feel more like myth than people now
+i swear i once saw a gm stroll through a town in a funny hat. nobody believes me
+[rumour is|they say] a gm sometimes rides the roads [in disguise|disguised as a nobody]. be polite to strangers, just in case
+word is the imps know every rumour in all three realms. i should ask them
+the best part of a good legend is that nobody can prove anything
+[heard|people say] the old gods still walk the roads now and then. i wave at every stranger
+nothing beats a good ghost story at the bind stone
+
+# ---------------------------------------------------------------- promised things
+@who NoLifer
+the devs promised more relics years ago. still six on the pedestals
+six relics, two per realm. there were supposed to be more. i keep wondering where they are
+[i think|my theory is] the missing relics are buried out there, waiting for someone to stumble on them
+some say the other relics were never made. i like the version where they sit in a chest somewhere
+every patch someone swears new relics are coming. every patch, nothing
+we were promised more relics back at the start. we got islands instead
+every realm guards two relics and swears its pair is the oldest
+albs have their lost city, mids have their lost hall, hibs have their door under the hill. everyone has a place they cant find
+
+# ---------------------------------------------------------------- general lore musings
+@who *
+every realm swears its legends are the oldest. i think all three are right
+legends never die, they just grow another verse each time a bard sings them
+half of lore is people who wiped explaining why
+the oldest lesson in the game: if it has a name, it has a grudge
+the battlegrounds have their own ghosts too. every one has a hill where someone stood against ten
+heard a renegade chieftain in the battlegrounds remembers every face that ever beat him
+nobody ever explains why the dead keep getting up in all three realms. we just kill them twice
+
+# ---------------------------------------------------------------- is it worth it, and dares
+@who Leveler
+@levels 30-50
+dragon raids are three hours of standing around for a stone. i will level instead
+df is decent xp while your realm holds it, and useless the rest of the week
+legion lore is fun, but lore never gave anyone a bubble
+@who Daredevil
+@levels 30-50
+i dare someone to run up to behemoth just to wave. once
+one day i will tag a duke in df alone, just to see what happens
+someday i will stand where legion can see me and not run. someday
+
+# ================================================================ debates
+@kind debate
+@realm *
+
+@topic lore_behemoth
+@levels 5-50
+@scene lore_behemoth_killable
+@role B type=NoLifer levels=35-50
+@role C type=Daredevil
+@role D type=* levels=5-25
+@role E type=Explorer levels=30-50
+A: {q} is behemoth really unkillable, or is that a story the raid leaders tell | {q} anyone else think behemoth can die and nobody has managed it yet
+?D: wait, who is behemoth? i keep seeing the name in faction | whos behemoth? sounds like a boat
+B: the biggest thing in darkness falls. level ninety nine, a room to himself, and nothing you swing at him sticks | a demon in df, level ninety nine, not a typo. he has his own room and every hit on him does nothing
+D: ninety nine? i thought fifty was the top | how is anything ninety nine, i thought fifty was as high as it goes
+E: fifty is our cap. legion's court goes way past it. dukes in the mid seventies, the princes near eighty, legion in the eighties | we stop at fifty, the demons dont. duke alloc and his lot are about seventy five, the three princes nearer eighty
+C: and behemoth sits sixteen levels over legion himself. so who is really in charge down there | sixteen levels over his own master. if i were legion i would sleep with one eye open
+B: thats the odd part. legion keeps a proper court. three princes, four high lords, the dukes, earls and marquises, a chancellor | every demon there has a rank. prince abdin, high lord baln, duke aypol, earl vone. a chancellor and a field marshal even
+B: behemoth has no title at all. no prince, no lord. just behemoth | and behemoth? no rank, no seat at the court. just the name
+E: a thing with no rank is not a servant. its something they keep. a pet, or a prisoner | no title means he is not part of the court. legion keeps him, he doesnt serve
+C: or the bouncer | or the thing legion feeds the people he doesnt like to
+B: half right. the raid leaders say legion can port people straight into behemoth's room in the middle of the fight | the old raiders swear legion sends people to behemoth's room mid fight, and nobody walks back
+D: so he's like a bin for players legion is done with | so legion throws you away and behemoth is the bin
+C: a bin that hits harder than your whole health bar | a very angry bin
+E: in the old books behemoth is the great beast of the land, and only the one who made him can bring a sword near him | the old scripture tale says behemoth is the first of the beasts, and only his maker can come at him with a blade
+E: so maybe none of us can kill him because none of us made him | which would mean the game is telling us straight: this one is not for you
+B: or nothing sticks and that is that. three guilds told me the same: you swing, you cast, you dot, the numbers dont move | three raid leaders, three realms, same story. melee, nukes, dots, nothing comes off him. thats not lore, thats a wall
+C: walls have doors. maybe its a phase thing like govannon's node. break something else first and he opens up | a mob that cant die is a puzzle. find the right thing to break first
+B: people looked. the rooms near him are full of chthonic knights and earls, and killing them does nothing to him | the knights and earls round his room get farmed for seals all week. nobody ever saw him flinch
+~ 15
+D: has anyone tried with a whole realm at once? | what if every level fifty in the realm went in together
+E: people say bring more and he just takes more, like rain on a lake | i heard a hundred went in once. the bards stopped counting the corpses
+C: i still say nobody brought enough people | everything dies if you hit it long enough
+B: everything with hit points. i am not sure he has any | everything that can bleed. i am not convinced he can
+?D: maybe he is why the demons stay down there. maybe they're scared of him | maybe legion isnt his master, maybe legion is his jailer
+C: next time df is ours im walking up to his doorway just to wave | someday i stand in his doorway and wave. just once
+E: take a scout. someone should write down what that room looks like before you die | wave from the door and type out what you see. nobody has described that room properly
+B: i'll hold your bind point | dont expect a rez from me
+
+@topic lore_tunnels
+@levels 5-50
+@scene lore_third_power
+@role B type=Explorer
+@role C type=NoLifer levels=30-50
+@role D type=Socialite
+@role E type=* levels=5-25
+A: who actually dug the tunnels under the frontiers? nobody ever answers that | {q} whose work are those tunnels under all three frontiers
+B: the dead did the digging. but the dead dont make plans, somebody gave them the plans | undead did the shovelling. undead dont draw plans though
+?E: wait, tunnels? under the frontier? | there are tunnels under the frontier? since when
+C: since the summer after darkness falls opened. one under each frontier, all three found the same season, all full of undead | they turned up the summer after df came. three of them, one per frontier, all crawling with the dead
+C: and the heralds said it plain: they serve a new power that wants all three realms. never said whose | the herald's word was a power that means to rule all three realms. a name? never one
+B: so who wants all three of us at once? not one of us three. nobody else is fighting on every front | which power hates every realm the same? not albs, not mids, not hibs
+D: legion. obviously. he hates us all equally, its almost sweet | my money is on legion. three realms, one demon, he doesnt play favourites
+C: legion's lot crawl up, they dont dig. and his court is demons. the tunnels are full of the dead, not demons | demons dont need tunnels, they have portals. and nothing in legion's court is undead, its all demons with titles
+B: then look at who rules the dead in each realm's old tales | then ask who keeps the dead in each realm's tales
+B: albion has arawn of annwn, who wants his dead back. midgard has bodgar, the valkyn's god of the dead, older than odin | the albs' tales have arawn, lord of the underworld. the mids' valkyn pray to bodgar, a god of the dead older than odin
+B: and the hibs have donn, who keeps the house of the dead out past the western sea. three realms, three lords of the dead | hibernia's tales have donn and his house out in the western sea, where the dead go. every realm has its own lord of the dead
+E: so its one of those three? | so one of the dead gods dug under everyone?
+C: or none. if arawn were behind it, why would he dig under the mids? bodgar has no business with hibs | why would one realm's god dig under the other two? arawn has no claim on a dwarf's bones
+B: unless its older than all three. the tunnels look the same in every frontier. same stone, same turns, one hand | every one of them is built the same way. same arches, same dead. that is one builder, not three
+D: or three builders who copied each other. the dead are lazy | maybe the dead share a mason
+~ 15
+C: here is what bothers me. if i remember right the summoner's hall turned up that same year. a hall that touches all three realms | the summoner's hall came that same year, if memory serves, and its the one place where all three realms meet
+B: thats my bet. someone is calling the dead from all three realms at once, and the summoners know who | someone down there is calling. the hall is the mouth, the tunnels are the throat
+C: or its two different stories that happened to come out the same year, like most things | or two stories in one year. not everything is one big plot
+?E: i'm level twelve and now i'm scared of the ground | great, so now i have to worry about the floor too
+D: at least whoever it is treats all three realms fairly. thats more than the frontier does | the third power is the only fair player in this war
+B: i'll walk ours this week with a torch and see where the far end goes | when the frontier is quiet i'll follow ours to the end and see which way it bends
+C: bring a healer. the dead down there hit like they mean it | if it bends down, turn back. that's my advice
+
+@topic lore_dragons
+@levels 5-50
+@scene lore_oldest_dragon
+@role B type=NoLifer levels=35-50
+@role C type=Explorer
+@role D class=Minstrel,Skald,Bard
+@role E type=* levels=5-25
+A: wolf, stone or glimmer, which of the three dragons is the oldest | {q} settle it: golestandt, gjalpinulva or cuuldurach, who came first
+B: they all came the same winter, the first winter of the war. one patch, three dragons. none of them is older | same winter, same week. the three of them turned up together. old is a funny word for that
+C: they turned up for us. that is not the same as being new. they were in their lairs long before anyone walked in | we found them the same winter. that says nothing about when they got there
+?E: hold on, which dragon is which? | sorry, three dragons? i only knew there was one
+D: one per realm. golestandt is the stone one for albion, gjalpinulva the wolf-headed one in midgard, cuuldurach the glimmer king for hibernia | albion's is golestandt, made of stone. midgard's is gjalpinulva, wolf headed. hibernia's is cuuldurach, a king of glowing glimmers
+C: golestandt's story starts in uther's time. a roman lord's whole household vanished on the moor and nobody asked twice | the albs' tale goes back to uther. a roman lord and his house went missing on the moor, and the dragon was why
+C: then thirty knights rode in after them. all that came back was a burnt journal that fell out of the sky, with one word left on it | sir arward took thirty knights in. what came back was a scorched journal, dropped from the sky. one word on it. golestandt
+B: uther is arthur's father. so call it a lifetime or two. thats young for a dragon | uther's time is one generation before arthur. two lifetimes at most. a dragon would call that last week
+D: gjalpinulva is the daughter of the fenris wolf. in the old songs fenris is chained by the gods till the end of the world | the mids say she is fenris's daughter. in the old norse tales fenris is the wolf the gods bound, the one that eats odin at ragnarok
+D: if she is his daughter, she is as old as the chain that holds him. thats older than any roman | a daughter of fenris is as old as the gods' own troubles. that beats a roman lord
+B: or someone named her after a giantess in an old poem. in the songs gjalp is a giantess thor drove off, not a wolf | gjalp in the old tale is a giantess, a daughter of geirrod, and thor knocked her back with a stone. not a wolf, not a dragon
+C: and she bred the drakulvs, two legged scaled wolves. you dont fill a fortress with children in one winter | she bred a whole kind of beast, the drakulvs. that takes generations. the werewolves even avoid her ground
+E: and the glimmer one? | whats the story with the hib one then
+D: the hibs' rangers found a pass coming out of the mist that had not been there the week before. glimmers guarding it | rangers saw a pass come out of a bog's mist where no pass had been. glowing things on it. glimmers
+D: an elf sage told them the hills there are a kingdom of the otherworld, and cuuldurach is its king | an elven sage said it was a piece of the otherworld, and cuuldurach rules it. the azure firbolgs have been at war with it since
+C: and in the irish tales the otherworld doesnt age. a man went there with a fairy, came back three hundred years later and turned to dust | in the old hib tales oisin rode to the land of youth, came home three hundred years on, touched the ground and grew old at once
+C: a king of the land where time stops is older than either of the others. maybe older than the realms | so the glimmer king could be any age. time doesnt run where he lives
+~ 15
+B: you're all arguing about stories. stone, wolf, light. which one breathes hardest, thats what i care about | lovely tales. i care which one has the worst breath, and that changes every patch
+D: the stone one, people say. a while back they gave her breath a heat debuff, the glimmer one got softer to heat | they changed golestandt's breath to strip heat resist, and the glimmer king got weaker to heat. so it goes back and forth
+B: there you go. even the dragons get patched. nothing is old in this world | see, they patch dragons. you dont patch something ten thousand years old
+?E: so nobody knows | so the answer is three answers
+D: i'll write a song where the three hatched from one egg and split up. nobody can prove me wrong | someday i'll make a song where they're siblings, one egg, three realms. the albs will hate it, the mids too, the hibs most
+C: i'd sing along to that one | do it, and sing it in every town. i want to see the faces
+
+@topic lore_dragons
+@levels 5-50
+@scene lore_dragon_sex
+@role B type=Socialite
+@role C type=NoLifer levels=30-50
+@role D type=Crafter
+@role E type=* levels=5-25
+A: {q} settle a bet. are the dragons he or she | {q} he or she, when we talk about the three dragons? i have a wager riding on it
+B: the heralds call the stone one she. golestandt is a she, every herald piece says so | golestandt is she. thats in the herald, written down, ask anyone who reads those
+C: the herald calls her she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it | written down as she, shouted at as he. the scorched journal from the moor only gave a name, not a he or she
+?E: how would you even tell, with a dragon | wait, how does anyone check that on a dragon
+D: you dont. you look at what the story calls them and hope | you read the lore, you dont go and look. nobody gets that close and lives
+B: the glimmer king is easy. king. its in the name. he | cuuldurach the glimmer KING. that one at least is a he
+C: kings are kings, sure. and there is a maldahar the glimmer prince too. a prince means a king with a son | and there is a glimmer prince called maldahar. a king with a prince is a father. thats a he for me
+B: i heard a guy swear cuuldurach is the only male dragon of the three | some old raider told me the glimmer king is the only male of the three. no proof, he just sounded sure
+D: and the wolf. thats where my wager is | the wolf is the one people fight over. midgard's
+C: the lore says gjalpinulva is a daughter of the fenris wolf. daughter. thats a she, right in the zone text | daughter of fenris, says the story. you dont get to be a daughter and a he
+B: and the mids still call it he half the time. i've heard he and she in the same raid, same sentence | and i've heard it called he by a runemaster who'd been in that lair twice. raids call it whatever they shout first
+D: the old tale helps. gjalp is a giantess in the norse songs, the one thor drove off. a she again | in the old norse songs gjalp is a giantess. so the name is a woman's name even before the wolf part
+C: and she bred the drakulvs. a mother breeding her own army. that is a she story through and through | she breeds the drakulvs, a whole kind of scaled wolf. that is a mother's story, not a father's
+E: fathers breed things too | dads can have kids too though
+B: not a whole fortress of them, my mother says | nobody's father fills a fortress with wolves
+~ 15
+D: so stone is she, glimmer is he, wolf is she by the lore and he by the raid | she, he, and she unless you're in the middle of a fight
+C: there is the one thing nobody asks. if the wolf talks to your corpse after it kills you, like people say, ask its voice | people say the wolf talks to you when you're dead. next time you die there, listen to the voice and settle it
+B: perfect. whoever dies first on the next midgard dragon raid, report back | so the next poor soul who gets breathed on by the wolf has a job to do
+?E: i'm never getting close enough to hear a dragon | i'll take your word for it, all of you
+D: i'm paying out the bet on the stone one and holding the money on the wolf | i win half the bet. the wolf money stays in my pack until someone hears the voice
+
+@topic lore_cons
+@levels 5-50
+@scene lore_con_colours
+@role B type=Leveler
+@role C type=Daredevil
+@role D type=* levels=5-15
+@role E type=NoLifer levels=35-50
+A: do the con colours lie or is it just me | {q} anyone else think the con colours lie on named mobs
+?D: sorry, con colours? i see the colours but nobody told me what they mean | whats the colour thing when you /con a mob
+B: grey gives nothing, green is easy, blue is fair, yellow is your level, orange hurts, red is a fight, purple you run | grey is no xp, green is easy, blue is good xp, yellow is even, orange is tough, red is a group's job, purple is a grave
+B: blue is the best xp per minute, for the record. fight blues all day and you level twice as fast as the heroes | i live on blues. never a death, steady xp. the colours are fair on normal mobs
+E: on normal mobs, sure. on anything with a name the colour is a guess. the old bestiaries list some named with two levels at once | on named ones the colour tells you nothing. half the bestiary pages list two levels for one mob and argue in the comments
+C: i read about one named that two bestiaries listed fifteen levels apart. the con just went red and stayed red | one named, two bestiaries, two levels fifteen apart. the colour cant even pick one
+E: and the frontier giants. glacier giant and evern listed in the seventies, the green knight at sixty, all three purple to everyone | the green knight is listed sixty, the glacier giant and evern in the seventies. same purple for all three. that colour covers a lot
+D: so purple just means more than red? | is there anything after purple?
+C: purple means the game stopped counting. it's the same colour for a duke in df and for behemoth | after purple there's nothing. a duke in df and behemoth con the same, and one is twenty four levels higher
+E: thats what i mean. purple is a lie by being honest. it says too strong and leaves out how much | purple covers twenty levels and calls them all the same. that is the lie
+B: the colour also doesnt know about friends. a blue with four blues behind it is a red | it doesnt count the adds either. one yellow with a social pack is your corpse
+C: and casters. a yellow caster at range is an orange. a yellow that roots and runs is a red | yellow casters hit like oranges. and nothing in the colour says this one roots you and calls for help
+~ 15
+D: so what am i supposed to do with it then | then whats the point of the colours at all
+E: con everything, twice. once for the colour, once for the name. a name means it has a story and the story means trouble | read the name, not the colour. a mob with a name has a grudge and the colour doesnt know about it
+B: and the third rule: look at what killed the last person at that spot. corpses are honest | if there's a pile of corpses round a blue, trust the corpses
+C: i pull reds solo to see what happens. the colour is just a suggestion to me | red is an invitation. i've had more fun losing to reds than winning against greens
+B: and thats why you see your bind point more than your camp | and that is why you know every bind stone in the realm by heart
+?D: ok, con everything, run from purple, dont fight next to the daredevil | so: con twice, trust the corpses, stay away from him
+E: you'll do fine | that's the whole lesson. took me forty levels to learn it
+
+@topic lore_drops
+@levels 5-50
+@scene lore_dragon_loot
+@role B type=Crafter
+@role C type=Leveler
+@role D type=NoLifer levels=35-50
+@role E type=* levels=5-25
+A: do the dragons really drop nothing but coin | {q} is it true the dragons drop almost nothing worth having
+D: they drop respec stones. fifty a kill, every dragon, since the winter patch. thats what the raids are really for | since the winter patch every dragon leaves fifty luminescent respec stones. thats why the raids fill up now
+?E: whats a respec stone? | respec? like resetting your skills?
+B: you give it in and you get to spend your points again. one bad spec and you'll want one more than any sword | resets your spec. put points wrong at twenty and by forty you'll trade your mount for one
+C: hours of waiting for a raid to form, for a stone i'll use once in my life | three hours of forming up for a reset. i could level twice in that time
+D: tell that to the people who made a mess of their spec at forty-five. they'd wait a week | wait until a patch changes your class and your spec is worthless. you'll be in line for the dragon too
+B: but the hoard. people talk about armour off the dragons and nobody can tell me what it looks like | everyone has a story about a dragon drop, nobody can show me one. i've asked in three towns
+D: the drop lists in the old bestiaries never agree. one says coin, one says jewels, one says the good stuff, all from the same week | the bestiary pages contradict each other. one raid leader swears a cloak, the next swears nothing but gold
+C: so the loot is a rumour and the stones are real | fine. stones are real, everything else is a bard's story
+B: i just want a scale. one scale. imagine what a smith could do with a dragon's hide | i'd give my whole tradeskill bank for one scale off the stone one. stone armour from a stone dragon
+~ 15
+E: why do so many people die on them? isnt it just hit it a lot? | is it hard? i figured a big raid just hits it till it falls
+D: the breath. each one has two, and they lowered one of each a while back. still wipes half a raid if you stand wrong | two breaths each. they softened one of them in a patch, the other still melts anyone outside the healers' reach
+D: and the old advice: dont nuke it early. let the tanks get it settled or it turns on the casters | rule one from every raid leader: no nukes in the first minute. the dragon looks for whoever hits hardest
+C: i heard bring more than a hundred and it loses its temper. so even the dragon has a raid cap | someone told me if over a hundred show up, the dragon goes berserk. a dragon that hates crowds, same as me
+B: and the giant story. kill the giant on the frontier first and the dragon loses its fire. people believe it | there was a whole season when people said kill the glacier giant and the wolf loses its fire. everyone tried, nobody checked
+D: superstition. the giants and the dragons are three zones apart and dont know each other. people just like rituals before a raid | the giants live on the frontier, the dragons in their own lands. nothing ties them but hope
+?E: so nobody really knows what they drop | so its fifty stones and a lot of stories
+C: still signing up next time. for the story, not the stone | i'll still go. i want to see one fall with my own eyes
+B: if a scale ever drops, it's mine. i called it, everyone heard | first scale comes to me, i've said it in front of witnesses
+
+@topic lore_edge
+@levels 1-50
+@scene lore_edge_of_world
+@role B type=Explorer
+@role C type=NoLifer levels=30-50
+@role D type=Daredevil
+@role E type=* levels=5-25
+A: is there anything out past the edge of the world | {q} has anyone here ever swum to the very edge of the map
+B: a wall. you swim and swim, the water stays the same and then you just stop. like cold glass you cannot see | i swam out until my map showed nothing but blue, then i hit something i couldnt see. no splash, no sound, just stop
+?E: wait, you can swim off the map? | the map ends? i thought it just kept going
+C: every map ends in water. the water doesnt end, you do. the gods put a wall there | the land stops, the sea goes on, and then the sea stops too. invisible, all the way round
+B: but it moved. the islands last autumn. three of them turned up that nobody had seen, one for each realm, and you could swim to one | it isnt fixed though. one autumn three islands appeared out of nowhere, one per realm, and people swam out to them
+C: those came with a patch. the heralds called them long forgotten islands. forgotten isnt hidden, its added | a patch put them there. the herald said long forgotten. thats a polite word for new
+B: so the sea was hiding them, or the wall was closer before. either way the edge moved and nobody noticed | either the wall was in front of them all along, or the wall moved back. both mean the edge isnt where it was
+D: so if it moved once it can move again. i want to be out there the day it does | so one day it moves and somebody is pressed against it when it goes. i want to be that someone
+E: what do the old stories say is out there | does any of the old lore say what is past the sea
+B: every realm has one. the albs have a drowned country that sank under the waves in one night, towns and bells and all | the albs tell of a whole land that sank, churches and fields, and the bells still ring under the water
+C: and the mids have the serpent. in the norse tale the sea goes round the world and the midgard serpent lies in it biting its own tail | the norse tale has the serpent lying in the sea all the way round the world. thats your wall, a snake
+B: and the hibs have an island off the west coast that comes out of the mist once every seven years and then is gone | the hib tale is an island in the western sea that shows itself every seventh year. you see it, you row, and it's gone
+D: so the albs swim to a drowned land, the mids to a snake, and the hibs to an island that isnt there. great, i pick the snake | sunken towns, a giant snake, a ghost island. i know which one i'm swimming at
+~ 15
+C: and none of them are out there. i've been to the wall. nothing on the other side. no bells, no snake | i've pressed my face on that wall more than once. no bells, no scales, no island
+B: you saw nothing. thats not the same as nothing being there. the fog out past the coast doesnt move with the wind | seeing nothing is not proof. the fog at the very edge sits still in any weather. real fog drifts
+C: it sits still because nothing makes it move. there is nothing there to make it move | fog that doesnt drift is fog nobody finished, not a door
+E: how long is the swim? | how far out is it really
+B: long. bring a speed song, a good book and nothing heavy. it took me most of an hour from the last beach | most of an hour from the furthest beach. go with a bard's speed song if you can find one
+D: i'll do it in full plate, no speed. just to say i did | i'm doing it in my heaviest armour. it's not a swim if it's easy
+C: you'll sink to the bottom and see the drowned towns after all | in full plate you'll find the bottom first. say hi to the bells
+B: i'm going this weekend. i'll /say what i see at the wall and type it in faction | i'll swim out once more and report in faction. maybe this time something presses back
+
+@topic lore_relics
+@levels 5-50
+@scene lore_more_relics
+@role B type=NoLifer levels=30-50
+@role C type=Socialite
+@role D type=Explorer
+@role E type=* levels=5-25
+A: will there ever be more relics, or is six all we get | {q} anyone think we'll ever see new relics on the pedestals
+B: the patch that brought relics said more would come. that was before the first keep fell. still six | when relics came in, the notes said there'd be more in time. years later, six. two each
+?E: six relics? which ones? | wait, which ones are there? i only know we're meant to guard ours
+B: albion has merlin's staff and excalibur's scabbard. midgard has thor's hammer and the horn of valhalla | the albs keep merlin's staff and the scabbard of excalibur, the mids keep thor's hammer and the horn of valhalla
+B: hibernia has lug's spear of lightning and the cauldron of dagda. one for strength, one for power, every realm | and the hibs have lug's spear and the dagda's cauldron. each realm has a strength one and a power one, fair and square
+C: and every realm swears its pair is the oldest. the war is half about the relics and half about who's older | three realms, six relics, and every one of them claims theirs came first
+D: thats the thing though. look at the old tales. every realm has more treasures in the stories than on the pedestals | think about the old stories. each realm left out something big
+D: the tuatha came to ireland with four treasures. a spear, a cauldron, a sword and a stone that cried out under the true king | in the irish tales the tuatha brought four treasures: lugh's spear, the dagda's cauldron, nuada's sword and the stone of destiny
+D: the hibs got two of the four. where is the sword of nuada? where is the stone? | two out of four on hib pedestals. nobody has seen the sword or the stone
+B: and the albs got the scabbard but not the sword. which is odd, if you know the tale | albion's relic is the scabbard, not the blade. people always ask why
+D: in the old tale the scabbard mattered more. whoever wore it could not bleed. the sword went back to the lady in the lake | the scabbard was the real prize in the legend, its wearer never bled. excalibur itself went back into the lake
+C: so excalibur is still in a lake somewhere and nobody's fished for it. lovely | so the best sword in the world is at the bottom of a lake and no one's got a long enough net
+B: and the mids have the hammer but not odin's spear, the one that never misses. or the ring that drops eight more every ninth night | the mids have thor's hammer, but odin's spear and the gold ring that breeds rings are nowhere
+D: three realms, each missing a sword or a spear or a stone the old songs promised. that is not chance | every realm is missing exactly the treasures its own songs talk about most. that is a pattern
+B: or the patch got busy and they made islands instead | or the plan changed. we got islands and dragons instead of relics
+~ 15
+E: if a new one turned up, what would happen? | what if someone found one
+C: every realm would empty its towns by the end of the week. the frontier would be one big fight | a seventh relic would start a war in all three realms in a single evening
+B: and the realm that found it would lose it to the other two inside a day. thats how relics work | whoever found it would have both other realms at their door by supper
+D: i check every pedestal room i pass. the stone is the one i'd look for. a stone could sit in plain sight | i always look for a stone nobody can name. a stone of destiny could be lying in a field and we'd walk past
+C: first to find one buys the drinks in every capital | if anyone finds one, the ale is on them for a month
+?B: i'll keep an eye out. the world did surprise me before | fine. i'll look under rocks too
+
+@topic lore_dungeons
+@levels 1-50
+@scene lore_undiscovered_dungeon
+@role B type=Explorer
+@role C type=Leveler
+@role D type=* levels=5-25
+@role E type=NoLifer levels=35-50
+A: is there still a dungeon out there nobody has found | {q} you think there are still dungeons nobody has walked into yet
+B: always one more. this world keeps finding pieces of itself, its been doing it since the first winter | there's always one more. the whole history of this world is people saying that was everything, and then more
+C: everything worth finding is on the maps by now. if it existed, someone would sell a map to it | if there were a hidden dungeon some guild would be farming it and selling the drops
+E: you say that. i remember the first winter, when three dragons turned up in one week and nobody had a map for any of them | people said the same before the dragon lairs. one winter they were just there, all three realms, same week
+E: the hibs had a pass come out of their mist overnight. the mids got told about a fortress little known and less explored | a hib pass came out of a bog's mist one morning. the mids heard of a fortress nobody had explored. the albs got a moor with a dragon
+?D: wait, the dragons weren't always there? | so the dragon lairs were new? i thought they were there from the start
+B: thats the argument. the lore says they were always there and we just hadnt walked in | the stories say they were there all along. we just hadnt been told where to look
+C: they came with a patch. a patch is not a hidden door, its a builder with a hammer | patches add things. that isnt discovery, thats a delivery
+B: then what about darkness falls? the spring after the war began, a portal opens and there's a whole demon court underneath | darkness falls. one spring, a door, and under it a court of demons with names and ranks. who built that in a week
+E: and that summer, tunnels under all three frontiers. then a whole new land across the sea that autumn. then the islands this year | then tunnels under every frontier the next summer, new lands across the water that autumn, three islands last autumn
+C: and every one of those came with patch notes. hidden things dont come with patch notes | right, and every one came with a herald post. nobody stumbled into anything
+B: but the herald always wrote it as found. discovered, long forgotten, little explored. never built | the heralds never said built. they said found, forgotten, uncovered. the world itself says it was there
+~ 15
+D: so is there one now? | ok but is there one right now, that nobody's found
+E: i heard one of the old mines in hibernia was shut tight at release and opened later. people walked past its door for months | people say one hib mine was locked at release and only opened later. everyone walked past that door
+B: and there are sealed doors in the old dungeons nobody opens. every realm has one. i've pushed on three of them | every realm has a crypt door that doesnt open. i've stood at three of them and pushed. nothing, yet
+C: a door that doesnt open is a wall with a hinge painted on | some walls just look like doors. builders like to decorate
+B: thats what a wall would want you to think | maybe. or maybe it opens for someone who isnt pushing
+D: im checking every wall i pass from now on | im going to /search every crypt i go into now
+E: check the corners too. the older the dungeon, the stranger the corners | look at the ceilings, not the walls. half the odd rooms i ever found were up
+C: you two have fun. i'll be at my camp, getting xp from the dungeons that exist | enjoy your walls. i'll level in the rooms we already know
+
+@topic lore_govannon
+@levels 5-50
+@scene lore_shield_node
+@role B type=NoLifer levels=35-50
+@role C type=Daredevil
+@role D class=Wizard,Runemaster,Eldritch levels=30-50
+@role E type=* levels=5-25
+A: is the shield node story about govannon true | {q} should you really leave govannon's shield node alone
+?E: whos govannon? | sorry, who or what is govannon
+B: grand summoner govannon. he holds the summoner's hall, past the deepest rooms of darkness falls. level eighty | the boss of the summoner's hall, the hall you reach past legion's rooms in df. grand summoner, level eighty
+B: the hall is the only place where all three realms meet. sidhe guards, the summoners, aidon the archwizard, and govannon at the end | its where the three realms come together. sidhe guards on the doors, summoners in the rooms, an archwizard, then him
+E: and the node thing? | so whats the shield node
+B: there's a node next to him. the old raid leaders all say the same: kill it and he goes near invulnerable. leave it alone | a thing called a shield node stands in his room. every raid leader i ever heard says dont touch it, or your hits do almost nothing
+C: everyone says leave it. nobody says they tested it. that's a rule somebody made after one bad wipe | sounds like one raid leader said it after a wipe and everyone copied it. nobody i know tested it
+D: it makes sense though, if you think about wards. a shield node feeds a shield. break the feeder and the ward snaps shut around him | from a caster's view it makes sense. a node that holds a ward open. break it, the ward closes on him, and he's sealed
+C: or break it and the shield drops. that's what a sensible node would do | or kill the shield and he has no shield. thats what a name usually means
+D: and there are more nodes, people say. a healing node, a fire node. the room is a machine, not a fight | i heard there's a healing node and a fire node too. the whole room works like a spell, and govannon is in the middle
+B: and he changes shape. starts as an elf caster, grows taller, and by sixty percent he's a true demon | three forms. an elf summoner, then something taller, and at sixty percent he drops the act and is a demon
+E: wait, an elf turning into a demon? | so he was pretending to be an elf?
+D: that's the question. was he an elf that legion turned, or a demon wearing an elf? i think the elf is the costume | i read it as a demon wearing a sidhe face. why else hide among sidhe guards
+C: or a summoner who called one demon too many and it moved in | or he called legion's lot once too often and something called him back
+D: and govannon is an old name. in the welsh tales govannon is the smith of the gods, son of don. a maker, not a demon | the name is from the old welsh tales. govannon the smith, who made weapons for the gods. strange name for a demon
+B: makes sense, if the hall is a forge. he summons things, a smith makes things. maybe he made the tunnels too | a smith holding a hall where three realms meet. you could say he's forging something out of us
+~ 15
+C: how long does the fight run if you do it right? | how long are we talking, for a proper attempt
+B: people say forty minutes, some say longer. healers taking turns, food at the keyboard | the stories say forty minutes when it goes well. some raids took longer and lost on the last form
+C: and if you break the node, maybe ten minutes. thats the rumour i want tested | so leave the node and it's forty minutes, break it and maybe it's ten. someone has to find out
+D: or maybe a wipe in ten seconds and a long run back from the bind stone | or the ward shuts and you fight a wall until your healers run out of mana
+?E: i'm writing all this down for when i'm fifty | i'll remember the node thing for when i'm old enough
+B: leave the node. thats my advice. i like my rules with a few wipes behind them | node stays, nobody touch it. the old raiders learned that the slow way
+C: if i ever get in there, the node gets one hit from me. just one. for science | one day i'll tap that node, just once, and we'll all know
+
+@topic lore_df
+@levels 5-50
+@scene lore_df_war
+@role B type=NoLifer levels=30-50
+@role C type=Socialite
+@role D type=Leveler
+@role E type=* levels=5-25
+A: does darkness falls make the realm war better or worse | {q} is darkness falls good for the realms or bad
+?E: how does df even work? who gets in? | wait, why can only one realm use df at a time
+B: whichever realm holds the most keeps gets the portal. count the keeps, thats your answer, every day of the week | most frontier keeps opens df. the moment another realm takes enough keeps, it flips
+C: so its weather. you dont ask if df is open, you ask if df is ours today | df is like weather. check when you log in, check again before supper
+D: and when its ours its the best xp in the game. demons all the way down, every level from the twenties to fifty | as a leveler i love it when its ours. the levels go from about twenty to the dukes, all in one place
+B: thats why it makes the war worse. people take keeps for the portal, not for the realm. half the keep fights are df fights | worse, i say. half of every keep fight is really a df fight. nobody cares about the keep, just the count
+C: better. without df half the realm would never leave town. it gets people out to the frontier | better. it drags people out who'd never set foot in the frontier. the war needs bodies
+B: and the moment it flips everyone logs off. the realm sulks for a week | and when we lose it the realm goes quiet. people log off rather than fight for it back
+?E: and the imps? someone said to watch out for imps | someone told me the imps steal stuff?
+D: the imps rob the bigger demons and trade the loot for seals. seals buy the good gear from the demon merchants | little thieves. they steal from the big demons and trade for seals. bring seals to the merchants down there for gear
+B: the imps have the best deal in the game. they win whichever realm holds the door | the only people who never lose in df are the imps
+C: and legion. three realms fighting over his front door. you know he loves it | legion must love it. three armies killing each other on the surface to get into his house
+B: some old timers say df was a story long before it was a dungeon. the war was named before the dungeon was | an old timer told me darkness falls was a name for the realm war long before there was a door. the dungeon came second
+D: that explains the demons. they were waiting for us to make enough war for them to feed on | maybe the deeper we fight, the deeper it goes. war up top, demons down below
+~ 15
+C: here is the real question. what if legion opened the portal on purpose, to keep us fighting each other | i think legion opened the door himself. as long as we fight over the keeps, nobody fights him
+B: that actually fits. no realm has ever brought legion's court down. the war upstairs keeps it that way | it fits. the court is still standing after all this time, and we're too busy with each other to change that
+D: i dont care who opened it as long as it's ours on the nights i play | lore aside, i just want it open when i log in
+?E: how many keeps do we have right now | so how do i know if its ours
+C: look at the keep list, or ask in faction. someone always knows | ask in faction. there's always one person who counts keeps for fun
+B: so it depends whose it is this week. same as always | no answer then. it's good when it's ours and terrible when it isnt
+
+@topic lore_maps
+@levels 1-50
+@scene lore_old_maps
+@role B type=Explorer
+@role C type=NoLifer levels=30-50
+@role D type=Socialite
+@role E type=* levels=5-25
+A: were the old maps wrong, or did the world change under them | {q} why do the old maps never match the land
+B: the world changed. land comes out of the mist when its ready, and the old maps caught it before it was ready | the land moves. the first maps were honest, they just drew a world that hadnt finished arriving
+C: the maps were wrong. half the first guides were written from beta notes and wishful thinking | the mapmakers guessed. a lot of the first guides came from people who'd never left town
+?E: what was wrong with them? | what do you mean, the old maps were different?
+B: every realm has one. the first albion guides had their marsh running right to the edges of a city of mages nobody could find | in albion the first guides said their marsh ran to the edges of a lost city. edges. you dont have edges on something that isnt there
+B: the midgard ones called the dragon's fortress little known and less explored. little known, as if someone had been | the mids' first word on their wolf dragon's lands was little known, less explored. somebody knew a little, then
+B: and the hibs got a mountain pass drawn where the rangers swore there'd only been bog the week before | and the hibs had a pass drawn on the new maps that the old maps showed as mist and bog
+C: and every one of those came true later, with a patch. the map was a promise, not a secret | and every one of those turned up with a patch. thats not a hidden world, thats a map of next year
+D: so the maps were a sneak peek. i like that better than lying | so the mapmakers were prophets. i'd pay more for that map
+C: and when the keeps got rebuilt this autumn every frontier map went stale overnight. the world changes, the ink doesnt | when the frontier keeps changed layout last autumn, every frontier map was wrong by the next morning
+B: thats my point. the world moves. a map is a picture of one day | thats exactly it. the world isnt fixed. a map is just one day of it
+~ 15
+C: then explain the roads that go nowhere. old roads that end at a cliff, like somebody walked them once | ok, explain the roads that end at a cliff. there are old markers that point at nothing
+B: those are the best part. someone walked them once. maybe the road went on, and the land after it went back into the mist | roads that stop at a cliff are a story. either the land fell or something past it left
+C: or a builder ran out of time and left the road half done. its just a road on paper | or the road was never finished. a road that stops is just a builder who went home
+E: so the old maps are useless now? | should i even bother with a map then
+D: keep your first map forever. the blank bits are the best part | buy every map and keep the first one. in a year it'll be a history book
+B: i still have my first one. half the coast is missing and its more honest than the new ones | my first map has whole stretches marked unknown. i trust it more than anything sold today
+C: you trust a map with no coast | the man trusts a map that's mostly blank. tells you everything
+B: i trust a map that admits what it doesnt know. go ride to a blank bit sometime and see what's there | i'd rather a map that says unknown than one that lies. one evening, ride to a blank and see for yourself
+?E: i'll try it after this level | maybe this weekend, i like the sound of that
+
+# ================================================================ tales
+@topic lore_tale_legion_court
+@levels 5-50
+@scene lore_tale_legion_court_first_seen
+@role B type=NoLifer levels=35-50
+@role C type=* levels=5-25
+@role D type=Socialite,Daredevil
+@role E type=Leveler
+A: ever hear how the first raid met legion's court? the night darkness falls opened | {q} want the story of the first night anyone went into darkness falls
+?C: i've never been to df. go on | sure, i've never seen df, tell it
+B: it opened in the spring after the war started. one evening a portal was just there, and only the realm with the most keeps could use it | the spring after launch the portal appeared. word went round that only the realm holding the most keeps could step through
+B: the first ones down met a gatekeeper. gatekeeper dommel. they thought he was the boss. he was the doorman | the first thing anyone met was gatekeeper dommel, and they all thought that was the whole dungeon. he was just the door
+D: imagine wiping on the doorman | the doorman. imagine telling your guild you died to the doorman
+B: past him were imps stealing from bigger demons, and behind the imps, rooms of demons with titles. earls, marquises, dukes | further in were imps robbing their betters, then whole halls of demons with titles. marquis, earl, duke, and they kept going
+C: titles? like nobility? | wait, the demons had ranks?
+B: a whole court. marquises at the bottom, then earls, dukes, four high lords, three princes. plus a chancellor and a field marshal | marquis, earl, duke, high lord, prince. grand chancellor adremal ran the books, field marshal nebir ran the army
+B: then somebody got as far as the deep rooms and saw the name. legion. he typed it in faction and the whole realm went quiet | one scout got deep enough to /con the thing at the end. typed the name into faction. legion. nobody typed for a minute
+~ 15
+B: and the next week every raid that tried came back with the same two stories: chthonic knights blocking the way, and a room called behemoth's | for weeks every raid came back saying the chthonic knights stopped them, and that legion sends you to behemoth's room
+C: did anyone beat him back then? | so did anyone kill legion that first year
+B: not that i ever saw. raids went down, raids came back up in pieces. the court has stood there ever since | none i know of. the court is still there, prince and duke, every night, same as the first
+E: still the best xp in the realm when its ours. thats the part of the story i care about | lovely story. still the best xp below fifty when its ours
+B: when you go down, nod at dommel. he's been on that door since the first night | first time you go down, nod to the gatekeeper. he remembers everyone
+
+@topic lore_tale_edge_swim
+@levels 1-50
+@scene lore_tale_first_swim_to_edge
+@role B type=Explorer
+@role C type=* levels=5-25
+@role D type=NoLifer levels=30-50
+@role E type=Daredevil
+A: did anyone ever tell you about the first one who swam to the edge of the world | {q} you all know the story of the first swim to the edge of the world?
+?C: no, go on | nope, never heard it
+B: the way i heard it, it was the first winter. a bard, no armour, a speed song on loop, swam straight out from the last beach on his map | the story goes it was a bard in the first winter. no armour, singing his speed song, swimming out from the furthest beach he knew
+B: an hour out the land went behind him, the map showed only blue, and the water stopped being any colour at all | after an hour there was nothing on his map but blue, and the sea went flat and grey, like a picture of a sea
+B: then he stopped. not tired, just stopped. he pushed and the water pushed back. he typed /em presses a hand against the sky | he stopped dead. no wave, no rock. he said it felt like cold glass, and he typed that he was touching the sky
+D: every realm has that bard. albs say minstrel, mids say skald, hibs say bard. the story fits whichever realm is telling it | i've heard it told in all three realms, and the swimmer is always from the realm telling it. thats how you know its a legend
+E: whats the point of swimming if nothing hits you | an hour in the water and not one thing tried to eat him? boring
+B: thats the part people forget. he said the fog at the wall didnt move, and something in it was keeping still, the way a cat keeps still | he said the fog at the wall sat dead still, and behind it something big kept very still. like it was watching
+D: he was alone for an hour in grey water. he'd have seen a dragon in a cloud | an hour alone at sea and you'll see anything. i've seen faces in a campfire
+~ 15
+B: he swam back and told his guild, and nobody believed him, so half of them swam out the next night. all found the wall | his guild laughed, then six of them swam out the next week to prove him wrong. every one of them found the wall
+C: and the thing in the fog? | did they see the big thing too
+B: one said yes. the others said no. that one never swam out again | one of the six swore he saw the fog breathe. he never went back in the water after that
+E: i'm swimming out this weekend. if something in the fog is watching, it can watch me wave | someone has to go back. i'll swim out and wave at the fog
+D: bring a bard. it's tradition | sing on the way. thats how the story starts, after all
+
+@topic lore_tale_relics
+@levels 5-50
+@scene lore_tale_promised_relics
+@role B type=NoLifer levels=35-50
+@role C type=* levels=5-25
+@role D class=Minstrel,Skald,Bard
+@role E type=Leveler,Crafter
+A: ever hear the story of the relics we were promised | {q} want the tale of the relics that never came
+?C: promised by who? | there were supposed to be more relics?
+B: when relics first went on the pedestals, the word from on high was that more would come. that was the first autumn of the war | right at the start, when the six relics were set up, the devs wrote that more were coming. they never did
+B: and the story the old timers tell is that the relic keeps were built for more. go look at the pedestals. room for one more, every realm | the old timers say every realm's relic rooms have one pedestal standing empty. room for a seventh, or an eighth
+D: and the bards have filled that pedestal with songs. every realm's version is different | the songs did the rest. in every realm the bards sing about what should stand on the empty one
+D: the albion song is that the seventh relic is excalibur itself. the scabbard went to the pedestal, the blade went back into the lake to wait | the albs sing that the scabbard is only half. the sword went back to the lady of the lake, and one day it comes out
+D: the midgard song is odin's spear, the one that never misses its mark. thor's hammer is on a pedestal, so why not his father's spear | the mids sing of odin's spear. thor's hammer on one pedestal, his father's spear missing from the next
+D: and in hibernia they sing of the stone of destiny, the treasure of the tuatha that cries out when the rightful king stands on it | the hibs sing of the stone that cried out under the true king. the tuatha brought four treasures, and only two stand on pedestals
+B: none, and all of them. the old tales are real. the relics they promised never came. we got dragons and islands instead | the tales are real, the relics aren't. instead of a seventh relic we got dragons, a demon court and three islands
+E: dragons were a fair trade if you ask me. a relic just sits on a pedestal making the frontier angry | i'd take a dragon over a relic. a relic's just a reason for three realms to stay up fighting
+~ 15
+D: there's a last verse in all three songs, the same in every realm. the seventh relic belongs to whoever finds it first | the songs all end the same way. whoever finds the seventh doesnt carry it home. the other two realms come for it
+B: which is why, if one ever turns up, the frontier will burn for a month | if one turns up, the war will never sleep again
+C: i'll look out for a stone that talks | i'll keep an eye out for a sword in a lake then
+B: start with the lakes, the rivers and the rocks nobody looks at. thats where the old stories hide things | look in the places the songs point to. water, stone, old trees. the tellers never made it easy

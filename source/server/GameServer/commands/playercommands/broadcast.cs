@@ -55,6 +55,7 @@ namespace DOL.GS.Commands
 
             Broadcast(client.Player, message);
             client.Player.TempProperties.SetProperty(BROAD_TICK, client.Player.CurrentRegion.Time);
+            AutonomousBeggars.OnPlayerAsked(client.Player, message, "broadcast");
         }
 
         private void Broadcast(GamePlayer player, string message)

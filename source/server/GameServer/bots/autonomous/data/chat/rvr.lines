@@ -5,10 +5,11 @@
 @who *
 @levels 35-50
 @needs solo
-heading to the frontier, anyone want to run with me?
 @needs
 @invites news
+@needs keep_news
 {frontier} was busy tonight, lots of fighting near {keep}
+@needs
 @invites complaint
 got ganked by a stealther on the way in, again
 @invites
@@ -30,50 +31,98 @@ chain-killed three {enemy} stealthers tonight, feeling good
 @who *
 @needs in_frontier
 @invites news
+@needs in_frontier, defending
 inc! enemies on the road to {keep}
+@needs in_frontier
+@needs in_frontier, defending
 anyone near {keep}? i see a group headed that way
+@needs in_frontier
+@needs in_frontier, defending
 they are hitting the door at {keep}, need defenders
+@needs in_frontier
 heading back to {keep}, run home if you can
 watch out near {frontier}, stealthers about
 @invites
 @levels 20-50
+@needs in_frontier, attacking
 the zerg is rolling toward {keep}, anyone want to join?
+@needs in_frontier
 @invites news
+@needs in_frontier, defending
 keep defense at {keep}, every body helps
+@needs in_frontier
 @invites ask_anyone
 relic raid tonight? i would show up for that
 @invites boast
+@needs in_frontier, keep_won_recent
 we hold {keep} again, nice work everyone
+@needs in_frontier
 
 @kind rvr
 @topic darkness_falls
 @who *
 @levels 20-50
 @invites news
+@needs df_ours
+@about place
 we have darkness falls this week, go get your seals
+@needs
+@about
+@needs !df_ours
+@about place
 lost darkness falls again, the other realms must be busy
+@needs
+@about
 @invites
 @invites lfg
+@needs df_ours
+@about place
 darkness falls run anyone? need seals for gear
+@needs
+@about
 @invites
 @invites ask
+@about place
 is darkness falls ours right now? want to grind there
+@about
 @invites joke
+@about place
 the demons in darkness falls keep me humble
+@about
 
 @kind rvr
 @topic battlegrounds
 @who *
 @levels 20-24
 @invites lfg
+@about place
 anyone going to thidranki? need a few more friendlies
+@about
 @invites
+@about place
 thidranki is the most fun i have had at 20
+@about
 @invites complaint
+@about place
 twinks in thidranki again, they hit like trucks
+@about
 @invites
 @levels 25-29
 @invites ask_anyone
+@about place
 murdaigean tonight, who is in?
+@about
 @invites
+@about place
 murdaigean keeps changing hands, love it
+@about
+
+# The talking update audit: said from the frontier, not from anywhere
+@kind rvr
+@topic frontier
+@who *
+@realm *
+@levels 35-50
+@needs solo,in_frontier
+@invites ask_anyone
+out in the frontier, anyone want to run with me?

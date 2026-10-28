@@ -1,0 +1,50 @@
+# Looking-for-group and trade lines built from parts (the month simulation, 2026-10-26: 130 lfg lines met about 830 lfg
+# lines a month). Real lfg spam was formulaic, so these vary the formula: order, what is wanted, how long, a sign-off.
+# "[a|b]" parts are expanded by build_corpus.py. New writing.
+
+# ---- lfg_self ------------------------------------------------------------------------------
+@kind lfg
+@topic lfg_self
+@who *
+@needs solo
+@invites lfg
+[lfg|lf grp|lf group] {level} {class}[, | - ][any xp|anything really|xp group|dungeon or camp, dont mind][ pst| /tell me|]
+{level} {class} [lfg|looking for group|lf grp][, ][can start now|ready to go|full pots|got time][ pst|]
+{class} {level} [lfg|lf any group][, ][been solo too long|solo is slow|bored of soloing|need the xp]
+[anyone need a|any group need a|group need a] {level} {class}[?|? pst|? happy to travel]
+[lfg|lf grp] {level} {class}[, know my class|, been playing a while|, wont die on you][, pst|]
+[lfg|lf group] {level} {class}[, couple hours|, an hour or so][ to play|]
+{level} {class} [here|over here][, lfg|, looking][, any level close to mine|, any camp]
+@who Socialite
+[lfg|lf group] {level} {class}[, good company|, will chat|, no drama][ pst|]
+@who Leveler
+[lfg|lf grp] {level} {class}[, fast xp only|, want to push a level|, steady pulls preferred][ pst|]
+@who Daredevil
+[lfg|lf grp] {level} {class}[, oranges and reds welcome|, the harder the better|, lets pull big]
+@who NoLifer
+[lfg|lf grp] {level} {class}[, on for hours|, not logging anytime soon|, here for hours]
+@who Crafter
+{level} {class} [lfg|lf grp][, need coin for my craft|, taking a break from crafting][ pst|]
+@who Explorer
+[lfg|lf grp] {level} {class}[, somewhere i havent been|, show me a new camp|, anywhere new]
+@who *
+@needs solo,xp_high
+{level} {class} [lfg|lf grp][, almost a ding|, close to a ding|, few bubbles to go][ pst|]
+@needs solo,xp_low
+{level} {class} [lfg|lf grp][, just dinged and want to keep going|, fresh level, need xp]
+
+# ---- trade: buying and selling in general terms --------------------------------------------
+@kind trade
+@topic buying
+@who *
+@needs
+[wtb|looking for|anyone got] [armor|a weapon|jewelry|a shield] for a {level} {class}[, pst|, paying fair|]
+[wtb|need] [potions|power pots|health pots|dye][, anyone|, will pay|, pst]
+[anyone sell|wtb] [a better cloak|a ring or two|some bracers|a decent belt] [for|around] level {level}[?|, pst]
+@topic selling
+@who Crafter
+[making|finishing] [armor|weapons|tailored stuff] [for the guild|for my alt|for skill ups][, materials cost a fortune|]
+[doing guild orders|crafting for the guild][, materials are killing me|, slow going|]
+[crafter here|crafting tonight], [making|finishing] [armor|weapons|arrows|tailored gear] for [guildies|my guild|my alts]
+@needs evening
+[crafting all evening|at the forge tonight], [guild orders first|skill ups all night]

@@ -1,0 +1,891 @@
+# Storylines (AutonomousBotStorylines, 2026-10-26, the owner's idea). Multi-day dramas between two bots, played in
+# /faction as episodes a few days apart. The same two bots play roles A and B in every episode of an arc; roles C-H are
+# other bots of the realm each time (bystanders, gossips, peacemakers, instigators). {name_a} and {name_b} are the two
+# protagonists' names, so everyone names them. A real player may take a side in faction: the last episode then plays as
+# _4a (the player sided with A) or _4b (with B), and {player} is that player. Plain _4 is the ending nobody chose. Each
+# arc starts fun and turns spicy fast, with callbacks to the earlier episodes. Afterwards the protagonist the player
+# backed sends a "side_thanks" tell, the one they went against a "side_scorn" tell ({target} is the rival's name).
+# Real swear words are not in the corpus: they swear the way 2003 chat did, wtf, stfu, gtfo, omfg, $#@!. New writing.
+
+@kind debate
+@realm *
+
+# ==== killsteal: B took a named kill A had camped for an hour ======================================
+
+@topic story_killsteal
+@levels 10-50
+@scene story_killsteal_1
+@role A type=Leveler levels=10-50
+@role B type=Daredevil levels=10-50
+@role C type=*
+@role D type=*
+@role E type=Socialite
+@role F type=*
+@role G type=*
+@role H type=NoLifer
+A: omg. i camped that named for a FULL HOUR and {name_b} just ran in and took it | an hour. sixty minutes. the named pops and {name_b} tags it out of nowhere
+C: lol rip | oof
+D: classic | welcome to camp life
+B: lol what? it was up, i hit it. thats how named mobs work {name_a} | {name_a} it was just standing there. first hit wins. thats the rule
+A: i was sitting RIGHT THERE {name_b}. you ran past me. you SAW me | {name_b} you literally ran past my campfire to get to it
+B: i saw someone sitting. i figured you were afk | you were sitting down. i thought you fell asleep
+A: i was MEDDING. for the PULL. that i was going to MAKE | i was resting up for the pull i had waited an hour to make
+E: {name_b} did you at least say sorry | did {name_b} even type a sorry
+B: sorry the named liked me better | sorry {name_a}. sorry you're slow
+F: ohhh | OHHHH
+G: {name_b} just went for it | {name_b} woke up and chose chaos
+A: what did it even drop. tell me it dropped junk | please tell me it dropped nothing at least
+B: oh it dropped the good one. looks great on me | the rare. first kill. feels amazing actually
+A: you are kidding me | are you serious right now
+H: an hour is an hour, {name_b}. thats {name_a}'s camp | sorry {name_b}, camp rules say {name_a} had it
+B: camp rules are made up by people who are slow on the draw | theres no camp rules. theres fast and theres slow
+A: ok. ok {name_b}. i'll remember this | noted {name_b}. noted. i have a long memory
+B: remember it while i wear the loot lol | remember what? the loot? its on my back now
+D: this is going to be a thing isnt it | i smell a feud
+E: {name_a} vs {name_b}, round one | someone start a log, this one is going places
+A: next time it pops, you better be nowhere near it {name_b} | if i see you near my camp again {name_b}, we have a problem
+B: or what {name_a}? you'll med at me? | ooh scary. what are you going to do, sit at me harder?
+F: rofl sit at me harder | lol "med at me"
+~ 6
+H: note to self: never sit down near {name_b} | everyone guard your camps, {name_b} is loose
+
+@topic story_killsteal
+@levels 10-50
+@scene story_killsteal_2
+@role A type=Leveler levels=10-50
+@role B type=Daredevil levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=Leveler
+@role G type=*
+@role H type=*
+A: public service announcement: {name_b} is a kill stealer. watch your camps | heads up realm. {name_b} steals named kills. guard your camps
+B: lol {name_a} is STILL crying about last week | omg {name_a} are you still on about that? its been days
+A: yes. i am. because you never said sorry. you said i was SLOW | still. yes. because you took it and laughed about it
+C: wait is this the named thing again | oh its the named camp drama. part two
+B: i got the named, i got the drop, i got over it. you should too | its a monster {name_a}. it respawns. go camp it again
+A: i DID camp it again. three hours. nothing. because YOU kept killing the placeholder | went back, three hours, no spawn. guess who was killing the placeholder
+B: maybe it just doesnt like you | maybe the mob can smell desperation
+D: ohhh thats cold {name_b} | cold, {name_b}. ice cold
+A: stfu {name_b}. you're a bottom feeder who cant camp anything yourself | stfu. you never earned a single drop in your life, you just steal them
+B: earned? i earned it with a pulse and a sword. you earned a nap | i earned it by hitting it. you were busy sitting
+E: honestly i heard {name_b} did this to someone else too | i heard {name_b} pulled the same thing at another camp yesterday
+B: who said that. name names | thats a lie and whoever started it can say it to my face
+F: me. you stole my pull last week and laughed, {name_b} | it was me. you took my mob mid pull, {name_b}. remember?
+B: you were fighting it for a year. i did you a favor | you took forever. i put it out of its misery
+A: SEE?? A PATTERN. THE WHOLE REALM SEES IT | THERE IT IS. A SERIAL KILL STEALER. IN OUR OWN REALM
+G: lol {name_a} found the caps lock | here come the caps
+B: omg {name_a} you're so dramatic. it was ONE named | {name_a} its a mob. not your firstborn
+A: it was MY named. MY hour. MY drop. you're a thief and everyone knows it | you're a $#@! thief and i'll say it every day until you give the drop back
+B: give it back?? LOL. come and take it | lol. its on my back, {name_a}. come take it
+H: wait. did {name_b} just say "come and take it" | was that a challenge? that sounded like a challenge
+C: oh this is getting good | grabbing a seat for this one
+A: oh i will {name_b}. i will | count on it. you'll see me soon
+D: next episode: {name_a} takes it back | i would pay to see what happens next
+E: my money's on {name_b}. fast hands | my money's on {name_a}. angry people hit harder
+
+@topic story_killsteal
+@levels 10-50
+@scene story_killsteal_3
+@role A type=Leveler levels=10-50
+@role B type=Daredevil levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=Daredevil
+@role G type=Socialite
+@role H type=*
+A: {name_b}. you and me. a duel at the gates of {capital}. loser says sorry in faction | ok {name_b}, i'm done talking. duel me outside {capital}. loser apologizes in faction
+B: a duel? {name_a} you couldnt beat a training dummy | lol a duel. sure {name_a}. bring a healer, you'll need one
+C: OH | WHAT
+D: its happening | its finally happening
+B: and when i win you stop crying about the named. forever | when i win you never mention the named again. deal?
+A: deal. and when I win, you type it: "i stole {name_a}'s named and i'm sorry" | deal. and when i win you type "sorry {name_a}, i'm a kill stealer". word for word
+E: my guild backs {name_a}. you dont touch someones camp | our whole guild is with {name_a}. camp thieves get no mercy
+F: lol my guild backs {name_b}. there is no such thing as a camp | we're with {name_b}. first hit wins, always has
+E: of course your guild says that. you're all thieves too | figures. thieves stick together
+F: say that again and see who rezzes your guild at the next keep fight | keep talking and our healers forget your names in the {frontier}
+G: guys guys. its one named mob. we have a war with {enemy} | uh, remember {enemy}? the actual enemy? anyone?
+A: {enemy} can wait. this is about honor | {enemy} didnt steal my named. {name_b} did
+B: honor lol. {name_a} has been whining for a week straight | a week of crying over one mob and they call it honor
+H: i'll ref the duel. no buffs, no pots, no running | i volunteer to ref. no potions, no running away, no crying
+B: no running? {name_a} runs every time a mob turns around | no running? thats all {name_a} knows how to do
+A: WATCH YOUR MOUTH {name_b}. I'LL PUT YOU ON YOUR BACK IN FRONT OF THE WHOLE REALM | KEEP TALKING. YOU'LL BE EATING DIRT AT THE GATES IN FRONT OF EVERYONE
+B: big words from a camper. you'll be dead before your first swing | i'll be done before you finish medding
+C: should we sell tickets | i'm charging admission at the gate
+A: and after i win, i'm camping every named you ever look at | when this is over i'm sitting on every camp you love. forever
+B: you cant camp anything, you just sit there and lose it | try it. i'll be there first. like always
+D: the realm is officially split. team {name_a} or team {name_b} | its war now. pick a side people
+G: so when is this duel even happening | someone tell me when, i'm not missing it
+~ 6
+H: whoever loses, i'm keeping the log | this is going in the realm history books
+
+@topic story_killsteal
+@levels 10-50
+@scene story_killsteal_4
+@role A type=Leveler levels=10-50
+@role B type=Daredevil levels=10-50
+@role C type=*
+@role D type=NoLifer
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: ok. the duel. its time. {name_b}, the gates, now | {name_b}. gates of {capital}. no more talking
+B: already here {name_a}. been waiting. like you wait for named mobs | here and ready. try not to sit down
+C: ref here. ready. fight! | ref is ready. on three. three!
+D: {name_a} opens strong | ooh good first hit from {name_a}
+E: {name_b} hits back hard. this is close | {name_b} is answering. its close
+F: wait. whats that coming up the road | uh, is that a wandering pack behind them
+G: lol a whole pack of mobs just walked into the duel | the duel just got guests
+A: {name_b} you pulled them on purpose!! | {name_b} did you train those on me
+B: me?? you were the one standing in the road, {name_a} | i didnt pull anything, they came for YOU
+H: and they're both dead | rofl they both died. double knockout
+A: ... | ...great
+B: well that was dumb | ok that didnt go how i planned
+C: by the rules this is a draw. nobody apologizes | ref says: draw. no winner, no apology
+D: meanwhile i went to the named camp. nobody was there. it was up | fun fact, while everyone watched the duel, i killed the named. no line at all
+E: lol what. did it drop the rare | no way. what did it drop
+D: the rare. first try. ty for the distraction, both of you | the good one. ty {name_a}, ty {name_b}, great show
+A: are you SERIOUS. {name_b} this is your fault | oh come ON. this is all your fault {name_b}
+B: MY fault? you challenged me! | how is it mine, the duel was your idea {name_a}!
+A: ...ok, ok. i guess we both got robbed | ok fine. we both lost the named this time
+B: heh. ok {name_a}. truce? we camp it together next time and roll for it | fine. truce {name_a}. next spawn we group up and roll like people
+F: aww. they made up over a shared enemy | nothing brings people together like getting robbed
+G: the real kill steal was the friends we made along the way | best ending. everyone lost
+H: i want a rematch. with the mobs this time | season two when
+
+@topic story_killsteal
+@levels 10-50
+@scene story_killsteal_4a
+@role A type=Leveler levels=10-50
+@role B type=Daredevil levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=Socialite
+A: {name_b}. the gates. today. and {player} came to watch | its time {name_b}. {player} is in my corner, so you're done
+B: oh you brought {player}? cute. still going to lose {name_a} | {player} cant swing your sword for you {name_a}
+C: ref ready. no pots. fight! | ok, on my count. go!
+D: {name_a} is all over {name_b}! | wow {name_a} came to play
+E: {name_b} is low. very low | {name_b} is going to fall
+F: AND {name_b} IS DOWN | {name_b} DROPS. ITS OVER
+A: HA. HAAA. {player} SAW THAT. EVERYONE SAW THAT | WHOS SLOW NOW {name_b}?? ask {player}, they saw it all
+B: lag. that was pure lag | i lagged. everyone knows i lagged
+G: no lag. you lost | it was not lag, you just lost
+C: rules are rules {name_b}. say the words | {name_b}, the deal. type it
+B: ...fine. "sorry {name_a}, i'm a kill stealer." happy? | ugh. sorry {name_a}. i took your named. i was wrong. there
+A: very happy. and {player}, ty for backing me when half the realm laughed | so happy. big thanks to {player}, you believed me from day one
+H: {player} picked the right side | good call by {player}
+B: and {player}, dont think i forgot whose side you were on | yeah {player}, i'll remember you were cheering
+E: lol {name_b} is still bitter | {name_b} lost and is still mad. classic
+A: {player} is a true friend of the camp. remember that name | the camps of this realm owe {player} one
+D: honor restored. the camps are safe | the named mobs of the realm can rest easy
+B: whatever. i'm going to find a named nobody is camping | i'll be at a camp with no {name_a} in it
+F: gz {name_a}, a week of crying paid off | a whole week of drama and {name_a} got the win
+G: and that, kids, is why you ask before pulling | the end. finally. ask before you pull, people
+
+@topic story_killsteal
+@levels 10-50
+@scene story_killsteal_4b
+@role A type=Leveler levels=10-50
+@role B type=Daredevil levels=10-50
+@role C type=*
+@role D type=*
+@role E type=Daredevil
+@role F type=*
+@role G type=*
+@role H type=*
+A: {name_b}. gates. time to end this | {name_b}, the duel, now. i'm done waiting
+B: ready {name_a}. and {player} is here to watch you fall | come on then. {player} has front row seats
+C: ref ready. no pots, no running. go! | fighters ready? fight!
+D: {name_b} jumps right on {name_a} | ouch, {name_b} comes in swinging
+E: is {name_a} trying to run already lol | {name_a} is backing up. already
+F: {name_a} is DOWN | DOWN GOES {name_a}
+B: WHAT WAS THAT {name_a}? i couldnt hear you over the sound of winning | lol {name_a} that took less time than your camp
+A: you used a potion. i SAW it | that was not fair, you had buffs on
+H: no potion. i watched. clean win | clean fight, i was right there. {name_b} wins
+C: by the deal: {name_a} never mentions the named again | deal was the deal. {name_a}, the named is closed forever
+A: ...fine. FINE. the named is closed | ugh. fine. i'll stop. happy?
+B: so happy. and {player}, ty. you had my back when the whole realm called me a thief | big thank you to {player}, who said first hit wins from the start
+A: and {player}... i saw you cheering. traitor | oh i saw you there {player}. cheering for a thief. noted
+G: {player} called it | {player} knew who was going to win
+B: ignore {name_a}, {player}. sore losers say stuff | {name_a} lost a camp and a duel, let them vent {player}
+A: this isnt over. i'm going to go camp something far away from everyone | i'm going to camp alone. forever. in peace
+E: rip {name_a}. off to med alone | {name_a} is going to sit at a camp and stare at a wall now
+B: aww {name_a}, i'll save you a spot at my next named. as a spectator | want to come watch me kill the next one {name_a}? front row
+D: rofl | ice cold
+F: first hit wins. the realm has spoken | lesson for everyone: dont sit down next to a named
+
+# ==== guildsplit: A leads a guild, B is an officer; loot rules split it ===========================
+
+@topic story_guildsplit
+@levels 10-50
+@scene story_guildsplit_1
+@role A type=Socialite levels=10-50
+@role B type=NoLifer levels=10-50
+@role C type=*
+@role D type=Crafter
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+B: ok since {name_a} wont listen in guild chat: we need loot rules. real ones | posting this in faction so the whole realm sees: {name_a}, our guild needs a loot system
+A: lol {name_b} why is this in faction. we have guild chat for this | {name_b}... we have a guild channel. you know that right
+B: because in guild chat you just type "lol" and go afk | you ignore me in guild chat. here you cant
+C: oh no, guild drama in faction. my favorite | grabbing a snack, guild fight in faction
+A: our loot system is fine. everyone rolls. its fun | free rolls for everyone. its worked for months
+B: its not fine. last raid someone who showed up for five minutes won the best drop | your "fun" gave the best drop to someone who logged in for the last pull
+A: thats what rolls are, {name_b}. luck | thats luck {name_b}. sometimes the dice like people
+B: i've been at every raid for months. the dice hate me | i've been to every single raid. my rolls are cursed
+D: just use points. points for showing up, spend them on loot | points system. show up, earn points, spend them. easy
+A: points are for boring guilds. we're a FUN guild | ugh, points. spreadsheets. we play to have fun, not to do math
+B: fun for who? the one who showed up for five minutes? | fun for the people who roll in at the last pull, sure
+E: {name_b} has a point honestly | i'm with {name_b}, showing up should count for something
+F: nah {name_a} is right, points guilds are miserable | points guilds argue about points all day. {name_a} is right
+A: ty. see {name_b}, the realm agrees with me | see, half the realm agrees with me {name_b}
+B: half the realm isnt in our guild {name_a}. and they dont get robbed every raid | half the realm doesnt do our raids, {name_a}
+G: wait is {name_b} an officer? arguing with their own leader in public lol | is {name_b} an officer? this is a mutiny
+A: yes, and a good one usually. until today | {name_b} is my best officer. usually. not today
+B: then listen to your best officer. points or i walk | then listen to me for once {name_a}. a real system, or else
+A: or else what lol | ooh, or else. ok {name_b}
+B: you'll see | try me
+H: i give this guild two weeks | this guild has a countdown on it now
+C: guild drama, season one. tune in next time | {name_a} vs {name_b}. part one of many, i bet
+
+@topic story_guildsplit
+@levels 10-50
+@scene story_guildsplit_2
+@role A type=Socialite levels=10-50
+@role B type=NoLifer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=Daredevil
+@role H type=*
+B: update for the realm: {name_a} skipped the roll and handed the raid drop to a buddy | so {name_a} gave last night's best drop to their best friend. no roll. just gave it
+A: it was a GIFT, {name_b}. it was their birthday | they needed it more. and it was their birthday, so relax
+B: their birthday?? i've been at every raid for months and got NOTHING | birthday loot. thats the new system? after last week's whole talk?
+C: oh its still going. the loot thing | part two of the loot drama. nice
+A: you're making this a big deal in front of the whole realm. again | {name_b} you're airing the guild's laundry in faction. again
+B: because in guild chat you mute me! you muted me {name_a}! | you MUTED me in guild chat. so here i am
+D: {name_a} muted an officer lol | an officer got muted. this guild is falling apart
+A: i muted you because you typed the word "points" forty times | you said "points" forty times in an hour. i had to
+B: i said it forty times because you ignored it thirty nine times | and you ignored every single one
+E: ok "it was their birthday" is not a loot system | {name_b} isnt wrong, birthday loot is wild
+A: stay out of it. this is guild business | nobody asked you. guild stuff
+B: oh NOW its guild business? you made it public when you gave away the drop | its realm business when the leader is a cheat
+A: did you just call me a cheat. in faction | say "cheat" one more time {name_b}
+B: CHEAT. CHEAT. CHEAT. YOU'RE A CHEAT {name_a} | YES. CHEAT. YOU RUN THE GUILD LIKE YOUR PERSONAL BANK
+F: whoa | the caps came out
+A: thats it. {name_b} you're demoted. recruit rank. enjoy | ok. you're not an officer anymore {name_b}. recruit rank. congratulations
+B: you demoted me IN FACTION? are you kidding | demoted?? after everything i did for that guild??
+G: rofl demoted live in faction | first public demotion i've ever seen
+B: you know what {name_a}? fine. keep your fun guild. lets see how fun it is with no officers | fine. lets see who shows up to your raids now
+A: oh go cry in a corner {name_b}. nobody needs your spreadsheets | bye then. take your stupid points with you
+H: this is how guilds die | ten gold says this guild splits by next week
+C: no bet. its splitting by friday | i'd never take that bet. its already over
+D: whose side is everyone on | team {name_a} or team {name_b}, choose wisely
+
+@topic story_guildsplit
+@levels 10-50
+@scene story_guildsplit_3
+@role A type=Socialite levels=10-50
+@role B type=NoLifer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=Explorer
+@role H type=*
+B: announcing my new guild. real loot rules. no birthday loot. no {name_a} | NEW GUILD, recruiting now: fair points, fair rolls, zero {name_a}
+A: lol {name_b} made a guild. how many members, one? | a whole guild of one. congrats {name_b}
+B: nine. nine of YOUR members left with me this week | nine, {name_a}. nine of your people. count your roster
+C: oh it happened | the split. its real
+A: they'll be back. nobody wants spreadsheets on a friday night | they'll come home once they see your spreadsheets
+B: they're not coming back. they're tired of watching your friends get every drop | they left because your best friend has every drop in the guild
+D: i heard {name_b}'s guild already has a points list. color coded | {name_b}'s guild has a rule book. like a real book with pages
+E: {name_a}, a guild with no officers is just a chat channel | {name_a} who even runs your raids now
+A: i run them. better than ever. we raided yesterday and nobody whined | we cleared a dungeon last night without a single complaint
+B: you cleared it with three people and a pet lol | sure, with four people. i heard the wipes from here
+A: you are the most bitter, petty, spreadsheet hugging nerd in this realm {name_b} | your guild is a tax office with swords, {name_b}
+B: and yours is a party where the host steals the presents {name_a} | better than a guild where the leader hands out loot like candy
+F: OOF | ohhh, the candy line
+A: STOP POACHING MY MEMBERS. I SEE YOUR TELLS. EVERY ONE | STOP SENDING TELLS TO MY PEOPLE {name_b}. I KNOW. THEY SHOW ME
+B: I DONT HAVE TO POACH. THEY COME TO ME. BEGGING | THEY ASK ME. THEY ASK TO LEAVE. THATS ON YOU {name_a}
+G: anyone want a third guild? no drama, no rules, just bad decisions | starting a guild for people sick of both guilds. lol
+H: {enemy} is going to walk into {keep} while you two argue | both of you are going to lose {keep} fighting about this
+A: our guild will be at {keep}. ask {name_b} if theirs can find it | we'll be at {keep}. {name_b} will be filling in a form about it
+B: we'll be there first. and we'll split the loot fairly. imagine | see you at {keep}, {name_a}. try not to give the keep away for someone's birthday
+C: guild war in faction, best night in weeks | this realm is the best realm
+~ 6
+E: whoever shows up at {keep} with more people wins this | guild headcount at {keep} decides it
+D: i'm going just to watch | i'll be at {keep} with snacks
+
+@topic story_guildsplit
+@levels 10-50
+@scene story_guildsplit_4
+@role A type=Socialite levels=10-50
+@role B type=NoLifer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: ok. {keep}. we're here. where is {name_b}'s guild | here at {keep}. guild is ready. well, most of it
+B: we're here too {name_a}. all of us | my guild is at {keep}. full force
+C: lol i see three of {name_a}'s and three of {name_b}'s | i count six people. total. both guilds
+D: thats it? the great guild war is six people? | six people. thats the whole war
+A: some of mine were busy | half my guild had dinner plans
+B: mine had to work. real life stuff | mine logged early. its a weeknight
+E: uh. {enemy} is here. a lot of {enemy} | incoming. big {enemy} group. like thirty
+F: and they're all dead | everyone's dead. both guilds. instantly
+G: rofl twelve seconds | wiped in twelve seconds flat
+A: {name_b} your people ran! | {name_b}, your guild ran first
+B: mine ran?? yours were already dead {name_a}! | you were dead before the fight started, {name_a}
+H: well. everyone died equally. very fair | both guilds wiped together. thats teamwork
+C: so... maybe merge? six is a better number than three | three plus three is six. just saying
+A: ...if we merged, who leads | merge? who would even lead
+B: not you | i'd lead, obviously
+A: definitely not you | over my dead body. which, today, it is
+D: let the guild vote. with points. or rolls. lol | vote on it. points or rolls, your pick
+E: roll for guild leader. loser keeps the spreadsheets | /roll for leader. its the only fair way
+A: ...fine. /roll | ok fine. rolling
+B: ...fine. rolling too | lol ok. rolling
+F: they tied. they both rolled the same number | they TIED. you cant make this up
+G: the dice refuse to choose | even the dice are done with this guild
+H: two leaders, one guild, six members. good luck everyone | co leaders it is. this ends great, im sure
+
+@topic story_guildsplit
+@levels 10-50
+@scene story_guildsplit_4a
+@role A type=Socialite levels=10-50
+@role B type=NoLifer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: news for the realm: {name_b}'s guild is down to one member. guess who | {name_b}'s guild disbanded. the points list ate itself
+B: it did not "eat itself". people just got busy | its on a break. a short break
+C: i heard they fought over how many points a rez is worth | i heard they argued for three days about points for being late
+A: and all nine came home. and {player} was right there cheering them back | every one of them came back. {player} was the first to say they would
+B: yeah, i saw {player} in faction. thanks a lot {player} | {player} spent the whole week cheering for {name_a}. i noticed
+D: lol {name_b} blaming {player} now | {player} just backed the winning guild
+A: dont blame {player} for knowing a good guild when they see one | {player} picked the fun guild. smart
+E: so {name_b}, what now? | {name_b} whats the plan now
+B: ...{name_a}. can i come back. recruit rank is fine | ok. {name_a}. i'll come back. as anything. just let me raid
+A: hmm. let me think about it | ooh, now you want back
+F: make them beg | make {name_b} say it in caps
+A: ok {name_b}. one condition: type "{name_a} was right" where everyone can see | fine. you're back. but first you say it in faction: "{name_a} was right"
+B: ...{name_a} was right. ugh. happy? | fine. {name_a} was right. i want to delete my character
+G: rofl | the most painful words ever typed
+A: welcome home {name_b}. and {player}, the guild owes you one | welcome back. and huge ty to {player}, who held the realm together on this one
+H: guild drama resolved. world peace next | peace in our time
+B: {player}, you won this time. dont get used to it | gg {player}. but i will remember your face
+C: back to rolling for loot like the old days | rolls for all. like nothing ever happened
+D: and {name_b} gets the next drop. no roll. as a gift | next birthday, {name_b} gets the loot. lol
+
+@topic story_guildsplit
+@levels 10-50
+@scene story_guildsplit_4b
+@role A type=Socialite levels=10-50
+@role B type=NoLifer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+B: big night for my guild. we took {keep}. with points. with FAIR points | my guild holds {keep} tonight. organized raid, fair loot, no birthdays
+A: lol you got lucky. {enemy} had nobody there | {enemy} was asleep. that wasnt a fight
+C: no, {enemy} had a full group there. {name_b}'s guild was clean | they had a whole group defending. i saw it
+B: and {player} backed us all week, telling everyone where the real guild was | ty to {player}, who has backed fair loot from day one
+A: oh {player}. of course. the traitor of the realm | {player}. i should have known
+D: lol {name_a} is mad at {player} now | {player} is getting blamed for the whole thing
+E: {name_a}, how many people are in your guild now | {name_a} whats your roster at
+A: ...four. and one of them is my alt | four. its cozy. we like cozy
+F: rofl the alt counts | a guild of four with an alt. legendary
+B: {name_a}, my guild has an open spot. recruit rank. you'd earn points like everyone | we're recruiting. even you {name_a}. you'd start at zero points like everyone else
+A: you want ME to join YOUR guild. as a RECRUIT | me? a recruit? in your spreadsheet guild?
+B: yep. first raid you get zero points. like the one who showed up for five minutes | thats the deal. the system is fair, even to you
+G: oh thats cold | this is the best revenge i have ever seen
+A: ...do you have birthday loot | ...are the raids at least fun
+B: no | they are fun when people get what they earned
+A: ugh. fine. i'll join. dont say anything | ok. fine. i'm in. dont make it weird
+H: {name_a} joined {name_b}'s guild. the circle is complete | the leader is now the recruit. poetry
+B: welcome {name_a}. and {player}, ty again. you saw it before anyone | {player}, ty. this win is half yours
+C: points: one. birthday loot: zero | fair loot wins the war
+D: next week {name_a} starts a mutiny. calling it | give it a month, {name_a} will be leading again
+
+# ==== romance: A and B flirt in faction, the realm ships them, a wedding is planned ==============
+
+@topic story_romance
+@levels 10-50
+@scene story_romance_1
+@role A type=Crafter levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=*
+@role D type=Socialite
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: just want to say {name_b} saved me from a train today without being asked. what a hero | shoutout to {name_b} who healed me out of a nasty pull today. you're the best
+B: aw {name_a}, anytime. you were very brave. and very almost dead | lol {name_a} you were one hit from dead. i couldnt let that happen
+C: ooooh | ooh la la
+D: {name_a} and {name_b}? i see it | wait. {name_a} x {name_b}. i ship it
+A: what? no lol. its just a thank you | omg stop, i was being nice
+B: yeah its just a thank you. a normal thank you | totally normal. we just group a lot. a lot a lot
+E: "we just group a lot" lol | "a lot a lot"
+F: {name_a} has been typing "{name_b}" in faction all week | i've seen {name_a} say {name_b}'s name like ten times today
+A: because {name_b} is helpful! the realm needs helpful people! | its called gratitude, look it up
+B: {name_a} also sold me a sword at a nice price. just being fair | {name_a} gave me a discount on armor. as a friend
+G: a DISCOUNT. its love | nobody gives discounts. thats love
+A: you people are ridiculous | i'm logging off. no i'm not. but stop
+B: they're just jealous nobody saves them from trains, {name_a} | ignore them {name_a}. same time tomorrow for the hunt?
+C: SAME TIME TOMORROW | did everyone see that. a date
+A: its not a date! its a hunt! | its a HUNT. with swords
+H: hunting together. under the stars. romantic | a romantic evening of killing things
+D: proposing the ship name {name_a}{name_b}. all in favor | i'm naming the ship. {name_b}{name_a}. all in favor?
+E: aye | aye!
+F: aye | motion carried
+B: lol this realm | you all need hobbies
+A: ...see you tomorrow {name_b} | ok bye everyone. bye {name_b} :)
+G: THE SMILEY | did {name_a} just send a smiley
+
+@topic story_romance
+@levels 10-50
+@scene story_romance_2
+@role A type=Crafter levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=Daredevil
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+D: spotted: {name_a} and {name_b}, duo hunting. fourth night in a row | update: {name_a} and {name_b} were seen hunting together. again. third time this week
+A: we're a good team, ok | its efficient! two is the perfect group size
+B: very efficient. {name_a} pulls, i heal. like a machine | perfect team. {name_a} tanks, i keep them alive
+C: just get married already | so when's the wedding
+B: ...actually | um. about that
+A: ok fine. {name_b} asked last night, on the hill by the river. i said yes | {name_b} asked me. i said yes. the wedding is in {capital}!
+E: WHAT | NO WAY
+F: OMG A REALM WEDDING | THE SHIP SAILED
+G: i call officiant | i'll be the officiant, i have a robe
+H: i'll bring the cake. well, bread. the merchant only sells bread | i'm doing food. its going to be bread and ale
+D: flower duty. i'll throw whatever the alchemist has | i want to throw flowers. do we have flowers. i'll throw herbs
+B: lol the realm took over our wedding | {name_a}, we have a planning committee now apparently
+A: its fine {name_b}, i love it. the whole realm is invited | the more the merrier. everyone come to {capital}
+C: objection. {name_b} was MY duo partner first | i object. you leave me with no duo partner. i'm against it
+B: we duoed ONCE. you died and blamed me | one hunt. you pulled a train and blamed me all week
+C: still. i had dibs | i'm just saying i was there first
+A: back off. {name_b} is taken | hands off {name_b}. booked
+E: oooh {name_a} getting protective | {name_a} said BACK OFF lol
+C: whatever. i hope it rains at your wedding | fine. i hope the cake is stale
+F: its bread. its already stale | the cake is bread, the cake was always stale
+G: dress code? | is there a dress code? do i have to wear something nice
+B: wear whatever isnt grey loot | anything that isnt grey please
+H: this is the most wholesome thing in faction in years | love in the time of keep raids
+
+@topic story_romance
+@levels 10-50
+@scene story_romance_3
+@role A type=Crafter levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=Crafter
+A: has anyone seen {name_b}. we were supposed to pick the spot in {capital} today | {name_b} hasnt answered a tell in two days. anyone seen them
+D: i saw {name_b} out in the {frontier} alone. way out | {name_b} was seen running deep into the {frontier} solo yesterday
+B: i'm here. i just needed some air | here. i was exploring. thinking
+A: thinking about WHAT {name_b} | thinking? about what exactly?
+B: its all so fast {name_a}. two weeks ago we were just grouping. now there's a committee and bread | the whole realm is planning our lives. its a lot {name_a}
+A: so you have cold feet. in FACTION. you're doing this in FACTION | are you getting cold feet in front of the whole realm right now
+E: oh no | uh oh
+F: not like this | no no no no
+B: i didnt say no! i said its fast! | i'm not saying no. i'm saying slow down
+A: YOU ASKED ME {name_b}! ON THE HILL! YOU MADE A WHOLE SPEECH! | YOU PROPOSED TO ME. YOU. WITH A SPEECH. ABOUT HEALING
+G: {name_b} how could you | {name_b}, the realm is disappointed
+H: i already baked the bread | i bought forty loaves of bread for this
+B: everyone stop yelling at me. this is between {name_a} and me | this is why i went to the frontier. you're all so loud
+C: i heard {name_b} was a flight risk. explorers always wander off | never trust an explorer, they always run off to look at a hill
+A: nobody asked you | stay out of this, gossip
+B: and you stop guilting me {name_a}. i'm allowed to be nervous | {name_a} you're making it worse, i'm just nervous!
+A: NERVOUS?? I TOLD MY WHOLE GUILD. I MADE A NEW CLOAK FOR THIS | OH YOU'RE NERVOUS? I SPENT EVERY COIN I HAD ON A CLOAK FOR THIS
+D: the cloak is very nice actually, i saw it | i've seen the cloak. its a good cloak
+B: ...i'm sorry about the cloak | i didnt know about the cloak
+A: forget the cloak. do you want this or not | is the wedding on or off, {name_b}. yes or no
+B: ...i need a day | give me one day. one
+E: the realm will wait. barely | everyone hold your breath
+F: if {name_b} doesnt show i'm eating all forty loaves | worst case, we have a bread party
+~ 6
+G: i'm keeping my robe on just in case | officiant on standby
+
+@topic story_romance
+@levels 10-50
+@scene story_romance_4
+@role A type=Crafter levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=Socialite
+@role H type=*
+G: ok everyone, quiet please. welcome to the wedding of {name_a} and {name_b} | we are gathered here in {capital}, by the bindstone, because nobody could agree on a spot
+A: {name_b} isnt here yet | uh. has anyone seen {name_b}
+C: oh no. not again | here we go again
+B: I'M HERE. I'M HERE. the horse route takes forever | here! sorry! i took the slow horse
+D: phew | they came!
+A: you came | {name_b}. you actually came
+B: of course. i just needed a day. and a long walk | i needed to think. i thought. i'm here
+G: {name_a}, do you take {name_b}, through wipes and corpse runs | ok. {name_a}, do you take {name_b} as your duo partner, in sickness and in rez sickness
+A: i do | yes. i do
+G: {name_b}, do you take {name_a}, for every pull, even the bad ones | {name_b}, do you take {name_a}, even when they pull a whole camp
+B: i do. even the bad pulls | i do. especially the bad pulls
+G: then by the power of this robe, you are partners for life | then by the power invested in me by this robe, you're married
+E: YAAAY | WOOOO
+F: /em throws bread | throwing bread! everyone throw bread!
+H: who brought a mob to the wedding | uh why is there a mob chasing someone through the ceremony
+C: sorry! sorry! it followed me! | that one was me. it followed me in. sorry!
+A: {name_b}, our first fight as a married duo | {name_b}, first pull as partners!
+B: on it {name_a}. you pull, i heal | i got your back {name_a}
+D: they killed it together. i'm crying | they killed it together. beautiful
+E: best wedding in realm history | ten out of ten wedding. mob included
+H: the bread is all gone | did someone eat ALL forty loaves
+
+@topic story_romance
+@levels 10-50
+@scene story_romance_4a
+@role A type=Crafter levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=*
+@role D type=Socialite
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: everyone, the wedding is ON. {name_b} said yes. again. officially | its happening! {name_b} came back and said yes. come to {capital}!
+B: i read what {player} said in faction. they were right. i was being a coward | {player} said what everyone was thinking. i was running away. not anymore
+C: aww {player} saved the wedding | {player} the matchmaker
+A: {player} stood up for me when i was a mess. ty {player} | ty {player}. you were on my side when i needed it
+D: officiant reporting for duty. robe pressed | i'm here, robe on, words memorized. mostly
+E: bread is ready. sixty loaves now | i brought more bread. its a bread wedding
+D: {name_a}, will you keep {name_b} alive in every fight and every corpse run | {name_a}, do you promise to never pull without warning {name_b}
+A: always. i will | i promise. mostly
+D: {name_b}, do you promise to never run off to the frontier alone again | {name_b}, do you swear to stop wandering off without a tell
+B: i promise. i'll even take {name_a} with me | i swear. no more solo trips
+D: then you're married! hug the partner! | married! by the power of this very nice robe
+F: WOOOOO | /cheer
+G: {player} gets the first piece of bread | someone give {player} the first loaf, they earned it
+H: for the record, i still object. but congratulations | i object. quietly. congrats though
+A: objection overruled. by the whole realm | denied. its done. we're married
+B: {name_a}, ready for our first duo as married people? | come on {name_a}, the frontier awaits. together this time
+A: always. and {player}, if you ever see us out there, wave! | lets go. {player}, ty again. the realm needs more people like you
+C: happiest faction has ever been | best day in faction ever
+E: i'm not crying, i have dust in my eyes | ok who is chopping onions in {capital}
+
+@topic story_romance
+@levels 10-50
+@scene story_romance_4b
+@role A type=Crafter levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=Crafter
+B: ok realm. announcement. no wedding. not yet. {name_a} and i are taking it slow | the wedding is postponed. we're staying duo partners. thats it. thats the news
+A: ...yes. we talked. {name_b} wants to wait, and thats ok | we talked it over. no big wedding. for now
+E: NOOOO | WHAT. NO
+F: but the BREAD | the BREAD, {name_b}. the bread
+B: {player} was the only one who said slowing down was ok. ty {player} | ty {player}, you were the only one who didnt yell at me
+A: yeah, i saw that {player}. thanks for... not helping my wedding | {player}, i'm still a little mad at you. a little
+C: lol {player} called the wedding off | {player} single handedly cancelled a wedding
+D: {player} the wedding crusher | someone get {player} a medal. or a scolding
+B: dont blame {player}. i was going to say it anyway | {player} just gave me the nerve
+G: so whats the robe for now | i bought a robe for this. a ROBE
+H: i'm returning all sixty loaves | does the merchant take returns on bread
+A: we can still have a party. a small one. no committee | ok fine, a small party. bread included. no speeches
+B: a duo party. just {name_a} and me and a pile of mobs | a hunt. the two of us. thats our party
+E: thats actually very romantic | killing things together. true love
+F: fine. but when you DO get married, i'm still doing the flowers | i call flowers for the real one
+B: deal | you got it
+A: and {player}, when it happens, you're sitting in the back | {player}, you're still invited. but in the back row
+C: drama over. love survives. bread does not | the end of the romance. for now
+
+# ==== ninjaloot: A accuses B of ninja-looting a rare drop; evidence, a trial, a verdict ===========
+
+@topic story_ninjaloot
+@levels 10-50
+@scene story_ninjaloot_1
+@role A type=NoLifer levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=Socialite
+A: psa: grouped with {name_b} last night. rare drop. {name_b} looted it and ran | so we kill the named, the rare drops, and {name_b} grabs it before anyone can roll. classy
+B: lol what. {name_a} the loot was set to free for all. i just clicked | {name_a} it was on free loot. i looted. thats it
+A: free loot is for TRASH, {name_b}. everyone knows rares get rolled | everyone knows the rare gets rolled. even on free loot
+C: oh a ninja | ninja loot accusation in faction, here we go
+B: i'm not a ninja. i'm just fast at clicking | i'm not a ninja. i just have a quick mouse
+D: {name_b} what was the rare | what dropped
+B: a ring. a nice ring. not even that nice | just a ring. kind of plain
+A: "not even that nice". it was the best ring in the zone | plain?? that ring sells for more than your whole outfit
+E: if its so plain {name_b}, give it to {name_a} | then hand it over {name_b}, if its so plain
+B: cant. i'm wearing it | too late, its on my finger already
+A: you're WEARING it?? | you put it ON??
+F: lol the ring is on | ninja and wearing the evidence
+B: i wanted to see how it looked. it looks good | it matches my boots
+A: you're a thief {name_b}. a ring thief | wow. i've got a word for you and its "thief"
+B: and you're a sore loser with slow hands {name_a} | and you're slow, {name_a}. slow hands, slow brain
+G: ohhh | burn
+A: i have the combat log. every line | i saved the log. you'll see
+B: show it then | lets see the log, detective
+H: a ninja loot with evidence. this is going to be good | someone call a judge
+C: ninja week in faction lol | ring drama. my favorite kind of drama
+~ 6
+D: whose ring is it really though | the ring knows the truth
+
+@topic story_ninjaloot
+@levels 10-50
+@scene story_ninjaloot_2
+@role A type=NoLifer levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: ok. evidence time. the log says "{name_b} picks up a ring" four seconds after the kill | heres the log: the kill at the top, "{name_b} picks up a ring" right after. nobody rolled
+B: four seconds is a normal click {name_a}. you're proving i'm fast | thats not evidence. thats a timestamp. i'm just fast
+C: the log doesnt lie {name_b} | four seconds is ninja speed
+B: logs can be edited. anyone can type a fake log | anyone can fake a log in a text file, {name_a}
+A: i didnt FAKE anything. i dont even know how | fake?? you think i forged a log for a ring??
+D: i was in that group. there was no roll. {name_b} took it | i was in the group. nobody rolled, the ring was just gone
+B: you were dead on the floor, how would you know | you were dead the whole fight, you didnt see anything
+D: i was dead with my EYES OPEN | dead people can read chat, {name_b}
+E: rofl | lol dead people can read chat
+B: fine. there was no roll. because {name_a} said "you can have the next one" last week | {name_a} told me last week i'd get the next rare. so i took it
+A: I SAID THAT ABOUT A BLUE CON SWORD. NOT THE RARE RING | THAT WAS ABOUT A SWORD. A CHEAP SWORD. NOT A RING
+B: you said "the next one". the ring was the next one | a deal is a deal, the next one was the ring
+F: thats actually a good point lol | ok {name_b} found a loophole
+A: there is no loophole. you're a liar and a ninja and a ring thief | thats not a loophole thats a lie, you lying little ninja
+B: and you're a crybaby who cant read their own promises | stop crying {name_a}, you'll rust your armor
+G: this needs a trial | someone take this to court. a realm court
+H: i'll be the judge. i have a big hat | i volunteer to judge. i'm very fair. ask anyone
+A: fine. a trial. in faction. and when you lose you pay me what the ring is worth | trial. right here. guilty pays the ring's worth in gold
+B: fine. and when i win you apologize in caps | deal. i win, you say sorry. in caps lock. for the whole realm
+C: a real trial! | trial of the year
+~ 6
+E: i'm bringing snacks to the trial | cant wait for the closing arguments
+
+@topic story_ninjaloot
+@levels 10-50
+@scene story_ninjaloot_3
+@role A type=NoLifer levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+C: order in the court. faction is now a court. the trial of {name_b}, for ninja looting a ring | court is in session. the case: {name_a} against {name_b}. the ring
+A: your honor, {name_b} took the ring with no roll. i have a log and a witness | the ring dropped, nobody rolled, {name_b} grabbed it. simple
+B: your honor, {name_a} promised me the next drop. i took the next drop. case closed | i was told i'd get the next rare. so i got it. i'm a person of my word
+C: witnesses? | does anyone have something to say to the court
+D: i was in the group. it was gone before i could blink | i saw it. or didnt, because it vanished so fast
+E: character witness for {name_b}: they once gave me a free potion | i've known {name_b} for months. they rezzed me twice for free
+A: a potion?? thats your defense?? a POTION | one rez doesnt make a person honest
+F: character witness against {name_b}: my boots went missing in their group last spring | i grouped with {name_b} once. my boots vanished. just saying
+B: those boots were TRASH and you know it | i sold those boots for you. you were afk!
+A: SEE?? A HISTORY OF NINJA LOOTING | THERE IT IS. BOOTS. THEN RINGS. WHATS NEXT, OUR RELICS?
+B: OBJECTION. thats not even the same case | OBJECTION YOUR HONOR, the boots are not on trial
+C: sustained. the boots are not on trial | the boots are out of order. sustained
+G: who even made this the judge | who gave the court a big hat
+C: silence in the gallery | quiet, or i'll hold you in contempt of faction
+A: your honor, look at {name_b}. look at that smug face. thats a guilty face | {name_b} is wearing the ring IN COURT. the nerve
+B: i wear it because its MINE. you couldnt loot your own corpse {name_a} | at least i can click. you take a minute to loot a copper, {name_a}
+A: STFU YOU $#@! NINJA | THIEF. NINJA. RING BANDIT
+B: CRY MORE {name_a}. CRYBABY | WAAAH, {name_a} WANTS A RING
+H: order! order! | the court is getting rowdy
+C: the court has heard enough. the verdict comes after a short recess | the jury will think about it. verdict soon
+D: who is the jury | wait, theres a jury?
+C: the jury is the whole realm. say it in faction: guilty or not guilty | the jury is everyone reading this. decide
+~ 6
+E: not guilty. a deal is a deal | not guilty, the rez was nice
+F: guilty. justice for my boots | guilty, for the boots
+
+@topic story_ninjaloot
+@levels 10-50
+@scene story_ninjaloot_4
+@role A type=NoLifer levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+C: all rise. the verdict | court is back in session. the verdict on the ring of {name_a} against {name_b}
+A: finally | about time
+B: bring it | lets hear it
+C: the jury is split exactly in half. half guilty, half not guilty | the votes are in. its a tie. the realm cant decide
+D: of course it is | lol a tie
+C: so by ancient court law, the ring goes to the court | so the court will keep the ring. court fees
+A: WHAT | EXCUSE ME
+B: you cant do that!! | thats MY ring. well, the ring
+C: the court can do anything. the court has a hat | the hat has spoken
+E: lol the judge ninja'd the ninja | the judge just ninja looted both of them
+F: best verdict ever | justice is blind and wearing a ring
+B: ...{name_a}, are you seeing this | {name_a}, the judge is a thief
+A: i am. i hate this more than i hate you | yes. this is worse than you {name_b}. somehow
+B: truce? to get the ring back from this crook? | team up? against the court?
+A: ...fine. temporary truce | for this. only this
+G: uh oh, the court is being threatened | the defendants are uniting. the court is in danger
+C: court is adjourned. forever. bye | the court is closing early. very early
+H: the judge just logged off with the ring | the judge ran. with the ring
+A: ...so {name_b}. next named we roll. like people | next time we roll for it, {name_b}. ok?
+B: deal. and we never ask that judge for anything again | deal. no more courts
+D: and the ring lived happily ever after. with someone else | moral: never trust a judge with a big hat
+
+@topic story_ninjaloot
+@levels 10-50
+@scene story_ninjaloot_4a
+@role A type=NoLifer levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+C: the jury has spoken. all rise | verdict time. the court has counted the votes
+C: {name_b} is GUILTY of ninja looting | GUILTY. {name_b}, the court finds you guilty
+A: YES. JUSTICE | FINALLY. THE TRUTH WINS
+B: this is a rigged court | this whole court is a joke
+D: {player} said guilty first and the whole realm followed | {player} called it guilty and nobody could argue
+A: ty {player}. you saw the log and you saw the truth | {player}, ty. you believed me when {name_b} called me a liar
+B: and {player}, i saw what you said. i'll remember it | {player}, thanks for nothing. really
+C: the sentence: {name_b} pays {name_a} the ring's worth in gold, in full | sentence: the ring's value in gold goes to {name_a}. every coin
+B: thats half my savings!! | do you know how much that ring is worth
+A: i do. thats the point | yes. i told you. the whole realm knows
+E: pay up {name_b} | pay the person, {name_b}
+B: ugh. fine. sent. i hope you choke on it | fine. its sent. enjoy your blood money {name_a}
+A: received. counting it. every. single. coin | got it. and every coin feels amazing
+F: justice served cold | the ninja has been brought to justice
+B: i'm keeping the ring though | at least i still have the ring. its still on my finger
+A: enjoy it. every time you look at it, think of me | wear it with shame {name_b}
+G: the ring of shame | from now on its called the ninja ring
+H: {player} for realm judge | next trial, {player} is the judge
+A: from now on we roll everything, {name_b}. {player} is my witness | next group we roll for everything. even trash. {player} heard it
+B: ...fine. we roll | fine. rolls. for everything
+D: case closed | court adjourned
+
+@topic story_ninjaloot
+@levels 10-50
+@scene story_ninjaloot_4b
+@role A type=NoLifer levels=10-50
+@role B type=Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+C: the verdict on the ring. ready? | the jury has voted. the court is ready
+C: {name_b} is NOT GUILTY. a deal is a deal | NOT GUILTY. "the next one" means the next one
+B: HA. told you {name_a} | YES. the realm has sense after all
+A: this is a joke. a total joke | unbelievable. a ring thief walks free
+D: {player} brought up the "next one" deal and it changed everything | {player} stood up for {name_b} and the jury flipped
+B: ty {player}. you were the only one who read the actual deal | {player}, you're a hero. you saw through all of {name_a}'s crying
+A: {player}... you sided with a ninja. how do you live with yourself | wow {player}. i thought you were one of the good ones
+B: dont be bitter at {player}, {name_a}. be bitter at your own words | {name_a} you made the promise. {player} just read it out loud
+C: and as agreed: {name_a} now apologizes. in caps | the deal: {name_a} says sorry. caps lock on
+A: ...no | do i have to
+E: you agreed! | a deal is a deal {name_a}. lol
+F: CAPS. CAPS. CAPS | we're all waiting
+A: SORRY {name_b}. I'M SORRY. HAPPY?? | FINE. I'M SORRY {name_b}. THERE. THE RING IS YOURS
+B: very happy. the ring says thanks too | the ring and i accept your apology
+G: rofl | best apology in faction history
+A: next time i group with you i'm setting loot to "leader only" | never grouping with you again {name_b}. never
+B: you'll be back. you need my fast hands | sure. see you next named {name_a}
+H: and {name_a} learned to never say "the next one" again | moral: watch what you promise in a group
+D: the ring stays. the ninja walks. faction rests | case closed. ninja free. ring shiny
+
+# ==== tells to a player who took a side ===========================================================
+
+@kind storyline
+@topic side_thanks
+@who *
+ty for having my back in faction, {player}. {target} never saw it coming
+{player}! you backed me against {target}. i wont forget that
+[ty|thanks|thank you] {player}. [not many|nobody else|few people] stood up to {target} [like that|for me|in faction]
+[hey|psst|yo] {player}, [just wanted to say|had to say|i gotta say] [ty|thanks] for [taking my side|backing me|sticking up for me]
+you saw right through {target}, {player}. respect
+{player}, the realm needed someone with sense. you were it
+i owe you one, {player}. and {target} owes you an apology
+[ty again|still grinning|cant stop grinning], {player}. [{target} is fuming|{target} is so mad|did you see {target} rage]
+lol {player} did you see {target}'s caps lock. priceless
+{player}, anyone who sides with me against {target} is a friend for life
+honestly {player}, i thought the whole realm was against me. then you spoke up
+{player}, if {target} sends you nasty tells, ignore them. they're just bitter
+[you're|ur] [one of the good ones|a true friend|good people], {player}. [{target} could learn from you|ty for today|the realm needs more like you]
+{player} just so you know, {target} is still complaining about you. lol
+thanks for the support {player}. {target} will be talking about this for weeks
+{player} you picked the right side. history will remember. well, faction will
+[had to send this|one more thing], {player}: [ty|thank you|cheers]. [{target} had it coming|you made my week|best backup ever]
+{player}, i'm telling everyone how you stood up to {target}. already did actually
+ty {player}. next time someone asks who's fair in this realm, i'm saying your name
+its not every day a stranger takes my side, {player}. ty
+{player}! {target} just sent me the angriest tell ever. worth it. ty
+[{player}, ty|ty {player}], you turned [the whole thing|faction|this mess] [around|into a win for me]
+{player}, i had a whole speech ready. you said it better
+{player} you're my favorite person in this realm right now. dont tell anyone
+
+@topic side_scorn
+@who *
+wow {player}. you sided with {target}. i'll remember that
+{player} you backed {target}?? over ME??
+[nice going|great job|well done], {player}. [you backed the wrong one|you picked the wrong side|you chose {target}]. [hope its worth it|enjoy that|remember this day]
+ty for nothing {player}. go hang out with {target} since you love them so much
+{player}, i saw what you typed in faction. every word
+[{player}|hey {player}|oh {player}], [you're on my list now|your name is on my list|i'm writing your name down]. [right under {target}|top of the page|in red]
+{player}, you and {target} deserve each other
+i hope {target} is worth it {player}. they wont lift a finger for you
+lol {player} picked {target}. enjoy your new best friend
+{player} stfu next time faction is talking about me
+[stfu|gtfo|go away] {player}. [you dont even know the whole story|you werent even there|nobody asked you]
+{player} you have no idea what {target} is really like. you'll find out
+[wow|unreal|omfg], {player}. [i thought we were cool|i thought you were one of the good ones]. [guess not|nope|whatever]
+next time you need help out there, {player}, go ask {target}
+{player} you just made an enemy. a petty one. with a long memory
+$#@! you {player}. and $#@! {target} too
+siding with {target}? {player}, your taste is as bad as your armor
+{player}, i'm telling everyone in my guild what you did
+[cool|great|real nice], {player}. [the whole realm saw you|everyone saw you|faction saw you] [side with {target}|pick {target}|cheer for {target}]
+i dont even know you {player} and i already dont like you
+{player} you'd side with a mob if it typed in faction
+{player}, when {target} turns on you, dont come crying to me
+congrats {player}, you're officially team {target}. enjoy the wrong side of history
+watch your back, {player}. i mean that
+{player} i hope every named you camp gets stolen
+{player} remember this when you need a heal. you wont get one from me
+honestly {player}? {target} paid you. had to be

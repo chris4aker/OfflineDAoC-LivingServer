@@ -5,7 +5,8 @@ namespace DOL.GS.Commands
 {
     [CmdAttribute(
         "&transfercorpse",
-        new string[] {"&tc"},
+        // No "/tc" alias: /tc is the Realm Exchange teleport (TeleportToExchangeCommand); both registered it and the
+        // second failed at every start ("An item with the same key has already been added. Key: &tc", 2026-10-27).
         ePrivLevel.Player, // Set to player.
         "/transfercorpse <Keep name> ie: /transfercorpse dun crauchon")]
     public class transfercorpseCommandHandler : AbstractCommandHandler, ICommandHandler

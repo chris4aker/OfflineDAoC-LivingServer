@@ -7,6 +7,20 @@ namespace DOL.GS
     {
         public const int ClearRadius = 100;
 
+        /// <summary>
+        /// Interaction spots are resolved only this close to the merchant; farther away the bot walks toward it.
+        /// Issue #25 (2026-10-27): since a distant warband walks to its medallion merchant (7ef2d66), each bot
+        /// 20,000-110,000 units out ran up to 18 multi-zone HasRoute probes every 15 seconds, all failing, and
+        /// held NpcService ticks at 1-1.3 s. Up close the probes are single-zone corridor checks.
+        /// </summary>
+        public const int SpotSearchRange = 2_000;
+
+        /// <summary>A failed search (all 18 candidates) waits this long before the next one.</summary>
+        public const int RetryAfterFailureMs = 30_000;
+
+        /// <summary>Whether to look for an interaction spot now. Pure.</summary>
+        public static bool ShouldResolveSpot(float distanceToMerchant) => distanceToMerchant <= SpotSearchRange;
+
         public static bool IsInteractionSpot(Vector3 center, Vector3 position, int interactionRadius)
         {
             return float.IsFinite(position.X) && float.IsFinite(position.Y) && float.IsFinite(position.Z) &&
@@ -69,15 +83,18 @@ namespace DOL.GS
                 _supplySpacePoint = null;
                 _nextSupplySpaceSearch = 0;
             }
-            if (!_supplySpacePoint.HasValue && GameLoop.GameLoopTime >= _nextSupplySpaceSearch)
+            int distance = bot.GetDistanceTo(merchant);
+            if (!_supplySpacePoint.HasValue && AutonomousSupplyMerchantSpace.ShouldResolveSpot(distance) &&
+                GameLoop.GameLoopTime >= _nextSupplySpaceSearch)
             {
-                _nextSupplySpaceSearch = GameLoop.GameLoopTime + 15_000;
                 if (AutonomousSupplyMerchantSpace.TryResolve(PathfindingProvider.Instance, bot.CurrentRegion, bot.Realm,
                     new(bot.X, bot.Y, bot.Z), center, bot.DatabaseID, radius, out var point)) _supplySpacePoint = point;
+                else
+                    _nextSupplySpaceSearch = GameLoop.GameLoopTime + AutonomousSupplyMerchantSpace.RetryAfterFailureMs;
             }
             if (_supplySpacePoint.HasValue)
                 IssuePath(bot, _supplySpacePoint.Value, preciseArrival: true);
-            else if (bot.GetDistanceTo(merchant) > 2_000)
+            else if (!AutonomousSupplyMerchantSpace.ShouldResolveSpot(distance))
                 IssuePath(bot, center); // no interaction spot resolved from far away yet: head toward the merchant, never stand still
             else
             {

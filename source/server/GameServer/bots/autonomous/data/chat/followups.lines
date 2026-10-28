@@ -1,0 +1,167 @@
+# A bot's answer when a player asks "why?", "really?", "how?", "what?" or "who?" right after the bot's own
+# line. Lines without a @topic fit any line; a @topic (boast, complaint, joke, news, chat, ask, lfg, rvr)
+# only follows a line of that family. New writing (see docs/bot-voices/TALKING-UPDATE-CONTENT.md).
+
+# ---- why? ----------------------------------------------------------------------------------
+@kind reply
+@who *
+@answers followup_why
+dunno, just feels that way
+why not
+no real reason
+long story
+habit i guess
+just how it is
+because thats how it went
+seemed like a good idea at the time
+ask me again in an hour
+heh, good question
+couldnt tell you honestly
+just a hunch
+because i said so lol
+old habits
+eh, its been that kind of day
+@topic complaint
+because nothing goes right today
+because the game hates me, clearly
+spawn rng, why else
+@topic boast
+because ive been at it for weeks
+because i finally got lucky for once
+@topic joke
+why not, its funny
+@topic lfg
+solo xp is too slow, thats why
+@topic rvr
+because the {enemy} never stop
+@topic news
+dunno, thats just what i heard
+@topic chat
+just thinking out loud
+
+# ---- really? -------------------------------------------------------------------------------
+@kind reply
+@who *
+@answers followup_really
+yep, really
+yep, no joke
+swear
+really really
+would i lie lol
+100 percent
+every word true
+honest
+i know, crazy
+believe it
+yup, weird huh
+dead serious
+mostly, yeah
+as far as i know
+yes sir
+@topic boast
+yep, first try too
+yep, still cant believe it
+@topic complaint
+yeah, third time today
+really, its been awful
+@topic joke
+no lol
+nah, kidding
+@topic news
+thats what i heard anyway
+yep, everyone is talking about it
+@topic lfg
+yep, still looking
+@topic rvr
+yep, they were everywhere
+
+# ---- how? ----------------------------------------------------------------------------------
+@kind reply
+@who *
+@answers followup_how
+luck mostly
+patience
+no idea honestly
+trial and error
+lots of practice
+dont ask me how, it just worked
+slowly
+very carefully
+with a lot of potions
+same way as everyone, the hard way
+i wish i knew
+had help
+just kept at it
+not sure, it just happened
+too many hours in front of a screen
+@topic boast
+slow and steady, lots of potions
+good group, mostly
+pure luck, wont happen again
+@topic complaint
+no clue, one second fine then dead
+bad pulls and worse luck
+@topic rvr
+zerg, how else
+big group, fast rams
+@topic news
+no idea, wasnt there
+@topic lfg
+just asking around
+@topic joke
+practice, lots of practice
+
+# ---- what? ---------------------------------------------------------------------------------
+@kind reply
+@who *
+@answers followup_what
+nvm
+nevermind
+ignore me
+talking to myself
+typo, nvm
+nothing, forget it
+just rambling
+lol never mind
+eh, not important
+nm, wrong channel
+it made sense in my head
+sorry, half asleep
+oops, nvm
+just thinking out loud again
+nothing nothing
+forget i said anything
+sorry, lag ate half my line
+heh, long story
+@topic joke
+it was a joke, nevermind
+guess that one only works in my head
+@topic news
+the news, didnt you hear?
+@topic complaint
+just venting, ignore me
+@topic lfg
+i said lfg, anyone?
+@topic boast
+nothing, just happy
+@topic rvr
+the frontier, keep fights
+
+# ---- who? ----------------------------------------------------------------------------------
+@kind reply
+@who *
+@answers followup_who
+nobody you know
+some guy from my old guild
+dunno, never got a name
+cant remember the name
+a friend of a friend
+no idea, didnt catch it
+@topic rvr
+the {enemy}, who else
+@topic news
+dunno who exactly, just heard it
+@topic complaint
+whoever keeps camping my spot
+@topic boast
+me, who else lol

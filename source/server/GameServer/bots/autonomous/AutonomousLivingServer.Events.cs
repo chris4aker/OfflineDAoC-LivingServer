@@ -281,6 +281,7 @@ public static partial class AutonomousLivingServer
     /// <summary>A frontier bot saw enemies (called from its threat scan): warn the realm in /faction now and then.</summary>
     public static void ObserveEnemies(GameBot bot, IReadOnlyList<GameLiving> nearby)
     {
+        NoteSighting(bot, nearby);
         if (!AlarmsOn || nearby == null || nearby.Count < AlarmMinimumEnemies || !IsSpeaker(bot) || !bot.IsAlive)
             return;
         long now = GameLoop.GameLoopTime;
@@ -319,6 +320,36 @@ public static partial class AutonomousLivingServer
             Speak(bot, Channel.Faction, line);
             Log.Info($"LIVING_SERVER_ALARM realm={bot.Realm} enemy={enemy} count={count} place=\"{place}\" speaker=\"{bot.Name}\"");
         }
+    }
+
+    private static readonly Dictionary<(eRealm, string), long> NextSightingByZone = new();
+    public const long SightingZoneCooldownMs = 60_000;
+
+    /// <summary>
+    /// The talking update: what a frontier bot sees goes on its realm's news board (AutonomousChatNews), so "where are the
+    /// mids?" is answered from what the realm has seen, not from where every enemy really is.
+    /// </summary>
+    private static void NoteSighting(GameBot bot, IReadOnlyList<GameLiving> nearby)
+    {
+        if (!AutonomousBotVoices.Enabled || bot?.CurrentZone == null || nearby == null || nearby.Count == 0 || !bot.IsAlive)
+            return;
+        string zone = bot.CurrentZone.Description;
+        long now = GameLoop.GameLoopTime;
+        lock (NextSightingByZone)
+            if (NextSightingByZone.TryGetValue((bot.Realm, zone), out long next) && now < next)
+                return;
+        var enemies = nearby.Where(target => (target is GamePlayer || target is GameBot) && target.IsAlive && target.Realm != bot.Realm &&
+                                             target.Realm is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia)
+            .GroupBy(target => target.Realm).OrderByDescending(group => group.Count()).FirstOrDefault();
+        if (enemies == null)
+            return;
+        lock (NextSightingByZone)
+        {
+            if (NextSightingByZone.TryGetValue((bot.Realm, zone), out long next) && now < next)
+                return;
+            NextSightingByZone[(bot.Realm, zone)] = now + SightingZoneCooldownMs;
+        }
+        AutonomousChatNews.EnemySeen(bot.Realm, enemies.Key, zone, enemies.Count(), bot.CurrentRegionID, bot.X, bot.Y);
     }
 
     #endregion

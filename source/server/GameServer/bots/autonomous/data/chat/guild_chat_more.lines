@@ -1,0 +1,729 @@
+# Still more guild chat (kind guild): what regulars say to each other in /gu between everything else.
+# Hellos and "not long left for me" (real logons and logoffs are kind session, said by the schedule; these
+# lines are said by a bot that stays on), ribbing, real-life small talk, vague guild plans, crafting asks and
+# offers, small wins and losses, inside jokes, and asking how everyone is. Any realm, no place names.
+# Real-life lines invite the player_rl_<subject> replies ("ugh, work", "gl on the test") so a guildmate
+# answers in kind. Lines never promise an invite, an event or what a guildmate will do. New writing
+# (see docs/bot-voices).
+
+# ---------------- Hellos and checking in ----------------
+@kind guild
+@topic social
+@who *
+@invites ask_howareyou
+[hey|hi|hiya|heya] [guild|guildies|folks], [hows everyone doing|how is everybody|hows it going]?
+[so|ok] how is [the guild|everybody] [doing|holding up] [tonight|these days]?
+[hows|how is] [everyone|the guild] [getting on|keeping] [this week|lately]?
+[good|nice] to see you all, [whats new|anything new] [with everyone|in your lives]?
+[hope|i hope] everyone is [having a good week|doing alright|keeping well]
+how is everyone's real life going? the in game one i can see
+hows the week treating everyone?
+how was everyone's day?
+@needs evening
+[evening|hey] [all|everyone|guild], [hows the night treating everyone|how is the night going|everyone having a good one]?
+@needs night
+[hey|hi] [night owls|late crew], [how is everyone holding up|hows the night going|still kicking]?
+@needs day
+[hey|hi] [all|guild], how is the day going for everyone?
+@needs
+@invites ask_doing
+whats everyone been up to lately?
+[anyone|anybody] [doing|planning] anything fun this week?
+@invites chat
+[hello|hey] [guild|all], [long time no see|been a while|missed you lot]
+[hi|hey|hello] all, just [popping in|checking in|stopping by] to say hi
+[nice|good|great] to see [so many names on|a full guild list|the regulars on] tonight
+[hi|hey] all, [only a little time for me tonight|cant stay long tonight|on for a short one tonight] but wanted to say hi
+oh good, people are on
+guild chat is lively tonight, love it
+hi guild, quiet one tonight huh
+there you all are, it was lonely out there
+the usual suspects are online i see
+@needs evening
+[evening|hey] [guildies|all], [the kettle is on|got my tea|got a drink] and im ready to [chat|relax|level]
+@needs night
+the night shift reporting for duty
+@needs
+@who Socialite
+[hey hey|hello hello|well hello], [my favorite people are on|the gang is here|look who is around]
+missed this channel, its the best part of logging in
+@who NoLifer
+@needs night
+still here, of course, where else would i be
+@needs
+@who *
+@invites ask
+did i miss anything good in here?
+@invites chat
+@who Leveler
+hi all, quick hello and back to the grind
+
+# ---------------- Not long left for me ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_late
+@needs night
+[eyes are getting heavy|i can barely keep my eyes open|yawning nonstop], [probably not much longer for me|might call it soon|one more hour tops]
+[should be asleep|should have been in bed an hour ago|really need to sleep soon] [but|and yet] here i am
+its way past my bedtime [again|already], [the guild is a bad influence|blame you lot|this is your fault]
+[one more pull|one more bubble|five more minutes] and [then bed|i am done|im out], [i mean it this time|for real|honest]
+yawned so hard my jaw clicked, bed is calling
+@needs
+@invites chat
+@needs evening
+[probably|likely] [only|just] on for [another hour|a little while longer|an hour or so] tonight
+@needs !day
+[gonna|going to] call it [soon|in a bit], [this was a fun one|good times all|thanks for the company tonight]
+if i go quiet [i probably fell asleep|its probably the kids|its probably dinner], [no need to worry|carry on|dont wait up]
+@needs
+[short session|quick one] for me, [errands later|have to head out soon|got things to do later]
+not staying long, just wanted to see who was around
+@invites player_rl_work
+@needs !day
+work [early|first thing] tomorrow so i wont be on long
+work tomorrow but the guild is too much fun
+@needs day
+on my lunch break, cant stay long
+@needs
+
+# ---------------- Ribbing ----------------
+@kind guild
+@topic social
+@who *
+@invites joke
+[whoever|the person who] [pulled the whole room|trained that camp|ran off the ledge] last [night|week], [you know who you are|your secret is safe with me]
+[our tank|our puller|someone here] [still|probably still] owes me [a rez|five gold|a potion] from last time
+[nobody|no one] let me pull [again|ever again|tonight], [trust me|i beg you|i have learned nothing]
+[funny how|amazing how|odd how] [everyone|the whole guild] logs on [right after|just after] the hard part is done
+[our healers|the healers in this guild] [deserve medals|are saints|put up with so much from us]
+[if|when] [our|the] [casters|melee] [stop|quit] standing in the bad stuff ill buy everyone a drink
+[reminder|friendly reminder|public service announcement]: the [red|purple] cons are not [free xp|a dare|a suggestion]
+[i swear|honestly|seriously] [some of you|half of you] [would die to a grey con if i looked away|have died to grey cons right in front of me]
+[the guild record|our guild record] for [deaths in one night|wipes in an hour] is [safe|unbroken] [for now|, thank goodness|]
+[everyone|everybody] acts tough until the [healer|main healer|buffer] goes afk
+our tank's idea of a plan is [run in and see|hit it and hope|charge first, think later]
+the guild that wipes together stays together
+someone tell our puller that yellow does not mean mellow
+i would complain about the guild but you lot are the only ones who laugh at my jokes
+if anyone needs me ill be hiding behind our tank, as usual
+pretty sure half this guild is held together by potions and luck
+this guild has the worst luck with rolls, its uncanny
+as a {class} i get no respect in here, and i have made my peace with it
+somebody in this guild keeps stealing my kills and i know you do it on purpose
+the amount of times i have been rezzed by this guild should be on a plaque
+we are not a guild, we are a support group for bad pulls
+some of you treat the bindstone like a second home
+i love how nobody reads the loot rules until they lose a roll
+for the record, i was not the one who ran into that room
+our guild chat is ninety percent jokes and ten percent pull timers
+heard someone in here tried to fight a guard once, not naming names
+the only thing faster than our puller is our puller running away
+@who Daredevil
+[purple con|big named|whole camp], [no problem|easy|why not], said the guild member we will miss
+called it a calculated risk, the guild called it a wipe
+@who Socialite
+you lot make even the slow nights fun, dont let it go to your heads
+@who Leveler
+[some of us|a few of us] are [leveling|grinding] while [the rest|others] [chat|gossip] all night, just saying
+@who NoLifer
+@needs night
+[the late crew|us night owls] [is|are] the real guild, the day people just visit
+@needs
+
+# ---------------- Ribbing about leveling ----------------
+@kind guild
+@topic leveling
+@who *
+@invites joke
+[at this rate|the way i level] ill [hit|reach] the next level [some time next year|by spring|eventually]
+[our healers|the healers] level so fast because [nobody lets them solo|everyone wants them|we keep them busy]
+the [fastest|slowest] leveler in the guild [is|has to be] [a mystery|me, obviously|whoever is quiet right now]
+whoever keeps dinging while i sleep, slow down, i cant keep up
+my xp bar and i are no longer on speaking terms
+guild rule: if you ding, you owe the channel a story
+someone here leveled three times this week and still asks for tips
+@invites boast
+[outleveled|caught up to] [half the guild|my old group|my brother] [this week|finally], [feels good|watch out|its happening]
+@invites complaint
+[the slow levels|this stretch of levels|the middle levels] [are|is] [eating my soul|a long road|testing my patience]
+@needs
+
+# ---------------- Real life: work ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_work
+@needs !day
+finally home from work [and|,] [ready to relax|ready to unwind|glad to be here]
+[work|my shift|the job] was [brutal|a slog|endless|a circus] today, [this is my reward|time to hit something|glad to be on]
+[my boss|my manager] [kept me late|had me running in circles|dumped a pile of work on me] [again|today]
+[meetings|paperwork|phone calls] all day, my brain is [mush|fried|done]
+spent the whole day staring at spreadsheets, give me mobs instead
+my commute was twice as long today, the roads were a mess
+@needs
+[got|picked up] an extra shift this weekend, [so i wont be around much|so less game time for me|so the xp waits]
+[the office|work] is so quiet this week, [cant complain|i almost miss the chaos]
+new job is [going ok|treating me well|tiring but good] so far, [still learning the ropes|long hours though|]
+@invites joke
+[a coworker|someone at work] asked what i do in my free time, i said [farming|camping], [they looked confused|they did not get it]
+dreaming of a job where i get paid to camp named mobs
+told my boss i was tired from a long night of hunting, technically true
+@invites chat
+[day off|took the day off] [tomorrow|], [so i might stay up a bit|so i can level guilt free]
+payday today, which means new armor tomorrow
+
+# ---------------- Real life: school ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_school
+[got a|have a|another] [test|exam|quiz] tomorrow, [should be studying|studying between fights|notes are open next to the keyboard]
+[homework|this essay|my book report] can wait [one more hour|until after this level|a little longer], right?
+finals [week|are coming], [wish me luck|dont expect me on much|my brain is full]
+[group project|lab report] due this week, [and nobody in my group does anything|and my partners wont answer the phone]
+teacher assigned a ten page paper over the weekend, of all times
+math homework open on the desk, xp bar open on the screen, guess which one is winning
+@needs !day
+school tomorrow, but one more pull
+@needs
+@invites joke
+[my mom|my dad] wants homework done before i play [any more|more], [so i am being sneaky|negotiations ongoing|working on it]
+@invites boast
+[aced|passed|survived] [my test|the exam|the midterm] [today|], [feeling good|celebrating with xp|time to relax]
+@invites chat
+summer cant come soon enough, so much leveling planned
+dorm internet is slow but the company here makes up for it
+
+# ---------------- Real life: family and home ----------------
+@kind guild
+@topic social
+@who *
+@invites chat
+@needs !day
+[the kids are|the little ones are|my kids are] finally asleep, [time for some peace|the house is quiet|now i can play]
+the house is finally quiet, best part of the day
+family dinner ran long, but im here now
+@needs
+[my little brother|my sister|my nephew] wants to [make a character|watch me play|try my {class}]
+[in laws|my parents|family] [visiting|coming over] this weekend, [so i will be quiet for a bit|wish me luck|light schedule for me]
+[baby|the baby] [finally went down|is finally asleep], [typing very quietly|fingers crossed|lets see how long this lasts]
+[the kids|my son|my daughter] [made|rolled] a character named after the [dog|cat]
+my brother keeps stealing the computer, had to wait my turn tonight
+my mom asked if the guild is real people, i said the best kind
+the whole family is sick this week, i am the last one standing
+spent the day fixing the sink, now i fix my gear
+@invites joke
+[my wife|my husband|my girlfriend|my boyfriend] [says i play too much|wants to know who i keep laughing at|thinks the guild is a cult]
+[my dad|my grandpa] [asked|wanted to know] if this is the game with the [dragons|elves], i said [sort of|yes and no|close enough]
+my mom called during a fight, i love her but the timing
+my kid drew a picture of my character, it has six legs
+my roommate keeps asking if i have seen the sun lately
+explained the guild to my parents, they think i joined a club, which is fair
+@who Socialite
+my partner says hi to the guild and asks who keeps making me laugh
+
+# ---------------- Real life: food and drink ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_food
+[pizza|chinese food|takeout] [just showed up|is here|arrived], [best part of the night|eating and leveling|keyboard is in danger]
+[pasta|chili|soup|tacos] on the stove, [smells amazing|almost ready|nothing fancy but it works]
+my food went cold an hour ago and i only just noticed
+anyone else live on frozen pizza during long leveling nights?
+grabbing a sandwich between fights is an art form
+@needs !day
+[ate|had] way too much [dinner|food|pizza], [need a nap|cant move|sitting very still]
+[forgot to eat|skipped dinner] again, [the game does that|oops|guild chat distracted me]
+@needs night
+[midnight snack|late snack] [run|time], [cereal|toast|leftovers] [it is|wins]
+@needs evening
+popcorn and guild chat, perfect evening
+@needs
+@invites chat
+[coffee|tea|soda] number [three|four] [tonight|], [still yawning|this might be a problem|i regret nothing]
+@invites joke
+@needs !day
+burnt my dinner because of one more pull, worth it
+@needs
+spilled my drink on the desk, the keyboard survived, my pride did not
+
+# ---------------- Real life: weather ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_weather
+[pouring rain|storming|snowing like crazy] [here|outside], [perfect excuse to stay in|glad to be inside|good excuse to play]
+[power flickered|the lights flickered] [twice|again], [storm outside|thunder is loud] [, hope it holds|, fingers crossed|]
+[so cold|freezing] [here|outside], [wearing a blanket while i play|the heater is losing|my hands are numb]
+snow day tomorrow maybe, fingers crossed
+wind is howling outside, cozy in here though
+hail on the windows, sounds like a siege out there
+icy roads all week, so i am staying put
+@invites chat
+[too hot|so humid] [to do anything|to sleep|to go outside], [so i play instead|good thing the computer room has a fan]
+
+# ---------------- Real life: sleep and late nights ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_late
+@needs night
+[its almost|its nearly|its past] [two|three] am and [i am still here|im still at it|the guild is still going]
+[cant sleep|couldnt sleep], [figured|thought] [id|i would] [hang out with you lot|grind a little|see who was on]
+[napped|slept] [all afternoon|half the day], [so now i am wide awake|so no sleep for me]
+alarm goes off in five hours, this is fine
+@needs
+[running on|living on] [four hours|no] sleep [this week|again], [send help|send coffee|ill be fine]
+[tired|exhausted|so tired] but [this level|the guild|the company] is too good to log
+@who NoLifer
+sleep is for people who are not this close to a ding
+
+# ---------------- Real life: pets ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_pet
+[my|the] [cat|dog] [keeps sitting on the keyboard|wants attention|just knocked my drink over]
+[the cat|my cat] is asleep on my [lap|mouse hand|notes], [cant move now|guess i live here now|typing one handed]
+[the dog|my dog] [heard thunder|saw a squirrel] and [now hes under my desk|lost his mind]
+new kitten in the house, she attacks my feet during fights
+the dog brought me his leash mid fight, how do i say no to that face
+my cat watches the screen like she wants to join the group
+
+# ---------------- Real life: movies, books, tv ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_media
+[saw|watched] a [great|really good] movie [last night|this weekend], [no spoilers|highly recommend it|still thinking about it]
+[reading|halfway through] a [great|really good] [fantasy|mystery] book, [cant put it down|almost as good as leveling]
+[rented|picked up] a movie for later, [after this level|once the guild goes quiet]
+the tv is on in the background, i have no idea what im watching
+finally watched that movie everyone keeps quoting, now i get the jokes
+
+# ---------------- Real life: computers and connections ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_tech
+[my|the] [connection|internet|dsl] [keeps dropping|is acting up|has been flaky] tonight, [sorry if i vanish|bear with me|fingers crossed]
+[new video card|new graphics card] [is in|arrived], [everything looks amazing|no more slideshow in big fights]
+[my|the] computer [crashed|froze] [twice|again] [today|tonight], [rebooting is my new hobby|this machine is ancient]
+[upgraded|added more] ram, zoning is so much faster now
+on dialup at my parents house this weekend, pray for me
+my brother is downloading something and my ping is through the roof
+new keyboard, still finding where all the keys went
+
+# ---------------- Real life: aches ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_body
+[my back|my neck] [hurts|is sore] from [this chair|all this sitting|hunching over the desk]
+[mouse hand|my wrist] is [cramping|aching], [too many|so many] [clicks|fights] tonight
+[my eyes are|eyes are] [burning|dry] from the screen, [need a break soon|blinking a lot]
+[stood up|got up] for the first time in [hours|three hours], [my legs forgot how|my knees cracked|everything hurts]
+need a better chair, this one is older than my character
+
+# ---------------- Asking how guildies are ----------------
+@kind guild
+@topic general
+@who *
+@invites chat
+[if anyone had a rough day|to whoever had a rough week], [hang in there|guild chat is here for you|pull up a chair]
+[havent|have not] seen [some of you|a few of you] in a while, [hope all is well|hope life is treating you ok]
+tell me something good that happened today
+hope the folks who are not on tonight are doing ok
+@invites ask_anyone
+who had the best day today? share it
+@invites ask_howareyou
+[hey|hi] all, how is everybody feeling tonight?
+everyone surviving the week?
+@who Socialite
+@invites ask_howareyou
+[so|ok], [real question|honest question], how is everyone actually doing?
+@who *
+
+# ---------------- Guild plans, vague ----------------
+@kind guild
+@topic general
+@who *
+@invites chat
+we should [get everyone together|do a big guild night|all group up] [sometime|one of these weekends|soon]
+[would be fun|it would be nice] to [fill a whole group with guildies|get a guild picture together|run something as a full guild] [sometime|one of these days]
+[someday|one day] [this guild|we] will [take a keep|kill a dragon|have matching tabards], [mark my words|just watch|i believe it]
+[maybe|i think] we should [vote on|talk about] [guild ranks|a new guild emblem|guild colors] [sometime|soon]
+[when|once] [more of us are higher|everyone levels up a bit], we should [try something bigger|go explore together|tackle something scary]
+i like that we never make plans and somehow it still works
+the best guild nights are the ones nobody planned
+not promising anything, but a guild run some weekend would be fun
+we should write down the best guild stories somewhere
+our tabard could use a new color, just saying
+one of these days we should all make alts and level them together
+a guild trip to see the other capitals would be a laugh some time
+@invites joke
+[we need|we could use] a guild [motto|cheer|battle cry], [ideas welcome|im open to ideas|mine is 'it was blue when i pulled it']
+@invites ask
+[anyone up for|thoughts on|who would want] a [guild hunt|guild night|lowbie fun night] [some weekend|sometime]?
+any interest in a guild duel night some time? just for fun
+@who Socialite
+@invites chat
+[we should|lets] have a [guild night|guild hangout] where nobody is allowed to talk about xp
+@who Explorer
+we should all go sightseeing as a guild some night, no xp, just views
+@who Leveler
+when the slow levels are behind us, lets plan something big
+@who *
+
+# ---------------- Crafting: asks and offers ----------------
+@kind guild
+@topic crafting
+@who *
+@invites ask_anyone
+[anyone|any crafters] [able|willing] to [fix up|redo] [my armor|my weapon] [sometime|at some point]?
+@invites chat
+[need|looking for] a [new|better] [bow|shield|helm|pair of boots] [at some point|when someone has time|], no rush
+[saving up|putting coin aside] for a [crafted suit|proper crafted weapon], [the drops are not cutting it|one day|slowly]
+dyed my [armor|cloak|robe] [a new color|dark blue|forest green], [not sure about it|loving it|might change it back]
+[spellcrafting|figuring out gem combos] [makes my head hurt|is pure math homework|needs a calculator]
+my gear is held together by hope and repair bills
+would love a matching set someday, mine looks like a patchwork quilt
+our crafters are the unsung heroes of this guild
+whoever made my last weapon, it is still going strong, ty
+@invites joke
+my armor is so mismatched people think im wearing a costume
+@who Crafter
+@invites chat
+[if anyone|whoever] has spare [leather|cloth|metal|wood] lying around, [i could use some|my skill bar would love it]
+[skilling up|grinding] [tailoring|armorcraft|weaponcraft|fletching|alchemy], [send me|toss me] your [leftovers|scraps] if you have any
+[happy to|glad to] [make|craft] things for guildies [at cost|for mats], just ask
+crafting is the only thing that puts me to sleep faster than counting sheep
+every time i craft something i just end up selling it to a vendor
+my crafting window has been open so long it has dust on it
+nothing like a crafting session to empty the purse
+@invites boast
+[just|finally] [hit|reached] a new tier in my craft, [so happy|small win|celebrating]
+[made|crafted] a [helm|pair of gloves|sword] that came out [perfect|lovely|better than expected], [feeling proud|guild price if anyone wants it]
+@invites complaint
+[another|yet another] 99 percent piece, [the craft gods mock me|one day it will be 100|i want to scream]
+[my|the] [crafting|skill] bar [barely|hardly] moved [tonight|in an hour], [this is a long road|send encouragement|patience is a virtue]
+@who *
+
+# ---------------- Small wins ----------------
+@kind guild
+@topic general
+@who *
+@invites boast
+[finally|at last] [got|found] a [drop|piece of loot] [worth keeping|for my class|that i can use], [small wins|happy dance|good night so far]
+[made|earned] [some|a bit of] [decent|good] coin today, [new boots fund is growing|the bank thanks me|for once]
+[won a roll against|beat] [three people|half the group] for a nice drop [earlier|tonight], [never happens to me|ill take it]
+[survived|got out of] a [nasty|bad] add [with a sliver of health|by the skin of my teeth], [heart is racing|still shaking|legendary]
+[my new spec|the respec|my new build] is [paying off|working nicely|a big improvement], [so glad i switched|no regrets]
+finally beat that one mob that keeps killing me
+got a lucky crit on a yellow, felt like a hero for five seconds
+my first big sale, the merchant didnt even blink
+got a compliment on my armor from a stranger, best moment of the night
+killed something orange solo and nobody saw it, so you will have to trust me
+@who Explorer
+[found|stumbled on] a [quiet|pretty] spot nobody seems to know about, [keeping it secret|might share it someday]
+@who Daredevil
+[pulled|took on] something [way|much] above me and lived, [dont tell the healers|ill be insufferable now]
+@who *
+
+# ---------------- Small losses ----------------
+@kind guild
+@topic general
+@who *
+@invites complaint
+[lost|dropped] [a bubble|two bubbles] to [a silly|a dumb|one bad] [pull|mistake] [earlier|tonight], [lesson learned|ouch|back to work]
+[sold|vendored] [something|an item] for [nothing|a few copper] and found out [later|after] it was [worth a lot|rare|worth a fortune]
+[rolled for it|went for the drop] and [lost again|lost for the fifth time], [the dice hate me|story of my life]
+[spent|wasted] [an hour|all evening] [camping|waiting on] a named and [it never showed|someone else got it]
+[forgot to|didnt] [repair|rebind|buy potions] and [paid for it|regretted it]
+died with a full bag of loot earlier, the run back was quiet and sad
+my lucky streak ended the moment i said it out loud
+missed a level by a sliver before the group broke up, so close
+nothing dropped all evening except my hopes
+@invites joke
+fell off a ledge i have walked past a hundred times, no idea how
+
+# ---------------- Inside jokes ----------------
+@kind guild
+@topic general
+@who *
+@invites joke
+[never|we never] [forget|speak of] the [great pull|bridge incident|night of the ten adds]
+[as the guild motto goes|like we always say|as tradition demands], [it was blue when i pulled it|if in doubt, run|rez first, ask later]
+[someone|somebody] [poke|wake up] our [tank|healer|puller], [pretty sure|i think] [he is|they are] asleep at the [keyboard|bindstone]
+[remember|anyone remember] when [we|half of us] [trained a whole camp|wiped to a grey con|got lost for an hour]
+[the|our] [guild|official] [mascot|pet] should be a [grey con|lost frog|very confused rat]
+[ten|five] [gold|silver] says [our tank|someone in here] [dies first|falls off something] [tonight|this week]
+still laughing about [the jump|that pull|the bridge] from last [night|week], [no regrets|best wipe ever|worth it]
+[still|i am still] not over [that one roll|the great loot debate|the time someone pulled with an area spell]
+if anyone asks, the guild was never lost, we were exploring
+running count of times our healer has said oops: too many
+the official guild response to a train is still to scream and run
+we should hang a plaque for the most dramatic death of the month
+every guild needs one person who jumps off ledges for fun, and we have three
+somewhere out there is a mob that still remembers us, and it is not happy
+our guild has a long and proud tradition of running the wrong way
+@who Socialite
+i keep a list of the funniest things said in this channel, it is getting long
+@who NoLifer
+@needs night
+the late crew has seen things the day crew would not believe
+@needs
+@who *
+
+# ---------------- Small talk with no time of day ----------------
+@kind guild
+@topic general
+@who *
+@invites chat
+[i love|theres nothing like|gotta love] a [quiet|lazy|slow] night with [the guild|you lot|good company]
+[best|nicest] thing about this guild is [nobody yells|everyone helps|the stories]
+[just|only] here to [chat|hang out|listen in] for a bit, [ignore me|carry on|dont mind me]
+[guild chat|this channel] is [better than tv|my favorite show|the best part of the game]
+[some nights|tonight] i [dont even care about xp|just want to talk|log on only for you lot]
+wish i could play as much as some of you, jealous
+it is nice having a place where someone always says hi back
+glad i joined this guild, best choice i made in this game
+nobody else gets my jokes like this guild does
+i think we have the friendliest guild chat on the server
+one day i will be the one handing out tips instead of asking for them
+honestly the game would be lonely without this channel
+@invites ask_opinion
+[what do you all think|thoughts], is it more fun to level fast or slow?
+[favorite|best] part of a guild night for you all?
+@invites joke
+my character has more gold than i do in real life
+my bags hold more junk than my garage
+@who Socialite
+@invites chat
+[i talk|we talk] more than we play some nights and i would not change it
+@who Explorer
+spent an hour just running around looking at things, no regrets
+@who Crafter
+i craft, you fight, the guild runs on teamwork
+@who Leveler
+@invites complaint
+xp is slow but the chat is good, so it evens out
+@who Daredevil
+@invites boast
+one day i will tell you all about the time i survived three adds, oh wait i already did
+@who *
+
+# ---------------- More hellos ----------------
+@kind guild
+@topic social
+@who *
+@invites chat
+hi all, the usual crowd i see
+hello hello, who is around
+good to be back in guild chat after a busy week
+hey guildies, saving a seat for anyone who wants to chat
+popping my head in, everyone looks busy
+quiet little hello from me, carry on
+hey all, just catching up on chat
+@needs evening
+evening crew, nice to see the regulars
+evening all, long one today but i made it
+[hey|hi] [all|guild], [the coffee is hot|the snacks are out|the chair is comfy] and the night is young
+@needs night
+hello to whoever is still awake
+late hello from me, the house is asleep
+@needs day
+daytime hello, strange seeing the channel this quiet
+on early for once, hi to the day crew
+@needs
+@invites ask_howareyou
+checking on the guild, everyone in one piece?
+[how is|hows] [work|school|the family] treating everyone [lately|these days]?
+@invites ask_anyone
+anyone have good news to share?
+
+# ---------------- More winding down ----------------
+@kind guild
+@topic social
+@who *
+@invites player_rl_late
+@needs night
+i keep saying one more, i have said it six times
+[gonna|going to] [regret this|feel this] in the morning
+fell asleep on the couch earlier, now i am wide awake
+@needs evening
+@invites chat
+probably heading off after this hour, depends how it goes
+@needs
+
+# ---------------- More ribbing ----------------
+@kind guild
+@topic social
+@who *
+@invites joke
+[we|this guild] [could|would] get lost in [a straight hallway|a single room|an empty field]
+[rumor has it|word is|i hear] [someone|one of you] [cried|screamed] when [they|he] lost that roll
+[never|dont ever] say ['this is easy'|'what could go wrong'|'i got this'] in guild chat, [we all know what happens|the game hears you|it is cursed]
+the guild has two speeds: afk and train
+i trust this guild with my life but not with the loot rolls
+our healer's patience is the strongest buff in the game
+i count at least three people in here who still cant find the bank
+if you ever need a lesson in running away, ask our tank
+some of you have more alts than friends, and the alts are in this guild too
+i see someone changed their guild title again, very fancy
+nobody in this guild has ever looked at the map and it shows
+there are two kinds of guildies, those who read the quest and those who ask in here
+our puller has the confidence of a dragon and the health of a rabbit
+the healers keep a list of who stands in the bad stuff, and some of you are on it twice
+we have a guild superstition: never say the words easy pull
+our guild has a strict policy: if it moves, someone will pull it
+the guild handbook is one page and it says dont pull the room
+i still have the screenshot, nobody is safe
+
+# ---------------- More real life ----------------
+@kind guild
+@topic social
+@who *
+@invites chat
+[mowed the lawn|did the laundry|cleaned the whole house] [today|], i have earned this
+[went for a run|went to the gym|took a long walk] [earlier|today], [feeling good|legs are jelly|now i deserve this]
+[watched the game|caught the game] [earlier|tonight], [my team lost|my team won|what a finish]
+[my car|the car] [broke down|wont start|is in the shop] [again|], [bus it is tomorrow|my wallet is crying]
+[moving|packing] boxes all [weekend|week], [so much stuff|why do i own this much]
+[my birthday was yesterday|birthday was this week], [another year older|cake for days|the guild can sing now]
+[the neighbors|the folks upstairs] are [having a party|being loud] [again|], [headphones on|cant hear myself think]
+@needs !day
+[errands|chores|yard work] all day, [finally|at last] sitting down
+@needs
+holiday weekend coming up, so much leveling time
+new glasses today, the game has never looked so sharp
+got a haircut, feeling like a new character model
+the grocery store was packed, i would rather fight a named
+fixed a leak under the sink, i am basically a crafter now
+my garden finally has tomatoes, small wins
+took the kids to the park, now they are tired and i am tired
+jury duty this week, the most boring quest in real life
+dentist tomorrow, i would rather face a dragon
+studying with the game open is a skill they should teach
+the library closed early so here i am
+@invites joke
+@needs night
+the neighbor asked why my lights are on so late, i said research
+@needs
+first warm day in weeks, i almost went outside
+@invites player_rl_weather
+rainy weekend ahead, the guild will see a lot of me
+@invites player_rl_body
+spent all day at a wedding, my feet are done
+@invites player_rl_school
+quiz tomorrow on stuff i swear we never covered
+@invites player_rl_work
+first day back after vacation, the inbox was a monster
+worked a double, my feet are not speaking to me
+on call this week, if my pager goes off i vanish
+the boss finally said thanks today, i almost fell over
+
+# ---------------- More small wins and losses ----------------
+@kind guild
+@topic general
+@who *
+@invites boast
+[best|luckiest] [drop|roll] of my [week|month] [earlier|tonight], [cant stop smiling|ill frame it]
+finally finished that long quest, the reward was a plain ring and i am thrilled anyway
+got my first matching piece of armor, now i look half put together
+ran out of potions and still made it, barely
+found some coin in my bank i forgot about, happy surprise
+@invites complaint
+[ran out of potions|forgot my buffs|lost my target] at the worst [time|moment], [never again|classic me|lesson learned]
+sold my best ring by accident, i want to cry
+my bind point was miles away, the run back took forever
+group broke up right as i was about to ding, so close
+got stuck on a rock for five minutes, very dignified
+spent my coin on a weapon and the next mob dropped a better one
+
+# ---------------- More crafting ----------------
+@kind guild
+@topic crafting
+@who *
+@invites ask_anyone
+[anyone|any crafters] [making|selling] [arrows|potions|cloaks] these days?
+@invites chat
+anyone else think the dye merchants should sell more colors?
+my cloak and armor do not match and i have stopped caring
+i owe our crafters a thank you, my whole suit is their work
+repair bills are eating me alive, a guild crafter would save my purse
+@who Crafter
+[tailoring|fletching|armorcraft|weaponcraft] is [slow|tedious] but [i love it|it pays|someone has to do it]
+if anyone wants a lowbie weapon for an alt, i make them for skill points anyway
+crafting tip from a tired crafter: buy your materials in bulk
+need someone to talk to while i craft for an hour
+@invites boast
+got my first masterpiece in a while, it lives in my bags now
+skill went up five points in a row, i thought the game was broken
+@who *
+
+# ---------------- More guild plans ----------------
+@kind guild
+@topic general
+@who *
+@invites chat
+[a|one] [costume|dye] night where everyone wears [the same color|their ugliest gear] would be [fun|hilarious]
+would love to see everyone in one place for a guild screenshot some day
+maybe some weekend we all pick one zone and level there, no pressure
+if anyone has ideas for guild nights, toss them in here
+the guild could use a few more healers someday, just thinking out loud
+a guild race some time would be fun, last one there buys potions
+
+# ---------------- Leveling guild banter ----------------
+@kind guild
+@topic leveling
+@who *
+@invites chat
+[i|we] [will|shall] [ding|level] [eventually|someday|before the guild retires], one bubble at a time
+[anyone else feel like|anyone else think] [this level|the xp] [is cursed|never ends]?
+half the fun of leveling is complaining about it in here
+guild xp report: slow but steady
+slow and steady, the guild way
+leveling is better with guild chat open, the bubbles go faster
+
+# ---------------- RvR guild banter ----------------
+@kind guild
+@topic rvr
+@who *
+@levels 20-50
+@invites chat
+the frontier is more fun with guildies, even when we lose
+my realm rank is tiny but my heart is huge
+someday i will understand siege, today is not that day
+@invites joke
+my corpse has seen more of the frontier than i have
+
+# ---------------- Odds and ends ----------------
+@kind guild
+@topic social
+@who *
+@invites chat
+you lot are the reason i keep renewing my subscription
+real life has been busy, but i always make time for this channel
+took a week off the game and missed the chatter more than the xp
+i should probably go outside more, but you lot are here
+listening to music and reading guild chat, perfect combination
+i log on some nights just to read what you all are up to
+funny how a bunch of strangers became my favorite people to talk to
+my sister just got engaged, the family is buzzing
+@needs evening
+the hum of the computer and guild chat, that is my evening
+@needs
+@invites joke
+someone said my name in here earlier and i got excited, then it was a typo
+my desk is covered in notes about the game, my family is concerned
+printed a map of the zone and taped it to the wall, no regrets
+the kids want to know if the guild is coming to the birthday party
+@invites player_rl_tech
+new pair of headphones, i can hear every footstep now
+the power went out for an hour earlier, longest hour of my life
+@invites player_rl_food
+@needs !day
+the fridge is empty, dinner is whatever i find in the cupboard

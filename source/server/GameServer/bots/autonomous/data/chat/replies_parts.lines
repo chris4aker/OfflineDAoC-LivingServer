@@ -1,0 +1,70 @@
+# Replies built from parts, for the reply pools the month simulation found most used (UT_ChatMonth, 2026-10-26: about
+# 1,600 "chat" replies a month from 56 lines once the new openers were in). Every way of saying a line must fit ANY
+# opener of its type. "[a|b]" parts are expanded by build_corpus.py.
+
+# ---- chat: a light reaction to an observation -----------------------------------------------
+@kind reply
+@answers chat
+@who *
+[heh|ha|hah], [so true|too true|true enough|very true]
+[yeah|yep|yup], [i noticed that too|noticed the same|saw that as well]
+[thats|that is] [so|very|pretty] [true|accurate|on the nose][ lol|]
+[ha|heh], [cant argue with|no arguing with|wont argue with] that
+[same|same here|me too][, every time|, all the time|, always]
+[i know|i know right|tell me about it][, it never changes|, every single night|]
+[ha|heh] [you said it|well said|you nailed it]
+[cant say|wont say] [i disagree|youre wrong|otherwise]
+[yeah|yep] [thats|that is] [about right|how it goes|the way of it]
+[i was|i was just] [thinking|saying] [the same thing|that earlier|that yesterday]
+[ha|heh|lol] [yes|yep], [exactly that|this exactly|exactly]
+[fair|good|solid] [point|observation|call]
+[thats|that is] [a good one|so real|very real][ heh|]
+[oh|ah] [i know the feeling|know that feeling|i know that one]
+[hah|heh], [been there|seen that|lived that][, many times|, more than once|]
+[huh|hm], [never noticed|didnt notice|hadnt noticed] [but you are right|but yeah|but true]
+[pretty much|basically|more or less][, yeah|, yep|]
+[mm|mhm], [agreed|same|true]
+[yeah|yep] [its|it is] [like that|always like that|like that every time]
+[makes|that makes] [sense|perfect sense|total sense][ to me|]
+[ha|heh], [thats|that is] [the realm in a nutshell|the game in a nutshell|life out here]
+[oh yeah|oh for sure|for sure][, same|, me too|, every time]
+[heh|ha], [you and everyone else|you are not alone|not just you]
+[good|nice] [to hear|to know][, ty|, thanks|]
+[ha|heh], [i like that|love that|thats great]
+@who Socialite
+[aw|oh] [i love that|thats lovely|thats sweet][!|, really|]
+@who NoLifer
+[yep|mhm][, seen it|, old news|, every night][. back to it|. anyway|]
+@who Explorer
+[heh|ha], [the little things|its the little things] [out here|in this game|in the realm]
+@who Daredevil
+[ha|heh], [sounds|that sounds] like [a good time|my kind of night|fun]
+@who Crafter
+[heh|ha], [same at the forge|same with crafting|crafting is the same]
+@who Leveler
+[yep|true][, anyway|. ok], [back to the grind|back to it|xp waits]
+
+# ---- lfg: someone looking for a group (never claim to invite) -----------------------------
+@kind reply
+@answers lfg
+@who *
+[gl|good luck][, should be easy|, someone will bite|, hope you find one][ to find one|]
+[gl|good luck][, its|, it is] [busy|pretty busy|quiet|slow] [right now|at the moment][ though|]
+[what|which] [camp|zone|dungeon] [you after|you looking at|you thinking][?|, xp or loot?]
+[keep|just keep] [asking|at it][, someone|, a group] will [want|need] [you|a {class}]
+[gl|good luck], [i|] [would join|would group] but [im|i am] [busy|in the middle of something]
+@needs solo
+[same|same here], [lf group|lfg] [too|as well][, if you form one say so|]
+@needs in_group
+[our|my] group [is full|has no room][, sorry|, gl though]
+
+# ---- trade: someone buying or selling ---------------------------------------------------------
+@kind reply
+@answers trade
+@who *
+[gl selling|good luck selling][ that|][, someone will want it|]
+[how much|what price][ for it|][?|, roughly?]
+[try|check] the [exchange|broker][, prices are fair|, people buy there|]
+[nice|good] [stuff|item][, gl with it|, hope it sells|]
+[not for my class|cant use it][, sorry|, gl though]
+[might|maybe ill] [look|check it out] [later|after this camp]

@@ -6,64 +6,114 @@
 @realm mid
 @who *
 @levels 1-19
+@needs at:mularn
 mularn is packed tonight, half the realm made alts
+@needs
 @needs solo
+@needs solo, near:audliten
 anyone want to clear the road to audliten with me?
+@needs solo
 @needs
 @invites complaint
+@about place
 those hill cats in the vale are no joke at level 4
+@about
 @invites
+@needs going:myrkwood
 heading into myrkwood, wish me luck
+@needs
 @invites lfg
+@needs near:nisse's lair
 nisse's lair anyone? i hear the tomte are good xp
+@needs
 @invites ask_pulling
+@about place
 east svealand wolves keep adding, how do you pull them clean
+@about
 @needs solo
 @invites
+@needs solo, at:gotar
 gotar seems quiet, perfect for a slow solo night
+@needs solo
 @needs
 @invites joke
+@about place
 jordheim is so big i still get lost on the way to my trainer
+@about
 @invites ask_advice
+@about place
 huldu hunters in the vale keep getting me, any tips
+@about
 @invites
 @levels 20-34
 @invites lfg
+@needs near:cursed tomb
 cursed tomb group forming? need a tank and a healer
+@needs
 @invites
+@needs near:vendo caverns
 vendo caverns is busy tonight, might try muspelheim instead
+@needs
+@about place
 skona ravine at 30 feels like the right speed
+@about
+@about place
 anyone think muspelheim is worth the walk at {level}?
+@about
+@about place
 the draugr in cursed tomb hit harder than they look
+@about
 @invites lfg
+@about place
 anybody seen a good group in vendo? lfm or lfg either way
+@about
 @invites
 @levels 35-50
 @needs in_group
 @invites lfg
+@needs in_group, near:spindelhalla
 spindelhalla tonight? we need a puller who knows the halls
+@needs in_group
 @needs
 @invites boast
+@needs at:spindelhalla
 spindel was full but we got a corner, xp is great
+@needs
 @invites
+@about place
 varulvhamn wolves are rough but the xp is worth it
+@about
 @invites joke
+@needs at:raumarik
 raumarik is freezing and so is my kill speed
+@needs
 @invites news
+@needs at:malmohus
 malmohus is quiet tonight, good camps open
+@needs
 @invites lfg
+@needs near:iarnvidiur's lair
 iarnvidiur's lair anyone? need a strong group
+@needs
 @invites ask_anyone
+@about place
 trollheim at 50 for the gear runs?
+@about
 @invites
 @levels 1-50
 skald speed on the road home, best feeling in the game
 @invites joke
+@about place
 jordheim smells like fish and smithing, just like home
+@about
 @invites
 @levels 20-50
+@about place
 the aegir zones look amazing, worth seeing even if you dont level there
+@about
+@about place
 anyone level on aegir? munin sound or gripklosa?
+@about
 
 # ---------------- Albion ----------------
 @kind ambient
@@ -71,45 +121,81 @@ anyone level on aegir? munin sound or gripklosa?
 @realm alb
 @who *
 @levels 1-19
+@needs at:cotswold
 cotswold is packed, everyone and their alt is here
+@needs
 @invites complaint
+@needs at:camelot hills
 camelot hills bandits keep jumping me
+@needs
 @invites joke
+@about place
 salisbury plains looks safe until it isnt
+@about
 @needs solo
 @invites
+@needs solo, near:tomb of mithra
 anyone want to run the tomb of mithra with me?
+@needs solo
 @needs
+@needs near:black mountains
 black mountains road is long, anyone want to walk together?
+@needs
+@about place
 campacorentin forest at night is a bit creepy honestly
+@about
 @invites joke
+@about place
 camelot is beautiful but i keep getting lost in it
+@about
+@about place
 avalon marsh slimes, the xp that nobody admits to doing
+@about
 @invites
 @levels 20-34
 @invites ask_where
+@needs at:cornwall
 cornwall camps are full tonight, anyone know an open one?
-@invites
-anyone tried the barrows yet at this level?
-@needs solo
-@invites lfg
-isle of glass anyone? need a group for the dragonflies
-lfg cornwall or wherever has room
 @needs
 @invites
+@about place
+anyone tried the barrows yet at this level?
+@about
+@needs solo
+@invites lfg
+@needs solo, near:isle of glass
+isle of glass anyone? need a group for the dragonflies
+@needs solo
+@about place
+lfg cornwall or wherever has room
+@about
+@needs
+@invites
+@about place
 the moors in cornwall are good xp if you can find a camp
+@about
 @levels 35-50
 @invites lfg
+@needs near:stonehenge barrows
 stonehenge barrows group forming, need a cleric
+@needs
 @invites
+@about place
 the barrows at night feel like a horror story
+@about
+@needs at:avalon isle
 avalon isle drakoran camps, anyone want to share?
+@needs
 @invites ask_where
+@about place
 anyone know a good camp at {level} besides the barrows?
+@about
 @invites
 @levels 1-50
 minstrel speed down the road, perfect
+@about place
 camelot at sunset is something else
+@about
 @levels 20-50
 avalon looks unreal, glad i finally made it out there
 
@@ -119,35 +205,57 @@ avalon looks unreal, glad i finally made it out there
 @realm hib
 @who *
 @levels 1-19
+@needs at:mag mell
 mag mell is so crowded tonight
-@invites complaint
-lough derg wolves are faster than they look
-@needs solo
-@invites
-anyone want to clear connacht with me?
 @needs
 @invites complaint
-silvermine mountains are rough at level 10
+@about place
+lough derg wolves are faster than they look
+@about
+@needs solo
 @invites
+@needs solo, near:connacht
+anyone want to clear connacht with me?
+@needs solo
+@needs
+@invites complaint
+@about place
+silvermine mountains are rough at level 10
+@about
+@invites
+@about place
 shannon estuary crabs are free xp honestly
+@about
 @invites joke
+@about place
 tir na nog is pretty but my map skills are not
+@about
 @invites lfg
+@needs near:muire tomb
 muire tomb group? i hear the mummy hags hit hard
+@needs
 @invites joke
 @invites lfg
+@about place
 valley of bri leith anyone? siogs keep stealing my gear, i swear
+@about
 @invites joke
 @invites
 @levels 20-34
 @invites lfg
+@needs near:spraggon den
 spraggon den needs a group, pst
+@needs
 @invites boast
+@needs at:spraggon den
 spraggon den is the best xp i have had in weeks
+@needs
 @invites
 anyone know if the den is busy right now?
 @invites ask_opinion
+@needs at:connacht
 connacht at {level}? or should i move on
+@needs
 @invites
 @levels 35-50
 @invites ask_where
@@ -159,6 +267,8 @@ need a bard for a long night of pulling
 @invites
 @levels 1-50
 bard speed on the road, nothing better
+@about place
 tir na nog at night with the lights on, love this realm
+@about
 @levels 20-50
 hy brasil looks like a dream, anyone level there?

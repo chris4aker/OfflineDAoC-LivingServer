@@ -1,0 +1,151 @@
+# Realm balance (2026-10-26): Midgard had the fewest realm lines (1,375 ambient against 1,545 for Albion and 1,679 for
+# Hibernia), so it gets a block of its own here, and Albion a smaller one. Places only from the speaker's realm, always
+# with @about place. "[a|b]" parts are expanded by build_corpus.py. New writing.
+
+# ---- Midgard ----------------------------------------------------------------------------------
+@kind ambient
+@realm mid
+@who *
+[the snow|the cold|the wind] [up here|in midgard] [keeps you honest|makes you tough|teaches you to keep moving]
+[a good fire|a warm hearth|a mug of mead] [after a long hunt|after a hard camp|after a cold walk] [is all a viking needs|beats any treasure]
+[the gods|odin and thor] [watch|are watching] [every fight|every pull], [make it a good one|so dont run|so fight well]
+[trolls|our trolls] [are|look] [slow|clumsy] [until|right up until] [they hit something|the fight starts|the hammer lands]
+[kobolds|the kobolds] [built half|run half|fixed half] this realm and [nobody|no one] [thanks them|says thanks]
+[a kobold|kobolds] [with a grudge|holding a grudge] [is|are] [scarier than|worse than] [any troll|a troll with a hammer]
+[dwarves|the dwarves] [argue|fight] [over|about] [mead|beards|the best forge] [more than|harder than] [albs fight|hibs fight|anything]
+[norsemen|a norseman] [dont|doesnt] [complain about|mind] the [cold|snow|weather], [we|they] [call it|think its] [spring|a nice day]
+[the valkyn|valkyn] [howl|growl] [in their sleep|at the moon], [nobody|no one] [asks why|says a word]
+[every|each] [rune|runestone] in this realm [means something|has a story|was carved for a reason]
+[midgard|our realm] [doesnt|does not] [do|bother with] [pretty|fancy], [it does|we do] [strong|hard|honest]
+[nothing|no feeling] [beats|is better than] [a skald chant|a good war cry] [before|right before] a [big pull|hard fight]
+[ask|any] [shaman|old shaman] [and theyll|and they will] [tell you|swear] the [spirits|ancestors] [are restless|are watching] [lately|these days]
+[the|our] [healers|shamans] [keep|have kept] [this realm|midgard|us] [alive|standing] [through|since] [every winter|the worst of it]
+[albs|the albs] [bring|have] [walls|castles], [hibs|the hibs] [bring|have] [pets|tricks], we [bring|have] [axes|hammers|trolls]
+[say what you want about|laugh all you want at] [berserkers|zerkers], [they|zerkers] [never|dont] [back down|run first]
+[ragnarok|the end of days] [is coming|will come] [one day|someday], [might as well|best to] [get the levels in now|be ready]
+@about place
+[jordheim|the city of jordheim] [is|feels] [warm|cozy|alive] [compared to|next to] the [road|hills|snow] outside
+[mularn|the vale of mularn] [is where|was where] [every|most] [mid|midgardian] [learned to|first learned to] [swing|die|run]
+[vendo|the vendo caverns] [smells like|is all] [wet fur|bugs and bad luck], [ask anyone|everyone knows]
+[spindelhalla|spindel] [teaches|taught me] [respect|caution|patience] [for spiders|the hard way]
+[myrkwood|the myrkwood] [in the dark|after sundown] [is|feels] [no joke|a different place], [stay close|keep together]
+[raumarik|up in raumarik] [the cold|the wind] [bites|cuts] [through anything|right through mail]
+[nisses lair|the nisse] [is|was] [where|the place] [i|many of us] [learned|learned not] to [split pulls|pull two]
+[svealand|the svealand roads] [are|feel] [long|endless] [when you are|if you are] [new|lost|alone]
+[malmohus|malmohus and its ice] [makes|made] [me|everyone] [respect|fear] [the north|the cold|the deep snow]
+[the yggdra forest|yggdra] [feels|seems] [old|ancient], [like|as if] [it|the trees] [remember|remembers] [the gods|everything]
+[trollheim|up near trollheim] [is|feels] [no place|the wrong place] [for|to bring] a [lowbie|kobold|fresh character]
+@about place
+[if you|whoever] [havent seen|has not seen] [the aurora|the northern sky|the lights] [over|above] [uppland|jamtland|the mountains], [you|they] [havent|have not] [played|lived]
+[the iarnwood|iarnwood] [has|holds] [more|stranger] [things|secrets] than [any|most] [map|maps] [shows|show]
+[the cursed tomb|cursed tomb] [isnt|is not] [cursed|haunted], [its|it is] just [badly|poorly] [lit|kept]. [probably|i hope]
+@levels 20-50
+[the frontier|odins gate] [belongs to|was made for] [midgard|the north], [the others|albs and hibs] [just|only] [visit|borrow it]
+[a mid|our] [zerg|army] [on the move|coming over the hill] [is|sounds] [like|as loud as] [thunder|a storm|an avalanche]
+@about place
+[odins gate|the gate at odins] [has|holds] [our|the realms] [pride|honor], [never|dont ever] [let|leave] it [fall|undefended]
+@about
+@levels 1-50
+@who Socialite
+[love|i love] [how|that] [mids|midgard folk] [share|split] [mead|their last mug] [with|even with] [strangers|anyone]
+@who NoLifer
+[been|lived] in [midgard|the north] [since|from] [day one|the first day], [never|wouldnt] [trade|swap] it
+@who Explorer
+[every|each] [fjord|valley|ridge] [up here|in midgard] [hides|has] [something|a cave|a story] [nobody|no one] [talks about|mentions]
+@who Crafter
+[dwarven|a dwarven] [forge|smith] [makes|turns out] [the best|better] [axes|mail] [in any realm|than albs ever will]
+@who Daredevil
+[give me|i want] [a cliff|a frozen lake|a troll camp] [and a dare|and a bet], [i will|ill] [take it|do it]
+@who Leveler
+[midgard|the north] [rewards|pays] [the patient|the steady|those who grind], [keep|just keep] [swinging|pulling]
+
+# ---- Albion -----------------------------------------------------------------------------------
+@kind ambient
+@realm alb
+@who *
+@about place
+[albion|our realm] [was built|stands] on [stubbornness|tea and stubbornness|old stone and old grudges]
+[a good|any good] [armsman|paladin] [is|makes] [a wall|the best wall] [nobody|no hib|no mid] [gets past|walks through]
+[the church|the clergy] in [camelot|albion] [has|holds] [an opinion|opinions] on [everything|every guild|every spell]
+[highlanders|the highlanders] [sing|shout] [louder|longer] than [anyone|any bard] [after|over] [a pint|an ale]
+[saracens|a saracen] [can|will] [cross|walk] [a whole zone|the realm] [and never|without ever] [complain|breaking a sweat]
+[inconnu|the inconnu] [keep|hold] [their|old] [secrets|counsel], [and|but] [they|the inconnu] [fight|hit] [hard|like anyone]
+[the guilds|our guilds] [in camelot|of camelot] [argue|bicker] [more|longer] than [they|anyone] [fight|train]
+@about place
+[the black mountains|black mountains] [are|feel] [darker|colder] [every|each] [time|visit], [or|maybe] [its|it is] [just me|my imagination]
+[avalon marsh|the marsh] [smells|reeks] [like|of] [old magic|wet stone|something buried]
+[salisbury|salisbury plains] [is|looks] [peaceful|calm] [until|right up until] [the giants|something big] [walk past|turn up]
+@about
+@who Explorer
+[albion|this realm] [still|has] [corners|paths|caves] [i have not|i havent] [found|walked], [and i|i] [have looked|keep looking]
+@who Socialite
+[albs|albion folk] [may be|are] [stubborn|proud], [but|and] [they|we] [never|dont] [leave|abandon] [a friend|a groupmate|anyone] [behind|in a fight]
+[a|any] [cleric|friar] [worth|who is worth] [the name|their robe] [has|keeps] [a hymn|a prayer|a joke] [for every|ready for any] [occasion|fight]
+[albion|our realm] [remembers|honors] [arthur|the old king] [in|with] [every|each] [banner|knight|stone]
+[a minstrel|minstrels] [can|will] [make|turn] [any|a] [walk|trip] [across the realm|through the hills] [feel|seem] [shorter|like a song]
+[the|our] [wizards|theurgists|sorcerers] [argue|bicker] [about|over] [spell theory|whose robe is fancier] [for hours|endlessly]
+@about place
+[cotswold|the cotswold road] [saw|has seen] [more|most] [of|all] [our|albion's] [first|early] [steps|mistakes|deaths]
+[camelot|the city of camelot] [never|doesnt] [sleeps|sleep], [there is always|someone is always] [a bard|a merchant|a guard] [talking|singing]
+[the barrows|stonehenge barrows] [give|gives] [me|everyone] [chills|the creeps], [and|but] [i|we] [still|keep] [go|going] [back|in]
+[ludlow|the road to ludlow] [is|feels] [quiet|peaceful] [in|on] [a good|most] [day|days], [enjoy it|savor it]
+[dartmoor|the moors of dartmoor] [are|feel] [wild|old|empty], [like|as if] [something|someone] [is|might be] [watching|waiting]
+[the forest sauvage|forest sauvage] [hides|holds] [more|stranger] [things|beasts] than [any|the] [bard|song] [admits|tells]
+[the tomb of mithra|mithra] [is|was] [where|the place] [i|half the realm] [learned|first learned] [what fear|what a train] [feels like|is]
+[snowdonia|the snowdonia hills] [are|feel] [cold|colder] than [they look|you expect|any map says]
+@about
+@who Explorer
+[i swear|honestly] [every|each] [hill|ridge|valley] [in albion|in this realm] [has|hides] [a cave|a ruin|a path] [nobody|no one] [mapped|marked]
+@who Crafter
+[albion|albion's] [smiths|crafters] [make|turn out] [the|some of the] [finest|best] [plate|armor] [anywhere|in any realm], [no arguing|dont argue]
+@who NoLifer
+[albion|this realm] [since|from] [day one|the very first night], [and i still havent seen|still havent seen] [it all|everything]
+@who Daredevil
+[the|any] [giants|big ones] [out on the plains|up in the hills] [look like|are] [a challenge|fun], [someone hold|anyone want to hold] my [ale|helm]
+@who Leveler
+[albion|our realm] [rewards|pays back] [the steady grinders|those who keep pulling|those who grind], [one bubble|one level] at a time
+
+# ---- Hibernia ---------------------------------------------------------------------------------
+@kind ambient
+@realm hib
+@who *
+[the|our] [music|songs] [in|of] [hibernia|this realm] [never|dont] [stop|really stop], [even|not even] [in|during] [a fight|the worst of it]
+[the sidhe|the old folk] [are|is] [watching|listening], [my|our] [grandmother|elders] [always|used to] [said so|say so]
+[lurikeens|a lurikeen] [are|is] [small|tiny] [but|and] [never|nobody] [forget|forgets] [a slight|an insult|a debt]
+[celts|a celt] [will|would] [sing|fight] [through|for] [anything|anyone], [usually|mostly] [both|at once]
+[firbolgs|a firbolg] [are|is] [gentle|patient] [until|right until] [you|someone] [hurt|harms] [the trees|the forest|a friend]
+[elves|the elves] [think|reckon] [they|elves] [are|look] [graceful|elegant], [the rest of us|we] [have seen|saw] [them fall|one trip] [off|down] [a ledge|the stairs]
+[a sylvan|sylvans] [standing|stood] [still|so still] [is|looks] [just|exactly] [like|the same as] [a tree|a stump], [ask|any] [mid|alb] [who found out|who learned the hard way]
+[the|our] [druids|wardens|bards] [keep|have kept] [this realm|hibernia] [green|alive|standing] [since|through] [the|every] [hard|dark] [times|years]
+[albs|the albs] [march|clank] [and|while] [mids|the mids] [roar|shout], [we|hibs] [just|simply] [win|walk away] [quietly|singing]
+[mezz|mez] [them|the lot], [heal|patch] [us|ourselves], [walk|stroll] [away|on]. [the|that is the] [hib|hibernian] [way|plan]
+[every|each] [path|grove|stone] in [hibernia|this realm] [has|holds] [a story|a song|a name] [older|longer] than [albion|any alb]
+@about place
+[tir na nog|the city of tir na nog] [is|feels] [the|a] [kindest|friendliest] [place|city] [in|of] [any|the three] [realm|realms]
+[mag mell|the fields of mag mell] [is|was] [where|the place] [every|most] [hib|of us] [learned|first learned] [to|how to] [fight|run|share a camp]
+[ardee|the road to ardee] [is|feels] [peaceful|quiet] [enough|until] [something|the wolves] [notices|notice] [you|a lowbie]
+[muire tomb|the muire tomb] [taught|teaches] [me|everyone] [patience|caution] [the hard way|the slow way]
+[the spraggon den|spraggon den] [is|sounds] [loud|noisy], [those|the] [spraggons|little ones] [never|dont] [stop|shut up] [chattering|laughing]
+[the coruscating mine|coruscating] [glitters|shines] [nice|pretty] [until|right up until] [the|something] [miners|things] [down there|below] [notice|spot] [you|a light]
+[lough derg|the shores of lough derg] [is|are] [the|a] [prettiest|loveliest] [spot|view] [in|of] [the realm|hibernia], [prove|show] [me|otherwise] [wrong|]
+[the cliffs of moher|moher] [make|makes] [you|me] [feel|seem] [small|tiny], [in|and in] [a good way|the best way]
+[the bog of cullen|cullen bog] [smells|reeks] [like|of] [old|ancient] [magic|secrets|mud]
+[the sheeroe hills|sheeroe] [glitter|shine] [at a distance|from far off], [and|but] [nobody|no sane hib] [walks|goes] [in|there] [alone|lightly]
+[the cursed forest|cursed forest] [earned|got] [its|that] [name|reputation] [honestly|fair and square]
+[shannon|the shannon estuary] [is|feels] [calm|quiet] [enough|on top], [it is|its] [what|the things] [under|in] [the water|it] [you|that] [worry about|watch]
+@levels 20-50
+[emain|emain macha] [belongs|was always meant] [to|for] [hibernia|us], [the|those] [albs|mids] [just|only] [visit|borrow it]
+[a|any] [hib|hibernian] [group|zerg] [on|in] [the move|full song] [sounds|is] [like|as] [a festival|a storm|a wedding] [with|but with] [swords|mezzes]
+@about
+@who Socialite
+[hibs|hibernia folk] [will|always] [share|split] [a song|a fire|their last pot] [with|even with] [a|any] [stranger|newcomer]
+@who Explorer
+[every|each] [glen|hill|lake] in [hibernia|this realm] [hides|has] [something|a cave|a story] [nobody|no one] [talks about|mentions]
+@who Crafter
+[hib|hibernian] [tailors|crafters] [make|turn out] [the finest|the best] [cloth|leather|bows] [in any realm|anywhere]
+@who NoLifer
+[been|lived] in [hibernia|this realm] [since|from] [day one|the first night], [would not|wouldnt] [trade|swap] it
+@who Daredevil
+[give me|show me] [a|the] [darkest|deepest] [glen|cave|bog] [and|plus] [a bet|a dare], [i will|ill] [do it|go first]
+@who Leveler
+[hibernia|this realm] [rewards|pays] [the patient hunter|the steady ones|those who grind], [keep|just keep] [pulling|going]

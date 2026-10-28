@@ -30,11 +30,113 @@ public static class AutonomousChatKnowledge
             return true;
         if (LooksLikeStableQuestion(query) && TryAnswerStable(player.Realm, query, out answer))
             return true;
+        if (TryAnswerTicketsInGeneral(query, out answer))
+            return true;
+        if (TryAnswerDragon(player.Realm, query, out answer))
+            return true;
+        if (TryAnswerTimeToCap(query, out answer))
+            return true;
+        if (AsksAboutRealmRaid(query) &&
+            TryAnswerRealmRaid(GlobalConstants.RealmToName(player.Realm), player.Level, AutonomousRealmRaid.Snapshot(), out answer))
+            return true;
         if (LooksLikeSpellQuestion(query) && TryAnswerSpell(player, query, out answer))
             return true;
         if (LooksLikeTrainerQuestion(query) && TryAnswerTrainer(player.Realm, query, player.CharacterClass?.ID ?? 0, player, out answer))
             return true;
         return LooksLikeLocationQuestion(query) && TryAnswerLocation(player.Realm, query, out answer);
+    }
+
+    /// <summary>
+    /// "is it true theres a dragon in midgard?", "where is the hib dragon?": each realm's dragon and its zone (world data:
+    /// Golestandt in Dartmoor, Gjalpinulva in Malmohus, Cuuldurach the Glimmer King in Sheeroe Hills). Play test 2026-10-27:
+    /// the question drew three off-topic lines. Pure.
+    /// </summary>
+    public static bool TryAnswerDragon(eRealm askerRealm, string text, out string answer)
+    {
+        answer = string.Empty;
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string lower = " " + new string(text.ToLowerInvariant().Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()) + " ";
+        bool asks = text.Contains('?') || lower.Contains(" where ") || lower.Contains(" is there ") || lower.Contains(" theres ");
+        if (!asks || !(lower.Contains(" dragon ") || lower.Contains(" dragons ")))
+            return false;
+        eRealm realm = lower.Contains(" alb") || lower.Contains(" albion ") ? eRealm.Albion
+            : lower.Contains(" mid") || lower.Contains(" midgard ") ? eRealm.Midgard
+            : lower.Contains(" hib") || lower.Contains(" hibernia ") ? eRealm.Hibernia
+            : askerRealm;
+        (string name, string zone) = realm switch
+        {
+            eRealm.Albion => ("Golestandt", "Dartmoor"),
+            eRealm.Midgard => ("Gjalpinulva", "Malmohus"),
+            eRealm.Hibernia => ("Cuuldurach the Glimmer King", "Sheeroe Hills"),
+            _ => (null, null),
+        };
+        if (name == null)
+            return false;
+        answer = $"yeah, {name}, up in {zone}. thats a full raid, dont go alone";
+        return true;
+    }
+
+    /// <summary>
+    /// "how long does it take to hit 50?": what players of the era said, a couple of weeks /played. Play test 2026-10-27: the
+    /// question drew a lore line about Orasgaen. Pure.
+    /// </summary>
+    public static bool TryAnswerTimeToCap(string text, out string answer)
+    {
+        answer = string.Empty;
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string lower = " " + new string(text.ToLowerInvariant().Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()) + " ";
+        bool howLong = lower.Contains(" how long ") || lower.Contains(" how many hours ") || lower.Contains(" how many days ");
+        bool cap = lower.Contains(" 50 ") || lower.Contains(" cap ") || lower.Contains(" max level ");
+        if (!howLong || !cap)
+            return false;
+        answer = Random.Shared.Next(3) switch
+        {
+            0 => "couple weeks /played if you group a lot, way longer solo",
+            1 => "took me about 15 days played. groups are faster, the 40s drag",
+            _ => "depends, two or three weeks played. 1 to 20 goes quick, then it slows down",
+        };
+        return true;
+    }
+
+    /// <summary>"any hibs doing a dungeon run tonight?", "is there a raid going?", "when is the next dragon raid". Pure.</summary>
+    public static bool AsksAboutRealmRaid(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string lower = " " + new string(text.ToLowerInvariant().Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()) + " ";
+        bool asks = text.Contains('?') || lower.Contains(" any ") || lower.Contains(" when ") || lower.Contains(" is there ");
+        bool raid = lower.Contains(" raid ") || lower.Contains(" raids ") || lower.Contains(" dungeon run") || lower.Contains(" expedition ") ||
+                    lower.Contains(" epic ");
+        return asks && raid;
+    }
+
+    /// <summary>
+    /// What the realm's raids are doing, from the live raid state. Play test 2026-10-27: "any hibs doing a dungeon run tonight?"
+    /// drew "no clue" while 116 Hibernians were fighting in Galladoria. Pure.
+    /// </summary>
+    public static bool TryAnswerRealmRaid(string realmName, int askerLevel, IEnumerable<AutonomousRealmRaid.Summary> raids, out string answer)
+    {
+        answer = string.Empty;
+        var mine = (raids ?? []).Where(raid => string.Equals(raid.Realm, realmName, StringComparison.OrdinalIgnoreCase)).ToArray();
+        string tail = askerLevel < 45 ? ", its a 50 thing though" : ", come along";
+        var battle = mine.FirstOrDefault(raid => raid.Phase == "Battle");
+        if (battle != null)
+        {
+            answer = battle.Present > 0 ? $"yeah, the realm is in {battle.Name} right now, {battle.Present} of us{tail}"
+                : $"yeah, the {battle.Name} raid is underway{tail}";
+            return true;
+        }
+        var forming = mine.FirstOrDefault(raid => raid.Phase is "Muster" or "Staging" or "Waiting");
+        if (forming != null)
+        {
+            answer = forming.Assigned > 0 ? $"{forming.Name} raid is gathering, {forming.Assigned} signed up so far{tail}"
+                : $"{forming.Name} raid is gathering{tail}";
+            return true;
+        }
+        answer = "nothing running right now, the next one gets called when enough 50s are on";
+        return true;
     }
 
     public static bool TryAnswer(eRealm realm, string message, out string answer)
@@ -399,6 +501,24 @@ public static class AutonomousChatKnowledge
         HasWord(text, "where") || HasWord(text, "wheres") || HasWord(text, "where's") || HasWord(text, "find") ||
         HasWord(text, "located") || HasWord(text, "location") || HasPhrase(text, "how do i get") || HasPhrase(text, "how do you get") ||
         HasPhrase(text, "how to get");
+
+    /// <summary>
+    /// "where can i buy a horse ticket?" names no destination, so no route matches; it went unanswered in game (2026-10-27).
+    /// Any stable master sells tickets, and /stables lists the routes. Pure.
+    /// </summary>
+    public static bool TryAnswerTicketsInGeneral(string text, out string answer)
+    {
+        answer = string.Empty;
+        string t = (text ?? string.Empty).ToLowerInvariant();
+        bool aboutTickets = t.Contains("ticket") || t.Contains("horse route") || t.Contains("stable");
+        bool asks = t.Contains("where") || t.Contains("buy") || t.Contains("get") || t.Contains("how");
+        if (!aboutTickets || !asks)
+            return false;
+        answer = Pick("any stable master sells them, most towns have one. /stables lists the routes",
+            "stable master in town, they sell tickets to everywhere nearby. /stables shows where they go",
+            "buy them from the stable master, every big town has one");
+        return true;
+    }
 
     private static bool LooksLikeStableQuestion(string text) =>
         text.Contains("stable master", StringComparison.OrdinalIgnoreCase) ||

@@ -242,7 +242,7 @@ public static class AutonomousBotGuildSocial
         _ = new ECSGameTimer(bot, _ =>
         {
             string text = bot.Guild == guild && bot.ObjectState == GameObject.eObjectState.Active && HasListener(guild)
-                ? FreshLine(guild.GuildID, () => Lines.OwnDeath(zone, Random.Shared), GameLoop.GameLoopTime)
+                ? AutonomousBotVoices.StyleFor(bot, FreshLine(guild.GuildID, () => Lines.OwnDeath(zone, Random.Shared), GameLoop.GameLoopTime))
                 : null;
             if (text != null)
                 SendGuildLine(guild, bot.Name, text);
@@ -303,6 +303,7 @@ public static class AutonomousBotGuildSocial
     /// <summary>Called after a player's /gu line was sent to the guild.</summary>
     public static void OnPlayerGuildChat(GamePlayer player, string message)
     {
+        AutonomousBeggars.OnPlayerAsked(player, message, "guild");
         if (!Enabled || player?.Guild == null || string.IsNullOrWhiteSpace(message))
             return;
         BotChatTranscript.Player("guild", player, message, player.Guild.Name);
@@ -370,7 +371,7 @@ public static class AutonomousBotGuildSocial
                                   // in-game check 2026-10-18: "lfg, anyone want a 50 cleric?" drew "what level and class?"
                                   filter: candidate => AutonomousChatShortTalk.ReplyFits(message, candidate.Text)))
                 ? picked.Text
-                : Lines.Reply(kind, player.Name, bot.Level, bot.CurrentZone?.Description, Random.Shared);
+                : AutonomousBotVoices.StyleFor(bot, Lines.Reply(kind, player.Name, bot.Level, bot.CurrentZone?.Description, Random.Shared));
             if (!AutonomousBotChatCoordinator.TryAddDistinctResponse(used, line, out line))
                 continue;
             due = AutonomousBotChatCoordinator.ReplyDelayMs(line, due, Random.Shared) + 600;
@@ -421,7 +422,7 @@ public static class AutonomousBotGuildSocial
     /// <summary>With bot voices on, a gamebot's answer to a player's /gu line (as /faction and /group answer); else null.</summary>
     public static string VoicedPlayerGuildReply(GameBot bot, GamePlayer player, string message) =>
         AutonomousBotVoices.Enabled && bot != null && player != null
-            ? AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge) ? knowledge
+            ? AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge) ? AutonomousBotVoices.StyleFor(bot, knowledge)
                 : AutonomousBotChatCoordinator.ReplyToPlayer(bot, player, message)
             : null;
 
@@ -473,7 +474,7 @@ public static class AutonomousBotGuildSocial
             LastIdleByGuild[guild.GuildID] = GameLoop.GameLoopTime;
         }
         VC.Picked voiced = CorpusIdle(bot, charter);
-        string idle = voiced?.Text ?? Lines.Idle(charter, bot.ClassName, bot.Level, bot.CurrentZone?.Description, Random.Shared);
+        string idle = voiced?.Text ?? AutonomousBotVoices.StyleFor(bot, Lines.Idle(charter, bot.ClassName, bot.Level, bot.CurrentZone?.Description, Random.Shared));
         if (allianceLine)
         {
             AutonomousBotGuildAlliances.SendLine(alliance, bot.Name, idle);
@@ -481,7 +482,7 @@ public static class AutonomousBotGuildSocial
         }
         SendGuildLine(guild, bot.Name, idle);
         if (!string.IsNullOrEmpty(voiced?.Correction))
-            ScheduleGuildLine(bot, guild, 1_200 + Random.Shared.Next(1_400), () => voiced.Correction);
+            ScheduleGuildLine(bot, guild, 1_200 + Random.Shared.Next(1_400), () => voiced.Correction, styled: true);
 
         // A guildmate picks it up: a corpus line answers what it invites (a question nearly always, a remark
         // sometimes); today's lines keep their old 30% "lol" or "haha true".
@@ -498,7 +499,7 @@ public static class AutonomousBotGuildSocial
                 if (!AutonomousBotVoices.TryLine(other, "reply", out VC.Picked reply, answers: answers, slots: slots,
                         requireVoices: false, filter: line => AutonomousChatShortTalk.ReplyFits(voiced.Text, line.Text)))
                     continue;
-                ScheduleGuildLine(other, guild, AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared) + 1_500, () => reply.Text);
+                ScheduleGuildLine(other, guild, AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared) + 1_500, () => reply.Text, styled: true);
                 break;
             }
         }
@@ -639,7 +640,7 @@ public static class AutonomousBotGuildSocial
             LastRecruitByRealm[realm] = GameLoop.GameLoopTime;
             OpenRecruit[realm] = (guild.GuildID, GameLoop.GameLoopTime);
         }
-        AutonomousBotChatCoordinator.BroadcastFaction(officer.Name, realm, Lines.Recruit(guild.Name, info.Charter, minLevel, Random.Shared));
+        AutonomousBotChatCoordinator.BroadcastFaction(officer.Name, realm, AutonomousBotVoices.StyleFor(officer, Lines.Recruit(guild.Name, info.Charter, minLevel, Random.Shared)));
         return true;
     }
 
@@ -744,12 +745,16 @@ public static class AutonomousBotGuildSocial
         ? []
         : guild.GetOnlineBotMembers().Where(Eligible).OrderBy(_ => Random.Shared.Next()).ToArray();
 
-    private static void ScheduleGuildLine(GameBot bot, Guild guild, int delayMs, Func<string> line)
+    /// <summary>
+    /// Sends a bot's guild line after a pause. The talking update: fixed text (templates, knowledge answers) is written in the
+    /// bot's own style when bot voices are on; corpus lines and typo fixes are passed with <paramref name="styled"/> true.
+    /// </summary>
+    private static void ScheduleGuildLine(GameBot bot, Guild guild, int delayMs, Func<string> line, bool styled = false)
     {
         _ = new ECSGameTimer(bot, _ =>
         {
             if (bot.Guild == guild && Eligible(bot) && HasListener(guild))
-                SendGuildLine(guild, bot.Name, line());
+                SendGuildLine(guild, bot.Name, styled ? line() : AutonomousBotVoices.StyleFor(bot, line()));
             return 0;
         }, delayMs);
     }

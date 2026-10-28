@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using DOL.Database;
@@ -71,8 +74,8 @@ namespace DOL.GS
 		/// </summary>
 		protected HybridDictionary m_usedItemsTemplates = new HybridDictionary();
 		private readonly Lock _lock = new();
-		private Hashtable _databaseItemsCache;
-		private long _databaseItemsCacheExpiresTick;
+		private Dictionary<int, DbItemTemplate> _databaseLayout;
+		private long _databaseLayoutExpiresTick;
 		private const int DatabaseItemsCacheLifetimeMilliseconds = 5 * 60_000;
 
 		#endregion
@@ -130,6 +133,113 @@ namespace DOL.GS
 
 		#region Get Inventory Informations
 
+		/// <summary>One merchant row: its page and slot, the item template it sells and its own row id.</summary>
+		public readonly record struct MerchantRow(int Page, int Slot, string TemplateId, string RowId);
+
+		/// <summary>
+		/// The window layout of a list's rows: absolute slot (page * 30 + slot) to template id. The world data has rows on the
+		/// same page and slot (1,754 copies of an item already in that slot and 182 different items fighting for one, in 50
+		/// lists; docs/LOG-ERROR-BACKLOG.md). Rows are read in a stable order (page, slot, row id); the first row in a slot keeps
+		/// it; a second copy of an item already in the list is dropped; a different item is moved to the first free slot from its
+		/// own page on, so it can still be bought. Rows on a free slot keep it, even if the item is listed twice. Pure.
+		/// </summary>
+		public static Dictionary<int, string> Layout(IEnumerable<MerchantRow> rows, out int copies, out int moved, out int dropped)
+		{
+			const int total = MAX_PAGES_IN_TRADEWINDOWS * MAX_ITEM_IN_TRADEWINDOWS;
+			var layout = new Dictionary<int, string>();
+			var placed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			var pending = new List<MerchantRow>();
+			copies = moved = dropped = 0;
+			foreach (MerchantRow row in rows.OrderBy(r => r.Page).ThenBy(r => r.Slot).ThenBy(r => r.RowId, StringComparer.Ordinal))
+			{
+				if (row.Page < 0 || row.Page >= MAX_PAGES_IN_TRADEWINDOWS || row.Slot < 0 || row.Slot >= MAX_ITEM_IN_TRADEWINDOWS)
+				{
+					pending.Add(row);
+					continue;
+				}
+				int absolute = row.Page * MAX_ITEM_IN_TRADEWINDOWS + row.Slot;
+				if (!layout.TryGetValue(absolute, out string there))
+				{
+					layout[absolute] = row.TemplateId;
+					placed.Add(row.TemplateId);
+				}
+				else if (string.Equals(there, row.TemplateId, StringComparison.OrdinalIgnoreCase) || placed.Contains(row.TemplateId))
+					copies++;
+				else
+					pending.Add(row);
+			}
+			foreach (MerchantRow row in pending)
+			{
+				if (placed.Contains(row.TemplateId))
+				{
+					copies++;
+					continue;
+				}
+				int start = Math.Clamp(row.Page, 0, MAX_PAGES_IN_TRADEWINDOWS - 1) * MAX_ITEM_IN_TRADEWINDOWS;
+				int free = -1;
+				for (int i = 0; i < total && free < 0; i++)
+					if (!layout.ContainsKey((start + i) % total))
+						free = (start + i) % total;
+				if (free < 0)
+				{
+					dropped++;
+					continue;
+				}
+				layout[free] = row.TemplateId;
+				placed.Add(row.TemplateId);
+				moved++;
+			}
+			return layout;
+		}
+
+		/// <summary>Lists already reported as tidied or missing items, so each says so once per server run.</summary>
+		private static readonly ConcurrentDictionary<string, byte> Reported = new(StringComparer.OrdinalIgnoreCase);
+
+		/// <summary>The database rows of this list laid out (<see cref="Layout"/>), cached for five minutes.</summary>
+		private Dictionary<int, DbItemTemplate> DatabaseLayout()
+		{
+			lock (_lock)
+			{
+				long now = GameLoop.GameLoopTime;
+				if (_databaseLayout != null && now < _databaseLayoutExpiresTick)
+					return _databaseLayout;
+				var layout = new Dictionary<int, DbItemTemplate>();
+				if (!string.IsNullOrEmpty(m_itemsListID))
+				{
+					var templates = new Dictionary<string, DbItemTemplate>(StringComparer.OrdinalIgnoreCase);
+					var rows = new List<MerchantRow>();
+					foreach (DbMerchantItem merchantItem in DOLDB<DbMerchantItem>.SelectObjects(DB.Column("ItemListID").IsEqualTo(m_itemsListID)))
+					{
+						if (!templates.TryGetValue(merchantItem.ItemTemplateID, out DbItemTemplate template))
+						{
+							template = GameServer.Database.FindObjectByKey<DbItemTemplate>(merchantItem.ItemTemplateID);
+							templates[merchantItem.ItemTemplateID] = template;
+							if (template == null && Reported.TryAdd(m_itemsListID + "|missing|" + merchantItem.ItemTemplateID, 0))
+								log.ErrorFormat("Item template with ID = '{0}' not found for merchant item list '{1}'", merchantItem.ItemTemplateID, ItemsListID);
+						}
+						if (template != null)
+							rows.Add(new MerchantRow(merchantItem.PageNumber, merchantItem.SlotPosition, merchantItem.ItemTemplateID, merchantItem.ObjectId));
+					}
+					Dictionary<int, string> laidOut = Layout(rows, out int copies, out int moved, out int dropped);
+					foreach (KeyValuePair<int, string> placed in laidOut)
+						layout[placed.Key] = templates[placed.Value];
+					// Was "two merchant items on same page/slot" at error level for every slot on every page view (2,000+ a day).
+					if (copies + moved + dropped > 0 && Reported.TryAdd(m_itemsListID, 0))
+						log.InfoFormat("MERCHANT_LIST_TIDIED list={0} copies_dropped={1} moved_to_free_slots={2} no_room={3}", m_itemsListID, copies, moved, dropped);
+				}
+				_databaseLayout = layout;
+				_databaseLayoutExpiresTick = now + DatabaseItemsCacheLifetimeMilliseconds;
+				return layout;
+			}
+		}
+
+		/// <summary>Forget the cached layout, after the list's rows were changed in the database (/merchant articles).</summary>
+		public void InvalidateCache()
+		{
+			lock (_lock)
+				_databaseLayout = null;
+		}
+
 		/// <summary>
 		/// Get the list of all items in the specified page
 		/// </summary>
@@ -138,30 +248,10 @@ namespace DOL.GS
 			try
 			{
 				HybridDictionary itemsInPage = new HybridDictionary(MAX_ITEM_IN_TRADEWINDOWS);
-				if (m_itemsListID != null && m_itemsListID.Length > 0)
+				foreach (KeyValuePair<int, DbItemTemplate> item in DatabaseLayout())
 				{
-					var itemList = DOLDB<DbMerchantItem>.SelectObjects(DB.Column("ItemListID").IsEqualTo(m_itemsListID).And(DB.Column("PageNumber").IsEqualTo(page)));
-					foreach (DbMerchantItem merchantitem in itemList)
-					{
-						DbItemTemplate item = GameServer.Database.FindObjectByKey<DbItemTemplate>(merchantitem.ItemTemplateID);
-                        if (item != null)
-                        {
-                            DbItemTemplate slotItem = (DbItemTemplate)itemsInPage[merchantitem.SlotPosition];
-                            if (slotItem == null)
-                            {
-                                itemsInPage.Add(merchantitem.SlotPosition, item);
-                            }
-                            else
-                            {
-                                log.ErrorFormat("two merchant items on same page/slot: listID={0} page={1} slot={2}", m_itemsListID, page, merchantitem.SlotPosition);
-                            }
-                        }
-                        else
-                        {
-                            log.ErrorFormat("Item template with ID = '{0}' not found for merchant item list '{1}'", 
-                                merchantitem.ItemTemplateID, ItemsListID);
-                        }
-					}
+					if (item.Key / MAX_ITEM_IN_TRADEWINDOWS == page)
+						itemsInPage[item.Key % MAX_ITEM_IN_TRADEWINDOWS] = item.Value;
 				}
 				lock (_lock)
 				{
@@ -194,22 +284,13 @@ namespace DOL.GS
 				slot = GetValidSlot(page, slot);
 				if (slot == eMerchantWindowSlot.Invalid) return null;
 
-				DbItemTemplate item;
+				int absolute = (int)slot + (page * MAX_ITEM_IN_TRADEWINDOWS);
 				lock (_lock)
 				{
-					item = m_usedItemsTemplates[(int)slot+(page*MAX_ITEM_IN_TRADEWINDOWS)] as DbItemTemplate;
-					if (item != null) return item;
+					if (m_usedItemsTemplates[absolute] is DbItemTemplate scripted) return scripted;
 				}
-
-				if (m_itemsListID != null && m_itemsListID.Length > 0)
-				{
-					var itemToFind = DOLDB<DbMerchantItem>.SelectObject(DB.Column("ItemListID").IsEqualTo(m_itemsListID).And(DB.Column("PageNumber").IsEqualTo(page)).And(DB.Column("SlotPosition").IsEqualTo((int)slot)));
-					if (itemToFind != null)
-					{
-						item = GameServer.Database.FindObjectByKey<DbItemTemplate>(itemToFind.ItemTemplateID);
-					}
-				}
-				return item;
+				// The same layout the window showed, so a moved item is bought where it is shown.
+				return DatabaseLayout().TryGetValue(absolute, out DbItemTemplate item) ? item : null;
 			}
 			catch (Exception e)
 			{
@@ -228,36 +309,12 @@ namespace DOL.GS
 			try
 			{
 				Hashtable allItems = new Hashtable();
+				foreach (KeyValuePair<int, DbItemTemplate> item in DatabaseLayout())
+					allItems[item.Key] = item.Value;
 				lock (_lock)
 				{
-					long now = GameLoop.GameLoopTime;
-					if (_databaseItemsCache == null || now >= _databaseItemsCacheExpiresTick)
-					{
-						_databaseItemsCache = new Hashtable();
-						if (!string.IsNullOrEmpty(m_itemsListID))
-						{
-							var itemList = DOLDB<DbMerchantItem>.SelectObjects(DB.Column("ItemListID").IsEqualTo(m_itemsListID));
-							foreach (DbMerchantItem merchantitem in itemList)
-							{
-								DbItemTemplate item = GameServer.Database.FindObjectByKey<DbItemTemplate>(merchantitem.ItemTemplateID);
-								if (item == null)
-									continue;
-								int absoluteSlot = merchantitem.PageNumber * MAX_ITEM_IN_TRADEWINDOWS + merchantitem.SlotPosition;
-								if (_databaseItemsCache[absoluteSlot] == null)
-									_databaseItemsCache.Add(absoluteSlot, item);
-								else
-									log.ErrorFormat("two merchant items on same page/slot: listID={0} page={1} slot={2}", m_itemsListID, merchantitem.PageNumber, merchantitem.SlotPosition);
-							}
-						}
-						_databaseItemsCacheExpiresTick = now + DatabaseItemsCacheLifetimeMilliseconds;
-					}
-
-					foreach (DictionaryEntry de in _databaseItemsCache)
-						allItems[de.Key] = de.Value;
 					foreach (DictionaryEntry de in m_usedItemsTemplates)
-					{
 						allItems[(int)de.Key] = (DbItemTemplate)de.Value;
-					}
 				}
 				return allItems;
 			}

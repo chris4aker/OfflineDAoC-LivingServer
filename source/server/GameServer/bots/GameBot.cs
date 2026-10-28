@@ -248,9 +248,18 @@ namespace DOL.GS
 
         public override int MaxMana => GetModified(eProperty.MaxMana);
 
+        /// <summary>A player drags an item onto the bot: only a beggar takes it (AutonomousBeggars), into its own saved pack.</summary>
+        public override bool ReceiveItem(GameLiving source, DbInventoryItem item) =>
+            AutonomousBeggars.TryReceiveItem(this, source as GamePlayer, item) || base.ReceiveItem(source, item);
+
+        /// <summary>A player drags coin onto the bot: only a beggar takes it, into its own saved purse.</summary>
+        public override bool ReceiveMoney(GameLiving source, long money) =>
+            AutonomousBeggars.TryReceiveMoney(this, source as GamePlayer, money) || base.ReceiveMoney(source, money);
+
         /// <summary>A bot's /say, recorded in the chat transcript (CHAT_LINE) when a player is near enough to hear it.</summary>
         public override bool Say(string str)
         {
+            str = AutonomousRoleplayers.Voice(this, str);   // a roleplayer speaks in thee and thou
             bool said = base.Say(str);
             if (said && AutonomousLivingServer.PlayerHears(this))
                 BotChatTranscript.Bot("say", Name, Realm, str);
@@ -1270,6 +1279,13 @@ namespace DOL.GS
             StopMoving();
         }
 
+        /// <summary>Ends a walk back to the party (a stuck recovery put the bot with its group).</summary>
+        public void EndReturnJourney()
+        {
+            IsReturningAfterRelease = false;
+            _stableReturnPlan = null;
+        }
+
         public bool ContinueReturnJourney()
         {
             if (!IsReturningAfterRelease || !IsAlive)
@@ -1378,7 +1394,39 @@ namespace DOL.GS
             Say(ReturnDialogue(stage));
         }
 
-        private string ReturnDialogue(string stage) => stage switch
+        // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —
+        // the companion bots' formal voice. A gamebot talks like a player.
+        private string ReturnDialogue(string stage) => IsAutonomousWorldBot
+            ? GamebotReturnLine(stage, Random.Shared, StableRouteDestination, CurrentZone?.Description)
+            : CompanionReturnDialogue(stage);
+
+        /// <summary>What an autonomous gamebot says on its way back to the player's group. Pure.</summary>
+        public static string GamebotReturnLine(string stage, Random random, string stableDestination, string zone) => stage switch
+        {
+            "release" => random.Next(3) switch
+            {
+                0 => "released, running back",
+                1 => "at bind, omw back",
+                _ => "no rez, released. coming back to you",
+            },
+            "stable" => "grabbing a horse, faster",
+            "mount" => string.IsNullOrEmpty(stableDestination) ? "on a horse, be there soon" : $"horse to {stableDestination}, be there soon",
+            "dismount" => "off the horse, almost there",
+            "arrive" => random.Next(3) switch
+            {
+                0 => "back",
+                1 => "here, ready",
+                _ => "made it, whats next",
+            },
+            _ => random.Next(3) switch
+            {
+                0 => "still omw",
+                1 => "taking the long way round some mobs, almost there",
+                _ => string.IsNullOrEmpty(zone) ? "omw back" : $"in {zone}, omw back",
+            },
+        };
+
+        private string CompanionReturnDialogue(string stage) => stage switch
         {
             "release" => Random.Shared.Next(3) switch
             {

@@ -9,6 +9,7 @@
     "HouseConsignmentMerchant", "househookpointitem", "PlayerBoats"
   ],
   "OptionalProgressTables": ["offline_bot_guilds", "offline_bot_guild_members", "offline_bot_scenes_heard",
-    "offline_bot_memory", "offline_bot_nemesis", "offline_server_firsts", "offline_bot_lines_heard"],
+    "offline_bot_memory", "offline_bot_nemesis", "offline_server_firsts", "offline_bot_lines_heard",
+    "offline_bot_ragequits", "offline_player_reputation", "offline_bot_storylines", "offline_bot_bonds"],
   "ClearTables": ["Appeal", "AuditEntry", "Ban", "BugReport", "KeepCaptureLog", "News", "PlayerInfo", "ServerInfo", "SinglePermission", "Voting", "serverstats", "offline_bot_commands", "offline_runtime_status", "offline_local_options"]
 }

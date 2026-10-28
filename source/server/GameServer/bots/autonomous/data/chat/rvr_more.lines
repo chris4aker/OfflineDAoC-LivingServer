@@ -13,9 +13,13 @@ anyone near {keep}?
 stealthers out tonight, stick together
 lost my group, anyone near amg?
 @invites news
+@needs in_frontier, defending
 {enemy} 8man roaming near {keep}
+@needs in_frontier
 @invites
+@needs in_frontier, defending
 ram on the door at {keep}!
+@needs in_frontier
 {frontier} is crawling with {enemy} tonight
 @invites ask_anyone
 anyone have speed? long run to {keep}
@@ -23,15 +27,21 @@ anyone have speed? long run to {keep}
 waiting at the portal keep for a group
 almost got ganked at the bridge, close one
 lots of {enemy} at the mile gate, dont go alone
+@needs in_frontier, !defending
 dead quiet near {keep}, i dont trust it
+@needs in_frontier
 realm points are flowing tonight
+@needs in_frontier, defending
 {keep} lord is still up, we have time
+@needs in_frontier
 group up at the portal keep, safer that way
 saw a {enemy} stealther near the mg, heads up
 our realm owns {frontier} tonight
 stuck in the zerg, cant see a thing for the lag
 sitting by the mg waiting for a fight
+@needs in_frontier, defending
 watch the hill near {keep}, archers up there
+@needs in_frontier
 @invites ask_where
 anyone know where the {enemy} zerg went?
 @invites ask_anyone

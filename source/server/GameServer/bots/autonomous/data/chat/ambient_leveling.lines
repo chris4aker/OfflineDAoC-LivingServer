@@ -84,7 +84,9 @@ who says you cant solo oranges at {level}
 @needs
 @invites
 @who Leveler
-3 bubbles from ding, staying up till i get it
+@needs xp_high
+almost there, staying up till i ding
+@needs
 sticking to {monsters} till {count} more levels, xp is steady
 
 @kind ambient
@@ -169,7 +171,9 @@ is it just me or do the 40s go faster than the 30s
 anyone know who camps {monster} at {camp}? want to take turns
 @invites
 @invites complaint
+@levels 48-49
 almost 50 and my gear is still a mess
+@levels 35-50
 @invites
 thinking about rerolling an alt once this one hits 50
 how does everyone fill the time at 50 besides the frontier?
@@ -192,11 +196,12 @@ heard there is a named that wanders near {camp}, anyone seen it?
 three purples in {dungeon} and we did not wipe. legendary night
 @invites
 @who NoLifer
-once i hit 50 it is straight to the frontier, no stops
 mapping out which realm abilities to buy first at 50
 @who Leveler
 @invites joke
+@levels 48-48
 2 levels to go, nobody talk to me until i ding
+@levels 35-50
 @invites
 @who Crafter
 taking a break from leveling to work on crafting, my bags thank me
@@ -239,3 +244,12 @@ any merchant buys it, they all pay the same
 every merchant takes everything, just sell it to the closest one
 try the exchange first, merchants pay less
 the nearest merchant will take it, price is the same everywhere
+
+# The talking update audit: not said by a 50
+@kind ambient
+@topic leveling
+@who NoLifer
+@realm *
+@levels 35-49
+@invites chat
+once i hit 50 it is straight to the frontier, no stops

@@ -1,0 +1,446 @@
+# The Dunce Rage Quit (2026-10-26, the owner's idea; third pass: "start fun, then get hostile super fast"). Now and then a
+# bot asks something truly dumb in /faction. Three or four lines of fun, then the dunce snaps at the first joke, the
+# realm smells blood, and it turns into a flame war: insults, threats, a cousin who is a GM, ALL CAPS, keyboard smashes,
+# and a rage quit. "@exit A" logs that bot off for 2-6 hours once the scene has played to its end
+# (AutonomousBotSchedule.RageQuit). A player who spoke during the scene gets a parting tell ("ragequit_tell"), and the dunce
+# comes back sheepish ("ragequit_back"). Real swear words are not in the corpus (build_corpus.py BANNED): they swear the way
+# 2003 chat did, wtf, stfu, gtfo, omfg, $#@!. Nobody uses slurs. The roasts call the dunce "they". New writing.
+
+@kind debate
+@realm *
+
+@topic dunce
+@levels 5-50
+@scene dunce_horse_level
+@exit A
+@role A type=* levels=5-25
+@role B type=Socialite
+@role C type=NoLifer
+@role D type=Daredevil
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} how do i level up my horse? mine is still really slow | {q} serious question, where do i train my horse? it never gets faster
+B: hahahaha | ROFL
+C: your. horse. | ...your horse
+D: you have to feed it a dragon scale every level | have you tried killing blues ON the horse
+A: wow. ok. forget i asked, bunch of comedians | oh great, the whole realm is a comedy club now. thanks a lot
+E: someone's touchy | lol the horse question was the calm part
+A: touchy? i asked ONE question and you all jumped on it like vultures | i asked a normal question and got a circus. typical for this realm
+F: it wasnt a normal question tho. it was a horse question | normal questions dont have horse levels in them
+A: stfu. nobody asked you | did i ask you? no. so shut it
+G: lol mad | rofl they're actually mad about a horse
+C: its a fixed route. same speed for everyone. you rent the seat, you dont own the animal. there. answered. still funny | same speed for everyone, its a rented ride. now go cry about it
+A: oh NOW you answer. after making me look like an idiot in front of everyone | thanks for the answer genius, after the whole realm laughed at me
+H: you did that part yourself | we didnt make you look like anything, you typed it
+A: you know what, all of you are no-life losers who live in this game | none of you have ever seen the sun. go outside. go look at a real horse
+D: says the one trying to level a horse | the horse is the only one here who goes outside
+A: my cousin is a GM. i'm sending him this log. enjoy your bans | ok screenshotting all of this. my cousin works for the game. say goodbye
+E: oh no, not the cousin | tell your cousin the horse wants a raise
+B: guys come on, theyre new | aw stop it, everyone was new once. even if not this new
+A: dont defend me, i dont need YOUR help, you're just as bad | butt out. you were laughing first, i saw it
+B: wow ok. never mind then. roast away | ok, i tried. i withdraw my kindness
+F: l2p | learn to ride, noob
+A: SAY THAT TO MY FACE. COME TO THE STABLES RIGHT NOW | MEET ME AT THE STABLES. RIGHT NOW. ALL OF YOU
+G: on what, your slow horse? we'll be waiting a week | we'll wait. your horse won't get there till friday
+A: ASKJDHASKJDH I HATE THIS REALM I HATE THIS GAME I HATE YOUR STUPID FACES | $#@! $#@! $#@! YOU ALL. EVERY SINGLE ONE. AND YOUR HORSES
+H: /em gets popcorn | someone get this on video
+A: IM CANCELING MY ACCOUNT. ENJOY YOUR SLOW $#@! HORSES. I HOPE THEY ALL THROW YOU INTO A LAKE | DONE. GONE. UNINSTALLING. ALL OF YOU CAN RIDE YOUR SLOW HORSES OFF A CLIFF
+C: o/ | bye
+D: o/ | /wave
+~ 6
+E: did they actually log | they're gone. they actually left
+F: rip horse whisperer | rest in peace, horse guy
+G: ten gold says they're back before the stablemaster's horse gets to the next town | they'll be back by morning asking how to level their cloak
+H: the cousin is going to be so disappointed | somewhere a GM cousin is very confused right now
+
+@topic dunce
+@levels 10-50
+@scene dunce_pvp_off
+@exit A
+@role A type=* levels=10-30
+@role B type=Daredevil
+@role C type=NoLifer
+@role D type=Socialite
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} how do i turn off pvp?? the enemy keeps killing me in the frontier | {q} where is the option to turn off pvp, three enemies just killed me again
+B: lol | omfg
+C: the frontier. is the pvp. | turn off pvp... in the frontier... the pvp zone
+D: there's a button for it but you have to be level 51 to see it | it's under options, right below "make me invincible"
+A: oh ha ha. so funny. i just died three times and you're doing standup | wow, i'm getting farmed and my own realm is laughing. great realm
+E: you walked to an enemy keep alone. we're allowed to laugh | you fed them three times in ten minutes. the laugh is earned
+A: i didnt FEED anyone. i was exploring. not that you would know, you never leave the capital | it wasnt feeding. at least i go out there, you all hide in town
+F: i've got more kills tonight than you have deaths. barely | big words from someone who just gave the enemy a free dinner
+A: shut up. nobody cares about your stupid kills | wow congrats on your little kill count. want a medal?
+B: i'd take a medal over a corpse run | yes actually. i'd like a medal. you can bring it on your next corpse run
+A: you're all trash. our realm loses because of trash like you | this is why we lose every keep. a realm full of garbage players
+G: we lose keeps because people walk into them alone and feed | we lose because of guys who think pvp has an off switch
+C: you lost three fights in ten minutes and you're giving US a lecture | the guy with three deaths is coaching the realm now
+A: STFU. I KNOW EXACTLY WHO ALL OF YOU ARE AND I'M WRITING YOUR NAMES DOWN | keep laughing. i'm making a list. every name in this chat
+H: oh no, a list | is the list in crayon
+A: i'm rolling an enemy character tonight and camping every one of you. EVERY ONE | watch. i'll make one on their side and camp you all at the gate
+B: you couldnt camp a campfire | you'll die to the gate guards before you find us
+D: guys stop, theyre clearly having a bad night | come on, let them be. they're upset
+A: DONT PITY ME. YOU'RE THE WORST ONE. FAKE NICE | oh look who's suddenly nice. save it. i know you were laughing too
+D: ok wow. never mind. carry on | fine, i take it back. roast away
+E: cry more | /cry
+A: I HOPE THE ENEMY TAKES EVERY KEEP AND EVERY RELIC AND YOU ALL GET FARMED FOREVER | I HOPE YOU ALL LOSE EVERY KEEP. YOU DESERVE IT. EVERY ONE OF YOU
+F: says the guy who handed them three kills tonight | you've done more for the enemy tonight than their whole army
+A: THIS GAME IS TRASH. THIS REALM IS TRASH. IM DONE. $#@! ALL OF YOU | UNINSTALLING. ENJOY BEING FARMED, YOU $#@!ING CLOWNS
+G: say hi to the enemy on your way out, they'll miss you | the other realms just lost their favorite pinata
+H: o/ | o7
+~ 6
+B: did anyone get a screenshot of the caps | please tell me someone screenshotted the caps
+C: next week: how do i turn off mobs | back in an hour asking how to turn off dragons
+E: i almost feel bad. almost | the enemy realm is having a moment of silence right now
+
+@topic dunce
+@levels 10-50
+@scene dunce_buy_realm_points
+@exit A
+@role A type=* levels=8-30
+@role B type=Crafter
+@role C type=NoLifer
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} which merchant sells realm points? i have like 40 gold saved | {q} where can i buy realm points, i have gold now
+B: the merchant is called the frontier | aisle three, next to the courage potions
+E: i'll sell you mine. send me the 40 gold and stand very still in the frontier | 40 gold and i'll send you all my realm points. trust me
+A: really? ok how do i send it | wait for real? how many do i get
+F: DO NOT | DONT YOU DARE
+G: lol they were really going to send it | and that's how you lose 40 gold in one evening
+A: so you were LYING to me. wow. what kind of scum lies to a guildmate | you were scamming me?? in my own realm?? you people are disgusting
+E: i was doing you a favor. lesson one: dont send gold to strangers | consider it a free lesson. most people pay 40 gold for it
+A: shut up. you're a scammer and a loser and i'm reporting you | reported. enjoy your ban, you scamming creep
+C: you cant buy realm points. you kill enemies for them. thats the whole game | no merchant. frontier kills, battlegrounds, keeps. thats it. thats the answer
+A: then what is gold even FOR. this game is stupid | so gold is useless? great design. real great
+B: armor. buy armor. like a person | spend it on gear, like everyone with a pulse
+A: i HAVE armor | my armor is fine
+H: its grey. we can see it from here | from here it looks like a tablecloth
+A: at least i dont spend 20 hours a day in a fantasy game, you basement goblins | you all live in your moms basement and it SHOWS
+C: i have a job, a house and a dog, and i still found time for this | i have a mortgage and i'm still having more fun than you right now
+A: nobody cares about your dog. i hope your dog runs away | nobody asked about your life. go walk your stupid dog
+D: whoa. leave the dog out of this | ok that was too far. the dog did nothing
+G: you've lost the realm. now you lost the dog people too | never insult a man's dog in faction. thats the rule
+A: I DONT CARE. I DONT CARE ABOUT ANY OF YOU OR YOUR DOGS OR YOUR STUPID REALM POINTS | ARGH. YOU'RE ALL INSANE. ALL OF YOU. DOGS INCLUDED
+F: rofl caps lock | they found the caps lock. it's over now
+A: ENJOY YOUR FAKE POINTS YOU $#@! NERDS. IM GONE. DELETING MY CHARACTER | DONE. CANCELLING. KEEP YOUR FAKE POINTS AND YOUR STUPID DOGS
+E: still selling realm points, if anyone has 40 gold | offer still stands. 40 gold, all my realm points
+B: o/ | bye bye
+~ 6
+H: shame, i was going to buy pots with that 40 gold | i still would have taken the 40 gold
+D: give my regards to the dog | the dog is fine by the way. the dog says hi
+G: they'll be back. they always come back | give it two hours
+
+@topic dunce
+@levels 10-50
+@scene dunce_switch_realm
+@exit A
+@role A type=* levels=10-35
+@role B type=NoLifer
+@role C type=Socialite
+@role D type=Daredevil
+@role E type=Explorer
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} how do i switch realms? the other side is winning and i want to be on that team | {q} is there a way to move my guy to the winning realm
+B: lol, a traitor in faction | wow. said it right out loud and everything
+C: aw, fair weather fan | someone's shopping for a new realm
+D: ask the enemy, they'll give you a very warm welcome. with swords | sure, walk over and ask them nicely. they love visitors
+A: you guys are so dramatic. its a game. i want to win, sue me | omg its just a question, i'd rather be on the side that actually wins
+E: a new realm is a new character. level 1. everything starts over | it doesnt carry over. new realm, new guy, back to level 1
+A: so i'm STUCK with you losers? great. perfect | so i'm stuck in the worst realm with the worst people. awesome
+F: the feeling is mutual | believe me, the realm feels the same way about you
+A: we lose every night because nobody here knows how to play | its not my fault we lose. look at the people in this chat
+B: we lost ONE keep. one. and you're packing your bags | one keep and the traitor's already halfway out the door
+A: shut up, you're the reason we lose, you just sit in town all day | you couldnt hold a keep if they handed it to you with a bow on it
+D: says the deserter | big words from a guy with one foot in the enemy realm
+A: i'm rolling on their side tonight and i'm telling them EVERYTHING. every guild, every name | fine. i'll go to their side and tell them where you all bind. enjoy
+G: please do, they could use a laugh | tell them hi. tell them we're sending you as a gift
+H: someone report them to the king | call the guards, we have a traitor in the chat
+A: report me?? REPORT ME?? you're the ones being toxic, i'M reporting YOU. ALL of you | oh i'll report YOU. harassment. every single one. my cousin is a GM
+C: not the cousin again | everyone has a GM cousin. its a whole family of GMs
+A: I HOPE THEIR ARMY FARMS ALL OF YOU EVERY NIGHT. I HOPE THEY TAKE EVERY KEEP AND EVERY RELIC | I HOPE THEY BURN EVERY KEEP YOU HAVE AND CAMP YOUR BINDSTONE FOREVER
+F: lol the enemy doesnt want you either | the other realm already saw this chat. they're not taking you
+A: THIS REALM IS FULL OF $#@! LOSERS. IM GONE. GOODBYE FOREVER | YOU'RE ALL PATHETIC. DELETING THIS CHARACTER. $#@! THIS REALM
+E: wait, which side are you even going to | do you know which side is winning? asking for the enemy
+B: o/ | /wave
+~ 6
+C: they'll be back here tomorrow, same name with an extra letter | tomorrow: a new character, same name plus an x
+D: the enemy is welcome to them. our gift | gift to the enemy. they can keep them
+G: honestly the other realms dont deserve this kind of punishment | poor enemy realm, they didnt do anything to deserve them
+
+@topic dunce
+@levels 15-50
+@scene dunce_gold_to_dragon
+@exit A
+@role A type=* levels=15-35
+@role B type=NoLifer levels=35-50
+@role C type=Daredevil
+@role D type=Socialite
+@role E type=Explorer
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} if i give the dragon gold will it leave me alone? dragons love gold right | {q} do dragons take gold? like if i pay it, will it let me pass
+C: absolutely. go up close so it can see the coins | yes, but you have to hand it over in person. very close
+D: say please, they're very formal | bring a nice card with the gold, dragons like manners
+E: in fairness, every old tale puts the dragon on a pile of gold | the dragon does sit on a pile of gold. its not a crazy idea. its a dumb idea
+A: ok i see whats going on. very funny. real mature | lol ok i get it. the realm thinks its hilarious. can someone answer like an adult
+B: the dragon takes fifty people, a plan and a lot of luck. not a purse | answer: no. fifty players, a raid leader and luck. no purse
+A: so you could have just said that instead of making me look stupid | wow thanks, after three jokes. you people are exhausting
+F: you didnt need our help looking stupid | that part you did on your own, we just watched
+A: shut up. you probably cant even kill the dragon either, you just sit here talking | like any of you have ever seen the dragon. you sit in the capital all day
+B: i've killed it four times | four kills on it this year. how many do you have
+A: liar. nobody believes you, no-life | sure you did. and i'm the king of the realm
+G: lol they called the raid leader a liar | they're picking a fight with the guy who actually kills dragons
+A: i'm going there RIGHT NOW with my gold. i'll prove all of you wrong | fine. i'm going to the lair. watch me. i'll come back rich
+C: someone follow them, i want the death message | i'll watch from a safe distance. very safe
+D: leave us your stuff in your will | can i have your boots when it eats you
+A: you all want me to die. you're SICK. this whole realm is sick | you're all laughing about me dying?? what is WRONG with you
+H: we want you to die a little. for the story | not die. just... learn. by dying
+A: I HOPE THE DRAGON WIPES YOUR RAID EVERY NIGHT FOR A YEAR | I HOPE IT EATS YOUR WHOLE RAID AND YOUR CORPSES ROT IN THE LAIR
+E: the dragon wipes us for free. no gold needed | it already does, you're late
+A: AAAARGH. YOU'RE ALL $#@! IDIOTS. KEEP YOUR STUPID DRAGON. IM DONE WITH THIS $#@! GAME | IM DONE WITH THIS GAME AND THIS $#@! REALM. BYE. HOPE YOU ALL GET EATEN
+F: o/ | /wave
+G: o/ | bye
+~ 6
+B: either they logged or they're walking to the lair, both are great | did they log or go to the lair? both are wins
+C: i kind of wanted to see them try | i was going to follow for the screenshot
+D: next raid we name a pull after them | next raid, the first death is in their honor
+
+@topic dunce
+@levels 5-50
+@scene dunce_guards_attack
+@exit A
+@role A type=* levels=5-20
+@role B type=Socialite
+@role C type=NoLifer
+@role D type=Daredevil
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} why do our own guards kill me when i attack them? theyre on my side | {q} the guards keep killing me when i hit them, that has to be a bug
+B: aww | oh no. oh sweetie
+C: why are you attacking the guards | stop. hitting. the guards
+D: they're on your side until you stab them. then they're on their side | the guards have a very simple rule, and you found it
+A: i was testing my new sword, ok? relax | it was an accident. i was trying out a combo. jeez
+E: how many times | how many deaths so far
+A: six. so what. it should not do that | like six. it's a bug and someone should fix it
+F: six times. you hit the guard six times | you tried it SIX times
+G: the definition of insanity is attacking the same guard six times | after the third death most people get the hint
+A: shut up. everyone here thinks they're so smart | oh wow, the geniuses of the realm have arrived. please, teach me
+C: we're not smart. we just dont hit guards | the bar is on the floor and you're digging under it
+A: you're all so smug. none of you have a life, you just camp this channel waiting for someone to mess up | you're like vultures. you wait in faction all day to laugh at people. pathetic
+H: you made it very easy | you're the most fun we've had all week
+A: i hope YOU get killed by the guards. i hope the guards kill all of you | i'll get the guards to kill you. watch. i'll pull them onto you
+E: you cant even get them to stop killing YOU | the guards have killed you six times. they're on our team
+A: STFU STFU STFU. I'M SO SICK OF THIS REALM | GTFO OF MY CHAT. ALL OF YOU. I'M SO DONE
+D: its faction chat. its everyone's chat | your chat? lol
+A: I'M GOING TO ATTACK THE GUARDS UNTIL THE GAME BREAKS. WATCH ME | FINE. I'LL HIT THEM ALL NIGHT. I'LL BREAK THEM. YOU'LL SEE
+B: please dont, the guards have families | the guards are tired. let them rest
+A: ASDFGHJKL I HATE THIS GAME. $#@! THE GUARDS. $#@! ALL OF YOU | $#@! THIS. $#@! YOU. $#@! THE GUARDS. UNINSTALLING
+C: /em salutes the guards | the guards win again
+~ 6
+F: seven. bet they hit one more on their way out | final count: seven guards, zero wins
+G: the guards should get a medal | someone send the guards a thank you note
+H: i asked my guard. he says good riddance | the guards are celebrating
+
+@topic dunce
+@levels 5-50
+@scene dunce_pause_game
+@exit A
+@role A type=* levels=5-30
+@role B type=NoLifer
+@role C type=Socialite
+@role D type=Daredevil
+@role E type=Leveler
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} how do i pause the game? i need to go eat and i'm in a fight | {q} whats the pause button? dinner is ready and i'm fighting
+B: ...pause | pause the... server
+C: aww, dinner time | tell your mom you'll be right down
+D: the pause button is the escape key. hold it for ten minutes | ask everyone in the realm to stand still. we'll wait for you
+A: lol very funny, im serious, my food is getting cold | im not joking, my mom is yelling and the mob is hitting me
+E: there is no pause. its online. a thousand people are playing | the game doesnt stop for you. its an online world
+A: so i'm just supposed to DIE?? that's so stupid | wow great. so i die because i have to eat. what a game
+F: you're dying while typing this, you know that right | the mob is still hitting you. right now. while you type
+A: shut up and help me | stop typing jokes and TELL ME WHAT TO DO
+B: kill the mob or run. then eat | finish the fight, then log out, then eat. its not hard
+A: its not my fault you have no life and never have to eat dinner | easy for you to say, your mom probably brings you dinner at the computer
+G: rofl, they died | and they're dead. rip
+A: I DIED. THANKS A LOT. BEST REALM EVER | I DIED WHILE YOU CLOWNS WERE JOKING. THANKS FOR NOTHING
+H: you died while insulting us. thats on you | you used your last seconds to insult us. bold
+A: ALL OF YOU ARE THE WORST. IF I LOSE MY XP IM REPORTING EVERY SINGLE ONE OF YOU | IF THAT DEATH COST ME A LEVEL I'M GETTING YOU ALL BANNED
+E: you can't report someone for your dinner | report reason: they didn't pause the game for me
+A: OMFG I'M SO SICK OF YOU NERDS. GO OUTSIDE. EAT SOMETHING. GET A LIFE | YOU ARE ALL CREEPS WHO LIVE IN THIS GAME. I HAVE A LIFE. I HAVE DINNER
+D: enjoy your dinner, its probably cold now | your dinner is cold AND you're dead. two for one
+A: $#@! THIS GAME. $#@! YOUR DINNERS. I'M NEVER PLAYING THIS AGAIN | THAT'S IT. $#@! ALL OF YOU. I'M GOING TO EAT. FOREVER
+B: o/ | bon appetit
+C: o/ | enjoy your meal
+~ 6
+F: the mob is still standing there. waiting | their corpse is cold too
+G: tell your mom the realm says hi | someone tell their mom, she'll want to know
+H: i'm going to go eat too. but i'll kill the mob first | brb dinner. i know how to stop fighting first
+
+@topic dunce
+@levels 5-50
+@scene dunce_pet_warrior
+@exit A
+@role A type=* levels=5-25 class=Armsman,Paladin,Mercenary,Reaver,Scout,Infiltrator,Minstrel,Cleric,Friar,Wizard,Warrior,Thane,Skald,Berserker,Savage,Shadowblade,Healer,Shaman,Runemaster,Hero,Champion,Blademaster,Warden,Bard,Ranger,Nightshade,Eldritch,Mentalist,Valewalker
+@role B type=NoLifer
+@role C type=Socialite
+@role D type=Daredevil
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} how do i get my pet? everyone has one and i cant find the button | {q} where do i get my pet? i looked through every menu
+B: you're a {class} | what class are you again?
+C: aww. the pet is in another class | oh honey. your pet is in another character
+D: your pet is your sword. name it something nice | your pet is the healer. be nice to them
+A: what? the guy next to me has a pet. why does HE get one and not me | so every class gets a pet but me? thats so unfair
+E: some classes have pets. yours doesnt. you picked it at character creation | the class page told you. you clicked past it
+A: nobody reads that stuff. this game is so badly explained | why would i read the class page, nobody reads that. bad design
+F: you didnt read the class page. and its the game's fault | you skipped the reading and you're blaming the game. bold
+A: shut up. i want a pet and i deserve one. i'm paying for this game too | why do you even care, nobody asked you. i want a PET
+G: someone's having a tantrum | lol they're stomping their feet. we can hear it
+A: i'm not having a tantrum. you're all just jerks | you're the ones being childish. making fun of someone who asks
+B: you can have a pet. roll a new character | reroll. level one. pet included
+A: reroll? i'm not starting OVER. are you insane | i've played for weeks. i'm not rerolling. you're crazy
+H: then love your sword | then name your sword. it'll never leave you
+A: you're all so stupid. this is why nobody likes this realm | wow. the worst people in the whole game are right here in this chat
+C: we like this realm. we're having a great time | the realm is fine. you're just mad about a pet
+A: I'M GOING TO STEAL SOMEONE'S PET. I'LL TAKE YOURS | I'LL FOLLOW ONE OF YOUR PETS AROUND UNTIL IT LIKES ME BETTER
+D: the pet would rather die | our pets have taste
+A: ARGH YOU ARE ALL $#@! LOSERS. I HATE THIS STUPID GAME AND YOUR STUPID PETS | $#@! YOUR PETS. $#@! YOUR CLASSES. I'M DELETING THIS CHARACTER
+E: dont delete it, your sword will be sad | think of the sword. the sword loves you
+F: o/ | /pet attack
+G: o/ | bye bye
+~ 6
+H: they left without their pet. again | no pet came to say goodbye
+B: next: how do i get wings | coming soon: how do i fly
+C: some of us did read the class page | its right there on the creation screen
+
+@topic dunce
+@levels 5-50
+@scene dunce_how_do_i_quit
+@exit A
+@role A type=* levels=5-30
+@role B type=Daredevil
+@role C type=NoLifer
+@role D type=Socialite
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} why cant i get out of the water? i've been swimming for twenty minutes | {q} how do you get out of the water? i'm stuck swimming in circles
+B: swim to the shore | have you tried the land
+C: oh, they went to see the edge of the world | they swam out to the edge. they always do once
+D: did you find the wall of the gods | did you see the wall yet? everyone sees the wall
+A: ok i get it, very funny. now someone help me for real | ha. ha. ha. i'm in the middle of the ocean. can we be serious
+E: turn around and swim back | do a 180. literally swim back
+A: i DID that. like ten times. it all looks the same | i turned around a hundred times, which way is back??
+F: the way you came | back is behind you
+A: wow genius. really helpful. you should be a teacher | oh thank you so much. what would i do without you. probably the same thing
+G: you're welcome | always happy to help
+A: you're all useless. i've been here half an hour while you make jokes | half an hour in the water and this realm is doing comedy
+H: open your map. land is the color that isnt blue | look at the map. find land. swim at it
+A: what map. nobody told me about any map | i dont have a map?? where is the map??
+B: ... | they dont know about the map
+C: how did you get this far without a map | how did you find ANYTHING
+A: SHUT UP. I'M SICK OF YOU ACTING LIKE YOU'RE SMARTER THAN ME | STFU. YOU'RE NOT BETTER THAN ME BECAUSE YOU KNOW WHERE THE MAP IS
+D: we are, a little | we are, specifically about maps
+A: I HOPE YOU ALL DROWN. I HOPE YOUR WHOLE GUILD DROWNS | I HOPE YOU ALL GET LOST AT SEA AND NOBODY EVER FINDS YOU
+E: we know where the land is. we'll be fine | we have maps. we'll make it
+A: FORGET IT. I QUIT. HOW DO I EVEN LOG OUT OF THIS $#@! GAME | $#@! THIS. I'M QUITTING. WAIT. HOW DO I QUIT
+F: /quit | type /quit
+A: /quit. BYE. $#@! ALL OF YOU AND YOUR STUPID MAPS | OK /QUIT. BYE. I HOPE THE FOG EATS ALL OF YOU
+~ 6
+B: they quit from the middle of the ocean. legend | they left from the middle of the sea. what a way to go
+C: their ghost will swim forever | somewhere out there, a ghost is still swimming
+D: next time someone tell them where the map is | someone tell them about the map when they're back
+
+@topic dunce
+@levels 10-50
+@scene dunce_relic_mez
+@exit A
+@role A type=* levels=15-35
+@role B type=NoLifer levels=35-50
+@role C type=Daredevil
+@role D type=Socialite
+@role E type=*
+@role F type=*
+@role G type=*
+@role H type=*
+A: {q} can i mez the enemy relic so they cant carry it away? | {q} if i mez the relic, can the enemy still carry it?
+B: mez. the relic. | the rock?
+C: yes, mez the rock. then stun the keep door. then root the castle | absolutely, and while you're at it, mez the walls
+D: aww, that's sort of creative | points for thinking outside the box. way outside
+A: why is that funny. it moves, so it can be mezzed. thats logic | its a real question. relics move. so i should be able to mez them
+E: it moves because a PERSON is carrying it. mez the person | mez the guy holding it. the guy. not the rock
+A: oh ok, mister genius. like you've ever even seen a relic | wow, look at the expert. have you even been on a relic raid
+B: eleven relic raids. i carried one home | i've carried two of them home. you've asked if rocks have feelings
+A: wow congrats, you no-life nerd. go touch a real rock | nobody cares about your relic raids, you spend your life in this game
+F: says the person trying to mez a rock | the rock is doing better than you right now
+A: shut up. at least i'm trying to help, unlike you losers who just make fun of people | at least i'm thinking, which is more than any of you clowns do
+G: thinking. about mezzing rocks | you're thinking very hard about rocks
+A: you know what, next relic raid i'm going to stand in your way. every single one of you | i'm going to follow you on every relic raid and pull the guards on you
+C: lol, you'll mez the guards. or a tree | you'll be busy mezzing the relic
+A: I'M NOT STUPID. YOU'RE STUPID. ALL OF YOU. THE WHOLE REALM | I'M NOT DUMB. YOU ARE. YOU AND YOUR STUPID RELICS AND YOUR STUPID ROCKS
+H: they wanted to mez the rock | they were going to mez the rock
+A: I HOPE THE ENEMY TAKES ALL OUR RELICS AND YOU NEVER GET THEM BACK | I HOPE YOU LOSE EVERY RELIC FOREVER AND I'LL LAUGH AT ALL OF YOU
+D: wow. ok. that got dark | yikes, wishing our relics away now
+A: $#@! THIS. $#@! THE RELICS. $#@! YOU ALL. I'M GONE | $#@! YOUR RELIC RAIDS. IM UNINSTALLING. ENJOY YOUR ROCKS
+E: o/ | bye bye
+F: o/ | /wave
+~ 6
+G: next relic raid, we put a mez on the pillar in their honor | we leave one rock unmezzed for them
+H: im saving that log | that one goes in the guild hall of fame
+B: they'll be back to cc the keep doors | they'll be back. the rocks will be waiting
+
+@kind session
+@topic ragequit_back
+@who *
+ok im back. we dont talk about earlier
+so... about earlier. bad night
+back. i was hungry, ok. dont start
+ok i calmed down. hi again
+dont say anything. just dont
+fine. im back. the game is ok i guess
+im back. was not my best moment earlier
+yes its me. yes im back. no i dont want to talk about it
+logged back in. someone tell me what i missed and not what i said
+ok, ok. i may have been a little dramatic earlier
+i did not uninstall. i was going to. it was a long night
+before anyone says anything, yes, i came back. the game has a hold on me
+i would like to formally apologize to the horse
+whoever saved the screenshot, i will pay you to delete it
+im back, but i still think the guards are op
+my cousin is not a gm. i made that up. sorry
+ok i apologize for the caps. and the dog thing. mostly the dog thing
+
+@kind session
+@topic ragequit_tell
+@who *
+and YOU. i saw you laughing. i'll remember your name
+dont think i didnt see you in there. you're on the list now
+you too. dont act innocent. you were the worst one
+you were laughing the loudest. dont lie
+remember my name. you'll regret this
+youre on my list. top of the list
+dont ever ask me for a rez. ever
+thanks for nothing. hope the enemy camps you all night
+i saw every word you typed. every word
+next time we meet in the frontier i'm not helping you
+dont bother sending me a tell. blocked

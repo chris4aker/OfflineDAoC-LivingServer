@@ -72,6 +72,7 @@ public static partial class AutonomousLivingServer
             Load("rows of deleted characters", PruneDeletedCharacters);
         GameEventMgr.AddHandler(GamePlayerEvent.LevelUp, new DOLEventHandler(OnPlayerLevelUp));
         GameEventMgr.AddHandler(GamePlayerEvent.RRLevelUp, new DOLEventHandler(OnPlayerRealmRankUp));
+        GameEventMgr.AddHandler(GameLivingEvent.Dying, new DOLEventHandler(OnLivingDying));
         _nextNemesisPrune = Environment.TickCount64 + NemesisPruneIntervalMs;
         _flushTimer = new Timer(_ =>
         {
@@ -84,11 +85,30 @@ public static partial class AutonomousLivingServer
                      $"nemesis {NemesisOn}, schedule {Properties.BOT_SCHEDULE_MODE}, breaks {Properties.BOT_LIVING_BREAKS}).");
     }
 
+    /// <summary>The talking update audit: a real player died; groupmate gamebots react (AutonomousBotGroupChatter).</summary>
+    private static void OnLivingDying(DOLEvent e, object sender, EventArgs args)
+    {
+        // Deeds (bot_living_deeds): a named kill, an enemy kill or the player's own death a bot may have seen.
+        if (sender is GameLiving dead)
+            AutonomousPlayerDeeds.OnDeath(dead, (args as DyingEventArgs)?.Killer);
+        if (sender is not GamePlayer { Group: not null } player)
+            return;
+        try
+        {
+            AutonomousBotGroupChatter.OnPlayerDying(player);
+        }
+        catch (Exception exception)
+        {
+            Log.Warn("Bot voices: groupmate reaction to a death", exception);
+        }
+    }
+
     [GameServerStoppedEvent]
     public static void OnServerStopped(DOLEvent e, object sender, EventArgs args)
     {
         GameEventMgr.RemoveHandler(GamePlayerEvent.LevelUp, new DOLEventHandler(OnPlayerLevelUp));
         GameEventMgr.RemoveHandler(GamePlayerEvent.RRLevelUp, new DOLEventHandler(OnPlayerRealmRankUp));
+        GameEventMgr.RemoveHandler(GameLivingEvent.Dying, new DOLEventHandler(OnLivingDying));
         _flushTimer?.Dispose();
         _flushTimer = null;
         FlushAll(wait: true);
@@ -176,6 +196,7 @@ public static partial class AutonomousLivingServer
             AutonomousBotSchedule.Pulse(now);
             if (MemoryOn)
                 MemoryPulse(now);
+            AutonomousLivingWorld.Pulse(now);
         }
         catch (Exception exception)
         {
@@ -207,6 +228,8 @@ public static partial class AutonomousLivingServer
     {
         if (string.IsNullOrWhiteSpace(text) || !IsSpeaker(bot))
             return;
+        if (channel is Channel.Group or Channel.Guild)
+            text = AutonomousRoleplayers.Voice(bot, text);   // /say goes through GameBot.Say, /faction through BroadcastFaction
         switch (channel)
         {
             case Channel.Say:
@@ -338,12 +361,16 @@ public static partial class AutonomousLivingServer
     }
 
     /// <summary>A private /send from a bot to a player (shown as "Name sends, ...").</summary>
-    internal static void Tell(GameBot bot, GamePlayer player, string text)
+    internal static void Tell(GameBot bot, GamePlayer player, string text, string invites = null)
     {
         if (string.IsNullOrWhiteSpace(text) || !IsSpeaker(bot) || player?.Client == null)
             return;
+        text = AutonomousRoleplayers.Voice(bot, text);
         ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
         BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name);
+        // The talking update: the player's next tell to this bot continues this exchange.
+        AutonomousChatThreads.Log.Record(AutonomousChatThreads.Tell(player.Name, bot.Name), bot.DatabaseID, bot.Name, text, invites,
+            GameLoop.GameLoopTime);
     }
 
     #endregion

@@ -12,9 +12,10 @@ using DOL.GS.PacketHandler;
 namespace DOL.GS;
 
 /// <summary>
-/// Keeps only ephemeral /spawn companions with their real-player leader over
-/// authoritative travel.  It never considers persistent bots, normal group
-/// members, money, inventory, or ticket ownership.
+/// Keeps ephemeral /spawn companions with their real-player leader over
+/// authoritative travel, and brings an autonomous gamebot in the player's group
+/// along when it stood beside the player at departure (TryBringGroupmateAlong).
+/// It never considers money, inventory, or ticket ownership.
 /// </summary>
 public static class TemporaryGroupStableTravel
 {
@@ -98,6 +99,54 @@ public static class TemporaryGroupStableTravel
         ushort playerZone) =>
         hasConfirmedPlayerTransfer && isTemporaryHelper && sharesGroup && followsPlayer;
 
+    /// <summary>Gamebots in the player's group within this distance of where the player left go along, as through the same portal.</summary>
+    public const int GroupmateTravelRadius = 1_500;
+
+    private static readonly ConcurrentDictionary<GamePlayer, (ushort Region, int X, int Y, DateTime Utc)> TransferOrigins = new();
+
+    /// <summary>Called as a player's MoveTo starts. Only a living player's trip counts (a release is not one).</summary>
+    public static void MarkTransferOrigin(GamePlayer player)
+    {
+        if (player?.IsAlive == true && player.Group != null && player.ObjectState == GameObject.eObjectState.Active)
+            TransferOrigins[player] = (player.CurrentRegionID, player.X, player.Y, DateTime.UtcNow);
+    }
+
+    /// <summary>Whether a gamebot was beside the player when the player left. Pure.</summary>
+    public static bool WasBesideDeparture(ushort botRegion, int botX, int botY, ushort originRegion, int originX, int originY, bool freeToGo) =>
+        freeToGo && botRegion == originRegion &&
+        (long)(botX - originX) * (botX - originX) + (long)(botY - originY) * (botY - originY) <= (long)GroupmateTravelRadius * GroupmateTravelRadius;
+
+    /// <summary>
+    /// Play test 2026-10-27: an autonomous gamebot invited into the player's group stayed behind whenever the player took a
+    /// porter, so it ended up in another region with no way to follow. A gamebot that was beside the player when the player
+    /// left (and free: alive, not fighting, not on a duty) arrives with the player, as a real groupmate taking the same
+    /// portal would. A gamebot elsewhere stays where it is.
+    /// </summary>
+    public static bool TryBringGroupmateAlong(GameBot bot)
+    {
+        if (bot is not { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsOnStableMasterRoute: false, IsAlive: true } ||
+            bot.PlayerGroupLeader is not { IsAlive: true, ObjectState: GameObject.eObjectState.Active } player ||
+            player.Group == null || bot.Group != player.Group || player.CurrentZone == null ||
+            !TransferOrigins.TryGetValue(player, out var origin) || DateTime.UtcNow - origin.Utc > TransferMarkerLifetime)
+            return false;
+        // Already there (or the player moved only a little).
+        if (bot.CurrentRegionID == player.CurrentRegionID && bot.IsWithinRadius(player, GroupmateTravelRadius))
+            return false;
+        bool free = !bot.InCombat && BotGroupInvite.DutyOf(bot) == BotGroupInvite.Duty.None;
+        if (!WasBesideDeparture(bot.CurrentRegionID, bot.X, bot.Y, origin.Region, origin.X, origin.Y, free))
+            return false;
+        bot.StopCurrentSpellcast();
+        bot.StopMoving();
+        Vector3 destination = FormationPoint(player, bot.ObjectID % 6);
+        if (!bot.MoveTo(player.CurrentRegionID, (int)Math.Round(destination.X), (int)Math.Round(destination.Y),
+                (int)Math.Round(destination.Z), player.Heading))
+            return false;
+        bot.EndReturnJourney();
+        if (bot.Brain is BotBrain brain)
+            brain.FSM.SetCurrentState(eFSMStateType.FOLLOW);
+        return true;
+    }
+
     public static void MarkAcceptedPlayerTransfer(GamePlayer player)
     {
         if (player != null)
@@ -172,6 +221,12 @@ public static class TemporaryGroupStableTravel
         {
             if (!bot.IsAlive || bot.ObjectState != GameObject.eObjectState.Active)
                 continue; // Dead helpers retain their corpse/recovery timer.
+            if (bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper)
+            {
+                if (TryBringGroupmateAlong(bot))
+                    relocated++;
+                continue;
+            }
             bool needsRelocation = ShouldRelocateForOwnerTransfer(
                     hasConfirmedTransfer,
                     bot.IsTemporaryGroupHelper,
@@ -211,6 +266,10 @@ public static class TemporaryGroupStableTravel
     /// </summary>
     public static bool EnsureOwnerTransferCohesion(GameBot bot)
     {
+        // A gamebot in the player's group: the player's region change has no event for it, so its think checks.
+        if (bot is { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsPlayerLedGroup: true } &&
+            bot.PlayerGroupLeader?.CurrentRegionID != bot.CurrentRegionID)
+            return TryBringGroupmateAlong(bot);
         if (bot is not { IsTemporaryGroupHelper: true, IsOnStableMasterRoute: false } || bot.Owner == null ||
             !HasPendingPlayerTransfer(bot.Owner))
             return false;

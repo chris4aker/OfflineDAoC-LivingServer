@@ -17,10 +17,17 @@ namespace DOL.GS.Tests
         #region Settings
 
         [Test]
-        public void EveryPartIsOffByDefault()
+        public void TheChatPartsAreOnAndTheRestOffByDefault()
         {
             var fields = typeof(Properties).GetFields();
-            foreach (string name in new[] { "BOT_LIVING_MEMORY", "BOT_LIVING_GRATS", "BOT_LIVING_FIRSTS", "BOT_LIVING_DEATH",
+            // The talking update (Beta 1.1) turns on the chat-only parts: bot voices, bot memory and grats (below).
+            foreach (string name in new[] { "BOT_VOICES_ENABLED", "BOT_LIVING_MEMORY", "BOT_LIVING_GRATS", "BOT_VOICES_TELLS" })
+            {
+                var field = fields.Single(f => f.Name == name);
+                var attribute = (ServerPropertyAttribute)Attribute.GetCustomAttribute(field, typeof(ServerPropertyAttribute));
+                Assert.That(attribute.DefaultValue, Is.EqualTo(true), name);
+            }
+            foreach (string name in new[] { "BOT_LIVING_FIRSTS", "BOT_LIVING_DEATH",
                          "BOT_LIVING_ALARMS", "BOT_LIVING_NEMESIS", "BOT_LIVING_BREAKS" })
             {
                 var field = fields.Single(f => f.Name == name);

@@ -55,6 +55,9 @@ var realm := "hib"
 var screen := ""
 var chars: Array = []
 var sel := 0
+# When PLAY last sent the character into the world: a second click (a double-click) sent a second request, the server
+# refused it ("already in the region") and closed the connection (in-game check 2026-10-27).
+var _entered_at := -100000
 var draft := {}                                   # the character being created or customized
 var editing := false                              # customize an existing character (select screen CUSTOMIZE)
 var locks := {}
@@ -489,6 +492,10 @@ func _play() -> void:
 	if sel >= chars.size():
 		return
 	if Server.active:                                     # the server puts the character in the world (Server.enter_world)
+		var now := Time.get_ticks_msec()
+		if now - _entered_at < 10000:                     # already on its way in
+			return
+		_entered_at = now
 		_say("Entering the world...")
 		Server.enter_world(chars[sel])
 		return

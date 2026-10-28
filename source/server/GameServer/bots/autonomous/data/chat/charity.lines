@@ -1,0 +1,34 @@
+# Replies to a player who asks /faction, /say or a bot for gold or items (question shape ask_charity, in-game check
+# 2026-10-27: such asks drew "dunno" and an exchange advert). A bot never promises coin it will not give: it says no,
+# gives honest advice, or teases. Asking also marks the player for the capital's beggars (AutonomousBeggars).
+
+@kind reply
+@answers ask_charity
+@who *
+lol get in line behind the beggars
+sell your drops to a merchant, it adds up fast
+kill stuff. it drops coin. thats the whole economy
+[broke too|im broke too], sorry
+nope. coin is earned
+the beggars in [the capital|town] are going to hear about this
+[grind|level] a bit, the coin comes with it
+asking for gold in faction, bold move
+no handouts, but merchants buy anything you loot
+cant spare any, saving for my epic
+heh no
+[everyone|we all] started with nothing. [go hunt|go kill something]
+[sell|vendor] [the junk|everything grey] in your bags, [easy|quick] silver
+if i had spare gold i would not be out here [farming|grinding]
+lol [no|nope]. but the exchange has cheap starter gear
+@who Crafter
+craft something and sell it, thats what i do
+@who NoLifer
+i farmed every copper i have. go farm yours
+@who Socialite
+aww. cant spare coin but good luck out there :)
+@who Daredevil
+i spend all mine on repairs, sorry
+@who Leveler
+coin comes with levels. level
+@who Explorer
+found more coin in old ruins than anyone ever gave me. go look

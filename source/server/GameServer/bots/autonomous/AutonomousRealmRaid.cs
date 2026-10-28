@@ -200,7 +200,7 @@ namespace DOL.GS
         {
             lock (Sync) return Raids.TryGetValue(id, out var raid) && raid.Forced;
         }
-        public static bool IsEligible(GameBot bot) => bot != null && RealmRaidRecruitmentPolicy.Eligible(
+        public static bool IsEligible(GameBot bot) => bot != null && !AutonomousBeggars.Is(bot) && RealmRaidRecruitmentPolicy.Eligible(
             bot.Level, bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper, bot.IsPlayerLedGroup);
 
         /// <summary>
@@ -300,7 +300,8 @@ namespace DOL.GS
                     raid.HubDeparted |= departing;
                     if (departing) raid.HubDepartedTick = GameLoop.GameLoopTime;
                     if (departing) RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
-                        $"{presentAtHub} adventurers present at {raid.Hub.Name}; departing together for {raid.Definition.Name}. Late arrivals will join the expedition directly.");
+                        $"{presentAtHub} adventurers present at {raid.Hub.Name}; departing together for {raid.Definition.Name}. Late arrivals will join the expedition directly.",
+                        "raid_forming", RaidSlots(raid.Definition.Name, null));
                     if (raid.HubDeparted)
                         foreach (Party p in raid.Parties.Values)
                             if (!p.Departed)
@@ -324,7 +325,7 @@ namespace DOL.GS
                         {
                             raid.PreparationNoticeSent = true;
                             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
-                                RealmEventBanter.RaidReminder(raid.Definition.Name, raid.Forced));
+                                RealmEventBanter.RaidReminder(raid.Definition.Name, raid.Forced), "raid_forming", RaidSlots(raid.Definition.Name, null));
                         }
                         int present = PresentAtStaging(raid);
                         bool ready = RealmRaidRecruitmentPolicy.Ready(raid.Forced, now - raid.Created, present, DragonLanded(raid), raid.Required);
@@ -506,7 +507,8 @@ namespace DOL.GS
                 RealmEventNotices.QueueScreen(id, realm, $"A {definition.Name} raid is forming at {raid.Hub.Name}.", AnnouncementKind.PveRealmEvent);
                 RealmEventNotices.Queue(id, realm, forced
                     ? $"{definition.Name}: {recruits.Sum(p => p.Length)} level-50 adventurers reserved; gather at {raid.Hub.Name}. {startCondition}"
-                    : $"{definition.Name}: recruiting up to 300 level-50 adventurers via {raid.Hub.Name}; at least 200 must arrive before assault.");
+                    : $"{definition.Name}: recruiting up to 300 level-50 adventurers via {raid.Hub.Name}; at least 200 must arrive before assault.",
+                    "raid_forming", RaidSlots(definition.Name, null));
                 reason = forced ? $"Reserved {recruits.Sum(p => p.Length)} level-50 bots, closest to {raid.Hub.Name} first. The raid starts as soon as 200 are staged and runs until the encounter is defeated or you press Stop event. {startCondition}" :
                     $"Recruiting up to 300 level-50 bots via {raid.Hub.Name}. At least 200 must arrive before assault; staging can last up to {RealmRaidRecruitmentPolicy.AutonomousStagingLimitMilliseconds / 60_000} minutes.";
                 return true;
@@ -1296,7 +1298,22 @@ namespace DOL.GS
             // A player stop is not a failed attempt: no cooldown, so it can be restarted at once.
             if (!stoppedByPlayer)
                 Cooldowns[raid.Definition.Id] = now + (30 + Random.Shared.Next(61)) * 60_000L;
-            RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidOutcome(raid.Definition.Name, outcome));
+            // The talking update: a win or a defeat is news the realm's bots tell and talk about.
+            string bossName = (raid.DungeonRoute?.FinalBosses ?? [raid.Boss]).FirstOrDefault(n => n != null)?.Name ?? raid.Boss?.Name;
+            string newsTopic = outcome == "Boss defeated" ? "raid_won" : outcome == "Defeated" ? "raid_wiped" : null;
+            if (newsTopic != null)
+                AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, bossName, newsTopic == "raid_won");
+            RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidOutcome(raid.Definition.Name, outcome),
+                newsTopic, RaidSlots(raid.Definition.Name, bossName));
+        }
+
+        /// <summary>The names a raid's news lines use ({raid}, {boss}).</summary>
+        public static Dictionary<string, string> RaidSlots(string raid, string boss)
+        {
+            var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["raid"] = raid };
+            if (!string.IsNullOrWhiteSpace(boss))
+                slots["boss"] = boss;
+            return slots;
         }
 
         private const string StoppedByPlayer = "Stopped by the player";
@@ -1307,7 +1324,9 @@ namespace DOL.GS
             Log.Info($"REALM_RAID_WIPE event={raid.Definition.Id} boss=\"{boss}\" failures={failures} support={raid.Support.Length} " +
                      $"living={raid.Support.Count(b => b.IsAlive)} minutes={(now - raid.Created) / 60_000}");
             if (failures >= RealmRaidDungeonRoute.MaximumFailedAttempts) return;
-            RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidWipe(raid.Definition.Name, boss));
+            AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, boss, false);
+            RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidWipe(raid.Definition.Name, boss),
+                "raid_wiped", RaidSlots(raid.Definition.Name, boss));
             AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm, $"a wipe at {boss}");
         }
 

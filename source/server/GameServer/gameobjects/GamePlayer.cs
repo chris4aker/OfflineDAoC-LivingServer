@@ -7922,6 +7922,8 @@ namespace DOL.GS
         public override bool MoveTo(ushort regionID, int x, int y, int z, ushort heading)
         {
             bool changingRegion = regionID != CurrentRegionID;
+            // Where a living player left from: gamebots in the player's group standing there go along (a release is no trip).
+            TemporaryGroupStableTravel.MarkTransferOrigin(this);
             // If we are jumping somewhere away from our house not using house.Exit, we need to make the server know we have left the house.
             if ((CurrentHouse != null || InHouse) && CurrentHouse.RegionID != regionID)
             {

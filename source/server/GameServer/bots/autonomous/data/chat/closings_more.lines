@@ -1,0 +1,68 @@
+# More closings: what a bot says when a player answers its question or its lfg line. Never a question,
+# and never a promise the server can't keep. New writing (see docs/bot-voices/TALKING-UPDATE-CONTENT.md).
+
+@kind closing
+@who *
+
+# ---- ask ------------------------------------------------------------------------------------
+@answers ask
+oh nice ty
+ty, appreciate it
+ahh, that explains it
+cool, ty
+ok, that helps
+thx a bunch
+ah right, forgot about that
+huh, didnt know that
+ty, you saved me some running
+ok, ill give it a go
+
+# ---- ask_where ------------------------------------------------------------------------------
+@answers ask_where
+ty, ill find it
+ah, never would have found that
+ok, not far then
+ty, been running in circles
+thx, ill look there
+oh, that way. ty
+ty, i was way off
+ah, should have asked sooner
+k, got it now
+perfect, ty
+
+# ---- ask_opinion ----------------------------------------------------------------------------
+@answers ask_opinion
+fair point
+hm, might try that then
+yeah thats what i figured
+ok youve convinced me
+interesting, ty
+fair enough
+hm, hadnt thought of it like that
+guess ill stick with it then
+good to hear another view
+
+# ---- ask_anyone -----------------------------------------------------------------------------
+@answers ask_anyone
+ok cool
+k, no worries
+alright, ty
+cool cool
+k, maybe another time
+no problem, ty anyway
+ok, ty for answering
+figured, no big deal
+all good
+
+# ---- lfg ------------------------------------------------------------------------------------
+@answers lfg
+np, maybe later
+ok, ill keep an eye out
+thx anyway
+k, ill try /lfg again in a bit
+np, ty for the tip
+ok, ty for looking
+heh, gl out there
+ah ok, ill wait a bit
+@needs solo
+ok, back to soloing for now

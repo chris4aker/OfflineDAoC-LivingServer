@@ -114,7 +114,6 @@ who is up for a group just for the company?
 @topic explorer
 @who Explorer
 @levels 1-50
-i want to see every zone in the realm before i hit 50
 @needs outdoors
 there is a spot near {zone} where the sunset is perfect
 anyone know what is at the far end of {zone}?
@@ -204,7 +203,9 @@ max spec at 50 or spread points, the eternal question
 if your spellcraft is not capped you are leaving power on the table
 realm abilities are where the real power is
 @invites complaint
+@needs at:darkness falls
 farming seals in darkness falls again, the grind never ends
+@needs
 @invites boast
 i have the frontier map memorized
 @invites
@@ -330,22 +331,25 @@ crafters are your friends, be nice to them
 @who *
 @levels 1-50
 @invites joke
-my pet has better gear than me
 spent more time running back from my bind than fighting tonight
-i swear the monsters respawn faster when i am oom
 @invites complaint
 why is every useful merchant on the other side of town
 @invites joke
 my sense of direction is a grey con
 i took a wrong turn and found three new ways to die
 who put that cliff there
-somebody tell my healer i am sorry
 i was going to log off an hour ago
 the game says blue con. the game is lying
 @needs evening
 dinner is ready, says my family, for the third time
 @needs outdoors
 the road to {zone} is longer every time i walk it
+# The talking update: only a bot in a group has a healer to apologize to, and only a pet class has a pet.
+@needs in_group
+somebody tell my healer i am sorry
+@needs
+@class Cabalist,Theurgist,Necromancer,Spiritmaster,Bonedancer,Hunter,Druid,Enchanter,Animist
+my pet has better gear than me
 
 # Answers to "how is everyone tonight?" (0.36-se.4).
 @kind reply
@@ -356,3 +360,22 @@ not bad, you?
 tired but still leveling
 cant complain, the camp is quiet
 doing ok, just trying not to die
+
+# The talking update audit: only a power user goes oom
+@kind ambient
+@topic humor
+@who *
+@realm *
+@class Wizard,Theurgist,Sorcerer,Cabalist,Necromancer,Cleric,Friar,Minstrel,Healer,Shaman,Runemaster,Spiritmaster,Bonedancer,Skald,Eldritch,Enchanter,Mentalist,Animist,Druid,Bard,Warden
+@levels 1-50
+@invites joke
+i swear the monsters respawn faster when i am oom
+
+# The talking update audit: not said by a 50
+@kind ambient
+@topic explorer
+@who Explorer
+@realm *
+@levels 1-49
+@invites chat
+i want to see every zone in the realm before i hit 50

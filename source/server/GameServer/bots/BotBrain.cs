@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Numerics;
 using System.Reflection;
 using DOL.Database;
@@ -192,10 +193,11 @@ namespace DOL.AI.Brain
         public static bool RetainCommittedDungeonPull(bool alive, bool sameRegion, bool inAggro,
             long now, long until) => alive && sameRegion && inAggro && now < until;
 
-        private bool HasCommittedDungeonPull => _committedDungeonPull != null &&
-            RetainCommittedDungeonPull(_committedDungeonPull.IsAlive,
-                _committedDungeonPull.CurrentRegion == Body.CurrentRegion,
-                AggroList.ContainsKey(_committedDungeonPull), GameLoop.GameLoopTime, _committedDungeonPullUntil);
+        // Read once: ClearAggroList can null the field between a check and a use (NullReferenceException in
+        // BotState_Aggro.Think, 2026-10-27, docs/LOG-ERROR-BACKLOG.md).
+        private bool HasCommittedDungeonPull => _committedDungeonPull is { } pull &&
+            RetainCommittedDungeonPull(pull.IsAlive, pull.CurrentRegion == Body.CurrentRegion,
+                AggroList.ContainsKey(pull), GameLoop.GameLoopTime, _committedDungeonPullUntil);
 
         public virtual void AddToAggroList(GameLiving living, long aggroAmount)
         {
@@ -782,12 +784,13 @@ namespace DOL.AI.Brain
         {
             get
             {
-                if (_orderedPullTarget?.IsAlive == true &&
-                    _orderedPullTarget.ObjectState is GameObject.eObjectState.Active &&
-                    CanAggroTarget(_orderedPullTarget))
-                    return _orderedPullTarget;
+                // Read once, as HasCommittedDungeonPull; clear it only if nobody set a new target meanwhile.
+                GameLiving target = _orderedPullTarget;
+                if (target?.IsAlive == true && target.ObjectState is GameObject.eObjectState.Active && CanAggroTarget(target))
+                    return target;
 
-                _orderedPullTarget = null;
+                if (target != null)
+                    Interlocked.CompareExchange(ref _orderedPullTarget, null, target);
                 return null;
             }
         }
@@ -1112,6 +1115,9 @@ namespace DOL.AI.Brain
                 out _);
         }
 
+        /// <summary>Beyond this distance from its slot, a gamebot following the player paths instead of walking straight.</summary>
+        public const int GamebotPathFollowDistance = 600;
+
         private void FollowFormation(bool ambientWander = false)
         {
             // Any FOLLOW entry or support path must honor a temporary caster's
@@ -1176,7 +1182,11 @@ namespace DOL.AI.Brain
                     ? (short)Math.Clamp(Body.MaxSpeed * 2 / 5, 60, Body.MaxSpeed)
                     : Body.MaxSpeed;
                 _ambientWanderMovement = ambientWander;
-                if (companionTravel && !ambientWander)
+                // Play test 2026-10-27: a gamebot in the player's group, told "come with me" from across the zone, walked in a
+                // straight line (WalkTo) into hills and, once, off the edge of the map. Far from its formation slot it paths.
+                bool farGamebot = !ambientWander && BotBody.IsAutonomousWorldBot && BotBody.IsPlayerLedGroup &&
+                                  Body.GetDistanceTo(destination) > GamebotPathFollowDistance;
+                if (companionTravel && !ambientWander || farGamebot)
                     Body.PathTo(destination, speed);
                 else
                     Body.WalkTo(destination, speed);
@@ -1230,6 +1240,9 @@ namespace DOL.AI.Brain
                     BotBody.StopMoving();
                 return;
             }
+            // Beggars (bot_living_beggars): a few Crafters live on a corner of their capital and do nothing else.
+            if (AutonomousBeggars.Think(this))
+                return;
             bool nativeSpeedTravelStarted;
             if (CompanionFollowPolicy.ObserveAndCancelBuffs(BotBody, out nativeSpeedTravelStarted))
             {
@@ -1253,6 +1266,9 @@ namespace DOL.AI.Brain
             AutonomousSummonActivity.RecoverOwner(BotBody);
             BotAnimistPolicy.RestoreEncounterTarget(BotBody);
             ObserveLeaderActivity();
+            // The talking update: in the real player's group a gamebot calls the fight in /group (pull, adds, oom, wipe).
+            if (BotBody?.IsAutonomousWorldBot == true && BotBody.IsPlayerLedGroup)
+                AutonomousBotCombatCalls.Observe(BotBody);
             BotBody?.WakeRecoveryRestIfCombatBlocked();
             BotBody?.EnsureAutonomousRecoveryTimers();
 

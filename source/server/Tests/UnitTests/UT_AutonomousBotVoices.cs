@@ -14,14 +14,22 @@ namespace DOL.GS.Tests
     {
         // Slots the server fills (AutonomousBotVoices.SlotsFor and SharedSlots).
         private static readonly string[] KnownSlots =
-            ["me", "class", "level", "realm", "zone", "monster", "item", "count", "q", "keep", "frontier", "enemy", "capital", "dungeon", "camp", "monsters", "destination"];
+            ["me", "class", "level", "realm", "zone", "monster", "item", "count", "q", "keep", "frontier", "enemy", "capital", "dungeon", "camp", "monsters", "destination",
+             // The talking update: the xp bubbles, what a recruiting group needs, and the names in a piece of news.
+             "bubbles", "need", "relic", "raid", "boss", "winner", "loser"];
 
         // Slots that need bot memory of the player; general callers never fill them, so those lines are skipped
         // unless the Living Server memory or rez code passes them in.
         private static readonly string[] MemorySlots = ["player", "place", "player_class"];
 
         // Slots only the Living Server event that says the line fills (grats, firsts, alarms, nemesis).
-        private static readonly string[] EventSlots = ["target", "what", "size", "classes", "killer", "killer_class"];
+        private static readonly string[] EventSlots = ["target", "what", "size", "classes", "killer", "killer_class",
+            // Beggars (AutonomousBeggars): a gift or sale, the beggar's purse, and the merchant by its corner
+            "coin", "hoard", "npc",
+            // Deeds, storylines and gold spammers (AutonomousPlayerDeeds, AutonomousBotStorylines, AutonomousGoldSpammers)
+            "nickname", "name_a", "name_b", "site",
+            // Bonds (AutonomousBotBonds): the other gamebot and its class
+            "other", "other_class"];
 
         private static readonly string[] OutOfEra =
             ["world of warcraft", "discord", "twitch", "youtube", "lmao", "covid", "smh", "tbh", "ngl", "yeet"];
@@ -68,6 +76,18 @@ namespace DOL.GS.Tests
             Assert.That(Corpus.Voices.Length, Is.GreaterThanOrEqualTo(5));
             Assert.That(Corpus.Lines.Select(line => line.Id).Distinct().Count(), Is.EqualTo(Corpus.Lines.Length), "Line ids are unique.");
             Assert.That(Corpus.Scenes.Select(scene => scene.Id).Distinct().Count(), Is.EqualTo(Corpus.Scenes.Length), "Scene ids are unique.");
+        }
+
+        [Test]
+        public void Tells_AboutLevelling_OnlyGoToPlayersUnderTheCap()
+        {
+            // In-game check 2026-10-27: a level 50 got "how close are you to your next level?" by tell.
+            VC.Line[] levelling = Corpus.Lines.Where(line => line.Kind == "tell" &&
+                System.Text.RegularExpressions.Regex.IsMatch(line.Text, @"\b(level|leveling|levelling|dinged|ding)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase) &&
+                line.Topic is "hello_friend" or "guildmate").ToArray();
+            Assert.That(levelling, Is.Not.Empty);
+            foreach (VC.Line line in levelling)
+                Assert.That(line.Needs, Does.Contain("player_leveling"), line.Text);
         }
 
         [Test]
@@ -142,7 +162,10 @@ namespace DOL.GS.Tests
         {
             // Scenes use no memory slots, so with every server slot filled each required beat can be said.
             Dictionary<string, string> slots = FullSlots();
-            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => slots)).Select(scene => scene.Id), Is.Empty);
+            // A storyline episode also gets its two protagonists' names and, for an ending, the player who took a side.
+            var story = new Dictionary<string, string>(slots) { ["name_a"] = "Aelwyn", ["name_b"] = "Brannoc", ["player"] = "Kaelith" };
+            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) ? story : slots))
+                .Select(scene => scene.Id), Is.Empty);
         }
 
         #endregion

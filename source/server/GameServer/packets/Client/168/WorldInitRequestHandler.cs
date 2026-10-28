@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Threading.Tasks;
 using DOL.Database;
@@ -10,7 +11,34 @@ namespace DOL.GS.PacketHandler.Client.v168
     {
         private static readonly Logger log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>Clients whose world entry is running (the player load is awaited, so a second request can arrive meanwhile).</summary>
+        private static readonly ConcurrentDictionary<GameClient, byte> Entering = new();
+
+        /// <summary>
+        /// One world entry per client at a time. Two PLAY clicks sent two requests: both loaded the character, the second
+        /// add-to-world failed ("Object is already in ..."), and the client was disconnected on "Entering the world"
+        /// (docs/LOG-ERROR-BACKLOG.md, 2026-10-27). A request that arrives while one is running is ignored; the first
+        /// one finishes the entry.
+        /// </summary>
         protected async override void HandlePacketInternal(GameClient client, GSPacketIn packet)
+        {
+            if (!Entering.TryAdd(client, 0))
+            {
+                log.Warn($"WORLD_ENTER_REPEAT_IGNORED account={client.Account?.Name} state={client.ClientState}");
+                return;
+            }
+
+            try
+            {
+                await EnterWorld(client, packet);
+            }
+            finally
+            {
+                Entering.TryRemove(client, out _);
+            }
+        }
+
+        private static async Task EnterWorld(GameClient client, GSPacketIn packet)
         {
             if (client.ClientState is not GameClient.eClientState.CharScreen and not GameClient.eClientState.Playing)
                 return;

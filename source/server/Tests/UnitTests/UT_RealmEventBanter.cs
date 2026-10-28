@@ -8,8 +8,9 @@ namespace DOL.UnitTests
     [TestFixture, NonParallelizable]
     public class UT_RealmEventBanter
     {
-        private static Dictionary<(string, eRealm), (string Text, long Expires)> Pending =>
-            (Dictionary<(string, eRealm), (string Text, long Expires)>)typeof(RealmEventNotices)
+        // The talking update: a notice also carries its news topic and slots (a bot may tell it in its own words).
+        private static Dictionary<(string, eRealm), (string Text, long Expires, string Topic, IReadOnlyDictionary<string, string> Slots)> Pending =>
+            (Dictionary<(string, eRealm), (string Text, long Expires, string Topic, IReadOnlyDictionary<string, string> Slots)>)typeof(RealmEventNotices)
                 .GetField("Pending", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
         [SetUp] public void Before() { DOL.GS.Tests.RvrEventTestState.Clear(); Pending.Clear(); }
         [TearDown] public void After() { DOL.GS.Tests.RvrEventTestState.Clear(); Pending.Clear(); }

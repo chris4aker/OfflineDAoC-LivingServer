@@ -1,0 +1,784 @@
+# Albion lore, myths and exploration talk (classic + Shrouded Isles, up to 1.65).
+# Documented lore is said plainly; rumours, superstitions and inventions are said as belief, memory or argument.
+# Named monsters are ones that live in this world. Lore only for the 70+ bosses: nobody here claims a kill.
+# Above all: the old Albion belief that Avalon was hidden in Albion all along (the marsh, the mist, the Lady).
+
+@kind ambient
+@realm alb
+@topic lore
+@about place
+
+# ---------------- Avalon was here all along (explorers and old avalonians) ----------------
+@who Explorer
+@levels *
+i still think avalon was in the marsh the whole time and we just never found the door
+[the|those] [sunken|half sunk] roman pillars in avalon marsh [lead somewhere|point somewhere|are not there for decoration], [mark me|i swear it]
+the old guides said the marsh ran right up to the edges of avalon city. i walked every inch of it and never saw a wall
+swim far enough west of adribard's retreat and the fog [gets thick as a wall|stops moving|goes very quiet]. never had the nerve to keep going
+i swam circles round the marsh islands for an hour looking for a ruin no map shows. found nothing but slimes
+isle of glass is an old name for glastonbury, and glastonbury [was always|has always been] [called|said to be] avalon. [just saying|draw your own lines]
+the isles did not find avalon, they just [pulled back the curtain|lifted the mist|took the mist away]
+by the time we crossed the water, avalon city was already rubble. [somebody|the drakoran] [got there first|knew the way before us]
+[heard|my old guild swore] lady nimue walks the marsh at night because [the door to avalon is still out there|she still guards the way in]
+avalon marsh after dark [feels like|is like] [walking through someone else's dream|a door left half open]
+[the|that] marsh mist [sits in|never lifts from] the same spots [every night|for weeks]. [real fog moves|fog that never moves is a spell]
+walked the shore of avalon isle and the same sunken pillars are there too. same builders, i'm sure of it
+some say merlin hid avalon himself before he vanished, so nobody could loot it while he was away
+anyone else think avalon was hiding in the marsh all along?
+a whole race of mages does not come from a city that isn't there. avalon was hidden, not missing
+
+@who NoLifer
+@levels 25-50
+i rolled an avalonian [the first week|at launch]. we had a homeland on the character screen and nowhere to go home to
+the day the isles opened, half the avalonians [i knew|in the realm] [went straight to the ruins|ran for the boats] like pilgrims
+before the isles, the nearest thing albion had to avalon was a name on a swamp
+[i've|i have] [waited|sat] in the marsh [half the night|for hours] [just to watch|to see] lady nimue go by. [worth it|no regrets]
+
+@who Socialite
+@levels *
+[heard|someone in camelot swears] the barkeeps [sold|were selling] avalon isle iced tea before anyone could sail there. [explain that one|curious, no]
+had a whole argument in camelot about whether avalon moved or we just never looked. three hours, no winner
+[a bard|a minstrel] [in camelot|at the tavern] [sings|has a song] that the lady of the lake [folded avalon into the mist|keeps avalon in her sleeve]. [lovely tune|i believe it]
+
+@who Crafter
+a tailor in camelot swears the old marsh stones are cut the same way as the walls in avalon city
+
+@who Leveler
+i get why explorers chase the avalon story, but marsh slimes give awful xp
+
+@who Daredevil
+i dare anyone to swim due west from lyonesse until the map runs out
+
+# ---------------- Dartmoor, Golestandt and the lost knights ----------------
+@who *
+@levels *
+sir arward took thirty knights into dartmoor. [all that came back|the only thing that came home] was a [scorched|singed] journal
+the journal [fell out of the sky|came down out of a clear sky] at prydwen keep, [they say|so the scribes write]. one word [left on it|still legible]: golestandt
+a roman lord and his whole household vanished in dartmoor back in uther's day. nobody asked twice
+[those|the] boulders in dartmoor are not boulders. granite giants, and [they get up|some of them stand] when you [aren't looking|least expect it]
+the stonecrush ogres eat granite. think about what that does to a sword
+never say the dragon's name inside dartmoor. old raid leaders swear she listens
+
+@who Explorer
+there's a corner of dartmoor south of the ruins where the grass is all burnt. i turned back
+they say moran the mighty keeps watch in dartmoor too. never got close enough to check
+
+@who *
+@levels 35-50
+golestandt's breath [eats|burns off] your heat resist [before the second one lands|first], [which is mean|which is just rude]
+my old guild swore the trick is to fight inside the ruins, because anyone outside draws the big breath
+[the heralds call golestandt she|golestandt is a she, ask any bard], [but|and] half the raid stories i've heard [still say he|swear it's a he]
+fifty respec stones from one dragon, they say. half the realm would go just for those
+i heard a raid of seventy went in once and it was over in three minutes. dragon stories always end like that
+
+@who NoLifer
+@levels 40-50
+when the dragons first woke, the whole realm stood around in dartmoor just to look
+
+@who Leveler
+@levels 35-50
+dragon raids are hours of waiting for five minutes of breath. not worth it
+
+@who Daredevil
+@levels 20-50
+i dare anyone to go look at golestandt and come back walking
+
+# ---------------- Cardova and the nameless emperor ----------------
+@who *
+@levels 15-50
+cardova holds a roman emperor nobody can name. cornwall is a strange place to bury an emperor
+emperor seleucus in cardova [has a name|is named], so he can't be the nameless one. [the forgotten emperor is the real mystery|that leaves the forgotten emperor]
+the spirit of the emperor, the forgotten emperor, emperor seleucus. that crypt has more emperors than rome ever did
+i think the nameless emperor at cardova is the one the dead legions march for. nobody believes me
+knock on the cardova door twice before you go in. it's tradition and the dead seem to like it
+
+@who Crafter
+an old crafter i know swears the coins in cardova have a blank face on them. never saw one myself
+
+# ---------------- Stonehenge and Merlin's barrow ----------------
+@who *
+@levels 20-50
+merlin's barrow lies under salisbury, right under the stones
+merlin isn't dead. the barrow's [empty|for show], mark me
+[the shade of uther pendragon|uther's shade] walks the barrows [and not merlin|while merlin is nowhere]. [that tells you something|make of that what you will]
+[heard|an old bard told me] wizard lichas was [merlin's apprentice|a student of merlin] who stayed behind [when the barrow was sealed|after merlin went]
+heard the stones were raised for ambrosius aurelianus. his shade is out there somewhere
+merlin left his staff behind. wizards don't leave their staff unless they mean to come back
+the barrows are the only place in albion where the dead outrank the living
+touch the stones at stonehenge for luck before a big raid. half the realm does it
+
+@who Explorer
+there's a passage in the barrows that ends in a wall that sounds hollow. never found the way past it
+
+@who NoLifer
+@levels 40-50
+
+# ---------------- Lady Nimue (sightings, never fights) ----------------
+@who *
+@levels *
+lady nimue walks the avalon marsh after dark. [the wizards chasing their epic know her by sight|ask any wizard who did their epic]
+[saw|spotted] lady nimue in [camelot hills|campacorentin] once, [just walking|walking like she owned the place]. [she never looked at me|i didn't dare say hello]
+a friend of mine conned lady nimue once. the color alone told him to walk away. leave her be
+they say the lady of the lake kept [the blade|excalibur] after arthur, which is why [we only have the scabbard|the scabbard is all we got]
+lady nimue keeps the same road every day. snowdonia by day, the marsh by night. like she's looking for something
+
+@who Explorer
+wherever lady nimue stops in the marsh at night is where i'd start digging. i'm convinced
+
+@who Daredevil
+i dare you to follow lady nimue her whole route on foot without losing her
+
+# ---------------- The Green Knight ----------------
+@who *
+@levels 15-50
+there's a knight in green on the sauvage road who won't fight you unless you start it
+[heard|an old bard says] the green knight [offers|plays] a game: [you strike once, he strikes back next year|one blow for one blow, a year apart]. [nobody takes it|i wouldn't]
+three full groups took on the green knight once, [so i heard|in the story i heard]. all anyone saw after was [death spam|the release timer]
+the green knight waits near castle sauvage like he's expecting someone. i bet it's not us
+
+@who Explorer
+@levels 25-50
+rode right past the green knight once. he nodded. i swear he nodded
+
+@who Daredevil
+@levels 30-50
+
+@who Crafter
+@levels *
+heard the green knight's blade never drops. i've never met anyone with one
+
+# ---------------- Llyn Barfog and the Legendary Afanc ----------------
+@who *
+@levels 20-50
+llyn barfog has an afanc in it. arthur [dragged|pulled] one out of that very lake, [so they say|the old tale goes]
+[the|those] afanc hatchlings mean [there's a mother|the big one is still breeding]. [think about that next swim|keep your feet dry]
+the legendary afanc hasn't left the lake since arthur's day. can you blame it
+there's a hoof print stone up by llyn barfog. some say arthur's horse still haunts it
+
+@who Explorer
+[swam|went] across llyn barfog [once|at dusk] and [something|a ripple] [followed me|went under me]. [never swam there again|i ran]
+
+@who Leveler
+the monsters at llyn barfog gained epic status, they say. my xp did not notice
+
+# ---------------- Xanxicar and the Crystal Cave ----------------
+@who *
+@levels 30-50
+a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. [wait too long|dawdle] and the cave fills with lightning
+[i think|my theory is] xanxicar was [guarding|sitting under] avalon [long before|before] the drakoran came. [maybe that's why it stayed hidden|it was the lock]
+heard the lightning timer in the crystal cave got longer. still not long enough
+
+@who NoLifer
+@levels 35-50
+the crystals down there hum when you stand still. old avalonians say it's the city singing
+
+@who Crafter
+@levels 30-50
+
+# ---------------- Caer Sidi and the road to Annwn ----------------
+@who *
+@levels 30-50
+caer sidi [sits on|straddles] the road to annwn. [the souls in there|whatever is in there] [aren't meant to leave|stay locked up]
+the old poem says arthur sailed to caer sidi with three ships and only seven men came home. bards still sing it
+the cwn annwn are arawn's hounds. if you hear them baying, run
+heard you never wear anything shiny into caer sidi. the dead go for the gilded first
+caer sidi is a prison of souls, and something at the bottom keeps the count. i don't want to meet it
+
+@who NoLifer
+@levels 40-50
+lich lord ilron is where most of the caer sidi stories i hear end. nobody tells what's past him
+
+@who Daredevil
+@levels 35-50
+
+# ---------------- Krondon and its queen ----------------
+@who *
+@levels 35-50
+krondon's ogres take orders from a warrior queen
+heard orylle keeps the deepest halls of krondon. never been that deep
+nobody knows what a thrawn queen eats for breakfast, and nobody wants to find out
+the orcs on inishail fled the ogres, they say. makes you wonder what krondon did to them
+
+# ---------------- The drakoran, the inconnu and Arawn ----------------
+@who *
+@levels 20-50
+the drakoran burned avalon city to rubble, and someone held their leash
+arawn sent the inconnu because [someone|a witch] is stealing his dead. [strange allies|odd friends], eyes like wells
+the arawnites in [snowdonia|the black mountains] [pray to|serve] the same lord the inconnu [serve|answer to]. [explain that one|so whose side is arawn on]
+i've never heard an inconnu laugh. not once
+the drakoran aren't stupid beasts. they have mystics, medics and sawbones. that's an army
+dura'ek the empowered leads the drakoran in avalon city, they say. empowered by whom is the question
+
+@who Socialite
+heard the inconnu count every albion death for arawn
+
+@who Explorer
+
+# ---------------- Relics ----------------
+@who *
+@levels *
+our relics are merlin's staff and excalibur's scabbard. lose either and the bards sing about it for a month
+[the scabbard|excalibur's scabbard] was always worth more than the blade. [the old tales say|merlin said so himself] [it kept arthur from bleeding|its wearer never bleeds]
+the heralds promised more relics years ago. still waiting
+the missing relic is excalibur itself. find the blade and you'll [find avalon too|know where avalon is]. [my theory anyway|just a theory]
+merlin's staff sits at castle myrddin in snowdonia. funny how merlin never came back for it
+
+@who NoLifer
+@levels 40-50
+i remember the first night the mids took a relic. half the realm logged in within the hour
+
+# ---------------- Tomb of Mithra, Tepok, Keltoi (the old dungeons) ----------------
+@who *
+@levels *
+[mithra's tomb|the tomb of mithra] was every squire's first dungeon, and the promise room [was where|is where] we all broke our promises
+high priest andania still preaches to an empty temple. you have to admire it
+mithra was a soldier's god. makes sense the tomb is full of soldiers who never left
+overseer tepok runs his mine like a guild leader. goblins have bosses too
+
+@who NoLifer
+@levels 30-50
+we used to meet at the pk bridge before a mithra run. good times
+
+@who Explorer
+@levels *
+
+# ---------------- Edges of the map, drowned lands and things nobody explains ----------------
+@who Explorer
+@levels *
+every map of albion ends in water, [but|and] the water doesn't end. [swim long enough|keep swimming] and [the world stops you|you hit the edge]
+lyonesse was a drowned land. [on a still night|when it's quiet] [you can hear|some hear] [bells under the water|church bells under the sea]
+i keep a [map|list] of every cave in albion nobody [talks about|names]. [it's longer than you'd think|it keeps growing]
+the coast of cornwall hides caves you can only reach from the water. found two so far
+the pixie queen in campacorentin holds court somewhere off the paths. i followed the giggling once
+granddaddy longlegs is a real name in campacorentin and i refuse to explain further
+there's a white horse walking salisbury. [old folks say|i heard] it's [the one carved into the hills|older than the stones]
+cynewulf the ghostwalker is not a briton name. someone else's war ended in salisbury
+they found inishail just off the coast and you can swim there. makes you wonder how many more islands are hiding out there
+the spirit of lord emthoro still holds inishail. nobody knows who he was
+anyone else ever swum out past the last island just to see what happens?
+
+@who *
+@levels 25-50
+the vetusta abbey bell rings in the black mountains, they say. i wonder who it rings for
+cailleach uragaig walks lyonesse. the old folk in cornwall won't say the name
+there's a thing called draco magnificens in the pennines, they say. never seen it
+coliath rules gwyddneau and nobody can tell me what it guards
+hadrian's wall was built to keep something out. nobody agrees what
+the eye of arawn in snowdonia watches the whole frontier, they say. i wave when i pass
+
+@who Socialite
+@levels *
+the bards in camelot can't agree whether lyonesse sank in one night or over a hundred years. i side with one night
+
+# ======================= Debate scenes: Albion lore =======================
+@kind debate
+@realm alb
+
+@topic lore_avalon
+@levels 1-50
+@scene alb_lore_avalon_in_the_marsh
+@role B type=Explorer
+@role C type=Leveler,NoLifer levels=30-50
+@role D type=* levels=5-25
+@role E type=Socialite,Daredevil
+A: {q} anyone else think avalon was hidden in the marsh all along? | {q} i get more sure every week: avalon was in the marsh the whole time
+?D: wait, avalon like the avalonians? i thought that was just a race on the character screen | avalon as in avalonians? i figured that was just a race name
+B: thats the thing. day one the race text said they come from the city of avalon, albion's seat of magic. so where was it? | the race text says avalonians come from the city of avalon, where the great mage guilds were. ever been? nobody had
+C: across the water, where we found it. avalon isle, the isle of glass, the ruins. case closed | on the isle, where it is now. we sailed there, we killed things there. done
+B: the isle we found was rubble. the drakoran had already burned it. so who was the race text talking about? | by the time we landed it was ash and drakoran. so where did the living avalonians come from?
+C: survivors. thats why they came to camelot. thats literally the race story | refugees. they fled to camelot, which is why they have nowhere to go home to
+B: then why did the old guides say avalon marsh runs right to the edges of avalon city. edges. you dont have edges across a sea | the first guides said the marsh ran to the edges of avalon city. a city on another island has no edges in our marsh
+E: the old guides also said the merchants were honest | the old guides also said my class was fun to solo
+B: walk the marsh sometime. roman pillars sinking into the bog, in rows. rows lead somewhere | go stand in the marsh. pillars, half sunk, in lines. somebody built a road into that mud
+C: romans built everywhere. there's a whole roman tomb under cornwall and nobody calls cardova avalon | the romans left stones in every zone. cardova has an emperor in it and it isnt avalon either
+D: whats in the marsh besides pillars? i only go there for the slimes | is there anything in the marsh worth seeing? i just kill slimes there
+B: lady nimue. the lady of the lake. she walks the marsh after dark, every night, and nobody can tell you why | the lady of the lake walks that marsh at night. not a guard, not a merchant. her
+C: she walks camelot hills and campacorentin too. she just likes long walks | she has a whole route, four zones. by your logic avalon is everywhere
+B: think about the old tale. the lady took excalibur back, and arthur was carried to avalon to heal. she keeps the way in | in the old story the lady of the lake took the sword back and the barge took arthur to avalon. she is the gatekeeper
+E: so arthur is asleep under the marsh? would explain why camelot went downhill | arthur's napping in a bog? explains a lot about the realm lately
+B: the old tale says he sleeps in avalon until albion needs him most. look around. albion needs him | the isle of apples, where the king sleeps until the realm is at its worst. we're getting close
+C: if he's sleeping in that marsh he picked a smelly bed | he'd wake up just to complain about the leeches
+D: wait so what's the isle of glass then, if avalon is somewhere else? | then why is the landing called the isle of glass?
+B: isle of glass is an old name for glastonbury, and glastonbury was always said to be avalon. look at the names over there | glastonbury was the isle of glass, and the monks swore it was avalon. the isle is wearing avalon's old names
+C: so you agree. avalon is the isle. across the water. not under your frogs | caer witrin, wearyall, all on the isle. you just proved my point
+B: i agree the isle wears the names. i think the real city sat between the two, and the mist moved it | the names went with the people who fled. the city itself? the mist has it
+~ 15
+C: mist doesnt move cities | fog does not pick up a city and carry it off
+B: mist pulled a whole pass out of a bog in hibernia once, ask any hib. their rangers swore it wasnt there the week before | the hibs had a pass come out of the mist one morning. nobody believed that either
+E: great, now we're taking geography lessons from hibs | lovely, hib fairy stories as evidence
+A: ok explorer, what's your actual proof | so whats the proof, if there is any
+B: none i can hand you. but the fog west of adribard's retreat doesnt move with the wind. real fog moves | the fog off adribard's retreat sits still in a gale. ive watched it for an hour. fog that doesnt drift is a door
+C: i'll believe it when the fog lets you in and you send me a tell from inside | send me a tell from the other side and i'll buy you a horse
+?E: bring a lantern. and a healer. and dont call me when the leeches win | count me out, i'll hold your corpse spot
+A: i ride past the marsh after this camp anyway. i'll look at the fog | im near the marsh later, i'll check the fog for you
+B: look at the pillars too. count which way they lean | and look which way the pillars lean. they all point the same way
+
+@topic lore_avalon
+@levels 1-50
+@scene alb_lore_avalon_why_a_ship
+@role B type=NoLifer levels=30-50
+@role C type=Explorer
+@role D type=* levels=5-25
+@role E type=Socialite,Daredevil
+A: {q} if avalon sat inside albion all along, why did we have to cross the sea to reach it | honest question for the marsh crowd: if avalon was always ours, why did it take a crossing to get there
+?D: wait, there's an actual avalon you can go to? i thought the avalonians were just a race on the creation screen | hold on, avalon is a real place? i thought it was flavour text for the avalonian race
+B: oh it's real. the isles opened it. you land at caer gothwaite on the isle of glass and walk straight into drakoran country | real enough to kill you. the shrouded isles came out, you land at caer gothwaite and the drakoran are waiting
+B: and i say that as an avalonian since the first week. a homeland on my creation screen and no road home for a year | i rolled an avalonian at launch. a city of mages in my story and not one road on the map that led there
+C: because the old avalon was never a place you walk to. in the old tale arthur went there on a barge, three queens with him. by water | the old story never had a road either. arthur was carried there on a barge with three queens. water was always the way in
+E: three queens on one barge. meanwhile i cant get one cleric to follow me to the next camp | three queens to row one king. my group cant even find one healer
+C: and the real glastonbury, the isle of glass, was a hill standing up out of drowned marsh. the marsh and the island are one story | look at old glastonbury. a hill sticking out of flooded marsh, and they called it an island. marsh and isle, same place
+B: then why is our marsh on the mainland and the isle a sea crossing away? thats not a hill in a bog, thats open water | nice theory, but our marsh is on one side of the map and the isle is over open sea. no bog in between
+C: because the land moved, or the mist did. hibernia had a whole pass come out of a bog. an island can drift off a marsh | if a pass can come out of the mist in hibernia, an island can slip back into it here
+B: that hib mist pass gets used to prove everything from avalon to free respecs | every albion argument ends up borrowing that hib pass story
+D: so is the city still there? the one the avalonians came from? | so what happened to the city of mages, is any of it left?
+B: avalon city is a dungeon now. rubble and drakoran, named ones like dura'ek the empowered and sys'sro the ruthless giving orders | its a dungeon. drakoran sitting in the old libraries, dura'ek the empowered and sys'sro the ruthless in charge
+E: sys'sro the ruthless. you just know his mother calls him sysy | sys'sro the ruthless sounds like a name somebody practised in a mirror
+C: and under it the crystal cave with xanxicar. a city of mages built on a two-headed dragon. tell me that was an accident | the crystal cave sits right under the ruins, xanxicar and all. nobody builds a mage city on a dragon by mistake
+~ 15
+B: what bothers me is the word when the isles were announced: avalon was no longer a friendly place. no longer. so it was friendly once | the first word about the isles said avalon was no longer a friendly place. no longer. it had a friendly time we never got to see
+C: exactly. it was there and friendly the whole time we were levelling in the marsh. hidden, not missing | right, friendly and there, behind the mist, while we killed slimes next door
+D: is anyone on our side still living over there? | who still lives on the isle then?
+B: wearyall holds out, a hamlet of avalonians. in the old tale wearyall hill is where joseph's staff took root and grew the holy thorn | wearyall village. the name is from the legend too: wearyall hill, where a pilgrim's staff grew into a thorn tree
+E: a village named after a tired hill. i feel that every time i ride from caer witrin to camelot | wearyall. clearly named by someone who walked there
+C: and the orchards. crafted apple gatherers, made things picking fruit for nobody. avalon means isle of apples in the old tongue | the isle of apples, avalons oldest name. and who works the orchards now? crafted gatherers, built not born
+B: ok, the apples i give you. the first time i saw one picking fruit it gave me a chill | the apple harvesters got me, i admit it
+A: so it was always there, it was hidden, and the drakoran found the door before we did | so the city was there, friendly, hidden, and then the drakoran knocked first
+B: and that's the real question. someone showed them the way. dragon-men dont read old maps | the question isnt the ship, its who led the drakoran across first
+?E: probably whoever sold me a map of the marsh in camelot for forty silver | someone with a boat and no morals. half the merchants in camelot qualify
+C: next trip i'm following the orchard down to the shore. if an old road ran out to the marsh, it ends in the water there | i'll walk the orchard edge to the coast next time. if there was ever a road home, it starts there
+B: send a tell if you find it. i've only been waiting since launch | if you find a road home, tell this avalonian first
+
+@topic lore_avalon
+@levels 1-50
+@scene alb_lore_xanxicar_the_lock
+@role B type=NoLifer,Leveler levels=35-50
+@role C type=Explorer
+@role D type=* levels=5-25
+@role E class=Wizard,Theurgist,Sorcerer,Cabalist
+A: {q} here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone | which came first, the city of avalon or the two-headed dragon in its cellar
+?D: xanxicar? is that one of the dragons you raid? | wait, who is xanxicar, another dragon?
+B: twin-headed dragon in the crystal cave, under the ruins of avalon city. one of the big beasts of the isles, raid only | two heads, one dragon, lives in the crystal cave under the ruined city. raid only, dont go look
+B: and the cave fills with lightning if you take too long. thats the part everyone remembers | linger and the whole lair lights up with lightning. thats how most raids there end
+C: think about that. a dragon whose cave punishes you for staying. thats not a lair, thats a guarded door | a beast whose home turns on you if you overstay. thats not a temper, thats a ward on a door
+B: or a short fuse. they even lengthened the lightning timer in a patch. nobody makes a sacred ward easier | the timer got longer in a patch because raids kept wiping. thats tuning, not a sacred seal
+E: speaking as a wizard: lightning that builds on a timer is how a ward feels. it stores, then it spends. a storm doesnt keep time | lightning that gathers and then breaks on a count is how a binding behaves. weather has no clock
+B: a wizard says it's magic. stop the presses | of course the wizard thinks everything is a spell
+E: the race text calls that city the seat of albion's strongest mage guilds. mages notice what sleeps under their floors | the greatest mage guilds in albion lived up there. you think they missed a dragon downstairs?
+C: there's an old tale for it. vortigern's walls kept falling down until the boy merlin told him: two dragons sleep in a pool under the hill | remember the old story. vortigern's fort kept collapsing and young merlin said dig: a red dragon and a white one under the foundations
+D: two dragons under a castle? like two heads? | wait, two dragons under the hill, and ours has two heads?
+C: two heads, one body. the old tale made it two dragons. avalon kept them together under the city | the legend split them in two. here they share one body under the mage city
+B: in that tale they were dug up and fought, and the red one won. it was a prophecy, not a door lock | they got dug out and the red beat the white. nobody kept them as a lock, it was an omen
+C: an omen about the fate of the land, buried under walls on purpose. call it what you like, someone kept it there | the fate of the realm buried under a fort. thats still a lock with a story carved on it
+~ 15
+B: then the lock failed. drakoran, dragon-men, walked into the city and burned the libraries | some lock. the drakoran strolled in and burned the place
+C: thats my best evidence. dragon-men walking past a dragon guard. maybe the guard let its own kin through | dragon-men, dragon guard. who do you think opened the door
+E: or flip it. the guilds were the ward and xanxicar the prisoner. burn the guilds and the prisoner stirs | maybe the mages were the lock and the dragon was the thing locked in. kill the mages, the ward weakens
+B: then why is he still sitting in his cave instead of flying over camelot | then why hasnt he left. he could be eating cotswold by now
+E: a ward half broken still holds the door. maybe the lightning is what's left of the old spell | broken wards still bite. the lightning could be the last of it, working on its own
+?D: so if you kill him, does something get out? | so killing him might let something loose?
+B: raids have dropped him and the only thing that came out of the crystal cave was the raid, carrying loot | every raid that downs him gets loot and a long ride home. nothing has crawled out yet
+C: yet. the drakoran never left those ruins. ask yourself what they're still digging for | that we know of. the drakoran are still in the city, still searching for something
+A: this is better than another argument about drop tables honestly | i like this more than the loot debates
+B: fine. next time a raid goes down there i'll watch the drakoran when he falls. if they cheer, i owe you a drink | next raid i'll keep an eye on the drakoran when he drops. if they look relieved, you win
+C: and count the seconds to the lightning. a storm doesnt count. a ward does | time the lightning while you're at it. if it keeps a clock, i'm right
+
+@topic lore_dragon
+@levels 1-50
+@scene alb_lore_golestandt_he_or_she
+@role B type=NoLifer levels=30-50
+@role C type=Explorer,Socialite
+@role D type=* levels=5-25
+@role E class=Minstrel
+A: {q} settle a guild fight for me. golestandt, he or she | my guild has argued for an hour. is golestandt a he or a she
+?D: who's golestandt? | golestandt? is that a boss?
+B: albion's dragon. the stone dragon at the south edge of dartmoor, past the granite giants. and she. every herald writes she | our dragon. south end of dartmoor, a dragon like living rock. and it's she, the heralds always wrote she
+C: every raid leader i ever followed said he. "he's turning, he's breathing, spread out" | funny, the raid leaders i rode with all said he. "he's lifting his head, scatter"
+B: raid leaders call everything he. i heard one call the king's wight a she once and nobody blinked | a raid leader would call a door he if it hit hard enough
+E: the songs say she. there's an old minstrel verse about the stone mother of dartmoor. you dont sing a mother as a he | minstrels have sung her as the stone mother for years. nobody rhymes a mother with he
+C: since when do minstrels get facts right. one of you sang that i soloed a giant | minstrels also sing that the merchants in camelot are fair
+D: why does it even matter? | does it change anything in the fight?
+B: it matters because a name was all we had. sir arward's thirty knights rode into dartmoor and the only word that came back was hers | the name came first. sir arward led thirty knights into the moor and all that returned was a journal with one word: golestandt
+E: and that journal didnt say he or she. one singed word, fallen out of the sky over prydwen keep | one word and no pronoun. the page dropped out of the sky at prydwen, half burnt
+C: there you go. the only witness never said she. the heralds decided later | the one real witness never said. so "she" came from someone who wasnt there
+B: the heralds wrote the dartmoor story. if anyone decides, it's them | the people who wrote her lore say she. thats as close to a witness as we get
+~ 15
+C: midgard cant decide about theirs either. half of them say he for the wolf-headed one and half say she | the mids argue the same thing about their wolf dragon. its a dragon thing, not an albion thing
+B: and a hib once told me their glimmer king is the only male dragon of the three. king, so that one's easy | some hib swore their glimmer king is the only he among the dragons. a king. fair enough
+D: what does she actually do to you? the breath? | so how does the fight go, is it the fire breath?
+B: two breaths. a patch put a heat debuff on her breath so the next one hurts more, i think. a later patch softened one of them | she breathes twice and the first strips your heat resist, as i understand it. one breath got toned down later, still hurts
+C: and he drops fifty luminescent stones for respecs. half the raid is there for the stones, not the pronoun | and the stones. fifty respec stones a kill. nobody asks he or she when the stones drop
+E: in the old tale uther took the name pendragon when a star shaped like a dragon crossed the sky. albion has always argued about dragons | uther was called pendragon after the dragon star he saw. our kings have been arguing about dragons since the beginning
+C: pendragon, chief dragon. and uther was a he, by the way | and uther was very much a he. just saying
+B: uther is a shade in the barrows. she is alive in dartmoor. different argument | uther haunts the barrows. she lives on the moor. not the same file
+A: still split then. i'm calling her she, in case she can hear us from the moor | ok. she, to be safe. dartmoor is closer than it looks
+?E: the next verse says "the dragon". everyone pays, everyone's happy | i'll write the ballad as "the dragon" and keep both camps buying me ale
+
+@topic lore_cardova
+@levels 1-50
+@scene alb_lore_cardova_nameless_emperor
+@role B type=Explorer
+@role C type=NoLifer levels=30-50
+@role D type=* levels=5-25
+@role E type=Socialite,Daredevil
+A: {q} how does a crypt hold an emperor nobody can name. cardova bugs me | cardova question. the lore says a roman emperor no one can name lies there. how do you lose an emperor
+?D: cardova is the place in cornwall with the roman dead, right? | is cardova the roman crypt under cornwall? i havent been yet
+C: cardova, yes. legionaries, centurions, praetorians, all dead and still standing their posts | the crypts under cornwall. dead legionaries and centurions and the princeps praetorii, a legion that never got the order to stand down
+B: and the story says it plainly: an emperor of rome buried in cornwall, and his name lost. not hidden. lost | the lore is simple. an emperor of rome lies in cornwall and nobody can name him. that's the whole record
+C: except emperor seleucus is right there with his name over his head. a named emperor, in the crypt. solved | but emperor seleucus is down there, name and all. there's your emperor
+B: and a few halls away the forgotten emperor, and the spirit of the emperor. three emperors in one crypt, one name between them | then explain the forgotten emperor. and the spirit of the emperor. three crowns and one name
+E: three emperors in one basement and still not one of them can tell you where the exit is | three emperors, one tomb. sounds like the queue at the camelot smith
+C: seleucus isnt even a roman name. greek kings used it. smells like a pretender who took the chair when the real one died | seleucus sounds greek, not roman. a usurper's name, or a guard's joke
+B: there you go. seleucus is the name on the throne, the forgotten one is the man who earned it | so the one with the name is the pretender and the forgotten one is the true emperor
+D: why would rome bury an emperor in cornwall though? isnt rome far away? | wait, why is a roman emperor buried out in cornwall at all?
+C: rome held this land for centuries. hadrian's wall in the north, pillars in the marsh, centurion favius still drilling out in cornwall | the romans were everywhere here. their wall up north, their pillars in the marsh, centurion favius still marching in cornwall
+B: and rome had a custom for hated emperors. they chiselled the name off every stone and coin. the old books call it condemnation of memory | rome used to scrape a hated emperor's name off every monument. maybe it was done to him, on purpose
+C: then he was punished, not mysterious. some failed emperor dumped at the edge of the world | so he wasnt lost, he was erased. a bad emperor thrown in a provincial hole
+B: and his legion still guards him. men dont guard a hated emperor for a thousand years | hated by rome, maybe. not by his men. they're still at their posts
+~ 15
+C: the dead guard crypts because thats what dead things do in albion. the barrows have guards, mithra has guards | skeletons standing guard is the most normal thing in albion. every barrow has them
+B: the barrow wights are a rabble. cardova keeps rank. amminus pilus, taras princep praetorii, crotus, olivarius. that's a court | look at the names down there. pilus, princeps, praetorii, all in order. thats a court still serving
+D: is the forgotten emperor hard? | can a group my level take the forgotten emperor?
+C: he's no dragon. it's the praetorians in the tight halls that wipe groups, and the pulls on the stairs | not hard as emperors go. the guards in the corridors are what kill you
+E: bring a cleric who likes stairs. cardova is all stairs and regret | bring a healer and a sense of direction. cardova eats both
+B: the old belief is that a soul whose name is forgotten cant rest. nobody says his name, so he walks | they say a soul nobody can name can never sleep. so the forgotten one stays up
+E: by that logic every alt i ever deleted is haunting something | then my forgotten alts should be haunting somebody too
+A: so the dead know and they wont tell. typical cornwall | nobody knows, the dead wont say, cornwall shrugs. sounds right
+B: next run i'm reading the walls instead of the loot. if a name was scraped off a stone, the scrape is still there | i'm going down with a scout to look at the stonework. a chiselled-off name leaves marks
+?C: if you find it, keep it quiet. the last thing we need is a fourth emperor | find a name and some bard will have a fourth emperor by friday
+
+@topic lore_merlin
+@levels 1-50
+@scene alb_lore_merlin_in_the_barrow
+@role B type=NoLifer,Leveler levels=25-50
+@role C type=Explorer
+@role D type=* levels=5-25
+@role E class=Wizard,Theurgist,Sorcerer,Cabalist
+A: {q} merlin is not dead. i will die on this hill | does anyone still think merlin is lying in his barrow under stonehenge
+?D: merlin has a grave in this game? where? | wait, merlin is buried somewhere we can go?
+B: the stonehenge barrows, under salisbury plains. the heart of it is the barrow of merlin. his name on his tomb. dead | stonehenge barrows in salisbury. the middle of it is called the barrow of merlin. nobody names a tomb after a living man
+C: and who do you meet down there? the shade of uther pendragon, the king's wight, wizard lichas. never once merlin | the barrows hold uther's shade, the king's wight and wizard lichas. i've walked every hall. no merlin
+B: shades are what's left when the body rots. maybe there's nothing of him left to walk | maybe he's dust. not every great man comes back as a shade
+C: read the realm's own story. after arthur fell, merlin was seen no more. thats how you write a man who left, not one who died | the realm lore says merlin is seen no more. not dead, not buried. seen no more
+E: and in the old tale he didnt die either. nimue learned his own spells and sealed him away, in a tree or a cave or a prison of air | the old tale has the lady of the lake learning his magic and shutting him in. a tree, a cave, a cell of air. alive, just stuck
+D: nimue? like the lady who wanders around the marsh? | is that the same lady nimue who walks around at night?
+C: the same. she walks camelot hills, campacorentin, the marsh and snowdonia. snowdonia, where castle myrddin keeps his staff | the very same. and her path runs through snowdonia, right past castle myrddin where merlin's staff sits as our relic
+B: she hands wizards their quests on a clock. if she's guarding merlin she's very relaxed about it | she's a quest giver on a schedule, not a jailer on patrol
+E: i've done her lake quests. she talks like someone who has kept a secret for a very long time | her quests are all about the lake and the old magic. she knows more than an errand giver should
+B: then who named the barrow? someone buried him there, or believed they did | then why is the barrow his. somebody thought he was in it
+C: in the old story merlin brought those stones over the sea himself to mark the graves of kings. his barrow because he built it | the old tale says merlin carried the stones from across the water for a royal grave. he made the barrow, he didnt fill it
+E: and the old chronicles bury uther inside that ring of stones. look who walks the barrows: uther's shade. that part they got right | the chronicles put uther's grave in the stone ring, and the shade of uther pendragon is down there. the old books were half right
+~ 15
+B: fine, but wizard lichas. a wizard, in merlin's barrow, turned lich. i dont like where that points | and lichas? a wizard gone lich in the barrow of merlin. you see where i'm going
+C: merlin would sooner be a toad than a lich. he had style | lichas is no merlin. lichas has a robe full of moths
+D: whats a lich anyway? | is a lich like a skeleton mage?
+E: a caster who cheated death by keeping his life outside his body. exactly the kind of trick an old wizard would study | a mage who hides his own life somewhere safe and keeps walking. old wizards love that sort of reading
+B: so you admit it. merlin's in there with a new face | so lichas could be what's left of merlin
+C: lichas is the apprentice who stayed behind to keep the door. my old guild's minstrel swore to it | i was always told lichas was a student who stayed to guard the barrow when merlin left
+E: and merlin left his staff with albion. you dont leave your staff behind unless you mean to come back for it | either way, the staff stayed with us. a wizard doesnt leave his staff unless he plans to return
+B: or he died holding it and someone picked it up | or he couldnt carry it any more
+A: i still nod to the stones when i ride across salisbury. just in case | i nod at stonehenge every time i pass. if he's listening, i want to be on the list
+?C: next run i'm knocking on the barrow walls. hollow walls have stories | i'll tap the walls of the barrow of merlin next time. something down there sounds hollow
+
+@topic lore_inconnu
+@levels 1-50
+@scene alb_lore_trust_the_inconnu
+@role B class=Necromancer
+@role C type=NoLifer levels=25-50
+@role D type=* levels=5-25
+@role E type=Explorer,Daredevil
+A: {q} honest question. do we actually trust the inconnu | do we trust the inconnu, or are we just glad they point the same way
+?D: inconnu are the pale ones with the big eyes, right? what's their story? | sorry, the inconnu are a race? where did they come from?
+C: they came up from below when the isles opened. arawn, lord of the dead, sent them, because someone was stealing his dead | they're arawn's people. arawn rules the underworld, someone has been stealing his dead, so he sent the inconnu to help us
+B: and before anyone sneers, my whole class answers to arawn. the necromancers of albion have served him since the realm began | careful. every necromancer in albion draws power from arawn. he was on our side long before the inconnu came up
+C: our side. the arawnites in the black mountains pray to him too, and they ambush travellers on the road | arawn has worshippers in the black mountains. arawnite warriors, headhunters, shamanesses. trust them too?
+B: every lord has bad followers. we have friars who drink | a god with ugly worshippers. sounds like half the churches in camelot
+E: and there's an eye of arawn in snowdonia. if he's our friend why is he watching our frontier | snowdonia has a thing called the eye of arawn. friends dont leave eyes in your yard
+B: the war comes over snowdonia. a wise ally keeps an eye where the enemy walks in | maybe he watches because thats where the enemy crosses. an ally watches the gate
+D: is arawn from the old legends or did someone make him up? | is arawn a real legend?
+C: old welsh tale. arawn, king of annwn, the otherworld. a prince called pwyll swapped places with him for a year and a day | welsh legend. arawn ruled annwn, the land of the dead, and traded faces with a mortal prince, pwyll, for a year
+B: and pwyll kept faith the whole year, never touched arawn's queen. arawn made him a friend for life. he repays loyalty | pwyll kept every promise for a year and arawn never forgot it. a lord who rewards honesty
+C: the same tales have his hounds, white with red ears, running down souls. cwn annwn. some of those dogs are loose in our world | and his hounds, cwn annwn, white with red ears, hunting the dead. you can meet them out there. lovely friends
+~ 15
+E: and caer sidi is from the old poem too. arthur sailed into annwn with three shiploads of men and seven came back | the old poem says arthur raided the fortress of annwn. three ships went in, seven men came out
+C: caer sidi sits on the border to his land, packed with imprisoned souls. if arawn is so mighty, why is his own doorstep rotting | his own back door is caer sidi and it's full of trapped souls. some kingdom
+B: because someone is robbing him. that's the whole reason he sent help. you dont send help when you're winning | thats why he needs us. a lord who is losing asks for allies
+C: and when he wins? a lord of the dead doesnt take thank-you notes. he'll send a bill and i can guess the coin | win his war and then what. lords of the dead get paid in souls
+E: i've never once heard an inconnu say thank you. or why. they only ever tell you when | inconnu tell you when to charge and never why
+D: the inconnu in my guild is the nicest person in it, for what it's worth | one of my guildmates is inconnu and she's always the first to help
+B: there you go. the newest voice in the realm with the best argument | see. the newbie has more sense than the veterans
+C: and a friendly face is exactly how a patient lord of the dead would buy trust | if i were the lord of the dead, i'd send the nice ones first
+A: so we trust them and count our fingers after | trust them, ride with them, keep one eye open
+?E: if an inconnu reads this channel we're all in trouble. they hear everything | careful, the inconnu hear more than they let on
+
+@topic lore_green_knight
+@levels 1-50
+@scene alb_lore_green_knight_game
+@role B type=Daredevil
+@role C type=NoLifer levels=30-50
+@role D type=* levels=5-25
+@role E type=Explorer
+A: {q} what is the green knight actually doing on the sauvage road | does anyone know why the green knight just stands in forest sauvage
+?D: there's a green knight? like from the story? | the green knight from the old poem? he's here?
+E: out in forest sauvage, not far from castle sauvage. a tall knight in green plate with a green blade, standing there, bothering nobody | in the frontier, sauvage. tall, green plate, green sword. he doesnt aggro, he just stands and watches the road
+B: standing there daring someone to swing first. i respect it | waiting for someone brave enough to start it. one day that's me
+C: he cons purple to every one of us. a patch made him as tough as midgard's glacier giant. that's not a dare, it's a warning | they toughened him in a patch to glacier giant strength. he's not a dare, he's a wall
+D: what happens in the story he's from? | whats the old story?
+E: a knight in green rides into arthur's hall at the yule feast and offers a game: strike me once, and in a year and a day i strike you back | a stranger all in green rides into the yule feast. one free blow, he says, and you take mine back in a year and a day
+E: young gawain takes his head off. the knight picks it up by the hair and the head tells him: come find me at the green chapel | gawain cuts his head clean off. the knight lifts it and the head says see you next year
+B: so the first swing is free. you all heard it | free first hit. sounds like a deal to me
+C: the free swing is the trap. the whole point of the tale is that he doesnt die, and you owe him | the catch is in the tale. he doesnt die and you've just signed for his return blow
+E: and gawain only lived because he came back honest. two feints and a nick on the neck | gawain lived because he kept his word. two feints, a nick on the neck, and a lesson
+~ 15
+C: i watched three groups go at him on a quiet frontier night once. death spam for a full minute, then he went back to standing | three groups tried him while i was passing once. the death spam scrolled for ages. then the road was quiet again
+B: three groups is a warm-up. bring a proper raid and he falls | three groups is not a raid. bring forty and see
+C: and get what? no keep, no relic, no realm points. you'd be killing a neighbour for a bad story | for what? he guards nothing. a neighbour who never bothered anyone
+D: so he's not an enemy? | so is he on our side or not?
+E: neither. look at who lives around him: fellwoods, walking trees, the gold oaken fellwood, a fallen druid seer | neutral. look at his neighbours. fellwoods, the gold oaken fellwood, a fallen druid seer. he belongs to the forest
+E: i think he's the old green man of the woods, the face with leaves for a beard, in armour. the fellwoods are his court | the green man carved in old church roofs, put in plate. thats my guess. sauvage is his and the fellwoods are his household
+C: the poem never made him a tree. he was a lord, bertilak, under a witch's spell, sent to test arthur's court | in the old poem he's a lord under an enchantment, sent by a witch to scare the round table. not a tree king
+B: spell or not, the head comes off. i've read the story | fine, a lord under a spell. still has a head i can take
+C: and the return blow comes a year and a day later. while you're shopping in cotswold | then a year on, he finds you. probably while you're at the bank in camelot
+?D: someone said a fellwood quest out there gives a grail shaped charm. is that a joke? | i heard there's a grail shaped charm of fellwood out there. is that real?
+E: real. somebody in that forest has read the old tales and laughs at them | real enough. the grail shaped charm of fellwood. that forest has a sense of humour
+A: so the advice is nod politely and keep riding | right. nod, keep riding, owe nobody a blow
+B: i'll nod. for now. one day i'm bringing a raid and a bard to write it down | i'll nod this time. but one day it's a raid and a minstrel taking notes
+?C: tell the bard to write the second verse too. the one where he picks his head up | make sure the song covers what happens a year later
+
+@topic lore_afanc
+@levels 1-50
+@scene alb_lore_afanc_drop
+@role B type=Crafter
+@role C type=Leveler levels=30-50
+@role D type=* levels=5-25
+@role E type=Explorer
+A: {q} what does the legendary afanc actually drop. my guild says three different things | is the legendary afanc worth killing or is it a story with teeth
+?D: whats an afanc? | afanc? never heard of it
+E: a lake monster out of the welsh tales. ours lives in llyn barfog, with its hatchlings swimming all over the shallows | llyn barfog's lake beast. part beaver, part dragon, depends who tells it. the afanc hatchlings are all around the water
+B: an old smith in ludlow swears it drops a hide that sheds water like oil. best leather in the realm, if you can get it | a crafter i trust swore it drops a scale that never rusts. hammer it into a shield and it shrugs off rain forever
+C: i heard it drops a wet sack and a long walk back to the stable | i heard nothing drops but lake weed and repair bills
+B: then why is someone in camelot selling "afanc hide" for a fortune. you dont fake what doesnt exist | someone in camelot sells afanc scale. nobody forges a thing that was never real
+C: people sell fakes of things that never existed all the time. i once bought a map to avalon | people fake unicorn horns too. by that logic unicorns are camping lyonesse
+D: is it a raid or can a group do it? | how strong is it? can a group take it?
+C: it's big. the zone story says the beasts of llyn barfog gained epic status, and the afanc is the worst of them | big. the zone lore says the monsters of that lake grew to epic size, and the legendary afanc tops them all
+E: and it's not alone up there. the king of the barfog hills, teazanodwc, mouth, fester. the whole lake is a nest of named things | the hills around it have names of their own. king of the barfog hills, teazanodwc, mouth and fester. busy neighbourhood
+E: in the old tale arthur's horse dragged an afanc out of that very lake on a chain. the hoof print is still in the stone, carn march arthur | the legend says arthur chained an afanc and his horse hauled it out of the lake. the hoofprint is pressed in a stone up the hill
+C: so which is it, the one arthur pulled out or another one | if arthur pulled it out, what's this one doing back in there
+E: its grandchild, maybe. look at all the hatchlings. it's a family business | a descendant. or the same beast, walked back in. legends never stay out of lakes
+~ 15
+B: barfog is old welsh for bearded, you know. llyn barfog, the bearded lake | the name means bearded. the bearded lake
+D: a lake with a beard? why? | why would a lake be bearded?
+E: there's a sir dillus up there. in the old tale dillus the bearded had his beard plucked out with wooden tweezers to make a hound's leash | sir dillus walks those hills. in the old story dillus the bearded lost his beard hair by hair to make a hunting leash
+C: thats a horrible way to make a leash. even crafters have standards | that is the worst crafting recipe i have ever heard
+B: speak for yourself. a leash from a beard, a shield from an afanc. i'd craft with either if the quality was right | crafters do have standards. thats why i want that hide
+C: real talk, i've never met anyone with that famous hide in their bags. coin, some loot, a story | honest answer: nobody i know ever came back with the scale or the hide. coin and a story
+B: nobody you know. the ones who have it dont shout it across camelot | the people who have it dont advertise
+A: so no proof of the drop and plenty of history. sounds like albion | no loot proof, lots of legend. normal albion
+E: i'm riding up there anyway to see the hoof print stone. legends are worth more than leather | i'll go look at the stone with the hoof print. bring back nothing but a better story
+?B: if you see a scale on the shore, it's mine. i called it | any scale you find on the beach, mail it to me
+
+@topic lore_relics
+@levels 1-50
+@scene alb_lore_scabbard_not_blade
+@role B type=NoLifer levels=30-50
+@role C type=Explorer
+@role D type=* levels=5-25
+@role E class=Armsman,Paladin,Mercenary,Reaver
+A: {q} why is the scabbard our relic and not excalibur itself | how did albion end up with a scabbard for a relic instead of the sword
+?D: what are relics? i keep hearing about them in the frontier | relics? are those the things the keeps fight over?
+B: two per realm, one for strength and one for power. ours are excalibur's scabbard and merlin's staff. hold theirs and your realm hits harder | a strength relic and a power relic each. ours are the scabbard and merlin's staff. steal the enemy's and the whole realm gets a bonus
+E: the scabbard is the strength one. every fighter in albion swings harder because of a sheath. think about that | our melee relic is a sword holder. my swings hit harder because albion keeps a sheath safe
+C: because the scabbard was always the real treasure. in the old tale merlin asked arthur which he valued more, blade or sheath | merlin asked arthur once which he liked better, the sword or the scabbard. arthur picked the sword. wrong answer
+C: whoever wore the scabbard couldnt bleed. worth ten swords, merlin said. the sword just cut | the old tale says the sheath kept its wearer from losing blood. merlin said it was worth ten of the blade
+B: and arthur lost it. his half sister stole it and threw it in a lake, and without it he bled out at camlann | arthur lost it, didnt he. his sister stole it and drowned it. without it he bled at camlann
+D: so where's the sword then? | so what happened to excalibur?
+C: back in the water. bedivere threw it into the lake when arthur was dying, and a hand came up and took it under | the dying king made bedivere throw it in the lake. a hand rose out of the water, caught it and sank
+E: after he hid it in the reeds twice and lied about it. bedivere, worst errand runner in albion | took him three tries. hid it in the grass twice and lied. sounds like my guild with quest items
+B: so the lady has it. lady nimue walks avalon marsh after dark. go ask her for it | so the lady of the lake has it. nimue walks the marsh at night. ask her nicely
+C: con her once. nobody is prying anything out of those hands | nobody is taking a sword from her. con her and you'll see why
+~ 15
+B: the relic raids are the better story anyway. lose the scabbard to midgard and every tavern sings about it for a month | the real excalibur fight is relic raids. lose the scabbard and you hear about it for weeks
+E: the first time we lost it, faction chat was a funeral. nobody logged off | i still remember the first relic we lost. the whole realm was in the frontier within the hour
+D: can they really just take it? | does that happen a lot?
+B: break the relic keep, carry it home, survive the ride. it has happened both ways. that's what the frontier is for | it happens. break the keep, walk it to your own relic keep, live through the ride. rvr at its best
+C: and when the relics first came, the word was more would follow. none ever did | the heralds once promised more relics. they never came
+C: i think the sword is the one they held back. the day the lady lets go of excalibur, the realms go to war over it | the missing relic is the blade, i'm sure of it. one day the lady gives it up and all three realms come for it
+B: and the hibs would swear the lady of the lake was one of their elves all along | if they add the sword the hibs will claim the lady was a lurikeen
+E: the day excalibur is a relic, the mids will camp the marsh till the leeches eat them | if the sword ever shows up the mids will be camping avalon marsh in shifts
+A: until then, guard the scabbard and bow if you pass the lady | for now, keep the scabbard home and bow to the lady
+?C: i do bow, every time she passes. she nodded back once, i swear | i bow every time. she looked at me once. i'm counting it
+
+@topic lore_oldest
+@levels 1-50
+@scene alb_lore_oldest_in_albion
+@role B type=NoLifer levels=30-50
+@role C type=Explorer
+@role D type=* levels=5-25
+@role E type=Socialite
+A: {q} what's the oldest thing in albion, honestly | oldest legend in albion. go
+B: golestandt. in uther's day a roman lord and his household vanished in dartmoor, and she was already home | the dragon. a roman lord vanished on the moor back in uther's time. she was there first
+C: the giants were here before her. in the old chronicles albion was giant country until brutus of troy landed and drove them out | older than dragons: giants. the old books say albion belonged to giants before brutus came from troy
+?D: brutus of troy? like the troy with the wooden horse? | who was brutus?
+C: a trojan prince who sailed west after the war, the old books say. he named britain after himself and gave cornwall to his friend corineus | grandson of aeneas, so the story goes. landed here, fought the giants, gave the island his name. his man corineus got cornwall
+C: corineus wrestled the giant gogmagog and threw him off a cliff into the sea. and what still walks cornwall? cornish giants | corineus threw the chief giant off a cornish cliff. and today cornwall is full of cornish giants
+E: so the cornish giants are sore losers waiting for a rematch | cornish giants holding a grudge for three thousand years. respect
+B: and the boulders in dartmoor are granite giants, and the stonecrush ogres chew on them, and all of them keep clear of her | the granite giants are dartmoor itself. the stonecrush ogres eat them. everyone stays out of her way
+C: dragons outlive kings, fine, but stone outlives dragons | i still say rock is older than any dragon
+D: what about stonehenge? isnt that super old? | stonehenge has to be old, right?
+E: the stones were standing long before anyone named a barrow after merlin. he just moved in | stonehenge was ancient already when they buried kings under it
+C: the old name for it is the giants' dance. giants carried those stones first, merlin only moved them. giants again | in the old tale merlin brought the giants' dance from over the sea. giants raised it first
+B: is there any question where your answer isnt giants | you'd make the giants the answer to everything
+~ 15
+E: keltoi fogou then. the carvings aren't roman, aren't anything with a name, and the keltoi priests are still chanting in there | the fogou. a holy cave before rome had a name, and the keltoi are still down there chanting
+B: chanting, and adding on every single pull | chanting and bringing friends to every fight
+C: then lyonesse. cailleach uragaig walks there, and the cailleach of the old tales is the hag of winter who dropped the hills from her apron | lyonesse has cailleach uragaig. in the old stories the cailleach built the mountains out of stones she spilled from her apron
+E: so the oldest thing in albion is somebody's grandmother. sounds right | the oldest thing is an old woman with an apron. every village knows that
+D: someone told me about a ghost bell in the black mountains too | i heard there's an abbey bell in the black mountains that rings by itself
+B: the vetusta abbey bell. vetusta is latin for ancient. even the name is cheating at this game | vetusta abbey. the name means old in latin. whoever named it knew what they were doing
+C: and llyn barfog had its afanc before arthur was born. he only got the credit for pulling one out | the lake had its monster long before arthur dragged one ashore
+A: so no winner. i'm writing it down as all of them | no answer as usual. albion is old all the way down
+B: put golestandt at the top. she might be reading | write her first. she's a dragon, she can read chat
+?C: i'm off to the cornish cliffs to look for where gogmagog went over. somebody has to | i'm riding to cornwall to find the cliff corineus used. if there's a giant's heel mark at the edge, i'll tell you
+
+# ---- Tale scenes: one bot tells an Albion legend, others interrupt ----
+@topic lore_tale_arward
+@levels 1-50
+@scene alb_tale_arwards_knights
+@role B type=* levels=5-25
+@role C type=NoLifer,Leveler
+@role D type=Socialite,Daredevil
+A: {q} want to hear how albion first learned the name golestandt? | here's the old dartmoor story. how we learned the dragon's name
+?B: go on, all i know is dont go south in dartmoor | sure, i only know her as the big con at the bottom of dartmoor
+A: back when uther was king, a roman lord kept a house out on the moor. one season the letters stopped. household, servants, horses, gone | in uther's day a roman lord lived on dartmoor with his whole household. one year they simply stopped answering
+A: uther sent sir arward with thirty knights to find out why, and a scribe to write it all down | so the king sent sir arward and thirty knights. and a scribe, because someone always has to keep the record
+C: thirty knights for one missing roman. that lord must have owed the crown a fortune | uther sent thirty knights for one roman? he must have owed uther money
+A: the journal tells of boulders that stood up and walked, the granite giants, and ogres that ate the rock, the stonecrush | the scribe wrote of stones that got up and walked, and of the stonecrush ogres chewing granite giants like bread
+B: wait, the stonecrush ogres in dartmoor are from that story? | the stonecrush? those are still out on the moor
+A: still there, still chewing. the knights rode south past all of it. the entries get shorter. then nothing | still hungry too. arward pushed south, deeper into the moor. the pages thin out. then they stop
+~ 12
+A: months later a sentry at prydwen keep saw something fall out of a clear sky. a book, half burnt, still smoking | months on, a guard at prydwen watched a scorched book drop out of an empty sky and land at his feet
+C: from dartmoor to prydwen through the air. thats some throw | thats a long way for a book to fly. something threw it
+A: most pages were ash. one word could still be read, written large: golestandt | the pages were cinders. one word survived the fire. golestandt
+D: and the thirty knights? and arward? | so what happened to arward and his men?
+A: never found. not a horse, not a helm. the moor kept them all, and the journal kept her name | no knight came back. dartmoor kept the men and gave us only the name
+?C: i'll believe the flying book when one lands on my head at prydwen | if a burnt book ever hits me at prydwen keep i'll know who sent it
+
+@topic lore_tale_cardova
+@levels 1-50
+@scene alb_tale_nameless_emperor
+@role B type=NoLifer
+@role C type=* levels=5-25
+@role D type=Explorer
+A: {q} my old guild's minstrel had a story about the emperor under cardova. want it? | here's the cardova story the way an old minstrel told it to me. the emperor nobody can name
+A: it starts in britain. a general here was hailed emperor by his own legions and marched them over the sea, like macsen in the welsh tale | a commander in britain was named emperor by his troops, like macsen wledig in the old welsh story, and took the legions to win rome
+?C: who's macsen? | macsen?
+A: an emperor out of britain in the welsh tale. he dreamed of a maiden in a far land, crossed the sea to find her and stayed. ours is darker | in the welsh story macsen dreams of a girl across the sea, goes to find her and never comes home. a love story. this one isnt
+A: ours lost. killed far away. but his legion would not leave him in foreign dirt. they carried him home across the sea by night | our emperor fell over the sea, the minstrel said, and his legion carried his body all the way back to cornwall
+B: carrying a dead emperor across a whole continent. in armour. with the smell | across an entire continent with a corpse. loyal, i'll give them that
+A: they cut cardova out of the cornish rock and laid him deep. then rome, which hated him, ordered his name struck from every stone | they dug the crypt halls and sealed him in. and rome ordered his name chiselled off everything, the way it did with emperors it hated
+A: so his own priests scraped it off the tomb first. a man with no name cant be cursed by his enemies, they said | his priests scratched the name away before rome could. no name, no curse
+D: clever. and terrible. very roman | thats clever and sad at once
+A: and the legion swore to stand watch until someone speaks his name in the crypt. nobody knows it. so the watch never ends | the legion's oath: guard him until his name is said aloud in those halls. nobody can say it, so they still stand
+B: and emperor seleucus? | then who's seleucus?
+A: the general who took the empty chair, she said. the forgotten emperor is the real one, and seleucus sits in his seat | a pretender, the minstrel said. the forgotten one is our man and seleucus is wearing his crown
+?B: lovely tale. tell it to a centurion and see if he lets you pass | nice story. i'll believe it when a praetorian stands down
+?D: next time i'm down there i'm shouting every roman name i know at the forgotten emperor | i'm going to try every latin name i can think of in front of him
+
+@topic lore_tale_green_knight
+@levels 1-50
+@scene alb_tale_green_knight_road
+@role B type=* levels=5-25
+@role C type=NoLifer
+@role D type=Daredevil,Socialite
+A: {q} want to know why the green knight stands in sauvage? an old armsman told me the story | here's the story i heard about the green knight and the sauvage road
+A: you know the old game, a blow for a blow, the return in a year and a day. the armsman said more than gawain played it | the beheading game. the armsman said gawain wasnt the only one who took a swing. a whole bench of knights did
+?B: more than gawain? who else? | wait, others swung at him too?
+A: every proud knight at the table, after gawain came home with that nick on his neck. each one swung, each one booked a return | after gawain came back alive, every hothead at the round table wanted a go. each swing, another blow owed
+A: then camlann came before the year was out. the table broken, the knights dead or scattered. nobody left to collect from | and before the year was up, camlann. table broken, knights dead or gone. a ledger full of blows and no one to pay
+C: so he's a debt collector. albion's oldest debt collector | so he's standing there with a bill. very albion
+A: so he took the road through sauvage, the one every albion knight rides to the frontier sooner or later, and he waits | he picked the road north that every knight of albion has to ride one day. and he stands there, waiting
+B: but those knights are long dead | the round table's been dust for ages though
+A: the armsman said the debt passes to whoever strikes him next. hit him and you inherit some dead knight's return blow | swing at him, the armsman said, and you take a dead knight's place in his book
+D: that's why he never swings first. he's waiting for a volunteer | that explains the not attacking. he wants someone to sign
+A: and those groups that tried him and died? the armsman said that wasnt a fight. that was him collecting | the groups he wiped? not combat, the armsman said. a receipt
+?C: nice tale. i bet the fellwoods tell it differently | the fellwoods probably have their own version
+?D: next time i'm through sauvage i'm keeping both hands on the reins | i'll nod to him next time and keep my hands off my sword
+
+@topic lore_tale_lyonesse
+@levels 1-50
+@scene alb_tale_lyonesse_drowning
+@role B type=* levels=5-25
+@role C type=NoLifer,Leveler
+@role D type=Explorer
+A: {q} the camelot bards tell the drowning of lyonesse two ways. want the one-night version? | here's the lyonesse story, the way an old bard in camelot told it to me
+?B: drowning? we level in lyonesse, it's dry land | wait, lyonesse isnt underwater. i've walked through it
+A: patience. in the old tale lyonesse ran from cornwall out into the western sea. fields, a city, a hundred and forty churches | in the old tale lyonesse was a rich country past cornwall, out where the sea is now. farms, towns, a hundred and forty churches
+A: in one night the sea rose and took all of it. one man got out, riding a white horse ahead of the waves to the cornish hills | then one night the sea came up and swallowed the lot. one rider escaped on a white horse, the water at his heels
+C: one night, or a hundred years of the sea creeping in. depends which bard has had more ale | the other version is a century of slow flooding. less dramatic, more likely
+A: one night. a hundred years doesnt get a ballad | one night makes the song. nobody sings about slow flooding
+D: there's a white horse near west downs in salisbury. same horse? | heh, a white horse wanders around west downs. you think it's that one
+A: the bard swore it was. still running, still afraid of water. i never checked | the bard said yes. still running from the sea after all these years
+B: so what's the lyonesse we play in then? | then what is our lyonesse?
+A: what the sea left, the bard said. the high ground. the drowned country lies past the coast, and the church bells still ring down there | the hilltops that stayed dry, the bard said. the rest is under the waves, bells and all
+C: you hear bells anywhere if you want to. albion collects haunted bells, there's one at vetusta abbey too | bells under the sea. the vetusta abbey bell in the black mountains rings with nobody pulling it either
+A: and who walks the dry part now? cailleach uragaig. a hag of the old world who watched her country go under | and cailleach uragaig keeps the dry part. an old witch who saw it all drown and stayed
+?D: next time i'm in lyonesse i'm swimming out to listen for bells | i'm swimming out past the coast to listen. if i hear a bell, i'm turning around
+?C: if you hear bells, swim faster. the sea doesnt give people back | take a healer. the sea keeps what it takes
+
+@topic lore_tale_inconnu
+@levels 1-50
+@scene alb_tale_inconnu_came
+@role B class=Necromancer
+@role C type=NoLifer
+@role D type=* levels=5-25
+A: {q} how did the inconnu end up in albion anyway? i never got the story | anyone know how the inconnu came to albion? they just showed up with the isles
+B: my trainer told it this way. arawn rules annwn, the land of the dead, and every soul in albion goes to him in the end | the way the necromancers tell it: every albion soul ends up in annwn, arawn's realm. that's the old bargain
+B: then his dead started going missing, raised before they reached him. old roman legions marching again. souls locked in caer sidi | then somebody started stealing his dead. dead legions walking again, souls caged at caer sidi. arawn noticed
+?D: stealing dead people? who? | who was stealing them?
+C: the same witch who set the drakoran on avalon. nobody says her name in camelot | the one who sent the drakoran into avalon. you know who. we dont say it
+B: so arawn opened the deep doors and sent his pale servants up. the inconnu. eyes made for the dark, faces that never saw sun | arawn answered by sending his own people up from below. the inconnu. pale as candles, eyes made for the dark
+B: they came up on the isles where the war was, and they chose to stand with albion, because the thief is our enemy too | they surfaced right where the drakoran were winning, and they picked our side
+C: picked our side. or were told to | told to, more like. arawn sends, they go
+D: so are the inconnu undead? | are they dead too?
+B: no. living, but from close to his kingdom. they can tell arawn's dead from the stolen ones the way we tell rain from snow | living. but they know the dead the way we know weather. which belong to arawn and which were taken
+C: a whole people who can count souls. handy, and a little creepy | that's the part that worries me
+B: in the old welsh tale arawn gave lifelong friendship to a prince who kept his word for a year. albion has kept its word. so far | there's an old story where arawn rewards a mortal for one honest year. keep faith with arawn and he keeps faith with you
+?A: so they're here as long as the thief is | so they stay until the thief is caught
+?C: and when she's caught, someone will have to pay arawn's bill | and after that, we'll see what arawn wants for his help
+
+# ---- more Albion lore built from parts (realm balance, 2026-10-26) -----------------------------
+@kind ambient
+@realm alb
+@topic lore
+@about place
+@who *
+[my old guild|an old paladin i knew|a friar in camelot] [swore|used to swear] [avalon|the city of avalon] [was|sat] [hidden in|right inside] [the marsh|avalon marsh] [all along|the whole time]
+[heard|they say] [lady nimue|the lady of the lake] [still walks|walks] [the marsh|avalon marsh] [looking for|guarding] [a door|the way in] [nobody else|no one else] [can see|has found]
+[sir arward|arward] [took|led] thirty knights into [dartmoor|the moors], and [all that came back|the only thing that came back] was [a scorched journal|a burnt journal] [that fell out of the sky|that dropped out of the sky]
+[the only word|the one word] [left|still readable] in [that journal|arward's journal] [was|is] golestandt. [makes you think|think about that]
+[those boulders|the boulders] in dartmoor [are|might be] granite giants, [and|so] [watch|mind] [where you sit|what you lean on]
+why would rome [bury|lay] an emperor [in cornwall|under cornwall]? [cardova never answers|cardova still wont say]
+[the barrow of merlin|merlin's barrow] [sits|lies] [under|at the heart of] [stonehenge|the stonehenge barrows], [and|but] [i dont|i do not] [think|believe] [he is in it|he ever stayed in it]
+[the shade of uther|uther's shade] [walks|haunts] [the barrows|stonehenge barrows] [still|even now], [guarding|watching over] [something|a secret] [older than|deeper than] the [king's wight|wight]
+[the green knight|that knight in green] [on|by] [the sauvage road|forest sauvage] [never swings|wont swing] first. [the trick|the hard part] is [the second blow|what comes after]
+[arthur|the old king] [dragged|pulled] [an afanc|the afanc] out of [llyn barfog|that lake] [once|long ago], and [the legendary afanc|its big cousin] [never forgave|still has not forgiven] [us|albion] for it
+[xanxicar|the two headed dragon] [sleeps|waits] [under|beneath] [the ruins|avalon city], [and|so] [dont|do not] [linger|dawdle] [or|or else] the cave [fills|lights up] with lightning
+[caer sidi|the fortress of caer sidi] [sits|stands] [on|right on] the road to annwn, [and|so] [the dead|lost souls] [walk|pass] [in|through] [and do not|but never] [walk out|come back]
+[krondon|the ogres of krondon] [answer|bow] to a warrior queen, [heard|i heard] [she|the queen] [never loses|does not lose] [a fight|an argument]
+[the drakoran|those dragon men] [burned|wrecked] [avalon city|the city of avalon] [before|long before] [we|any of us] [got there|crossed the water]
+[arawn|the lord of the underworld] [sent|lent] us the inconnu [because|since] [morgana|someone] [steals|is stealing] his dead. [strange friends|odd allies], [those two|the lot of them]
+[merlin's staff|the staff of merlin] and [the scabbard|excalibur's scabbard] [are|stay] [ours|home]. so where did [excalibur|the sword itself] [go|end up]?
+@who Explorer
+[i still|sometimes i] [walk|wade] [the marsh|avalon marsh] [looking for|hunting for] [a wall|a gate|a stair] [nobody|no one] [mapped|ever drew]
+[swam|i swam] [west|out] [off|past] [the coast|lyonesse] [once|one time], [the fog|the sea] [got|went] [thick|quiet] [as a wall|like a door]. [never|i never] [went back|tried again]
+[the old maps mark|my old map marks] [a ruin|a stair] in [the black mountains|dartmoor] that [nobody|no one] [has found|can find]. [still looking|i keep looking]
+@who NoLifer
+@levels 40-50
+[back then|in the first months], [we|everyone] [argued|fought] [for hours|for days] [about|over] [where|whether] avalon [was|even existed]. [turns out|and] [it was|we were] [right there|close] [the whole time|all along]
+@who Socialite
+[gossip|word] in camelot [says|is that] [someone|a scout] [saw|found] [lights|a stair] [in|under] [the marsh|avalon marsh] [again|last week]. [nobody|no one] has found [it|the spot] since
+@who Daredevil
+[dare|i dare you]: [swim|wade] [out|across] [to|into] [the|that] [fog wall|still fog] [off|west of] [adribard's retreat|the coast] and [tell|report] [us|everyone] what [you find|is there]
+@who Crafter
+[an|any] [albion|old albion] [smith|crafter] will [swear|tell you] that [steel|iron] [quenched|cooled] in [llyn barfog|that lake] [never|wont] [rusts|rust]
+@who Leveler
+is [caer sidi|krondon|avalon city] [worth|really worth] it at our levels? the [stories|tales] alone keep [me|most of us] out

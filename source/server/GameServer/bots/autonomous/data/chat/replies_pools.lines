@@ -1,0 +1,296 @@
+# More replies for the pools a nightly player hears most (the month simulation, UT_ChatMonth, 2026-10-26: about 1,000
+# "chat" replies a month came from 19 lines). Every line must fit ANY opener of its type, as in replies_invites.lines.
+
+# ---- chat: an observation, light reactions ------------------------------------------------
+@kind reply
+@answers chat
+@who *
+huh, yeah
+fair point
+thats about right
+i was just thinking that
+yeah i saw that too
+true enough
+so true
+been saying that for weeks
+oh yeah, definitely
+same thing happened to me
+wouldnt surprise me
+yeah thats a thing
+hah, yes
+ha, i noticed
+totally
+yep yep, same
+truer words
+ok that made me smile
+heh, isnt it always
+i mean, yeah
+never thought of it that way
+huh, interesting
+oh i know
+seems so
+heh, true story
+yeah thats how it goes
+lol yes
+sounds familiar
+ha, couldnt have said it better
+thats the game for you
+@who Socialite
+aw, i love that
+ha, you always notice the good stuff
+@who NoLifer
+yep. seen it a hundred times
+@who Explorer
+same, its the little things out here
+@who Crafter
+heh, reminds me of the forge, same deal
+@who Leveler
+yep, now back to the grind
+@who Daredevil
+ha, sounds like a fun night
+
+# ---- joke ---------------------------------------------------------------------------------
+@kind reply
+@answers joke
+@who *
+oh no lol
+heh, good one
+ha, that got me
+lol you would
+that was terrible and i laughed
+heh, thats going in my book
+oof
+okay that was funny
+lol whyyy
+heh, nice try
+groan, but ok
+ha, cute
+ha, stop it
+lol thats awful
+i see what you did there
+lol i shouldnt have laughed
+heh, you win today
+ha, someone had too much ale
+lol ok you get one more
+that deserved a rimshot
+lol told it better than me
+@who Socialite
+lol ok that one was great
+@who NoLifer
+heard it, still funny
+@who Explorer
+lol, ill think of that next time im lost
+@who Leveler
+heh, back to work now
+@who Daredevil
+lol thats exactly my luck
+
+# ---- boast --------------------------------------------------------------------------------
+@kind reply
+@answers boast
+@who *
+nice score
+grats, thats awesome
+oh sweet, gz
+good stuff
+now thats a good night
+ok thats pretty great
+nice going
+way to go
+look at you
+congrats, well done
+gz, you earned it
+sweet
+nice, about time
+woot, nice
+ha, show off. gz
+thats a good haul
+envious, nice
+well played
+grats grats
+now do it again
+nice, i still need that
+lucky! gz
+ha nice, enjoy it
+@who Socialite
+yay, that is so great
+@who NoLifer
+gz. now the next one
+@who Leveler
+nice, keep that pace
+@who Crafter
+nice, the work pays off
+@who Daredevil
+ha, nice, now find something meaner
+
+# ---- complaint ----------------------------------------------------------------------------
+@kind reply
+@answers complaint
+@who *
+oof, sorry
+ugh, that sucks
+yeah thats the worst
+sorry to hear it
+that stinks
+rough night huh
+bleh, been there
+dont let it get to you
+argh, hate that
+thats just mean
+ugh, i feel you
+ah man
+painful
+sorry, unlucky
+that happened to me yesterday
+ugh, typical
+yep, it does that
+hope the next hour goes better
+take five, then try again
+ha, welcome to my week
+ugh, every time
+the worst feeling
+sorry, that is annoying
+you deserved better
+that would make me log
+cant win them all i guess
+grr, i know that one
+@who Socialite
+aww no, hugs
+@who NoLifer
+happens. shake it off
+@who Leveler
+ugh, lost time is the worst
+@who Explorer
+at least you saw something new on the way
+@who Crafter
+sounds like my last batch at the forge
+@who Daredevil
+heh, still beats a quiet night
+
+# ---- lfg: someone looking for a group (never claim to invite) -----------------------------
+@kind reply
+@answers lfg
+@who *
+gl finding one
+gl, someone should bite
+what are you, what lvl?
+how many bubbles to go?
+gl, evenings are busy
+should be easy for you, gl
+hope you find one quick
+gl with that
+what spec are you?
+what are you after, xp or drops?
+keep at it, somebody will want you
+pst whoever forms, gl
+@needs solo
+lf one too, if anyone forms
+im solo too, will say if i see one
+@needs in_group
+we are full right now, sorry
+@needs
+@who Socialite
+gl! you will find one in no time
+@who NoLifer
+groups form after the hour, keep asking
+@who Leveler
+gl, or solo blues while you wait
+
+# ---- the player's real-life remarks --------------------------------------------------------
+@kind reply
+@who *
+@answers player_rl_late
+ha, same, i should be asleep too
+one more pull, famous last words
+night owls unite
+you'll feel it tomorrow lol
+get some rest after this one
+@answers player_rl_school
+gl on the test
+school first, the mobs will still be here
+been there, cram then camp
+good luck, you got this
+@answers player_rl_food
+ooh, enjoy
+now im hungry
+nice, eat up
+save me a slice lol
+@answers player_rl_tech
+ugh, computers
+hope it holds up tonight
+nothing worse than lag at a bad moment
+been there, reboot and pray
+@answers player_rl_pet
+aw, give them a pat for me
+ha, pets always know when you are busy
+they want attention, go on
+lol mine does the same
+@answers player_rl_weather
+stay dry out there
+perfect night to stay in and play then
+yikes, stay safe
+@answers player_rl_media
+ooh, no spoilers lol
+still need to see that one
+heard good things
+@answers player_rl_work
+ugh, work
+sounds like a long one
+glad you made it home
+hope tomorrow is easier
+@answers player_rl_body
+yeah, take a stretch break
+same here, need a better chair
+go grab some water, it helps
+
+# ---- answers to the newbie questions -------------------------------------------------------
+@kind reply
+@who *
+@answers ask_xpneeded
+fill the bar ten bubbles and you ding
+each bubble is a tenth, watch them fill
+@answers ask_findgroup
+post your level and class in lfg and wait a bit
+ask whoever is camping near your level
+@answers ask_power
+sit between pulls, it comes back way faster
+pace your pulls and med when you need to
+@answers ask_merchant
+sell to whoever is closest, they all pay the same
+grey stuff goes to any merchant, keep upgrades
+@answers ask_bind
+the bindstone is in town, stand next to it and /bind
+if you die you go back to your bind, so bind close
+@answers ask_realmability
+those come later, realm points from the frontier buy them
+your trainer sells them once you have realm points
+@answers ask_train
+visit your trainer when you ding and spend the points
+the trainer in town takes your spec points
+@answers ask_camps
+find mobs that con blue or yellow and stay there
+say your level in faction and someone will point you to a spot
+@answers ask_campshare
+just ask nicely, most will share
+ask first, then take turns on pulls
+@answers ask_bags
+sell what you dont use, bags fill fast
+keep upgrades, sell the rest to a merchant
+@answers ask_guards
+run to the guards if a pull goes bad
+guards help, lead the bad ones back to them
+@answers ask_lfg
+lfg is looking for group, add your level and class
+it means someone wants a group
+@answers ask_guild
+watch for guild recruiting, it happens every night
+send a tell to someone wearing a guild tag
+@answers ask_safezone
+home zones are safe, the enemy is in the frontier
+you are fine here, enemies stay in the frontier
+@answers ask_pulling
+pull one at a time and back off to your spot
+pull with a ranged spell or arrow if you have one
+@answers ask_craft
+pick one craft and stick with it, it adds up
+talk to the craft trainer in town to start

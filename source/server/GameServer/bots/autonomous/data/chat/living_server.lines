@@ -21,7 +21,9 @@ grats {target}, go train
 @who *
 grats {target}, good group
 gz {target}, keep it going
+@needs in_group, xp_high
 ding grats, one more and i am there too
+@needs in_group
 @kind grats
 @topic fifty
 @who *

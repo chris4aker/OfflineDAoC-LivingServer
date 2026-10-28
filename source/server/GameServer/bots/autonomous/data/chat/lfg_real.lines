@@ -1,0 +1,150 @@
+# Real looking-for-group talk (the talking update). lfg_self: a solo bot looking for a group, with its real
+# level and class. lfm: a bot group that is really recruiting ({need} is "a healer", "a tank", "a puller"
+# or "dps"; {camp} is where the group is). join: said in /group when the bot joins the player's group.
+# New writing (see docs/bot-voices/TALKING-UPDATE-CONTENT.md).
+
+# ---- lfg_self ------------------------------------------------------------------------------
+@kind lfg
+@topic lfg_self
+@who *
+@needs solo
+@invites lfg
+lfg {level} {class}, anything
+{class} {level} lfg, pst
+lfg, {level} {class}, any camp
+{level} {class} lf group, got a few hours
+lfg {level} {class}, will run to you
+{class} lfg, {level}, been waiting a while
+{level} {class} lfg, anyone?
+lf grp, {level} {class}
+lfg {camp}, {level} {class}
+{level} {class}, lfg xp group, can start now
+lfg, {class} {level}, know my class
+{level} {class} lfg, dont care where
+{class} {level} lfg, full buffs and potions
+lfg any xp, {level} {class}, inv pls
+{level} {class} lfg, lets get a group going
+lfg {level} {class}, solo xp is killing me
+{class} {level} lf anything with xp, pst
+@needs solo,xp_high
+{level} {class} lfg, so close to a ding
+@needs solo
+@needs solo,outdoors
+{class} {level} lfg {zone} or close
+lfg in {zone}, {level} {class}
+{level} {class} lfg, already at {zone}
+@needs solo
+@who Socialite
+{level} {class} lfg, good company guaranteed
+@who Leveler
+lfg {level} {class}, fast pulls preferred
+@who Daredevil
+{level} {class} lfg, orange cons or better
+@who *
+@class Cleric,Friar,Healer,Shaman,Druid,Bard,Warden,Mentalist
+{level} {class} lfg, heals and buffs, pst
+@class Armsman,Paladin,Warrior,Hero
+{level} {class} lfg, can main tank
+lfg {level} {class}, can hold aggro
+@class Wizard,Theurgist,Sorcerer,Cabalist,Runemaster,Spiritmaster,Eldritch,Enchanter
+{level} {class} lfg, nukes ready
+lfg {level} {class}, decent dmg, low hp
+@class Scout,Hunter,Ranger
+{level} {class} lfg, can pull
+@class Minstrel,Skald,Bard
+lfg {level} {class}, speed and songs
+@class
+@needs solo,can_rez
+lfg {level} {class}, can heal and rez
+
+# ---- lfm: the bot's group is really recruiting ---------------------------------------------
+@kind lfg
+@topic lfm
+@who *
+@needs recruiting,in_group
+@invites lfg
+lfm {need}, {camp}, pst
+lf {need} at {camp}
+{camp} group lf {need}, pst
+need {need} for {camp}, xp is good
+group at {camp} needs {need}
+lf {need}, we are at {camp}
+lfm, need {need}, {camp}
+anyone? need {need} at {camp}
+lf {need} for {camp}, rest of the grp is set
+{camp} group, only missing {need}
+need {need} at {camp}, send a tell
+lf {need}, {camp}, steady pulls
+looking for {need} at {camp}, pst me
+lfm {camp}, need {need} asap
+{camp}, lf {need}, will wait a bit
+need {need}, {camp}, good group
+lf {need}, {camp}, no drama group
+group lf {need} at {camp}, pst
+{camp} grp lfm, need {need}
+need {need} badly, {camp}
+lf {need} @ {camp}, pst
+still lf {need} at {camp}
+{camp} still needs {need}, pst
+lf {need}, {camp}, any level close is fine
+{camp} xp group needs {need}, pst
+lf {need} for {camp}, just lost ours
+lfm, {need} wanted at {camp}
+we need {need} at {camp}, anyone?
+one spot open for {need} at {camp}
+{camp}, need {need}, spawn is fast
+lf {need} to finish the group at {camp}
+need {need} at {camp}, been short all night
+lfm {need}, {camp}, nice and chill
+@who Socialite
+lf {need} at {camp}, we are a fun bunch
+@who Leveler
+lf {need} at {camp}, xp is flowing
+need {need} for {camp}, chain pulling all night
+@who Daredevil
+{camp}, lf {need}, we pull big
+@who NoLifer
+lf {need} at {camp}, long session, pst
+@who Explorer
+lf {need} for {camp}, then maybe somewhere new
+@who Crafter
+lf {need} at {camp}, need coin for materials
+@who *
+@needs recruiting,in_group,in_dungeon
+lf {need}, we are down in {camp}
+@needs recruiting,in_group,at_camp
+at {camp} now, need {need}, pst
+
+# ---- join: said in /group when the bot joins the player's group ----------------------------
+@kind lfg
+@topic join
+@who *
+@needs in_group,in_player_group
+@invites none
+hi all, ty for the inv
+ty for the inv
+hey all
+hi group
+ty, on my way
+heya, thx for the invite
+hi all, glad to be here
+ty for the spot
+hello hello
+@invites
+hi all, what are we killing?
+hey, who is main assist?
+ty for the inv, where are you all?
+@who Socialite
+@invites none
+hi everyone, nice to meet you all
+@who Daredevil
+hey, lets pull something big
+@who *
+@needs in_group,in_player_group,evening
+evening all, ty for the inv
+@who *
+@needs in_group,in_player_group,is_healer
+@invites none
+hi all, healer here, try not to die
+@needs in_group,in_player_group,is_tank
+hey, tank here, pull to me

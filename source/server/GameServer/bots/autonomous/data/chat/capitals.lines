@@ -44,9 +44,15 @@ every minute in town is a minute not leveling
 @realm alb
 @who *
 @needs in_capital
+@needs in_capital, at:camelot
 camelot market is louder than a keep siege
+@needs in_capital
+@needs in_capital, at:camelot
 the smiths in camelot never stop hammering
+@needs in_capital
+@needs in_capital, at:camelot
 camelot guards look at me like i stole something
+@needs in_capital
 
 # ---------------- Jordheim ----------------
 @kind ambient
@@ -54,9 +60,15 @@ camelot guards look at me like i stole something
 @realm mid
 @who *
 @needs in_capital
+@needs in_capital, at:jordheim
 jordheim is cold even indoors, how do the trolls stand it
+@needs in_capital
+@needs in_capital, at:jordheim
 dwarves at the jordheim forges, best smithing in the realm
+@needs in_capital
+@needs in_capital, at:jordheim
 the kobold merchants in jordheim drive a hard bargain
+@needs in_capital
 
 # ---------------- Tir na Nog ----------------
 @kind ambient
@@ -64,6 +76,12 @@ the kobold merchants in jordheim drive a hard bargain
 @realm hib
 @who *
 @needs in_capital
+@needs in_capital, at:tir na nog
 tir na nog is so green i keep walking past the merchants
+@needs in_capital
+@needs in_capital, at:tir na nog
 lurikeen merchants in tir na nog talk faster than i can read
+@needs in_capital
+@needs in_capital, at:tir na nog
 the lights in the trees of tir na nog never get old
+@needs in_capital

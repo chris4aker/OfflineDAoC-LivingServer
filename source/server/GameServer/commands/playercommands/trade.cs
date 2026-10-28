@@ -40,6 +40,7 @@ namespace DOL.GS.Commands
 
             string message = string.Join(" ", args, 1, args.Length - 1);
             Broadcast(client.Player, message);
+            AutonomousBeggars.OnPlayerAsked(client.Player, message, "trade");
         }
 
         private static void Broadcast(GamePlayer player, string message)

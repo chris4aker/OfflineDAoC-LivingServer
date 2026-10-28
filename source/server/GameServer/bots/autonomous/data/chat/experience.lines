@@ -1,0 +1,134 @@
+# Talk that shows how long a bot has played: new players (level 1-14) ask and wonder, veterans (40+) talk
+# templates, realm abilities and old stories. New writing (see docs/bot-voices/TALKING-UPDATE-CONTENT.md).
+
+# ---------------- New players ----------------
+@kind ambient
+@topic newbie
+@who *
+@needs newbie
+how do i get my new spells?
+do i have to visit my trainer every level?
+where do i spend my spec points?
+what does oom mean? everyone keeps saying it
+is it bad to put all my points in one line?
+how do i bind? woke up miles from anywhere
+whats the difference between blue and green con?
+can i lose a level if i die?
+where do people sell all this loot?
+how do you all type and fight at the same time
+when do i get to pick my real class?
+is it rude to loot when someone else did most of the damage?
+what does pst mean
+how do people make money? i have like 40 copper
+should i buy armor from the merchant or wait for drops?
+how do the horse routes work?
+what are those little bubbles on the xp bar?
+anyone know where to get a better weapon at my level?
+first time grouping, what do i do besides hit stuff?
+this world is huge, i had no idea
+just figured out sitting gets my health back faster
+everyone is so helpful here, ty all
+i keep getting lost, do people use maps?
+whats a realm ability? heard someone mention it
+how high can quality go on armor?
+what level can i go to the frontier?
+is it normal that {monsters} hit this hard?
+does constitution matter for a {class}?
+@who Explorer
+how far does the road go? been walking for ages
+@who Socialite
+anyone want to show a new player around?
+@who Daredevil
+yellow cons are fine right? right?
+@who *
+@needs newbie,in_dungeon
+my first dungeon ever, this place is creepy
+how do people find their way around down here?
+@needs newbie,in_capital
+{capital} is enormous, where are the trainers?
+@needs newbie,just_died
+died again, how do people not die all the time?
+@needs newbie,just_leveled
+just leveled, do i need to see my trainer now?
+@needs newbie,outdoors,night
+{zone} at night is spooky
+@needs newbie
+@about place
+@realm alb
+is tomb of mithra ok at my level?
+how do i get from cotswold to camelot?
+@realm mid
+is nisses lair scary? never been
+how far is jordheim from mularn?
+@realm hib
+anyone want to show me muire tomb sometime?
+how do i get to tir na nog from mag mell?
+@about
+@realm *
+
+# ---------------- Veterans ----------------
+@kind ambient
+@topic veteran
+@who *
+@needs veteran
+templates are a second job
+anyone else spend more time on their template than playing?
+str capped, dex two points short, story of my life
+plan your realm abilities before you hit 50, trust me
+purge first, then think about the rest
+my first character took months, alts go so much faster
+i remember when nobody knew where anything was
+the people make this game, not the loot
+seen a lot of guilds come and go
+first time i saw a dragon i just stood there and died
+if a stealther hits you, dont run in a straight line
+best advice i ever got: always know where the zone line is
+spent more on gems this month than on my house
+leveling an alt is easy when you know every camp
+every class feels weak until you learn it
+i still remember my first real group, we wiped all night
+used to think 20 was high level
+spec deep, dont spread your points, learned that the hard way
+the frontier is where the real game is
+lost count of my deaths in the frontier years ago
+a good healer is worth ten good drops
+my old guild did the dragon every friday, good times
+learned more from wiping than from winning
+speed is everything once you leave the keep
+back when i started, buffbots were just a rumor
+an 8 man that knows each other beats a zerg every time
+the trick to leveling is good company, the xp follows
+still have my first sword, cant bring myself to sell it
+nothing beats the first time you take a keep
+miss being new sometimes, everything was a surprise
+@who NoLifer
+running numbers on resists again, dont mind me
+spent the whole evening on spellcraft math, worth it
+@who Socialite
+half my friends list is people i met in pickup groups
+@who Daredevil
+been ganked so many times i dont even flinch now
+@who Crafter
+legendary in one craft and still broke
+@who Explorer
+still find corners of the world i have never seen
+@who *
+@needs veteran,in_frontier
+nothing like the frontier on a busy night
+@needs veteran,in_group
+this group reminds me of the old days
+@levels 50-50
+@needs veteran
+50 and still learning new tricks every week
+the hardest part of 50 is choosing what to do next
+@levels 40-50
+@needs veteran
+@about place
+@realm alb
+remember when the barrows were packed every night?
+@realm mid
+spindelhalla used to be the place to be, every night a full house
+@realm hib
+coruscating mine was where everyone went back then
+@about
+@realm *

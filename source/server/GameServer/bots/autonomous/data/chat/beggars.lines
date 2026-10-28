@@ -1,0 +1,320 @@
+# Beggars (AutonomousBeggars): 4% of Crafter bots live in their capital, beg players and passing bots for coin and
+# loot, sell what they are given, and never spend a copper of it. A player who asks ANYONE for gold or items (any
+# channel, or a /beg) gets followed around the city and insulted until they leave it. Every coin and item is
+# real: given by a player (drag it onto the beggar), given by a passing bot from its own purse, or a begged item sold
+# at a merchant or listed on the Realm Exchange. {coin} is the amount, {hoard} the beggar's whole purse, {npc} the
+# merchant whose corner it is. Real swear words are not in the corpus: they swear the way 2003 chat did. New writing.
+
+# ---- beg: to a real player walking past ----------------------------------------------------------
+@kind beggar
+@topic beg
+@who *
+spare a copper, {player}? just one. i wont even spend it
+{player}! {player}! alms for a poor {class}? anything helps
+[spare|got] [a few|any|some] [coppers|coin|silver] [for a poor soul|for an old {class}|for the needy][?|, friend?|, {player}?]
+[please|pls|plz] {player}, [anything|any coin|any loot] [helps|will do|at all][, even trash drops|, even a bone|]
+a gift for the needy, {player}? [loot you dont want|coin you wont miss|that rusty thing in your pack]
+[kind|noble|generous] {player_class}, [spare a coin|spare some silver|toss a copper] for [the needy|a poor crafter|old me]?
+{player} i see that full pack. you dont need ALL of it
+[alms|alms for the poor|coin for the poor][, {player}|][!|, please!|, anything!]
+[hey|psst|oi] {player}, [got any|any] [vendor trash|junk loot|spare drops] [for me|you dont want][?| i wont judge]
+my forge went cold, {player}. [one silver|a few coppers|a single gold] [gets it lit again|buys the coal|and its lit]
+{player} you look rich. [rich people share|share the wealth|spread it around][. please|. its the law|]
+just drag a coin onto me, {player}. [any coin|one copper|anything]. its easy. look how easy
+{player}, the realm needs heroes. i need [silver|coppers|gold]. help us both
+i used to adventure like you, {player}. [then the bog took my boots|then a troll took my purse|then i took up crafting]. spare a copper?
+{player}! dont walk away! [i saw you loot that|i know you have coin|i can hear your pack jingling]
+a {player_class}! [your kind always gives|your kind is generous|bless your kind]. spare [a coin|some silver]?
+[spare any|any spare] [gems|bones|hides|cloth|loot][, {player}|]? [i turn junk into food|i can sell that|i make use of anything]
+{player} [you dropped|you forgot|you owe] [a coin|a copper|your charity]. right here. in my hand
+[for the love of the realm|by all the gods|have mercy], {player}, [a copper|a coin|anything]
+honest work [is hard to find|dried up|left me] in {capital}, {player}. [spare a coin|help a soul out]?
+{player}, every coin you give me makes the realm [stronger|richer|better]. probably
+you got that much loot and none of it for me, {player}? [sad|tragic|a crime]
+[good|fine|kind] {player}, [a moment|one moment|a second]. [a coin|a copper] [for a poor beggar|for my supper]?
+[poor|old|hungry] {class} here, {player}. [anything helps|any coin helps|every copper counts]
+dont make eye contact if you want, {player}, just make coin contact
+{player} that armor looks expensive. you can afford one copper. ONE
+i will [pray|sing|chant] for you, {player}. for a silver. for a copper i will hum
+{player}! i accept [coin|loot|potions|anything that sells]. no refunds
+[im not|not] asking for much, {player}. [just|only] [some coin|a silver|whatever you have]
+[some|a little] [coin|silver] for [a poor|an honest|a humble] beggar, {player}? [the gods see you|i will remember you]
+{player}, the guards dont give. the merchants dont give. [be better than them|you are my last hope|be the one]
+
+# ---- beg_bot: to a passing bot (it may really give from its own purse) ------------------------------
+@kind beggar
+@topic beg_bot
+@who *
+{target}, [spare a copper|spare some coin|anything for me][?|, friend?]
+[hey|oi|psst] {target}, [loot to spare|any coin to spare|got anything][?| for a poor soul?]
+{target}! [i know you just sold|i saw you at the merchant|youre loaded]. share
+[alms|coin][, {target}|] [for the needy|for an old {class}][?|!]
+{target} [one coin|a copper] and i will [tell everyone you are kind|stop following you|bless your pulls]
+
+# ---- beg_idle: calling out to the street --------------------------------------------------------
+@kind beggar
+@topic beg_idle
+@who *
+[alms|alms for the poor|coin for the needy][! alms!|, anyone|, please|]
+[spare a copper|spare some coin|any spare coin][, anyone|, friends|][?|? anyone?]
+[will take|taking] [vendor trash|junk loot|old gear|anything] [off your hands|for free|gladly]. [drag it on me|just hand it over]
+[poor|old|humble] {class}, [down on my luck|fallen on hard times|out of coin]. [anything helps|please]
+i [take|accept] [copper|silver|gold|loot] and [kind words|pity|nothing else]. mostly [copper|coin]
+coin for a poor beggar! [the gods see who gives|charity is a virtue|be a hero today]
+[cant|i cant] [eat|craft|live] on [pity|good wishes|hope], {capital}. [coin please|send coin|help]
+[anyone|any of you] got [loot|coin|junk] you dont need? [i need it|i will take it|bring it here]
+[look at me|over here]. [poor|hungry|broke]. [spare a coin|toss a copper|help out][?|!]
+{capital}, [you|your people] [walk past me every day|never look down|step over me]. a copper would kill you?
+[a coin|a copper|a silver] [for the poor|for the hungry][, and the gods smile on you|, and you sleep easy|]
+[i dont need much|dont need much]. [just|only] [everything you dont want|a little coin|your vendor trash]
+
+# ---- thanks_coin: a real player just gave coin ----------------------------------------------------
+@kind beggar
+@topic thanks_coin
+@who *
+{coin}! [bless you|the gods bless you|bless your whole realm], {player}
+{coin}... [oh|ohh] {player}. [you are a saint|you are a hero|i will remember this]
+[thank you|ty|tyty] {player}! [into the purse it goes|for the hoard|straight in the pouch]
+{coin}. [not bad|nice|ooh]. [the hoard grows|my purse sings|i can hear it jingle]
+{player} gave me {coin}! [everyone see that?|SEE? kindness lives|a real hero]
+[bless|bless you|blessings on] {player} and [their pulls|their loot|their mother]. {coin} [richer|happier]
+{coin}? [you shouldnt have|you really shouldnt have|i could kiss you]. [more?|got more?|no really, more?]
+[ooh|oh], {coin}. [i will spend it wisely|i will never spend it|this one stays with me forever]
+{player} [you|u] [beautiful|wonderful|glorious] {player_class}. {coin}! [thank you|ty ty]
+{coin} [for me|from you]? [the gods saw that|i will name a coin after you|its going under my pillow]
+[ty|thanks] {player}. that makes {hoard} [now|in the purse]. [not that im counting|not that it matters|still poor]
+
+# ---- thanks_item: a real player just gave an item --------------------------------------------------
+@kind beggar
+@topic thanks_item
+@who *
+{item}! [for me|you shouldnt have]? [bless you|thank you], {player}
+[ooh|oh] {item}. [i know a merchant who will love this|that sells|worth a few coppers at least]
+{player} gave me {item}. [kindness|charity|generosity] [lives|still lives|is not dead] in {capital}
+[ty|thank you] {player}! {item} [goes in the pack|is mine now|will feed me for a week]
+{item}... [i will treasure it|i will cherish it] [until a merchant buys it|for an hour|forever. or till i sell it]
+[bless|blessings on] {player}! {item}! [what a find|what a gift|what a day]
+{item}? [hmm|heh], [its no gold|not coin], but [i can sell it|it will sell|a merchant will take it]. [ty|thanks] {player}
+
+# ---- full: the beggar's pack has no room for an item ------------------------------------------------
+@kind beggar
+@topic full
+@who *
+[my pack|my bags] [are full|is full][, {player}|]. [coin only now|just coin please|coin fits anywhere]
+[no room|no more room] [for loot|in the pack][, {player}|]. but coin? [always room for coin|coin fits|i have room for coin]
+[cant carry it|cant fit it], {player}. [give me the coin it sells for|coin instead|sell it and bring me the coin]
+
+# ---- thanks_bot: a passing bot gave from its own purse -----------------------------------------------
+@kind beggar
+@topic thanks_bot
+@who *
+{coin} from {target}! [bless you|the gods bless you|you are a good one]
+[ty|thanks] {target}. {coin}. [into the hoard|the purse grows|not a copper wasted]
+{target} [gives|gave]! {coin}! [see? kindness|thats a real {realm} hero|everyone learn from {target}]
+
+# ---- donor_give: the passing bot that gives (it speaks; {target} is the beggar) -------------------
+@kind beggar
+@topic donor_give
+@who *
+[here|heres a bit], {target}. [get some food|dont spend it all at once|go buy some bread]
+[fine|ok fine|alright], {target}. [take it|here|one coin] and [leave me alone|stop staring|go away]
+[ugh|sigh]. [here|take this], {target}. [now stop following me|you win|happy now?]
+[take it|here], {target}. [my good deed for the day|for luck|the gods are watching]
+[heres a few coppers|here, a bit of coin|small coin, but here], {target}
+[sure|ok], {target}. [i was poor once too|been there|times are hard]
+@who Socialite
+[aww here|here you go|of course], {target}! [buy yourself something nice|chin up|it gets better]
+@who Crafter
+[here|take it], {target}. crafting [ate my coin too|made me poor once|is a money pit, i know]
+
+# ---- donor_refuse: the passing bot says no ---------------------------------------------------------
+@kind beggar
+@topic donor_refuse
+@who *
+[no|nope|not today], {target}
+[get a job|go farm|kill some rats], {target}
+i [have|got] [no coin|nothing|less than you probably], {target}
+[not now|busy], {target}. [maybe later|ask someone else|ask the guards]
+{target} [youve asked me|you ask me] [every day|three times today|every time i pass]. no
+@who Leveler
+[no time|cant stop], {target}. [xp waits|camp waits|on my way out]
+@who Daredevil
+[earn it|go earn it], {target}. [the frontier pays|go kill something|the realm needs swords not beggars]
+@who NoLifer
+{target} [i have been grinding|been farming] [all day|for hours] for this coin. [no|NO|absolutely not]
+
+# ---- spurned: the beggar after a refusal ------------------------------------------------------------
+@kind beggar
+@topic spurned
+@who *
+[fine|FINE|ok]. [be that way|keep it|choke on it], {target}
+[cheapskate|tightwad|miser]. [i will remember you|remember this|the gods saw that], {target}
+[pfft|tch|hmph]. {target} [wouldnt give|never gives] [a copper to his own mother|a copper to a dying man|anything]
+i hope [your next pull goes wrong|your loot is all trash drops|your horse throws a shoe], {target}
+[its fine|fine|whatever]. [i didnt want your coin|i have my own hoard|plenty of fish]. [*sniff*|sniff|]
+
+# ---- hoard: muttering over the purse ------------------------------------------------------------------
+@kind beggar
+@topic hoard
+@who *
+{hoard}. [not enough|never enough|still not enough]
+[counting|let me count]... {hoard}. [hmm|hm]. [count again|need more|one more time]
+{hoard} [in the purse|in my pouch|in the hoard]. [nobody knows|nobody needs to know|shh]
+[my precious coins|my coins|my lovely coins]. {hoard}. [all mine|mine|every copper mine]
+[one more|a little more|just a bit more] and then {hoard} becomes [more|a real hoard|something]
+[i have|got] {hoard} [and i will never spend a copper of it|and not one copper is for spending|and it stays that way]
+[{hoard}|{hoard} saved]. [rich?|rich? me?] [no no|ha], [very poor|still poor|poor as dirt]. [spare a coin?|alms!]
+[jingle jingle|clink clink]. {hoard}. [beautiful|lovely|music]
+[if anyone asks|if the guards ask], i have [nothing|no coin|a copper at most]. [not {hoard}|definitely not {hoard}]
+{hoard} and [the merchants|the bankers|the guards] [think im poor|dont even know|never suspect]. heh
+
+# ---- sold: the beggar sold or listed what it was given ---------------------------------------------------
+@kind beggar
+@topic sold
+@who *
+{npc} gave me {coin} for {item}. [the hoard grows|into the purse|heh]
+[sold|traded] {item} [for|to {npc} for] {coin}. [charity is a fine trade|business is good|easy coin]
+{item} [went for|fetched] {coin}. [the begging business|beggar economics|the system] [works|is booming]
+[one|some] {item} [turned into|became] {coin}. [like magic|alchemy|the oldest craft]
+@topic listed
+[put|listed] {item} [on the exchange|with the broker] for {coin}. [some fool will buy it|somebody will pay|heh]
+
+# ---- tell: a player sends the beggar a tell (not asking it for anything) ----------------------------
+@kind beggar
+@topic tell
+@who *
+[spare a copper?|any coin for me?|got anything to spare?] [drag it onto me|just walk up and hand it over], {player}
+[come find me|im on my corner] in {capital}. [bring coin|bring loot|bring anything]
+[what do you want|what]? [unless its coin|unless you are bringing coin|if its not coin], [im busy|go away|dont bother]
+[busy|very busy]. begging [is a full time job|takes all day|doesnt do itself]. [coin?|unless you have coin]
+[you whisper|you send tells] but [no coin|no silver|no gifts]? [typical|heh|tch]
+[questions cost a copper|answers cost coin], {player}. [pay first|coin first]
+
+# ---- tell_group: a tell about grouping, inviting or joining (in-game check 2026-10-27: "how long have you been on
+# this corner?" drew "no groups") ----------------------------------------------------------------------------------------
+@kind beggar
+@topic tell_group
+@who *
+[i dont group|no groups], {player}. [i have a corner|i have a job|i beg]. [but coin is welcome|coin though?]
+[group|grouping]? [and leave my corner|and lose my spot]? [never|not a chance], {player}
+the only party i join is the one with [coin|a purse]. [got one?|you have one?]
+
+# ---- outraged: the moment a player asks the BEGGAR for gold or items ---------------------------------
+@kind beggar
+@topic outraged
+@who *
+[EXCUSE ME|excuse me|WHAT]? [YOU|you] want [MY|my] coin? [i am the beggar here|thats MY job|on MY corner]?
+[oh no|oh NO|no no no]. [no you didnt|you did NOT|you didnt just]. on MY corner, {player}?
+[you|YOU] [ask ME|beg ME]? [a beggar|the beggar]? [{player} you absolute|{player} you rotten|unbelievable] [vulture|leech|weasel]
+[lol|LOL|ha|HA]. [no|NO]. [and now|now] [you have a problem|youre MINE|we have a problem], {player}
+[my|MY] coin? [MY|my] [loot|hoard|purse]? [over my dead body|not in a hundred years|i will follow you to the gates]
+{player} [begging|asks for coin] on [my|MY] corner. [the nerve|the gall|the cheek]. [oh you are going to hear about it|youre not going anywhere]
+[wtf|WTF|omfg]. [did|did you all|everyone] [hear that|see that]? {player} wants [MY coin|charity FROM ME]
+[get your|get ur] own corner, {player}! [this one is taken|this one is MINE|this street is MINE]
+[a|A] {player_class} [begging|asking] a beggar. [i have seen everything now|thats a new low|the realm is doomed]
+[you|YOU] [want|need] [gold|coin|loot]? [i want|I want] [you OFF my corner|you GONE|your head on a pike]
+[oh its|ohhh its] [ON|on] now, {player}. [where you go i go|i go where you go|i am your shadow now]
+
+# ---- heard: a beggar that heard the player asked SOMEONE for coin or items (anywhere, any channel, within the hour) --
+@kind beggar
+@topic heard
+@who *
+[oi|OI|hey] {player}! [i heard|word is|the street says] you [been begging|asked for coin|want handouts]. [begging is MY job|thats MY trade|on MY streets]?
+[well well|well well well]. [its|here comes] {player}. [the|that] {player_class} [who begs|begging for gold|asking for handouts] [all over {capital}|in my city]
+[word|news|gossip] [travels fast|gets around] [on the street|in {capital}], {player}. [you asked for coin|you begged]. [now you have ME|big mistake]
+{player}! [you|YOU] [asked|begged] [someone|a stranger|the whole realm] for [gold|coin|loot]? [in|IN] [my|MY] city?
+[i know what you did|everyone knows what you did|we all heard], {player}. [begging|asking for gold]. [shameful|amateur hour|disgusting]
+[there|THERE] [you are|they are]. {player}. [the freeloader|the coin vulture|the competition]. [get over here|dont you run|stay right there]
+[every|EVERY] beggar in {capital} [knows your name now|heard about you|is looking for you], {player}. [and i found you first|lucky me|surprise]
+[you|u] [want|wanted] handouts, {player}? [handouts are|begging is] [union work|a guild craft|for professionals]. [you are not in the guild|you have no license|scab]
+{player}, [asking|begging] for [gold|coin|loot] [without|and not] [paying your dues|asking us first|cutting us in]? [oh no|no no|nope]
+[the corners|the beggars|the street] [talk|have ears|hear everything], {player}. [you asked for coin|you begged]. [now|so now] [you get me|we dance|i follow]
+[look|LOOK] [who it is|everyone]. {player}, [the {player_class} who begs|professional moocher|king of handouts]. [boo|BOO|shame]
+[you|YOU] [beg|begged] [out there|over there|behind my back], {player}? [and thought i wouldnt hear|and thought we wouldnt know|cute]
+ ---------------------------------------------------
+@kind beggar
+@topic insult
+@who *
+[keep walking|keep going|walk faster], {player}. [im right behind you|i got all day|i dont get tired]
+[everyone|hey everyone|{capital}], [look|look at this|meet] {player}. [the {player_class} who begs from beggars|a professional freeloader|a coin vulture]
+[you call that armor|you call those boots|you call that a weapon], {player}? [i have seen better on a skeleton|i sleep on better|my rags are nicer]
+{player} [smells like|smells of] [a wet hound|old cabbage|a bog|three day old mead]. [just saying|everyone can smell it|no offense. lots of offense]
+[nice try|nice|real nice], {player}. [begging a beggar|robbing the poor|asking ME for coin]. [genius|real hero stuff|truly a legend]
+[go|run|go on], {player}. [run home|run to the gates|run to your guild]. [i will be right here|i will follow|im faster than i look]
+[hey|oi|HEY] {player}! [you forgot something|you dropped something]. [your dignity|your shame|your manners]. [its back there|by my corner]
+{player} [begs|begged] [like a|worse than a] [first day farmer|wet kobold|lost goblin]. [amateur|pathetic|embarrassing]
+[i have|got] [more coin in one boot than you have in the bank|more class in one boot than your whole guild|more friends than you], {player}
+[stop|quit] [looking at|staring at] [my purse|my pouch], {player}. [its not yours|it will never be yours|mine]
+[pay|tip] [this|THIS] corner, {player}. [oh wait|oh right], [you cant|you need coin for that|you begged for it]
+{player} the {player_class}. [scourge of beggars|thief of the poor|the corner pirate]. [boo|booo|BOOO]
+[im not|not] [leaving|going anywhere|stopping], {player}. [not till you leave|not until youre gone|not while you walk my streets]
+[when|if] {player} [pulls|tanks|heals] like [they beg|that], [i feel sorry for their group|no wonder they are broke|no wonder]
+[is that|that] [a {player_class}|what passes for a {player_class}] these days? [the trainers must be crying|sad|tragic]
+[you|u] [want|wanted] coin? [here is some advice instead|free advice|i give advice free]: [leave|go away|get out of {capital}]
+[ha|HA|lol]. {player} [still here|still walking|thinks i will get bored]. i [never|dont] [get bored|tire|stop]
+{player} [is so cheap|is so broke] they [ask beggars for coin|beg from beggars|would rob a rat]
+[everyone|guards|people], [hold on to your purse|watch your pouch|lock your banks]. {player} is [about|here|on the prowl]
+[i will be|im] [your shadow|right behind you|at your heels], {player}. [every step|all the way|until the gates]
+[you|u] [got|have] the [manners|charm|face] of a [bog troll|drowned rat|rotten turnip], {player}
+{player}! [stop|STOP]! [thief|THIEF]! [well|ok], [almost thief|wanted to be a thief|thief in spirit]
+[beg|go beg] [somewhere else|outside|in the swamp], {player}. [the frogs might give|the rats might share|the mobs might pity you]
+[my|MY] [corner|street|spot]. [my coin|MY coin]. [my city|MY rules]. [get|now get] [out|lost|walking], {player}
+[omfg|wtf|lol] [are you still|you still] [here|walking around|in {capital}], {player}? [take a hint|the gates are that way|go]
+{player} [asked|begged] ME for [coin|gold|loot]. [tell your friends|tell your guild|i will tell everyone]. [i will|i already did]
+[that|THAT] {player_class} [wanted|tried to take] [MY|my] [gold|coin]. [shame|SHAME|shame on them]. [shame!|SHAME!]
+[i hope your horse|i hope your next mount] [bucks you off|throws you|kicks you] [in the river|at the gate|into a bog], {player}
+[even|even the] [guards|merchants|rats] [laugh at you|pity you|wont talk to you], {player}
+[you|u] [walk|move] like a [wounded ox|lost sheep|drunk dwarf], {player}. [slow|so slow|im barely walking]
+{player} [has|got] [a face|a voice|a smell] only a [mother troll|blind hound|bog creature] could love
+[you|u] wanted [my|MY] gold, {player}? [earn it|work for it]. [like i do|by begging|the honest way]
+[you|u] wanted [my|MY] gold, {player}? go kill something. [oh wait|then again], [you|u] [cant|wont]
+[shoo|SHOO|go]. [shoo|go on|out]. [{player}|you] [pest|leech|vulture]
+[whos the beggar now|who begs now|who is poor now], {player}? [not me|still not me|you. its you]
+{player} [why are you|why u] [running|walking so fast|looking back]? [scared?|scared of a beggar?|guilty?]
+[$#@!|#$@!|%$#@] [freeloader|leech|vulture]! [out|get out|out of my city], {player}!
+[i know|we all know] [where you bind|where you bank|your face], {player}. [i will be waiting|see you tomorrow|and i dont forget]
+@who Daredevil
+[come back here|come here], {player}! [i may be poor|i may be a beggar] but [i bite|i kick|i am fast]
+@who Socialite
+[and to think|and i was going to] [say something nice about you|be your friend|invite you to tea], {player}. [never mind|NEVER]
+
+# ---- corner: possessive about the corner --------------------------------------------------------------
+@kind beggar
+@topic corner
+@who *
+[this|THIS] [is|is MY] corner, {player}. [mine|MINE]. [nobody begs here but me|i have papers|ask anyone]
+[i have been|been|ive been] begging [on this corner|by {npc}] [since before you could walk|for years|since the realm was young]. [MINE|my corner]
+[the corner by|the spot by] {npc} [is|is MINE. its] [mine|taken|spoken for]. [find your own|go beg by the gates|the sewers have room]
+[nobody|NOBODY] [begs|works|sits] [my corner|by {npc}] [but me|without my blessing|and lives]
+[you|u] [think|thought] you could [just|simply] [walk|waltz] [onto|up to] MY corner and [ask for coin|beg]? [think again|wrong|nope]
+[my|MY] corner. [my|MY] [cobbles|stones|patch of dirt]. [my|MY] [coin|marks|customers]. [get lost|go]
+[i|I] [paid|bled|begged] for this corner, {player}. [three winters|ten years|every day]. [not giving it up|not sharing it]
+[this|that] [street|stretch|corner] is [spoken for|MINE|claimed]. [ask {npc}|{npc} knows|even {npc} knows]. [MINE|mine]
+[you want a corner|u want a corner|want a corner]? [go|then go] [beg in the frontier|stand in the bog|ask the trainers]. [not mine|not here]
+{player} [tried to|wanted to] [steal|take|beg on] my corner. [everyone remember that|witness this|remember the face]
+[i see|i saw] [you|u] [eyeing|looking at] my corner, {player}. [dont|DONT]. [even|dont even] [think about it|try it]
+[the|THE] corner [is|stays] [mine|MINE]. [the coin is mine|the hoard is mine]. [{capital} is|this whole city is] [mine|kind of mine]
+[back off from|step away from|get off|off] my corner, {player}. [three steps|five steps|all the way to the gates]
+[there are|we have] rules, {player}. [rule one|one]: [the corner is mine|my corner my coin|nobody begs here]. [rule two|two]: [see rule one|get out]
+[you|u] [dont|cant] just [take|steal] a [mans|beggars] corner, {player}. [thats|that is] [low|the lowest|wrong]
+i know every [stone|cobble|crack] [of|on] this corner. [you|u] [dont|never will]. [so|now] [go|leave|scram]
+
+# ---- gone: the player left the city -------------------------------------------------------------------
+@kind beggar
+@topic gone
+@who *
+[and STAY out|and stay gone|and dont come back][, {player}|]! [my corner|my city|my streets] [is safe|is clean again|is mine again]
+[ha|HA]. [ran off|gone|fled]. [nobody|no one] [takes|touches|begs on] [my corner|my street]
+[good riddance|good|finally]. [back to|now back to] [work|my corner|begging]. [alms!|spare a copper?|coin for the poor!]
+[thats right|yeah|aha], [run|walk|keep walking]. [beggars always win|beggars never forget|this beggar wins again]
+[corner|my corner] [defended|saved|held]. [the hoard is safe|the purse is safe]. [heh|hehe|ha]
+[the|that] {player_class} [is gone|left|ran]. [the corner|my corner] [remains|stands|is mine]
+
+# ---- calm: the player paid while being followed -----------------------------------------------------
+@kind beggar
+@topic calm
+@who *
+{coin}? [hmph|hm]. [fine|FINE]. [you may|ok you can] [walk|stay]. [but the corner|still my corner]
+[oh|ah]. {coin}. [well|ok]. [why didnt you say so|we are friends now|forgiven]. [mostly forgiven|for now]
+[...fine|ok fine]. {coin} [buys|gets you] [my silence|peace|a truce]. [dont|but dont] [ask me for coin again|beg here]
+{coin}. [apology|apology accepted|it will do]. [now|but now] [off my corner|go|leave it at that]

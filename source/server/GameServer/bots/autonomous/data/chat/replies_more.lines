@@ -28,7 +28,9 @@ cant complain, xp is coming
 tired but still going
 not much happening, you?
 same old, killing things
+@needs just_leveled
 good, just dinged actually
+@needs
 alive, mostly
 @who Socialite
 great now that people are on!
@@ -82,7 +84,9 @@ who holds {keep} now?
 stealthers everywhere, careful
 i might head out later
 need more healers out there
+@needs keep_news
 saw {enemy} near {keep} earlier
+@needs
 
 @kind reply
 @intent dungeon
@@ -177,11 +181,15 @@ here!! whats going on
 @answers ask_level
 @who *
 {level} here
+@needs just_leveled
 just hit {level}
+@needs
 {level} and grinding
 @levels 1-49
 {level}, slowly
+@needs xp_mid
 {level}, halfway to the next
+@needs
 still {level}, dont ask
 @levels 50-50
 50, finally
@@ -190,13 +198,21 @@ capped, just rps now
 @answers ask_xp
 @levels 1-49
 @who *
+@needs xp_mid
 about halfway
-two bubbles
+@needs
+@needs !xp_low
+{bubbles} bubbles
+@needs
 one more pull i hope
 not even close lol
+@needs just_leveled
 just dinged, so far
+@needs
 almost, few more kills
-three bubbles, ugh
+@needs xp_mid
+{bubbles} bubbles, ugh
+@needs
 @levels 50-50
 im 50, no more bubbles
 capped, its all realm points now
@@ -243,7 +259,6 @@ a guard killed me once, still not sure why
 fell off a cliff running from a grey con
 drowned in a pond, a tiny one
 a named spawned on top of us at the bind
-my pet ran off and brought the whole camp back
 @who Daredevil
 tried to solo an orange, it went about how youd think
 @who Socialite
@@ -312,3 +327,13 @@ down in {zone}
 @needs just_died
 running back from the bind lol
 @needs
+
+# The talking update audit: only a pet class has a pet
+@kind reply
+@topic general
+@who *
+@realm *
+@class Cabalist,Theurgist,Necromancer,Spiritmaster,Bonedancer,Hunter,Druid,Enchanter,Animist,Sorcerer
+@levels 1-50
+@answers ask_story
+my pet ran off and brought the whole camp back

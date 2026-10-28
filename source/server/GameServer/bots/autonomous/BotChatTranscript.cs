@@ -22,7 +22,7 @@ public static class BotChatTranscript
         if (player == null || string.IsNullOrWhiteSpace(text)) return;
         string intent;
         try { intent = AutonomousChatIntentModel.Predict(text).ToString(); } catch { intent = "?"; }
-        Log.Info($"CHAT_LINE who=player ch={channel} realm={player.Realm} from=\"{player.Name}\"" +
+        Log.Info($"CHAT_LINE who=player ch={channel} realm={GlobalConstants.RealmToName(player.Realm)} from=\"{player.Name}\"" +
                  (to != null ? $" to=\"{to}\"" : "") + $" intent={intent} zone=\"{player.CurrentZone?.Description}\" text=\"{Clean(text)}\"");
     }
 
@@ -32,7 +32,7 @@ public static class BotChatTranscript
         if (string.IsNullOrWhiteSpace(text)) return;
         string via;
         try { via = Via(new StackTrace(1, false)); } catch { via = "?"; }
-        Log.Info($"CHAT_LINE who=bot ch={channel} realm={realm} from=\"{speaker}\"" + (to != null ? $" to=\"{to}\"" : "") +
+        Log.Info($"CHAT_LINE who=bot ch={channel} realm={GlobalConstants.RealmToName(realm)} from=\"{speaker}\"" + (to != null ? $" to=\"{to}\"" : "") +
                  $" via={via} text=\"{Clean(text)}\"");
     }
 

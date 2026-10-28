@@ -15,7 +15,9 @@ public sealed class FactionChatCommand : AbstractCommandHandler, ICommandHandler
             client.Out.SendMessage("Usage: /faction <message>", eChatType.CT_System, eChatLoc.CL_SystemWindow);
             return;
         }
-        if (client.Player.IsMuted || !GameServer.ServerRules.IsAllowedToSpeak(client.Player, "faction"))
+        // Faction chat stands in for the realm channels (lfg, advice) a dead player still uses to ask for a rez. Play test
+        // 2026-10-27: "anyone near for a rez?" was refused with "you can't faction while dead". /say keeps the rule.
+        if (client.Player.IsMuted || client.Player.IsAlive && !GameServer.ServerRules.IsAllowedToSpeak(client.Player, "faction"))
         {
             client.Out.SendMessage("You cannot use faction chat right now.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
             return;

@@ -320,7 +320,8 @@ public static class AutonomousBotPersonality
     }
 
     public static double ChatRateFactor(GameBot bot) =>
-        (Applies(bot) ? ChatRateFactor(For(bot)) : 1.0) * (AutonomousBotVoices.Enabled ? RegularFactor(bot.DatabaseID) : 1.0);
+        (Applies(bot) ? ChatRateFactor(For(bot)) : 1.0) *
+        (AutonomousBotVoices.Enabled ? RegularFactor(bot.DatabaseID) * Math.Clamp(Properties.BOT_VOICES_CHAT_RATE, 0.0, 3.0) : 1.0);
 
     /// <summary>
     /// With bot voices on, about one bot in seven is a "regular" who talks two and a half times as often, and

@@ -1,0 +1,90 @@
+# Said in /say at a camp: the monsters, the pulls, the spawn, the neighbours. Slots come from the
+# speaker's live camp. New writing (see docs/bot-voices/TALKING-UPDATE-CONTENT.md).
+
+# ---- the spawn ------------------------------------------------------------------------------
+@kind camp
+@topic spawn
+@who *
+@needs at_camp
+spawn is slow tonight
+{monsters} popping right on top of me
+three up by the trees, careful
+respawn here is quick, watch your back
+anyone know the respawn timer here?
+nothing up, waiting on the spawn
+they spawn two at a time over there
+{monsters} up again
+spawn just reset, its all clear for a sec
+whole camp just respawned at once, yikes
+@who Explorer
+anyone seen the named around {camp}?
+@who Leveler
+waiting on the {monster} to pop, it always comes back here
+
+# ---- the monsters ---------------------------------------------------------------------------
+@kind camp
+@topic monsters
+@who *
+@needs at_camp
+these {monsters} hit harder than they look
+watch out, {monsters} here bring friends
+{monsters} keep running when they get low
+these {monsters} con yellow for me, good xp
+the {monster} by the rocks is a caster, careful
+{monsters} are social here, pull one at a time
+the big {monster} near the fire hits like a truck
+anyone know if the {monster} drops anything good?
+{monsters} are greening out for me, time to move soon
+@who Daredevil
+the orange ones here are worth the risk
+@who Crafter
+{monsters} drop decent hides here, nice for the coin bags
+@who *
+@needs at_camp,night
+{monsters} look creepier after dark
+
+# ---- the pulls ------------------------------------------------------------------------------
+@kind camp
+@topic pulls
+@who *
+@needs at_camp
+careful pulling here, they link
+pull from the edge or you get the whole group
+somebody keeps pulling my spawn
+whoever trained those {monsters} through here, ty very much
+watch the pat, it walks through every few minutes
+pull them back to the hill, its safer
+if you pull the left one the right one comes too
+@needs at_camp,in_group
+we are pulling from the back, front side is yours
+our group pulls from here, give us some room
+@needs at_camp,solo
+just me here, pulling slow
+solo here, mind if i take the odd stray?
+@who Daredevil
+@needs at_camp
+two at a time is fine here if you are careful
+
+# ---- neighbours -----------------------------------------------------------------------------
+@kind camp
+@topic neighbours
+@who *
+@needs at_camp
+hey, who else is here?
+plenty of {monsters} for everyone
+if you need a hand, just shout
+watch the ledge here, easy to fall
+anyone mind if i sit here and med?
+{camp} was packed last time i came
+quiet here, nice change
+someone sitting on the good spot again
+@needs at_camp,outdoors
+good camp, decent view of {zone}
+best camp in {zone} if you ask me
+@needs at_camp,in_dungeon
+dark in here, keep close to the wall
+@who Socialite
+@needs at_camp
+nice to have neighbors, gets lonely out here
+@who NoLifer
+been at {camp} longer than i want to admit

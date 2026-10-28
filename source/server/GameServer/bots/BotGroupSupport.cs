@@ -52,6 +52,11 @@ namespace DOL.GS
                 state.Resurrection.ReleaseCaster(bot);
         }
 
+        public const int DeclinedRezPauseMs = 60_000;
+
+        /// <summary>Whether a resurrection was declined within the last minute (0: never). Pure.</summary>
+        public static bool RecentlyDeclined(long declinedAt, long now) => declinedAt > 0 && now - declinedAt < DeclinedRezPauseMs;
+
         public static GameLiving ReserveResurrection(GameBot bot, Spell spell)
         {
             if (bot.Group == null || !bot.IsAlive || bot.IsCasting || bot.IsCrowdControlled || bot.IsSilenced || UnderAttack(bot))
@@ -78,6 +83,9 @@ namespace DOL.GS
             {
                 if (!HasCorpseLineOfSight(bot, corpse)) continue;
                 if (corpse.TempProperties.GetProperty<GameLiving>("RESURRECT_CASTER") != null) continue;
+                // A player who just said no (to release, or to wait for someone else) isn't asked again for a minute.
+                if (RecentlyDeclined(corpse.TempProperties.GetProperty<long>(DOL.GS.Spells.ResurrectSpellHandler.RESURRECT_DECLINED_AT_PROPERTY),
+                        GameLoop.GameLoopTime)) continue;
                 int cost = (int)(bot.MaxMana * Math.Max(.1f, .5f + (corpse.Level - bot.Level) / (float)Math.Max(1, (int)bot.Level)));
                 if (bot.Mana < cost) continue;
                 if (state.Resurrection.TryReserve(bot, corpse, GameLoop.GameLoopTime, spell.CastTime,

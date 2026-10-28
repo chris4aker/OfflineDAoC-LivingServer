@@ -1,0 +1,866 @@
+# Realm-scoped chatter, one realm per block: realm pride and rivalry, races, classes, culture, home zones and
+# dungeons, and general frontier talk. Places are only that realm's (or Darkness Falls and the battlegrounds),
+# always with @about place or a near:/at:/going: need. New writing for Offline DAoC (see docs/bot-voices).
+
+# =====================================================================================================
+# ALBION
+# =====================================================================================================
+
+# ---------------- Albion: pride, rivalry, races, culture ----------------
+@kind ambient
+@topic realm_pride
+@realm alb
+@who *
+[say what you will|honestly|call me biased], albion [still has|has] the best [armor|healers|casters] in the game
+[hibs|mids] [keep|never stop] [complaining|crying] about our [clerics|wizards|armsmen], must be doing something right
+[heh, |]nothing in the game beats a line of [armsmen|paladins] [holding a door|standing shoulder to shoulder]
+[a hib|some hib] told me [lurikeens|elves] are [fearsome|dangerous|scary] up close, [i laughed|i almost believed him|sure they are]
+[mids|midgard folk] think [trolls|their trolls] are [subtle|sneaky|quiet], i [heard|smelled] one from three hills away
+highlanders yelling in a group is my favorite sound in the realm
+avalons always look like they are about to correct your spelling
+inconnu give me the shivers, glad they picked our side
+saracens are the best looking race in any realm, no further questions
+briton is the plain choice and it never lets you down
+[i was raised on|i grew up on|nothing beats] [old|] king arthur stories, [this realm feels like home|no other realm ever made sense to me]
+long live the king, wherever he wandered off to
+albion was here first and the other two know it
+[our|albion] music is all lutes and [flutes|pipes], not [drums and shouting|goat horns|whatever the mids call singing]
+minstrels are basically the realm's town criers with a lute
+ever notice albion guards look like they could actually fight
+reavers are what happens when the church loses track of a knight
+necromancers creep me out but i want one in every group
+cabalist pets are uglier than anything a hib could grow
+theurgist pets everywhere, the whole realm sounds like a beehive
+sorcerers put the whole room to sleep and call it teamwork
+mercenaries are just armsmen who skipped the sermons
+paladin chants could put a baby to sleep, but they keep us standing
+scouts are the realm's eyes and most of its complaints
+every infiltrator swears he fights fair. i have my doubts
+[mids|the mids] [smell like|always smell of] [wet dog|old mead|fish] and [nobody|not one of them] has [mentioned it|noticed]
+[hibs|hibernians] [dye|paint] everything [purple|bright green|pink], [and call it stealth|then wonder why we spot them|its a wonder they sneak at all]
+a kobold asked me for directions once. then he stabbed me. typical midgard
+a friar with a quarterstaff is the most albion thing there is
+i trust a cleric with a mace over any druid with a twig
+the church of albion has rules for everything, even for fun
+albion breeds stubborn people, its all the rain
+[sometimes|now and then] i stop [on a hill|on the road] just to look at [the countryside|the green hills|the old castles]
+[anyone else think|does anyone else think] albion has the [best|prettiest] [castles|countryside] of the three realms?
+what do you think makes albion better than the other two?
+albs argue about everything, then line up behind the same banner
+nobody does honor like albion. nobody does paperwork like albion either
+there is a guild for everything in albion, probably a guild for guilds too
+the defenders of albion take their job seriously, try telling a joke near one
+the guild of shadows is not half as secret as it thinks
+the academy smells like old books and singed eyebrows
+i like how albion feels old, like the stones remember things
+a hot stew in a tavern after a long hunt, that is albion
+[the mids eat raw fish|mids eat anything that moves], [the hibs eat flowers|hibs live on berries], we eat proper food
+albion has the best castles, the other realms have the best excuses
+[a good|any proper] alb [knows|remembers] that [a sword is only as good as the arm behind it|the realm comes first|you never leave a cleric behind]
+[i like|nothing beats] the sound of [church bells|a minstrel tuning up] in an albion village
+the other realms have magic, we have magic and manners
+saracens and highlanders in the same group, the arguments never end
+[my|my old] [mentor|guildmaster] said a true alb never [runs|leaves a friend behind], [then he ran|i think about that a lot|he was mostly right]
+the realm feels bigger every year, or i walk slower
+@invites joke
+a hib, a mid and an alb walk into a keep. only the alb walks out
+how many mids does it take to light a torch? none, the troll already ate it
+why did the lurikeen cross the road? he couldnt see over the hedge
+[i tried to|once i tried to] teach a [troll|kobold] to [read|use a fork|bow], [it did not go well|we are both still confused|i gave up after an hour]
+heard the hibs train their pets to cry when an alb walks by
+[mids|the mids] say we wear too much armor. [they say it from the floor|they say that until they hit it|funny how they never say it twice]
+albion knights never bow to a hib, mostly because we cant find them
+@invites boast
+albion plate shines brighter than anything a mid ever hammered
+[proud|happy] to be an alb, [best realm|best people|best ale] in the land and [nobody can tell me otherwise|i will hear no argument]
+@invites complaint
+the other realms got the pretty zones and we got the rain, typical
+[why is it|how is it] always [raining|foggy] in albion, [i rust just looking at it|my armor squeaks|my cloak never dries]
+[too many|so many] [infiltrators|scouts] in this realm, [nobody|not one of them] wants to [heal|play a cleric]
+@invites
+
+# ---------------- Albion: veterans and personalities ----------------
+@who NoLifer
+@levels 40-50
+after all these levels i still get a little proud when i see the albion banner
+[seen|watched] a lot of albs come and go, [the realm keeps going|the stubborn ones stay|the good ones always come back]
+@levels *
+@who Crafter
+albion smiths know plate better than anyone, ask any alb crafter
+[a well made|a good] [albion|alb] [breastplate|helm] is [worth every coin|a work of art], the hibs can keep their cloth
+@who Explorer
+i have walked every road in albion and i still find new corners
+[every|each] old ruin in albion has a story, [i want to hear all of them|someone should write them down]
+@who Socialite
+the best thing about albion is the people, even the grumpy ones
+[love|i love] how [friendly|chatty] albion is, [even the guards say hello|nobody walks past a stranger]
+@who Daredevil
+an alb is never more alive than when outnumbered
+@who *
+
+# ---------------- Albion: classes ----------------
+@topic classes
+@class Armsman
+an armsman's job is simple. stand in front, hit hard, dont fall down
+[every|one more] [day|fight] in [this|my] plate and i [creak|clank] like an old gate
+@class Paladin
+holding chants for an hour straight is a real skill, nobody believes me
+[a paladin|my paladin] [never runs|does not run], [he walks with purpose|we just retreat with dignity|he holds the line]
+@class Cleric
+[heh, |]cleric life: [everyone loves you|you are everyone's best friend] [right up until|until] they die
+smite cleric or rez cleric, the group always wants the other one
+@class Friar
+a friar does not need plate, a friar needs faith and a good staff
+[i love being a friar|friar life is great], [robes|sandals] and a stick and [nobody expects a thing|i would not trade it]
+@class Wizard
+nothing in the realm hits like a wizard with a full power bar
+the academy taught me fire and ice and very little about running
+@class Theurgist
+theurgist life, three pets out and none of them listen
+@class Sorcerer
+a sorcerer in a good group is a mez machine, the hibs hate it
+@class Cabalist
+cabalist pets are not ugly, they have character
+@class Necromancer
+[heh, |]being a [necro|necromancer] means half the realm [thinks i am|treats me like] a monster
+@class Infiltrator
+infiltrator life, nobody sees you and nobody thanks you
+@class Scout
+[an albion longbow|a good longbow] [sings|hums] when you let it go, [no other realm has that|hib bows sound like twigs]
+@class Minstrel
+minstrels carry this realm on speed songs and charm
+@class Reaver
+the church still asks about my flail. i do not answer
+@class Mercenary
+merc means i fight for albion and for the loot, mostly albion
+@class Cleric,Friar
+[healing albs|keeping albs alive] is [a calling|thankless work|the best job in the realm], [nobody|no one] [says thanks|says sorry] after a bad pull
+@class Wizard,Theurgist,Sorcerer,Cabalist,Necromancer
+the academy and the guilds argue, but every alb caster agrees the hibs are worse
+@class Armsman,Paladin
+[nothing|no feeling] beats [fresh polish on|a new strap on] my plate before a long hunt
+@class
+
+# ---------------- Albion: home zones, towns and dungeons (talk) ----------------
+@topic places
+@about place
+camelot is crowded and loud, but it is home
+every time i walk into camelot city i hear trumpets in my head
+[heh, |i swear |][the cotswold road|the road out of cotswold|the walk to ludlow] is where every albion adventure starts
+humberton always felt like the safest village in albion
+i still think of cotswold as home, no matter what level i get
+caer sidi is the hardest thing albion has to offer, from what i hear
+[krondon|caer sidi|the tomb of mithra] is [no place|the wrong place] for [a nervous|a careless] [healer|caster]
+avalon city is the prettiest ruin in any realm
+salisbury plains go on forever, i swear the road gets longer each time
+the black mountains are albion's way of telling you to slow down
+llyn barfog is lovely when nothing is trying to eat you
+lyonesse is where good albion groups go to grow up
+campacorentin has the oldest trees in the realm, or it feels like it
+[the cornwall coast|cornwall] [is|looks] [lovely|beautiful] from a distance, [up close it bites|less so up close]
+the dales of devwy are quieter than people say
+isle of glass sounds magical until the bugs find you
+caer gothwaite is where the isles really start for us
+avalon marsh is the reason i own spare boots
+[give me|i will take] [the hills around camelot|camelot hills|the campacorentin woods] over [any|every] hib forest[ any day|]
+the bells in camelot ring like they mean it
+the west downs feel like the real old albion
+caldey is a strange island, it feels like it is watching you
+the guilds in camelot have been arguing since before i was born
+[ludlow|humberton|cotswold] [has|makes] the best [bread|ale|stew] in the realm, [ask anyone|no question]
+dartmoor is the part of albion the songs leave out
+the walls of caer witrin look tired, like they have stood too long
+[camelot|the city of camelot] at [dusk|sunset] is the [best|finest] view in the [game|land]
+@levels 20-50
+the barrows were my first real scare in this game
+tomb of mithra still gives me the chills
+tepoks mine is where i learned to stop running into rooms
+keltoi fogou sounds friendly. it is not
+dartmoor made me rethink my whole armor setup
+krondon is too hot for anyone wearing plate
+[the barrows|tepoks mine|keltoi fogou] [taught me|is where i learned] [to respect a pull|to love my healers|to check behind me]
+@levels 35-50
+caer sidi at fifty still makes my hands sweat
+[stonehenge barrows|the tomb of mithra] [felt|seemed] [so big|enormous] when i was young, now it is just home turf
+@levels *
+@about
+
+# ---------------- Albion: here now ----------------
+@topic places_here
+@needs in_capital, at:camelot
+camelot is loud as ever, i love it
+[heh, |]camelot [is busy|is packed|never sleeps], [guards|merchants] [shouting|calling out] everywhere
+the church in camelot is the quietest spot in the city, my favorite
+@needs at:cotswold
+back in cotswold, smells like bread and horses
+@needs at:ludlow
+ludlow never changes, i find that comforting
+@needs at:humberton
+humberton guards just nodded at me, i am basically famous
+@needs going:tomb of mithra
+off to the tomb of mithra, wish me luck
+@needs near:salisbury plains, outdoors
+out on salisbury again, those giants are always watching
+@needs at:black mountains, outdoors
+the black mountains are steep, my horse would have quit by now
+@needs at:lyonesse
+lyonesse again, the old ruins still look sad to me
+@needs at:campacorentin, outdoors
+[these|the] campacorentin woods [creak|groan] like an old ship, [i love it|creepy|every time]
+@needs at:avalon marsh, outdoors
+avalon marsh again, my boots will never be dry
+@needs going:krondon
+heading for krondon, already sweating in this armor
+@needs
+
+# ---------------- Albion: frontier and battlegrounds (musings) ----------------
+@kind rvr
+@topic frontier_alb
+@realm alb
+@who *
+@levels 20-50
+nothing unites the realm like a hib zerg on the horizon
+mids fight like they want to die, hibs like they want to win, we fight like dinner is waiting
+albion keeps were built to last, someone tell the mids
+the sound of a ram on an albion door is the worst sound in the game
+a good minstrel in rvr is worth three swords
+every infiltrator out there swears the last kill was his
+realm ranks come slow but every one feels earned
+[heh, |][one day|someday] [all the relics|every relic] will sit in albion keeps where they belong
+[the hibs|hibs] [mez|root] everything that moves and call it [tactics|skill|a fair fight]
+[mids|the mids] [travel|roam] in [packs|one big ball], [like wolves|like geese|no wonder they lag]
+our clerics keep the line standing, the hibs know to hunt them first
+[id rather|i would rather] [die on|hold] an albion wall than [win|live] in a hib forest
+first rule of rvr, guard the healers. second rule, see first rule
+every realm thinks the other two are teamed up, we are just right about it
+what do you think, are mids or hibs worse in a keep fight?
+[nothing|no sight] [makes me prouder|lifts my heart more] than [albion banners|our colors] on a keep wall
+a hib stealther is a bush you have not hit yet
+the frontier is where you learn who your real friends are
+[a mid|any mid] will tell you trolls win fights. [trolls lose fights all the time|we have the bones to prove otherwise|ask our archers about that]
+[albs|we albs] [hold|defend] keeps like [nobody else|no other realm] can, [its in our blood|its the stubborn streak]
+[i like|nothing beats] [a small|a tight] alb group [roaming|out hunting] the hills, [no zerg needed|just us and the wind]
+@invites joke
+hibs build their keeps out of flowers, explains a lot
+a mid once tried to ram a gate with a troll. honestly it worked
+[the hibs|hibernia] sent a lurikeen to scout once, we [stepped on him by accident|thought he was a rabbit|still feel bad]
+@invites boast
+[albion|our realm] [holds the line|stands firm] [when it counts|every time it matters], the songs will say so
+@invites complaint
+[hib|those hib] [mezzers|bards] [ruin|wreck] every fight, [i spend half of rvr asleep|i see stars for an hour|my group never even got to swing]
+@invites
+@about place
+hadrian's wall has seen more alb sweat than any field in the realm
+every alb remembers the first walk out past hadrian's wall
+the pennine mountains are beautiful if you never look over your shoulder
+snowdonia is cold, steep and full of hibs, sounds about right
+forest sauvage is where good scouts earn their names
+[hadrian's wall|forest sauvage|snowdonia] [holds|has] more [ghosts|stories|old bones] than any dungeon in albion
+castle sauvage has seen more sieges than i have seen hot meals
+[snowdonia fortress|castle sauvage] is the [first|last] thing a young alb sees before the [real|] fighting
+@levels 15-50
+abermenai was the first place i ever saw an albion army
+@levels 20-50
+[abermenai|thidranki] [taught me|showed me] more about fighting than any trainer in camelot
+@levels 30-50
+murdaigean and caledonia, the two places that made me a soldier
+@levels 40-50
+darkness falls is the best and worst thing in the frontier
+[darkness falls|df] is [worth fighting for|why we fight], [the demons|the seals] [are a bonus|are just a bonus]
+@levels 20-50
+@about
+
+# ---------------- Albion: out there now ----------------
+@levels 36-50
+@needs in_frontier
+quiet out here, the hibs must be napping
+every tree out here might be a nightshade, keep moving
+[keep your eyes on|watch] the [tree line|ridges|hills], [hib archers|stealthers|rangers] love this [kind of|] ground
+@class Armsman,Paladin
+my plate is so loud out here, every stealther knows i am coming
+@class
+@needs in_frontier, !defending
+nothing happening out here, which is the scariest part
+[the wind|the cold] on these hills [bites|cuts] right through [plate|chain|my cloak]
+@needs in_battleground
+@levels 15-35
+battlegrounds are where albion learns to fight
+stay near the clerics, the hibs come for them first
+[young|little] albion army [doing us proud|holding up fine] [out here|in this bg]
+@needs
+@levels 35-50
+@about place
+@needs df_ours
+darkness falls is ours, the demons are albion's problem now
+@needs !df_ours
+darkness falls closed to albion again, someone go fix that
+@about
+@needs relic_won_recent
+a relic came home, albion stands a bit taller
+@needs relic_lost_recent
+lost a relic, every alb in the frontier should be angry
+@needs keep_won_recent
+we took {keep}, put the kettle on
+@needs keep_lost_recent
+{keep} fell, albion will want it back
+@needs defending
+they are at {keep}, every alb who can hold a sword is welcome
+@needs
+
+# =====================================================================================================
+# MIDGARD
+# =====================================================================================================
+
+# ---------------- Midgard: pride, rivalry, races, culture ----------------
+@kind ambient
+@topic realm_pride
+@realm mid
+@who *
+[say what you like|honestly|mark my words], midgard [breeds|makes] the [toughest|hardest] [fighters|people] in [the game|any realm]
+[albs|hibs] [hide behind|cower behind] their [pretty walls|shiny armor|pets] and call it [courage|strategy]
+a troll in a doorway is the best wall a realm can have
+kobolds are small but they hold grudges forever
+dwarves will argue about anything, mostly ale
+norseman is the plain pick and plain is strong
+valkyn are strange but they fight like wolves
+[heh, |][nothing|no sound] in this realm beats a skald [song|chant] before a fight
+albs clank so loud you can hear them a zone away
+hibs sparkle so much, explains how we always find them
+[heh, |][hibs|albs] think the cold is our weakness. [it is our home|we were born in it|ask them how their toes feel]
+in midgard even the trees want to fight you
+a mid without a beard is just a kobold standing up straight
+odin is watching. try not to die stupid
+thor would never pull a whole room on purpose. most of the time
+the sagas will not remember who sat in town
+[i like that|best thing about midgard is] our songs are [loud|about battle] and our ale is [strong|stronger]
+berserkers are the reason albs check behind them
+savages fight with their fists, how is that not the best thing in the game
+hunters and their hounds are the backbone of every mid road trip
+shadowblades complain the most and kill the most, funny how that works
+healers keep this realm standing, never forget it
+shamans are the friend who brings the cure and the poison both
+runemasters say the runes talk to them. i believe it
+spiritmasters have the creepiest pets in midgard and i love them
+bonedancers walk around with a skeleton army like it is normal
+thanes call down lightning just to light a pipe
+warriors do not say much, they just stand in the way of things
+[an alb|some alb] [told me|said] midgard is [all snow|nothing but snow], [has he never seen a swamp|he never left the roads]
+midgard does not ask for respect, it takes it
+a mid funeral is just a louder party
+the houses argue among themselves, but never in front of an alb
+the cold keeps us honest and the mead keeps us warm
+every mid has a scar story, and most of them are true
+longships, beards and bad tempers, that is midgard
+a kobold with a grudge is the most dangerous thing in the realm
+trolls are slow to anger and slower to forget
+albs think we are wild, we think they are tin cans with opinions
+hibs think we are loud, we think they are hard to see, both true
+[anyone else think|does anyone else think] midgard has the [best|clearest] sky [at night|of the three realms]?
+what do you think the albs fear most about us?
+[my|my old] [grandfather|guild leader] said a mid [never backs down|should never back down] from a fight, [then he ran to the tavern|i took that too far once|wise words mostly]
+[a proper|a real] mid [eats|drinks] [like a troll|like a bear] and [fights|sings] like [a storm|ten men]
+[i love|nothing beats] the [sound of a forge|smell of smoke] in a midgard village after a [cold|long] day
+dwarves and kobolds in the same group, every pull turns into an argument
+the gods of midgard like a good fight, so we give them one
+a valkyn walked past me in town and i still dont know what it was
+[trolls|dwarves|kobolds] [make|are] the [best|most loyal] [friends|guildmates] in the realm, [dont tell the others|ask anyone]
+@invites joke
+why do trolls make bad stealthers? they keep sitting on the bushes
+a lurikeen fell in my mead once, i drank it anyway
+albs wear so much plate they rust when they cry
+[i asked|once i asked] a hib why [their armor|everything in hibernia] is so shiny, he said [style|magic|it keeps the faeries away]
+heard the albs pray before every pull. we just yell
+[an alb|some alb] [challenged|dared] a troll to [a staring contest|an arm wrestle], [the alb lost|it did not end well for the alb|we are still waiting]
+@invites boast
+mid steel is the only steel worth swinging
+[proud|happy] to be a mid, [best fighters|best mead|best songs] in the land and [nobody can say different|the sagas agree]
+@invites complaint
+the snow is pretty until you have walked through it for an hour
+[my boots are|my beard is|my cloak is] [frozen|frozen solid] again, [midgard life|home sweet home|the price of being a mid]
+[too many|so many] [shadowblades|hunters] in this realm, [nobody|not one of them] wants to [heal|play a healer]
+@invites
+
+# ---------------- Midgard: veterans and personalities ----------------
+@who NoLifer
+@levels 40-50
+@about place
+after all these levels, a war horn in jordheim still gets my blood up
+@about
+[seen|watched] a lot of mids come and go, [the realm keeps roaring|the stubborn ones stay|the good ones always come back]
+@levels *
+@who Crafter
+dwarven smithing is the best in the world, ask any dwarf, he will tell you for an hour
+[a well made|a good] [midgard|mid] [axe|hammer] is [worth every coin|worth more than any alb sword]
+@who Explorer
+i have walked every frozen road in midgard and i still find new corners
+[every|each] old runestone in midgard has a story, [i want to read all of them|someone should write them down]
+@who Socialite
+the best thing about midgard is the people, even the loud ones. especially the loud ones
+[love|i love] how [loud|friendly] midgard is, [even the guards shout hello|nobody walks past a stranger]
+@who Daredevil
+a mid is never more alive than when outnumbered and grinning
+@who *
+
+# ---------------- Midgard: classes ----------------
+@topic classes
+@class Warrior
+a warrior's shield has more stories than any skald
+@class Thane
+[thor|the hammer] hears me when i call, [the albs|the hibs] [hear it too|wish they didnt]
+@class Skald
+a skald without a fight to sing about is just a loud dwarf
+@class Berserker
+[heh, |][when the frenzy hits|once i frenzy], i forget [my own name|which realm i am in|everything but the fight]
+@class Savage
+savage life is simple, fists up, face forward
+@class Hunter
+my hound has seen more of midgard than most players
+@class Shadowblade
+shadowblades are honest, we tell you we are behind you. afterwards
+@class Healer
+[healer life|being a healer]: [everyone|the whole group] [yells|shouts] my name [right before|just before] they die
+@class Shaman
+shamans cure what we can and curse what we cant
+@class Runemaster
+runes never lie, they just hit very very hard
+@class Spiritmaster
+my pet looks like a nightmare and it is my best friend
+@class Bonedancer
+my skeletons follow me better than most groups do
+@class Healer,Shaman
+[healing mids|keeping mids alive] is [hard work|a calling|the best job in the realm], they [run in|charge in] before [i finish|i can even buff]
+@class Runemaster,Spiritmaster,Bonedancer
+the casters of midgard get no respect until the albs start falling over
+@class Warrior,Thane,Berserker,Skald
+[nothing|no feeling] beats [a fresh edge on|new runes on] [my axe|my hammer|my sword] before a long hunt
+@class
+
+# ---------------- Midgard: home zones, towns and dungeons (talk) ----------------
+@topic places
+@about place
+jordheim smells like smoke and roasting meat, perfect
+mularn is where every mid starts and nobody forgets
+[the walk from mularn|the road from mularn to audliten] [taught me|is where i learned] [to fear hill cats|to keep my eyes open|what midgard really is]
+the vale of mularn is the prettiest place nobody remembers
+haggerfel has the best smiths in the realm, or the loudest
+svealand in the snow is the most midgard thing there is
+fort atla always smells like wet wolves
+the myrkwood trees are older than any alb castle
+vanern swamp is the one place even trolls dont like
+raumarik is cold enough to make a dwarf complain
+skona ravine echoes, every pull sounds like a war
+malmohus is where midgard keeps its scariest things
+gotar is quiet and that is why i love it
+[give me|i will take] [myrkwood|the svealand snow|the vanern swamp] over [any|every] [alb meadow|hib forest][ any day|]
+[aegirs landing|munin sound|iarnwood] [looks|feels] like [a whole new world|a different realm]
+iarnwood dwarves hit harder than ours, do not tell them i said that
+the gripklosa mountains are where midgard shows off
+nyttheim feels like the end of the world
+tuscaran glacier is beautiful and it wants you dead
+[jordheim|the great hall of jordheim] at [dusk|nightfall] is the [best|finest] view in the [game|land]
+vasudheim feels like the edge of everything, in a good way
+[audliten|haggerfel|mularn] [has|brews] the best [mead|ale] in the realm, [no question|ask anyone]
+the halls in jordheim are so tall even trolls look up
+huginfel is a quiet town with too many stories
+@levels 20-50
+nisses lair taught every young mid to fear little men in hats
+the cursed tomb is well named, trust me
+vendo caverns are a maze, every mid has been lost in there once
+muspelheim is too hot for a realm full of snow people
+[nisses lair|the cursed tomb|vendo caverns] [taught me|is where i learned] [to respect a pull|to love my healers|to check behind me]
+@levels 35-50
+spindelhalla is where mids learn to love their healers
+varulvhamn wolves are real midgard monsters, none of that alb ghost stuff
+trollheim is the only place a troll ever feels small
+[spindelhalla|varulvhamn] [felt|seemed] [so big|enormous] when i was young, now it is just home turf
+@levels *
+@about
+
+# ---------------- Midgard: here now ----------------
+@topic places_here
+@needs in_capital, at:jordheim
+jordheim halls are warm and loud, just how i like them
+[heh, |]jordheim [is busy|is packed|is roaring], [half|most of] the realm is [at the forge|drinking]
+@needs at:mularn
+back in mularn, everyone here looks so small and new
+@needs at:fort atla
+fort atla again, the guards here have seen everything
+@needs near:svealand, outdoors
+snow on the svealand roads again, my boots will never dry
+@needs going:spindelhalla
+off to spindelhalla, may the healers be kind
+@needs at:myrkwood, outdoors
+myrkwood is so dark even the wolves look lost
+@needs at:haggerfel
+haggerfel forges are hot as ever, smells like home
+@needs at:vanern swamp, outdoors
+[ugh, |]vanern swamp [again|once more], [my boots|my beard] will smell for a week
+@needs going:cursed tomb
+heading for the cursed tomb, bring me back if i fall
+@needs
+
+# ---------------- Midgard: frontier and battlegrounds (musings) ----------------
+@kind rvr
+@topic frontier_mid
+@realm mid
+@who *
+@levels 20-50
+the mid zerg is not a zerg, it is a family reunion
+albs build walls, hibs build hedges, we build rams
+give me a troll with a hammer and a good healer and i will take any door
+the albs and hibs talk tough until the drums start
+[every|any] [hib|alb] [knows|remembers] the sound of [a mid war horn|a skald chant|a troll charging]
+realm points taste better when an alb dies complaining
+never trust a hib bush in the frontier
+[hibs|the hibs] mez [everything|the whole group] and then [run|hide] behind [their pets|a tree]
+the relics will all come north one day, mark my words
+a good healer in the frontier is worth more than a bag of gold
+albs wear so much plate they need a ram just to get dressed
+[nothing|no sight] [warms my heart|stirs my blood] [more than|like] [a midgard banner|our colors] on a keep wall
+[i like|nothing beats] [a small|a tight] mid group [roaming|out hunting] the snow, [no zerg needed|just us and the wind]
+[albs|the albs] [pray|kneel] before a fight, [hibs|the hibs] [sing|hide], we just [charge|yell]
+every realm says the mids zerg. every realm wishes it had our numbers
+a skald with speed and a healer with patience, that is a mid army
+what do you think, are albs or hibs harder to fight in a keep?
+[albion|hibernia] [can keep|is welcome to] [its walls|its pretty colors], midgard has [its axes|the north|the gods on its side]
+@invites joke
+how do you stop an alb charge? stand on a hill and wait for him to get tired
+[a hib|some hib] tried to mez a troll once. [the troll did not notice|the troll fell asleep anyway, out of boredom|it was very slow]
+@invites boast
+[midgard|our realm] [fights|hits] harder than [the other two put together|both of them combined], and the albs know it
+@invites complaint
+[alb|those alb] [archers|scouts] [ruin|wreck] every fight, [i spend half of rvr pulling arrows out|we never see them|my group never even got to swing]
+@invites
+@who Daredevil
+nothing like charging a keep door with a troll on your left
+@who *
+@about place
+odin's gate is where every mid learns what the frontier really means
+jamtland is home ground and we fight like it
+uppland is the first frontier view for a lot of young mids
+yggdra forest is where hib rangers go to get lost
+[odin's gate|jamtland|yggdra forest] [has heard|has seen] more [war cries|sagas|ram hits] than any hall in jordheim
+@levels 20-50
+thidranki was the first place i ever saw a midgard army
+[abermenai|thidranki] [taught me|showed me] more about fighting than any trainer in jordheim
+@levels 30-50
+caledonia is where i stopped being afraid of albs
+@levels 40-50
+darkness falls is the prize, the rest is just practice
+[darkness falls|df] is [worth fighting for|why we fight], [the demons|the seals] [are a bonus|are just a bonus] for a mid
+@levels 20-50
+@about
+
+# ---------------- Midgard: out there now ----------------
+@levels 36-50
+@needs in_frontier
+cold wind out here, good fighting weather
+quiet out here, the albs must be polishing their armor
+[watch|keep an eye on] the [bushes|tree line|ridges], [hib|alb] stealthers love [cover like this|this kind of ground]
+@class Warrior,Thane
+my armor clanks out here, every stealther knows where i am
+@class
+@needs in_frontier, !defending
+nobody near, just snow and silence
+[the snow|the frost] out here [gets|seeps] into [my furs|every joint|my boots]
+@needs in_battleground
+@levels 15-35
+battlegrounds are where mids learn to love the zerg
+stay close to the healers, the albs go for them first
+[young|little] mid army [doing us proud|holding up fine] [out here|in this bg]
+@needs
+@levels 35-50
+@about place
+@needs df_ours
+darkness falls is ours, let the demons learn some norse
+@needs !df_ours
+darkness falls closed to midgard again, the gods are not amused
+@about
+@needs relic_won_recent
+a relic came north, the halls will be loud
+@needs relic_lost_recent
+lost a relic, every mid in the frontier should be angry
+@needs keep_won_recent
+we took {keep}, someone open the mead
+@needs keep_lost_recent
+{keep} fell, midgard will want it back with interest
+@needs defending
+they are at {keep}, every mid with an axe is welcome
+@needs
+
+# =====================================================================================================
+# HIBERNIA
+# =====================================================================================================
+
+# ---------------- Hibernia: pride, rivalry, races, culture ----------------
+@kind ambient
+@topic realm_pride
+@realm hib
+@who *
+[say what you will|honestly|mark me], hibernia [is|will always be] the [prettiest|loveliest] realm [in the game|of the three]
+[albs|mids] [laugh at|make fun of] our [colors|bright armor|lurikeens] until [they get mezzed|the enchanter shows up|a ranger finds them]
+firbolgs are the gentlest giants you will ever meet, until you anger one
+lurikeens are small but they have the loudest opinions in the realm
+elves pretend not to care about anything, they care about everything
+celts fit in anywhere, and they fight like it
+sylvans are trees with opinions, and i love them
+[mids|albs] think [lurikeens|we hibs] are [soft|harmless|weak], [let them keep thinking it|that works in our favor|right up until the mez lands]
+mids smell like wet wolf and burnt mead
+albs wear so much metal they forget to bring a brain
+a bard with a harp can make a whole group forget they are tired
+druids keep this realm growing, in more ways than one
+wardens are the quiet ones who save the group and never mention it
+blademasters spin like they are dancing, and the albs fall over
+champions hit you with a spell and a sword, rude but effective
+heroes are the walls of hibernia and they know it
+rangers see everything, then complain about it
+nightshades are why mids walk around in circles
+eldritches burn bright and die fast, but what a show
+enchanter pets are the cutest thing in the game, do not tell them
+mentalists heal and mez and still get no respect
+animists plant mushrooms and the mushrooms do the fighting, that is hibernia
+valewalkers with scythes look like a harvest gone wrong, i love it
+[i love that|the best thing about hibernia is] even our [roads|swamps|caves] look like [a painting|a dream]
+the faeries here are friendly. mostly. some of them
+hibernia smells like rain and wildflowers, the other realms smell like smoke
+every song in hibernia is either about love or about beating albs
+the trees in hibernia listen, i am sure of it
+a lurikeen on a horse is the bravest thing in the realm
+albs pray, mids shout, hibs sing, and we are the happiest realm for it
+hib bread is the best bread, i will not be moved on this
+the path of harmony, the path of focus, the path of essence, and the path to the tavern
+hibernia is full of old magic and older grudges
+firbolgs make the best friends, they never forget a kindness
+[anyone else think|does anyone else think] hibernia has the [best|prettiest] [music|sunsets] of the three realms?
+what do you think is the prettiest zone in hibernia?
+[my|my old] [teacher|guild leader] said a hib should never [fight ugly|win without a song], [then he punched a mid|i try to remember that|mostly true]
+[a proper|a real] hib [sings|dances] [before|after] every fight, [win or lose|even the bad ones]
+[i love|nothing beats] the [sound of a harp|smell of rain] in a hibernian village after a [long|hard] day
+elves and lurikeens in the same group, the jokes never end
+the sidhe left us the loveliest places in the world and the albs want them, of course
+a sylvan stood still so long in town that a bard leaned on it
+[celts|elves|firbolgs] [make|are] the [best|most loyal] [friends|guildmates] in the realm, [dont tell the others|i will hear no argument]
+@invites joke
+a mid asked me why lurikeens are so short. to stay out of troll reach, obviously
+why do albs wear so much plate? so the mez has something to bounce off
+[i once watched|i watched] a troll try to [sneak|hide] behind a [tree|bush|rock] [for ten minutes|the whole fight]
+heard the albs need a priest to tie their boots
+[an alb|some mid] [challenged|dared] a lurikeen to [a race|a staring contest], [he never saw where the lurikeen went|the lurikeen is still laughing|it was over very fast]
+@invites boast
+hib magic is the only magic worth casting
+[proud|happy] to be a hib, [best music|best magic|best bread] in the land and [nobody can say different|the bards agree]
+@invites complaint
+every alb thinks every hib is a stealther. its insulting. half of us are
+[too many|so many] [rangers|nightshades] in this realm, [nobody|not one of them] wants to [heal|play a druid]
+[why does it|how does it] [always rain|never stop raining] in hibernia, [the flowers love it|i do not|my boots never dry]
+@invites
+
+# ---------------- Hibernia: veterans and personalities ----------------
+@who NoLifer
+@levels 40-50
+@about place
+after all these levels, a harp in tir na nog still makes me stop and listen
+@about
+[seen|watched] a lot of hibs come and go, [the realm keeps singing|the stubborn ones stay|the good ones always come back]
+@levels *
+@who Crafter
+hib tailors make the prettiest armor in the world, practical is someone else's job
+[a well made|a good] [hibernian|hib] [bow|cloak] is [worth every coin|a work of art], the albs can keep their tin
+@who Explorer
+i have walked every green road in hibernia and i still find new corners
+[every|each] old stone circle in hibernia has a story, [i want to hear all of them|someone should write them down]
+@who Socialite
+the best thing about hibernia is the people, even the moody elves
+[love|i love] how [warm|friendly] hibernia is, [even the guards hum along|nobody walks past a stranger]
+@who Daredevil
+a hib is never more alive than when outnumbered and dancing
+@who *
+
+# ---------------- Hibernia: classes ----------------
+@topic classes
+@class Hero
+a hero's shield is the oldest tree in any forest
+@class Champion
+[champion life|being a champion]: [debuff them|hit them with a spell], then [hit them with a sword|smack them]
+@class Blademaster
+two blades, one blademaster, and not much left of the alb
+@class Warden
+a warden's work is quiet. nobody notices until it stops
+@class Druid
+[my|this] pet is [more polite|smarter] than most [mids|albs] i have met
+@class Bard
+a bard plays and the realm runs faster, that is real magic
+@class Ranger
+a ranger's arrow does not miss, it just has a long way to go
+@class Nightshade
+nightshade life, you never see me, you only feel it
+@class Eldritch
+eldritch life, burn hard and pray the tank holds
+@class Enchanter
+my pet has better armor than the whole group
+@class Mentalist
+mentalists do three jobs and get thanked for none
+@class Animist
+my mushrooms do the fighting, i just water them
+@class Valewalker
+a valewalker cuts through albs like summer wheat
+@class Druid,Warden,Bard
+[healing hibs|keeping hibs alive] is [lovely work|a calling|the best job in the realm], until [someone pulls|the lurikeen pulls] [two rooms|the whole hill]
+@class Eldritch,Enchanter,Mentalist,Animist
+the path casters of hibernia argue, but every one of us agrees the albs are worse
+@class Hero,Champion,Blademaster
+[nothing|no feeling] beats [a fresh edge on|a good polish on] my weapon before a long hunt
+@class
+
+# ---------------- Hibernia: home zones, towns and dungeons (talk) ----------------
+@topic places
+@about place
+tir na nog is the most beautiful city in any realm, i will hear no argument
+every time i walk into tir na nog the music hits me
+mag mell is where every hib's story starts
+lough derg shines like silver, best view in hibernia
+the cursed forest earns its name every single day
+the connacht hills always smell like rain and clover
+the bog of cullen is the only place in hibernia i do not like
+the silvermine mountains are steep but the view is worth every step
+the shannon estuary is where i learned to swim, and to run
+the cliffs of moher make me want to sit down and write a poem
+the sheeroe hills are quieter than the rest, i like that
+the valley of bri leith feels like an old song
+domnann looks like someone painted it with moonlight
+worlds end is well named, i get chills every time
+howth smells like salt and fresh bread
+ardee always feels like a village from a story
+[give me|i will take] [lough derg|the connacht hills|the shannon estuary] over [any|every] [alb meadow|mid snowfield][ any day|]
+[heh, |][the road from mag mell|the walk to tir na mbeo|the path past ardee] is where [i fell in love with|i first saw] hibernia
+[tir na nog|the city of tir na nog] at [dusk|sunset] is the [best|finest] view in the [game|land]
+lough gur is so calm you forget what lives in the water
+[ardee|howth|mag mell] [has|bakes] the best [bread|honey cakes] in the realm, [no question|ask anyone]
+the fountains in tir na nog have heard every secret in hibernia
+cothrom gorge looks like the land split open to show off
+the vale of balor feels like walking into an old curse
+@levels 20-50
+muire tomb was my first real scare in this realm
+spraggon den taught me to hate small angry things
+koalinth caverns smell like fish and bad decisions
+coruscating mine is pretty until it eats your group
+[muire tomb|spraggon den|koalinth caverns] [taught me|is where i learned] [to respect a pull|to love my healers|to check behind me]
+@levels 35-50
+treibh caillte is where good hib groups go to suffer
+tur suil is the hardest thing hibernia has to offer, from what i hear
+galladoria is beautiful and absolutely full of things that want me dead
+the fomor are the oldest enemy hibernia has, older than any alb grudge
+[galladoria|tur suil|treibh caillte] [chews up|eats] [careless|loud] groups and [keeps|spits out] the [gear|armor]
+@levels *
+@about
+
+# ---------------- Hibernia: here now ----------------
+@topic places_here
+@needs in_capital, at:tir na nog
+tir na nog is lovely as ever, the fountains never get old
+[heh, |]tir na nog [is busy|is packed|is humming], [bards|merchants] [playing|calling out] on every corner
+@needs at:mag mell
+back in mag mell, everyone here looks so new and brave
+@needs at:ardee
+ardee is calm, nice to breathe for a minute
+@needs near:lough derg, outdoors
+the lough derg water is so still, makes me want to sit a while
+@needs going:muire tomb
+off to muire tomb, the ghosts better behave
+@needs at:cursed forest, outdoors
+the cursed forest creeps me out, every tree looks hungry
+@needs at:howth
+howth again, the sea air is doing me good
+@needs at:bog of cullen, outdoors
+[ugh, |]the bog of cullen [again|once more], [my boots|my robes] will smell for a week
+@needs going:koalinth caverns
+heading for koalinth, holding my nose already
+@needs
+
+# ---------------- Hibernia: frontier and battlegrounds (musings) ----------------
+@kind rvr
+@topic frontier_hib
+@realm hib
+@who *
+@levels 20-50
+albs charge, mids roar, hibs just win quietly
+the frontier without a bard is a very long walk
+mez first, ask questions later, the hibernian way
+[mids|the mids] [always charge in|come in] [screaming|roaring], [our enchanters love that|makes them easy to mez|its almost polite of them]
+[albs|the albs] [hide in|turtle up in] their keeps like [snails|turtles|old men][ in the rain|]
+the frontier was ours long before anyone built walls on it
+hib stealthers have a code. mostly the code is dont get caught
+nothing feels as good as a mez landing on a whole alb group
+every relic that leaves hibernia is a song we owe the bards
+[nothing|no sight] lifts my heart like [hibernian banners|our colors] on a keep wall
+[i like|nothing beats] [a small|a tight] hib group [roaming|out hunting] the hills, [no zerg needed|just us and the birds]
+[albs|the albs] [pray|kneel] and [mids|the mids] [shout|roar], we [sing|dance] and win anyway
+every realm calls us the mez realm. every realm wishes it had our enchanters
+a bard with speed and a druid with patience, that is a hib army
+what do you think, are albs or mids harder to fight in a keep?
+[albion can keep its plate|midgard can keep its snow|the others can keep their walls], hibernia has [its magic|the old songs|the faeries on its side]
+@invites joke
+mids bring trolls, albs bring plate, we bring a lurikeen and nobody sees him coming
+[an alb|some alb] tried to find a nightshade once. [he is still looking|he found the ground first|we let him keep trying]
+@invites boast
+[hibernia|our realm] [fights|wins] [smarter|prettier] than [the other two put together|both of them combined], and the mids know it
+@invites complaint
+[alb|those alb] [wizards|sorcerers] [ruin|wreck] every fight, [i spend half of rvr dead|we never see them coming|my group never even got to swing]
+@invites
+@who Daredevil
+nothing like a blademaster charge with a bard singing behind you
+@who *
+@about place
+emain macha is the prettiest place to die in the whole game
+breifine is where young hibs learn the frontier is real
+cruachan gorge echoes with every fight it has ever seen
+mount collory is steep, cold and worth defending
+[emain|breifine|cruachan] [is|feels] [older|wilder] than any [song|story] a bard could sing
+@levels 15-50
+abermenai was the first place i ever saw a hibernian army
+@levels 25-50
+[abermenai|murdaigean] [taught me|showed me] more about fighting than any trainer in tir na nog
+@levels 30-50
+murdaigean is where i got my first real taste of rvr
+@levels 40-50
+darkness falls is the prize, the rest is only the road there
+[darkness falls|df] is [worth fighting for|why we fight], [the demons|the seals] [are a bonus|are just a bonus] for a hib
+@levels 20-50
+@about
+
+# ---------------- Hibernia: out there now ----------------
+@levels 36-50
+@needs in_frontier
+[so quiet|awful quiet] out here, [the albs|the mids|our enemies] must be [lost again|regrouping|arguing about who leads]
+the grass out here hides too many things, stay close
+[mind|watch] the [ridges|tree line|hills], [alb|mid] [archers|stealthers] like [high ground|cover]
+@class Hero,Champion
+my armor rattles out here, every stealther knows where i am
+@class
+@needs in_frontier, !defending
+nobody near, just wind and birdsong
+[the rain|the mist] out here [soaks|gets into] [my cloak|everything|my bowstring]
+@needs in_battleground
+@levels 15-35
+battlegrounds are where hibs learn to mez under pressure
+stay close to the druids, the albs go for them first
+[young|little] hib army [doing us proud|holding up fine] [out here|in this bg]
+@needs
+@levels 35-50
+@about place
+@needs df_ours
+darkness falls is ours, the demons can learn to like harp music
+@needs !df_ours
+darkness falls closed to hibernia again, the bards will write a sad song
+@about
+@needs relic_won_recent
+a relic came home, the bards will be singing about it all week
+@needs relic_lost_recent
+lost a relic, every hib in the frontier should be angry
+@needs keep_won_recent
+we took {keep}, someone play something cheerful
+@needs keep_lost_recent
+{keep} fell, hibernia will want it back
+@needs defending
+they are at {keep}, every hib who can cast is welcome
+@needs

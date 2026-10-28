@@ -24,10 +24,10 @@ public sealed record SocialExpansionSettings
     public bool GuildEconomy { get; init; } = true;
     public bool GuildAlliances { get; init; } = true;
     public bool Personalities { get; init; }
-    public bool Voices { get; init; }
+    public bool Voices { get; init; } = true;
     public bool Debates { get; init; } = true;
-    public bool LivingMemory { get; init; }
-    public bool LivingGrats { get; init; }
+    public bool LivingMemory { get; init; } = true;
+    public bool LivingGrats { get; init; } = true;
     public bool LivingFirsts { get; init; }
     public bool LivingDeath { get; init; }
     public bool LivingAlarms { get; init; }
@@ -36,10 +36,17 @@ public sealed record SocialExpansionSettings
     public string ScheduleMode { get; init; } = "off";
     public bool LivingBreaks { get; init; }
     public bool LivingBodyLanguage { get; init; }
+    /// <summary>About 4% of Crafter bots are beggars in their capital (AutonomousBeggars). On by default.</summary>
+    public bool LivingBeggars { get; init; } = true;
+    /// <summary>Deeds and reputation, storylines, gold spammers and roleplayers, true rumours (the living-world parts). On by default.</summary>
+    public bool LivingDeeds { get; init; } = true;
+    public bool LivingStorylines { get; init; } = true;
+    public bool LivingCharacters { get; init; } = true;
+    public bool LivingRumours { get; init; } = true;
     public string PlayerXpByLevel { get; init; } = "";
     public string BotXpByLevel { get; init; } = "";
 
-    /// <summary>The server's defaults: every Living Server feature off.</summary>
+    /// <summary>The server's defaults: since Beta 1.1 (the talking update) bot voices, bot memory and grats on, the rest off.</summary>
     public static SocialExpansionSettings Defaults { get; } = new();
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -65,6 +72,11 @@ public sealed record SocialExpansionSettings
         ("bot_schedule_mode", "bots", "Server life: when autonomous gamebots are online. off = the whole roster (today's behavior); session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock = your PC's time of day (busiest 7-11pm and weekends, quiet overnight)."),
         ("bot_living_breaks", "bots", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march."),
         ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots cannot jump or sit (the game sends no such state for them)."),
+        ("bot_living_beggars", "bots", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight."),
+        ("bot_living_deeds", "bots", "Server life: bots of your realm that see you solo a named monster, go on a kill streak in the frontier, get zerged or die to something silly tell /faction a few minutes later, and others react. Deeds build a reputation the realm talks about, and a nickname."),
+        ("bot_living_storylines", "bots", "Server life: pairs of bots live out dramas in /faction over days: a kill steal, a guild split, a romance, a ninja-loot trial. The same two bots play every episode; take a side in faction and the ending follows you."),
+        ("bot_living_characters", "bots", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them."),
+        ("bot_living_rumours", "bots", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
     ];
@@ -92,6 +104,11 @@ public sealed record SocialExpansionSettings
         ["bot_schedule_mode"] = ScheduleMode,
         ["bot_living_breaks"] = Bool(LivingBreaks),
         ["bot_living_body_language"] = Bool(LivingBodyLanguage),
+        ["bot_living_beggars"] = Bool(LivingBeggars),
+        ["bot_living_deeds"] = Bool(LivingDeeds),
+        ["bot_living_storylines"] = Bool(LivingStorylines),
+        ["bot_living_characters"] = Bool(LivingCharacters),
+        ["bot_living_rumours"] = Bool(LivingRumours),
         ["xp_rate_by_level"] = PlayerXpByLevel.Trim(),
         ["bot_xp_rate_by_level"] = BotXpByLevel.Trim(),
     };
@@ -184,6 +201,11 @@ public sealed record SocialExpansionSettings
             ScheduleMode = schedule,
             LivingBreaks = ReadBool("bot_living_breaks", d.LivingBreaks),
             LivingBodyLanguage = ReadBool("bot_living_body_language", d.LivingBodyLanguage),
+            LivingBeggars = ReadBool("bot_living_beggars", d.LivingBeggars),
+            LivingDeeds = ReadBool("bot_living_deeds", d.LivingDeeds),
+            LivingStorylines = ReadBool("bot_living_storylines", d.LivingStorylines),
+            LivingCharacters = ReadBool("bot_living_characters", d.LivingCharacters),
+            LivingRumours = ReadBool("bot_living_rumours", d.LivingRumours),
             // Kept as written: an invalid range setting shows its own error in the tab (the server ignores it).
             PlayerXpByLevel = stored.TryGetValue("xp_rate_by_level", out string? player) ? player?.Trim() ?? "" : "",
             BotXpByLevel = stored.TryGetValue("bot_xp_rate_by_level", out string? bots) ? bots?.Trim() ?? "" : "",
@@ -195,7 +217,8 @@ public sealed record SocialExpansionSettings
 
     /// <summary>True when any Living Server part is on.</summary>
     public bool AnyLiving => LivingMemory || LivingGrats || LivingFirsts || LivingDeath || LivingAlarms || LivingNemesis ||
-                             ScheduleMode != "off" || LivingBreaks || LivingBodyLanguage;
+                             ScheduleMode != "off" || LivingBreaks || LivingBodyLanguage || LivingBeggars ||
+                             LivingDeeds || LivingStorylines || LivingCharacters || LivingRumours;
 
     /// <summary>
     /// "All off": the three features, every Living Server part and both XP ranges off. The share, lowest level and each part keep their
@@ -205,7 +228,8 @@ public sealed record SocialExpansionSettings
     {
         BotGuilds = false, Personalities = false, Voices = false, PlayerXpByLevel = "", BotXpByLevel = "",
         LivingMemory = false, LivingGrats = false, LivingFirsts = false, LivingDeath = false, LivingAlarms = false,
-        LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false,
+        LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false, LivingBeggars = false,
+        LivingDeeds = false, LivingStorylines = false, LivingCharacters = false, LivingRumours = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>

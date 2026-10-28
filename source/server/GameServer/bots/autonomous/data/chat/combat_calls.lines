@@ -1,0 +1,252 @@
+# Group calls in a fight with the player's group (kind combat, /group). The code picks the topic at the
+# matching moment: a pull, an add, out of power, low health, a big heal, mez and mez broken, root, stun,
+# taunt, a kill, a wipe, the rest after a fight, and a rez. Keep each topic strictly about its moment.
+# New writing (see docs/bot-voices/TALKING-UPDATE-CONTENT.md).
+
+# ---- pull: the bot pulls, or sees the pull coming -----------------------------------------
+@kind combat
+@topic pull
+@who *
+@needs in_player_group
+incoming
+inc, get ready
+pulling, get set
+here it comes
+pull on the way
+one coming, on me
+inc 1
+heads up, pull inc
+ready? pulling now
+bringing it in
+@who Daredevil
+pulling the big one, trust me
+@who Leveler
+
+# ---- add: another monster joined ----------------------------------------------------------
+@kind combat
+@topic add
+@who *
+@needs in_player_group
+add, add
+got an add
+add inc
+we have an add
+another one, add!
+add, someone grab it
+two now, careful
+add, mez it if you can
+extra coming in
+@who Daredevil
+add, we can take it
+
+# ---- oom: out of power --------------------------------------------------------------------
+@kind combat
+@topic oom
+@who *
+@needs in_player_group,is_caster
+oom
+oom, sorry
+out of power
+oom, meleeing with my staff lol
+0 power, need a sec
+dry, nothing left
+@needs in_player_group,is_healer
+oom, no more heals
+oom! careful
+last heal, then im oom
+oom, pot me or pray
+healer oom, slow down
+
+# ---- low_hp: the bot is hurt --------------------------------------------------------------
+@kind combat
+@topic low_hp
+@who *
+@needs in_player_group
+low!
+heal me
+need a heal
+hp low, help
+im dying here
+getting chewed up, heals pls
+almost dead
+dont let me die
+ouch, red hp
+help, its eating me
+@who Daredevil
+low but fine, keep hitting
+
+# ---- heal_big: a group heal ---------------------------------------------------------------
+@kind combat
+@topic heal_big
+@who *
+@needs in_player_group,is_healer
+group heal
+group heal inc, stay close
+big heal going out
+hang on, healing everyone
+bunch up, group heal
+topping everyone off
+heals up, stay in range
+healing group, keep hitting
+big heal, everyone hold on
+all of you, stay close to me
+
+# ---- mez: the bot mezzes an add -----------------------------------------------------------
+@kind combat
+@topic mez
+@who *
+@needs in_player_group,is_support
+mezzed
+mez on the add
+add mezzed, dont touch it
+mezzed, leave it alone
+@needs in_player_group,is_caster
+mez up, hands off
+sleeping the add, ignore it
+mezzed the add, kill the first one
+mez is in, no aoe
+@needs in_player_group,is_support
+mezzed, dont pbaoe
+mez on, fight the other one
+
+# ---- mez_broke: the mez is off -------------------------------------------------------------
+@kind combat
+@topic mez_broke
+@who *
+@needs in_player_group,is_support
+mez is off
+who broke my mez
+it woke up
+mez broke, remezzing
+@needs in_player_group,is_caster
+resisted, mez failed
+mez down, careful
+add is loose
+it resisted, watch out
+@needs in_player_group,is_support
+mez broke, its loose
+broke early, sorry
+
+# ---- root ---------------------------------------------------------------------------------
+@kind combat
+@topic root
+@who *
+@needs in_player_group
+rooted
+root on
+rooted the add
+its rooted, dont hit it
+root is up, back off it
+rooted, kill the other
+root in, leave that one
+that one is rooted
+rooted, step back from it
+
+# ---- stun ---------------------------------------------------------------------------------
+@kind combat
+@topic stun
+@who *
+@needs in_player_group
+stunned
+stun on
+stunned, go go
+stun, hit it
+its stunned, burn it
+stun in, nuke it
+stunned, free hits
+stun landed
+stunned, kill it fast
+
+# ---- taunt: the tank takes it back ---------------------------------------------------------
+@kind combat
+@topic taunt
+@who *
+@needs in_player_group,is_tank
+taunting
+got it
+on me
+i have it
+off the healer, taunting
+taunt, come here you
+got aggro back
+mine now, heal me
+eyes on me
+
+# ---- kill: the fight just ended well -------------------------------------------------------
+@kind combat
+@topic kill
+@who *
+@needs in_player_group
+gj
+nice
+easy
+dead
+clean
+next
+that went well
+and stay down
+nice work all
+smooth
+@who Daredevil
+too easy
+@who Leveler
+nice xp, next
+
+# ---- wipe: the group is dying, run ---------------------------------------------------------
+@kind combat
+@topic wipe
+@who *
+@needs in_player_group
+run!
+wipe, run
+everyone run
+its over, run
+leave me, go
+not this one, run
+too many, get out
+bail bail
+run to the zone line
+@who Daredevil
+go, ill hold them
+
+# ---- rest: after the fight, med and rebuff -------------------------------------------------
+@kind combat
+@topic rest
+@who *
+@needs in_player_group
+med up
+sitting
+short break, heal up
+everyone sit
+endurance break
+give me a sec to med
+@needs in_player_group,is_support
+rebuff time
+rebuffing, one sec
+buffs before the next one
+
+# ---- rez: rezzing someone ------------------------------------------------------------------
+@kind combat
+@topic rez
+@who *
+@needs in_player_group,can_rez
+rezzing
+rez inc
+rezzing, dont release
+hold on, rez coming
+wait for the rez
+rez up, accept it
+rezzing, sit and med after
+rez on the way
+rezzing, hang tight
+rez going up
+
+# The talking update audit: only a power user rests for power
+@kind combat
+@topic rest
+@who *
+@realm *
+@class Wizard,Theurgist,Sorcerer,Cabalist,Necromancer,Cleric,Friar,Minstrel,Healer,Shaman,Runemaster,Spiritmaster,Bonedancer,Skald,Eldritch,Enchanter,Mentalist,Animist,Druid,Bard,Warden
+@levels 1-50
+@needs in_player_group
+need power, sitting

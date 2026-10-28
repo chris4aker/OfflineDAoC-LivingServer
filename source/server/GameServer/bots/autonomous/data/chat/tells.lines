@@ -1,0 +1,177 @@
+# The talking update: private tells a bot starts with the player (kind tell). Every tell is an opener and says
+# what it invites. {player} and {place} come from the bot's memory, so those lines need knows_player.
+# A tell never promises what the server will not do (inviting, giving, coming over). New writing (see docs/bot-voices).
+
+# ---- hello_friend: a bot that knows the player sees them log in or come near ----
+@kind tell
+@topic hello_friend
+@who *
+@needs knows_player
+@invites chat
+hey {player}, back for more?
+oh hey {player}, saw you log in
+heya {player}
+yo {player}
+hi {player}! good timing, its been quiet
+hey {player}, i was just thinking about our last group
+@invites ask
+{player}! where have you been hiding?
+hey {player}, long time, how are things?
+hi {player}, what are you up to tonight?
+{player}, hey! long day?
+@needs knows_player,player_leveling
+{player} hi, how is the leveling going?
+hey {player}, dinged yet?
+@needs knows_player
+@needs knows_player,evening
+@invites chat
+evening {player}, good to see a friendly name on
+@needs knows_player,player_nearby
+hey {player}, didnt know you were around here
+@needs knows_player
+@who Socialite
+{player}!! hiii, missed you
+@who NoLifer
+@invites ask
+there you are {player}, thought you quit on us
+
+# ---- after_group: grouped with the player before ----
+@kind tell
+@topic after_group
+@who *
+@needs knows_player
+@invites chat
+ty for the group the other night
+hey, ty again for the group at {place}
+{player}, that group at {place} was fun, ty
+hey {player}, good group last time, ty
+ty for sticking around last group, i know it ran long
+that was the best xp i had all week, ty {player}
+sorry i had to leave the group early last time
+{player}, we made a good team at {place}
+@invites ask
+hey {player}, want to run {place} again sometime?
+@who Leveler
+still riding the xp from that group at {place}, ty
+
+# ---- group_offer: close in level, same zone ----
+@kind tell
+@topic group_offer
+@who *
+@needs !knows_player
+@invites ask
+hey, want to duo here? im {level} {class}
+{level} {class} here, want to team up for a bit?
+you looking for a group? im {level}, same area
+we keep going after the same mobs lol, want to group?
+want to group? xp is better with two
+hey, saw you soloing, duo?
+your level looks close to mine, want to group up?
+hey, im {level}, you?
+lfg? i could use a partner out here
+@needs !knows_player,outdoors
+hi, im {level} {class}, want to duo in {zone}?
+@needs !knows_player,is_healer
+duo? i can heal, you hit things
+@needs !knows_player,is_tank
+want a tank? im {level} {class}, you pull i hold
+@needs !knows_player,is_caster
+duo? im a {class}, lots of damage but squishy
+@needs knows_player
+hey {player}, same zone again, want to group?
+@needs knows_player,outdoors
+{player}, im in {zone} too, duo?
+
+# ---- help_offer: the player is a low level near the bot ----
+@kind tell
+@topic help_offer
+@who *
+@needs knows_player
+@invites ask
+hey {player}, need a hand with anything?
+{player}, need help with that quest?
+hey {player}, how is it going? need anything?
+need directions anywhere {player}?
+any questions about your class? happy to help
+{player}, you doing ok? lots of things wander through here
+hey {player}, saw you fighting, all good?
+@invites chat
+if you get stuck, send me a tell
+hey, remember to train when you ding
+@needs knows_player,outdoors
+watch the adds around here, they hit hard at your level
+
+# ---- news_tell: shares news privately (the news flag supplies the slots) ----
+@kind tell
+@topic news_tell
+@who *
+@invites ask
+@needs keep_lost_recent,knows_player
+did you see we lost {keep}?
+@invites chat
+@needs keep_lost_recent,knows_player
+{player}, {keep} fell, if you want some rp tonight
+@invites ask
+@needs keep_won_recent,knows_player
+hey, we took {keep}! you see it?
+@invites chat
+@needs relic_lost_recent,knows_player
+psst, {relic} is gone, they got it
+@needs relic_won_recent,knows_player
+{player}! we took {relic}
+@invites ask
+@needs raid_won_recent,knows_player
+did you hear the raid killed {boss} in {raid}?
+@invites chat
+@needs raid_wiped_recent,knows_player
+raid wiped on {boss}, glad you werent there lol
+@needs defending,knows_player
+hey, {keep} is under attack if you feel like a fight
+@needs attacking,knows_player
+{player}, the army is hitting {keep}, free rp
+@needs keep_news,knows_player
+{keep} changed hands, frontier is busy tonight
+@invites ask
+you hear about {keep}? keeps are flipping all over
+@about place
+@needs df_changed_recent,df_ours,knows_player
+@invites ask
+df is ours again, want to go?
+@needs df_changed_recent,!df_ours,knows_player
+@invites chat
+heads up, we lost df
+@about
+
+# ---- guildmate: small talk with a guildmate ----
+@kind tell
+@topic guildmate
+@who *
+@needs knows_player
+@invites ask
+hey, anyone in the guild grouping tonight?
+{player}, are we doing anything this weekend?
+yo, got a question about your spec, got a sec?
+hey, you ok? havent seen you on much
+{player}! guild is quiet tonight, where is everyone?
+@needs knows_player,player_leveling
+{player}, how close are you to your next level?
+{player}, quick question, what armor are you wearing at your level?
+@needs knows_player
+@invites chat
+heya guildie
+{player}, we should get the guild out to rvr soon
+was just telling the others about you lol, all good things
+@who Crafter
+@invites ask
+need anything made? i have some free time at the forge
+@who Socialite
+@invites chat
+we miss you in /gu, say hi sometime
+@who Leveler
+@invites ask
+@needs knows_player,player_leveling
+{player}, want to level together some night this week?
+@needs knows_player
+@who NoLifer
+@invites chat
+guild needs more people in the frontier, think about it

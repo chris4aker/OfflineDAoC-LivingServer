@@ -58,16 +58,20 @@ public class SocialExpansionSettingsTests
         GuildAlliances = false, PlayerXpByLevel = SocialExpansionSettings.SuggestedPlayerXp,
         BotXpByLevel = SocialExpansionSettings.SuggestedBotXp,
         LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true,
-        LivingNemesis = true, ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true,
+        LivingNemesis = true, ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true,
+        LivingDeeds = true, LivingStorylines = true, LivingCharacters = true, LivingRumours = true,
     };
 
-    [Test] public void NoRowsMeansTheServerDefaultsEverythingOff()
+    [Test] public void NoRowsMeansTheServerDefaults()
     {
         var problems = new List<string>();
         Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(SocialExpansionSettings.Defaults));
         Assert.That(problems, Is.Empty);
+        // Since Beta 1.1 (the talking update) the chat-only parts are on: voices, memory, grats, and the beggars. The rest stays off.
+        Assert.That(SocialExpansionSettings.Defaults.Voices && SocialExpansionSettings.Defaults.LivingMemory &&
+                    SocialExpansionSettings.Defaults.LivingGrats && SocialExpansionSettings.Defaults.LivingBeggars, Is.True);
         Assert.That(SocialExpansionSettings.Defaults.BotGuilds || SocialExpansionSettings.Defaults.Personalities ||
-                    SocialExpansionSettings.Defaults.Voices, Is.False);
+                    SocialExpansionSettings.Defaults.LivingDeath || SocialExpansionSettings.Defaults.LivingBreaks, Is.False);
         Assert.That(SocialExpansionSettings.Defaults.PlayerXpByLevel + SocialExpansionSettings.Defaults.BotXpByLevel, Is.Empty);
     }
 
@@ -86,6 +90,9 @@ public class SocialExpansionSettingsTests
         Assert.That(rows["bot_schedule_mode"], Is.EqualTo("clock"));
         Assert.That(rows["bot_living_breaks"], Is.EqualTo("True"));
         Assert.That(rows["bot_living_body_language"], Is.EqualTo("True"));
+        Assert.That(rows["bot_living_beggars"], Is.EqualTo("True"));
+        Assert.That(rows["bot_living_deeds"] + rows["bot_living_storylines"] + rows["bot_living_characters"] + rows["bot_living_rumours"],
+            Is.EqualTo("TrueTrueTrueTrue"));
         var problems = new List<string>();
         Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(AllOn));
         Assert.That(problems, Is.Empty);
@@ -137,6 +144,8 @@ public class SocialExpansionSettingsTests
         Assert.That((SocialExpansionSettings.Defaults with { ScheduleMode = "session" }).IsAllOff, Is.False);
         Assert.That((SocialExpansionSettings.Defaults with { LivingBodyLanguage = true }).IsAllOff, Is.False);
         Assert.That(off.LivingBodyLanguage, Is.False);
+        Assert.That(off.LivingBeggars || off.LivingDeeds || off.LivingStorylines || off.LivingCharacters || off.LivingRumours, Is.False);
+        Assert.That((SocialExpansionSettings.Defaults.AllOff() with { LivingBeggars = true }).IsAllOff, Is.False);
     }
 
     [Test] public void NothingIsWrittenWhileTheServerRunsOrWithInvalidRanges()
@@ -233,8 +242,12 @@ public class SocialExpansionSettingsTests
         var save = Field<Button>("_save");
         Color muted = Color.FromArgb(166, 154, 128), parchment = Color.FromArgb(215, 199, 157);
         Assert.That(claims.ForeColor, Is.EqualTo(muted), "guild parts are dimmed until bot guilds are on");
-        Assert.That(debates.ForeColor, Is.EqualTo(muted), "debates are dimmed until voices are on");
+        // Since Beta 1.1 voices are on by default, so debates start bright and dim when voices are switched off.
+        Assert.That(voices.Checked, Is.True, "bot voices are on by default");
+        Assert.That(debates.ForeColor, Is.EqualTo(parchment));
         Assert.That(save.Enabled, Is.False, "nothing to save yet");
+        voices.Checked = false;
+        Assert.That(debates.ForeColor, Is.EqualTo(muted), "debates are dimmed until voices are on");
 
         guilds.Checked = true;
         voices.Checked = true;
@@ -264,7 +277,8 @@ public class SocialExpansionSettingsTests
         Call("SaveSettings");
         var rows = Rows();
         Assert.That(rows["bot_guilds_enabled"], Is.EqualTo("True"));
-        Assert.That(rows["bot_voices_enabled"], Is.EqualTo("True"));
+        // Voices were switched off and on again: still the default (on since Beta 1.1), so nothing is written for them.
+        Assert.That(rows.ContainsKey("bot_voices_enabled"), Is.False);
         Assert.That(rows["xp_rate_by_level"], Is.EqualTo(SocialExpansionSettings.SuggestedPlayerXp));
         Assert.That(type.GetProperty("HasUnsavedChanges")!.GetValue(panel), Is.False);
 
@@ -272,6 +286,7 @@ public class SocialExpansionSettingsTests
         Call("SaveSettings");
         rows = Rows();
         Assert.That(rows["bot_guilds_enabled"], Is.EqualTo("False"));
+        Assert.That(rows["bot_voices_enabled"], Is.EqualTo("False"), "ALL OFF switches the new default off too");
         Assert.That(rows["xp_rate_by_level"], Is.EqualTo(""));
     }
 

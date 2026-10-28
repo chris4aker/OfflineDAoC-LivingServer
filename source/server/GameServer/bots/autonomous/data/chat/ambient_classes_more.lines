@@ -1,0 +1,1057 @@
+# What playing each class feels like at its level: styles and spells in general terms, pets for pet
+# classes, heals for healers, stealth for stealthers, solo and group life, gear and spec musings, class
+# pride, class envy and jokes about one's own class. Classic and Shrouded Isles classes only, each in its
+# own realm. Role lines at the end. Adds to classes.lines and classes_more.lines. New writing (see docs/bot-voices).
+
+# ======================================================================== Albion
+@kind ambient
+@topic class
+@realm alb
+
+# ---- Armsman
+@class Armsman
+@levels 1-19
+[at this level|this early] my armsman has like three styles and i [mash|spam] all of them
+getting the first real set of plate is a big day for an armsman
+an armsman at this level is mostly a tin can with a sword
+@levels 20-34
+[polearm|two handed] armsman [life|here], [slow|big] swings and [even bigger|bigger] [hits|numbers]
+guarding the cleric is half my job and the half i take most seriously
+i see a paladin chanting and wonder what it is like to bring more than a sword
+crossbow on an armsman is for pulling and nothing else, and it does that fine
+@levels 35-50
+at this level an armsman is mostly a [wall|door|shield] with [opinions|feelings|a polearm]
+parry, shield and plate. some fights i dont even notice the add hitting me
+more polearm or more shield, every respec i [end up back where i started|flip the other way|talk myself out of it]
+@levels 1-50
+@invites joke
+the armsman way: [taunt|hit] it, [stand there|stay put], [trust the healer|hope the healer is awake]
+@invites boast
+no class takes a beating like an armsman and i will hear no argument
+@invites
+soloing on an armsman is slow but steady, plate forgives a lot
+@who Crafter
+an armsman's repair bill could feed a small village
+@who
+
+# ---- Paladin
+@class Paladin
+@levels 1-19
+[early on|at these levels] a paladin is just a tank who [hums a lot|sings under their breath|never stops chanting]
+one chant at a time for now, twisting can wait
+@levels 20-34
+chant twisting [finally|almost] makes sense, [my fingers hurt|my hotbar is a mess|my keyboard hates me]
+paladin in a group: chants up, taunt up, nobody thanks the chants
+the endurance chant is why the whole group can keep swinging
+@levels 35-50
+[twisting four chants|keeping four chants going] and [still swinging|still taunting] [feels like juggling|is a full time job]
+two handed paladin damage is better than people say. not great, but better
+@levels 1-50
+@invites joke
+paladins dont run out of endurance, we [hand it out|sing it to everyone|share it around]
+plate, a big sword and a choir of chants. the paladin dress code
+@invites
+[i love my chants|chants are great] but some days i envy the armsman [polearm|damage|hits]
+@invites boast
+a group with a paladin just lasts longer, endurance and health regen add up
+@invites complaint
+solo paladin is slow, chants cant kill things for you
+
+# ---- Mercenary
+@class Mercenary
+@levels 1-19
+dual wield at this level [misses a lot|feels clumsy], but when both swings land [it is great|it is lovely|wow]
+starting merc, still figuring out which hand does what
+@levels 20-34
+evade and parry stacking on my merc, half the hits just go past me now
+merc solo is a gamble, sometimes the yellow dies, sometimes i do
+chain armor and two swords, the merc uniform
+@levels 35-50
+[at this point|this far in] a merc in chain [does more damage than|outdamages] half the [realm|tanks i know]
+two weapons, no shield, no apologies
+@levels 1-50
+@invites joke
+[the class is called mercenary|i am a mercenary] but [nobody ever pays me|the pay is terrible|the coin all goes to repairs]
+@invites
+merc envy is real, i look at reaver lifetaps every time i get low
+@invites boast
+nothing beats watching both hands crit at once on a merc
+@invites
+a merc in a group just needs a target and a healer who likes them
+
+# ---- Reaver
+@class Reaver
+@levels 1-19
+a young reaver is just a [fighter|merc] with a flail and [dreams|big plans]
+low level reaver, the flex skill is still pretty sad
+@levels 20-34
+[soulrending|my] lifetaps keep me going when the healer [runs dry|goes oom|looks away]
+the pbaoe on a reaver makes every pull a little exciting
+reaver in a group means the healer has one less person to worry about
+@levels 35-50
+high level reaver: [lifetap|tap], [pulse|swing], [smile|grin]
+the flex reach on a reaver still feels like cheating
+@levels 1-50
+@invites joke
+reavers [look evil|look scary] but [we|most of us] just want [a group|to be invited|someone to talk to]
+@invites
+i see paladins get groups and remind myself reavers exist too
+reaver solo is underrated, the lifetaps make up for no healer
+@invites boast
+black chain and a spiked flail, the reaver look is unmatched
+
+# ---- Scout
+@class Scout
+@levels 1-19
+early scout is all [missing|hoping], the bow spec [comes later|grows on you]
+first time something walked right past me while i was hidden, scouts are fun
+@levels 20-34
+scout solo: [draw|shoot], [release|shoot again], [hope|pray] it [dies|falls] before it [arrives|reaches me]
+hidden on a hill with a longbow, waiting. that is the scout life
+@levels 35-50
+a scout with a [good|decent] bow and high bow spec is a [scary|frightening] thing
+a shield on a scout really saves lives, mine mostly
+@levels 1-50
+@invites joke
+scouts always get to the loot last, we stand so far back
+@invites
+scout envy: watching an infil walk up and stab things without a worry
+[a scout in a group|in a group a scout] [pulls|pulls everything], [shoots|plinks] and [stays out of the way|tries not to die]
+@invites boast
+albion archery is the best in the land, i will say that to any hunter or ranger
+@invites complaint
+arrows cost money, nobody tells you that when you roll a scout
+
+# ---- Infiltrator
+@class Infiltrator
+@levels 1-19
+low level infil, [mostly|] [stealthing|sneaking] past things i cant kill yet
+@levels 20-34
+applying poisons before every fight, the infil ritual
+backstab, [follow up|chain], [vanish|gone], [the infil way|that is the job]
+infil solo at this level is slow and careful, and i like careful
+@levels 35-50
+[this high|at this level] an infil is [mostly|all] [patience|waiting] and [one|a single] [great|perfect] moment
+high crit strike on an infil, one good opener ends most fights
+@levels 1-50
+@invites joke
+infils dont lose fights, we just [never start|walk away from|quietly leave] the ones we would lose
+@invites
+minstrels stealth too and still get invited, infil envy is real
+nobody asks for an infil in a pve group and i dont blame them
+leather and two short blades, light and quick
+@invites boast
+nobody in albion moves quieter than an infil, that is a fact
+
+# ---- Minstrel
+@class Minstrel
+@levels 1-19
+minstrel at this level: [one song|a few songs] and a lot of [hope|enthusiasm]
+@levels 20-34
+[my charmed pet|the charm] broke [again|mid fight], [minstrel problems|that is minstrel life]
+[speed song and power song|power song and speed song] [twisting|swapping], [the|my] group [never|hardly] [notices|thanks me]
+mez on a minstrel is the most useful thing i do and nobody sees it
+@levels 35-50
+high level minstrel [is|feels like] half [tank|fighter] half [jukebox|music box]
+@levels 1-50
+@invites joke
+they call minstrels the realm's radio and i am fine with it
+@invites
+minstrels have stealth too, people forget that
+i do envy bards a little, they get heals with their songs
+chain armor and a lute, the minstrel is better armored than people think
+@invites boast
+speed to the frontier, courtesy of your local minstrel
+
+# ---- Cleric
+@class Cleric
+@levels 1-19
+low level cleric, [mostly smite|smiting things] until [someone needs|the group needs] me
+the first rez on a cleric is a big moment, i still remember mine
+@levels 20-34
+rejuv cleric [in a group|with a full group], [eyes on|watching] the health bars the whole time
+a cleric's buffs are half the reason the tank lives, nobody says it
+@levels 35-50
+[high level|veteran] cleric means rezzing [the same|one] person [three|four] times a night
+smite spec at this level is serious damage, nobody believes it until they see it
+@levels 1-50
+@invites joke
+[the tank dies|the puller dies|someone dies], the cleric gets [blamed|the tell]
+@invites
+clerics in chain, wizards in robes, i know who got the better deal
+solo cleric is slow but i can heal myself through anything
+@invites boast
+albion clerics, holding up every group in the realm
+@who Socialite
+@invites
+half my friends list is people i rezzed once
+@who
+
+# ---- Friar
+@class Friar
+@levels 1-19
+friar at this level is just a monk with a stick
+@levels 20-34
+staff in one hand, heals in the other, the friar way
+friar in a group: [heal|buff], [swing|bonk], [heal|buff] again
+solo friar is really strong, a staff and a self heal go far
+@levels 35-50
+[high level|veteran] friar staff crits [surprise|shock|still surprise] people, [even me|including me]
+@levels 1-50
+@invites joke
+friars take a vow of poverty and [my repair bill keeps it|the merchant makes sure i keep it]
+@invites
+friar envy: watching a cleric walk around in chain while i bonk things in robes
+friar evade and parry let me soak a pull in robes
+two classes in one robe, the friar never gets bored
+@who Crafter
+still hunting for a good quarterstaff, friar problems
+@who
+
+# ---- Wizard
+@class Wizard
+@levels 1-19
+[low level wizard|wizard at this level], [one|a single] [bolt|nuke] and then [run|rest|pray]
+medding between every pull is the wizard life at this level
+@levels 20-34
+fire wizard at this level, most fights end before melee
+a wizard in cloth learns to respect every add, one death at a time
+@levels 35-50
+[high level|veteran] [fire|earth|cold] wizard nukes from max range are [a joy|pure joy]
+a pbaoe wizard in a good dungeon group is a beautiful thing
+@levels 1-50
+@invites joke
+a wizard's answer to everything is [more fire|another bolt|a bigger nuke]
+@invites
+wizard envy: [theurgs|sorcerers] get pets, i get [a robe|cloth] and [a prayer|good aim]
+solo wizard is fine if you pull carefully and keep a quickcast ready
+@invites boast
+nothing in albion hits harder at range than a wizard on a good day
+@who Crafter
+@invites
+a good focus staff matters more than any robe on a wizard
+@who
+
+# ---- Theurgist
+@class Theurgist
+@levels 1-19
+theurg at this level, [pets|little pets] [everywhere|all over] and no idea [who they are attacking|what they are doing]
+@levels 20-34
+earth theurg pets keep things busy while i [cast|nuke|run]
+my pet count on a theurg is never the same twice
+@levels 35-50
+high level theurg [pet spam|pets] [can|will] [lock down|swarm] [a whole camp|anything that moves]
+@levels 1-50
+@invites joke
+theurg pets [have no loyalty|never stay put|wander off], [but|and] [there are always more|i just summon more]
+@invites
+theurg envy: cabalists get one pet that listens, i get a dozen that never do
+solo theurg is safe as long as the pets keep coming
+robes and a cloud of elementals, that is the theurg look
+@invites complaint
+half the trains in albion were started by a theurg pet, i am sure of it
+
+# ---- Sorcerer
+@class Sorcerer
+@levels 1-19
+sorc at this level is [mostly|all] mez and [hope|small nukes]
+@levels 20-34
+mind sorc [mez|sleep] [lands|holds], [the|my] group [lives|breathes]
+body sorc debuffs make every fight shorter and nobody says thanks
+@levels 35-50
+[high level|veteran] sorc, the crowd control [is|has become] [rock solid|second nature]
+@levels 1-50
+@invites joke
+sorcerers [put things to sleep|mez things] for a living, [ask my group|my group can tell you]
+@invites
+wizards get the big numbers, sorcs get [the work|the blame|the mez]
+a sorc solos well when the pet behaves, so almost never
+a sorc in a group watches the adds more than the target
+the trick to sorc is knowing which add to leave asleep
+@invites boast
+albion sorcs are the reason half the fights go our way
+
+# ---- Cabalist
+@class Cabalist
+@levels 1-19
+my simulacrum is my [best|only] friend [at this level|so far]
+@levels 20-34
+cab dots [ticking|stacking] on a yellow while [my|the] pet [tanks|holds it], [peaceful|relaxing]
+matter cab dots plus a stubborn pet, solid solo
+@levels 35-50
+high level cabalist soloing is patient work but almost risk free
+@levels 1-50
+@invites joke
+my simulacrum [has|shows] more [personality|charm] than [most|half my] [groups|guildmates]
+@invites
+cab envy: sorcs get the group spots, we get blank looks
+cloth, a focus staff and a pet built by hand, that is cab life
+a cabalist in a group is mostly dots and quiet
+@invites boast
+a patient cabalist outlasts anything, that is the whole secret
+
+# ---- Necromancer
+@class Necromancer
+@levels 1-19
+low level necro, [the pet|my servant] does [everything|the work] and i [watch|cheer|take notes]
+@levels 20-34
+being the shade [still|] [feels strange|takes getting used to], necro life
+painworking necro, steady drains and a patient pet
+@levels 35-50
+high level necro pet [tanks|holds] [yellows|oranges] [without a complaint|like nothing]
+deathsight necro is a whole different class at this level
+@levels 1-50
+@invites joke
+necros [are not evil|arent evil], we just [keep odd hours|look a bit pale|smell a bit]
+@invites
+necro envy is real, everyone wants the cleric and nobody asks for the dead guy
+the dead serve albion too, quietly
+@invites boast
+necro solo is the best in albion, i stand by it
+
+# ======================================================================== Midgard
+@kind ambient
+@topic class
+@realm mid
+
+# ---- Warrior
+@class Warrior
+@levels 1-19
+young warrior, [big shield|a shield], [tiny|small] plan, [lots of|plenty of] heart
+@levels 20-34
+warrior in a group: [taunt|hit], [block|parry], [repeat|do it again]
+thrown weapons on a warrior are perfect for pulling, nobody believes me
+@levels 35-50
+at this level hardly anything gets past my warrior's shield
+[hammer|axe|sword] warrior [here|], every weapon is fine if you [block|parry] enough
+@levels 1-50
+@invites joke
+warriors dont need magic, we have the healer
+@invites complaint
+warrior envy: [zerkers|savages] get [all the damage|the big numbers], we get [the bruises|the repair bills]
+@invites boast
+midgard warriors have held the line since the first winter
+@invites
+solo warrior is slow, chain keeps me alive but kills take forever
+
+# ---- Thane
+@class Thane
+@levels 1-19
+a low level thane is a warrior who found a spellbook
+@levels 20-34
+stormcalling crits on a thane still make me grin
+thane in a group: pull with lightning, tank with a hammer, out of power by the second add
+@levels 35-50
+[at this level|this high] a thane [nukes|hits] like a caster and [tanks|takes hits] like a warrior
+@levels 1-50
+@invites joke
+thanes bring the storm to every fight, the healers complain about the noise
+@invites
+thane envy: [warriors|zerkers] [dont|never] [worry about|run out of] power
+chain, a big hammer and a head full of thunder
+solo thane is not bad, nuke it in and finish it with the hammer
+how much stormcalling is enough on a thane, i go back and forth
+
+# ---- Skald
+@class Skald
+@levels 1-19
+skald at this level, [speed|one song] and a [sword|small nuke], [not much else|and a smile]
+@levels 20-34
+skald songs on, [everyone|the group] [runs|moves] [faster|like the wind]
+skald nukes land harder than people expect
+@levels 35-50
+a skald nuke and a big two handed [swing|hit] [ends|finishes] most [fights|pulls] [fast|quick]
+@levels 1-50
+@invites joke
+skalds sing badly but the speed is real
+@invites complaint
+skald envy: [healers|shamans] get thanked, skalds get [asked for speed|told to sing louder]
+@invites boast
+a midgard group without a skald just takes the long way everywhere
+@invites
+chain armor and a battle song, the skald look
+being a skald means half my hotbar is songs and half is panic
+
+# ---- Berserker
+@class Berserker
+@levels 1-19
+young zerker, [swinging|flailing] [two|both] [axes|weapons] and [hoping|praying]
+@levels 20-34
+berserk frenzy on a zerker [is|feels] [amazing|wonderful] until [the healer looks away|my health runs out]
+left axe spec on a zerker, every swing counts
+@levels 35-50
+[high level|veteran] zerker damage [is|feels] [silly|unreal], the defense [less so|not so much]
+@levels 1-50
+@invites joke
+zerkers have one plan and it involves [axes|more axes|two axes]
+@invites
+zerker envy: warriors and thanes get to carry a shield
+solo zerker is quick until it isnt, and then it is a long run back
+@invites boast
+nothing in midgard swings faster than a zerker in a frenzy
+
+# ---- Savage
+@class Savage
+@levels 1-19
+savage at this level, punching things and loving it
+@levels 20-34
+savage self buffs eat health but the extra speed is worth it
+hand to hand savage, [fast|quick] claws and [a lot of|lots of] [bandages|healing]
+@levels 35-50
+[high level|veteran] savage [swings|hits] so fast [the|my] [healer|group] [cant keep up|gets dizzy]
+@levels 1-50
+@invites joke
+we savages hurt ourselves to hurt others harder, it makes sense after a while
+@invites
+savage envy: everyone knows the zerkers and hardly anyone remembers us
+@invites boast
+savages are the newest fighters in midgard and the angriest
+@invites complaint
+good claws are hard to find, savage problems
+
+# ---- Hunter
+@class Hunter
+@levels 1-19
+young hunter, [my|the] pet [does most of the work|tanks everything], i [shoot|poke] from behind
+@levels 20-34
+stealthed on a hill with a composite bow, watching. hunter life
+hunter and pet [soloing|solo on] [yellows|blues] is [the best|great]
+@levels 35-50
+at this level a hunter with a good pet can handle most camps
+@levels 1-50
+@invites joke
+i trust my pet more than [my group|my guild|most people], hunter habit
+@invites
+hunter envy: rangers and scouts get the archery talk, we get asked about the pet
+a hunter's pet is the only groupmate that never asks for loot
+@invites boast
+midgard hunters [can do it all|solo, stealth and shoot], [ask anyone|just ask]
+@invites complaint
+feeding the pet and buying arrows, hunter money disappears
+
+# ---- Shadowblade
+@class Shadowblade
+@levels 1-19
+young shadowblade, [still|] [learning|practicing] where [to stand|the back is]
+@levels 20-34
+poisons on, [hidden|stealthed], [waiting|patient], the shadowblade [life|routine]
+left axe shadowblade, both weapons and a lot of crits
+sb solo is careful but rewarding
+@levels 35-50
+high level [sb|shadowblade] [opening|opener] [chains|crits] [end|finish] fights before they [start|begin]
+@levels 1-50
+@invites joke
+a shadowblade's best friend is the shadow behind the tank
+@invites
+sb envy: healers get the invites first, every time
+nobody asks for a shadowblade in a pve group, i stopped minding
+@invites boast
+midgard shadowblades can wait longer than any stealther alive
+
+# ---- Healer
+@class Healer
+@levels 1-19
+low level healer means heal, [sit|med], [repeat|heal again]
+@levels 20-34
+pac healer [mez|crowd control] saves more pulls than people [know|realize]
+[group heals|a big group heal] [landing|going off] right on time [is the best feeling|feels great]
+@levels 35-50
+high level healer heals are huge, the power never keeps up though
+a mending healer at this level can keep [anyone|a whole group] [standing|alive] [through anything|if they stay close]
+@levels 1-50
+@invites joke
+healer rule [one|number one]: [never|dont] stand next to the [puller|tank]
+@invites
+healer envy: zerkers get to swing axes and i count health bars
+solo healer is a slow grind, hit and heal, hit and heal
+@invites boast
+midgard healers might be the best of any realm, i will say it again
+
+# ---- Shaman
+@class Shaman
+@levels 1-19
+low level shaman, [little|small] [dots|diseases] and [lots of|plenty of] patience
+@levels 20-34
+cave shaman [dots|diseases] [ticking|spreading] on [everything|the whole pull]
+shaman buffs on the tank, a heal on standby, ready
+@levels 35-50
+a [high level|veteran] shaman heals, buffs and [rots|diseases] things [all at once|without breaking a sweat]
+@levels 1-50
+@invites joke
+shamans carry the smell of the cave, you get used to it
+@invites complaint
+shaman envy: healers get the big group heals, we get the smell
+@invites boast
+[a|any] group with a shaman [hits|swings] harder, [the|our] buffs [do that|see to it]
+@invites
+shaman solo is solid, dot it and wait
+
+# ---- Runemaster
+@class Runemaster
+@levels 1-19
+young runemaster, [one|a] [nuke|bolt] [then|and then] [a long med|sit and med]
+@levels 20-34
+runemaster [bolts|nukes] [from|at] [max|long] range [are|feel] [wonderful|lovely]
+darkness rm nukes land big
+@levels 35-50
+high level runemaster [nukes|bolts] [carry|end] fights, [the robe does not|cloth cant] save me
+@levels 1-50
+@invites joke
+runemasters [carve|read] runes [for fun|in their sleep], then [nuke|blast] things from range
+@invites
+rm envy: spiritmasters have someone to hide behind, i have a prayer
+solo runemaster is about pulling one at a time, a single add is the end
+@invites boast
+runemasters are the biggest nukes midgard has
+
+# ---- Spiritmaster
+@class Spiritmaster
+@levels 1-19
+low level spiritmaster, [my|the] spirit [tanks|does the work] while i [cast|nuke]
+@levels 20-34
+summoning sm, [the spirit|my pet] [tanks|holds aggro] [better than|like] [some warriors|a warrior]
+spiritmaster soloing feels cozy behind a good pet
+@levels 35-50
+[high level|veteran] sm, [the|my] [pet|spirit] [hits|swings] [harder|more] than [i do|my nukes]
+@levels 1-50
+@invites joke
+spiritmasters argue with spirits for a living, nothing odd about it
+@invites complaint
+sm envy: bonedancers get a whole army of pets, i get a single spirit
+@invites boast
+a spiritmaster with a healthy pet can handle anything blue
+@invites
+cloth robes, a staff and a spirit at my shoulder
+
+# ---- Bonedancer
+@class Bonedancer
+@levels 1-19
+young bonedancer, one skeleton and big plans
+@levels 20-34
+commander out, [subpets|little skeletons] [following|in tow], [bd life|the bonedancer way]
+bonedancer lifetaps keep me going after the pets go down
+@levels 35-50
+high level bd pets [hold|tank] [the pull|a whole camp] [by themselves|on their own]
+@levels 1-50
+@invites joke
+a bonedancer never [eats|travels] alone, the [skeletons|bones] [are|make] [good|fine] company
+@invites complaint
+spiritmasters only lose one pet at a time, bds lose the whole army
+@invites boast
+bonedancers are midgard's newest casters and probably the strangest
+@invites
+cloth, a staff and a clattering escort
+
+# ======================================================================== Hibernia
+@kind ambient
+@topic class
+@realm hib
+
+# ---- Hero
+@class Hero
+@levels 1-19
+young hero, [a|one] [big|celtic] spear and [no idea|no plan]
+@levels 20-34
+a hero's job is simple: [stand in front|get hit], [hold aggro|keep aggro], [dont die|stay standing]
+celtic spear reach on a hero is lovely on pulls
+@levels 35-50
+[high level|veteran] hero, [shield|large weapons|blades] spec and [no regrets|no complaints|sore arms]
+@levels 1-50
+@invites joke
+the class is called hero and still nobody cheers when i walk in
+@invites complaint
+hero envy: blademasters get the damage, heroes get the healer's attention
+@invites boast
+heroes of hibernia never step back from a pull
+@invites
+solo hero [is|feels] slow but [safe|steady], [shield up|big shield] and patience
+
+# ---- Champion
+@class Champion
+@levels 1-19
+young champion, still figuring out what valor even does
+@levels 20-34
+champion debuffs [land|go on] and [suddenly|then] the group [hits harder|does more damage]
+large weapons champ here, debuff first, swing second
+@levels 35-50
+high level champ, [the|my] valor spells turn [yellows|oranges] into [blues|easy kills]
+@levels 1-50
+@invites joke
+champions [are|stay] [the|] [unsung|quiet] heroes, the heroes take the credit
+@invites complaint
+champ envy: [blademasters|heroes] [get|take] the [credit|glory] for [my|our] debuffs
+@invites boast
+a group with a champion just kills faster, everyone knows it
+@invites
+solo champ is decent, debuffs then swing
+
+# ---- Blademaster
+@class Blademaster
+@levels 1-19
+young blademaster, [two|both] [swords|blades] and [little|no] aim
+@levels 20-34
+celtic dual crits on a bm never get old
+blademaster in a group, stick to the tank and hit with both hands
+@levels 35-50
+[high level|veteran] bm damage [is|feels] [unreal|silly] on a good pull
+@levels 1-50
+@invites joke
+blademasters [solve|answer] every problem with [two|more] blades
+@invites
+bm envy: [heroes|wardens] [get|carry] shields, bms [get|carry] a second sword
+solo bm is quick kills and long rests
+@invites boast
+nothing in hibernia spins prettier than a blademaster
+
+# ---- Warden
+@class Warden
+@levels 1-19
+young warden, [heals|a heal] and a [sword|shield], [not great at either|learning both]
+@levels 20-34
+warden heals keep the tank standing while i swing
+nurture buffs on a warden make the whole group stronger
+@levels 35-50
+high level warden [can|will] [heal|off heal] and [tank|take hits] [at once|together]
+@levels 1-50
+@invites joke
+a warden does a bit of everything and nobody says thanks
+@invites complaint
+warden envy: druids [get|have] [pets|a pet] and [bigger|better] heals, we get [a shield|bruises]
+@invites boast
+a group with a warden just dies less, simple as that
+@invites
+solo warden is solid, swing and heal and swing again
+
+# ---- Druid
+@class Druid
+@levels 1-19
+young druid, [my|the] pet [tanks|does the work] and i [heal|keep it alive]
+@levels 20-34
+druid group heals [land|go off] and [everyone|the whole group] [breathes|sighs] again
+druid buffs feel stronger than anyone's, maybe i am biased
+@levels 35-50
+high level druid, [my|the] heals [are|feel] [solid|huge], [the|my] pet [is|stays] [handy|useful]
+@levels 1-50
+@invites joke
+druids [talk to|hug] trees [for fun|on weekends|in our spare time]
+@invites
+druid envy: bards and wardens get to swing a sword, i stand back
+druid solo with the pet is comfy, buff it and watch
+@invites boast
+hibernian druids, the best heals in the land
+
+# ---- Bard
+@class Bard
+@levels 1-19
+young bard, [one song|speed] and a [small|tiny] heal, [still|already] [fun|useful]
+@levels 20-34
+bard [mez|sleep song] [holds|keeps] the adds [down|quiet] while the group [fights|kills]
+the bard kit: [speed|songs], [heals|a heal], [mez|sleep] and a [lute|drum|flute]
+@levels 35-50
+[high level|veteran] bard, [twisting|swapping] songs [like it is nothing|like breathing]
+@levels 1-50
+@invites joke
+bards do everything, a little badly, but in tune
+@invites complaint
+bard envy: [druids|wardens] [get|have] [bigger|real] heals, [bards|we] [get|have] songs
+@invites boast
+a group with a bard [never walks|runs everywhere], [hibernia's|the realm's] [best|favorite] taxi
+
+# ---- Ranger
+@class Ranger
+@levels 1-19
+young ranger, [a short|a] bow and [a lot of|plenty of] [misses|practice]
+@levels 20-34
+hidden ranger with a recurve, waiting, quiet
+pathfinding buffs on a ranger [matter|help] more than [people|you] [think|expect]
+@levels 35-50
+[high level|veteran] ranger [arrows|shots] [from|at] [max|long] range [hit|land] [hard|true]
+@levels 1-50
+@invites joke
+rangers [love|hug] [nature|trees] until it bites back
+@invites
+ranger envy: [scouts get shields|hunters get pets] and [i get|rangers get] [a recurve|celtic dual]
+ranger solo is smooth, arrows first, blades when it arrives
+@invites boast
+hibernian rangers move quieter than any archer in the land
+
+# ---- Nightshade
+@class Nightshade
+@levels 1-19
+young nightshade, [hiding|sneaking] [more|a lot more] than [fighting|stabbing]
+@levels 20-34
+nightshade opener [lands|crits] and [the rest|everything else] [is|goes] [easy|smooth]
+ns solo is careful work, one add and i am done
+@levels 35-50
+[high level|veteran] nightshade, [critical strike|crit strike] [and|plus] a little patience, that is all
+@levels 1-50
+@invites joke
+nightshades [prefer|like] [the dark|the shadows], [daylight makes us nervous|torches are rude]
+@invites
+ns envy: rangers take the group spots
+nobody asks for a nightshade in pve, we stay hidden either way
+@invites boast
+hibernia's nightshades are the quietest blades in the land
+
+# ---- Eldritch
+@class Eldritch
+@levels 1-19
+young eldritch, [bolt|nuke], [run|med], [bolt|nuke] again
+@levels 20-34
+void eld damage hits [so hard|hard enough that] [the|my] tank [barely|hardly] gets a swing in
+mana eld pbaoe [is|feels] [risky|exciting] [but|and] [so much fun|worth it]
+@levels 35-50
+[high level|veteran] eldritch, [big|huge] [nukes|bolts] and [no|zero] [armor|defense]
+@levels 1-50
+@invites joke
+people say elds look [creepy|odd], we just stare [a lot|at things]
+@invites
+eld envy: enchanters have pets to hide behind, i get a robe
+solo eld is fine until an add shows up
+@invites boast
+hibernian eldritch nukes are the best anywhere
+
+# ---- Enchanter
+@class Enchanter
+@levels 1-19
+young enchanter, [the|my] pet [tanks|does the hitting] and i [buff|watch]
+@levels 20-34
+enchanter pbaoe [with a pet tanking|while my pet holds them] [is|feels] [unfair|silly]
+enchanter buffs make the group hit harder
+@levels 35-50
+high level enchanter, [the|my] pet [holds|tanks] and [everything|the pull] [dies|melts] [around me|near me]
+@levels 1-50
+@invites joke
+enchanters are [polite|charming], [the|our] pets [less so|not so much]
+@invites
+ench envy: elds nuke harder at range, but we have friends
+solo ench with a good pet feels cozy
+@invites boast
+hibernian enchanters carry more groups than people realize
+
+# ---- Mentalist
+@class Mentalist
+@levels 1-19
+young mentalist, a little healing, a little [mez|damage], [lots of|a lot of] [medding|resting]
+@levels 20-34
+mentalist mez [holds|keeps] the adds [down|locked] [nicely|without fuss]
+mentalist in a group: [backup|off] heals, [mez|crowd control] and [nukes|damage] when [it is quiet|things calm down]
+@levels 35-50
+high level mentalist mez holds most rooms with no fuss
+@levels 1-50
+@invites joke
+mentalists read minds, and [most|all] [monsters|mobs] [think about|want] [food|lunch]
+@invites complaint
+ment envy: [druids|wardens] get [bigger|real] heals, [elds|eldritch] get [bigger|real] [nukes|damage]
+@invites boast
+a mentalist does a bit of everything, hibernia needs that
+@invites
+solo mentalist is fine thanks to a mez and a self heal
+
+# ---- Animist
+@class Animist
+@levels 1-19
+young animist, [one|a single] [shroom|turret] and a lot of [hope|patience]
+@levels 20-34
+animist turrets [everywhere|all over the place], [nothing|the pull] [knows|sees] what hit it
+[arboreal|creeping|verdant] path animist [here|], still [learning|figuring out] the turrets
+@levels 35-50
+[high level|veteran] animist [turrets|shrooms] [shred|chew through] [anything|everything] that [walks up|comes close]
+@levels 1-50
+@invites joke
+animists [garden|farm] for a living, the garden [just|] [bites|fights back]
+@invites complaint
+animist envy: [enchanters|druids] [get|have] pets that [follow|walk], mine [stay put|grow in place]
+@invites boast
+no other class turns a clearing into a garden that bites
+@invites
+solo animist is mostly setting turrets before the pull
+
+# ---- Valewalker
+@class Valewalker
+@levels 1-19
+young valewalker, a big scythe and no idea what to do with it
+@levels 20-34
+scythe [swings|styles] on a [vw|valewalker] [hit hard|land big]
+a valewalker in cloth up front makes every healer nervous
+@levels 35-50
+[high level|veteran] valewalker, [buffs|arboreal buffs] and a [heavy|big] scythe, [strange|odd] but [fun|strong]
+@levels 1-50
+@invites joke
+valewalkers [carry|swing] a scythe [and|but] [nobody|no one] [knows|asks] why
+@invites complaint
+vw envy: [heroes|blademasters] [get|wear] real armor, [valewalkers|i] [get|wear] [cloth|robes]
+@invites boast
+valewalkers are the oddest fighters in hibernia and proud of it
+@invites
+solo vw is [better|stronger] than [you|people] [think|expect]
+
+# ======================================================================== More of each class
+@kind ambient
+@topic class
+@realm alb
+@class Armsman
+@levels 45-50
+after all these levels in plate i still flinch when a caster looks my way
+@levels 1-50
+@needs solo
+soloing on the armsman, one pull at a time and no rush
+@needs
+@class Paladin
+a paladin's hotbar is mostly chants and one lonely taunt
+@levels 1-14
+still picking which chant to keep up, health regen wins for now
+@levels 1-50
+@class Mercenary
+@needs solo
+out soloing on the merc, every pull is a coin toss
+@needs
+a merc with a good off hand weapon is a happy merc
+@class Reaver
+@invites joke
+people see a reaver and assume we are trouble, we usually are
+@invites
+@levels 40-50
+reaver at this level is all about picking the right moment to pulse
+@levels 1-50
+@class Scout
+@needs solo
+soloing on the scout, lots of walking backwards
+@needs
+scouts see the fight first and loot it last
+@class Infiltrator
+@needs solo
+out solo on the infil, nothing knows i am here
+@needs
+an infil's favorite sound is the second crit
+@class Minstrel
+@invites joke
+minstrels are the only fighters who bring a lute to a sword fight
+@invites
+@levels 40-50
+high level minstrel mez is the reason half my groups survive
+@levels 1-50
+@class Cleric
+@needs in_group
+keeping an eye on everyone's health, cleric habits
+@needs
+a cleric who smites is a cleric who gets yelled at, i do it anyway
+@class Friar
+a friar in the back row is a friar wasting a staff
+@levels 1-14
+first staff style on the friar and i felt unstoppable
+@levels 1-50
+@class Wizard
+@needs solo
+soloing on the wizard, quickcast on standby, nerves on standby too
+@needs
+every wizard has a story about the add that came from nowhere
+@class Theurgist
+@invites joke
+a theurg's pets are loud, messy and loyal for about thirty seconds
+@invites
+@needs solo
+out soloing on the theurg, pets doing the hard part
+@needs
+@class Sorcerer
+mez timers are the only clock a sorc really watches
+@levels 1-14
+still learning which mez lasts how long on the sorc
+@levels 1-50
+@class Cabalist
+a cabalist rebuilds the pet more often than anyone wants to know
+@needs solo
+soloing on the cab, dots ticking, nothing in a hurry
+@needs
+@class Necromancer
+a necro's real body never sees combat, and i like it that way
+@levels 40-50
+high level necro, the pet is scarier than anything we fight
+
+@kind ambient
+@topic class
+@realm mid
+@class Warrior
+@invites joke
+a warrior's shield has more dents than my bank has coins
+@invites
+@needs solo
+soloing on the warrior, slow kills but nothing scary
+@needs
+@class Thane
+a thane's favorite sound is thunder right before the hammer lands
+@levels 1-14
+first stormcalling spell on the thane, i used it on everything
+@levels 1-50
+@class Skald
+@invites joke
+a skald who forgets the speed song hears about it for days
+@invites
+@levels 40-50
+high level skald, the songs run on habit and the nukes still hit hard
+@levels 1-50
+@class Berserker
+a zerker counts health in seconds, not points
+@needs solo
+out soloing on the zerker, fast kills and faster rests
+@needs
+@class Savage
+a savage with full buffs is a beautiful, short lived thing
+@levels 40-50
+high level savage, the buffs are huge and so is the health bill
+@levels 1-50
+@class Hunter
+@needs solo
+soloing with the pet, the hunter's way
+@needs
+a hunter's pet gets more praise than the hunter, as it should
+@class Shadowblade
+shadowblades spend more time waiting than fighting and that is the job
+@needs solo
+out solo on the sb, stealthed and in no rush
+@needs
+@class Healer
+healers notice who stands in the wrong place, every time
+@levels 40-50
+high level healer, the big group heal is worth every point of power
+@levels 1-50
+@class Shaman
+shamans buff the group and get thanked by the tank, sometimes
+@needs solo
+soloing on the shaman, dots up and a heal ready
+@needs
+@class Runemaster
+a runemaster lives at max range and dies at melee range
+@levels 1-14
+first few levels on the rm, every bolt feels like a big deal
+@levels 1-50
+@class Spiritmaster
+spiritmasters never feel alone, the spirit sees to that
+@needs solo
+out solo with the spirit, it does the hard part
+@needs
+@class Bonedancer
+@invites joke
+bonedancers clatter, there is no sneaking up on anything
+@invites
+@levels 40-50
+high level bd, the army does the fighting and i do the counting
+
+@kind ambient
+@topic class
+@realm hib
+@class Hero
+a hero's shield has seen more fights than most of hibernia
+@needs solo
+soloing on the hero, slow and steady
+@needs
+@class Champion
+champions make everyone else look good, that is the whole point
+@levels 40-50
+high level champ, the debuffs land and the group feels unstoppable
+@levels 1-50
+@class Blademaster
+@invites joke
+a blademaster without a second weapon is just sad
+@invites
+@needs solo
+soloing on the bm, both blades busy
+@needs
+@class Warden
+@invites complaint
+wardens get yelled at for not healing and for not tanking, sometimes at once
+@invites
+@levels 1-14
+first heal on the warden saved my own life, felt good
+@levels 1-50
+@class Druid
+@needs in_group
+keeping the group healed and the pet out of the way, druid life
+@needs
+a druid's pet is the only friend who never complains
+@class Bard
+@invites joke
+a bard with no group is just a speed song and a sad face
+@invites
+@levels 40-50
+high level bard, the mez is the real reason groups want me
+@levels 1-50
+@class Ranger
+@needs solo
+soloing on the ranger, arrows and patience
+@needs
+@invites joke
+rangers notice tracks nobody else sees, or we pretend to
+@invites
+@class Nightshade
+a nightshade's best friend is a slow moving target
+@levels 40-50
+high level ns, the opener is everything
+@levels 1-50
+@class Eldritch
+an eldritch counts power, not health. health is somebody else's job
+@needs solo
+out solo on the eld, pulling one at a time
+@needs
+@class Enchanter
+an enchanter's buffs are the gift nobody remembers to thank
+@levels 1-14
+early enchanter levels are mostly nuking and hoping
+@levels 1-50
+@class Mentalist
+@invites complaint
+mentalists get blamed when the mez breaks and forgotten when it holds
+@invites
+@needs solo
+soloing on the ment, mez one and kill the other
+@needs
+@class Animist
+@invites joke
+animists plant first and ask questions later
+@invites
+@needs solo
+out solo on the animist, turrets planted and waiting
+@needs
+@class Valewalker
+valewalkers get looks in town, the scythe does that
+@levels 40-50
+high level vw, the scythe finally feels right
+
+# ======================================================================== Roles, any realm
+@kind ambient
+@topic class
+@needs is_healer
+[healing|being the healer] means [watching|staring at] health bars more than the scenery
+nobody notices a good heal, [everyone remembers|they all remember] a [late|missed] one
+@invites chat
+healer tip: [stand back|stay back], [heal early|heal before they ask], [never|dont] pull
+@invites
+my power bar is the real tank and nobody guards it
+a healer who dies last did their job, a healer who dies first stood too close
+i like healing, it is calm right up until a pull goes wrong
+@needs is_tank
+tanking is simple: [face it|stand in front], [hold it|keep it], [trust the healer|dont run]
+@invites boast
+[nothing|no feeling] beats [holding|keeping] three adds off the [healer|casters]
+@invites
+a tank learns to read the healer's mood by how fast the heals come
+@invites complaint
+repair bills are a tank's only real enemy
+@invites joke
+tank rule: taunt first, apologize later
+@invites
+@needs is_caster
+casting from the back is [great|lovely] until [something|an add] [turns around|looks at me]
+a robe stops nothing, [casters|we casters] learn that [early|fast|the hard way]
+@invites joke
+half of caster life is medding and the other half is running
+@invites
+the trick to being a caster is waiting one more second before the first nuke
+oom is the natural state of a caster, i have accepted it
+@needs is_support
+@invites complaint
+[buffs|speed|mez] on, [nobody|no one] said thanks, [as usual|as always]
+@invites
+[the best|a good] support player is the one [nobody|no one] [notices|thinks about]
+support classes do the quiet work and nobody tells stories about it
+i play support because someone has to, and honestly because i like it

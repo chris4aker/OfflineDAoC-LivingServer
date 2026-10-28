@@ -1,0 +1,923 @@
+# Everyday MMO life, any realm: leveling moods, loot luck, deaths, mob habits, grouping manners, crafting and
+# money, small jokes, boasts and gripes, the hour of the day, new players and old hands, personality types and
+# what a bot is doing right now. No place names. New writing for Offline DAoC (see docs/bot-voices).
+
+# ---------------- Leveling moods (still leveling) ----------------
+@kind ambient
+@topic leveling
+@who *
+@levels 1-49
+[ugh|man|sigh], [this level|this one] is [dragging|crawling|taking ages]
+some levels fly by and some just sit there staring at you
+[slow and steady|one bubble at a time|kill, sit, kill, sit], thats how levels get done
+every few levels the game finds a new way to humble me
+[i|] never know whether to spend my spec points now or [save them|sit on them] for later
+the level you dread is never the one that actually drags
+[i keep|keep] telling myself one more bubble and then i stop. [it never works|never works]
+spec points burning a hole in my pocket
+planned my whole spec on a scrap of paper and already changed it twice
+leveled faster once i stopped trying to be clever about it
+the best xp is always wherever you are not
+trained a new style and now i want to use it on everything
+[leveling|the grind] is [kind of relaxing|weirdly soothing] once you stop watching the bar
+[nothing beats|nothing like] that first fight after training [new spells|a new style|new skills]
+the trick to leveling is not looking at the xp bar. i look at it constantly
+some nights the xp just flows and you dont question it
+[i|] used to rush every level, now i kind of [enjoy|like] the slow ones
+@invites joke
+[pretty sure|i swear] someone adds bubbles to my bar when im not looking
+[my xp bar|the xp bar] and i [are not on speaking terms|have a complicated relationship]
+my xp bar moves like it is stuck in mud
+@invites ask
+{q} how is everyones leveling going?
+anyone else think the middle levels are the best part of the game?
+what do you all think, spec deep early or spread out a bit?
+@invites
+@levels 15-25
+[the mid teens|level fifteen or so] is where everything [suddenly|] starts wanting to kill you
+@levels 20-49
+[the twenties|the 20s] are where the game [starts|really starts] to feel like a game
+the first time your class clicks is the best moment in the game
+@levels 30-49
+the thirties are long, but at least you finally feel strong
+[around thirty|somewhere in the thirties] i stopped counting how long each level takes
+@levels 44-49
+so close to 50 i can almost touch it, and yet
+[every|each] level past 45 feels like [two|three] of the old ones
+@levels 50-50
+nothing left to level, so now i level my alts in my head
+[being|hitting] 50 is great until you realise the xp bar was half the fun
+[i|] kind of miss having a reason to [watch|check] the xp bar
+
+# ---------------- Loot luck ----------------
+@kind ambient
+@topic loot
+@who *
+[finally|at last] got a drop worth [selling|keeping], my luck is turning
+[three hours|a whole session] of [rings i cant use|cloth caps|junk] and then a [nice|decent] weapon. thats how it goes
+the loot table and i have a long running feud
+some nights mobs carry nothing but [rusty junk|broken bits|bones]
+every time i give up on a camp, the next guy gets the drop
+[heh|well|ha], [another|got a] [shiny|fancy] [cloak|ring|belt] for [the wrong class|a class i dont play]
+random drops with silly names are [half the fun|the best part] of the game
+the [named|named mob] [dropped|coughed up] [two copper|a single copper|a bent nail]. [thanks for nothing|truly generous]
+people say luck isnt real but they have never watched me loot
+i dont even read drops anymore, i just sell whatever has the biggest number
+the best drop of my life was off a mob i almost [skipped|didnt bother with]
+found a weapon way too high for me, so it sits in the bank looking pretty
+loot is like weather, you complain about it and nothing changes
+the mob always drops the good stuff right after you buy the same thing from a merchant
+i [carry|keep] a [lucky|favorite] [ring|charm|pebble] in my bags. it does nothing. [i keep it anyway|still not selling it]
+[a good drop|good loot] [is|feels] [twice as sweet|so much better] when [the whole group|everyone] cheers
+when the drop finally comes it never looks as good as you imagined
+@invites joke
+[pretty sure|i think|i swear] the loot gods [hate|have it in for] [me|my whole family]
+if i had a gold for every useless cloak i looted, i could buy a useful one
+@invites boast
+[looted|got] something [that made my night|worth the whole camp], not saying what
+[my|] luck has been [silly|unreal] lately, [two|three] good drops in a row
+@invites ask_anyone
+anyone else keep loot just because the name sounds cool?
+@invites ask
+{q} whats the best thing you ever looted?
+@invites complaint
+[ugh|sigh], [another|yet another] [pair of|set of] [boots|gloves] i cant wear
+[no drops|nothing good] [for ages|in hours], the mobs are [broke|poorer than me]
+
+# ---------------- Deaths in general ----------------
+@kind ambient
+@topic death
+@who *
+[dying|death] costs so much time in this game, i try really hard not to
+always pray at your grave, every bit of xp counts
+[the walk back|the run back] [after dying|from the bind stone] is where i [think about my choices|reflect on my life]
+[my bind point|my bind] is always in the wrong place when i die
+i bind close to my camp now, learned that one the hard way
+nothing humbles you like dying to something [blue|green]
+one tip for new folks: [bind|always bind] before [you go anywhere new|heading out]
+dying is just the game telling you to take a break
+the scariest words in the game: it has friends
+rez sickness is the game telling you to sit down and think
+every death teaches you something, mostly to look behind you
+[i|] can tell how my session went by how many gravestones i left
+@invites joke
+i have a gravestone in every zone at this point
+[the|my] bind stone [sees|has seen] me more than [my friends do|my own family does]
+if armor got heavier every time i died i could not move
+@levels 11-50
+@invites complaint
+[paid|went to] the healer [for my con|to buy my con back] [again|], my [wallet|purse] weeps
+con loss is the worst part, the walk back is just sad
+@invites
+@levels 1-50
+@invites ask
+{q} what is the dumbest way you ever died?
+
+# ---------------- Just died ----------------
+@kind ambient
+@topic death
+@who *
+@needs just_died
+[well|ugh|heh], [that|this] [could have gone better|did not go to plan]
+[and|] down i go. [walking back|off to pray at my grave]
+died. [i blame|blaming] [lag|the pull|my own greed]
+just found out what the floor tastes like
+dead again. at least the view from down here is nice
+note to self: read the con before you swing
+releasing. if anyone finds my dignity, it is on the ground back there
+[that|it] hit [way|a lot] harder than it looked
+[i|] really thought i had that one
+back to the bind stone, [round two soon|i will get it next time|lesson learned]
+@invites joke
+i have died so much [the|my] gravestones are forming a little [village|town]
+@needs just_died,xp_high
+died with {bubbles} bubbles, [so close|that stings|of course]
+@needs just_died,xp_low
+died right at the start of a level, at least there was not much to lose
+@needs just_died,in_group
+[sorry all|sorry guys|oops], [my bad|that one was on me]
+@needs just_died,solo
+soloing has [one|a] downside, nobody to [rez you|pick you up]
+@needs just_died,in_dungeon
+[dying|death] down here means a long walk back in
+@needs just_died,!day
+[this is not|this isnt|not] how i wanted [tonight|my night] to go
+
+# ---------------- Mob habits ----------------
+@kind ambient
+@topic mobs
+@who *
+[the runners|mobs that run] are the worst, [they always|always] come back with friends
+nothing pulls cleanly when you need it to
+there is always one mob that paths right through camp at the worst time
+[casters|caster mobs] [first|go first], always. learned that one the hard way
+the con color says blue, the mob says otherwise
+[funny how|] the [small|tiny] ones are always the meanest
+mobs that evade everything should be against the law
+a purple con walking past [camp|the group] makes everyone go very quiet
+if a mob looks friendly, it is lying
+pet classes make every pull look easy, its not fair
+[i|] once saw a mob chase someone [halfway across|across] a whole zone
+the respawn timer always knows when you need a break, and ignores you
+every camp has that one mob that hits like a cart full of rocks
+animals are easy. its the ones with swords and spells you watch out for
+nothing scarier than a caster mob that roots you and keeps nuking
+[i always|always] check for [adds|wanderers|patrols] before [i pull|pulling] now
+mobs never seem to have the gold they should for all that armor they wear
+[mobs that link|linked mobs] are [why|the reason] i [check|look] twice before every pull
+undead never flee, which is the one nice thing about them
+you can always tell a new player, they chase runners into the next camp
+some mobs fight like they have a grudge against your whole family
+@invites joke
+[i think|pretty sure] [the mobs|mobs] [talk to each other|have a meeting] about me when i log off
+the mobs dont respawn, they just come back angrier
+@invites ask_anyone
+anyone else think undead hit harder than they should?
+@invites ask
+{q} what mob do you hate most in the whole game?
+
+# ---------------- Grouping manners ----------------
+@kind ambient
+@topic grouping
+@who *
+good groups say hello when you join, it costs nothing
+the best groups [i have had|ive been in] [never needed|didnt need] a leader, everyone just knew their job
+golden rule: dont break mezz
+[please|] dont pull while the healer is [oom|out of power], [its|it is] that simple
+a group that says gz on every ding is a group i stay in
+asking before you loot is [just good manners|basic manners|common courtesy]
+the puller is the most underrated job in any group
+[med breaks|power breaks] are part of the game, [let the casters sit|nobody should rush the casters]
+i will always wait for a groupmate who has to [go afk|run off] for a minute
+groups that split coin and loot fair are worth their weight in gold
+you can tell a good tank by how quiet the healer is
+i judge a group by how it handles a wipe
+if the healer says sit, you sit
+nobody remembers the xp, everyone remembers the group
+[say|always say] bye before you leave a group, [its|thats] just decent
+soloing is fine, but grouping is where the stories come from
+[nothing|there is nothing] worse than a pickup group where nobody talks
+pickup groups are a gamble, but sometimes you win big
+the best groups tell you whats going on before it goes wrong
+[assisting|/assist] is the most important button [nobody uses|people forget]
+[a good|one good] [puller|pull] can make or break the whole group
+[bring|carry] your own [food|potions|arrows] to a group, nobody likes a leech
+the group that wipes together laughs together, eventually
+@invites ask
+{q} what do you all think of groups that kick people right before a ding?
+@invites ask_anyone
+anyone else feel like a good group is rarer than a good drop?
+@invites ask_opinion
+whats the best group you ever had, what made it work?
+@invites complaint
+[people|folks] who [loot|grab] everything [without asking|and say nothing] [drive me mad|are the worst]
+[nobody|no one] [reads|watches] the healer [anymore|these days], [we|i] see it all the time
+
+# ---------------- Crafting talk ----------------
+@kind ambient
+@topic crafting
+@who *
+[crafting|the craft grind] is slower than leveling and somehow i still love it
+a masterpiece [roll|craft] is [the best feeling in the game|better than any drop]
+[94|95|96] percent again, the forge is teasing me
+[i keep|keep] making things nobody [needs|wants], but [my skill goes up|the skill goes up], so
+spellcrafting eats [every copper|all the money] i make
+alchemy is just cooking with more smoke
+fletchers never get enough credit
+every crafter has a pile of failed attempts in the bank
+crafting goes faster with good company in chat
+buying materials in small batches is how you go broke slowly
+[my bags are|half my bags are] full of practice pieces nobody will buy
+the merchant pays almost nothing for practice pieces, it hurts
+crafting is my way of relaxing after a bad night of dying
+it takes a silly amount of metal to make one good sword
+one day i will craft my whole suit myself. one day
+overcharging is a gamble, and i always lose
+[dye|a good dye] [sometimes costs|can cost] more than the armor
+i craft, therefore i am broke
+[crafters|good crafters] keep the whole realm [dressed|armed|going]
+tailors never get thanked until the leather runs out
+@invites ask_anyone
+anyone else find crafting oddly relaxing?
+@invites ask_opinion
+{q} which craft do you think is the most worth it?
+@invites complaint
+[ugh|sigh], [failed|botched] [two|three] in a row, [the forge hates me|my hands are cursed]
+@invites boast
+[made|crafted] [a masterpiece|my first masterpiece], [just saying|framing it]
+
+# ---------------- Money ----------------
+@kind ambient
+@topic money
+@who *
+[coin|money] leaves my pockets faster than it comes in
+[spent|blew] my last gold on [armor|a new weapon|a dye], [worth it|no regrets|maybe a mistake]
+i have exactly enough money to be worried
+platinum is a myth invented by crafters
+selling loot at a natural break is the best feeling, bags empty, pockets full
+my bank is worth more than my character
+a gold here, a gold there, it adds up. slowly. very slowly
+merchants buy for pennies and sell it back for ten times more, nice work if you can get it
+never pay full price for something a crafter can make
+rich people in this game must never die
+i keep my money in the bank so i cant spend it on silly things
+dye merchants have gotten more of my coin than any crafter
+[i|] count my silver after every sale like a [dragon|miser]
+the day i stopped buying merchant armor my wallet thanked me
+being broke at {level} is [a rite of passage|a tradition|practically required]
+@levels 1-19
+[my pockets are|my purse is] so light [i could float away|it echoes]
+@levels 20-50
+the first time i saw a platinum coin i just stared at it
+@levels 1-50
+@invites joke
+my money is like my power bar, always empty when i need it
+@invites complaint
+[everything|all the good stuff] costs more than i [have|make]
+@invites ask_advice
+{q} how do you all make money without crafting?
+
+# ---------------- Small jokes and banter ----------------
+@kind ambient
+@topic banter
+@who *
+@invites joke
+if i had a copper for every time i pulled two, i could buy a castle
+my character has run more miles than i ever will
+the route horses never get tired. i want whatever they eat
+trainers teach for free and still dress better than me
+the merchant looked at my loot and sighed
+someday i will actually read a quest text all the way through
+i dont get lost, i explore aggressively
+my bags hold more rocks than a quarry
+some people collect stamps, i collect gravestones
+the guards have seen things. terrible things. mostly me falling off ledges
+my trainer pretends not to know me
+i named my sword. it doesnt answer
+every npc in this game has a sadder story than me
+the healer npc greets me by name now, thats not a good sign
+im not lost, the map is wrong
+[they should|someone should] make sitting a skill, i would be [grandmaster|legendary] by now
+[i swear|] [that|the] guard [winked|nodded] at me
+[the|that] horse ride took so long i [made a sandwich|grew a beard|aged a year]
+if [walking|running] into walls gave xp i would have [leveled twice|three alts at 50] by now
+i like to think the mobs have little families waiting for them. then i loot them
+the bind stone and i are on first name terms
+i once spent ten minutes fighting a mob that was grey to me. for honor
+[pretty sure|i think] my keyboard has a dent where the sit key is
+@invites ask
+{q} if you could be any mob in the game, which one?
+{q} what would your character do if they werent adventuring?
+@invites ask_anyone
+anyone else talk to their character like a pet?
+
+# ---------------- Boasts ----------------
+@kind ambient
+@topic boast
+@who *
+@invites boast
+solo pulled three and walked away, still shaking
+[no deaths|not a single death] [this session|so far], [new record|a personal best]
+made it across a whole zone without aggroing anything, im basically a ghost
+pulled a perfect single out of a pack of five, someone frame that
+[got|finally have] my spec exactly where i want it
+[two|three] levels [this week|in a week], not bad for someone with a job
+i can name every mob in a zone by the way it walks
+[outran|outlasted] a [runner|whole add] [on foot|with no snare], [still proud|proud of that one]
+never once broke mezz, ask anyone
+[kept|] every pull clean [all session|so far], [not bragging|just saying]
+best pull of my life was a lucky one. still counts
+my bank is organized better than most guilds
+
+# ---------------- Mild gripes ----------------
+@kind ambient
+@topic gripe
+@who *
+@invites complaint
+my hands hurt from all this clicking
+lag spike right in the middle of a pull, of course
+why is every quest item at the bottom of a hill full of things
+running out of endurance mid fight is the worst
+the walk from the bind to anywhere is too long
+whoever designed these hills hated knees
+nothing in my bags sells for more than a few silver
+got lagged off a ledge. a ledge
+stuck on a rock again. the rocks in this game are sticky
+[ugh|man], [my|the] [buffs|buff timers] always [run out|drop] [mid fight|at the worst time]
+[i hate|nothing worse than] [three|four] resists in a row
+[pathing|mob pathing] [is|has been] [weird|silly] lately, [stuff|things] walking through walls
+my keyboard needs a new sit key, the old one is worn out
+i swear quest npcs move when you are not looking
+@class Scout,Hunter,Ranger
+[ugh|again|of course], [out of arrows|my quiver is empty] [mid fight|at the worst time]
+
+# ---------------- Late at night ----------------
+@kind ambient
+@topic latenight
+@who *
+@needs night
+[still up|up way too late], [one more|just one more] [pull|camp|level] and then sleep
+the realm gets so quiet at this hour
+best time to camp is when everyone else is asleep
+if i stop now i sleep. if i keep going i level. hard choice
+my eyes are closing but [my xp bar|the bar] is [so close|right there]
+i should be asleep, but here we are
+nothing like a quiet realm at this hour, every camp is free
+[work|class] in a few hours and im still [here|playing]
+[wee hours|small hours] [crew|club], who else is still up?
+the night crowd is the best crowd, fewer people, more talk
+at this hour every shadow looks like an add
+[faction chat|chat] [goes|gets] so quiet this late
+[im|i am] [running on|living on] [coffee|tea] and stubbornness at this point
+@needs night,outdoors
+the moon in game is [prettier|nicer] than the real one [tonight|]
+@needs night,in_group
+[late night|night shift] groups are [the best|my favorite], [nobody|no one] [rushes|is in a hurry]
+
+# ---------------- Evening ----------------
+@kind ambient
+@topic evening
+@who *
+@needs evening
+dinner done, [time to level|back to the grind|back to business]
+[the|] evening crowd is [rolling|coming] in, [chat|faction] is picking up
+long day at work, [this|a few kills] is exactly what i needed
+the best part of the day is logging in after it
+[evenings|nights] like this are why i play
+[finally|] home and logged in, [lets see|time to see] what the [evening|night] brings
+@invites ask_howareyou
+evening all, how is everyone?
+
+# ---------------- Daytime ----------------
+@kind ambient
+@topic daytime
+@who *
+@needs day
+[lunch break|on my lunch break], [sneaking in|squeezing in] a few kills
+playing in the daytime feels like skipping school
+the realm is so empty during the day, i love it
+[sick day|day off], so [the game|leveling] it is
+daylight hours, quiet camps, cant complain
+[i|] should be [doing chores|mowing the lawn|running errands], [instead|but instead] here i am
+
+# ---------------- Weekends and real life ----------------
+@kind ambient
+@topic reallife
+@who *
+weekends are for long camps and short sleeps
+saturday camps are the best camps, everyone is relaxed
+the week drags, the game doesnt
+[my|the] [cat|dog] keeps sitting on my keyboard, if i type nonsense thats why
+@invites none
+[brb|back in a bit], [doorbell|phone|kettle]
+[brb|back soon], [getting a drink|grabbing a snack]
+@invites
+my [mom|wife|roommate] says i play this too much. [might be right|not wrong]
+the power went out [earlier|last night] and i nearly cried
+@invites ask
+{q} how is everyone doing?
+
+# ---------------- New players ----------------
+@kind ambient
+@topic newbie
+@who *
+@needs newbie
+[i|] keep stopping just to look at [the sky|the trees|everything]
+everything here wants to eat me and i love it
+the first time a mob ran away from me i felt like a hero
+i bought every pretty thing the merchant had and now im broke
+my first level up sound gave me chills
+the older players make it look so easy
+dont tell anyone but i still read every quest text
+no idea what im doing, having a great time anyway
+found out the hard way that swimming in armor is slow
+someone gave me a few silver for nothing, people here are so nice
+[i|] thought that [deer|bear|boar] looked friendly. it was not
+cant wait to see what my class can do later on
+i keep hitting the wrong key and waving at mobs
+the first big mob i saw made me hide behind a tree
+every time i level i run back to the trainer like its a birthday
+even the merchants are exciting when everything is new
+[wow|whoa], so [that|this] is what a named mob looks like
+just [figured out|noticed] the [map|compass] shows which way im facing
+my backpack is full of things i dont understand
+[i|] still [get|feel] [excited|giddy] every time [i loot|something drops]
+@invites ask_anyone
+anyone else still figuring out [the buttons|all the menus|what everything does]?
+@invites ask
+{q} what was everyones first character?
+does it ever stop feeling this big?
+@invites
+@needs newbie,in_capital
+the capital is so big i keep walking in circles
+@needs newbie,outdoors
+[i|] [keep stopping|stopped] to watch the [sunset|clouds|water]
+@needs newbie,in_group
+my first group! [tell me if|let me know if] i do something wrong
+@needs newbie,just_leveled
+leveled! does that [sound|little tune] ever get old?
+
+# ---------------- Low levels ----------------
+@kind ambient
+@topic lowlevel
+@who *
+@levels 1-19
+[every|each] level [feels like|is] a [little party|big deal] at this point
+[still|] learning which [colors|cons] to [fight|avoid], [slowly|the hard way]
+the low levels go so fast, i barely know my spells
+my armor is a patchwork of [whatever dropped|random pieces], i look like a scarecrow
+gray cons everywhere, time to move on soon
+[heard|someone told me] the teens are where it [slows down|gets hard]. [gulp|oh no]
+
+# ---------------- Old hands ----------------
+@kind ambient
+@topic veteran
+@who *
+@levels 40-50
+i remember when [ten|twenty] felt like a big deal
+my first character never made it past the teens, i still think about [him|her|them]
+back when i started i thought red cons were a myth
+[funny how|] the camps i [feared|was scared of] at 20 are [all|] grey now
+the old days of [walking|running] everywhere because i didnt know about the horses
+i remember my first death like it was yesterday. ran straight into a red con
+these days i can do a camp half asleep
+watching new players run around makes me smile
+the game felt so much bigger when i was level ten
+i have spent more hours here than i want to count
+every zone has a memory for me now
+first time i hit 40 i just sat by the trainer for a while
+[i used to|used to] panic at every add, now i [barely look up|just sigh]
+[i|] still [hear|remember] the sound of my first [ding|level up]
+[nobody|no one] warned me how [attached|fond] you get to [a character|your first character]
+[i|] learned [every|each] class by dying to it
+old habit: i still check behind me before every pull
+my first group leader taught me more than any guide ever did
+@invites ask
+{q} remember your first ever group?
+@levels 50-50
+fifty and still finding new things to do
+the [best|funniest] part about 50 is [helping|watching] the new folks find their feet
+
+# ---------------- Personality: Leveler ----------------
+@kind ambient
+@topic leveler
+@who Leveler
+@levels 1-49
+[sitting|resting] [is|feels like] wasted time, i hate sitting
+[every|each] minute not killing is a minute not leveling
+i dont stop for scenery, the scenery can wait
+i log out with a fresh ding or not at all
+[the|my] [plan|goal] is [simple|easy]: [kill|pull], [sit|rest], repeat
+tracking my xp per hour on a notepad like an accountant
+the fastest way to 50 is to never stop moving
+@invites boast
+[two|three] levels since [dinner|lunch], [anyone beat that|not bad]
+
+# ---------------- Personality: Crafter ----------------
+@kind ambient
+@topic crafter
+@who Crafter
+@levels 1-50
+i spend more time at the forge than in the field
+my favorite mobs are the ones that drop [materials|anything i can craft with]
+spent my whole session crafting and i regret nothing
+i look at every piece of armor and think how i would have made it better
+[crafting|the forge] is [where i unwind|my happy place]
+my skill went up [a point|two points] and i celebrated like [a ding|i had leveled]
+every crafter knows the exact number of bars in their bank
+
+# ---------------- Personality: Socialite ----------------
+@kind ambient
+@topic socialite
+@who Socialite
+@levels 1-50
+i log in mostly for the chat, the xp is a bonus
+[love|i love] seeing the same names in chat every night
+if you are new, say hi, we dont bite. mostly
+the best part of this game is the people
+[a|one] [good|long] chat [in faction|with you lot] is worth more than a level
+i would rather wipe with friends than solo with strangers
+i remember everyones name, [just not|but never] their [spec|level]
+@invites ask_howareyou
+how is everyone [doing|getting on]? [quiet|slow] in here
+@invites ask
+{q} tell me something good that happened to you lately
+
+# ---------------- Personality: Explorer ----------------
+@kind ambient
+@topic explorer
+@who Explorer
+@levels 1-50
+there is always another hill to look over
+found a path i have never seen before, no idea where it goes
+i like the spots nobody camps, they feel secret
+i have walked off every cliff in the realm, for science
+the [view|sunrise] from the top of [a high ridge|a big hill] is worth [the climb|every death]
+maps are for [people|folks] who [dont like|hate] surprises
+i take the long way everywhere on purpose
+@needs outdoors
+[i|] [wandered|walked] off the road in {zone} and found [ruins|old stones|a little pond]
+
+# ---------------- Personality: Daredevil ----------------
+@kind ambient
+@topic daredevil
+@who Daredevil
+@levels 1-50
+red con. sounds like a challenge
+if it isnt a little scary, i get bored
+pulled something way too big, regret nothing
+i fight [best|better] with [no|zero] power and [half|a sliver of] health
+my healer has stopped [asking|wondering] what i was thinking
+[who needs|why bother with] a [plan|safe pull] when you have [courage|a sword]
+@invites boast
+[soloed|beat] [an orange|a red] con [with no|without] potions, [ask me how|still buzzing]
+
+# ---------------- Personality: NoLifer ----------------
+@kind ambient
+@topic nolifer
+@who NoLifer
+@levels 1-50
+how long have i been on? dont answer that
+my chair has a dent in my exact shape
+real life called, i let it go to the answering machine
+i have not seen the [sun|outside] in [days|a while]
+i [know|could tell you] the respawn timer on every camp [i have|ive] ever [used|sat at]
+one more hour, i say, every hour
+my [friends|family] [think|say] i live here now. [they are not wrong|fair enough]
+@needs night
+the [sun|birds] will be up [soon|in an hour] and i have not moved
+
+# ---------------- At camp ----------------
+@kind ambient
+@topic camp
+@who *
+@needs at_camp
+pull, kill, sit. pull, kill, sit. [i love|love] this camp
+the respawn here is [just right|perfect], barely time to sit
+[i have|ive] been at this camp [so long|long enough] the mobs know my name
+[good|nice] camp, [good|steady] xp, [no|zero] drama
+[camp is|this camp is] [steady|nice and steady], [no complaints|cant complain]
+this spot has a nice rhythm once you settle in
+{monsters} respawning right on time, [no complaints here|i could do this all day]
+[nobody|no one] [else|] [around|here], [the camp is|the whole camp is] mine
+[i|] [moved|shifted] [a few steps|a bit] [over|back] and the pulls got so much [easier|cleaner]
+every camp gets boring eventually, this one is close
+@needs at_camp,!day
+[this camp|this spot] is [slow|quiet|dead] tonight
+
+# ---------------- In a dungeon ----------------
+@kind ambient
+@topic dungeon
+@who *
+@needs in_dungeon
+[its|it is] so dark down here, [i keep|keep] [jumping at shadows|seeing things]
+the air down here feels heavy, if that makes sense
+every corner in here has something waiting
+[i|] lost track of how long ive been down here
+dungeon xp is great, dungeon walks back are not
+the echoes down here make every fight sound huge
+careful pulls in here, things link like crazy
+[i|] never trust [corners|doorways] [in here|down here]
+[i|] [miss|could use] [the sun|some daylight] [already|right about now]
+{zone} [is|feels] [busier|quieter] than i expected
+
+# ---------------- In town ----------------
+@kind ambient
+@topic town
+@who *
+@needs in_town
+back in town for a breather
+nothing like the noise of town after a long camp
+[just|] [standing|hanging around] in town [people watching|watching folks go by], [best|cheapest] show in the realm
+town always [smells like fresh bread|feels like home] after [a long camp|a few hours out]
+the [merchants|vendors] [here|in town] never [seem|look] [happy|pleased] to see me
+@needs in_capital
+{capital} is [always|] [packed|buzzing], [i like the noise|so much to look at]
+[i|] always get a little lost in {capital}, [no matter how often|however many times] i come
+
+# ---------------- Travelling ----------------
+@kind ambient
+@topic travel
+@who *
+@needs traveling
+[on the road|travelling] again, [wake me|tell me] when [i get there|im there]
+long trip ahead, [good time to|time to] [catch up on chat|stretch my legs]
+[i|] love [the trip|travelling] between [zones|camps], [a nice|a good] break from fighting
+if anyone needs me i am on the road for a while
+on my way to {destination}, [long ride|long walk|a fair trip] ahead
+the road always [feels|seems] longer [the second time|on the way back]
+[nothing beats|i love] watching the [hills|trees] go by
+@needs traveling,night
+the roads always feel longer in the dark
+
+# ---------------- Solo ----------------
+@kind ambient
+@topic solo
+@who *
+@needs solo
+soloing is peaceful, nobody to blame but me
+[solo|on my own] for [now|a while], [slow|slower] but [relaxing|quiet]
+solo xp is slow, but at least i dont share the loot
+[just me|me] and [my thoughts|the mobs], [nice|peaceful] for a change
+i [kind of|] [like|enjoy] the quiet [now and then|once in a while]
+@invites ask_anyone
+anyone else talk to themselves when they solo?
+
+# ---------------- In a group ----------------
+@kind ambient
+@topic group
+@who *
+@needs in_group
+this group is [great|solid|a good one], [glad i|happy i] [joined|stuck around]
+[good|nice] [pulls|teamwork] everyone, [this is|thats] how it should be
+group is [running|moving] smooth, [love it|cant complain]
+[a|] [quiet|chatty] group, i like it
+nobody has died yet, lets keep it that way
+having a [real|proper] healer makes [such a|all the] difference
+[this group|good company] makes the time [fly|go so fast]
+the loot is fine, the company is better
+
+# ---------------- Bags full ----------------
+@kind ambient
+@topic bags
+@who *
+@needs bag_full
+[bags are|my bags are] [full|stuffed|bursting], [time to sell|need a merchant|cant carry another thing]
+full bags and a long walk to the merchant, story of my life
+had to leave a drop on the ground [because|cause] my bags are full, [painful|it hurt]
+i carry too much junk, i know, i know
+my pack weighs more than [i do|my horse]
+
+# ---------------- Just leveled ----------------
+@kind ambient
+@topic ding
+@who *
+@needs just_leveled
+[dinged|leveled]! [another one|new level], [feels good|love that sound]
+{level}, [at last|finally], [off to the trainer|time to see the trainer]
+new level, new spec points, [no idea|no clue] where to put them
+leveled, and the next one already looks [far|miles away]
+[that|the] level up sound never gets old
+{level} now, [feeling|feel] [stronger|a bit tougher] already
+@needs just_leveled,in_group
+[ty|thanks] [all|group|everyone], [that|this] [ding|level] [was a team effort|is yours too]
+@needs just_leveled,solo
+[dinged|leveled] solo, [the hard way|slowly but surely]
+
+# ---------------- How full the bar is ----------------
+@kind ambient
+@topic xp
+@who *
+@needs xp_high
+{bubbles} bubbles, [one more pull|a couple more kills|a few more pulls] and i ding
+[almost|nearly] there, {bubbles} bubbles and counting
+so close to leveling i can [hear the trainer|smell it]
+@needs xp_mid
+{bubbles} bubbles in, the middle of a level is the [loneliest|slowest] place
+[sitting at|on] {bubbles} bubbles, [chipping away|plugging away]
+@needs xp_low
+fresh bar, [long|a long] way to go
+[barely|hardly] a bubble into this level, [deep breath|here we go]
+
+# ---------------- Roles ----------------
+@kind ambient
+@topic roles
+@who *
+@needs is_healer
+healing is [a lot of|mostly] watching health bars and [praying|hoping]
+[a|one] good [tank|puller] makes my job so easy
+healers see everything, we just dont say anything
+[a|the] healer never gets to [watch|see] the fight, just the [bars|health bars]
+@needs is_tank
+[holding|keeping] aggro is an art, nobody notices until it goes wrong
+being the tank means [getting hit|taking hits] for a living
+@needs is_caster
+casters spend half their life sitting, its the price of power
+there is nothing like a [big|clean] nuke landing [right before|just as] the mob reaches you
+@needs is_support
+support classes [hold|keep] groups together and [nobody|no one] says thanks
+
+# ---------------- More of the same moods, in more words ----------------
+@kind ambient
+@topic leveling
+@who *
+@levels 1-49
+[nothing|there is nothing] like [a full bubble|a big chunk of xp] off one [kill|pull]
+[a|one] [good|solid] [hour|session] can be worth [half a level|a whole level|more than a day of soloing]
+i [always|] [say|tell myself] ill stop at the next [ding|level], [and then i dont|it never happens]
+
+@kind ambient
+@topic loot
+@who *
+[the|that] [moment|second] a [rare|good] drop hits the ground [is pure magic|feels like christmas|makes the whole camp worth it]
+[i|] [still|] [check|look at] every [drop|piece of loot] twice, [just in case|you never know]
+
+@kind ambient
+@topic death
+@who *
+[i have|ive] [had|done] [enough|so much] practice walking back from [the bind|my bind] that i [know every rock|could do it blind]
+[always|] [check|look at] the con [twice|again] before [you pull|pulling]. [ask me how i know|trust me|i learned the hard way]
+
+@kind ambient
+@topic mobs
+@who *
+[some|a few] mobs [just|] [seem to|] [know|sense] when you are [low on health|out of power|about to sit]
+[wandering|roaming] [mobs|adds] have [ruined|wrecked] more [pulls|camps] than [bad luck|lag] ever [did|could]
+
+@kind ambient
+@topic grouping
+@who *
+[a quick|a short|one little] [hello|hi] when you join a group goes a long way
+[i|] [always|] [thank|say ty to] the healer [after|at the end of] a [long|good] [session|group]
+the best [puller|tank|healer] i [ever|have ever] [grouped with|played with] [never said a word|barely talked|just knew what to do]
+
+@kind ambient
+@topic crafting
+@who *
+[nothing|there is nothing] [quite|] like [wearing armor|swinging a sword|using gear] you made yourself
+[i|] [spent|sank] [my last|all my] [gold|coin] on [materials|bars and leather] [again|], [the skill better go up|worth it i hope]
+
+@kind ambient
+@topic money
+@who *
+[selling|vendoring] [a full bag|a whole pack] of [loot|junk] and [getting|walking away with] [two|three] gold [is|feels] [the best|great]
+@levels 20-50
+[i|] [still|] [remember|recall] my first [gold|platinum] [like|as if] it was yesterday
+
+@kind ambient
+@topic banter
+@who *
+@invites joke
+[i bet|i think] the [route horses|stable horses] [gossip|talk] about [us|the riders] [behind our backs|when we dismount]
+if patience [was|were] a stat [i would|id] have it [capped|maxed] by now
+my [character|toon] has [fallen off|walked off] more [ledges|bridges|cliffs] than anyone alive
+
+@kind ambient
+@topic gripe
+@who *
+@invites complaint
+why does every [quest|errand] [need|want] [ten|twelve] of something that [never|barely ever] drops
+i [hate it|cant stand it] when [a mob|the mob] [evades|parries|blocks] [three|four] times in a row
+
+@kind ambient
+@topic latenight
+@who *
+@needs night
+[the|] [quiet|silence] at this hour [is|feels] [kind of|really] [nice|peaceful]
+[one|] [last|final] [pull|kill|bubble] [and|then] [i am|im] [out|done|logging]
+
+@kind ambient
+@topic evening
+@who *
+@needs evening
+[evening|evening all|evening folks], [what a|long] day
+
+@kind ambient
+@topic daytime
+@who *
+@needs day
+[quiet|slow] day in the realm, [i like it|perfect for leveling|good for soloing]
+
+@kind ambient
+@topic reallife
+@who *
+[nothing beats|there is nothing like] a [long|lazy] [weekend|sunday] [session|camp]
+
+@kind ambient
+@topic newbie
+@who *
+@needs newbie
+[i|] [just|] [learned|found out] [that|] [mobs|monsters] [can|will] [run away|flee] [when they are hurt|at low health]
+[people|folks] in this realm are [so|really] [nice|kind] to new [players|folks]
+
+@kind ambient
+@topic veteran
+@who *
+@levels 40-50
+[i|] [miss|kind of miss] [being scared of|fearing] [orange|yellow] cons
+[back at 20|months ago|ten levels ago] i would have [run from|been scared of] [half|most] of what i kill now
+
+@kind ambient
+@topic socialite
+@who Socialite
+[good|nice] to see [so many|all the] [familiar|usual] names [on|online] [lately|again]
+
+@kind ambient
+@topic explorer
+@who Explorer
+[every|each] [zone|corner of the map] [hides|is hiding] something [odd|strange] if you [wander|poke around] [long enough|far enough]
+
+@kind ambient
+@topic daredevil
+@who Daredevil
+[safe|careful] [pulls|camps] are [boring|for other people], [give me|i want] [a challenge|something orange]
+
+@kind ambient
+@topic nolifer
+@who NoLifer
+i [planned|meant] to play for [an hour|a bit|twenty minutes]. that was [hours ago|a long time ago]
+
+@kind ambient
+@topic leveler
+@who Leveler
+@levels 1-49
+[xp is xp|a bubble is a bubble], [honestly|] i dont care [where|how] it comes from
+
+@kind ambient
+@topic crafter
+@who Crafter
+my [best|favorite] [customers|buyers] are the ones who [say thanks|come back|pay on time]
+
+@kind ambient
+@topic camp
+@who *
+@needs at_camp
+[still|] [here|at it], [pulling|working] [this camp|the same spot] [like|as if] [its|it is] my job
+
+@kind ambient
+@topic dungeon
+@who *
+@needs in_dungeon
+the [deeper|further] i go [down here|in here], the [nastier|meaner] [it gets|everything gets]
+
+@kind ambient
+@topic travel
+@who *
+@needs traveling
+[travel time|time on the road] is [snack time|chat time|thinking time] for me
+
+@kind ambient
+@topic group
+@who *
+@needs in_group
+[love|i love] [it when|when] [a group|the group] [clicks|just clicks]
+
+@kind ambient
+@topic bags
+@who *
+@needs bag_full
+[one more|another] [drop|piece of loot] and [something has to go|my bags will burst|i start crying]
+
+@kind ambient
+@topic ding
+@who *
+@needs just_leveled
+[gz me|gz to me|grats to me], [i|] [finally|just] [dinged|leveled]
+
+@kind ambient
+@topic xp
+@who *
+@needs xp_mid
+[about|roughly] {bubbles} bubbles [into|through] this level, [steady|getting there]
+@needs xp_high
+{bubbles} bubbles, [the ding is|the level is] [right there|so close]
+
+@kind ambient
+@topic roles
+@who *
+@needs is_healer
+[the|] [best|nicest] [compliment|thing] a healer [can get|hears] is [silence|a quiet group]
+@needs is_tank
+my armor has [more dents than|seen more hits than] [a smiths anvil|an old barn door]
+@needs is_caster
+[nothing|there is nothing] worse than [a resist|being resisted] [on the pull|at the worst moment]

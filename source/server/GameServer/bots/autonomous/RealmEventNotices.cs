@@ -8,16 +8,57 @@ namespace DOL.GS
     public static class RealmEventNotices
     {
         private static readonly object Sync = new();
-        private static readonly Dictionary<(string, eRealm), (string Text, long Expires)> Pending = new();
+        private static readonly Dictionary<(string, eRealm), (string Text, long Expires, string Topic, IReadOnlyDictionary<string, string> Slots)> Pending = new();
         private static readonly Dictionary<eRealm, long> Next = new();
+        /// <summary>When each event was last told to each realm, so world news (AutonomousChatNews) doesn't tell it twice.</summary>
+        private static readonly Dictionary<(string, eRealm), long> Told = new();
+        public const long ToldMemoryMs = 3 * 60_000;
 
-        public static void Queue(string id, eRealm realm, string text)
+        /// <summary>
+        /// The talking update: an event notice may name its news topic and slots ("siege_defend", {keep}, {enemy}). With bot
+        /// voices on, a bot tells it in its own words ("they are hitting the door at Caer Benowyc, need defenders") and others
+        /// react; the written notice is only the fallback. Topic "-" marks an event the world news tells instead (a relic set
+        /// in a shrine), so its notice is dropped while voices are on.
+        /// </summary>
+        public static void Queue(string id, eRealm realm, string text, string newsTopic = null, IReadOnlyDictionary<string, string> newsSlots = null)
         {
             if (realm == eRealm.None || string.IsNullOrWhiteSpace(text)) return;
             lock (Sync)
             {
                 if (Pending.Count >= 32 && !Pending.ContainsKey((id, realm))) return;
-                Pending[(id, realm)] = (text, GameLoop.GameLoopTime + 5 * 60_000);
+                Pending[(id, realm)] = (text, GameLoop.GameLoopTime + 5 * 60_000, newsTopic, newsSlots);
+            }
+        }
+
+        /// <summary>Slots for a keep event: the keep's name as players say it, and the enemy realm.</summary>
+        public static Dictionary<string, string> KeepSlots(string objectiveName, eRealm enemy)
+        {
+            var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["keep"] = AutonomousRvrEventLayer.Place(objectiveName) };
+            if (enemy != eRealm.None)
+                slots["enemy"] = GlobalConstants.RealmToName(enemy);
+            return slots;
+        }
+
+        /// <summary>Whether this realm heard about this event in the last few minutes.</summary>
+        public static bool VoicedRecently(string id, eRealm realm, long now)
+        {
+            lock (Sync)
+                return Told.TryGetValue((id, realm), out long when) && now - when < ToldMemoryMs;
+        }
+
+        /// <summary>
+        /// A bot just told this realm about the event in its own words (AutonomousChatNews): a notice about it still waiting
+        /// for its turn (one that a bot could have said, so with a news topic) is not sent as well.
+        /// </summary>
+        public static void ToldByNews(string id, eRealm realm, long now)
+        {
+            if (string.IsNullOrEmpty(id))
+                return;
+            lock (Sync)
+            {
+                if (Pending.TryGetValue((id, realm), out var pending) && !string.IsNullOrEmpty(pending.Topic))
+                    Pending.Remove((id, realm));
+                Told[(id, realm)] = now;
             }
         }
 
@@ -54,18 +95,24 @@ namespace DOL.GS
         {
             FlushScreen();
             GameWideAnnouncements.Flush();
-            List<(string EventId, eRealm Realm, string Text)> outgoing = new();
+            AutonomousChatNews.Pulse(now);
+            bool voices = AutonomousBotVoices.Enabled;
+            List<(string EventId, eRealm Realm, string Text, string Topic, IReadOnlyDictionary<string, string> Slots)> outgoing = new();
             lock (Sync)
             {
                 foreach (var entry in Pending.ToArray())
                 {
                     if (entry.Value.Expires < now) { Pending.Remove(entry.Key); continue; }
                     eRealm realm = entry.Key.Item2;
+                    if (voices && entry.Value.Topic == "-") { Pending.Remove(entry.Key); continue; }
                     if (Next.GetValueOrDefault(realm) > now) continue;
                     Next[realm] = now + 60_000;
                     Pending.Remove(entry.Key);
-                    outgoing.Add((entry.Key.Item1, realm, entry.Value.Text));
+                    outgoing.Add((entry.Key.Item1, realm, entry.Value.Text, entry.Value.Topic, entry.Value.Slots));
+                    Told[entry.Key] = now;
                 }
+                foreach (var old in Told.Where(pair => now - pair.Value > ToldMemoryMs).Select(pair => pair.Key).ToList())
+                    Told.Remove(old);
             }
             outgoing.RemoveAll(notice => !ClientService.Instance.GetPlayersOfRealm(notice.Realm).Any());
             if (outgoing.Count == 0) return;
@@ -89,7 +136,13 @@ namespace DOL.GS
                         (!forces.TryGetValue(force, out string target) || target != notice.EventId)) continue;
                     if (Random.Shared.Next(++candidates) == 0) speaker = bot;
                 }
-                AutonomousBotChatCoordinator.BroadcastFaction(speaker?.Name ?? fallback?.Name ?? "Realm herald", notice.Realm, notice.Text);
+                // The talking update: a bot tells it in its own words (a bot taking part says it as a witness), and others react.
+                if (voices && !string.IsNullOrEmpty(notice.Topic) && notice.Topic != "-" &&
+                    AutonomousBotChatCoordinator.TrySayEventNews(speaker ?? fallback, speaker != null, notice.Topic, notice.Slots))
+                    continue;
+                GameBot herald = speaker ?? fallback;
+                AutonomousBotChatCoordinator.BroadcastFaction(herald?.Name ?? "Realm herald", notice.Realm,
+                    herald != null ? AutonomousBotVoices.StyleFor(herald, notice.Text) : notice.Text);
             }
         }
     }

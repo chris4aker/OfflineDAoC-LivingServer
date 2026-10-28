@@ -1,0 +1,169 @@
+# Roleplayers (AutonomousRoleplayers): a few bots never leave character. They speak in /faction in faux-medieval
+# speech (thee, thou, aye, nay, forsooth, verily, huzzah, emotes in asterisks), take the lore seriously, and the realm
+# mocks them for it. "ambient" is a roleplayer's own line, "mock" another bot's jab right after ({target} is the
+# roleplayer), "answer" the roleplayer's reply, still in character ({target} is the mocker). Funny because it is earnest.
+# Real swear words are not in the corpus: the mockers swear the way 2003 chat did. New writing.
+
+# ---- ambient: a roleplayer's own /faction lines --------------------------------------------------
+@kind roleplay
+@topic ambient
+@who *
+good morrow, brave souls of the realm. may thy blades stay sharp and thy purses heavy
+*raises tankard* to the fallen! may they rest easy in the halls of the gods
+hark! doth anyone else feel the {enemy} stirring beyond the frontier? mine bones ache with it
+verily, the night watch is a lonely post. i stand it gladly, for {capital} sleeps safe
+*sharpens blade by the fire* this steel hath tasted the blood of many a {enemy} cur
+forsooth, the tavern ale grows thinner each season. i suspect the innkeep of treachery
+*kneels in prayer* grant me strength, o gods, that i may bring honour to my house
+the {enemy} shall rue the day they set foot upon our sacred soil. this i swear
+good gentles, i once sought a stout companion for a quest of great peril. i found a group for xp instead
+*gazes upon the walls of {capital}* how fair she looks. i would die for her stones
+i have slain three wolves this day. each one fought with honour. i buried them with honour
+*polishes armor* a knight's shine is a knight's pride. a dull knight is a dead knight
+mine horse hath served me well. i know not its name, for the stablemaster never told me
+the bards sing of heroes. one day, mark me, they shall sing of me. *strums nothing*
+verily, i say unto thee all: drink water between thy ales, lest thou fall from thy saddle
+*stands watch at the gate* none shall pass. save merchants. and friends. and most others
+forsooth, i misplaced mine sword. if any good soul findeth it, it answereth to "beloved"
+huzzah! another day of honest toil in service of the realm! *wipes brow*
+the {enemy} fight without honour. they come in packs and flee when the odds turn. cowards all
+i hath written a poem of our last battle. it beginneth "o the keep, the keep, the keep"
+*bows deeply to all of {capital}* thy humble servant reporteth for duty
+mine squire hath deserted me. if thou seest a lad with a bucket on his head, tell him i forgive him
+the healers of this realm are saints. i would kneel before each of them, were mine knees not sore
+*lights a candle for the fallen* we remember thee. even the ones who pulled too much
+nay, i shall not sell my old shield. it hath turned aside a hundred blows. it stays
+methinks the merchant cheated me. but a gentle knight doth not quarrel over coppers. *grumbles*
+be wary, travellers! the roads grow dark and the beasts grow bold. stay ye on the path
+the sun riseth over {capital}, and mine heart riseth with it
+*unrolls a map* our enemies gather in the east. or the west. this map is upside down
+i have taken a vow of silence. *breaks it immediately* the vow was too hard
+o {capital}, jewel of the realm, i shall defend thy gates until mine last breath. or until supper
+the {enemy} raided our keep whilst i slept. never again shall i sleep. *yawns*
+fellow warriors, remember: a true hero eateth a hearty breakfast before battle
+*hums an old marching song* "o the frontier is cold and the {enemy} is near..."
+tis a fine day to defend the realm. tis always a fine day to defend the realm
+mine family crest is a boar upon a field of green. mine family is not famous. yet
+i hath heard tales of a beast that walketh the hills by night. i shall find it. *wanders off*
+by mine honour, the next {enemy} i meet shall know the bite of my blade
+the gods watch over us all. especially those who remember to bind at the healer
+i offer mine sword to any in need. mine sword, not mine coin. mine coin is spoken for
+[good morrow|hail|well met], [brave|noble|gentle] [souls|folk|friends] of the realm! [*bows*|*tips helm*|*salutes*]
+[*draws sword*|*raises shield*|*grips axe*] [the {enemy} shall not pass|for the realm|for {capital}]! [huzzah!|to arms!|onward!]
+[verily|forsooth|in sooth], [the night is long|the road is long|the war is long] and [mine heart is heavy|mine ale is empty|mine feet are sore]
+[hark|lo|behold], [the {enemy}|the foul {enemy}|our foes in {enemy}] [gather at the frontier|sharpen their blades|plot against us]. [be ye ready|stand fast|keep watch]
+[mine|this] [sword|blade|axe] hath [tasted|known|felt] [the blood of many a foe|a hundred battles|the bones of the {enemy}]
+[to the tavern|to the inn|to the alehouse], [good friends|brave companions|fellow souls]! [we drink to the fallen|let us sing of glory|tonight we sing]
+[*kneels*|*bows head*|*lights a candle*] [may the gods|may the heavens|may the old gods] [guide our blades|keep {capital} safe|bless our fallen]
+[nay|aye], [i shall|i must] [stand the night watch|guard the gate|keep vigil] [alone|until the dawn|for {capital}]. [tis mine duty|honour demands it|none else will]
+[huzzah|hurrah|rejoice]! [the realm stands|{capital} stands|we stand] [another day|strong|unbroken]! [*raises tankard*|*cheers*|*dances a jig*]
+[honour|glory|duty] [above all|before gold|before sleep]. [this i swear|so i have sworn|thus speaketh mine heart]
+[who among ye|doth anyone|would any brave soul] [remember|still honour|still sing of] [the fallen|the old ways|the heroes of old][?|? *waits nobly*]
+[m'lords and m'ladies|good gentles|fair people of the realm], [i bid thee|i wish thee|i give thee] [good morrow|well|good fortune] [this day|on thy travels|in battle]
+[*sits by the fire*|*leans on spear*|*stares into the distance*] [tis quiet|the land is still|the wind speaketh]. [too quiet|i like it not|something cometh]
+[i hath|i have] [lost|broken|dented] mine [favourite|trusty|third best] [helm|shield|gauntlet]. [alas|woe is me|a dark day indeed]
+@realm alb
+for Arthur and for Albion! *raises sword* long live the king!
+the king's peace must be kept, even in the alehouse. *glares at a drunken minstrel*
+[for Arthur|for the king|for the crown], [i shall|i will] [hold this ground|fight to mine last breath|not yield]! [*raises shield*|*draws sword*]
+the church teacheth us patience. the {enemy} teacheth us to sleep with our boots on
+@realm mid
+by Odin's beard! the {enemy} shall feel the fury of the north!
+when i fall, i shall feast in the halls of the all-father. until then, i feast in {capital}
+[by Odin|by Thor's hammer|by the all-father], [the {enemy} shall fall|we fight with honour|mine axe thirsts]! [*bangs shield*|*roars*]
+the skalds shall sing of this winter. mostly of how cold it was
+@realm hib
+may the blessing of Lugh be upon thee, friends of the realm
+the old ones of the Tuatha watch over us. i feel their eyes upon mine neck. *shivers*
+[by Lugh|by the Tuatha|by the old gods], [the {enemy} shall not take our groves|our land shall stand|i shall not falter]! [*draws blade*|*bows to the trees*]
+the trees of this land have long memories. i try to be polite to them
+
+# ---- mock: another bot jabs at a roleplayer who just spoke ({target} is the roleplayer) ------------
+@kind roleplay
+@topic mock
+@who *
+/rp off plz
+speak english
+{target} is at it again
+thou art a nerd
+lol thee and thou
+{target} who talks like that
+someone tell {target} the ren faire closed in august
+did {target} just bow in faction chat
+{target} its a game man
+forsooth? FORSOOTH?
+my eyes glazed over at "good morrow"
+{target} please, its too early for the olde english
+how do you even type that fast in shakespeare
+{target} *rolls eyes*
+the asterisks are back. hide
+{target} uses more emotes than spells
+[lol|rofl|heh] [thee and thou|thy and thine|forsooth and verily]
+[/rp off|rp off|turn the rp off] [plz|please|already][, {target}|]
+[speak english|english please|normal words please][, {target}|][.|!|. plz]
+[{target} is at it again|here goes {target} again|{target} again]. [lol|ugh|rofl]
+[thou art|thou be|ye art] [a nerd|a dork|a huge nerd][, {target}|][. lol|]
+[who|who even|who actually] talks like that[, {target}|][?|. lol|]
+[{target}|dude|man], [its a game|its just a game|its a video game]. [relax|chill|calm down]
+[{target} did you|did {target} just] [bow|curtsy|kneel] in [faction|faction chat|front of everyone][?|? lol]
+[ye olde|the olde|olde] [faction chat|chat channel|realm news], [now with|featuring|starring] {target}
+[*bows*|*curtsies*|*kneels*] [lol|rofl|haha] [ok {target}|sure {target}|whatever {target}]
+[forsooth|verily|huzzah] [my|this] [lfg is going nowhere|faction chat is ruined|evening is over]. [ty {target}|cheers {target}|thanks {target}]
+@who Socialite
+{target} doth thou also say forsooth to the merchant
+i love {target}. i also want {target} to stop
+{target} marry me but in normal english
+[{target}|lol {target}], [do you|does thou] [talk like that|speak like that] [at dinner|to your mom|at school][?|? lol]
+@who NoLifer
+every server has one {target}. ours never sleeps
+ive heard that exact speech from {target} three times this week
+[{target}|man {target}], [we get it|yes we know|ok we heard], [honour|glory|the realm]. [lol|zzz|moving on]
+@who Daredevil
+{target} if you love battle so much come to the frontier and stop narrating
+less verily more killing, {target}
+[{target}|hey {target}], [bring that sword|take that blade|bring all that honour] [to the frontier|to a keep fight|to the next raid] [then|for once][.|. lol]
+@who Leveler
+{target} i read lfg in this channel. please
+cool story {target}. lfg anyone?
+[{target}|ok {target}], [some of us|i|we] [are trying|am trying] to [read lfg|find a group|level]
+@who Crafter
+{target} i can polish that shiny armor for 3 gold, m'lord
+i will make {target} a quill so they can write it down instead
+@who Explorer
+{target} where do you even find that many old words
+honestly {target} i kind of want to hear the rest of that
+[{target}|ok {target}], [which way is east|wheres the beast|what quest]? [asking for real|i want in|i have time]
+
+# ---- answer: the roleplayer answers the mockery, still in character ({target} is the mocker) --------
+@kind roleplay
+@topic answer
+@who *
+thou wouldst mock me, {target}? i shall await thee at dawn by the gates of {capital}
+*slaps {target} with a gauntlet* i demand satisfaction!
+peasant. i forgive thee, for thou knowest not what thou sayest
+nay, {target}, i shall not "rp off". there is no off. there is only honour
+*sighs heavily* the realm hath fallen far, if its people cannot abide a little courtesy
+{target}, thy tongue is sharper than thy blade. i have seen thy blade
+i shall pray for thee, {target}. thou needest it more than most
+*turns away with dignity* i shall not dignify that with a response. *responds anyway* hmph
+thy words wound me, {target}. but a knight beareth wounds in silence. *bleeds loudly*
+good {target}, when the {enemy} come for thee, thou shalt wish thou hadst learned courtesy
+*draws sword* name thy second, {target}! *waits* ... very well, i shall wait
+i speak the tongue of mine forefathers, {target}. what tongue speakest thou? the tongue of the gutter?
+thy jest is noted, {target}, and filed beneath "peasantry"
+a nerd, sayest thou? i shall add it to mine titles. sir nerd of {capital}
+*bows to {target}* even a fool deserveth courtesy. there. thou hast had thine
+{target}, mine mother warned me of thy kind. she was right, as ever
+alas, the {enemy} hath already claimed thy wits, {target}. i weep for thee
+verily i say, {target}, a churl's laughter is but wind. *holds nose*
+i shall remember this, {target}. the bards shall sing of thy rudeness. off key
+"its a game," sayest thou? nay, {target}. it is a way of life
+[how dare thee|how darest thou|thou darest], {target}! [i challenge thee to a duel|meet me at dawn|name thy weapon]! [*draws sword*|*throws down gauntlet*|*glares*]
+[peasant|churl|knave], [i pity thee|i forgive thee|thou knowest not what thou sayest][, {target}|]. [*sighs*|*shakes head*|*turns away*]
+[thy words wound me|thy jest cuts deep|thy mockery is noted], {target}. [but i shall endure|i shall not forget|mine honour remaineth]
+[nay|never], {target}! [i shall not|i will not] [speak as a commoner|abandon mine tongue|stoop to thy level]! [*clutches chest*|*stands tall*]
+[*sheathes sword*|*lowers shield*|*sets down tankard*] [thou art not worth|thou art beneath|thou wouldst not survive] [mine steel|a true duel|mine wrath], {target}
+[good|dear|poor] {target}, [may the gods|may the heavens|may some kind soul] [grant thee manners|teach thee courtesy|forgive thy tongue]
+[{target}|knave], [at dawn|at first light|on the morrow], [by the gates of {capital}|upon the frontier|before the whole realm]. [come armed|bring thy courage|bring thy second]
+[*weeps*|*sniffs*|*dabs eye with sleeve*] [such cruelty|such rudeness|such scorn] [from|on the lips of] [a fellow of the realm|one of our own|a comrade], {target}
+[mock if thou wilt|laugh if thou must|jest away], {target}. [i shall still guard thee|mine sword still serveth thee|i defend even fools]

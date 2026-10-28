@@ -261,6 +261,7 @@ namespace DOL.GS.Commands
 												item.ItemTemplateID = templateID;
 												GameServer.Database.SaveObject(item);
 											}
+											targetMerchant.TradeItems.InvalidateCache();   // the window reads a cached layout
 											DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Merchant.Articles.Add.ItemAdded"));
 										}
 										catch (Exception)
@@ -311,6 +312,7 @@ namespace DOL.GS.Commands
 												return;
 											}
 											GameServer.Database.DeleteObject(item);
+											targetMerchant.TradeItems.InvalidateCache();
 											DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Merchant.Articles.Remove.SlotInPageCleaned", slot, page));
 
 										}
@@ -346,6 +348,7 @@ namespace DOL.GS.Commands
 											{
 												GameServer.Database.DeleteObject(merchantitems);
 											}
+											targetMerchant.TradeItems.InvalidateCache();
 											DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Merchant.Articles.Delete.ListDeleted"));
 										}
 										catch (Exception)

@@ -13,6 +13,7 @@ namespace DOL.GS.Spells
 	public class ResurrectSpellHandler : SpellHandler
 	{
 		private const string RESURRECT_CASTER_PROPERTY = "RESURRECT_CASTER";
+		public const string RESURRECT_DECLINED_AT_PROPERTY = "RESURRECT_DECLINED_AT";
 		protected readonly ListDictionary m_resTimersByLiving = new ListDictionary();
 		private readonly Lock _lock = new();
 
@@ -40,6 +41,11 @@ namespace DOL.GS.Spells
 			}
 			else
 			{
+				// One question at a time. Play test 2026-10-27: a druid gamebot's rez reached the dead player twice; the second
+				// dialog replaced the first, the client declined the first ("You decline to be resurrected."), that cleared the
+				// pending rez, and accepting the second said "No one is currently trying to resurrect you." Ten casts, no rez.
+				if (targetPlayer.TempProperties.GetProperty<GameLiving>(RESURRECT_CASTER_PROPERTY) != null)
+					return;
 				targetPlayer.TempProperties.SetProperty(RESURRECT_CASTER_PROPERTY, m_caster);
 				ECSGameTimer resurrectExpiredTimer = new ECSGameTimer(targetPlayer);
 				resurrectExpiredTimer.Callback = new ECSGameTimer.ECSTimerCallback(ResurrectExpiredCallback);
@@ -103,6 +109,8 @@ namespace DOL.GS.Spells
 					else
 					{
 						player.Out.SendMessage("You decline to be resurrected.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						// Gamebot resurrectors wait a minute before asking again (BotGroupSupport.ReserveResurrection).
+						player.TempProperties.SetProperty(RESURRECT_DECLINED_AT_PROPERTY, GameLoop.GameLoopTime);
 						//refund mana
 						m_caster.Mana += PowerCost(player);
 

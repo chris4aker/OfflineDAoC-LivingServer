@@ -25,6 +25,9 @@ public sealed class AutonomousBotVoiceCorpus
 
         /// <summary>A reply's or closing's answers: the opener invitations it fits.</summary>
         public string[] Answers { get; init; } = [];
+
+        /// <summary>The line names a place only to talk about it ("@about place"), not to say the speaker is there.</summary>
+        public bool About { get; init; }
     }
 
     public sealed record Beat(string Role, string[] Variants, bool Optional, int PauseSeconds)
@@ -43,6 +46,9 @@ public sealed class AutonomousBotVoiceCorpus
     {
         /// <summary>Time-of-day flags the scene needs ("night", "!day"); empty for any time.</summary>
         public string[] Needs { get; init; } = [];
+
+        /// <summary>A role that logs off when the scene plays to its end ("@exit A": the dunce who rage quits); empty for none.</summary>
+        public string Exit { get; init; } = string.Empty;
 
         public string[] SpeakingRoles => Beats.Where(beat => !beat.IsPause).Select(beat => beat.Role).Distinct().ToArray();
     }
@@ -118,6 +124,7 @@ public sealed class AutonomousBotVoiceCorpus
         {
             Invites = Str(e, "invites"),
             Answers = Strs(e, "answers"),
+            About = Bool(e, "about"),
         };
     }
 
@@ -143,6 +150,7 @@ public sealed class AutonomousBotVoiceCorpus
         return new Scene(Str(e, "id"), Str(e, "topic"), realm.Length == 0 ? "*" : realm, low, high, roles, beats)
         {
             Needs = Strs(e, "needs"),
+            Exit = Str(e, "exit"),
         };
     }
 
@@ -190,17 +198,32 @@ public sealed class AutonomousBotVoiceCorpus
     {
         foreach (string need in needs)
         {
-            bool met = need.StartsWith('!') ? !flags.Contains(need[1..]) : flags.Contains(need);
-            if (!met)
+            bool negated = need.StartsWith('!');
+            string flag = negated ? need[1..] : need;
+            // The talking update: "near:myrkwood" is being in Myrkwood or on the way there (flags "at:" and "going:").
+            bool has = flag.StartsWith("near:", StringComparison.Ordinal)
+                ? flags.Contains("at:" + flag[5..]) || flags.Contains("going:" + flag[5..])
+                : flags.Contains(flag);
+            if (has == negated)
                 return false;
         }
         return true;
     }
 
     /// <summary>Lines of a kind this speaker may say now (realm, class, level band, needed context, intent, answers).</summary>
+    private Dictionary<string, Line[]> _byKind;
+
+    /// <summary>The lines of a kind (built once: lines built from parts made the corpus several times larger).</summary>
+    private Line[] OfKind(string kind)
+    {
+        Dictionary<string, Line[]> byKind = _byKind ??= Lines.GroupBy(line => line.Kind, StringComparer.Ordinal)
+            .ToDictionary(group => group.Key, group => group.ToArray(), StringComparer.Ordinal);
+        return kind != null && byKind.TryGetValue(kind, out Line[] lines) ? lines : [];
+    }
+
     public IEnumerable<Line> Candidates(string kind, Speaker speaker, string intent = null, string topic = null, string mood = null,
         string answers = null) =>
-        Lines.Where(line => line.Kind == kind &&
+        OfKind(kind).Where(line => line.Kind == kind &&
                             (topic == null || string.Equals(line.Topic, topic, StringComparison.Ordinal)) &&
                             (mood == null || string.Equals(line.Mood, mood, StringComparison.Ordinal)) &&
                             RealmFits(line.Realm, speaker.Realm) &&
@@ -273,6 +296,30 @@ public sealed class AutonomousBotVoiceCorpus
 
         /// <summary>The local hour on the PC's clock, for "tonight" by day (null: no time adaptation).</summary>
         public int? LocalHour { get; init; }
+
+        /// <summary>
+        /// Slots that come with a flag (the talking update): a line that needs "keep_lost_recent" fills {keep} with the keep
+        /// that was lost, and one that needs "defending" with the keep under siege, whatever {keep} is for other lines.
+        /// </summary>
+        public IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> NeedSlots { get; init; }
+    }
+
+    /// <summary>The slots a line is filled with: the request's, then those of each flag the line needs.</summary>
+    public static IReadOnlyDictionary<string, string> SlotsForLine(Line line, IReadOnlyDictionary<string, string> slots,
+        IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> needSlots)
+    {
+        if (needSlots == null || needSlots.Count == 0 || line.Needs.Length == 0)
+            return slots;
+        Dictionary<string, string> merged = null;
+        foreach (string need in line.Needs)
+        {
+            if (need.StartsWith('!') || !needSlots.TryGetValue(need, out var extra) || extra == null)
+                continue;
+            merged ??= slots == null ? new Dictionary<string, string>(StringComparer.Ordinal) : new Dictionary<string, string>(slots, StringComparer.Ordinal);
+            foreach (var pair in extra)
+                merged[pair.Key] = pair.Value;
+        }
+        return merged ?? slots;
     }
 
     /// <summary>A picked line: its text as sent, the corpus line, and a typo correction the speaker may send after it ("*word").</summary>
@@ -313,7 +360,7 @@ public sealed class AutonomousBotVoiceCorpus
             }
             Line line = pool[index].Line;
             pool.RemoveAt(index);
-            if (!TryFill(line.Text, request.Slots, out string filled))
+            if (!TryFill(line.Text, SlotsForLine(line, request.Slots, request.NeedSlots), out string filled))
                 continue;
             if (request.LocalHour is int hour)
                 filled = ForTimeOfDay(filled, hour);

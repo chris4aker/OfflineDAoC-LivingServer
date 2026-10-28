@@ -1,7 +1,9 @@
 using System;
+using DOL.Database;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DOL.GS.ServerRules;
 
 namespace DOL.GS;
 
@@ -48,18 +50,53 @@ public static class AutonomousChatLiveAnswers
             return random.Next(2) == 0 ? $"{zone}, saw a bunch of {level}s camping there" : $"try {zone}, thats where the {level}s are right now";
         if (dungeon != null)
             return random.Next(2) == 0 ? $"{dungeon} is good around {level} if you can get a group" : $"{dungeon} for {level}, bring a group";
-        return null;
+        return StarterZones(bot.Realm, level, random);
     }
 
-    /// <summary>"where are the mids?": the frontier zone with the most enemy gamebots in it now, or that it is quiet.</summary>
+    /// <summary>
+    /// Play test 2026-10-27: "where should i level?" from a level 1 got no answer, because no bot hunts that low. A new player's
+    /// realm has its starter zones (the zones with the most level 1-5 monsters in the world data: Camelot Hills, Vale of Mularn,
+    /// Connacht and Lough Derg). Below level 10 only. Pure.
+    /// </summary>
+    public static string StarterZones(eRealm realm, int level, Random random)
+    {
+        if (level >= 10)
+            return null;
+        string zones = realm switch
+        {
+            eRealm.Albion => "Camelot Hills, right outside Cotswold",
+            eRealm.Midgard => "the Vale of Mularn, all around town",
+            eRealm.Hibernia => "Connacht or Lough Derg around Mag Mell",
+            _ => null,
+        };
+        if (zones == null)
+            return null;
+        return random.Next(2) == 0 ? $"at {level}? {zones}, everything there is easy" : $"{zones}. stay there till 5 or so";
+    }
+
+    /// <summary>
+    /// "where are the mids?": what the realm has seen. The talking update: first the realm's latest sightings on its news board
+    /// (frontier bots report what they see), with how long ago; else enemies that a bot or player of the realm can see now;
+    /// else that it is quiet. Before, the answer came from where every enemy gamebot really was, seen or not.
+    /// </summary>
     public static string EnemySighting(GameBot bot, Random random)
     {
         if (bot == null)
             return null;
+        ChatNewsItem latest = AutonomousChatNews.Board.EnemySightings(bot.Realm, DateTime.UtcNow).FirstOrDefault();
+        if (latest != null)
+            return SightingText(latest, DateTime.UtcNow, random);
+        // Only watchers in the frontier can see enemies there (review 2026-10-26: all bots against all enemies was millions of
+        // distance checks with a 9,000-bot roster).
+        ILookup<ushort, GameLiving> watchers = AutonomousBotRegistry.Snapshot()
+            .Where(other => other.Realm == bot.Realm && other.IsAlive && (other.CurrentZone?.IsRvR == true || other.CurrentRegion?.IsRvR == true))
+            .Concat<GameLiving>(ClientService.Instance.GetPlayersOfRealm(bot.Realm))
+            .ToLookup(watcher => watcher.CurrentRegionID);
         var seen = AutonomousBotRegistry.Snapshot()
             .Where(other => other.Realm != bot.Realm && other.Realm is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia && other.IsAlive &&
                             other.CurrentZone != null && (other.CurrentZone.IsRvR || other.CurrentRegion?.IsRvR == true) &&
-                            !string.IsNullOrWhiteSpace(other.CurrentZone.Description))
+                            !string.IsNullOrWhiteSpace(other.CurrentZone.Description) &&
+                            watchers[other.CurrentRegionID].Any(watcher => watcher.IsWithinRadius(other, SightRadius)))
             .GroupBy(other => (other.Realm, Zone: other.CurrentZone.Description, ZoneRealm: FrontierHome(other.CurrentZone.Description)))
             // Enemies on our side of the frontier first, then on neutral ground, then in their own homeland (live check
             // 2026-10-21: "where are the mids?" drew "big group of mids in Uppland", Midgard's own frontier).
@@ -76,6 +113,19 @@ public static class AutonomousChatLiveAnswers
         return seen.Count() >= 8
             ? random.Next(2) == 0 ? $"big group of {enemy} in {seen.Key.Zone}" : $"{enemy} zerg in {seen.Key.Zone} last i heard"
             : random.Next(2) == 0 ? $"saw some {enemy} around {seen.Key.Zone}" : $"a few {enemy} in {seen.Key.Zone}";
+    }
+
+    /// <summary>How far a bot or player of the realm sees an enemy for "where are the mids?".</summary>
+    public const int SightRadius = 3_500;
+
+    /// <summary>A sighting off the news board in chat words: "6 mids in Emain Macha, couple min ago". Pure.</summary>
+    public static string SightingText(ChatNewsItem item, DateTime now, Random random)
+    {
+        string enemy = item.Enemy switch { eRealm.Albion => "albs", eRealm.Midgard => "mids", _ => "hibs" };
+        double minutes = Math.Max(0, (now - item.When).TotalMinutes);
+        string when = minutes < 2 ? "just now" : minutes < 6 ? "couple min ago" : $"{(int)minutes} min ago";
+        string size = item.Size >= 8 ? "big group of" : item.Size >= 3 ? $"{item.Size}" : "a couple";
+        return random.Next(2) == 0 ? $"{size} {enemy} in {item.Zone}, {when}" : $"saw {size} {enemy} at {item.Zone} {when}";
     }
 
     /// <summary>
@@ -173,4 +223,91 @@ public static class AutonomousChatLiveAnswers
     public static string WhereIAm(GameBot bot, GamePlayer asker, Random random) =>
         bot == null ? null : AutonomousBotChatCoordinator.WhereText(string.IsNullOrWhiteSpace(bot.CurrentZone?.Description) ? "the frontier" : bot.CurrentZone.Description.Trim(),
             bot.CurrentZone != null && asker != null && bot.CurrentZone == asker.CurrentZone, bot.Level, bot.CharacterClass?.Name ?? "adventurer", random);
+
+    #region Questions with real answers (the talking update audit)
+
+    /// <summary>What a bot knows about itself, for "r u 50 yet", "are u a healer", "do u have speed", "u got pots?".</summary>
+    public static AutonomousChatQuestions.BotFacts FactsOf(GameBot bot)
+    {
+        int potions = 0, equipped = 0, crafted = 0;
+        try
+        {
+            potions = bot.Inventory?.AllItems.Count(item => item != null && item.SlotPosition >= (int)eInventorySlot.FirstBackpack &&
+                                                          item.SlotPosition <= (int)eInventorySlot.LastBackpack &&
+                                                          item.Name?.Contains("potion", StringComparison.OrdinalIgnoreCase) == true) ?? 0;
+            // "whered u get that armor": worn pieces, and how many a crafter made (IsCrafted; Creator also holds the mob a drop came
+            // from, review 2026-10-26).
+            foreach (DbInventoryItem item in bot.Inventory?.EquippedItems ?? [])
+            {
+                if (item == null || item.SlotPosition is < (int)eInventorySlot.MinEquipable or > (int)eInventorySlot.MaxEquipable)
+                    continue;
+                equipped++;
+                if (item.IsCrafted)
+                    crafted++;
+            }
+        }
+        catch (InvalidOperationException)
+        {
+        }
+        bool speed = bot.Spells?.Any(spell => spell?.SpellType == eSpellType.SpeedEnhancement && spell.Level <= bot.Level) == true;
+        return new AutonomousChatQuestions.BotFacts(bot.DatabaseID, bot.Level, bot.CharacterClass?.Name ?? bot.ClassName, bot.Realm,
+            bot.RealmLevel, AutonomousBotPersonality.For(bot).Type, speed, potions, bot.Guild?.Name, equipped, crafted,
+            bot.InCombat || BotGroupInvite.DutyOf(bot) != BotGroupInvite.Duty.None);
+    }
+
+    private static readonly Dictionary<eRealm, (long At, AutonomousChatQuestions.WorldFacts Facts)> Worlds = new();
+
+    /// <summary>What a realm knows of the world (who holds Darkness Falls, the relics, the keeps, the places), cached 10 s.</summary>
+    public static AutonomousChatQuestions.WorldFacts WorldFor(eRealm realm)
+    {
+        long now = GameLoop.GameLoopTime;
+        lock (Worlds)
+            if (Worlds.TryGetValue(realm, out var cached) && now - cached.At < 10_000)
+                return cached.Facts;
+        var relics = new List<(string, eRealm, eRealm, bool)>();
+        var keeps = new List<(string, eRealm)>();
+        try
+        {
+            foreach (GameRelic relic in RelicMgr.GetRelics() ?? [])
+                if (relic != null)
+                    relics.Add((relic.Name, relic.Realm, relic.OriginalRealm, relic.IsMounted));
+            foreach (var keep in GameServer.KeepManager?.GetAllKeeps() ?? [])
+                if (keep != null && !keep.IsPortalKeep && !BattlegroundBrackets.IsBattlegroundRegion(keep.Region))
+                    keeps.Add((keep.Name, keep.Realm));
+        }
+        catch (Exception)
+        {
+            // The world isn't up (tests): answer from places alone.
+        }
+        eRealm df = eRealm.None;
+        try { df = DFEnterJumpPoint.DarknessFallOwner; } catch (Exception) { }
+        var facts = new AutonomousChatQuestions.WorldFacts(df, relics, keeps, AutonomousChatPlaces.All);
+        lock (Worlds)
+            Worlds[realm] = (now, facts);
+        return facts;
+    }
+
+    /// <summary>
+    /// A bot's answer to a question it can answer truly: about itself when the question is said to it (<paramref name="addressed"/>:
+    /// named, by tell, in its group), or about the world (place levels, Darkness Falls, relics, keeps). Null when it can't.
+    /// </summary>
+    public static string AnswerQuestion(GameBot bot, string text, bool addressed, Random random)
+    {
+        if (bot == null || string.IsNullOrWhiteSpace(text))
+            return null;
+        // "torvald u still a thane?": the bot's own name is not part of the question (the holdout check).
+        string unnamed = AutonomousChatThreads.WithoutName(text, bot.Name);
+        if (!string.IsNullOrWhiteSpace(unnamed))
+            text = unnamed;
+        eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(text);
+        if (intent is eAutonomousChatIntent.BotCheck or eAutonomousChatIntent.Abuse)
+            return null;
+        string self = addressed ? AutonomousChatQuestions.SelfQuestion(text) : null;
+        string answer = self != null
+            ? AutonomousChatQuestions.AnswerSelf(self, text, FactsOf(bot), random)
+            : AutonomousChatQuestions.AnswerWorld(text, bot.Realm, WorldFor(bot.Realm), random);
+        return answer == null ? null : AutonomousBotVoices.StyleFor(bot, answer);
+    }
+
+    #endregion
 }

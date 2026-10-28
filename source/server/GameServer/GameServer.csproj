@@ -59,6 +59,7 @@
         <EmbeddedResource Include=".\bots\autonomous\data\capnbry_classic_si_goals.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\corpus.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\voices.json" />
+        <EmbeddedResource Include=".\bots\autonomous\data\chat\places.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\classic165_restored_spawn_ids.txt" />
         <EmbeddedResource Include=".\bots\autonomous\data\classic165_period_restored_spawn_ids.txt" />
         <EmbeddedResource Include=".\bots\autonomous\data\dungeon_navigation_points.json" />

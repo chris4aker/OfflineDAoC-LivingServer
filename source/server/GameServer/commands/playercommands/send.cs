@@ -42,6 +42,13 @@ namespace DOL.GS.Commands
                 return;
             }
 
+            // A tell to the realm's gold spammer (AutonomousGoldSpammers) gets more spam back.
+            if (targetPlayer == null && AutonomousGoldSpammers.TryAnswerTell(client.Player, targetName, message))
+            {
+                ChatUtil.SendSendMessage(client, "Social.SendMessage.Private.YouSendTo", message, targetName);
+                return;
+            }
+
             if (targetPlayer == null)
             {
                 // Message: "{0} is not in the game, or is a member of another realm."
@@ -92,6 +99,7 @@ namespace DOL.GS.Commands
                     {
                         // Send the message
                         client.Player.SendPrivateMessage(targetPlayer, message);
+                        AutonomousBeggars.OnPlayerAsked(client.Player, message, "tell");
                     }
 
                     return;

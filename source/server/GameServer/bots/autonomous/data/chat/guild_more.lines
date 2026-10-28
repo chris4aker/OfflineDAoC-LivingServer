@@ -1,0 +1,135 @@
+# More guild chat (kind guild), by the guild's charter (@topic); "general" fits any guild. Plans, help,
+# crafting, jokes and real-life breaks. Lines ask and suggest; they never promise what a guildmate will do.
+# New writing (see docs/bot-voices/TALKING-UPDATE-CONTENT.md).
+
+# ---------------- Leveling guilds ----------------
+@kind guild
+@topic leveling
+@who *
+anyone want to duo for a bit? {level} {class}
+who needs xp tonight? lets get a guild group going
+tips for {camp}? never been
+any healers around {level} want to group up?
+does anyone still need the {dungeon} quest?
+anyone know what the next good camp after {camp} is?
+@needs xp_high
+{bubbles} bubbles in, so close i can taste it
+@needs xp_mid
+halfway through the level, the middle bubbles drag
+@needs xp_low
+fresh level, empty bar, here we go again
+@needs just_leveled
+ding! {level}, finally
+@needs in_group
+in a pickup group, nice people so far
+@needs solo,outdoors
+soloing in {zone}, shout if you want company
+@needs
+
+# ---------------- Social guilds ----------------
+@kind guild
+@topic social
+@who *
+afk 10, dinner
+brb, kids are up
+brb phone
+back, what did i miss?
+anyone watch anything good lately?
+the dog wants out, brb
+my wife says hi to the guild lol
+long week at work, glad to be on
+@needs night
+up way too late again, work in 6 hours
+@needs day
+on my lunch break, just checking in
+@who Socialite
+@needs
+we should do a guild screenshot at the keep sometime
+who wants to do a guild run through all the capitals?
+@who *
+anyone remember the name of that bard who helped us last week?
+i owe whoever buffed me in town, ty stranger
+
+# ---------------- RvR guilds ----------------
+@kind guild
+@topic rvr
+@who *
+who has purge? asking for our next fight
+assist train worked well last night, lets keep it
+anyone want to practice duels? need to learn my class
+how many are on for rvr? need a headcount
+remember to bring siege gear, we always forget
+who has the best group setup for 8v8?
+stealthers, please call what you see in /gu
+@needs defending
+{enemy} on {keep}, everyone who can, get out there
+@needs attacking
+we are on {keep}, more bodies welcome
+@needs keep_won_recent
+we got {keep}! nice work everyone
+@needs relic_lost_recent
+lost {relic}, this is going to sting
+@needs relic_won_recent
+{relic} is ours, best night in ages
+@needs in_frontier
+out in the frontier, group up if you are near
+
+# ---------------- Raiding guilds ----------------
+@kind guild
+@topic raiding
+@who *
+raid at 8, bring potions and resists
+who has the most rez classes on tonight?
+need a raid leader for the next one, anyone?
+please read up on the dragon before saturday
+loot council or dice? lets vote
+who is pulling for the raid, same as last time?
+everyone set your bind before the raid please
+raid tips: stay off the walls and watch the leader
+@needs raid_won_recent
+we did it, {boss} is down!
+@needs raid_wiped_recent
+{boss} wiped us, regroup and think it over
+@needs df_ours
+@about place
+we hold darkness falls, who needs seals?
+
+# ---------------- Crafting guilds ----------------
+@kind guild
+@topic crafting
+@who *
+who is our best weaponcrafter these days?
+anyone have a tailor who can do a full suit?
+need someone to spellcraft my armor, will pay
+what does everyone charge for a {level} suit?
+anyone selling dyes cheap?
+best way to skill up fletching, anyone?
+crafting order: two bows and a quiver, who can?
+if you need potions, i know an alchemist
+who can make me a shield with our emblem on it?
+anyone tried dyeing leather black? does it look ok?
+whats the best metal to buy for skilling right now?
+
+# ---------------- Any guild ----------------
+@kind guild
+@topic general
+@who *
+anyone have a spare horse ticket?
+who is on? say hi
+guild meeting this weekend, sound good?
+anyone need help with a quest? i have time
+remember to update your guild notes
+new members, say hi when you get on
+who wants to help me level my alt this weekend?
+need a hand with my epic quest, anyone?
+@needs bag_full
+bags are bursting, anyone want some vendor trash?
+@needs just_died
+died to something i should have seen coming, lesson learned
+@needs in_capital
+in {capital} now, anyone need anything picked up?
+@needs in_dungeon
+in a dungeon, might be slow to answer
+@needs evening
+@invites ask_howareyou
+evening everyone, how was the day?

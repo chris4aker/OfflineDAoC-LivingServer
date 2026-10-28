@@ -96,6 +96,18 @@ namespace DOL.GS
             !string.IsNullOrWhiteSpace(campId) && Records.TryGetValue(campId, out Record record) &&
             record.BenchedUntilUtc > (nowUtc ?? DateTime.UtcNow);
 
+        /// <summary>
+        /// The key for one kind of monster in one region. Deaths and kills are also counted by it, so a deadly monster spread
+        /// over many camp cells is benched as a whole: in the 2026-10-27 run "rencan tri" was benched 8 times over 5 cells and
+        /// "cave fairy" 7 times over 6, three bot deaths per cell before each bench. Null without a name.
+        /// </summary>
+        public static string SpeciesKey(ushort regionId, string monsterName) =>
+            string.IsNullOrWhiteSpace(monsterName) ? null : $"species:{regionId}:{monsterName.Trim().ToLowerInvariant()}";
+
+        /// <summary>A camp is benched when its own cell is, or its monster in that region is.</summary>
+        public static bool IsBenched(string campId, ushort regionId, string monsterName, DateTime? nowUtc = null) =>
+            IsBenched(campId, nowUtc) || IsBenched(SpeciesKey(regionId, monsterName), nowUtc);
+
         public static void ResetForTests() => Records.Clear();
     }
 }

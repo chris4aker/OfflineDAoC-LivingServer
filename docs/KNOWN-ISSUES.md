@@ -87,6 +87,9 @@ meetup fix drop two no-shows (in the server log).
   - Bots don't know what you are doing beyond your words: a "gz" is answered only by a bot that just
     levelled, and other replies guess from the words alone.
   - Chat volume hasn't been tuned for very large rosters (1,000+ bots a realm).
+  - In development for Beta 1.1 (the talking update, [bot-voices/TALKING-UPDATE.md](bot-voices/TALKING-UPDATE.md)):
+    true-only lines, conversation threads, combat calls, bot tells and /lfg and /trade traffic. They're tested
+    without a running world only; its "Not checked in game yet" list is what's left.
 - **Added the 0.37c new client after installing this?** Run `INSTALL.cmd` again so the new client's
   launcher gets the Living Server tab and its gate fixes too.
 - **Versions:** Beta 1.0 is for 0.37 / 0.37b only, and the installer refuses anything else. When

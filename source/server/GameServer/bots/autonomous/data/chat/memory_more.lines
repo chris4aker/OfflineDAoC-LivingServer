@@ -1,0 +1,44 @@
+# The talking update: greetings that recall where the bot last saw the player ({place}) or the last group.
+# Kind greet, knows_player. They recall only what the bot remembers; no invented events. New writing (see docs/bot-voices).
+
+@kind greet
+@needs knows_player
+@mood friendly
+@who *
+{player}! how did {place} go?
+hey {player}, still hunting {place}?
+{player}, you make it out of {place} ok?
+oh hey {player}, last time i saw you was {place}
+{player}! did you ever finish up at {place}?
+hey {player}, been back to {place} since?
+{player}, good group at {place}, hi again
+look, its {player}. {place} was fun
+hi {player}! xp still good at {place}?
+{player}, how many levels since {place}?
+{player}! still in one piece after {place}? :)
+{player}, back from {place} i see
+hey {player}, was it {place} last time? feels like ages
+{player}! the {player_class} from {place}, hi
+hey {player}, did you stay at {place} long?
+{player}! we should do that group again
+oh hi {player}, ding since last time?
+hey {player}, our old group was a good one, hi
+hey hey {player}, {place} treat you well after i left?
+{player}, still owe you for {place}, hi
+hi {player}, i still think about that group from {place}
+{player}! not at {place} today?
+hey {player}, glad you made it out of {place}
+@who Socialite
+{player}!! i was telling everyone about {place}
+@who Leveler
+hey {player}, i went back to {place} without you, not the same xp
+@who Explorer
+{player}, find anything good past {place}?
+@mood neutral
+@who *
+{player}. {place} go alright?
+hi {player}, still around {place}?
+hey {player}, same group as {place}, right?
+@mood rival
+you again, {player_class}. {place} is not forgotten
+{player_class} from {place}... i remember that face

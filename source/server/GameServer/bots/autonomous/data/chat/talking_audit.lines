@@ -1,0 +1,347 @@
+# The talking update audit (2026-10-26): replies for player lines the reply path now reads but had nothing for.
+# A player's follow-up to a bot's own line ("which bridge?", "when?", "the one by the inn?", "how long did that take?"),
+# a player's good news ("finally got my epic"), an offer ("want some buffs?") and a request to wait ("dont rez me yet").
+# None of these may claim a fact the bot doesn't know: a "which one?" gets an honest vague answer, not an invented name.
+
+# ---- which one? (the bot can't name it, so it says so) --------------------------------------
+@kind reply
+@who *
+@answers followup_which
+cant remember the name lol
+the big one, you cant miss it
+not sure what its called
+the first one you come to
+dunno the name, sorry
+the one everyone uses
+couldnt tell you the name, i just go there
+the usual one heh
+whichever is closest honestly
+i always forget the name
+
+# ---- when? -----------------------------------------------------------------------------------
+@kind reply
+@who *
+@answers followup_when
+soon i hope
+whenever people show up
+in a bit
+not sure yet
+later tonight maybe
+once i finish here
+no set time
+when enough people are on
+
+# ---- the one by the inn? / now? / for you too? (a yes, roughly) ------------------------------
+@kind reply
+@who *
+@answers followup_confirm
+yep yep
+yeah that one
+think so
+yea
+pretty sure
+yep, thats it
+i think so anyway
+mhm, that one
+yeah, right there
+sounds right
+
+# ---- how long did that take? / how high? -----------------------------------------------------
+@kind reply
+@who *
+@answers followup_howlong
+too long lol
+a few nights
+longer than i want to admit
+dont ask heh
+a while
+couple of sessions
+way too many hours
+lost count honestly
+
+# ---- a player's good news: gz -----------------------------------------------------------------
+@kind reply
+@who *
+@answers player_goodnews
+gz!! nice
+grats on that
+nice, gz
+gz, about time
+sweet, grats
+nice one
+oh nice, gz
+grats, well earned
+woot gz
+gz gz gz
+well done, gz
+congrats
+@who Socialite
+gz!! so happy for you
+@who NoLifer
+gz, now the real grind starts
+
+# ---- an offer: buffs, help, an item ------------------------------------------------------------
+@kind reply
+@who *
+@answers player_offer
+oh ty!
+sure, ty
+ty, thats nice of you
+if its spare, sure ty
+im good, but thanks
+nah im ok, ty though
+ty, appreciate it
+sure, why not, ty
+thats kind, ty
+im ok for now, ty
+
+# ---- wait: dont rez me yet, hold the pull, wait up -------------------------------------------
+@kind reply
+@who *
+@answers player_wait
+k, holding up
+ok, holding
+will do
+k, say when
+np, waiting
+ok, ill wait
+k, ready when you are
+sure, waiting
+
+# ---- either or: more picks (the pool of 9 ran dry in an evening) -----------------------------
+@kind reply
+@who *
+@answers ask_choice
+id go with the first
+second, no question
+the first, i never regretted it
+second one, easier to level
+first one honestly
+id say the second
+first, but its close
+the second, more fun in groups
+started with the first, wish id done the second
+the first if you solo a lot
+second if you like groups
+cant go wrong either way, i did the first
+first one, everyone needs those
+the second, trust me
+
+# ---- a player's warning ("stealthers near the dock watch out", "adds!!" in /group) ----------
+@kind reply
+@who *
+@answers player_headsup
+thanks for the heads up, watching
+got it
+on it, ty
+ty, watching for them
+k careful all
+noted, ty
+eyes open
+k, ty
+
+# ---- a player's real-life remark (guild, group and tell chat) --------------------------------
+@kind reply
+@who *
+@answers player_rl_late
+get some sleep lol
+same, i should sleep too
+one more pull, right? heh
+ouch, coffee tomorrow then
+@answers player_rl_school
+go study lol
+good luck with it
+finals are the worst, gl
+study first, xp later
+@answers player_rl_food
+pizza, always
+mmm now im hungry
+chinese, easy
+dont let it get cold
+@answers player_rl_tech
+ugh, i know that feeling
+my connection is the same some nights
+nice, bet it looks great
+lag is the real enemy
+@answers player_rl_pet
+lol cats
+mine does the same
+pets have no respect for the grind
+haha, they know when you are busy
+@answers player_rl_weather
+stay warm
+ugh, same here
+sounds like a good night to stay in and play
+glad im inside lol
+@answers player_rl_media
+havent seen it yet
+no spoilers lol
+heard its good
+been meaning to
+@answers player_rl_work
+ugh, gl with it
+work, the real grind
+hope it goes ok
+long day huh
+
+# ---- closings: a plain yes to the bot's question ("ya go" to "ready to pull?") --------------
+@kind closing
+@who *
+@answers ask_yes
+cool
+ok good
+sweet
+alright
+k, on it
+good good
+ok, here we go
+perfect
+k cool
+nice, ok
+
+# ---- closings: a no ("nah not my thing", "nah im good ty") -----------------------------------
+@kind closing
+@who *
+@answers ask_no
+ah ok, np
+fair enough, np
+no worries
+ok, maybe another time
+k np
+ok then
+all good, np
+np, just checking
+
+# ---- closings: an answer to a question about the player ("since beta lol") ------------------
+@kind closing
+@who *
+@answers ask_personal
+oh cool
+heh nice
+not bad at all
+ah nice
+cool, nice
+oh wow
+ha nice
+nice, good to know
+oh neat
+nice nice
+
+# ---- an order to a groupmate ("Aldric pull the next one", "ok follow me") --------------------
+@kind reply
+@who *
+@answers player_order
+k np
+kk will try
+alright alright
+k, will try
+ok ok
+roger
+
+# ---- "wb Sigrun": the bot welcomed back ------------------------------------------------------
+@kind reply
+@who *
+@answers player_wb
+ty ty, back now
+thx, good to be back
+heh ty
+ty, missed anything?
+thanks, good to see you too
+glad to be back
+
+# ---- the player died in the bot's group (a groupmate says something) --------------------------
+@kind combat
+@topic player_down
+@who *
+@needs in_player_group
+noooo
+ouch, sorry
+rip
+that hit hard
+my bad, should have peeled it
+argh, sorry
+oh no
+that one came out of nowhere
+@needs in_player_group,can_rez
+rez coming, dont release
+hang on, ill rez you
+dont release, rezzing after this
+# ---- the holdout check: where did they go, what stats, aches from sitting --------------------
+@kind reply
+@who *
+@answers followup_whereto
+no idea, lost track of them
+looked like they headed north
+didnt see where, sorry
+toward the next keep i think
+they scattered, couldnt tell you
+not sure, i was busy not dying
+@answers followup_detail
+nothing special, but it beats what i had
+decent, not amazing
+cant remember the numbers, it was ok
+meh, vendor trash mostly
+better than mine was, thats all i know
+pretty good for the level honestly
+@answers player_rl_body
+ouch, get up and stretch a bit
+been there, take a break
+my back hates this game too
+stand up for a min, it helps
+same, this chair is killing me
+go walk around a bit, the mobs will wait
+@answers followup_specific
+eh, nothing exciting
+nothing special honestly
+just the usual stuff
+long story lol
+cant even remember now
+meh, not worth the story
+@answers followup_howmany
+a bunch
+didnt count, enough
+stopped counting after a while
+more than i wanted lol
+a few, maybe more
+too many lol
+
+# ---- a player joins a running debate (AutonomousBotDebates.TryAnswerPlayer) ----------------
+@kind reply
+@who *
+@answers debate_agreed
+see, {player} gets it
+thank you {player}
+ha, told you
+finally, someone with sense
+{player} knows whats up
+exactly my point
+see? its not just me
+ty {player}, glad someone agrees
+@answers debate_disagreed
+fair, but hear me out
+agree to disagree then
+nah {player}, ive seen it happen
+ok but have you actually tried it
+heh, we will see
+you have a point, still think im right
+lol fine, its close
+not buying it, sorry
+@answers debate_backed
+see, {player} is with me
+thank you, {player} sees it
+ha, two against one now
+{player} has it right
+@answers debate_outnumbered
+oh great, now there are two of you
+ok ok, outvoted
+lol ganging up on me now
+fine, but im still not convinced
+@answers debate_opinion
+good point {player}
+huh, didnt think of that
+{player} has a point
+thats one way to look at it
+fair enough, {player}
+interesting take
+ha, could be
+maybe, depends on the group

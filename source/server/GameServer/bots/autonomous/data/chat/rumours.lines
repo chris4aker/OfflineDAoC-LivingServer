@@ -1,0 +1,134 @@
+# True rumours (AutonomousRumours): when something real is happening, a bot hints at it in /faction ("rumour"), and
+# others react ("rumour_reply"). The code only says it when it is true. Vague, the way rumours are, but enough to act
+# on. named_up: {target} is a rare named monster that just spawned, {place} its zone. keep_thin: {keep} is an ENEMY
+# keep whose guards are mostly dead, {place} its zone, {enemy} its owners. Bots can't promise to come ("omw"), so the
+# replies react instead. Real swear words are not in the corpus (build_corpus.py BANNED). New writing.
+
+# ---- named_up: a rare named monster just spawned --------------------------------------------------------------------
+@kind rumour
+@topic named_up
+@who *
+heard {target} is up again in {place}
+someone in my guild saw {target} wandering {place}
+{target} is up in {place}, or so my guildie says
+anyone want {target}? its up in {place} supposedly
+word is {target} is back in {place}
+friend of a friend saw {target} near the road in {place}
+{target} up in {place}. go before someone else gets it
+i keep hearing {target} is roaming {place} right now
+{target} in {place}, last i heard. could be old news
+psst, {target} is up. {place}. you didnt hear it from me
+someone was shouting about {target} in {place} a minute ago
+my guildie just ran past {target} in {place}. said it was huge
+{target} is out. {place}. bring friends
+just saw a group asking about {target} in {place}, so i guess its up
+{target} is up in {place} and nobody is on it yet. allegedly
+somebody said {target} is wandering around {place}. could be a joke
+if anyone needs {target}, its up in {place}, heard it from a scout
+{target} sighting in {place}. not mine, a guildie's
+{target} is up again? in {place}? thats what they said anyway
+rumor has it {target} just popped in {place}
+who wants {target}? up in {place}, last i heard
+there is a {target} in {place} right now. or there was a few minutes ago
+a newbie in {place} is asking what the big scary thing is. pretty sure its {target}
+@who Explorer
+i know {place} well and i swear i saw {target} on the far side of it. go look
+@who Leveler
+{target} is up in {place}. i would go but i am mid grind. someone take it
+@who NoLifer
+{target} up in {place}. it doesnt spawn often, dont sleep on it
+@who Socialite
+ooh juicy news: {target} is wandering {place}! dont tell everyone. ok tell everyone
+@who *
+[heard|word is|someone said] {target} [is up|just spawned|is back] in {place}[. not sure tho|, go go|]
+[my guildie|a friend|some scout] [saw|spotted|ran into] {target} [in|wandering|roaming] {place}
+{target} [is up|spawned|is out] in {place}[. go|, if anyone wants it|. or so i hear]
+[psst|heads up|fyi], {target} [might be|is] up in {place}[. maybe|. hurry|]
+[not sure|could be wrong|dont quote me] but {target} [is up|spawned|is wandering around] in {place}
+[anyone|anybody] [want|need|going for] {target}? [its up|it spawned|heard its up] in {place}
+
+# ---- keep_thin: an ENEMY keep whose guards are mostly dead ------------------------------------------------------
+@kind rumour
+@topic keep_thin
+@who *
+scout says {keep} is wide open
+{keep} guards are mostly dead. free keep anyone?
+heard {keep} in {place} is barely defended. the {enemy} are asleep
+the {enemy} left {keep} with almost no guards. just saying
+{keep} is ripe for the taking. {place}. someone go
+my guildie rode past {keep}, said the guards are gone
+{keep} looks empty. the {enemy} must be busy somewhere else
+anyone up for {keep}? word is its wide open
+free rps at {keep}. guards are down, {enemy} are nowhere
+{keep} is naked right now. heard it from a scout
+the {enemy} forgot about {keep}. guards mostly dead
+{keep} in {place}, half the guards dead, {enemy} not around. go go go
+someone hit {keep} hard and left. guards still down
+scouts report {keep} is thin. who wants a keep tonight
+i hear {keep} has like two guards left
+{keep} is wide open and the {enemy} have no idea
+rams, people. {keep} is open
+{keep} has no guards. repeat, no guards. well, almost
+rumor: {keep} is undefended. could be a trap, but still
+grab {keep} before the {enemy} wake up. guards are down
+just heard {keep} is barely guarded. {place} anyone?
+wanna take {keep}? its basically empty
+{keep} in {place} is ours if we want it. guards are dead
+@who Daredevil
+{keep} is thin. a few of us could take it. who has the guts
+@who NoLifer
+seen {keep} this empty maybe twice. the {enemy} are slacking. go
+@who Explorer
+rode past {keep} in {place} on my way through. guards were lying all over the place
+@who *
+[scout says|word is|heard] {keep} [is wide open|is barely guarded|has almost no guards][. go go|. who is in?|]
+[the|those] {enemy} [left|forgot|abandoned] {keep}[ in {place}|]. [guards are down|almost no guards|free keep]
+{keep} [is open|looks empty|is thin][ right now| at the moment|][. someone grab it|. just saying|]
+[anyone|who] [up for|wants|feels like] {keep}? [guards are mostly dead|its wide open|the {enemy} are asleep]
+[free keep|easy keep|free rps] at {keep}[ in {place}|]. [the {enemy} are nowhere|guards are dead|hurry]
+
+# ==== rumour_reply: reactions, same topics and slots ================================================================
+
+@kind rumour_reply
+@topic named_up
+@who *
+last time that was a lie
+is that the one with the good drop?
+heard that an hour ago, probably dead by now
+that thing never stays dead
+who said? source?
+if its true im jealous of whoever gets it
+someone always says that. its never up
+{target} drops are junk anyway. ok i still want one
+it was up yesterday too. or someone lied
+i dont trust rumors about {place}
+if anyone kills {target} post what drops
+gl to whoever goes
+i went looking for {target} last time and found nothing but bugs
+@who *
+[really?|for real?|is it actually up?][ last time it was a lie|]
+[if someone|whoever] [grabs|kills|gets] it, pst
+[{target}|{target} again]? [i always miss it|tempting|my guild will lose their minds]
+[probably|bet its] [camped|dead|taken] [already|by now]
+
+@kind rumour_reply
+@topic keep_thin
+@who *
+free keep? dont tempt me
+is it really thin or is the {enemy} zerg sitting inside
+last time a scout said that we lost two groups
+ooh {keep}. been a while
+if we take {keep} i want the lord kill
+the {enemy} always come back fast to {keep}
+free rps is free rps
+nobody ever believes the scouts
+{keep} again? we took it last week and lost it the next day
+tempting. very tempting
+if its real, someone grab it before they notice
+i will believe it when i see the claim message
+the {enemy} probably moved to defend their relic
+@who *
+[free keep|easy keep|an open keep]? [stop teasing|sounds too good|my favorite words]
+[could be|smells like|probably] a trap[, the {enemy} love that|. still tempting|]
+[who|which scout|who exactly] [scouted|said] that?
+[if|when] [a group|a raid] forms for {keep}[, pst me|, pst|. pst me]

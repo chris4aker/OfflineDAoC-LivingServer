@@ -130,7 +130,9 @@ the deeper rooms are worth it if you can hold the adds
 @intent rvr
 @who *
 the frontier was busy earlier
+@needs keep_news
 i heard there was fighting near {keep}
+@needs
 the realm needs defenders more than attackers some nights
 group up before you head out there
 stealthers everywhere tonight, careful

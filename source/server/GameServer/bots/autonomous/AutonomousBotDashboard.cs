@@ -97,6 +97,8 @@ public static class AutonomousBotDashboard
         }
     }
 
+    private const int MoveAttempts = 4, MoveRetryMilliseconds = 100;
+
     private static bool Publish(bool running, string requestId)
     {
         if (Interlocked.Exchange(ref _writing, 1) != 0)
@@ -117,8 +119,25 @@ public static class AutonomousBotDashboard
             {
                 JsonSerializer.Serialize(stream, snapshot);
             }
-            File.Move(temporaryPath, FilePath, true);
-            return true;
+            // The launcher may be reading the snapshot at this moment (Windows locks it: "Access to the path is denied",
+            // 2026-10-27, docs/LOG-ERROR-BACKLOG.md). This runs on a timer thread, so wait a moment and try again.
+            for (int attempt = 1; ; attempt++)
+            {
+                try
+                {
+                    File.Move(temporaryPath, FilePath, true);
+                    return true;
+                }
+                catch (Exception exception) when (exception is IOException or UnauthorizedAccessException && attempt < MoveAttempts)
+                {
+                    Thread.Sleep(MoveRetryMilliseconds);
+                }
+                catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+                {
+                    Log.Warn($"Live bot dashboard snapshot skipped: the file stayed locked ({exception.Message})");
+                    return false;
+                }
+            }
         }
         catch (Exception exception)
         {

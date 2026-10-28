@@ -119,7 +119,9 @@ def clean_world(database: Path, policy: dict, defaults: dict) -> dict:
     tables = {row[0] for row in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     cleared = []
     extra = ["FactionAggroLevel"]   # per-character standings (clean_slate.py clears them too)
-    for table in policy["ProgressTables"] + policy["ClearTables"] + extra:
+    # The optional tables (bot memory of the player, nemeses, firsts, lines and scenes heard, rage quits) are saved
+    # progress too: 0.35 cleared them, and 0.37 must (they name the developer's own characters).
+    for table in policy["ProgressTables"] + policy.get("OptionalProgressTables", []) + policy["ClearTables"] + extra:
         if table in tables and table not in {"Guild", "GuildRank"}:
             con.execute(f'DELETE FROM "{table}"')
             cleared.append(table)
@@ -188,7 +190,7 @@ def set_edition(con: sqlite3.Connection, enabled: bool):
 
 def verify_clean(con: sqlite3.Connection, policy: dict, defaults: dict) -> dict:
     assert con.execute("PRAGMA quick_check").fetchone()[0] == "ok"
-    for table in policy["ProgressTables"] + policy["ClearTables"] + ["FactionAggroLevel"]:
+    for table in policy["ProgressTables"] + policy.get("OptionalProgressTables", []) + policy["ClearTables"] + ["FactionAggroLevel"]:
         if table in {"Guild", "GuildRank", "offline_local_options", "offline_runtime_status"}:
             continue
         exists = con.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?", (table,)).fetchone()[0]

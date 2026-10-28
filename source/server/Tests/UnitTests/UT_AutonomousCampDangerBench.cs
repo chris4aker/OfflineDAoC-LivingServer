@@ -31,6 +31,26 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void ADeadlyMonsterIsBenchedAcrossItsCampCells()
+        {
+            // Three bots die to the same monster at three different cells: no cell reaches three, the monster does.
+            string species = AutonomousCampDangerBench.SpeciesKey(200, "Rencan Tri ");
+            Assert.That(species, Is.EqualTo(AutonomousCampDangerBench.SpeciesKey(200, "rencan tri")));
+            for (int bot = 1; bot <= 3; bot++)
+            {
+                Assert.That(AutonomousCampDangerBench.RecordDeath("cell-" + bot, bot, Start.AddMinutes(bot * 10)), Is.Null);
+                TimeSpan? bench = AutonomousCampDangerBench.RecordDeath(species, bot, Start.AddMinutes(bot * 10));
+                Assert.That(bench, bot < 3 ? Is.Null : Is.EqualTo(TimeSpan.FromHours(3)));
+            }
+            DateTime later = Start.AddHours(1);
+            Assert.That(AutonomousCampDangerBench.IsBenched("cell-9", 200, "rencan tri", later), Is.True, "a fresh cell of the same monster");
+            Assert.That(AutonomousCampDangerBench.IsBenched("cell-9", 100, "rencan tri", later), Is.False, "another region");
+            Assert.That(AutonomousCampDangerBench.IsBenched("cell-9", 200, "cave fairy", later), Is.False, "another monster");
+            Assert.That(AutonomousCampDangerBench.SpeciesKey(200, " "), Is.Null);
+            Assert.That(AutonomousCampDangerBench.IsBenched("cell-9", 200, null, later), Is.False);
+        }
+
+        [Test]
         public void AProductiveCampIsNeverBenchedForOrdinaryDeaths()
         {
             Kills("young lynx", 150, Start);

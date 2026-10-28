@@ -1,0 +1,171 @@
+# Bonds (AutonomousBotBonds): gamebots remember the bots they grouped with, and now and then say so in /faction
+# ("bond"), with a reaction or two ("bond_reply"). {other} is the other gamebot, {other_class} its class (lower case),
+# {place} where it happened (a zone or a meeting point). friends: two good runs together made {other} a friend.
+# reunion: a new party just formed with an old friend in it. flake: {other} never reached the meeting point while this
+# bot waited (often a bad route, so the grumbling stays light). Only true events are told. New writing.
+
+# ---- friends: the speaker now counts {other} as a friend ------------------------------------------------------------
+@kind bond
+@topic friends
+@who *
+another clean run with {other}. thats two now. adding to my friends list
+{other} is officially on my friends list. best {other_class} ive grouped with in weeks
+if you ever get a group invite from {other}, take it. trust me
+two runs with {other} and not one wipe. keeping that {other_class}
+{other} knows how to play a {other_class}. rare these days
+just finished another run with {other}. we work well together
+{other} for realm hero. ok not really but good group
+note to self: always invite {other}
+{other} and i should just duo forever at this point
+cant believe i almost declined {other}'s invite the first time
+great group again with {other} in {place}. same time tomorrow?
+{other} never lets me die. best {other_class} in the realm
+some groups just click. {other}, you know who you are
+added {other} to friends. dont make me regret it lol
+grouped with {other} twice now, smooth both times. thats rare
+whoever taught {other} to play {other_class}, thank you
+{other}! good runs. next time im bringing more pots
+second great run with {other}. im starting to think its not luck
+@who Socialite
+{other} is my new favorite person. two runs, zero drama
+already planning the next run with {other}. who else wants in?
+@who Leveler
+{other} pulls fast and doesnt waste time. my kind of {other_class}
+two runs with {other} and i got most of a level. grouping with them again
+@who NoLifer
+played with a lot of {other_class}s since launch. {other} is one of the good ones
+@who Daredevil
+{other} didnt even blink when i pulled the whole camp. keeper
+@who Crafter
+{other} if you ever need anything made, its on the house
+@who Explorer
+{other} is up for any dungeon i suggest. finally a real adventurer
+@who *
+[{other}|{other} the {other_class}] is [a keeper|good people|solid]. [two runs, no wipes|grouping again soon|added to friends]
+
+# ---- reunion: a new party just formed with an old friend in it ------------------------------------------------------
+@kind bond
+@topic reunion
+@who *
+the old crew is back. grouped with {other} again
+look who it is, {other} in my group again
+{other} again! this is going to be a good run
+back with {other}. the camp doesnt stand a chance
+{other} and me again. place your bets on how long the camp lasts
+good to see you {other}. same plan as last time?
+grouped with {other} again. no wipes allowed this time either
+oh nice, {other} is in. we're going to be fine
+{other} said yes to my invite. good night ahead
+regrouping with {other}. been too long
+{other} again, my favorite {other_class}
+got {other} in the group. i can relax a little now
+{other}, out hunting with you again. like old times
+ahh {other}. last time we cleared the whole camp twice
+the band is back together. {other}, lets go
+{other} back in my group means i might actually not die tonight
+@who Socialite
+{other} is in my group!! the gang is back
+everyone say hi to {other}, my favorite {other_class}
+@who Leveler
+{other} again. good, this means fast xp
+@who NoLifer
+{other} again. some things dont change since launch
+@who Daredevil
+{other} is back. time to pull bigger
+@who Crafter
+{other} is back in my group. bringing extra pots this time
+@who Explorer
+{other} again. wonder where we'll end up this time
+@who *
+[{other} again|back with {other}|{other} rejoined]. [good times|lets go|this will be fun|the old crew]
+
+# ---- flake: {other} never reached the meeting point --------------------------------------------------------------
+@kind bond
+@topic flake
+@who *
+waited at {place} for {other}. never showed
+{other} said yes to the invite and then vanished. classic
+hey {other}, the meeting point was {place}, not wherever you are
+we sat at {place} for ages waiting on {other}. went without them
+note to self: {other} accepts invites and doesnt come
+{other} is either lost or asleep. we left without you
+group of us waiting at {place} and {other} just... didnt come
+if anyone sees {other}, tell them the group left
+{other} got the invite, got the directions, got lost i guess
+waited for {other}. kept waiting. left
+next time {other} invites me im asking where they are first
+{other} must be stuck on a rock somewhere near {place}
+{other}, we waited. we really did
+the {other_class} {other} never made it to {place}. we went anyway
+somebody give {other} a map please
+{other}, if your horse died on the way, i forgive you. barely
+was supposed to have a {other_class} tonight. {other} never showed
+ok {other}, that's twice now. or it feels like twice
+@who Socialite
+aww {other} never made it to {place}. hope theyre ok
+@who Leveler
+lost good xp time waiting for {other} at {place}. not again
+@who NoLifer
+been playing forever and people still dont show up. {other}, this means you
+@who Daredevil
+didnt need {other} anyway. pulled without them
+@who Crafter
+{other} missed the run. more loot for the rest of us i guess
+@who Explorer
+maybe {other} found something more interesting than {place}. still rude
+@who *
+[{other}|{other} the {other_class}] [never showed|got lost|went missing][ at {place}|]. [we left|went without them|typical]
+
+# ==== bond_reply: reactions, same topics and slots ==================================================================
+
+@kind bond_reply
+@topic friends
+@who *
+{other} is good people
+grouped with {other} once, can confirm
+nice, a good group is hard to find
+save some of {other} for the rest of us
+need a {other_class} too, {other} busy tomorrow?
+good groups make the grind
+i want a {other} for my group
+glad someone is having good runs tonight
+{other}? never heard of them. now i want to
+gratz on finding a keeper
+a good {other_class} is worth gold
+hold on to that one
+@who *
+[nice|gratz|good find][, {other} is solid|, keep them|]
+
+@kind bond_reply
+@topic reunion
+@who *
+have fun you two
+dont wipe
+the old crew, love it
+say hi to {other} for me
+good luck out there
+some groups just work
+save some xp for the rest of us
+{other} is in? lucky
+@who *
+[gl|have fun|good hunting][ out there| tonight|]
+[nice|cool|good], [the old crew|a real group|good group]
+
+@kind bond_reply
+@topic flake
+@who *
+{other} did that to me too
+happens. the roads are a mess
+maybe their horse broke
+i got lost once on the way to {place}. once
+{other} probably died to a wandering add
+been there. waited an hour once
+some people just accept every invite
+mark them down. we all have a list
+at least you went without them
+happens to everyone. ok not to me
+{other} owes you a drink
+probably linkdead, give them a break
+@who *
+[lol|ouch|classic][ {other}|]
+[happens|been there|it happens][, at least you went|, next time|]

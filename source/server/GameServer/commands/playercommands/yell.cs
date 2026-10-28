@@ -88,6 +88,7 @@ namespace DOL.GS.Commands
 
 			string message = string.Join(" ", args, 1, args.Length - 1);
 			client.Player.Yell(message);
+			AutonomousBeggars.OnPlayerAsked(client.Player, message, "yell");
 			client.Player.TempProperties.SetProperty(YELL_TICK, client.Player.CurrentRegion.Time);
 			return;
 		}
