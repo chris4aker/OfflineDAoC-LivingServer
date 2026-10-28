@@ -48,6 +48,7 @@ namespace LivingServerSetup
         public string Hint;
         public bool CanForce;
         public bool CanFreshCopy;
+        public bool CanChangeFolder;   // the folder was the problem: offer to go back and pick another
         public string GamePath;
         public string CacheDir;
         public string Note;            // something the player should know on the done page
@@ -322,6 +323,7 @@ namespace LivingServerSetup
                 r.Hint = f.Hint;
                 r.CanForce = f.CanForce;
                 r.CanFreshCopy = f.CanFreshCopy;
+                r.CanChangeFolder = f.CanChangeFolder;
                 r.GamePath = gamePath;
                 MarkFailed();
                 RestoreAfterFailedUpdate(r);
@@ -375,7 +377,7 @@ namespace LivingServerSetup
 
         sealed class StepFailed : Exception
         {
-            public string Hint; public bool CanForce; public bool CanFreshCopy;
+            public string Hint; public bool CanForce; public bool CanFreshCopy; public bool CanChangeFolder;
             public StepFailed(string message, string hint = null) : base(message) { Hint = hint; }
         }
 
@@ -399,13 +401,13 @@ namespace LivingServerSetup
             {
                 var dest = gamePath;
                 if (dest.Length > 100 && o.NewClient)
-                    throw new StepFailed("That folder's path is too long for the new client (" + dest.Length + " characters, 100 at most).", "Choose a shorter folder, like C:\\Games\\OfflineDAoC.");
+                    throw new StepFailed("That folder's path is too long for the new client (" + dest.Length + " characters, 100 at most).", "Choose a shorter folder, like C:\\Games\\OfflineDAoC.") { CanChangeFolder = true };
                 var pf = new[] { Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), Environment.GetFolderPath(Environment.SpecialFolder.Windows) };
                 if (pf.Any(p => !string.IsNullOrEmpty(p) && dest.StartsWith(p.TrimEnd('\\') + "\\", StringComparison.OrdinalIgnoreCase)))
-                    throw new StepFailed("The game can't live under Program Files or Windows: it saves your world in its own folder.", "Choose a folder like C:\\Games\\OfflineDAoC.");
+                    throw new StepFailed("The game can't live under Program Files or Windows: it saves your world in its own folder.", "Choose a folder like C:\\Games\\OfflineDAoC.") { CanChangeFolder = true };
                 if (GameScanner.IsGame(dest) && GameScanner.Inspect(dest).IsBase && MarkerExists(dest))
                     throw new StepFailed("Offline DAoC " + GameScanner.Inspect(dest).Edition + " is already installed in " + dest + ".",
-                        "Go back and choose that game on the first page to add Living Server to it, or choose a new folder for a second game.");
+                        "Go back and choose that game on the first page to add Living Server to it, or choose a new folder for a second game.") { CanChangeFolder = true };
                 // A folder Setup itself started unpacking into, stopped by a crash or power cut before the downloader
                 // marked it finished: the downloader won't continue it, so move it aside (never delete) and start over
                 // from the verified parts, which are still in the cache.
@@ -418,7 +420,14 @@ namespace LivingServerSetup
                     pendingNote = "An unfinished copy from an earlier attempt was moved aside to " + aside + ". Delete it when you like.";
                 }
                 if (Directory.Exists(dest) && Directory.EnumerateFileSystemEntries(dest).Any() && !ResumableNewInstall(dest))
-                    throw new StepFailed("The folder " + dest + " already has files in it, and they aren't an unfinished Offline DAoC install.", "Choose a new folder: Setup never installs over files it didn't put there.");
+                {
+                    // A finished game whose download cache was cleaned up has no marker any more (walkthrough 2026-10-28: the
+                    // message called a complete 0.37b game "not an unfinished Offline DAoC install").
+                    if (GameScanner.IsGame(dest))
+                        throw new StepFailed("Offline DAoC " + GameScanner.Inspect(dest).Edition + " is already installed in " + dest + ".",
+                            "Go back and choose that game on the first page to add Living Server to it, or choose a new folder for a second game.") { CanChangeFolder = true };
+                    throw new StepFailed("The folder " + dest + " already has files in it, and they aren't an unfinished Offline DAoC install.", "Choose a new folder: Setup never installs over files it didn't put there.") { CanChangeFolder = true };
+                }
             }
             var need = NeededBytes();
             var root = Path.GetPathRoot(o.NewInstall ? gamePath : setupDir);

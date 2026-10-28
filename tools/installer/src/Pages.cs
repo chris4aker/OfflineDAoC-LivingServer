@@ -39,9 +39,20 @@ namespace LivingServerSetup
 
         public static string DefaultFolder()
         {
-            foreach (var drive in new[] { "C:\\" })
-                if (Directory.Exists(drive)) return Path.Combine(drive, "Games", "OfflineDAoC", "playable-v" + Payload.BaseRelease + "b");
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Games", "OfflineDAoC", "playable-v" + Payload.BaseRelease + "b");
+            string parent = Directory.Exists("C:\\") ? Path.Combine("C:\\", "Games", "OfflineDAoC")
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Games", "OfflineDAoC");
+            return FreeFolder(Path.Combine(parent, "playable-v" + Payload.BaseRelease + "b"));
+        }
+
+        /// <summary>The folder itself when it's free, else name-2, name-3...: a new install never proposes a game you
+        /// already have (walkthrough 2026-10-28: it offered the existing playable-v0.37b).</summary>
+        public static string FreeFolder(string path)
+        {
+            bool Taken(string p) { try { return Directory.Exists(p) && Directory.EnumerateFileSystemEntries(p).Any(); } catch { return true; } }
+            if (!Taken(path)) return path;
+            for (int n = 2; n < 100; n++)
+                if (!Taken(path + "-" + n)) return path + "-" + n;
+            return path;
         }
     }
 
@@ -399,7 +410,7 @@ namespace LivingServerSetup
                 if (d.ShowDialog(Form) != DialogResult.OK) return;
                 var p = d.SelectedPath;
                 if (GameScanner.IsGame(p) || Directory.Exists(p) && Directory.EnumerateFileSystemEntries(p).Any())
-                    p = Path.Combine(p, "playable-v" + Payload.BaseRelease + (editionClassic?.Checked == true ? "" : "b"));
+                    p = Wizard.FreeFolder(Path.Combine(p, "playable-v" + Payload.BaseRelease + (editionClassic?.Checked == true ? "" : "b")));
                 folder.Text = p;
             }
         }
@@ -739,6 +750,12 @@ namespace LivingServerSetup
                     b.Click += (s, e) => { var x = Retry(o, r); x.ForceLivingServer = true; form.Wizard.Install(x); };
                     bx += 212;
                 }
+                if (r.CanChangeFolder)
+                {
+                    var b = Put(new GoldButton("CHOOSE ANOTHER FOLDER", true), bx, by, 240, 42);
+                    b.Click += (s, e) => form.Wizard.Prepare();
+                    bx += 252;
+                }
                 if (r.CanFreshCopy)
                 {
                     var b = Put(new GoldButton("FRESH COPY + MY CHARACTERS", true), bx, by, 280, 42);
@@ -792,8 +809,12 @@ namespace LivingServerSetup
                 {
                     Directory.Delete(dir, true);
                     Log.Write("Deleted the downloaded setup files in " + dir);
-                    // and the "Offline DAoC setup files" folder itself once nothing else is in it
+                    // and the "Offline DAoC setup files" folder itself once nothing else is in it. Setup's own copy of the
+                    // downloader goes too (each run writes it again); anything else keeps the folder (walkthrough 2026-10-28).
                     var parent = Path.GetDirectoryName(dir);
+                    var downloader = Path.Combine(parent, "Get-OfflineDAoC.ps1");
+                    if (File.Exists(downloader) && Directory.GetFileSystemEntries(parent).Length == 1)
+                        File.Delete(downloader);
                     if (Directory.Exists(parent) && Directory.GetFileSystemEntries(parent).Length == 0)
                     {
                         Directory.Delete(parent);

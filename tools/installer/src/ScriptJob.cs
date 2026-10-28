@@ -90,6 +90,8 @@ namespace LivingServerSetup
         }
 
         static readonly Regex CurlBar = new Regex(@"^[#\s=O\-]*\s*\d{1,3}(\.\d)?%\s*$");
+        // Bar fragments without a percentage ("#=#=#", "##O#-#"): curl's progress, not errors (walkthrough 2026-10-28).
+        static readonly Regex CurlBarOnly = new Regex(@"^[#\s=O\-]+$");
 
         void Emit(StringBuilder sb, bool err)
         {
@@ -108,7 +110,7 @@ namespace LivingServerSetup
                 if (m.Success) { LastError = m.Groups[1].Value.Trim(); sawRecord = true; }
                 else if (!sawRecord && !line.StartsWith("At ") && !line.TrimStart().StartsWith("+")) LastError = line.Trim();
             }
-            if (!(err && CurlBar.IsMatch(line))) Log.Write((err ? "! " : "  ") + line);
+            if (!(err && (CurlBar.IsMatch(line) || CurlBarOnly.IsMatch(line)))) Log.Write((err ? "! " : "  ") + line);
             // a handler's mistake must never stop the reading: PowerShell would block on a full pipe for ever
             try { Line?.Invoke(line, err); } catch (Exception e) { Log.Write("(output handler: " + e.Message + ")"); }
         }
