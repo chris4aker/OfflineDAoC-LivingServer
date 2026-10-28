@@ -62,6 +62,14 @@ namespace LivingServerSetup
     /// <summary>Runs an install plan step by step on a worker thread. The UI reads the public state on Changed.</summary>
     internal sealed class Engine
     {
+        /// <summary>A download error that means the connection went away, not that something is wrong with the game. Pure.</summary>
+        public static bool LooksLikeNetworkDrop(string message) =>
+            message != null && (message.IndexOf("could not be resolved", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                message.IndexOf("connection was reset", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                message.IndexOf("unable to connect", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                message.IndexOf("timed out", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                message.IndexOf("connection was closed", StringComparison.OrdinalIgnoreCase) >= 0);
+
         sealed class Step
         {
             public StepId Id;
@@ -521,7 +529,9 @@ namespace LivingServerSetup
                     if (code != 0)
                     {
                         var msg = job.LastError ?? "The official downloader stopped with code " + code + ".";
-                        var f = new StepFailed(msg, "Finished downloads are kept: click Try again and it continues where it stopped.");
+                        var f = new StepFailed(msg, LooksLikeNetworkDrop(msg)
+                            ? "The internet connection dropped while downloading. Finished downloads are kept: when you're back online, click Try again and it continues where it stopped."
+                            : "Finished downloads are kept: click Try again and it continues where it stopped.");
                         if (filesChanged)
                         {
                             f.CanFreshCopy = true;
