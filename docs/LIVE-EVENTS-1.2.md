@@ -125,6 +125,20 @@ as server properties like the other `bot_living_*` switches (proposed).
 
 Each milestone ships only after its in-game check, reported separately from automated tests.
 
+## Also in 1.2: a historical server
+
+Chosen by the owner on 2026-10-29.
+- **What:** you pick an old server, and the launcher imports its guilds and characters from a roster file: names,
+  classes, races and emblems.
+- **Precedent:** the fan server Bindstone (r/daoc, October 2026) runs on bots that are the real Igraine guilds and
+  characters from the old Camelot Herald.
+- **Opt-in, not bundled:** those are real people's names, so the download keeps the 2003-style generator
+  ([research/BOT-NAMES-2003.md](research/BOT-NAMES-2003.md)) and the roster stays a separate file.
+- **Open:**
+  - where the data comes from (archived Herald pages; asking Bindstone's author is one route);
+  - how imported guilds tie into realm guilds and the war-effort chapter (a historical guild's banner in the realm
+    total).
+
 ## Open questions for the owner
 
 1. Which town or keep in each realm should see the first invasion? A mid-level frontier town or border keep is the
