@@ -65,6 +65,11 @@ namespace DOL.GS
         private long _nextPlanTick;
         private long _nextMeetupPlanTick;
         private long _nextTargetSearchTick;
+        // The ranged-pull check before the camp point has its own throttle. It used to share _nextTargetSearchTick with WorkCamp:
+        // whenever the check ran and declined (no firing point in reach, the five minutes of ordinary pulls after failed ranged
+        // pulls), it re-armed the throttle, WorkCamp found it closed on every turn and returned without pulling, and the party
+        // stood at its camp (2026-10-29: seven bots 30 minutes with no kill, five more 3 minutes and counting).
+        private long _nextRangedPullCheckTick;
         private long _nextFailedSoloPullRoutePruneTick;
         private readonly Dictionary<ushort, SavageBotCombatPolicy.FailedSoloPullRoute> _failedSoloPullRoutes = new();
         private long _nextFailedSavageMeleePullPruneTick;
@@ -777,9 +782,9 @@ namespace DOL.GS
                 if (campDistance <= 2000 && _groupDirective?.Puller == bot &&
                     AutonomousBotGroupCoordinator.UsesDefensivePullGroup(bot.Group) &&
                     AutonomousBotGroupCoordinator.CanInitiateNewPull(bot) &&
-                    GameLoop.GameLoopTime >= _nextTargetSearchTick)
+                    GameLoop.GameLoopTime >= _nextRangedPullCheckTick)
                 {
-                    _nextTargetSearchTick = GameLoop.GameLoopTime + 1500;
+                    _nextRangedPullCheckTick = GameLoop.GameLoopTime + 1500;
                     GameNPC nearbyGoal = FindCampTarget(bot);
                     if (nearbyGoal != null && AutonomousDefensivePull.TryBeginFlyingHandoff(bot, nearbyGoal))
                     {
