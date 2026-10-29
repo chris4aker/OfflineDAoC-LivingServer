@@ -250,6 +250,41 @@ namespace DOL.GS
                     Log.Warn($"REALM_RAID_SCHEDULE_FAILED event={chosen.Id} realm={realm} online={online} reason=\"{reason}\"");
             }
         }
+        /// <summary>
+        /// GM test (/lstest raid): the realm's automatic raid opens now, sized to its online level 50s like a scheduled one
+        /// (forced raids from the launcher need 300). <paramref name="dragon"/> picks the realm's dragon, else a random
+        /// available raid. Returns false with <paramref name="reason"/>.
+        /// </summary>
+        public static bool StartAutomaticForTest(eRealm realm, bool dragon, out string reason)
+        {
+            lock (Sync)
+            {
+                int online = OnlineLevelFifty(realm);
+                if (Raids.Values.Any(r => r.Definition.Realm == realm))
+                {
+                    reason = "your realm already has a raid running (stop it from the launcher's Realm Events tab)";
+                    return false;
+                }
+                if (online < RealmRaidRecruitmentPolicy.MinimumScaledBots)
+                {
+                    reason = $"only {online} level 50 gamebot(s) of your realm are free for a raid; at least {RealmRaidRecruitmentPolicy.MinimumScaledBots} are needed";
+                    return false;
+                }
+                Definition chosen = Definitions.Where(d => d.Realm == realm && Available(d.Id) && (!dragon || d.Id.StartsWith("dragon-", StringComparison.Ordinal)))
+                    .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
+                if (chosen == null)
+                {
+                    reason = dragon ? "your realm's dragon is not up (respawning or on cooldown)" : "no raid encounter of your realm is up";
+                    return false;
+                }
+                if (!Start(chosen.Id, realm, out reason))
+                    return false;
+                reason = $"{chosen.Name}: {Raids[chosen.Id].Required} of {online} free level 50s must gather (at least 15 minutes)";
+                Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={realm} online={online} required={Raids[chosen.Id].Required} forced=lstest");
+                return true;
+            }
+        }
+
         public static readonly Definition[] Definitions =
         [
             new("dragon-albion", "Golestandt", eRealm.Albion, 1, "AlbGolestandt", 200),

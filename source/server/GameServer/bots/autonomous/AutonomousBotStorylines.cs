@@ -41,7 +41,7 @@ public sealed class OfflineBotStorylineRecord : DataObject, ILivingServerRow
 /// "nah {name_b} did nothing wrong"): the one they backed thanks them by tell, the other tells them off, and the last
 /// episode plays that side's ending (scene "_4a" or "_4b"; plain "_4" when nobody took a side).
 /// Scenes are "story_&lt;arc&gt;_&lt;episode&gt;[a|b]" with topic "story_&lt;arc&gt;" (storylines.lines). Progress is saved
-/// (offline_bot_storylines), one realm plays at most one episode every 75 minutes, an arc's episodes are 6-20 hours apart,
+/// (offline_bot_storylines), one realm plays at most one episode every 45 minutes, an arc's episodes are 3-10 hours apart,
 /// and a finished arc starts again with a new pair a week later.
 /// </summary>
 public static class AutonomousBotStorylines
@@ -50,10 +50,12 @@ public static class AutonomousBotStorylines
 
     public static bool On => Properties.BOT_LIVING_STORYLINES;
 
-    public static readonly TimeSpan RealmRest = TimeSpan.FromMinutes(75);
-    public static readonly TimeSpan EpisodeGapMin = TimeSpan.FromHours(6), EpisodeGapSpread = TimeSpan.FromHours(14);
+    // Pacing (owner 2026-10-28, for a player on a few hours a week): one episode per realm every 45 minutes at most,
+    // episodes 3-10 hours apart, a new arc every 2 hours (they were 75 minutes, 6-20 hours and 4 hours).
+    public static readonly TimeSpan RealmRest = TimeSpan.FromMinutes(45);
+    public static readonly TimeSpan EpisodeGapMin = TimeSpan.FromHours(3), EpisodeGapSpread = TimeSpan.FromHours(7);
     public static readonly TimeSpan RestartAfter = TimeSpan.FromDays(7);
-    public static readonly TimeSpan NewArcGap = TimeSpan.FromHours(4);
+    public static readonly TimeSpan NewArcGap = TimeSpan.FromHours(2);
     public static readonly TimeSpan AbandonAfter = TimeSpan.FromDays(3);
 
     internal static readonly LivingServerTable<string, OfflineBotStorylineRecord> Stories =
@@ -196,17 +198,24 @@ public static class AutonomousBotStorylines
 
     /// <summary>
     /// The realm's next due episode, with its two protagonists, or null. The protagonists of a new arc are cast from the
-    /// online bots that fit the first episode's roles A and B; an arc whose pair is offline waits, and is abandoned (to
-    /// start again with a new pair) once it has waited three days.
+    /// free bots (<paramref name="online"/>) that fit the first episode's roles A and B. A running arc plays when its pair is
+    /// in the game (<paramref name="present"/>: alive, even if fighting; the scene waits for a busy speaker); an arc whose
+    /// pair is offline waits, and is abandoned (to start again with a new pair) once it has waited three days.
     /// </summary>
-    public static Next TryNext(eRealm realm, GameBot[] online, DateTime nowUtc, Random random)
+    /// <remarks>
+    /// In-game check 2026-10-28: the pair used to have to be out of combat at the very moment a scene was chosen, and
+    /// gamebots grinding a camp almost never both are, so running arcs hardly ever got their next episode.
+    /// </remarks>
+    public static Next TryNext(eRealm realm, GameBot[] online, DateTime nowUtc, Random random, GameBot[] present = null)
     {
         if (!On || online == null || online.Length < 4)
             return null;
         if (LastEpisodeUtc.TryGetValue(realm, out DateTime last) && nowUtc - last < RealmRest)
             return null;
         var arcs = Arcs(AutonomousBotVoices.Corpus?.Scenes);
-        var byId = online.ToDictionary(bot => (long)bot.DatabaseID);
+        var byId = online.Concat(present ?? []).GroupBy(bot => (long)bot.DatabaseID).ToDictionary(g => g.Key, g => g.First());
+        // An arc whose first episode never played may recast its pair from the free bots.
+        bool Free(long id) => online.Any(bot => bot.DatabaseID == id);
         foreach (var (arc, episodes) in arcs.OrderBy(_ => random.Next()))
         {
             string key = KeyOf(realm, arc);
@@ -225,7 +234,7 @@ public static class AutonomousBotStorylines
                     Abandon(key, "its pair stayed offline");
                 continue;
             }
-            if (row == null || row.Episode <= 1 && (!byId.ContainsKey(row.BotA) || !byId.ContainsKey(row.BotB)))
+            if (row == null || row.Episode <= 1 && (!Free(row.BotA) || !Free(row.BotB)))
             {
                 // A new arc (or one whose first episode never played): only every few hours per realm.
                 if (NextNewArcUtc.TryGetValue(realm, out DateTime newAt) && nowUtc < newAt)
@@ -282,17 +291,47 @@ public static class AutonomousBotStorylines
 
     /// <summary>
     /// GM test (/lstest storyline): the realm's rests are lifted and every unfinished arc is due, so the next /faction scene
-    /// is a storyline episode (a new arc when none is running). Returns how many arcs were already under way.
+    /// is a storyline episode (a new arc when none is running). Returns how many arcs can play now; <paramref name="note"/>
+    /// says what else happened. An arc already due keeps its due time, so the three-day abandon clock isn't reset. When
+    /// every arc is either running with its pair out of the game or finished this week, the one that has waited longest is
+    /// dropped so a new pair can be cast (in-game check 2026-10-28: all four arcs were waiting for offline bots).
     /// </summary>
-    public static int MakeDueNow(eRealm realm)
+    public static int MakeDueNow(eRealm realm, out string note)
+    {
+        note = null;
+        LastEpisodeUtc.TryRemove(realm, out _);
+        NextNewArcUtc.TryRemove(realm, out _);
+        DateTime now = DateTime.UtcNow;
+        string due = now.AddMinutes(-1).ToString("O");
+        OfflineBotStorylineRecord[] open = Stories.Where(row => row.Realm == (int)realm && string.IsNullOrEmpty(row.DoneUtc));
+        foreach (OfflineBotStorylineRecord row in open.Where(row => ParseUtc(row.NextAtUtc) > now))
+            Stories.Change(row.StoryKey, () => row, r => r.NextAtUtc = due);
+        static bool InGame(long id) => AutonomousBotRegistry.TryGet(id, out GameBot bot) && bot.IsAlive &&
+                                       bot.ObjectState == GameObject.eObjectState.Active;
+        OfflineBotStorylineRecord[] waiting = open.Where(row => row.Episode > 1 && (!InGame(row.BotA) || !InGame(row.BotB))).ToArray();
+        int playable = open.Length - waiting.Length;
+        bool anyFree = Arcs(AutonomousBotVoices.Corpus?.Scenes).Keys.Any(arc =>
+            !Stories.TryGet(KeyOf(realm, arc), out OfflineBotStorylineRecord row) ||
+            !string.IsNullOrEmpty(row.DoneUtc) && now - ParseUtc(row.DoneUtc) >= RestartAfter);
+        if (playable == 0 && !anyFree && waiting.Length > 0)
+        {
+            OfflineBotStorylineRecord stuck = waiting.OrderBy(row => ParseUtc(row.NextAtUtc)).First();
+            Abandon(stuck.StoryKey, "GM test: its pair is out of the game");
+            note = $"the {stuck.Arc} storyline was dropped (its two bots are out of the game) so a new one can start";
+        }
+        else if (waiting.Length > 0)
+            note = $"{waiting.Length} storyline(s) wait for bots that are out of the game";
+        return playable;
+    }
+
+    /// <summary>
+    /// A new play session (AutonomousLivingWorld): the realm's rests are lifted, so the session's first /faction scene is a
+    /// storyline episode when one is due or a new arc can be cast. Episode gaps are kept.
+    /// </summary>
+    public static void OnSessionStart(eRealm realm)
     {
         LastEpisodeUtc.TryRemove(realm, out _);
         NextNewArcUtc.TryRemove(realm, out _);
-        string due = DateTime.UtcNow.AddMinutes(-1).ToString("O");
-        OfflineBotStorylineRecord[] open = Stories.Where(row => row.Realm == (int)realm && string.IsNullOrEmpty(row.DoneUtc));
-        foreach (OfflineBotStorylineRecord row in open)
-            Stories.Change(row.StoryKey, () => row, r => r.NextAtUtc = due);
-        return open.Length;
     }
 
     /// <summary>A bot already a protagonist of an unfinished arc (one drama at a time).</summary>

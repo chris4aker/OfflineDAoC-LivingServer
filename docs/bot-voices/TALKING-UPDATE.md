@@ -295,9 +295,11 @@ not there brings up an online player's reputation ("isnt Kaelith the one who sol
 `bot_living_storylines` (on by default; `AutonomousBotStorylines`). Four four-episode dramas per realm, played in
 /faction through the debate engine: `killsteal`, `guildsplit`, `romance` and `ninjaloot` (`storylines.lines`, 24 scenes).
 The same two bots (roles A and B, saved in `offline_bot_storylines`) play every episode and name each other; the other
-roles are cast fresh. A realm plays at most one episode every 75 minutes, an arc's episodes are 6-20 hours apart, a new
-arc starts at most every four hours, and a finished arc starts again with a new pair a week later. An arc waits while its
-pair is offline and is dropped after three days. The two protagonists are never replaced by stand-ins: an episode waits up
+roles are cast fresh. A realm plays at most one episode every 45 minutes, an arc's episodes are 3-10 hours apart, a new
+arc starts at most every two hours, and a finished arc starts again with a new pair a week later. The first /faction scene
+of a play session (5-10 minutes after you log in, or come back after half an hour away) is an episode when one can play.
+An arc plays while its pair is in the game, even fighting; it waits while one of them is offline and is dropped after
+three days. The two protagonists are never replaced by stand-ins: an episode waits up
 to three minutes for a busy one, and ends unfinished (to play again later) if one leaves.
 
 Take a side by naming one of the two in /faction during an episode or up to ten minutes after it ("Aelwyn is right",
@@ -311,14 +313,14 @@ The one you backed thanks you by tell, the other tells you off, and the last epi
 
 `bot_living_characters` (on by default).
 
-- **Gold spammers** (`AutonomousGoldSpammers`): 20-50 minutes after you log in, then every 1-2.5 hours, a throwaway name
-  of gibberish ("Xkqhoaa") posts three to six gold-selling ads in /faction for a made-up site. Every site has a zero or a
+- **Gold spammers** (`AutonomousGoldSpammers`): 12-30 minutes into a play session, then every 1-2.5 hours, a throwaway
+  name of gibberish ("Xkqhoaa") posts five to ten gold-selling ads in /faction for a made-up site. Every site has a zero or a
   three for a letter ("c0m", "n 3 t"), so none is a real address. Bots react ("reported", "/ignore"), then it is
   "banned" and the realm cheers. A /send to the spammer while it is around gets more spam back. It is only a name in
   /faction, not a character in the world.
 - **Roleplayers** (`AutonomousRoleplayers`): about 4% of the Socialite and Explorer personalities (about 1.6% of all
   bots) roleplay. Everything they say, in every channel, comes out in thee and thou ("art thou well? aye, forsooth").
-  Every 20-45 minutes one posts an in-character line in /faction; other bots mock them ("/rp off plz") and they answer in
+  The first comes 6-18 minutes into a play session, then every 20-45 minutes one posts an in-character line in /faction; other bots mock them ("/rp off plz") and they answer in
   character.
 
 `spammers.lines` and `roleplayers.lines`: about 3,000 lines.

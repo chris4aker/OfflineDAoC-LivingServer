@@ -291,7 +291,7 @@ public static class AutonomousPlayerDeeds
         if (target != null) slots["target"] = target;
         if (count != null) slots["count"] = count;
         if (enemy != null) slots["enemy"] = enemy;
-        Tell(witness, player, TopicOf(kind), slots, 120_000 + Random.Shared.Next(480_000), 3);
+        Tell(witness, player, TopicOf(kind), slots, 120_000 + Random.Shared.Next(480_000), TellTries);
 
         (string Nickname, string Kind)? earned = Earned(player.Name, row.NamedSolo, row.RvrKills, row.SillyDeaths, row.NicknameKind);
         if (earned is { } nickname)
@@ -304,7 +304,7 @@ public static class AutonomousPlayerDeeds
             Log.Info($"PLAYER_NICKNAME player=\"{player.Name}\" nickname=\"{nickname.Nickname}\"");
             var named = SlotsOf(player, row);
             named["nickname"] = nickname.Nickname;
-            Tell(witness, player, "nickname", named, 15 * 60_000 + Random.Shared.Next(10 * 60_000), 3);
+            Tell(witness, player, "nickname", named, 15 * 60_000 + Random.Shared.Next(10 * 60_000), TellTries);
         }
     }
 
@@ -327,7 +327,7 @@ public static class AutonomousPlayerDeeds
         slots["count"] = "5";
         slots["enemy"] = AutonomousLivingServer.RealmPlural(player.Realm == eRealm.Albion ? eRealm.Midgard : eRealm.Albion);
         Log.Info($"PLAYER_DEED player=\"{player.Name}\" kind={TopicOf(kind)} target=\"{target}\" witness=\"{witness.Name}\" forced=lstest");
-        Tell(witness, player, TopicOf(kind), slots, 5_000, 3);
+        Tell(witness, player, TopicOf(kind), slots, 5_000, TellTries);
         why = witness.Name;
         return true;
     }
@@ -359,18 +359,40 @@ public static class AutonomousPlayerDeeds
         return at.GetNPCsInRadius(WitnessRadius).OfType<GameBot>().Where(Fits).OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
     }
 
-    /// <summary>The witness tells /faction after a delay (retried while a debate runs), and one to three bots react.</summary>
+    /// <summary>How many times a deed is retried while its witness is busy or a /faction scene plays.</summary>
+    public const int TellTries = 12;
+
+    /// <summary>
+    /// The wait before trying a deed again: a witness that is only fighting or casting is back in a few seconds, a /faction
+    /// scene takes minutes. Pure. (In-game check 2026-10-28: the witness was mid-pull, and the old two-minute wait made the
+    /// deed land long after the moment.)
+    /// </summary>
+    public static int RetryDelayMs(bool sceneRunning) => sceneRunning ? 60_000 : 15_000;
+
+    /// <summary>
+    /// The witness tells /faction after a delay (retried while it is busy or a debate runs), and one to three bots react.
+    /// A witness that left the game is replaced by another gamebot near the player, if one is there.
+    /// </summary>
     private static void Tell(GameBot witness, GamePlayer player, string topic, Dictionary<string, string> slots, int delayMs, int tries)
     {
         eRealm realm = player.Realm;
-        AutonomousLivingServer.Later(witness, delayMs, () => AutonomousLivingServer.IsSpeaker(witness), () =>
+        // On the player's timer, so a witness that leaves the game doesn't take the deed with it.
+        AutonomousLivingServer.Later(player, delayMs, null, () =>
         {
             if (!AutonomousBotChatCoordinator.HasFactionAudience(realm))
                 return;
-            if (!AutonomousLivingServer.CanTalk(witness) || AutonomousBotDebates.IsRunning(realm))
+            if (!AutonomousLivingServer.IsSpeaker(witness))
+            {
+                // In-game check 2026-10-28: the witness ported away and logged out before it could tell anyone.
+                witness = WitnessOf(player, null);
+                if (witness == null)
+                    return;
+            }
+            bool scene = AutonomousBotDebates.IsRunning(realm);
+            if (!AutonomousLivingServer.CanTalk(witness) || scene)
             {
                 if (tries > 1)
-                    Tell(witness, player, topic, slots, 120_000, tries - 1);
+                    Tell(witness, player, topic, slots, RetryDelayMs(scene), tries - 1);
                 return;
             }
             if (!AutonomousBotVoices.TryEventLine(witness, "deed", out string line, topic, slots))

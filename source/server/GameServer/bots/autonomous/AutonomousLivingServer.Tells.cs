@@ -42,11 +42,33 @@ public static partial class AutonomousLivingServer
     public static bool FitsHelpOffer(int botLevel, int playerLevel, bool sameZone, double distance) =>
         sameZone && playerLevel < 20 && botLevel >= playerLevel + 8 && distance <= 4_000;
 
-    /// <summary>GM test (/lstest tell): the player's tell gap is skipped, so a bot starts a tell within a few seconds if one fits.</summary>
-    public static void TellSoon(GamePlayer player)
+    /// <summary>
+    /// GM test (/lstest tell): a bot that fits starts a tell to the player now. Returns the bot and the topic, or null with
+    /// <paramref name="why"/>. (In-game check 2026-10-28: the old "on the next scan" version said nothing when no bot fit.)
+    /// </summary>
+    public static (GameBot Bot, string Topic)? TellNow(GamePlayer player, out string why)
     {
-        lock (NextTellTo)
-            NextTellTo[player.Name] = 0;
+        why = null;
+        if (!TellsOn)
+        {
+            why = "bot tells are off (bot_voices_tells)";
+            return null;
+        }
+        if (!player.IsAlive || player.InCombat)
+        {
+            why = "you are dead or in combat";
+            return null;
+        }
+        if (StartTell(player, GameLoop.GameLoopTime) is { } started)
+        {
+            lock (NextTellTo)
+                NextTellTo[player.Name] = GameLoop.GameLoopTime + NextTellGap(false, Random.Shared);
+            return started;
+        }
+        why = "no bot fits: friends (a good group or a rez) tell only from afar, a guildmate needs a bot guild, " +
+              $"and a duo offer needs you solo, level 5 or more, and a solo bot within 2 levels of you within 6,000 units" +
+              (player.Level < 5 ? $" (you are level {player.Level})" : string.Empty);
+        return null;
     }
 
     private static void TryStartTell(GamePlayer player, long now)
@@ -66,6 +88,12 @@ public static partial class AutonomousLivingServer
         }
         if (!player.IsAlive || player.InCombat)
             return;
+        StartTell(player, now);
+    }
+
+    /// <summary>The best bot that has a line starts its tell to the player. Returns it and the topic, or null when none fits.</summary>
+    private static (GameBot Bot, string Topic)? StartTell(GamePlayer player, long now)
+    {
         foreach ((GameBot bot, string topic, IReadOnlyDictionary<string, string> slots, string[] flags) in TellCandidates(player))
         {
             if (!AutonomousBotVoices.TryLine(bot, "tell", out VC.Picked picked, topic: topic, slots: slots, flags: flags))
@@ -75,8 +103,9 @@ public static partial class AutonomousLivingServer
             // Only a duo offer is answered with how to group; "need directions?" is a real question (review 2026-10-26).
             string invites = topic == "group_offer" && picked.Line?.Invites == "ask" ? AskGroupInvite : picked.Line?.Invites;
             Later(bot, 0, () => CanTalk(bot) && player.ObjectState == GameObject.eObjectState.Active, () => Tell(bot, player, picked.Text, invites));
-            return;
+            return (bot, topic);
         }
+        return null;
     }
 
     private static readonly System.Text.RegularExpressions.Regex HereWords = new(

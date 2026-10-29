@@ -16,7 +16,11 @@ public static partial class AutonomousLivingServer
     public const long GreetPairCooldownMs = 45 * 60_000;
     public const long GreetPlayerCooldownMs = 3 * 60_000;
     public const long GossipRealmCooldownMinMs = 30 * 60_000;
-    public const int GreetRange = 700;
+    /// <summary>
+    /// A bot greets a player it remembers within /say range. (It was 700, past the 512 a /say carries: a bot between the two
+    /// picked the greeting, used up the player's three-minute greeting cooldown, and its line was dropped unheard.)
+    /// </summary>
+    public const int GreetRange = WorldMgr.SAY_DISTANCE;
 
     private static readonly Dictionary<(long BotId, string Player), long> LastGroupedNote = new();
     private static readonly Dictionary<(long BotId, string Player), long> LastGreeted = new();
@@ -104,11 +108,52 @@ public static partial class AutonomousLivingServer
         }
     }
 
-    /// <summary>GM test (/lstest gossip): a bot that likes a player of the realm mentions them in /faction on the next scan.</summary>
-    public static void GossipSoon(eRealm realm)
+    /// <summary>
+    /// GM test (/lstest greet): a remembered bot near the player greets them now. Returns the bot, or null with
+    /// <paramref name="why"/>. (In-game check 2026-10-28: the old "on the next scan" version gave no word when nothing fit.)
+    /// </summary>
+    public static GameBot GreetNow(GamePlayer player, out string why)
     {
-        lock (NextGossip)
-            NextGossip[realm] = 0;
+        why = null;
+        if (!MemoryOn)
+        {
+            why = "bot memory is off (bot_living_memory)";
+            return null;
+        }
+        GreetSoon(player);
+        GameBot[] known = player.GetNPCsInRadius(GreetRange).OfType<GameBot>()
+            .Where(bot => bot.Realm == player.Realm && Memories.TryGet((bot.DatabaseID, player.Name), out OfflineBotMemoryRecord row) &&
+                          row.Grouped + row.Rezzed + row.Abused > 0).ToArray();
+        if (known.Length == 0)
+        {
+            why = $"no bot within {GreetRange} units remembers you (/lstest remember on one, then stand by it)";
+            return null;
+        }
+        if (!player.IsAlive || player.InCombat)
+        {
+            why = "you are dead or in combat";
+            return null;
+        }
+        GameBot greeter = TryGreet(player, GameLoop.GameLoopTime);
+        if (greeter == null)
+            why = $"{known[0].Name} remembers you but is busy (fighting, casting, dead or in your group)";
+        return greeter;
+    }
+
+    /// <summary>GM test (/lstest gossip): a bot that likes the player mentions them in /faction now. Returns the bot, or null with <paramref name="why"/>.</summary>
+    public static GameBot GossipNow(GamePlayer player, out string why)
+    {
+        if (!MemoryOn)
+        {
+            why = "bot memory is off (bot_living_memory)";
+            return null;
+        }
+        if (AutonomousBotDebates.IsRunning(player.Realm))
+        {
+            why = "a /faction scene is playing; try again when it ends";
+            return null;
+        }
+        return GossipAbout(player, out why);
     }
 
     public static bool TryRecall(GameBot bot, GamePlayer player, out OfflineBotMemoryRecord row)
@@ -178,11 +223,11 @@ public static partial class AutonomousLivingServer
         }
     }
 
-    private static void TryGreet(GamePlayer player, long now)
+    private static GameBot TryGreet(GamePlayer player, long now)
     {
         lock (LastGreeted)
             if (LastGreetOfPlayer.TryGetValue(player.Name, out long last) && now - last < GreetPlayerCooldownMs)
-                return;
+                return null;
         foreach (GameBot bot in player.GetNPCsInRadius(GreetRange).OfType<GameBot>())
         {
             if (!CanTalk(bot) || bot.Realm != player.Realm || bot.Group != null && bot.Group == player.Group ||
@@ -210,8 +255,9 @@ public static partial class AutonomousLivingServer
                 if (line != null)
                     Speak(bot, Channel.Say, line);
             });
-            return;
+            return bot;
         }
+        return null;
     }
 
     /// <summary>Now and then a bot that likes you mentions you in /faction (never one standing next to you).</summary>
@@ -235,23 +281,43 @@ public static partial class AutonomousLivingServer
             }
             if (AutonomousBotDebates.IsRunning(realm))
                 continue;
-            GamePlayer subject = players[Random.Shared.Next(players.Count)];
-            OfflineBotMemoryRecord[] friends = Memories.Where(row => string.Equals(row.PlayerName, subject.Name, StringComparison.OrdinalIgnoreCase) &&
-                                                                     MoodOf(row) == "friendly" && row.Grouped + row.Rezzed >= 2);
-            foreach (OfflineBotMemoryRecord row in friends.OrderBy(_ => Random.Shared.Next()))
-            {
-                if (!AutonomousBotRegistry.TryGet(row.BotId, out GameBot bot) || !CanTalk(bot) ||
-                    bot.CurrentRegion == subject.CurrentRegion && bot.IsWithinRadius(subject, WorldMgr.SAY_DISTANCE * 2))
-                    continue;
-                // Lines about a rez need a rez this bot remembers (in-game check 2026-10-18).
-                var flags = new List<string> { "knows_player" };
-                if (AutonomousBotGuildSocial.CountsAsGuildless(subject.Guild)) flags.Add("player_guildless");
-                if (row.Rezzed > 0) flags.Add("player_rezzed_me");
-                if (AutonomousBotVoices.TryEventLine(bot, "gossip", out string line, slots: MemorySlots(row, subject),
-                        flags: flags.ToArray(), mood: "friendly"))
-                    Speak(bot, Channel.Faction, line);
-                break;
-            }
+            GossipAbout(players[Random.Shared.Next(players.Count)], out _);
         }
+    }
+
+    /// <summary>
+    /// A bot that likes the player (two good groups or rezzes), is free and isn't standing next to them, mentions them in
+    /// /faction. Returns the bot, or null with <paramref name="why"/> (for /lstest gossip).
+    /// </summary>
+    private static GameBot GossipAbout(GamePlayer subject, out string why)
+    {
+        why = null;
+        OfflineBotMemoryRecord[] friends = Memories.Where(row => string.Equals(row.PlayerName, subject.Name, StringComparison.OrdinalIgnoreCase) &&
+                                                                 MoodOf(row) == "friendly" && row.Grouped + row.Rezzed >= 2);
+        if (friends.Length == 0)
+        {
+            why = "no bot likes you enough yet (two good groups or rezzes; /lstest remember)";
+            return null;
+        }
+        foreach (OfflineBotMemoryRecord row in friends.OrderBy(_ => Random.Shared.Next()))
+        {
+            if (!AutonomousBotRegistry.TryGet(row.BotId, out GameBot bot) || !CanTalk(bot) ||
+                bot.CurrentRegion == subject.CurrentRegion && bot.IsWithinRadius(subject, WorldMgr.SAY_DISTANCE * 2))
+                continue;
+            // Lines about a rez need a rez this bot remembers (in-game check 2026-10-18).
+            var flags = new List<string> { "knows_player" };
+            if (AutonomousBotGuildSocial.CountsAsGuildless(subject.Guild)) flags.Add("player_guildless");
+            if (row.Rezzed > 0) flags.Add("player_rezzed_me");
+            if (AutonomousBotVoices.TryEventLine(bot, "gossip", out string line, slots: MemorySlots(row, subject),
+                    flags: flags.ToArray(), mood: "friendly"))
+            {
+                Speak(bot, Channel.Faction, line);
+                return bot;
+            }
+            why = $"{bot.Name} had no gossip line that fits";
+            return null;
+        }
+        why = $"the {friends.Length} bot(s) that like you are offline, busy, or within {WorldMgr.SAY_DISTANCE * 2} units of you (they greet you instead)";
+        return null;
     }
 }

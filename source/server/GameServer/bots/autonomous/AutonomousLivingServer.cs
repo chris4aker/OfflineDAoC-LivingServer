@@ -254,8 +254,8 @@ public static partial class AutonomousLivingServer
         }
     }
 
-    /// <summary>Runs an action on the bot's timer after a delay, if the condition still holds then.</summary>
-    internal static void Later(GameBot bot, int delayMs, Func<bool> stillValid, Action action)
+    /// <summary>Runs an action on the bot's (or player's) timer after a delay, if it is still in the game and the condition still holds then.</summary>
+    internal static void Later(GameObject bot, int delayMs, Func<bool> stillValid, Action action)
     {
         if (bot == null)
             return;

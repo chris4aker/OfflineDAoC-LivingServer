@@ -124,9 +124,15 @@ public static class AutonomousRumours
         var slots = new Dictionary<string, string> { ["target"] = named.Name, ["place"] = named.CurrentZone.Description };
         LastRumourAt.TryRemove(player.Realm, out _);
         about = $"{named.Name} (level {named.Level}) in {named.CurrentZone.Description}";
+        // Say's reasons, told apart (in-game check 2026-10-28: "no bot had a line" was shown while a scene was playing).
+        if (AutonomousBotDebates.IsRunning(player.Realm))
+        {
+            about += ": a /faction scene is playing; try again when it ends";
+            return false;
+        }
         if (!Say(player.Realm, "named_up", slots, GameLoop.GameLoopTime))
         {
-            about += ": no bot had a line for it";
+            about += ": no free bot of your realm had a line for it";
             return false;
         }
         Log.Info($"RUMOUR_NAMED realm={GlobalConstants.RealmToName(player.Realm)} target=\"{named.Name}\" zone=\"{named.CurrentZone.Description}\" forced=lstest");

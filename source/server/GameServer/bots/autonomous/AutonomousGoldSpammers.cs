@@ -23,7 +23,9 @@ public static class AutonomousGoldSpammers
 
     public static bool On => Properties.BOT_LIVING_CHARACTERS;
 
-    public const long FirstWaveMinMs = 20 * 60_000, FirstWaveSpreadMs = 30 * 60_000;
+    public const long FirstWaveMinMs = 12 * 60_000, FirstWaveSpreadMs = 18 * 60_000;
+    /// <summary>Ads in a wave before the ban: 5-10, 18-48 seconds apart (it was 3-6, gone before anyone noticed).</summary>
+    public const int AdsMin = 5, AdsSpread = 6;
     public const long WaveMinMs = 60 * 60_000, WaveSpreadMs = 90 * 60_000;
 
     private sealed class Wave
@@ -99,6 +101,13 @@ public static class AutonomousGoldSpammers
         return true;
     }
 
+    /// <summary>A new play session (AutonomousLivingWorld): the first wave comes 12-30 minutes in.</summary>
+    public static void OnSessionStart(eRealm realm, long now)
+    {
+        if (!Waves.ContainsKey(realm))
+            NextWaveAt[realm] = now + FirstWaveMinMs + Random.Shared.Next((int)FirstWaveSpreadMs);
+    }
+
     /// <summary>Starts, runs and bans the spam waves (AutonomousLivingWorld.Pulse, once a second).</summary>
     public static void Pulse(long now)
     {
@@ -120,7 +129,7 @@ public static class AutonomousGoldSpammers
             string name;
             do name = SpammerName(Random.Shared);
             while (AutonomousBotRegistry.TryGetByName(name, out _) || ClientService.Instance.GetPlayerByExactName(name) != null);
-            Waves[realm] = new Wave { Name = name, Site = FakeSite(Random.Shared), AdsLeft = 3 + Random.Shared.Next(4), NextAt = now };
+            Waves[realm] = new Wave { Name = name, Site = FakeSite(Random.Shared), AdsLeft = AdsMin + Random.Shared.Next(AdsSpread), NextAt = now };
             Log.Info($"GOLD_SPAMMER_START realm={GlobalConstants.RealmToName(realm)} name=\"{name}\"");
         }
     }

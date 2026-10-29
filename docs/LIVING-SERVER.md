@@ -51,7 +51,7 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
   - you insulting it in chat (the chat model's "abuse" intent).
 - Its mood toward you follows from that: friendly, neutral, or cool after insults.
 - What it does with the memory:
-  - **Greets you** when you pass within about 700 units: at most one greeting every 3 minutes, and
+  - **Greets you** when you pass within /say range (about 500 units): at most one greeting every 3 minutes, and
     the same bot at most every 45 minutes. Groupmates don't greet.
   - Sometimes **thanks you for an old rez or a good group**, naming the place.
   - **Answers you by name** (most of the time) when you talk near it, in `/faction`, or by its
@@ -316,16 +316,17 @@ through the part's own code, lines and logging, in your realm and around you.
 | Command | What happens |
 |---|---|
 | `/lstest list` | Every part, on or off |
-| `/lstest storyline`, `debate`, `dunce` | The next /faction scene starts within seconds: a storyline episode, any debate, or a dunce rage quit |
+| `/lstest storyline`, `debate`, `dunce` | The next /faction scene starts within seconds: a storyline episode, any debate, or a dunce rage quit. When every storyline is waiting for bots that are out of the game, `storyline` drops the one that has waited longest so a new one starts |
 | `/lstest spammer`, `roleplayer`, `rumour` | A gold spammer starts; a roleplayer speaks; a bot tells the realm about a rare named up in your region |
-| `/lstest tell` | A bot that fits starts a tell to you |
+| `/lstest tell` | A bot that fits starts a tell to you now, or you're told why none fits |
 | `/lstest memory` | What every bot remembers about you |
 | `/lstest remember` | Your target (or the nearest gamebot) remembers two good groups with you; walk away and back to be greeted |
-| `/lstest greet`, `gossip` | A remembered bot near you greets you; a bot that likes you mentions you in /faction |
+| `/lstest greet`, `gossip` | A remembered bot near you greets you; a bot that likes you mentions you in /faction. Each happens now, or tells you why not |
 | `/lstest deed <solo, group, streak, ganked, silly, fell>` | A bot near you tells /faction it saw you do that (your reputation counts don't change) |
 | `/lstest holiday <name, off>` | Bots treat today as that holiday until `off` or a restart |
-| `/lstest leeroy` | The next realm raid has a Leeroy (start one from the launcher's Realm Events tab) |
+| `/lstest leeroy` | The next realm raid has a Leeroy (start one with `/lstest raid dragon`) |
 | `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once |
+| `/lstest raid [dragon]` | Your realm's automatic raid opens now, sized to its free level 50s (at least 40; raids from the launcher need 300) |
 
 ## Tests
 

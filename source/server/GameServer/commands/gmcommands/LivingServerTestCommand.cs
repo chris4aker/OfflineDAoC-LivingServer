@@ -21,8 +21,9 @@ namespace DOL.GS.Commands;
     "/lstest greet | gossip - a remembered bot near you greets you; a bot that likes you mentions you in /faction",
     "/lstest deed <solo|group|streak|ganked|silly|fell> - a bot near you tells the realm it saw that",
     "/lstest holiday <name|off> - bots treat today as that holiday (newyear valentines stpatricks aprilfools easter midsummer halloween thanksgiving christmas)",
-    "/lstest leeroy - the next realm raid has a Leeroy; start one from the launcher's Realm Events tab",
-    "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once")]
+    "/lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid",
+    "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once",
+    "/lstest raid [dragon] - your realm's automatic raid opens now, sized to its level 50s (launcher raids need 300)")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     public void OnCommand(GameClient client, string[] args)
@@ -38,7 +39,9 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 List(client);
                 return;
             case "storyline":
-                int open = AutonomousBotStorylines.MakeDueNow(realm);
+                int open = AutonomousBotStorylines.MakeDueNow(realm, out string storyNote);
+                if (storyNote != null)
+                    Say(client, char.ToUpper(storyNote[0]) + storyNote[1..] + ".");
                 Scene(client, realm, null, open > 0 ? $"the next episode of {open} storyline(s) under way" : "a new storyline's first episode");
                 return;
             case "debate":
@@ -64,8 +67,9 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                     Say(client, AutonomousRumours.TellNow(gm, out string about) ? $"A bot tells /faction about {about}." : $"No rumour: {about}.");
                 return;
             case "tell":
-                AutonomousLivingServer.TellSoon(gm);
-                Say(client, "A bot that fits (a friend, a guildmate, a bot of your level near you) starts a tell within about 5 seconds, if one fits. Stand still, out of combat.");
+                Say(client, AutonomousLivingServer.TellNow(gm, out why) is { } tell
+                    ? $"{tell.Bot.Name} sends you a tell now ({tell.Topic.Replace('_', ' ')})."
+                    : $"No tell: {why}.");
                 return;
             case "memory":
                 Memory(client, gm);
@@ -74,12 +78,14 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 Remember(client, gm);
                 return;
             case "greet":
-                AutonomousLivingServer.GreetSoon(gm);
-                Say(client, "A bot that remembers you, within 700 units and not in your group, greets you within about 5 seconds.");
+                Say(client, AutonomousLivingServer.GreetNow(gm, out why) is GameBot greeter
+                    ? $"{greeter.Name} greets you in /say within a few seconds."
+                    : $"No greeting: {why}.");
                 return;
             case "gossip":
-                AutonomousLivingServer.GossipSoon(realm);
-                Say(client, "A bot that likes you (two good groups or rezzes) and is not next to you mentions you in /faction within about 5 seconds.");
+                Say(client, AutonomousLivingServer.GossipNow(gm, out why) is GameBot gossip
+                    ? $"{gossip.Name} mentions you in /faction."
+                    : $"No gossip: {why}.");
                 return;
             case "deed":
                 Deed(client, gm, arg);
@@ -98,8 +104,13 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 else
                 {
                     AutonomousRaidLeeroy.ForceNextRaid();
-                    Say(client, "The next realm raid to form has a Leeroy. Start a dragon or dungeon raid from the launcher's Realm Events tab; he charges once part of the raid has gathered (or use /lstest leeroy now).");
+                    Say(client, "The next realm raid to form has a Leeroy. Start one with /lstest raid dragon (or from the launcher's Realm Events tab); he charges once part of the raid has gathered (or use /lstest leeroy now).");
                 }
+                return;
+            case "raid":
+                Say(client, AutonomousRealmRaid.StartAutomaticForTest(realm, arg == "dragon", out why)
+                    ? $"Raid opened: {why}. Watch the launcher's Realm Events tab."
+                    : $"No raid: {why}.");
                 return;
             default:
                 DisplaySyntax(client);
