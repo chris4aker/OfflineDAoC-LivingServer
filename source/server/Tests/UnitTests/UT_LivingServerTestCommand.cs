@@ -73,5 +73,16 @@ namespace DOL.GS.Tests
             // It was 700: a bot past the 512 a /say carries used up the greeting and nobody heard it.
             Assert.That(AutonomousLivingServer.GreetRange, Is.LessThanOrEqualTo(WorldMgr.SAY_DISTANCE));
         }
+
+        [Test]
+        public void ALeeroyJumpsThePullWhenTheRaidArrivesAllAtOnce()
+        {
+            // Overnight check 2026-10-29: Crystal Cave went from 1 to 52 at the muster in ten seconds; he never charged.
+            Assert.That(AutonomousRaidLeeroy.ShouldCharge(52, 49, 10_000, 0, false), Is.False, "the old rule: all there, so no charge");
+            Assert.That(AutonomousRaidLeeroy.JumpsThePull(52, 49, 0, false), Is.True);
+            Assert.That(AutonomousRaidLeeroy.JumpsThePull(30, 49, 0, false), Is.False, "not all there: his usual rule decides");
+            Assert.That(AutonomousRaidLeeroy.JumpsThePull(52, 49, 1, false), Is.False, "never after a wipe");
+            Assert.That(AutonomousRaidLeeroy.JumpsThePull(52, 49, 0, true), Is.False, "never while regrouping");
+        }
     }
 }

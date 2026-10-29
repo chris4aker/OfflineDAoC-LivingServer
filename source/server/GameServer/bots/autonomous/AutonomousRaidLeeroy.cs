@@ -53,6 +53,14 @@ public static class AutonomousRaidLeeroy
         !regrouping && failedAttempts == 0 && musterMilliseconds >= EarliestMusterMilliseconds &&
         mustered < needed && mustered >= Math.Max(FewestFollowers, needed / 4);
 
+    /// <summary>
+    /// The raid reached the muster all at once, so the moment "part of it is there" never came: he jumps the pull instead,
+    /// a first attempt with the whole muster there. Pure. (Overnight check 2026-10-29: the Crystal Cave raid rolled a Leeroy,
+    /// went from 1 to 52 raiders at Xanxicar in ten seconds and engaged as usual, so he never charged.)
+    /// </summary>
+    public static bool JumpsThePull(int mustered, int needed, int failedAttempts, bool regrouping) =>
+        !regrouping && failedAttempts == 0 && mustered >= needed && mustered >= FewestFollowers;
+
     /// <summary>A dragon raid at its staging: half the raid there, not all, after three minutes. Pure.</summary>
     public static bool ShouldChargeStaging(int present, int required, long stagingMilliseconds) =>
         stagingMilliseconds >= EarliestStagingMilliseconds && present < required &&

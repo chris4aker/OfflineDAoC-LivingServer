@@ -80,7 +80,11 @@ internal static class BotCharacterGenerator
         [3] = ["", "ae", "el", "in", "or"],
     };
 
-    public static Identity Generate(int realm, ISet<string> reservedNames, bool allowSluaghbinder = true)
+    /// <summary>
+    /// A new bot. Its name is three in four in the 2003 style and one in four a lore name (OfflineDaoc.Shared.EraBotNames has
+    /// the mix and the research); <paramref name="rejected"/> is the server's invalid-names check (EraBotNames.LoadRejected).
+    /// </summary>
+    public static Identity Generate(int realm, ISet<string> reservedNames, bool allowSluaghbinder = true, Func<string, bool> rejected = null)
     {
         int gender = Random.Shared.Next(1, 3);
         // The "no custom class" edition (0.33, 0.34, 0.35; classes/enable_sluaghbinder = False) never rolls class 63.
@@ -88,6 +92,17 @@ internal static class BotCharacterGenerator
         Choice choice = pool[Random.Shared.Next(pool.Length)];
         var race = choice.Races[Random.Shared.Next(choice.Races.Length)];
         var parts = Names[(realm, gender)];
+        string[] loreBridges = NameBridges[realm];
+        OfflineDaoc.Shared.EraBotNames.Style style = OfflineDaoc.Shared.EraBotNames.PickStyle(Random.Shared);
+        foreach (OfflineDaoc.Shared.EraBotNames.Style tried in new[] { style, OfflineDaoc.Shared.EraBotNames.Style.Invented })
+        {
+            string era = OfflineDaoc.Shared.EraBotNames.Generate(tried, realm, gender == 2, choice.ClassName, Random.Shared,
+                reservedNames.Contains, rejected,
+                () => Normalize(parts.Starts[Random.Shared.Next(parts.Starts.Length)] + parts.Middles[Random.Shared.Next(parts.Middles.Length)] +
+                                loreBridges[Random.Shared.Next(loreBridges.Length)] + parts.Ends[Random.Shared.Next(parts.Ends.Length)]));
+            if (era != null && reservedNames.Add(era))
+                return new(era, realm, gender, choice.ClassId, choice.ClassName, race.Id, race.Name);
+        }
         string[] bridges = NameBridges[realm];
         for (int attempt = 0; attempt < 1024; attempt++)
         {

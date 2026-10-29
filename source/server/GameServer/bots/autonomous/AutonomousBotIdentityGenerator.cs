@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OfflineDaoc.Shared;
 
 namespace DOL.GS
 {
@@ -118,7 +119,7 @@ namespace DOL.GS
             realmChoices = ActiveChoices(realmChoices);
             ClassChoice classChoice = realmChoices[random.Next(realmChoices.Length)];
             eRace race = classChoice.Races[random.Next(classChoice.Races.Length)];
-            string name = GenerateUniqueName(realm, gender, reservedNames, random);
+            string name = GenerateUniqueName(realm, gender, classChoice.CharacterClass, reservedNames, random);
             return new Identity(name, realm, gender, classChoice.CharacterClass, race);
         }
 
@@ -140,7 +141,7 @@ namespace DOL.GS
             random ??= Random.Shared;
             eRace race = choice.Races[random.Next(choice.Races.Length)];
             return new Identity(
-                GenerateUniqueName(realm, gender, reservedNames, random),
+                GenerateUniqueName(realm, gender, characterClass, reservedNames, random),
                 realm,
                 gender,
                 characterClass,
@@ -167,7 +168,41 @@ namespace DOL.GS
             Choices.Values.SelectMany(value => value)
                 .FirstOrDefault(choice => choice.CharacterClass == characterClass)?.Races ?? Array.Empty<eRace>();
 
-        private static string GenerateUniqueName(eRealm realm, eGender gender, ISet<string> reservedNames, Random random)
+        /// <summary>
+        /// A free name: three in four in the 2003 style (made-up, compound, joke, first name, class joke, stretched), one in
+        /// four a lore name (OfflineDaoc.Shared.EraBotNames has the mix and the research behind it).
+        /// </summary>
+        private static string GenerateUniqueName(eRealm realm, eGender gender, eCharacterClass characterClass, ISet<string> reservedNames, Random random)
+        {
+            EraBotNames.Style style = EraBotNames.PickStyle(random);
+            bool female = gender == eGender.Female;
+            Func<string, bool> rejected = name =>
+            {
+                try { return GameServer.Instance?.PlayerManager?.InvalidNames?[name] ?? false; }
+                catch (Exception) { return false; }
+            };
+            foreach (EraBotNames.Style tried in new[] { style, EraBotNames.Style.Invented })
+            {
+                string name = EraBotNames.Generate(tried, (int)realm, female, characterClass.ToString(), random,
+                    candidate => reservedNames != null && reservedNames.Contains(candidate), rejected,
+                    () => LoreCandidate(realm, gender, random));
+                if (name != null && (reservedNames == null || reservedNames.Add(name)))
+                    return name;
+            }
+            return GenerateLoreName(realm, gender, reservedNames, random);
+        }
+
+        /// <summary>One of the realm's old syllable names (Gisenalora, Berismund), not checked for being free.</summary>
+        private static string LoreCandidate(eRealm realm, eGender gender, Random random)
+        {
+            var parts = NameParts[(realm, gender)];
+            string[] bridges = NameBridges[realm];
+            return Normalize(parts.Starts[random.Next(parts.Starts.Length)] + parts.Middles[random.Next(parts.Middles.Length)] +
+                             bridges[random.Next(bridges.Length)] + parts.Ends[random.Next(parts.Ends.Length)]);
+        }
+
+        /// <summary>A free syllable lore name (the pre-1.1 generator), falling back to every combination.</summary>
+        private static string GenerateLoreName(eRealm realm, eGender gender, ISet<string> reservedNames, Random random)
         {
             var parts = NameParts[(realm, gender)];
             string[] bridges = NameBridges[realm];

@@ -376,11 +376,12 @@ namespace DOL.GS
                             Log.Info($"REALM_RAID_SHORT_START event={raid.Definition.Id} present={present} required={raid.Required} " +
                                      $"recruited={raid.Support.Length} minutes={(now - raid.Created) / 60_000}");
                         }
-                        // A dragon raid's Leeroy: half the raid is there, not all, and he goes; the raid goes in after him.
+                        // A dragon raid's Leeroy: half the raid is there, not all, and he goes; the raid goes in after him. A raid
+                        // that is ready before that moment came still has him: he jumps its pull.
                         GameBot leeroy = null;
                         GameLiving[] staged = null;
-                        if (!ready && raid.LeeroyRolled && !raid.LeeroyDone && !raid.Definition.IsDungeon && DragonLanded(raid) &&
-                            AutonomousRaidLeeroy.GoesNow(AutonomousRaidLeeroy.ShouldChargeStaging(present, raid.Required, now - raid.Created), present))
+                        if (raid.LeeroyRolled && !raid.LeeroyDone && !raid.Definition.IsDungeon && DragonLanded(raid) &&
+                            (ready || AutonomousRaidLeeroy.GoesNow(AutonomousRaidLeeroy.ShouldChargeStaging(present, raid.Required, now - raid.Created), present)))
                         {
                             raid.LeeroyDone = true;
                             staged = StagedBots(raid);

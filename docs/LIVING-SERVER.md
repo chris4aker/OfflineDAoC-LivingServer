@@ -265,12 +265,24 @@ The lines are in `data/chat/holidays.lines`; the calendar is `AutonomousHolidays
 ### Leeroy in raids (`bot_living_leeroy`)
 One end-game raid in twenty (dungeon raids and dragons) has a raider who can't wait. While the raid musters for its
 final encounter, once a quarter of the raid is there but not all of it (half, at a dragon), he yells
-"LEEEEROOOOOOY JENKINS!" and charges in alone. The boss is fighting now, so the raid goes in after him with whoever is
+"LEEEEROOOOOOY JENKINS!" and charges in alone (a raid that arrives all at once gets him too: he jumps its pull). The boss is fighting now, so the raid goes in after him with whoever is
 there; a few raiders react in /say ("oh my god he just ran in", "stick to the plan!!") and one tells /faction. The
 raid's own rules take it from there: a wipe still regroups and tries again. After the raid a raider tells /faction how
 it went ("thanks a lot ..." or "cant believe that worked"). He is a damage dealer, never a healer or support class, and
 usually a Daredevil or No-lifer. Never on a retry after a wipe. Logs `RAID_LEEROY_ROLLED`, `RAID_LEEROY`,
 `REALM_EXPEDITION_LEEROY` (dungeons) and `REALM_RAID_LEEROY_START` (dragons).
+
+### Bot names (always on)
+New bots are named the way a 2003 server's players named themselves:
+- **Three in four in the 2003 style:**
+  - short made-up names (Grizlas-style);
+  - English compounds (Souleater-style);
+  - jokes and puns, everyday first names, class or race jokes, and the odd stretched name (Droooood).
+- **One in four lore names:** the realm's old syllable names, or a real Old English, Norse or Irish name.
+- **Never:** a word players say in chat (a bot named "Axe" would answer "anyone got an axe?"), a name the server's
+  invalid-names list rejects, pop culture, or a joke from after 2003.
+- **Who gets them:** bots made by the launcher's + buttons and by the server. Bots you already have keep their names.
+- **Details:** the research and the mix are in [research/BOT-NAMES-2003.md](research/BOT-NAMES-2003.md).
 
 ## New client (0.36c)
 

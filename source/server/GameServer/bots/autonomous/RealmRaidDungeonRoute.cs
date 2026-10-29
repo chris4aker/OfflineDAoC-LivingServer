@@ -507,9 +507,11 @@ namespace DOL.GS
             // After a wipe the survivors rest and rebuff for a few minutes even when enough are already there.
             bool rested = !_regrouping || regroupMilliseconds >= RegroupMinimumMilliseconds;
             // Leeroy (bot_living_leeroy): part of the raid is here, not all of it, and he can't wait. The boss is in the fight,
-            // so the whole muster goes in after him now, as an attempt like any other.
+            // so the whole muster goes in after him now, as an attempt like any other. A raid that arrives all at once gets
+            // him too: he jumps its pull.
             if (LeeroyRolled && !_leeroyDone &&
-                AutonomousRaidLeeroy.GoesNow(AutonomousRaidLeeroy.ShouldCharge(mustered, needed, now - _musterSince, FailedAttempts(_target.Name), _regrouping), mustered))
+                AutonomousRaidLeeroy.GoesNow(AutonomousRaidLeeroy.ShouldCharge(mustered, needed, now - _musterSince, FailedAttempts(_target.Name), _regrouping) ||
+                                             rested && AutonomousRaidLeeroy.JumpsThePull(mustered, needed, FailedAttempts(_target.Name), _regrouping), mustered))
             {
                 _leeroyDone = true;
                 if (AutonomousRaidLeeroy.Pick(musteredRaiders) is GameBot leeroy &&

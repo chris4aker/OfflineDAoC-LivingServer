@@ -18,6 +18,9 @@
     <Compile Include="../../server/GameServer/Managers/GameLoop/BotAiDelayReport.cs" Link="Records/BotAiDelayReport.cs" />
     <!-- Living Server: the server's own XP-by-level parser, so the launcher checks a setting by the same rules. -->
     <Compile Include="../../server/GameServer/gameutils/LevelRangeXpRates.Parsing.cs" Link="SocialExpansion/LevelRangeXpRates.Parsing.cs" />
+    <!-- Living Server: 2003-style bot names, the same mix as the server's own bots. -->
+    <Compile Include="../../server/GameServer/bots/autonomous/EraBotNames.cs" Link="SocialExpansion/EraBotNames.cs" />
+    <Compile Include="../../server/GameServer/bots/autonomous/EraBotNameWords.cs" Link="SocialExpansion/EraBotNameWords.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\offline-daoc-header.png"

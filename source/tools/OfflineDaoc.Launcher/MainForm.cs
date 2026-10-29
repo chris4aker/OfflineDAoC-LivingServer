@@ -2194,10 +2194,12 @@ internal sealed partial class MainForm : Form
         }
 
         bool allowSluaghbinder = SluaghbinderEnabled(connection, transaction);
+        // The server's own invalid-names list, so a launcher bot never gets a name a player couldn't.
+        Func<string, bool> rejected = OfflineDaoc.Shared.EraBotNames.LoadRejected(Path.Combine(_serverDirectory, "config", "invalidnames.txt"));
         var identities = new List<BotCharacterGenerator.Identity>(count);
         for (int index = 0; index < count; index++)
         {
-            BotCharacterGenerator.Identity identity = BotCharacterGenerator.Generate(realm, reserved, allowSluaghbinder);
+            BotCharacterGenerator.Identity identity = BotCharacterGenerator.Generate(realm, reserved, allowSluaghbinder, rejected);
             BotStartingLocation start = level == 50
                 ? CapitalBotStartingLocation(identity.Realm)
                 : ChooseBotStartingLocation(connection, transaction, identity.Realm, identity.RaceId, identity.ClassId);
