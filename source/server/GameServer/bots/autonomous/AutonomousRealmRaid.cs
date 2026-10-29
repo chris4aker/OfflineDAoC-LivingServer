@@ -1372,7 +1372,9 @@ namespace DOL.GS
                 newsTopic, RaidSlots(raid.Definition.Name, bossName));
             string leeroyName = raid.LeeroyName ?? raid.DungeonRoute?.LeeroyName;
             if (leeroyName != null && newsTopic != null)
-                AutonomousRaidLeeroy.AfterRaid(raid.Definition.Realm, leeroyName, bossName, newsTopic == "raid_won", raid.Support);
+                // The raiders as they were (raid.Support is emptied above when the parties are released: in-game check
+                // 2026-10-29, Golestandt fell after a Leeroy and nobody said a word about him).
+                AutonomousRaidLeeroy.AfterRaid(raid.Definition.Realm, leeroyName, bossName, newsTopic == "raid_won", recipients);
         }
 
         /// <summary>The names a raid's news lines use ({raid}, {boss}).</summary>

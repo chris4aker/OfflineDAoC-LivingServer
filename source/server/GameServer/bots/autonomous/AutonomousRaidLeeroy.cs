@@ -164,6 +164,10 @@ public static class AutonomousRaidLeeroy
         string shout = Shouts[random.Next(Shouts.Length)];
         if (leeroy.Yell(shout) && AutonomousLivingServer.PlayerHears(leeroy))
             BotChatTranscript.Bot("yell", leeroy.Name, leeroy.Realm, shout);
+        // And in /faction, so the whole realm hears him go (owner 2026-10-29: "the leeroy character should also be shouting
+        // in faction when they run in"). Sent as written: the speech pass would tidy it.
+        if (AutonomousBotChatCoordinator.HasFactionAudience(leeroy.Realm))
+            AutonomousBotChatCoordinator.BroadcastFactionAsWritten(leeroy.Name, leeroy.Realm, shout);
         Log.Info($"RAID_LEEROY bot=\"{leeroy.Name}\" class=\"{leeroy.CharacterClass?.Name}\" boss=\"{boss.Name}\" raid=\"{raidName}\" " +
                  $"region={leeroy.CurrentRegionID} raiders={raiders.Count}");
 

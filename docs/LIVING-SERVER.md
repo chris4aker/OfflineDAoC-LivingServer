@@ -265,7 +265,7 @@ The lines are in `data/chat/holidays.lines`; the calendar is `AutonomousHolidays
 ### Leeroy in raids (`bot_living_leeroy`)
 One end-game raid in twenty (dungeon raids and dragons) has a raider who can't wait. While the raid musters for its
 final encounter, once a quarter of the raid is there but not all of it (half, at a dragon), he yells
-"LEEEEROOOOOOY JENKINS!" and charges in alone (a raid that arrives all at once gets him too: he jumps its pull). The boss is fighting now, so the raid goes in after him with whoever is
+"LEEEEROOOOOOY JENKINS!" (in /yell and in /faction, so the whole realm hears it) and charges in alone (a raid that arrives all at once gets him too: he jumps its pull). The boss is fighting now, so the raid goes in after him with whoever is
 there; a few raiders react in /say ("oh my god he just ran in", "stick to the plan!!") and one tells /faction. The
 raid's own rules take it from there: a wipe still regroups and tries again. After the raid a raider tells /faction how
 it went ("thanks a lot ..." or "cant believe that worked"). He is a damage dealer, never a healer or support class, and
