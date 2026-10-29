@@ -84,7 +84,11 @@ internal static class BotCharacterGenerator
     /// A new bot. Its name is three in four in the 2003 style and one in four a lore name (OfflineDaoc.Shared.EraBotNames has
     /// the mix and the research); <paramref name="rejected"/> is the server's invalid-names check (EraBotNames.LoadRejected).
     /// </summary>
-    public static Identity Generate(int realm, ISet<string> reservedNames, bool allowSluaghbinder = true, Func<string, bool> rejected = null)
+    public static Identity Generate(int realm, ISet<string> reservedNames, bool allowSluaghbinder = true) =>
+        Generate(realm, reservedNames, allowSluaghbinder, null);
+
+    /// <param name="rejected">The server's invalid-names check, or null for none.</param>
+    public static Identity Generate(int realm, ISet<string> reservedNames, bool allowSluaghbinder, Func<string, bool> rejected)
     {
         int gender = Random.Shared.Next(1, 3);
         // The "no custom class" edition (0.33, 0.34, 0.35; classes/enable_sluaghbinder = False) never rolls class 63.

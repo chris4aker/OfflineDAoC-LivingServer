@@ -39,7 +39,7 @@ public sealed class ClaudeTakeoverEditionTests
     {
         var reserved = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         MethodInfo generate = Launcher.GetType("OfflineDaoc.Launcher.BotCharacterGenerator")!
-            .GetMethod("Generate", BindingFlags.Static | BindingFlags.Public)!;
+            .GetMethod("Generate", BindingFlags.Static | BindingFlags.Public, [typeof(int), typeof(ISet<string>), typeof(bool)])!;
         int Roll(bool allow)
         {
             object identity = generate.Invoke(null, [3, reserved, allow])!;
