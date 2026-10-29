@@ -113,6 +113,32 @@ public static class AutonomousDarknessFallsNavigation
     public static bool ReadyWhen(bool databaseReady, Func<bool> certificateAvailable) =>
         databaseReady && certificateAvailable?.Invoke() == true;
 
+    /// <summary>
+    /// The point inside Darkness Falls where this realm's wing begins (the first waypoint of every certified route of the
+    /// realm; Albion 31211,27924,22893, Midgard 18798,18667,22892, Hibernia 46325,40969,21357). Nobody died within 1,500 of
+    /// these points in the logs of 2026-10-29.
+    /// </summary>
+    public static bool TryFindEntrance(IEnumerable<SpawnProof> spawns, eRealm realm, out Vector3 entrance)
+    {
+        entrance = default;
+        foreach (SpawnProof proof in spawns ?? [])
+        {
+            RouteProof route = proof?.Routes?.FirstOrDefault(candidate => candidate?.Realm == realm);
+            if (route?.InWaypoints is { Length: > 0 } waypoints && waypoints[0]?.Length == 3 && waypoints[0].All(float.IsFinite))
+            {
+                entrance = new Vector3(waypoints[0][0], waypoints[0][1], waypoints[0][2]);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool TryGetRealmEntrance(eRealm realm, out Vector3 entrance)
+    {
+        entrance = default;
+        return IsReady && TryFindEntrance(CertificateData.Value.Spawns, realm, out entrance);
+    }
+
     public static bool TryGetProof(string id, out SpawnProof proof)
     {
         proof = null;
