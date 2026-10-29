@@ -362,6 +362,11 @@ public static class AutonomousBotDebates
         return bot.InCombat || bot.IsCasting ? SpeakerState.Busy : SpeakerState.Free;
     }
 
+    /// <summary>The role's bot is in the game but dead (a corpse waiting to release or be raised).</summary>
+    private static bool DeadInWorld(eRealm realm, Running running, string role) =>
+        running.Cast.TryGetValue(role, out long id) && AutonomousBotRegistry.TryGet(id, out GameBot bot) &&
+        bot.IsAutonomousWorldBot && bot.Realm == realm && !bot.IsAlive && bot.ObjectState == GameObject.eObjectState.Active;
+
     private static SpeakerState CastState(eRealm realm, Running running, string role) =>
         running.Cast.TryGetValue(role, out long id) && AutonomousBotRegistry.TryGet(id, out GameBot bot)
             ? StateOf(bot, realm) : SpeakerState.Gone;
@@ -509,6 +514,10 @@ public static class AutonomousBotDebates
             if (running.WaitingSince == 0 && beat.Optional && Random.Shared.NextDouble() < 0.5 || beat.Variants.Length == 0)
                 continue;
             SpeakerState state = CastState(realm, running, beat.Role);
+            // A protagonist who died is waited for like a busy one: it releases or is raised in well under three minutes
+            // (in-game check 2026-10-28: a romance episode ended "a protagonist left" when one of the pair died mid-scene).
+            if (running.StoryKey != null && beat.Role is "A" or "B" && state == SpeakerState.Gone && DeadInWorld(realm, running, beat.Role))
+                state = SpeakerState.Busy;
             long waited = running.WaitingSince == 0 ? 0 : now - running.WaitingSince;
             // A storyline's protagonist is never replaced: a busy one is waited for (up to three minutes), and one who
             // left or stays busy ends the episode unfinished, so it plays again later with the same pair.

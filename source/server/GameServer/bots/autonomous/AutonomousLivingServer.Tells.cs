@@ -67,8 +67,34 @@ public static partial class AutonomousLivingServer
         }
         why = "no bot fits: friends (a good group or a rez) tell only from afar, a guildmate needs a bot guild, " +
               $"and a duo offer needs you solo, level 5 or more, and a solo bot within 2 levels of you within 6,000 units" +
-              (player.Level < 5 ? $" (you are level {player.Level})" : string.Empty);
+              (player.Level < 5 ? $" (you are level {player.Level})" : string.Empty) + FriendStates(player);
         return null;
+    }
+
+    /// <summary>For /lstest tell: why each friend of the player can't tell them now (in-game check 2026-10-28).</summary>
+    private static string FriendStates(GamePlayer player)
+    {
+        long now = GameLoop.GameLoopTime;
+        var states = new List<string>();
+        foreach (OfflineBotMemoryRecord row in Memories.Where(r => string.Equals(r.PlayerName, player.Name, StringComparison.OrdinalIgnoreCase) &&
+                                                                   MoodOf(r) == "friendly" && r.Grouped + r.Rezzed >= 1).Take(5))
+        {
+            if (!AutonomousBotRegistry.TryGet(row.BotId, out GameBot bot) || !IsSpeaker(bot))
+            {
+                states.Add($"bot {row.BotId} is offline");
+                continue;
+            }
+            bool told;
+            lock (LastTellPair)
+                told = LastTellPair.TryGetValue((bot.DatabaseID, player.Name), out long at) && now - at < TellPairCooldownMs;
+            string state = !CanTalk(bot) ? "is busy (fighting, casting or dead)"
+                : bot.IsOnStableMasterRoute ? "is riding a stable route"
+                : told ? "told you something in the last six hours"
+                : bot.CurrentRegion == player.CurrentRegion && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE * 2) ? "is next to you (it greets instead)"
+                : "had no line that fits";
+            states.Add($"{bot.Name} {state}");
+        }
+        return states.Count == 0 ? string.Empty : ". Friends: " + string.Join("; ", states);
     }
 
     private static void TryStartTell(GamePlayer player, long now)

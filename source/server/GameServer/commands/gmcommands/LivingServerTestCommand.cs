@@ -23,7 +23,7 @@ namespace DOL.GS.Commands;
     "/lstest holiday <name|off> - bots treat today as that holiday (newyear valentines stpatricks aprilfools easter midsummer halloween thanksgiving christmas)",
     "/lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid",
     "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once",
-    "/lstest raid [dragon] - your realm's automatic raid opens now, sized to its level 50s (launcher raids need 300)")]
+    "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     public void OnCommand(GameClient client, string[] args)
@@ -108,10 +108,16 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 }
                 return;
             case "raid":
-                Say(client, AutonomousRealmRaid.StartAutomaticForTest(realm, arg == "dragon", out why)
-                    ? $"Raid opened: {why}. Watch the launcher's Realm Events tab."
-                    : $"No raid: {why}.");
+            {
+                // In-game check 2026-10-28: Albion's level 50s were all at keep sieges, so another realm's raid may be the one to watch.
+                string[] words = args.Skip(2).Select(a => a.ToLowerInvariant()).ToArray();
+                eRealm raidRealm = words.Contains("mid") ? eRealm.Midgard : words.Contains("hib") ? eRealm.Hibernia
+                    : words.Contains("alb") ? eRealm.Albion : realm;
+                Say(client, AutonomousRealmRaid.StartAutomaticForTest(raidRealm, words.Contains("dragon"), out why)
+                    ? $"{GlobalConstants.RealmToName(raidRealm)} raid opened: {why}. Watch the launcher's Realm Events tab."
+                    : $"No {GlobalConstants.RealmToName(raidRealm)} raid: {why}.");
                 return;
+            }
             default:
                 DisplaySyntax(client);
                 return;
@@ -156,7 +162,7 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
             return;
         }
         Say(client, AutonomousLivingServer.RememberForTest(bot, gm)
-            ? $"{bot.Name} now remembers two good groups with you. Walk more than 700 units away and back (not grouped with it) to be greeted, or /lstest gossip."
+            ? $"{bot.Name} now remembers two good groups with you. /lstest greet while it is out of combat and near you, or /lstest gossip from afar."
             : $"{bot.Name} can't remember you (bot memory off, or it is not a gamebot of your realm).");
     }
 

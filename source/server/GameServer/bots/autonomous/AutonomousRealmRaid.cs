@@ -262,19 +262,19 @@ namespace DOL.GS
                 int online = OnlineLevelFifty(realm);
                 if (Raids.Values.Any(r => r.Definition.Realm == realm))
                 {
-                    reason = "your realm already has a raid running (stop it from the launcher's Realm Events tab)";
+                    reason = "that realm already has a raid running (watch or stop it on the launcher's Realm Events tab)";
                     return false;
                 }
                 if (online < RealmRaidRecruitmentPolicy.MinimumScaledBots)
                 {
-                    reason = $"only {online} level 50 gamebot(s) of your realm are free for a raid; at least {RealmRaidRecruitmentPolicy.MinimumScaledBots} are needed";
+                    reason = $"only {online} level 50 gamebot(s) of that realm are free for a raid (the rest are at sieges, in groups or in town); at least {RealmRaidRecruitmentPolicy.MinimumScaledBots} are needed";
                     return false;
                 }
                 Definition chosen = Definitions.Where(d => d.Realm == realm && Available(d.Id) && (!dragon || d.Id.StartsWith("dragon-", StringComparison.Ordinal)))
                     .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
                 if (chosen == null)
                 {
-                    reason = dragon ? "your realm's dragon is not up (respawning or on cooldown)" : "no raid encounter of your realm is up";
+                    reason = dragon ? "that realm's dragon is not up (respawning or on cooldown)" : "no raid encounter of that realm is up";
                     return false;
                 }
                 if (!Start(chosen.Id, realm, out reason))

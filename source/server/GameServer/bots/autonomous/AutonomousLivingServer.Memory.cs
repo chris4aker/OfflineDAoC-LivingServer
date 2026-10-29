@@ -17,10 +17,12 @@ public static partial class AutonomousLivingServer
     public const long GreetPlayerCooldownMs = 3 * 60_000;
     public const long GossipRealmCooldownMinMs = 30 * 60_000;
     /// <summary>
-    /// A bot greets a player it remembers within /say range. (It was 700, past the 512 a /say carries: a bot between the two
-    /// picked the greeting, used up the player's three-minute greeting cooldown, and its line was dropped unheard.)
+    /// A bot greets a player it remembers within this range, well inside the 512 a /say carries, so a bot walking past is
+    /// still in earshot when its line comes a second later. (It was 700: a bot past 512 picked the greeting, used up the
+    /// player's three-minute greeting cooldown, and its line was dropped unheard. In-game check 2026-10-28: a walking bot
+    /// at the edge of /say range also lost its greeting.)
     /// </summary>
-    public const int GreetRange = WorldMgr.SAY_DISTANCE;
+    public const int GreetRange = 400;
 
     private static readonly Dictionary<(long BotId, string Player), long> LastGroupedNote = new();
     private static readonly Dictionary<(long BotId, string Player), long> LastGreeted = new();
@@ -245,7 +247,7 @@ public static partial class AutonomousLivingServer
             Dictionary<string, string> slots = MemorySlots(row, player);
             string mood = MoodOf(row);
             bool thanks = mood == "friendly" && row.LastTopic is "rez" or "group" && Random.Shared.NextDouble() < 0.3;
-            Later(bot, 1_000 + Random.Shared.Next(2_500), () => CanTalk(bot) && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE), () =>
+            Later(bot, 600 + Random.Shared.Next(1_200), () => CanTalk(bot) && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE), () =>
             {
                 string line = null;
                 if (thanks)

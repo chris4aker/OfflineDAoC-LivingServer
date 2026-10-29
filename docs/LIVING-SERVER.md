@@ -51,7 +51,7 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
   - you insulting it in chat (the chat model's "abuse" intent).
 - Its mood toward you follows from that: friendly, neutral, or cool after insults.
 - What it does with the memory:
-  - **Greets you** when you pass within /say range (about 500 units): at most one greeting every 3 minutes, and
+  - **Greets you** when you pass within about 400 units: at most one greeting every 3 minutes, and
     the same bot at most every 45 minutes. Groupmates don't greet.
   - Sometimes **thanks you for an old rez or a good group**, naming the place.
   - **Answers you by name** (most of the time) when you talk near it, in `/faction`, or by its
@@ -326,7 +326,7 @@ through the part's own code, lines and logging, in your realm and around you.
 | `/lstest holiday <name, off>` | Bots treat today as that holiday until `off` or a restart |
 | `/lstest leeroy` | The next realm raid has a Leeroy (start one with `/lstest raid dragon`) |
 | `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once |
-| `/lstest raid [dragon]` | Your realm's automatic raid opens now, sized to its free level 50s (at least 40; raids from the launcher need 300) |
+| `/lstest raid [dragon] [alb, mid, hib]` | A realm's automatic raid (yours unless named) opens now, sized to its free level 50s (at least 40; raids from the launcher need 300) |
 
 ## Tests
 

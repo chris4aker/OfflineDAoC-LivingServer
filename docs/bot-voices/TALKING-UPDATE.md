@@ -299,7 +299,7 @@ roles are cast fresh. A realm plays at most one episode every 45 minutes, an arc
 arc starts at most every two hours, and a finished arc starts again with a new pair a week later. The first /faction scene
 of a play session (5-10 minutes after you log in, or come back after half an hour away) is an episode when one can play.
 An arc plays while its pair is in the game, even fighting; it waits while one of them is offline and is dropped after
-three days. The two protagonists are never replaced by stand-ins: an episode waits up
+a day. The two protagonists are never replaced by stand-ins: an episode waits up
 to three minutes for a busy one, and ends unfinished (to play again later) if one leaves.
 
 Take a side by naming one of the two in /faction during an episode or up to ten minutes after it ("Aelwyn is right",

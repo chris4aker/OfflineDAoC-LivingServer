@@ -56,7 +56,9 @@ public static class AutonomousBotStorylines
     public static readonly TimeSpan EpisodeGapMin = TimeSpan.FromHours(3), EpisodeGapSpread = TimeSpan.FromHours(7);
     public static readonly TimeSpan RestartAfter = TimeSpan.FromDays(7);
     public static readonly TimeSpan NewArcGap = TimeSpan.FromHours(2);
-    public static readonly TimeSpan AbandonAfter = TimeSpan.FromDays(3);
+    // A day (it was three): in-game check 2026-10-28 found two of Albion's four arcs waiting on bots out of the game,
+    // and a player on a few hours a week rarely comes back within three days, so stuck arcs held up new ones for weeks.
+    public static readonly TimeSpan AbandonAfter = TimeSpan.FromDays(1);
 
     internal static readonly LivingServerTable<string, OfflineBotStorylineRecord> Stories =
         new("storylines", row => row.StoryKey, StringComparer.OrdinalIgnoreCase);
@@ -200,7 +202,7 @@ public static class AutonomousBotStorylines
     /// The realm's next due episode, with its two protagonists, or null. The protagonists of a new arc are cast from the
     /// free bots (<paramref name="online"/>) that fit the first episode's roles A and B. A running arc plays when its pair is
     /// in the game (<paramref name="present"/>: alive, even if fighting; the scene waits for a busy speaker); an arc whose
-    /// pair is offline waits, and is abandoned (to start again with a new pair) once it has waited three days.
+    /// pair is offline waits, and is abandoned (to start again with a new pair) once it has waited a day.
     /// </summary>
     /// <remarks>
     /// In-game check 2026-10-28: the pair used to have to be out of combat at the very moment a scene was chosen, and
@@ -292,7 +294,7 @@ public static class AutonomousBotStorylines
     /// <summary>
     /// GM test (/lstest storyline): the realm's rests are lifted and every unfinished arc is due, so the next /faction scene
     /// is a storyline episode (a new arc when none is running). Returns how many arcs can play now; <paramref name="note"/>
-    /// says what else happened. An arc already due keeps its due time, so the three-day abandon clock isn't reset. When
+    /// says what else happened. An arc already due keeps its due time, so the abandon clock isn't reset. When
     /// every arc is either running with its pair out of the game or finished this week, the one that has waited longest is
     /// dropped so a new pair can be cast (in-game check 2026-10-28: all four arcs were waiting for offline bots).
     /// </summary>
