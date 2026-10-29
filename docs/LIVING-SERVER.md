@@ -277,7 +277,8 @@ New bots are named the way a 2003 server's players named themselves:
 - **Three in four in the 2003 style:**
   - short made-up names (Grizlas-style);
   - English compounds (Souleater-style);
-  - jokes and puns, everyday first names, class or race jokes, and the odd stretched name (Droooood).
+  - jokes and puns, everyday first names, class or race jokes, and the odd stretched name (Droooood);
+  - xX and number names (XxShadowxX, Zerga420).
 - **One in four lore names:** the realm's old syllable names, or a real Old English, Norse or Irish name.
 - **Never:** a word players say in chat (a bot named "Axe" would answer "anyone got an axe?"), a name the server's
   invalid-names list rejects, pop culture, or a joke from after 2003.

@@ -16,7 +16,8 @@ namespace OfflineDaoc.Shared;
 /// Most were made-up single names, short (median six letters) and often harsh (z, x, k, q in three in ten): Grizlas,
 /// Kalgarn, Zarff, Mezzar. Then English compounds (Souleater, Whitepoison, Grayhawk), jokes and puns (Sofragile,
 /// Fancypants, Champtastic), everyday first names (Nate, Faye, Jenna), class or race jokes (Puppethealer, Meaniesavage)
-/// and stretched letters (Droooood, Buffffffer). Letters only, one word, capital first, no digits, so no xX names. The
+/// and stretched letters (Droooood, Buffffffer). DAoC took letters only, so the research found almost no xX or number
+/// names; the owner wants them in (3% each, the wider gamer names of the era: XxShadowxX, Gankr420). The
 /// rest of this generator's names (a quarter) are lore names: the realm's old syllable names and real Norse, Celtic and
 /// Old English names.
 /// </para>
@@ -27,19 +28,24 @@ namespace OfflineDaoc.Shared;
 /// </summary>
 public static partial class EraBotNames
 {
-    public enum Style { Invented, Compound, Joke, FirstName, ClassJoke, Stretched, Lore }
+    public enum Style { Invented, Compound, Joke, FirstName, ClassJoke, Stretched, Decorated, Numbered, Lore }
 
     /// <summary>The mix (percent of all names). The 2003 styles add up to 75, lore names to 25.</summary>
     public static readonly (Style Style, int Percent)[] Mix =
     [
         // The research's 2001-2004 shares (invented 49%, compound 15%, joke 14%, first name 9%, class or race 4%,
-        // stretched 3%; pop culture and real myth names left out) scaled to 75.
-        (Style.Invented, 39),
+        // stretched 3%; pop culture and real myth names left out) scaled to 75, then xX and number names added (owner
+        // 2026-10-29: "having no xX or Xx or numbers like 420 is a major miss"). DAoC's name filter took letters only, so
+        // the research found almost none; they are the era's wider gamer names, the ones a server that let them through
+        // would have had.
+        (Style.Invented, 35),
         (Style.Compound, 12),
-        (Style.Joke, 11),
+        (Style.Joke, 10),
         (Style.FirstName, 7),
         (Style.ClassJoke, 3),
-        (Style.Stretched, 3),
+        (Style.Stretched, 2),
+        (Style.Decorated, 3),
+        (Style.Numbered, 3),
         (Style.Lore, 25),
     ];
 
@@ -86,12 +92,15 @@ public static partial class EraBotNames
                 Style.FirstName => Pick(female ? FemaleFirstNames : MaleFirstNames, random),
                 Style.ClassJoke => ClassJoke(realm, className, random),
                 Style.Stretched => Stretch(random.Next(2) == 0 ? Invented(realm, female, random) : Pick(female ? FemaleFirstNames : MaleFirstNames, random), random),
+                Style.Decorated => Decorated(random),
+                Style.Numbered => Numbered(realm, female, random),
                 Style.Lore => random.Next(10) < 3 ? Pick(LoreNames(realm, female), random) : lore?.Invoke(),
                 _ => null,
             };
             if (candidate == null)
                 continue;
-            candidate = Capitalize(candidate);
+            if (style is not (Style.Decorated or Style.Numbered))
+                candidate = Capitalize(candidate);
             // A taken name gets an extra letter, as players did (Jammer, Jammerr).
             // (Only made-up and lore names: a joke or compound with a doubled letter just reads as a typo.)
             if (taken(candidate) && style is Style.Invented or Style.Lore)
@@ -102,11 +111,25 @@ public static partial class EraBotNames
         return null;
     }
 
-    /// <summary>Letters only, 3-18 long, a capital then lowercase, and (but for first names) not a chat word. Pure.</summary>
-    public static bool Allowed(string name, Style style = Style.Invented) =>
-        !string.IsNullOrEmpty(name) && name.Length is >= MinLength and <= MaxLength && name.All(c => c is >= 'a' and <= 'z' or >= 'A' and <= 'Z') &&
-        char.IsUpper(name[0]) && name.Skip(1).All(char.IsLower) && !LooksAnachronistic(name) &&
-        (style == Style.FirstName ? !FirstNameWords.Contains(name) : !IsChatWord(name));
+    /// <summary>
+    /// 3-18 long and starting with a capital; letters only and lowercase after the first (xX names may mix case, number
+    /// names end in digits or swap a few letters for them); not a chat word (first names have their own list). Pure.
+    /// </summary>
+    public static bool Allowed(string name, Style style = Style.Invented)
+    {
+        if (string.IsNullOrEmpty(name) || name.Length is < MinLength or > MaxLength || !char.IsUpper(name[0]) || LooksAnachronistic(name))
+            return false;
+        bool letters = name.All(c => c is >= 'a' and <= 'z' or >= 'A' and <= 'Z');
+        string core = new string(name.Where(char.IsLetter).ToArray());
+        return style switch
+        {
+            Style.Decorated => letters && !IsChatWord(core),
+            Style.Numbered => name.All(char.IsLetterOrDigit) && name.Count(char.IsLetter) >= 3 && name.Any(char.IsDigit) &&
+                              name.Skip(1).All(c => !char.IsUpper(c)) && !IsChatWord(name) && !BadNumbers.Any(n => Regex.IsMatch(name, $"(?<!\\d){n}(?!\\d)")),
+            Style.FirstName => letters && name.Skip(1).All(char.IsLower) && !FirstNameWords.Contains(name),
+            _ => letters && name.Skip(1).All(char.IsLower) && !IsChatWord(name),
+        };
+    }
 
     // Endings and pieces that read as post-2003 internet (the research's 2026 freeshard: "Bonklol", "Shroomlol").
     private static readonly string[] Anachronisms = ["lol", "lmao", "yolo", "swag", "leeroy", "rickroll", "lolcat", "noscope", "derp", "troll face"];
@@ -325,6 +348,88 @@ public static partial class EraBotNames
         int at = vowels.Length > 0 ? vowels[random.Next(vowels.Length)] : name.Length - 1;
         int extra = 3 + random.Next(3);
         return name.Insert(at, new string(char.ToLowerInvariant(name[at]), extra));
+    }
+
+    #endregion
+
+    #region xX names (XxShadowxX, xXDeathXx)
+
+    private static readonly string[] DecoratedWords =
+    [
+        "Shadow", "Dark", "Death", "Blood", "Killer", "Slayer", "Ninja", "Assassin", "Legend", "Sniper", "Reaper", "Demon",
+        "Angel", "Dragon", "Hunter", "Ghost", "Venom", "Chaos", "Storm", "Fury", "Doom", "Pain", "Soul", "Night", "Wolf",
+        "Raven", "Blade", "Fire", "Frost", "Rogue", "Stalker", "Silent", "Evil", "Elite", "Lethal", "Toxic", "Psycho", "Grim",
+    ];
+
+    /// <summary>
+    /// An xX name: XxShadowxX, Xxdeathxx, XxBloodSlayerxX. Starts with a capital X (a name must), never xxx (the server's
+    /// invalid-names list rejects it). Pure for a given random.
+    /// </summary>
+    public static string Decorated(Random random)
+    {
+        string word = Pick(DecoratedWords, random);
+        if (random.Next(4) == 0)
+            word += Pick(DecoratedWords, random);
+        return random.Next(4) switch
+        {
+            0 => "Xx" + word + "xX",
+            1 => "Xx" + word.ToLowerInvariant() + "xx",
+            2 => "X" + word + "X",
+            _ => "Xx" + word + "Xx",
+        };
+    }
+
+    #endregion
+
+    #region Number names (Gankr420, Darkblade87, D4rkst0rm)
+
+    private static readonly string[] Numbers =
+    [
+        "420", "1337", "666", "2003", "2k3", "99", "01", "13", "23", "77", "85", "86", "87", "89", "90", "91", "92", "7",
+        "3", "4", "9", "12", "21", "42", "101", "999", "2000", "2001", "3000",
+    ];
+
+    // Numbers kept out: hate symbols and the sexual one.
+    private static readonly string[] BadNumbers = ["88", "14", "1488", "18", "69"];
+
+    private static readonly string[] GamerWords =
+    [
+        "gankr", "pwnage", "killa", "snipa", "stabba", "smasha", "nukr", "zerga", "lootr", "camper", "fragger", "headshot",
+        "darkblade", "deathbringer", "bloodlust", "hellspawn", "doomlord", "shadowkill", "deadeye", "warlord", "spellslinger",
+    ];
+
+    private static readonly Dictionary<char, char> Leet = new() { ['a'] = '4', ['e'] = '3', ['o'] = '0', ['i'] = '1', ['s'] = '5', ['t'] = '7' };
+
+    /// <summary>
+    /// A number name: a gamer word, compound or made-up name with a number after it (Gankr420, Darkblade87, Zarff99), or a
+    /// few letters swapped for digits (D4rkst0rm). Pure for a given random.
+    /// </summary>
+    public static string Numbered(int realm, bool female, Random random)
+    {
+        string baseName = random.Next(3) switch
+        {
+            0 => Pick(GamerWords, random),
+            1 => Compound(random),
+            _ => Invented(realm, female, random),
+        };
+        if (baseName == null)
+            return null;
+        baseName = Capitalize(baseName);
+        if (random.Next(5) == 0 && baseName.Length >= 5)
+        {
+            // Leet: swap two or three letters after the first, keep the rest.
+            var chars = baseName.ToCharArray();
+            int swapped = 0;
+            for (int i = 1; i < chars.Length && swapped < 3; i++)
+                if (Leet.TryGetValue(chars[i], out char digit) && random.Next(2) == 0)
+                {
+                    chars[i] = digit;
+                    swapped++;
+                }
+            return swapped >= 2 ? new string(chars) : baseName + Pick(Numbers, random);
+        }
+        string number = Pick(Numbers, random);
+        return baseName.Length + number.Length <= MaxLength ? baseName + number : null;
     }
 
     #endregion

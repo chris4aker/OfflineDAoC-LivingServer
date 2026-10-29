@@ -72,6 +72,12 @@ namespace DOL.GS.Tests
             Assert.That(EraBotNames.Allowed("Bonklol"), Is.False, "a post-2003 joke");
             Assert.That(EraBotNames.Allowed("Nate", EraBotNames.Style.FirstName), Is.True);
             Assert.That(EraBotNames.Allowed("Will", EraBotNames.Style.FirstName), Is.False);
+            Assert.That(EraBotNames.Allowed("XxShadowxX", EraBotNames.Style.Decorated), Is.True);
+            Assert.That(EraBotNames.Allowed("XxShadowxX"), Is.False, "mixed case only for xX names");
+            Assert.That(EraBotNames.Allowed("Gankr420", EraBotNames.Style.Numbered), Is.True);
+            Assert.That(EraBotNames.Allowed("D4rkst0rm", EraBotNames.Style.Numbered), Is.True);
+            Assert.That(EraBotNames.Allowed("Darkblade88", EraBotNames.Style.Numbered), Is.False, "a hate-symbol number");
+            Assert.That(EraBotNames.Allowed("Gank420"), Is.False, "digits only for number names");
         }
 
         [Test]
@@ -84,7 +90,11 @@ namespace DOL.GS.Tests
                 for (int i = 0; i < 2_000; i++)
                     names.Add(AutonomousBotIdentityGenerator.Generate(realm, i % 2 == 0 ? eGender.Male : eGender.Female, reserved, random).Name);
             Assert.That(names.Distinct(StringComparer.OrdinalIgnoreCase).Count(), Is.EqualTo(names.Count));
-            Assert.That(names.All(n => n.Length >= 3 && n.All(char.IsLetter) && char.IsUpper(n[0])), Is.True);
+            Assert.That(names.All(n => n.Length >= 3 && n.All(char.IsLetterOrDigit) && char.IsUpper(n[0])), Is.True);
+            // About 3% each (owner 2026-10-29: xX and number names are a must).
+            Assert.That(names.Count(n => n.StartsWith("Xx", StringComparison.Ordinal) || n.StartsWith('X') && n.EndsWith('X')) / (double)names.Count, Is.InRange(0.015, 0.05));
+            Assert.That(names.Count(n => n.Any(char.IsDigit)) / (double)names.Count, Is.InRange(0.015, 0.05));
+            TestContext.WriteLine("xX and numbers: " + string.Join(", ", names.Where(n => n.Any(char.IsDigit) || n.StartsWith("Xx", StringComparison.Ordinal)).Take(30)));
             int[] lengths = names.Select(n => n.Length).OrderBy(n => n).ToArray();
             int median = lengths[lengths.Length / 2];
             Assert.That(median, Is.InRange(6, 9), "the research's 2003 median was six letters; lore names run longer");

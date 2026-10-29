@@ -50,14 +50,20 @@ Hand-tagged sample of 294 names from 2001-2004 (a name can have more than one ta
 
 The 2003 shares, without pop culture and real myth names, scaled to 75. Lore names make up the other 25.
 
+xX and number names were added on the owner's call (2026-10-29: "having no xX or Xx or numbers like 420 is a major
+miss"). DAoC's own filter took letters only, so the research found almost none. They are the era's wider gamer names,
+the ones a server that let them through would have had.
+
 | Style | Share | Notes |
 |---|---|---|
-| Made-up | 39% | Short syllable names, light realm flavour |
+| Made-up | 35% | Short syllable names, light realm flavour |
 | Compound | 12% | Two English words, never a word itself |
-| Joke | 11% | Written in the 2003 vein, no innuendo; Sir, Mr or Lil plus a silly noun; "Healsalot" |
+| Joke | 10% | Written in the 2003 vein, no innuendo; Sir, Mr or Lil plus a silly noun; "Healsalot" |
 | First name | 7% | Common 2003 names in the US, the UK and northern Europe |
 | Class or race joke | 3% | The bot's own class or its realm's races |
-| Stretched | 3% | One letter held, four to six long in all |
+| Stretched | 2% | One letter held, four to six long in all |
+| xX | 3% | XxShadowxX, Xxbloodxx, XxEvilFuryXx; never "xxx" (the invalid-names list) |
+| Number | 3% | Zerga420, Headshot91, Winterfury2k3, a few letters swapped for digits; never 88, 14, 18 or 69 |
 | Lore | 25% | Seven in ten the realm's old syllable names, three in ten real Old English, Norse or Irish names; no famous or Arthurian names |
 
 ## Guards

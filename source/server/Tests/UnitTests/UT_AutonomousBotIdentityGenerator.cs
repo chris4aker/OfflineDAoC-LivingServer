@@ -26,7 +26,8 @@ namespace DOL.GS.Tests
                     Assert.That(identity.Gender, Is.EqualTo(gender));
                     Assert.That(AutonomousBotIdentityGenerator.GetEraClasses(realm), Does.Contain(identity.CharacterClass));
                     Assert.That(AutonomousBotIdentityGenerator.GetEligibleRaces(identity.CharacterClass), Does.Contain(identity.Race));
-                    Assert.That(identity.Name, Does.Match("^[A-Z][a-z]{2,18}$"));
+                    // 1.1: xX names mix case and number names end in digits (owner 2026-10-29); still a capital first and 3-18 long.
+                    Assert.That(identity.Name, Does.Match("^[A-Z][A-Za-z0-9]{2,17}$"));
                 });
             }
 
