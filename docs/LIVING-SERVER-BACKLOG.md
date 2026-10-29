@@ -63,7 +63,9 @@ startup; and it has a password-protected shutdown endpoint, so it must stay loca
 
 ## Guild tiers (planning, chosen 2026-10-28)
 
-Owner: Chris. Not scheduled; after 1.1. Goal: bot guilds that differ in **who they let in**, with the
+Owner: Chris. **Planned for 1.2, as one guild social package** (Chris, 2026-10-28): recruitment
+policies, standing, tier benefits and costs ship together. Not split; the recruitment half was
+considered for 1.1 and declined. Goal: bot guilds that differ in **who they let in**, with the
 most exclusive ones worth earning through people and organization, never stat buffs. Ideas borrowed
 from offline WoW: a per-bot relationship score (deseven's `mod-pbc` for AzerothCore Playerbots) and
 guilds that invite you only once enough members like you (Erenshor). Credit both in the release note.
