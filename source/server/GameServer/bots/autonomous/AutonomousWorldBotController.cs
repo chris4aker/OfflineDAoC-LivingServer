@@ -1686,6 +1686,13 @@ namespace DOL.GS
             if (leader == null || !leader.IsAlive)
                 return true;
 
+            // A member stalled for minutes (a pocket of the navigation mesh) is brought to its leader.
+            if (AutonomousGroupMemberStall.TryRecoverToLeader(bot, leader))
+            {
+                ResetRouteOrderState();
+                return true;
+            }
+
             if (directive.ObjectiveKind == eAutonomousObjectiveKind.GroupPve && directive.Camp != null &&
                 bot.CurrentRegionID != leader.CurrentRegionID)
             {
