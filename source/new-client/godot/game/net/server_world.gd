@@ -122,6 +122,11 @@ func _on_world(kind: String, d: Dictionary) -> void:
 		"visual_effect": _visual_effect(d)
 		"model_change": _model_change(d)
 		"riding": _riding(d)
+		"companion":                                        # the server's companion messages: the group's stance
+			var body := PackedByteArray(d.body)
+			if body.size() > 4 and body[3] == 30:
+				Server.companion_defensive = body[4] == 1
+				Server.stance_changed.emit()
 		"raid":                                             # the companion raid window (/raid 40, /raid 80)
 			if viewer and viewer.ui:
 				viewer.ui.raid_packet(d)
@@ -550,6 +555,7 @@ func _move(d: Dictionary) -> void:
 	# a ridden steed at 37 m/s is a few metres off the server's place at every update: snapping it there (SNAP_M) made
 	# the mount and its rider jump; it eases back instead, unless it is really lost (two seconds' travel)
 	var snap := maxf(SNAP_M, float(int(d.speed)) * 0.025 * 2.0) if ridden else SNAP_M
+	var drawn_before := st.pos                                    # (the death log: where it was drawn before this update)
 	if st.pos.distance_to(p) > snap or float(d.speed) == 0.0:
 		st.pos = p
 	else:
@@ -576,10 +582,37 @@ func _move(d: Dictionary) -> void:
 		if dp != Vector3.INF:
 			mv["dest"] = dp
 	var hp := int(d.health)
+	_death_note(st, d, p, hp, drawn_before)
 	_set_health(st, hp)
 	if int(d.oid) == pet_oid and not PlayerData.pet.is_empty():   # your pet's health on the pet window
 		PlayerData.pet["health"] = st.health
 		PlayerData.pet_changed.emit()
+
+
+## Death position log (server chat 2026-10-30, owner: a dead companion's / gamebot's body shows farther away than where it
+## died): for a character figure (a gamebot, a companion), the last update before its death (position, speed,
+## destination), where its body is drawn when it dies, and every update for 15 s after - user://death_log.txt (the
+## packet's own zone units next to the drawn place, so the server's log can be matched).
+func _death_note(st: NpcState, d: Dictionary, p: Vector3, hp: int, drawn_before: Vector3) -> void:
+	if not st.info.has("race"):
+		return
+	var mv: Dictionary = _mover.get(st, {})
+	var line := "zone %d (%d, %d, %d) speed %d dest (%d, %d) health %d | drawn at %s before it (%.1f m off), now %s (%.1f m off)" % [
+			int(d.zone), int(d.x), int(d.y), int(d.z), int(d.speed), int(d.tx), int(d.ty), hp,
+			str(drawn_before.snapped(Vector3.ONE * 0.1)), drawn_before.distance_to(p),
+			str(st.pos.snapped(Vector3.ONE * 0.1)), st.pos.distance_to(p)]
+	mv["last_upd"] = line
+	if not st.alive and Time.get_ticks_msec() < int(mv.get("death_log_until", 0)):
+		_death_log("%s (oid %d) dead, update: %s" % [String(st.spawn.name), int(st.spawn.get("oid", 0)), line])
+
+
+func _death_log(text: String) -> void:
+	var t := Time.get_datetime_string_from_system()
+	print("[death] ", t, " ", text)
+	var f := FileAccess.open("user://death_log.txt", FileAccess.READ_WRITE if FileAccess.file_exists("user://death_log.txt") else FileAccess.WRITE)
+	if f:
+		f.seek_end()
+		f.store_line("%s %s" % [t, text])
 
 
 func _set_health(st: NpcState, pct: int) -> void:
@@ -587,6 +620,13 @@ func _set_health(st: NpcState, pct: int) -> void:
 	st.health = pct / 100.0
 	st.alive = pct > 0
 	if was and not st.alive:
+		if st.info.has("race"):                                 # (the death position log: _death_note)
+			var mv0: Dictionary = _mover.get(st, {})
+			mv0["death_log_until"] = Time.get_ticks_msec() + 15000
+			_mover[st] = mv0
+			_death_log("%s (oid %d) DIES, body at %s - the last update (this one if it carried the death): %s" % [
+					String(st.spawn.name), int(st.spawn.get("oid", 0)), str(st.pos.snapped(Vector3.ONE * 0.1)),
+					String(mv0.get("last_upd", "none"))])
 		st.mode = NpcState.Mode.DEAD
 		st.corpse_left = 1e9                                    # the body stays until the server removes it
 		_interrupt(int(st.spawn.get("oid", 0)), false)          # its cast's hand glows go with it (no fizzle)
@@ -879,6 +919,22 @@ func con_level(player_level: int, npc_level: int) -> int:
 
 # ---------------------------------------------------------------- you and the server
 
+## Buying / selling / appraising (PlayerBuyRequestHandler & co. act on your TARGET, silently when it isn't the merchant -
+## owner 2026-10-30: BUY did nothing at the inn's arrow merchant): the merchant whose window is open is targeted again
+## first if you have targeted something else since (your companion, a traveler). The request follows it on the same
+## connection, so the server sees the new target first.
+func target_for_trade(oid: int) -> void:
+	if oid == 0 or Server.client == null:
+		return
+	if target and is_instance_valid(target) and int(target.spawn.get("oid", 0)) == oid:
+		return
+	var st: NpcState = by_oid.get(oid)
+	if st and st.view and is_instance_valid(st.view) and st.view is Npc:
+		select(st.view as Npc)
+	else:
+		Server.client.call("Target", oid, 0x8000 | 0x6000)
+
+
 ## Targeting on the server, as the old client did: "You target [X]." here, the examine line from the server (the
 ## examine bit), the in-view bits so it doesn't answer "Target is not in view."
 func select(n: Npc) -> void:
@@ -904,9 +960,13 @@ func clear_target() -> void:
 		Server.client.call("Target", 0, 0)
 
 
+var last_interact_oid := 0                  # the NPC you last right-clicked (a merchant whose window then opens)
+
+
 func interact(n: Npc) -> void:
 	if n == null or Server.client == null:
 		return
+	last_interact_oid = int(n.spawn.get("oid", 0))
 	var r := Server.to_region(_current_zone(), player.global_position)
 	Server.client.call("Interact", int(n.spawn.get("oid", 0)), int(r.x), int(r.y))
 
@@ -1681,14 +1741,23 @@ func _merchant(d: Dictionary) -> void:
 	var ids := []
 	for it in d.get("items", []):
 		var id := "srvm:%d:%d" % [pg, int(it.index)]
-		ItemDb.add_runtime(id, {"id": id, "name": String(it.name), "level": int(it.level), "dps_af": int(it.value1),
+		# the pack one purchase gives (PacketLib168.SendMerchantWindow): value1 for arrows, bolts, poisons and general
+		# goods (value2 = the pack's weight), value2 for thrown weapons (value1 = their DPS)
+		var ot := int(it.object_type)
+		var pack := int(it.value1) if ot in [0, 43, 44, 46] else (int(it.value2) if ot == 16 else 0)
+		ItemDb.add_runtime(id, {"id": id, "name": String(it.name), "level": int(it.level),
+				"dps_af": 0 if ot in [0, 43, 44, 46] else int(it.value1), "pack": pack,
 				"spd_abs": int(it.spd_abs), "hand": int(it.hand), "type_damage": int(it.type_damage),
-				"object_type": int(it.object_type), "weight": int(it.value2), "price": int(it.price), "model": int(it.model),
+				"object_type": ot, "weight": 0 if ot == 16 else int(it.value2), "price": int(it.price), "model": int(it.model),
 				"icon": Server.item_icon(int(it.model)), "maxcondition": 100, "condition": 100, "maxdurability": 100,
 				"durability": 100, "quality": 100, "server": true})
 		ids.append(id)
 	_merchant_pages[pg] = ids
 	var who := String(PlayerData.target.get("name", "Merchant"))
+	var mst: NpcState = by_oid.get(last_interact_oid)
+	if mst:
+		who = String(mst.spawn.get("name", who))                 # (the merchant you right-clicked, whatever you target)
+	viewer.ui.merchant.server_oid = last_interact_oid
 	viewer.ui.merchant.open_server(who, _merchant_pages, int(d.window))
 
 
@@ -1873,6 +1942,7 @@ func _riding(d: Dictionary) -> void:
 			rider.ride_clip = ""
 		return
 	_riders[int(d.rider)] = int(d.steed)
+	_ride_since[int(d.rider)] = Time.get_ticks_msec()
 	if rider:
 		rider.ride_clip = "ride_horse"
 
@@ -1883,6 +1953,7 @@ func _riding(d: Dictionary) -> void:
 ## dismount we never got (out of range), a horse whose updates stopped at a zone edge - and the rider goes on alone;
 ## the riderless horse then lasts only as long as the server keeps sending it (STALE_MS).
 const RIDE_LOST_M := 12.0
+var _ride_since := {}                         # rider object id -> msec of its Riding packet
 
 
 func _seat_riders() -> void:
@@ -1890,11 +1961,18 @@ func _seat_riders() -> void:
 	for r in _riders.keys():
 		var rider: NpcState = by_oid.get(r)
 		var steed: NpcState = by_oid.get(_riders[r])
+		# (a Riding packet a moment ahead of the rider's or the horse's own create - a hired companion boarding your
+		# stable route, server chat 2026-10-30: horse, rider, then Riding, re-sent after re-creates): held 5 s
+		if (rider == null or steed == null) and now - int(_ride_since.get(r, 0)) < 5000:
+			continue
 		if rider == null or steed == null:
 			if rider:
 				rider.ride_clip = ""
 			_riders.erase(r)
+			_ride_since.erase(r)
 			continue
+		if rider.ride_clip == "":
+			rider.ride_clip = "ride_horse"
 		var rm: Dictionary = _mover.get(rider, {})
 		if rm.get("srv_pos") is Vector3 and now - int(rm.get("srv_at", 0)) < 3000 				and Vector2((rm.srv_pos as Vector3).x - steed.pos.x, (rm.srv_pos as Vector3).z - steed.pos.z).length() > RIDE_LOST_M:
 			rider.ride_clip = ""

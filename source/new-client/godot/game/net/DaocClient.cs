@@ -751,6 +751,14 @@ public partial class DaocClient : Node
 		switch (code)
 		{
 			case 0x21:                                    // DebugMode - or the companion raid window (CompanionRaid.Send:
+				if (r.Left >= 44 && r.At(1) == 0x48)      // the server's companion messages (marker 'H', version 1,
+				{                                          // 128 bytes): the body as it is, read by the game (op 30 stance)
+					var body = new byte[r.Left];
+					for (int i = 0; i < body.Length; i++) body[i] = r.Byte();
+					d["kind"] = "companion";
+					d["body"] = body;
+					return d;
+				}
 				if (r.Left >= 44)                         // 128 bytes, marker 0x52, version 1)
 				{
 					r.Byte();

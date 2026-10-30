@@ -701,6 +701,40 @@ func _build_minigroup() -> void:
 	_mini_rows.position = Vector2(7, 7)
 	_mini_rows.add_theme_constant_override("separation", 2)
 	w.add_child(_mini_rows)
+	# the group's companion stance, one click swaps it (owner 2026-10-30, new client only): /aggressive or /defensive,
+	# as typed; the server's op 30 says which it is (Server.companion_defensive). Small and dim in the top-right corner
+	_stance = Button.new()
+	_stance.flat = true
+	_stance.focus_mode = Control.FOCUS_NONE
+	_stance.add_theme_font_override("font", UiArt.font(true))
+	_stance.add_theme_font_size_override("font_size", 6)
+	_stance.anchor_left = 1.0
+	_stance.anchor_right = 1.0
+	_stance.offset_left = -52
+	_stance.offset_right = -4
+	_stance.offset_top = -1
+	_stance.offset_bottom = 8
+	_stance.tooltip_text = "Your companions' stance (the whole group): click to switch AGGRESSIVE / DEFENSIVE"
+	_stance.visible = false
+	_stance.pressed.connect(func():
+		Server.command("/aggressive" if Server.companion_defensive else "/defensive"))
+	w.add_child(_stance)
+	PlayerData.hook(self, Server.stance_changed, _show_stance)
+	_show_stance()
+
+
+var _stance: Button
+
+
+func _show_stance() -> void:
+	if _stance == null:
+		return
+	_stance.text = "DEFENSIVE" if Server.companion_defensive else "AGGRESSIVE"
+	var c := Color(0.55, 0.75, 1.0, 0.75) if Server.companion_defensive else Color(1.0, 0.62, 0.45, 0.75)
+	for k in ["font_color", "font_hover_color", "font_pressed_color"]:
+		_stance.add_theme_color_override(k, c if k == "font_color" else c.lightened(0.3))
+
+
 
 
 func _tick_minigroup() -> void:
@@ -709,6 +743,8 @@ func _tick_minigroup() -> void:
 		return
 	var rows: Array = PlayerData.group_rows()
 	_mini_empty.visible = rows.is_empty()
+	if _stance:
+		_stance.visible = Server.active and not rows.is_empty()
 	while _mini_rows.get_child_count() < rows.size():
 		var r := Control.new()
 		r.custom_minimum_size = Vector2(136, 10)
@@ -1823,9 +1859,11 @@ func handle_input(event: InputEvent) -> bool:
 		# the item held up with the left button (owner 2026-10-11: pick it up, Shift+S - it sold in the old client)
 		var held := int(get_viewport().gui_get_drag_data().slot)
 		get_viewport().gui_cancel_drag()
+		merchant.target_merchant()
 		PlayerData.sell(held, merchant.npc_name)
 		return true
 	if Keybinds.pressed(event, "sell") and merchant and merchant.visible and PlayerData.selected_slot >= 0:
+		merchant.target_merchant()
 		PlayerData.sell(PlayerData.selected_slot, merchant.npc_name)
 		return true
 	if Keybinds.pressed(event, "use_item") and PlayerData.selected_slot >= 0:

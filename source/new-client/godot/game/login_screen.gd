@@ -29,8 +29,19 @@ var _host_label: Label
 var _host_check := 0.0
 
 
+## The game's window title (owner 2026-10-30: 0.38 is now the only version). Set on the root window, which keeps it
+## (window_set_title alone was reset to the project name); a debug Godot binary - the one the launcher runs - adds
+## " (DEBUG)" to a Window's title, so the screen's own title is set again without it once the window has applied its own.
+const GAME_TITLE := "Offline DAoC Rebuilt v0.38"
+
+
+static func set_game_title(w: Window) -> void:
+	w.title = GAME_TITLE
+	(func(): DisplayServer.window_set_title(GAME_TITLE, w.get_window_id())).call_deferred()
+
+
 func _ready() -> void:
-	get_window().title = "Offline DAoC Rebuilt v0.37c"            # the root window keeps it (window_set_title alone was reset to the project name)
+	set_game_title(get_window())
 	var args := OS.get_cmdline_user_args()
 	for a in args:
 		if a.trim_prefix("--").split("=")[0] in SKIP_FLAGS:
