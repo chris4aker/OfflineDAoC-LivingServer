@@ -244,8 +244,8 @@ public static class BotGroupRelease
     /// <summary>Only a release in a player's group: every gamebot's release was 2,951 lines in three hours (GameBot.LogDeadMove).</summary>
     public static void NoteRelease(GameBot bot, ushort region, Point3D point, bool returnToParty)
     {
-        bot.TempProperties.SetProperty(ReleaseTickKey, GameLoop.GameLoopTime);
-        bot.TempProperties.RemoveProperty(ReturnHeadwayKey);
+        bot.TempProperties?.SetProperty(ReleaseTickKey, GameLoop.GameLoopTime);
+        bot.TempProperties?.RemoveProperty(ReturnHeadwayKey);
         if (bot.Group?.GetPlayersInTheGroup().Count > 0)
             Log.Info($"BOT_GROUP_RELEASE bot=\"{bot.Name}\" id={bot.DatabaseID} to={region}:{point.X},{point.Y},{point.Z} returning={returnToParty}");
     }
