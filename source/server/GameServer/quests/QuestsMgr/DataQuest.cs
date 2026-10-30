@@ -1016,7 +1016,7 @@ namespace DOL.GS.Quests
 		/// <returns></returns>
 		public override bool CheckQuestQualification(GamePlayer player)
 		{
-			if (player.Level < DBDataQuest.MinLevel || player.Level > DBDataQuest.MaxLevel)
+			if (!QuestLevelWindow.Offers(player.Level, DBDataQuest.MinLevel, DBDataQuest.MaxLevel))
 				return false;
 
 			if (m_allowedClasses.Count > 0)
@@ -2365,7 +2365,7 @@ namespace DOL.GS.Quests
 			{
 				DbCharacterXDataQuest charQuest = GetCharacterQuest(player, ID, true);
 
-				if (charQuest.Count < MaxQuestCount && player.Level <= MaxLevel && player.Level >= Level)
+				if (charQuest.Count < MaxQuestCount && QuestLevelWindow.Offers(player.Level, Level, MaxLevel))
 				{
 					TryTurnTo(obj, player);
 					long lvlXP  = (player.ExperienceForNextLevel - player.ExperienceForCurrentLevel) / player.Level;
@@ -2627,8 +2627,10 @@ namespace DOL.GS.Quests
 			if (item == null || item.OwnerID == null || m_collectItems.Count == 0)
 				return;
 
-			if (QuestNames.Same(TargetName, obj.Name) && (TargetRegion == obj.CurrentRegionID || TargetRegion == 0)
-			   && player.Level >= Level && player.Level <= MaxLevel)
+			// Owner 2026-10-30: no level window here. This is a step of a quest the player already holds, and a player who
+			// outlevelled it could not hand its item in while the kill, interact and whisper steps went on. The window
+			// stays where the quest is offered (QuestLevelWindow).
+			if (QuestNames.Same(TargetName, obj.Name) && (TargetRegion == obj.CurrentRegionID || TargetRegion == 0))
 			{
 				// An entry "id;N" (N >= 2) needs N of the item; any other entry is read as before (HearthDAoC).
 				(string collectId, int collectNeeded) = (null, 1);
