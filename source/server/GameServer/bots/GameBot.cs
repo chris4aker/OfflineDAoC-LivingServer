@@ -1072,6 +1072,15 @@ namespace DOL.GS
 
         public const long SiegeCorpseWaitMilliseconds = 240_000;
 
+        // Fork: /allrelease runs the death timer's release at once; the timer ends itself once the bot is alive
+        public bool ReleaseNow()
+        {
+            if (IsAlive || ObjectState != eObjectState.Active)
+                return false;
+            ReleaseToNearestBindAndReturn();
+            return IsAlive;
+        }
+
         private bool HasViableResurrector()
         {
             if (Group == null)
@@ -1127,6 +1136,7 @@ namespace DOL.GS
                 if (releaseZone == null || !AutonomousRealmBoundary.Allows(Realm, releaseRegion, releaseZone.ID))
                     release = null;
             }
+            if (release == null && IsAutonomousWorldBot) BotGroupRelease.TryPortalKeep(this, releaseRegion, out release); // Fork: battlegrounds have no bind points
             if (release == null && IsAutonomousWorldBot && returnToParty &&
                 AutonomousRealmRaid.TryRaidRelease(this, out ushort hubRegion, out Point3D hub))
             {
@@ -1163,6 +1173,7 @@ namespace DOL.GS
             }
             if (!moved)
                 return;
+            BotGroupRelease.LogRelease(this, releaseRegion, release, returnToParty); // Fork: a release in a player's group shows in the log
             Health = Math.Max(1, MaxHealth / 3);
             Mana = Math.Max(0, MaxMana / 3);
             Endurance = Math.Max(0, MaxEndurance / 3);
@@ -1302,7 +1313,7 @@ namespace DOL.GS
                 ? new Point3D(leader.X, leader.Y, leader.Z)
                 : _deathLocation;
             if (CurrentRegionID != _deathRegionId && (leader == null || leader.CurrentRegionID != CurrentRegionID))
-                return true;
+                return BotGroupRelease.TryReturnToLeader(this, _deathTick); // Fork: it stood here for good, nothing else moves a bot in a player's group
 
             if (GetDistanceTo(destination) <= 350)
             {
