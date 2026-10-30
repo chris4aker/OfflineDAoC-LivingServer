@@ -4319,6 +4319,62 @@ namespace DOL.GS
         }
 
         /// <summary>
+        /// Pays quest experience (owner 2026-10-30). The quest's own amount (its share of the level from
+        /// ClassicQuests.ScaleXP, its fixed value, or a bounty's bulbs) is multiplied by this player's quest rate, the
+        /// xp_rate_by_level rate for the level while quest_xp_by_level is on (see QuestExperience), and capped at one
+        /// level's worth, so one payment dings at most once. It is handed to ForceGainExperience one boundary at a time
+        /// (the second stage at levels 40 to 49, then the next level, then the rest), so each call makes at most one
+        /// level-up or stage step: a payout that reaches the next level dings now, not again on the next kill. Data
+        /// quests, reward quests, bounties and the daily, weekly and battleground quests pay through here;
+        /// ForceGainExperience stays the raw path.
+        /// </summary>
+        /// <param name="baseXp">the quest's own amount, before any rate</param>
+        /// <param name="source">the quest, for the QUEST_XP log line</param>
+        /// <param name="flatRate">the rate the payout used before this setting: 1 for quests, xp_rate for bounties</param>
+        /// <returns>the experience added</returns>
+        public long GainQuestExperience(long baseXp, string source = null, double flatRate = 1.0)
+        {
+            if (baseXp <= 0)
+                return 0;
+
+            int level = Level;
+            double rate = QuestExperience.Rate(level, flatRate);
+            long scaled = QuestExperience.Scaled(baseXp, rate);
+            long levelSpan = ExperienceForNextLevel - ExperienceForCurrentLevel;
+            long paid = QuestExperience.Capped(scaled, levelSpan);
+
+            if (log.IsInfoEnabled)
+            {
+                log.Info($"QUEST_XP player=\"{Name}\" level={level}{(IsLevelSecondStage ? ".5" : string.Empty)} source=\"{source ?? "quest"}\" " +
+                         $"base={baseXp} rate={rate:0.###} scaled={scaled} paid={paid}{(paid < scaled ? " capped=one-level" : string.Empty)}");
+            }
+
+            long before = Experience;
+            long remaining = paid;
+
+            // At most three steps (second stage, next level, the rest); the bound only guards against a stuck loop.
+            for (int step = 0; remaining > 0 && step < 4; step++)
+            {
+                long was = Experience;
+                long boundary = Level < MAX_LEVEL ? ExperienceForNextLevel : long.MaxValue;
+
+                if (Level >= 40 && Level < MAX_LEVEL && !IsLevelSecondStage)
+                    boundary = Math.Min(boundary, ExperienceForCurrentLevelSecondStage);
+
+                long toBoundary = boundary - was;
+                // Experience already banked at or past the boundary (the base-class trainer gate at level 5) is paid in one go, as before.
+                ForceGainExperience(toBoundary > 0 ? Math.Min(remaining, toBoundary) : remaining);
+
+                if (Experience <= was)
+                    break;
+
+                remaining -= Experience - was;
+            }
+
+            return Experience - before;
+        }
+
+        /// <summary>
         /// Called whenever this player gains experience
         /// </summary>
         public override void GainExperience(GainedExperienceEventArgs arguments, bool notify = true)
