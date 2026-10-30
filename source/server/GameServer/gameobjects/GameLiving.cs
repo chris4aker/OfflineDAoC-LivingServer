@@ -3130,7 +3130,9 @@ namespace DOL.GS
 			{
 				player = source as GamePlayer;
 				long whisperdelay = player.TempProperties.GetProperty<long>("WHISPERDELAY");
-				if (whisperdelay > 0 && (GameLoop.GameLoopTime - 1500) < whisperdelay && player.Client.Account.PrivLevel == 1)
+				// Owner 2026-10-30: the 1.5 s silent pause stays for whispers to players. A quest NPC's [keyword] clicks
+				// are whispers too, and the second of two quick ones was dropped without a word (WhisperThrottle).
+				if (whisperdelay > 0 && player.Client.Account.PrivLevel == 1 && WhisperThrottle.Drops(this is GamePlayer, GameLoop.GameLoopTime - whisperdelay))
 				{
 					//player.Out.SendMessage("Speak slower!", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 					return false;
