@@ -32,6 +32,13 @@ Fixes for reports after Beta 1.1 shipped.
     data: Fighter Ruby Slash, Thistle and Daze at 2; Viking Splitter, Thor's Anvil and Whirling Blade; Guardian
     Shining Blade, Contusions and Dragonfly). Chosen classes keep their own lists unchanged.
   - **Checked:** two new tests; the full server suite passes. Not yet seen in game.
+- **Quiet twisting** (from a r/daoc report by ThatRebelKid).
+  - **The problem:** a Minstrel, Bard or Skald bot twists by restarting a song every few seconds. Each restart played
+    its 3-second cast music and its start sound to everyone nearby, so a bot performer near you never stopped.
+  - **Now:** a bot restarting a song it started within the last 30 seconds does so without the cast animation and
+    with the start effect silent. The first start of each song is still heard. Songs, timings and buffs are unchanged,
+    and players' own songs and harmful pulses (a flute mez) keep their sounds.
+  - **Checked:** three new tests (`UT_BotQuietSongs`); 4,101 server tests pass. Not yet heard in game.
 
 ## Beta 1.1 (released 2026-10-29)
 
