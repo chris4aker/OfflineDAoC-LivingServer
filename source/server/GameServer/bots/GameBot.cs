@@ -1173,7 +1173,7 @@ namespace DOL.GS
             }
             if (!moved)
                 return;
-            BotGroupRelease.LogRelease(this, releaseRegion, release, returnToParty); // Fork: a release in a player's group shows in the log
+            BotGroupRelease.NoteRelease(this, releaseRegion, release, returnToParty); // Fork: a release in a player's group shows in the log
             Health = Math.Max(1, MaxHealth / 3);
             Mana = Math.Max(0, MaxMana / 3);
             Endurance = Math.Max(0, MaxEndurance / 3);
@@ -1312,6 +1312,7 @@ namespace DOL.GS
             Point3D destination = leader?.IsAlive == true && leader.CurrentRegionID == CurrentRegionID
                 ? new Point3D(leader.X, leader.Y, leader.Z)
                 : _deathLocation;
+            if (BotGroupRelease.WaitsForLeader(this)) return true; // Fork: its corpse is no goal, the group goes on where the player comes back
             if ((CurrentRegionID != _deathRegionId || BotGroupRelease.IsGroupReturn(this)) && (leader == null || leader.CurrentRegionID != CurrentRegionID)) // Fork: its leader left the region it died in
                 return BotGroupRelease.TryReturnToLeader(this, _deathTick); // Fork: it stood here for good, nothing else moves a bot in a player's group
 
@@ -1322,10 +1323,9 @@ namespace DOL.GS
                 CompleteStableMasterRoute();
                 Say(ReturnDialogue("arrive"));
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
+                BotGroupRelease.FinishReturn(this); // Fork: as an invitation does
                 return false;
             }
-
-            if (BotGroupRelease.TryUnstick(this, _deathTick)) return false; // Fork: nothing else moves a stuck bot in a player's group
 
             if (IsOnStableMasterRoute)
             {

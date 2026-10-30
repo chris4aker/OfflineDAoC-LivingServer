@@ -42,12 +42,14 @@ namespace DOL.UnitTests
             Assert.That(BotGroupRelease.ReturnDelayOver(1_000, 1_000 + BotGroupRelease.ReturnToLeaderDelayMilliseconds), Is.True);
         }
 
-        [TestCase(149, 1_000, 1_500, false, TestName = "Short of headway, looked at just now")]
-        [TestCase(150, 1_000, 1_500, true, TestName = "Enough headway")]
-        [TestCase(0, 1_000, 7_000, false, TestName = "The gap is exactly the limit")]
-        [TestCase(0, 1_000, 7_001, true, TestName = "A fight came between two looks")]
-        public void ReturnClock_RestartsOnHeadwayOrAfterAGap(double moved, long checkedTick, long now, bool expected) =>
-            Assert.That(BotGroupRelease.RestartsReturnClock(moved, checkedTick, now), Is.EqualTo(expected));
+        [TestCase(1_000, 301_000, false, 1_001, true, TestName = "Last moment of the watch")]
+        [TestCase(1_000, 301_001, false, 1_001, false, TestName = "The watch is over")]
+        [TestCase(0, 100_000, false, 1_001, false, TestName = "Never released")]
+        [TestCase(1_000, 2_000, true, 1_001, false, TestName = "In combat")]
+        [TestCase(1_000, 2_000, false, 1_000, false, TestName = "Near its leader")]
+        public void ReleaseWatch_OnlySoonAfterARelease_OutOfCombat_FarFromTheLeader(long release, long now, bool inCombat,
+            int distance, bool expected) =>
+            Assert.That(BotGroupRelease.ReleaseWatchApplies(release, now, inCombat, distance), Is.EqualTo(expected));
 
         [Test]
         public void ReturnStall_EndsAfterItsTime()
