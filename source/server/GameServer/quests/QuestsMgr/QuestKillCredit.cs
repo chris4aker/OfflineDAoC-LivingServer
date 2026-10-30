@@ -33,5 +33,14 @@ namespace DOL.GS.Quests
 
             return leader;
         }
+
+        /// <summary>
+        /// A kill counts for a quest once. GamePlayer.EnemyKilled tells the killer's quests about the kill once more
+        /// for each groupmate in range who didn't attack (with that groupmate as the sender), so a data quest with
+        /// consecutive kill steps advanced several steps on one kill. Only the notification whose sender is the
+        /// quest's own player counts, as BountyQuest already checks it; each groupmate's own quests hear their own.
+        /// </summary>
+        public static bool CountsForQuest(object sender, object questPlayer) =>
+            sender != null && ReferenceEquals(sender, questPlayer);
     }
 }

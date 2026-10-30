@@ -3,6 +3,7 @@ using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using DOL.Database;
+using DOL.Events;
 using DOL.GS.Quests;
 using DOL.UnitTests;
 using NUnit.Framework;
@@ -60,6 +61,20 @@ namespace DOL.GS.Tests
                 Assert.That(QuestKillCredit.Range, Is.EqualTo(WorldMgr.MAX_EXPFORKILL_DISTANCE));
                 Assert.That(QuestKillCredit.LeaderIsCredited(false, true, true, QuestKillCredit.Range), Is.True);
                 Assert.That(QuestKillCredit.LeaderIsCredited(false, true, true, QuestKillCredit.Range + 1), Is.False);
+            });
+        }
+
+        [Test]
+        public void OnlyTheQuestPlayersOwnNotificationCounts()
+        {
+            object questPlayer = new object();
+            object groupmate = new object();
+            Assert.Multiple(() =>
+            {
+                Assert.That(QuestKillCredit.CountsForQuest(questPlayer, questPlayer), Is.True);
+                Assert.That(QuestKillCredit.CountsForQuest(groupmate, questPlayer), Is.False);
+                Assert.That(QuestKillCredit.CountsForQuest(null, questPlayer), Is.False);
+                Assert.That(QuestKillCredit.CountsForQuest(null, null), Is.False);
             });
         }
 
@@ -170,6 +185,38 @@ namespace DOL.GS.Tests
             var (leader, bot, kill) = InvitedBotGroup();
             typeof(GameBot).GetField("<Owner>k__BackingField", Hidden).SetValue(bot, leader);
             Assert.That(QuestKillCredit.GroupLeaderFor(bot, kill), Is.Null);
+        }
+
+        // DataQuest.Notify: the kill advances the quest on the quest player's own notification only.
+        private sealed class CountingQuest : DataQuest
+        {
+            public int Kills;
+            public CountingQuest(GamePlayer player) => m_questPlayer = player;
+            protected override void OnEnemyKilled(GamePlayer player, GameLiving living) => Kills++;
+        }
+
+        [Test]
+        public void ADataQuestCountsAKillOnceNotOncePerGroupmate()
+        {
+            Player questPlayer = Make<Player>();
+            Player groupmate = Make<Player>();
+            Player anotherGroupmate = Make<Player>();
+            var quest = new CountingQuest(questPlayer);
+            var killed = new EnemyKilledEventArgs(Make<Monster>());
+
+            quest.Notify(GamePlayerEvent.EnemyKilled, questPlayer, killed);
+            quest.Notify(GamePlayerEvent.EnemyKilled, groupmate, killed);
+            quest.Notify(GamePlayerEvent.EnemyKilled, anotherGroupmate, killed);
+
+            Assert.That(quest.Kills, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ADataQuestWithoutAPlayerIgnoresKills()
+        {
+            var quest = new CountingQuest(null);
+            quest.Notify(GamePlayerEvent.EnemyKilled, Make<Player>(), new EnemyKilledEventArgs(Make<Monster>()));
+            Assert.That(quest.Kills, Is.Zero);
         }
     }
 }

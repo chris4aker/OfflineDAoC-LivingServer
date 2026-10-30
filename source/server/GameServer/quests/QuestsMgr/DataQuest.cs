@@ -2010,6 +2010,12 @@ namespace DOL.GS.Quests
 				// Enemy of player with quest was killed, check quests and steps
 				if (e == GamePlayerEvent.EnemyKilled)
 				{
+					// Owner 2026-10-30: a kill counts once. GamePlayer.EnemyKilled repeats the kill to this player's quests
+					// for each groupmate in range who didn't attack (that groupmate as the sender), and one kill advanced
+					// consecutive kill steps. Only the quest player's own notification counts (QuestKillCredit).
+					if (!QuestKillCredit.CountsForQuest(sender, m_questPlayer))
+						return;
+
 					EnemyKilledEventArgs a = args as EnemyKilledEventArgs;
 					GamePlayer player = sender as GamePlayer;
 					GameLiving killed = a.Target;
