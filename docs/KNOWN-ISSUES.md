@@ -1,8 +1,10 @@
-# Living Server Beta 1.0: known issues and what's not tested yet
+# Living Server Beta 1.1: known issues and what's not tested yet
 
 For players. What to expect, what hasn't been checked in game, and known problems. The full list
-of changes is in [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-SocialExpansion/blob/main/CHANGELOG-LIVING-SERVER.md).
-The Living Server was called the Social Expansion up to 0.37-se.2; Beta 1.0 is that build.
+of changes is in [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
+The Living Server was called the Social Expansion up to 0.37-se.2; Beta 1.0 was that build, and Beta 1.1
+(2026-10-29) added the talking update, the living world, 2003-style names, the one-click Setup and the fixes
+taken from other forks and from Offline DAoC 0.38.
 
 ## Always on
 
@@ -28,7 +30,34 @@ These apply even with every Living Server switch off:
   ignored most of them. An insult has to be aimed at someone to count. Place answers match whole
   words, name class trainers, and are worded like a player.
 
-## How it was tested
+## Beta 1.1: what hasn't been checked yet
+
+- **Quests and quest markers.** Beta 1.1 carries HearthDAoC's quest changes (name matching, delivery items, the
+  25-quest journal, one marker scheme, the epic chains) and they have **not been played in game**. The code also
+  has defects that would make quests feel broken for a solo player: a kill by your bot group gives you no quest
+  credit unless you damaged the monster yourself; a hand-in is refused once you are above the quest's maximum
+  level; quest experience ignores the XP-by-level setting; and the epic chains are not linked until a world script
+  runs, which the installer doesn't do yet. The list with the fixes planned for 1.1.1 is in
+  [QUESTING.md](QUESTING.md). The new client also colours "this NPC is your current step" as if the quest were in
+  progress elsewhere.
+- **Sieges at a normal bot count.** Their timers really run from 1.1 on (they were off in every earlier build),
+  so musters, marches, repels and the four-hour cap fire where they used to be skipped. Checked only on the test
+  copy at about 1,000 bots.
+- **Three fixes to raid and storyline moments** came after the last play test: Leeroy jumping the pull, his
+  /faction shout and his after-raid comment; a storyline protagonist dying mid-episode.
+- **Smaller rosters:** automatic raids open only when a realm has 80 eligible level-50 bots online, so a small
+  roster rarely gets them, and a roster filled only with the Lv.1 and Lv.50 buttons has no bots between levels 20
+  and 49 until they level.
+- **Dragon raids don't call the Epic Special Forces** after a wipe yet; dungeon raids do.
+- **Bots don't fall when they die:** the game client keeps a dead pose only for players. A fix was tried and left
+  out.
+- **The talking update's own in-game list** (combat calls in a real fight, a keep's news retold a minute later,
+  /lfg and /trade in the original client, chat volume at 900 bots a realm) is still being worked through.
+- The community's first reports are on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues):
+  the launcher staying on STARTING, a party that doesn't disband, bots released in a battleground standing in the
+  capital, the friends list, and the new client's hotbars. They are the 1.1.1 list.
+
+## How it was tested (Beta 1.0)
 
 - **Automated:** every build runs the full server test suite (3,400+ tests) and the installer tests
   before it's packaged.
@@ -115,6 +144,6 @@ meetup fix drop two no-shows (in the server log).
 
 ## Reporting a problem
 
-Open an issue on [GitHub](https://github.com/chris4aker/OfflineDAoC-SocialExpansion/issues).
+Open an issue on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues).
 Include the `FORK_BUILD` line from `runtime\server\logs\server.log` (it names the build and which
 features are on) and what you were doing.

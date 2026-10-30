@@ -40,6 +40,6 @@ shadowofze, already in his 0.38 work where he took them) and the old `se`, `ci` 
 - [x] CI green on `release/1.1` (server, launcher and installer tests; 2026-10-28, recheck after the last merges)
 - [x] Played on the owner's test copy at up to about 1,000 bots online (2026-10-28 and 29; see the changelog's
       Checked section). Sieges at the normal bot count still to watch.
-- [ ] Played on the owner's PC at the normal bot count. Watch sieges: their expiry timers now run on the live
+- [ ] Played on the owner's PC at the normal bot count (carried to 1.1.1, see [RELEASE-TRAIN.md](RELEASE-TRAIN.md)). Watch sieges: their expiry timers now run on the live
       clock, so musters, marches, repels and the four-hour cap will fire where earlier builds skipped them.
-- [ ] Reply on issue #25 once the release is out
+- [x] Reply on issue #25 once the release is out (2026-10-29; closed as fixed in 1.1)
