@@ -22,6 +22,16 @@ Fixes for reports after Beta 1.1 shipped.
     with none left, leave the group and go back to their own play. `/spawn` companions are left as before.
   - **Checked:** three new tests (released, handed to a remaining player, companions untouched); 4,096 server tests
     pass. Not yet seen in game.
+- **Base classes get their weapon styles before level 5** (reported on r/daoc by Zarthol).
+  - **The bug:** the style table lists styles only for the classes chosen at level 5, so a Fighter, Viking, Guardian
+    or other base class had no styles at all until then. A Fighter with Slash 2 had nothing where a classic one had
+    Slash's first style.
+  - **Whose code:** shadowofze's data and style lookup, the same in 0.36c and 0.37b. Bots aren't affected: they start
+    in their chosen class.
+  - **Now:** a base class gets the styles its classes have in the weapon line it trains, each once (from the game's
+    data: Fighter Ruby Slash, Thistle and Daze at 2; Viking Splitter, Thor's Anvil and Whirling Blade; Guardian
+    Shining Blade, Contusions and Dragonfly). Chosen classes keep their own lists unchanged.
+  - **Checked:** two new tests; the full server suite passes. Not yet seen in game.
 
 ## Beta 1.1 (released 2026-10-29)
 
