@@ -13,7 +13,7 @@ namespace DOL.GS
             IsStealthClass((eCharacterClass)bot.CharacterClass.ID) &&
             (bot.GetSpecializationByName(Specs.Stealth)?.Level ?? 0) > 0 &&
             bot.IsAlive && !bot.InCombat && !bot.IsAttacking && !bot.IsCasting && !bot.IsCrowdControlled &&
-            !bot.IsOnHorse && bot.castingComponent?.HasPendingSkillRequests != true &&
+            !bot.IsOnHorse && bot.castingComponent?.HasPendingSkillRequests != true && !GameRelic.IsPlayerCarryingRelic(bot) &&
             IsEnemyCombatant(bot, target) && bot.IsWithinRadius(target, 2_000) &&
             GameServer.ServerRules.IsAllowedToAttack(bot, target, true);
     }

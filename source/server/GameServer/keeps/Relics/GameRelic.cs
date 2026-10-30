@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using DOL.Database;
 using DOL.Events;
 using DOL.GS.PacketHandler;
@@ -67,9 +68,28 @@ namespace DOL.GS
 
         private bool PickupCore(GameLiving player)
         {
-            if (player is not IGamePlayer || InventoryOf(player) == null || CurrentCarrier != null ||
-                ObjectState != eObjectState.Active || !player.IsWithinRadius(this, WorldMgr.INTERACT_DISTANCE))
+            if (player is not IGamePlayer || InventoryOf(player) == null)
                 return false;
+
+            // A carried relic is out of the world. One that is in the world with a carrier still recorded is a broken
+            // hand-off (2026-10-30 livestream: a bot "dropped" it and nobody could pick it up again, with no message).
+            if (CurrentCarrier != null && ObjectState == eObjectState.Active)
+                ClearStaleCarrier();
+
+            if (CurrentCarrier != null)
+            {
+                OutputOf(player)?.SendMessage($"{CurrentCarrier.Name} is already carrying {GetName(0, false)}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                return false;
+            }
+
+            if (ObjectState != eObjectState.Active)
+                return false;
+
+            if (!player.IsWithinRadius(this, WorldMgr.INTERACT_DISTANCE))
+            {
+                OutputOf(player)?.SendMessage($"{GetName(0, true)} is too far away.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                return false;
+            }
 
             if (player.TempProperties.GetProperty<GameRelic>(PLAYER_CARRY_RELIC_WEAK) != null)
             {
@@ -106,9 +126,12 @@ namespace DOL.GS
 
             if (player is not GamePlayer human || (ePrivLevel)human.Client.Account.PrivLevel == ePrivLevel.Player)
             {
-                if (IsMounted && CurrentRelicPad.GetEnemiesOnPad() < Properties.RELIC_PLAYERS_REQUIRED_ON_PAD)
+                int onPad = IsMounted ? CurrentRelicPad.GetEnemiesOnPad() : 0;
+                if (IsMounted && onPad < Properties.RELIC_PLAYERS_REQUIRED_ON_PAD)
                 {
-                    OutputOf(player).SendMessage($"You must have {Properties.RELIC_PLAYERS_REQUIRED_ON_PAD} players nearby the pad before taking a relic.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    OutputOf(player).SendMessage($"You must have {Properties.RELIC_PLAYERS_REQUIRED_ON_PAD} players nearby the pad before taking a relic " +
+                        $"({onPad} of {Properties.RELIC_PLAYERS_REQUIRED_ON_PAD} there now; your companions count when alive, not hidden and within reach of the pad).",
+                        eChatType.CT_System, eChatLoc.CL_SystemWindow);
                     return false;
                 }
             }
@@ -120,6 +143,8 @@ namespace DOL.GS
             }
 
             InventoryLogging.LogInventoryAction(this, player, eInventoryActionType.Other, _item.Template, _item.Count);
+            if (log.IsInfoEnabled)
+                log.Info($"RELIC_PICKUP relic=\"{Name}\" carrier={player.Name} bot={player is GameBot} mounted={IsMounted} region={CurrentRegionID} x={X} y={Y} z={Z}");
             CurrentCarrier = player;
             player.TempProperties.SetProperty(PLAYER_CARRY_RELIC_WEAK, this);
             OutputOf(player).SendUpdateMaxSpeed();
@@ -369,10 +394,25 @@ namespace DOL.GS
                 return 0;
             if (!CurrentCarrier.IsAlive || CurrentCarrier.ObjectState != eObjectState.Active || CurrentCarrier.IsStealthed)
             {
-                DropFromCarrier(CurrentCarrier);
+                DropFromCarrier(CurrentCarrier, !CurrentCarrier.IsAlive ? "dead" : CurrentCarrier.IsStealthed ? "stealthed" : "left-world");
                 return 0;
             }
             Update();
+
+            // A bot carrier (a /raid or group companion, which the pad's area never sees) captures the relic at its
+            // realm's matching shrine like a player walking onto it (2026-10-30).
+            if (CurrentCarrier is GameBot carrierBot)
+            {
+                GameRelicPad home = RelicMgr.GetPadsSnapshot().FirstOrDefault(pad => pad.Realm == carrierBot.Realm &&
+                    pad.PadType == RelicType && pad.CurrentRegionID == carrierBot.CurrentRegionID &&
+                    pad.MountedRelics.Count < 3 && carrierBot.IsWithinRadius(pad, 250));
+                if (home != null && RelicPadTakesOver(home, false))
+                {
+                    if (log.IsInfoEnabled)
+                        log.Info($"RELIC_CAPTURE relic=\"{Name}\" carrier={carrierBot.Name} pad=\"{home.Name}\"");
+                    return 0;
+                }
+            }
 
             // Disabled for OF.
             /*if (!GameServer.KeepManager.FrontierRegionsList.Contains(CurrentRegionID) == false)
@@ -388,12 +428,28 @@ namespace DOL.GS
 
             if (CurrentCarrier != null && InventoryOf(CurrentCarrier).GetFirstItemByID(_item.Id_nb, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack) == null)
             {
-                if (log.IsDebugEnabled)
-                    log.Debug($"{Name} not found in carriers backpack, relic returned to previous pad.");
+                GameLiving carrier = CurrentCarrier;
+                if (carrier is GameBot && InventoryOf(carrier).AddItem(eInventorySlot.FirstEmptyBackpack, _item))
+                {
+                    if (log.IsWarnEnabled)
+                        log.Warn($"RELIC_ITEM_RESTORED relic=\"{Name}\" carrier={carrier.Name}: the relic was missing from the bot's bag");
+                    return RELIC_EFFECT_INTERVAL;
+                }
 
-                RelicPadTakesOver(_returnRelicPad, true);
-                SaveIntoDatabase();
-                AddToWorld();
+                if (log.IsWarnEnabled)
+                    log.Warn($"RELIC_DROP relic=\"{Name}\" carrier={carrier.Name} reason=not-in-backpack");
+
+                lock (_custodyLock)
+                {
+                    if (CurrentCarrier != carrier)
+                        return 0;
+                    if (!RelicPadTakesOver(_returnRelicPad, true))
+                    {
+                        // No pad to go back to: it falls where the carrier stands, free to pick up.
+                        Realm = eRealm.None;
+                        PlayerLoosesRelic(false);
+                    }
+                }
                 return 0;
             }
 
@@ -443,18 +499,40 @@ namespace DOL.GS
                 return;
             }
 
-            DropFromCarrier(sender as GameLiving);
+            DropFromCarrier(sender as GameLiving, e?.Name ?? "event");
         }
 
-        public void DropFromCarrier(GameLiving carrier)
+        public void DropFromCarrier(GameLiving carrier, string reason = "dropped")
         {
             lock (_custodyLock)
             {
                 if (carrier != CurrentCarrier || carrier == null)
                     return;
+                if (log.IsInfoEnabled)
+                    log.Info($"RELIC_DROP relic=\"{Name}\" carrier={carrier.Name} bot={carrier is GameBot} reason={reason} region={carrier.CurrentRegionID} x={carrier.X} y={carrier.Y} z={carrier.Z}");
                 Realm = eRealm.None;
                 PlayerLoosesRelic(true);
             }
+        }
+
+        /// <summary>Clears a carrier left recorded on a relic that is back in the world, so it can be picked up.</summary>
+        private void ClearStaleCarrier()
+        {
+            GameLiving carrier = CurrentCarrier;
+            if (carrier == null)
+                return;
+            if (log.IsWarnEnabled)
+                log.Warn($"RELIC_STALE_CARRIER relic=\"{Name}\" carrier={carrier.Name}: in the world with a carrier recorded, carrier cleared");
+            if (carrier.TempProperties.GetProperty<GameRelic>(PLAYER_CARRY_RELIC_WEAK) == this)
+                carrier.TempProperties.RemoveProperty(PLAYER_CARRY_RELIC_WEAK);
+            SetHandlers(carrier, false);
+            StartPlayerTimer(null);
+            IGameInventory inventory = InventoryOf(carrier);
+            if (inventory != null)
+                lock (inventory.Lock)
+                    inventory.RemoveItem(_item);
+            CurrentCarrier = null;
+            OutputOf(carrier)?.SendUpdateMaxSpeed();
         }
 
         public static bool IsPlayerCarryingRelic(GameLiving player)

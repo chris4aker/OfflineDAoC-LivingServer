@@ -70,6 +70,7 @@ namespace DOL.GS
         public static bool MayHide(GameBot bot)
         {
             if (!bot.IsAlive || InOwnFight(bot) || bot.IsCasting || bot.castingComponent?.HasPendingSkillRequests == true ||
+                GameRelic.IsPlayerCarryingRelic(bot) ||
                 bot.IsMezzed || bot.IsStunned)
                 return false;
             int stealth = Math.Min(50, bot.GetModifiedSpecLevel(Specs.Stealth));

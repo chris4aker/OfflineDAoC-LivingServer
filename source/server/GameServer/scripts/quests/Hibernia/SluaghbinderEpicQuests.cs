@@ -609,7 +609,10 @@ public static class SluaghbinderEpicQuestRuntime
         // even with quests disabled, so worn pieces always resolve to a template.
         SluaghbinderEpicArmor.EnsureTemplates();
 
-        if (!ServerProperties.Properties.LOAD_QUESTS)
+        // 0.38: the Sluaghbinder is discontinued (owner 2026-10-30). Its trainer and wisp are removed from the world
+        // (tools/claude-version/remove_sluaghbinder_npcs.py), and its quests, quest monsters and markers no longer start.
+        // The armour templates above stay so pieces an old character still owns resolve.
+        if (Discontinued || !ServerProperties.Properties.LOAD_QUESTS)
             return;
 
         GameEventMgr.AddHandler(GamePlayerEvent.GameEntered, PlayerEntered);
@@ -633,6 +636,9 @@ public static class SluaghbinderEpicQuestRuntime
         GameEventMgr.AddHandler(Muirenn, GameObjectEvent.Interact, TalkToMuirenn);
         GameEventMgr.AddHandler(Muirenn, GameLivingEvent.WhisperReceive, TalkToMuirenn);
     }
+
+    /// <summary>0.38: the class is discontinued; nothing of its quest line starts.</summary>
+    public const bool Discontinued = true;
 
     private static GameNPC Muirenn;
 

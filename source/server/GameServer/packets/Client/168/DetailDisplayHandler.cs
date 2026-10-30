@@ -172,6 +172,9 @@ namespace DOL.GS.PacketHandler.Client.v168
 						if (invItem.Object_Type == (int)eObjectType.Poison)
 							WritePoisonInfo(objectInfo, invItem, client);
 
+						if (invItem.Object_Type is (int)eObjectType.Arrow or (int)eObjectType.Bolt)
+							WriteAmmoInfo(objectInfo, invItem.SPD_ABS, invItem.Type_Damage, invItem.PackSize, invItem.MaxCount, invItem.Count);
+
 						if (invItem.Object_Type == (int)eObjectType.Magical && invItem.Item_Type == (int)eInventorySlot.FirstBackpack) // potion
 							WritePotionInfo(objectInfo, invItem, client);
 						else if (invItem.CanUseEvery > 0)
@@ -460,6 +463,9 @@ namespace DOL.GS.PacketHandler.Client.v168
 						if (item.Object_Type == (int)eObjectType.Poison)
 							WritePoisonInfo(objectInfo, item, client);
 
+						if (item.Object_Type is (int)eObjectType.Arrow or (int)eObjectType.Bolt)
+							WriteAmmoInfo(objectInfo, item.SPD_ABS, item.Type_Damage, item.PackSize, item.MaxCount);
+
 						if (item.Object_Type == (int)eObjectType.Magical && item.Item_Type == 40) // potion
 							WritePotionInfo(objectInfo, item, client);
 
@@ -645,6 +651,9 @@ namespace DOL.GS.PacketHandler.Client.v168
 
 						if (invItem.Object_Type == (int)eObjectType.Poison)
 							WritePoisonInfo(objectInfo, invItem, client);
+
+						if (invItem.Object_Type is (int)eObjectType.Arrow or (int)eObjectType.Bolt)
+							WriteAmmoInfo(objectInfo, invItem.SPD_ABS, invItem.Type_Damage, invItem.PackSize, invItem.MaxCount, invItem.Count);
 
 						if (invItem.Object_Type == (int)eObjectType.Magical && invItem.Item_Type == 40) // potion
 							WritePotionInfo(objectInfo, invItem, client);
@@ -1816,6 +1825,42 @@ namespace DOL.GS.PacketHandler.Client.v168
 			list.Add(LanguageMgr.GetTranslation(client.Account.Language, "DetailDisplayHandler.WriteHorseInfo.Armor", (item.DPS_AF == 0 ? "None" : item.DPS_AF.ToString())));
 			list.Add(LanguageMgr.GetTranslation(client.Account.Language, "DetailDisplayHandler.WriteHorseInfo.Barding"));
 			list.Add(LanguageMgr.GetTranslation(client.Account.Language, "DetailDisplayHandler.WriteHorseInfo.Food"));
+		}
+
+		/// <summary>
+		/// Arrows and bolts (owner 2026-10-30: the merchant delve said nothing and gave no stack size). The modifiers are
+		/// the ones AttackComponent applies, read from SPD_ABS: bits 0-1 damage, 2-3 range, 4-5 accuracy.
+		/// </summary>
+		protected static void WriteAmmoInfo(List<string> list, int spdAbs, int damageType, int packSize, int maxCount, int count = 0)
+		{
+			static string Step(int code, string low, string high) => code switch
+			{
+				0 => $"{low} (-15%)",
+				2 => "+15%",
+				3 => $"{high} (+25%)",
+				_ => "normal",
+			};
+			list.Add(" ");
+			list.Add("Ammunition:");
+			list.Add("- Damage: " + Step(spdAbs & 0x3, "Blunt", "Broadhead"));
+			list.Add("- Range: " + Step((spdAbs >> 2) & 0x3, "Clout", "Flight"));
+			list.Add("- Accuracy: " + Step((spdAbs >> 4) & 0x3, "Rough", "Footed"));
+			string type = ((eDamageType)damageType) switch
+			{
+				eDamageType.Crush => "Crush",
+				eDamageType.Slash => "Slash",
+				eDamageType.Thrust => "Thrust",
+				_ => null,
+			};
+			if (type != null)
+				list.Add("- Damage type: " + type);
+			list.Add(" ");
+			if (count > 0)
+				list.Add($"{count} in this stack.");
+			if (packSize > 1)
+				list.Add($"Sold in packs of {packSize}.");
+			if (maxCount > 1)
+				list.Add($"Stacks up to {maxCount}.");
 		}
 
 		protected void WritePoisonInfo(List<string> list, DbItemTemplate item, GameClient client)

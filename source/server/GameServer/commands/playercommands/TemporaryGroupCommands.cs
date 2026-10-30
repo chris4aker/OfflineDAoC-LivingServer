@@ -13,13 +13,9 @@ namespace DOL.GS.Commands
 
         public static IEnumerable<(eCharacterClass CharacterClass, string Role)> ForRealm(eRealm realm)
         {
-            // Keep the command catalog resilient to an older generated identity
-            // list.  Sluaghbinder is an isolated Hibernian class and must be
-            // available to both the popup and the text form of /spawn even when
-            // a runtime is updated one assembly at a time.
-            IEnumerable<eCharacterClass> classes = AutonomousBotIdentityGenerator.GetEraClasses(realm);
-            if (realm == eRealm.Hibernia && !classes.Contains(eCharacterClass.Sluaghbinder))
-                classes = classes.Append(eCharacterClass.Sluaghbinder);
+            // 0.38: the Sluaghbinder is discontinued (owner 2026-10-30): /spawn never offers it.
+            IEnumerable<eCharacterClass> classes = AutonomousBotIdentityGenerator.GetEraClasses(realm)
+                .Where(c => c != eCharacterClass.Sluaghbinder);
 
             return classes.Select(characterClass => (characterClass, BotPartyRoles.Label(characterClass)));
         }

@@ -9625,6 +9625,13 @@ namespace DOL.GS
             if (floorObject.ObjectState is not eObjectState.Active)
                 return;
 
+            // A relic is taken with the same rules whether right-clicked or picked up with the Get key (2026-10-30).
+            if (floorObject is GameRelic relic)
+            {
+                relic.Interact(this);
+                return;
+            }
+
             if (floorObject is GameStaticItemTimed staticItem &&
                 !staticItem.IsOwner(this) &&
                 (ePrivLevel) Client.Account.PrivLevel <= ePrivLevel.Player)

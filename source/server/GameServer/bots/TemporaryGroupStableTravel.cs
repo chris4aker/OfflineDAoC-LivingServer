@@ -172,6 +172,10 @@ public static class TemporaryGroupStableTravel
         {
             if (!bot.IsAlive || bot.ObjectState != GameObject.eObjectState.Active)
                 continue; // Dead helpers retain their corpse/recovery timer.
+            // A helper already fighting near where the player landed stays in that fight (Legion's purgatory: the
+            // zone point back down lands about 3000 from him, where the raid is still fighting).
+            if (bot.CurrentRegionID == player.CurrentRegionID && bot.InCombat && bot.IsWithinRadius(player, 4000))
+                continue;
             bool needsRelocation = ShouldRelocateForOwnerTransfer(
                     hasConfirmedTransfer,
                     bot.IsTemporaryGroupHelper,

@@ -1071,7 +1071,7 @@ namespace DOL.GS
                 StopCurrentSpellcast();
                 (Brain as BotBrain)?.PrepareForTankPull();
                 StopMoving();
-                if (!MoveTo(Owner.CurrentRegionID, (int)Math.Round(destination.X),
+                if (!MoveCorpseForRelease(Owner.CurrentRegionID, (int)Math.Round(destination.X),
                     (int)Math.Round(destination.Y), (int)Math.Round(destination.Z), Owner.Heading))
                     return;
 
@@ -1083,6 +1083,7 @@ namespace DOL.GS
                 EnterPlayerLedGroup(Owner);
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
                 Brain?.Start();
+                ShowStandingToViewers();
                 return;
             }
 
@@ -1116,7 +1117,7 @@ namespace DOL.GS
             release ??= _deathLocation;
             // Transfer the corpse first: a failed MoveTo must not revive the bot
             // at its killer or cause HandleDeathRecovery to discard its timer.
-            if (!MoveTo(releaseRegion, release.X, release.Y, release.Z, Heading))
+            if (!MoveCorpseForRelease(releaseRegion, release.X, release.Y, release.Z, Heading))
                 return;
             Health = Math.Max(1, MaxHealth / 3);
             Mana = Math.Max(0, MaxMana / 3);
@@ -1126,6 +1127,7 @@ namespace DOL.GS
             _nextReturnRoleplayTick = GameLoop.GameLoopTime + Util.Random(45_000, 90_000);
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
+            ShowStandingToViewers();
             if (returnToParty)
                 Say(ReturnDialogue("release"));
 
@@ -1136,6 +1138,25 @@ namespace DOL.GS
                     PersistentRecord.CurrentGoal = $"Return to the party near {_deathLocation.X}, {_deathLocation.Y}";
                 PersistentRecord.TravelDestination = CurrentZone?.Description ?? string.Empty;
                 MarkAutonomousStateDirty();
+            }
+        }
+
+        /// <summary>
+        /// A release moves the corpse first and raises it after: the move re-created the bot for every viewer while it
+        /// was still dead, and a client keeps an NPC created dead lying down whatever its health says later, so it showed
+        /// as a second dead body (owner 2026-10-30). Re-send it standing.
+        /// </summary>
+        private void ShowStandingToViewers()
+        {
+            if (!IsAlive || ObjectState != eObjectState.Active)
+                return;
+            foreach (GamePlayer viewer in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+            {
+                if (viewer.Client?.ClientState is not GameClient.eClientState.Playing || !viewer.CanDetect(this))
+                    continue;
+                viewer.Out.SendObjectRemove(this);
+                ClientService.CreateObjectForPlayer(viewer, this);
+                viewer.Out.SendLivingEquipmentUpdate(this);
             }
         }
 
@@ -1708,6 +1729,10 @@ namespace DOL.GS
 
             if (goStealth)
             {
+                // A relic carrier cannot hide: the relic would fall at once (2026-10-30 livestream).
+                if (GameRelic.IsPlayerCarryingRelic(this))
+                    return;
+
                 // Songs and pulsing spells are mutually exclusive with stealth.
                 // Keep the same legality rule without using GamePlayer-only effects.
                 if (effectListComponent.ContainsEffectForEffectType(eEffect.Pulse))
@@ -2659,8 +2684,41 @@ namespace DOL.GS
         /// The ordinary RemoveFromWorld pet release is retained, allowing the
         /// pet manager to re-summon a legal pet in the destination region.
         /// </summary>
+        private int _corpseReleaseMove;
+
+        /// <summary>The release's own corpse move (the bot is raised right after): the one move a dead bot may make.</summary>
+        private bool MoveCorpseForRelease(ushort regionID, int x, int y, int z, ushort heading)
+        {
+            _corpseReleaseMove++;
+            try { return MoveTo(regionID, x, y, z, heading); }
+            finally { _corpseReleaseMove--; }
+        }
+
+        /// <summary>
+        /// A body stays where it fell until it is raised or released (owner 2026-10-30: a companion killed outside an inn
+        /// showed up dead beside the innkeeper 6 seconds later, by an in-region teleport). Any other move of a dead bot is
+        /// refused and logged with its caller.
+        /// </summary>
+        private bool RefuseCorpseMove(string kind, ushort regionID, int x, int y, int z)
+        {
+            if (Health > 0 || ObjectState != eObjectState.Active || _corpseReleaseMove > 0)
+                return false;
+            log.Warn($"BOT_CORPSE_MOVE_REFUSED {kind} bot=\"{Name}\" id={DatabaseID} from={CurrentRegionID}:{X},{Y},{Z} " +
+                     $"to={regionID}:{x},{y},{z}{Environment.NewLine}{Environment.StackTrace}");
+            return true;
+        }
+
+        public override bool MoveInRegion(ushort regionID, int x, int y, int z, ushort heading, bool forceMove)
+        {
+            if (RefuseCorpseMove("MoveInRegion", regionID, x, y, z))
+                return false;
+            return base.MoveInRegion(regionID, x, y, z, heading, forceMove);
+        }
+
         public override bool MoveTo(ushort regionID, int x, int y, int z, ushort heading)
         {
+            if (RefuseCorpseMove("MoveTo", regionID, x, y, z))
+                return false;
             // Owner 2026-10-07: travelling the old frontiers, the pets of the player's /spawn and /raid companions died
             // on every move (the move removes the bot from the world, which released its pet) and their pet classes kept
             // re-summoning. Within a region a companion's pet now comes along and is placed behind it, as a player's pet
@@ -2774,7 +2832,7 @@ namespace DOL.GS
             // this removal is classified after it has begun.
             bool intentionalWorldMove = IsIntentionalWorldMove;
             if (!intentionalWorldMove)
-                TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(this);
+                TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(this, "bot-removed");
             if (IsAutonomousWorldBot && !intentionalWorldMove)
                 SaveAutonomousState(true);
             // A charm cast can have created its tagged candidate before the
@@ -3672,6 +3730,12 @@ namespace DOL.GS
                 SetSluaghbinderSpells();
                 return;
             }
+
+            // The usable-skill lists are cached: rebuild them from the current specs and level first. Read from the cache,
+            // a bot trained or levelled in the field kept its old spells until it was created again (owner 2026-10-30:
+            // a level 5 Hunter trained to Beastcraft 5 used none of the new buffs until dismissed and summoned at the inn).
+            GetAllUsableSkills(true);
+            GetAllUsableListSpells(true);
 
             // Casters use list spells (highest level per type), hybrids use all usable skills
             if (CharacterClass.ClassType == eClassType.ListCaster)

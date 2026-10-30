@@ -131,6 +131,36 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
   ahead it saves for it, and with nothing left to save for it buys the most valuable seal item it can and sells it or
   posts it on the Realm Exchange like any other loot. Applies to every server (normal mode).
 
+- A dead bot no longer shows as two dead bodies. When a bot released, the server moved its body to the bind point
+  before raising it: every client was told to leave the old body as a corpse, and the bot was re-created dead at the
+  bind point too (seen since 0.1, in both clients). The body now goes without a trace and the raised bot appears
+  standing. A dead bot also stays where it fell: nothing but its own release moves it (a companion killed outside an
+  inn showed up dead next to the innkeeper; any other attempt is now refused and logged with the code that tried it).
+- Bots and companions use what they learn at once. Training a companion's specs or a bot's level-up added the new
+  spells to its skills but not to the spell list it casts from, so they waited until the bot was created again (a
+  Hunter trained to Beastcraft 5 never used its new buffs until dismissed and summoned again). Styles and abilities
+  already came at once.
+- Bards, Minstrels, Skalds and Paladins hold one song or chant like a player instead of twisting through all of them:
+  speed while travelling, endurance (then power, then health) in a fight, and whatever the group is short of when
+  standing around. A held song lasts at least 10 seconds and is never recast while it pulses; Paladins hold endurance.
+  A performer without speed or endurance yet uses another song it knows until then.
+- Relics: a relic a bot had dropped could no longer be picked up by anyone, with no message. The broken hand-off is
+  cleared, the relic drops properly and a bot whose bags lost it gets it back. Every refusal now says why (someone is
+  already carrying it, too far away, how many of the 8 needed are at the pad), the Get key picks a relic up like a
+  right-click, bots carrying a relic never stealth (they dropped it within seconds), and a /raid or group companion
+  carrying one captures it at its realm's shrine.
+- Keep doors no longer repair themselves while enemies are within 3,000. A broken relic temple door crossed the 15%
+  line on its 30-minute repair tick and shut behind a raid fighting the guards inside (relic temples have no lord, so
+  the keep counted as out of combat 5 minutes after the last door hit). Same 5% per 30 minutes otherwise.
+- Legion's throw is an encounter throw like the dragons': companions stay down fighting instead of being dragged up
+  to the purgatory platform, whose only way down is a zone point bots can't use; helpers already fighting near a
+  player's landing spot stay in that fight.
+- A companion released for good no longer makes the server retry saving it every second. Its record was deleted while
+  its save stayed queued, and each failed save also held up the other bots saved with it.
+- The Sluaghbinder is no longer offered anywhere: new characters can't choose it, no gamebots or /spawn companions are
+  made as one, and its trainer, wisp, quest line and quest monsters are gone (existing installs: run
+  tools/claude-version/remove_sluaghbinder_npcs.py once with the server stopped). Old characters still load.
+
 **World**
 - Bring A Friend reaches as far as on Dawn of Light, and only monsters in sight come. Friends came from up to 1,500
   units for a full group (450 plus 150 for each other member), through walls and from the next room; in Cardova's
@@ -206,6 +236,12 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
     skill); Catacombs class bonuses were not added.
   - Existing installs: run tools/claude-version/fix_quest_reward_stats.py once with the server stopped (it backs up
     the database and only changes rows that still hold the old values). Applies to every server (normal mode).
+
+- Arrows and bolts have item information on a merchant, in your bags and in a trade: the damage, range and accuracy
+  modifiers the game applies (for example "Range: Clout (-15%)"), the damage type, how many come in a pack and how
+  many stack (the window was empty).
+- The launcher no longer crashes when its server log can't be rotated (another launcher window held the file): the
+  crash took the server and the game down with it.
 
 **Companions and commands**
 - /spawn specs opens a menu like /spawn that lists every class of your realm with its builds, such as
