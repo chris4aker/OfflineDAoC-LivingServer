@@ -8,7 +8,22 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Beta 1.1 (in development)
+## Beta 1.1.1 (in development)
+
+Fixes for reports after Beta 1.1 shipped.
+
+- **Bots stop following you when you leave or disband their group** (issue #33, reported by nindybrew-svg).
+  - **The bug:** with two or more invited gamebots in the group, `/disband` took you out but left them marked as
+    following you. They trailed you without fighting for you, and refused new invites ("already following another
+    player-led group") until you logged out. A single bot was already released correctly.
+  - **Whose code:** the cause is in shadowofze's group code (`Group.RemoveMember`), unchanged in his 0.38 branch.
+    It isn't a 1.1 regression, but 1.1's pathing to a far-off player made the stuck bots follow more reliably.
+  - **Now:** when a player leaves, the gamebots that followed them follow another player still in the group, or,
+    with none left, leave the group and go back to their own play. `/spawn` companions are left as before.
+  - **Checked:** three new tests (released, handed to a remaining player, companions untouched); 4,096 server tests
+    pass. Not yet seen in game.
+
+## Beta 1.1 (released 2026-10-29)
 
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,
 spammers, roleplayers, rumours, holiday chatter, Leeroy), 2003-style bot names, a first half hour paced for signature
