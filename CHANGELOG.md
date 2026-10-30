@@ -3,9 +3,12 @@
 The newest version is first. For the full detail of every earlier update, see
 [docs/history/CHANGELOG-0.3-to-0.32b.md](docs/history/CHANGELOG-0.3-to-0.32b.md).
 
-## 0.38 / 0.38b / 0.38c (not released yet)
+## 0.38 (not released yet)
 
 0.37 / 0.37b / 0.37c is the latest release.
+
+**Going forward only the new client is supported.** 0.38 is one download (the server, the launcher and the new
+client). The original DAoC client is no longer supported, and the Sluaghbinder class is discontinued.
 
 **Bots and raids**
 - Hibernian bots no longer get stuck at the door of their portal keep in Odin's Gate. Once out of the keep's
@@ -240,7 +243,7 @@ The newest version is first. For the full detail of every earlier update, see
   pregame screens. Only the creation screen's picture in `pregame/pregame.mpk` changed; the original is kept in
   `runtime/client-opendaoc/app/backups/no-atlas-planner-text-20261030/` (tool: `source/tools/remove_atlas_planner_line.py`).
 
-**The new client (0.38c)**
+**The new client**
 - A monster or NPC that dies stops attacking at once. It sometimes went on swinging for a second or two over its
   death, when a blow of its own arrived just after the killing blow; the original client never animates a dead body.
 - The new client keeps a log of the spells it sees cast and land around you (spell_log.txt in its save folder, the
@@ -364,6 +367,22 @@ The newest version is first. For the full detail of every earlier update, see
   resurrect them. Monster bodies still can't be targeted.
 - Right-clicking a relic picks it up in the new client (it did nothing; only targeting it and pressing Get Item
   worked). Right-clicking loot on the ground picks it up too; a gravestone is just targeted, for /pray.
+- The window title says Offline DAoC Rebuilt v0.38.
+- BUY, SELL and APPRAISE work even when you have targeted something else since opening a merchant (your companion,
+  another NPC). The server only deals with your target and ignored the purchase without a word; the merchant whose
+  window is open is now targeted again first.
+- The merchant window works like the original client's. A QUANTITY row (1 to 100) buys that many packs per BUY and
+  goes back to 1 afterwards unless KEEP is on. The list scrolls: a page holds up to 30 goods and only the first 20
+  could be reached (the arrow merchants have more). Each row shows how many one purchase gives ("x20") for arrows,
+  bolts, poisons and thrown weapons.
+- Right-clicking arrows or bolts at a merchant shows what they are, as in the original client: how many, the damage
+  type, the weight, and their damage, range and accuracy grades. Poisons show their pack size and level.
+- A small AGGRESSIVE / DEFENSIVE button in the group window's corner switches your companions' stance in one click
+  (the same as typing /aggressive or /defensive).
+- A bot or companion riding a stable horse sits on it even when the server's riding message arrives just before the
+  horse or the rider appears (it was dropped and the rider walked beside its horse).
+- The new client logs every death of a gamebot or companion it sees (death_log.txt in its save folder: the server's
+  last positions and where the body is drawn), to compare with the server's log when a body shows up in the wrong place.
 
 **Credits**
 - Thanks to chris4aker's Living Server fork
