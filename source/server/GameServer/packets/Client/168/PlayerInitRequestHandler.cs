@@ -32,11 +32,13 @@ namespace DOL.GS.PacketHandler.Client.v168
             player.Out.SendTime();
             bool checkInstanceLogin = false;
             bool updateTempProperties = false;
+            bool firstEntry = false;
 
             // If player is entering the game on this PlayerInit.
             if (!player.EnteredGame)
             {
                 updateTempProperties = true;
+                firstEntry = true;
                 player.EnteredGame = true;
                 player.Notify(GamePlayerEvent.GameEntered, player);
                 ShowPatchNotes(player);
@@ -82,6 +84,11 @@ namespace DOL.GS.PacketHandler.Client.v168
 
             if (ServerProperties.Properties.ENABLE_DEBUG)
                 player.Out.SendMessage("Server is running in DEBUG mode!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+
+            // Owner 2026-10-30: an older save with more than 25 active quests keeps every one of them; the journal shows
+            // 25 and the rest are listed as slots free. Said once per login instead of hiding them without a word.
+            if (firstEntry && Quests.QuestJournal.WaitingText(player.QuestList.Count) is string waitingQuests)
+                player.Out.SendMessage(waitingQuests, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 
             if (player.PreviousLoginDate.AddMinutes(ServerProperties.Properties.NEAR_KEEP_RELOG_GRACE_PERIOD) < DateTime.Now)
                 CheckNearbyKeepAndMoveIfUnsafe(player);

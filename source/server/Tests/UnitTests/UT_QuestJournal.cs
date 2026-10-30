@@ -60,4 +60,62 @@ public sealed class UT_QuestJournal
             Assert.That(QuestJournal.Same(new FakeDataQuest(1), new ScriptedA()), Is.False);
         });
     }
+
+    // An older save with more than 25 active quests (owner 2026-10-30): none is aborted, the extras wait for a slot,
+    // and login says how many.
+    [Test]
+    public void UpToTheCapacityNothingWaits()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(QuestJournal.WaitingCount(0), Is.Zero);
+            Assert.That(QuestJournal.WaitingCount(25), Is.Zero);
+            Assert.That(QuestJournal.WaitingText(0), Is.Null);
+            Assert.That(QuestJournal.WaitingText(25), Is.Null);
+        });
+    }
+
+    [Test]
+    public void TheQuestsPastTheCapacityWait()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(QuestJournal.WaitingCount(26), Is.EqualTo(1));
+            Assert.That(QuestJournal.WaitingCount(31), Is.EqualTo(6));
+        });
+    }
+
+    [Test]
+    public void LoginSaysHowManyWaitInOneLine()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(QuestJournal.WaitingText(26), Is.EqualTo("Your journal shows 25 of your 26 quests; the other 1 is still active and will be listed as you finish or abandon some."));
+            Assert.That(QuestJournal.WaitingText(28), Is.EqualTo("Your journal shows 25 of your 28 quests; the other 3 are still active and will be listed as you finish or abandon some."));
+            Assert.That(QuestJournal.WaitingText(28), Does.Not.Contain("\n"));
+        });
+    }
+
+    // A slot is reused only while no quest holds it: a quest that moved in from past the capacity keeps its slot even
+    // though that slot was queued as free when its previous quest ended.
+    [Test]
+    public void TheFreeSlotIsTheLowestNoQuestHolds()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(QuestJournal.FreeIndex(null), Is.Zero);
+            Assert.That(QuestJournal.FreeIndex(new byte[0]), Is.Zero);
+            Assert.That(QuestJournal.FreeIndex(new byte[] { 0, 1, 2 }), Is.EqualTo(3));
+            Assert.That(QuestJournal.FreeIndex(new byte[] { 0, 2, 3 }), Is.EqualTo(1));
+            Assert.That(QuestJournal.FreeIndex(new byte[] { 1, 2 }), Is.Zero);
+        });
+    }
+
+    [Test]
+    public void AFullJournalsFreeSlotIsPastTheLastOne()
+    {
+        var used = new byte[QuestJournal.Capacity];
+        for (byte i = 0; i < used.Length; i++) used[i] = i;
+        Assert.That(QuestJournal.FreeIndex(used), Is.EqualTo((byte)QuestJournal.Capacity));
+    }
 }
