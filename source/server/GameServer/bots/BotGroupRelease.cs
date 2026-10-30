@@ -12,8 +12,9 @@ namespace DOL.GS;
 /// /allrelease and the way back to a player's group after a release. Kept out of upstream's GameBot, which only calls
 /// in here, so it stays easy to merge.
 /// - /allrelease runs the release the death timer would have run, at once, for every dead bot of the player's group.
-/// - Battlegrounds have no bind points, so a gamebot released to its capital and stood there for good. It now releases
-///   to its realm's portal keep, as a player can, whatever bg_release_to_portal_keep says for players.
+/// - Battlegrounds have no bind points, so a gamebot in a player's group released to its capital and stood there for good.
+///   It now releases to its realm's portal keep, whatever bg_release_to_portal_keep says for players. Solo gamebots and
+///   bot-only groups release as upstream has them: their own controllers already take them back.
 /// - A gamebot that is still in another region than the player who leads it (no portal keep, or the player moved on)
 ///   joins that player after a short wait, about as long as the capital's teleporter takes.
 /// </summary>
@@ -27,9 +28,12 @@ public static class BotGroupRelease
 
     private sealed record ReturnWait(long DeathTick, long SinceTick);
 
-    /// <summary>Pure rule: as for a player, a bot above the battleground's level cap has no portal keep there.</summary>
-    public static bool PortalKeepApplies(bool isBattleground, int level, int maxLevel) =>
-        isBattleground && level <= maxLevel;
+    /// <summary>
+    /// Pure rule: only a gamebot on its way back to a player's group, and as for a player, not above the battleground's
+    /// level cap.
+    /// </summary>
+    public static bool PortalKeepApplies(bool playerLed, bool returnToParty, bool isBattleground, int level, int maxLevel) =>
+        playerLed && returnToParty && isBattleground && level <= maxLevel;
 
     /// <summary>Pure rule: a gamebot joins the living player who leads it, in the same group and realm, only.</summary>
     public static bool CanJoinLeader(bool autonomous, bool temporary, bool sameGroup, bool sameRealm,
@@ -53,11 +57,12 @@ public static class BotGroupRelease
     }
 
     /// <summary>The nearest thing a battleground has to a bind point for this gamebot: its realm's portal keep.</summary>
-    public static bool TryPortalKeep(GameBot bot, ushort region, out Point3D point)
+    public static bool TryPortalKeep(GameBot bot, ushort region, bool returnToParty, out Point3D point)
     {
         point = null;
         DbBattleground battleground = GameServer.KeepManager?.GetBattleground(region);
-        if (battleground == null || !PortalKeepApplies(true, bot.Level, battleground.MaxLevel))
+        if (battleground == null ||
+            !PortalKeepApplies(bot.IsPlayerLedGroup, returnToParty, true, bot.Level, battleground.MaxLevel))
             return false;
         foreach (AbstractGameKeep keep in GameServer.KeepManager.GetKeepsOfRegion(region))
         {

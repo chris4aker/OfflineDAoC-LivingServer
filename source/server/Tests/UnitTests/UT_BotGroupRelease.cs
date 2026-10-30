@@ -4,8 +4,9 @@ using NUnit.Framework;
 
 namespace DOL.UnitTests
 {
-    // /allrelease and the way back after a release (BotGroupRelease): a portal keep only under the battleground's level
-    // cap, a gamebot joins only the living player who leads it, after the wait, and what the player is told.
+    // /allrelease and the way back after a release (BotGroupRelease): a portal keep only for a gamebot going back to a
+    // player's group and under the battleground's level cap, a gamebot joins only the living player who leads it, after
+    // the wait, and what the player is told.
     [TestFixture]
     public class UT_BotGroupRelease
     {
@@ -14,7 +15,13 @@ namespace DOL.UnitTests
         [TestCase(true, 25, 24, false)]
         [TestCase(false, 22, 24, false)]
         public void PortalKeep_OnlyInABattlegroundUnderItsCap(bool battleground, int level, int maxLevel, bool expected) =>
-            Assert.That(BotGroupRelease.PortalKeepApplies(battleground, level, maxLevel), Is.EqualTo(expected));
+            Assert.That(BotGroupRelease.PortalKeepApplies(true, true, battleground, level, maxLevel), Is.EqualTo(expected));
+
+        [TestCase(false, true, TestName = "Solo gamebot or bot-only group")]
+        [TestCase(true, false, TestName = "Not going back to the party")]
+        [TestCase(false, false, TestName = "Neither")]
+        public void PortalKeep_OnlyOnTheWayBackToAPlayersGroup(bool playerLed, bool returnToParty) =>
+            Assert.That(BotGroupRelease.PortalKeepApplies(playerLed, returnToParty, true, 22, 24), Is.False);
 
         [TestCase(true, false, true, true, true, true, true)]
         [TestCase(false, false, true, true, true, true, false)]

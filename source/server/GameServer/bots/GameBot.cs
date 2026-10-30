@@ -1136,7 +1136,7 @@ namespace DOL.GS
                 if (releaseZone == null || !AutonomousRealmBoundary.Allows(Realm, releaseRegion, releaseZone.ID))
                     release = null;
             }
-            if (release == null && IsAutonomousWorldBot) BotGroupRelease.TryPortalKeep(this, releaseRegion, out release); // Fork: battlegrounds have no bind points
+            if (release == null && IsAutonomousWorldBot) BotGroupRelease.TryPortalKeep(this, releaseRegion, returnToParty, out release); // Fork: battlegrounds have no bind points
             if (release == null && IsAutonomousWorldBot && returnToParty &&
                 AutonomousRealmRaid.TryRaidRelease(this, out ushort hubRegion, out Point3D hub))
             {
