@@ -42,6 +42,20 @@ namespace DOL.UnitTests
             Assert.That(BotGroupRelease.ReturnDelayOver(1_000, 1_000 + BotGroupRelease.ReturnToLeaderDelayMilliseconds), Is.True);
         }
 
+        [TestCase(149, 1_000, 1_500, false, TestName = "Short of headway, looked at just now")]
+        [TestCase(150, 1_000, 1_500, true, TestName = "Enough headway")]
+        [TestCase(0, 1_000, 7_000, false, TestName = "The gap is exactly the limit")]
+        [TestCase(0, 1_000, 7_001, true, TestName = "A fight came between two looks")]
+        public void ReturnClock_RestartsOnHeadwayOrAfterAGap(double moved, long checkedTick, long now, bool expected) =>
+            Assert.That(BotGroupRelease.RestartsReturnClock(moved, checkedTick, now), Is.EqualTo(expected));
+
+        [Test]
+        public void ReturnStall_EndsAfterItsTime()
+        {
+            Assert.That(BotGroupRelease.ReturnStalled(1_000, 1_000 + BotGroupRelease.ReturnStallMilliseconds - 1), Is.False);
+            Assert.That(BotGroupRelease.ReturnStalled(1_000, 1_000 + BotGroupRelease.ReturnStallMilliseconds), Is.True);
+        }
+
         [Test]
         public void Report_NoDeadBots()
         {

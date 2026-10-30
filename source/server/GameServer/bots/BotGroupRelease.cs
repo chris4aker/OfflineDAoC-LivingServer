@@ -17,16 +17,31 @@ namespace DOL.GS;
 ///   bot-only groups release as upstream has them: their own controllers already take them back.
 /// - A gamebot that is still in another region than the player who leads it (no portal keep, or the player moved on)
 ///   joins that player after a short wait, about as long as the capital's teleporter takes.
+/// - A gamebot on its way back to a player walks a planned route (GameBot.WalkReturnStep), and joins that player if it
+///   still makes no headway. Thidranki, 2026-10-30: three stood at the wall of Midgard's portal keep, whose way out is a door.
 /// </summary>
 public static class BotGroupRelease
 {
     /// <summary>A released gamebot's wait in another region before it joins the player who leads it.</summary>
     public const long ReturnToLeaderDelayMilliseconds = 20_000;
 
+    /// <summary>How long a gamebot on its way back may stay within <see cref="ReturnHeadwayDistance"/> before it joins its leader.</summary>
+    public const long ReturnStallMilliseconds = 15_000;
+
+    public const int ReturnHeadwayDistance = 150;
+
+    /// <summary>The walk is only looked at between fights; a longer gap than this starts the stall clock over.</summary>
+    public const long ReturnCheckGapMilliseconds = 6_000;
+
     private const string ReturnWaitKey = "BotGroupRelease.ReturnWait";
+    private const string ReturnHeadwayKey = "BotGroupRelease.ReturnHeadway";
     private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(BotGroupRelease));
 
     private sealed record ReturnWait(long DeathTick, long SinceTick);
+    private sealed record ReturnHeadway(long DeathTick, Point3D Position, long SinceTick, long CheckedTick);
+
+    /// <summary>Solo gamebots and bot-only groups keep upstream's walk: their own controllers take them back.</summary>
+    public static bool IsGroupReturn(GameBot bot) => bot.IsAutonomousWorldBot && bot.IsPlayerLedGroup;
 
     /// <summary>
     /// Pure rule: only a gamebot on its way back to a player's group, and as for a player, not above the battleground's
@@ -42,6 +57,13 @@ public static class BotGroupRelease
 
     public static bool ReturnDelayOver(long sinceTick, long nowTick) =>
         nowTick - sinceTick >= ReturnToLeaderDelayMilliseconds;
+
+    /// <summary>Pure rule: the stall clock restarts on headway, or when the last look at the walk is too old (a fight came between).</summary>
+    public static bool RestartsReturnClock(double distanceMoved, long checkedTick, long nowTick) =>
+        distanceMoved >= ReturnHeadwayDistance || nowTick - checkedTick > ReturnCheckGapMilliseconds;
+
+    public static bool ReturnStalled(long sinceTick, long nowTick) =>
+        nowTick - sinceTick >= ReturnStallMilliseconds;
 
     /// <summary>What /allrelease tells the player.</summary>
     public static IReadOnlyList<string> Report(IReadOnlyCollection<string> released, IReadOnlyCollection<string> waiting)
@@ -105,9 +127,7 @@ public static class BotGroupRelease
     public static bool TryReturnToLeader(GameBot bot, long deathTick)
     {
         GamePlayer leader = bot.PlayerGroupLeader;
-        if (leader == null || !CanJoinLeader(bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper,
-                bot.Group != null && bot.Group == leader.Group, bot.Realm == leader.Realm, leader.IsAlive,
-                leader.ObjectState == GameObject.eObjectState.Active && leader.CurrentZone != null))
+        if (!CanJoin(bot, leader))
             return true;
 
         ReturnWait wait = bot.TempProperties.GetProperty<ReturnWait>(ReturnWaitKey);
@@ -119,15 +139,50 @@ public static class BotGroupRelease
         if (!ReturnDelayOver(wait.SinceTick, GameLoop.GameLoopTime))
             return true;
         bot.TempProperties.RemoveProperty(ReturnWaitKey);
+        return !JoinLeader(bot, leader, "BOT_GROUP_RELEASE_RETURN");
+    }
 
+    /// <summary>
+    /// One look at a gamebot walking back to the player who leads it. Returns true when it made no headway for
+    /// <see cref="ReturnStallMilliseconds"/> and joined that player.
+    /// </summary>
+    public static bool TryUnstick(GameBot bot, long deathTick)
+    {
+        if (!IsGroupReturn(bot) || bot.IsOnStableMasterRoute)
+            return false;
+
+        long now = GameLoop.GameLoopTime;
+        ReturnHeadway headway = bot.TempProperties.GetProperty<ReturnHeadway>(ReturnHeadwayKey);
+        if (headway == null || headway.DeathTick != deathTick ||
+            RestartsReturnClock(bot.GetDistanceTo(headway.Position), headway.CheckedTick, now))
+        {
+            bot.TempProperties.SetProperty(ReturnHeadwayKey, new ReturnHeadway(deathTick, new Point3D(bot.X, bot.Y, bot.Z), now, now));
+            return false;
+        }
+        bot.TempProperties.SetProperty(ReturnHeadwayKey, headway with { CheckedTick = now });
+        GamePlayer leader = bot.PlayerGroupLeader;
+        if (!ReturnStalled(headway.SinceTick, now) || !CanJoin(bot, leader))
+            return false;
+        bot.TempProperties.RemoveProperty(ReturnHeadwayKey);
+        return JoinLeader(bot, leader, "BOT_GROUP_RELEASE_UNSTUCK");
+    }
+
+    private static bool CanJoin(GameBot bot, GamePlayer leader) =>
+        leader != null && CanJoinLeader(bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper,
+            bot.Group != null && bot.Group == leader.Group, bot.Realm == leader.Realm, leader.IsAlive,
+            leader.ObjectState == GameObject.eObjectState.Active && leader.CurrentZone != null);
+
+    private static bool JoinLeader(GameBot bot, GamePlayer leader, string logMarker)
+    {
         ushort oldRegion = bot.CurrentRegionID;
+        int oldX = bot.X, oldY = bot.Y, oldZ = bot.Z;
         Vector3 spot = TemporaryGroupStableTravel.FormationPoint(leader, bot.ObjectID % 6);
         bot.CompleteStableMasterRoute();
         bot.StopFollowing();
         bot.StopMovingOnPath();
         bot.StopMoving();
         if (!bot.MoveTo(leader.CurrentRegionID, (int)Math.Round(spot.X), (int)Math.Round(spot.Y), (int)Math.Round(spot.Z), leader.Heading))
-            return true;
+            return false;
         bot.EndReturnJourney();
         if (bot.Brain is BotBrain brain)
             brain.FSM.SetCurrentState(eFSMStateType.FOLLOW);
@@ -136,9 +191,9 @@ public static class BotGroupRelease
             bot.PersistentRecord.Activity = "Following the player's group";
             bot.MarkAutonomousStateDirty();
         }
-        Log.Info($"BOT_GROUP_RELEASE_RETURN bot=\"{bot.Name}\" id={bot.DatabaseID} from={oldRegion} " +
+        Log.Info($"{logMarker} bot=\"{bot.Name}\" id={bot.DatabaseID} from={oldRegion}:{oldX},{oldY},{oldZ} " +
                  $"to=player:{leader.Name} {leader.CurrentRegionID}:{leader.X},{leader.Y},{leader.Z}");
-        return false;
+        return true;
     }
 
     /// <summary>Only a release in a player's group: every gamebot's release was 2,951 lines in three hours (GameBot.LogDeadMove).</summary>

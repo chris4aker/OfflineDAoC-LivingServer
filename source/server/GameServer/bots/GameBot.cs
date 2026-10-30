@@ -1312,7 +1312,7 @@ namespace DOL.GS
             Point3D destination = leader?.IsAlive == true && leader.CurrentRegionID == CurrentRegionID
                 ? new Point3D(leader.X, leader.Y, leader.Z)
                 : _deathLocation;
-            if (CurrentRegionID != _deathRegionId && (leader == null || leader.CurrentRegionID != CurrentRegionID))
+            if ((CurrentRegionID != _deathRegionId || BotGroupRelease.IsGroupReturn(this)) && (leader == null || leader.CurrentRegionID != CurrentRegionID)) // Fork: its leader left the region it died in
                 return BotGroupRelease.TryReturnToLeader(this, _deathTick); // Fork: it stood here for good, nothing else moves a bot in a player's group
 
             if (GetDistanceTo(destination) <= 350)
@@ -1324,6 +1324,8 @@ namespace DOL.GS
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
                 return false;
             }
+
+            if (BotGroupRelease.TryUnstick(this, _deathTick)) return false; // Fork: nothing else moves a stuck bot in a player's group
 
             if (IsOnStableMasterRoute)
             {
@@ -1380,7 +1382,9 @@ namespace DOL.GS
         {
             Vector3 current = new(X, Y, Z);
             Vector3 desired = new(destination.X, destination.Y, destination.Z);
-            AutonomousThreatAwarePathing.SafeStep step = AutonomousThreatAwarePathing.ChooseStep(this, current, desired, 900);
+            AutonomousThreatAwarePathing.SafeStep step = BotGroupRelease.IsGroupReturn(this)
+                ? new(desired, false, string.Empty) // Fork: 900-unit steps stopped at the first wall, a planned route finds the door
+                : AutonomousThreatAwarePathing.ChooseStep(this, current, desired, 900);
             PathTo(step.Position, MaxSpeed);
             if (PersistentRecord != null)
             {
