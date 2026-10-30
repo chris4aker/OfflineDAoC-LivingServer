@@ -2060,6 +2060,17 @@ namespace DOL.GS
 					}
 				}
 
+				// Owner 2026-10-30: an autonomous gamebot fighting in a real player's group (/invite) has no Owner, only
+				// a PlayerGroupLeader, so a kill its group made without the player's own damage credited nobody's
+				// quests. The leader is credited like a companion's owner when in the kill's region and within the
+				// group's credit range, and the leader's group in range follows below. XP and loot keep their own
+				// rules (QuestKillCredit).
+				if (player == null && attacker is GameBot gamebot && Quests.QuestKillCredit.GroupLeaderFor(gamebot, this) is GamePlayer leader)
+				{
+					player = leader;
+					livingAttacker.EnemyKilled(this);
+				}
+
 				if (player != null)
 				{
 					if (!playerAttackers.Contains(player))
@@ -2107,7 +2118,9 @@ namespace DOL.GS
 			LastAttackedByEnemyTickPvP = 0;
 
 			//Let's send the notification at the end
-			Notify(GameLivingEvent.Dying, this, new DyingEventArgs(killer));
+			// Owner 2026-10-30: the players credited for the kill ride along, so ClassicQuests.DropForSteps hands its
+			// step drops to the same players the kill steps credit (it read PlayerKillers but was only ever sent null).
+			Notify(GameLivingEvent.Dying, this, new DyingEventArgs(killer, playerAttackers));
 		}
 
 		public void GainExperience(eXPSource xpSource, long exp, bool allowMultiply = false)
