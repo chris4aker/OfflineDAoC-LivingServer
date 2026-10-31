@@ -474,6 +474,8 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
   own position from the server, and only a bot truly apart from its horse for 3 seconds gets off.
 - Bots and companions sit down to rest, sitting until they get up to move on or fight (with the server's resting
   signal; they used to rest standing).
+- A monster, bot or companion standing in a fight turns to face what it is hitting, as the original client turned
+  fighters itself (with the server's own turn; bots that stepped to a flank kept facing the way they walked in).
 
 **Credits**
 - Thanks to chris4aker's Living Server fork

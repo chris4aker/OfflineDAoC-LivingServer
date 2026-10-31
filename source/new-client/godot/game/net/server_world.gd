@@ -856,6 +856,8 @@ func _physics_body(delta: float) -> void:
 			s.mode = NpcState.Mode.FIGHT if int(mv.target) != 0 or now_ms < s.combat_until else NpcState.Mode.IDLE
 			s.running = false
 			s.fighting = int(mv.target) != 0 or now_ms < s.combat_until
+			if int(mv.target) != 0:
+				_face_target(s, int(mv.target), delta)
 			continue
 		var step := speed * 0.025 * delta
 		var dest = mv.dest
@@ -878,6 +880,27 @@ func _physics_body(delta: float) -> void:
 		s.running = speed >= RUN_UNITS
 		s.fighting = int(mv.target) != 0 or now_ms < s.combat_until   # chasing its target: weapons stay drawn
 	_seat_riders()
+
+
+## A living standing in a fight turns to its target, as the original client turned fighters itself (server chat
+## 2026-10-31: the server turns an NPC once when its attack starts; a gamebot that then steps to a flank / behind spot
+## kept its walk-in heading - owner: "bots are facing away from their targets and meleeing"). Within 30 m, turned
+## smoothly; the server's own heading still comes with every update.
+func _face_target(s: NpcState, target: int, delta: float) -> void:
+	var tp := Vector3.INF
+	var tst: NpcState = by_oid.get(target)
+	if tst:
+		tp = tst.pos
+	elif target == Server.me_oid and viewer and viewer.player:
+		tp = viewer.player.global_position
+	if tp == Vector3.INF:
+		return
+	var to := tp - s.pos
+	to.y = 0.0
+	var d := to.length()
+	if d < 0.2 or d > 30.0:
+		return
+	s.yaw = lerp_angle(s.yaw, atan2(to.x, to.z), minf(1.0, delta * 8.0))
 
 
 ## A ridden steed between the server's updates (owner 2026-10-17: stable horses jittered beside their riders, flights
