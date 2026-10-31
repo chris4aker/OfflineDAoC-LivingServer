@@ -8,13 +8,13 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Beta 1.1.1 (in development)
+## Beta 1.1.1 — 2026-10-31
 
-Fixes and verifications only, for the first week after Beta 1.1: the community's reports (issues #32, #33, #38,
-#39 and the pull requests offered in #40), the stacked fixes #35-#37, sieges played at the owner's roster now that
-their timers run, dragon raids calling the Epic Special Forces after a wipe, and the quest defects that are code
-only (kill credit in a bot group, hand-ins above a quest's level, the journal, quest XP). The plan is
-[docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md); the quest findings are [docs/QUESTING.md](docs/QUESTING.md).
+Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the
+launcher stuck on STARTING), base classes' weapon styles, quieter bot performers, and the new client's quest marker,
+the first new-client file Living Server ships. Dragon raids regrouping after a wipe and the quest fixes (kill credit
+in a bot group, one count per kill, hand-ins above a quest's level, the journal, quest XP by level) come next, once
+they are played. The plan is [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md).
 
 - **Bots stop following you when you leave or disband their group** (issue #33, reported by nindybrew-svg).
   - **The bug:** with two or more invited gamebots in the group, `/disband` took you out but left them marked as

@@ -1,4 +1,4 @@
-# Living Server Beta 1.1: known issues and what's not tested yet
+# Living Server Beta 1.1.1: known issues and what's not tested yet
 
 For players. What to expect, what hasn't been checked in game, and known problems. The full list
 of changes is in [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
