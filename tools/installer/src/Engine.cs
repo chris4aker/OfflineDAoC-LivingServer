@@ -575,6 +575,13 @@ namespace LivingServerSetup
 
         void RunUpstream(InstallResult r)
         {
+            Sources.Decide();
+            if (string.IsNullOrEmpty(o.LocalAssets))
+            {
+                try { Sources.CheckCopyManifests(); }
+                catch (Exception e) { throw new StepFailed(e.Message, "Nothing was downloaded. Living Server's copy may be damaged or replaced; please report it on GitHub."); }
+                Log.Write("Downloading Offline DAoC from " + Sources.Describe + ".");
+            }
             var script = Payload.ExtractDownloader(setupDir);
             bool client = o.NewInstall ? o.NewClient : (o.Game.NewClient || o.AddClient);
             string release = Payload.BaseRelease + (client ? "c" : (o.NewInstall && o.Classic) || (!o.NewInstall && o.Game.Classic) ? "" : "b");
