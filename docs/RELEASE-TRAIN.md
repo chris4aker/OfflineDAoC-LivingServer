@@ -92,7 +92,11 @@ second reader and their fixes applied; nothing is merged and nothing is played y
 - [ ] Doc drift: KNOWN-ISSUES to 1.1 (PR #41); the changelog's Beta 1.1 header (PR #41); RELEASE-1.1's boxes
       (PR #41); SHA-256s in the release notes (the owner, on the release page); the "wait for shadowofze's next
       update" lines now that there won't be one (PR #41)
-- [ ] Release notes written to the rules above
+- [ ] CI stability: the SQLite pool test waits the server's 60 s (PR #48); a second install within one second
+      gets its own backup folder (PR #49). Both tripped `build-and-test` on 2026-10-31 on unrelated pushes
+- [ ] Release notes written to the rules above. Suggested split (the owner's call): merge candidate A (#47) as
+      1.1.1 this week, since nothing in it needs a play test of its own, and candidate B (#50) as 1.1.2 after the
+      dragon, quest and siege checks; or merge B as the whole of 1.1.1 after the checks
 
 ### 1.2 — the last base merge (proposed 2026-10-31; decision 3 is the owner's)
 
@@ -196,7 +200,7 @@ Open, each listed with its options in the design document named:
 
 | Stop | State |
 |---|---|
-| 1.1.1 | In progress (2026-10-31): nine branches open and green (#35–#37 the owner's, #41–#46 drafted here); #44–#46 reviewed and their fixes applied; the merge, the played checks and the release notes wait for the owner |
+| 1.1.1 | In progress (2026-10-31): every branch open and green (#35–#37 the owner's, #41–#46, #48, #49 drafted here); #44–#46 reviewed and their fixes applied; two pre-merged candidates with their conflicts resolved: #47 (A: the small set) and #50 (B: everything, 4,110 tests passing). The merge, the played checks and the release notes wait for the owner |
 | 1.2 | Proposed as the last base merge; decision 3 open; waits for his `main` to be still |
 | 1.3 | Planned (live events) |
 | 1.4 | Planned (invasion, crafting M0–M2) |
