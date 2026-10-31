@@ -5,19 +5,31 @@ Each new upstream release changes that game's own server, so a Living Server bui
 server code before it may install on it. Otherwise it would undo that release's server changes. This page is the
 checklist for that day, written for 0.38.
 
-## State as of 2026-10-27
+## State as of 2026-10-31
 
-- **Released upstream:** 0.37 / 0.37b / 0.37c (tag `v0.37`, `ab4df02`).
-- **0.38 so far:** shadowofze's `main` (`9da9091`, 2026-10-20) has 0.38 work that isn't released.
-- **Beta 1.1 already carries its server code:** branch `upstream/0.38-server`, all of `source/server` from
-  `v0.37..9da9091`.
+- **shadowofze has stopped.** His README (commit `f630845`, 2026-10-31) says the project is on hold and will not
+  receive any more updates; the 0.37 / 0.37b / 0.37c downloads stay; he has moved to a separate "True 1.65" version
+  that uses only the new client, with no release promised. The checklist below still applies, read with "his final
+  `main`" wherever it says the `v0.38` tag; the "0.37 → official 0.38 update → Living Server" test path no longer
+  exists.
+- **Released upstream:** 0.37 / 0.37b / 0.37c (tag `v0.37`, `ab4df02`). There is no `v0.38` tag; his changelog
+  says "0.38 (not released yet)" and describes it as one download with the new client only, the original client
+  unsupported and the Sluaghbinder discontinued (the class code is still there, it is no longer offered; a script
+  `remove_sluaghbinder_npcs.py` removes its NPCs from a world — Living Server does not run it).
+- **His `main`:** `b0b855d` (2026-10-31, five commits after the on-hold note, so possibly not final). Since
+  `9da9091` it adds 40 commits: 127 server files (+6,293 / −539), 41 of them files Living Server also changed, and
+  63 new-client files (+4,102). Quest code: only the HearthDAoC name matching, which 1.1 already has, and the tasks
+  rework. His 0.38 changelog credits Living Server for ten or more fixes.
+- **Beta 1.1 already carries his server code as of `9da9091`:** branch `upstream/0.38-server`, all of
+  `source/server` from `v0.37..9da9091`.
 - **Left out of 1.1:** the new-client changes, the patch tools and baselines, and the 0.38 world-data changes
-  (Campacorentin patrols, helmets already stored in a world). Those come with shadowofze's own 0.38 patch.
-- **Preview branch:** `sync/upstream-0.38-preview` applies everything on `main` (client and tools too). It built and
-  passed 3,457 server tests on 2026-10-27, with three trivial conflicts.
-- **Installer:** `BaseRelease` in `ForkBuildInfo.cs` can list several releases (`0.37,0.38`). The installer then
-  accepts a game whose newest release notes are any of them, and still refuses anything newer. It stays `0.37` until
-  the steps below are done.
+  (Campacorentin patrols, helmets already stored in a world, and since then the 68 quest reward stats, Necromancer
+  creation, the night spawns). With no upstream patch coming, they become Setup steps with rollbacks if the merge is
+  taken ([RELEASE-TRAIN.md](RELEASE-TRAIN.md), decision 3).
+- **Preview branch:** `sync/upstream-0.38-preview` applied everything on his `main` of 2026-10-27 (client and tools
+  too). It built and passed 3,457 server tests, with three trivial conflicts. It predates most of the 40 commits.
+- **Installer:** `BaseRelease` in `ForkBuildInfo.cs` can list several releases (`0.37,0.38`). With no 0.38 release
+  it stays `0.37`: a merge of his final `main` is a Living Server build on a 0.37 game, not a new base release.
 
 ## Checklist
 
@@ -59,5 +71,13 @@ checklist for that day, written for 0.38.
   its test.
 - **shadowofze pulled the "dead gamebots stay where they fall" fix** from his 0.38 changelog, with no reason given.
   Living Server still has it.
-- **The siege expiry throttle bug and the effect leak are still in his `main`.** Both are fixed in Beta 1.1 (PR #27)
-  and worth offering upstream.
+- **The siege expiry throttle bug and the effect leak** were fixed in Beta 1.1 (PR #27) and are in his `main`
+  since 2026-10-29, credited to Living Server (and stefanrows's fork for finding the siege one).
+- **In his `main` and not in Living Server (2026-10-31):** area spells and add control for every class, Celerity,
+  pet focus shields, Reaver auras, mesmerized and rooted monsters left alone, camp spread, tank Protect/Guard/
+  Intercept, raid tether and rally fixes, performers holding one song, relic campaigns and relic captures, raid loot
+  shared with a player, bots at player height, three Exchange listings per bot, seal merchants, the double dead
+  body, companions' trained spells at once, keep doors not repairing under attack, Legion's throw, the tasks
+  rework, loot tables rolling once per row, night spawns saved awake, the salvage type bug, Necromancer creation,
+  disabled class and race ranges, Trials of Atlantis regions off, 68 quest reward stats, and the new client's
+  stealth, quickbar abilities, merchant SELL, crafting window and freeze fixes.
