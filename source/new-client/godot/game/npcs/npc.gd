@@ -798,6 +798,13 @@ func _process_view(delta: float, cam: Camera3D) -> void:
 			anim.play(state.ride_clip, 0.2)
 			_shown_mode = -1
 		return
+	if seated:                                       # resting (0xF0): the sit held - never moving in the sit pose
+		if state.alive and not state.fighting and state.mode != NpcState.Mode.WALK:
+			if anim.current_animation != "sit_idle" and anim.has_animation("sit_idle"):
+				anim.play("sit_idle", 0.2)
+				_shown_mode = -1
+			return
+		seated = false                                 # (moving / fighting without the stand: up at once)
 	var run_now: bool = state.fighting or state.running
 	var swim: bool = state.swimming and state.mode != NpcState.Mode.DEAD and anim.has_animation("swim")
 	if int(state.mode) != _shown_mode or (_shown_mode == int(NpcState.Mode.FIGHT) and anim.current_animation == "") 			or (_shown_mode == int(NpcState.Mode.WALK) and run_now != _shown_running) or swim != _shown_swim:
@@ -974,7 +981,29 @@ var _cast_clips := ["cast_start", "cast_mid", "cast_end"]
 
 
 ## An emote clip (emotes.csv id) when its figure has one (player-race NPCs: build_races.py 'emote_<id>').
+## 0xF0 / 0xF1 are no emotes but a held state - a gamebot or companion sitting to rest (the server chat's signal,
+## 2026-10-30): sit_down once, sit_idle held until 0xF1, then stand_up. The server sends 0xF0 again right after the bot
+## comes into view seated, and 0xF1 before a seated bot moves or fights.
+const EMOTE_SIT := 0xF0
+const EMOTE_STAND := 0xF1
+var seated := false
+
+
 func play_emote(id: int) -> void:
+	if id == EMOTE_SIT:
+		if not seated:
+			seated = true
+			_action_left = 0.0
+			if anim and anim.has_animation("sit_down"):
+				_one_shot("sit_down")
+		return
+	if id == EMOTE_STAND:
+		if seated:
+			seated = false
+			_action_left = 0.0
+			if anim and anim.has_animation("stand_up"):
+				_one_shot("stand_up")
+		return
 	if anim and anim.has_animation("emote_%d" % id) and _action_left <= 0.0:
 		_one_shot("emote_%d" % id)
 

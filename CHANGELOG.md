@@ -464,6 +464,12 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
   horse or the rider appears (it was dropped and the rider walked beside its horse).
 - The new client logs every death of a gamebot or companion it sees (death_log.txt in its save folder: the server's
   last positions and where the body is drawn), to compare with the server's log when a body shows up in the wrong place.
+- Bots on a stable master's horse stay in the saddle. They kept dropping off and teleporting along behind the horse:
+  the client checked the bot's position against where it was drawing the horse, which runs a little behind its own
+  updates at that speed, so every bend counted as a lost ride. The bot's position is now checked against the horse's
+  own position from the server, and only a bot truly apart from its horse for 3 seconds gets off.
+- Bots and companions sit down to rest, sitting until they get up to move on or fight (with the server's resting
+  signal; they used to rest standing).
 
 **Credits**
 - Thanks to chris4aker's Living Server fork

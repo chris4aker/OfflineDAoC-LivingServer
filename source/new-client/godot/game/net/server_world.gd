@@ -556,11 +556,16 @@ func _move(d: Dictionary) -> void:
 	# the mount and its rider jump; it eases back instead, unless it is really lost (two seconds' travel)
 	var snap := maxf(SNAP_M, float(int(d.speed)) * 0.025 * 2.0) if ridden else SNAP_M
 	var drawn_before := st.pos                                    # (the death log: where it was drawn before this update)
-	if st.pos.distance_to(p) > snap or float(d.speed) == 0.0:
+	# a seated rider stays in the saddle (_seat_riders puts it there every frame; its own update - the horse's server
+	# place - only feeds the ride check); moved here it showed a frame off the horse at each update
+	var seated := _riders.has(int(d.oid)) and st.ride_clip != ""
+	if seated:
+		pass
+	elif st.pos.distance_to(p) > snap or float(d.speed) == 0.0:
 		st.pos = p
 	else:
 		st.pos = st.pos.lerp(p, 0.25 if ridden else 0.5)       # close: ease into the server's place
-	if not (ridden and String(st.info.get("figure", "")).to_lower() in FLIER_FIGURES):
+	if not seated and not (ridden and String(st.info.get("figure", "")).to_lower() in FLIER_FIGURES):
 		_ground(st)
 	if not ridden:
 		st.yaw = Server.yaw_of(int(d.heading))
@@ -1938,6 +1943,7 @@ func _riding(d: Dictionary) -> void:
 	var rider: NpcState = by_oid.get(int(d.rider))
 	if int(d.mount) == 0:
 		_riders.erase(int(d.rider))
+		_ride_apart.erase(int(d.rider))
 		if rider:
 			rider.ride_clip = ""
 		return
@@ -1973,16 +1979,51 @@ func _seat_riders() -> void:
 			continue
 		if rider.ride_clip == "":
 			rider.ride_clip = "ride_horse"
-		var rm: Dictionary = _mover.get(rider, {})
-		if rm.get("srv_pos") is Vector3 and now - int(rm.get("srv_at", 0)) < 3000 				and Vector2((rm.srv_pos as Vector3).x - steed.pos.x, (rm.srv_pos as Vector3).z - steed.pos.z).length() > RIDE_LOST_M:
+		if _ride_lost(r, rider, steed, now):
 			rider.ride_clip = ""
-			rider.pos = rm.srv_pos
+			rider.pos = (_mover.get(rider, {}) as Dictionary).get("srv_pos", rider.pos)
 			_riders.erase(r)
+			_ride_since.erase(r)
+			_ride_apart.erase(r)
 			_ground(rider)
 			continue
 		rider.pos = seat_of(steed)
 		rider.yaw = steed.yaw
 		rider.mode = NpcState.Mode.IDLE
+
+
+## Whether a rider's ride is really over though no dismount came: the rider's own server place and its STEED'S server
+## place (not where the steed is drawn - a ridden steed eases up to two seconds' travel behind its updates, so a rider
+## whose updates carry the horse's exact place was "lost" at every bend and dropped behind it: gamebots on stable
+## routes, owner 2026-10-31 "teleporting behind the horse as it moves") more than RIDE_LOST_M apart, allowing for the
+## time between their two updates, for RIDE_APART_MS; or the steed's updates stopped while the rider's go on.
+const RIDE_APART_MS := 3000
+var _ride_apart := {}                         # rider object id -> msec it was first seen apart from its steed
+
+
+func _ride_lost(r: int, rider: NpcState, steed: NpcState, now: int) -> bool:
+	var rm: Dictionary = _mover.get(rider, {})
+	var sm: Dictionary = _mover.get(steed, {})
+	if not (rm.get("srv_pos") is Vector3) or now - int(rm.get("srv_at", 0)) > 3000:
+		_ride_apart.erase(r)
+		return false                                            # (no fresh word on the rider: it stays seated)
+	var apart: bool
+	if not (sm.get("srv_pos") is Vector3) or now - int(sm.get("srv_at", 0)) > 6000:
+		# the steed has gone quiet (its updates stopped at a zone edge) while the rider's still come
+		var sp: Vector3 = steed.pos
+		apart = Vector2((rm.srv_pos as Vector3).x - sp.x, (rm.srv_pos as Vector3).z - sp.z).length() > RIDE_LOST_M
+	else:
+		var gap := absf(float(int(rm.srv_at) - int(sm.srv_at))) / 1000.0
+		var room := RIDE_LOST_M + float(sm.get("speed", 0.0)) * 0.025 * minf(gap, 2.0)
+		var d := Vector2((rm.srv_pos as Vector3).x - (sm.srv_pos as Vector3).x,
+				(rm.srv_pos as Vector3).z - (sm.srv_pos as Vector3).z).length()
+		apart = d > room
+	if not apart:
+		_ride_apart.erase(r)
+		return false
+	if not _ride_apart.has(r):
+		_ride_apart[r] = now
+	return now - int(_ride_apart[r]) >= RIDE_APART_MS
 
 
 ## A steed's saddle: its model's saddle node, else 1.3 m up its back.
