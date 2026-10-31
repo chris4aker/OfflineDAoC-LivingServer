@@ -126,6 +126,10 @@ code map confirmed every line below):
   broken recipes will throw; and `Repair.IsAllowedToBeginWork` has an integer division that makes its skill gate
   0 (`Repair.cs:150`). `Salvage.GetYieldPenalty` also mutates the item's `Object_Type` (`Salvage.cs:198`).
 - **The 0.37c new client has no crafting window**: it shows the skill and title only (`character_sheet.gd:85-94`).
+  Checked 2026-10-31: shadowofze's unreleased `main` gives the new client a crafting window with salvage and repair
+  (`game/ui/craft_window.gd`), fixes the `Salvage` type bug above and lets a bot hold three Exchange listings; none
+  of it is released, and Living Server would ship it only through the base merge
+  ([RELEASE-TRAIN.md](RELEASE-TRAIN.md), decision 3). The numbers in this document describe what players have.
   **Player crafting is an original-client feature** until shadowofze's client grows one.
 
 ### 3.2 Bots do not craft, and barely shop

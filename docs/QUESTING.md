@@ -32,7 +32,7 @@ defects in the code as it is on `main`. The first four fit "feels broken" for a 
 | 13 | `ClassicQuests` spawns, hands items and advances quests from a thread-pool timer, not the game loop | `ClassicQuests.cs:183, 704-856` | Race conditions that show up as "it just didn't count" |
 | 14 | Removing Living Server with the chains applied breaks the Guild of Shadows (stock reads `#id` dependencies as names); `ROLLBACK.cmd` doesn't run `epic_chains.py rollback` | `QuestDependencies.cs`, `ROLLBACK.cmd` | A trap for anyone who rolls back |
 
-Also verified: upstream 0.38 touches no quest code; the 1.1 port's unit tests cover rule helpers only (nothing drives
+Also verified (re-checked 2026-10-31 against his final `main`, `b0b855d`): upstream 0.38 touches no quest logic beyond the HearthDAoC name matching 1.1 already has, a tasks rework and a world script that gives 68 classic quest rewards their 1.65 stats; the 1.1 port's unit tests cover rule helpers only (nothing drives
 `AdvanceQuestStep`, `FinishQuest`, hand-ins, kills or the classic custom steps); the only end-to-end quest harness
 is the new client's `tests/quest_driver.gd`, whose `plan.json` and results aren't in the repo.
 

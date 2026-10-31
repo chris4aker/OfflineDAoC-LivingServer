@@ -121,10 +121,17 @@ meetup fix drop two no-shows (in the server log).
     without a running world only; its "Not checked in game yet" list is what's left.
 - **Added the 0.37c new client after installing this?** Run `INSTALL.cmd` again so the new client's
   launcher gets the Living Server tab and its gate fixes too.
-- **Versions:** Beta 1.0 is for 0.37 / 0.37b only, and the installer refuses anything else. When
-  shadowofze releases the next update, run `PREPARE-FOR-UPDATE.cmd` before updating (it also puts the
-  released game files back), and wait for a Living Server build for that version before installing one
-  again.
+- **Versions:** Living Server is for Offline DAoC 0.37 / 0.37b / 0.37c only, and the installer refuses anything
+  else. On 2026-10-31 shadowofze put Offline DAoC on hold ("will not receive any more updates"; the 0.37 downloads
+  stay up), so there is no 0.38 to wait for: 0.37 stays the game, and the later fixes from his unreleased work
+  come to you through Living Server releases instead. If an update of his ever does appear, run
+  `PREPARE-FOR-UPDATE.cmd` before applying it (it also puts the released game files back) and wait for a Living
+  Server build for that version before installing one again.
+- **The new client's own fixes in Living Server's source weren't shipped (Beta 1.0 and 1.1).** `/target <name>`
+  filling the target window, the FACE/FOLLOW/STICK buttons, the stick toggle, `/lfg` and `/trade` shown as realm
+  channels and the PLAY double-click guard were fixed in `source/new-client` and played on the owner's PC, but the
+  installer only ships the gate models; a 0.37c player has shadowofze's unchanged client. The quest-marker colour
+  fix (1.1.1) is the first client script the installer carries, and the others follow the same way in 1.2.
 - **Memory over very long sessions:** Windows handles grow about 1,700 an hour with 600 bots per realm
   (a lock inside each monster's stat table keeps the event it waited on once). That is a few MB of
   Windows memory a day; the server's own memory stays flat (about 1.7 GB live at 1,800 bots).
