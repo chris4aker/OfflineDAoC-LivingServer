@@ -61,6 +61,38 @@ only (kill credit in a bot group, hand-ins above a quest's level, the journal, q
     (the target window, FACE/FOLLOW/STICK, `/lfg` and `/trade` channels, the PLAY double-click guard) follow in 1.2.
   - **Checked:** the patch rebuilds the fixed file byte for byte; not run in game.
 
+**Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
+- Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
+  back by twos and threes to a dragon at full health, until it died or the four hours ran out, and the Special Forces
+  were never called. A dragon raid now keeps the dungeon raids' rules. An attempt begins when the raid goes in from its
+  staging ring and ends when the dragon is out of combat after the three-minute approach, or when it has taken no
+  damage for five minutes while a trickle keeps it busy; the attempt was a wipe when half the raiders in it fell, or
+  the dragon healed back to 95% after being taken to 85% or lower. The raid then regroups at its staging ring, outside
+  the dragon's aggro, by the checked route around the lair: the fallen walk back, the living rest and rebuff for at
+  least five minutes, and the raid goes in again once 70% of its roster stands there (40% after 20 minutes) and the
+  dragon has landed. After two failed attempts the raid is **Defeated** and goes home, and every realm hears it. The
+  lair radius, the 600 damage cap and the landing rule are unchanged.
+- Review fixes (2026-10-31): who fell is remembered for the whole attempt. A dragon raider releases to a bind in the
+  dragon's own region and is on its feet again seconds later, so judging the wipe from the corpses at the moment the
+  dragon left combat would have called most wipes a break-off and left the raid trickling back as before. And a
+  regroup nobody has reached for twenty minutes (the dungeon muster's rule) is given up and the raid is Defeated, so a
+  forced dragon raid, which has no four-hour window, cannot hold at an empty ring until the player presses Stop
+  (`REALM_RAID_DRAGON_REGROUP_UNREACHABLE`).
+- On the first wipe the realm hears that the raid fell, and the Epic Special Forces are asked for on the same terms as
+  at a dungeon: up to 24, one party fewer per win and one more per loss over that dragon's last six results in the
+  Herald, nobody after three kills in a row. They arrive at the raid's muster hub and walk to the staging ring like any
+  late party. A dragon beaten twice in a row (defeats and time-outs) brings them from the start, as a dungeon does.
+- The launcher's Realm Events tab shows "RAID — regrouping at the staging ring after a wipe (staged/needed, attempt 2 of
+  2)". Logs: `REALM_RAID_WIPE` now for dragons too, `REALM_RAID_DRAGON_WIPE` (engaged, fallen, health, how),
+  `REALM_RAID_DRAGON_REGROUP`, `REALM_RAID_DRAGON_ENGAGE` (the retry) and `REALM_RAID_DRAGON_BROKE_OFF` (an attempt
+  that ended with most of the raid standing). Automated tests only (`UT_DragonRaidWipes`); not played in game yet.
+
+**Fixes**
+- Repairing an item never checked the crafter's skill: the gate was written as `(percentNeeded / 100) * craftLevel`,
+  integer division, so the 50% a repair asks for became 0 and anyone could start one (with a 0% chance below 44% of the
+  item's craft level). A repair now needs half the item's craft level in the skill, a repair in the trade window the
+  full level, as intended (`Repair.HasSkillToRepair`, `UT_RepairSkillGate`).
+
 ## Beta 1.1 — 2026-10-29
 
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,
@@ -712,7 +744,7 @@ evening's earlier 0.37-se.1 session; see "Checked" below).
 - They are the one exception to gamebots earning their armor. They live in memory only: they are never saved, never
   counted in the population or a guild roster, take no loot or coin (with only them nearby a drop stays where it
   fell), claim no server firsts, and leave when the raid ends. A restart leaves nothing behind.
-- Dragon raids don't call them yet.
+- Dragon raids don't call them yet (they do from Beta 1.1.1, above).
 - Logs: `REALM_RAID_SPECIAL_FORCES_ARRIVED`, `_NOT_NEEDED`, `_FAILED`, `_LEFT`, and `specialForces=` on `REALM_RAID_ENDED`.
 
 **From the first 600-per-realm night (2026-10-19/20)**
