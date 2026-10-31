@@ -131,8 +131,11 @@ func _rebuild() -> void:
 
 
 ## 0.36c: the server's quest indicators (ServerWorld: NPCCreate flags / the quest effect) - available yellow, finish
-## green, pending (a quest of theirs in progress) orange; a lesson / lore NPC as available.
-const SERVER_KIND := {1: "available", 2: "turnin", 4: "available", 8: "available", 16: "progress"}
+## green; a lesson / lore NPC as available. Since Living Server 1.1 the server sends one scheme for every NPC
+## (QuestIndicators.Wire): 8 is a quest you can take, 16 is an NPC your current step needs, 2 is the one that finishes
+## the quest. 16 used to be drawn orange as "a quest of theirs in progress elsewhere", which is not what the server means:
+## both 16 and 2 are "go to them now", so both are green (2026-10-30).
+const SERVER_KIND := {1: "available", 2: "turnin", 4: "available", 8: "available", 16: "turnin"}
 
 
 func _server_rebuild() -> void:

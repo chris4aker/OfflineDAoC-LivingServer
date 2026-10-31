@@ -15,7 +15,9 @@ ALWAYS ON (the bots' own game, nothing to switch):
     on nearby bots, and bots read short chat ("ty", "lol", "inc") and answer like a player
   - a dead bot's corpse stays where it fell until it releases
   - fixed game files: Hall of the Corrupt's navmesh (Lord Gildas's room) and, on 0.37c, eight
-    keep and hall gates whose portcullis never rose in the new client (see INSTALL)
+    keep and hall gates whose portcullis never rose in the new client and the new client's quest
+    marker script (the NPC of your current quest step was coloured as if the quest were in
+    progress elsewhere) (see INSTALL)
 
 OFF UNTIL YOU SWITCH THEM ON (launcher -> Living Server tab):
   - Bot guilds .................... docs\BOT-GUILDS.md
