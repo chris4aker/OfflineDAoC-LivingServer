@@ -8,6 +8,19 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.1 (in development)
+
+- Quest XP follows your XP-by-level rate. When `xp_rate_by_level` covers your level, the experience from quests,
+  bounties and the daily, weekly and battleground quests is multiplied by that level's rate (quest XP used to skip
+  every rate); the 0.36 "share of your level" amounts stay the base, one payment never pays more than one level, and
+  the offer window shows what you will actually get. New server setting `quest_xp_by_level`, on by default. It is a
+  kill switch: off, the rate and the one-level cap are both gone and quests and bounties pay exactly as before
+  (2026-10-31). With it on, a bounty's `xp_rate` is replaced by the range rate inside a range and a bounty pays at
+  most one level, where the launcher's 5× and 10× presets used to pay several. The three Shrouded Isles quests
+  Ancestral Secrets, The Lost Seed and Lost Stone of Arawn and the Wolf Pelt Cloak payments, which paid outside
+  every rate, now pay like every other quest. Details in [docs/XP-BY-LEVEL-RANGE.md](docs/XP-BY-LEVEL-RANGE.md).
+  Automated tests only; not played in game yet.
+
 ## Beta 1.1 (in development)
 
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,

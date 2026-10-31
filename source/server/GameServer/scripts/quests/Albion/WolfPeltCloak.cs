@@ -338,7 +338,7 @@ namespace DOL.GS.Quests.Albion
                     RemoveItem(_don, m_questPlayer, _wolfPeltCloak);
                     _don.SayTo(player, "Well done! You've helped the children get over the harsh winter.");
 
-                    player.ForceGainExperience(200);
+                    player.GainQuestExperience(200, Name);
 
                     return;
                 }
@@ -398,7 +398,11 @@ namespace DOL.GS.Quests.Albion
             base.FinishQuest();
             GiveItem(_lynett, m_questPlayer, _wolfPeltCloak);
 
-            m_questPlayer.GainExperience(eXPSource.Quest, 50, true);
+            // Quest experience at your pace (owner 2026-10-31, after review): these 50 points went through the kill
+            // path (xp_rate and the zone bonus applied, the quest_xp_by_level setting skipped); they now pay like
+            // every other quest. A player who turned experience off (/xp off) still gets nothing, as before.
+            if (m_questPlayer.GainXP)
+                m_questPlayer.GainQuestExperience(50, Name);
             long money = Money.GetMoney(0, 0, 0, 0, 50);
             m_questPlayer.AddMoney(money, "You recieve {0} for your service.");
             InventoryLogging.LogInventoryAction("(QUEST;" + Name + ")", m_questPlayer, eInventoryActionType.Quest, money);
