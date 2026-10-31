@@ -60,14 +60,38 @@ namespace DOL.GS
             return TryPickup(player);
         }
 
-        public bool TryPickup(GameLiving player)
+        public bool TryPickup(GameLiving player) => TryPickup(player, out _);
+
+        /// <summary>Picks the relic up, or says why not (the bot pickup log, relic audit 2026-10-31 L10).</summary>
+        public bool TryPickup(GameLiving player, out string refusal)
         {
+            bool picked;
             lock (_custodyLock)
-                return PickupCore(player);
+                picked = PickupCore(player, out refusal);
+            if (!picked && player is GameBot bot)
+                LogBotRefusal(bot, refusal);
+            return picked;
         }
 
-        private bool PickupCore(GameLiving player)
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> _refusalLogged = new();
+
+        /// <summary>A bot's refusal reasons went to its dummy client only; one line per relic and reason per 30 s.</summary>
+        private void LogBotRefusal(GameBot bot, string refusal)
         {
+            if (string.IsNullOrEmpty(refusal) || !log.IsInfoEnabled) return;
+            string key = $"{Name}|{refusal}";
+            long now = GameLoop.GameLoopTime;
+            if (_refusalLogged.TryGetValue(key, out long last) && now - last < 30_000 && now >= last) return;
+            _refusalLogged[key] = now;
+            int onPad = CurrentRelicPad?.GetEnemiesOnPad() ?? 0;
+            log.Info($"RELIC_PICKUP_REFUSED relic=\"{Name}\" bot={bot.Name} realm={GlobalConstants.RealmToName(bot.Realm)} reason={refusal} " +
+                $"onPad={onPad}/{Properties.RELIC_PLAYERS_REQUIRED_ON_PAD} mounted={IsMounted} distance={(int)bot.GetDistanceTo(this)} " +
+                $"region={bot.CurrentRegionID} x={bot.X} y={bot.Y} z={bot.Z}");
+        }
+
+        private bool PickupCore(GameLiving player, out string refusal)
+        {
+            refusal = "not-a-player";
             if (player is not IGamePlayer || InventoryOf(player) == null)
                 return false;
 
@@ -78,33 +102,39 @@ namespace DOL.GS
 
             if (CurrentCarrier != null)
             {
+                refusal = "already-carried";
                 OutputOf(player)?.SendMessage($"{CurrentCarrier.Name} is already carrying {GetName(0, false)}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return false;
             }
 
+            refusal = "not-in-world";
             if (ObjectState != eObjectState.Active)
                 return false;
 
             if (!player.IsWithinRadius(this, WorldMgr.INTERACT_DISTANCE))
             {
+                refusal = "too-far";
                 OutputOf(player)?.SendMessage($"{GetName(0, true)} is too far away.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return false;
             }
 
             if (player.TempProperties.GetProperty<GameRelic>(PLAYER_CARRY_RELIC_WEAK) != null)
             {
+                refusal = "carrying-another";
                 OutputOf(player).SendMessage("You are already carrying a relic.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return false;
             }
 
             if (!player.IsAlive)
             {
+                refusal = "dead";
                 OutputOf(player).SendMessage($"You cannot pickup {GetName(0, false)}. You are dead!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return false;
             }
 
             if (player.IsStealthed)
             {
+                refusal = "stealthed";
                 OutputOf(player).SendMessage("You cannot carry a relic while stealthed.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return false;
             }
@@ -113,12 +143,14 @@ namespace DOL.GS
             {
                 if (player.Realm == Realm)
                 {
+                    refusal = "own-realm";
                     OutputOf(player).SendMessage($"You cannot pickup {GetName(0, false)}. It is owned by your realm.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                     return false;
                 }
 
                 if (!RelicMgr.CanPickupRelicFromShrine(player, this))
                 {
+                    refusal = "own-relic-missing";
                     OutputOf(player).SendMessage($"You cannot pickup {GetName(0, false)}. You need to capture your realm's {Enum.GetName(RelicType)} relic first.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                     return false;
                 }
@@ -129,6 +161,7 @@ namespace DOL.GS
                 int onPad = IsMounted ? CurrentRelicPad.GetEnemiesOnPad() : 0;
                 if (IsMounted && onPad < Properties.RELIC_PLAYERS_REQUIRED_ON_PAD)
                 {
+                    refusal = "too-few-on-pad";
                     OutputOf(player).SendMessage($"You must have {Properties.RELIC_PLAYERS_REQUIRED_ON_PAD} players nearby the pad before taking a relic " +
                         $"({onPad} of {Properties.RELIC_PLAYERS_REQUIRED_ON_PAD} there now; your companions count when alive, not hidden and within reach of the pad).",
                         eChatType.CT_System, eChatLoc.CL_SystemWindow);
@@ -138,9 +171,12 @@ namespace DOL.GS
 
             if (!InventoryOf(player).AddItem(eInventorySlot.FirstEmptyBackpack, _item))
             {
+                refusal = "backpack-full";
                 OutputOf(player).SendMessage("You don't have enough space in your backpack to carry this.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return false;
             }
+
+            refusal = null;
 
             InventoryLogging.LogInventoryAction(this, player, eInventoryActionType.Other, _item.Template, _item.Count);
             if (log.IsInfoEnabled)
@@ -149,8 +185,10 @@ namespace DOL.GS
             player.TempProperties.SetProperty(PLAYER_CARRY_RELIC_WEAK, this);
             OutputOf(player).SendUpdateMaxSpeed();
 
+            GameRelicPad stolenFrom = null;
             if (IsMounted)
             {
+                stolenFrom = CurrentRelicPad;
                 CurrentRelicPad.RemoveRelic(this);
                 _returnRelicPad = CurrentRelicPad;
                 LastRealm = CurrentRelicPad.Realm;
@@ -169,6 +207,9 @@ namespace DOL.GS
                 _returnRelicTimer = null;
             }
 
+            // Relic audit 2026-10-31 (M3): the event used to fire from inside the pad while the relic still counted for the
+            // pad's realm, so the sentinel scaling (RelicGuardManager.Init) was one event late.
+            stolenFrom?.NotifyCustody(RelicPadEvent.RelicStolen, player, this);
             return true;
         }
 
@@ -184,6 +225,8 @@ namespace DOL.GS
                 CurrentCarrier.Realm != pad.Realm || RelicType != pad.PadType ||
                 !CurrentCarrier.IsWithinRadius(pad, 250))))
                 return false;
+            GameLiving carrier = CurrentCarrier;
+            bool captured = !returning && carrier != null;
             if (!pad.MountRelic(this, returning))
                 return false;
 
@@ -192,6 +235,10 @@ namespace DOL.GS
             PlayerLoosesRelic(true);
             SaveIntoDatabase();
             AddToWorld();
+            // M3: listeners see the relic on its new pad and of its new realm. A relic that goes back by itself (return
+            // timer, missing item, server start) fires RelicReturned: it never ended the carrier event (L5) nor re-scaled the
+            // sentinels before.
+            pad.NotifyCustody(captured ? RelicPadEvent.RelicMounted : RelicPadEvent.RelicReturned, captured ? carrier : null, this);
             return true;
         }
 
@@ -329,38 +376,75 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>Retry interval when no pad can take a relic back (relic audit M1).</summary>
+        private const int RETURN_RETRY_INTERVAL = 60_000;
+
         protected virtual int ReturnRelicTick(ECSGameTimer timer)
         {
-            if (GameLoop.GameLoopTime - _timeRelicOnGround < ReturnRelicInterval)
+            // M2: an exception here made the timer service remove the timer's owner, this relic, from the world for good.
+            try
             {
-                ushort effectID = (ushort) Util.Random(5811, 5815);
+                if (GameLoop.GameLoopTime - _timeRelicOnGround < ReturnRelicInterval)
+                {
+                    ushort effectID = (ushort) Util.Random(5811, 5815);
 
-                foreach (GamePlayer ppl in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
-                    ppl.Out.SendSpellEffectAnimation(this, this, effectID, 0, false, 0x01);
+                    foreach (GamePlayer ppl in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                        ppl.Out.SendSpellEffectAnimation(this, this, effectID, 0, false, 0x01);
 
-                return RELIC_EFFECT_INTERVAL;
+                    return RELIC_EFFECT_INTERVAL;
+                }
+
+                lock (_custodyLock)
+                {
+                    if (CurrentCarrier != null || IsMounted)
+                    {
+                        _returnRelicTimer?.Stop();
+                        _returnRelicTimer = null;
+                        return 0;
+                    }
+
+                    // M1: the pad it came from may be full (three relics); it then goes to a pad of the realm it was taken
+                    // from, or of its own realm. It used to be put back on the ground with the timer stopped, for good, and
+                    // was added to the world twice.
+                    GameRelicPad target = ReturnPadCandidates().FirstOrDefault();
+                    if (target == null)
+                    {
+                        if (log.IsWarnEnabled)
+                            log.Warn($"RELIC_RETURN_FAILED relic=\"{Name}\" reason=\"{(_returnRelicPad == null ? "no return pad" : "every matching pad is full")}\" retrySeconds={RETURN_RETRY_INTERVAL / 1000}");
+                        return RETURN_RETRY_INTERVAL;
+                    }
+
+                    RemoveFromWorld();
+                    if (!MountCore(target, true))
+                    {
+                        AddToWorld();
+                        if (log.IsWarnEnabled)
+                            log.Warn($"RELIC_RETURN_FAILED relic=\"{Name}\" pad=\"{target.Name}\" reason=\"mount refused\" retrySeconds={RETURN_RETRY_INTERVAL / 1000}");
+                        return RETURN_RETRY_INTERVAL;
+                    }
+
+                    if (log.IsInfoEnabled)
+                        log.Info($"RELIC_RETURNED relic=\"{Name}\" pad=\"{target.Name}\" realm={GlobalConstants.RealmToName(target.Realm)} reason=timer " +
+                            $"groundSeconds={(GameLoop.GameLoopTime - _timeRelicOnGround) / 1000}");
+                    _returnRelicTimer?.Stop();
+                    _returnRelicTimer = null;
+                    return 0;
+                }
             }
-
-            if (_returnRelicPad != null)
-            {
-                if (log.IsDebugEnabled)
-                    log.Debug($"Relic {Name} is lost and returns to {_returnRelicPad}");
-
-                RemoveFromWorld();
-                RelicPadTakesOver(_returnRelicPad, true);
-                SaveIntoDatabase();
-                AddToWorld();
-            }
-            else
+            catch (Exception exception)
             {
                 if (log.IsErrorEnabled)
-                    log.Error($"Relic {Name} is lost and ReturnRelicPad is null!");
+                    log.Error($"RELIC_TIMER_ERROR relic=\"{Name}\" timer=return", exception);
+                return RETURN_RETRY_INTERVAL;
             }
-
-            _returnRelicTimer.Stop();
-            _returnRelicTimer = null;
-            return 0;
         }
+
+        /// <summary>Pads a lost relic may go back to, best first: the pad it came from, its last realm's, its own realm's.</summary>
+        private System.Collections.Generic.IEnumerable<GameRelicPad> ReturnPadCandidates() =>
+            RelicMgr.GetPadsSnapshot()
+                .Where(pad => pad.PadType == RelicType && pad.MountedRelics.Count < 3 &&
+                    (pad == _returnRelicPad || pad.Realm == LastRealm || pad.Realm == OriginalRealm))
+                .OrderBy(pad => pad == _returnRelicPad ? 0 : pad.Realm == LastRealm ? 1 : 2);
 
         protected virtual void StartPlayerTimer(GameLiving player)
         {
@@ -388,15 +472,40 @@ namespace DOL.GS
             }
         }
 
+        private long _carrierOutOfWorldSince;
+
         private int CarrierTimerTick(ECSGameTimer timer)
+        {
+            // M2: an exception here made the timer service remove the timer's owner, the carrier, from the world (a bot
+            // carrier then dropped the relic as "bot-removed").
+            try { return CarrierTimerTickCore(); }
+            catch (Exception exception)
+            {
+                if (log.IsErrorEnabled)
+                    log.Error($"RELIC_TIMER_ERROR relic=\"{Name}\" timer=carrier carrier={CurrentCarrier?.Name}", exception);
+                return RELIC_EFFECT_INTERVAL;
+            }
+        }
+
+        private int CarrierTimerTickCore()
         {
             if (CurrentCarrier == null)
                 return 0;
+            // M9: a carrier between RemoveFromWorld and AddToWorld of a region move is out of the world for a moment; only
+            // a carrier still gone on the next tick has really left.
+            if (CurrentCarrier.IsAlive && !CurrentCarrier.IsStealthed && CurrentCarrier.ObjectState != eObjectState.Active &&
+                (_carrierOutOfWorldSince == 0 || GameLoop.GameLoopTime - _carrierOutOfWorldSince < RELIC_EFFECT_INTERVAL))
+            {
+                if (_carrierOutOfWorldSince == 0) _carrierOutOfWorldSince = GameLoop.GameLoopTime;
+                return RELIC_EFFECT_INTERVAL;
+            }
             if (!CurrentCarrier.IsAlive || CurrentCarrier.ObjectState != eObjectState.Active || CurrentCarrier.IsStealthed)
             {
+                _carrierOutOfWorldSince = 0;
                 DropFromCarrier(CurrentCarrier, !CurrentCarrier.IsAlive ? "dead" : CurrentCarrier.IsStealthed ? "stealthed" : "left-world");
                 return 0;
             }
+            _carrierOutOfWorldSince = 0;
             Update();
 
             // A bot carrier (a /raid or group companion, which the pad's area never sees) captures the relic at its
@@ -409,7 +518,7 @@ namespace DOL.GS
                 if (home != null && RelicPadTakesOver(home, false))
                 {
                     if (log.IsInfoEnabled)
-                        log.Info($"RELIC_CAPTURE relic=\"{Name}\" carrier={carrierBot.Name} pad=\"{home.Name}\"");
+                        log.Info($"RELIC_CAPTURE relic=\"{Name}\" carrier={carrierBot.Name} realm={GlobalConstants.RealmToName(carrierBot.Realm)} pad=\"{home.Name}\" path=carrier-timer");
                     return 0;
                 }
             }
@@ -443,12 +552,15 @@ namespace DOL.GS
                 {
                     if (CurrentCarrier != carrier)
                         return 0;
-                    if (!RelicPadTakesOver(_returnRelicPad, true))
+                    GameRelicPad back = ReturnPadCandidates().FirstOrDefault();
+                    if (back == null || !RelicPadTakesOver(back, true))
                     {
                         // No pad to go back to: it falls where the carrier stands, free to pick up.
                         Realm = eRealm.None;
                         PlayerLoosesRelic(false);
                     }
+                    else if (log.IsInfoEnabled)
+                        log.Info($"RELIC_RETURNED relic=\"{Name}\" pad=\"{back.Name}\" realm={GlobalConstants.RealmToName(back.Realm)} reason=not-in-backpack");
                 }
                 return 0;
             }

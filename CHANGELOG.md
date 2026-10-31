@@ -172,6 +172,22 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
   one item in four straight into the bag and 25% of the coin; the bots share the rest. Other kills are unchanged.
 - Gamebots are drawn at a player's height (short, average or tall) instead of a random size that could make them
   far taller than any player.
+- Bot relic raids can take a relic home. Before, a relic raid could never end in a capture:
+  - After the gates fall, the army goes up onto the enemy relic shrine (in four of the six relic keeps the relic sits
+    about 650 units from the keep centre and 830 higher, so the bots never saw it and the pad never held the 8 it
+    needs). A relic is lifted as soon as there is a way to it, not after every door of the keep is broken.
+  - The healthiest raider on the pad carries it and runs home: no fighting or looting on the way unless stunned or
+    cornered, and it opens its own keep's gates to reach its shrine (it used to stand outside them until the stuck
+    check made it drop the relic, over and over). The escort stays with it until the capture.
+  - Sieging bots with nothing else to fight hit the nearest gate by hand, as players did, instead of waiting for rams.
+    Ranged bots step in to a sentinel (relic temple guards take no damage from beyond 800).
+  - A relic campaign is kept, and retried, until its relic siege really starts; it ends after six hours without a
+    keep taken (not six hours from the start) or three steps in a row with no progress. Raids in progress survive a
+    server restart and are planned again about five minutes later; a relic being carried at a restart goes back to
+    the pad it was taken from.
+  - A relic that goes back to its pad by itself ends its carrier event (the leftover event blocked every new siege
+    for every realm for up to four hours), only living sentinels count, every refused pickup is logged with the
+    reason, and the frontier porters no longer teleport a player carrying a relic (bots already could not).
 
 **World**
 - Bring A Friend reaches as far as on Dawn of Light, and only monsters in sight come. Friends came from up to 1,500

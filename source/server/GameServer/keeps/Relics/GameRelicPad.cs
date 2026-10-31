@@ -176,7 +176,7 @@ namespace DOL.GS
                 }
 
                 relic.LastCaptureDate = DateTime.Now;
-                Notify(RelicPadEvent.RelicMounted, this, new RelicPadEventArgs(relic.CurrentCarrier, relic));
+                // RelicMounted fires from GameRelic once the relic is on this pad and of this realm (NotifyCustody).
             }
             else
             {
@@ -219,10 +219,21 @@ namespace DOL.GS
                 if (ServerProperties.Properties.DISCORD_ACTIVE && !string.IsNullOrEmpty(ServerProperties.Properties.DISCORD_RVR_WEBHOOK_ID))
                     BroadcastDiscordRelic(message, relic.CurrentCarrier.Realm, relic.Name);
 
-                Notify(RelicPadEvent.RelicStolen, this, new RelicPadEventArgs(relic.CurrentCarrier, relic));
+                // RelicStolen fires from GameRelic once the relic is off this pad and realmless (NotifyCustody).
             }
 
             UpdateRelicPositions();
+        }
+
+        /// <summary>
+        /// Fires a relic custody event for this pad. GameRelic calls it after its own state has changed, so listeners see
+        /// the relic where it now is (relic audit 2026-10-31, M3: the events fired before the relic's realm and pad were
+        /// set, and RelicGuardManager scaled the sentinels one event late).
+        /// </summary>
+        public void NotifyCustody(RelicPadEvent e, GameLiving carrier, GameRelic relic)
+        {
+            if (e != null && relic != null)
+                Notify(e, this, new RelicPadEventArgs(carrier, relic));
         }
 
         public int GetEnemiesOnPad()

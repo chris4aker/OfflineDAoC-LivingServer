@@ -12,7 +12,7 @@ internal static class RvrEventTestState
         // These fixtures document the continuous (unstaged) assault; UT_StagedSiegeOct6 covers staging.
         AutonomousRvrEventLayer.StagedAssault = false;
         AutonomousRvrEventLayer.SiegeScheduling = false;
-        foreach (string name in new[] { "Events", "CarrierEvents", "CarrierTargets", "Cooldowns", "ReleasedForces", "SelectedKeeps", "SelectedRelics", "DefenseAlarms", "DefenseWarnings", "KeepCombatPressure" })
+        foreach (string name in new[] { "Events", "CarrierEvents", "CarrierTargets", "Cooldowns", "ReleasedForces", "SelectedKeeps", "SelectedRelics", "DefenseAlarms", "DefenseWarnings", "KeepCombatPressure", "Campaigns", "CarrierOrigins", "CarrierMountedSeen" })
         {
             object value = typeof(AutonomousRvrEventLayer).GetField(name, BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
             value.GetType().GetMethod("Clear").Invoke(value, null);
