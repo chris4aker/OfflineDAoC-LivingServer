@@ -1261,6 +1261,24 @@ namespace DOL.AI.Brain
                 OnOwnerAttacked(attackArgs.AttackData);
         }
 
+        /// <summary>
+        /// A bot swinging at its target faces it (owner 2026-10-31: gamebots meleed facing away). The attack turns an NPC
+        /// only once, when it starts; a bot that then walks to its own spot (closing in, a flank, behind for a style) and
+        /// stops kept facing the way it walked. Every think: standing, attacking in melee, more than 30 degrees off -> turn.
+        /// </summary>
+        private void FaceMeleeTarget()
+        {
+            GameNPC body = Body;
+            if (body is not { IsAlive: true, IsAttacking: true } || body.IsMoving || body.IsCasting ||
+                body.ActiveWeaponSlot == eActiveWeaponSlot.Distance ||
+                body.TargetObject is not GameLiving target || !target.IsAlive || target.CurrentRegion != body.CurrentRegion ||
+                !body.IsWithinRadius(target, 600))
+                return;
+            int off = Math.Abs(body.GetHeading(target) - body.Heading) % 4096;
+            if (Math.Min(off, 4096 - off) > 4096 / 12)
+                body.TurnTo(target);
+        }
+
         public override void Think()
         {
             bool nativeSpeedTravelStarted;
@@ -1294,6 +1312,8 @@ namespace DOL.AI.Brain
 
             if (AutonomousStuckWatchdog.Observe(BotBody))
                 return;
+
+            FaceMeleeTarget();
 
             // put away for its player's horse ride: nothing to do until it is back at the player's side. Checked on every
             // think, not only when the stable master hands over the ride (owner 2026-10-31: companions still ran behind)

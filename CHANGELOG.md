@@ -188,6 +188,8 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
   - A relic that goes back to its pad by itself ends its carrier event (the leftover event blocked every new siege
     for every realm for up to four hours), only living sentinels count, every refused pickup is logged with the
     reason, and the frontier porters no longer teleport a player carrying a relic (bots already could not).
+- Gamebots face the monster they are hitting. A bot that walked to its own spot (closing in, a flank, behind for a
+  style) and stopped kept facing the way it walked while it swung; it now turns to its target.
 
 **World**
 - Bring A Friend reaches as far as on Dawn of Light, and only monsters in sight come. Friends came from up to 1,500
