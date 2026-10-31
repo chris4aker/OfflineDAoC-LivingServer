@@ -50,5 +50,8 @@
     <EmbeddedResource Include="Assets\shortcut.ico" LogicalName="shortcut.ico" />
     <EmbeddedResource Include="$(PayloadDir)LivingServer.zip" LogicalName="LivingServer.zip" />
     <EmbeddedResource Include="$(PayloadDir)Get-OfflineDAoC.ps1" LogicalName="Get-OfflineDAoC.ps1" />
+    <!-- 2026-10-31: the same downloader reading Living Server's copy of the release files, and the originals' SHA-256s -->
+    <EmbeddedResource Include="$(PayloadDir)Get-OfflineDAoC-copy.ps1" LogicalName="Get-OfflineDAoC-copy.ps1" />
+    <EmbeddedResource Include="Assets\base-files.sha256" LogicalName="base-files.sha256" />
   </ItemGroup>
 </Project>
