@@ -55,8 +55,12 @@ namespace DOL.GS
 
             long gold = assignedLevel == 50 ? Money.GetMoney(0, 0, 100, 0, 0) : 0;
             // The bulbs at a rate of 1; GainQuestExperience applies the rate once (2026-10-30): xp_rate, as before, or
-            // the xp_rate_by_level rate for the player's level in place of it while quest_xp_by_level is on.
-            long xp = assignedLevel == 50 ? 0 : CalculateExperienceReward(assignedLevel, rerolled, 1.0, difficulty);
+            // the xp_rate_by_level rate for the player's level in place of it while quest_xp_by_level is on. With the
+            // setting off (owner 2026-10-31, after review: it is a kill switch) the bounty is paid exactly as before
+            // 1.1.1: bulbs x xp_rate in full, through ApplyExperience below.
+            bool byLevel = ServerProperties.Properties.QUEST_XP_BY_LEVEL;
+            long xp = assignedLevel == 50 ? 0 : CalculateExperienceReward(assignedLevel, rerolled,
+                byLevel ? 1.0 : ServerProperties.Properties.XP_RATE, difficulty);
 
             // Reserve actual backpack slots before paying XP or gold. AddItem can
             // still reject an item, in which case restore the inventory and leave
@@ -92,7 +96,12 @@ namespace DOL.GS
 
             long experienceBefore = player.Experience;
             if (xp > 0 && player.Level < GamePlayer.MAX_LEVEL)
-                player.GainQuestExperience(xp, $"bounty Lv{assignedLevel} {difficulty}", ServerProperties.Properties.XP_RATE);
+            {
+                if (byLevel)
+                    player.GainQuestExperience(xp, $"bounty Lv{assignedLevel} {difficulty}", ServerProperties.Properties.XP_RATE);
+                else
+                    ApplyExperience(player, xp);
+            }
 
             return new()
             {
@@ -106,9 +115,11 @@ namespace DOL.GS
 
         /// <summary>
         /// One bulb is one tenth of the assigned level's XP width: 2, 4 or 8 bulbs
-        /// by difficulty, halved after a reroll, at <paramref name="xpRate"/>. Grant passes
-        /// a rate of 1 and lets GamePlayer.GainQuestExperience apply the player's rate
-        /// exactly once (2026-10-30); the tests pass a rate to check the arithmetic.
+        /// by difficulty, halved after a reroll, at <paramref name="xpRate"/>. With
+        /// quest_xp_by_level on, Grant passes a rate of 1 and lets GamePlayer.GainQuestExperience
+        /// apply the player's rate exactly once (2026-10-30); off, it passes xp_rate and
+        /// pays the result through ApplyExperience, as before 1.1.1. The tests pass a rate
+        /// to check the arithmetic.
         /// </summary>
         public static long CalculateExperienceReward(byte assignedLevel, bool rerolled, double xpRate,
             BountyDifficulty difficulty = BountyDifficulty.Normal)
@@ -150,6 +161,37 @@ namespace DOL.GS
                 return item;
             }
             return null;
+        }
+
+        /// <summary>
+        /// The payment before 1.1.1, kept for quest_xp_by_level off (owner 2026-10-31, after review): the whole
+        /// amount, one boundary per step so every level dings in turn, up to the start of level 50.
+        /// </summary>
+        private static void ApplyExperience(GamePlayer player, long amount)
+        {
+            long cap = GamePlayer.GetExperienceAmountForLevel(GamePlayer.MAX_LEVEL - 1);
+            long target = Math.Min(cap, player.Experience + Math.Min(amount, cap));
+
+            while (player.Experience < target && player.Level < GamePlayer.MAX_LEVEL)
+            {
+                long boundary = player.ExperienceForNextLevel;
+                if (player.Level >= 40 && !player.IsLevelSecondStage)
+                    boundary = Math.Min(boundary, player.ExperienceForCurrentLevelSecondStage);
+
+                long next = Math.Min(target, boundary);
+                if (next <= player.Experience)
+                {
+                    // The base-class trainer gate can leave raw XP banked above
+                    // the displayed level. Do not discard the earned bounty XP.
+                    player.ForceGainExperience(target - player.Experience);
+                    break;
+                }
+
+                long previous = player.Experience;
+                player.ForceGainExperience(next - previous);
+                if (player.Experience <= previous)
+                    break;
+            }
         }
     }
 }

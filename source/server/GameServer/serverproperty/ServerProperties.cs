@@ -758,7 +758,7 @@ namespace DOL.GS.ServerProperties
 		/// Quest experience follows xp_rate_by_level (owner 2026-10-30, see QuestExperience). On, and a range covers the
 		/// player's level: the quest's XP is multiplied by that level's rate. Off, no range or no setting: quest XP as before.
 		/// </summary>
-		[ServerProperty("rates", "quest_xp_by_level", "Quest experience follows xp_rate_by_level. When true (the default) and one of its ranges covers the player's level, the XP of data quests, reward quests, bounties and the daily, weekly and battleground quests is multiplied by that level's rate (a bounty's xp_rate is replaced by it). False, no range for the level or no xp_rate_by_level leaves quest XP as it was. One quest payment never pays more than one level.", true)]
+		[ServerProperty("rates", "quest_xp_by_level", "Quest experience follows xp_rate_by_level. When true (the default) and one of its ranges covers the player's level, the XP of data quests, reward quests, bounties and the daily, weekly and battleground quests is multiplied by that level's rate (a bounty's xp_rate is replaced by it). While true, one quest payment never pays more than one level. False is a kill switch (2026-10-31): no rate and no cap, quest XP exactly as before 1.1.1. No range for the level or no xp_rate_by_level leaves the amount as it was.", true)]
 		public static bool QUEST_XP_BY_LEVEL;
 
 		/// <summary>

@@ -6,7 +6,8 @@ namespace DOL.UnitTests
 {
     /// <summary>
     /// Quest XP at the player's pace (2026-10-30): the quest_xp_by_level setting, the xp_rate_by_level rate on quest
-    /// payouts, the one-level cap and the percentage the offer window shows (QuestExperience).
+    /// payouts, the one-level cap and the percentage the offer window shows (QuestExperience). Since 2026-10-31 the
+    /// setting is a kill switch: off, there is no rate and no cap (the owner's decision after review).
     /// </summary>
     [TestFixture, NonParallelizable]
     public sealed class UT_QuestExperience
@@ -158,6 +159,53 @@ namespace DOL.UnitTests
             Properties.QUEST_XP_BY_LEVEL = false;
             Assert.That(QuestExperience.Payout(bubble25, 25, Level25Span), Is.EqualTo(bubble25));
             Assert.That(QuestExperience.Payout(bubble40, 40, Level40Span), Is.EqualTo(bubble40));
+        }
+
+        // The kill switch (owner 2026-10-31, after review): off, the cap goes too.
+
+        [Test]
+        public void TheCapGoesWithTheSetting()
+        {
+            long threeLevels = Level25Span * 3;
+            Assert.That(QuestExperience.Payout(threeLevels, 1.0, Level25Span, true), Is.EqualTo(Level25Span), "on: one level at most");
+            Assert.That(QuestExperience.Payout(threeLevels, 1.0, Level25Span, false), Is.EqualTo(threeLevels), "off: the whole amount, as before 1.1.1");
+            Assert.That(QuestExperience.Payout(Level25Span / 10, 1.0, Level25Span, false), Is.EqualTo(Level25Span / 10), "off: a bubble is still a bubble");
+        }
+
+        [Test]
+        public void SettingOffPaysAQuestWholeWithNoRateAndNoCap()
+        {
+            Properties.XP_RATE_BY_LEVEL = OwnersPlan;
+            long threeLevels = Level25Span * 3;
+
+            Properties.QUEST_XP_BY_LEVEL = false;
+            Assert.That(QuestExperience.Payout(threeLevels, 25, Level25Span), Is.EqualTo(threeLevels), "off: no cap, and the 5x range is not applied");
+            Assert.That(QuestExperience.Percent(QuestExperience.Payout(threeLevels, 25, Level25Span), Level25Span), Is.EqualTo(100),
+                "the window's byte cannot show more than a whole level");
+
+            Properties.QUEST_XP_BY_LEVEL = true;
+            Assert.That(QuestExperience.Payout(threeLevels, 25, Level25Span), Is.EqualTo(Level25Span), "on: one level at most");
+        }
+
+        [Test]
+        public void SettingOffPaysABountyAtXpRateWithNoCap()
+        {
+            // Two bulbs of level 25 at the launcher's 10x preset: two levels, paid whole, as before 1.1.1.
+            Properties.XP_RATE = 10;
+            Properties.XP_RATE_BY_LEVEL = "";
+            long twoBulbs = Level25Span / 5;
+
+            Properties.QUEST_XP_BY_LEVEL = false;
+            Assert.That(QuestExperience.Payout(twoBulbs, 25, Level25Span, Properties.XP_RATE), Is.EqualTo(Level25Span * 2), "off: bulbs x xp_rate, uncapped");
+
+            Properties.QUEST_XP_BY_LEVEL = true;
+            Assert.That(QuestExperience.Payout(twoBulbs, 25, Level25Span, Properties.XP_RATE), Is.EqualTo(Level25Span), "on, no range: xp_rate still applies, one level at most");
+
+            Properties.XP_RATE_BY_LEVEL = OwnersPlan;
+            Assert.That(QuestExperience.Payout(twoBulbs, 25, Level25Span, Properties.XP_RATE), Is.EqualTo(Level25Span), "on, in a range: 5 x 20% is a level");
+
+            Properties.QUEST_XP_BY_LEVEL = false;
+            Assert.That(QuestExperience.Payout(twoBulbs, 25, Level25Span, Properties.XP_RATE), Is.EqualTo(Level25Span * 2), "off, ranges set: still xp_rate, uncapped");
         }
 
         [Test]

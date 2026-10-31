@@ -7,9 +7,11 @@ namespace DOL.GS
     /// Quest experience at the player's pace (owner 2026-10-30). A quest pays a share of the player's level
     /// (ClassicQuests.ScaleXP, since 0.36) or its fixed amount, and a bounty pays bulbs of its assigned level. When the
     /// server setting <c>quest_xp_by_level</c> is on and an <c>xp_rate_by_level</c> range covers the player's level, that
-    /// amount is multiplied by the level's rate, as a kill's base XP is, so quests keep up with grinding at 12x. One
-    /// payment pays at most one level's worth of experience. These are pure functions, covered by UT_QuestExperience;
-    /// GamePlayer.GainQuestExperience applies them, and the offer window shows their result.
+    /// amount is multiplied by the level's rate, as a kill's base XP is, so quests keep up with grinding at 12x, and one
+    /// payment pays at most one level's worth of experience. The setting is a kill switch (owner 2026-10-31, after
+    /// review): off, there is no rate and no cap, and a quest pays exactly what it paid before 1.1.1. These are pure
+    /// functions, covered by UT_QuestExperience; GamePlayer.GainQuestExperience applies them, and the offer window
+    /// shows their result.
     /// </summary>
     public static class QuestExperience
     {
@@ -51,7 +53,8 @@ namespace DOL.GS
 
         /// <summary>
         /// The cap: one payment pays at most one level's worth, <paramref name="levelSpan"/> being the experience from the
-        /// start of the player's level to the start of the next. A span of zero or less leaves the amount alone.
+        /// start of the player's level to the start of the next. A span of zero or less leaves the amount alone. The cap
+        /// is part of the setting: <see cref="Payout(long, double, long, bool)"/> applies it only while the setting is on.
         /// </summary>
         public static long Capped(long xp, long levelSpan)
         {
@@ -60,15 +63,30 @@ namespace DOL.GS
             return levelSpan > 0 ? Math.Min(xp, levelSpan) : xp;
         }
 
-        /// <summary>What one payment of <paramref name="baseXp"/> pays a player of this level: the rate, then the cap.</summary>
-        public static long Payout(long baseXp, int level, long levelSpan, double flatRate = 1.0)
+        /// <summary>
+        /// What one payment of <paramref name="baseXp"/> pays at <paramref name="rate"/>: the amount, capped at one level
+        /// only while <paramref name="settingOn"/>. With the setting off the amount is paid whole, however large, as it
+        /// was before 1.1.1 (owner 2026-10-31, after review: the setting is a kill switch, so the cap goes with it).
+        /// </summary>
+        public static long Payout(long baseXp, double rate, long levelSpan, bool settingOn)
         {
-            return Capped(Scaled(baseXp, Rate(level, flatRate)), levelSpan);
+            long scaled = Scaled(baseXp, rate);
+            return settingOn ? Capped(scaled, levelSpan) : scaled;
         }
 
         /// <summary>
-        /// What the offer and reward windows show: the payout as a whole percentage of the player's level, 0 to 100
-        /// (the packet carries one byte, and the cap keeps a payment within one level).
+        /// What one payment of <paramref name="baseXp"/> pays a player of this level under the live settings: the rate,
+        /// then the cap while <c>quest_xp_by_level</c> is on; the amount at <paramref name="flatRate"/> when it is off.
+        /// </summary>
+        public static long Payout(long baseXp, int level, long levelSpan, double flatRate = 1.0)
+        {
+            return Payout(baseXp, Rate(level, flatRate), levelSpan, Properties.QUEST_XP_BY_LEVEL);
+        }
+
+        /// <summary>
+        /// What the offer and reward windows show: the payout as a whole percentage of the player's level, 0 to 100.
+        /// The packet carries one byte, so a payment of more than a level (possible with the setting off) shows as a
+        /// whole level; before 1.1.1 such a value wrapped around.
         /// </summary>
         public static int Percent(long paidXp, long levelSpan)
         {
