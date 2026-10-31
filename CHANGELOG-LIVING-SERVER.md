@@ -43,6 +43,23 @@ only (kill credit in a bot group, hand-ins above a quest's level, the journal, q
     with the start effect silent. The first start of each song is still heard. Songs, timings and buffs are unchanged,
     and players' own songs and harmful pulses (a flute mez) keep their sounds.
   - **Checked:** three new tests (`UT_BotQuietSongs`); 4,101 server tests pass. Not yet heard in game.
+- **The launcher no longer stays on STARTING when Windows leaves the server out of its listener table** (issue #32,
+  reported by joshuaforehand).
+  - **The bug:** the launcher asked Windows for the list of listening TCP ports and looked for 10300. On the reporter's
+    PC that list left a working listener out, so the server was up, `Test-NetConnection` succeeded, and the launcher
+    never left STARTING.
+  - **Now:** the list is still the first check; when it doesn't show the port, the launcher tries a short connection
+    to 127.0.0.1:10300 (150 ms at most) and takes success as "running". Shared launcher code, so it applies to both
+    launchers.
+  - **Checked:** four new tests (`ServerPortProbeTests`); the launcher suite (127 tests) passes on CI. Not tried on a
+    PC that shows the problem.
+- **New client: the NPC your current quest step needs is marked green, not orange.** Since 1.1 the server sends one
+  marker scheme (available, current step, finish); the 0.37c client drew "current step" as "in progress elsewhere".
+  - **How it reaches you:** the client runs its scripts from source, so the installer patches
+    `new-client\godot\game\quests\quest_markers.gd` in place like the gate models (only when it is the released
+    file; `ROLLBACK.cmd` puts it back). It is the first client script Living Server ships; the others in its source
+    (the target window, FACE/FOLLOW/STICK, `/lfg` and `/trade` channels, the PLAY double-click guard) follow in 1.2.
+  - **Checked:** the patch rebuilds the fixed file byte for byte; not run in game.
 
 ## Beta 1.1 — 2026-10-29
 
