@@ -104,6 +104,25 @@ only (kill credit in a bot group, hand-ins above a quest's level, the journal, q
   every rate, now pay like every other quest. Details in [docs/XP-BY-LEVEL-RANGE.md](docs/XP-BY-LEVEL-RANGE.md).
   Automated tests only; not played in game yet.
 
+**Quests with your bot group** (2026-10-30, review fixes 2026-10-31; [docs/QUESTING.md](docs/QUESTING.md))
+- A kill by the gamebots in your group counts for your quests. Before, only a kill you damaged yourself, or your own
+  `/spawn` companion made, gave quest credit, so a player who healed, nuked late or only tagged while the invited bots
+  made the kill got nothing and no classic step drop. The group's leader is now credited as a companion's owner is,
+  when the bot still fights in the leader's group and the leader stands alive in the same region within the group's
+  kill-credit range (6,000 units); who gets the experience, the loot and the coin does not change.
+- A kill advances a quest step once. The killer's own quests heard the same kill once more for every groupmate in
+  range who hadn't attacked, so a quest with consecutive kill steps jumped two or three steps on one kill. The quest
+  now remembers the last kill it counted (two seconds), which also keeps the forced credit that nine named monsters
+  (the dragons, Legion, Olcasgean, Myrddraxis, Xanxicar, Nosdoden, King Tuscar) give to everyone in sight.
+- A hand-in is accepted above the quest's maximum level: a player who outlevelled a quest they already hold could not
+  hand its item in while the kill, talk and whisper steps still worked. The level window stays where a quest is offered.
+- More than 25 quests at login: a save with more than the client's 25 active quests kept them all and said so at
+  login, instead of losing the ones past the limit; finishing one brings the next hidden quest into the journal.
+- Whispering a keyword to a quest NPC twice quickly works: the silent 1.5-second pause between whispers now applies
+  to whispers to players only, so two quick keyword clicks both arrive.
+- Automated tests only (`UT_QuestKillCredit`, `UT_QuestLevelWindow`, `UT_QuestJournal`, `UT_WhisperThrottle`); not
+  played in game yet. The in-game check for the owner: a kill quest as a normal account in a group of invited bots.
+
 ## Beta 1.1 — 2026-10-29
 
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,
