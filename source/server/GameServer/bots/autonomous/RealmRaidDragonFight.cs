@@ -21,12 +21,21 @@ namespace DOL.GS;
 ///
 /// The raid feeds it plain facts once a pulse (<see cref="Raider"/>, <see cref="Dragon"/>), so the rules run the same
 /// in a unit test as in the game.
+///
+/// Review fix for the owner's PR #44, 2026-10-31: who fell is remembered for the whole attempt. A dungeon raider who
+/// releases goes to the hub in another region and stays "fallen" until it walks back in; a dragon raider releases to a
+/// bind in the dragon's own region (regions 1, 100 and 200 hold both the lair and the bind stones) and is standing
+/// again seconds later, when the autonomous controller takes over its walk back. Counting only the raiders dead at the
+/// moment the dragon left combat (the last minute and a half of corpses) would have called most wipes a break-off and
+/// left the raid to trickle back as before. So an engaged raider seen not standing at any pulse of the attempt counts
+/// as fallen at the verdict, even if it is on its feet again by then.
 /// </summary>
 public sealed class RealmRaidDragonFight
 {
-    /// <summary>One raider as the raid sees it this pulse: standing (alive, in the dragon's region, not walking back from
-    /// a release), at the dragon (standing within <see cref="RealmRaidDungeonRoute.TargetPresenceRadius"/> of it) and at
-    /// the staging ring (standing on a staging post, outside the dragon's clearance).</summary>
+    /// <summary>One raider as the raid sees it this pulse: standing (alive and in the dragon's region, which a raider
+    /// released to a bind in that region is again within seconds), at the dragon (standing within
+    /// <see cref="RealmRaidDungeonRoute.TargetPresenceRadius"/> of it) and at the staging ring (standing on a staging
+    /// post, outside the dragon's clearance).</summary>
     public readonly record struct Raider(long Id, bool Standing, bool AtDragon, bool AtStaging);
 
     /// <summary>The dragon this pulse. OutOfLair: drawn out of its lair, where it takes no damage and the raid leads it home.</summary>
@@ -44,12 +53,22 @@ public sealed class RealmRaidDragonFight
     /// and only a trickle keeps it busy), as a dungeon encounter does.</summary>
     public const long NoProgressMilliseconds = RealmRaidDungeonRoute.TargetNoProgressMilliseconds;
     public const long RegroupLogMilliseconds = 2 * 60_000;
+    /// <summary>
+    /// Review fix for PR #44, 2026-10-31: a regroup nobody has reached for this long is given up, as the dungeon route
+    /// gives up a muster nobody reached (<see cref="RealmRaidDungeonRoute.MusterUnreachableMilliseconds"/>). A forced
+    /// raid has no four-hour window, so without this an empty ring would have held it until the player pressed Stop.
+    /// The raid is then defeated: the dragon beat it and it could not re-form.
+    /// </summary>
+    public const long RegroupUnreachableMilliseconds = RealmRaidDungeonRoute.MusterUnreachableMilliseconds;
 
     private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(RealmRaidDragonFight));
 
     private readonly string _dragon;
     // Everyone who stood in the current attempt (raiders arriving during the fight join it).
     private readonly HashSet<long> _engaged = new();
+    // Everyone in the attempt seen not standing at any pulse of it (dead, or released and walking back): see the class
+    // summary, 2026-10-31. Cleared when the next attempt begins.
+    private readonly HashSet<long> _fell = new();
     private bool _attempt;
     private long _attemptSince;
     private int _attemptLowestPercent = 100;
@@ -57,6 +76,8 @@ public sealed class RealmRaidDragonFight
     private int _lowestHealth;
     private long _progressTick;
     private long _regroupSince, _nextRegroupLog;
+    // Nobody has stood at the staging ring since this tick of the regroup (0 = someone is there).
+    private long _regroupEmptySince;
     private readonly Queue<int> _wipes = new();
 
     public RealmRaidDragonFight(string dragon)
@@ -67,11 +88,16 @@ public sealed class RealmRaidDragonFight
     /// <summary>The raid is gathering at its staging ring after a wipe.</summary>
     public bool Regrouping { get; private set; }
     public int FailedAttempts { get; private set; }
-    /// <summary>The dragon's name once it has beaten the raid twice; null while the raid can still win.</summary>
+    /// <summary>The dragon's name once it has beaten the raid (two failed attempts, or a regroup nobody reached); null
+    /// while the raid can still win.</summary>
     public string DefeatedAt { get; private set; }
     public bool Defeated => DefeatedAt != null;
+    /// <summary>How the dragon beat the raid, for the raid's record ("after 2 failed attempts", ...); null until then.</summary>
+    public string DefeatedHow { get; private set; }
     /// <summary>Raiders in the current attempt (for logs and tests).</summary>
     public int Engaged => _engaged.Count;
+    /// <summary>Raiders of the current attempt seen fallen so far (for logs and tests).</summary>
+    public int Fallen => _fell.Count;
     /// <summary>What the launcher shows while the raid regroups or is defeated; null while it fights as before.</summary>
     public string Status { get; private set; }
 
@@ -124,7 +150,12 @@ public sealed class RealmRaidDragonFight
                 _progressTick = now;
             }
         }
-        if (!_attempt || !AttemptOver(dragon.InCombat, now - _attemptSince, now - _progressTick)) return;
+        if (!_attempt) return;
+        // Who fell is remembered for the whole attempt (2026-10-31): a dragon raider released to a bind in the dragon's
+        // region is standing again seconds later, but it fell all the same.
+        foreach (Raider raider in raiders)
+            if (!raider.Standing && _engaged.Contains(raider.Id)) _fell.Add(raider.Id);
+        if (!AttemptOver(dragon.InCombat, now - _attemptSince, now - _progressTick)) return;
         EndAttempt(raiders, dragon, now, dragon.InCombat ? "no damage for five minutes" : "left combat");
     }
 
@@ -134,6 +165,7 @@ public sealed class RealmRaidDragonFight
         _attemptSince = _progressTick = now;
         _engaged.Clear();
         _engaged.UnionWith(raiders);
+        _fell.Clear();
         _attemptLowestPercent = dragon.HealthPercent;
         _lowestHealth = dragon.Health;
         Regrouping = false;
@@ -146,9 +178,11 @@ public sealed class RealmRaidDragonFight
         _attempt = false;
         int engaged = _engaged.Count;
         var standing = new HashSet<long>(raiders.Where(r => r.Standing).Select(r => r.Id));
-        // Dead, released and walking back, or no longer in the raid at all.
-        int fallen = _engaged.Count(id => !standing.Contains(id));
+        // Seen fallen at any pulse of the attempt (dead, or released and walking back), not standing now, or no longer
+        // in the raid at all.
+        int fallen = _engaged.Count(id => _fell.Contains(id) || !standing.Contains(id));
         _engaged.Clear();
+        _fell.Clear();
         if (!IsWipe(engaged, fallen, dragon.HealthPercent, _attemptLowestPercent))
         {
             if (Log.IsInfoEnabled)
@@ -164,15 +198,23 @@ public sealed class RealmRaidDragonFight
                      $"fallen={fallen} health={dragon.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\"");
         if (FailedAttempts >= MaximumFailedAttempts)
         {
-            DefeatedAt = _dragon;
-            Status = $"defeated at {_dragon}";
+            Defeat($"after {MaximumFailedAttempts} failed attempts");
             return true;
         }
         Regrouping = true;
         _regroupSince = now;
+        _regroupEmptySince = 0;
         _nextRegroupLog = 0;
         Status = RegroupStatus(0, RegroupNeeded(raiders.Count, 0), dragon.Landed);
         return true;
+    }
+
+    private void Defeat(string how)
+    {
+        DefeatedAt = _dragon;
+        DefeatedHow = how;
+        Regrouping = false;
+        Status = $"defeated at {_dragon}";
     }
 
     private void Regroup(IReadOnlyList<Raider> raiders, Dragon dragon, long now)
@@ -187,6 +229,18 @@ public sealed class RealmRaidDragonFight
             if (Log.IsInfoEnabled)
                 Log.Info($"REALM_RAID_DRAGON_ENGAGE dragon=\"{_dragon}\" staged={staged} needed={needed} roster={roster} " +
                          $"minutes={regroupMilliseconds / 60_000.0:0.0} attempt={FailedAttempts + 1} retry=true");
+            return;
+        }
+        // A ring nobody has stood on for twenty minutes is a regroup that will not happen (2026-10-31; a forced raid
+        // has no clock of its own): the dragon beat the raid.
+        if (staged > 0) _regroupEmptySince = 0;
+        else if (_regroupEmptySince == 0) _regroupEmptySince = now;
+        else if (RealmRaidDungeonRoute.MusterUnreachable(_regroupEmptySince, now))
+        {
+            if (Log.IsWarnEnabled)
+                Log.Warn($"REALM_RAID_DRAGON_REGROUP_UNREACHABLE dragon=\"{_dragon}\" roster={roster} standing={raiders.Count(r => r.Standing)} " +
+                         $"minutes={RegroupUnreachableMilliseconds / 60_000} reason=\"nobody reached the staging ring; the raid is defeated\"");
+            Defeat($"after a wipe: nobody reached the staging ring for {RegroupUnreachableMilliseconds / 60_000} minutes");
             return;
         }
         Status = RegroupStatus(staged, needed, dragon.Landed);

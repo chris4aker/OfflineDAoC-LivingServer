@@ -42,6 +42,8 @@ namespace DOL.UnitTests
                 Assert.That(RealmRaidDragonFight.IsWipe(7, 7, 100, 10), Is.False, "a handful at the dragon is not the raid");
                 Assert.That(RealmRaidDragonFight.RegroupNeeded(80, 0), Is.EqualTo(56));
                 Assert.That(RealmRaidDragonFight.RegroupNeeded(80, 20 * Minute), Is.EqualTo(32), "after 20 minutes 40% will do");
+                Assert.That(RealmRaidDragonFight.RegroupUnreachableMilliseconds, Is.EqualTo(RealmRaidDungeonRoute.MusterUnreachableMilliseconds),
+                    "a ring nobody reaches is given up after the dungeon's twenty minutes (2026-10-31)");
             });
         }
 
@@ -120,11 +122,110 @@ namespace DOL.UnitTests
             {
                 Assert.That(fight.Defeated, Is.True);
                 Assert.That(fight.DefeatedAt, Is.EqualTo("Golestandt"));
+                Assert.That(fight.DefeatedHow, Is.EqualTo("after 2 failed attempts"));
                 Assert.That(fight.FailedAttempts, Is.EqualTo(2));
                 Assert.That(fight.TryTakeWipe(out int failures), Is.True);
                 Assert.That(failures, Is.EqualTo(2));
                 Assert.That(fight.Regrouping, Is.False);
                 Assert.That(fight.Status, Is.EqualTo("defeated at Golestandt"));
+            });
+        }
+
+        // Review fix 2026-10-31. A dragon raider that dies releases to a bind in the dragon's own region and is standing
+        // again seconds later (the autonomous controller clears IsReturningAfterRelease on its next turn), so at the
+        // verdict only the raiders dead for less than a minute and a half are corpses. Who fell is remembered for the
+        // whole attempt; these fights are shaped the way the game feeds them.
+        [Test]
+        public void AReleasedRaiderStandingAgainAtTheVerdictStillCountsAsFallen()
+        {
+            var fight = new RealmRaidDragonFight("Golestandt");
+            long[] roster = Roster(40);
+            fight.Engage(roster, Idle, 0);
+            fight.Advance(All(roster, AtDragon), Fighting, Minute);
+            // Five minutes in: 25 lie dead at the dragon's feet, 15 still fight it.
+            fight.Advance(All(roster, id => id <= 25 ? Fallen(id) : AtDragon(id)), new(true, true, false, 60, 60_000), 5 * Minute);
+            Assert.That(fight.Fallen, Is.EqualTo(25));
+            // Seven minutes: the 25 released to a bind in the region and walk back, on their feet, neither at the dragon
+            // nor at the ring.
+            fight.Advance(All(roster, id => id <= 25 ? Away(id) : AtDragon(id)), new(true, true, false, 55, 55_000), 7 * Minute);
+            Assert.That(fight.Fallen, Is.EqualTo(25), "a released raider is standing again, but it fell");
+            // Nine minutes: the last 15 fall and the dragon leaves combat. Only those 15 are corpses now.
+            fight.Advance(All(roster, id => id <= 25 ? Away(id) : Fallen(id)), new(false, true, false, 55, 55_000), 9 * Minute);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fight.Regrouping, Is.True, "40 of 40 fell in the attempt, not the 15 corpses at the verdict");
+                Assert.That(fight.FailedAttempts, Is.EqualTo(1));
+                Assert.That(fight.TryTakeWipe(out int failures) && failures == 1, Is.True);
+            });
+        }
+
+        [Test]
+        public void AProgressiveCollapseIsAWipeThoughFewAreDeadAtTheVerdict()
+        {
+            var fight = new RealmRaidDragonFight("Cuuldurach");
+            long[] roster = Roster(40);
+            fight.Engage(roster, Idle, 0);
+            fight.Advance(All(roster, AtDragon), new(true, true, false, 70, 70_000), Minute);
+            // Every two minutes eight more fall, and by the next wave the last eight have released and walk back. The
+            // dragon keeps losing health to the ones still on it.
+            for (int wave = 1; wave <= 5; wave++)
+            {
+                int dead = wave * 8, released = (wave - 1) * 8, health = 70 - wave * 5;
+                fight.Advance(All(roster, id => id <= released ? Away(id) : id <= dead ? Fallen(id) : AtDragon(id)),
+                    new(true, true, false, health, health * 1_000), 2 * wave * Minute);
+            }
+            Assert.That(fight.Fallen, Is.EqualTo(40), "every wave was seen fallen");
+            // Ten seconds after the last wave the dragon is out of combat: eight corpses, 32 raiders on their feet far away.
+            fight.Advance(All(roster, id => id <= 32 ? Away(id) : Fallen(id)), new(false, true, false, 45, 45_000), 10 * Minute + 10_000);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fight.Regrouping, Is.True, "eight corpses at the verdict, but all forty fell during the attempt");
+                Assert.That(fight.FailedAttempts, Is.EqualTo(1));
+            });
+        }
+
+        [Test]
+        public void AFightNobodyFellInIsABreakOffNotAWipe()
+        {
+            var fight = new RealmRaidDragonFight("Gjalpinulva");
+            long[] roster = Roster(40);
+            fight.Engage(roster, Idle, 0);
+            fight.Advance(All(roster, AtDragon), new(true, true, false, 70, 70_000), Minute);
+            // Half the raid walks away from her, half stays; she leaves combat with everyone on their feet.
+            fight.Advance(All(roster, id => id <= 20 ? Away(id) : AtDragon(id)), new(false, true, false, 60, 60_000), 4 * Minute);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fight.Fallen, Is.EqualTo(0), "walking away is not falling");
+                Assert.That(fight.Regrouping, Is.False);
+                Assert.That(fight.FailedAttempts, Is.EqualTo(0));
+                Assert.That(fight.TryTakeWipe(out _), Is.False);
+            });
+        }
+
+        [Test]
+        public void TheFallenOfOneAttemptAreNotCountedAgainstTheNext()
+        {
+            var fight = new RealmRaidDragonFight("Golestandt");
+            long[] roster = Roster(40);
+            fight.Engage(roster, Idle, 0);
+            fight.Advance(All(roster, AtDragon), Fighting, Minute);
+            fight.Advance(All(roster, id => id <= 30 ? Fallen(id) : AtDragon(id)), new(false, true, false, 60, 60_000), 4 * Minute);
+            Assert.That(fight.Regrouping, Is.True);
+            // Six minutes later the whole raid stands at the ring, the thirty who fell among them, and goes in again.
+            fight.Advance(All(roster, Staged), Idle, 10 * Minute);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fight.Regrouping, Is.False);
+                Assert.That(fight.Engaged, Is.EqualTo(40));
+                Assert.That(fight.Fallen, Is.EqualTo(0), "the retry starts with a clean slate");
+            });
+            // The second attempt: nobody falls and the dragon is left at 60%. A break-off, not the second wipe.
+            fight.Advance(All(roster, AtDragon), new(true, true, false, 60, 60_000), 11 * Minute);
+            fight.Advance(All(roster, id => id <= 20 ? Away(id) : AtDragon(id)), new(false, true, false, 60, 60_000), 14 * Minute);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fight.Defeated, Is.False);
+                Assert.That(fight.FailedAttempts, Is.EqualTo(1));
             });
         }
 
@@ -245,6 +346,55 @@ namespace DOL.UnitTests
             Assert.That(fight.Status, Does.Contain("dragon airborne"));
             fight.Advance(All(roster, Staged), Idle, 11 * Minute);
             Assert.That(fight.Regrouping, Is.False);
+        }
+
+        // Review fix 2026-10-31: a forced raid has no four-hour window, so a regroup nobody reaches would have held it
+        // until the player pressed Stop. The dungeon route gives up a muster nobody reached for twenty minutes; so does
+        // the dragon regroup, and the raid is defeated (one wipe, no second attempt).
+        [Test]
+        public void ARegroupNobodyReachesForTwentyMinutesDefeatsTheRaid()
+        {
+            var fight = new RealmRaidDragonFight("Cuuldurach");
+            long[] roster = Roster(40);
+            fight.Engage(roster, Idle, 0);
+            fight.Advance(All(roster, AtDragon), Fighting, Minute);
+            fight.Advance(All(roster, id => id <= 30 ? Fallen(id) : Away(id)), Idle, 4 * Minute);
+            Assert.That(fight.Regrouping, Is.True);
+            // Nobody reaches the ring: the survivors are stuck somewhere and the released are far away. The empty-ring
+            // clock starts at the first regroup pulse (five minutes).
+            for (long now = 5 * Minute; now <= 24 * Minute; now += Minute)
+                fight.Advance(All(roster, Away), Idle, now);
+            Assert.That(fight.Defeated, Is.False, "nineteen minutes of an empty ring");
+            fight.Advance(All(roster, Away), Idle, 25 * Minute);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fight.Defeated, Is.True);
+                Assert.That(fight.DefeatedAt, Is.EqualTo("Cuuldurach"));
+                Assert.That(fight.DefeatedHow, Does.Contain("nobody reached the staging ring for 20 minutes"));
+                Assert.That(fight.FailedAttempts, Is.EqualTo(1), "one wipe, not two");
+                Assert.That(fight.Regrouping, Is.False);
+                Assert.That(fight.Status, Is.EqualTo("defeated at Cuuldurach"));
+                Assert.That(fight.TryTakeWipe(out int failures) && failures == 1, Is.True, "the first wipe's notice and call-up still happen");
+            });
+        }
+
+        [Test]
+        public void OneRaiderOnTheRingRestartsTheEmptyRingClock()
+        {
+            var fight = new RealmRaidDragonFight("Cuuldurach");
+            long[] roster = Roster(40);
+            fight.Engage(roster, Idle, 0);
+            fight.Advance(All(roster, AtDragon), Fighting, Minute);
+            fight.Advance(All(roster, id => id <= 30 ? Fallen(id) : Away(id)), Idle, 4 * Minute);
+            for (long now = 5 * Minute; now <= 40 * Minute; now += Minute)
+            {
+                // At fourteen minutes one raider stands on the ring for a pulse; the twenty minutes count from the next
+                // empty pulse (fifteen), so the give-up is at thirty-five, not twenty-five.
+                var pulse = now == 14 * Minute ? All(roster, id => id == 1 ? Staged(id) : Away(id)) : All(roster, Away);
+                fight.Advance(pulse, Idle, now);
+                if (now < 35 * Minute) Assert.That(fight.Defeated, Is.False, $"minute {now / Minute}");
+            }
+            Assert.That(fight.Defeated, Is.True);
         }
 
         [Test]

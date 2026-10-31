@@ -14,12 +14,19 @@ Older entries below keep the names they were written with.
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
   back by twos and threes to a dragon at full health, until it died or the four hours ran out, and the Special Forces
   were never called. A dragon raid now keeps the dungeon raids' rules. An attempt begins when the raid goes in from its
-  staging ring; it fails when half the raiders in it fall, or the dragon heals back to 95% after being taken to 85% or
-  lower, or it takes no damage for five minutes while a trickle keeps it busy. The raid then regroups at its staging
-  ring, outside the dragon's aggro, by the checked route around the lair: the fallen walk back, the living rest and
-  rebuff for at least five minutes, and the raid goes in again once 70% of its roster stands there (40% after 20
-  minutes) and the dragon has landed. After two failed attempts the raid is **Defeated** and goes home, and every realm
-  hears it. The lair radius, the 600 damage cap and the landing rule are unchanged.
+  staging ring and ends when the dragon is out of combat after the three-minute approach, or when it has taken no
+  damage for five minutes while a trickle keeps it busy; the attempt was a wipe when half the raiders in it fell, or
+  the dragon healed back to 95% after being taken to 85% or lower. The raid then regroups at its staging ring, outside
+  the dragon's aggro, by the checked route around the lair: the fallen walk back, the living rest and rebuff for at
+  least five minutes, and the raid goes in again once 70% of its roster stands there (40% after 20 minutes) and the
+  dragon has landed. After two failed attempts the raid is **Defeated** and goes home, and every realm hears it. The
+  lair radius, the 600 damage cap and the landing rule are unchanged.
+- Review fixes (2026-10-31): who fell is remembered for the whole attempt. A dragon raider releases to a bind in the
+  dragon's own region and is on its feet again seconds later, so judging the wipe from the corpses at the moment the
+  dragon left combat would have called most wipes a break-off and left the raid trickling back as before. And a
+  regroup nobody has reached for twenty minutes (the dungeon muster's rule) is given up and the raid is Defeated, so a
+  forced dragon raid, which has no four-hour window, cannot hold at an empty ring until the player presses Stop
+  (`REALM_RAID_DRAGON_REGROUP_UNREACHABLE`).
 - On the first wipe the realm hears that the raid fell, and the Epic Special Forces are asked for on the same terms as
   at a dungeon: up to 24, one party fewer per win and one more per loss over that dragon's last six results in the
   Herald, nobody after three kills in a row. They arrive at the raid's muster hub and walk to the staging ring like any

@@ -437,7 +437,8 @@ namespace DOL.GS
                             OnWipe(raid, raid.Boss.Name, failures, now);
                         if (fight.Defeated)
                         {
-                            End(raid, now, $"Defeated at {fight.DefeatedAt} after {RealmRaidDragonFight.MaximumFailedAttempts} failed attempts.");
+                            // "after 2 failed attempts", or a regroup nobody reached for 20 minutes (2026-10-31).
+                            End(raid, now, $"Defeated at {fight.DefeatedAt} {fight.DefeatedHow}.");
                             continue;
                         }
                     }
@@ -614,6 +615,10 @@ namespace DOL.GS
         /// <summary>
         /// The raid's roster as the fight tracker sees it: standing (alive, in the dragon's region, not walking back from
         /// a release), at the dragon (within the dungeon route's presence radius) and at the staging ring.
+        /// Review fix, 2026-10-31: a dragon raider releases to a bind in the dragon's own region (TryRaidRelease is for
+        /// dungeons), and the autonomous controller clears IsReturningAfterRelease on its next turn, so a released raider
+        /// is "standing" again seconds after it fell. The tracker therefore remembers who fell during an attempt instead
+        /// of judging the wipe from the corpses of the last minute and a half.
         /// </summary>
         private static List<RealmRaidDragonFight.Raider> DragonRaiders(Raid raid)
         {
