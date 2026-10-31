@@ -8,7 +8,15 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Beta 1.1 (in development)
+## Beta 1.1.1 (in development)
+
+Fixes and verifications only, for the first week after Beta 1.1: the community's reports (issues #32, #33, #38,
+#39 and the pull requests offered in #40), the stacked fixes #35-#37, sieges played at the owner's roster now that
+their timers run, dragon raids calling the Epic Special Forces after a wipe, and the quest defects that are code
+only (kill credit in a bot group, hand-ins above a quest's level, the journal, quest XP). The plan is
+[docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md); the quest findings are [docs/QUESTING.md](docs/QUESTING.md).
+
+## Beta 1.1 — 2026-10-29
 
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,
 spammers, roleplayers, rumours, holiday chatter, Leeroy), 2003-style bot names, a first half hour paced for signature
