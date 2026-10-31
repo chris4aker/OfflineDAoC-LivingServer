@@ -4319,6 +4319,77 @@ namespace DOL.GS
         }
 
         /// <summary>
+        /// Pays quest experience (owner 2026-10-30). While quest_xp_by_level is on, the quest's own amount (its share of
+        /// the level from ClassicQuests.ScaleXP, its fixed value, or a bounty's bulbs) is multiplied by this player's
+        /// quest rate, the xp_rate_by_level rate for the level (see QuestExperience), and capped at one level's worth,
+        /// so one payment can never pay two levels. It is handed to ForceGainExperience one boundary at a time (the
+        /// second stage at levels 40 to 49, then the next level, then the rest), so each call makes at most one
+        /// level-up or stage step and a payout that reaches the next level dings now, not again on the next kill. At
+        /// levels 40 to 48 one payment can still cross the level and reach the next level's second stage, since a
+        /// level's width there is more than half of the next one's; that is a level and a spec-point step, not two levels.
+        /// The setting is a kill switch (owner 2026-10-31, after review): off, the amount at <paramref name="flatRate"/>
+        /// goes to ForceGainExperience in one call, with no cap and no boundary steps, exactly as before 1.1.1. Data
+        /// quests, reward quests, bounties and the daily, weekly and battleground quests pay through here;
+        /// ForceGainExperience stays the raw path.
+        /// </summary>
+        /// <param name="baseXp">the quest's own amount, before any rate</param>
+        /// <param name="source">the quest, for the QUEST_XP log line</param>
+        /// <param name="flatRate">the rate the payout used before this setting: 1 for quests, xp_rate for bounties</param>
+        /// <returns>the experience added</returns>
+        public long GainQuestExperience(long baseXp, string source = null, double flatRate = 1.0)
+        {
+            if (baseXp <= 0)
+                return 0;
+
+            int level = Level;
+            bool byLevel = Properties.QUEST_XP_BY_LEVEL;
+            double rate = QuestExperience.Rate(level, flatRate); // the flat rate while the setting is off
+            long scaled = QuestExperience.Scaled(baseXp, rate);
+            long levelSpan = ExperienceForNextLevel - ExperienceForCurrentLevel;
+            long paid = QuestExperience.Payout(baseXp, rate, levelSpan, byLevel);
+
+            if (log.IsInfoEnabled)
+            {
+                log.Info($"QUEST_XP player=\"{Name}\" level={level}{(IsLevelSecondStage ? ".5" : string.Empty)} source=\"{source ?? "quest"}\" " +
+                         $"base={baseXp} rate={rate:0.###} scaled={scaled} paid={paid}{(paid < scaled ? " capped=one-level" : string.Empty)}" +
+                         (byLevel ? string.Empty : " quest_xp_by_level=off"));
+            }
+
+            long before = Experience;
+
+            if (!byLevel)
+            {
+                // The kill switch: one raw payment, as every quest made before 1.1.1. Experience past the next level
+                // is banked and the level follows on the next kill, as it did then.
+                ForceGainExperience(paid);
+                return Experience - before;
+            }
+
+            long remaining = paid;
+
+            // At most three steps (second stage, next level, the rest); the bound only guards against a stuck loop.
+            for (int step = 0; remaining > 0 && step < 4; step++)
+            {
+                long was = Experience;
+                long boundary = Level < MAX_LEVEL ? ExperienceForNextLevel : long.MaxValue;
+
+                if (Level >= 40 && Level < MAX_LEVEL && !IsLevelSecondStage)
+                    boundary = Math.Min(boundary, ExperienceForCurrentLevelSecondStage);
+
+                long toBoundary = boundary - was;
+                // Experience already banked at or past the boundary (the base-class trainer gate at level 5) is paid in one go, as before.
+                ForceGainExperience(toBoundary > 0 ? Math.Min(remaining, toBoundary) : remaining);
+
+                if (Experience <= was)
+                    break;
+
+                remaining -= Experience - was;
+            }
+
+            return Experience - before;
+        }
+
+        /// <summary>
         /// Called whenever this player gains experience
         /// </summary>
         public override void GainExperience(GainedExperienceEventArgs arguments, bool notify = true)
@@ -11446,8 +11517,20 @@ namespace DOL.GS
             if (QuestList.Keys.Any(q => q.IsDoingQuest() && QuestJournal.Same(q, quest)))
                 return false;
 
-            if (!AvailableQuestIndexes.TryDequeue(out byte index))
-                index = (byte) QuestList.Count;
+            // Owner 2026-10-30: a freed slot is given only while no quest holds it. SendQuestListUpdate moves a quest
+            // waiting past the 25th slot (an older save with more than 25 active quests) into a freed slot but leaves
+            // that slot queued here, so the next quest taken shared its index and the two showed as one.
+            byte index;
+
+            do
+            {
+                if (!AvailableQuestIndexes.TryDequeue(out index))
+                {
+                    index = QuestJournal.FreeIndex(QuestList.Values);
+                    break;
+                }
+            }
+            while (QuestList.Values.Contains(index));
 
             QuestList.TryAdd(quest, index);
             quest.OnQuestAssigned(this);

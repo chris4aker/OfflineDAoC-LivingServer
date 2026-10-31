@@ -1671,7 +1671,10 @@ namespace DOL.GS.PacketHandler
 
 		public virtual void SendQuestRemove(byte index)
 		{
-			if (m_gameClient.Player.QuestList.Count > JOURNAL_MAX_QUEST_COUNT)
+			// The quest is already out of the list. With 25 or more left, one may still wait past the last slot (an older
+			// save with more than 25 active quests), so the whole list is sent and it moves into the freed slot; the old
+			// "more than 25" test left it hidden when exactly 25 remained (owner 2026-10-30).
+			if (m_gameClient.Player.QuestList.Count >= JOURNAL_MAX_QUEST_COUNT)
 				SendQuestListUpdate();
 			else
 				SendQuestPacket(null, index);
