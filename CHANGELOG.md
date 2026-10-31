@@ -3,12 +3,16 @@
 The newest version is first. For the full detail of every earlier update, see
 [docs/history/CHANGELOG-0.3-to-0.32b.md](docs/history/CHANGELOG-0.3-to-0.32b.md).
 
-## 0.38 (not released yet)
+> **No more public releases.** 0.37 / 0.37b / 0.37c is the last public release of Offline DAoC; there will be no
+> 0.38 or later download. The owner is now building a separate True 1.65 version. Commits with major fixes will
+> still come to this repository's source, to help the forks, and are listed below.
 
-0.37 / 0.37b / 0.37c is the latest release.
+## Changes since 0.37c (source only, no release)
 
-**Going forward only the new client is supported.** 0.38 is one download (the server, the launcher and the new
-client). The original DAoC client is no longer supported, and the Sluaghbinder class is discontinued.
+0.37 / 0.37b / 0.37c is the latest and last release. Everything below is in the source only.
+
+**Going forward only the new client is supported.** The original DAoC client is no longer supported, and the
+Sluaghbinder class is discontinued.
 
 **MAJOR: bot armor now works like a player's**
 - Until now the armor a bot (gamebot or companion) wore did nothing when it was hit. Its defense was a monster's: a
