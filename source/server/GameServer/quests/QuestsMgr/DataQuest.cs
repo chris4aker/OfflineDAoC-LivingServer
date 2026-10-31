@@ -249,6 +249,13 @@ namespace DOL.GS.Quests
 		string m_additionalData = string.Empty;
 		// The item being handed over while its step advances; it doesn't count as carried.
 		DbInventoryItem m_handingOver;
+		// Owner 2026-10-31: the monster whose kill a kill step last counted, and when, so one kill counts once however
+		// many notifications carry it (QuestKillCredit.IsRepeat).
+		GameLiving m_lastKillCounted;
+		long m_lastKillCountedAt;
+
+		/// <summary>The clock the once-per-kill rule reads: the game loop's. A test double can move it.</summary>
+		protected virtual long KillClock => GameLoop.GameLoopTime;
 
 		#region Construction
 
@@ -2010,16 +2017,25 @@ namespace DOL.GS.Quests
 				// Enemy of player with quest was killed, check quests and steps
 				if (e == GamePlayerEvent.EnemyKilled)
 				{
-					// Owner 2026-10-30: a kill counts once. GamePlayer.EnemyKilled repeats the kill to this player's quests
-					// for each groupmate in range who didn't attack (that groupmate as the sender), and one kill advanced
-					// consecutive kill steps. Only the quest player's own notification counts (QuestKillCredit).
-					if (!QuestKillCredit.CountsForQuest(sender, m_questPlayer))
-						return;
-
 					EnemyKilledEventArgs a = args as EnemyKilledEventArgs;
 					GamePlayer player = sender as GamePlayer;
-					GameLiving killed = a.Target;
+					GameLiving killed = a?.Target;
 
+					// Owner 2026-10-31: a kill counts once. GamePlayer.EnemyKilled repeats the kill to this player's quests
+					// for each groupmate in range who didn't attack (that groupmate as the sender), and one kill advanced
+					// consecutive kill steps. The repeat is known by the monster, not by the sender: counting only the quest
+					// player's own notification (the first fix, 2026-10-30) also dropped the named mobs' forced credit, which
+					// is sent to every player in sight with the killer as the sender (QuestKillCredit.IsRepeat). A quest
+					// nobody holds counts no kill.
+					if (m_questPlayer == null || killed == null)
+						return;
+
+					long now = KillClock;
+					if (QuestKillCredit.IsRepeat(killed, m_lastKillCounted, m_lastKillCountedAt, now))
+						return;
+
+					m_lastKillCounted = killed;
+					m_lastKillCountedAt = now;
 					OnEnemyKilled(player, killed);
 
 					return;
