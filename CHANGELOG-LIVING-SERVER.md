@@ -16,6 +16,34 @@ their timers run, dragon raids calling the Epic Special Forces after a wipe, and
 only (kill credit in a bot group, hand-ins above a quest's level, the journal, quest XP). The plan is
 [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md); the quest findings are [docs/QUESTING.md](docs/QUESTING.md).
 
+- **Bots stop following you when you leave or disband their group** (issue #33, reported by nindybrew-svg).
+  - **The bug:** with two or more invited gamebots in the group, `/disband` took you out but left them marked as
+    following you. They trailed you without fighting for you, and refused new invites ("already following another
+    player-led group") until you logged out. A single bot was already released correctly.
+  - **Whose code:** the cause is in shadowofze's group code (`Group.RemoveMember`), unchanged in his 0.38 branch.
+    It isn't a 1.1 regression, but 1.1's pathing to a far-off player made the stuck bots follow more reliably.
+  - **Now:** when a player leaves, the gamebots that followed them follow another player still in the group, or,
+    with none left, leave the group and go back to their own play. `/spawn` companions are left as before.
+  - **Checked:** three new tests (released, handed to a remaining player, companions untouched); 4,096 server tests
+    pass. Not yet seen in game.
+- **Base classes get their weapon styles before level 5** (reported on r/daoc by Zarthol).
+  - **The bug:** the style table lists styles only for the classes chosen at level 5, so a Fighter, Viking, Guardian
+    or other base class had no styles at all until then. A Fighter with Slash 2 had nothing where a classic one had
+    Slash's first style.
+  - **Whose code:** shadowofze's data and style lookup, the same in 0.36c and 0.37b. Bots aren't affected: they start
+    in their chosen class.
+  - **Now:** a base class gets the styles its classes have in the weapon line it trains, each once (from the game's
+    data: Fighter Ruby Slash, Thistle and Daze at 2; Viking Splitter, Thor's Anvil and Whirling Blade; Guardian
+    Shining Blade, Contusions and Dragonfly). Chosen classes keep their own lists unchanged.
+  - **Checked:** two new tests; the full server suite passes. Not yet seen in game.
+- **Quiet twisting** (from a r/daoc report by ThatRebelKid).
+  - **The problem:** a Minstrel, Bard or Skald bot twists by restarting a song every few seconds. Each restart played
+    its 3-second cast music and its start sound to everyone nearby, so a bot performer near you never stopped.
+  - **Now:** a bot restarting a song it started within the last 30 seconds does so without the cast animation and
+    with the start effect silent. The first start of each song is still heard. Songs, timings and buffs are unchanged,
+    and players' own songs and harmful pulses (a flute mez) keep their sounds.
+  - **Checked:** three new tests (`UT_BotQuietSongs`); 4,101 server tests pass. Not yet heard in game.
+
 ## Beta 1.1 — 2026-10-29
 
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,

@@ -16,7 +16,7 @@ namespace DOL.GS
             return spellType is not eSpellType.EnduranceRegenBuff ? ServerProperties.Properties.BUFF_RANGE > 0 ? ServerProperties.Properties.BUFF_RANGE : 5000 : 1500;
         }
 
-        public static void SendSpellAnimation(ECSGameSpellEffect e)
+        public static void SendSpellAnimation(ECSGameSpellEffect e, bool noSound = false)
         {
             if (e == null)
                 return;
@@ -32,7 +32,7 @@ namespace DOL.GS
                 target = e.Owner;
 
             foreach (GamePlayer player in e.Owner.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
-                player.Out.SendSpellEffectAnimation(spellHandler.Caster, target, spell.ClientEffect, 0, false, 1);
+                player.Out.SendSpellEffectAnimation(spellHandler.Caster, target, spell.ClientEffect, 0, noSound, 1);
         }
 
         public static eEffect GetEffectFromSpell(Spell spell)
