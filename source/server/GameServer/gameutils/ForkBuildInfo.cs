@@ -66,6 +66,7 @@ public static class ForkBuildInfo
                $"bot_guilds={On(Properties.BOT_GUILDS_ENABLED)}" +
                (Properties.BOT_GUILDS_ENABLED ? $" bot_guild_parts={(guildParts.Length == 0 ? "none" : guildParts)}" : string.Empty) +
                $" xp_rate_by_level={Range(Properties.XP_RATE_BY_LEVEL)} bot_xp_rate_by_level={Range(Properties.BOT_XP_RATE_BY_LEVEL)}" +
+               $" quest_xp_by_level={On(Properties.QUEST_XP_BY_LEVEL)}" +
                $" bot_personalities={On(Properties.BOT_PERSONALITIES_ENABLED)} bot_voices={On(Properties.BOT_VOICES_ENABLED)}" +
                (Properties.BOT_VOICES_ENABLED ? $" bot_debates={On(Properties.BOT_VOICES_DEBATES)}" : string.Empty) +
                $" living={(livingParts.Length == 0 ? "off" : livingParts)} bot_schedule={AutonomousBotSchedule.CurrentMode.ToString().ToLowerInvariant()}";

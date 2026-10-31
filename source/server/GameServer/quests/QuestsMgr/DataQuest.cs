@@ -1519,6 +1519,8 @@ namespace DOL.GS.Quests
 		
 		/// <summary>
         /// Gets experience reward for reward quests. Used for sending packet info to dialog popup window.
+        /// 2026-10-30: the offer and reward windows show what the quest will pay this player, as FinishQuest pays it:
+        /// its share of the level (ClassicQuests.ScaleXP), the quest rate and the one-level cap (QuestExperience).
         /// </summary>
         /// <returns></returns>
         public int ExperiencePercent(GamePlayer player)
@@ -1533,7 +1535,8 @@ namespace DOL.GS.Quests
             long experienceToLevel = player.GetExperienceNeededForLevel(currentLevel + 1) -
                 player.GetExperienceNeededForLevel(currentLevel);
 
-            return (int)((m_rewardXPs[0] * 100) / experienceToLevel);
+            long paid = QuestExperience.Payout(ClassicQuests.ScaleXP(ID, player, 0, m_rewardXPs[0]), currentLevel, experienceToLevel);
+            return QuestExperience.Percent(paid, experienceToLevel);
         }
         
 		protected virtual bool ExecuteCustomQuestStep(GamePlayer player, int step, eStepCheckType stepCheckType)
@@ -1723,7 +1726,7 @@ namespace DOL.GS.Quests
 					{
 						if (RewardXP > 0)
 						{
-							m_questPlayer.ForceGainExperience(ClassicQuests.ScaleXP(ID, m_questPlayer, Step - 1, RewardXP));
+							m_questPlayer.GainQuestExperience(ClassicQuests.ScaleXP(ID, m_questPlayer, Step - 1, RewardXP), Name);
 						}
 	
 						if (RewardRP > 0)
@@ -2176,7 +2179,7 @@ namespace DOL.GS.Quests
 
 							if (m_rewardXPs.Count > 0 && m_rewardXPs[0] > 0)
 							{
-								player.ForceGainExperience(ClassicQuests.ScaleXP(ID, player, 0, m_rewardXPs[0]));
+								player.GainQuestExperience(ClassicQuests.ScaleXP(ID, player, 0, m_rewardXPs[0]), Name);
 							}
 							
 							if (m_rewardCLXPs.Count > 0 && m_rewardCLXPs[0] > 0)
@@ -2398,7 +2401,7 @@ namespace DOL.GS.Quests
 								rewardXP = player.GetExperienceNeededForLevel(player.Level) / 50;
 							else if (lvlXP > rewardXP)
 								rewardXP = lvlXP;
-							player.ForceGainExperience(rewardXP);
+							player.GainQuestExperience(rewardXP, Name);
 						}
 						if (m_sourceTexts.Count > 0)
 						{
@@ -2425,7 +2428,7 @@ namespace DOL.GS.Quests
 										rewardXP = player.GetExperienceNeededForLevel(player.Level) / 50;
 									else if (lvlXP > rewardXP)
 										rewardXP = lvlXP;
-									player.ForceGainExperience(rewardXP);
+									player.GainQuestExperience(rewardXP, Name);
 								}
 								//remove only the remaining turn-ins
 								item.Count -= 1;
@@ -2444,7 +2447,7 @@ namespace DOL.GS.Quests
 										rewardXP = player.GetExperienceNeededForLevel(player.Level) / 50;
 									else if (lvlXP > rewardXP)
 										rewardXP = lvlXP;
-									player.ForceGainExperience(rewardXP);
+									player.GainQuestExperience(rewardXP, Name);
 								}
 								//remove only the remaining turn-ins
 								item.Count -= 1;
@@ -2895,7 +2898,7 @@ namespace DOL.GS.Quests
 
 								if (m_rewardXPs.Count > 0 && m_rewardXPs[0] > 0)
 								{
-									player.ForceGainExperience(ClassicQuests.ScaleXP(ID, player, 0, m_rewardXPs[0]));
+									player.GainQuestExperience(ClassicQuests.ScaleXP(ID, player, 0, m_rewardXPs[0]), Name);
 								}
 								
 								if (m_rewardCLXPs.Count > 0 && m_rewardCLXPs[0] > 0)
@@ -3135,7 +3138,7 @@ namespace DOL.GS.Quests
 								return false;
 							}
 	
-							m_questPlayer.ForceGainExperience(ClassicQuests.ScaleXP(ID, m_questPlayer, lastStep - 1, rewardXP));
+							m_questPlayer.GainQuestExperience(ClassicQuests.ScaleXP(ID, m_questPlayer, lastStep - 1, rewardXP), Name);
 						}
 	
 						if (rewardRP > 0)
@@ -3219,7 +3222,7 @@ namespace DOL.GS.Quests
 								return false;
 							}
 	
-							m_questPlayer.ForceGainExperience(ClassicQuests.ScaleXP(ID, m_questPlayer, 0, rewardXP));
+							m_questPlayer.GainQuestExperience(ClassicQuests.ScaleXP(ID, m_questPlayer, 0, rewardXP), Name);
 						}
 	
 						if (rewardRP > 0)
