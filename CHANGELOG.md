@@ -317,6 +317,8 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
   the player at the end of the route or when the player jumps off early. The check looked for a personal horse,
   which a stable route never sets, so companions ran (and died) behind the horse.
 - Druids and Minstrels (solo too) send their pet into the fight while they heal or sing.
+- Gamebots and companions sit down when they rest and stand up to move, cast or fight, as players do (the server now
+  tells the client; only the look changes, resting itself works as before).
 
 **The original client**
 - The character creation screen no longer shows the Atlas freeshard's "Class / Race Combination:

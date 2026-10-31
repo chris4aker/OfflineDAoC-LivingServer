@@ -282,6 +282,30 @@ namespace DOL.GS
 
         #endregion
 
+        #region Resting seated (visual)
+
+        // Bots sit down to rest, visibly (owner 2026-10-31). The NPC packets carry no sit state, so a seated bot is shown by
+        // emote 0xF0 (sit down, then sit-idle) and stood up by 0xF1, sent on each change to the players who see it and
+        // again by SendNPCCreate to a player who first sees it seated. Visual only: recovery and its timing are unchanged.
+        internal const eEmote SitEmote = (eEmote)0xF0;
+        internal const eEmote StandEmote = (eEmote)0xF1;
+        private bool _seatedForClients;
+
+        public bool IsSeatedForClients => _seatedForClients;
+
+        private void SetSeatedForClients(bool seated)
+        {
+            if (_seatedForClients == seated)
+                return;
+            _seatedForClients = seated;
+            if (ObjectState != eObjectState.Active)
+                return;
+            foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                player.Out.SendEmoteAnimation(this, seated ? SitEmote : StandEmote);
+        }
+
+        #endregion
+
         #region Player-accurate regeneration
 
         private int GetHealthAndPowerRegenerationInterval()
@@ -955,6 +979,7 @@ namespace DOL.GS
 
         public override void ProcessDeath(GameObject killer)
         {
+            SetSeatedForClients(false);
             AutonomousPetSupport.CancelPendingCharm(this);
             _deathTick = GameLoop.GameLoopTime;
             _deathRegionId = CurrentRegionID;
@@ -2531,7 +2556,12 @@ namespace DOL.GS
                 return false;
 
             if (_recoveryRestLocked)
+            {
+                // stood up for a song while resting: sits back down once it's done
+                if (!_seatedForClients && !IsCasting && !IsMoving && !InCombat)
+                    SetSeatedForClients(true);
                 return true;
+            }
 
             // Harmless mobile songs are allowed to continue during logical
             // recovery. Ordinary casts are cancelled so recovery still owns
@@ -2545,8 +2575,7 @@ namespace DOL.GS
             StopMovingOnPath();
             StopMoving();
             _recoveryRestLocked = true;
-            // GameBots remain standing NPC actors. Recovery has no IsSitting,
-            // emote, player packet, model swap, or client-facing stance state.
+            SetSeatedForClients(true);      // sits down for the rest, visibly (0xF0)
             UpdateHealthManaEndu();
             StartEnhancedRecoveryTimers();
             return true;
@@ -2566,6 +2595,7 @@ namespace DOL.GS
         public void WakeRecoveryRest()
         {
             _recoveryRestLocked = false;
+            SetSeatedForClients(false);     // stands up before it moves, casts or fights (0xF1)
         }
 
         /// <summary>
@@ -2633,6 +2663,9 @@ namespace DOL.GS
             if (IsRecoveryResting && !IsTemporaryGroupHelper &&
                 !BotSongTwistPolicy.IsMobileSong(this, spell))
                 WakeRecoveryRest();
+            // a seated bot stands to cast, as a player does (a song keeps the rest; it sits again after)
+            if (_seatedForClients)
+                SetSeatedForClients(false);
             bool started = base.CastSpell(spell, line, spellCastingAbilityHandler, checkLos);
             CabalistRestDiagnostics.Attempt(this, spell, started);
             if (started && CharacterClass?.ID == (int)eCharacterClass.Animist)
@@ -2731,6 +2764,7 @@ namespace DOL.GS
         {
             if (RefuseCorpseMove("MoveTo", regionID, x, y, z))
                 return false;
+            SetSeatedForClients(false);     // never arrives seated
             // Owner 2026-10-07: travelling the old frontiers, the pets of the player's /spawn and /raid companions died
             // on every move (the move removes the bot from the world, which released its pet) and their pet classes kept
             // re-summoning. Within a region a companion's pet now comes along and is placed behind it, as a player's pet
