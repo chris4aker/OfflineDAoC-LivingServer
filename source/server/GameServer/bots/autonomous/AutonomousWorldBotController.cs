@@ -1005,7 +1005,8 @@ namespace DOL.GS
         private bool TryRouteToNeededService(GameBot bot)
         {
             eWorldServiceKind? needed = AutonomousBotEconomy.GetNeededService(bot);
-            if (needed is not eWorldServiceKind.RealmExchange and not eWorldServiceKind.Vendor and not eWorldServiceKind.SealMerchant)
+            if (needed is not eWorldServiceKind.RealmExchange and not eWorldServiceKind.Vendor and not eWorldServiceKind.SealMerchant and
+                not eWorldServiceKind.Shop)
             {
                 _serviceNpc = null;
                 _serviceKind = null;
@@ -1027,7 +1028,7 @@ namespace DOL.GS
                     _serviceNpc = null;
                 }
             }
-            if (_serviceNpc == null && needed == eWorldServiceKind.SealMerchant)
+            if (_serviceNpc == null && needed is eWorldServiceKind.SealMerchant or eWorldServiceKind.Shop)
             {
                 // Seal gear is optional: with no reachable seal merchant the bot simply carries on.
                 _serviceKind = null;
@@ -1152,6 +1153,8 @@ namespace DOL.GS
             bool exchange = kind == eWorldServiceKind.RealmExchange;
             GameNPC best = null;
             double bestMinutes = double.MaxValue;
+            if (kind == eWorldServiceKind.Shop)
+                return ShoppingPlanFor(bot)?.Merchant;
             if (kind == eWorldServiceKind.SealMerchant)
             {
                 // Only the bot's own realm's seal merchants in Darkness Falls that have something it can pay for.
@@ -1211,6 +1214,7 @@ namespace DOL.GS
         {
             eWorldServiceKind.RealmExchange => "Use the Realm Exchange",
             eWorldServiceKind.SealMerchant => "Trade Darkness Falls seals for seal gear",
+            eWorldServiceKind.Shop => "Buy a gear upgrade from a vendor",
             _ => "Sell ordinary backpack loot",
         };
 

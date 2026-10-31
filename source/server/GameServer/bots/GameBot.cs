@@ -1480,15 +1480,59 @@ namespace DOL.GS
 
         #region IGamePlayer — Equipment / Armor
 
+        // Bot armor works exactly like a player's (owner 2026-10-31, major): the piece that is hit is chosen with the
+        // player's odds (or the style's fixed location), its AF is capped by level and armor type, quality and condition
+        // count, and its absorb comes from the armor type. Before this a bot defended like a monster of its level and
+        // its worn armor did nothing. Copies of GamePlayer.CalculateArmorHitLocation / GetArmorFactorCap / GetArmorAF /
+        // GetArmorAbsorb.
         public virtual eArmorSlot CalculateArmorHitLocation(AttackData ad)
         {
-            int random = Util.Random(99);
-            if (random < 35) return eArmorSlot.TORSO;
-            if (random < 55) return eArmorSlot.LEGS;
-            if (random < 70) return eArmorSlot.ARMS;
-            if (random < 82) return eArmorSlot.HEAD;
-            if (random < 91) return eArmorSlot.HAND;
+            if (ad?.Style != null && ad.Style.ArmorHitLocation != eArmorSlot.NOTSET)
+                return ad.Style.ArmorHitLocation;
+            int chance = Util.Random(1, 100);
+            if (chance <= 40) return eArmorSlot.TORSO;
+            if (chance <= 65) return eArmorSlot.LEGS;
+            if (chance <= 80) return eArmorSlot.ARMS;
+            if (chance <= 90) return eArmorSlot.HEAD;
+            if (chance <= 95) return eArmorSlot.HAND;
             return eArmorSlot.FEET;
+        }
+
+        public int GetArmorFactorCap(eObjectType type, out int itemArmorFactorCap)
+        {
+            int modifiedCharacterLevel = Level;
+            if (RealmLevel > 39)
+                modifiedCharacterLevel++;
+            int playerArmorFactorCap = modifiedCharacterLevel * 2;
+            itemArmorFactorCap = type is eObjectType.Cloth ? modifiedCharacterLevel : playerArmorFactorCap;
+            return playerArmorFactorCap;
+        }
+
+        public override double GetArmorAF(eArmorSlot slot)
+        {
+            if (slot is eArmorSlot.NOTSET)
+                return 0;
+            DbInventoryItem item = Inventory?.GetItem((eInventorySlot)slot);
+            if (item == null || !GlobalConstants.IsArmor(item.Object_Type))
+                return 0;
+            int armorFactorCap = GetArmorFactorCap((eObjectType)item.Object_Type, out int itemArmorFactorCap);
+            double armorFactor = Math.Min(item.DPS_AF, itemArmorFactorCap);
+            armorFactor += BaseBuffBonusCategory[eProperty.ArmorFactor] / 5.0;
+            armorFactor *= item.Quality * 0.01 * item.ConditionPercent * 0.01;
+            armorFactor = Math.Min(armorFactor, armorFactorCap);
+            armorFactor += GetModified(eProperty.ArmorFactor) / 5.0;
+            return Math.Max(0, armorFactor);
+        }
+
+        public override double GetArmorAbsorb(eArmorSlot slot)
+        {
+            if (slot is eArmorSlot.NOTSET)
+                return 0;
+            DbInventoryItem item = Inventory?.GetItem((eInventorySlot)slot);
+            if (item == null)
+                return 0;
+            double absorb = item.SPD_ABS * 0.01 * (1 + GetModified(eProperty.ArmorAbsorption) * 0.01);
+            return Math.Clamp(absorb, 0, 1);
         }
 
         public double WeaponDamageWithoutQualityAndCondition(DbInventoryItem weapon)

@@ -1408,7 +1408,7 @@ namespace DOL.GS
 
             armorFactor = target.GetArmorAF(armorSlot);
 
-            if (target is GamePlayer or GameTrainingDummy)
+            if (target is GamePlayer or GameBot or GameTrainingDummy)
                 armorFactor += target.Level * PLAYER_EXTRA_AF_PER_LEVEL;
 
             double absorbFactor = CalculateTargetAbsorbFactor(target, armorSlot);
@@ -1765,6 +1765,8 @@ namespace DOL.GS
             // Must be set before calling `GetMissChance`.
             if (playerTarget != null)
                 ad.ArmorHitLocation = playerTarget.CalculateArmorHitLocation(ad);
+            else if (ad.Target is GameBot botTarget)
+                ad.ArmorHitLocation = botTarget.CalculateArmorHitLocation(ad);   // the worn piece counts (owner 2026-10-31)
 
             double missChance = Math.Min(1, GetMissChance(action, ad, lastAttackData, attackerWeapon) * 0.01);
             double fumbleChance = ad.IsMeleeAttack ? Math.Min(1, ad.Attacker.GetModified(eProperty.FumbleChance) * 0.001) : 0;
@@ -2221,7 +2223,7 @@ namespace DOL.GS
             // Weapon and armor bonuses.
             int armorBonus = 0;
 
-            if (ad.Target is GamePlayer playerTarget)
+            if (ad.Target is GamePlayer or GameBot)
             {
                 if (ad.Target.Inventory != null)
                 {
@@ -2231,7 +2233,7 @@ namespace DOL.GS
                         armorBonus = armor.Bonus;
                 }
 
-                int bonusCap = GetBonusCapForLevel(playerTarget.Level);
+                int bonusCap = GetBonusCapForLevel(ad.Target.Level);
 
                 if (armorBonus > bonusCap)
                     armorBonus = bonusCap;

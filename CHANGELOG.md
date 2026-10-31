@@ -10,6 +10,23 @@ The newest version is first. For the full detail of every earlier update, see
 **Going forward only the new client is supported.** 0.38 is one download (the server, the launcher and the new
 client). The original DAoC client is no longer supported, and the Sluaghbinder class is discontinued.
 
+**MAJOR: bot armor now works like a player's**
+- Until now the armor a bot (gamebot or companion) wore did nothing when it was hit. Its defense was a monster's: a
+  flat number from its level, and the game never picked which piece of armor was struck. So a bot's armor value,
+  absorb, quality and condition, the armor-type resists against slash, crush and thrust, the armor's to-hit bonus
+  and its procs never counted. At level 50 every bot defended better than any player: about 1.2 times a player in
+  plate, and about 3 times a caster in cloth.
+- Bots now defend exactly like players. The piece that is hit is chosen with the player odds, its armor value is
+  capped by level and armor type, quality and condition count, absorb comes from the armor type, armor buffs have
+  the player caps, and the worn piece's to-hit bonus and procs work. `/targetstats` on a bot shows its torso armor.
+- This changes the game a lot. Well-geared bots are a little softer than before at high level, and bots with little
+  or no armor are much softer (a bot caster in cloth takes 2 to 3 times the melee damage it used to), so gear matters
+  for them as it does for players.
+- Gamebots go shopping for it: a bot knows what every merchant it can reach sells and for how much, picks the best
+  upgrade it can afford and wear (at most one level above it, keeping a little coin back), and walks to that merchant
+  between tasks instead of browsing the nearest one. A merchant that turns out not to have it is skipped for 30
+  minutes.
+
 **Bots and raids**
 - Hibernian bots no longer get stuck at the door of their portal keep in Odin's Gate. Once out of the keep's
   inner door, the route they planned led back in to the keep yard and then out again, over and over, until they
