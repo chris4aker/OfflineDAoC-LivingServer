@@ -114,7 +114,7 @@ namespace DOL.UnitTests
             string path = TemporaryPath();
             try
             {
-                var database = new SqliteObjectDatabase($"Data Source={path};Version=3;Pooling=False;Journal Mode=WAL;Synchronous=Normal;Foreign Keys=True;Default Timeout=2");
+                var database = new SqliteObjectDatabase($"Data Source={path};Version=3;Pooling=False;Journal Mode=WAL;Synchronous=Normal;Foreign Keys=True;Default Timeout=60");
                 database.RegisterDataObject(typeof(DbSinglePermission));
                 Parallel.For(0, 240, index =>
                 {
@@ -142,7 +142,10 @@ namespace DOL.UnitTests
             string path = TemporaryPath();
             try
             {
-                var database = new SqliteObjectDatabase($"Data Source={path};Version=3;Pooling=True;Journal Mode=WAL;Synchronous=Normal;Foreign Keys=True;Default Timeout=2");
+                // Owner 2026-10-31: the busy wait is the server's own 60 s (GameServerConfiguration), not 2 s. With 2 s the 480
+                // parallel writers on a two-core CI runner failed about one run in twenty with "database is locked" (seen
+                // 2026-10-30 and 2026-10-31 on docs-only pushes). The test still fails on a real deadlock, at the 60 s mark.
+                var database = new SqliteObjectDatabase($"Data Source={path};Version=3;Pooling=True;Journal Mode=WAL;Synchronous=Normal;Foreign Keys=True;Default Timeout=60");
                 database.RegisterDataObject(typeof(DbSinglePermission));
                 Parallel.For(0, 480, index =>
                 {
