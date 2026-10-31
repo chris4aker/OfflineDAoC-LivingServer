@@ -10,7 +10,9 @@ file is downloaded from shadowofze's release, checked against src/Assets/base-fi
 deleted here, so the work folder never holds more than one file (the largest is 1.9 GB). An upload is checked by the
 SHA-256 GitHub reports for it. Each copied release also gets the original's SHA256SUMS.txt.
 
-Needs: gh (authenticated for chris4aker/OfflineDAoC-base-files) and curl.
+Needs: gh (authenticated for chris4aker/OfflineDAoC-base-files) and curl. The copy repository runs this same script
+on GitHub Actions (its .github/workflows/copy.yml: on a change, by hand, and a weekly --check), with the pin list at its
+root; keep the two copies of the script and the pin list the same.
 """
 import argparse
 import hashlib

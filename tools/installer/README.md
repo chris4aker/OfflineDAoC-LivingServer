@@ -37,7 +37,8 @@ Setup doesn't reimplement anything that already has a tested script. It embeds t
     its manifest, as it does for his. Finished parts are shared between the two, so a stopped download continues
     from either. `--base-files-copy` uses the copy on purpose (for testing it).
   - The copy is kept by `mirror_base_files.py` (`--copy` to fill it one file at a time, `--check` to compare it with
-    the pins). It is in its own repository so that a takedown of the game client files can't touch Living Server's.
+    the pins), which the copy repository runs itself on GitHub Actions: on a change, by hand, and a check every
+    Monday. It is in its own repository so that a takedown of the game client files can't touch Living Server's.
 - **the Living Server release package** (`BUILD-INFO.txt` names the build and the release it fits). Setup unpacks it
   into the game folder, as a player would, and runs its `install-server-build.ps1` / `rollback-server-build.ps1`, so
   every check stays: the version check, the refusal while the game runs, backups of every replaced file, the
