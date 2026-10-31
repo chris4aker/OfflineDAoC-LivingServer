@@ -30,14 +30,66 @@ rate.
 | Base XP from monsters | Uses the range rate | Uses the range rate |
 | Zone XP bonus | Uses the range rate | Uses the range rate |
 | In RvR zones | Keeps `rvr_zones_xp_rate`, as before | Range rate × `rvr_zones_xp_rate`, as `bot_xp_rate` was |
+| Quest XP (quests, bounties, dailies) | Uses the range rate (see [Quest XP](#quest-xp) below) | Gamebots do no quests |
 
 - **Same parts as the flat rates:** like `xp_rate` and `bot_xp_rate`, the range rate multiplies the
   base XP of a kill and the zone bonus. Camp, group and other bonuses are added on top unmultiplied,
   as before. The per-kill XP cap is applied before any rate.
 - **Which level counts:** the character's level when the XP arrives.
-- **Not affected:** companion bots (`/spawn`, `/raid`) and Bounty Master rewards. Bounty rewards
-  still use `xp_rate`.
+- **Not affected:** companion bots (`/spawn`, `/raid`).
 - **An invalid setting is ignored:** the flat rate stays in use, and the server log says why once.
+
+## Quest XP
+
+Since Living Server 1.1.1 quest experience follows your range rate too (2026-10-30). Before that, quest XP
+skipped every rate: at 12× from kills a quest that pays a bubble felt like nothing.
+
+- **The setting is `quest_xp_by_level`.** It is on by default. It is a server setting like the others
+  (the `ServerProperty` table, category `rates`); set its value to `False` with the server closed to turn
+  it off. The server reads it when it starts. **It is a kill switch (2026-10-31):** the range rate and the
+  one-level cap below both belong to it. Off, quest XP is exactly what it was before 1.1.1: no rate, no cap,
+  one raw payment (and a bounty pays bulbs × `xp_rate` in full, level after level, as it did).
+- **What it does.** When it is on and one of your `xp_rate_by_level` ranges covers your level, the XP a
+  quest pays is multiplied by that range's rate. The base is still the 0.36 rule: a classic quest pays its
+  share of your current level (about a bubble for a typical quest), other quests their fixed amount. At
+  the plan's rates a typical quest at level 25 pays half a level instead of a bubble; at 35 and above the
+  plan's 12× would be more than a level, so the cap below pays exactly one level.
+- **When nothing changes.** With the setting off, a quest pays exactly what it paid before. With it on but
+  no `xp_rate_by_level` set, an invalid one, or a level outside every range, the amount is what it was
+  before too, within one level per payment. `xp_rate` on its own never touches quest XP; it is a kill rate.
+- **Which quests.** Data quests (the classic quests and their reward quests), scripted reward quests, the
+  Bounty Master's bounties, the Atlas daily, weekly and monthly quests and the battleground quests, and
+  since 2026-10-31 the three Shrouded Isles quests Ancestral Secrets, The Lost Seed and Lost Stone of
+  Arawn (half a level each) and the Wolf Pelt Cloak payments, which used to pay outside every rate. Only
+  three Atlas quests that pay 20 points (Play the Last Song, Help Sir Lukas, Power of Nature) are left as
+  they were. Kill XP, bot XP and the RvR rates are not touched.
+- **Bounties.** A bounty's bulbs used to be multiplied by `xp_rate`. With the setting on they still are,
+  outside your ranges; inside a range the range's rate replaces `xp_rate`, as it does for kills, and the
+  cap applies. For example, a Hard bounty at level 20 (4 bulbs of level 20, 12,300,000 a level): at a flat
+  `xp_rate` of 3 with no ranges it paid 14,760,000 before and pays 12,300,000 (one level) now; at the
+  launcher's 10× preset it paid 49,200,000 (into level 22) before and pays 12,300,000 now. With the setting
+  off both pay what they did before.
+- **One payment, one level at most (while the setting is on).** Whatever the rate, one quest payment pays
+  at most one level's worth of experience (the width of your level when it pays); anything beyond that is
+  dropped, not carried. So a quest can never pay you two levels. The rule was chosen over "stop at the start
+  of the next level" because it leaves every payout that already fit in a level unchanged (the Atlas
+  weeklies pay a whole level today). Inside that one level the server pays the XP to each boundary in turn
+  (the second stage at levels 40 to 49, then the next level, then the rest), which is why a big quest reward
+  can show two or three "You get ... experience points" lines; it is how the ding happens now instead of on
+  your next kill. At levels 40 to 48 a level is wider than half of the next one, so one payment near the top
+  of a level can give you the level and then the next level's second stage (its spec points) as well; that
+  is still one level.
+- **The offer window shows what you will get.** The experience bar in a quest's offer and reward windows
+  shows the amount the quest will pay you at your level and rate, after the cap, as a share of your level
+  (it used to show the raw amount from the quest's row). The bar cannot show more than a whole level, so
+  with the setting off a payment above a level shows as a whole one.
+- **In the log.** Each quest payment writes one `QUEST_XP` line to the server log with the quest, your
+  level, the base amount, the rate, the scaled amount and what was paid, and `quest_xp_by_level=off` when
+  the switch is off.
+
+**Automated checks (2026-10-31):** `UT_QuestExperience` (35 tests) covers the rate on and off, no range
+set, an invalid range, levels outside the ranges, the bounty's `xp_rate` handling, the cap, that the cap
+and the rate both go with the setting, and the offer window's percentage. Not checked in game yet.
 
 ## The plan's values
 
@@ -121,4 +173,4 @@ applies outside your ranges.
     - So bot rates raise XP in game, but the exact factor isn't confirmed this way. A log of the
       base XP per kill would settle it.
 - **Code:** `source/server/GameServer/gameutils/LevelRangeXpRates.cs`, used by `GamePlayer` and
-  `GameBot`.
+  `GameBot`; quest XP: `gameutils/QuestExperience.cs` and `GamePlayer.GainQuestExperience`.

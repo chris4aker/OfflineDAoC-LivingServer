@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using DOL.GS.PacketHandler;
 
@@ -60,7 +61,10 @@ namespace DOL.GS
             $"{GlobalConstants.RealmToName(realm)}'s forces have defeated {boss} in {place}!";
 
         public static string RaidDefeated(eRealm realm, string boss, string place) =>
-            $"{GlobalConstants.RealmToName(realm)}'s expedition has been driven out of {place} by {boss}!";
+            // A dragon raid's place is the dragon itself (2026-10-30).
+            string.Equals(boss, place, StringComparison.Ordinal)
+                ? $"{GlobalConstants.RealmToName(realm)}'s expedition has been driven off by {boss}!"
+                : $"{GlobalConstants.RealmToName(realm)}'s expedition has been driven out of {place} by {boss}!";
 
         /// <summary>The line for a battleground keep siege starting ("Albion's forces have laid siege to Dun Abermenai in Abermenai!").</summary>
         public static string BattlegroundSiegeStarted(eRealm attacker, string keep, string battleground, eRealm holder) =>

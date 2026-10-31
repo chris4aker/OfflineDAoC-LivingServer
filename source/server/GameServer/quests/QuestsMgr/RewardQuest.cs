@@ -236,7 +236,7 @@ namespace DOL.GS.Quests
 			{
 				base.FinishQuest();
 				QuestPlayer.Out.SendSoundEffect(11, 0, 0, 0, 0, 0);
-				QuestPlayer.ForceGainExperience(Rewards.Experience);
+				QuestPlayer.GainQuestExperience(Rewards.Experience, Name);
 				QuestPlayer.AddMoney(Rewards.Money);
                 InventoryLogging.LogInventoryAction("(QUEST;" + Name + ")", QuestPlayer, eInventoryActionType.Quest, Rewards.Money);
 				if (Rewards.GiveBountyPoints > 0)
@@ -661,6 +661,8 @@ namespace DOL.GS.Quests
 			/// experience the player already has gained towards the next level.
 			/// Because this depends on the current level of the interacting player
 			/// it doesn't make sense to change it from your scripts.
+			/// 2026-10-30: shows what FinishQuest will pay this player, the quest rate and the one-level cap applied
+			/// (QuestExperience), so the offer window matches the payment.
 			/// </summary>
 			public int ExperiencePercent(GamePlayer player)
 			{
@@ -670,7 +672,7 @@ namespace DOL.GS.Quests
 				long experienceToLevel = player.GetExperienceNeededForLevel(currentLevel + 1) -
 					player.GetExperienceNeededForLevel(currentLevel);
 
-				return (int)((m_experience * 100) / experienceToLevel);
+				return QuestExperience.Percent(QuestExperience.Payout(m_experience, currentLevel, experienceToLevel), experienceToLevel);
 			}
 
 			/// <summary>

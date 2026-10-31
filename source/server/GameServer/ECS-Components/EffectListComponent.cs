@@ -508,7 +508,8 @@ namespace DOL.GS
                                     if (spellEffect is ECSPulseEffect)
                                     {
                                         if (!spell.IsHarmful && spell.SpellType is not eSpellType.Charm && !spellEffect.IsEnabling)
-                                            EffectHelper.SendSpellAnimation(spellEffect);
+                                            EffectHelper.SendSpellAnimation(spellEffect,
+                                                BotQuietSongs.MarkStarted(spellHandler.Caster, spell, GameLoop.GameLoopTime));
                                     }
                                     else if (spell.IsHarmful)
                                         EffectHelper.SendSpellAnimation(spellEffect);

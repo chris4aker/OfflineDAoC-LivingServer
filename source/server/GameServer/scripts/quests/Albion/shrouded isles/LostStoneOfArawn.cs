@@ -779,12 +779,12 @@ public class LostStoneofArawn : BaseQuest
     {
         if (m_questPlayer.Inventory.IsSlotsFree(1, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack))
         {
-            if (m_questPlayer.Level >= 49)
-                m_questPlayer.GainExperience(eXPSource.Quest,
-                    (m_questPlayer.ExperienceForNextLevel - m_questPlayer.ExperienceForCurrentLevel) / 3, false);
-            else
-                m_questPlayer.GainExperience(eXPSource.Quest,
-                    (m_questPlayer.ExperienceForNextLevel - m_questPlayer.ExperienceForCurrentLevel) / 2, false);
+            // Quest experience at your pace (owner 2026-10-31, after review): this quest paid half a level (a third at
+            // 49) through GainExperience, which skipped the quest_xp_by_level rate and cap. It now pays through
+            // GainQuestExperience like every other quest. A player who turned experience off (/xp off) still gets
+            // nothing here, as before.
+            if (m_questPlayer.GainXP)
+                m_questPlayer.GainQuestExperience((m_questPlayer.ExperienceForNextLevel - m_questPlayer.ExperienceForCurrentLevel) / (m_questPlayer.Level >= 49 ? 3 : 2), Name);
             RemoveItem(m_questPlayer, scroll_wearyall_loststone);
             GiveItem(m_questPlayer, ancient_copper_necklace);
             m_questPlayer.AddMoney(Money.GetMoney(0, 0, 121, 41, Util.Random(50)), "You receive {0} as a reward.");

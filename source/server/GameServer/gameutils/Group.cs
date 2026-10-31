@@ -357,6 +357,12 @@ namespace DOL.GS
             else if (newLeaderName != null)
                 SendMessageToGroupMembers($"{newLeaderName} is the new group leader.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 
+            // Gamebots a player invited follow that player. Leaving or /disband used to clear that only when the group
+            // fell to one member, so two or more bots kept following someone they were no longer grouped with and
+            // refused new invites until the player logged out (issue #33).
+            if (living is GamePlayer leavingPlayer)
+                ReleaseGamebotsLedBy(leavingPlayer);
+
             UpdateGroupIndexes();
             UpdateGroupWindow();
             GameEventMgr.Notify(GroupEvent.MemberDisbanded, this, new MemberDisbandedEventArgs(living));
@@ -382,6 +388,40 @@ namespace DOL.GS
             }
 
             player.Out.SendObjectGuildID(controlledBody, playerGuild ?? Guild.DummyGuild);
+        }
+
+        /// <summary>Invited gamebots still in this group that follow <paramref name="player"/> (issue #33).</summary>
+        public List<GameBot> GamebotsLedBy(GamePlayer player)
+        {
+            lock (_groupMembersLock)
+                return _groupMembers.OfType<GameBot>()
+                    .Where(bot => bot.PlayerGroupLeader == player && bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper)
+                    .ToList();
+        }
+
+        /// <summary>
+        /// After <paramref name="player"/> leaves, the gamebots that followed them follow another player of their realm
+        /// still in the group, or, with none left, leave the group and go back to their own play.
+        /// </summary>
+        public void ReleaseGamebotsLedBy(GamePlayer player)
+        {
+            List<GameBot> followers = GamebotsLedBy(player);
+            if (followers.Count == 0)
+                return;
+
+            GamePlayer stays;
+            lock (_groupMembersLock)
+                stays = _groupMembers.OfType<GamePlayer>().FirstOrDefault(member => member != player);
+
+            foreach (GameBot bot in followers)
+            {
+                if (stays != null && bot.EnterPlayerLedGroup(stays))
+                    continue;
+                // Outside the member lock, as for the sole remaining member above. RemoveMember clears the follow
+                // order, idles the bot and hands it back to the autonomous coordinator; a bot the last removal
+                // already took out is skipped there.
+                _ = RemoveMember(bot);
+            }
         }
 
         public void DisbandGroup()

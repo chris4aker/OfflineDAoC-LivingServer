@@ -1,5 +1,7 @@
 # Living Server backlog (planning)
 
+> **2026-10-30:** the plan of record is now [RELEASE-TRAIN.md](RELEASE-TRAIN.md). This file stays as the dated record.
+
 Status (2026-10-16): **built** on `feature/living-server`, plus bot memory of you. What was built,
 and what wasn't, is in [LIVING-SERVER.md](LIVING-SERVER.md). This file is the planning record.
 
@@ -60,3 +62,81 @@ On Chris's PC, with a test install only:
 
 Also to confirm in code: `ApiHost` calls `api.Run()` in its constructor, which may hold up server
 startup; and it has a password-protected shutdown endpoint, so it must stay local-only.
+
+## Guild tiers (planning, chosen 2026-10-28)
+
+Owner: Chris. **Planned for 1.2, as one guild social package** (Chris, 2026-10-28): recruitment
+policies, standing, tier benefits and costs ship together. Not split; the recruitment half was
+considered for 1.1 and declined. Goal: bot guilds that differ in **who they let in**, with the
+most exclusive ones worth earning through people and organization, never stat buffs. Ideas borrowed
+from offline WoW: a per-bot relationship score (deseven's `mod-pbc` for AzerothCore Playerbots) and
+guilds that invite you only once enough members like you (Erenshor). Credit both in the release note.
+
+### What already exists (checked on `release/1.1`, 2026-10-28)
+
+- **Charters** say what a guild is for: Leveling, Social, RvR, Raiding, Crafting
+  ([BOT-GUILDS.md](BOT-GUILDS.md) 3.1). Dues, merit buffs, keep claims and RvR/Raiding alliances
+  already follow the charter.
+- **Recruiting is open everywhere:** any "lf guild" gets an invite from the best-fitting guild, and
+  officers near you offer invites unprompted (3.5).
+- **Bot memory of you** gives each bot a mood toward you (friendly, neutral, cool) from grouping,
+  rezzes and insults ([LIVING-SERVER.md](LIVING-SERVER.md)). By design it is chat only and "never
+  refuses you".
+- **Formation never moves a bot already in a guild** (3.2).
+
+### What's new
+
+1. **A recruitment policy per guild**, separate from its charter. Starting shares (Chris's
+   suggestion, not research):
+
+   | Policy | Share | Who gets in | How it recruits |
+   |---|---|---|---|
+   | Open | ~40% | almost anyone | spams `/faction`; high churn, many low levels |
+   | Friendly | ~30% | you, once enough members like you | whispers you after a good group |
+   | Application | ~20% | a level or class need, maybe a member's vouch | posts needs ("lf healers 40+") |
+   | Closed | ~10% | a strong relationship only | never posts |
+
+   Policy leans on charter: Social and Leveling mostly Open, Raiding and RvR mostly Application or
+   Closed. Each realm varies a little but stays in the same range; no realm is favored.
+2. **Relationship standing:** grow the memory mood into a score (groups, rezzes, later heals and
+   help; insults lower it) that Friendly, Application and Closed guilds read.
+3. **Policies drift:** a struggling guild opens up, a growing one tightens.
+4. **Open guilds churn:** members leave for stricter guilds as they level, which keeps low-level
+   guilds refreshed.
+
+### Benefits by tier (grow with exclusivity)
+
+- **Raid access:** Closed guilds run epic dungeons and dragons on a schedule, so membership means a
+  reliable raid slot. The "Epic Special Forces" bots come from this tier.
+- **Organized RvR:** Closed and Application guilds run coordinated frontier raids and keep takes,
+  the safer way into the deep frontier.
+- **Crafter access:** their master crafters make gear for members at material cost.
+- **Gear and loot:** fair handling of raid drops; members pass down old raid gear.
+- **Knowledge:** true rumours, hidden places and boss tactics reach their guild chat first.
+- **Prestige:** other bots react to the guild tag; server firsts and Herald mentions.
+
+### Costs (so it's a trade-off, not a ladder)
+
+- **Obligations:** raid attendance expected; skip too often and standing drops. Keep it light:
+  Chris plays about 5 hours a week.
+- **Drama:** loot disputes, rivalries, members quitting over leadership.
+- **Less freedom:** pressure to play your main. Realistic, but must barely punish alt-hopping.
+
+Open guilds keep: no obligations, easy low-level groups, the chattiest guild chat. Every tier should
+be the right choice for some character at some point.
+
+### Decisions needed before building
+
+- **Memory rule:** gating invites on standing breaks "memory never refuses you". Proposed: guild
+  invites only; grouping stays unaffected.
+- **Formation rule:** churn means moving bots already in a guild, which formation never does today.
+- **Owner's gameplay rules:** passed-down gear must not let gamebots skip earning their armor
+  (proposed: hand-me-downs go to you, or only between bots that already earned that slot's tier).
+  Crafter access must charge real materials and coin.
+- **Guild bank:** bot guilds collect dues but never spend them (3.10). Crafter access and raid
+  supplies are a natural first use.
+- **Raid slots for you:** automatic raids recruit bots today; how you get a guaranteed slot needs a
+  design check against `AutonomousRealmRaid`.
+- **Chat volume:** recruiting styles and drama need a per-channel budget at ~1,000 bots per realm.
+
+Depends on: bot memory of you (built); guild-based memory of you (bot-voices `DESIGN.md`, step 3).

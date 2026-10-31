@@ -1,8 +1,10 @@
-# Living Server Beta 1.0: known issues and what's not tested yet
+# Living Server Beta 1.1: known issues and what's not tested yet
 
 For players. What to expect, what hasn't been checked in game, and known problems. The full list
-of changes is in [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-SocialExpansion/blob/main/CHANGELOG-LIVING-SERVER.md).
-The Living Server was called the Social Expansion up to 0.37-se.2; Beta 1.0 is that build.
+of changes is in [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
+The Living Server was called the Social Expansion up to 0.37-se.2; Beta 1.0 was that build, and Beta 1.1
+(2026-10-29) added the talking update, the living world, 2003-style names, the one-click Setup and the fixes
+taken from other forks and from Offline DAoC 0.38.
 
 ## Always on
 
@@ -28,7 +30,34 @@ These apply even with every Living Server switch off:
   ignored most of them. An insult has to be aimed at someone to count. Place answers match whole
   words, name class trainers, and are worded like a player.
 
-## How it was tested
+## Beta 1.1: what hasn't been checked yet
+
+- **Quests and quest markers.** Beta 1.1 carries HearthDAoC's quest changes (name matching, delivery items, the
+  25-quest journal, one marker scheme, the epic chains) and they have **not been played in game**. The code also
+  has defects that would make quests feel broken for a solo player: a kill by your bot group gives you no quest
+  credit unless you damaged the monster yourself; a hand-in is refused once you are above the quest's maximum
+  level; quest experience ignores the XP-by-level setting; and the epic chains are not linked until a world script
+  runs, which the installer doesn't do yet. The list with the fixes planned for 1.1.1 is in
+  [QUESTING.md](QUESTING.md). The new client also colours "this NPC is your current step" as if the quest were in
+  progress elsewhere.
+- **Sieges at a normal bot count.** Their timers really run from 1.1 on (they were off in every earlier build),
+  so musters, marches, repels and the four-hour cap fire where they used to be skipped. Checked only on the test
+  copy at about 1,000 bots.
+- **Three fixes to raid and storyline moments** came after the last play test: Leeroy jumping the pull, his
+  /faction shout and his after-raid comment; a storyline protagonist dying mid-episode.
+- **Smaller rosters:** automatic raids open only when a realm has 80 eligible level-50 bots online, so a small
+  roster rarely gets them, and a roster filled only with the Lv.1 and Lv.50 buttons has no bots between levels 20
+  and 49 until they level.
+- **Dragon raids don't call the Epic Special Forces** after a wipe yet; dungeon raids do.
+- **Bots don't fall when they die:** the game client keeps a dead pose only for players. A fix was tried and left
+  out.
+- **The talking update's own in-game list** (combat calls in a real fight, a keep's news retold a minute later,
+  /lfg and /trade in the original client, chat volume at 900 bots a realm) is still being worked through.
+- The community's first reports are on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues):
+  the launcher staying on STARTING, a party that doesn't disband, bots released in a battleground standing in the
+  capital, the friends list, and the new client's hotbars. They are the 1.1.1 list.
+
+## How it was tested (Beta 1.0)
 
 - **Automated:** every build runs the full server test suite (3,400+ tests) and the installer tests
   before it's packaged.
@@ -92,10 +121,17 @@ meetup fix drop two no-shows (in the server log).
     without a running world only; its "Not checked in game yet" list is what's left.
 - **Added the 0.37c new client after installing this?** Run `INSTALL.cmd` again so the new client's
   launcher gets the Living Server tab and its gate fixes too.
-- **Versions:** Beta 1.0 is for 0.37 / 0.37b only, and the installer refuses anything else. When
-  shadowofze releases the next update, run `PREPARE-FOR-UPDATE.cmd` before updating (it also puts the
-  released game files back), and wait for a Living Server build for that version before installing one
-  again.
+- **Versions:** Living Server is for Offline DAoC 0.37 / 0.37b / 0.37c only, and the installer refuses anything
+  else. On 2026-10-31 shadowofze put Offline DAoC on hold ("will not receive any more updates"; the 0.37 downloads
+  stay up), so there is no 0.38 to wait for: 0.37 stays the game, and the later fixes from his unreleased work
+  come to you through Living Server releases instead. If an update of his ever does appear, run
+  `PREPARE-FOR-UPDATE.cmd` before applying it (it also puts the released game files back) and wait for a Living
+  Server build for that version before installing one again.
+- **The new client's own fixes in Living Server's source weren't shipped (Beta 1.0 and 1.1).** `/target <name>`
+  filling the target window, the FACE/FOLLOW/STICK buttons, the stick toggle, `/lfg` and `/trade` shown as realm
+  channels and the PLAY double-click guard were fixed in `source/new-client` and played on the owner's PC, but the
+  installer only ships the gate models; a 0.37c player has shadowofze's unchanged client. The quest-marker colour
+  fix (1.1.1) is the first client script the installer carries, and the others follow the same way in 1.2.
 - **Memory over very long sessions:** Windows handles grow about 1,700 an hour with 600 bots per realm
   (a lock inside each monster's stat table keeps the event it waited on once). That is a few MB of
   Windows memory a day; the server's own memory stays flat (about 1.7 GB live at 1,800 bots).
@@ -115,6 +151,6 @@ meetup fix drop two no-shows (in the server log).
 
 ## Reporting a problem
 
-Open an issue on [GitHub](https://github.com/chris4aker/OfflineDAoC-SocialExpansion/issues).
+Open an issue on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues).
 Include the `FORK_BUILD` line from `runtime\server\logs\server.log` (it names the build and which
 features are on) and what you were doing.

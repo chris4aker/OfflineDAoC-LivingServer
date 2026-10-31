@@ -1,5 +1,7 @@
 # Audit and release plan (2026-10-12)
 
+> **2026-10-30:** the plan of record is now [RELEASE-TRAIN.md](RELEASE-TRAIN.md). This file stays as the dated record.
+
 What was built on the fork (`chris4aker/OfflineDAoC-SocialExpansion`) on 2026-10-11 and 2026-10-12, what state
 each piece is in, and the plan to code, test, install and release it.
 

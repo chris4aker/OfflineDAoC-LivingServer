@@ -362,13 +362,16 @@ namespace DOL.GS.Quests
         }
 
         /// <summary>Kill-task drops: a monster slain by a player (or the player's pet) on a step that lists it drops that
-        /// step's item into the player's backpack, like DataQuest's own kill-step drops.</summary>
+        /// step's item into the player's backpack, like DataQuest's own kill-step drops. The players credited for the
+        /// kill (GameLiving.ProcessDeath's list: attackers, pet and companion owners, the leader of an autonomous
+        /// gamebot's player-led group, and their groups in range) count too; owner 2026-10-30.</summary>
         private static void DropForSteps(GameNPC mob, DyingEventArgs slain)
         {
             var killers = new HashSet<GamePlayer>();
             if (slain.PlayerKillers != null) killers.UnionWith(slain.PlayerKillers);
             if (slain.Killer is GamePlayer direct) killers.Add(direct);
             else if (slain.Killer is GameNPC pet && pet.Brain is IControlledBrain controlled && controlled.GetPlayerOwner() is GamePlayer owner) killers.Add(owner);
+            else if (slain.Killer is GameBot gamebot && QuestKillCredit.GroupLeaderFor(gamebot, mob) is GamePlayer leader) killers.Add(leader);
             foreach (GamePlayer player in killers)
             {
                 if (!player.IsWithinRadius(mob, WorldMgr.VISIBILITY_DISTANCE)) continue;

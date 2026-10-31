@@ -8,7 +8,124 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Beta 1.1 (in development)
+## Beta 1.1.1 (in development)
+
+Fixes and verifications only, for the first week after Beta 1.1: the community's reports (issues #32, #33, #38,
+#39 and the pull requests offered in #40), the stacked fixes #35-#37, sieges played at the owner's roster now that
+their timers run, dragon raids calling the Epic Special Forces after a wipe, and the quest defects that are code
+only (kill credit in a bot group, hand-ins above a quest's level, the journal, quest XP). The plan is
+[docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md); the quest findings are [docs/QUESTING.md](docs/QUESTING.md).
+
+- **Bots stop following you when you leave or disband their group** (issue #33, reported by nindybrew-svg).
+  - **The bug:** with two or more invited gamebots in the group, `/disband` took you out but left them marked as
+    following you. They trailed you without fighting for you, and refused new invites ("already following another
+    player-led group") until you logged out. A single bot was already released correctly.
+  - **Whose code:** the cause is in shadowofze's group code (`Group.RemoveMember`), unchanged in his 0.38 branch.
+    It isn't a 1.1 regression, but 1.1's pathing to a far-off player made the stuck bots follow more reliably.
+  - **Now:** when a player leaves, the gamebots that followed them follow another player still in the group, or,
+    with none left, leave the group and go back to their own play. `/spawn` companions are left as before.
+  - **Checked:** three new tests (released, handed to a remaining player, companions untouched); 4,096 server tests
+    pass. Not yet seen in game.
+- **Base classes get their weapon styles before level 5** (reported on r/daoc by Zarthol).
+  - **The bug:** the style table lists styles only for the classes chosen at level 5, so a Fighter, Viking, Guardian
+    or other base class had no styles at all until then. A Fighter with Slash 2 had nothing where a classic one had
+    Slash's first style.
+  - **Whose code:** shadowofze's data and style lookup, the same in 0.36c and 0.37b. Bots aren't affected: they start
+    in their chosen class.
+  - **Now:** a base class gets the styles its classes have in the weapon line it trains, each once (from the game's
+    data: Fighter Ruby Slash, Thistle and Daze at 2; Viking Splitter, Thor's Anvil and Whirling Blade; Guardian
+    Shining Blade, Contusions and Dragonfly). Chosen classes keep their own lists unchanged.
+  - **Checked:** two new tests; the full server suite passes. Not yet seen in game.
+- **Quiet twisting** (from a r/daoc report by ThatRebelKid).
+  - **The problem:** a Minstrel, Bard or Skald bot twists by restarting a song every few seconds. Each restart played
+    its 3-second cast music and its start sound to everyone nearby, so a bot performer near you never stopped.
+  - **Now:** a bot restarting a song it started within the last 30 seconds does so without the cast animation and
+    with the start effect silent. The first start of each song is still heard. Songs, timings and buffs are unchanged,
+    and players' own songs and harmful pulses (a flute mez) keep their sounds.
+  - **Checked:** three new tests (`UT_BotQuietSongs`); 4,101 server tests pass. Not yet heard in game.
+- **The launcher no longer stays on STARTING when Windows leaves the server out of its listener table** (issue #32,
+  reported by joshuaforehand).
+  - **The bug:** the launcher asked Windows for the list of listening TCP ports and looked for 10300. On the reporter's
+    PC that list left a working listener out, so the server was up, `Test-NetConnection` succeeded, and the launcher
+    never left STARTING.
+  - **Now:** the list is still the first check; when it doesn't show the port, the launcher tries a short connection
+    to 127.0.0.1:10300 (150 ms at most) and takes success as "running". Shared launcher code, so it applies to both
+    launchers.
+  - **Checked:** four new tests (`ServerPortProbeTests`); the launcher suite (127 tests) passes on CI. The reporter
+    built the branch and confirmed it on the PC that shows the problem (2026-10-30): the launcher went from STARTING
+    to RUNNING and enabled Enter Realm while Windows still left the port out of its table. An in-game login on that
+    PC wasn't tried yet.
+- **New client: the NPC your current quest step needs is marked green, not orange.** Since 1.1 the server sends one
+  marker scheme (available, current step, finish); the 0.37c client drew "current step" as "in progress elsewhere".
+  - **How it reaches you:** the client runs its scripts from source, so the installer patches
+    `new-client\godot\game\quests\quest_markers.gd` in place like the gate models (only when it is the released
+    file; `ROLLBACK.cmd` puts it back). It is the first client script Living Server ships; the others in its source
+    (the target window, FACE/FOLLOW/STICK, `/lfg` and `/trade` channels, the PLAY double-click guard) follow in 1.2.
+  - **Checked:** the patch rebuilds the fixed file byte for byte; not run in game.
+
+**Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
+- Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
+  back by twos and threes to a dragon at full health, until it died or the four hours ran out, and the Special Forces
+  were never called. A dragon raid now keeps the dungeon raids' rules. An attempt begins when the raid goes in from its
+  staging ring and ends when the dragon is out of combat after the three-minute approach, or when it has taken no
+  damage for five minutes while a trickle keeps it busy; the attempt was a wipe when half the raiders in it fell, or
+  the dragon healed back to 95% after being taken to 85% or lower. The raid then regroups at its staging ring, outside
+  the dragon's aggro, by the checked route around the lair: the fallen walk back, the living rest and rebuff for at
+  least five minutes, and the raid goes in again once 70% of its roster stands there (40% after 20 minutes) and the
+  dragon has landed. After two failed attempts the raid is **Defeated** and goes home, and every realm hears it. The
+  lair radius, the 600 damage cap and the landing rule are unchanged.
+- Review fixes (2026-10-31): who fell is remembered for the whole attempt. A dragon raider releases to a bind in the
+  dragon's own region and is on its feet again seconds later, so judging the wipe from the corpses at the moment the
+  dragon left combat would have called most wipes a break-off and left the raid trickling back as before. And a
+  regroup nobody has reached for twenty minutes (the dungeon muster's rule) is given up and the raid is Defeated, so a
+  forced dragon raid, which has no four-hour window, cannot hold at an empty ring until the player presses Stop
+  (`REALM_RAID_DRAGON_REGROUP_UNREACHABLE`).
+- On the first wipe the realm hears that the raid fell, and the Epic Special Forces are asked for on the same terms as
+  at a dungeon: up to 24, one party fewer per win and one more per loss over that dragon's last six results in the
+  Herald, nobody after three kills in a row. They arrive at the raid's muster hub and walk to the staging ring like any
+  late party. A dragon beaten twice in a row (defeats and time-outs) brings them from the start, as a dungeon does.
+- The launcher's Realm Events tab shows "RAID — regrouping at the staging ring after a wipe (staged/needed, attempt 2 of
+  2)". Logs: `REALM_RAID_WIPE` now for dragons too, `REALM_RAID_DRAGON_WIPE` (engaged, fallen, health, how),
+  `REALM_RAID_DRAGON_REGROUP`, `REALM_RAID_DRAGON_ENGAGE` (the retry) and `REALM_RAID_DRAGON_BROKE_OFF` (an attempt
+  that ended with most of the raid standing). Automated tests only (`UT_DragonRaidWipes`); not played in game yet.
+
+**Fixes**
+- Repairing an item never checked the crafter's skill: the gate was written as `(percentNeeded / 100) * craftLevel`,
+  integer division, so the 50% a repair asks for became 0 and anyone could start one (with a 0% chance below 44% of the
+  item's craft level). A repair now needs half the item's craft level in the skill, a repair in the trade window the
+  full level, as intended (`Repair.HasSkillToRepair`, `UT_RepairSkillGate`).
+
+- Quest XP follows your XP-by-level rate. When `xp_rate_by_level` covers your level, the experience from quests,
+  bounties and the daily, weekly and battleground quests is multiplied by that level's rate (quest XP used to skip
+  every rate); the 0.36 "share of your level" amounts stay the base, one payment never pays more than one level, and
+  the offer window shows what you will actually get. New server setting `quest_xp_by_level`, on by default. It is a
+  kill switch: off, the rate and the one-level cap are both gone and quests and bounties pay exactly as before
+  (2026-10-31). With it on, a bounty's `xp_rate` is replaced by the range rate inside a range and a bounty pays at
+  most one level, where the launcher's 5× and 10× presets used to pay several. The three Shrouded Isles quests
+  Ancestral Secrets, The Lost Seed and Lost Stone of Arawn and the Wolf Pelt Cloak payments, which paid outside
+  every rate, now pay like every other quest. Details in [docs/XP-BY-LEVEL-RANGE.md](docs/XP-BY-LEVEL-RANGE.md).
+  Automated tests only; not played in game yet.
+
+**Quests with your bot group** (2026-10-30, review fixes 2026-10-31; [docs/QUESTING.md](docs/QUESTING.md))
+- A kill by the gamebots in your group counts for your quests. Before, only a kill you damaged yourself, or your own
+  `/spawn` companion made, gave quest credit, so a player who healed, nuked late or only tagged while the invited bots
+  made the kill got nothing and no classic step drop. The group's leader is now credited as a companion's owner is,
+  when the bot still fights in the leader's group and the leader stands alive in the same region within the group's
+  kill-credit range (6,000 units); who gets the experience, the loot and the coin does not change.
+- A kill advances a quest step once. The killer's own quests heard the same kill once more for every groupmate in
+  range who hadn't attacked, so a quest with consecutive kill steps jumped two or three steps on one kill. The quest
+  now remembers the last kill it counted (two seconds), which also keeps the forced credit that nine named monsters
+  (the dragons, Legion, Olcasgean, Myrddraxis, Xanxicar, Nosdoden, King Tuscar) give to everyone in sight.
+- A hand-in is accepted above the quest's maximum level: a player who outlevelled a quest they already hold could not
+  hand its item in while the kill, talk and whisper steps still worked. The level window stays where a quest is offered.
+- More than 25 quests at login: a save with more than the client's 25 active quests kept them all and said so at
+  login, instead of losing the ones past the limit; finishing one brings the next hidden quest into the journal.
+- Whispering a keyword to a quest NPC twice quickly works: the silent 1.5-second pause between whispers now applies
+  to whispers to players only, so two quick keyword clicks both arrive.
+- Automated tests only (`UT_QuestKillCredit`, `UT_QuestLevelWindow`, `UT_QuestJournal`, `UT_WhisperThrottle`); not
+  played in game yet. The in-game check for the owner: a kill quest as a normal account in a group of invited bots.
+
+## Beta 1.1 — 2026-10-29
 
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,
 spammers, roleplayers, rumours, holiday chatter, Leeroy), 2003-style bot names, a first half hour paced for signature
@@ -659,7 +776,7 @@ evening's earlier 0.37-se.1 session; see "Checked" below).
 - They are the one exception to gamebots earning their armor. They live in memory only: they are never saved, never
   counted in the population or a guild roster, take no loot or coin (with only them nearby a drop stays where it
   fell), claim no server firsts, and leave when the raid ends. A restart leaves nothing behind.
-- Dragon raids don't call them yet.
+- Dragon raids don't call them yet (they do from Beta 1.1.1, above).
 - Logs: `REALM_RAID_SPECIAL_FORCES_ARRIVED`, `_NOT_NEEDED`, `_FAILED`, `_LEFT`, and `specialForces=` on `REALM_RAID_ENDED`.
 
 **From the first 600-per-realm night (2026-10-19/20)**
