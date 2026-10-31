@@ -1304,6 +1304,10 @@ namespace DOL.GS.Spells
 			_calculatedCastTime = castTime * 100;
 			_castEndTick = _castStartTick + _calculatedCastTime;
 
+			// A bot twisting its songs restarts them every few seconds; only the first start plays its music (BotQuietSongs).
+			if (BotQuietSongs.IsRestart(m_caster, m_spell, GameLoop.GameLoopTime))
+				return;
+
 			foreach (GamePlayer player in m_caster.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 			{
 				if (player == null)
