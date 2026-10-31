@@ -18,7 +18,7 @@
 >
 > To find other developers who are carrying it on and sharing their versions, look through this repository's
 > [forks](https://github.com/shadowofze/OfflineDAoC/forks) and the
-> [r/DarkAgeOfCamelot](https://www.reddit.com/r/DarkAgeOfCamelot/) subreddit.
+> [r/daoc](https://www.reddit.com/r/daoc/) subreddit.
 >
 > The owner has moved on to a separate True 1.65 version that uses only the new client. It is uncertain whether
 > or when it will be released.
