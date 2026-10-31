@@ -13,6 +13,16 @@
 > of Camelot, which is a very different, modern experience. If that interests you, please visit the
 > official site: [darkageofcamelot.com](https://www.darkageofcamelot.com/).
 
+> [!IMPORTANT]
+> **This project is on hold and will not receive any more updates.** The releases below stay available.
+>
+> To find other developers who are carrying it on and sharing their versions, look through this repository's
+> [forks](https://github.com/shadowofze/OfflineDAoC/forks) and the
+> [r/DarkAgeOfCamelot](https://www.reddit.com/r/DarkAgeOfCamelot/) subreddit.
+>
+> The owner has moved on to a separate True 1.65 version that uses only the new client. It is uncertain whether
+> or when it will be released.
+
 # Offline DAoC — single-player Dark Age of Camelot with bots
 
 Offline DAoC is a local, single-player Dark Age of Camelot (Classic + Shrouded Isles, 1.65 rules)
