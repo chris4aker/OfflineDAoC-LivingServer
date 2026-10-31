@@ -51,8 +51,10 @@ only (kill credit in a bot group, hand-ins above a quest's level, the journal, q
   - **Now:** the list is still the first check; when it doesn't show the port, the launcher tries a short connection
     to 127.0.0.1:10300 (150 ms at most) and takes success as "running". Shared launcher code, so it applies to both
     launchers.
-  - **Checked:** four new tests (`ServerPortProbeTests`); the launcher suite (127 tests) passes on CI. Not tried on a
-    PC that shows the problem.
+  - **Checked:** four new tests (`ServerPortProbeTests`); the launcher suite (127 tests) passes on CI. The reporter
+    built the branch and confirmed it on the PC that shows the problem (2026-10-30): the launcher went from STARTING
+    to RUNNING and enabled Enter Realm while Windows still left the port out of its table. An in-game login on that
+    PC wasn't tried yet.
 - **New client: the NPC your current quest step needs is marked green, not orange.** Since 1.1 the server sends one
   marker scheme (available, current step, finish); the 0.37c client drew "current step" as "in progress elsewhere".
   - **How it reaches you:** the client runs its scripts from source, so the installer patches
