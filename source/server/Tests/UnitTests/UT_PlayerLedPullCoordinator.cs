@@ -570,6 +570,49 @@ namespace DOL.UnitTests
             Assert.That(B(damage).Pulls, Is.Zero);
         }
 
+        // Issue #33: after /disband, two or more invited gamebots kept following the player outside the group and
+        // refused new invites until the player logged out.
+        [Test] public void GamebotsStopFollowingAPlayerWhoLeavesTheirGroup()
+        {
+            var (player, tank, damage, healer, _) = Party();
+            Group group = player.Group;
+            foreach (Bot bot in new[] { tank, damage, healer }) Autonomous(bot);
+            Remove(player);
+            group.ReleaseGamebotsLedBy(player);
+            foreach (Bot bot in new[] { tank, damage, healer })
+            {
+                Assert.That(bot.PlayerGroupLeader, Is.Null, bot.Name);
+                // Both were what made BotGroupInvite.TryInvite answer "already following another player-led group".
+                Assert.That(bot.Group, Is.Null, bot.Name + " goes back to its own play");
+            }
+        }
+
+        [Test] public void GamebotsFollowThePlayerWhoStaysInTheGroup()
+        {
+            var (player, tank, damage, _, _) = Party();
+            Group group = player.Group;
+            Player friend = Actor<Player>();
+            Add(group, friend);
+            foreach (Bot bot in new[] { tank, damage }) Autonomous(bot);
+            Remove(player);
+            group.ReleaseGamebotsLedBy(player);
+            Assert.That(tank.PlayerGroupLeader, Is.SameAs(friend));
+            Assert.That(damage.PlayerGroupLeader, Is.SameAs(friend));
+            Assert.That(tank.Group, Is.SameAs(group));
+        }
+
+        [Test] public void CompanionsInTheGroupAreLeftAsBefore()
+        {
+            var (player, tank, _, _, _) = Party();
+            Group group = player.Group;
+            Remove(player);
+            group.ReleaseGamebotsLedBy(player);
+            Assert.That(tank.PlayerGroupLeader, Is.SameAs(player), "only invited gamebots are released");
+            Assert.That(tank.Group, Is.SameAs(group));
+        }
+
+        private static void Autonomous(Bot bot) => Field(typeof(GameBot), bot, "<IsAutonomousWorldBot>k__BackingField", true);
+
         [Test] public void OldTankCannotReleaseANewGroupAfterLeaderLeaves()
         {
             var (player, tank, damage, _, enemy) = Party();

@@ -100,7 +100,7 @@ Personality doesn't choose goals in two cases:
 
 When voices are on, a bot's chat comes from the corpus in
 `source/server/GameServer/bots/autonomous/data/chat/` (979 lines and 296 scenes, written for
-2002–2003; see [bot-voices/DESIGN.md](https://github.com/chris4aker/OfflineDAoC-SocialExpansion/blob/main/docs/bot-voices/DESIGN.md)). The corpus is built into
+2002–2003; see [bot-voices/DESIGN.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/bot-voices/DESIGN.md)). The corpus is built into
 `GameServer.dll`. Nothing is generated freely.
 
 **Choosing a line:**

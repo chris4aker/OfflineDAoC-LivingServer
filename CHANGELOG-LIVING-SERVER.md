@@ -8,7 +8,62 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Beta 1.1 (in development)
+## Beta 1.1.1 — 2026-10-31
+
+Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the
+launcher stuck on STARTING), base classes' weapon styles, quieter bot performers, and the new client's quest marker,
+the first new-client file Living Server ships. Dragon raids regrouping after a wipe and the quest fixes (kill credit
+in a bot group, one count per kill, hand-ins above a quest's level, the journal, quest XP by level) come next, once
+they are played. The plan is [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md).
+
+- **Bots stop following you when you leave or disband their group** (issue #33, reported by nindybrew-svg).
+  - **The bug:** with two or more invited gamebots in the group, `/disband` took you out but left them marked as
+    following you. They trailed you without fighting for you, and refused new invites ("already following another
+    player-led group") until you logged out. A single bot was already released correctly.
+  - **Whose code:** the cause is in shadowofze's group code (`Group.RemoveMember`), unchanged in his 0.38 branch.
+    It isn't a 1.1 regression, but 1.1's pathing to a far-off player made the stuck bots follow more reliably.
+  - **Now:** when a player leaves, the gamebots that followed them follow another player still in the group, or,
+    with none left, leave the group and go back to their own play. `/spawn` companions are left as before.
+  - **Checked:** three new tests (released, handed to a remaining player, companions untouched); 4,096 server tests
+    pass. Not yet seen in game.
+- **Base classes get their weapon styles before level 5** (reported on r/daoc by Zarthol).
+  - **The bug:** the style table lists styles only for the classes chosen at level 5, so a Fighter, Viking, Guardian
+    or other base class had no styles at all until then. A Fighter with Slash 2 had nothing where a classic one had
+    Slash's first style.
+  - **Whose code:** shadowofze's data and style lookup, the same in 0.36c and 0.37b. Bots aren't affected: they start
+    in their chosen class.
+  - **Now:** a base class gets the styles its classes have in the weapon line it trains, each once (from the game's
+    data: Fighter Ruby Slash, Thistle and Daze at 2; Viking Splitter, Thor's Anvil and Whirling Blade; Guardian
+    Shining Blade, Contusions and Dragonfly). Chosen classes keep their own lists unchanged.
+  - **Checked:** two new tests; the full server suite passes. Not yet seen in game.
+- **Quiet twisting** (from a r/daoc report by ThatRebelKid).
+  - **The problem:** a Minstrel, Bard or Skald bot twists by restarting a song every few seconds. Each restart played
+    its 3-second cast music and its start sound to everyone nearby, so a bot performer near you never stopped.
+  - **Now:** a bot restarting a song it started within the last 30 seconds does so without the cast animation and
+    with the start effect silent. The first start of each song is still heard. Songs, timings and buffs are unchanged,
+    and players' own songs and harmful pulses (a flute mez) keep their sounds.
+  - **Checked:** three new tests (`UT_BotQuietSongs`); 4,101 server tests pass. Not yet heard in game.
+- **The launcher no longer stays on STARTING when Windows leaves the server out of its listener table** (issue #32,
+  reported by joshuaforehand).
+  - **The bug:** the launcher asked Windows for the list of listening TCP ports and looked for 10300. On the reporter's
+    PC that list left a working listener out, so the server was up, `Test-NetConnection` succeeded, and the launcher
+    never left STARTING.
+  - **Now:** the list is still the first check; when it doesn't show the port, the launcher tries a short connection
+    to 127.0.0.1:10300 (150 ms at most) and takes success as "running". Shared launcher code, so it applies to both
+    launchers.
+  - **Checked:** four new tests (`ServerPortProbeTests`); the launcher suite (127 tests) passes on CI. The reporter
+    built the branch and confirmed it on the PC that shows the problem (2026-10-30): the launcher went from STARTING
+    to RUNNING and enabled Enter Realm while Windows still left the port out of its table. An in-game login on that
+    PC wasn't tried yet.
+- **New client: the NPC your current quest step needs is marked green, not orange.** Since 1.1 the server sends one
+  marker scheme (available, current step, finish); the 0.37c client drew "current step" as "in progress elsewhere".
+  - **How it reaches you:** the client runs its scripts from source, so the installer patches
+    `new-client\godot\game\quests\quest_markers.gd` in place like the gate models (only when it is the released
+    file; `ROLLBACK.cmd` puts it back). It is the first client script Living Server ships; the others in its source
+    (the target window, FACE/FOLLOW/STICK, `/lfg` and `/trade` channels, the PLAY double-click guard) follow in 1.2.
+  - **Checked:** the patch rebuilds the fixed file byte for byte; not run in game.
+
+## Beta 1.1 — 2026-10-29
 
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,
 spammers, roleplayers, rumours, holiday chatter, Leeroy), 2003-style bot names, a first half hour paced for signature

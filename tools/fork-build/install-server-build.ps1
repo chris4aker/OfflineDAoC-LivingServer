@@ -177,6 +177,12 @@ if ($DryRun) {
 # 5. Back up, copy, verify.
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $backup = Join-Path $game "runtime\server\deployment-backups\fork-build-$stamp"
+# Owner 2026-10-31: the folder is named to the second, so a second install inside the same second (INSTALL.cmd
+# double-clicked, or the install-script test's chain scenario on a fast CI runner, seen 2026-10-31) found the name
+# taken and stopped at New-Item with an error instead of a message. The second one takes -2, -3 and so on; the
+# rollback scripts list backups by name, and the suffix keeps the order.
+$same = 1
+while (Test-Path -LiteralPath $backup) { $same++; $backup = Join-Path $game "runtime\server\deployment-backups\fork-build-$stamp-$same" }
 New-Item -ItemType Directory -Path $backup | Out-Null
 $entries = @()
 foreach ($item in $plan) {
