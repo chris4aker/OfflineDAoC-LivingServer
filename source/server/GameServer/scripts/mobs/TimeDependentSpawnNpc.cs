@@ -11,6 +11,9 @@ namespace DOL.GS
 
         public new TimeDependentSpawnBrain Brain => base.Brain as TimeDependentSpawnBrain;
         public override eFlags Flags => Brain != null && Brain.IsVisible ? base.Flags : base.Flags | INACTIVE_FLAGS;
+
+        // Saved without the asleep flags, so a spawn saved at the wrong time of day still wakes up.
+        protected override eFlags FlagsToSave => base.Flags;
         public override ushort Model => Brain != null && Brain.IsVisible ? base.Model : (ushort) 1;
 
         public override bool AddToWorld()

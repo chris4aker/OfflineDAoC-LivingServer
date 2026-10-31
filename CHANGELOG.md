@@ -160,6 +160,18 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
 - The Sluaghbinder is no longer offered anywhere: new characters can't choose it, no gamebots or /spawn companions are
   made as one, and its trainer, wisp, quest line and quest monsters are gone (existing installs: run
   tools/claude-version/remove_sluaghbinder_npcs.py once with the server stopped). Old characters still load.
+- Solo gamebots pick up the coin and items of their own kills again. The check for who may pick up a dropped bag
+  compared the owner by reference instead of by value, so a bot never counted as the owner of its own drops.
+- Bots buy the best equipment upgrade they can afford. They chose the best upgrade on a merchant's list first and,
+  when it cost more than they had, bought nothing, although cheaper upgrades were on the same list.
+- Relic campaigns: an army out to take a relic first takes the frontier keeps whose sentinels guard that relic keep.
+  Every keep a realm holds stands a 3x-health sentinel at its relic temple, and an army that marched straight in was
+  wiped by them (in one test 125 of 173 deaths at a relic keep were guards, 63 of them sentinels). The relic siege
+  follows once at most two sentinels are left.
+- High-end raid encounters (epic named monsters, the raid boss, a dungeon's final bosses): a player in the fight gets
+  one item in four straight into the bag and 25% of the coin; the bots share the rest. Other kills are unchanged.
+- Gamebots are drawn at a player's height (short, average or tall) instead of a random size that could make them
+  far taller than any player.
 
 **World**
 - Bring A Friend reaches as far as on Dawn of Light, and only monsters in sight come. Friends came from up to 1,500
@@ -242,6 +254,19 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
   many stack (the window was empty).
 - The launcher no longer crashes when its server log can't be rotated (another launcher window held the file): the
   crash took the server and the game down with it.
+- Monster loot tables roll as they were written. A monster with two loot-table rows read its own table once per row
+  and carried the list over, so its sure drops (100%) dropped twice and every other item was rolled three times,
+  while the second row's own table was never used. Each row now reads its own table once.
+- Night and day monsters (ghosts, night spawns, faerie frogs...) saved while asleep no longer keep their asleep state
+  (peaceful, can't be targeted, no name): about 220 of them could never be fought again.
+- Tasks (/task): /task asks the targeted townsperson or guard for a task, or shows your current one (/task abort to
+  give it up); the Quest Guide is /questguide. Kill tasks name a random common monster of the guard's zone (every
+  kill task named the same one) and point the way from the guard; delivery tasks go to a townsperson of your own
+  realm, far away when possible (it was any NPC of any realm); craft tasks no longer crash without recipes nearby;
+  the 5-minute wait after refusing works; tasks stop after level 19 and a failed task still counts. A kill task is
+  worth about three same-level kills; a delivery never more than a kill task.
+- No error at server stop from the zone bonus handler.
+- Inventory information no longer shows the "Atlas ROG" salvage marker.
 
 **Companions and commands**
 - /spawn specs opens a menu like /spawn that lists every class of your realm with its builds, such as
@@ -272,6 +297,10 @@ client). The original DAoC client is no longer supported, and the Sluaghbinder c
   Blades, Piercing; Ranger Pathfinding, Recurve Bow, Celtic Dual; Berserker Left Axe or a weapon; and the same for
   Minstrel, Scout and Valewalker), and four builds were added: Death Servant Necromancer, Soulrending Reaver (flail
   and shield), Regrowth Bard and Spear Hunter. Existing builds and the bots already playing them are unchanged.
+- Companions are put away while their player rides a stable route (hidden, untouchable, idle) and come back beside
+  the player at the end of the route or when the player jumps off early. The check looked for a personal horse,
+  which a stable route never sets, so companions ran (and died) behind the horse.
+- Druids and Minstrels (solo too) send their pet into the fight while they heal or sing.
 
 **The original client**
 - The character creation screen no longer shows the Atlas freeshard's "Class / Race Combination:

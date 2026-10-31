@@ -913,6 +913,34 @@ namespace DOL.AI.Brain
             CompanionEngagementMode.Allows(pet, target) &&
             GameServer.ServerRules.IsAllowedToAttack(pet, target, true);
 
+        /// <summary>
+        /// Druids and Minstrels keep a defensive pet in the bot's own pet logic, and a Druid heals with its target on a
+        /// friend, so their pets only defended (owner 2026-10-31: druids send their pet in while healing, as they did
+        /// before, and minstrels use their pet aggressively too, solo or grouped). Every turn of a fight the pet goes for
+        /// the enemy: the human leader's target, else the bot's own hostile target, else the enemy a groupmate is
+        /// attacking, else the bot's worst threat.
+        /// </summary>
+        private void KeepSupportPetFighting()
+        {
+            if (BotBody?.CharacterClass?.ID is not ((int)eCharacterClass.Druid or (int)eCharacterClass.Minstrel) ||
+                Body.ControlledBrain is not ControlledMobBrain pet ||
+                pet.Body?.IsAlive != true || pet.Body.ObjectState != GameObject.eObjectState.Active)
+                return;
+            GameLiving enemy = AssistedPlayer is GamePlayer ? PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) : null;
+            if (enemy == null && (Body.IsAttacking || Body.InCombat || HasAggro) && Body.TargetObject is GameLiving own && own.IsAlive &&
+                GameServer.ServerRules.IsAllowedToAttack(Body, own, true))
+                enemy = own;
+            if (enemy == null && Body.Group != null)
+                enemy = Body.Group.GetMembersInTheGroup()
+                    .Where(m => m != Body && m.IsAlive && m.IsAttacking && m.CurrentRegion == Body.CurrentRegion)
+                    .Select(m => m.TargetObject as GameLiving)
+                    .FirstOrDefault(t => t != null && GameServer.ServerRules.IsAllowedToAttack(Body, t, true));
+            if (enemy == null && (Body.InCombat || HasAggro))
+                enemy = CalculateNextAttackTarget();
+            if (enemy != null && IsValidPetCombatTarget(pet.Body, enemy) && GameServer.ServerRules.IsAllowedToAttack(Body, enemy, true))
+                CommandPetAttack(enemy);
+        }
+
         /// <summary>Orders the pet onto the resolved target; repeated identical orders are ignored by the pet brain.</summary>
         private void CommandPetAttack(GameLiving candidate)
         {
@@ -1267,6 +1295,11 @@ namespace DOL.AI.Brain
             if (AutonomousStuckWatchdog.Observe(BotBody))
                 return;
 
+            // put away for its player's horse ride: nothing to do until it is back at the player's side. Checked on every
+            // think, not only when the stable master hands over the ride (owner 2026-10-31: companions still ran behind)
+            if (TemporaryGroupStableTravel.SyncStowWithLeaderRide(BotBody) || Body.StowedForRide)
+                return;
+
             AutonomousBotRealmAbilities.UseActives(BotBody);
 
             // Once a stable ticket has boarded, its waypoint chain exclusively
@@ -1283,6 +1316,7 @@ namespace DOL.AI.Brain
             }
 
             CompanionPvpEngagement.Observe(BotBody);
+            KeepSupportPetFighting();
             // Goal 11: a /raid 40 or /raid 80 on a keep siege works its squad job (rams, engines) on its own.
             if (CompanionRaidSiege.Think(this))
                 return;
@@ -2172,7 +2206,7 @@ namespace DOL.AI.Brain
             !CompanionFollowPolicy.WaitingForLeaderToStop(BotBody);
 
         private static bool IsTemporaryCompanionPerformer(GameBot bot) =>
-            bot is { IsTemporaryGroupHelper: true, IsAutonomousWorldBot: false, IsPlayerLedGroup: true } &&
+            bot is { IsPlayerCompanion: true, IsPlayerLedGroup: true } &&
             IsClassicSongClass(bot);
 
         private void CompleteCompanionPerformerBuffBatch(GameBot bot)
@@ -3672,7 +3706,7 @@ namespace DOL.AI.Brain
             // Only player-led /spawn performers: ordinary gamebot route and
             // scheduling rules are untouched. Optional upkeep can otherwise
             // return before the FOLLOW state's mobile-song movement branch.
-            if (BotBody is not { IsTemporaryGroupHelper: true, IsAutonomousWorldBot: false,
+            if (BotBody is not { IsPlayerCompanion: true,
                     IsRecoveryResting: false, IsOnStableMasterRoute: false, IsAlive: true } bot ||
                 !IsClassicSongClass(bot) || !bot.IsPlayerLedGroup || bot.IsIncapacitated ||
                 bot.InCombat || HasAggro || bot.IsAttacking ||

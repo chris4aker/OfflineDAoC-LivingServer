@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
@@ -37,7 +39,11 @@ namespace DOL.GS.Quests
         /// </summary>
         protected const int CHANCE = 50;
 
-        protected const int MAX_LEVEL = 20;
+        // Period (Camelot Warcry task guide): "These tasks can only be done from level 1 through 19. At level 20, you
+        // will no longer be able to task your way to the next level." (the new client's task data uses the same limit)
+        protected const int MAX_LEVEL = 19;
+
+        public static int MaxTaskLevel => MAX_LEVEL;
 
         // allowed number of tasks per level
         private static readonly int[] m_maxTasksDone = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
@@ -386,6 +392,7 @@ namespace DOL.GS.Quests
             m_dbTask.TasksDone += 1;
 
             SaveIntoDatabase();
+            m_taskPlayer.Out.SendQuestListUpdate();
         }
 
         /// <summary>
@@ -415,8 +422,16 @@ namespace DOL.GS.Quests
                 eChatLoc.CL_SystemWindow);
             m_dbTask.TaskType = typeof(AbstractTask).ToString();
             m_dbTask.CustomPropertiesString = null;
-            m_customProperties.Clear();
+            lock (m_customProperties)
+            {
+                m_customProperties.Clear();
+            }
+
+            // period guide: a failed task still counts ("if you are level five and you fail your first task, you will
+            // only have four remaining for that level")
+            m_dbTask.TasksDone += 1;
             SaveIntoDatabase();
+            m_taskPlayer.Out.SendQuestListUpdate();
         }
 
         /// <summary>
@@ -489,6 +504,43 @@ namespace DOL.GS.Quests
         }
 
         /// <summary>
+        /// Asks an NPC for a task (/task, or saying "task" to it): a kill task from a named guard, a craft task from a
+        /// crafter of your trade, a delivery task from another townsperson. True when a task was given.
+        /// </summary>
+        public static bool TryGiveTask(GamePlayer player, GameLiving giver)
+        {
+            if (KillTask.CheckAvailability(player, giver))
+                return KillTask.BuildTask(player, giver);
+            if (CraftTask.CheckAvailability(player, giver))
+                return CraftTask.BuildTask(player, giver);
+            if (MoneyTask.CheckAvailability(player, giver))
+                return MoneyTask.BuildTask(player, giver);
+            return false;
+        }
+
+        /// <summary>
+        /// The zone's NPCs for a task, chosen at random. (Zone.GetRandomNPC returned the zone's first match every time,
+        /// so every kill task of a zone named the same monster and every delivery the same receiver.)
+        /// </summary>
+        protected static GameNPC PickFromZone(Zone zone, eRealm[] realms, int minLevel, int maxLevel, Func<GameNPC, bool> filter)
+        {
+            if (zone == null)
+                return null;
+            List<GameNPC> pool = zone.GetNPCsOfZone(realms, minLevel, maxLevel, 0, 0, false)
+                .Where(n => n != null && n.IsAlive && n.ObjectState == GameObject.eObjectState.Active && n is not GameBot &&
+                            !string.IsNullOrEmpty(n.Name) && filter(n))
+                .ToList();
+            return pool.Count == 0 ? null : pool[Util.Random(pool.Count - 1)];
+        }
+
+        /// <summary>A townsperson who can send or take a delivery: your realm, named, targetable, not a guard or pet.</summary>
+        public static bool IsTownsperson(GameNPC npc, eRealm realm) =>
+            npc != null && npc is not GameBot && npc.Realm == realm && !string.IsNullOrEmpty(npc.Name) &&
+            char.IsUpper(npc.Name[0]) && npc is not GameGuard && npc is not Keeps.GameKeepGuard &&
+            npc.Brain is not AI.Brain.IControlledBrain && !npc.Name.Contains("Guard") && !KillTask.CheckNamedGuard(npc) &&
+            (npc.Flags & (GameNPC.eFlags.CANTTARGET | GameNPC.eFlags.DONTSHOWNAME)) == 0;
+
+        /// <summary>
         /// Check if Player can accept a new Task
         /// </summary>
         /// <param name="player">The GamePlayer Object</param>
@@ -500,7 +552,7 @@ namespace DOL.GS.Quests
             if (target == null)
                 return false;
 
-            if (target.Realm == 0)
+            if (target.Realm == 0 || target is GameBot)
                 return false;
 
             if (GameServer.ServerRules.IsAllowedToUnderstand(target, player) == false)
@@ -528,7 +580,7 @@ namespace DOL.GS.Quests
                 return false;
             }
 
-            if (player.TempProperties.GetProperty<int>(CHECK_TASK_TICK) > GameLoop.GameLoopTime)
+            if (player.TempProperties.GetProperty<long>(CHECK_TASK_TICK) > GameLoop.GameLoopTime)
             {
                 player.Out.SendMessage(
                     "I have no tasks for you at the moment. Come back sometime later, perhaps then you can help me with something.",

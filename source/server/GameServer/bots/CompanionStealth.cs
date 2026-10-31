@@ -23,7 +23,7 @@ namespace DOL.GS
 
         /// <summary>The companion's player when that player is hidden and the companion is with them.</summary>
         public static GamePlayer StealthedLeader(GameBot bot) =>
-            bot is { IsTemporaryGroupHelper: true, IsAutonomousWorldBot: false, IsAlive: true } &&
+            bot is { IsPlayerCompanion: true, IsAlive: true } &&
             bot.PlayerGroupLeader is { IsAlive: true, IsStealthed: true } leader && leader.Group != null &&
             bot.Group == leader.Group && leader.CurrentRegionID == bot.CurrentRegionID
                 ? leader
@@ -41,7 +41,7 @@ namespace DOL.GS
 
         public static void Maintain(GameBot bot)
         {
-            if (bot is not { IsTemporaryGroupHelper: true, IsAutonomousWorldBot: false })
+            if (bot is not { IsPlayerCompanion: true })
                 return;
             GamePlayer leader = StealthedLeader(bot);
             if (bot.IsStealthed)

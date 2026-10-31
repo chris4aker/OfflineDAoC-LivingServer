@@ -48,7 +48,19 @@ namespace DOL.GS
         public byte GenderId { get; set; }
         public long DatabaseID { get; set; }
         public bool IsAutonomousWorldBot { get; private set; }
+        /// <summary>
+        /// The NPC Size that draws like a player of that height (1 Short, 2 Average, 3 Tall): 48 / 50 / 52, the new client's
+        /// player scale. No bot is drawn bigger than a Tall player (owner 2026-10-31).
+        /// </summary>
+        public static byte SizeForHeight(int height) => height switch { 1 => 48, 3 => 52, _ => 50 };
+
         public bool IsTemporaryGroupHelper { get; private set; }
+
+        /// <summary>
+        /// A player's own companion (a /spawn helper, never a world bot with goals): the companion follow, buff, song,
+        /// stealth and PvP rules apply to it.
+        /// </summary>
+        public bool IsPlayerCompanion => IsTemporaryGroupHelper && !IsAutonomousWorldBot;
         public bool IsEndgameCompanion => TemporaryCompanionBalance.IsEndgame(IsTemporaryGroupHelper, Level);
         private bool _endgameCompanionEquipped;
         public bool SuppressLootAndProgress => IsTemporaryGroupHelper;
@@ -2935,7 +2947,9 @@ namespace DOL.GS
                 }
             }
 
-            Size = (byte)Util.Random(45, 60);
+            // A player's height, Short / Average / Tall, never bigger than a real player model (owner 2026-10-31: a
+            // companion Bard stood far above its player; it was a random 45-60).
+            Size = SizeForHeight(Util.Random(1, 3));
         }
 
         #endregion

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using DOL.Events;
 using DOL.GS.Keeps;
@@ -107,6 +108,21 @@ namespace DOL.GS.GameEvents
                 GuardTemplateMgr.RefreshTemplate(guard);
                 return guard;
             }
+        }
+
+        /// <summary>
+        /// The frontier keeps whose sentinel stands at this relic keep and that its realm still holds: each one is a 3x-health
+        /// sentinel at the relic temple (owner 2026-10-30: bots take these keeps first, as players did, before a relic siege).
+        /// </summary>
+        public static int[] SentinelKeepsAt(eRealm realm, ushort region, int x, int y, int radius = 5000)
+        {
+            if (!_guards.TryGetValue(realm, out List<GuardPair> pairs))
+                return [];
+            lock (_lock)
+                return pairs.Where(pair => new[] { pair.Guard1, pair.Guard2 }.Any(g => g != null && g.CurrentRegionID == region &&
+                                                   Math.Abs(g.X - x) <= radius && Math.Abs(g.Y - y) <= radius) &&
+                                           GameServer.KeepManager.GetKeepByID(pair.KeepId) is { } keep && keep.Realm == realm)
+                    .Select(pair => pair.KeepId).ToArray();
         }
 
         public static void Init()

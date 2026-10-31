@@ -339,6 +339,10 @@ namespace DOL.GS.ServerRules
             if (!defender.IsAlive || !attacker.IsAlive)
                 return false;
 
+            // a companion or pet stowed during its player's horse ride neither attacks nor can be attacked (owner 2026-10-31)
+            if (defender is GameNPC { StowedForRide: true } || attacker is GameNPC { StowedForRide: true })
+                return false;
+
             GamePlayer playerAttacker = attacker as GamePlayer;
             GamePlayer playerDefender = defender as GamePlayer;
 
@@ -1084,6 +1088,16 @@ namespace DOL.GS.ServerRules
             // Snapshot the nearby expedition before completion can detach parties.
             // Support bots earn the same kill credit without duplicating XP awards.
             var expeditionOwner = AutonomousRealmRaid.LootOwner(killedNpc, botCountAndDamage.Keys) as RealmRaidLootOwner;
+            if (expeditionOwner != null && AutonomousRealmRaid.IsHighEndRaidEncounter(killedNpc))
+            {
+                // the real players in a high-end raid encounter get their quarter of its loot (owner 2026-10-31): whoever
+                // fought it, or stands with the expedition's realm by the boss. Only these bosses: every other kill keeps
+                // the normal loot rules (autoloot off unless the player turns it on)
+                eRealm raidRealm = expeditionOwner.Members.FirstOrDefault()?.Realm ?? eRealm.None;
+                expeditionOwner.Players = playerCountAndDamage.Keys
+                    .Concat(killedNpc.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE).Where(p => p.Realm == raidRealm))
+                    .Distinct().ToArray();
+            }
             var expeditionMembers = expeditionOwner?.Members.ToHashSet();
             foreach (var pair in botCountAndDamage)
             {

@@ -130,7 +130,9 @@ namespace DOL.GS.PacketHandler.Client.v168
 							objectInfo.Add(LanguageMgr.GetTranslation(client.Account.Language, "DetailDisplayHandler.HandlePacket.CrafterName", invItem.Creator));
 							objectInfo.Add(" ");
 						}
-						else if (!string.IsNullOrEmpty(invItem.Description))
+						// "Atlas ROG | <class>" marks a randomly generated item for salvage (Salvage.cs); never shown (owner
+						// 2026-10-31: bots' training swords and hammers were labelled Atlas ROG)
+						else if (!string.IsNullOrEmpty(invItem.Description) && !invItem.Description.StartsWith("Atlas ROG"))
 						{
 							objectInfo.Add(invItem.Description);
 							objectInfo.Add(" ");

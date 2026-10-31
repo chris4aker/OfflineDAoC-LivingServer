@@ -683,8 +683,12 @@ namespace DOL.GS;
                 bot.Inventory.FindFirstEmptySlot(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack) == eInventorySlot.Invalid)
                 return false;
 
+            // Only what the bot can pay for: the best upgrade overall was chosen first and, when it cost more than the
+            // bot had, nothing was bought although cheaper upgrades were on the same list (run 1c, 2026-10-30).
+            long coin = GetMoney(bot.DatabaseID);
             DbInventoryItem[] upgrades = merchant.TradeItems.GetAllItems().Values
                 .OfType<DbItemTemplate>()
+                .Where(template => template.Price > 0 && template.Price <= coin)
                 .Select(GameInventoryItem.Create)
                 .Where(item => item != null && TryGetEquipmentUpgrade(bot, item, out _))
                 .OrderByDescending(EquipmentValue)

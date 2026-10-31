@@ -24,6 +24,7 @@ public static class TemporaryGroupStableTravel
     private const int CompanionStaggerMilliseconds = 125;
     private const int FormationRadius = 180;
     private const int RouteAbortGraceMilliseconds = 5000;
+    private static readonly DOL.Logging.Logger Log = DOL.Logging.LoggerManager.Create(typeof(TemporaryGroupStableTravel));
     private static readonly TimeSpan TransferMarkerLifetime = TimeSpan.FromSeconds(30);
 
     private sealed class RouteMonitor
@@ -109,47 +110,127 @@ public static class TemporaryGroupStableTravel
         // The delayed callback ensures the native stable master mounted the
         // player first.  Cancel cleanly if that boarding was interrupted.
         if (player?.ObjectState is not GameObject.eObjectState.Active || !player.IsAlive ||
-            player.Steed == null || !player.IsOnHorse || player.Group == null ||
+            player.Steed == null || !player.IsRiding || player.Group == null ||
             !AutonomousStableRoutePlanner.TryMeasureRide(route, out _, out double rideSeconds))
             return;
 
+        // Owner 2026-10-31: companions that followed the horse on foot (too far to board, or a ride that failed) died on
+        // the way. Every companion of the player's group (/spawn helpers, at any
+        // distance) is now put away while the player rides: gone from view, untouchable, idle. They come back beside the
+        // player when the player gets off, at the end of the route or by jumping off early.
         DateTime started = DateTime.UtcNow;
-        GameBot[] eligible = player.Group.GetMembersInTheGroup()
+        GameBot[] companions = player.Group.GetMembersInTheGroup()
             .OfType<GameBot>()
-            .Where(bot => IsEligibleForMirroredRide(
-                bot.IsTemporaryGroupHelper,
-                bot.IsAlive,
-                bot.ObjectState is GameObject.eObjectState.Active,
-                bot.Group == player.Group,
-                bot.PlayerGroupLeader == player,
-                Distance(bot, player)))
+            .Where(bot => bot.IsTemporaryGroupHelper &&
+                          bot.IsAlive && bot.ObjectState is GameObject.eObjectState.Active &&
+                          bot.Group == player.Group && bot.PlayerGroupLeader == player)
             .ToArray();
-        if (eligible.Length == 0)
+        if (companions.Length == 0)
             return;
 
-        ActiveRoutes.TryRemove(player, out _);
-        string destination = string.IsNullOrWhiteSpace(ticket.Name) ? "the next stable" : ticket.Name;
-        GameBot[] boarded = eligible
-            .Select((bot, index) => new { Bot = bot, Index = index })
-            .Where(entry => entry.Bot.BeginStableMasterRoute(
-                destination,
-                TimeSpan.FromSeconds(rideSeconds),
-                CloneRoute(route),
-                ticket,
-                Math.Max(0, PlayerRouteStartMilliseconds - BoardAfterPlayerMountMilliseconds) + entry.Index * CompanionStaggerMilliseconds))
-            .Select(entry => entry.Bot)
-            .ToArray();
-        if (boarded.Length == 0)
-            return;
+        foreach (GameBot bot in companions)
+            Stow(bot);
 
         ActiveRoutes[player] = new RouteMonitor
         {
             Player = player,
-            Companions = boarded,
+            Companions = companions,
             StartedUtc = started,
             ExpectedArrivalUtc = started + TimeSpan.FromMilliseconds(PlayerRouteStartMilliseconds - BoardAfterPlayerMountMilliseconds) +
                                  TimeSpan.FromSeconds(rideSeconds) + TimeSpan.FromSeconds(2),
         };
+    }
+
+    /// <summary>
+    /// Every think of a player's companion: its player on a stable horse puts it away; off the horse (at the end or by
+    /// jumping off) brings it back beside the player. This does not depend on the stable master's hand-off, which did
+    /// not catch every ride (owner 2026-10-31: hired companions still ran behind the horse). True while it is put away.
+    /// </summary>
+    // A stable route seats the player on the route horse as its steed (IsRiding); IsOnHorse is only a personal horse,
+    // never set on a stable route, so checking it caught no ride at all (owner 2026-10-31: a companion still died on foot).
+    public static bool SyncStowWithLeaderRide(GameBot bot)
+    {
+        if (bot is not { IsAlive: true, ObjectState: GameObject.eObjectState.Active, IsPlayerCompanion: true })
+            return false;
+        GamePlayer leader = bot.PlayerGroupLeader;
+        bool riding = leader is { IsAlive: true, ObjectState: GameObject.eObjectState.Active, IsRiding: true } &&
+                      leader.Steed != null && bot.Group != null && bot.Group == leader.Group;
+        if (riding)
+        {
+            if (!bot.StowedForRide)
+            {
+                Stow(bot);
+                Log.Info($"COMPANION_RIDE_STOWED bot=\"{bot.Name}\" id={bot.DatabaseID} player=\"{leader.Name}\"");
+            }
+            return true;
+        }
+        // the ride's own monitor brings them back after its grace period; without one (or no leader) do it here
+        if (bot.StowedForRide && (leader == null || !ActiveRoutes.ContainsKey(leader)))
+        {
+            Unstow(bot, leader, Math.Max(0, bot.GroupIndex - 1));
+            Log.Info($"COMPANION_RIDE_BACK bot=\"{bot.Name}\" id={bot.DatabaseID} player=\"{leader?.Name}\"");
+        }
+        return false;
+    }
+
+    /// <summary>Puts a companion (and its pet) away for the ride: out of every fight, out of sight, untouchable.</summary>
+    private static void Stow(GameBot bot)
+    {
+        bot.StopCurrentSpellcast();
+        bot.StopAttack();
+        bot.StopFollowing();
+        bot.StopMovingOnPath();
+        bot.StopMoving();
+        (bot.Brain as BotBrain)?.ClearAggroList();
+        GameNPC pet = bot.ControlledBrain?.Body is { IsAlive: true, ObjectState: GameObject.eObjectState.Active } body ? body : null;
+        foreach (GameNPC npc in bot.GetNPCsInRadius(WorldMgr.VISIBILITY_DISTANCE))
+            if (npc.Brain is StandardMobBrain enemy)
+            {
+                enemy.RemoveFromAggroList(bot);
+                if (pet != null)
+                    enemy.RemoveFromAggroList(pet);
+            }
+        foreach (GameNPC hidden in new[] { bot, pet })
+        {
+            if (hidden == null)
+                continue;
+            hidden.StopAttack();
+            hidden.StowedForRide = true;
+            foreach (GamePlayer viewer in hidden.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                viewer.Out.SendObjectRemove(hidden);
+        }
+        if (pet?.Brain is ControlledMobBrain petBrain)
+            petBrain.Disengage();
+    }
+
+    /// <summary>Brings a stowed companion (and its pet) back beside the player.</summary>
+    private static void Unstow(GameBot bot, GamePlayer player, int ordinal)
+    {
+        GameNPC pet = bot.ControlledBrain?.Body;
+        bool petStowed = pet?.StowedForRide == true;
+        if (petStowed)
+            pet.StowedForRide = false;
+        if (!bot.StowedForRide)
+            return;
+        bot.StowedForRide = false;
+        if (bot.ObjectState is not GameObject.eObjectState.Active || player?.ObjectState is not GameObject.eObjectState.Active)
+            return;
+        Vector3 beside = FormationPoint(player, ordinal);
+        bot.MoveTo(player.CurrentRegionID, (int)Math.Round(beside.X), (int)Math.Round(beside.Y), (int)Math.Round(beside.Z), player.Heading);
+        if (petStowed && pet.IsAlive && pet.ObjectState is GameObject.eObjectState.Active && bot.ObjectState is GameObject.eObjectState.Active &&
+            (pet.CurrentRegionID != bot.CurrentRegionID || !pet.IsWithinRadius(bot, 300)))
+        {
+            Point2D behind = bot.GetPointFromHeading(bot.Heading, 64);
+            if (pet.CurrentRegionID == bot.CurrentRegionID)
+                pet.MoveInRegion(bot.CurrentRegionID, behind.X, behind.Y, bot.Z + 10, bot.Heading, true);
+            else
+                pet.MoveTo(bot.CurrentRegionID, behind.X, behind.Y, bot.Z + 10, bot.Heading);
+        }
+        if (bot.Brain is BotBrain brain)
+        {
+            bot.Follow(player, BotManager.FOLLOW_DISTANCE, BotManager.MAX_FOLLOW_DISTANCE);
+            brain.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
+        }
     }
 
     /// <summary>
@@ -285,7 +366,18 @@ public static class TemporaryGroupStableTravel
 
             DateTime now = DateTime.UtcNow;
             bool playerStillRiding = monitor.Player.ObjectState is GameObject.eObjectState.Active &&
-                                     monitor.Player.IsAlive && monitor.Player.Steed != null && monitor.Player.IsOnHorse;
+                                     monitor.Player.IsAlive && monitor.Player.Steed != null && monitor.Player.IsRiding;
+            if (monitor.Companions.Any(bot => bot.StowedForRide))
+            {
+                // stowed companions wait out the ride, then come back beside the player wherever the player got off
+                if (playerStillRiding || now - monitor.StartedUtc <= TimeSpan.FromMilliseconds(RouteAbortGraceMilliseconds))
+                    return;
+                int slot = 0;
+                foreach (GameBot bot in monitor.Companions)
+                    Unstow(bot, monitor.Player, slot++);
+                ActiveRoutes.TryRemove(monitor.Player, out _);
+                return;
+            }
             bool routeMayHaveFinished = now >= monitor.ExpectedArrivalUtc;
             bool interrupted = !playerStillRiding && now - monitor.StartedUtc > TimeSpan.FromMilliseconds(RouteAbortGraceMilliseconds) &&
                                !routeMayHaveFinished;

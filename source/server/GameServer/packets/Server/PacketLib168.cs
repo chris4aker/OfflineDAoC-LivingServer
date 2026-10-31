@@ -3953,7 +3953,7 @@ namespace DOL.GS.PacketHandler
 			//all the task info is sent in name field
 
 			string taskStr = string.Empty;
-			if (task == null)
+			if (task == null || !task.TaskActive)
 				taskStr = "You have no current personal task.\n";
 			else taskStr = "[" + task.Name + "] " + task.Description + ".\n";
 

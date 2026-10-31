@@ -59,6 +59,12 @@ namespace DOL.GS.Quests
         }		
 
         /// <summary>
+        /// Period: the guide gives no number for delivery tasks, only "Delivery tasks are not as rewarding as kill
+        /// tasks": the old server's amount, never more than a kill task's (the new client's offline tasks use the same).
+        /// </summary>
+        public override long RewardXP => Math.Min(base.RewardXP, KillTask.PeriodKillTaskXP(m_taskPlayer.Level));
+
+        /// <summary>
         /// Retrieves the name of the task
         /// </summary>
         public override string Name
@@ -121,7 +127,7 @@ namespace DOL.GS.Quests
                 GameLiving target = gArgs.Target as GameLiving;
                 DbInventoryItem item = gArgs.Item;
 
-                if(player.GameTask.ReceiverName == target.Name && item.Name == player.GameTask.ItemName)
+                if(target != null && item != null && player.GameTask.ReceiverName == target.Name && item.Name == player.GameTask.ItemName)
                 {
                     player.Inventory.RemoveItem(item);
                     InventoryLogging.LogInventoryAction(player, target, eInventoryActionType.Quest, item.Template, item.Count);
@@ -155,7 +161,7 @@ namespace DOL.GS.Quests
             if (source == null)
                 return false;
 
-            GameNPC NPC = GetRandomNPC(player);
+            GameNPC NPC = GetRandomNPC(player, source);
             if(NPC == null)
             {
                 player.Out.SendMessage("I have no task for you, come back some time later.",eChatType.CT_System,eChatLoc.CL_PopupWindow);
@@ -175,6 +181,7 @@ namespace DOL.GS.Quests
                 //Player.Out.SendCustomDialog("", new CustomDialogResponse(TaskDialogResponse));
 
                 player.ReceiveItem(source,TaskItems);
+                player.Out.SendQuestListUpdate();
                 return true;
             }
             
@@ -186,9 +193,17 @@ namespace DOL.GS.Quests
         /// </summary>
         /// <param name="Player">The GamePlayer Object</param>		
         /// <returns>The GameNPC Searched</returns>
-        public static GameNPC GetRandomNPC(GamePlayer Player)
+        /// <summary>
+        /// The receiver: another townsperson of the player's realm in the giver's zone, far from the giver when one is
+        /// (period guide: "an item ... you must deliver to another NPC in another town"). It was any NPC of any realm in
+        /// the zone, the zone's first one every time: an enemy guard, a gamebot, the giver.
+        /// </summary>
+        public static GameNPC GetRandomNPC(GamePlayer Player, GameLiving giver = null)
         {
-            return Player.CurrentZone.GetRandomNPC(new eRealm[]{eRealm.Albion,eRealm.Hibernia,eRealm.Midgard});			
+            Zone zone = giver?.CurrentZone ?? Player.CurrentZone;
+            bool Other(GameNPC npc) => IsTownsperson(npc, Player.Realm) && npc != giver && npc.Name != giver?.Name;
+            return (giver == null ? null : PickFromZone(zone, [Player.Realm], 0, 0, npc => Other(npc) && !npc.IsWithinRadius(giver, 3000))) ??
+                   PickFromZone(zone, [Player.Realm], 0, 0, Other);
         }
 
         public new static bool CheckAvailability(GamePlayer player, GameLiving target)
@@ -196,10 +211,11 @@ namespace DOL.GS.Quests
             if (target==null)
                 return false;
 
-            if (target is GameTrainer || target is GameMerchant || target.Name.IndexOf("Crier")>=0) 
+            // period guide: "These tasks are given by any non guard NPC" (of your realm); crafters give craft tasks
+            if (target is GameNPC npc && npc is not CraftNPC && IsTownsperson(npc, player.Realm))
             {
                 return AbstractTask.CheckAvailability(player,target,CHANCE);
-            } 
+            }  
             else 
             {
                 return false;
