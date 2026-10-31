@@ -11446,8 +11446,20 @@ namespace DOL.GS
             if (QuestList.Keys.Any(q => q.IsDoingQuest() && QuestJournal.Same(q, quest)))
                 return false;
 
-            if (!AvailableQuestIndexes.TryDequeue(out byte index))
-                index = (byte) QuestList.Count;
+            // Owner 2026-10-30: a freed slot is given only while no quest holds it. SendQuestListUpdate moves a quest
+            // waiting past the 25th slot (an older save with more than 25 active quests) into a freed slot but leaves
+            // that slot queued here, so the next quest taken shared its index and the two showed as one.
+            byte index;
+
+            do
+            {
+                if (!AvailableQuestIndexes.TryDequeue(out index))
+                {
+                    index = QuestJournal.FreeIndex(QuestList.Values);
+                    break;
+                }
+            }
+            while (QuestList.Values.Contains(index));
 
             QuestList.TryAdd(quest, index);
             quest.OnQuestAssigned(this);
