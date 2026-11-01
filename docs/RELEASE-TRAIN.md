@@ -98,45 +98,65 @@ second reader and their fixes applied; nothing is merged and nothing is played y
       1.1.1 this week, since nothing in it needs a play test of its own, and candidate B (#50) as 1.1.2 after the
       dragon, quest and siege checks; or merge B as the whole of 1.1.1 after the checks
 
-### 1.2 — the last base merge (proposed 2026-10-31; decision 3 is the owner's)
+### 1.2 — the comprehensive update (owner 2026-11-01: the old 1.3 folds into 1.2)
 
-Headline: the bots of 0.38, in a game that stays 0.37. Checklist: [UPSTREAM-RELEASES.md](UPSTREAM-RELEASES.md),
-read with "his final `main`" in place of "the `v0.38` tag".
+Headline: the bots of shadowofze's final code, playing the era's builds, in a world that moves. One public release,
+built in four phases. Each phase is merged to a `release/1.2` branch and soaked overnight on its own before the next
+one goes in, so a regression can still be traced to one system (the rule above); only the whole ships. While 1.2 is
+being built, community fixes keep going out as 1.1.x patches.
 
-- [ ] Wait until his `main` has been still for 14 days, then merge it on a `sync/upstream-final` branch: keep both
-      clients and the Sluaghbinder switch (Living Server's policy, not his), take his world scripts
-      (`fix_quest_reward_stats.py`, Necromancer creation, the night spawns) as Setup steps with rollbacks, and
-      leave out `remove_sluaghbinder_npcs.py`
-- [ ] Living Server's own new-client fixes shipped at last: the 0.37c client runs its GDScript from source, so the
-      four scripts (`/lfg` and `/trade` as realm channels, FACE/FOLLOW/STICK, the stick toggle, the PLAY
-      double-click guard) go into `content-patches.json` like the quest-marker script in 1.1.1; `/target` filling
-      the target window needs the rebuilt C# client (`MMOEngine.dll`) and is decided with it
-- [ ] Which of his 63 new-client files can be shipped the same way (stealth, abilities on the quickbar, the
-      merchant SELL button: issue #34; the crafting window), and which need converted content and can't
-- [ ] The full suite green, a week of overnight soaks with nothing else moving, the siege and raid ledgers compared
-      with 1.1.1's
-- [ ] Live events M0 alongside (measurement only: the cost per monster and per bot at the owner's roster, the
-      timeline report)
-- [ ] Played: one session per realm; a relic campaign watched end to end; a dragon raid with the new add control
+**Phase A — the base.** Checklist: [UPSTREAM-RELEASES.md](UPSTREAM-RELEASES.md), read with "his final `main`" in
+place of "the `v0.38` tag".
+- [x] Merge his final `main` (owner 2026-11-01: start now, no waiting; anything he pushes later merges the same
+      way). Done on `release/1.2` (`1ac3406`, his `cd2bf52`; 15 files conflicted, the suite passes). Both clients
+      stay supported; the Sluaghbinder is discontinued as in the base (owner 2026-11-01, `50ecb30`)
+- [ ] His world scripts as Setup steps with rollbacks: `fix_quest_reward_stats.py`, Necromancer creation, the night
+      spawns, and `remove_sluaghbinder_npcs.py` (its trainer, wisp and quest monsters out of existing worlds)
+- [ ] Living Server's own new-client fixes shipped at last: the four scripts (`/lfg` and `/trade` as realm channels,
+      FACE/FOLLOW/STICK, the stick toggle, the PLAY double-click guard) go into `content-patches.json` like the
+      quest-marker script in 1.1.1; `/target` filling the target window needs the rebuilt C# client (`MMOEngine.dll`)
+      and is decided with it
+- [ ] Which of his 63 new-client files can be shipped the same way (stealth, abilities on the quickbar, the merchant
+      SELL button: issue #34; the crafting window), and which need converted content and can't
+- [ ] Setup's fallback to the copy of the release files (PR #51)
+- [ ] Soak: the full suite green, a week of overnight runs, the siege and raid ledgers compared with 1.1.x's; live
+      events M0 measured alongside (the cost per monster and per bot at the owner's roster, the timeline report)
 
-If decision 3 goes the other way (live events first), this stop becomes the harvest: his world scripts and the
-small server fixes cherry-picked, the bot-combat changes left, and the stops below keep their numbers.
+**Phase B — bot builds and RvR** ([BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md), from r/daoc feedback 2026-11-01).
+- [ ] The era's builds and class shares researched and weighted (`bot-builds.json`), with a pet-class cap per warband
+- [ ] RvR perception: noticing by chance and distance, a reaction delay, spotters calling "inc", an RvR difficulty
+      setting; warbands in lanes and small roaming groups
+- [ ] A playbook per build on the base's spell-use engine (PBAE casters, healers, crowd control and tanks first)
+- [ ] Bot groups and warbands filled by role; `/lfg pbae|healer|cc|tank`; a bot's build shown when you target or
+      invite it; respeccing a bot you group with
+- [ ] Soak and the battleground session measured before and after
 
-### 1.3 — the world moves
-
-Headline: live events. Design: [LIVE-EVENTS-1.2.md](LIVE-EVENTS-1.2.md) (the plan, written when this was 1.2),
-[LIVE-EVENTS-ENGINE.md](LIVE-EVENTS-ENGINE.md) (how it is built and seen), the guild tiers entry in the
-[backlog](LIVING-SERVER-BACKLOG.md).
-
+**Phase C — the world moves.** Design: [LIVE-EVENTS-1.2.md](LIVE-EVENTS-1.2.md),
+[LIVE-EVENTS-ENGINE.md](LIVE-EVENTS-ENGINE.md).
 - [ ] Live events M1: the engine on a scripted dragon fight (Script, Stage, Chorus, Chronicle, `/lstest event`)
 - [ ] Live events M2: the director and the roaming threat
-- [ ] The guild social package as one unit (policies, standing, tier benefits and costs)
+- [ ] Soak
+
+**Phase D — the social realm and quests.**
+- [ ] The guild social package as one unit (policies, standing, tier benefits and costs; the guild tiers entry in
+      the [backlog](LIVING-SERVER-BACKLOG.md))
 - [ ] The historical server (opt-in roster import)
 - [ ] Questing: the server-side quest harness and the quest audit script; the first world fixes; the epic chains
       linked by Setup (and unlinked by rollback)
-- [ ] Played: one session per realm for the fight and the roaming threat; the guild tiers; two epic lines
+- [ ] Soak
 
-### 1.4 — the realm has work to do
+**Before it ships**
+- [ ] Played: one session per realm; a relic campaign watched end to end; a dragon raid with the new add control and
+      the scripted fight; the roaming threat; the guild tiers; two epic lines; the battleground session
+- [ ] Release notes to the rules above
+
+The trade-off, written down when the owner chose it: one big release instead of two means a longer gap between
+public releases (the 1.1.x patches fill it) and a larger play check at the end; in return the community gets one
+update that changes how the game feels, and the phases keep each system's soak separate. If decision 3 goes the
+other way, phase A becomes the harvest (his world scripts and small fixes cherry-picked) and phase B's playbooks must
+rebuild the spell-use fixes his code already has.
+
+### 1.3 — the realm has work to do
 
 Headline: the invasion. Design as above plus [CRAFTING-AND-ECONOMY.md](CRAFTING-AND-ECONOMY.md).
 
@@ -178,14 +198,23 @@ Taken on the owner's behalf in the 1.1.1 branches, to be confirmed or reversed a
 - Dragons count their timed-out raids as losses, as dungeons do, so a dragon whose last two raids timed out meets
   the Special Forces from the start on the day PR #44 is merged.
 
-Open, decision 3 (2026-10-31), the owner's: **the last base merge as its own stop (1.2 as written above) or a
-harvest.** The case for the merge: the overlap only grows (41 shared server files today; crafting, events and
+Taken (2026-11-01): the answer to "too many pets, bots see you from miles, no PBAE group" is the world's own
+gamebots playing the era's builds properly, not summoned companions ([BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md)).
+It also strengthens the case for decision 3: the spell-use engine it builds on (area spells that fire, add control,
+tank guarding) is in shadowofze's final `main`.
+
+Taken (2026-11-01): **1.2 is one comprehensive update**: the old 1.3 (live events M1–M2, the guild package, the
+historical server, the quest harness) and both halves of the builds work fold into it, built in phases that are
+soaked one at a time; the invasion and crafting stop becomes 1.3.
+
+Taken (2026-11-01), decision 3: **the base's final code is merged whole** as 1.2's phase A, starting at once. The
+reasoning that led there, kept for the record: The case for the merge: the overlap only grows (41 shared server files today; crafting, events and
 quests all touch raids, valuation and `DataQuest`), it is the largest bot upgrade available anywhere and nobody else
 will bring it to 0.37 players, Cancain's synced fork will send pull requests against that code, and the train's
 rule was always to merge the base first. The case against: it is unplayed code with no author behind it any more,
-it delays the live-events headline one stop, and it costs a merge of 127 files plus a soak week. What would change
+it delays the rest of 1.2 by a phase, and it costs a merge of 127 files plus a soak week. What would change
 the recommendation: his `main` keeps moving (wait), the trial merge fails the suite badly (harvest), or the owner
-wants the live-events moment first (harvest now, merge as 1.3).
+wants live events sooner (harvest now, merge later).
 
 Open, each listed with its options in the design document named:
 - Questing ([QUESTING.md](QUESTING.md) §5): hand-ins above the maximum level and bot-group kills crediting the
@@ -201,7 +230,7 @@ Open, each listed with its options in the design document named:
 | Stop | State |
 |---|---|
 | 1.1.1 | In progress (2026-10-31): every branch open and green (#35–#37 the owner's, #41–#46, #48, #49 drafted here); #44–#46 reviewed and their fixes applied; two pre-merged candidates with their conflicts resolved: #47 (A: the small set) and #50 (B: everything, 4,110 tests passing). The merge, the played checks and the release notes wait for the owner |
-| 1.2 | Proposed as the last base merge; decision 3 open; waits for his `main` to be still |
-| 1.3 | Planned (live events) |
-| 1.4 | Planned (invasion, crafting M0–M2) |
+| 1.1.x | Patch stops for community fixes while 1.2 is built |
+| 1.2 | The comprehensive update: phase A merged on `release/1.2` (2026-11-01); phase B starting |
+| 1.3 | Planned (invasion, crafting M0–M2) |
 | 2.0 | Planned |
