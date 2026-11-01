@@ -54,6 +54,13 @@ gates fell, and the Renegade Lord never dropped below 100%).
 - **For testers:** `DUTY_LEASE` lines in the server log record each claim granted, taken, refused (with its reason)
   and ended, once per change.
 
+**RvR perception**
+- **Gamebots notice you in RvR like players, not radar** (a player's report on r/daoc; owner 2026-11-01). In the frontier,
+  battlegrounds and Darkness Falls a gamebot used to see an enemy player from 5,000 units at once; now it notices by
+  chance (always within 1,000 units, rarely near 3,500, never beyond), reacts after 0.5-2 seconds, and tells its group
+  and warband. Settings `rvr_bot_perception`, `rvr_bot_awareness` (easy, normal, veteran) and `rvr_bot_spotters`; see
+  [docs/LIVING-SERVER.md](docs/LIVING-SERVER.md). Unit-tested, not yet played.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
