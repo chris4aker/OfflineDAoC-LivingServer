@@ -13,11 +13,18 @@ namespace DOL.GS
     {
         public const string AwayKey = "passport.away";
         public const string HostKey = "passport.host";
+        public const string VisitorKey = "passport.visitor";
 
         /// <summary>The database is read each time, so a lock written after this account logged in still holds.</summary>
         public static bool IsAway(DbCoreCharacter character, out string where)
         {
             return IsAway(DOLDB<DbCoreCharacterXCustomParam>.SelectObjects(DB.Column("DOLCharactersObjectId").IsEqualTo(character.ObjectId)), out where);
+        }
+
+        /// <summary>A character here from another world. Nothing that ties it to this world, such as a house, can go home with it.</summary>
+        public static bool IsVisitor(DbCoreCharacter character)
+        {
+            return DOLDB<DbCoreCharacterXCustomParam>.SelectObject(DB.Column("DOLCharactersObjectId").IsEqualTo(character.ObjectId).And(DB.Column("KeyName").IsEqualTo(VisitorKey))) != null;
         }
 
         public static bool IsAway(IEnumerable<DbCoreCharacterXCustomParam> customParams, out string where)

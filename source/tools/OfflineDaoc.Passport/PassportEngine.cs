@@ -1,4 +1,9 @@
+#nullable enable
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace OfflineDaoc.Passport;
 
@@ -47,6 +52,75 @@ public static class PassportTables
 
 public sealed record ArrivalReport(string Name, int AccountSlot, IReadOnlyList<string> Notes);
 
+/// <summary>A character visiting this world.</summary>
+public sealed record VisitorInfo(string CharacterId, string Name, string HomeName, string TripId, string State);
+
+/// <summary>A character of this save, as the launcher lists it.</summary>
+public sealed record LocalCharacter(string Id, string Name, int Realm, int Level, string? AwayAt);
+
+/// <summary>
+/// The save a step works on. A plain runtime folder means a stopped world, checked and backed up as such. The server's
+/// Passport Desk works on its own live database instead: the row changes are one short transaction on characters of an
+/// account that is not logged in, and the server reads those at login.
+/// </summary>
+public sealed class PassportWorld
+{
+    const int BackupsKept = 6;
+
+    string? _runtime;
+    public string Database { get; private set; } = "";
+    public string Name { get; private set; } = "";
+    public bool IsLive => _runtime == null;
+
+    public static PassportWorld Live(string database, string name) => new() { Database = database, Name = name };
+
+    public static implicit operator PassportWorld(string runtime) => new()
+    {
+        _runtime = runtime,
+        Database = Path.Combine(runtime, "data", "opendaoc.sqlite3.db"),
+        Name = new DirectoryInfo(runtime).Parent?.Name ?? "",
+    };
+
+    internal string Open()
+    {
+        if (!File.Exists(Database))
+            throw new PassportException("no_save", $"No save at {Database}.");
+        if (_runtime == null)
+            return Database;
+
+        // A running server, however it was started, holds its own assemblies open.
+        foreach (string file in new[] { Path.Combine("server", "CoreServer.dll"), Path.Combine("server", "lib", "GameServer.dll") })
+        {
+            string path = Path.Combine(_runtime, file);
+            if (!File.Exists(path))
+                continue;
+            try
+            {
+                using var probe = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None);
+            }
+            catch (IOException)
+            {
+                throw new PassportException("server_running", "Stop this world's server first. Nothing was changed.");
+            }
+        }
+        return Database;
+    }
+
+    internal void BackUp(string character, string step)
+    {
+        if (_runtime == null)
+            return;
+        string root = Path.Combine(_runtime, "passport-backups");
+        string folder = Path.Combine(root, $"{DateTime.Now:yyyyMMdd-HHmmss}-{character}-{step}");
+        Directory.CreateDirectory(folder);
+        PassportDatabase.Backup(Database, Path.Combine(folder, "opendaoc.sqlite3.db"));
+
+        // Each one is a whole save, so only the newest few stay.
+        foreach (string old in Directory.GetDirectories(root).OrderByDescending(Path.GetFileName, StringComparer.Ordinal).Skip(BackupsKept))
+            Directory.Delete(old, true);
+    }
+}
+
 /// <summary>
 /// One character's round trip between two saves. The character is playable in exactly one world:
 /// its home rows stay in place, locked by the passport.away custom param, until the return passport
@@ -55,7 +129,7 @@ public sealed record ArrivalReport(string Name, int AccountSlot, IReadOnlyList<s
 public static class PassportEngine
 {
     public const string AwayKey = "passport.away", HostKey = "passport.host", GuildKey = "passport.guild";
-    public const string PurseKey = "passport.purse", LeftKey = "passport.left_utc", CancelledKey = "passport.cancelled";
+    public const string PurseKey = "passport.purse", LeftKey = "passport.left_utc", CancelledKey = "passport.cancelled", VisitorKey = "passport.visitor";
     const string ProceedsPrefix = "RealmExchange.Proceeds.";
     const string VisitsTable = "passport_visits";
     const string Visiting = "visiting", Departing = "departing", Returned = "returned";
@@ -65,9 +139,9 @@ public static class PassportEngine
     const int NoGuildRank = 9;
 
     /// <summary>Home: writes the passport and locks the character. Null purse carries the whole realm wallet.</summary>
-    public static string Leave(string runtime, string characterName, long? purseCopper, string hostLabel, string outFolder)
+    public static string Leave(PassportWorld world, string characterName, long? purseCopper, string hostLabel, string outFolder)
     {
-        string database = OpenWorld(runtime);
+        string database = world.Open();
         using var db = new PassportDatabase(database);
         Row character = FindCharacter(db, characterName);
         string id = character.Text("DOLCharacters_ID");
@@ -84,7 +158,7 @@ public static class PassportEngine
         if (purse < 0 || purse > wallet)
             throw new PassportException("purse", $"The realm wallet holds {wallet} copper; {purse} cannot be carried.");
 
-        BackUp(runtime, database, character.Text("Name"), "out");
+        world.BackUp(character.Text("Name"), "out");
         string tripId = Guid.NewGuid().ToString();
         string path = Path.Combine(outFolder, PassportFile.FileName(character.Text("Name"), tripId, Manifest.Outbound));
         string partial = path + ".partial";
@@ -94,13 +168,14 @@ public static class PassportEngine
         {
             db.Transaction(() =>
             {
-                PassportFile.Write(Pack(db, character, Manifest.Outbound, tripId, purse, runtime), partial);
+                PassportFile.Write(Pack(db, character, Manifest.Outbound, tripId, purse, world.Name), partial);
                 SetWallet(db, account, realm, wallet - purse);
                 SetParam(db, id, AwayKey, tripId);
                 SetParam(db, id, HostKey, hostLabel.Length > 200 ? hostLabel[..200] : hostLabel);
                 SetParam(db, id, GuildKey, $"{character.Text("GuildID")}|{character.Text("GuildRank")}");
                 SetParam(db, id, PurseKey, purse.ToString(CultureInfo.InvariantCulture));
                 SetParam(db, id, LeftKey, DateTime.UtcNow.ToString("O"));
+                db.Exec("DELETE FROM DOLCharactersXCustomParam WHERE DOLCharactersObjectId=@id AND KeyName=@k", ("@id", id), ("@k", CancelledKey));
             });
         }
         catch
@@ -114,9 +189,9 @@ public static class PassportEngine
     }
 
     /// <summary>Host: adds the visitor to an existing account. The account must have logged in here once.</summary>
-    public static ArrivalReport Arrive(string runtime, string passportPath, string account, string? visitingName = null)
+    public static ArrivalReport Arrive(PassportWorld world, string passportPath, string account, string? visitingName = null)
     {
-        string database = OpenWorld(runtime);
+        string database = world.Open();
         PassportData passport = PassportFile.Read(passportPath);
         Manifest manifest = passport.Manifest;
         if (manifest.Direction != Manifest.Outbound)
@@ -129,20 +204,29 @@ public static class PassportEngine
         Row accountRow = FindAccount(db, account);
         string accountName = accountRow.Text("Name");
 
-        if (db.Count("SELECT count(*) FROM DOLCharacters WHERE DOLCharacters_ID=@id", ("@id", manifest.CharacterId)) > 0)
+        // A locked copy left by a trip whose confirm never got here is out of date: that trip went home.
+        Row? stale = db.Rows("DOLCharacters", "DOLCharacters_ID=@id", ("@id", manifest.CharacterId)).SingleOrDefault();
+        string? previousTrip = VisitTrip(db, manifest.CharacterId);
+        if (stale != null && (VisitState(db, manifest.CharacterId) != Departing || previousTrip == manifest.TripId ||
+                              !stale.Text("AccountName").Equals(accountName, StringComparison.OrdinalIgnoreCase)))
             throw new PassportException("already_here", $"{manifest.Name} is already in this world.");
-        string? previousTrip = Convert.ToString(db.Scalar($"SELECT trip_id FROM {VisitsTable} WHERE character_id=@id", ("@id", manifest.CharacterId)));
         if (previousTrip == manifest.TripId)
             throw new PassportException("replayed", "This passport was already used. Start a new trip from home.");
 
         string name = string.IsNullOrWhiteSpace(visitingName) ? manifest.Name : visitingName.Trim();
-        if (NameTaken(db, name))
+        if (!name.Equals(stale?.Text("Name"), StringComparison.OrdinalIgnoreCase) && NameTaken(db, name))
             throw new PassportException("name_taken", $"The name {name} is taken in this world. Choose a visiting name.");
-        int slot = FreeSlot(db, accountName, manifest.Realm);
+        int slot = stale != null ? Convert.ToInt32(stale["AccountSlot"]) : FreeSlot(db, accountName, manifest.Realm);
 
         var notes = new List<string>();
         db.Transaction(() =>
         {
+            if (stale != null)
+            {
+                RemoveCharacter(db, manifest.CharacterId);
+                db.Exec("DELETE FROM DOLCharactersXCustomParam WHERE DOLCharactersObjectId=@id", ("@id", manifest.CharacterId));
+            }
+
             Row row = passport.Tables["DOLCharacters"].Single();
             row["AccountName"] = accountName;
             row["AccountSlot"] = (long)slot;
@@ -155,6 +239,7 @@ public static class PassportEngine
 
             string? hostGuild = Convert.ToString(db.Scalar($"SELECT host_guild FROM {VisitsTable} WHERE character_id=@id", ("@id", manifest.CharacterId)));
             RestoreGuild(db, manifest.CharacterId, hostGuild);
+            SetParam(db, manifest.CharacterId, VisitorKey, manifest.TripId);
             if (Convert.ToInt64(accountRow["Realm"]) == 0)
                 db.Exec("UPDATE Account SET Realm=@r WHERE Name=@a", ("@r", (long)manifest.Realm), ("@a", accountName));
 
@@ -170,9 +255,9 @@ public static class PassportEngine
     /// Host: writes the return passport and locks the visitor. Calling it again gives the same trip and purse,
     /// so a lost file can be remade until <see cref="ConfirmDeparture"/> runs.
     /// </summary>
-    public static string Depart(string runtime, string characterName, long? purseCopper, string outFolder)
+    public static string Depart(PassportWorld world, string characterName, long? purseCopper, string outFolder)
     {
-        string database = OpenWorld(runtime);
+        string database = world.Open();
         using var db = new PassportDatabase(database);
         EnsureVisits(db);
         Row character = FindCharacter(db, characterName);
@@ -210,7 +295,7 @@ public static class PassportEngine
         {
             db.Transaction(() =>
             {
-                PassportFile.Write(Pack(db, character, Manifest.Return, tripId, purse, runtime), partial);
+                PassportFile.Write(Pack(db, character, Manifest.Return, tripId, purse, world.Name), partial);
                 if (state == Departing)
                     return;
 
@@ -232,9 +317,9 @@ public static class PassportEngine
     }
 
     /// <summary>Host: forgets the visitor once its return passport is safe at home.</summary>
-    public static void ConfirmDeparture(string runtime, string characterName, string tripId)
+    public static void ConfirmDeparture(PassportWorld world, string characterName, string tripId)
     {
-        string database = OpenWorld(runtime);
+        string database = world.Open();
         using var db = new PassportDatabase(database);
         EnsureVisits(db);
         Row character = FindCharacter(db, characterName);
@@ -243,7 +328,7 @@ public static class PassportEngine
         if (visit == null || visit.Text("state") != Departing || visit.Text("trip_id") != tripId)
             throw new PassportException("no_departure", $"{character.Text("Name")} has no departure to confirm for trip {tripId}.");
 
-        BackUp(runtime, database, character.Text("Name"), "left");
+        world.BackUp(character.Text("Name"), "left");
         db.Transaction(() =>
         {
             RemoveCharacter(db, id);
@@ -256,9 +341,9 @@ public static class PassportEngine
     }
 
     /// <summary>Home: replaces the frozen character with what comes back, and unlocks it.</summary>
-    public static IReadOnlyList<string> ComeHome(string runtime, string passportPath)
+    public static IReadOnlyList<string> ComeHome(PassportWorld world, string passportPath)
     {
-        string database = OpenWorld(runtime);
+        string database = world.Open();
         PassportData passport = PassportFile.Read(passportPath);
         Manifest manifest = passport.Manifest;
         if (manifest.Direction != Manifest.Return)
@@ -274,7 +359,7 @@ public static class PassportEngine
                 ? "This trip was recalled, so what it earned cannot come home."
                 : "This passport is from another trip. Nothing was changed.");
 
-        BackUp(runtime, database, home.Text("Name"), "in");
+        world.BackUp(home.Text("Name"), "in");
         var notes = new List<string>();
         db.Transaction(() =>
         {
@@ -299,9 +384,9 @@ public static class PassportEngine
     }
 
     /// <summary>Home: gives up on the trip. The frozen character and its purse come back; everything earned on the trip is lost.</summary>
-    public static void Recall(string runtime, string characterName)
+    public static void Recall(PassportWorld world, string characterName)
     {
-        string database = OpenWorld(runtime);
+        string database = world.Open();
         using var db = new PassportDatabase(database);
         Row character = FindCharacter(db, characterName);
         string id = character.Text("DOLCharacters_ID");
@@ -310,7 +395,7 @@ public static class PassportEngine
             throw new PassportException("is_visitor", $"{character.Text("Name")} is a visitor leaving this world. Recall it from its home save.");
 
         long purse = long.Parse(Param(db, id, PurseKey) ?? "0", CultureInfo.InvariantCulture);
-        BackUp(runtime, database, character.Text("Name"), "recall");
+        world.BackUp(character.Text("Name"), "recall");
         db.Transaction(() =>
         {
             AddToWallet(db, character.Text("AccountName"), Convert.ToInt32(character["Realm"]), purse);
@@ -319,46 +404,51 @@ public static class PassportEngine
         });
     }
 
-    static string OpenWorld(string runtime)
+    /// <summary>Home or host: this account's characters and where the away ones are.</summary>
+    public static IReadOnlyList<LocalCharacter> Characters(PassportWorld world, string account)
     {
-        string database = Path.Combine(runtime, "data", "opendaoc.sqlite3.db");
-        if (!File.Exists(database))
-            throw new PassportException("no_save", $"No save at {database}.");
-
-        // A running server, however it was started, holds its own assemblies open.
-        foreach (string file in new[] { Path.Combine("server", "CoreServer.dll"), Path.Combine("server", "lib", "GameServer.dll") })
-        {
-            string path = Path.Combine(runtime, file);
-            if (!File.Exists(path))
-                continue;
-            try
+        using var db = new PassportDatabase(world.Database, readOnly: true);
+        return db.Rows("DOLCharacters", "AccountName=@a COLLATE NOCASE ORDER BY Name", ("@a", account))
+            .Select(c =>
             {
-                using var probe = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None);
-            }
-            catch (IOException)
-            {
-                throw new PassportException("server_running", "Stop this world's server first. Nothing was changed.");
-            }
-        }
-        return database;
+                string id = c.Text("DOLCharacters_ID");
+                string? away = Param(db, id, AwayKey) == null ? null : Param(db, id, HostKey) ?? "another world";
+                return new LocalCharacter(id, c.Text("Name"), Convert.ToInt32(c["Realm"]), Convert.ToInt32(c["Level"]), away);
+            })
+            .ToList();
     }
 
-    static void BackUp(string runtime, string database, string name, string step)
+    /// <summary>Host: the visitors of an account that have not gone home.</summary>
+    public static IReadOnlyList<VisitorInfo> Visitors(PassportWorld world, string account)
     {
-        string folder = Path.Combine(runtime, "passport-backups", $"{DateTime.Now:yyyyMMdd-HHmmss}-{name}-{step}");
-        Directory.CreateDirectory(folder);
-        PassportDatabase.Backup(database, Path.Combine(folder, "opendaoc.sqlite3.db"));
+        using var db = new PassportDatabase(world.Database);
+        EnsureVisits(db);
+        return db.Rows(VisitsTable, "account=@a COLLATE NOCASE AND state<>@s", ("@a", account), ("@s", Returned))
+            .Select(v =>
+            {
+                string id = v.Text("character_id");
+                string name = db.Rows("DOLCharacters", "DOLCharacters_ID=@id", ("@id", id)).SingleOrDefault()?.Text("Name") ?? v.Text("home_name");
+                return new VisitorInfo(id, name, v.Text("home_name"), v.Text("trip_id"), v.Text("state"));
+            })
+            .ToList();
+    }
+
+    /// <summary>Home: the trip a character is away on, if any.</summary>
+    public static string? AwayTrip(PassportWorld world, string characterName)
+    {
+        using var db = new PassportDatabase(world.Database, readOnly: true);
+        return Param(db, FindCharacter(db, characterName).Text("DOLCharacters_ID"), AwayKey);
     }
 
     static Row FindCharacter(PassportDatabase db, string name) =>
-        db.Rows("DOLCharacters", "Name=@n COLLATE NOCASE", ("@n", name)).SingleOrDefault()
+        db.Rows("DOLCharacters", "Name=@n COLLATE NOCASE OR DOLCharacters_ID=@n", ("@n", name)).SingleOrDefault()
         ?? throw new PassportException("no_character", $"No character named {name} in this save.");
 
     static Row FindAccount(PassportDatabase db, string name) =>
         db.Rows("Account", "Name=@n COLLATE NOCASE", ("@n", name)).SingleOrDefault()
         ?? throw new PassportException("no_account", $"No account {name} in this world. Log in here once first.");
 
-    static PassportData Pack(PassportDatabase db, Row character, string direction, string tripId, long purse, string runtime)
+    static PassportData Pack(PassportDatabase db, Row character, string direction, string tripId, long purse, string worldName)
     {
         string id = character.Text("DOLCharacters_ID");
         Row? crafting = CraftingRow(db, character.Text("AccountName"), Convert.ToInt32(character["Realm"]));
@@ -373,7 +463,7 @@ public static class PassportEngine
                 Class = Convert.ToInt32(character["Class"]),
                 Level = Convert.ToInt32(character["Level"]),
                 Direction = direction,
-                FromWorld = new DirectoryInfo(runtime).Parent?.Name ?? "",
+                FromWorld = worldName,
                 PurseCopper = purse,
                 CraftingSkills = crafting?.Text("SerializedCraftingSkills") ?? "",
                 CraftingPrimarySkill = crafting == null ? 0 : Convert.ToInt32(crafting["CraftingPrimarySkill"]),
@@ -542,6 +632,9 @@ public static class PassportEngine
 
     static string? VisitState(PassportDatabase db, string id) =>
         db.HasTable(VisitsTable) ? Convert.ToString(db.Scalar($"SELECT state FROM {VisitsTable} WHERE character_id=@id", ("@id", id))) : null;
+
+    static string? VisitTrip(PassportDatabase db, string id) =>
+        Convert.ToString(db.Scalar($"SELECT trip_id FROM {VisitsTable} WHERE character_id=@id", ("@id", id)));
 
     static string? Param(PassportDatabase db, string id, string key) =>
         db.Rows("DOLCharactersXCustomParam", "DOLCharactersObjectId=@id AND KeyName=@k", ("@id", id), ("@k", key)).SingleOrDefault()?.Text("Value");

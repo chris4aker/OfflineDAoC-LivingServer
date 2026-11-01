@@ -40,6 +40,27 @@ namespace DOL.UnitTests
         {
             Assert.That(PassportLock.AwayKey, Is.EqualTo("passport.away"));
             Assert.That(PassportLock.HostKey, Is.EqualTo("passport.host"));
+            Assert.That(PassportLock.VisitorKey, Is.EqualTo(OfflineDaoc.Passport.PassportEngine.VisitorKey));
+        }
+
+        [TestCase("Basic Zm9vOmJhcg==", "foo", "bar")]
+        [TestCase("basic Zm9vOmI6cg==", "foo", "b:r")]
+        public void TheDeskReadsAnAccountAndPassword(string header, string account, string password)
+        {
+            Assert.That(PassportDesk.TryReadBasicAuthorization(header, out string readAccount, out string readPassword), Is.True);
+            Assert.That(readAccount, Is.EqualTo(account));
+            Assert.That(readPassword, Is.EqualTo(password));
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("Bearer Zm9vOmJhcg==")]
+        [TestCase("Basic not-base-64!")]
+        [TestCase("Basic Zm9v")]
+        [TestCase("Basic OmJhcg==")]
+        public void TheDeskRefusesAnyOtherHeader(string header)
+        {
+            Assert.That(PassportDesk.TryReadBasicAuthorization(header, out _, out _), Is.False);
         }
     }
 }

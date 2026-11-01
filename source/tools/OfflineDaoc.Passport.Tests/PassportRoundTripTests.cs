@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace OfflineDaoc.Passport.Tests;
 
 [TestFixture]
-public class PassportRoundTripTests
+public partial class PassportRoundTripTests
 {
     const string Id = "11111111-1111-1111-1111-111111111111";
     const string Schema = """

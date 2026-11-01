@@ -1,6 +1,18 @@
 # Character passport: take a toon to a friend's world and back
 
-Status: steps 1 to 3 built, 2026-11-01. Join Friend and hosting are in the launcher, see
+Status: all five steps built, 2026-11-01. See [PLAY-WITH-FRIENDS.md](PLAY-WITH-FRIENDS.md) for how a player uses it. Tested
+with automated tests, on copies of played saves and on a private running server over this PC's own network; never yet
+between two PCs or with the real game client.
+
+Where this page and the code differ after the build: the Desk's port is the login port + 10, so an invite code needs no
+second number, and it goes through the same firewall rule and UPnP mapping as the game. It opens only while hosting. It works on any address, not only Tailscale. Calls are `POST /passport/arrive`, `GET /passport/visitors`, `POST
+/passport/depart`, `POST /passport/depart/confirm`, with HTTP Basic over plain HTTP, the same exposure as the game's own
+login packet. The Desk changes the live database directly and takes no backups; the guest's launcher backs up the home
+save and keeps the newest 6. `depart/confirm` is best effort: once the return passport is on the guest's disk the
+character goes home, and a locked copy left at the host is replaced by the next visit. A request with no answer never
+unlocks a character, because the host may have taken it.
+
+Earlier status: steps 1 to 3 built, 2026-11-01. Join Friend and hosting are in the launcher, see
 [PLAY-WITH-FRIENDS.md](PLAY-WITH-FRIENDS.md). The passport library, its command line tool, the home lock and recall are
 built and tested on save copies and a private server copy. The Passport Desk and the launcher buttons (steps 4 and 5) are
 not built, so a passport moves by hand for now. The Desk text below still names Tailscale; it has to be fitted to invite

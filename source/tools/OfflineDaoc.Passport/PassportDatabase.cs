@@ -1,4 +1,9 @@
+#nullable enable
+using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
+using System.Linq;
 
 namespace OfflineDaoc.Passport;
 
@@ -12,7 +17,7 @@ sealed class PassportDatabase : IDisposable
 
     public PassportDatabase(string path, bool readOnly = false)
     {
-        var builder = new SQLiteConnectionStringBuilder { DataSource = path, ReadOnly = readOnly, FailIfMissing = true, Pooling = false, DefaultTimeout = 10 };
+        var builder = new SQLiteConnectionStringBuilder { DataSource = path, ReadOnly = readOnly, FailIfMissing = true, Pooling = false, DefaultTimeout = 60 };
         _connection = new SQLiteConnection(builder.ConnectionString);
         _connection.Open();
     }
