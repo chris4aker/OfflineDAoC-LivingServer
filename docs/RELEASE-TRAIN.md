@@ -107,7 +107,8 @@ being built, community fixes keep going out as 1.1.x patches.
 
 **Phase A — the base.** Checklist: [UPSTREAM-RELEASES.md](UPSTREAM-RELEASES.md), read with "his final `main`" in
 place of "the `v0.38` tag".
-- [ ] Wait until his `main` has been still for 14 days, then merge it: keep both clients and the Sluaghbinder switch
+- [x] Merge his final `main` (owner 2026-11-01: start now, no waiting; anything he pushes later merges the same
+      way). Done on `release/1.2` (`1ac3406`, his `cd2bf52`; 15 files conflicted, the suite passes): keep both clients and the Sluaghbinder switch
       (Living Server's policy, not his), take his world scripts (`fix_quest_reward_stats.py`, Necromancer creation,
       the night spawns) as Setup steps with rollbacks, and leave out `remove_sluaghbinder_npcs.py`
 - [ ] Living Server's own new-client fixes shipped at last: the four scripts (`/lfg` and `/trade` as realm channels,
@@ -205,7 +206,8 @@ Taken (2026-11-01): **1.2 is one comprehensive update**: the old 1.3 (live event
 historical server, the quest harness) and both halves of the builds work fold into it, built in phases that are
 soaked one at a time; the invasion and crafting stop becomes 1.3.
 
-Open, decision 3 (2026-10-31), the owner's: **the last base merge as 1.2's phase A, or a harvest.** The case for the merge: the overlap only grows (41 shared server files today; crafting, events and
+Taken (2026-11-01), decision 3: **the base's final code is merged whole** as 1.2's phase A, starting at once. The
+reasoning that led there, kept for the record: The case for the merge: the overlap only grows (41 shared server files today; crafting, events and
 quests all touch raids, valuation and `DataQuest`), it is the largest bot upgrade available anywhere and nobody else
 will bring it to 0.37 players, Cancain's synced fork will send pull requests against that code, and the train's
 rule was always to merge the base first. The case against: it is unplayed code with no author behind it any more,
@@ -228,6 +230,6 @@ Open, each listed with its options in the design document named:
 |---|---|
 | 1.1.1 | In progress (2026-10-31): every branch open and green (#35–#37 the owner's, #41–#46, #48, #49 drafted here); #44–#46 reviewed and their fixes applied; two pre-merged candidates with their conflicts resolved: #47 (A: the small set) and #50 (B: everything, 4,110 tests passing). The merge, the played checks and the release notes wait for the owner |
 | 1.1.x | Patch stops for community fixes while 1.2 is built |
-| 1.2 | The comprehensive update (2026-11-01): phase A waits for his `main` to be still; decision 3 open |
+| 1.2 | The comprehensive update: phase A merged on `release/1.2` (2026-11-01); phase B starting |
 | 1.3 | Planned (invasion, crafting M0–M2) |
 | 2.0 | Planned |
