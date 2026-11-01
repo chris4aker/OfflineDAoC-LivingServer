@@ -3,9 +3,9 @@
 The newest version is first. For the full detail of every earlier update, see
 [docs/history/CHANGELOG-0.3-to-0.32b.md](docs/history/CHANGELOG-0.3-to-0.32b.md).
 
-> **No more public releases.** 0.37 / 0.37b / 0.37c is the last public release of Offline DAoC; there will be no
-> 0.38 or later download. The owner is now building a separate True 1.65 version. Commits with major fixes will
-> still come to this repository's source, to help the forks, and are listed below.
+> **On hold.** 0.37 / 0.37b / 0.37c is the last release of Offline DAoC, and the project won't receive any more
+> updates. The owner has moved on to a separate True 1.65 version. The source changes made after 0.37c, listed
+> below, are the last ones.
 
 ## Changes since 0.37c (source only, no release)
 
