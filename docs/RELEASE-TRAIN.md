@@ -108,9 +108,10 @@ being built, community fixes keep going out as 1.1.x patches.
 **Phase A — the base.** Checklist: [UPSTREAM-RELEASES.md](UPSTREAM-RELEASES.md), read with "his final `main`" in
 place of "the `v0.38` tag".
 - [x] Merge his final `main` (owner 2026-11-01: start now, no waiting; anything he pushes later merges the same
-      way). Done on `release/1.2` (`1ac3406`, his `cd2bf52`; 15 files conflicted, the suite passes): keep both clients and the Sluaghbinder switch
-      (Living Server's policy, not his), take his world scripts (`fix_quest_reward_stats.py`, Necromancer creation,
-      the night spawns) as Setup steps with rollbacks, and leave out `remove_sluaghbinder_npcs.py`
+      way). Done on `release/1.2` (`1ac3406`, his `cd2bf52`; 15 files conflicted, the suite passes). Both clients
+      stay supported; the Sluaghbinder is discontinued as in the base (owner 2026-11-01, `50ecb30`)
+- [ ] His world scripts as Setup steps with rollbacks: `fix_quest_reward_stats.py`, Necromancer creation, the night
+      spawns, and `remove_sluaghbinder_npcs.py` (its trainer, wisp and quest monsters out of existing worlds)
 - [ ] Living Server's own new-client fixes shipped at last: the four scripts (`/lfg` and `/trade` as realm channels,
       FACE/FOLLOW/STICK, the stick toggle, the PLAY double-click guard) go into `content-patches.json` like the
       quest-marker script in 1.1.1; `/target` filling the target window needs the rebuilt C# client (`MMOEngine.dll`)
