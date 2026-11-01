@@ -256,7 +256,7 @@ namespace DOL.AI.Brain
 
 			AttackMostWanted();
 			if (Owner is GamePlayer player && Body == player.ControlledBrain?.Body)
-				PlayerLedPullCoordinator.LeaderEngaged(player, target as GameLiving);
+				PlayerLedPullCoordinator.LeaderEngaged(player, target as GameLiving, fromPet: true);
 		}
 
 		/// <summary>

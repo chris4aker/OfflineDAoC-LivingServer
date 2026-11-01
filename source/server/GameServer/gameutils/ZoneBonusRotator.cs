@@ -78,6 +78,7 @@ namespace DOL.GS.Scripts
         {
             Initialize();
             GameEventMgr.AddHandler(GamePlayerEvent.GameEntered, new DOLEventHandler(PlayerEntered));
+            _playerEnteredAdded = true;
             
         }
 
@@ -88,8 +89,16 @@ namespace DOL.GS.Scripts
             ClearPvEZones();
             ClearRvRZones();
 
-            GameEventMgr.RemoveHandler(GamePlayerEvent.GameEntered, new DOLEventHandler(PlayerEntered));
+            // Only if it was added, and the event lists may already be gone this late in a shutdown: the removal threw
+            // "Value cannot be null (chain)" at server stop.
+            if (!_playerEnteredAdded)
+                return;
+            _playerEnteredAdded = false;
+            try { GameEventMgr.RemoveHandler(GamePlayerEvent.GameEntered, new DOLEventHandler(PlayerEntered)); }
+            catch (ArgumentNullException) { }
         }
+
+        private static bool _playerEnteredAdded;
 
         public static void Initialize()
         {

@@ -3,6 +3,518 @@
 The newest version is first. For the full detail of every earlier update, see
 [docs/history/CHANGELOG-0.3-to-0.32b.md](docs/history/CHANGELOG-0.3-to-0.32b.md).
 
+> **On hold.** 0.37 / 0.37b / 0.37c is the last release of Offline DAoC, and the project won't receive any more
+> updates. The owner has moved on to a separate True 1.65 version. The source changes made after 0.37c, listed
+> below, are the last ones.
+
+## Changes since 0.37c (source only, no release)
+
+0.37 / 0.37b / 0.37c is the latest and last release. Everything below is in the source only.
+
+**Going forward only the new client is supported.** The original DAoC client is no longer supported, and the
+Sluaghbinder class is discontinued.
+
+**MAJOR: bot armor now works like a player's**
+- Until now the armor a bot (gamebot or companion) wore did nothing when it was hit. Its defense was a monster's: a
+  flat number from its level, and the game never picked which piece of armor was struck. So a bot's armor value,
+  absorb, quality and condition, the armor-type resists against slash, crush and thrust, the armor's to-hit bonus
+  and its procs never counted. At level 50 every bot defended better than any player: about 1.2 times a player in
+  plate, and about 3 times a caster in cloth.
+- Bots now defend exactly like players. The piece that is hit is chosen with the player odds, its armor value is
+  capped by level and armor type, quality and condition count, absorb comes from the armor type, armor buffs have
+  the player caps, and the worn piece's to-hit bonus and procs work. `/targetstats` on a bot shows its torso armor.
+- This changes the game a lot. Well-geared bots are a little softer than before at high level, and bots with little
+  or no armor are much softer (a bot caster in cloth takes 2 to 3 times the melee damage it used to), so gear matters
+  for them as it does for players.
+
+**Bots and raids**
+- Hibernian bots no longer get stuck at the door of their portal keep in Odin's Gate. Once out of the keep's
+  inner door, the route they planned led back in to the keep yard and then out again, over and over, until they
+  gave up and went home (47 bots and 292 give-ups in one test run). A planned route no longer starts by going back
+  through a door the bot has just come out of when that leads no nearer its goal.
+- Bots no longer fight things a player can't target. In Galladoria the Corrupt Primal of Fire leaves short-lived
+  patches of fire behind it (they can't be targeted, resist nearly everything and burn out in six seconds), and
+  nearly the whole raid by the Earthmenders was swinging at them instead of the Earthmenders and the primal; the
+  Fire primal was given up at 99%.
+- When only a handful of a raid fight its current target while many stand around it, up to a third of those already
+  busy with something else now switch to it as well. Before, only idle raiders were called over until the target had
+  gone untouched for three minutes, which never happens while a few keep chipping at it (Galladoria's Magical
+  Earthmender: 2 of 207 raiders on it).
+- The patches of fire Galladoria's Corrupt Primal of Fire leaves behind hit for less: 120 heat damage in a 300 radius
+  every 2 seconds (was 220 in a 450 radius).
+- Siege armies' healers go out to their dead. A fallen attacker now waits for a raise while one of its army's healers
+  is within 5,000 (it was 2,000; with nobody that close it released after 20 seconds and walked back from its portal
+  keep, about 185,000 units at Dun Dagda), healers out of the fight walk out to the dead on the field, and the realm's
+  other RvR healers at the battle raise them too. At Dun Dagda most attackers fall on the slopes 3,000 to 4,500 below
+  the keep, out of reach of the healers at the gate.
+- Albion bots no longer get sent home to Camelot from beside their portal keep in Odin's Gate. A walled-in floor just
+  south of the keep joins nothing; bots that ended up on it now step back into the keep yard and go on.
+- Bots can now finish Caer Sidi: a bot raid killed the four horsemen and Apocalypse for the first time. The hidden
+  controller that starts the horsemen's challenge only woke up for players, so it never noticed the raid waiting at
+  its trigger (over a hundred bots stood there for half an hour with nothing happening). Hidden encounter controllers
+  now always run, whoever is near.
+- Galladoria's Olcasgean wakes for a bot raid once all four primals are dead. He slept on as a statue, because only his
+  own brain starts the timer that wakes him, and bots never woke a monster that couldn't attack them. Raid bots now
+  wake any scripted encounter boss near them, as a player would.
+- A relic or keep army stays together on the march. When its leader stopped leading, the next one was simply the first
+  marcher on the list, wherever it was; a straggler 64,000 units behind could take over, and the front of the army
+  walked back to it (at Dun Dagda the siege then opened with 62 of 170 attackers there). The new leader is the marcher
+  with most of the army around it. In the next test the army marched in 22 minutes and opened the siege with 161 at
+  the keep.
+- A siege army's healers stay behind the line. Those that can raise the dead no longer pick fights of their own in the
+  melee: they step back from an enemy close to them and heal and raise their army from behind, and fight back only
+  when they are hit. They used to fight in the front with everyone else and were always under attack or dead when
+  their army fell, so no fallen attacker was ever raised at Dun Dagda.
+- A group member that dies three times on its way to the group's meetup point counts as a no-show at once, and
+  the group goes on without it, instead of waiting the full fifteen minutes (a low-level group was seen dying
+  about 70 times near its meetup during one wait and then being dropped anyway). (From the
+  chris4aker/OfflineDAoC-SocialExpansion fork.)
+- Bots and companions use their area spells on two or more monsters (GitHub issue #17). Point blank spells (centred on
+  the caster) were never cast at all, because of a range check that could not pass. Now:
+  - Thanes, Reavers, Clerics and Shamans use their instant point blank spells when two or more monsters already in the
+    fight are around them.
+  - Wizards, Theurgists, Eldritches, Enchanters, Mentalists, Spiritmasters, Runemasters and Bonedancers cast theirs
+    where they stand, or walk a short way in (up to 700 units) to reach two or more while their group holds the
+    monsters and nothing is hitting them. A caster that is hit or interrupted waits 15 seconds, and two failures end
+    it for that fight, so it never walks in and out in a loop.
+  - An area nuke is chosen over a single nuke when its total over the monsters it hits is bigger.
+  - No area spell is cast when it would also hit a mesmerized monster (waking it) or one not in the fight yet (pulling
+    it).
+  - Ground-targeted area spells land on the target; bots never set a ground target, so these always failed.
+- Every class with a mesmerize or stun now controls adds, not only Bards: a monster attacking the group that nobody
+  is killing gets mesmerized (an area mez only where it cannot reach the monster being killed), and a stun protects
+  someone an add is hitting while they fight something else. The instant mez and stun with a ten-minute reuse are kept
+  for three or more adds. Healers, Clerics and Druids in a group never did this, because their support turn cancelled
+  any harmful spell; they now do, after heals, and keep a quarter of their power for healing.
+- Augmentation Healers cast Celerity while a melee groupmate is fighting in melee without it. The buff choice had no
+  place for it, so it was never cast.
+- Cabalist, Enchanter and Spiritmaster bots and companions use their pet focus damage shield again. It had been
+  turned off because a bot shielding its pet stood still for good: every later spell was queued behind the shield's
+  channel. Now a bot's next spell ends the channel, as a player's does, and the shield is used as a player uses it:
+  only while a monster is hitting the pet (the pet tanking, as when soloing), in a fight that will last, with nothing
+  hitting the caster and power to save. It is dropped two seconds after nobody hits the pet any more (and so when the
+  fight ends), when the caster has to move or is hit, and for heals or a mez, and the bot carries on.
+- A monster's area spell that recasts itself from each target it lands on (Lydsyg's disease in Iarnvidiur's Lair)
+  could fill the server's memory against a large raid until it stopped. A monster can no longer ask for the same
+  instant spell on the same target within a second, queue it twice, or hold more than 16 casts. (From the
+  chris4aker/OfflineDAoC-LivingServer fork.)
+- Reaver bots no longer stand in place. Starting a pulsing spell ends the others, so a Reaver's three auras (damage,
+  armor and melee curse) cancelled each other every turn; a Reaver now runs one aura at a time, and ends it when it
+  would hit a mesmerized monster or one not in the fight, or three seconds after nothing in the fight is in reach.
+- Bots leave mesmerized and rooted monsters alone while something else is fighting them: a mesmerized monster, or one
+  held by a root that damage breaks, is not chosen as a target and a bot's pet is moved off it; area spells will not
+  reach one either. When every monster left is held, the bots break one and carry on. Single-target fights are as
+  before.
+- Bot raids no longer stall on a scripted boss that is immune outside its tether. On Albion's way to Summoner's Hall,
+  Lieutenant Meade in the Hall of the Corrupt takes no damage once pulled away from his spot, and the raid fought him
+  until its four hours ran out; bots now stop and lead such a boss home, as they already did for the epic bosses.
+- A raid rally no longer gives up while its bots are still arriving: someone arriving with less than ten minutes left
+  gives the rally ten more minutes, up to thirty minutes past its deadline. The 200 needed to start are unchanged.
+- Bots spread over a zone's camps instead of crowding a few (84 level 19 to 23 bots shared four brown bear and moor
+  wolf camps in Cornwall while other camps stood empty). A camp now counts as crowded when its bots outnumber half its
+  live monsters (two bots always fit); bots choose among the uncrowded camps while any is left, and only then the
+  least crowded ones. No monster was added or moved.
+- Tank bots look after their group the way players do. Protect sits on the group's healer (or on the squishy member
+  being hit), Guard covers the squishiest member a monster is hitting in melee while the tank has a shield up, and
+  Intercept takes the blows for one below half health next to the tank, on its one-minute reuse. Taunting is as before.
+- Siege weapons can be summoned in the battlegrounds as well as the Frontiers, and bots attack an enemy realm's keep
+  doors, so battleground keeps can be taken.
+- Siege results say how a siege ended. Sieges that ended any other way than captured, defended or a failed rally were
+  all logged as "Ended (unconfirmed)"; they now show "Timed out", "Ended: keep no longer a target" or the reason given.
+- A Necromancer bot's servant no longer stands still forever on a command that never finished. Out of combat, a
+  servant command still waiting after ten seconds is dropped and the servant carries on.
+- Bots can list up to three items on the Realm Exchange at a time (was one).
+- Siege musters, marches, repels and the four-hour cap now run on the live clock. The first time check overflowed and
+  stopped every later one from running. (Found by the stefanrows/OfflineDAoC fork; from the
+  chris4aker/OfflineDAoC-LivingServer fork.)
+- Long runs no longer slow down from effects that never end: an effect that ended before it started, an ending effect
+  its owner had already dropped, and effects on deleted monsters or pets (a deleted Sluaghbinder pet's Cairn Boneplate
+  kept pulsing) are now removed. (From the rambodolphin13/OfflineDAoC and chris4aker/OfflineDAoC-LivingServer forks.)
+- The server no longer leaks memory on pathfinding (about 250 MB an hour on the fork's runs): route queries are now
+  shared per zone instead of kept forever for every thread, and freed when a zone unloads. Bot logins no longer leak
+  a system handle each (about 1,500 an hour). (From the chris4aker/OfflineDAoC-LivingServer fork.)
+- No more lag spikes near medallion merchants ([issue #25](https://github.com/shadowofze/OfflineDAoC/issues/25)). A
+  bot far from its merchant ran up to 18 failing route searches every 15 seconds; it now searches only within 2,000
+  units of the merchant, walks toward it from farther away, and waits 30 seconds after a failed search. (From the
+  chris4aker/OfflineDAoC-LivingServer fork.)
+- Torst no longer disappears when he summons his eddies (the summon threw an error and the server removed him), and
+  a bot letting go of a siege weapon no longer throws an error in the siege timer. (From the
+  chris4aker/OfflineDAoC-LivingServer fork.)
+- Bots no longer buy Darkness Falls seal gear with coin, and spend their seals instead. A bot shopping at the nearest
+  merchant could pick a seal merchant and pay the seal price in copper (15 to 51 copper for seal gear), while the
+  seals it looted sat unused in its bags. Bots now only buy with coin from merchants that sell for coin (never seal,
+  Atlantean glass, aurulite or bounty point merchants). In Darkness Falls a bot that isn't grouped walks to its own
+  realm's seal merchant and pays in seals for an upgrade it can afford, and wears it; while a dearer upgrade is still
+  ahead it saves for it, and with nothing left to save for it buys the most valuable seal item it can and sells it or
+  posts it on the Realm Exchange like any other loot. Applies to every server (normal mode).
+
+- A dead bot no longer shows as two dead bodies. When a bot released, the server moved its body to the bind point
+  before raising it: every client was told to leave the old body as a corpse, and the bot was re-created dead at the
+  bind point too (seen since 0.1, in both clients). The body now goes without a trace and the raised bot appears
+  standing. A dead bot also stays where it fell: nothing but its own release moves it (a companion killed outside an
+  inn showed up dead next to the innkeeper; any other attempt is now refused and logged with the code that tried it).
+- Bots and companions use what they learn at once. Training a companion's specs or a bot's level-up added the new
+  spells to its skills but not to the spell list it casts from, so they waited until the bot was created again (a
+  Hunter trained to Beastcraft 5 never used its new buffs until dismissed and summoned again). Styles and abilities
+  already came at once.
+- Bards, Minstrels, Skalds and Paladins hold one song or chant like a player instead of twisting through all of them:
+  speed while travelling, endurance (then power, then health) in a fight, and whatever the group is short of when
+  standing around. A held song lasts at least 10 seconds and is never recast while it pulses; Paladins hold endurance.
+  A performer without speed or endurance yet uses another song it knows until then.
+- Relics: a relic a bot had dropped could no longer be picked up by anyone, with no message. The broken hand-off is
+  cleared, the relic drops properly and a bot whose bags lost it gets it back. Every refusal now says why (someone is
+  already carrying it, too far away, how many of the 8 needed are at the pad), the Get key picks a relic up like a
+  right-click, bots carrying a relic never stealth (they dropped it within seconds), and a /raid or group companion
+  carrying one captures it at its realm's shrine.
+- Keep doors no longer repair themselves while enemies are within 3,000. A broken relic temple door crossed the 15%
+  line on its 30-minute repair tick and shut behind a raid fighting the guards inside (relic temples have no lord, so
+  the keep counted as out of combat 5 minutes after the last door hit). Same 5% per 30 minutes otherwise.
+- Legion's throw is an encounter throw like the dragons': companions stay down fighting instead of being dragged up
+  to the purgatory platform, whose only way down is a zone point bots can't use; helpers already fighting near a
+  player's landing spot stay in that fight.
+- A companion released for good no longer makes the server retry saving it every second. Its record was deleted while
+  its save stayed queued, and each failed save also held up the other bots saved with it.
+- The Sluaghbinder is no longer offered anywhere: new characters can't choose it, no gamebots or /spawn companions are
+  made as one, and its trainer, wisp, quest line and quest monsters are gone (existing installs: run
+  tools/claude-version/remove_sluaghbinder_npcs.py once with the server stopped). Old characters still load.
+- Solo gamebots pick up the coin and items of their own kills again. The check for who may pick up a dropped bag
+  compared the owner by reference instead of by value, so a bot never counted as the owner of its own drops.
+- Bots buy the best equipment upgrade they can afford. They chose the best upgrade on a merchant's list first and,
+  when it cost more than they had, bought nothing, although cheaper upgrades were on the same list.
+- Relic campaigns: an army out to take a relic first takes the frontier keeps whose sentinels guard that relic keep.
+  Every keep a realm holds stands a 3x-health sentinel at its relic temple, and an army that marched straight in was
+  wiped by them (in one test 125 of 173 deaths at a relic keep were guards, 63 of them sentinels). The relic siege
+  follows once at most two sentinels are left.
+- High-end raid encounters (epic named monsters, the raid boss, a dungeon's final bosses): a player in the fight gets
+  one item in four straight into the bag and 25% of the coin; the bots share the rest. Other kills are unchanged.
+- Gamebots are drawn at a player's height (short, average or tall) instead of a random size that could make them
+  far taller than any player.
+- Bot relic raids can take a relic home. Before, a relic raid could never end in a capture:
+  - After the gates fall, the army goes up onto the enemy relic shrine (in four of the six relic keeps the relic sits
+    about 650 units from the keep centre and 830 higher, so the bots never saw it and the pad never held the 8 it
+    needs). A relic is lifted as soon as there is a way to it, not after every door of the keep is broken.
+  - The healthiest raider on the pad carries it and runs home: no fighting or looting on the way unless stunned or
+    cornered, and it opens its own keep's gates to reach its shrine (it used to stand outside them until the stuck
+    check made it drop the relic, over and over). The escort stays with it until the capture.
+  - Sieging bots with nothing else to fight hit the nearest gate by hand, as players did, instead of waiting for rams.
+    Ranged bots step in to a sentinel (relic temple guards take no damage from beyond 800).
+  - A relic campaign is kept, and retried, until its relic siege really starts; it ends after six hours without a
+    keep taken (not six hours from the start) or three steps in a row with no progress. Raids in progress survive a
+    server restart and are planned again about five minutes later; a relic being carried at a restart goes back to
+    the pad it was taken from.
+  - A relic that goes back to its pad by itself ends its carrier event (the leftover event blocked every new siege
+    for every realm for up to four hours), only living sentinels count, every refused pickup is logged with the
+    reason, and the frontier porters no longer teleport a player carrying a relic (bots already could not).
+- Gamebots face the monster they are hitting. A bot that walked to its own spot (closing in, a flank, behind for a
+  style) and stopped kept facing the way it walked while it swung; it now turns to its target.
+
+**World**
+- Bring A Friend reaches as far as on Dawn of Light, and only monsters in sight come. Friends came from up to 1,500
+  units for a full group (450 plus 150 for each other member), through walls and from the next room; in Cardova's
+  first room they came from other rooms and hallways. Now friends come from within 2/5 of the pulled monster's aggro
+  range (200 units for most monsters), in a dungeon from 250 units for one attacker plus 150 for each other (up to
+  1,000) with the nearest first, and only if they can see the pulled monster. How many come still depends on the size
+  of the group. A monster that came as a friend, or one already in that fight, brings no friends of its own for two
+  minutes, so a pull brings one round of adds instead of a chain across the room.
+- Monsters with no faction bring friends again: their own kind. Bring A Friend only counted monsters of the same or an
+  allied faction, and two thirds of the aggressive monsters in the game have no faction, so they never brought anyone,
+  whatever the size of the group (Midgard's frore liches, windswept wraiths and chillsome wights, for example). A
+  monster with no faction now brings others of the same name that have no faction either, the way wraiths brought
+  wraiths; monsters with a faction work as before. The server setting baf_same_name_without_faction turns it off.
+- The Huntsmen and Woodsmen of Campacorentin Forest patrol the roads in pairs again instead of standing still. Period
+  sightings show a Huntsman and a Woodsman together all along the forest's main roads; each Huntsman now walks one
+  stretch of road up and down with a Woodsman at his side, along the same road the horse routes take.
+- Helmets that showed nothing on the head now look like a normal helm. Fifteen helmet looks have no head model in the
+  game client at all, so the client drew nothing when one was worn; the commonest was the Albion cloth cap (most random
+  Albion cloth caps rolled it), along with crowns, circlets, a leather cap and the Dragonsworn full helms. Every such
+  helmet now uses its realm's usual helm for its armour type (Albion cloth caps the plain Albion cloth helm), random
+  helmets no longer roll them, and the ones already in the game were changed.
+- A door the server has no record of opens again when you use it. Such a door is opened by a stand-in that the
+  server makes on the spot, but the stand-in started out already open, so opening it changed nothing and the
+  door stayed shut. The server log now also names any door it doesn't know (DOOR_NOT_IN_DATABASE), so missing
+  ones can be found and added.
+- NPCs no longer flicker twice after every teleport. The server resent everything in sight twice after a teleport or
+  region change; it now resends once, and only what it sent while your client was still loading.
+- More Albion helmets that showed no face now show one: the chain coif family (11 looks, for example the alloy mail
+  coif) and the leather helm family (16 looks, for example the cured siluric leather helm, with the cloth helm and
+  chain helm stand-ins). Only how they are drawn changes.
+- Ten Minstrel songs show their own icons. The speed songs (Motivational Chant to Motivational Anthem) carried the
+  Skald's Song of Travel icons and the power songs (Song of Power to Song of Empowering) the Bard's Rhyme icons.
+- Ordinary bounties no longer send you after named monsters.
+- A second resurrection offer no longer cancels the first. Accepting it said "No one is currently trying to resurrect
+  you" (a Druid gamebot cast ten rezzes with no result), and an offer that ran out was later taken as a decline. Now
+  one offer is open at a time, and only the one you are looking at can be accepted or declined. (From the
+  chris4aker/OfflineDAoC-LivingServer fork.)
+- Clicking PLAY twice no longer drops you at "Entering the world": a second world entry while the first is still
+  loading is ignored. (From the chris4aker/OfflineDAoC-LivingServer fork.)
+- "You must wait 0 seconds" now shows the real wait, rounded up to whole seconds. (From the
+  chris4aker/OfflineDAoC-LivingServer fork.)
+- Quest names match whatever their case, so a quest whose name is written differently in two places still starts and
+  finishes. (From the lometur/HearthDAoC fork.)
+- Trials of Atlantis regions are switched off as the server settings always meant. disabled_expansions is written in
+  the client's expansion numbers (Trials of Atlantis 3, Catacombs 4...), but the region check compared it with the
+  Regions table's own numbers (Trials of Atlantis 2), so the Trials of Atlantis regions, and the Atlas event regions
+  filed under it, stayed loaded; only Catacombs and Darkness Rising were off. Nothing reachable is lost: no zone line
+  leads there and no player or bot was in them. Applies to every server (normal mode).
+- Necromancers can be created again. The disabled_classes setting held the Disciple, the class a new Necromancer
+  starts as, so the server refused new Necromancers (any race; Britons were the ones reported) for normal accounts,
+  while GM accounts, which skip that check, could still make one. Necromancer is a Shrouded Isles class. This is a
+  setting in the game database: new release databases carry the fix, and an existing install can run
+  tools/claude-version/enable_necromancer_creation.py once with the server stopped (it backs up the database first).
+  Applies to every server (normal mode).
+- The classes and races the server settings switch off are refused on the original client too. Ranges in the
+  disabled lists (Catacombs classes "58-62", races "16-21": Half Ogre, Frostalf, Shar and the Minotaurs) were never
+  read as ranges at character creation or by trainers, so the original client could still make them while the new
+  client already hid them. Characters that already exist are unchanged. Applies to every server (normal mode).
+- Salvaging a jewellery-type (magical) item no longer turns it into a cloth item. Its type was changed for the
+  salvage calculation and never changed back, so an item whose salvage was cancelled stayed cloth. Applies to every
+  server (normal mode).
+- 68 classic quest rewards now carry real 1.65 stats. When the classic quest rewards were added, 53 got made-up stats
+  because no period page was found, and others lost bonuses the item builder couldn't read. Fixed:
+  - 20 made-up rewards have a real Allakhazam page under another spelling and now use it: level, armour or damage and
+    speed, and bonuses (for example Gurz, Avalon's Defender Boots, Devastation, the Viraniel's belts).
+  - 23 more made-up rewards take the bonuses of a real sibling (another piece of the same set, or the same reward
+    made for another class), with the item's own weapon skill (for example Kiss of Death, now Thrust +5, Parry +4;
+    the Stoneheart weapons from the Troll's weapons).
+  - 2 made-up belts that were stronger than any real reward of their level were brought down to the period range.
+  - 23 rewards get back real 1.65 bonuses that were lost: Smiting, Soulrending, Arboreal Path, Light and Mana skills,
+    and the staves' elemental, Body, Mind and Spirit focus levels.
+  - Later bonus forms were turned back into the 1.65 ones (Power Pool % into Power, All Archery into the realm's bow
+    skill); Catacombs class bonuses were not added.
+  - Existing installs: run tools/claude-version/fix_quest_reward_stats.py once with the server stopped (it backs up
+    the database and only changes rows that still hold the old values). Applies to every server (normal mode).
+
+- Arrows and bolts have item information on a merchant, in your bags and in a trade: the damage, range and accuracy
+  modifiers the game applies (for example "Range: Clout (-15%)"), the damage type, how many come in a pack and how
+  many stack (the window was empty).
+- The launcher no longer crashes when its server log can't be rotated (another launcher window held the file): the
+  crash took the server and the game down with it.
+- Monster loot tables roll as they were written. A monster with two loot-table rows read its own table once per row
+  and carried the list over, so its sure drops (100%) dropped twice and every other item was rolled three times,
+  while the second row's own table was never used. Each row now reads its own table once.
+- Night and day monsters (ghosts, night spawns, faerie frogs...) saved while asleep no longer keep their asleep state
+  (peaceful, can't be targeted, no name): about 220 of them could never be fought again.
+- Tasks (/task): /task asks the targeted townsperson or guard for a task, or shows your current one (/task abort to
+  give it up); the Quest Guide is /questguide. Kill tasks name a random common monster of the guard's zone (every
+  kill task named the same one) and point the way from the guard; delivery tasks go to a townsperson of your own
+  realm, far away when possible (it was any NPC of any realm); craft tasks no longer crash without recipes nearby;
+  the 5-minute wait after refusing works; tasks stop after level 19 and a failed task still counts. A kill task is
+  worth about three same-level kills; a delivery never more than a kill task.
+- No error at server stop from the zone bonus handler.
+- Inventory information no longer shows the "Atlas ROG" salvage marker.
+
+**Companions and commands**
+- /spawn specs opens a menu like /spawn that lists every class of your realm with its builds, such as
+  [Healer (Mending)] [Healer (Augmentation)] [Healer (Pacification)]; click one to add that companion. /spawn healer
+  augmentation does the same from a macro, and /spawn healer still picks a build at random. Each build is named after
+  the spec line it really trains highest; melee builds are named by their weapon setup (One Handed and Shield, Two
+  Handed, Celtic Dual, Hand to Hand, Left Axe).
+- Companions with Stealth hide when you stealth and come out when you do, or when they are drawn into a fight. They
+  follow the same rules you do (not in combat or casting, not too close to an enemy), a Minstrel stops its songs first,
+  and while hidden they cast nothing but heals.
+- /tc always takes you to your capital's Realm Exchange. /transfercorpse also claimed /tc, so the server reported an
+  error at every start and the two could swap. /transfercorpse keeps its full name. (From the lometur/HearthDAoC
+  fork; Nikse77 and chris4aker found the same clash.)
+- /spawn Clerics, Druids and Healers stand and heal during a fight instead of walking back to their place in the
+  formation between heals, follow you again three seconds after it, or at once if you get more than 1,500 units away,
+  and no longer walk away from you to heal or buff someone. (From the Nikse77/OfflineDAoC fork, branch mod-0.37.)
+- Companions' pets follow their own owner's target. When you sent your pet in, every companion's pet switched to your
+  pet's target; now your pet attacking starts the fight for companions not yet in one, as a damage spell does, and a
+  companion already fighting keeps its own target, and so does its pet.
+- Companions and their pets leave your crowd control alone. Your mesmerize, stun or root no longer sends the group at
+  that monster: they join the fight on another monster that is fighting the group, and the one you are holding is
+  left alone even before the spell lands.
+- Spell casters' builds are named after the class's own spell line, for example Sorcerer Telekinesis, Disorientation
+  and Domination, Theurgist Abrasion, Refrigeration and Vapormancy, Cleric Rebirth, Guardian Angel and Terrible Hammer.
+  The trainer's name (Matter Magic and so on) still works when typed.
+- /spawn specs now offers builds for the classes that had only one. Their existing variants are listed by the line
+  they train highest (Infiltrator Critical Strike, Dual Wield, Slash, Thrust; Nightshade Critical Strike, Celtic Dual,
+  Blades, Piercing; Ranger Pathfinding, Recurve Bow, Celtic Dual; Berserker Left Axe or a weapon; and the same for
+  Minstrel, Scout and Valewalker), and four builds were added: Death Servant Necromancer, Soulrending Reaver (flail
+  and shield), Regrowth Bard and Spear Hunter. Existing builds and the bots already playing them are unchanged.
+- Companions are put away while their player rides a stable route (hidden, untouchable, idle) and come back beside
+  the player at the end of the route or when the player jumps off early. The check looked for a personal horse,
+  which a stable route never sets, so companions ran (and died) behind the horse.
+- Druids and Minstrels (solo too) send their pet into the fight while they heal or sing.
+- Gamebots and companions sit down when they rest and stand up to move, cast or fight, as players do (the server now
+  tells the client; only the look changes, resting itself works as before).
+
+**The original client**
+- The character creation screen no longer shows the Atlas freeshard's "Class / Race Combination:
+  https://planner.atlasfreeshard.com" line across its top; that strip is now the same plain stone as the other
+  pregame screens. Only the creation screen's picture in `pregame/pregame.mpk` changed; the original is kept in
+  `runtime/client-opendaoc/app/backups/no-atlas-planner-text-20261030/` (tool: `source/tools/remove_atlas_planner_line.py`).
+
+**The new client**
+- A monster or NPC that dies stops attacking at once. It sometimes went on swinging for a second or two over its
+  death, when a blow of its own arrived just after the killing blow; the original client never animates a dead body.
+- The new client keeps a log of the spells it sees cast and land around you (spell_log.txt in its save folder, the
+  last few hundred lines), to attach to a bug report when a spell's animation or effect doesn't show.
+- A spell at a target you can't see (behind a wall or a hill) is refused at once with "You can't see your target
+  from here!", as in the original client. It used to cast in full and only then fail with that message.
+- Ghostly characters (Spiritmaster spirits, ghost NPCs) keep their hair from every angle. Part of it vanished
+  depending on where you looked from, so a ghostly dwarf's braided head looked bald from the front.
+- Robes hang as long robes, as in the original client. They were drawn on the vest body with sleeves and trousers
+  showing under them (a troll Bonedancer's robe looked like a striped tunic). Now a robe uses the long robe body,
+  with the arms and legs (and a Highlander's kilt) hidden and shorter boots and gloves, and every other armour piece
+  takes the body, boot or glove shape its item names (its extension), where everything used to fall back to the
+  first shape.
+- Helms and hats wear their own material. The Norse Cloth Cap that many cloth casters wear showed a sheet of
+  chain and scales; it is padded leather again, as are 23 other helms that had the same wrong texture (Celtic cloth,
+  reinforced and scale caps, the tiaras, some guard helms).
+- Snow wolves (savage winterwolves and the like) fall over when they die. They stood on in their idle pose,
+  because they had been built with the animations of the wolf puppy pets, which look the same but have no death.
+  Every monster now plays its own animation set, which also gives the Labyrinth's living Undead Minotaur its own
+  moves (it had the dead one's), and Fomorians and Red Caps with and without weapons their own.
+- A buff overridden by a stronger one of its kind (and an immunity) shows tinted red on your effects bar, as in
+  the original client. Both used to look active.
+- Weapons you aren't using stay on you, as in the original client: a two-hander rides on your back while you
+  fight with one hand and a shield, and a one-hander hangs at your belt while you use your two-hander or bow.
+  Shields, bows, staves and polearms you aren't using are put away out of sight.
+- Sheathed weapons hang the way the original client hangs them: a two-hander's hilt comes up over your left shoulder
+  with the blade down your back under the cloak, and one-handers hang head down at the belt. They used to hang out
+  across the cloak.
+- A cloak covers the spiked shoulder pieces of some chain chests (on Kobolds most of all), which came through the
+  cloak's inner edges when standing still.
+- A Necromancer's necroservant no longer shows up carrying a two-handed sword. A creature with no gear of its own
+  could show the weapons of whatever had been in its place before (an abomination's sword after switching pets).
+- Shift + right-click on a quickbar slot empties it, as in the original client. Dragging it off the bar still works.
+- Helmets show on every race that can wear them: Briton women, Half Ogres, Frostalfs and Shar had no helmets in
+  many sets, and some full helms (the Albion full plate helm) showed on Briton men only.
+- Paladin chants look like the original client: the Refreshment chants' golden chalice appears over each healed
+  group member again (it had been left out of the effect), and chant pulses no longer make the paladin wave their
+  arms. The blessing halo and the Mjolnir and Gungnir effects got their missing parts back too.
+- The Necromancer's abomination (and other glowing demon knights) has its glowing eyes in its helmet again, not on
+  its chest armour.
+- Weapon enchantment glows stay on the blade instead of trailing far behind a swinging sword.
+- Names no longer peek around building walls when the character behind the wall is hidden.
+- Four campfires that floated above the ground (one in Camelot Hills, among others) sit on the ground.
+- The Crafted Keeper's arms no longer stretch into long thin strands when it moves. Its model file keeps its bones
+  with the arms held straight out, while the body is fitted to them with the arms down; the client now fits the body
+  the way the original client does. Some other monsters move more cleanly for the same reason, among them the stone
+  and wolf dragons, the Dracolich, Soulkeeper, harpies, slugs, beetles, crabs, scorpions and eels.
+- Avalonian, Elf and Sylvan men's feet no longer go through their cloak when they run. Their skeletons give two
+  bones the same name, and the right side of the cloak followed the wrong one, so that panel never swung with the
+  run. The client now picks the same bone the original client does. Dark Elves, Half Orcs, Xaphans, mammoths and some
+  other monsters with the same quirk move more like the original too.
+- Snowdonia Fortress's metal gates (portcullises) open when the levers are pulled. Gates that slide instead of
+  swinging never moved; the other border keep gates, Caer Diogel's bars and two stone halls' portcullises open too.
+- The target window's FACE, FOLLOW and STICK buttons work when playing on the server (they answered "No such
+  command"), and pressing the same one again on the same target turns it off, as in the original client. (From the
+  chris4aker/OfflineDAoC-SocialExpansion fork.)
+- /target <name> and /assist fill the target window. The server picked the target, but the client never showed it,
+  so a following /invite found no target. (From the chris4aker/OfflineDAoC-SocialExpansion fork.)
+- Abilities such as Sprint, Stealth and Quickcast can be dragged onto the quickbar, as the skills sheet says.
+  (From the chris4aker/OfflineDAoC-SocialExpansion fork.)
+- Stealth works. Stealth is a specialization, not an ability, and the new client had no way to use it: it was
+  missing from the Abilities window, could not go on the quickbar, and /stealth answered "unrecognized command"
+  (issue #16). Stealth now has its own row in the Abilities window to click or drag onto the quickbar, and /stealth
+  and /hide work. While hidden you, and stealthed group members you can still see, are drawn as a dark green
+  ghostly form; enemies who can't detect a stealther still don't see it at all. The Stealth buff also shows its own
+  icon instead of another spell's picture.
+- The new client no longer freezes after a teleport. Right after /tc (or any region change, or a neighbouring zone
+  loading in), it could lock up for good and show "Not Responding": the background zone loaders were touching the
+  graphics card while it was drawing. They now leave those steps to the game's main thread, a little at a time, so
+  nothing stutters, and region changes load a bit faster than before.
+- The new client no longer gets stuck on the loading screen at login, or locks up when you spawn companions in a
+  busy place. Part of the teleport fix above failed for every NPC, armour, weapon and helm model, which brought the
+  same lock-up back whenever many of them loaded at once.
+- The frame rate no longer drops for good after a long ride or a busy session. The models of characters, armour,
+  weapons and spell effects you had passed stayed on the graphics card; the client now lets go of what nothing on
+  screen uses, keeps one copy of a texture that many models share (one weapon texture was loaded once per weapon),
+  and clears out sooner when the card is nearly full. Nothing is drawn at lower quality.
+- No more lines along zone borders: the ground's colour map no longer bleeds the far side of a zone into its edge,
+  and the corners where zones meet at the edge of a region are no longer torn open.
+- Castle and keep walls block you again (Caer Ulfwych, the keeps, relic keeps, round towers, Caer Diogel and others):
+  only part of their walls had collision.
+- The Darkness Falls entrance in Avalon Marsh has its pillars, platform and purple flames instead of a plain white
+  shape.
+- Inconnu women have their hair under a circlet (and their own hair styles and hooded cloak), and Half Ogre men
+  their own cloaks and hair: they had been given Briton and Highlander hair.
+- Grindylows, grasping ghouls, waterlogged corpses and the other crawling legless zombies are visible again.
+- Casting hands flicker as in the original client instead of holding a solid glowing orb (weapon glows were
+  affected the same way).
+- The fog on Avalon Isle and its neighbours is the light haze of the original client (it closed in at a few dozen
+  metres); every zone now takes its region's fog, as the original does.
+- Banners on far-off towers no longer seem to float in the sky.
+- No more empty gaps in the combat window when songs pulse.
+- Server lag no longer snaps you back (rubberbanding): when the server pulls you back to a spot you just left, you
+  carry on where you are, as the original client lets you.
+- You can't run while stunned, mesmerized or rooted (the server pulled you back each time), and a GM who starts the
+  game hidden shows the stealth look.
+- Every window an NPC opens (stable routes, Realm Exchange, emblems, quest guide, innkeeper) closes when you walk
+  away, like the merchant and trainer windows.
+- The X on the trainer's skill preview closes the trainer window.
+- After the game is closed by force, logging in again keeps trying until the server lets the old session go (about
+  a minute), instead of stopping at "already logged in".
+- A double-click on PLAY enters the world once. (From the chris4aker/OfflineDAoC-LivingServer fork.)
+- The merchant window has SELL and APPRAISE buttons next to BUY, as in the original client: right-click an item in
+  your backpack, then SELL, or APPRAISE to hear what the merchant would pay. Dragging an item onto the window still
+  sells it.
+- Closing the new client while characters around you are still loading no longer crashes it on the way out.
+- The new client no longer freezes for good at the loading screen or soon after logging in. It happened on most
+  logins in testing: loading the spell effects, armour and models of the people around you in the background could
+  take every slot the game engine keeps for small background jobs while waiting on the game itself, and the engine
+  then waited on one of those slots forever. That background loading now runs on its own threads, and if the game
+  ever stops responding for 8 seconds it writes what it was waiting on to its log.
+- Logging in with a dyed weapon or helm no longer fills the log with "material is null" errors (and the occasional
+  crash that could follow): the dyed copy of its look is now made once and shared.
+- Crafting works in the new client. /craft (or a tradeskill row in the skills window) opens the tradeskill window:
+  pick a trade, a product and its material tier, see what it needs and how much of it you carry, and MAKE it; the
+  original's progress bar shows while you work, and MAKE again cancels. Your tradeskills and their levels are listed
+  in the skills window.
+- The item information window has SALVAGE and REPAIR buttons for items in your backpack, as in the original client.
+- A house vault's window is titled HOUSE VAULT; only an Account Vault Keeper's page says ACCOUNT VAULT.
+- Dead companion bots and gamebots can be targeted again (click the body, or the group window), so you can
+  resurrect them. Monster bodies still can't be targeted.
+- Right-clicking a relic picks it up in the new client (it did nothing; only targeting it and pressing Get Item
+  worked). Right-clicking loot on the ground picks it up too; a gravestone is just targeted, for /pray.
+- The window title says Offline DAoC Rebuilt v0.38.
+- BUY, SELL and APPRAISE work even when you have targeted something else since opening a merchant (your companion,
+  another NPC). The server only deals with your target and ignored the purchase without a word; the merchant whose
+  window is open is now targeted again first.
+- The merchant window works like the original client's. A QUANTITY row (1 to 100) buys that many packs per BUY and
+  goes back to 1 afterwards unless KEEP is on. The list scrolls: a page holds up to 30 goods and only the first 20
+  could be reached (the arrow merchants have more). Each row shows how many one purchase gives ("x20") for arrows,
+  bolts, poisons and thrown weapons.
+- Right-clicking arrows or bolts at a merchant shows what they are, as in the original client: how many, the damage
+  type, the weight, and their damage, range and accuracy grades. Poisons show their pack size and level.
+- A small AGGRESSIVE / DEFENSIVE button in the group window's corner switches your companions' stance in one click
+  (the same as typing /aggressive or /defensive).
+- A bot or companion riding a stable horse sits on it even when the server's riding message arrives just before the
+  horse or the rider appears (it was dropped and the rider walked beside its horse).
+- The new client logs every death of a gamebot or companion it sees (death_log.txt in its save folder: the server's
+  last positions and where the body is drawn), to compare with the server's log when a body shows up in the wrong place.
+- Bots on a stable master's horse stay in the saddle. They kept dropping off and teleporting along behind the horse:
+  the client checked the bot's position against where it was drawing the horse, which runs a little behind its own
+  updates at that speed, so every bend counted as a lost ride. The bot's position is now checked against the horse's
+  own position from the server, and only a bot truly apart from its horse for 3 seconds gets off.
+- Bots and companions sit down to rest, sitting until they get up to move on or fight (with the server's resting
+  signal; they used to rest standing).
+- A monster, bot or companion standing in a fight turns to face what it is hitting, as the original client turned
+  fighters itself (with the server's own turn; bots that stepped to a flank kept facing the way they walked in).
+- Loot bags, dropped gear and other things the server lays on the ground no longer float after you cross a zone border
+  (most often on a stable horse). At a border everything moves with the new zone, but those objects stayed where they
+  were and hung in the air or sank into the ground somewhere else.
+- A Necromancer's shade (or anyone in another form, such as a Vendo) shows its spell glows on the body you see. They
+  were drawn on the hidden normal body, so the hands never glowed.
+
+**Credits**
+- Thanks to chris4aker's Living Server fork
+  ([chris4aker/OfflineDAoC-LivingServer](https://github.com/chris4aker/OfflineDAoC-LivingServer), formerly
+  OfflineDAoC-SocialExpansion) for the fix for groups waiting on members that keep dying on the way to their meetup,
+  the boss recast guard, and three new-client fixes: the FACE / FOLLOW / STICK buttons, the server's target changes
+  (/target, /assist) and abilities on the quickbar.
+- Thanks to the [Nikse77/OfflineDAoC](https://github.com/Nikse77/OfflineDAoC) fork (branch mod-0.37) for the /spawn
+  healer fixes.
+- Thanks to lometur's [HearthDAoC](https://github.com/lometur/HearthDAoC) fork (Thomas Farral) for the /tc fix and
+  the quest names that match whatever their case; Nikse77 and chris4aker found the same /tc clash.
+- Thanks to chris4aker's Living Server fork (release v1.1-beta) for the memory and handle leak fixes, the issue #25
+  merchant lag fix, the resurrection offer fixes, the world-entry guard and the new client's one-click PLAY, and the
+  Torst, wait seconds and siege weapon fixes.
+- Thanks to [stefanrows/OfflineDAoC](https://github.com/stefanrows/OfflineDAoC) for finding the siege timer overflow.
+- Thanks to [rambodolphin13/OfflineDAoC](https://github.com/rambodolphin13/OfflineDAoC) for the effect leak fix.
+
 ## 0.37 / 0.37b / 0.37c — 2026-10-18
 
 The first version that comes as an update to 0.36: the overview is in [docs/RELEASE-0.37.md](docs/RELEASE-0.37.md);

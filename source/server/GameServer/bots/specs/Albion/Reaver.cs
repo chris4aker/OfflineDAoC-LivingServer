@@ -2,9 +2,21 @@ namespace DOL.GS
 {
     public class ReaverBotSpec : BotSpec
     {
-        public ReaverBotSpec()
+        public ReaverBotSpec(eSpecType spec = eSpecType.None)
         {
             SpecName = "ReaverBotSpec";
+
+            if (spec == eSpecType.SoulrendingReaver)
+            {
+                // Soulrending first with a flail and shield (owner 2026-10-29), on the same points as the others.
+                SpecType = eSpecType.OneHandAndShield;
+                WeaponOneType = eObjectType.Flexible;
+                Add(Specs.Soulrending, 50, 1.0f);
+                Add(Specs.Flexible, 42, 0.8f);
+                Add(Specs.Shields, 42, 0.5f);
+                Add(Specs.Parry, 9, 0.1f);
+                return;
+            }
 
             int randBaseWeap = Util.Random(4);
 

@@ -19,6 +19,14 @@ namespace DOL.GS
 
 		private static Dictionary<int, GameDoorBase> m_doors = new();
 
+		/// <summary>
+		/// Doors the navmesh has no door polygons for (RegisterDoor failed). The mesh does not know whether they are shut:
+		/// the six relic gates (door 02 of every relic keep) lie on open floor, so a planner must check them itself
+		/// (relic audit 2026-10-31, B3; AutonomousKeepApproachNavigation).
+		/// </summary>
+		private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, GameDoorBase> m_unregisteredInNavmesh = new();
+		public static ICollection<GameDoorBase> UnregisteredInNavmesh => m_unregisteredInNavmesh.Values;
+
 		public const string WANT_TO_ADD_DOORS = "WantToAddDoors";
 
 		/// <summary>
@@ -114,7 +122,9 @@ namespace DOL.GS
 				else
 				{
 					// Track doors that can't be opened via interaction, so they can be treated as obstacles.
-					if (!door.CanBeOpenedViaInteraction && !PathfindingProvider.Instance.RegisterDoor(door) && log.IsErrorEnabled)
+					if (!door.CanBeOpenedViaInteraction && !PathfindingProvider.Instance.RegisterDoor(door))
+						m_unregisteredInNavmesh[door.DoorId] = door;
+					if (m_unregisteredInNavmesh.ContainsKey(door.DoorId) && log.IsErrorEnabled)
 					{
 						log.Error($"Failed to register door in pathfinding provider, possible navmesh/object location mismatch " +
 							$"(Id: {door.DoorId}) " +

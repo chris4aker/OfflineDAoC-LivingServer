@@ -37,14 +37,14 @@ namespace DOL.GS
                 case eCharacterClass.Mercenary: return new MercenaryBotSpec(spec);
                 case eCharacterClass.Minstrel: return new MinstrelBotSpec();
                 case eCharacterClass.Paladin: return new PaladinBotSpec(spec);
-                case eCharacterClass.Reaver: return new ReaverBotSpec();
+                case eCharacterClass.Reaver: return new ReaverBotSpec(spec);
                 case eCharacterClass.Scout: return new ScoutBotSpec();
                 case eCharacterClass.Sorcerer: return new SorcererBotSpec(spec);
                 case eCharacterClass.Theurgist: return new TheurgistBotSpec(spec);
                 case eCharacterClass.Wizard: return new WizardBotSpec(spec);
                 case eCharacterClass.Necromancer: return new NecromancerBotSpec(spec);
 
-                case eCharacterClass.Bard: return new BardBotSpec();
+                case eCharacterClass.Bard: return new BardBotSpec(spec);
                 case eCharacterClass.Blademaster: return new BlademasterBotSpec(spec);
                 case eCharacterClass.Champion: return new ChampionBotSpec(spec);
                 case eCharacterClass.Druid: return new DruidBotSpec(spec);
@@ -62,7 +62,7 @@ namespace DOL.GS
                 case eCharacterClass.Berserker: return new BerserkerBotSpec();
                 case eCharacterClass.Bonedancer: return new BonedancerBotSpec(spec);
                 case eCharacterClass.Healer: return new HealerBotSpec(spec);
-                case eCharacterClass.Hunter: return new HunterBotSpec();
+                case eCharacterClass.Hunter: return new HunterBotSpec(spec);
                 case eCharacterClass.Runemaster: return new RunemasterBotSpec(spec);
                 case eCharacterClass.Savage: return new SavageBotSpec(spec);
                 case eCharacterClass.Shadowblade: return new ShadowbladeBotSpec(spec);
@@ -87,7 +87,11 @@ namespace DOL.GS
             eCharacterClass.Sorcerer => [eSpecType.MatterSorc, eSpecType.BodySorc, eSpecType.MindSorc],
             eCharacterClass.Theurgist => [eSpecType.EarthTheur, eSpecType.IceTheur, eSpecType.AirTheur],
             eCharacterClass.Wizard => [eSpecType.EarthWiz, eSpecType.IceWiz, eSpecType.FireWiz],
-            eCharacterClass.Necromancer => [eSpecType.DeathsightNecro, eSpecType.PainworkingNecro],
+            // Added builds (owner 2026-10-29): eSpecType.None is each class's original build with its own variants.
+            eCharacterClass.Necromancer => [eSpecType.DeathsightNecro, eSpecType.PainworkingNecro, eSpecType.DeathServantNecro],
+            eCharacterClass.Reaver => [eSpecType.None, eSpecType.SoulrendingReaver],
+            eCharacterClass.Bard => [eSpecType.None, eSpecType.RegrowthBard],
+            eCharacterClass.Hunter => [eSpecType.None, eSpecType.SpearHunter],
             eCharacterClass.Blademaster => [eSpecType.DualWield, eSpecType.DualWieldAndShield],
             eCharacterClass.Champion => [eSpecType.OneHandAndShield, eSpecType.TwoHanded],
             eCharacterClass.Druid => [eSpecType.RegrowthDruid, eSpecType.NurtureDruid, eSpecType.NatureDruid],

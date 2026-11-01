@@ -258,7 +258,9 @@ class QuickSlot extends Control:
 		return prev
 
 	func _can_drop_data(_pos: Vector2, data: Variant) -> bool:
-		return data is Dictionary and String(data.get("kind", "")) in ["item", "quickslot", "skill", "spell", "style", "petcmd", "macro"]
+		# "ability": Sprint, Stealth, Quickcast ... from the skills sheet (panel_sheets.gd: "These drag onto the quickbar"),
+		# which use_skill already plays (abilities.gd); the bar refused them (owner 2026-10-18: Sprint showed a no-entry sign)
+		return data is Dictionary and String(data.get("kind", "")) in ["item", "quickslot", "skill", "spell", "style", "petcmd", "macro", "ability"]
 
 	func _drop_data(_pos: Vector2, data: Variant) -> void:
 		var e: Dictionary = data.get("entry", {}) if data.kind == "quickslot" else \
@@ -275,7 +277,8 @@ class QuickSlot extends Control:
 		force_drag({"kind": "quickslot", "entry": e}, _preview(e))
 
 	# one left click uses the slot, as the 1.65 quickbar (was: double-click only - most clicks did nothing, owner
-	# 2026-10-10); right-click shows what it is; drag it off the bar to clear it
+	# 2026-10-10); right-click shows what it is; shift + right-click empties it, as the old client (owner 2026-10-19);
+	# or drag it off the bar
 	func _gui_input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.pressed:
 			if event.button_index == MOUSE_BUTTON_LEFT and not event.double_click:
@@ -284,6 +287,10 @@ class QuickSlot extends Control:
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
 				var e := entry()
 				if e.is_empty():
+					return
+				if event.shift_pressed:
+					_assign(Dictionary())
+					accept_event()
 					return
 				if String(e.get("kind", "")) == "item":
 					PlayerData.delve.emit(ItemDb.item(String(e.get("id", ""))))

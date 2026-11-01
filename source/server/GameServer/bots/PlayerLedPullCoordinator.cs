@@ -105,7 +105,12 @@ namespace DOL.GS
             return bot != order.Tank;
         }
 
-        public static void LeaderEngaged(GamePlayer player, GameLiving target)
+        /// <param name="fromPet">
+        /// The player's pet started it (owner 2026-10-29): the fight starts for the companions not yet in one, while a
+        /// companion already fighting keeps its own target, and so does its pet; only the player's own attacks and
+        /// /pull retarget the whole group.
+        /// </param>
+        public static void LeaderEngaged(GamePlayer player, GameLiving target, bool fromPet = false)
         {
             CompanionEngagementMode.RememberPull(player, target);
             if (player?.Group == null || !player.Group.IsInTheGroup(player) || !ValidEnemy(player, target)) return;
@@ -117,7 +122,7 @@ namespace DOL.GS
                 if (order != null && Interlocked.CompareExchange(ref order.Finished, 1, 0) == 0 && order.Target != target)
                     (order.Tank.Brain as BotBrain)?.CancelOrderedPull(order.Target);
             }
-            Engage(player, target, false);
+            Engage(player, target, false, fromPet);
         }
 
         public static void OnAttack(GameLiving actor, AttackData attack)
@@ -153,10 +158,16 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>
+        /// The monster the player is fighting, which their companions join: what the player or the player's pet attacks,
+        /// or what the player casts harmful magic at. A mesmerize, stun or root is not one (owner 2026-10-29: companions
+        /// broke the player's own mez): that fight is joined on another monster (<see cref="FindLeaderControlFight"/>).
+        /// </summary>
         public static GameLiving FindLeaderTarget(GamePlayer player)
         {
             if (player?.IsAlive != true) return null;
-            if ((player.IsAttacking || player.IsCasting && player.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) &&
+            Spell casting = player.castingComponent?.SpellHandler?.Spell;
+            if ((player.IsAttacking || player.IsCasting && casting?.IsHarmful == true && !IsCrowdControl(casting)) &&
                 player.TargetObject is GameLiving target && ValidEnemy(player, target)) return target;
             if (player.ControlledBrain is ControlledMobBrain brain && brain.Owner == player &&
                 brain.Body?.IsAlive == true && brain.Body.CurrentRegionID == player.CurrentRegionID &&
@@ -171,23 +182,74 @@ namespace DOL.GS
             return null;
         }
 
-        private static void Engage(GamePlayer player, GameLiving target, bool orderHumanPet)
+        private static void Engage(GamePlayer player, GameLiving target, bool orderHumanPet, bool onlyIdle = false)
         {
             if (player?.Group == null || !ValidEnemy(player, target)) return;
             foreach (GameLiving member in player.Group.GetMembersInTheGroup())
             {
                 if (member is GameBot bot && bot.PlayerGroupLeader == player && Available(bot, player) &&
-                    bot.IsWithinRadius(target, BotBrain.GROUP_DEFENSE_ASSIST_RADIUS) && bot.Brain is BotBrain brain)
+                    bot.IsWithinRadius(target, BotBrain.GROUP_DEFENSE_ASSIST_RADIUS) && bot.Brain is BotBrain brain &&
+                    !(onlyIdle && InOwnFight(bot)))
                     brain.AssistPlayerAttack(target);
             }
             if (orderHumanPet) player.ControlledBrain?.Attack(target);
         }
+
+        /// <summary>A companion already fighting a live, unheld monster of its own.</summary>
+        public static bool InOwnFight(GameBot bot) =>
+            bot.Brain is BotBrain { HasAggro: true } && bot.TargetObject is GameLiving { IsAlive: true } current &&
+            !BotBrain.IsBreakablyControlled(current);
 
         public static bool Available(GameBot bot, GamePlayer player) => bot != null && player?.IsAlive == true &&
             bot.IsAlive && bot.ObjectState == GameObject.eObjectState.Active && bot.Realm == player.Realm &&
             bot.Group == player.Group && bot.Group?.IsInTheGroup(bot) == true &&
             bot.CurrentRegionID == player.CurrentRegionID && bot.IsWithinRadius(player, BotBrain.GROUP_DEFENSE_ASSIST_RADIUS) &&
             !bot.IsOnStableMasterRoute && !bot.IsReturningAfterRelease;
+
+        /// <summary>The monster the player is mesmerizing, stunning or rooting right now, or null.</summary>
+        public static GameLiving LeaderControlTarget(GamePlayer player)
+        {
+            if (player?.IsAlive != true || !player.IsCasting) return null;
+            Spell casting = player.castingComponent?.SpellHandler?.Spell;
+            return IsCrowdControl(casting) && player.TargetObject is GameLiving target && target.IsAlive ? target : null;
+        }
+
+        /// <summary>
+        /// The player is controlling one monster of a pack: the companions join the fight on another monster that is
+        /// fighting the group (nearest first, never the controlled one or one already held), or stay out when none is.
+        /// </summary>
+        public static GameLiving FindLeaderControlFight(GamePlayer player, GameBot bot)
+        {
+            GameLiving held = LeaderControlTarget(player);
+            if (held == null || player.Group == null || bot == null) return null;
+            GameLiving best = null;
+            int bestDistance = int.MaxValue;
+            foreach (GameNPC npc in player.GetNPCsInRadius((ushort)BotBrain.GROUP_DEFENSE_ASSIST_RADIUS))
+            {
+                if (npc == held || !npc.IsAlive || npc is GameBot || BotBrain.IsBreakablyControlled(npc) ||
+                    npc.TargetObject is not GameLiving victim || !InGroupFight(player, victim) || !ValidEnemy(player, npc))
+                    continue;
+                int distance = bot.GetDistanceTo(npc);
+                if (distance < bestDistance)
+                {
+                    best = npc;
+                    bestDistance = distance;
+                }
+            }
+            return best;
+        }
+
+        private static bool InGroupFight(GamePlayer player, GameLiving victim)
+        {
+            if (victim is GameNPC { Brain: IControlledBrain controlled } && controlled.GetLivingOwner() is GameLiving owner)
+                victim = owner;
+            return victim == player || player.Group.IsInTheGroup(victim);
+        }
+
+        /// <summary>A spell that holds a monster rather than hurts it: mesmerize, stun, root.</summary>
+        public static bool IsCrowdControl(Spell spell) =>
+            spell?.SpellType is eSpellType.Mesmerize or eSpellType.Mez or eSpellType.Stun or eSpellType.Amnesia ||
+            spell?.SpellType is eSpellType.SpeedDecrease or eSpellType.UnbreakableSpeedDecrease && spell.Value >= 99;
 
         private static bool ValidEnemy(GamePlayer player, GameLiving target) => player != null && target?.IsAlive == true &&
             target.ObjectState == GameObject.eObjectState.Active && target.CurrentRegionID == player.CurrentRegionID &&

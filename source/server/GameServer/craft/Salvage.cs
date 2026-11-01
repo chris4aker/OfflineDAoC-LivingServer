@@ -194,10 +194,20 @@ namespace DOL.GS
             Multiplier = Multiplier < 1 ? 1 : Multiplier;//Not less then 0
             Multiplier = Multiplier > 99 ? 100 : Multiplier;//Not more then 100
 
-            //Magic items cannot be salvaged so give them cloth value
-            item.Object_Type = item.Object_Type == 41 ? 32 : item.Object_Type;
-            
-            int Percent = (int) player.GetCraftingSkillValue(CraftingMgr.GetSecondaryCraftingSkillToWorkOnItem(item)) * 100 / CraftingMgr.GetItemCraftLevel(item);
+            // Magic items cannot be salvaged so give them cloth value - for this calculation only. The item itself used to be
+            // changed to cloth for good, so one whose salvage was cancelled stayed cloth (owner 2026-10-30).
+            int originalType = item.Object_Type;
+            int Percent;
+            try
+            {
+                if (originalType == (int)eObjectType.Magical)
+                    item.Object_Type = (int)eObjectType.Cloth;
+                Percent = (int) player.GetCraftingSkillValue(CraftingMgr.GetSecondaryCraftingSkillToWorkOnItem(item)) * 100 / CraftingMgr.GetItemCraftLevel(item);
+            }
+            finally
+            {
+                item.Object_Type = originalType;
+            }
             Percent = Percent > 99 ? 100 : Percent;
 
             if (Percent < Multiplier) //Multiplier will never be below 0%

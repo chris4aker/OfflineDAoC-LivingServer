@@ -18,6 +18,10 @@ uniform float detail_fade_m = 90.0;
 uniform sampler2D base_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform float base_tiles = 256.0;
 uniform sampler2D layer_tex[8] : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+// the same textures, clamped: a layer drawn once across the zone (not tileable - the zone colour map) sampled with
+// wrap-around blended the far side of the zone into every border - a pale strip along each zone seam (owner
+// 2026-10-29: "white lines for every zone boundry"; the client has no visible borders)
+uniform sampler2D layer_tex_clamped[8] : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
 uniform float layer_tiles[8];
 uniform float layer_tileable[8];
 uniform int layer_count = 0;
@@ -53,8 +57,14 @@ void fragment() {
 			if (i >= layer_count) break;
 			float w = layer_weight(i, puv);
 			if (w <= 0.002) continue;
-			float tiles = layer_tileable[i] > 0.5 ? layer_tiles[i] : 1.0;
-			c = mix(c, textureGrad(layer_tex[i], UV * tiles, dx * tiles, dy * tiles).rgb, w);
+			vec3 lc;
+			if (layer_tileable[i] > 0.5) {
+				float tiles = layer_tiles[i];
+				lc = textureGrad(layer_tex[i], UV * tiles, dx * tiles, dy * tiles).rgb;
+			} else {
+				lc = textureGrad(layer_tex_clamped[i], UV, dx, dy).rgb;
+			}
+			c = mix(c, lc, w);
 		}
 		float far = smoothstep(far_fade_m * 0.6, far_fade_m, dist);
 		ALBEDO = mix(c, painted, far);

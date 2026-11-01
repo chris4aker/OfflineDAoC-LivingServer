@@ -32,6 +32,15 @@ func _pack(gltf: String) -> bool:
 				var m := mesh.surface_get_material(i)
 				if m is BaseMaterial3D:
 					(m as BaseMaterial3D).albedo_texture = null
+	# a race figure's placeholder materials go altogether (2026-10-30): Fig3Figure gives every part it shows its own
+	# material, and Fig3Figure.pack_figure loads this .scn on the NPC-view worker - loading a mesh sets its surface
+	# materials, which made their render-server materials on the worker while a frame was drawn ("Parameter 'material'
+	# is null" after a live login; the freeze GpuJobs exists to prevent)
+	if gltf.contains("/characters/races/"):
+		for mi in root.find_children("*", "MeshInstance3D", true, false):
+			var mesh := (mi as MeshInstance3D).mesh
+			for i in (mesh.get_surface_count() if mesh else 0):
+				mesh.surface_set_material(i, null)
 	# Godot's animation compression (bit-packed, page-based tracks): a race's 189 clips held ~736,000 full keys
 	for ap in root.find_children("*", "AnimationPlayer", true, false):
 		for lib_name in (ap as AnimationPlayer).get_animation_library_list():

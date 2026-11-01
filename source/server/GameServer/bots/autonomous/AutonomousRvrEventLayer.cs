@@ -113,7 +113,183 @@ public static partial class AutonomousRvrEventLayer
     private static readonly HashSet<string> SelectedKeeps = new(StringComparer.Ordinal);
     private static readonly HashSet<string> SelectedRelics = new(StringComparer.Ordinal);
 
+    // ---- relic campaigns (owner 2026-10-30): every frontier keep a realm holds stands a 3x-health sentinel at its relic
+    // temple (RelicGuardManager, the live rule), and a forced relic army that marched straight in was wiped by them
+    // (run 2: 125 of 173 deaths at Hibernia's relic keep were guards, 63 of them sentinels). As players did, the
+    // attackers first take the keeps whose sentinels still stand there; the relic siege follows once at most
+    // MaxSentinelsForRelicAssault are left.
+    public const int MaxSentinelsForRelicAssault = 2;
+    public const long CampaignRetryMilliseconds = 5 * 60_000;
+    /// <summary>Longest wait between two retries of a step that could not start (5, 10, 20, then 30 minutes).</summary>
+    public const long CampaignRetryMaximumMilliseconds = 30 * 60_000;
+    /// <summary>
+    /// A campaign ends after this long without progress (a sentinel keep taken), not six hours after it began (relic
+    /// audit 2026-10-31, L1: every step is a full muster, march and siege, 1-2 hours in True 1.65, and at least four of
+    /// the six sentinel keeps must fall). Scaled with the True 1.65 travel time.
+    /// </summary>
+    public static long CampaignIdleMilliseconds => 6 * 60 * 60_000L;
+    /// <summary>A campaign whose last three steps took no sentinel keep (or lost them again) gives up.</summary>
+    public const int CampaignMaxStepsWithoutProgress = 3;
+    private sealed class RelicCampaign
+    {
+        public required LiveObjective Relic;
+        public required eRealm Attacker;
+        public string StepId;
+        public long ContinueAt;     // 0 = waiting for the current step to end
+        public long DeadlineTick;   // no progress by then: the campaign ends
+        public bool StepEnded;      // the last step's event ended (EndEvent); judged at the next continuation
+        public int LastHeld = -1;   // sentinel keeps held when the last step began
+        public int StepsWithoutProgress;
+        public int Retries;         // consecutive continuations that could not start a step
+    }
+    private static readonly Dictionary<string, RelicCampaign> Campaigns = new(StringComparer.Ordinal);
+
+    /// <summary>The frontier keeps whose sentinels still stand at this relic keep.</summary>
+    public static int[] HeldSentinelKeeps(LiveObjective relic) =>
+        relic?.IsRelicKeep == true
+            ? DOL.GS.GameEvents.RelicGuardManager.SentinelKeepsAt(relic.OwningRealm, relic.RegionId, relic.X, relic.Y)
+            : [];
+
+    public static LiveObjective ObjectiveForKeep(DOL.GS.Keeps.AbstractGameKeep keep) =>
+        new($"rvr-keep-{keep.KeepID}", keep.Name, keep.IsRelic ? Intent.AssaultRelicKeep : Intent.AssaultKeep,
+            keep.Realm, keep.Region, keep.X, keep.Y, keep.Z, keep.IsRelic, 0, 0,
+            keep.Guards.Values.Count(g => g.IsAlive), keep.Doors.Values.Count(d => d.IsAlive && d.State == eDoorState.Closed));
+
+    private static DOL.GS.Keeps.AbstractGameKeep NextSentinelKeep(LiveObjective relic, long now) =>
+        HeldSentinelKeeps(relic)
+            .Select(id => GameServer.KeepManager.GetKeepByID(id))
+            .Where(k => k != null && !Events.ContainsKey($"rvr-keep-{k.KeepID}") && !OnCooldown($"rvr-keep-{k.KeepID}", now))
+            .OrderBy(k => (long)(k.X - relic.X) * (k.X - relic.X) + (long)(k.Y - relic.Y) * (k.Y - relic.Y))
+            .FirstOrDefault();
+
     public static bool ForceStart(LiveObjective target, eRealm attacker, long now, out string reason)
+    {
+        lock (Sync)
+        {
+            if (target?.IsRelicKeep == true && target.OwningRealm != attacker &&
+                attacker is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia)
+            {
+                // One relic campaign per relic keep: another realm's would have its steps taken over.
+                if (Campaigns.TryGetValue(target.Id, out RelicCampaign other) && other.Attacker != attacker)
+                {
+                    reason = $"{GlobalConstants.RealmToName(other.Attacker)} is already on a relic campaign against {target.Name}.";
+                    return false;
+                }
+                int[] held = HeldSentinelKeeps(target);
+                if (held.Length > MaxSentinelsForRelicAssault)
+                {
+                    var next = NextSentinelKeep(target, now);
+                    if (next == null)
+                    {
+                        reason = $"{target.Name} still has {held.Length} sentinels, and none of their keeps can be attacked right now (a siege or a cooldown).";
+                        return false;
+                    }
+                    LiveObjective step = ObjectiveForKeep(next);
+                    if (!ForceStartCore(step, attacker, now, out string stepReason))
+                    {
+                        reason = $"{target.Name} still has {held.Length} sentinels; the first step, {next.Name}, could not start: {stepReason}";
+                        return false;
+                    }
+                    if (!Campaigns.TryGetValue(target.Id, out RelicCampaign campaign))
+                        Campaigns[target.Id] = campaign = new RelicCampaign { Relic = target, Attacker = attacker, DeadlineTick = now + CampaignIdleMilliseconds };
+                    campaign.StepId = step.Id;
+                    campaign.ContinueAt = 0;
+                    campaign.StepEnded = false;
+                    campaign.Retries = 0;
+                    campaign.LastHeld = held.Length;
+                    DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer)).Info(
+                        $"RVR_RELIC_CAMPAIGN relic={target.Id} attacker={attacker} sentinels={held.Length} step={step.Id} (\"{next.Name}\")");
+                    reason = $"{target.Name} still has {held.Length} sentinels. The army takes {next.Name} first; the relic siege follows by itself once at most {MaxSentinelsForRelicAssault} are left.";
+                    return true;
+                }
+                // The relic siege itself. Relic audit 2026-10-31 (B4): the campaign was removed BEFORE the siege was tried, so
+                // a siege that could not start (an automatic siege on the keep, or its cooldown) ended the campaign silently.
+                // It now stays (and is retried) until the siege really starts.
+                bool ownCampaign = Campaigns.ContainsKey(target.Id);
+                if (ownCampaign && Events.TryGetValue(target.Id, out ActiveEvent running) &&
+                    running.AttackerRealm == attacker && !running.DefenseReaction)
+                {
+                    Campaigns.Remove(target.Id);
+                    reason = $"{target.Name}: the relic siege by {GlobalConstants.RealmToName(attacker)} is already under way.";
+                    if (DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer)) is { IsInfoEnabled: true } endedLog) endedLog.Info(
+                        $"RVR_RELIC_CAMPAIGN_ENDED relic={target.Id} attacker={attacker} reason=\"relic siege already running\"");
+                    return true;
+                }
+                bool started = ForceStartCore(target, attacker, now, out reason);
+                if (started && ownCampaign && Campaigns.Remove(target.Id) &&
+                    DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer)) is { IsInfoEnabled: true } siegeLog)
+                    siegeLog.Info(
+                        $"RVR_RELIC_CAMPAIGN_SIEGE relic={target.Id} attacker={attacker} sentinels={held.Length} reason=\"relic siege started\"");
+                return started;
+            }
+            return ForceStartCore(target, attacker, now, out reason);
+        }
+    }
+
+    /// <summary>A campaign whose step has ended goes on: the next sentinel keep, or the relic siege itself.</summary>
+    private static void ContinueRelicCampaigns(long now)
+    {
+        if (Campaigns.Count == 0) return;
+        foreach ((string relicId, RelicCampaign campaign) in Campaigns.ToArray())
+        {
+            // A step whose event vanished without EndEvent (it cannot be found any more) has ended too.
+            if (campaign.ContinueAt == 0 && campaign.StepId != null && !Events.ContainsKey(campaign.StepId))
+            {
+                campaign.ContinueAt = now + 60_000;
+                campaign.StepEnded = true;
+            }
+            if (campaign.ContinueAt == 0 || now < campaign.ContinueAt)
+                continue;
+            var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
+            var relicKeep = int.TryParse(relicId["rvr-keep-".Length..], out int relicKeepId) ? GameServer.KeepManager?.GetKeepByID(relicKeepId) : null;
+            if (relicKeep == null || relicKeep.Realm == campaign.Attacker)
+            {
+                Campaigns.Remove(relicId);
+                if (log.IsInfoEnabled) log.Info($"RVR_RELIC_CAMPAIGN_ENDED relic={relicId} attacker={campaign.Attacker} reason=\"{(relicKeep == null ? "relic keep not found" : "relic keep changed hands")}\"");
+                continue;
+            }
+            LiveObjective relic = ObjectiveForKeep(relicKeep);
+            if (campaign.StepEnded)
+            {
+                // L1: judge the step that just ended: did the realm's held sentinel keeps go down?
+                campaign.StepEnded = false;
+                int held = HeldSentinelKeeps(relic).Length;
+                if (campaign.LastHeld < 0 || held < campaign.LastHeld)
+                {
+                    campaign.StepsWithoutProgress = 0;
+                    campaign.DeadlineTick = now + CampaignIdleMilliseconds;
+                    if (log.IsInfoEnabled) log.Info($"RVR_RELIC_CAMPAIGN_PROGRESS relic={relicId} attacker={campaign.Attacker} step={campaign.StepId} sentinels={held} " +
+                        $"(was {campaign.LastHeld}) idleHours={CampaignIdleMilliseconds / 3_600_000d:0.#}");
+                }
+                else campaign.StepsWithoutProgress++;
+                campaign.LastHeld = held;
+            }
+            if (now > campaign.DeadlineTick || campaign.StepsWithoutProgress >= CampaignMaxStepsWithoutProgress)
+            {
+                Campaigns.Remove(relicId);
+                if (log.IsInfoEnabled) log.Info($"RVR_RELIC_CAMPAIGN_ENDED relic={relicId} attacker={campaign.Attacker} reason=\"" +
+                    (now > campaign.DeadlineTick ? $"no progress for {CampaignIdleMilliseconds / 3_600_000d:0.#} hours"
+                        : $"no sentinel keep taken in {campaign.StepsWithoutProgress} steps") + "\"");
+                continue;
+            }
+            bool started = ForceStart(relic, campaign.Attacker, now, out string why);
+            if (log.IsInfoEnabled) log.Info($"RVR_RELIC_CAMPAIGN_CONTINUE relic={relicId} attacker={campaign.Attacker} started={started} reason=\"{why}\"");
+            if (!started && Campaigns.TryGetValue(relicId, out RelicCampaign still))
+            {
+                // B4: a siege or cooldown in the way: try again, backing off (5, 10, 20, then every 30 minutes).
+                still.Retries++;
+                still.ContinueAt = now + CampaignRetryDelay(still.Retries);
+                if (log.IsInfoEnabled) log.Info($"RVR_RELIC_CAMPAIGN_RETRY relic={relicId} attacker={still.Attacker} attempt={still.Retries} " +
+                    $"nextMinutes={CampaignRetryDelay(still.Retries) / 60_000}");
+            }
+        }
+    }
+
+    /// <summary>Wait before retry number <paramref name="attempt"/> (1-based) of a campaign step that could not start.</summary>
+    public static long CampaignRetryDelay(int attempt) =>
+        Math.Min(CampaignRetryMaximumMilliseconds, CampaignRetryMilliseconds << Math.Clamp(attempt - 1, 0, 3));
+
+    private static bool ForceStartCore(LiveObjective target, eRealm attacker, long now, out string reason)
     {
         lock (Sync)
         {
@@ -401,12 +577,29 @@ public static partial class AutonomousRvrEventLayer
                 return ReservePlan(force, objectives);
 
             bool hasEnemy = objectives.Any(objective => objective.Kind == Intent.HuntEnemy && objective.EnemyCount > 0);
-            LiveObjective relic = ChooseVariedTarget(objectives.Where(objective => objective.Kind == Intent.AssaultRelicKeep && objective.IsRelicKeep &&
+            LiveObjective[] relicCandidates = objectives.Where(objective => objective.Kind == Intent.AssaultRelicKeep && objective.IsRelicKeep &&
                                                                objective.OwningRealm != force.Realm && !Events.ContainsKey(objective.Id) && !OnCooldown(objective.Id, nowTick))
-                , SelectedRelics);
+                .ToArray();
+            // Relic audit 2026-10-31 (M5): a realm whose own relic sits in an enemy relic keep goes for that keep first.
+            LiveObjective[] retakes = relicCandidates.Where(candidate => HoldsRelicOf(candidate, force.Realm)).ToArray();
+            LiveObjective relic = ChooseVariedTarget(retakes.Length > 0 ? retakes : relicCandidates, SelectedRelics);
             LiveObjective keep = ChooseVariedTarget(objectives.Where(objective => objective.Kind == Intent.AssaultKeep && !objective.IsRelicKeep &&
                                                               objective.OwningRealm != force.Realm && !Events.ContainsKey(objective.Id) && !OnCooldown(objective.Id, nowTick))
                 , SelectedKeeps);
+            if (relic != null && HeldSentinelKeeps(relic) is { Length: > MaxSentinelsForRelicAssault } held)
+            {
+                // Too many sentinels at that relic keep: a warband that would go for it takes one of their keeps instead
+                // (owner 2026-10-30, the live way to open a relic siege). Ordinary keep choices are left alone.
+                LiveObjective feeder = objectives
+                    .Where(o => o.Kind == Intent.AssaultKeep && !o.IsRelicKeep && o.OwningRealm == relic.OwningRealm &&
+                                !Events.ContainsKey(o.Id) && !OnCooldown(o.Id, nowTick) &&
+                                held.Any(id => o.Id == $"rvr-keep-{id}"))
+                    .OrderBy(o => (long)(o.X - relic.X) * (o.X - relic.X) + (long)(o.Y - relic.Y) * (o.Y - relic.Y))
+                    .FirstOrDefault();
+                if (feeder != null && Random.Shared.NextDouble() < RelicSiegeShare)
+                    keep = feeder;
+                relic = null;
+            }
             bool siegeCapable = force.MemberCount >= 4 && force.AverageLevel >= 50 && force.CanSupplySiege;
             if (SiegeScheduling && (keep != null || relic != null) && siegeCapable && !SiegeStartAllowed(nowTick, force.Realm))
                 return ReservePlan(force, objectives);
@@ -1324,6 +1517,8 @@ public static partial class AutonomousRvrEventLayer
             if (System.Threading.Interlocked.CompareExchange(ref _lastExpireTick, nowTick, last) != last)
                 return;
         }
+        ContinueRelicCampaigns(nowTick);
+        RefreshCarrierEvents(nowTick);
         foreach (var active in Events.Values)
         {
             if (!RealmEventBanter.ReminderDue(active.BattleStarted, active.PreparationNoticeSent, active.ExpiresTick - nowTick)) continue;
@@ -1416,9 +1611,20 @@ public static partial class AutonomousRvrEventLayer
                 ReleasedForces[force] = "Relic event ended: four-hour battle timer expired";
             CarrierEvents.Remove(entry.Key);
             CarrierTargets.Remove(entry.Key);
+            CarrierOrigins.Remove(entry.Key);
             Cooldowns[entry.Key] = nowTick + TargetCooldownMilliseconds;
+            LogCarrierEnded(entry.Key, "timed out", eRealm.None);
         }
     }
+
+    /// <summary>
+    /// The realm record of a siege that was neither captured nor defended, named by why it ended (owner 2026-10-29: it
+    /// read "Ended (unconfirmed)", nearly always because the keep stopped being a target, e.g. another realm took it).
+    /// </summary>
+    public static string SiegeEndOutcome(string reason) =>
+        reason?.StartsWith("Siege objective is no longer available") == true ? "Ended: keep no longer a target" :
+        reason?.Contains("four-hour") == true || reason?.Contains("timer") == true ? "Timed out" :
+        string.IsNullOrWhiteSpace(reason) ? "Ended" : "Ended: " + reason.Split(':', '.')[0].Trim();
 
     private static void EndEvent(ActiveEvent active, long nowTick, string reason, eRealm winner = eRealm.None)
     {
@@ -1432,12 +1638,18 @@ public static partial class AutonomousRvrEventLayer
                 realm == active.DefenderRealm, reason.StartsWith("Siege defended"), reason.StartsWith("Rally failed"), winner, realm), topic, slots);
         }
         RealmEventRecords.Finish(active.TargetId, reason.StartsWith("Rally failed") ? "Failed rally" : reason.StartsWith("Keep captured") ? "Captured" :
-            reason.StartsWith("Siege defended") ? reason.Contains("expired") ? "Defended (timeout)" : "Defended" : "Ended (unconfirmed)", reason,
+            reason.StartsWith("Siege defended") ? reason.Contains("expired") ? "Defended (timeout)" : "Defended" : SiegeEndOutcome(reason), reason,
             active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum());
         foreach (string force in active.Attackers.Keys.Concat(active.Defenders.Keys).Concat(active.ThirdRealm.Keys))
             ReleasedForces[force] = reason;
         Events.Remove(active.TargetId);
         Cooldowns[active.TargetId] = nowTick + TargetCooldownMilliseconds;
+        Campaigns.Remove(active.TargetId);   // the relic siege itself has ended
+        foreach (RelicCampaign campaign in Campaigns.Values.Where(c => c.StepId == active.TargetId && c.ContinueAt == 0))
+        {
+            campaign.ContinueAt = nowTick + 60_000;   // a minute for the army to regroup
+            campaign.StepEnded = true;
+        }
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
         if (log.IsInfoEnabled) log.Info($"RVR_EVENT_ENDED target={active.TargetId} reason=\"{reason}\"");
     }
@@ -1488,6 +1700,18 @@ public static partial class AutonomousRvrEventLayer
     }
 
     private static bool OnCooldown(string targetId, long nowTick) => Cooldowns.TryGetValue(targetId, out long until) && until > nowTick;
+
+    /// <summary>Whether the relic keep holds a relic that belongs to this realm (a retake target).</summary>
+    private static bool HoldsRelicOf(LiveObjective relicKeep, eRealm realm)
+    {
+        foreach (GameRelic relic in RelicMgr.GetRelics())
+            if (relic.IsMounted && relic.OriginalRealm == realm && relic.Realm == relicKeep.OwningRealm &&
+                relic.CurrentRegionID == relicKeep.RegionId &&
+                Math.Abs(relic.X - relicKeep.X) <= AutonomousRelicShrine.PadKeepRadius &&
+                Math.Abs(relic.Y - relicKeep.Y) <= AutonomousRelicShrine.PadKeepRadius)
+                return true;
+        return false;
+    }
 
     private static bool TryJoinCarrier(LiveObjective carrier, Force force, long nowTick, double roll)
     {
@@ -1558,7 +1782,9 @@ public static partial class AutonomousRvrEventLayer
                 ReleasedForces[force] = "Relic captured or event no longer available";
             CarrierEvents.Remove(id);
             CarrierTargets.Remove(id);
+            CarrierOrigins.Remove(id);
             Cooldowns[id] = nowTick + TargetCooldownMilliseconds;
+            LogCarrierEnded(id, "timed out", eRealm.None);
         }
     }
 
@@ -1606,7 +1832,12 @@ public static partial class AutonomousRvrEventLayer
                    (CarrierEvents.TryGetValue(targetId, out var carrier) && carrier.ExpiresTick > nowTick);
     }
 
-    public static void EndTarget(string targetId, long nowTick, eRealm winner = eRealm.None)
+    public static void EndTarget(string targetId, long nowTick, eRealm winner = eRealm.None) =>
+        EndTarget(targetId, nowTick, winner, winner == eRealm.None ? "ended" : "captured");
+
+    /// <param name="carrierOutcome">For a relic carrier event: "captured" (carried onto a shrine), "returned" (back on its
+    /// pad by itself) or "ended"; it goes into the RVR_RELIC_CARRIER_ENDED log line.</param>
+    public static void EndTarget(string targetId, long nowTick, eRealm winner, string carrierOutcome)
     {
         if (string.IsNullOrWhiteSpace(targetId))
             return;
@@ -1623,7 +1854,9 @@ public static partial class AutonomousRvrEventLayer
             {
                 string name = CarrierTargets.GetValueOrDefault(targetId)?.Name ?? "The relic";
                 foreach (eRealm realm in escort.Participants.Keys.Append(winner).Where(r => r != eRealm.None).Distinct())
-                    RealmEventNotices.Queue(targetId, realm, winner == eRealm.None
+                    RealmEventNotices.Queue(targetId, realm, carrierOutcome == "returned"
+                        ? $"{name} has gone back to its shrine. The struggle on the road has ended."
+                        : winner == eRealm.None
                         ? $"{name} has been secured at a shrine. The struggle on the road has ended."
                         : realm == winner ? $"{name} is safe in our shrine! Honour to its bearers and defenders."
                         : $"{GlobalConstants.RealmToName(winner)} has secured {name} at a shrine. Our struggle on the road is over.",
@@ -1631,13 +1864,19 @@ public static partial class AutonomousRvrEventLayer
                         realm == winner ? "-" : null);
             }
             bool removed = CarrierEvents.Remove(targetId, out var carrier);
-            if (removed) RealmEventRecords.Finish(targetId, "Captured / returned", "Relic mounted or recovered; escort/interception ended.");
+            if (removed) RealmEventRecords.Finish(targetId, carrierOutcome == "returned" ? "Returned" : "Captured / returned",
+                carrierOutcome == "returned" ? "Relic back on its pad by itself; escort/interception ended."
+                    : "Relic mounted or recovered; escort/interception ended.");
             CarrierTargets.Remove(targetId);
+            CarrierOrigins.Remove(targetId);
             if (removed)
                 foreach (string force in carrier.Participants.Values.SelectMany(realm => realm.Keys))
-                    ReleasedForces[force] = "Relic captured: event ended";
+                    ReleasedForces[force] = carrierOutcome == "returned" ? "Relic returned to its pad: event ended" : "Relic captured: event ended";
             if (removed)
+            {
                 Cooldowns[targetId] = nowTick + TargetCooldownMilliseconds;
+                LogCarrierEnded(targetId, carrierOutcome, winner);
+            }
         }
     }
 
@@ -1648,8 +1887,10 @@ public static partial class AutonomousRvrEventLayer
             if (!Events.TryGetValue(keepId, out var active) || active.ExpiresTick <= nowTick) return;
             // Even if the relic left before the battle formally began, every side follows the relic now (owner
             // 2026-10-07: all sides focus the relic wherever it is, carried with an escort or not).
-            if (!active.BattleStarted) active.ExpiresTick = Math.Max(active.ExpiresTick, nowTick + BattleLifetimeMilliseconds);
-            CarrierEvents[carrierId] = (active.ExpiresTick, new()
+            // Relic audit 2026-10-31 (L6): the carrier event used to keep whatever the siege had left, so a relic taken
+            // late in the battle lost its escort mid-trip. It gets its own window, kept open while the relic is carried
+            // or on the ground (RefreshCarrierEvents), and ends on capture or return.
+            CarrierEvents[carrierId] = (nowTick + CarrierEventMilliseconds, new()
             {
                 [active.AttackerRealm] = new(active.Attackers, StringComparer.Ordinal),
                 [active.DefenderRealm] = new(active.Defenders, StringComparer.Ordinal),
@@ -1665,8 +1906,13 @@ public static partial class AutonomousRvrEventLayer
             RealmEventRecords.Finish(keepId, "Relic taken", "Relic removed; the battle continued as an escort/interception event.");
             RealmEventRecords.Begin(carrierId, carrierAnchor?.Name ?? active.Target.Name, "Relic", GlobalConstants.RealmToName(active.AttackerRealm), "Continued from " + active.Target.Name);
             RealmEventRecords.Progress(carrierId, "Battle", "Relic escort / interception", active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum(), 0);
+            CarrierOrigins[carrierId] = (keepId, active.AttackerRealm);
             Events.Remove(keepId);
             Cooldowns[keepId] = nowTick + TargetCooldownMilliseconds;
+            var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
+            if (log.IsInfoEnabled) log.Info($"RVR_RELIC_CARRIER_EVENT carrier={carrierId} from={keepId} attacker={GlobalConstants.RealmToName(active.AttackerRealm)} " +
+                $"escorts={active.Attackers.Values.Sum()} defenders={active.Defenders.Values.Sum()} third={active.ThirdRealm.Values.Sum()} " +
+                $"windowMinutes={CarrierEventMilliseconds / 60_000}");
         }
     }
 

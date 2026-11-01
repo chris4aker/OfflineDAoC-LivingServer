@@ -67,6 +67,8 @@ namespace DOL.GS.Spells
                 // This is normally set in 'AttackComponent.CalculateEnemyAttackResult', but we don't call it.
                 if (ad.Target is GamePlayer playerTarget)
                     ad.ArmorHitLocation = playerTarget.CalculateArmorHitLocation(ad);
+                else if (ad.Target is GameBot botTarget)
+                    ad.ArmorHitLocation = botTarget.CalculateArmorHitLocation(ad);
 
                 // We need a fake weapon skill for the target's armor to have something to be compared with.
                 // Since 'damage' is already modified by intelligence, power relics, spell variance, and everything else; we can use a constant only modified by the caster's level.

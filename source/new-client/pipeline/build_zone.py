@@ -39,6 +39,14 @@ ESRGAN = ROOT / 'tools/realesrgan/realesrgan-ncnn-vulkan.exe'
 BOM = '\N{ZERO WIDTH NO-BREAK SPACE}\xef\xbb\xbf'
 
 
+def zone_local_npks(zone_id):
+    """{file name (lower case): path} of the zone's own models (zones/zoneNNN/nifs, any case) - they come before the
+    shared zones/Nifs ones with the same names."""
+    zd = next((d for d in (CLIENT / 'zones').iterdir() if d.is_dir() and d.name.lower() == f'zone{zone_id:03d}'), None)
+    nd = next((d for d in zd.iterdir() if d.is_dir() and d.name.lower() == 'nifs'), None) if zd else None
+    return {p.name.lower(): p for p in nd.iterdir() if p.suffix.lower() == '.npk'} if nd else {}
+
+
 def read_csv(raw):
     return [r for r in csv.reader(io.StringIO(raw.decode('latin1')))]
 
@@ -287,7 +295,11 @@ WORLD_OBJECT_DROP = {
     (1, 'Statue of Flitzitina', 505080, 496334): 5.9,
     (1, 'building supplies', 387045, 721976): 7.8, (1, 'building supplies', 388601, 723658): 11.4,
     (1, 'building supplies', 386996, 721975): 7.3, (1, 'building supplies', 386989, 722014): 7.1,
-    (1, 'building supplies', 388732, 723583): 13.9}
+    (1, 'building supplies', 388732, 723583): 13.9,
+    # campfires (wardnode + campfire effect) hung over the ground (owner 2026-10-20: "a floating campfire" at Camelot
+    # Hills loc 51322 38985): the old DB's height against the client's ground at the object's origin
+    (1, 'New Object', 600246, 522344): 0.78, (1, 'New Object', 558213, 524362): 1.07,
+    (1, 'New Object', 489433, 437934): 0.54, (100, 'campfire', 747601, 757900): 3.91}
 # Old-DB props for post-1.65 buildings (owner 2026-10-10 "another missing tower"): the Cotswold pennant (New Object,
 # pennant_a, 29 m up) tops the New Frontiers guard tower the later client added at 13916, 26591 ("Guard tower
 # (Instance 2)", next to the NF fences); the 1.65 client has no tower there, so the pennant is left out.
@@ -890,6 +902,9 @@ def build(zone_id, upscale=True):
     nifs = {int(r[0]): r for r in read_csv(dat['nifs.csv']) if r and r[0].strip().isdigit()}
     fixtures = [r for r in read_csv(dat['fixtures.csv'])[2:] if len(r) > 11 and r[1].strip().isdigit()]
     npk_files = {p.name.lower(): p for p in (CLIENT / 'zones/Nifs').iterdir()}
+    npk_files.update(zone_local_npks(zone_id))   # the zone's own nifs folder first (owner 2026-10-29: Avalon Marsh's
+    #   Darkness Falls portal drew zones/Nifs' generic 7 KB 'avpier' pier, solid white; the 1.64 client ships the
+    #   zone's own AVPIER.npk - pillars, portal platform, purple flames - with its textures in zone009/nifs)
     mdir = out / 'models'
     mdir.mkdir(exist_ok=True)
     tex_names, models, model_index = set(), [], {}
@@ -982,8 +997,9 @@ def build(zone_id, upscale=True):
         tex_names.add(clutter['atlas'])
     warnings = sorted({w for m in models for w in m.get('warnings', [])})
 
-    # textures
+    # textures: the zone's own nifs folder first, as its models (zone_local_npks)
     idx = TextureIndex()
+    idx.first = [f'zones/zone{zone_id:03d}/nifs']
     odir = out / 'textures/original'
     odir.mkdir(parents=True, exist_ok=True)
     missing = []

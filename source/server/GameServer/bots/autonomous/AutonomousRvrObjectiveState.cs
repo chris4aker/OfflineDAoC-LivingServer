@@ -9,7 +9,8 @@ public enum eAutonomousRvrPhase
     ClearingKeep,
     AssaultingLord,
     HuntingEnemy,
-    RelicRequiresPlayerCarrier,
+    /// <summary>A relic can be lifted: bots take and carry it themselves (the old name said a player had to).</summary>
+    TakingRelic,
 }
 
 public static class AutonomousRvrObjectiveState
@@ -28,6 +29,6 @@ public static class AutonomousRvrObjectiveState
         closedEnemyDoor ? eAutonomousRvrPhase.BreachingDoor :
         enemyLordAlive ? eAutonomousRvrPhase.AssaultingLord :
         enemyBotVisible ? eAutonomousRvrPhase.HuntingEnemy :
-        relicAvailable ? eAutonomousRvrPhase.RelicRequiresPlayerCarrier :
+        relicAvailable ? eAutonomousRvrPhase.TakingRelic :
         eAutonomousRvrPhase.Recon;
 }

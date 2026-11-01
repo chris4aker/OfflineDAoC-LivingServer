@@ -8022,9 +8022,12 @@ namespace DOL.GS
 
         /// <summary>A same-region MoveTo farther than this (x + y distance) refreshes the world view afterwards.</summary>
         public const int WorldRefreshJumpDistance = 1000;
-        /// <summary>When the refreshes run after a teleport or region change (ms): once the client has usually finished
-        /// loading, and once more for a slow load.</summary>
-        public static readonly int[] WorldRefreshDelays = [1500, 5000];
+        /// <summary>
+        /// When the refresh runs after a teleport or region change (ms). Owner 2026-10-29: two full refreshes made every
+        /// NPC in sight flicker twice on every teleport; now one refresh resends only what was first sent while the
+        /// client was loading (what it may have dropped), so NPCs already shown never flicker.
+        /// </summary>
+        public static readonly int[] WorldRefreshDelays = [2500];
         private ECSGameTimer _worldRefreshTimer;
 
         /// <summary>
@@ -8039,10 +8042,11 @@ namespace DOL.GS
         {
             _worldRefreshTimer?.Stop();
             int step = 0;
+            long since = GameLoop.GameLoopTime;
             _worldRefreshTimer = new ECSGameTimer(this, timer =>
             {
                 if (ObjectState == eObjectState.Active && Client?.ClientState is GameClient.eClientState.Playing)
-                    PlayerObjectCache.ClearLocked();
+                    PlayerObjectCache.ForgetSentSince(since);
                 step++;
                 if (step < WorldRefreshDelays.Length)
                     return WorldRefreshDelays[step] - WorldRefreshDelays[step - 1];
@@ -9625,6 +9629,13 @@ namespace DOL.GS
 
             if (floorObject.ObjectState is not eObjectState.Active)
                 return;
+
+            // A relic is taken with the same rules whether right-clicked or picked up with the Get key (2026-10-30).
+            if (floorObject is GameRelic relic)
+            {
+                relic.Interact(this);
+                return;
+            }
 
             if (floorObject is GameStaticItemTimed staticItem &&
                 !staticItem.IsOwner(this) &&
@@ -13664,6 +13675,46 @@ namespace DOL.GS
         public readonly Lock ItemUpdateCacheLock = new();
         public readonly Lock DoorUpdateCacheLock = new();
         public readonly Lock HouseUpdateCacheLock = new();
+
+        /// <summary>
+        /// Forgets only what was first sent at or after <paramref name="since"/> (a teleport), so the next world update
+        /// sends it again; everything the client already had stays as it is.
+        /// </summary>
+        public void ForgetSentSince(long since)
+        {
+            lock (NpcUpdateCacheLock)
+            {
+                foreach (var pair in NpcUpdateCache.Where(pair => pair.Value.CreatedTime >= since).ToArray())
+                {
+                    NpcUpdateCache.Remove(pair.Key);
+                    NpcInRangeCache.Remove(pair.Key);
+                }
+            }
+            lock (ItemUpdateCacheLock)
+            {
+                foreach (var pair in ItemUpdateCache.Where(pair => pair.Value.LastUpdateTime >= since).ToArray())
+                {
+                    ItemUpdateCache.Remove(pair.Key);
+                    ItemInRangeCache.Remove(pair.Key);
+                }
+            }
+            lock (DoorUpdateCacheLock)
+            {
+                foreach (var pair in DoorUpdateCache.Where(pair => pair.Value >= since).ToArray())
+                {
+                    DoorUpdateCache.Remove(pair.Key);
+                    DoorInRangeCache.Remove(pair.Key);
+                }
+            }
+            lock (HouseUpdateCacheLock)
+            {
+                foreach (var pair in HouseUpdateCache.Where(pair => pair.Value >= since).ToArray())
+                {
+                    HouseUpdateCache.Remove(pair.Key);
+                    HouseInRangeCache.Remove(pair.Key);
+                }
+            }
+        }
 
         /// <summary><see cref="Clear"/> under the cache locks, for a refresh while the world update may be running.</summary>
         public void ClearLocked()

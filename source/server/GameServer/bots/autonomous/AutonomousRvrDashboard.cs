@@ -45,6 +45,7 @@ public static class AutonomousRvrDashboard
                 GameEventMgr.AddHandlerUnique(KeepEvent.KeepTaken, OnKeepTaken);
                 GameEventMgr.AddHandlerUnique(RelicPadEvent.RelicStolen, OnRelicChanged);
                 GameEventMgr.AddHandlerUnique(RelicPadEvent.RelicMounted, OnRelicChanged);
+                GameEventMgr.AddHandlerUnique(RelicPadEvent.RelicReturned, OnRelicChanged);
                 _handlersRegistered = true;
             }
         }
@@ -63,6 +64,7 @@ public static class AutonomousRvrDashboard
                 GameEventMgr.RemoveHandler(KeepEvent.KeepTaken, OnKeepTaken);
                 GameEventMgr.RemoveHandler(RelicPadEvent.RelicStolen, OnRelicChanged);
                 GameEventMgr.RemoveHandler(RelicPadEvent.RelicMounted, OnRelicChanged);
+                GameEventMgr.RemoveHandler(RelicPadEvent.RelicReturned, OnRelicChanged);
                 _handlersRegistered = false;
             }
         }
@@ -252,7 +254,15 @@ public static class AutonomousRvrDashboard
         {
             AutonomousRvrEventLayer.EndTarget(
                 AutonomousRvrEventLayer.RelicCarrierTargetId(changed.Relic), GameLoop.GameLoopTime,
-                sender is GameRelicPad destination ? destination.Realm : eRealm.None);
+                sender is GameRelicPad destination ? destination.Realm : eRealm.None, "captured");
+            return;
+        }
+        // Relic audit 2026-10-31 (L5): a relic that goes back to its pad by itself ends its carrier event too (it lived on
+        // for hours and blocked every new siege).
+        if (e == RelicPadEvent.RelicReturned)
+        {
+            AutonomousRvrEventLayer.EndTarget(AutonomousRvrEventLayer.RelicCarrierTargetId(changed.Relic), GameLoop.GameLoopTime,
+                eRealm.None, "returned");
             return;
         }
         if (e != RelicPadEvent.RelicStolen || sender is not GameRelicPad pad)

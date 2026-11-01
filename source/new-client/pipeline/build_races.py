@@ -151,7 +151,14 @@ class Tables:
     def __init__(self):
         self.g = read_mpk(str(CLIENT / 'gamedata.mpk'))
         r = self.rows
-        self.parts = {x[0]: x for x in r('fig3parts.csv') if x and x[0].isdigit()}
+        # first row per id wins: the client's fig3parts.csv ends with 12 junk lines reusing ids 189-200 (Briton female
+        # hair 02 x6, Highlander male hair 03 x6) - read last-wins they replaced the Inconnu female's hair 1-4 and
+        # hood cloaks and the Half Ogre male's cloaks / hair (owner 2026-10-29: Inconnu women bald under a circlet).
+        # fig3map.csv names 191-194 as inc_f hair, whose real files (inc_f_Hair01..04) the client ships.
+        self.parts = {}
+        for x in r('fig3parts.csv'):
+            if x and x[0].isdigit():
+                self.parts.setdefault(x[0], x)
         self.fmap = {(int(x[0]), int(x[1])): [c.strip() for c in x[3:] if c.strip()]
                      for x in r('fig3map.csv') if x and x[0].isdigit() and len(x) > 3}
         self.desc = {(int(x[0]), int(x[1])): [c.strip() for c in x[3:] if c.strip()]
@@ -164,7 +171,10 @@ class Tables:
         self.by_fig = lambda name: {int(x[0].strip()): x for x in r(name) if x and x[0].strip().isdigit()}
         self.faces, self.eyes = self.by_fig('fig3facemap.csv'), self.by_fig('fig3eyecolormap.csv')
         self.skin_tones, self.decals = self.by_fig('fig3skincolormap.csv'), self.by_fig('fig3decalmap.csv')
-        self.hair = {(int(x[0]), int(x[1])): x for x in r('fig3haircolormap.csv') if x and x[0].isdigit() and x[1].isdigit()}
+        self.hair = {}                                   # (first row per key, as fig3parts)
+        for x in r('fig3haircolormap.csv'):
+            if x and x[0].isdigit() and x[1].isdigit():
+                self.hair.setdefault((int(x[0]), int(x[1])), x)
         self._archives = {}
 
     def rows(self, name):

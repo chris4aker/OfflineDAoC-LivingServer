@@ -52,6 +52,9 @@ namespace DOL.GS
         public ServiceObjectId ServiceObjectId { get; } = new(ServiceObjectType.CastingComponent);
         public bool IsCasting => SpellHandler != null; // May not be actually casting yet.
 
+        /// <summary>A focus spell's channel after its cast (the caster stands; its next spell ends the focus).</summary>
+        public bool IsFocusChanneling => SpellHandler is { CastState: eCastState.Focusing } handler && handler.Spell?.IsFocus == true;
+
         // A requested cast is asynchronous: IsCasting alone does not cover the
         // interval before the casting service accepts it. Bots must not build a
         // burst of requests that all inspected the same pre-cast mana balance.
@@ -156,7 +159,7 @@ namespace DOL.GS
             lock (_startSkillRequestsLock)
             {
                 if (Owner is GameBot bot && (_startSkillRequests.Count != 0 ||
-                    BotSpellPower.IsOffensiveCaster(bot) && IsCasting))
+                    BotSpellPower.IsOffensiveCaster(bot) && IsCasting && !IsFocusChanneling))
                     return false;
 
                 if (IsGuardedNpc && spell != null)
@@ -435,6 +438,15 @@ namespace DOL.GS
                     {
                         if (CastingComponent.Owner is not GamePlayer player)
                         {
+                            // A bot's focus channel gives way to its next spell, as a player's does: the new spell's
+                            // CheckBeginCast ends the focus. Queued behind the channel, every later spell waited for it
+                            // to end and the bot stood in place (why bots' pet focus shields were disabled).
+                            if (CastingComponent.Owner is GameBot && currentSpell.IsFocus &&
+                                currentSpellHandler.CastState is eCastState.Focusing)
+                            {
+                                CastingComponent.SpellHandler = newSpellHandler;
+                                return;
+                            }
                             CastingComponent.QueuedSpellHandler = newSpellHandler;
                             return;
                         }

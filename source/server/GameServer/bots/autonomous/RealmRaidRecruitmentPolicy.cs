@@ -135,6 +135,27 @@ public static class RealmRaidRecruitmentPolicy
         !forced && now >= StagingDeadline(created, departedTick) &&
         !(present >= required && !landed);
 
+    // Owner 2026-10-29: rallies failed with bots still arriving (Albion dragon: 170 there, 84 on the way). A bot that
+    // arrives with less than 10 minutes left gives the rally 10 more minutes, up to 30 minutes past its deadline.
+    public const long ArrivalExtensionMilliseconds = 10 * 60_000L;
+    public const long MaximumExtensionMilliseconds = 30 * 60_000L;
+
+    /// <summary>The staging deadline after arrivals: lastArrival + 10 min when that is later, never past deadline + 30 min.</summary>
+    public static long ExtendedStagingDeadline(long deadline, long lastArrivalTick) =>
+        lastArrivalTick <= 0 ? deadline :
+        Math.Min(deadline + MaximumExtensionMilliseconds, Math.Max(deadline, lastArrivalTick + ArrivalExtensionMilliseconds));
+
+    public static bool StagingExpired(bool forced, long now, long created, long departedTick, int present, bool landed,
+        long lastArrivalTick) =>
+        !forced && now >= ExtendedStagingDeadline(StagingDeadline(created, departedTick), lastArrivalTick) &&
+        !(present >= AutonomousMinimumPresent && !landed);
+
+    // Merge of 2026-11-01: the base's arrival extension and Living Server's scaled raid size (required) together.
+    public static bool StagingExpired(bool forced, long now, long created, long departedTick, int present, bool landed,
+        int required, long lastArrivalTick) =>
+        !forced && now >= ExtendedStagingDeadline(StagingDeadline(created, departedTick), lastArrivalTick) &&
+        !(present >= required && !landed);
+
     public static bool BattleExpired(bool forced, long now, long deadline) => !forced && now >= deadline;
 
     /// <summary>A raid party that lost members (but still exists) takes replacements up to its size when it joined.</summary>

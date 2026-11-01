@@ -108,5 +108,10 @@ namespace DOL.GS
         SluaghbinderBulwark,
         SluaghbinderBane,
         SluaghbinderCovenant,
+
+        // Added builds (owner 2026-10-29, issues 10/18): appended so saved plans keep their numeric meaning.
+        DeathServantNecro,
+        SoulrendingReaver,
+        SpearHunter,
     }
 }

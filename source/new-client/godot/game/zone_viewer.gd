@@ -50,7 +50,7 @@ var _save_left := 5.0
 
 
 func _ready() -> void:
-	get_window().title = "Offline DAoC Rebuilt v0.37c"            # the root window keeps it (window_set_title alone was reset to the project name)
+	LoginScreen.set_game_title(get_window())
 	for a in OS.get_cmdline_user_args():
 		var kv := a.trim_prefix("--").split("=", true, 1)
 		args[kv[0]] = kv[1] if kv.size() > 1 else ""
@@ -778,7 +778,10 @@ func _input(event: InputEvent) -> void:
 				var rn: Npc = npcs.pick(player.camera, _rclick_from)
 				if rn:
 					npcs.select(rn)
+					_note_interact(rn)
 					npcs.interact(rn)
+				elif npcs is ServerWorld and (npcs as ServerWorld).use_object(player.camera, _rclick_from):
+					pass                                         # a relic taken up, loot picked up (a grave: targeted)
 				elif companions:
 					var rb: Node3D = WorldLink.pick_bot(player.camera, _rclick_from)
 					if rb and bool(rb.get("companion")):       # your companion: its window (gear, training, tactics, stance)
@@ -1196,21 +1199,55 @@ const WALK_AWAY_M := 6.0
 var _talk_with: Node3D = null                # the NPC the open windows belong to (null: the place they opened at)
 var _talk_at := Vector3.ZERO
 var _talk_open := 0                          # how many of those windows were open last frame
+# owner 2026-10-29 ("any npc window open ... walk away ... despawn by distance like wow"): the other windows an NPC
+# opens - the information window (a stable master's routes, an NPC's text), the Realm Exchange, the emblem picker,
+# the quest guide, the innkeeper's - are the NPC's when they open within INTERACT_WINDOW_MS of the right-click on it
+# (the server answers at once); the same window opened by a /command or a key stays open.
+const INTERACT_WINDOW_MS := 3000
+var _interact_npc: Node3D = null             # the NPC last right-clicked (interacted with)
+var _interact_ms := -100000
+var _npc_owned := {}                         # instance id -> true: an "other" window open now that an NPC opened
+
+
+func _note_interact(n: Node3D) -> void:
+	_interact_npc = n
+	_interact_ms = Time.get_ticks_msec()
+
+
+## The windows an NPC may open besides the four NPC windows (those may open by other means too).
+func _other_npc_windows() -> Array:
+	var out: Array = []
+	for w in [ui.windows.get("info"), ui.windows.get("exchange"), ui.get("emblem_window"), ui.get("guide"), _inn_window]:
+		if w != null and is_instance_valid(w):
+			out.append(w)
+	return out
 
 
 func _watch_npc_windows() -> void:
 	if ui == null or player == null:
 		return
+	var just_talked := Time.get_ticks_msec() - _interact_ms < INTERACT_WINDOW_MS
+	for w in _other_npc_windows():
+		var id := (w as Node).get_instance_id()
+		if not w.visible:
+			_npc_owned.erase(id)
+		elif not _npc_owned.has(id):
+			_npc_owned[id] = just_talked                     # (decided once, when it opens)
 	var open: Array = [ui.merchant, ui.vault, ui.trainer, ui.npc_dialog].filter(func(w): return w != null and w.visible)
+	open.append_array(_other_npc_windows().filter(func(w): return w.visible and bool(_npc_owned.get((w as Node).get_instance_id(), false))))
 	if open.is_empty():
 		_talk_open = 0
 		_talk_with = null
 		return
 	var t: Node3D = npcs.target if npcs and npcs.target and is_instance_valid(npcs.target) else null
-	# a window more than before, or talking to another NPC near you: the windows belong to the NPC you target
+	# a window more than before, or talking to another NPC near you: the windows belong to the NPC you target - or,
+	# right after a right-click, to the NPC clicked, at whatever distance it answered from (a GM account's reach)
 	if open.size() > _talk_open or (t != null and t != _talk_with
 			and player.global_position.distance_to(t.global_position) <= WALK_AWAY_M):
-		_talk_with = t if t != null and player.global_position.distance_to(t.global_position) <= WALK_AWAY_M else null
+		if open.size() > _talk_open and just_talked and _interact_npc != null and is_instance_valid(_interact_npc):
+			_talk_with = _interact_npc
+		else:
+			_talk_with = t if t != null and player.global_position.distance_to(t.global_position) <= WALK_AWAY_M else null
 		_talk_at = _talk_with.global_position if _talk_with else player.global_position
 	_talk_open = open.size()
 	if _talk_with and is_instance_valid(_talk_with):
@@ -1219,13 +1256,18 @@ func _watch_npc_windows() -> void:
 	d.y = 0.0
 	if d.length() > WALK_AWAY_M:
 		for w in open:
-			w.hide_window()
+			if w.has_method("hide_window"):
+				w.hide_window()
+			else:
+				w.visible = false
 		_talk_open = 0
 		_talk_with = null
 
 
 func _process_inner(delta: float) -> void:
 	_watch_npc_windows()
+	if CacheTrim.tick(delta) and CacheTrim.over_budget() and npcs:
+		npcs.drop_models_without_views()                   # (near the card's limit: monsters out of view too)
 	if sky and zone:                                       # (zone-only sun shadow splits: SkySystem.set_shadow_zone)
 		sky.set_shadow_zone(int(region.current.info.id) if region and region.current else int(zone.info.id))
 	if PlayerData.target.get("self", false):             # your own target: your health as it changes
@@ -1284,6 +1326,18 @@ var _server_attack := false
 var _pos_left := 0.0
 var _last_sent := {}
 var _fall_speed := 0.0                         # a landing's fall speed (units / s): the server's fall damage
+# The places you sent in the last TRAIL_MS, [msec, zone id, zone position] (owner 2026-10-29: "hiding server lag
+# instead of rubberbanding"). The server's speed-hack check (PlayerMovementMonitor) times your updates by when its
+# tick read them; a long tick under the bot load made you look 3-6x too fast and it pulled you back to one of your own
+# recent places (its cheat log: ~76 "Speed hack (teleport)" on the owner's account). After such a pull-back it checks
+# nothing for 0.75 s and takes your next place as it is - so the client keeps you where you are (a small desync, as
+# the original client's), unless they come too often (ABSORB_MAX in ABSORB_WINDOW_MS: then it is honoured).
+const TRAIL_MS := 3000
+const ABSORB_M := 0.15
+const ABSORB_MAX := 3
+const ABSORB_WINDOW_MS := 10000
+var _sent_trail: Array = []
+var _absorbed: Array = []                      # msec of the pull-backs kept off lately
 
 
 ## Your position to the server, as the client sent it: often while you move, once a second standing still.
@@ -1330,11 +1384,35 @@ func _send_position(delta: float) -> void:
 	Server.client.call("Position", r.x, r.y, r.z, speed, z_speed, zid, state, on_ground, heading, action,
 			int(PlayerData.health * 100.0), Server.me_oid)
 	_last_sent = {"p": p, "h": heading, "s": speed, "a": action}
+	var now := Time.get_ticks_msec()
+	_sent_trail.append([now, zid, p])
+	while not _sent_trail.is_empty() and now - int(_sent_trail[0][0]) > TRAIL_MS:
+		_sent_trail.pop_front()
+
+
+## A jump to one of the places you sent in the last few seconds, in this zone, on foot: the server's lag pull-back.
+func _lag_pull_back(e: Dictionary, zid: int) -> bool:
+	if int(e.zone) != zid or _server_steed != 0 or player.dead or int(e.get("house", 0)) != 0:
+		return false
+	var now := Time.get_ticks_msec()
+	_absorbed = _absorbed.filter(func(t): return now - int(t) < ABSORB_WINDOW_MS)
+	if _absorbed.size() >= ABSORB_MAX:
+		return false                                       # (too often: the server means it)
+	var pos: Vector3 = e.pos
+	for s in _sent_trail:
+		if int(s[1]) == zid and Vector2(pos.x - (s[2] as Vector3).x, pos.z - (s[2] as Vector3).z).length() <= ABSORB_M:
+			_absorbed.append(now)
+			return true
+	return false
 
 
 ## The server moved you inside the region (a teleport, a recall, the launcher's teleport to a bot).
 func _on_server_jump(e: Dictionary) -> void:
 	var zid := int(region.current.info.id) if region and region.current else int(zone.info.id)
+	if _lag_pull_back(e, zid):
+		_last_sent = {}                                    # your real place goes out at once
+		_pos_left = 0.0
+		return
 	if int(e.zone) == zid:
 		var pos: Vector3 = e.pos
 		if not zone.city:
@@ -1458,6 +1536,7 @@ func _server_item_info(it: Dictionary) -> void:
 	var id := String(it.get("id", ""))
 	var parts := id.split(":")
 	if id.begins_with("srv:") and parts.size() == 2:
+		Server.info_item_slot = int(parts[1])              # (its answer gets SALVAGE / REPAIR: GameUI.show_item_buttons)
 		Server.detail_shown(1, int(parts[1]))
 	elif id.begins_with("srvm:") and parts.size() == 3:
 		Server.detail_shown(4, int(parts[1]) * 30 + int(parts[2]))

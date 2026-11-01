@@ -133,6 +133,8 @@ func _on_raw(code: int, data: PackedByteArray) -> void:
 		conc_list = _read_conc(data)
 	elif code == 0xC5 or code == 0xC6:                   # AddFriend / RemoveFriend: your friends online
 		_friends_packet(code == 0xC5, data)
+	elif code == 0xF3 and data.size() >= 4:              # TimerWindow (PacketLib168 2505): crafting, salvage, repair
+		_timer_packet(data)
 	elif code == 0x92 and data.size() >= 14:             # Weather (PacketLib168): the region's storm
 		weather = {"x": _be32(data, 0), "width": _be32(data, 4),
 				"fog": _be16(data, 8), "speed": _be16(data, 10), "intensity": _be16(data, 12),
@@ -337,8 +339,12 @@ static func _overview_gear(nm: String, c: Dictionary) -> Dictionary:
 		# PacketLib1125: an item's guild emblem in its colour's place (owner 2026-10-17: no emblems on the select
 		# screen) - a dye is 0-143 (tints.csv), more is the emblem
 		var tex := int(colors.get(k, 0))
+		# the chest's, gloves' and boots' extensions (their meshes, Fig3Figure.item_armor): PacketLib1125's two
+		# bytes, boots << 4 | gloves and torso << 4 | hood
+		var ext := int({22: int(c.get("ext_boots_gloves", 0)) & 0xF, 23: int(c.get("ext_boots_gloves", 0)) >> 4,
+				25: int(c.get("ext_torso_hood", 0)) >> 4}.get(slots[k], 0))
 		ItemDb.add_runtime(id, {"id": id, "name": "", "model": m, "object_type": 42 if shield else 0, "hand": 0,
-				"color": tex if tex <= 0xFF else 0, "emblem": tex if tex > 0xFF else 0})
+				"color": tex if tex <= 0xFF else 0, "emblem": tex if tex > 0xFF else 0, "extension": ext})
 		inv[str(slots[k])] = {"id": id, "count": 1}
 	return inv
 
@@ -486,6 +492,8 @@ func _save_looks() -> void:
 ## PLAY: the server loads the character and puts it in the world; the zone loads when its position arrives.
 func enter_world(c: Dictionary) -> void:
 	max_speed_pct = 100
+	companion_defensive = false                           # (the server's stance starts aggressive at every login)
+	model_types = {}
 	game_time_ms = -1                                     # (a fresh login waits for the server's own time)
 	_friends_listed = false
 	friends_online = []
@@ -559,6 +567,8 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 				return
 		"max_speed":
 			max_speed_pct = int(d.percent)
+		"model_type":                                     # (kept: a GM is hidden at world init, before the world
+			model_types[int(d.oid)] = int(d.type)         # listens - owner 2026-10-29, the ghost was missing)
 		"time":                                           # (recorded even between worlds: a new one starts from it)
 			game_time_ms = int(d.time)
 			game_time_at = Time.get_ticks_msec()
@@ -603,8 +613,12 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 					# a concentration / permanent effect: no time shown (the server sends its endless duration as ~18 h,
 					# 65535 s; owner 2026-10-11: no time for those) - nothing timed runs that long
 					var timed := int(e.seconds) > 0 and int(e.seconds) < NO_TIME_SECONDS
+					# its third byte: 1 = an immunity, or a buff another one overrides (the server's IsDisabled) - the old
+					# client draws it tinted red (owner 2026-10-19)
 					effects[int(e.index)] = {"icon": int(e.icon), "name": String(e.name), "negative": int(e.negative),
-							"until": Time.get_ticks_msec() + int(e.seconds) * 1000 if timed else 0}
+							"until": Time.get_ticks_msec() + int(e.seconds) * 1000 if timed else 0,
+							"disabled": (int(e.get("immune", 0)) & 1) != 0,
+							"ability": bool(e.get("ability_icon", false))}
 			PlayerData.effects_changed.emit()
 		"map_marker":
 			map_markers[int(d.id)] = Vector4(float(d.region), float(d.x), float(d.y), float(d.z))
@@ -616,6 +630,11 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 			on_points(d)
 		"character":
 			on_character(d)
+		"craft_skills":                                   # VariousUpdate 8: your tradeskills (at world init, each gain)
+			craft_skills = {}
+			for s in d.get("skills", []):
+				craft_skills[int(s.id)] = {"points": int(s.points), "name": String(s.name)}
+			craft_changed.emit()
 		"weapon_armor":                                   # the sheet's weapon skill / damage, armor factor
 			weapon_stats = d
 			PlayerData.changed.emit()
@@ -885,6 +904,82 @@ var _model_icons := {}                   # content/items/model_icons.json (pipel
 signal skills_changed
 
 
+# ---------------------------------------------------------------- crafting (owner 2026-10-30: "the crafting UI ... and
+# the crafter self repair salvage stuff")
+## Your tradeskills (VariousUpdate 8: eCraftingSkill id -> {points, name}); the primary one and its title come in
+## VariousUpdate 3 (info.craft_skill / craft_title).
+var craft_skills := {}
+signal craft_changed
+## The group's companion stance (server chat 2026-10-30, both modes): /aggressive or /defensive for the whole group, the
+## server's DebugMode 'H' op 30 on every change ([4] 1 defensive / 0 aggressive). Not saved: aggressive at login.
+var companion_defensive := false
+signal stance_changed
+var info_item_slot := -1                 # the inventory slot whose information was just asked for (its answer's buttons)
+## The server's timer window (0xF3): seconds and its text ("Currently Making: bronze dagger", "Salvaging: ...",
+## "Repairing: ..."); seconds -1 when it closes.
+signal craft_timer(seconds: int, title: String)
+var _recipes := {}
+
+
+func _timer_packet(data: PackedByteArray) -> void:
+	var secs := (data[0] << 8) | data[1]
+	var flag := data[3]                                   # 1 open, 0 close (a GM's craft opens with 0 seconds)
+	if flag == 0:
+		craft_timer.emit(-1, "")
+		return
+	var n := data[2]
+	var title := data.slice(4, mini(4 + n, data.size())).get_string_from_ascii()
+	craft_timer.emit(secs, title)
+
+
+## Make a recipe (MakeProductHandler 0xED: CraftedItem.CraftedItemID). Asked again while making one, the server
+## cancels that one instead - its only cancel.
+func craft(recipe_id: int) -> void:
+	if client:
+		client.call("Craft", recipe_id)
+
+
+## Salvage / self-repair a backpack item (DetailDisplayHandler 102 / 100), with the original client's own line first.
+func salvage(slot: int) -> void:
+	if client and slot >= 40 and slot <= 79:
+		PlayerData.message.emit("Attempting to salvage your %s." % String(ItemDb.item("srv:%d" % slot).get("name", "item")), "system")
+		_quiet_delves += 1                                # (a GM's "Delve objectType=102" debug line: not shown)
+		client.call("Detail", 102, slot)
+	else:
+		PlayerData.message.emit("You can only salvage items in your backpack!", "error")
+
+
+func self_repair(slot: int) -> void:
+	if client and slot >= 40 and slot <= 79:
+		PlayerData.message.emit("Attempting to self-repair your %s." % String(ItemDb.item("srv:%d" % slot).get("name", "item")), "system")
+		_quiet_delves += 1
+		client.call("Detail", 100, slot)
+	else:
+		PlayerData.message.emit("You can only repair items in your backpack!", "error")
+
+
+## The recipes of a realm ("alb" / "mid" / "hib") (content/crafting/recipes.json, pipeline/build_recipes.py: the
+## server's tables): trade id (string) -> [recipe].
+func recipes_for(realm: String) -> Dictionary:
+	if _recipes.is_empty():
+		var t = JSON.parse_string(FileAccess.get_file_as_string("res://content/crafting/recipes.json")) \
+				if FileAccess.file_exists("res://content/crafting/recipes.json") else null
+		_recipes = t if t is Dictionary else {"skills": {}}
+	return (_recipes.get("normal", {}) as Dictionary).get(str(REALM_IDS.get(realm, 1)), {})
+
+
+func trade_name(trade_id: int) -> String:
+	if craft_skills.has(trade_id):
+		return String(craft_skills[trade_id].name)
+	recipes_for("alb")
+	return String((_recipes.get("skills", {}) as Dictionary).get(str(trade_id), "Trade %d" % trade_id))
+
+
+## Your realm's key ("alb" / "mid" / "hib") - the character being played.
+func my_realm() -> String:
+	return String(selected.get("realm", "alb"))
+
+
 func on_skills(d: Dictionary) -> void:
 	if int(d.first) == 0:
 		skills = []
@@ -1095,9 +1190,12 @@ func effects_list() -> Array:
 	var now := Time.get_ticks_msec()
 	for k in keys:
 		var e: Dictionary = effects[k]
-		var ic := skill_icon("spell", int(e.icon))
+		# an ability's effect (UpdateIcons' second byte 0xFF: Stealth, Sprint ...) takes the abilities' icon: Stealth's
+		# 403 as a spell icon was another spell's picture (owner 2026-10-28)
+		var ic := skill_icon("icon" if bool(e.get("ability", false)) else "spell", int(e.icon))
 		out.append({"icon": int(ic[0]), "border": int(ic[1]), "name": String(e.name), "fx": int(e.icon),
-				"seconds": maxf(0.001, (int(e.until) - now) / 1000.0) if int(e.until) > 0 else 1e9})
+				"seconds": maxf(0.001, (int(e.until) - now) / 1000.0) if int(e.until) > 0 else 1e9,
+				"disabled": bool(e.get("disabled", false))})
 	return out
 
 
@@ -1195,7 +1293,22 @@ func reuse_left(id: String) -> float:
 	return left
 
 
+## The specializations the server does something with when used (its ISpecActionHandlers: StealthSpecHandler only).
+const USABLE_SPECS := ["Stealth"]
+
+
+## A specialization's place in your usable skills (the specs come first), by its name; -1 if you have none of it.
+func spec_index(spec_name: String) -> int:
+	for i in skills.size():
+		if int(skills[i].page) != 0:
+			break
+		if String(skills[i].name) == spec_name:
+			return i
+	return -1
+
+
 ## A quickbar / sheet entry used: "srv:skill:<n>" (n = place among the non-spec skills) -> UseSkill,
+## "srv:spec:<name>" (a specialization, found by name: the list's order can change) -> UseSkill type 0,
 ## "srv:spell:<line>:<level>" -> UseSpell, "srv:<slot>" (an item) -> UseSlot.
 func use_entry(id: String, player: Node3D, zone_id: int, target_in_view: bool) -> bool:
 	if client == null or not id.begins_with("srv:"):
@@ -1204,7 +1317,12 @@ func use_entry(id: String, player: Node3D, zone_id: int, target_in_view: bool) -
 	var heading := heading_of(fposmod(-rad_to_deg(player.facing()), 360.0))
 	var speed := Vector2(player.velocity.x, player.velocity.z).length() / 0.025
 	var parts := id.split(":")
-	if parts.size() >= 3 and parts[1] == "skill":
+	if parts.size() >= 3 and parts[1] == "spec":
+		var si := spec_index(id.substr(9))
+		if si < 0:
+			return false
+		client.call("UseSkill", r.x, r.y, r.z, speed, heading, target_in_view, si, 0)
+	elif parts.size() >= 3 and parts[1] == "skill":
 		client.call("UseSkill", r.x, r.y, r.z, speed, heading, target_in_view, int(parts[2]), 1)
 	elif parts.size() >= 4 and parts[1] == "spell":
 		client.call("UseSpell", r.x, r.y, r.z, speed, heading, target_in_view, int(parts[3]), int(parts[2]))
@@ -1243,6 +1361,7 @@ var weight_max := -1
 var game_time_ms := -1                   # the server's last time of day (ms into the game day; Time packet), -1 none yet
 var game_time_at := 0                    # ...when it came (ticks ms)
 var day_increment := 24.0                # ...and its clock's speed (WORLD_DAY_INCREMENT)
+var model_types := {}                     # object id -> its last PlayerModelTypeChange (3 hidden, 2 seen)
 var max_speed_pct := 100                 # your last MaxSpeed (percent): kept across a region change - the server sends it
 										 # only when it changes (a skald's speed song pulses on at the same value)
 var group_members: Array = []            # the group window's members in group order (you included)
@@ -1289,13 +1408,23 @@ func on_inventory(d: Dictionary) -> void:
 		if int(d.window) == 3:
 			vault_open.emit("VAULT", VAULT_FIRST, VAULT_COUNT)
 		else:
-			vault_open.emit("ACCOUNT VAULT", CHEST_FIRST, ACCOUNT_VAULT_COUNT)
+			vault_open.emit(_house_window_title(), CHEST_FIRST, ACCOUNT_VAULT_COUNT)
 		return
 	if not chest.is_empty():
 		_listings_packet({"items": chest}, false)
 		if mine.is_empty():
 			return
 	_on_inventory_items(d, mine)
+
+
+## The HouseVault window (4) is a house vault (GameHouseVault: 100 slots, client 150-249) or the account vault
+## keeper's page: the account vault when you last right-clicked an Account Vault Keeper, else the house vault.
+func _house_window_title() -> String:
+	var v: Node = viewer()
+	var n = v.get("_interact_npc") if v else null
+	if is_instance_valid(n) and n is Node and n.get("spawn") is Dictionary 			and String(n.spawn.get("name", "")).to_lower().contains("account"):
+		return "ACCOUNT VAULT"
+	return "HOUSE VAULT"
 
 
 ## Slots no longer held (a container opened afresh: its list replaces what was there).
@@ -1573,4 +1702,13 @@ func use(id: String) -> bool:
 	var v := viewer()
 	if v == null:
 		return false
-	return use_entry(id, v.player, current_zone_id(), not PlayerData.target.is_empty())
+	# the cast's "target in view" flag: whether you can see it, as the client worked it out (owner 2026-10-19: a spell at a
+	# target behind a wall cast in full, then "You can't see your target from here!" - the old client is refused at
+	# once). It was "you have a target", so the server's start-of-cast check (SpellHandler: HasLos = TargetInView)
+	# always passed and only the position updates' flag told it otherwise, at the end. A target that isn't a drawn
+	# living (yourself, a door, an object) keeps "a target" - the server's own range rule covers those.
+	var in_view := not PlayerData.target.is_empty()
+	var w = v.get("npcs")
+	if in_view and w is ServerWorld and (w as ServerWorld).target and is_instance_valid((w as ServerWorld).target):
+		in_view = (w as ServerWorld).target_in_view(v.player.global_position)
+	return use_entry(id, v.player, current_zone_id(), in_view)

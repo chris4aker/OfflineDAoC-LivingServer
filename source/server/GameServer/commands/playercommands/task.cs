@@ -32,82 +32,66 @@ using DOL.GS.Quests;
 
 namespace DOL.GS.Commands
 {
-	//[CmdAttribute("&task", ePrivLevel.Player, "Ask for a Task from Guards or Merchants", "/task")]
-	// /task on a guard, merchant or crafter asks it for a task (the period behaviour). The Quest Journal's QUEST GUIDE
-	// button also sends /task (owner 2026-10-07: the old TASK button is not needed), so /task with no task-giver
-	// targeted opens the Quest Guide, which shows the current task at the top; /task status is the old snapshot.
-	[CmdAttribute("&task", ePrivLevel.Player, "Ask the targeted guard or merchant for a task, else open the Quest Guide",
-		"/task (target a guard, merchant or crafter)", "/task status", "/task abort")]
+	// /task is the period command again (owner 2026-10-31: only the new client is used now). The old client's QUEST
+	// GUIDE button sent /task, so /task with nothing targeted opened the Quest Guide here; the guide is /questguide.
+	// /task on a named guard asks for a kill task, on another townsperson of your realm for a delivery task (a crafter
+	// of your trade for a craft task); /task with nothing (or yourself) targeted shows your task; /task abort gives it
+	// up (it fails and still counts for the level).
+	[CmdAttribute("&task", ePrivLevel.Player, "Ask the targeted guard or townsperson for a task, or show your current task",
+		"/task (target a named guard for a kill task, another townsperson for a delivery task)",
+		"/task (nothing targeted) or /task status - your current task", "/task abort")]
 	public class TaskCommandHandler : AbstractCommandHandler, ICommandHandler
 	{
-		private static readonly DOL.Logging.Logger Log = DOL.Logging.LoggerManager.Create(typeof(TaskCommandHandler));
-		private static int _logged;
-
 		public void OnCommand(GameClient client, string[] args)
 		{
-			// The first calls are logged: the QUEST GUIDE button's TASK event shows up here (owner 2026-10-07: the
-			// button did nothing while typing /task worked).
-			if (System.Threading.Interlocked.Increment(ref _logged) <= 20)
-				Log.Info($"QUEST_GUIDE_TASK player={client.Player?.Name} args=\"{string.Join(" ", args)}\"");
-			if (IsSpammingCommand(client.Player, "task"))
+			GamePlayer player = client.Player;
+			if (player == null || IsSpammingCommand(player, "task"))
 				return;
 
-			if (args.Length < 2 || (args[1] != "abort" && args[1] != "status"))
+			string sub = args.Length > 1 ? args[1].ToLowerInvariant() : string.Empty;
+			if (sub == "abort")
 			{
-				GamePlayer asker = client.Player;
-				if (asker.TargetObject is GameLiving giver && giver != asker && TryGiveTask(asker, giver))
-					return;
-				QuestGuide.ShowNext(asker);
+				if (player.GameTask is { TaskActive: true })
+					player.GameTask.ExpireTask();
 				return;
 			}
-			if (args[1] == "abort")
+
+			if (sub != "status" && player.TargetObject is GameNPC giver && giver.Realm == player.Realm)
 			{
-				if (client.Player.GameTask != null && client.Player.GameTask.TaskActive)
-					client.Player.GameTask.ExpireTask();
-			}
-			else if (args[1] == "status")
-			{
-				GamePlayer player = client.Player;
-				//TaskCommand(client.Player);
-				if (player.GameTask != null)
-					player.GameTask.CheckTaskExpired();
-				
-				AbstractTask task = player.GameTask;
-				
-				if (task != null && task.TaskActive)
-				{
-					var messages = new List<string>();
-					messages.Add("You are on " + task.Name);
-					messages.Add("What to do: " + task.Description);
-					messages.Add(" ");
-					messages.Add("Task will expire at " + task.TimeOut.ToShortTimeString());
-					messages.Add("You have done " + task.TasksDone + " tasks out of " + AbstractTask.MaxTasksDone(player.Level) + " until now.");
-					player.Out.SendCustomTextWindow("Tasks (Snapshot)", messages);
-				}
-				else if (task != null && task.TasksDone >= AbstractTask.MaxTasksDone(player.Level))
-				{
-					player.Out.SendMessage("You can do no more tasks at your current level", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-				}
+				if (!player.IsWithinRadius(giver, WorldMgr.WHISPER_DISTANCE))
+					player.Out.SendMessage(giver.GetName(0, true) + " is too far away to interact", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 				else
-				{
-					player.Out.SendMessage("You have currently no pending task", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-				}
+					AbstractTask.TryGiveTask(player, giver);
+				return;
 			}
+
+			ShowStatus(player);
 		}
 
-		/// <summary>A task from the targeted NPC, when it is close enough and has one for this player (same as
-		/// whispering "task" to it).</summary>
-		private static bool TryGiveTask(GamePlayer player, GameLiving giver)
+		/// <summary>The period snapshot of your task.</summary>
+		private static void ShowStatus(GamePlayer player)
 		{
-			if (!player.IsWithinRadius(giver, WorldMgr.WHISPER_DISTANCE))
-				return false;
-			if (KillTask.CheckAvailability(player, giver))
-				return KillTask.BuildTask(player, giver);
-			if (MoneyTask.CheckAvailability(player, giver))
-				return MoneyTask.BuildTask(player, giver);
-			if (CraftTask.CheckAvailability(player, giver))
-				return CraftTask.BuildTask(player, giver);
-			return false;
+			player.GameTask?.CheckTaskExpired();
+			AbstractTask task = player.GameTask;
+			int done = task?.TasksDone ?? 0;
+			if (task != null && task.TaskActive)
+			{
+				var messages = new List<string>
+				{
+					"You are on " + task.Name,
+					"What to do: " + task.Description,
+					" ",
+					"Task will expire at " + task.TimeOut.ToShortTimeString(),
+					"You have done " + done + " tasks out of " + AbstractTask.MaxTasksDone(player.Level) + " until now."
+				};
+				player.Out.SendCustomTextWindow("Tasks (Snapshot)", messages);
+			}
+			else if (player.Level > AbstractTask.MaxTaskLevel)
+				player.Out.SendMessage($"Tasks are only available to players up to level {AbstractTask.MaxTaskLevel}!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			else if (done >= AbstractTask.MaxTasksDone(player.Level))
+				player.Out.SendMessage("You can do no more tasks at your current level", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			else
+				player.Out.SendMessage("You have currently no pending task", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 
 		/// <summary>

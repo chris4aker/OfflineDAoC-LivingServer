@@ -425,6 +425,7 @@ namespace DOL.GS.PacketHandler.Client.v168
             // Sluaghbinder choice from character select.
             // The 0.33 "no custom class" edition turns this off; the slot is then the
             // disabled native MaulerHib class again, exactly like the normal v0.32 edition.
+            // Living Server keeps the Sluaghbinder behind its switch (enable_sluaghbinder, on in 0.37b) when it merged the base's final code, which discontinued it (owner 2026-11-01).
             if (Properties.ENABLE_SLUAGHBINDER && (eRealm)ch.Realm == eRealm.Hibernia &&
                 (ch.Class == (int)eCharacterClass.MaulerHib ||
                  ch.Class == (int)eCharacterClass.Sluaghbinder))
@@ -478,7 +479,9 @@ namespace DOL.GS.PacketHandler.Client.v168
             }
 
             // Is class disabled ?
-            List<string> disabledClasses = Util.SplitCSV(Properties.DISABLED_CLASSES);
+            // Ranges such as "58-62" are expanded (owner 2026-10-30: they never matched, so the Catacombs classes and the
+            // races 16-21 could still be made on the original client while the new client already hid them).
+            List<string> disabledClasses = Util.SplitCSV(Properties.DISABLED_CLASSES ?? string.Empty, true);
             var occurences =
                 (from j in disabledClasses
                     where j == ch.Class.ToString()
@@ -494,7 +497,7 @@ namespace DOL.GS.PacketHandler.Client.v168
             }
 
             // check if race disabled
-            List<string> disabledRaces = Util.SplitCSV(Properties.DISABLED_RACES);
+            List<string> disabledRaces = Util.SplitCSV(Properties.DISABLED_RACES ?? string.Empty, true);
             occurences =
                 (from j in disabledRaces
                     where j == ch.Race.ToString()

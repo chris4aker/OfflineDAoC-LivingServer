@@ -7,6 +7,7 @@ extends NpcManager
 ## its updates a mover keeps walking toward where the server said it is going (the client's own dead reckoning).
 ## Also the server's chat lines, your health / power / endurance, swings, casts, emotes and deaths.
 
+const StealthLook := preload("res://game/stealth_look.gd")   # the dark green ghost of a hidden figure
 const RUN_UNITS := 150.0                     # a mover faster than this (units / s) runs, slower walks
 const SNAP_M := 6.0                          # an update this far from where it is drawn: jump there
 # eChatType -> the chat window's kinds
@@ -52,6 +53,7 @@ func setup_server(v: Node, zone_loader: ZoneLoader, p: Node3D) -> void:
 	# again while it stays the same (owner 2026-10-14: a skald companion's speed song stopped working after a zone
 	# change until the group was re-formed)
 	_apply_max_speed(Server.max_speed_pct)
+	_me_stealth = int(Server.model_types.get(Server.me_oid, 2)) == 3   # (hidden before this world listened: a GM)
 
 
 func _exit_tree() -> void:
@@ -120,12 +122,18 @@ func _on_world(kind: String, d: Dictionary) -> void:
 		"visual_effect": _visual_effect(d)
 		"model_change": _model_change(d)
 		"riding": _riding(d)
+		"companion":                                        # the server's companion messages: the group's stance
+			var body := PackedByteArray(d.body)
+			if body.size() > 4 and body[3] == 30:
+				Server.companion_defensive = body[4] == 1
+				Server.stance_changed.emit()
 		"raid":                                             # the companion raid window (/raid 40, /raid 80)
 			if viewer and viewer.ui:
 				viewer.ui.raid_packet(d)
 		"max_speed":                                       # your speed in percent of the base run speed (encumbrance,
 			if viewer and viewer.player:                     # buffs, snares - the server's, as the old client used it)
 				_apply_max_speed(int(d.percent))
+				viewer.player.no_turn = int(d.get("no_turn", 0)) != 0
 		"detail":
 			if Server.take_detail(d):                        # an item's hover text (kept for the hover box)
 				return
@@ -134,6 +142,9 @@ func _on_world(kind: String, d: Dictionary) -> void:
 					viewer.ui.show_server_guide(d.lines)
 				else:
 					viewer.ui.show_lines(String(d.caption), d.lines)
+					if Server.info_item_slot >= 0:               # the item you right-clicked: SALVAGE / REPAIR under it
+						viewer.ui.show_item_buttons(Server.info_item_slot)
+						Server.info_item_slot = -1
 		"trainer":
 			if viewer and viewer.ui and viewer.ui.trainer and not viewer.ui.trainer.visible:
 				viewer.ui.trainer.open()
@@ -141,6 +152,7 @@ func _on_world(kind: String, d: Dictionary) -> void:
 		"sound_effect": _sound_effect(d)
 		"door_state": _door_state(d)
 		"change_target": _change_target(int(d.oid))
+		"model_type": _model_type(d)
 		"siege_window", "siege_close": _siege_window(kind, d)
 		"siege_anim": _siege_anim(d)
 		"warmap_keeps", "warmap_fights":
@@ -349,6 +361,11 @@ func _add_npc(d: Dictionary) -> void:
 		_remove(oid, false)
 	var f := int(d.flags)
 	var f2 := int(d.flags2)
+	# no 0x02 (PacketLib1124: "mob has equipment ... the 0xBD packet" follows): this living has none - not the gear of
+	# whatever had this object id before (owner 2026-10-19: a necroservant, which has no inventory, showed the two-handed
+	# sword of an abomination released before it)
+	if f & 0x02 == 0:
+		data.equipment.erase("srv%d" % oid)
 	# the packet's flags -> the database's eFlags (what Npc / NamePlates read)
 	var flags := 0
 	if f & 0x01: flags |= 0x01                                  # ghost
@@ -368,6 +385,7 @@ func _add_npc(d: Dictionary) -> void:
 	st.level = int(d.level) & 0x7F
 	st.yaw = Server.yaw_of(int(d.heading))
 	st.stealthed = false                                        # (the server only sends what you can see)
+	st.stealth_look = (f2 & 0x04) != 0                          # hidden, but you can see it: the green ghost
 	st.wait = 1e9                                               # (no roaming of its own)
 	states.append(st)
 	by_oid[oid] = st
@@ -490,6 +508,9 @@ func _update_npc(st: NpcState, d: Dictionary) -> void:
 	st.spawn["level"] = int(d.level) & 0x7F
 	st.level = int(d.level) & 0x7F
 	st.spawn["quest"] = _quest_indicator(d)
+	# a gamebot stealthing / coming out: the server sends it again with its STEALTH flag (GameNPC.Flags) to everyone
+	# who can still see it - those who can't detect it get it removed instead
+	st.stealth_look = (int(d.get("flags2", 0)) & 0x04) != 0
 	var p := scene_pos(float(d.x), float(d.y), float(d.z))
 	if st.pos.distance_to(p) > SNAP_M:
 		st.pos = p
@@ -534,11 +555,17 @@ func _move(d: Dictionary) -> void:
 	# a ridden steed at 37 m/s is a few metres off the server's place at every update: snapping it there (SNAP_M) made
 	# the mount and its rider jump; it eases back instead, unless it is really lost (two seconds' travel)
 	var snap := maxf(SNAP_M, float(int(d.speed)) * 0.025 * 2.0) if ridden else SNAP_M
-	if st.pos.distance_to(p) > snap or float(d.speed) == 0.0:
+	var drawn_before := st.pos                                    # (the death log: where it was drawn before this update)
+	# a seated rider stays in the saddle (_seat_riders puts it there every frame; its own update - the horse's server
+	# place - only feeds the ride check); moved here it showed a frame off the horse at each update
+	var seated := _riders.has(int(d.oid)) and st.ride_clip != ""
+	if seated:
+		pass
+	elif st.pos.distance_to(p) > snap or float(d.speed) == 0.0:
 		st.pos = p
 	else:
 		st.pos = st.pos.lerp(p, 0.25 if ridden else 0.5)       # close: ease into the server's place
-	if not (ridden and String(st.info.get("figure", "")).to_lower() in FLIER_FIGURES):
+	if not seated and not (ridden and String(st.info.get("figure", "")).to_lower() in FLIER_FIGURES):
 		_ground(st)
 	if not ridden:
 		st.yaw = Server.yaw_of(int(d.heading))
@@ -560,10 +587,37 @@ func _move(d: Dictionary) -> void:
 		if dp != Vector3.INF:
 			mv["dest"] = dp
 	var hp := int(d.health)
+	_death_note(st, d, p, hp, drawn_before)
 	_set_health(st, hp)
 	if int(d.oid) == pet_oid and not PlayerData.pet.is_empty():   # your pet's health on the pet window
 		PlayerData.pet["health"] = st.health
 		PlayerData.pet_changed.emit()
+
+
+## Death position log (server chat 2026-10-30, owner: a dead companion's / gamebot's body shows farther away than where it
+## died): for a character figure (a gamebot, a companion), the last update before its death (position, speed,
+## destination), where its body is drawn when it dies, and every update for 15 s after - user://death_log.txt (the
+## packet's own zone units next to the drawn place, so the server's log can be matched).
+func _death_note(st: NpcState, d: Dictionary, p: Vector3, hp: int, drawn_before: Vector3) -> void:
+	if not st.info.has("race"):
+		return
+	var mv: Dictionary = _mover.get(st, {})
+	var line := "zone %d (%d, %d, %d) speed %d dest (%d, %d) health %d | drawn at %s before it (%.1f m off), now %s (%.1f m off)" % [
+			int(d.zone), int(d.x), int(d.y), int(d.z), int(d.speed), int(d.tx), int(d.ty), hp,
+			str(drawn_before.snapped(Vector3.ONE * 0.1)), drawn_before.distance_to(p),
+			str(st.pos.snapped(Vector3.ONE * 0.1)), st.pos.distance_to(p)]
+	mv["last_upd"] = line
+	if not st.alive and Time.get_ticks_msec() < int(mv.get("death_log_until", 0)):
+		_death_log("%s (oid %d) dead, update: %s" % [String(st.spawn.name), int(st.spawn.get("oid", 0)), line])
+
+
+func _death_log(text: String) -> void:
+	var t := Time.get_datetime_string_from_system()
+	print("[death] ", t, " ", text)
+	var f := FileAccess.open("user://death_log.txt", FileAccess.READ_WRITE if FileAccess.file_exists("user://death_log.txt") else FileAccess.WRITE)
+	if f:
+		f.seek_end()
+		f.store_line("%s %s" % [t, text])
 
 
 func _set_health(st: NpcState, pct: int) -> void:
@@ -571,6 +625,13 @@ func _set_health(st: NpcState, pct: int) -> void:
 	st.health = pct / 100.0
 	st.alive = pct > 0
 	if was and not st.alive:
+		if st.info.has("race"):                                 # (the death position log: _death_note)
+			var mv0: Dictionary = _mover.get(st, {})
+			mv0["death_log_until"] = Time.get_ticks_msec() + 15000
+			_mover[st] = mv0
+			_death_log("%s (oid %d) DIES, body at %s - the last update (this one if it carried the death): %s" % [
+					String(st.spawn.name), int(st.spawn.get("oid", 0)), str(st.pos.snapped(Vector3.ONE * 0.1)),
+					String(mv0.get("last_upd", "none"))])
 		st.mode = NpcState.Mode.DEAD
 		st.corpse_left = 1e9                                    # the body stays until the server removes it
 		_interrupt(int(st.spawn.get("oid", 0)), false)          # its cast's hand glows go with it (no fizzle)
@@ -678,7 +739,8 @@ func _equip(d: Dictionary) -> void:
 	var rows := []
 	for it in d.get("items", []):
 		rows.append({"slot": int(it.slot), "model": int(it.model), "color": int(it.get("color", 0)),
-				"effect": int(it.get("effect", 0)), "emblem": int(it.get("emblem", 0))})   # (a cloak / shield's guild emblem)
+				"effect": int(it.get("effect", 0)), "emblem": int(it.get("emblem", 0)),     # (a cloak / shield's guild emblem)
+				"extension": int(it.get("extension", 0))})                 # (an armour piece's mesh: Fig3Figure.item_armor)
 	var st: NpcState = by_oid.get(oid)
 	var gear := {"hood": (int(d.get("hood", 0)) & 1) != 0, "cloak_hidden": (int(d.get("hidden", 0)) & 1) != 0,
 			"helm_hidden": (int(d.get("hidden", 0)) & 2) != 0}
@@ -794,6 +856,8 @@ func _physics_body(delta: float) -> void:
 			s.mode = NpcState.Mode.FIGHT if int(mv.target) != 0 or now_ms < s.combat_until else NpcState.Mode.IDLE
 			s.running = false
 			s.fighting = int(mv.target) != 0 or now_ms < s.combat_until
+			if int(mv.target) != 0:
+				_face_target(s, int(mv.target), delta)
 			continue
 		var step := speed * 0.025 * delta
 		var dest = mv.dest
@@ -816,6 +880,27 @@ func _physics_body(delta: float) -> void:
 		s.running = speed >= RUN_UNITS
 		s.fighting = int(mv.target) != 0 or now_ms < s.combat_until   # chasing its target: weapons stay drawn
 	_seat_riders()
+
+
+## A living standing in a fight turns to its target, as the original client turned fighters itself (server chat
+## 2026-10-31: the server turns an NPC once when its attack starts; a gamebot that then steps to a flank / behind spot
+## kept its walk-in heading - owner: "bots are facing away from their targets and meleeing"). Within 30 m, turned
+## smoothly; the server's own heading still comes with every update.
+func _face_target(s: NpcState, target: int, delta: float) -> void:
+	var tp := Vector3.INF
+	var tst: NpcState = by_oid.get(target)
+	if tst:
+		tp = tst.pos
+	elif target == Server.me_oid and viewer and viewer.player:
+		tp = viewer.player.global_position
+	if tp == Vector3.INF:
+		return
+	var to := tp - s.pos
+	to.y = 0.0
+	var d := to.length()
+	if d < 0.2 or d > 30.0:
+		return
+	s.yaw = lerp_angle(s.yaw, atan2(to.x, to.z), minf(1.0, delta * 8.0))
 
 
 ## A ridden steed between the server's updates (owner 2026-10-17: stable horses jittered beside their riders, flights
@@ -862,10 +947,26 @@ func con_level(player_level: int, npc_level: int) -> int:
 
 # ---------------------------------------------------------------- you and the server
 
+## Buying / selling / appraising (PlayerBuyRequestHandler & co. act on your TARGET, silently when it isn't the merchant -
+## owner 2026-10-30: BUY did nothing at the inn's arrow merchant): the merchant whose window is open is targeted again
+## first if you have targeted something else since (your companion, a traveler). The request follows it on the same
+## connection, so the server sees the new target first.
+func target_for_trade(oid: int) -> void:
+	if oid == 0 or Server.client == null:
+		return
+	if target and is_instance_valid(target) and int(target.spawn.get("oid", 0)) == oid:
+		return
+	var st: NpcState = by_oid.get(oid)
+	if st and st.view and is_instance_valid(st.view) and st.view is Npc:
+		select(st.view as Npc)
+	else:
+		Server.client.call("Target", oid, 0x8000 | 0x6000)
+
+
 ## Targeting on the server, as the old client did: "You target [X]." here, the examine line from the server (the
 ## examine bit), the in-view bits so it doesn't answer "Target is not in view."
 func select(n: Npc) -> void:
-	if n == null or not n.state.alive:
+	if n == null or not (n.state.alive or n.rez_target()):   # (a dead bot / companion stays targetable: to resurrect)
 		return
 	target = n
 	target_object = 0
@@ -887,9 +988,13 @@ func clear_target() -> void:
 		Server.client.call("Target", 0, 0)
 
 
+var last_interact_oid := 0                  # the NPC you last right-clicked (a merchant whose window then opens)
+
+
 func interact(n: Npc) -> void:
 	if n == null or Server.client == null:
 		return
+	last_interact_oid = int(n.spawn.get("oid", 0))
 	var r := Server.to_region(_current_zone(), player.global_position)
 	Server.client.call("Interact", int(n.spawn.get("oid", 0)), int(r.x), int(r.y))
 
@@ -911,6 +1016,11 @@ func _message(d: Dictionary) -> void:
 		return
 	var kind := String(CHAT_KINDS.get(t, "system"))
 	var text := String(d.text)
+	if text.strip_edges().is_empty():
+		# (owner 2026-10-29: empty gaps in the combat box) the server sends a spell's "others see" line even when the
+		# spell has none - every song (Motivational Chant, Song of Renewal ...) on every pulse on every group member,
+		# through MessageToCaster, which has no empty check. The original client printed nothing for them.
+		return
 	if bool(d.get("popup", false)) and viewer and viewer.ui and viewer.ui.npc_dialog:
 		# an NPC talking to you (SayTo -> the popup window): its words in the NPC window, [keywords] clickable
 		var who := String(PlayerData.target.get("name", ""))
@@ -1192,10 +1302,43 @@ func _sounds_of(v: Node) -> CharacterSounds:
 	return null
 
 
+## The spell log (owner 2026-10-19: a /spawn bonedancer's pet buffs - "didn't see shield", two casts with no
+## animation): every cast and landing the server sends, with what the client did - user://spell_log.txt, the last
+## SPELL_LOG_MAX lines, written every few seconds.
+const SPELL_LOG_MAX := 600
+var _spell_log: Array = []
+var _spell_log_due := false
+
+
+func _slog(line: String) -> void:
+	_spell_log.append("%s %s" % [Time.get_time_string_from_system(), line])
+	if _spell_log.size() > SPELL_LOG_MAX:
+		_spell_log = _spell_log.slice(_spell_log.size() - SPELL_LOG_MAX)
+	if not _spell_log_due and is_inside_tree():
+		_spell_log_due = true
+		get_tree().create_timer(3.0).timeout.connect(func():
+			_spell_log_due = false
+			var f := FileAccess.open("user://spell_log.txt", FileAccess.WRITE)
+			if f:
+				f.store_string("
+".join(_spell_log) + "
+")
+				f.close())
+
+
+func _who(oid: int) -> String:
+	if oid == Server.me_oid:
+		return "you"
+	var st: NpcState = by_oid.get(oid)
+	return ("%s#%d" % [String(st.spawn.get("name", "?")), oid]) if st else "?#%d" % oid
+
+
 func _cast(d: Dictionary) -> void:
 	var oid := int(d.caster)
 	var v := _view_of(oid)
 	var ce := int(d.spell)
+	_slog("CAST  %s  %d %s  %.1fs  view=%s" % [_who(oid), ce, String(SpellFx.effect(ce).get("name", "")), int(d.get("time", 0)) / 10.0,
+			"yes" if v else "NOT YET"])
 	SpellFx.prefetch(ce)                                          # its effects load now, on a worker, not as it lands
 	_late_cast.erase(oid)
 	if v == null:
@@ -1282,6 +1425,9 @@ func _spell_effect(d: Dictionary) -> void:
 	var caster := _view_of(int(d.caster)) as Node3D
 	var target := _view_of(int(d.target)) as Node3D
 	var ce := int(d.spell)
+	_slog("LAND  %s -> %s  %d %s  cast=%s  target view=%s  %s" % [_who(int(d.caster)), _who(int(d.target)), ce,
+			String(SpellFx.effect(ce).get("name", "")), "yes" if _gathers.has(int(d.caster)) else "no",
+			"yes" if target else "NOT YET", "resisted" if int(d.success) == 0 else "ok"])
 	_late_cast.erase(int(d.caster))                              # (landed before its caster was drawn: no cast now)
 	var handles: Array = []
 	var g: Array = _gathers.get(int(d.caster), [])
@@ -1329,7 +1475,10 @@ func _spell_effect(d: Dictionary) -> void:
 			if c < anims.size() and String(anims[c]) != "":
 				clip = String(anims[c])
 				break
-		if clip != "" and caster.has_method("_one_shot") and not (caster is Player and (caster as Player).casting_spell):
+		# only a song's instrument (drums / lute / flute): a paladin's chant pulses with no motion (owner 2026-10-20:
+		# "paladins are doing animations for their chants") - as an instant spell shows none (owner 2026-10-15)
+		var instrument := clip.begins_with("cast_drums") or clip.begins_with("cast_lute") or clip.begins_with("cast_flute")
+		if instrument and caster.has_method("_one_shot") and not (caster is Player and (caster as Player).casting_spell):
 			caster.call("_one_shot", clip)
 		SpellFx.sound(_sounds_of(caster), int(SpellFx.effect(ce).get("sound_set", 0)), "gather")
 	# one burst, one sound: the server sends a spell's effect once per target (a group buff on eight: eight packets
@@ -1495,15 +1644,45 @@ func _add_object(d: Dictionary) -> void:
 	body.collision_mask = 0
 	var shape := CollisionShape3D.new()
 	var sphere := SphereShape3D.new()
-	sphere.radius = 0.45
+	var relic := model in RELIC_MODELS                             # (a relic stands about a metre high: a bigger target)
+	sphere.radius = 0.8 if relic else 0.45
 	shape.shape = sphere
-	shape.position.y = 0.2
+	shape.position.y = 0.6 if relic else 0.2
 	body.add_child(shape)
 	holder.add_child(body)
 	body.set_meta("server_object", oid)
 	holder.set_meta("name", String(d.name))
 	holder.set_meta("model", model)
 	objects[oid] = holder
+
+
+## You crossed a zone border (seamless zones: the new zone moves to the origin, everything by -d). NpcManager moves the
+## livings; the server's ground objects and the movers' server places / destinations were left where they were, so
+## after a crossing every object already in view - loot bags, dropped gear, server props - hung off by the whole zone
+## offset, in the air or in the ground (owner 2026-10-31: floating bags, a shield and banners in Salisbury Plains and
+## Campacorentin, "everytime ive seen these floating objects ive been on a horse ride").
+func rebase(d: Vector3) -> void:
+	super.rebase(d)
+	for oid in objects:
+		var o = objects[oid]
+		if o is Node3D and is_instance_valid(o):
+			(o as Node3D).position -= d
+	for st in _mover:
+		var mv: Dictionary = _mover[st]
+		for k in ["srv_pos", "dest"]:
+			if mv.get(k) is Vector3:
+				mv[k] = (mv[k] as Vector3) - d
+		if mv.has("sy"):
+			mv["sy"] = float(mv.sy) - d.y
+	for oid in _parked:                                         # (out of view, kept to come back: off by d too)
+		var pk: Array = _parked[oid]
+		if pk.size() >= 8 and pk[7] is NpcState:
+			var ps := pk[7] as NpcState
+			ps.pos -= d
+			ps.home -= d
+			ps.walk_to -= d
+		if pk.size() > 0 and pk[0] is Node3D and is_instance_valid(pk[0]):
+			(pk[0] as Node3D).position -= d
 
 
 var target_object := 0                       # the targeted ground object's id (loot, a gravestone, a relic)
@@ -1520,6 +1699,24 @@ func click_object(cam: Camera3D, screen_pos: Vector2) -> bool:
 	if hit.is_empty() or not hit.collider.has_meta("server_object"):
 		return false
 	_target_ground(int(hit.collider.get_meta("server_object")))
+	return true
+
+
+## A right click on a ground object (2026-10-30, owner / server chat: "right-clicking a relic never triggers a pickup
+## request"): targeted and used at once - a relic taken up (GameRelic.Interact -> TryPickup: the interact request, as
+## the Get Item key sends for one), loot picked up; a gravestone only targeted (for /pray). True when the click hit one.
+func use_object(cam: Camera3D, screen_pos: Vector2) -> bool:
+	var from := cam.project_ray_origin(screen_pos)
+	var q := PhysicsRayQueryParameters3D.create(from, from + cam.project_ray_normal(screen_pos) * 60.0, OBJECT_PICK)
+	var hit := get_world_3d().direct_space_state.intersect_ray(q)
+	if hit.is_empty() or not hit.collider.has_meta("server_object"):
+		return false
+	var oid := int(hit.collider.get_meta("server_object"))
+	_target_ground(oid)
+	var holder: Node3D = objects.get(oid)
+	if holder and String(holder.get_meta("name", "")).contains("'s Grave"):
+		return true
+	get_object()
 	return true
 
 
@@ -1601,14 +1798,23 @@ func _merchant(d: Dictionary) -> void:
 	var ids := []
 	for it in d.get("items", []):
 		var id := "srvm:%d:%d" % [pg, int(it.index)]
-		ItemDb.add_runtime(id, {"id": id, "name": String(it.name), "level": int(it.level), "dps_af": int(it.value1),
+		# the pack one purchase gives (PacketLib168.SendMerchantWindow): value1 for arrows, bolts, poisons and general
+		# goods (value2 = the pack's weight), value2 for thrown weapons (value1 = their DPS)
+		var ot := int(it.object_type)
+		var pack := int(it.value1) if ot in [0, 43, 44, 46] else (int(it.value2) if ot == 16 else 0)
+		ItemDb.add_runtime(id, {"id": id, "name": String(it.name), "level": int(it.level),
+				"dps_af": 0 if ot in [0, 43, 44, 46] else int(it.value1), "pack": pack,
 				"spd_abs": int(it.spd_abs), "hand": int(it.hand), "type_damage": int(it.type_damage),
-				"object_type": int(it.object_type), "weight": int(it.value2), "price": int(it.price), "model": int(it.model),
+				"object_type": ot, "weight": 0 if ot == 16 else int(it.value2), "price": int(it.price), "model": int(it.model),
 				"icon": Server.item_icon(int(it.model)), "maxcondition": 100, "condition": 100, "maxdurability": 100,
 				"durability": 100, "quality": 100, "server": true})
 		ids.append(id)
 	_merchant_pages[pg] = ids
 	var who := String(PlayerData.target.get("name", "Merchant"))
+	var mst: NpcState = by_oid.get(last_interact_oid)
+	if mst:
+		who = String(mst.spawn.get("name", who))                 # (the merchant you right-clicked, whatever you target)
+	viewer.ui.merchant.server_oid = last_interact_oid
 	viewer.ui.merchant.open_server(who, _merchant_pages, int(d.window))
 
 
@@ -1649,7 +1855,9 @@ var max_speed_pct := 100
 func _apply_max_speed(pct: int) -> void:
 	max_speed_pct = pct
 	if viewer and viewer.player:
-		viewer.player.encumbrance = clampf(float(pct) / 100.0, 0.0, 3.0) if pct > 0 else 1.0
+		# (owner 2026-10-29: a 0 - stunned, mesmerized, rooted, too heavy to move - was taken as full speed, so you ran
+		# and the server pulled you back; the server sends the real speed again when it ends)
+		viewer.player.encumbrance = clampf(float(pct) / 100.0, 0.0, 3.0)
 
 
 func _pet_window(d: Dictionary) -> void:
@@ -1688,6 +1896,39 @@ func request_door(door: ZoneDoor) -> void:
 				"con_color": Color.WHITE, "health": float(info.health) / 100.0})
 		Server.client.call("Target", int(info.oid), 0x8000 | 0x6000)
 	Server.client.call("DoorRequest", door.door_id, 0 if door.is_open else 1)
+
+
+## PlayerModelTypeChange: 3 you went into stealth, 2 you came out (StealthECSGameEffect; 1 / 0 are the GM wireframe) -
+## the old client draws your own hidden figure as the dark green ghost (owner 2026-10-28). Another living's.
+var _me_stealth := false
+
+
+func _model_type(d: Dictionary) -> void:
+	var t := int(d.type)
+	if t != 2 and t != 3:
+		return
+	if int(d.oid) == Server.me_oid:
+		_me_stealth = t == 3
+		_sync_my_stealth()
+	else:
+		var st: NpcState = by_oid.get(int(d.oid))
+		if st:
+			st.stealth_look = t == 3
+
+
+## Your figure as the ghost while you are hidden (again on a new figure: a shapechange, a mount).
+func _sync_my_stealth() -> void:
+	if viewer == null or viewer.player == null or not is_instance_valid(viewer.player):
+		return
+	var m = viewer.player.get("_model")
+	if m is Node3D and is_instance_valid(m) and (m as Node).has_node(StealthLook.NAME) != _me_stealth:
+		StealthLook.set_on(m, _me_stealth)
+
+
+func _process(delta: float) -> void:
+	super(delta)
+	if _me_stealth:
+		_sync_my_stealth()
 
 
 ## DoorState: open / shut a door of a loaded zone (both leaves of a double door).
@@ -1754,10 +1995,12 @@ func _riding(d: Dictionary) -> void:
 	var rider: NpcState = by_oid.get(int(d.rider))
 	if int(d.mount) == 0:
 		_riders.erase(int(d.rider))
+		_ride_apart.erase(int(d.rider))
 		if rider:
 			rider.ride_clip = ""
 		return
 	_riders[int(d.rider)] = int(d.steed)
+	_ride_since[int(d.rider)] = Time.get_ticks_msec()
 	if rider:
 		rider.ride_clip = "ride_horse"
 
@@ -1768,6 +2011,7 @@ func _riding(d: Dictionary) -> void:
 ## dismount we never got (out of range), a horse whose updates stopped at a zone edge - and the rider goes on alone;
 ## the riderless horse then lasts only as long as the server keeps sending it (STALE_MS).
 const RIDE_LOST_M := 12.0
+var _ride_since := {}                         # rider object id -> msec of its Riding packet
 
 
 func _seat_riders() -> void:
@@ -1775,21 +2019,63 @@ func _seat_riders() -> void:
 	for r in _riders.keys():
 		var rider: NpcState = by_oid.get(r)
 		var steed: NpcState = by_oid.get(_riders[r])
+		# (a Riding packet a moment ahead of the rider's or the horse's own create - a hired companion boarding your
+		# stable route, server chat 2026-10-30: horse, rider, then Riding, re-sent after re-creates): held 5 s
+		if (rider == null or steed == null) and now - int(_ride_since.get(r, 0)) < 5000:
+			continue
 		if rider == null or steed == null:
 			if rider:
 				rider.ride_clip = ""
 			_riders.erase(r)
+			_ride_since.erase(r)
 			continue
-		var rm: Dictionary = _mover.get(rider, {})
-		if rm.get("srv_pos") is Vector3 and now - int(rm.get("srv_at", 0)) < 3000 				and Vector2((rm.srv_pos as Vector3).x - steed.pos.x, (rm.srv_pos as Vector3).z - steed.pos.z).length() > RIDE_LOST_M:
+		if rider.ride_clip == "":
+			rider.ride_clip = "ride_horse"
+		if _ride_lost(r, rider, steed, now):
 			rider.ride_clip = ""
-			rider.pos = rm.srv_pos
+			rider.pos = (_mover.get(rider, {}) as Dictionary).get("srv_pos", rider.pos)
 			_riders.erase(r)
+			_ride_since.erase(r)
+			_ride_apart.erase(r)
 			_ground(rider)
 			continue
 		rider.pos = seat_of(steed)
 		rider.yaw = steed.yaw
 		rider.mode = NpcState.Mode.IDLE
+
+
+## Whether a rider's ride is really over though no dismount came: the rider's own server place and its STEED'S server
+## place (not where the steed is drawn - a ridden steed eases up to two seconds' travel behind its updates, so a rider
+## whose updates carry the horse's exact place was "lost" at every bend and dropped behind it: gamebots on stable
+## routes, owner 2026-10-31 "teleporting behind the horse as it moves") more than RIDE_LOST_M apart, allowing for the
+## time between their two updates, for RIDE_APART_MS; or the steed's updates stopped while the rider's go on.
+const RIDE_APART_MS := 3000
+var _ride_apart := {}                         # rider object id -> msec it was first seen apart from its steed
+
+
+func _ride_lost(r: int, rider: NpcState, steed: NpcState, now: int) -> bool:
+	var rm: Dictionary = _mover.get(rider, {})
+	var sm: Dictionary = _mover.get(steed, {})
+	if not (rm.get("srv_pos") is Vector3) or now - int(rm.get("srv_at", 0)) > 3000:
+		_ride_apart.erase(r)
+		return false                                            # (no fresh word on the rider: it stays seated)
+	var apart: bool
+	if not (sm.get("srv_pos") is Vector3) or now - int(sm.get("srv_at", 0)) > 6000:
+		# the steed has gone quiet (its updates stopped at a zone edge) while the rider's still come
+		var sp: Vector3 = steed.pos
+		apart = Vector2((rm.srv_pos as Vector3).x - sp.x, (rm.srv_pos as Vector3).z - sp.z).length() > RIDE_LOST_M
+	else:
+		var gap := absf(float(int(rm.srv_at) - int(sm.srv_at))) / 1000.0
+		var room := RIDE_LOST_M + float(sm.get("speed", 0.0)) * 0.025 * minf(gap, 2.0)
+		var d := Vector2((rm.srv_pos as Vector3).x - (sm.srv_pos as Vector3).x,
+				(rm.srv_pos as Vector3).z - (sm.srv_pos as Vector3).z).length()
+		apart = d > room
+	if not apart:
+		_ride_apart.erase(r)
+		return false
+	if not _ride_apart.has(r):
+		_ride_apart[r] = now
+	return now - int(_ride_apart[r]) >= RIDE_APART_MS
 
 
 ## A steed's saddle: its model's saddle node, else 1.3 m up its back.
@@ -1851,6 +2137,22 @@ func _ridden(st: NpcState) -> bool:
 		if by_oid.get(_riders[r]) == st:
 			return true
 	return false
+
+
+## The server's ChangeTarget (/target <name>, /assist): select that object as a click would - the client then sends
+## its Target packet, which is what sets the server's target. Missing until 2026-10-17: "/target Haralhelm" answered
+## "[GM] You target Haralhelm." but the target window stayed empty and /invite found no target.
+var _server_chose_target := false
+
+
+func _change_target(oid: int) -> void:
+	if oid <= 0:
+		if target or target_door:
+			clear_target()
+		return
+	_server_chose_target = true
+	target_oid(oid)
+	_server_chose_target = false
 
 
 ## A raid window slot clicked: target that member (its view if drawn, else straight on the server).

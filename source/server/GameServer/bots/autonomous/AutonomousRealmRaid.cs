@@ -84,6 +84,9 @@ namespace DOL.GS
             public RealmRaidMuster.Hub Hub;
             public bool HubDeparted;
             public long HubDepartedTick;
+            /// <summary>The most staged at once, and when that count last grew (an arrival).</summary>
+            public int StagingBest;
+            public long StagingArrivalTick;
             public long NextDefenseBroadcast;
             public readonly Dictionary<int, Vector3> HubPosts = new();
             public Vector3[] OutboundSeams = [];
@@ -366,9 +369,14 @@ namespace DOL.GS
                                 RealmEventBanter.RaidReminder(raid.Definition.Name, raid.Forced), "raid_forming", RaidSlots(raid.Definition.Name, null));
                         }
                         int present = PresentAtStaging(raid);
+                        if (present > raid.StagingBest)
+                        {
+                            raid.StagingBest = present;
+                            raid.StagingArrivalTick = now;
+                        }
                         bool ready = RealmRaidRecruitmentPolicy.Ready(raid.Forced, now - raid.Created, present, DragonLanded(raid), raid.Required);
                         bool expired = !ready && RealmRaidRecruitmentPolicy.StagingExpired(raid.Forced, now, raid.Created, raid.HubDepartedTick,
-                            present, DragonLanded(raid), raid.Required);
+                            present, DragonLanded(raid), raid.Required, raid.StagingArrivalTick);
                         // Out of time with at least half the raid there: it goes in short, and the rest follow it in.
                         if (expired && DragonLanded(raid) && RealmRaidRecruitmentPolicy.GoesInShortAtDeadline(raid.Forced, present, raid.Required))
                         {
@@ -1136,6 +1144,18 @@ namespace DOL.GS
         }
 
         public static bool HasSharedSupport(GameBot bot) => GetView(bot?.Group) != null || RealmWarbandSupport.Get(bot) != null;
+
+        /// <summary>
+        /// The high-end raid encounters whose loot a player in the encounter shares (owner 2026-10-31): the named epic
+        /// encounters, and each raid's own boss (the dragon) or final dungeon bosses. Trash on the way is not one.
+        /// </summary>
+        public static bool IsHighEndRaidEncounter(GameNPC victim)
+        {
+            if (victim is IGameEpicNpc) return true;
+            lock (Sync)
+                return CompletedLoot.ContainsKey(victim) || Raids.Values.Any(r => ReferenceEquals(r.Boss, victim) ||
+                    r.DungeonRoute?.FinalBosses.Contains(victim) == true);
+        }
 
         public static IGameStaticItemOwner LootOwner(GameNPC victim, IEnumerable<GameBot> contributors) =>
             LootOwner(victim, contributors.Where(b => b != null).Distinct().ToDictionary(b => b, _ => 1.0));

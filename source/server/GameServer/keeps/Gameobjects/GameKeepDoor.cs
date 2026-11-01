@@ -584,10 +584,29 @@ namespace DOL.GS.Keeps
             if (Component?.Keep == null || HealthPercent >= 100)
                 return 0;
 
-            if (!Component.Keep.InCombat)
+            // Not while enemies are still at the keep (2026-10-30 livestream: a broken relic temple door crossed the
+            // 15% close line on this tick and shut behind a raid fighting guards inside; a keep is only "in combat"
+            // for 5 minutes after a door or lord hit, and relic temples have no lord). Same 5% per 30 minutes otherwise.
+            if (!Component.Keep.InCombat && !EnemiesNear())
                 Repair(MaxHealth / 100 * 5);
 
             return REPAIR_INTERVAL;
+        }
+
+        private const int ENEMIES_NEAR_RADIUS = 3000;
+
+        /// <summary>A living enemy player or bot (companions included) of another realm than the keep's, near the door.</summary>
+        private bool EnemiesNear()
+        {
+            eRealm owner = Component.Keep.Realm;
+            foreach (GamePlayer player in GetPlayersInRadius(ENEMIES_NEAR_RADIUS))
+                if (player.IsAlive && player.Realm != owner && player.Realm != eRealm.None &&
+                    (ePrivLevel)player.Client.Account.PrivLevel == ePrivLevel.Player)
+                    return true;
+            foreach (GameNPC npc in GetNPCsInRadius(ENEMIES_NEAR_RADIUS))
+                if (npc is GameBot bot && bot.IsAlive && bot.Realm != owner && bot.Realm != eRealm.None)
+                    return true;
+            return false;
         }
 
         /// <summary>

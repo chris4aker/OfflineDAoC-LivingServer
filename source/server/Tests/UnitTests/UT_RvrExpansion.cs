@@ -188,7 +188,7 @@ public sealed class UT_RvrExpansion
             Assert.DoesNotThrow(() => AutonomousRvrDashboard.Start(null, null, EventArgs.Empty));
             Assert.DoesNotThrow(() => AutonomousRvrDashboard.Start(null, null, EventArgs.Empty),
                 "Repeated startup must not duplicate or pre-remove handlers.");
-            Assert.That(GameEventMgr.NumGlobalHandlers, Is.EqualTo(3));
+            Assert.That(GameEventMgr.NumGlobalHandlers, Is.EqualTo(4)); // keep taken, relic stolen / mounted / returned
             Assert.DoesNotThrow(() => AutonomousRvrDashboard.Stop(null, null, EventArgs.Empty));
             Assert.That(GameEventMgr.NumGlobalHandlers, Is.Zero);
         }

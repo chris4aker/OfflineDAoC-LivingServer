@@ -29,8 +29,19 @@ var _host_label: Label
 var _host_check := 0.0
 
 
+## The game's window title (owner 2026-10-30: 0.38 is now the only version). Set on the root window, which keeps it
+## (window_set_title alone was reset to the project name); a debug Godot binary - the one the launcher runs - adds
+## " (DEBUG)" to a Window's title, so the screen's own title is set again without it once the window has applied its own.
+const GAME_TITLE := "Offline DAoC Rebuilt v0.38"
+
+
+static func set_game_title(w: Window) -> void:
+	w.title = GAME_TITLE
+	(func(): DisplayServer.window_set_title(GAME_TITLE, w.get_window_id())).call_deferred()
+
+
 func _ready() -> void:
-	get_window().title = "Offline DAoC Rebuilt v0.37c"            # the root window keeps it (window_set_title alone was reset to the project name)
+	set_game_title(get_window())
 	var args := OS.get_cmdline_user_args()
 	for a in args:
 		if a.trim_prefix("--").split("=")[0] in SKIP_FLAGS:
@@ -446,13 +457,32 @@ func _server_login() -> void:
 	# the server's reason stays up: it closes the connection right after a refusal, and "Disconnected: the server
 	# closed the connection" hid it (owner 2026-10-15 - the reason was "being logged out, try back in 1 minute")
 	var refused := [false]
+	# owner 2026-10-29: after a frozen game was ended in Task Manager the account "stayed logged in" - the server keeps
+	# a lost connection's character in the world for 60 s (link-dead, GamePlayer SECONDS_TO_QUIT_ON_LINKDEATH) and
+	# refuses the account meanwhile. The game now asks again every RETRY_S until it is let in (the reason stays up).
+	var tries := [0]
 	Server.login_failed.connect(func(why: String):
 		refused[0] = true
-		_say("%s  (Escape to close)" % why))
+		var held: bool = why == String(Server.LOGIN_ERRORS.get(17, "")) or why == String(Server.LOGIN_ERRORS.get(11, ""))
+		if held and tries[0] < RETRY_MAX:
+			tries[0] += 1
+			_say("%s
+Your last session is still closing - trying again in %d seconds (%d of %d).  (Escape to close)" % [
+					why, int(RETRY_S), tries[0], RETRY_MAX])
+			get_tree().create_timer(RETRY_S).timeout.connect(func():
+				refused[0] = false
+				_say("Connecting to the server...", true)
+				Server.start())
+		else:
+			_say("%s  (Escape to close)" % why))
 	Server.disconnected.connect(func(why: String):
 		if not refused[0]:
 			_say("Disconnected: %s  (Escape to close)" % why))
 	Server.start.call_deferred()
+
+
+const RETRY_S := 10.0
+const RETRY_MAX := 9                              # (90 s: past the server's 60 s link-death hold)
 
 
 func _enter_world() -> void:

@@ -1,0 +1,1372 @@
+[
+ {
+  "Id_nb": "cq_alb_avalon_defender_s_boots",
+  "Name": "Avalon Defender's Boots",
+  "kind": "A real page",
+  "source": "Avalon's Defender Boots (citem 5139, live)",
+  "before": {
+   "Bonus1Type": 2,
+   "Bonus1": 5,
+   "Bonus2Type": 4,
+   "Bonus2": 5,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "DPS_AF": 12
+  },
+  "after": {
+   "Bonus1Type": 5,
+   "Bonus1": 3,
+   "Bonus2Type": 10,
+   "Bonus2": 6,
+   "Bonus3Type": 9,
+   "Bonus3": 2,
+   "DPS_AF": 13
+  }
+ },
+ {
+  "Id_nb": "cq_alb_gurz",
+  "Name": "Gurz",
+  "kind": "A real page",
+  "source": "Gruz (citem 6180, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus2Type": 6,
+   "Bonus2": 6,
+   "Bonus3Type": 9,
+   "Bonus3": 3,
+   "DPS_AF": 57,
+   "SPD_ABS": 37
+  },
+  "after": {
+   "Bonus1Type": 1,
+   "Bonus2Type": 10,
+   "Bonus2": 12,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "DPS_AF": 69,
+   "SPD_ABS": 29
+  }
+ },
+ {
+  "Id_nb": "cq_alb_kiss_of_death",
+  "Name": "Kiss of Death",
+  "kind": "B sibling",
+  "source": "Blood Encrusted Whip (citem 6138, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus1": 16,
+   "Bonus2Type": 1,
+   "Bonus2": 16,
+   "DPS_AF": 132
+  },
+  "after": {
+   "Bonus1Type": 40,
+   "Bonus1": 4,
+   "Bonus2Type": 50,
+   "Bonus2": 5,
+   "DPS_AF": 141
+  }
+ },
+ {
+  "Id_nb": "cq_alb_magician_s_dextrous_gloves",
+  "Name": "Magician's Dextrous Gloves",
+  "kind": "B sibling",
+  "source": "Magician's Dextrous Boots (citem 26173, live)",
+  "before": {
+   "DPS_AF": 22
+  },
+  "after": {
+   "DPS_AF": 26
+  }
+ },
+ {
+  "Id_nb": "cq_alb_magician_s_dextrous_sleeves",
+  "Name": "Magician's Dextrous Sleeves",
+  "kind": "B sibling",
+  "source": "Magician's Dextrous Boots (citem 26173, live)",
+  "before": {
+   "DPS_AF": 22
+  },
+  "after": {
+   "DPS_AF": 26
+  }
+ },
+ {
+  "Id_nb": "cq_alb_magician_s_mysterious_gloves",
+  "Name": "Magician's Mysterious Gloves",
+  "kind": "B sibling",
+  "source": "Magician's Mysterious Boots (citem 4504, live)",
+  "before": {
+   "DPS_AF": 22
+  },
+  "after": {
+   "DPS_AF": 26
+  }
+ },
+ {
+  "Id_nb": "cq_alb_magician_s_mysterious_sleeves",
+  "Name": "Magician's Mysterious Sleeves",
+  "kind": "A real page",
+  "source": "Magican's Mysterious Sleeves (citem 26174, live)",
+  "before": {
+   "DPS_AF": 22
+  },
+  "after": {
+   "DPS_AF": 26
+  }
+ },
+ {
+  "Id_nb": "cq_alb_magician_s_sly_gloves",
+  "Name": "Magician's Sly Gloves",
+  "kind": "B sibling",
+  "source": "Magician's Sly Sleeves (citem 19970, live)",
+  "before": {
+   "DPS_AF": 22
+  },
+  "after": {
+   "DPS_AF": 26
+  }
+ },
+ {
+  "Id_nb": "cq_alb_mithran_boots_of_leo",
+  "Name": "Mithran Boots of Leo",
+  "kind": "B sibling",
+  "source": "Mithran Sleeves of Perses (citem 4757, live)",
+  "before": {
+   "Bonus1": 6,
+   "Bonus2": 3,
+   "DPS_AF": 15
+  },
+  "after": {
+   "Bonus1": 4,
+   "Bonus2": 4,
+   "DPS_AF": 19
+  }
+ },
+ {
+  "Id_nb": "cq_alb_realm_defender_boots",
+  "Name": "Realm Defender Boots",
+  "kind": "A real page",
+  "source": "Realm's Defender Boots (citem 5073, live)",
+  "before": {
+   "Bonus1": 5,
+   "Bonus2": 5,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "DPS_AF": 24,
+   "Level": 12
+  },
+  "after": {
+   "Bonus1": 3,
+   "Bonus2": 3,
+   "Bonus3Type": 10,
+   "Bonus3": 9,
+   "DPS_AF": 26,
+   "Level": 13
+  }
+ },
+ {
+  "Id_nb": "cq_alb_sleeves_of_prestidigitation",
+  "Name": "Sleeves of Prestidigitation",
+  "kind": "A real page",
+  "source": "Sleeves of Prestidigation (citem 5351, live)",
+  "before": {
+   "DPS_AF": 22,
+   "SPD_ABS": 10
+  },
+  "after": {
+   "DPS_AF": 26,
+   "SPD_ABS": 19
+  }
+ },
+ {
+  "Id_nb": "cq_alb_snowbinder_s_mantle",
+  "Name": "Snowbinder's Mantle",
+  "kind": "A real page",
+  "source": "Shadowbinder's Mantle (citem 3995, live)",
+  "before": {
+   "Bonus1": 2,
+   "Bonus2Type": 3,
+   "Bonus2": 12,
+   "Bonus3Type": 4,
+   "Bonus3": 12,
+   "Bonus4Type": 12,
+   "Bonus4": 4
+  },
+  "after": {
+   "Bonus1": 3,
+   "Bonus2Type": 1,
+   "Bonus2": 13,
+   "Bonus3Type": 2,
+   "Bonus3": 13,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__bard_s_belt_bard",
+  "Name": "Bard's Belt",
+  "kind": "A real page",
+  "source": "Bard Belt (citem 10193, live)",
+  "before": {
+   "Bonus1Type": 19,
+   "Bonus1": 4,
+   "Bonus2Type": 77,
+   "Bonus2": 4,
+   "Bonus3Type": 9,
+   "Bonus3": 4,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus1Type": 77,
+   "Bonus1": 3,
+   "Bonus2Type": 78,
+   "Bonus2": 3,
+   "Bonus3Type": 80,
+   "Bonus3": 3,
+   "Bonus4Type": 8,
+   "Bonus4": 9
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__blademaster_s_belt_blademaster",
+  "Name": "Blademaster's Belt",
+  "kind": "C scaled to period median",
+  "source": "",
+  "before": {
+   "Bonus1": 2,
+   "Bonus2": 10,
+   "Bonus3": 10,
+   "Bonus4": 7
+  },
+  "after": {
+   "Bonus1": 1,
+   "Bonus2": 7,
+   "Bonus3": 7,
+   "Bonus4": 5
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__champion_s_belt_champion",
+  "Name": "Champion's Belt",
+  "kind": "C scaled to period median",
+  "source": "",
+  "before": {
+   "Bonus1": 33,
+   "Bonus2": 5,
+   "Bonus3": 14,
+   "Bonus4": 2
+  },
+  "after": {
+   "Bonus1": 23,
+   "Bonus2": 4,
+   "Bonus3": 10,
+   "Bonus4": 1
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__druid_s_belt_druid",
+  "Name": "Druid's Belt",
+  "kind": "A real page",
+  "source": "Druid Belt (citem 10194, live)",
+  "before": {
+   "Bonus1Type": 1,
+   "Bonus1": 11,
+   "Bonus2Type": 3,
+   "Bonus2": 14,
+   "Bonus3Type": 0,
+   "Bonus3": 0
+  },
+  "after": {
+   "Bonus1Type": 77,
+   "Bonus1": 3,
+   "Bonus2Type": 78,
+   "Bonus2": 3,
+   "Bonus3Type": 7,
+   "Bonus3": 9
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__eldritch_s_belt_eldritch",
+  "Name": "Eldritch's Belt",
+  "kind": "A real page",
+  "source": "Eldritch Belt (citem 22993, live)",
+  "before": {
+   "Bonus1Type": 5,
+   "Bonus1": 14,
+   "Bonus2Type": 19,
+   "Bonus2": 7,
+   "Bonus3Type": 10,
+   "Bonus3": 35
+  },
+  "after": {
+   "Bonus1Type": 65,
+   "Bonus1": 3,
+   "Bonus2Type": 67,
+   "Bonus2": 3,
+   "Bonus3Type": 5,
+   "Bonus3": 9
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__enchanter_s_belt_enchanter",
+  "Name": "Enchanter's Belt",
+  "kind": "A real page",
+  "source": "Enchanter's Belt (citem 10250, live)",
+  "before": {
+   "Bonus1Type": 5,
+   "Bonus1": 14,
+   "Bonus2Type": 9,
+   "Bonus2": 4,
+   "Bonus3Type": 17,
+   "Bonus3": 7,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus1Type": 65,
+   "Bonus1": 3,
+   "Bonus2Type": 67,
+   "Bonus2": 3,
+   "Bonus3Type": 70,
+   "Bonus3": 3,
+   "Bonus4Type": 5,
+   "Bonus4": 9
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__hero_s_belt_hero",
+  "Name": "Hero's Belt",
+  "kind": "A real page",
+  "source": "Hero Belt (citem 16027, live)",
+  "before": {
+   "Bonus1Type": 1,
+   "Bonus1": 10,
+   "Bonus2Type": 10,
+   "Bonus2": 10,
+   "Bonus3Type": 11,
+   "Bonus3": 7,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus1Type": 82,
+   "Bonus1": 3,
+   "Bonus2Type": 40,
+   "Bonus2": 3,
+   "Bonus3Type": 3,
+   "Bonus3": 12,
+   "Bonus4Type": 2,
+   "Bonus4": 12
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__mentalist_s_belt_mentalist",
+  "Name": "Mentalist's Belt",
+  "kind": "A real page",
+  "source": "Mentalist Belt (citem 21274, live)",
+  "before": {
+   "Bonus1Type": 5,
+   "Bonus1": 14,
+   "Bonus2Type": 9,
+   "Bonus2": 4,
+   "Bonus3Type": 17,
+   "Bonus3": 7,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus1Type": 65,
+   "Bonus1": 3,
+   "Bonus2Type": 67,
+   "Bonus2": 3,
+   "Bonus3Type": 76,
+   "Bonus3": 3,
+   "Bonus4Type": 5,
+   "Bonus4": 9
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__nightshade_s_belt_nightshade",
+  "Name": "Nightshade's Belt",
+  "kind": "A real page",
+  "source": "Nightshade Belt (citem 10191, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus1": 10,
+   "Bonus2Type": 2,
+   "Bonus2": 10,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus1Type": 81,
+   "Bonus1": 3,
+   "Bonus2Type": 23,
+   "Bonus2": 3,
+   "Bonus4Type": 4,
+   "Bonus4": 9
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__ranger_s_belt_ranger",
+  "Name": "Ranger's Belt",
+  "kind": "A real page",
+  "source": "Ranger Belt (citem 19770, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus1": 10,
+   "Bonus2Type": 2,
+   "Bonus2": 10,
+   "Bonus3Type": 49,
+   "Bonus3": 3,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus1Type": 81,
+   "Bonus1": 3,
+   "Bonus2Type": 49,
+   "Bonus2": 3,
+   "Bonus3Type": 2,
+   "Bonus3": 9,
+   "Bonus4Type": 83,
+   "Bonus4": 3
+  }
+ },
+ {
+  "Id_nb": "cq_hib_animist_bard_blademaster_champion_druid_eldritch_enchant__valewalker_s_belt_valewalker",
+  "Name": "Valewalker's Belt",
+  "kind": "A real page",
+  "source": "Valewalker Belt (citem 10195, live)",
+  "before": {
+   "Bonus1Type": 1,
+   "Bonus1": 10,
+   "Bonus2Type": 3,
+   "Bonus2": 10,
+   "Bonus3Type": 5,
+   "Bonus3": 10,
+   "Bonus4Type": 90
+  },
+  "after": {
+   "Bonus1Type": 40,
+   "Bonus1": 3,
+   "Bonus2Type": 5,
+   "Bonus2": 9,
+   "Bonus3Type": 90,
+   "Bonus3": 3,
+   "Bonus4Type": 89
+  }
+ },
+ {
+  "Id_nb": "cq_hib_belt_of_nimbleness",
+  "Name": "Belt of Nimbleness",
+  "kind": "B sibling",
+  "source": "Straw's Belt (citem 3738, live)",
+  "before": {
+   "Bonus1": 3,
+   "Bonus2Type": 3,
+   "Bonus2": 3
+  },
+  "after": {
+   "Bonus1": 4,
+   "Bonus2Type": 13,
+   "Bonus2": 2
+  }
+ },
+ {
+  "Id_nb": "cq_hib_charming_necklace",
+  "Name": "Charming Necklace",
+  "kind": "B sibling",
+  "source": "Straw's Bardic Beads (citem 3741, live)",
+  "before": {
+   "Bonus1": 3,
+   "Bonus2Type": 13,
+   "Bonus2": 1,
+   "Bonus3Type": 10,
+   "Bonus3": 7
+  },
+  "after": {
+   "Bonus1": 4,
+   "Bonus2Type": 17,
+   "Bonus2": 2,
+   "Bonus3Type": 0,
+   "Bonus3": 0
+  }
+ },
+ {
+  "Id_nb": "cq_hib_choker_of_empathetic_properties",
+  "Name": "Choker of Empathetic Properties",
+  "kind": "B sibling",
+  "source": "Straw's Beads (citem 3740, live)",
+  "before": {
+   "Bonus1": 3,
+   "Bonus2Type": 13,
+   "Bonus2": 1,
+   "Bonus3Type": 10,
+   "Bonus3": 7
+  },
+  "after": {
+   "Bonus1": 4,
+   "Bonus2Type": 16,
+   "Bonus2": 2,
+   "Bonus3Type": 0,
+   "Bonus3": 0
+  }
+ },
+ {
+  "Id_nb": "cq_hib_devastation",
+  "Name": "Devastation",
+  "kind": "A real page",
+  "source": "Devistation (citem 8804, live)",
+  "before": {
+   "SPD_ABS": 46
+  },
+  "after": {
+   "SPD_ABS": 54
+  }
+ },
+ {
+  "Id_nb": "cq_hib_shadowblade",
+  "Name": "Shadowblade",
+  "kind": "B sibling",
+  "source": "Shadow Scythe (citem 5141, live)",
+  "before": {
+   "Bonus2": 4,
+   "Bonus3Type": 4,
+   "Bonus3": 2,
+   "Bonus4Type": 10,
+   "Bonus4": 5
+  },
+  "after": {
+   "Bonus2": 3,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  }
+ },
+ {
+  "Id_nb": "cq_hib_vine_entwined_hauberk",
+  "Name": "Vine Entwined Hauberk",
+  "kind": "A real page",
+  "source": "Vined Entwined Hauberk (citem 5432, live)",
+  "before": {
+   "Bonus1Type": 2,
+   "Bonus1": 5,
+   "Bonus2Type": 16,
+   "Bonus3": 10,
+   "DPS_AF": 24
+  },
+  "after": {
+   "Bonus1Type": 1,
+   "Bonus1": 4,
+   "Bonus2Type": 9,
+   "Bonus3": 6,
+   "DPS_AF": 30
+  }
+ },
+ {
+  "Id_nb": "cq_mid_brack_s_hammer",
+  "Name": "Brack's Hammer",
+  "kind": "A real page",
+  "source": "Brack Hammer (citem 4204, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus1": 6,
+   "Bonus2Type": 2,
+   "Bonus2": 6,
+   "Bonus3Type": 6,
+   "Bonus3": 6,
+   "Bonus4Type": 10,
+   "Bonus4": 16,
+   "DPS_AF": 60
+  },
+  "after": {
+   "Bonus1Type": 53,
+   "Bonus1": 3,
+   "Bonus2Type": 4,
+   "Bonus2": 3,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 66
+  }
+ },
+ {
+  "Id_nb": "cq_mid_griffin_pelt_shield",
+  "Name": "Griffin Pelt Shield",
+  "kind": "A real page",
+  "source": "Griffin's Impervious Pelt Shield (citem 17580, live)",
+  "before": {
+   "Bonus1Type": 1,
+   "Bonus1": 7,
+   "Bonus2Type": 43,
+   "Bonus2": 4,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus1Type": 43,
+   "Bonus1": 2,
+   "Bonus2Type": 13,
+   "Bonus2": 6,
+   "Bonus4Type": 10,
+   "Bonus4": 12
+  }
+ },
+ {
+  "Id_nb": "cq_mid_njessi_staff_of_pure_thought",
+  "Name": "Njessi Staff of Pure Thought",
+  "kind": "A real page",
+  "source": "Njessie Staff of Pure Thought (Spiritmaster) (citem 3321, live)",
+  "before": {
+   "Bonus1Type": 5,
+   "Bonus1": 8,
+   "Bonus2Type": 1,
+   "Bonus2": 8,
+   "Bonus3Type": 2,
+   "Bonus3": 8,
+   "Bonus4Type": 10,
+   "Bonus4": 22,
+   "DPS_AF": 78,
+   "SPD_ABS": 45
+  },
+  "after": {
+   "Bonus1Type": 10,
+   "Bonus1": 24,
+   "Bonus2Type": 120,
+   "Bonus2": 19,
+   "Bonus3Type": 121,
+   "Bonus3": 19,
+   "Bonus4Type": 137,
+   "Bonus4": 19,
+   "DPS_AF": 80,
+   "SPD_ABS": 44
+  }
+ },
+ {
+  "Id_nb": "cq_mid_sleeves_of_buril",
+  "Name": "Sleeves of Buril",
+  "kind": "B sibling",
+  "source": "Vest of Audhumbla (citem 10079, live)",
+  "before": {
+   "Bonus1Type": 4,
+   "Bonus1": 3,
+   "Bonus2": 3,
+   "Bonus3Type": 17,
+   "Bonus3": 2,
+   "Bonus4Type": 9,
+   "Bonus4": 2,
+   "DPS_AF": 16
+  },
+  "after": {
+   "Bonus1Type": 1,
+   "Bonus1": 7,
+   "Bonus2": 7,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 20
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_greatsword_warrior",
+  "Name": "Stoneheart Greatsword",
+  "kind": "B sibling",
+  "source": "Troll's Bite Sword (citem 5590, live)",
+  "before": {
+   "Bonus1": 5,
+   "Bonus2Type": 1,
+   "Bonus2": 13,
+   "Bonus3Type": 10,
+   "Bonus3": 28,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1": 3,
+   "Bonus2Type": 17,
+   "Bonus2": 6,
+   "Bonus3Type": 12,
+   "Bonus3": 8,
+   "Bonus4Type": 10,
+   "Bonus4": 21,
+   "DPS_AF": 162
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_hammer_thane",
+  "Name": "Stoneheart Hammer",
+  "kind": "B sibling",
+  "source": "Troll's Fury Hammer (citem 6068, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus1": 20,
+   "Bonus2Type": 1,
+   "Bonus2": 20,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1Type": 53,
+   "Bonus1": 3,
+   "Bonus2Type": 11,
+   "Bonus2": 10,
+   "Bonus3Type": 10,
+   "Bonus3": 15,
+   "Bonus4Type": 14,
+   "Bonus4": 8,
+   "DPS_AF": 162
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_great_axe_skald",
+  "Name": "Stoneheart Great Axe",
+  "kind": "B sibling",
+  "source": "Troll's Arm Great Axe (citem 6321, live)",
+  "before": {
+   "Bonus1": 5,
+   "Bonus2Type": 1,
+   "Bonus2": 13,
+   "Bonus3Type": 10,
+   "Bonus3": 28,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1": 3,
+   "Bonus2Type": 12,
+   "Bonus2": 6,
+   "Bonus3Type": 11,
+   "Bonus3": 10,
+   "Bonus4Type": 10,
+   "Bonus4": 18,
+   "DPS_AF": 165
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_axe_berserker",
+  "Name": "Stoneheart Axe",
+  "kind": "B sibling",
+  "source": "Troll's War Cry Axe (citem 6065, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus1": 20,
+   "Bonus2Type": 1,
+   "Bonus2": 20,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1Type": 54,
+   "Bonus1": 3,
+   "Bonus2Type": 17,
+   "Bonus2": 8,
+   "Bonus3Type": 18,
+   "Bonus3": 6,
+   "Bonus4Type": 10,
+   "Bonus4": 21,
+   "DPS_AF": 162
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_claw_savage",
+  "Name": "Stoneheart Claw",
+  "kind": "B sibling",
+  "source": "Troll Fingers (citem 5655, live)",
+  "before": {
+   "Bonus1Type": 2,
+   "Bonus1": 10,
+   "Bonus2Type": 11,
+   "Bonus2": 9,
+   "Bonus3Type": 14,
+   "Bonus3": 9,
+   "Bonus4Type": 40,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1Type": 12,
+   "Bonus1": 8,
+   "Bonus2Type": 18,
+   "Bonus2": 8,
+   "Bonus3Type": 10,
+   "Bonus3": 18,
+   "Bonus4Type": 92,
+   "DPS_AF": 162
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_sword_hunter",
+  "Name": "Stoneheart Sword",
+  "kind": "B sibling",
+  "source": "Troll's Will Trident (citem 8513, live)",
+  "before": {
+   "Bonus1": 5,
+   "Bonus2Type": 1,
+   "Bonus2": 18,
+   "Bonus3Type": 4,
+   "Bonus3": 18,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1": 3,
+   "Bonus2Type": 19,
+   "Bonus2": 8,
+   "Bonus3Type": 16,
+   "Bonus3": 8,
+   "Bonus4Type": 10,
+   "Bonus4": 18,
+   "DPS_AF": 161
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_blade_shadowblade",
+  "Name": "Stoneheart Blade",
+  "kind": "B sibling",
+  "source": "Troll's Tooth Sword (citem 5591, live)",
+  "before": {
+   "Bonus1": 5,
+   "Bonus2Type": 4,
+   "Bonus2": 18,
+   "Bonus3": 47,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1": 3,
+   "Bonus2Type": 11,
+   "Bonus2": 10,
+   "Bonus3": 15,
+   "Bonus4Type": 14,
+   "Bonus4": 8,
+   "DPS_AF": 162
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_mace_healer",
+  "Name": "Stoneheart Mace",
+  "kind": "B sibling",
+  "source": "Troll's Fury Hammer (citem 6068, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus1": 19,
+   "Bonus2Type": 6,
+   "Bonus2": 19,
+   "Bonus3Type": 9,
+   "Bonus3": 9,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1Type": 53,
+   "Bonus1": 3,
+   "Bonus2Type": 11,
+   "Bonus2": 10,
+   "Bonus3Type": 10,
+   "Bonus3": 15,
+   "Bonus4Type": 14,
+   "Bonus4": 8,
+   "DPS_AF": 162
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_maul_shaman",
+  "Name": "Stoneheart Maul",
+  "kind": "B sibling",
+  "source": "Troll's Fury Hammer (citem 6068, live)",
+  "before": {
+   "Bonus1Type": 3,
+   "Bonus1": 19,
+   "Bonus2Type": 6,
+   "Bonus2": 19,
+   "Bonus3Type": 9,
+   "Bonus3": 9,
+   "Bonus4Type": 0,
+   "Bonus4": 0,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1Type": 53,
+   "Bonus1": 3,
+   "Bonus2Type": 11,
+   "Bonus2": 10,
+   "Bonus3Type": 10,
+   "Bonus3": 15,
+   "Bonus4Type": 14,
+   "Bonus4": 8,
+   "DPS_AF": 162
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_staff_runemaster",
+  "Name": "Stoneheart Staff",
+  "kind": "B sibling",
+  "source": "Dark Troll Bone Staff (citem 5594, live)",
+  "before": {
+   "Bonus1Type": 9,
+   "Bonus1": 9,
+   "Bonus2Type": 120,
+   "Bonus2": 45,
+   "Bonus3Type": 122,
+   "Bonus3": 49,
+   "Bonus4Type": 121,
+   "Bonus4": 45,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1Type": 17,
+   "Bonus1": 12,
+   "Bonus2Type": 19,
+   "Bonus2": 12,
+   "Bonus3Type": 10,
+   "Bonus3": 24,
+   "Bonus4Type": 120,
+   "Bonus4": 50,
+   "DPS_AF": 161
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_staff_spiritmaster",
+  "Name": "Stoneheart Staff",
+  "kind": "B sibling",
+  "source": "Spiritual Troll Bone Staff (citem 18843, live)",
+  "before": {
+   "Bonus1Type": 10,
+   "Bonus1": 49,
+   "Bonus2Type": 120,
+   "Bonus2": 38,
+   "Bonus3Type": 121,
+   "Bonus3": 49,
+   "Bonus4": 38,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1Type": 17,
+   "Bonus1": 10,
+   "Bonus2Type": 11,
+   "Bonus2": 10,
+   "Bonus3Type": 10,
+   "Bonus3": 24,
+   "Bonus4": 50,
+   "DPS_AF": 161
+  }
+ },
+ {
+  "Id_nb": "cq_mid_stoneheart_staff_axe_hammer_sword_hand_to_hand_1h_or_2h__stoneheart_staff_bonedancer",
+  "Name": "Stoneheart Staff",
+  "kind": "B sibling",
+  "source": "Brilliant Dancing Troll Bone Staff (citem 18647, live)",
+  "before": {
+   "Bonus1Type": 9,
+   "Bonus1": 9,
+   "Bonus2Type": 138,
+   "Bonus2": 49,
+   "Bonus3Type": 121,
+   "Bonus3": 45,
+   "Bonus4Type": 120,
+   "Bonus4": 45,
+   "DPS_AF": 159
+  },
+  "after": {
+   "Bonus1Type": 19,
+   "Bonus1": 10,
+   "Bonus2Type": 10,
+   "Bonus2": 24,
+   "Bonus3Type": 15,
+   "Bonus3": 10,
+   "Bonus4Type": 138,
+   "Bonus4": 50,
+   "DPS_AF": 161
+  }
+ },
+ {
+  "Id_nb": "cq_alb_duwiol_coif",
+  "Name": "Duwiol Coif",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 45,
+   "Bonus4": 2
+  }
+ },
+ {
+  "Id_nb": "cq_alb_glowing_adamantium_staff_of_the_fire_tempest",
+  "Name": "Glowing Adamantium Staff of the Fire Tempest",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus2Type": 0,
+   "Bonus2": 0,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus2Type": 127,
+   "Bonus2": 26,
+   "Bonus3Type": 126,
+   "Bonus3": 26,
+   "Bonus4Type": 124,
+   "Bonus4": 30
+  }
+ },
+ {
+  "Id_nb": "cq_alb_hammer_of_judgment",
+  "Name": "Hammer of Judgment",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus3Type": 0,
+   "Bonus3": 0
+  },
+  "after": {
+   "Bonus3Type": 45,
+   "Bonus3": 4
+  }
+ },
+ {
+  "Id_nb": "cq_alb_jewelled_skull_ring",
+  "Name": "Jewelled Skull Ring",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 46,
+   "Bonus4": 3
+  }
+ },
+ {
+  "Id_nb": "cq_alb_ruby_topped_staff",
+  "Name": "Ruby-Topped Staff",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 124,
+   "Bonus4": 28
+  }
+ },
+ {
+  "Id_nb": "cq_alb_sapphire_topped_staff",
+  "Name": "Sapphire-topped Staff",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 125,
+   "Bonus4": 28
+  }
+ },
+ {
+  "Id_nb": "cq_alb_staff_of_arctic_elderwood",
+  "Name": "Staff of Arctic Elderwood",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus2Type": 0,
+   "Bonus2": 0,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus2Type": 127,
+   "Bonus2": 33,
+   "Bonus3Type": 126,
+   "Bonus3": 43,
+   "Bonus4Type": 125,
+   "Bonus4": 33
+  }
+ },
+ {
+  "Id_nb": "cq_alb_staff_of_compliance",
+  "Name": "Staff of Compliance",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus3Type": 129,
+   "Bonus3": 26,
+   "Bonus4Type": 132,
+   "Bonus4": 30
+  }
+ },
+ {
+  "Id_nb": "cq_alb_staff_of_earth_channeling",
+  "Name": "Staff of Earth Channeling",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus3Type": 129,
+   "Bonus3": 33,
+   "Bonus4Type": 123,
+   "Bonus4": 33
+  }
+ },
+ {
+  "Id_nb": "cq_alb_staff_of_earthen_fury",
+  "Name": "Staff of Earthen Fury",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus2Type": 0,
+   "Bonus2": 0,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus2Type": 127,
+   "Bonus2": 43,
+   "Bonus3Type": 126,
+   "Bonus3": 33,
+   "Bonus4Type": 125,
+   "Bonus4": 33
+  }
+ },
+ {
+  "Id_nb": "cq_alb_staff_of_the_maelstrom",
+  "Name": "Staff of the Maelstrom",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus2Type": 0,
+   "Bonus2": 0,
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus2Type": 127,
+   "Bonus2": 33,
+   "Bonus3Type": 126,
+   "Bonus3": 33,
+   "Bonus4Type": 125,
+   "Bonus4": 43
+  }
+ },
+ {
+  "Id_nb": "cq_alb_stone_of_smiting",
+  "Name": "Stone of Smiting",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 45,
+   "Bonus4": 1
+  }
+ },
+ {
+  "Id_nb": "cq_alb_visage_of_death",
+  "Name": "Visage of Death",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus3Type": 129,
+   "Bonus3": 26,
+   "Bonus4Type": 123,
+   "Bonus4": 30
+  }
+ },
+ {
+  "Id_nb": "cq_hib_bracelet_of_botanical_talent",
+  "Name": "Bracelet of Botanical Talent",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus2Type": 0,
+   "Bonus2": 0
+  },
+  "after": {
+   "Bonus2Type": 89,
+   "Bonus2": 3
+  }
+ },
+ {
+  "Id_nb": "cq_hib_enchanter_s_jewel",
+  "Name": "Enchanter's Jewel",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus2Type": 0,
+   "Bonus2": 0,
+   "Bonus3Type": 0,
+   "Bonus3": 0
+  },
+  "after": {
+   "Bonus2Type": 65,
+   "Bonus2": 3,
+   "Bonus3Type": 67,
+   "Bonus3": 3
+  }
+ },
+ {
+  "Id_nb": "cq_hib_first_branch_of_spring",
+  "Name": "First Branch of Spring",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 144,
+   "Bonus4": 37
+  }
+ },
+ {
+  "Id_nb": "cq_hib_lusmorebane_s_jeweled_necklace",
+  "Name": "Lusmorebane's Jeweled Necklace",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus2Type": 0,
+   "Bonus2": 0
+  },
+  "after": {
+   "Bonus2Type": 67,
+   "Bonus2": 3
+  }
+ },
+ {
+  "Id_nb": "cq_hib_mindnumber",
+  "Name": "Mindnumber",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus3Type": 0,
+   "Bonus3": 0,
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus3Type": 128,
+   "Bonus3": 37,
+   "Bonus4Type": 134,
+   "Bonus4": 37
+  }
+ },
+ {
+  "Id_nb": "cq_hib_song_of_the_moon",
+  "Name": "Song of the Moon",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus3Type": 0,
+   "Bonus3": 0
+  },
+  "after": {
+   "Bonus3Type": 67,
+   "Bonus3": 4
+  }
+ },
+ {
+  "Id_nb": "cq_hib_song_of_the_sun",
+  "Name": "Song of the Sun",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus3Type": 0,
+   "Bonus3": 0
+  },
+  "after": {
+   "Bonus3Type": 65,
+   "Bonus3": 4
+  }
+ },
+ {
+  "Id_nb": "cq_hib_banba_s_cloak_for_class__banba_s_cloak_for_animists",
+  "Name": "Banba's Cloak for Animists",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 89,
+   "Bonus4": 3
+  }
+ },
+ {
+  "Id_nb": "cq_hib_banba_s_cloak_for_class__banba_s_cloak_for_enchanters",
+  "Name": "Banba's Cloak for Enchanters",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 67,
+   "Bonus4": 3
+  }
+ },
+ {
+  "Id_nb": "cq_hib_banba_s_cloak_for_class__banba_s_cloak_for_mentalists",
+  "Name": "Banba's Cloak for Mentalists",
+  "kind": "D lost bonuses restored",
+  "source": "",
+  "before": {
+   "Bonus4Type": 0,
+   "Bonus4": 0
+  },
+  "after": {
+   "Bonus4Type": 67,
+   "Bonus4": 3
+  }
+ }
+]

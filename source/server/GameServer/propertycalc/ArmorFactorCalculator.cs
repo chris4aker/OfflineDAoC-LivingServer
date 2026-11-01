@@ -21,6 +21,7 @@ namespace DOL.GS.PropertyCalc
             switch (living)
             {
                 case GamePlayer:
+                case GameBot:   // player rules: worn armor plus capped buffs, not a monster's level formula (owner 2026-10-31)
                 case GameTrainingDummy:
                     return CalculatePlayerArmorFactor(living, property);
                 case GameKeepDoor:

@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/weapon_fx_local_check.gd" id="1"]
+
+[node name="X" type="Node"]
+script = ExtResource("1")

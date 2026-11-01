@@ -132,6 +132,13 @@ func _build_preview() -> void:
 	_preview = Control.new()
 	_preview.size = Vector2(PREVIEW_W, size.y)
 	_preview.mouse_filter = Control.MOUSE_FILTER_STOP
+	# its frame's X (the interact frame's corner, as ClassicWindow's) closes the whole training window (owner
+	# 2026-10-29: "the secondary x beside the skill preview should also close the entire window out")
+	_preview.gui_input.connect(func(e: InputEvent):
+		if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT \
+				and e.position.x > PREVIEW_W - 16 and e.position.y < 14:
+			_preview.accept_event()
+			hide_window())
 	var holder := Control.new()
 	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	holder.scale = Vector2(0.25, 0.25)

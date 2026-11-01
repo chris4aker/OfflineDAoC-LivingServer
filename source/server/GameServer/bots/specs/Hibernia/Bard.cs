@@ -2,9 +2,20 @@ namespace DOL.GS
 {
     public class BardBotSpec : BotSpec
     {
-        public BardBotSpec()
+        public BardBotSpec(eSpecType spec = eSpecType.None)
         {
             SpecName = "BardBotSpec";
+
+            if (spec == eSpecType.RegrowthBard)
+            {
+                // Regrowth first, the healing Bard (owner 2026-10-29), on the same points as the others.
+                WeaponOneType = Util.Random(1) == 0 ? eObjectType.Blades : eObjectType.Blunt;
+                SpecType = eSpecType.Instrument;
+                Add(Specs.Regrowth, 47, 1.0f);
+                Add(Specs.Nurture, 38, 0.8f);
+                Add(Specs.Music, 22, 0.3f);
+                return;
+            }
 
             int randBaseWeap = Util.Random(1);
 

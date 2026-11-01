@@ -18,6 +18,7 @@ internal sealed class RollingServerLog : IDisposable
     private readonly long _segmentBytes;
     private readonly long _totalBytes;
     private StreamWriter? _writer;
+    private bool _disposed;
     private long _currentBytes;
     private long _unflushedBytes;
     private DateTime _lastFlushUtc;
@@ -37,24 +38,43 @@ internal sealed class RollingServerLog : IDisposable
         PruneOldestArchives();
     }
 
-    public void WriteLine(string value)
+    /// <summary>
+    /// Never throws: it runs on the server process's output-reader thread, where an exception kills the whole launcher
+    /// (and with it the server and the game; 2026-10-30 09:24, a closed writer after a failed rotation). A line that
+    /// can't be written is dropped; a closed writer is reopened on the next line.
+    /// </summary>
+    public void WriteLine(string? value)
     {
+        if (value is null)
+            return;
         lock (_sync)
         {
-            long lineBytes = Encoding.UTF8.GetByteCount(value) + Environment.NewLine.Length;
-            if (_currentBytes > 0 && _currentBytes + lineBytes > _segmentBytes)
-                Rotate();
-            _writer!.WriteLine(value);
-            _currentBytes += lineBytes;
-            _unflushedBytes += lineBytes;
-            DateTime now = DateTime.UtcNow;
-            if (_unflushedBytes >= FlushByteThreshold || now - _lastFlushUtc >= FlushInterval)
+            if (_disposed)
+                return;
+            try
             {
-                _writer.Flush();
-                _unflushedBytes = 0;
-                _lastFlushUtc = now;
+                long lineBytes = Encoding.UTF8.GetByteCount(value) + Environment.NewLine.Length;
+                if (_currentBytes > 0 && _currentBytes + lineBytes > _segmentBytes)
+                    Rotate();
+                if (_writer is null)
+                    OpenWriter();
+                StreamWriter writer = _writer!;
+                writer.WriteLine(value);
+                _currentBytes += lineBytes;
+                _unflushedBytes += lineBytes;
+                DateTime now = DateTime.UtcNow;
+                if (_unflushedBytes >= FlushByteThreshold || now - _lastFlushUtc >= FlushInterval)
+                {
+                    writer.Flush();
+                    _unflushedBytes = 0;
+                    _lastFlushUtc = now;
+                }
+                PruneOldestArchives();
             }
-            PruneOldestArchives();
+            catch (Exception)
+            {
+                // a locked or missing file: drop this line; the next one tries again
+            }
         }
     }
 
@@ -71,20 +91,28 @@ internal sealed class RollingServerLog : IDisposable
     {
         _writer?.Dispose();
         _writer = null;
-
-        string oldest = ArchivePath(MaximumArchiveFiles);
-        if (File.Exists(oldest))
-            File.Delete(oldest);
-        for (int index = MaximumArchiveFiles - 1; index >= 1; index--)
+        try
         {
-            string source = ArchivePath(index);
-            if (File.Exists(source))
-                File.Move(source, ArchivePath(index + 1), true);
+            string oldest = ArchivePath(MaximumArchiveFiles);
+            if (File.Exists(oldest))
+                File.Delete(oldest);
+            for (int index = MaximumArchiveFiles - 1; index >= 1; index--)
+            {
+                string source = ArchivePath(index);
+                if (File.Exists(source))
+                    File.Move(source, ArchivePath(index + 1), true);
+            }
+            if (File.Exists(_path))
+                File.Move(_path, ArchivePath(1), true);
         }
-        if (File.Exists(_path))
-            File.Move(_path, ArchivePath(1), true);
-
-        OpenWriter();
+        catch (Exception)
+        {
+            // another launcher window holding the log (two were open on 2026-10-30): keep appending to the current file
+        }
+        finally
+        {
+            OpenWriter();   // always reopened: a failed rename used to leave the writer closed for good
+        }
         PruneOldestArchives();
     }
 
@@ -112,7 +140,8 @@ internal sealed class RollingServerLog : IDisposable
     {
         lock (_sync)
         {
-            _writer?.Dispose();
+            _disposed = true;
+            try { _writer?.Dispose(); } catch (Exception) { }
             _writer = null;
         }
     }

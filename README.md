@@ -203,10 +203,11 @@ that runs entirely on your own PC. The world is filled with autonomous gamebots 
 group, trade and fight on their own, and you can recruit companion bots to adventure with you.
 
 It is a community project built on the open-source [OpenDAoC](https://github.com/OpenDAoC/OpenDAoC-Core)
-server. The customizations were developed with AI tools (Codex, then Claude) and directed and
-play-tested by the project owner. It is not an official DAoC product and is not for sale.
+server. Everything it adds to OpenDAoC, and the whole new client, was written by AI tools (Codex, then Claude). The
+project owner, who has no game development or coding experience, directed and play-tested it. It is not an official
+DAoC product and is not for sale.
 
-## Current release: 0.37
+## Last release: 0.37
 
 0.37 carries on from 0.36: you can form your own guild and bring gamebots into it, bot armies attack together and
 raise their fallen at sieges, groups travel as one pack, raids get further in Caer Sidi and Galladoria, there is far

@@ -45,7 +45,18 @@ On the launcher, click + Lv.1 or + Lv.50 under a faction:
   Opens a menu of valid companion bots to summon.
 
 /spawn X
-  X = a class name, if you prefer not to use the menu or want a macro.
+  X = a class name, if you prefer not to use the menu or want a macro. The build
+  (spec) is picked at random.
+
+/spawn specs
+  Opens a menu of every class of your realm with its builds, for example
+  Healer (Mending), Healer (Augmentation), Healer (Pacification). Click one to add
+  that companion. Each build is named after the spec line it trains highest.
+
+/spawn X Y
+  X = a class name, Y = one of its specs as /spawn specs shows it, written in full.
+  Example: /spawn healer augmentation. Useful for macros:
+  /macro aug /spawn healer augmentation
 
 /raid 40
 /raid 80

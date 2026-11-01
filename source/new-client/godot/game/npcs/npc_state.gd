@@ -59,6 +59,8 @@ var seen_at := 0                            # when the server last sent it (tick
 var prep_since := 0                         # when its view began waiting for its files (ticks ms; 0 = not waiting)
 var swimming := false                       # in deep water (the server's ObjectUpdate 0x10, IsUnderwater): it swims
 var stealthed := false                     # the STEALTH flag (ambushers): unseen, untargetable until it fights
+var stealth_look := false                  # hidden but shown to you (a realm-mate / your group's gamebot): the green
+                                           # ghost (StealthLook) - the server's NPCCreate flags2 0x04
 var last_combat := 0.0                     # when it last attacked or was attacked (it gives up after 25 s without)
 var no_target := false                      # everyone on its list is too far to count (it stands and waits)
 var returning := false                     # walking back to its spawn after a fight (it ignores you on the way)

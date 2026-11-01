@@ -52,5 +52,11 @@ namespace DOL.Events
         /// The RelicMounted event is fired whenever a relic is stored to the pad	
         /// </summary>
         public static readonly RelicPadEvent RelicMounted = new RelicPadEvent("RelicEvent.RelicMounted");
+
+        /// <summary>
+        /// The RelicReturned event is fired whenever a relic goes back onto a pad by itself (the return timer of a relic left
+        /// on the ground, a carrier who lost the relic item, loading at server start), not carried there.
+        /// </summary>
+        public static readonly RelicPadEvent RelicReturned = new RelicPadEvent("RelicEvent.RelicReturned");
     }
 }

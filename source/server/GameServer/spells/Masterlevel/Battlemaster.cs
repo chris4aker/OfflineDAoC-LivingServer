@@ -579,6 +579,8 @@ namespace DOL.GS.Spells
 
                 if (target is GamePlayer)
                     ad.ArmorHitLocation = ((GamePlayer)target).CalculateArmorHitLocation(ad);
+                else if (target is GameBot botTarget)
+                    ad.ArmorHitLocation = botTarget.CalculateArmorHitLocation(ad);
 
                 DbInventoryItem armor = null;
                 if (target.Inventory != null)

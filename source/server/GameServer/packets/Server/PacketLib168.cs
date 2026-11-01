@@ -911,7 +911,10 @@ namespace DOL.GS.PacketHandler
 			if (obj is GamePlayer)
 				oType = 2;
 			else if (obj is GameNPC npc)
-				oType = npc.Health > 0 ? 1 : 0;
+				// type 0 = "leave the corpse to fade". A gamebot's body is the bot itself (it stays in the world until
+				// raised or released), so a removal is always a move or a park: a corpse left behind showed as a second dead
+				// copy at the death spot (owner 2026-10-30, "since 0.1": release moved the dead bot to its bind point).
+				oType = npc is GameBot || npc.Health > 0 ? 1 : 0;
 
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.RemoveObject)))
 			{
@@ -3950,7 +3953,7 @@ namespace DOL.GS.PacketHandler
 			//all the task info is sent in name field
 
 			string taskStr = string.Empty;
-			if (task == null)
+			if (task == null || !task.TaskActive)
 				taskStr = "You have no current personal task.\n";
 			else taskStr = "[" + task.Name + "] " + task.Description + ".\n";
 

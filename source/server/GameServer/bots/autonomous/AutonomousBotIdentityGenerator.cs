@@ -68,6 +68,7 @@ namespace DOL.GS
                     new(eCharacterClass.Valewalker, eRace.Celt, eRace.Firbolg, eRace.Sylvan),
                     // Experimental Sluaghbinder: the isolated class has the
                     // same two legal races as its player character creator.
+                    // Living Server keeps the Sluaghbinder behind its switch (enable_sluaghbinder, on in 0.37b) when it merged the base's final code, which discontinued it (owner 2026-11-01).
                     new(eCharacterClass.Sluaghbinder, eRace.Celt, eRace.Firbolg),
                 ],
             };
