@@ -285,6 +285,34 @@ New bots are named the way a 2003 server's players named themselves:
 - **Who gets them:** bots made by the launcher's + buttons and by the server. Bots you already have keep their names.
 - **Details:** the research and the mix are in [research/BOT-NAMES-2003.md](research/BOT-NAMES-2003.md).
 
+### RvR perception (`rvr_bot_perception`, `rvr_bot_awareness`, `rvr_bot_spotters`)
+
+Added for Beta 1.2 (owner Chris, 2026-11-01) after a player's report on r/daoc: gamebots in the frontier saw you from
+5,000 units, instantly and all at once, whenever you were in their line of sight. Now they notice you the way players
+did in 2003. The design is the "RvR perception" section of `docs/BOT-BUILDS-AND-RVR.md`.
+
+- **Who it changes:** autonomous gamebots in the frontier, the battlegrounds and Darkness Falls, when they pick an enemy
+  player, a player's companion or a player's pet. Enemy gamebots, siege engines, keep guards, doors and monsters are
+  acquired as before, and so are targets of bots holding a keep or working a siege. A bot that is hit, or whose
+  realm-mates near it or group are attacked, fights back at once (`bot_incoming_fire_reaction` handles that delay).
+- **Noticing:** each scan (about once a second) is a chance, not a certainty. Within 1,000 units a bot always notices
+  you. Past that the chance falls quickly, from 50% per scan to 3% near 3,500 units; beyond 3,500 a bot never notices on
+  its own. Fighting doubles the chance, casting, being in a group of 3 or more, and being in the bot's 120° view each
+  raise it, and standing still out of combat halves it. Line of sight and stealth still apply first.
+- **Reacting:** a bot that notices you engages 0.5-2 seconds later. Higher level bots and bold personalities (Daredevils,
+  then high Risk) are faster.
+- **Spotters (`rvr_bot_spotters`):** the bot that notices you tells its group and warband mates within 2,500 units, and
+  each of them engages after its own reaction delay. With bot voices on and you in that group, it calls it in /group
+  ("inc 3 north"), at most every 12 seconds. Warbands have no chat channel yet, so their calls are only in the log.
+- **Difficulty (`rvr_bot_awareness`):** `easy` (always within 700, never beyond 2,500, lower chances, 30% slower
+  reactions, calls heard within 2,000), `normal` (the numbers above) or `veteran` (always within 1,300, never beyond
+  4,500, higher chances, 30% faster reactions, calls heard within 3,000).
+- **Settings:** `rvr_bot_perception` on, `rvr_bot_awareness` normal and `rvr_bot_spotters` on by default. With
+  `rvr_bot_perception` off bots see as before.
+- **Log:** `RVR_NOTICE` for each first sighting (bot, target, distance, the factors, the delay) and `RVR_SPOT` for each
+  call (how many mates heard it, and where it was said).
+- **Checked:** unit tests only (`UT_RvrPerception`). It has not been played yet.
+
 ## New client (0.36c)
 
 Everything here runs in the server and the launcher, so it works the same with the original client and the Godot
