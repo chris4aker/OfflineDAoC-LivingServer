@@ -8,6 +8,14 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.2 (in development)
+
+- **Gamebots notice you in RvR like players, not radar** (a player's report on r/daoc; owner 2026-11-01). In the frontier,
+  battlegrounds and Darkness Falls a gamebot used to see an enemy player from 5,000 units at once; now it notices by
+  chance (always within 1,000 units, rarely near 3,500, never beyond), reacts after 0.5-2 seconds, and tells its group
+  and warband. Settings `rvr_bot_perception`, `rvr_bot_awareness` (easy, normal, veteran) and `rvr_bot_spotters`; see
+  [docs/LIVING-SERVER.md](docs/LIVING-SERVER.md). Unit-tested, not yet played.
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the
