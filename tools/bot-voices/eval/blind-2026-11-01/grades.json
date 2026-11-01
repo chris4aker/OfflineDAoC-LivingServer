@@ -1,0 +1,3202 @@
+[
+ {
+  "id": "b001",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "overeager generic greeting"
+ },
+ {
+  "id": "b002",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b003",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": "guild greeting unanswered"
+ },
+ {
+  "id": "b004",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b005",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b006",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "odd canned 'nice night for it'"
+ },
+ {
+  "id": "b007",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b008",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b009",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "canned aphorism about work"
+ },
+ {
+  "id": "b010",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "'out here' odd in guild chat"
+ },
+ {
+  "id": "b011",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": "ignores 'long day'"
+ },
+ {
+  "id": "b012",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b013",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b014",
+  "answers": 2,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": "slightly canned greeting"
+ },
+ {
+  "id": "b015",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b016",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b017",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b018",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": "group greeting unanswered"
+ },
+ {
+  "id": "b019",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "groupmate doesn't know own hunt"
+ },
+ {
+  "id": "b020",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "direct tell greeting ignored"
+ },
+ {
+  "id": "b021",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "stock non sequitur to presence check"
+ },
+ {
+  "id": "b022",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b023",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "named player can't say if on"
+ },
+ {
+  "id": "b024",
+  "answers": 2,
+  "era": 2,
+  "human": 1,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b025",
+  "answers": 2,
+  "era": 2,
+  "human": 1,
+  "second": "better",
+  "flag": "overeager 'missed you'"
+ },
+ {
+  "id": "b026",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b027",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b028",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b029",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b030",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b031",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b032",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b033",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b034",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b035",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "formal capitalized sign-off"
+ },
+ {
+  "id": "b036",
+  "answers": 2,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": "stock 'mobs will still be here' quip"
+ },
+ {
+  "id": "b037",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b038",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b039",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "'safe travels' to going to bed"
+ },
+ {
+  "id": "b040",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b041",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b042",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b043",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "curt noncommittal to friend"
+ },
+ {
+  "id": "b044",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b045",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "group goodnight ignored"
+ },
+ {
+  "id": "b046",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "treats real-life trip as in-game"
+ },
+ {
+  "id": "b047",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b048",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "better",
+  "flag": ""
+ },
+ {
+  "id": "b049",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "canned 'glad to help'"
+ },
+ {
+  "id": "b050",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "'happy to help' wrong for group thanks"
+ },
+ {
+  "id": "b051",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "odd 'safe travels lol'"
+ },
+ {
+  "id": "b052",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "slogan-like 'pay it forward'"
+ },
+ {
+  "id": "b053",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b054",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": "gift thanks unacknowledged"
+ },
+ {
+  "id": "b055",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b056",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b057",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": "group thanks unacknowledged"
+ },
+ {
+  "id": "b058",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b059",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects basic town question"
+ },
+ {
+  "id": "b060",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflects basic town question"
+ },
+ {
+  "id": "b061",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b062",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b063",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects common-knowledge DF question"
+ },
+ {
+  "id": "b064",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "deflects; second says 'yes' to where"
+ },
+ {
+  "id": "b065",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflects enchanter question"
+ },
+ {
+  "id": "b066",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "stablemaster is basic knowledge"
+ },
+ {
+  "id": "b067",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b068",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b069",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects merchant question"
+ },
+ {
+  "id": "b070",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b071",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b072",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'i think so?' to which-way question"
+ },
+ {
+  "id": "b073",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "deflects stablemaster question"
+ },
+ {
+  "id": "b074",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "denies having the asked-about helm"
+ },
+ {
+  "id": "b075",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "irrelevant travel tip to camp question"
+ },
+ {
+  "id": "b076",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": "vague, gives no direction"
+ },
+ {
+  "id": "b077",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": "realm question unanswered"
+ },
+ {
+  "id": "b078",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "basic travel question ignored"
+ },
+ {
+  "id": "b079",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b080",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b081",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "basic respec question ignored"
+ },
+ {
+  "id": "b082",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "con colors question ignored"
+ },
+ {
+  "id": "b083",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "bare verdict, no reasoning"
+ },
+ {
+  "id": "b084",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects stat-cap question"
+ },
+ {
+  "id": "b085",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "/anon is basic knowledge"
+ },
+ {
+  "id": "b086",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects epic level question"
+ },
+ {
+  "id": "b087",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "deflects; second 'yes' nonsense"
+ },
+ {
+  "id": "b088",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflects relic question"
+ },
+ {
+  "id": "b089",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "guildmate can't explain guild cloak"
+ },
+ {
+  "id": "b090",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "lazy 'the first one' pick"
+ },
+ {
+  "id": "b091",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "congratulates a question"
+ },
+ {
+  "id": "b092",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "guildmate deflects raid time"
+ },
+ {
+  "id": "b093",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "correct but reads like a data dump"
+ },
+ {
+  "id": "b094",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'I think so?' to what-level question"
+ },
+ {
+  "id": "b095",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b096",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b097",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "groupmate ignores newbie question"
+ },
+ {
+  "id": "b098",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b099",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "bare verdict, no reasoning"
+ },
+ {
+  "id": "b100",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b101",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b102",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "direct tell question ignored"
+ },
+ {
+  "id": "b103",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b104",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects how-to-interact basics"
+ },
+ {
+  "id": "b105",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflects common spell question"
+ },
+ {
+  "id": "b106",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "everyone knew buffbots"
+ },
+ {
+  "id": "b107",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "answers presence, not DF interest"
+ },
+ {
+  "id": "b108",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "'dunno' to do-you-have question"
+ },
+ {
+  "id": "b109",
+  "answers": 2,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": "stock hedge phrase"
+ },
+ {
+  "id": "b110",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "LFG line inside active group"
+ },
+ {
+  "id": "b111",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'just got here' inside own group"
+ },
+ {
+  "id": "b112",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'Good question' to buff request"
+ },
+ {
+  "id": "b113",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b114",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "seller unsure about own bow"
+ },
+ {
+  "id": "b115",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "stock non sequitur to buff request"
+ },
+ {
+  "id": "b116",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "data-like phrasing"
+ },
+ {
+  "id": "b117",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "direct camp question ignored"
+ },
+ {
+  "id": "b118",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b119",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b120",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "Exchange deflection, not 2003"
+ },
+ {
+  "id": "b121",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b122",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b123",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "guildmate ignores GL question"
+ },
+ {
+  "id": "b124",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "worse",
+  "flag": "stock class quip, no answer"
+ },
+ {
+  "id": "b125",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "'ask around' inside own group"
+ },
+ {
+  "id": "b126",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "groupmate doesn't know puller"
+ },
+ {
+  "id": "b127",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflection"
+ },
+ {
+  "id": "b128",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "deflects crafter question"
+ },
+ {
+  "id": "b129",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "'who are u' tell ignored"
+ },
+ {
+  "id": "b130",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "better",
+  "flag": "misreads stuck as a fight"
+ },
+ {
+  "id": "b131",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "emotional platitude to urgent help"
+ },
+ {
+  "id": "b132",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "bare 'Careful.'"
+ },
+ {
+  "id": "b133",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "vague, no directions"
+ },
+ {
+  "id": "b134",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b135",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b136",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "ignores corpse-run request"
+ },
+ {
+  "id": "b137",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects escort request"
+ },
+ {
+  "id": "b138",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'true story' to urgent oom"
+ },
+ {
+  "id": "b139",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'i think so?' to power request"
+ },
+ {
+  "id": "b140",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "none",
+  "flag": "preachy refusal"
+ },
+ {
+  "id": "b141",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b142",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "LFG reply to rez request"
+ },
+ {
+  "id": "b143",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b144",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "encouragement instead of invite"
+ },
+ {
+  "id": "b145",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "unneeded refusal to LFM"
+ },
+ {
+  "id": "b146",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "LFG answered as if LFM"
+ },
+ {
+  "id": "b147",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "LFG answered as if LFM"
+ },
+ {
+  "id": "b148",
+  "answers": 1,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b149",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "templated home-zone line"
+ },
+ {
+  "id": "b150",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b151",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'beats me' to LFM"
+ },
+ {
+  "id": "b152",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b153",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "duo seeker told 'pst when u form'"
+ },
+ {
+  "id": "b154",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b155",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b156",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "misreads inv request"
+ },
+ {
+  "id": "b157",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "RvR filler to raid x-up"
+ },
+ {
+  "id": "b158",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b159",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b160",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b161",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b162",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'no idea' to duo invite"
+ },
+ {
+  "id": "b163",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "non sequitur to team-up offer"
+ },
+ {
+  "id": "b164",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b165",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "LFG stock line inside group"
+ },
+ {
+  "id": "b166",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "groupmate says 'solo for now'"
+ },
+ {
+  "id": "b167",
+  "answers": 2,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b168",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "misreads WTB as price check"
+ },
+ {
+  "id": "b169",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "better",
+  "flag": "asks price already stated"
+ },
+ {
+  "id": "b170",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "Exchange deflection, not 2003"
+ },
+ {
+  "id": "b171",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflects trade query"
+ },
+ {
+  "id": "b172",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "better",
+  "flag": "crafter reply to loot sale"
+ },
+ {
+  "id": "b173",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "noncommittal on price"
+ },
+ {
+  "id": "b174",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "worse",
+  "flag": "lectures seller, Exchange not era"
+ },
+ {
+  "id": "b175",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "worse",
+  "flag": "tautology to tailor request"
+ },
+ {
+  "id": "b176",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "seller tells buyer keep asking"
+ },
+ {
+  "id": "b177",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "misreads paid crafting offer"
+ },
+ {
+  "id": "b178",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "'wish i knew' to haggle"
+ },
+ {
+  "id": "b179",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "better",
+  "flag": "nonsense 'depends who is buying'"
+ },
+ {
+  "id": "b180",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'cant help' to free loot"
+ },
+ {
+  "id": "b181",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b182",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "contradicts 'saw u selling'"
+ },
+ {
+  "id": "b183",
+  "answers": 2,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b184",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b185",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "better",
+  "flag": "asks which keep, keep was named"
+ },
+ {
+  "id": "b186",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": "asks where, milegate given"
+ },
+ {
+  "id": "b187",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'call it out' to a callout"
+ },
+ {
+  "id": "b188",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "generic advice to raid call"
+ },
+ {
+  "id": "b189",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b190",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b191",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": "urgent realm call ignored"
+ },
+ {
+  "id": "b192",
+  "answers": 1,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b193",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "asks where, Nottmoor given"
+ },
+ {
+  "id": "b194",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "PvE advice to DF capture"
+ },
+ {
+  "id": "b195",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "generic RvR filler"
+ },
+ {
+  "id": "b196",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b197",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b198",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "too polite for SB emergency"
+ },
+ {
+  "id": "b199",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b200",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b201",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b202",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b203",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "redundant RvR filler"
+ },
+ {
+  "id": "b204",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b205",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b206",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b207",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b208",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b209",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "ignores rez request"
+ },
+ {
+  "id": "b210",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b211",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b212",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b213",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b214",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": "apology unacknowledged"
+ },
+ {
+  "id": "b215",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b216",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b217",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b218",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b219",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b220",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b221",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "'happened to me' though same camp"
+ },
+ {
+  "id": "b222",
+  "answers": 2,
+  "era": 2,
+  "human": 1,
+  "second": "better",
+  "flag": ""
+ },
+ {
+  "id": "b223",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b224",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b225",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "better",
+  "flag": ""
+ },
+ {
+  "id": "b226",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "mocks a real milestone"
+ },
+ {
+  "id": "b227",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b228",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b229",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b230",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "group ignores named drop"
+ },
+ {
+  "id": "b231",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "canned 'grind pays off'"
+ },
+ {
+  "id": "b232",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "realm ding 50 ignored"
+ },
+ {
+  "id": "b233",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "class review, no grats"
+ },
+ {
+  "id": "b234",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "RvR filler to personal win"
+ },
+ {
+  "id": "b235",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'lol so true' to achievement"
+ },
+ {
+  "id": "b236",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b237",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "filler 'safe travels'"
+ },
+ {
+  "id": "b238",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "canned consolation"
+ },
+ {
+  "id": "b239",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflection"
+ },
+ {
+  "id": "b240",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b241",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": ""
+ },
+ {
+  "id": "b242",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b243",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b244",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": "stock class-balance line"
+ },
+ {
+  "id": "b245",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "'vendor it' non sequitur"
+ },
+ {
+  "id": "b246",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b247",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b248",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "'worth it' to nothing"
+ },
+ {
+  "id": "b249",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b250",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b251",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "earnest class review to a joke"
+ },
+ {
+  "id": "b252",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "trade filler to crafting banter"
+ },
+ {
+  "id": "b253",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b254",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'dunno' to chat question"
+ },
+ {
+  "id": "b255",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'cant help' to chat question"
+ },
+ {
+  "id": "b256",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b257",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "better",
+  "flag": "'ouch' to positive remark"
+ },
+ {
+  "id": "b258",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b259",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b260",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b261",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b262",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "worse",
+  "flag": "'lol so true' to compliment"
+ },
+ {
+  "id": "b263",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "'you and me both' to being teased"
+ },
+ {
+  "id": "b264",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "contradicts zerg just seen"
+ },
+ {
+  "id": "b265",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "stock class quip"
+ },
+ {
+  "id": "b266",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b267",
+  "answers": 1,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b268",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b269",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b270",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "agrees with insult"
+ },
+ {
+  "id": "b271",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'pretty sure yes' to KS jab"
+ },
+ {
+  "id": "b272",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b273",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b274",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "moderator-like tone"
+ },
+ {
+  "id": "b275",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b276",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b277",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "relic filler to taunt"
+ },
+ {
+  "id": "b278",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'wish i knew' to instruction"
+ },
+ {
+  "id": "b279",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "flat OOC deflect to RP"
+ },
+ {
+  "id": "b280",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "non sequitur to RP offer"
+ },
+ {
+  "id": "b281",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b282",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b283",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b284",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'good question' to RP question"
+ },
+ {
+  "id": "b285",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b286",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "doesn't know own name"
+ },
+ {
+  "id": "b287",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b288",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "OOC deflect to RP question"
+ },
+ {
+  "id": "b289",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b290",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b291",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "worse",
+  "flag": "RvR filler to a toast"
+ },
+ {
+  "id": "b292",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b293",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "hunting tip instead of RP reply"
+ },
+ {
+  "id": "b294",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b295",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects heal request"
+ },
+ {
+  "id": "b296",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "addressee doesn't know own quest"
+ },
+ {
+  "id": "b297",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "trade filler, no price"
+ },
+ {
+  "id": "b298",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b299",
+  "answers": 1,
+  "era": 1,
+  "human": 0,
+  "second": "worse",
+  "flag": "hedges on own raid attendance"
+ },
+ {
+  "id": "b300",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b301",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "'true story' filler"
+ },
+ {
+  "id": "b302",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "direct tell ignored"
+ },
+ {
+  "id": "b303",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "named question ignored"
+ },
+ {
+  "id": "b304",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b305",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": "named wb unacknowledged"
+ },
+ {
+  "id": "b306",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "canned 'grind continues'"
+ },
+ {
+  "id": "b307",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "named request ignored"
+ },
+ {
+  "id": "b308",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b309",
+  "answers": 1,
+  "era": 2,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b310",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'couldnt tell you' to request"
+ },
+ {
+  "id": "b311",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b312",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "treats either-or as a pick"
+ },
+ {
+  "id": "b313",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "ignores raid-time question"
+ },
+ {
+  "id": "b314",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "templated home-zone line"
+ },
+ {
+  "id": "b315",
+  "answers": 0,
+  "era": 0,
+  "human": 0,
+  "second": "same",
+  "flag": "Exchange non sequitur to xp question"
+ },
+ {
+  "id": "b316",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b317",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "ignores both questions"
+ },
+ {
+  "id": "b318",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b319",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "better",
+  "flag": "non sequitur advice on spec"
+ },
+ {
+  "id": "b320",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "worse",
+  "flag": "'pst when you form' to spot offer"
+ },
+ {
+  "id": "b321",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "premature goodbye"
+ },
+ {
+  "id": "b322",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects trainer question"
+ },
+ {
+  "id": "b323",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflects crafting question"
+ },
+ {
+  "id": "b324",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b325",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b326",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "LFG answered with LFG"
+ },
+ {
+  "id": "b327",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b328",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b329",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": ""
+ },
+ {
+  "id": "b330",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'wondering too' to 'anyone on'"
+ },
+ {
+  "id": "b331",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b332",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "non sequitur to travel question"
+ },
+ {
+  "id": "b333",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflects merchant question"
+ },
+ {
+  "id": "b334",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b335",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b336",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b337",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b338",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b339",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b340",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b341",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "better",
+  "flag": "keeps going after '1 sec'"
+ },
+ {
+  "id": "b342",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b343",
+  "answers": 1,
+  "era": 1,
+  "human": 0,
+  "second": "worse",
+  "flag": "parrots the player's line"
+ },
+ {
+  "id": "b344",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "canned 'happy to help'"
+ },
+ {
+  "id": "b345",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b346",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b347",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b348",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "laughs at an ellipsis"
+ },
+ {
+  "id": "b349",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b350",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b351",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b352",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b353",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "worse",
+  "flag": ""
+ },
+ {
+  "id": "b354",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b355",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects epic question"
+ },
+ {
+  "id": "b356",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "generic, doesn't rate the camp"
+ },
+ {
+  "id": "b357",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'i think so?' to how-to question"
+ },
+ {
+  "id": "b358",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b359",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "non-answer about distance"
+ },
+ {
+  "id": "b360",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "same",
+  "flag": "deflects basic UI question"
+ },
+ {
+  "id": "b361",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b362",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "offerer deflects to Exchange mid-deal"
+ },
+ {
+  "id": "b363",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "seller deflects to Exchange mid-deal"
+ },
+ {
+  "id": "b364",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "'ty anyway' to 'not ready'"
+ },
+ {
+  "id": "b365",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b366",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "'nice nice' to location"
+ },
+ {
+  "id": "b367",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "forgets own directions"
+ },
+ {
+  "id": "b368",
+  "answers": 2,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b369",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "'Oh wow.' to lower level"
+ },
+ {
+  "id": "b370",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b371",
+  "answers": 1,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "no invite after asking level"
+ },
+ {
+  "id": "b372",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b373",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'not a clue' to counteroffer"
+ },
+ {
+  "id": "b374",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "canned quip"
+ },
+ {
+  "id": "b375",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "asker shrugs off volunteer"
+ },
+ {
+  "id": "b376",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "placeholder, reply text not shown"
+ },
+ {
+  "id": "b377",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b378",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "same",
+  "flag": ""
+ },
+ {
+  "id": "b379",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b380",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b381",
+  "answers": 0,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "seller ignores haggle"
+ },
+ {
+  "id": "b382",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b383",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "'good question' to 'u?'"
+ },
+ {
+  "id": "b384",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b385",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "forgets own advice"
+ },
+ {
+  "id": "b386",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "porter has no meeting spot"
+ },
+ {
+  "id": "b387",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b388",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "none",
+  "flag": "'yep yep' to RP question"
+ },
+ {
+  "id": "b389",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "nonsense to est/pst"
+ },
+ {
+  "id": "b390",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "worse",
+  "flag": "'yw' to distance question"
+ },
+ {
+  "id": "b391",
+  "answers": 1,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b392",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "proposer doesn't know where"
+ },
+ {
+  "id": "b393",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "deflects in own group"
+ },
+ {
+  "id": "b394",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b395",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "'anytime' to thanks for luck"
+ },
+ {
+  "id": "b396",
+  "answers": 0,
+  "era": 1,
+  "human": 0,
+  "second": "same",
+  "flag": "warner can't explain own warning"
+ },
+ {
+  "id": "b397",
+  "answers": 2,
+  "era": 1,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b398",
+  "answers": 2,
+  "era": 2,
+  "human": 2,
+  "second": "none",
+  "flag": ""
+ },
+ {
+  "id": "b399",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "retracts instead of clarifying"
+ },
+ {
+  "id": "b400",
+  "answers": 1,
+  "era": 1,
+  "human": 1,
+  "second": "none",
+  "flag": "no follow-up invite"
+ }
+]

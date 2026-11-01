@@ -1,0 +1,3847 @@
+[
+ {
+  "id": "b001",
+  "channel": "guild",
+  "context": "",
+  "player": "evening all",
+  "bot_replies": [
+   "hey!! how is everyone doing tonight",
+   "howdy"
+  ]
+ },
+ {
+  "id": "b002",
+  "channel": "guild",
+  "context": "",
+  "player": "hey guys",
+  "bot_replies": [
+   "sup heh",
+   "hello"
+  ]
+ },
+ {
+  "id": "b003",
+  "channel": "guild",
+  "context": "",
+  "player": "lo all",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b004",
+  "channel": "guild",
+  "context": "",
+  "player": "mornin",
+  "bot_replies": [
+   "hey :)",
+   "evening all"
+  ]
+ },
+ {
+  "id": "b005",
+  "channel": "guild",
+  "context": "",
+  "player": "sup ppl",
+  "bot_replies": [
+   "same old, killing things",
+   "alive mostly"
+  ]
+ },
+ {
+  "id": "b006",
+  "channel": "guild",
+  "context": "Guild member Brannoc has logged in.",
+  "player": "yo",
+  "bot_replies": [
+   "hello! nice night for it :D",
+   "yo"
+  ]
+ },
+ {
+  "id": "b007",
+  "channel": "guild",
+  "context": "",
+  "player": "hello hello",
+  "bot_replies": [
+   "hail Wynn",
+   "hey hey"
+  ]
+ },
+ {
+  "id": "b008",
+  "channel": "guild",
+  "context": "",
+  "player": "hiya all, what's everyone up to",
+  "bot_replies": [
+   "the usual, killing stuff",
+   "not much, you?"
+  ]
+ },
+ {
+  "id": "b009",
+  "channel": "guild",
+  "context": "",
+  "player": "hi guild, finally home from work",
+  "bot_replies": [
+   "work, the real grind",
+   "Hope tomorrow is easier."
+  ]
+ },
+ {
+  "id": "b010",
+  "channel": "guild",
+  "context": "",
+  "player": "evenin folks",
+  "bot_replies": [
+   "hey, good to see someone else out here",
+   "hiya"
+  ]
+ },
+ {
+  "id": "b011",
+  "channel": "guild",
+  "context": "",
+  "player": "heya guild, long day",
+  "bot_replies": [
+   "Hail.",
+   "yo Wynn"
+  ]
+ },
+ {
+  "id": "b012",
+  "channel": "say",
+  "context": "",
+  "player": "hail",
+  "bot_replies": [
+   "hi there",
+   "Hey all."
+  ]
+ },
+ {
+  "id": "b013",
+  "channel": "say",
+  "context": "",
+  "player": "hello",
+  "bot_replies": [
+   "hey there",
+   "well met"
+  ]
+ },
+ {
+  "id": "b014",
+  "channel": "say",
+  "context": "Another player walks up to the bindstone next to you.",
+  "player": "hey",
+  "bot_replies": [
+   "greetings, good hunting",
+   "evening"
+  ]
+ },
+ {
+  "id": "b015",
+  "channel": "say",
+  "context": "",
+  "player": "greetings",
+  "bot_replies": [
+   "o/",
+   "Hi hi, welcome back."
+  ]
+ },
+ {
+  "id": "b016",
+  "channel": "say",
+  "context": "",
+  "player": "evening",
+  "bot_replies": [
+   "heya Wynn",
+   "hey, how is the hunting?"
+  ]
+ },
+ {
+  "id": "b017",
+  "channel": "group",
+  "context": "You join the group.",
+  "player": "hi all",
+  "bot_replies": [
+   "hi",
+   "hey Wynn, how goes?"
+  ]
+ },
+ {
+  "id": "b018",
+  "channel": "group",
+  "context": "",
+  "player": "heya",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b019",
+  "channel": "group",
+  "context": "A new member joined the group.",
+  "player": "hello, what are we hunting?",
+  "bot_replies": [
+   "not a clue honestly",
+   "no idea, i just got here :)"
+  ]
+ },
+ {
+  "id": "b020",
+  "channel": "tell",
+  "context": "",
+  "player": "hi! long time no see",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b021",
+  "channel": "tell",
+  "context": "",
+  "player": "hey u there?",
+  "bot_replies": [
+   "someone said something about that earlier"
+  ]
+ },
+ {
+  "id": "b022",
+  "channel": "say",
+  "context": "",
+  "player": "hail and well met, traveler",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b023",
+  "channel": "guild",
+  "context": "",
+  "player": "hey Thoriel, you on tonight?",
+  "bot_replies": [
+   "hmm not sure",
+   "couldnt tell you"
+  ]
+ },
+ {
+  "id": "b024",
+  "channel": "guild",
+  "context": "",
+  "player": "re",
+  "bot_replies": [
+   "welcome back",
+   "There you are."
+  ]
+ },
+ {
+  "id": "b025",
+  "channel": "guild",
+  "context": "",
+  "player": "back",
+  "bot_replies": [
+   "wb!! missed you",
+   "wb, u didnt miss much"
+  ]
+ },
+ {
+  "id": "b026",
+  "channel": "guild",
+  "context": "",
+  "player": "ok back, sorry dc'd",
+  "bot_replies": [
+   "wb all good?",
+   "Wb, lets get moving."
+  ]
+ },
+ {
+  "id": "b027",
+  "channel": "guild",
+  "context": "",
+  "player": "re all, isp died again",
+  "bot_replies": [
+   "my connection is the same some nights lol",
+   "nothing worse than lag at a bad moment"
+  ]
+ },
+ {
+  "id": "b028",
+  "channel": "group",
+  "context": "",
+  "player": "back sry",
+  "bot_replies": [
+   "wb",
+   "oh wb :)"
+  ]
+ },
+ {
+  "id": "b029",
+  "channel": "group",
+  "context": "",
+  "player": "re, crashed to desktop",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b030",
+  "channel": "group",
+  "context": "",
+  "player": "linkdead sorry, back now",
+  "bot_replies": [
+   "wb, that was quick",
+   "re"
+  ]
+ },
+ {
+  "id": "b031",
+  "channel": "guild",
+  "context": "",
+  "player": "back from dinner",
+  "bot_replies": [
+   "yay wb",
+   "wb, ready to go?"
+  ]
+ },
+ {
+  "id": "b032",
+  "channel": "guild",
+  "context": "",
+  "player": "re. kids are in bed finally",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b033",
+  "channel": "tell",
+  "context": "",
+  "player": "sry was afk, back",
+  "bot_replies": [
+   "alright"
+  ]
+ },
+ {
+  "id": "b034",
+  "channel": "guild",
+  "context": "",
+  "player": "night all",
+  "bot_replies": [
+   "gn, good hunting tomorrow :)",
+   "see ya have fun"
+  ]
+ },
+ {
+  "id": "b035",
+  "channel": "guild",
+  "context": "",
+  "player": "gn guild",
+  "bot_replies": [
+   "Take care.",
+   "later, take care"
+  ]
+ },
+ {
+  "id": "b036",
+  "channel": "guild",
+  "context": "",
+  "player": "im off to bed, cya tomorrow",
+  "bot_replies": [
+   "sleep well the mobs will still be here tomorrow",
+   "cya next time"
+  ]
+ },
+ {
+  "id": "b037",
+  "channel": "guild",
+  "context": "",
+  "player": "later guys",
+  "bot_replies": [
+   "bye :)",
+   "Gn, safe travels."
+  ]
+ },
+ {
+  "id": "b038",
+  "channel": "guild",
+  "context": "",
+  "player": "logging, cya",
+  "bot_replies": [
+   "night, have a good one",
+   "Cya around."
+  ]
+ },
+ {
+  "id": "b039",
+  "channel": "guild",
+  "context": "",
+  "player": "wife says bed. gn all",
+  "bot_replies": [
+   "safe travels, see ya",
+   "Night!"
+  ]
+ },
+ {
+  "id": "b040",
+  "channel": "group",
+  "context": "",
+  "player": "i have to go guys, sorry. thx for the group",
+  "bot_replies": [
+   "np good luck out there",
+   "np gl"
+  ]
+ },
+ {
+  "id": "b041",
+  "channel": "group",
+  "context": "",
+  "player": "gotta log, gl all",
+  "bot_replies": [
+   "later",
+   "take it easy"
+  ]
+ },
+ {
+  "id": "b042",
+  "channel": "group",
+  "context": "",
+  "player": "im out, ty all",
+  "bot_replies": [
+   "np have fun",
+   "Sure thing."
+  ]
+ },
+ {
+  "id": "b043",
+  "channel": "tell",
+  "context": "",
+  "player": "gotta go, talk tomorrow?",
+  "bot_replies": [
+   "not sure"
+  ]
+ },
+ {
+  "id": "b044",
+  "channel": "say",
+  "context": "",
+  "player": "farewell friend",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b045",
+  "channel": "group",
+  "context": "",
+  "player": "bed time for me, gn",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b046",
+  "channel": "guild",
+  "context": "",
+  "player": "cya all next week, going out of town",
+  "bot_replies": [
+   "bring speed if you have it",
+   "i think there is a hosre route close to there"
+  ]
+ },
+ {
+  "id": "b047",
+  "channel": "group",
+  "context": "",
+  "player": "ty for the rez",
+  "bot_replies": [
+   "dont mention it",
+   "no worries"
+  ]
+ },
+ {
+  "id": "b048",
+  "channel": "group",
+  "context": "",
+  "player": "thx for buffs",
+  "bot_replies": [
+   "np",
+   "np, come back if it breaks"
+  ]
+ },
+ {
+  "id": "b049",
+  "channel": "group",
+  "context": "",
+  "player": "ty heals :)",
+  "bot_replies": [
+   "glad to help",
+   "any time Wynn :)"
+  ]
+ },
+ {
+  "id": "b050",
+  "channel": "group",
+  "context": "",
+  "player": "great group guys, thx",
+  "bot_replies": [
+   "happy to help",
+   "yw"
+  ]
+ },
+ {
+  "id": "b051",
+  "channel": "say",
+  "context": "",
+  "player": "ty!",
+  "bot_replies": [
+   "yw, safe travels lol",
+   "aww np, anytime!"
+  ]
+ },
+ {
+  "id": "b052",
+  "channel": "say",
+  "context": "",
+  "player": "thx for the help with that mob",
+  "bot_replies": [
+   "Np, pay it forward.",
+   "np Wynn"
+  ]
+ },
+ {
+  "id": "b053",
+  "channel": "tell",
+  "context": "",
+  "player": "thanks again for the armor",
+  "bot_replies": [
+   "anytime"
+  ]
+ },
+ {
+  "id": "b054",
+  "channel": "tell",
+  "context": "",
+  "player": "ty so much, that sword is perfect",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b055",
+  "channel": "guild",
+  "context": "",
+  "player": "ty for the help earlier guys",
+  "bot_replies": [
+   "np. back to it"
+  ]
+ },
+ {
+  "id": "b056",
+  "channel": "say",
+  "context": "You toss a few silver to a newbie.",
+  "player": "wow thx mister",
+  "bot_replies": [
+   "Np, now go pull something big."
+  ]
+ },
+ {
+  "id": "b057",
+  "channel": "group",
+  "context": "",
+  "player": "ty for carrying me lol",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b058",
+  "channel": "group",
+  "context": "The cleric rezzes you.",
+  "player": "ty",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b059",
+  "channel": "say",
+  "context": "",
+  "player": "where is the armor trainer?",
+  "bot_replies": [
+   "ask around maybe",
+   "no clue"
+  ]
+ },
+ {
+  "id": "b060",
+  "channel": "say",
+  "context": "",
+  "player": "anyone know where the healer is in this town",
+  "bot_replies": [
+   "no idea sorry",
+   "i was wondering that too"
+  ]
+ },
+ {
+  "id": "b061",
+  "channel": "faction",
+  "context": "",
+  "player": "where is a good place to lvl at 15?",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b062",
+  "channel": "faction",
+  "context": "",
+  "player": "where do i get my lvl 5 class training",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b063",
+  "channel": "faction",
+  "context": "",
+  "player": "where is the entrance to DF",
+  "bot_replies": [
+   "beats me",
+   "wish i knew"
+  ]
+ },
+ {
+  "id": "b064",
+  "channel": "faction",
+  "context": "",
+  "player": "anyone know where Dun Crauchon is?",
+  "bot_replies": [
+   "dunno",
+   "pretty sure yes but dont quote me"
+  ]
+ },
+ {
+  "id": "b065",
+  "channel": "faction",
+  "context": "",
+  "player": "where can i find the enchanter for my weapon",
+  "bot_replies": [
+   "cant help there sorry",
+   "no idea, i just got here :D"
+  ]
+ },
+ {
+  "id": "b066",
+  "channel": "faction",
+  "context": "",
+  "player": "were do u go 2 get a horse ride",
+  "bot_replies": [
+   "couldnt tell u",
+   "hmm not sure"
+  ]
+ },
+ {
+  "id": "b067",
+  "channel": "guild",
+  "context": "",
+  "player": "where you guys hunting?",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b068",
+  "channel": "guild",
+  "context": "",
+  "player": "where's everyone at?",
+  "bot_replies": [
+   "Myrkwood Forest",
+   "Myrkwood Forest, killing stuff"
+  ]
+ },
+ {
+  "id": "b069",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone know where the spellcraft merchant is?",
+  "bot_replies": [
+   "good question heh",
+   "not a clue honestly"
+  ]
+ },
+ {
+  "id": "b070",
+  "channel": "group",
+  "context": "",
+  "player": "where are we going next?",
+  "bot_replies": [
+   "wherever has blues for us",
+   "anywhere but here lol"
+  ]
+ },
+ {
+  "id": "b071",
+  "channel": "group",
+  "context": "",
+  "player": "where r u guys? cant find you",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b072",
+  "channel": "group",
+  "context": "",
+  "player": "which way to the camp",
+  "bot_replies": [
+   "i think so?",
+   "someone said something about that earlier"
+  ]
+ },
+ {
+  "id": "b073",
+  "channel": "say",
+  "context": "",
+  "player": "where is the stable master?",
+  "bot_replies": [
+   "not sure"
+  ]
+ },
+ {
+  "id": "b074",
+  "channel": "tell",
+  "context": "",
+  "player": "hey where did u get that helm?",
+  "bot_replies": [
+   "what gear lol, still working on it"
+  ]
+ },
+ {
+  "id": "b075",
+  "channel": "lfg",
+  "context": "",
+  "player": "where is the best place to solo at 22 as a hunter?",
+  "bot_replies": [
+   "the stable master saves you half the walk",
+   "head out the gate and follow the road, cant miss it"
+  ]
+ },
+ {
+  "id": "b076",
+  "channel": "faction",
+  "context": "",
+  "player": "were is the sauvage keep? im lost lol",
+  "bot_replies": [
+   "check your map, its marked",
+   "follow the road and avoid the hills at night"
+  ]
+ },
+ {
+  "id": "b077",
+  "channel": "faction",
+  "context": "",
+  "player": "anybody know were lvl 40 drakes spawn?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b078",
+  "channel": "faction",
+  "context": "",
+  "player": "how do i get to the shrouded isles",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b079",
+  "channel": "say",
+  "context": "",
+  "player": "is this the way to the dungeon?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b080",
+  "channel": "faction",
+  "context": "",
+  "player": "where do the necros train",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b081",
+  "channel": "faction",
+  "context": "",
+  "player": "how do i respec",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b082",
+  "channel": "faction",
+  "context": "",
+  "player": "what does the con colors mean",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b083",
+  "channel": "faction",
+  "context": "",
+  "player": "is it worth going 50 sword or should i split",
+  "bot_replies": [
+   "i wouldnt",
+   "go for it"
+  ]
+ },
+ {
+  "id": "b084",
+  "channel": "faction",
+  "context": "",
+  "player": "whats the cap on str for a lvl 50",
+  "bot_replies": [
+   "ask around maybe",
+   "no clue"
+  ]
+ },
+ {
+  "id": "b085",
+  "channel": "faction",
+  "context": "",
+  "player": "how do i get rid of my anon tag",
+  "bot_replies": [
+   "no idea sorry",
+   "i was wondering that too"
+  ]
+ },
+ {
+  "id": "b086",
+  "channel": "faction",
+  "context": "",
+  "player": "what lvl can i do my epic",
+  "bot_replies": [
+   "beats me",
+   "wish i knew"
+  ]
+ },
+ {
+  "id": "b087",
+  "channel": "faction",
+  "context": "",
+  "player": "how long does it take to get to 50",
+  "bot_replies": [
+   "Dunno.",
+   "pretty sure yes but dont quote me"
+  ]
+ },
+ {
+  "id": "b088",
+  "channel": "faction",
+  "context": "",
+  "player": "does anyone know how the relic thing works",
+  "bot_replies": [
+   "Can't help there sorry.",
+   "no idea, i just got here"
+  ]
+ },
+ {
+  "id": "b089",
+  "channel": "guild",
+  "context": "",
+  "player": "how do i get my cloak with the guild emblem",
+  "bot_replies": [
+   "couldnt tell you",
+   "hmm not sure"
+  ]
+ },
+ {
+  "id": "b090",
+  "channel": "guild",
+  "context": "",
+  "player": "should i go cleric or friar for my alt?",
+  "bot_replies": [
+   "the first one lol",
+   "the first if you solo a lot"
+  ]
+ },
+ {
+  "id": "b091",
+  "channel": "guild",
+  "context": "",
+  "player": "how many rp for rr2?",
+  "bot_replies": [
+   "nice, gz",
+   "gz!! nice"
+  ]
+ },
+ {
+  "id": "b092",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone know what time the relic raid is?",
+  "bot_replies": [
+   "good question",
+   "not a clue honestly"
+  ]
+ },
+ {
+  "id": "b093",
+  "channel": "guild",
+  "context": "",
+  "player": "who owns crauchon now?",
+  "bot_replies": [
+   "hibernia has dun crauchon right now",
+   "no, the hibs have dun crauchon"
+  ]
+ },
+ {
+  "id": "b094",
+  "channel": "group",
+  "context": "",
+  "player": "what lvl is the named here?",
+  "bot_replies": [
+   "I think so?",
+   "someone said something about that earlier"
+  ]
+ },
+ {
+  "id": "b095",
+  "channel": "group",
+  "context": "",
+  "player": "how long till respawn?",
+  "bot_replies": [
+   "not sure :)"
+  ]
+ },
+ {
+  "id": "b096",
+  "channel": "group",
+  "context": "",
+  "player": "what does this mob drop",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b097",
+  "channel": "group",
+  "context": "",
+  "player": "what is camping",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b098",
+  "channel": "faction",
+  "context": "",
+  "player": "whats the xp debt penalty if i die at 35?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b099",
+  "channel": "faction",
+  "context": "",
+  "player": "anyone know if spell crafting is worth it yet?",
+  "bot_replies": [
+   "not worth it",
+   "i would"
+  ]
+ },
+ {
+  "id": "b100",
+  "channel": "faction",
+  "context": "",
+  "player": "how do i get the stealth ability as an inf?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b101",
+  "channel": "faction",
+  "context": "",
+  "player": "do valkyn make good savages?",
+  "bot_replies": [
+   "ppl complain but they are fine",
+   "spec matters more than the class :P"
+  ]
+ },
+ {
+  "id": "b102",
+  "channel": "tell",
+  "context": "",
+  "player": "how do u get so many buffs on ur bar",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b103",
+  "channel": "trade",
+  "context": "",
+  "player": "how do i sell stuff to other players?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b104",
+  "channel": "say",
+  "context": "",
+  "player": "how do i talk to the trainer",
+  "bot_replies": [
+   "ask around maybe",
+   "no clue"
+  ]
+ },
+ {
+  "id": "b105",
+  "channel": "faction",
+  "context": "",
+  "player": "what does purge do",
+  "bot_replies": [
+   "no diea sorry",
+   "i was wondering that too"
+  ]
+ },
+ {
+  "id": "b106",
+  "channel": "faction",
+  "context": "",
+  "player": "whats a buff bot",
+  "bot_replies": [
+   "beats me",
+   "wish i knew"
+  ]
+ },
+ {
+  "id": "b107",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone up for DF?",
+  "bot_replies": [
+   "yep on",
+   "still here"
+  ]
+ },
+ {
+  "id": "b108",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone have a spare 2h sword?",
+  "bot_replies": [
+   "dunno",
+   "Can't help there sorry."
+  ]
+ },
+ {
+  "id": "b109",
+  "channel": "guild",
+  "context": "",
+  "player": "is tonight's raid still on?",
+  "bot_replies": [
+   "pretty sure yes but dont quote me",
+   "Hmm not sure."
+  ]
+ },
+ {
+  "id": "b110",
+  "channel": "group",
+  "context": "",
+  "player": "can we stay one more pull?",
+  "bot_replies": [
+   "need a healer still?",
+   "what level and class?"
+  ]
+ },
+ {
+  "id": "b111",
+  "channel": "group",
+  "context": "",
+  "player": "everyone rdy?",
+  "bot_replies": [
+   "No idea, I just got here.",
+   "couldnt tell u"
+  ]
+ },
+ {
+  "id": "b112",
+  "channel": "group",
+  "context": "",
+  "player": "can i get a speed song pls",
+  "bot_replies": [
+   "Good question.",
+   "not a clue honestly"
+  ]
+ },
+ {
+  "id": "b113",
+  "channel": "group",
+  "context": "",
+  "player": "can someone rez me?",
+  "bot_replies": [
+   "wish i could, no rez spell",
+   "rip"
+  ]
+ },
+ {
+  "id": "b114",
+  "channel": "tell",
+  "context": "",
+  "player": "u still selling that bow?",
+  "bot_replies": [
+   "not sure"
+  ]
+ },
+ {
+  "id": "b115",
+  "channel": "tell",
+  "context": "",
+  "player": "can u buff me? pretty pls",
+  "bot_replies": [
+   "someone said something about that earlier"
+  ]
+ },
+ {
+  "id": "b116",
+  "channel": "faction",
+  "context": "",
+  "player": "is DF open?",
+  "bot_replies": [
+   "hibernia has df right now",
+   "no, the hibs have it"
+  ]
+ },
+ {
+  "id": "b117",
+  "channel": "say",
+  "context": "",
+  "player": "are you camping these?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b118",
+  "channel": "tell",
+  "context": "",
+  "player": "are u in a guild?",
+  "bot_replies": [
+   "no guild right now"
+  ]
+ },
+ {
+  "id": "b119",
+  "channel": "faction",
+  "context": "",
+  "player": "who sells the lvl 20 epic armor?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b120",
+  "channel": "faction",
+  "context": "",
+  "player": "anyone know a good weaponcrafter?",
+  "bot_replies": [
+   "check the exchange",
+   "i can make that, send me the details haha"
+  ]
+ },
+ {
+  "id": "b121",
+  "channel": "faction",
+  "context": "",
+  "player": "who's leading the relic raid?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b122",
+  "channel": "guild",
+  "context": "",
+  "player": "who's on tonight?",
+  "bot_replies": [
+   "here o/",
+   "O/ hi."
+  ]
+ },
+ {
+  "id": "b123",
+  "channel": "guild",
+  "context": "",
+  "player": "who's GL now?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b124",
+  "channel": "guild",
+  "context": "",
+  "player": "who was that hunter that killed me lol",
+  "bot_replies": [
+   "hunters and their pets lol",
+   "strong if played right"
+  ]
+ },
+ {
+  "id": "b125",
+  "channel": "group",
+  "context": "",
+  "player": "who's the MA?",
+  "bot_replies": [
+   "ask around maybe"
+  ]
+ },
+ {
+  "id": "b126",
+  "channel": "group",
+  "context": "",
+  "player": "whos pulling?",
+  "bot_replies": [
+   "no clue",
+   "no diea sorry"
+  ]
+ },
+ {
+  "id": "b127",
+  "channel": "faction",
+  "context": "",
+  "player": "who is calling targets?",
+  "bot_replies": [
+   "i was wondering that too",
+   "beats me"
+  ]
+ },
+ {
+  "id": "b128",
+  "channel": "faction",
+  "context": "",
+  "player": "anyone know who crafts mastercrafted chain?",
+  "bot_replies": [
+   "wish i knew"
+  ]
+ },
+ {
+  "id": "b129",
+  "channel": "tell",
+  "context": "",
+  "player": "who are u?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b130",
+  "channel": "say",
+  "context": "",
+  "player": "help! im stuck under this rock",
+  "bot_replies": [
+   "Run to the guards if it goes bad.",
+   "what do u need?"
+  ]
+ },
+ {
+  "id": "b131",
+  "channel": "say",
+  "context": "",
+  "player": "help please, this mob is killing me",
+  "bot_replies": [
+   "dont let it get to you",
+   "Sorry, that is annoying."
+  ]
+ },
+ {
+  "id": "b132",
+  "channel": "faction",
+  "context": "",
+  "player": "help! train coming out of the dungeon",
+  "bot_replies": [
+   "Careful.",
+   "call it out"
+  ]
+ },
+ {
+  "id": "b133",
+  "channel": "faction",
+  "context": "",
+  "player": "im lost in the forest can someone help",
+  "bot_replies": [
+   "i went that way earlier watch out for adds near the bridge",
+   "Follow the road, can't miss it."
+  ]
+ },
+ {
+  "id": "b134",
+  "channel": "faction",
+  "context": "",
+  "player": "first char, very confused lol",
+  "bot_replies": [
+   "same here honestly",
+   "ha, fair"
+  ]
+ },
+ {
+  "id": "b135",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone around to help with my quest?",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b136",
+  "channel": "guild",
+  "context": "",
+  "player": "corpse run anyone? died in spindel",
+  "bot_replies": [
+   "the named in there hits hard",
+   "been ages since i went in there"
+  ]
+ },
+ {
+  "id": "b137",
+  "channel": "guild",
+  "context": "",
+  "player": "can someone escort me through emain to my keep",
+  "bot_replies": [
+   "not a clue honestly",
+   "hmm not sure"
+  ]
+ },
+ {
+  "id": "b138",
+  "channel": "group",
+  "context": "",
+  "player": "im oom and getting hit",
+  "bot_replies": [
+   "true story",
+   "heh"
+  ]
+ },
+ {
+  "id": "b139",
+  "channel": "group",
+  "context": "",
+  "player": "i have no power, can someone give me some?",
+  "bot_replies": [
+   "i think so?",
+   "Someone said something about that earlier."
+  ]
+ },
+ {
+  "id": "b140",
+  "channel": "tell",
+  "context": "",
+  "player": "do u have any spare gear for lvl 10?",
+  "bot_replies": [
+   "everyone started with nothing. go hunt"
+  ]
+ },
+ {
+  "id": "b141",
+  "channel": "say",
+  "context": "",
+  "player": "is anyone around? need a bind",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b142",
+  "channel": "faction",
+  "context": "",
+  "player": "need a healer at the cursed forest dock pls, dead",
+  "bot_replies": [
+   "how many do u have?",
+   "30 thane here if you need one"
+  ]
+ },
+ {
+  "id": "b143",
+  "channel": "say",
+  "context": "",
+  "player": "i cant figure out how to equip this",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b144",
+  "channel": "lfg",
+  "context": "",
+  "player": "lvl 22 cleric lfg",
+  "bot_replies": [
+   "keep at it someone will bite",
+   "im free, what are u hunting?"
+  ]
+ },
+ {
+  "id": "b145",
+  "channel": "lfg",
+  "context": "",
+  "player": "lf healer for xp grp, lvl 30ish",
+  "bot_replies": [
+   "sorry solo for now",
+   "inv me if you have room"
+  ]
+ },
+ {
+  "id": "b146",
+  "channel": "lfg",
+  "context": "",
+  "player": "LFG 34 bm",
+  "bot_replies": [
+   "i might be free later",
+   "Where are you camping?"
+  ]
+ },
+ {
+  "id": "b147",
+  "channel": "lfg",
+  "context": "",
+  "player": "lfg 18 nightshade, can tank a lil",
+  "bot_replies": [
+   "might be able to join in a bit :)",
+   "thane here, where are you? invite me :P"
+  ]
+ },
+ {
+  "id": "b148",
+  "channel": "lfg",
+  "context": "",
+  "player": "looking for group, lvl 12 mercenary",
+  "bot_replies": [
+   "i could use a group too",
+   "could join, 30 thane lol"
+  ]
+ },
+ {
+  "id": "b149",
+  "channel": "lfg",
+  "context": "",
+  "player": "healer lfg, lvl 41, have spec heals",
+  "bot_replies": [
+   "i can help if u are near Myrkwood Forest",
+   "What camp are you thinking?"
+  ]
+ },
+ {
+  "id": "b150",
+  "channel": "lfg",
+  "context": "",
+  "player": "LF puller, have full grp minus 1",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b151",
+  "channel": "lfg",
+  "context": "",
+  "player": "anyone lfg? need 2 for barrows",
+  "bot_replies": [
+   "beats me :D",
+   "No clue."
+  ]
+ },
+ {
+  "id": "b152",
+  "channel": "lfg",
+  "context": "",
+  "player": "lvl 45 bard lfg, can speed/heal/mez",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b153",
+  "channel": "lfg",
+  "context": "",
+  "player": "looking for a duo partner around 20",
+  "bot_replies": [
+   "pst me when u form up",
+   "how many are you? i can fill a spot if you inv haha"
+  ]
+ },
+ {
+  "id": "b154",
+  "channel": "lfg",
+  "context": "",
+  "player": "lf grp for epic mobs",
+  "bot_replies": [
+   "what level range?",
+   "what level and class?"
+  ]
+ },
+ {
+  "id": "b155",
+  "channel": "guild",
+  "context": "",
+  "player": "who wants a group? I'm 28",
+  "bot_replies": [
+   "Need a tank or a healer?",
+   "pst me if you still need someone"
+  ]
+ },
+ {
+  "id": "b156",
+  "channel": "guild",
+  "context": "",
+  "player": "inv pls",
+  "bot_replies": [
+   "need a healer still?"
+  ]
+ },
+ {
+  "id": "b157",
+  "channel": "guild",
+  "context": "",
+  "player": "x for the raid",
+  "bot_replies": [
+   "Stealthers everywhere tonight, careful.",
+   "the zerg moved on i think"
+  ]
+ },
+ {
+  "id": "b158",
+  "channel": "tell",
+  "context": "",
+  "player": "inv?",
+  "bot_replies": [
+   "[JoinReply]"
+  ]
+ },
+ {
+  "id": "b159",
+  "channel": "tell",
+  "context": "",
+  "player": "got room for a skald?",
+  "bot_replies": [
+   "[JoinReply]"
+  ]
+ },
+ {
+  "id": "b160",
+  "channel": "tell",
+  "context": "",
+  "player": "u lfg? we need a dps",
+  "bot_replies": [
+   "[JoinReply]"
+  ]
+ },
+ {
+  "id": "b161",
+  "channel": "tell",
+  "context": "",
+  "player": "group?",
+  "bot_replies": [
+   "[JoinReply]"
+  ]
+ },
+ {
+  "id": "b162",
+  "channel": "say",
+  "context": "",
+  "player": "duo?",
+  "bot_replies": [
+   "no idea sorry",
+   "good question :P"
+  ]
+ },
+ {
+  "id": "b163",
+  "channel": "say",
+  "context": "",
+  "player": "wanna team up for these? we're both soloing them",
+  "bot_replies": [
+   "i was wondering that too",
+   "not a clue honestly heh"
+  ]
+ },
+ {
+  "id": "b164",
+  "channel": "faction",
+  "context": "",
+  "player": "forming grp for keep take, need everyone at the milegate",
+  "bot_replies": [
+   "how many do u have?",
+   "30 thane here if u need one"
+  ]
+ },
+ {
+  "id": "b165",
+  "channel": "group",
+  "context": "",
+  "player": "can we invite my friend? hes a healer",
+  "bot_replies": [
+   "keep at it, someone will bite",
+   "im free what are u hunting?"
+  ]
+ },
+ {
+  "id": "b166",
+  "channel": "group",
+  "context": "",
+  "player": "we need a puller, anyone know one?",
+  "bot_replies": [
+   "sorry, solo for now",
+   "inv me if you have room"
+  ]
+ },
+ {
+  "id": "b167",
+  "channel": "trade",
+  "context": "",
+  "player": "WTS 2h sword 99% qual, pst",
+  "bot_replies": [
+   "what are you asking for it? heh",
+   "pst me"
+  ]
+ },
+ {
+  "id": "b168",
+  "channel": "trade",
+  "context": "",
+  "player": "wtb str buffed armor lvl 30, pst",
+  "bot_replies": [
+   "no lcue on pc, sorry",
+   "check the exchange first, prices are better than the merchant"
+  ]
+ },
+ {
+  "id": "b169",
+  "channel": "trade",
+  "context": "",
+  "player": "selling mc chain set lvl 40, 3p obo",
+  "bot_replies": [
+   "how much are you asking?",
+   "depends on the bonuses honestly"
+  ]
+ },
+ {
+  "id": "b170",
+  "channel": "trade",
+  "context": "",
+  "player": "how much for a 99 quality staff?",
+  "bot_replies": [
+   "Try the exchange, it sells there.",
+   "check the exchange first"
+  ]
+ },
+ {
+  "id": "b171",
+  "channel": "trade",
+  "context": "",
+  "player": "anyone selling arrows?",
+  "bot_replies": [
+   "not sure",
+   "couldnt tell you"
+  ]
+ },
+ {
+  "id": "b172",
+  "channel": "trade",
+  "context": "",
+  "player": "wts loot from DF, cheap",
+  "bot_replies": [
+   "pst me what u need made",
+   "Pst me the stats."
+  ]
+ },
+ {
+  "id": "b173",
+  "channel": "trade",
+  "context": "",
+  "player": "whats the going rate for a 5/5/5 sc'd armor piece?",
+  "bot_replies": [
+   "Hmm not sure.",
+   "ask around maybe"
+  ]
+ },
+ {
+  "id": "b174",
+  "channel": "trade",
+  "context": "",
+  "player": "selling potions, 1g each, pst",
+  "bot_replies": [
+   "merchants pay half, the exchange pays more if you can wait",
+   "Got materials for that, give me an hour."
+  ]
+ },
+ {
+  "id": "b175",
+  "channel": "trade",
+  "context": "",
+  "player": "need a tailor, have mats",
+  "bot_replies": [
+   "a crafter can probably make that for u",
+   "wts or wtb?"
+  ]
+ },
+ {
+  "id": "b176",
+  "channel": "tell",
+  "context": "",
+  "player": "how much for the bow?",
+  "bot_replies": [
+   "someone will want it, keep asking"
+  ]
+ },
+ {
+  "id": "b177",
+  "channel": "tell",
+  "context": "",
+  "player": "i can make u that for 20g if u bring mats",
+  "bot_replies": [
+   "if its spare sure ty"
+  ]
+ },
+ {
+  "id": "b178",
+  "channel": "tell",
+  "context": "",
+  "player": "can u lower the price a bit?",
+  "bot_replies": [
+   "wish i knew"
+  ]
+ },
+ {
+  "id": "b179",
+  "channel": "say",
+  "context": "",
+  "player": "wanna buy some arrows? cheap",
+  "bot_replies": [
+   "depends who is buying",
+   "not my class sorry"
+  ]
+ },
+ {
+  "id": "b180",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone need trash loot? giving away",
+  "bot_replies": [
+   "cant help there sorry",
+   "beats me"
+  ]
+ },
+ {
+  "id": "b181",
+  "channel": "trade",
+  "context": "",
+  "player": "WTS ROG longsword 18 str 12 con, offers",
+  "bot_replies": [
+   "no coin here sorry, just bought armor"
+  ]
+ },
+ {
+  "id": "b182",
+  "channel": "tell",
+  "context": "",
+  "player": "i saw u selling a chain set, still have it?",
+  "bot_replies": [
+   "not selling, sorry, i use it"
+  ]
+ },
+ {
+  "id": "b183",
+  "channel": "faction",
+  "context": "",
+  "player": "INC EAST GATE",
+  "bot_replies": [
+   "any healers with them?",
+   "cant im out in pve"
+  ]
+ },
+ {
+  "id": "b184",
+  "channel": "faction",
+  "context": "",
+  "player": "inc at bled!!",
+  "bot_replies": [
+   "how many?",
+   "What classes?"
+  ]
+ },
+ {
+  "id": "b185",
+  "channel": "faction",
+  "context": "",
+  "player": "Caer Benowyc under attack, need help asap",
+  "bot_replies": [
+   "Which keep?",
+   "zerg or a small group?"
+  ]
+ },
+ {
+  "id": "b186",
+  "channel": "faction",
+  "context": "",
+  "player": "mids at the milegate, 2 fg",
+  "bot_replies": [
+   "where at?",
+   "Where?"
+  ]
+ },
+ {
+  "id": "b187",
+  "channel": "faction",
+  "context": "",
+  "player": "hibs taking our relic keep!!!",
+  "bot_replies": [
+   "If you see the zerg coming, call it out.",
+   "relics are the real prize"
+  ]
+ },
+ {
+  "id": "b188",
+  "channel": "faction",
+  "context": "",
+  "player": "relic raid at 9, meet at portal keep",
+  "bot_replies": [
+   "group up before you head out there",
+   "been quiet out there lately"
+  ]
+ },
+ {
+  "id": "b189",
+  "channel": "faction",
+  "context": "",
+  "player": "stealthers at the bridge, watch out",
+  "bot_replies": [
+   "ty watching for them",
+   "noted ty"
+  ]
+ },
+ {
+  "id": "b190",
+  "channel": "faction",
+  "context": "",
+  "player": "they got our pwr relic, ugh",
+  "bot_replies": [
+   "sorry, unlucky",
+   "next one will go better"
+  ]
+ },
+ {
+  "id": "b191",
+  "channel": "faction",
+  "context": "",
+  "player": "need defenders at dun crim NOW",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b192",
+  "channel": "faction",
+  "context": "",
+  "player": "inc 3 hib at the tower, 2 bards and a champ",
+  "bot_replies": [
+   "im nowhere near the frontier sorry",
+   "stealthers or a group?"
+  ]
+ },
+ {
+  "id": "b193",
+  "channel": "faction",
+  "context": "",
+  "player": "keep under siege, everyone to Nottmoor",
+  "bot_replies": [
+   "how many and where?",
+   "call it out"
+  ]
+ },
+ {
+  "id": "b194",
+  "channel": "faction",
+  "context": "",
+  "player": "DF is ours again",
+  "bot_replies": [
+   "i would bring a healer and a mezzer for that one",
+   "take a healer, trust me"
+  ]
+ },
+ {
+  "id": "b195",
+  "channel": "faction",
+  "context": "",
+  "player": "mids ganking at the dock",
+  "bot_replies": [
+   "frontier is busy tonight",
+   "i might head out later"
+  ]
+ },
+ {
+  "id": "b196",
+  "channel": "group",
+  "context": "",
+  "player": "INC",
+  "bot_replies": [
+   "on it, ty"
+  ]
+ },
+ {
+  "id": "b197",
+  "channel": "group",
+  "context": "",
+  "player": "inc left",
+  "bot_replies": [
+   "k careful all"
+  ]
+ },
+ {
+  "id": "b198",
+  "channel": "group",
+  "context": "",
+  "player": "sb on me!!",
+  "bot_replies": [
+   "thanks for the heads up, watching"
+  ]
+ },
+ {
+  "id": "b199",
+  "channel": "group",
+  "context": "",
+  "player": "nuker on hill, kill it",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b200",
+  "channel": "group",
+  "context": "",
+  "player": "pull back to the keep",
+  "bot_replies": [
+   "k np",
+   "Alright alright."
+  ]
+ },
+ {
+  "id": "b201",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone near emain? we're getting zerged",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b202",
+  "channel": "faction",
+  "context": "",
+  "player": "where's the zerg at?",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b203",
+  "channel": "faction",
+  "context": "",
+  "player": "Emain is hot tonight, hibs everywhere",
+  "bot_replies": [
+   "the frontier was busy earlier",
+   "Stealthers everywhere, careful."
+  ]
+ },
+ {
+  "id": "b204",
+  "channel": "group",
+  "context": "",
+  "player": "pulling",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b205",
+  "channel": "group",
+  "context": "",
+  "player": "inc pull",
+  "bot_replies": [
+   "k ty"
+  ]
+ },
+ {
+  "id": "b206",
+  "channel": "group",
+  "context": "",
+  "player": "ADD!",
+  "bot_replies": [
+   "eyes open"
+  ]
+ },
+ {
+  "id": "b207",
+  "channel": "group",
+  "context": "",
+  "player": "oom",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b208",
+  "channel": "group",
+  "context": "",
+  "player": "low pow, need a sec",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b209",
+  "channel": "group",
+  "context": "",
+  "player": "wipe... rez me when u can",
+  "bot_replies": [
+   "release and run back maybe, bind isnt far",
+   "been there gl"
+  ]
+ },
+ {
+  "id": "b210",
+  "channel": "group",
+  "context": "",
+  "player": "gg we wiped lol",
+  "bot_replies": [
+   "rough night huh",
+   "argh, hate that"
+  ]
+ },
+ {
+  "id": "b211",
+  "channel": "group",
+  "context": "",
+  "player": "that was close",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b212",
+  "channel": "group",
+  "context": "",
+  "player": "mez the adds",
+  "bot_replies": [
+   "kk will try",
+   "k, will try"
+  ]
+ },
+ {
+  "id": "b213",
+  "channel": "group",
+  "context": "",
+  "player": "stop casting on the mezzed one!!!",
+  "bot_replies": [
+   "ok ok",
+   "roger"
+  ]
+ },
+ {
+  "id": "b214",
+  "channel": "group",
+  "context": "",
+  "player": "sorry, my fault",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b215",
+  "channel": "group",
+  "context": "",
+  "player": "puller died again",
+  "bot_replies": [
+   "ugh typical",
+   "at least you saw something new on the way"
+  ]
+ },
+ {
+  "id": "b216",
+  "channel": "group",
+  "context": "",
+  "player": "dont train the group!!",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b217",
+  "channel": "group",
+  "context": "",
+  "player": "need heals here!!",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b218",
+  "channel": "group",
+  "context": "",
+  "player": "taunting",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b219",
+  "channel": "group",
+  "context": "",
+  "player": "i got the drop ty",
+  "bot_replies": [
+   "woot gz",
+   "gz!! so happy for you"
+  ]
+ },
+ {
+  "id": "b220",
+  "channel": "group",
+  "context": "",
+  "player": "ugh 10% xp loss",
+  "bot_replies": [
+   "ugh, that sucks",
+   "happens to the best of us haha"
+  ]
+ },
+ {
+  "id": "b221",
+  "channel": "group",
+  "context": "",
+  "player": "this camp sucks, nothing up",
+  "bot_replies": [
+   "yep, happened to me too",
+   "been there"
+  ]
+ },
+ {
+  "id": "b222",
+  "channel": "guild",
+  "context": "",
+  "player": "DING 50!!!",
+  "bot_replies": [
+   "Gz, long road.",
+   "woo gz"
+  ]
+ },
+ {
+  "id": "b223",
+  "channel": "guild",
+  "context": "",
+  "player": "ding 20",
+  "bot_replies": [
+   "gratz",
+   "gratz! new spells?"
+  ]
+ },
+ {
+  "id": "b224",
+  "channel": "guild",
+  "context": "",
+  "player": "finally got my epic armor :D",
+  "bot_replies": [
+   "gz, about time",
+   "Sweet, grats."
+  ]
+ },
+ {
+  "id": "b225",
+  "channel": "guild",
+  "context": "",
+  "player": "rr3!",
+  "bot_replies": [
+   "nice one",
+   "oh nice, gz"
+  ]
+ },
+ {
+  "id": "b226",
+  "channel": "guild",
+  "context": "",
+  "player": "got my first realm rank lol, rr2 baby",
+  "bot_replies": [
+   "lol sure u did",
+   "lol"
+  ]
+ },
+ {
+  "id": "b227",
+  "channel": "group",
+  "context": "",
+  "player": "ding!",
+  "bot_replies": [
+   "gz gz",
+   "grats, now go train"
+  ]
+ },
+ {
+  "id": "b228",
+  "channel": "group",
+  "context": "",
+  "player": "dinged 34",
+  "bot_replies": [
+   "grats!",
+   "gz, spend those points well"
+  ]
+ },
+ {
+  "id": "b229",
+  "channel": "group",
+  "context": "",
+  "player": "ding 1/2 lol",
+  "bot_replies": [
+   "grats Wynn",
+   "ooh nice"
+  ]
+ },
+ {
+  "id": "b230",
+  "channel": "group",
+  "context": "",
+  "player": "woot just got the named drop",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b231",
+  "channel": "group",
+  "context": "",
+  "player": "first kill of the night and i dinged",
+  "bot_replies": [
+   "gz, the grind pays off",
+   "nice, grats"
+  ]
+ },
+ {
+  "id": "b232",
+  "channel": "faction",
+  "context": "",
+  "player": "finally 50 after 4 months :D",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b233",
+  "channel": "guild",
+  "context": "",
+  "player": "i got my necro to 25!",
+  "bot_replies": [
+   "fun but squishy",
+   "get a respec if you hate it"
+  ]
+ },
+ {
+  "id": "b234",
+  "channel": "guild",
+  "context": "",
+  "player": "my first solo kill in rvr!!",
+  "bot_replies": [
+   "need more healers out there",
+   "the realm needs defenders more than attackers some nights"
+  ]
+ },
+ {
+  "id": "b235",
+  "channel": "guild",
+  "context": "",
+  "player": "got a 99 quality on the first try!!",
+  "bot_replies": [
+   "lol so true",
+   "u and me both"
+  ]
+ },
+ {
+  "id": "b236",
+  "channel": "guild",
+  "context": "",
+  "player": "gratz on 40 Sigrunn",
+  "bot_replies": [
+   "ty, only died twice on the way",
+   "ty off to the trainer now"
+  ]
+ },
+ {
+  "id": "b237",
+  "channel": "guild",
+  "context": "",
+  "player": "ty for the grats all",
+  "bot_replies": [
+   "yw, safe travels",
+   "glad to help"
+  ]
+ },
+ {
+  "id": "b238",
+  "channel": "guild",
+  "context": "",
+  "player": "ugh lost 3 levels of con dying in emain",
+  "bot_replies": [
+   "hope the next hour goes better",
+   "heh, still beats a quiet night"
+  ]
+ },
+ {
+  "id": "b239",
+  "channel": "guild",
+  "context": "",
+  "player": "laggy tonight?",
+  "bot_replies": [
+   "beats me",
+   "I was wondering that too."
+  ]
+ },
+ {
+  "id": "b240",
+  "channel": "guild",
+  "context": "",
+  "player": "server lag is killing me",
+  "bot_replies": [
+   "tell me abt it",
+   "story of my life :D"
+  ]
+ },
+ {
+  "id": "b241",
+  "channel": "guild",
+  "context": "",
+  "player": "my comp keeps crashing",
+  "bot_replies": [
+   "ugh, every time",
+   "that happened to me yesterday"
+  ]
+ },
+ {
+  "id": "b242",
+  "channel": "guild",
+  "context": "",
+  "player": "worst day ever, boss yelled at me",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b243",
+  "channel": "guild",
+  "context": "",
+  "player": "got ganked 3 times leaving the portal keep",
+  "bot_replies": [
+   "that stinks",
+   "grr, i know that one"
+  ]
+ },
+ {
+  "id": "b244",
+  "channel": "faction",
+  "context": "",
+  "player": "this patch nerfed my class into the ground",
+  "bot_replies": [
+   "every class is fine with a good group",
+   "depends on your spec"
+  ]
+ },
+ {
+  "id": "b245",
+  "channel": "tell",
+  "context": "",
+  "player": "lost all my coins buying a respec, so broke now",
+  "bot_replies": [
+   "i would just vendor it"
+  ]
+ },
+ {
+  "id": "b246",
+  "channel": "group",
+  "context": "",
+  "player": "i hate these stupid spiders",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b247",
+  "channel": "guild",
+  "context": "",
+  "player": "lol",
+  "bot_replies": [
+   ":)",
+   "haha oh no"
+  ]
+ },
+ {
+  "id": "b248",
+  "channel": "guild",
+  "context": "",
+  "player": "rofl",
+  "bot_replies": [
+   "lol, worth it",
+   "lol i know"
+  ]
+ },
+ {
+  "id": "b249",
+  "channel": "guild",
+  "context": "",
+  "player": "who's buying the pizza",
+  "bot_replies": [
+   "now im hungry",
+   "mmm now im hungry"
+  ]
+ },
+ {
+  "id": "b250",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone watching the game tonight?",
+  "bot_replies": [
+   "havent seen it yet",
+   "heard good things"
+  ]
+ },
+ {
+  "id": "b251",
+  "channel": "guild",
+  "context": "",
+  "player": "bards are just mobile jukeboxes",
+  "bot_replies": [
+   "solid in groups, rough solo",
+   "They got nerfed last patch."
+  ]
+ },
+ {
+  "id": "b252",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone else still lvling their crafter or am i the only nerd",
+  "bot_replies": [
+   "might be worth something to a twink",
+   "my prices are fair ask any1"
+  ]
+ },
+ {
+  "id": "b253",
+  "channel": "guild",
+  "context": "",
+  "player": "i fell off the bridge in tir na nog. again.",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b254",
+  "channel": "guild",
+  "context": "",
+  "player": "anyone play any other games?",
+  "bot_replies": [
+   "dunno",
+   "No clue."
+  ]
+ },
+ {
+  "id": "b255",
+  "channel": "guild",
+  "context": "",
+  "player": "did u guys see the pic on the herald?",
+  "bot_replies": [
+   "cant help there sorry",
+   "ask around maybe"
+  ]
+ },
+ {
+  "id": "b256",
+  "channel": "guild",
+  "context": "",
+  "player": "i think my cat just logged me out",
+  "bot_replies": [
+   "lol cats",
+   "aw give them a pat for me"
+  ]
+ },
+ {
+  "id": "b257",
+  "channel": "guild",
+  "context": "",
+  "player": "this game is crack i swear",
+  "bot_replies": [
+   "ouch, been there",
+   "cant argue with that"
+  ]
+ },
+ {
+  "id": "b258",
+  "channel": "group",
+  "context": "",
+  "player": "lol nice pull",
+  "bot_replies": [
+   "lol yeah",
+   "lol"
+  ]
+ },
+ {
+  "id": "b259",
+  "channel": "group",
+  "context": "",
+  "player": "imagine if we had a real tank lol",
+  "bot_replies": [
+   "haha love it",
+   "True story."
+  ]
+ },
+ {
+  "id": "b260",
+  "channel": "group",
+  "context": "",
+  "player": "dont mind me, just dying over here",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b261",
+  "channel": "group",
+  "context": "",
+  "player": "mmm pizza while i med",
+  "bot_replies": [
+   "save me a slice lol",
+   "ooh, enjoy"
+  ]
+ },
+ {
+  "id": "b262",
+  "channel": "say",
+  "context": "",
+  "player": "nice hat lol",
+  "bot_replies": [
+   "lol so true",
+   "bet you cant solo it"
+  ]
+ },
+ {
+  "id": "b263",
+  "channel": "say",
+  "context": "",
+  "player": "lol you just fell off the cliff",
+  "bot_replies": [
+   "you and me both",
+   "ha fair"
+  ]
+ },
+ {
+  "id": "b264",
+  "channel": "faction",
+  "context": "",
+  "player": "rofl that alb just ran into our whole zerg",
+  "bot_replies": [
+   "The zerg moved on I think.",
+   "been quiet out there lately"
+  ]
+ },
+ {
+  "id": "b265",
+  "channel": "tell",
+  "context": "",
+  "player": "lol did u see that hunter fall off the bridge",
+  "bot_replies": [
+   "hunters and their pets lol"
+  ]
+ },
+ {
+  "id": "b266",
+  "channel": "guild",
+  "context": "",
+  "player": "omg my kid just asked me if I'm a real wizard",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b267",
+  "channel": "guild",
+  "context": "",
+  "player": "horse just dumped me in the middle of 4 reds lol",
+  "bot_replies": [
+   "heh",
+   "Lol sure you did."
+  ]
+ },
+ {
+  "id": "b268",
+  "channel": "guild",
+  "context": "",
+  "player": ":D",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b269",
+  "channel": "guild",
+  "context": "",
+  "player": "/me does a happy dance",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b270",
+  "channel": "say",
+  "context": "",
+  "player": "noob",
+  "bot_replies": [
+   "same here honestly"
+  ]
+ },
+ {
+  "id": "b271",
+  "channel": "say",
+  "context": "",
+  "player": "ks much?",
+  "bot_replies": [
+   "pretty sure yes but dont quote me",
+   "someone said something about that earlier"
+  ]
+ },
+ {
+  "id": "b272",
+  "channel": "say",
+  "context": "",
+  "player": "omg ur so bad",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b273",
+  "channel": "faction",
+  "context": "",
+  "player": "whoever pulled that train is an idiot",
+  "bot_replies": [
+   "easy there",
+   "not worth arguing abt"
+  ]
+ },
+ {
+  "id": "b274",
+  "channel": "tell",
+  "context": "",
+  "player": "u suck",
+  "bot_replies": [
+   "lets keep it friendly"
+  ]
+ },
+ {
+  "id": "b275",
+  "channel": "tell",
+  "context": "",
+  "player": "stop ksing my camp jerk",
+  "bot_replies": [
+   "ok ok"
+  ]
+ },
+ {
+  "id": "b276",
+  "channel": "tell",
+  "context": "",
+  "player": "ur a terrible healer",
+  "bot_replies": [
+   "noted"
+  ]
+ },
+ {
+  "id": "b277",
+  "channel": "faction",
+  "context": "",
+  "player": "gg albs, way to zerg",
+  "bot_replies": [
+   "relics are the real prize",
+   "the realm needs defenders more than attackers some nights heh"
+  ]
+ },
+ {
+  "id": "b278",
+  "channel": "group",
+  "context": "",
+  "player": "can u not stand in the fire",
+  "bot_replies": [
+   "wish i knew",
+   "hmm not sure"
+  ]
+ },
+ {
+  "id": "b279",
+  "channel": "say",
+  "context": "",
+  "player": "Hail, good sir. What news from Camelot?",
+  "bot_replies": [
+   "beats me",
+   "no idea, i just got here"
+  ]
+ },
+ {
+  "id": "b280",
+  "channel": "say",
+  "context": "",
+  "player": "*bows deeply* My lady, may I offer my sword in thy service?",
+  "bot_replies": [
+   "couldnt tell you",
+   "i think so?"
+  ]
+ },
+ {
+  "id": "b281",
+  "channel": "say",
+  "context": "",
+  "player": "By Odin's beard, these trolls stink worse than a kobold's boots!",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b282",
+  "channel": "say",
+  "context": "",
+  "player": "The Morrigan watches over us tonight.",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b283",
+  "channel": "say",
+  "context": "",
+  "player": "Ye be lookin' weary, friend. Rest by the fire.",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b284",
+  "channel": "say",
+  "context": "",
+  "player": "Hail, warrior. Have ye seen any Albion scum near the river?",
+  "bot_replies": [
+   "good question",
+   "ask around maybe"
+  ]
+ },
+ {
+  "id": "b285",
+  "channel": "say",
+  "context": "",
+  "player": "*wipes the blood off his blade* Another day, another dead goblin.",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b286",
+  "channel": "say",
+  "context": "",
+  "player": "What be thy name, stranger?",
+  "bot_replies": [
+   "no clue",
+   "cant help there sorry"
+  ]
+ },
+ {
+  "id": "b287",
+  "channel": "say",
+  "context": "",
+  "player": "I seek the tavern. My throat is drier than the Plains of Salisbury.",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b288",
+  "channel": "say",
+  "context": "",
+  "player": "Pray tell, where might I find the Lady of the Lake?",
+  "bot_replies": [
+   "not a clue honestly",
+   "not sure"
+  ]
+ },
+ {
+  "id": "b289",
+  "channel": "say",
+  "context": "",
+  "player": "The forest whispers of danger. Stay close.",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b290",
+  "channel": "guild",
+  "context": "",
+  "player": "Brothers and sisters, we march at dusk to defend our lands!",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b291",
+  "channel": "say",
+  "context": "",
+  "player": "*raises tankard* To Midgard!",
+  "bot_replies": [
+   "frontier is busy tonight",
+   "if you see the zerg coming, call it out"
+  ]
+ },
+ {
+  "id": "b292",
+  "channel": "say",
+  "context": "",
+  "player": "I sense dark magic in this place...",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b293",
+  "channel": "say",
+  "context": "",
+  "player": "Good morrow! A fine day for hunting, is it not?",
+  "bot_replies": [
+   "blues and yellows, keep it steady",
+   "dont forget the camp bonus, find a quiet spot"
+  ]
+ },
+ {
+  "id": "b294",
+  "channel": "say",
+  "context": "",
+  "player": "((ooc: brb phone))",
+  "bot_replies": [
+   "no rush",
+   "kk"
+  ]
+ },
+ {
+  "id": "b295",
+  "channel": "say",
+  "context": "",
+  "player": "Ye've the look of a druid about ye. Can ye mend my wounds?",
+  "bot_replies": [
+   "no idea sorry",
+   "i was wondering that too"
+  ]
+ },
+ {
+  "id": "b296",
+  "channel": "guild",
+  "context": "",
+  "player": "Thoriel, you still need the hide for your quest?",
+  "bot_replies": [
+   "dunno"
+  ]
+ },
+ {
+  "id": "b297",
+  "channel": "guild",
+  "context": "",
+  "player": "Grimbold how much do u want for that hammer?",
+  "bot_replies": [
+   "that would make a nice twink item :P",
+   "seen those go cheap on the exchange"
+  ]
+ },
+ {
+  "id": "b298",
+  "channel": "guild",
+  "context": "",
+  "player": "Kaelynn what lvl r u now?",
+  "bot_replies": [
+   "30 here",
+   "30 slowly"
+  ]
+ },
+ {
+  "id": "b299",
+  "channel": "guild",
+  "context": "",
+  "player": "Fenwick u coming to the raid?",
+  "bot_replies": [
+   "pretty sure yes but dont quote me :P",
+   "someone said something about that earlier"
+  ]
+ },
+ {
+  "id": "b300",
+  "channel": "group",
+  "context": "",
+  "player": "Eiliss can u mez the adds",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b301",
+  "channel": "group",
+  "context": "",
+  "player": "Mordath stop pulling so fast lol",
+  "bot_replies": [
+   "true story",
+   "ha fair"
+  ]
+ },
+ {
+  "id": "b302",
+  "channel": "tell",
+  "context": "",
+  "player": "Brannoc did u get the armor i sent?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b303",
+  "channel": "guild",
+  "context": "",
+  "player": "Sigrunn where'd you get that cloak?",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b304",
+  "channel": "group",
+  "context": "",
+  "player": "Oswin do u have a rez?",
+  "bot_replies": [
+   "not a rezzer, sorry",
+   "Where are you?"
+  ]
+ },
+ {
+  "id": "b305",
+  "channel": "guild",
+  "context": "",
+  "player": "Thoriel wb!",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b306",
+  "channel": "guild",
+  "context": "",
+  "player": "hey Kaelynn congrats on the ding!",
+  "bot_replies": [
+   "Ty, the grind continues.",
+   "thank u!"
+  ]
+ },
+ {
+  "id": "b307",
+  "channel": "guild",
+  "context": "",
+  "player": "Grimbold, you around? need a smith",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b308",
+  "channel": "group",
+  "context": "",
+  "player": "Fenwick r u afk?",
+  "bot_replies": [
+   "wish i knew",
+   "hmm not sure"
+  ]
+ },
+ {
+  "id": "b309",
+  "channel": "guild",
+  "context": "",
+  "player": "Eiliss u still mad at me for that pull? lol",
+  "bot_replies": [
+   "lol yeah",
+   "haha love it"
+  ]
+ },
+ {
+  "id": "b310",
+  "channel": "group",
+  "context": "",
+  "player": "brb dinner, can someone hold my spot?",
+  "bot_replies": [
+   "couldnt tell you",
+   "I think so?"
+  ]
+ },
+ {
+  "id": "b311",
+  "channel": "group",
+  "context": "",
+  "player": "brb 5 min, dont pull without me",
+  "bot_replies": [
+   "K, say when.",
+   "K, holding up."
+  ]
+ },
+ {
+  "id": "b312",
+  "channel": "guild",
+  "context": "",
+  "player": "back, anyone up for DF? or still raiding?",
+  "bot_replies": [
+   "flip a coin lol",
+   "first one honestly"
+  ]
+ },
+ {
+  "id": "b313",
+  "channel": "guild",
+  "context": "",
+  "player": "night all, raid at 9 tmrw right?",
+  "bot_replies": [
+   "cya around",
+   "take it easy"
+  ]
+ },
+ {
+  "id": "b314",
+  "channel": "guild",
+  "context": "",
+  "player": "hey all, anyone wanna group? im 32 now",
+  "bot_replies": [
+   "i can help if u are near Myrkwood Forest",
+   "where are you camping?"
+  ]
+ },
+ {
+  "id": "b315",
+  "channel": "group",
+  "context": "",
+  "player": "ty for rez, how much xp did i lose?",
+  "bot_replies": [
+   "try the exchange, prices are fair",
+   "try the exchange"
+  ]
+ },
+ {
+  "id": "b316",
+  "channel": "tell",
+  "context": "",
+  "player": "hey, u selling those boots? how much?",
+  "bot_replies": [
+   "not selling, sorry, i use it"
+  ]
+ },
+ {
+  "id": "b317",
+  "channel": "faction",
+  "context": "",
+  "player": "new here, where's the trainer and how do i get money?",
+  "bot_replies": [
+   "go slow, con everything",
+   "whatever works for u"
+  ]
+ },
+ {
+  "id": "b318",
+  "channel": "group",
+  "context": "",
+  "player": "oom and adds incoming!! someone help",
+  "bot_replies": [
+   "got it"
+  ]
+ },
+ {
+  "id": "b319",
+  "channel": "guild",
+  "context": "",
+  "player": "dinged 30 and got a respec, now what spec lol",
+  "bot_replies": [
+   "watch someone do it once",
+   "depends on what u want"
+  ]
+ },
+ {
+  "id": "b320",
+  "channel": "guild",
+  "context": "",
+  "player": "brb, wife needs help. anyone want my spot in DF grp?",
+  "bot_replies": [
+   "pst me when you form up",
+   "keep at it someone will bite"
+  ]
+ },
+ {
+  "id": "b321",
+  "channel": "group",
+  "context": "",
+  "player": "gtg soon, one more pull then im out",
+  "bot_replies": [
+   "bye :)",
+   "cya next time"
+  ]
+ },
+ {
+  "id": "b322",
+  "channel": "faction",
+  "context": "",
+  "player": "were r the eldrich trainrs",
+  "bot_replies": [
+   "Ask around maybe.",
+   "not sure"
+  ]
+ },
+ {
+  "id": "b323",
+  "channel": "faction",
+  "context": "",
+  "player": "how do u lvl a crafitng skil fast",
+  "bot_replies": [
+   "no clue",
+   "cant help there sorry"
+  ]
+ },
+ {
+  "id": "b324",
+  "channel": "faction",
+  "context": "",
+  "player": "ne1 kno were to fnd copper ore",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b325",
+  "channel": "faction",
+  "context": "",
+  "player": "w00t i pwned that alb",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b326",
+  "channel": "faction",
+  "context": "",
+  "player": "lfg pl0x",
+  "bot_replies": [
+   "30 thane here if you need one",
+   "could join, 30 thane :)"
+  ]
+ },
+ {
+  "id": "b327",
+  "channel": "say",
+  "context": "",
+  "player": "u r teh suck lol",
+  "bot_replies": [
+   "heh",
+   "Lol so true."
+  ]
+ },
+ {
+  "id": "b328",
+  "channel": "group",
+  "context": "",
+  "player": "omg pwnd",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b329",
+  "channel": "say",
+  "context": "",
+  "player": "plz giv me money im poor",
+  "bot_replies": [
+   "cant spare any, saving for my epic",
+   "im broke too, sorry"
+  ]
+ },
+ {
+  "id": "b330",
+  "channel": "guild",
+  "context": "",
+  "player": "ne1 on?",
+  "bot_replies": [
+   "i was wondering that too",
+   "good question"
+  ]
+ },
+ {
+  "id": "b331",
+  "channel": "guild",
+  "context": "",
+  "player": "wuts up wit da server tonite",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b332",
+  "channel": "faction",
+  "context": "",
+  "player": "anyone kno how 2 get 2 hib frm alb lol",
+  "bot_replies": [
+   "Can't argue with that.",
+   "ouch, been there"
+  ]
+ },
+ {
+  "id": "b333",
+  "channel": "faction",
+  "context": "",
+  "player": "were do i buy a bow im a scout",
+  "bot_replies": [
+   "not a clue honestly",
+   "dunno"
+  ]
+ },
+ {
+  "id": "b334",
+  "channel": "tell",
+  "context": "",
+  "player": "u gotta spare rez?",
+  "bot_replies": [
+   "Ouch, where did you die?"
+  ]
+ },
+ {
+  "id": "b335",
+  "channel": "guild",
+  "context": "",
+  "player": "omg i jsut got 1 shotted by a grey con",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b336",
+  "channel": "faction",
+  "context": "",
+  "player": "who teh hell pulls a whole cmp into town lol",
+  "bot_replies": [
+   "ha, fair",
+   "true story"
+  ]
+ },
+ {
+  "id": "b337",
+  "channel": "guild",
+  "context": "",
+  "player": "gn ppl",
+  "bot_replies": [
+   "later",
+   "Sleep well, the mobs will still be here tomorrow."
+  ]
+ },
+ {
+  "id": "b338",
+  "channel": "guild",
+  "context": "",
+  "player": "ty all 4 the help",
+  "bot_replies": [
+   "Np, have fun.",
+   "glad to help"
+  ]
+ },
+ {
+  "id": "b339",
+  "channel": "group",
+  "context": "",
+  "player": "k",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b340",
+  "channel": "group",
+  "context": "",
+  "player": "omw",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b341",
+  "channel": "group",
+  "context": "",
+  "player": "1 sec",
+  "bot_replies": [
+   "k. ill keep going",
+   "take ur time"
+  ]
+ },
+ {
+  "id": "b342",
+  "channel": "group",
+  "context": "",
+  "player": "/assist me",
+  "bot_replies": [
+   "kk will try",
+   "ok ok"
+  ]
+ },
+ {
+  "id": "b343",
+  "channel": "faction",
+  "context": "",
+  "player": "zerg left the keep",
+  "bot_replies": [
+   "the zerg moved on i think",
+   "the realm needs defenders more than attackers some nights"
+  ]
+ },
+ {
+  "id": "b344",
+  "channel": "faction",
+  "context": "",
+  "player": "relic is safe, ty all",
+  "bot_replies": [
+   "happy to help",
+   "any time Wynn"
+  ]
+ },
+ {
+  "id": "b345",
+  "channel": "guild",
+  "context": "",
+  "player": "afk",
+  "bot_replies": [
+   "np ill be here",
+   "sure"
+  ]
+ },
+ {
+  "id": "b346",
+  "channel": "guild",
+  "context": "",
+  "player": "brb",
+  "bot_replies": [
+   "ok, ill be around",
+   "k"
+  ]
+ },
+ {
+  "id": "b347",
+  "channel": "say",
+  "context": "",
+  "player": "/me sits by the fire",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b348",
+  "channel": "say",
+  "context": "",
+  "player": "...",
+  "bot_replies": [
+   "haha",
+   "lolol"
+  ]
+ },
+ {
+  "id": "b349",
+  "channel": "faction",
+  "context": "",
+  "player": "they're leaving, good job everyone",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b350",
+  "channel": "guild",
+  "context": "",
+  "player": "lol nice",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b351",
+  "channel": "group",
+  "context": "",
+  "player": "/face",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b352",
+  "channel": "say",
+  "context": "",
+  "player": "hmm",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b353",
+  "channel": "guild",
+  "context": "",
+  "player": "^^",
+  "bot_replies": [
+   "lol right",
+   "heh, it happens lol"
+  ]
+ },
+ {
+  "id": "b354",
+  "channel": "faction",
+  "context": "",
+  "player": "where do i get the quest for the lvl 10 shield?",
+  "bot_replies": [
+   "[from the world]"
+  ]
+ },
+ {
+  "id": "b355",
+  "channel": "faction",
+  "context": "",
+  "player": "anyone know how to start the epic quest?",
+  "bot_replies": [
+   "no idea i just got here",
+   "Ask around maybe."
+  ]
+ },
+ {
+  "id": "b356",
+  "channel": "guild",
+  "context": "",
+  "player": "is the bone camp in muspelheim good xp?",
+  "bot_replies": [
+   "xp is better in a group",
+   "anything that doesnt add"
+  ]
+ },
+ {
+  "id": "b357",
+  "channel": "faction",
+  "context": "",
+  "player": "how do i get to the cursed forest",
+  "bot_replies": [
+   "i think so?",
+   "someone said something about that earlier"
+  ]
+ },
+ {
+  "id": "b358",
+  "channel": "faction",
+  "context": "",
+  "player": "what lvl do keltoi mobs con",
+  "bot_replies": [
+   "thats in albion lol, mostly 21-25",
+   "thats in albion lol, keltoi fogou is about 21-25"
+  ]
+ },
+ {
+  "id": "b359",
+  "channel": "faction",
+  "context": "",
+  "player": "where do i get my first weapon upgrade lol",
+  "bot_replies": [
+   "its a bit of a trek",
+   "it is a long walk, bring a friend"
+  ]
+ },
+ {
+  "id": "b360",
+  "channel": "faction",
+  "context": "",
+  "player": "is there a way to see my rp count?",
+  "bot_replies": [
+   "no idea sorry",
+   "wish i knew"
+  ]
+ },
+ {
+  "id": "b361",
+  "channel": "faction",
+  "context": "try the bone camp in Muspelheim, good xp at that lvl",
+  "player": "where?",
+  "bot_replies": [
+   "[where the bot is]"
+  ]
+ },
+ {
+  "id": "b362",
+  "channel": "trade",
+  "context": "i can make u that for 30g",
+  "player": "how much for 2?",
+  "bot_replies": [
+   "check the exchange, people buy there",
+   "check the exchange, prices are fair"
+  ]
+ },
+ {
+  "id": "b363",
+  "channel": "trade",
+  "context": "sure, 50g for the bow",
+  "player": "how much?",
+  "bot_replies": [
+   "try the exchange, it sells there",
+   "check the exchange first"
+  ]
+ },
+ {
+  "id": "b364",
+  "channel": "group",
+  "context": "pulling next one, rdy?",
+  "player": "lol no",
+  "bot_replies": [
+   "hm ok ty anyway"
+  ]
+ },
+ {
+  "id": "b365",
+  "channel": "guild",
+  "context": "ill help u with the epic tmrw",
+  "player": "ok ty",
+  "bot_replies": [
+   "dont mention it"
+  ]
+ },
+ {
+  "id": "b366",
+  "channel": "tell",
+  "context": "omw, where r u?",
+  "player": "at the bridge",
+  "bot_replies": [
+   "nice nice"
+  ]
+ },
+ {
+  "id": "b367",
+  "channel": "faction",
+  "context": "go to the armsman trainer in the north wing",
+  "player": "which wing?",
+  "bot_replies": [
+   "cant remember the name lol"
+  ]
+ },
+ {
+  "id": "b368",
+  "channel": "group",
+  "context": "want me to pull?",
+  "player": "sure",
+  "bot_replies": [
+   "ok good"
+  ]
+ },
+ {
+  "id": "b369",
+  "channel": "guild",
+  "context": "im 34 now, you?",
+  "player": "29 :(",
+  "bot_replies": [
+   "Oh wow."
+  ]
+ },
+ {
+  "id": "b370",
+  "channel": "tell",
+  "context": "i have a spare 2h if u want",
+  "player": "srsly? ty!",
+  "bot_replies": [
+   "no problem"
+  ]
+ },
+ {
+  "id": "b371",
+  "channel": "lfg",
+  "context": "sure, what lvl r u?",
+  "player": "33 healer",
+  "bot_replies": [
+   "heh nice :D"
+  ]
+ },
+ {
+  "id": "b372",
+  "channel": "say",
+  "context": "u camping these?",
+  "player": "nope",
+  "bot_replies": [
+   "no worries"
+  ]
+ },
+ {
+  "id": "b373",
+  "channel": "trade",
+  "context": "60g for the set",
+  "player": "how about 45?",
+  "bot_replies": [
+   "not a clue honestly",
+   "couldnt tell you :P"
+  ]
+ },
+ {
+  "id": "b374",
+  "channel": "faction",
+  "context": "the dye merchant is in the market area",
+  "player": "ty",
+  "bot_replies": [
+   "np now go pull something big"
+  ]
+ },
+ {
+  "id": "b375",
+  "channel": "guild",
+  "context": "anyone want to go to DF?",
+  "player": "me!",
+  "bot_replies": [
+   "ah ok"
+  ]
+ },
+ {
+  "id": "b376",
+  "channel": "group",
+  "context": "inc 3 albs",
+  "player": "where?",
+  "bot_replies": [
+   "[where the bot is]"
+  ]
+ },
+ {
+  "id": "b377",
+  "channel": "tell",
+  "context": "can't, in a grp sry",
+  "player": "k np",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b378",
+  "channel": "guild",
+  "context": "ding 40!",
+  "player": "grats",
+  "bot_replies": [
+   "thx, slow and steady",
+   "ty, that one hurt"
+  ]
+ },
+ {
+  "id": "b379",
+  "channel": "guild",
+  "context": "brb",
+  "player": "k",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b380",
+  "channel": "say",
+  "context": "nice hat lol",
+  "player": "lol ty",
+  "bot_replies": [
+   "np"
+  ]
+ },
+ {
+  "id": "b381",
+  "channel": "tell",
+  "context": "i'm selling it for 40g",
+  "player": "too much",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b382",
+  "channel": "group",
+  "context": "need a rez?",
+  "player": "yes pls",
+  "bot_replies": [
+   "K, on it."
+  ]
+ },
+ {
+  "id": "b383",
+  "channel": "guild",
+  "context": "what are u doing tonight?",
+  "player": "farming, u?",
+  "bot_replies": [
+   "good question",
+   "i was wondering that too"
+  ]
+ },
+ {
+  "id": "b384",
+  "channel": "guild",
+  "context": "we're in emain, come help",
+  "player": "omw",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b385",
+  "channel": "faction",
+  "context": "ask the trainer in town, he'll tell u",
+  "player": "which trainer?",
+  "bot_replies": [
+   "Not sure what its called."
+  ]
+ },
+ {
+  "id": "b386",
+  "channel": "tell",
+  "context": "sure i can port u",
+  "player": "awesome, meet where?",
+  "bot_replies": [
+   "no clue"
+  ]
+ },
+ {
+  "id": "b387",
+  "channel": "group",
+  "context": "loot is trash, sell it",
+  "player": "k",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b388",
+  "channel": "say",
+  "context": "hail, traveler",
+  "player": "hail. whither are you bound?",
+  "bot_replies": [
+   "yep yep"
+  ]
+ },
+ {
+  "id": "b389",
+  "channel": "guild",
+  "context": "the raid is at 9",
+  "player": "est or pst?",
+  "bot_replies": [
+   "started with the first, wish id done the second",
+   "both are fine honestly"
+  ]
+ },
+ {
+  "id": "b390",
+  "channel": "faction",
+  "context": "spindel is in the vale of mularn",
+  "player": "ty, how far?",
+  "bot_replies": [
+   "yw",
+   "np come back if it breaks"
+  ]
+ },
+ {
+  "id": "b391",
+  "channel": "tell",
+  "context": "selling it for 1p",
+  "player": "lol no",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b392",
+  "channel": "guild",
+  "context": "wanna duo?",
+  "player": "sure, where?",
+  "bot_replies": [
+   "no idea, i just got here",
+   "pretty sure yes but dont quote me"
+  ]
+ },
+ {
+  "id": "b393",
+  "channel": "group",
+  "context": "i'm healing",
+  "player": "ok cool, who's pulling?",
+  "bot_replies": [
+   "cant help there sorry",
+   "beats me"
+  ]
+ },
+ {
+  "id": "b394",
+  "channel": "lfg",
+  "context": "pst for inv",
+  "player": "sent",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b395",
+  "channel": "guild",
+  "context": "gl on ur epic!",
+  "player": "ty lol i need it",
+  "bot_replies": [
+   "anytime"
+  ]
+ },
+ {
+  "id": "b396",
+  "channel": "say",
+  "context": "watch out for the adds here",
+  "player": "what adds?",
+  "bot_replies": [
+   "i think so?",
+   "not sure heh"
+  ]
+ },
+ {
+  "id": "b397",
+  "channel": "tell",
+  "context": "i dont have one sorry",
+  "player": "aw ok",
+  "bot_replies": [
+   "(no reply)"
+  ]
+ },
+ {
+  "id": "b398",
+  "channel": "group",
+  "context": "wanna stay another hour?",
+  "player": "maybe 30 min",
+  "bot_replies": [
+   "cool ty"
+  ]
+ },
+ {
+  "id": "b399",
+  "channel": "faction",
+  "context": "the bindstone is by the bank",
+  "player": "huh?",
+  "bot_replies": [
+   "forget i said anything"
+  ]
+ },
+ {
+  "id": "b400",
+  "channel": "guild",
+  "context": "u need a healer?",
+  "player": "ya pls",
+  "bot_replies": [
+   "nice, ok"
+  ]
+ }
+]

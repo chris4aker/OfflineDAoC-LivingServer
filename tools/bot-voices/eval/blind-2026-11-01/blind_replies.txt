@@ -1,0 +1,1900 @@
+  1. [guild] evening all
+     expect greeting: 'evening' / 'hey X' from a couple of guildies
+     -> intent greeting | intent=Greeting shape=-
+        "hey!! how is everyone doing tonight"
+        "howdy"
+  2. [guild] hey guys
+     expect greeting: 'hey' or 'yo'
+     -> intent greeting | intent=Greeting shape=-
+        "sup heh"
+        "hello"
+  3. [guild] lo all
+     expect greeting: 'lo' / 'hiya'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+  4. [guild] mornin
+     expect greeting: 'morning' maybe 'up early?'
+     -> intent greeting | intent=Greeting shape=-
+        "hey :)"
+        "evening all"
+  5. [guild] sup ppl
+     expect greeting: 'sup' / 'not much, farming'
+     -> shape howareyou | intent=Greeting shape=ask_howareyou
+        "same old, killing things"
+        "alive mostly"
+  6. [guild] yo
+     bot before: Guild member Brannoc has logged in.
+     expect greeting: 'yo Bran'
+     -> intent greeting | intent=Greeting shape=-
+        "hello! nice night for it :D"
+        "yo"
+  7. [guild] hello hello
+     expect greeting: 'hey' back
+     -> intent greeting | intent=Greeting shape=-
+        "hail Wynn"
+        "hey hey"
+  8. [guild] hiya all, what's everyone up to
+     expect greeting: greeting + 'farming X' / 'RvR in emain'
+     -> shape ask_doing | intent=Greeting shape=ask_doing
+        "the usual, killing stuff"
+        "not much, you?"
+  9. [guild] hi guild, finally home from work
+     expect greeting: 'hey, wb from work' style greeting
+     -> shape player_rl_work | intent=Greeting shape=player_rl_work
+        "work, the real grind"
+        "Hope tomorrow is easier."
+ 10. [guild] evenin folks
+     expect greeting: 'evening'
+     -> intent greeting | intent=Greeting shape=-
+        "hey, good to see someone else out here"
+        "hiya"
+ 11. [guild] heya guild, long day
+     expect greeting: 'hey, rough day?'
+     -> intent greeting | intent=Greeting shape=-
+        "Hail."
+        "yo Wynn"
+ 12. [say] hail
+     expect greeting: 'hail' back or nothing from strangers
+     -> intent greeting | intent=Greeting shape=-
+        "hi there"
+        "Hey all."
+ 13. [say] hello
+     expect greeting: 'hi'
+     -> intent greeting | intent=Greeting shape=-
+        "hey there"
+        "well met"
+ 14. [say] hey
+     bot before: Another player walks up to the bindstone next to you.
+     expect greeting: 'hey' / nod emote
+     -> intent greeting | intent=Greeting shape=-
+        "greetings, good hunting"
+        "evening"
+ 15. [say] greetings
+     expect greeting: 'greetings' or 'hi'
+     -> intent greeting | intent=Greeting shape=-
+        "o/"
+        "Hi hi, welcome back."
+ 16. [say] evening
+     expect greeting: 'evening'
+     -> intent greeting | intent=Greeting shape=-
+        "heya Wynn"
+        "hey, how is the hunting?"
+ 17. [group] hi all
+     bot before: You join the group.
+     expect greeting: 'hi' / 'welcome'
+     -> intent greeting | intent=Greeting shape=-
+        "hi"
+        "hey Wynn, how goes?"
+ 18. [group] heya
+     expect greeting: 'hey'
+     -> intent greeting | intent=Greeting shape=-
+        "(nothing)"
+ 19. [group] hello, what are we hunting?
+     bot before: A new member joined the group.
+     expect greeting: 'hey' + 'trolls at X'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "not a clue honestly"
+        "no idea, i just got here :)"
+ 20. [tell] hi! long time no see
+     expect greeting: 'hey! yeah been busy'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+ 21. [tell] hey u there?
+     expect greeting: 'yeah whats up'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "someone said something about that earlier"
+ 22. [say] hail and well met, traveler
+     expect greeting: RP-flavoured return 'well met'
+     -> intent greeting | intent=Greeting shape=-
+        "(nothing)"
+ 23. [guild] hey Thoriel, you on tonight?
+     expect greeting: Thoriel (or anyone) says 'hey, yep'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "hmm not sure"
+        "couldnt tell you"
+ 24. [guild] re
+     expect welcome_back: 'wb'
+     -> intent back | intent=Back shape=-
+        "welcome back"
+        "There you are."
+ 25. [guild] back
+     expect welcome_back: 'wb'
+     -> intent back | intent=Back shape=-
+        "wb!! missed you"
+        "wb, u didnt miss much"
+ 26. [guild] ok back, sorry dc'd
+     expect welcome_back: 'wb'
+     -> intent back | intent=Back shape=-
+        "wb all good?"
+        "Wb, lets get moving."
+ 27. [guild] re all, isp died again
+     expect welcome_back: 'wb, ugh'
+     -> shape player_rl_tech | intent=Unknown shape=player_rl_tech
+        "my connection is the same some nights lol"
+        "nothing worse than lag at a bad moment"
+ 28. [group] back sry
+     expect welcome_back: 'wb' then carry on pulling
+     -> intent back | intent=Back shape=-
+        "wb"
+        "oh wb :)"
+ 29. [group] re, crashed to desktop
+     expect welcome_back: 'wb'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+ 30. [group] linkdead sorry, back now
+     expect welcome_back: 'wb'
+     -> intent back | intent=Back shape=-
+        "wb, that was quick"
+        "re"
+ 31. [guild] back from dinner
+     expect welcome_back: 'wb'
+     -> intent back | intent=Back shape=-
+        "yay wb"
+        "wb, ready to go?"
+ 32. [guild] re. kids are in bed finally
+     expect welcome_back: 'wb' / 'lol'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+ 33. [tell] sry was afk, back
+     expect welcome_back: 'np, wb'
+     -> intent away | intent=Away shape=-
+        "alright"
+ 34. [guild] night all
+     expect farewell: 'night' / 'gn'
+     -> intent farewell | intent=Farewell shape=-
+        "gn, good hunting tomorrow :)"
+        "see ya have fun"
+ 35. [guild] gn guild
+     expect farewell: 'gn'
+     -> intent farewell | intent=Farewell shape=-
+        "Take care."
+        "later, take care"
+ 36. [guild] im off to bed, cya tomorrow
+     expect farewell: 'night' / 'cya'
+     -> intent farewell | intent=Farewell shape=-
+        "sleep well the mobs will still be here tomorrow"
+        "cya next time"
+ 37. [guild] later guys
+     expect farewell: 'later'
+     -> intent farewell | intent=Farewell shape=-
+        "bye :)"
+        "Gn, safe travels."
+ 38. [guild] logging, cya
+     expect farewell: 'cya'
+     -> intent farewell | intent=Farewell shape=-
+        "night, have a good one"
+        "Cya around."
+ 39. [guild] wife says bed. gn all
+     expect farewell: 'lol gn'
+     -> intent farewell | intent=Farewell shape=-
+        "safe travels, see ya"
+        "Night!"
+ 40. [group] i have to go guys, sorry. thx for the group
+     expect farewell: 'np ty, cya' (thanks implied)
+     -> intent thanks | intent=Thanks shape=-
+        "np good luck out there"
+        "np gl"
+ 41. [group] gotta log, gl all
+     expect farewell: 'cya, ty'
+     -> intent farewell | intent=Farewell shape=-
+        "later"
+        "take it easy"
+ 42. [group] im out, ty all
+     expect farewell: 'ty, gn'
+     -> intent thanks | intent=Thanks shape=-
+        "np have fun"
+        "Sure thing."
+ 43. [tell] gotta go, talk tomorrow?
+     expect farewell: 'sure, cya'
+     -> intent farewell -> not sure | intent=Farewell shape=-
+        "not sure"
+ 44. [say] farewell friend
+     expect farewell: 'farewell'
+     -> intent farewell | intent=Farewell shape=-
+        "(nothing)"
+ 45. [group] bed time for me, gn
+     expect farewell: 'gn'
+     -> intent farewell | intent=Farewell shape=-
+        "(nothing)"
+ 46. [guild] cya all next week, going out of town
+     expect farewell: 'have fun, cya'
+     -> intent travel | intent=Travel shape=-
+        "bring speed if you have it"
+        "i think there is a hosre route close to there"
+ 47. [group] ty for the rez
+     expect thanks_ack: 'np'
+     -> intent thanks | intent=Thanks shape=-
+        "dont mention it"
+        "no worries"
+ 48. [group] thx for buffs
+     expect thanks_ack: 'np' / 'yw'
+     -> intent thanks | intent=Thanks shape=-
+        "np"
+        "np, come back if it breaks"
+ 49. [group] ty heals :)
+     expect thanks_ack: 'np'
+     -> intent thanks | intent=Thanks shape=-
+        "glad to help"
+        "any time Wynn :)"
+ 50. [group] great group guys, thx
+     expect thanks_ack: 'ty, was fun'
+     -> intent thanks | intent=Thanks shape=-
+        "happy to help"
+        "yw"
+ 51. [say] ty!
+     expect thanks_ack: 'np'
+     -> intent thanks | intent=Thanks shape=-
+        "yw, safe travels lol"
+        "aww np, anytime!"
+ 52. [say] thx for the help with that mob
+     expect thanks_ack: 'np'
+     -> intent thanks | intent=Thanks shape=-
+        "Np, pay it forward."
+        "np Wynn"
+ 53. [tell] thanks again for the armor
+     expect thanks_ack: 'np, enjoy'
+     -> intent thanks | intent=Thanks shape=-
+        "anytime"
+ 54. [tell] ty so much, that sword is perfect
+     expect thanks_ack: 'np glad it fits'
+     -> intent thanks | intent=Thanks shape=-
+        "(nothing)"
+ 55. [guild] ty for the help earlier guys
+     expect thanks_ack: 'np anytime'
+     -> intent thanks | intent=Thanks shape=-
+        "(nothing)"
+        "np. back to it"
+ 56. [say] wow thx mister
+     bot before: You toss a few silver to a newbie.
+     expect thanks_ack: 'np, gl'
+     -> thread thanks->np | intent=Thanks shape=-
+        "Np, now go pull something big."
+ 57. [group] ty for carrying me lol
+     expect thanks_ack: 'np' / 'lol'
+     -> intent thanks | intent=Thanks shape=-
+        "(nothing)"
+ 58. [group] ty
+     bot before: The cleric rezzes you.
+     expect thanks_ack: 'np'
+     -> thread thanks->np | intent=Thanks shape=-
+        "(nothing)"
+ 59. [say] where is the armor trainer?
+     expect answer_info: points to the building / 'by the bank'
+     -> factual -> not sure (half the time) [db knowledge may answer] | intent=Travel shape=-
+        "ask around maybe"
+        "no clue"
+ 60. [say] anyone know where the healer is in this town
+     expect answer_info: 'by the north gate'
+     -> factual -> not sure (half the time) | intent=ClassTalk shape=-
+        "no idea sorry"
+        "i was wondering that too"
+ 61. [faction] where is a good place to lvl at 15?
+     expect answer_info: names a zone/camp
+     -> live ask_hunt | intent=Travel shape=ask_hunt
+        "[from the world]"
+ 62. [faction] where do i get my lvl 5 class training
+     expect answer_info: 'go to your class trainer in the capital'
+     -> live ask_hunt | intent=Travel shape=ask_hunt
+        "[from the world]"
+ 63. [faction] where is the entrance to DF
+     expect answer_info: 'in the realm that owns it, by your capital'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "beats me"
+        "wish i knew"
+ 64. [faction] anyone know where Dun Crauchon is?
+     expect answer_info: 'emain, far east side'
+     -> factual -> not sure (half the time) | intent=RvR shape=-
+        "dunno"
+        "pretty sure yes but dont quote me"
+ 65. [faction] where can i find the enchanter for my weapon
+     expect answer_info: 'enchanter npc in town'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "cant help there sorry"
+        "no idea, i just got here :D"
+ 66. [faction] were do u go 2 get a horse ride
+     expect answer_info: 'stable master by the gate, buy a ticket'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "couldnt tell u"
+        "hmm not sure"
+ 67. [guild] where you guys hunting?
+     expect answer_info: 'Myrkwood' / 'giants in Malmohus'
+     -> live ask_hunt | intent=Grinding shape=ask_hunt
+        "[from the world]"
+ 68. [guild] where's everyone at?
+     expect answer_info: 'emain' / 'DF'
+     -> shape ask_whereall | intent=Travel shape=ask_whereall
+        "Myrkwood Forest"
+        "Myrkwood Forest, killing stuff"
+ 69. [guild] anyone know where the spellcraft merchant is?
+     expect answer_info: 'in the capital near the crafters'
+     -> factual -> not sure (half the time) | intent=Trading shape=-
+        "good question heh"
+        "not a clue honestly"
+ 70. [group] where are we going next?
+     expect answer_info: 'deeper in' / 'to X camp'
+     -> shape ask_next | intent=Unknown shape=ask_next
+        "wherever has blues for us"
+        "anywhere but here lol"
+ 71. [group] where r u guys? cant find you
+     expect answer_info: 'by the tower' / '/loc' style answer
+     -> live ask_whereyou | intent=Travel shape=ask_whereyou
+        "[from the world]"
+ 72. [group] which way to the camp
+     expect answer_info: 'north, past the bridge'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "i think so?"
+        "someone said something about that earlier"
+ 73. [say] where is the stable master?
+     expect answer_info: 'just outside gate'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "not sure"
+        "(nothing)"
+ 74. [tell] hey where did u get that helm?
+     expect answer_info: 'dropped off X' / 'crafted it'
+     -> fact gear | intent=Unknown shape=-
+        "what gear lol, still working on it"
+ 75. [lfg] where is the best place to solo at 22 as a hunter?
+     expect answer_info: names a spot
+     -> intent travel | intent=Travel shape=-
+        "the stable master saves you half the walk"
+        "head out the gate and follow the road, cant miss it"
+ 76. [faction] were is the sauvage keep? im lost lol
+     expect answer_info: 'castle sauvage, camelot hills side'
+     -> intent travel | intent=Travel shape=-
+        "check your map, its marked"
+        "follow the road and avoid the hills at night"
+ 77. [faction] anybody know were lvl 40 drakes spawn?
+     expect answer_info: names a zone
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "(nothing)"
+ 78. [faction] how do i get to the shrouded isles
+     expect answer_info: 'take the boat from X'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "(nothing)"
+ 79. [say] is this the way to the dungeon?
+     expect answer_info: 'yep straight ahead' (yes/no-ish but location)
+     -> factual -> not sure (half the time) | intent=Dungeon shape=-
+        "(nothing)"
+ 80. [faction] where do the necros train
+     expect answer_info: SI capital directions
+     -> factual -> not sure (half the time) | intent=ClassTalk shape=-
+        "(nothing)"
+ 81. [faction] how do i respec
+     expect answer_info: 'buy a respec stone / lvl 20 and 40 free'
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "(nothing)"
+ 82. [faction] what does the con colors mean
+     expect answer_info: 'grey=no xp, green easy... purple dont'
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "(nothing)"
+ 83. [faction] is it worth going 50 sword or should i split
+     expect answer_info: spec opinion
+     -> shape ask_opinion | intent=Unknown shape=ask_opinion
+        "i wouldnt"
+        "go for it"
+ 84. [faction] whats the cap on str for a lvl 50
+     expect answer_info: rough cap number
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "ask around maybe"
+        "no clue"
+ 85. [faction] how do i get rid of my anon tag
+     expect answer_info: '/anon again'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "no idea sorry"
+        "i was wondering that too"
+ 86. [faction] what lvl can i do my epic
+     expect answer_info: 'level 50'
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "beats me"
+        "wish i knew"
+ 87. [faction] how long does it take to get to 50
+     expect answer_info: 'depends... weeks'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "Dunno."
+        "pretty sure yes but dont quote me"
+ 88. [faction] does anyone know how the relic thing works
+     expect answer_info: short explanation
+     -> factual -> not sure (half the time) | intent=RvR shape=-
+        "Can't help there sorry."
+        "no idea, i just got here"
+ 89. [guild] how do i get my cloak with the guild emblem
+     expect answer_info: 'emblemeer in capital, need GL to set it'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "couldnt tell you"
+        "hmm not sure"
+ 90. [guild] should i go cleric or friar for my alt?
+     expect answer_info: opinion
+     -> shape ask_choice | intent=ClassTalk shape=ask_choice
+        "the first one lol"
+        "the first if you solo a lot"
+ 91. [guild] how many rp for rr2?
+     expect answer_info: rough number
+     -> shape player_goodnews | intent=RvR shape=player_goodnews
+        "nice, gz"
+        "gz!! nice"
+ 92. [guild] anyone know what time the relic raid is?
+     expect answer_info: '9 est' / 'not sure'
+     -> factual -> not sure (half the time) | intent=RvR shape=-
+        "good question"
+        "not a clue honestly"
+ 93. [guild] who owns crauchon now?
+     expect answer_info: answers with realm
+     -> fact world | intent=RvR shape=-
+        "hibernia has dun crauchon right now"
+        "no, the hibs have dun crauchon"
+ 94. [group] what lvl is the named here?
+     expect answer_info: 'like 28'
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "I think so?"
+        "someone said something about that earlier"
+ 95. [group] how long till respawn?
+     expect answer_info: 'like 5 min'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "not sure :)"
+        "(nothing)"
+ 96. [group] what does this mob drop
+     expect answer_info: names loot
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "(nothing)"
+ 97. [group] what is camping
+     expect answer_info: explains staying at one spot and killing spawns
+     -> factual -> not sure (half the time) | intent=Grinding shape=-
+        "(nothing)"
+ 98. [faction] whats the xp debt penalty if i die at 35?
+     expect answer_info: explains con loss/xp
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "(nothing)"
+ 99. [faction] anyone know if spell crafting is worth it yet?
+     expect answer_info: opinion
+     -> shape ask_opinion | intent=Trading shape=ask_opinion
+        "not worth it"
+        "i would"
+100. [faction] how do i get the stealth ability as an inf?
+     expect answer_info: 'you start with it'
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "(nothing)"
+101. [faction] do valkyn make good savages?
+     expect answer_info: opinion
+     -> classtalk | intent=ClassTalk shape=-
+        "ppl complain but they are fine"
+        "spec matters more than the class :P"
+102. [tell] how do u get so many buffs on ur bar
+     expect answer_info: explains quickbar
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "(nothing)"
+103. [trade] how do i sell stuff to other players?
+     expect answer_info: 'post wts here and trade window them'
+     -> factual -> not sure (half the time) | intent=Trading shape=-
+        "(nothing)"
+104. [say] how do i talk to the trainer
+     expect answer_info: 'right click him'
+     -> factual -> not sure (half the time) [db knowledge may answer] | intent=Help shape=-
+        "ask around maybe"
+        "no clue"
+105. [faction] what does purge do
+     expect answer_info: 'removes stuns/mez etc'
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "no diea sorry"
+        "i was wondering that too"
+106. [faction] whats a buff bot
+     expect answer_info: 'second account just for buffs'
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "beats me"
+        "wish i knew"
+107. [guild] anyone up for DF?
+     expect answer_yesno: 'sure' / 'maybe later'
+     -> shape ask_on | intent=Grouping shape=ask_on
+        "yep on"
+        "still here"
+108. [guild] anyone have a spare 2h sword?
+     expect answer_yesno: 'no sorry' / 'maybe in vault'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "dunno"
+        "Can't help there sorry."
+109. [guild] is tonight's raid still on?
+     expect answer_yesno: 'yep 9pm'
+     -> factual -> not sure (half the time) | intent=RvR shape=-
+        "pretty sure yes but dont quote me"
+        "Hmm not sure."
+110. [group] can we stay one more pull?
+     expect answer_yesno: 'sure' / 'ok one more'
+     -> intent grouping | intent=Grouping shape=-
+        "need a healer still?"
+        "what level and class?"
+111. [group] everyone rdy?
+     expect answer_yesno: 'rdy' / 'need pow'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "No idea, I just got here."
+        "couldnt tell u"
+112. [group] can i get a speed song pls
+     expect answer_yesno: 'sure' then turns it on
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "Good question."
+        "not a clue honestly"
+113. [group] can someone rez me?
+     expect answer_yesno: 'omw'
+     -> intent rez | intent=Rez shape=-
+        "wish i could, no rez spell"
+        "rip"
+114. [tell] u still selling that bow?
+     expect answer_yesno: 'yep' / 'sold sry'
+     -> factual -> not sure (half the time) | intent=Trading shape=-
+        "not sure"
+115. [tell] can u buff me? pretty pls
+     expect answer_yesno: 'sure' / 'sorry in a group'
+     -> factual -> not sure (half the time) | intent=Help shape=-
+        "someone said something about that earlier"
+116. [faction] is DF open?
+     expect answer_yesno: 'yes' / 'no'
+     -> fact world | intent=Dungeon shape=-
+        "hibernia has df right now"
+        "no, the hibs have it"
+117. [say] are you camping these?
+     expect answer_yesno: 'yes' / 'nah go ahead'
+     -> factual -> not sure (half the time) | intent=Grinding shape=-
+        "(nothing)"
+118. [tell] are u in a guild?
+     expect answer_yesno: 'yeah, X' / 'no'
+     -> fact guild | intent=Unknown shape=-
+        "no guild right now"
+119. [faction] who sells the lvl 20 epic armor?
+     expect answer_info: names npc/crafter
+     -> factual -> not sure (half the time) | intent=Trading shape=-
+        "(nothing)"
+120. [faction] anyone know a good weaponcrafter?
+     expect answer_info: names a player or self-offer
+     -> intent trading | intent=Trading shape=-
+        "check the exchange"
+        "i can make that, send me the details haha"
+121. [faction] who's leading the relic raid?
+     expect answer_info: names a leader
+     -> factual -> not sure (half the time) | intent=RvR shape=-
+        "(nothing)"
+122. [guild] who's on tonight?
+     expect answer_info: lists names / 'just me'
+     -> shape ask_on | intent=Unknown shape=ask_on
+        "here o/"
+        "O/ hi."
+123. [guild] who's GL now?
+     expect answer_info: names the leader
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "(nothing)"
+124. [guild] who was that hunter that killed me lol
+     expect answer_info: 'no idea' / name
+     -> classtalk | intent=ClassTalk shape=-
+        "hunters and their pets lol"
+        "strong if played right"
+125. [group] who's the MA?
+     expect answer_info: 'follow me' / name
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "(nothing)"
+        "ask around maybe"
+126. [group] whos pulling?
+     expect answer_info: 'me' / name
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "no clue"
+        "no diea sorry"
+127. [faction] who is calling targets?
+     expect answer_info: names caller
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "i was wondering that too"
+        "beats me"
+128. [faction] anyone know who crafts mastercrafted chain?
+     expect answer_info: names a crafter
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "wish i knew"
+        "(nothing)"
+129. [tell] who are u?
+     expect answer_info: introduces self
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "(nothing)"
+130. [say] help! im stuck under this rock
+     expect offer_help: '/stuck' advice or 'coming'
+     -> intent help | intent=Help shape=-
+        "Run to the guards if it goes bad."
+        "what do u need?"
+131. [say] help please, this mob is killing me
+     expect offer_help: someone runs over to help
+     -> shape complaint | intent=Help shape=complaint
+        "dont let it get to you"
+        "Sorry, that is annoying."
+132. [faction] help! train coming out of the dungeon
+     expect offer_help: 'omw' / 'run!'
+     -> intent alarm | intent=Alarm shape=-
+        "Careful."
+        "call it out"
+133. [faction] im lost in the forest can someone help
+     expect offer_help: offers directions
+     -> intent travel | intent=Travel shape=-
+        "i went that way earlier watch out for adds near the bridge"
+        "Follow the road, can't miss it."
+134. [faction] first char, very confused lol
+     expect offer_help: 'ask anything'
+     -> intent banter | intent=Banter shape=-
+        "same here honestly"
+        "ha, fair"
+135. [guild] anyone around to help with my quest?
+     expect offer_help: 'sure, what is it'
+     -> live ask_inplace | intent=Help shape=ask_inplace
+        "[from the world]"
+136. [guild] corpse run anyone? died in spindel
+     expect offer_help: 'omw, where?'
+     -> intent dungeon | intent=Dungeon shape=-
+        "the named in there hits hard"
+        "been ages since i went in there"
+137. [guild] can someone escort me through emain to my keep
+     expect offer_help: 'sure, meet at portal'
+     -> factual -> not sure (half the time) | intent=RvR shape=-
+        "not a clue honestly"
+        "hmm not sure"
+138. [group] im oom and getting hit
+     expect offer_help: someone taunts/heals
+     -> intent banter | intent=Banter shape=-
+        "true story"
+        "heh"
+139. [group] i have no power, can someone give me some?
+     expect offer_help: 'sec' (power transfer if possible)
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "i think so?"
+        "Someone said something about that earlier."
+140. [tell] do u have any spare gear for lvl 10?
+     expect offer_help: gives stuff or 'no sry'
+     -> shape ask_charity | intent=Trading shape=ask_charity
+        "everyone started with nothing. go hunt"
+141. [say] is anyone around? need a bind
+     expect offer_help: points at bindstone
+     -> live ask_inplace | intent=Help shape=ask_inplace
+        "[from the world]"
+142. [faction] need a healer at the cursed forest dock pls, dead
+     expect offer_help: 'omw'
+     -> intent grouping | intent=Grouping shape=-
+        "how many do u have?"
+        "30 thane here if you need one"
+143. [say] i cant figure out how to equip this
+     expect offer_help: explains drag to paper doll
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+144. [lfg] lvl 22 cleric lfg
+     expect join: invite sent / 'pst'
+     -> intent grouping | intent=Grouping shape=-
+        "keep at it someone will bite"
+        "im free, what are u hunting?"
+145. [lfg] lf healer for xp grp, lvl 30ish
+     expect join: healer sends tell
+     -> intent grouping | intent=Grouping shape=-
+        "sorry solo for now"
+        "inv me if you have room"
+146. [lfg] LFG 34 bm
+     expect join: invite
+     -> intent grouping | intent=Grouping shape=-
+        "i might be free later"
+        "Where are you camping?"
+147. [lfg] lfg 18 nightshade, can tank a lil
+     expect join: invite
+     -> intent grouping | intent=Grouping shape=-
+        "might be able to join in a bit :)"
+        "thane here, where are you? invite me :P"
+148. [lfg] looking for group, lvl 12 mercenary
+     expect join: invite
+     -> intent grouping | intent=Grouping shape=-
+        "i could use a group too"
+        "could join, 30 thane lol"
+149. [lfg] healer lfg, lvl 41, have spec heals
+     expect join: fast invites
+     -> intent grouping | intent=Grouping shape=-
+        "i can help if u are near Myrkwood Forest"
+        "What camp are you thinking?"
+150. [lfg] LF puller, have full grp minus 1
+     expect join: tell
+     -> intent grouping | intent=Grouping shape=-
+        "(nothing)"
+151. [lfg] anyone lfg? need 2 for barrows
+     expect join: 'me!' tell
+     -> intent grouping -> not sure | intent=Grouping shape=-
+        "beats me :D"
+        "No clue."
+152. [lfg] lvl 45 bard lfg, can speed/heal/mez
+     expect join: invite
+     -> intent grouping | intent=Grouping shape=-
+        "(nothing)"
+153. [lfg] looking for a duo partner around 20
+     expect join: tell
+     -> intent grouping | intent=Grouping shape=-
+        "pst me when u form up"
+        "how many are you? i can fill a spot if you inv haha"
+154. [lfg] lf grp for epic mobs
+     expect join: 'what lvl'
+     -> intent grouping | intent=Grouping shape=-
+        "what level range?"
+        "what level and class?"
+155. [guild] who wants a group? I'm 28
+     expect join: 'me, inv'
+     -> intent grouping | intent=Grouping shape=-
+        "Need a tank or a healer?"
+        "pst me if you still need someone"
+156. [guild] inv pls
+     expect join: gets an invite
+     -> intent grouping | intent=Grouping shape=-
+        "need a healer still?"
+        "(nothing)"
+157. [guild] x for the raid
+     expect join: invite to raid group
+     -> intent rvr | intent=RvR shape=-
+        "Stealthers everywhere tonight, careful."
+        "the zerg moved on i think"
+158. [tell] inv?
+     expect join: invite
+     -> tell join | intent=Grouping shape=-
+        "[JoinReply]"
+159. [tell] got room for a skald?
+     expect join: 'sure' / 'full sry'
+     -> tell join | intent=Grouping shape=-
+        "[JoinReply]"
+160. [tell] u lfg? we need a dps
+     expect join: 'sure inv'
+     -> tell join | intent=Grouping shape=-
+        "[JoinReply]"
+161. [tell] group?
+     expect join: 'sure'
+     -> tell join | intent=Grouping shape=-
+        "[JoinReply]"
+162. [say] duo?
+     expect join: 'ok'
+     -> intent grouping -> not sure [JoinReply by the bot asked] | intent=Grouping shape=-
+        "no idea sorry"
+        "good question :P"
+163. [say] wanna team up for these? we're both soloing them
+     expect join: 'sure inv'
+     -> intent grouping -> not sure [JoinReply by the bot asked] | intent=Grouping shape=-
+        "i was wondering that too"
+        "not a clue honestly heh"
+164. [faction] forming grp for keep take, need everyone at the milegate
+     expect join: 'x' / 'omw'
+     -> intent grouping | intent=Grouping shape=-
+        "how many do u have?"
+        "30 thane here if u need one"
+165. [group] can we invite my friend? hes a healer
+     expect join: 'sure, inv him'
+     -> intent grouping | intent=Grouping shape=-
+        "keep at it, someone will bite"
+        "im free what are u hunting?"
+166. [group] we need a puller, anyone know one?
+     expect join: suggests name / offers to pull
+     -> intent grouping | intent=Grouping shape=-
+        "sorry, solo for now"
+        "inv me if you have room"
+167. [trade] WTS 2h sword 99% qual, pst
+     expect trade_response: tell asking price
+     -> intent trading | intent=Trading shape=-
+        "what are you asking for it? heh"
+        "pst me"
+168. [trade] wtb str buffed armor lvl 30, pst
+     expect trade_response: seller tells
+     -> intent trading | intent=Trading shape=-
+        "no lcue on pc, sorry"
+        "check the exchange first, prices are better than the merchant"
+169. [trade] selling mc chain set lvl 40, 3p obo
+     expect trade_response: offer or 'too much'
+     -> intent trading | intent=Trading shape=-
+        "how much are you asking?"
+        "depends on the bonuses honestly"
+170. [trade] how much for a 99 quality staff?
+     expect trade_response: price quote
+     -> shape ask_price | intent=Trading shape=ask_price
+        "Try the exchange, it sells there."
+        "check the exchange first"
+171. [trade] anyone selling arrows?
+     expect trade_response: 'fletcher here pst'
+     -> factual -> not sure (half the time) | intent=Trading shape=-
+        "not sure"
+        "couldnt tell you"
+172. [trade] wts loot from DF, cheap
+     expect trade_response: 'what u have?'
+     -> intent trading | intent=Trading shape=-
+        "pst me what u need made"
+        "Pst me the stats."
+173. [trade] whats the going rate for a 5/5/5 sc'd armor piece?
+     expect trade_response: price range
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "Hmm not sure."
+        "ask around maybe"
+174. [trade] selling potions, 1g each, pst
+     expect trade_response: buyer pst
+     -> intent trading | intent=Trading shape=-
+        "merchants pay half, the exchange pays more if you can wait"
+        "Got materials for that, give me an hour."
+175. [trade] need a tailor, have mats
+     expect trade_response: tailor offers
+     -> intent trading | intent=Trading shape=-
+        "a crafter can probably make that for u"
+        "wts or wtb?"
+176. [tell] how much for the bow?
+     expect trade_response: price
+     -> shape ask_price | intent=Trading shape=ask_price
+        "someone will want it, keep asking"
+177. [tell] i can make u that for 20g if u bring mats
+     expect trade_response: 'deal' / 'ok'
+     -> shape player_offer | intent=Unknown shape=player_offer
+        "if its spare sure ty"
+178. [tell] can u lower the price a bit?
+     expect trade_response: counter
+     -> factual -> not sure (half the time) | intent=Trading shape=-
+        "wish i knew"
+179. [say] wanna buy some arrows? cheap
+     expect trade_response: 'no thx' / 'how much'
+     -> intent trading | intent=Trading shape=-
+        "depends who is buying"
+        "not my class sorry"
+180. [guild] anyone need trash loot? giving away
+     expect trade_response: 'me!' / 'what is it'
+     -> unknown? | intent=Unknown shape=-
+        "cant help there sorry"
+        "beats me"
+181. [trade] WTS ROG longsword 18 str 12 con, offers
+     expect trade_response: offer
+     -> intent trading | intent=Trading shape=-
+        "no coin here sorry, just bought armor"
+        "(nothing)"
+182. [tell] i saw u selling a chain set, still have it?
+     expect trade_response: 'yep' / 'sold'
+     -> fact selling | intent=Trading shape=-
+        "not selling, sorry, i use it"
+183. [faction] INC EAST GATE
+     expect alarm_response: 'omw' / 'how many?'
+     -> intent alarm | intent=Alarm shape=-
+        "any healers with them?"
+        "cant im out in pve"
+184. [faction] inc at bled!!
+     expect alarm_response: 'omw'
+     -> intent alarm | intent=Alarm shape=-
+        "how many?"
+        "What classes?"
+185. [faction] Caer Benowyc under attack, need help asap
+     expect alarm_response: 'omw'
+     -> intent alarm | intent=Alarm shape=-
+        "Which keep?"
+        "zerg or a small group?"
+186. [faction] mids at the milegate, 2 fg
+     expect alarm_response: 'omw' / 'where exactly'
+     -> intent alarm | intent=Alarm shape=-
+        "where at?"
+        "Where?"
+187. [faction] hibs taking our relic keep!!!
+     expect alarm_response: 'omw!!!'
+     -> intent rvr | intent=RvR shape=-
+        "If you see the zerg coming, call it out."
+        "relics are the real prize"
+188. [faction] relic raid at 9, meet at portal keep
+     expect alarm_response: 'x' / 'be there'
+     -> intent rvr | intent=RvR shape=-
+        "group up before you head out there"
+        "been quiet out there lately"
+189. [faction] stealthers at the bridge, watch out
+     expect alarm_response: 'ty' / 'where'
+     -> shape player_headsup | intent=Alarm shape=player_headsup
+        "ty watching for them"
+        "noted ty"
+190. [faction] they got our pwr relic, ugh
+     expect alarm_response: sympathetic groan + 'lets take it back'
+     -> shape complaint | intent=RvR shape=complaint
+        "sorry, unlucky"
+        "next one will go better"
+191. [faction] need defenders at dun crim NOW
+     expect alarm_response: 'omw'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+192. [faction] inc 3 hib at the tower, 2 bards and a champ
+     expect alarm_response: 'omw'
+     -> intent alarm | intent=Alarm shape=-
+        "im nowhere near the frontier sorry"
+        "stealthers or a group?"
+193. [faction] keep under siege, everyone to Nottmoor
+     expect alarm_response: 'omw'
+     -> intent alarm | intent=Alarm shape=-
+        "how many and where?"
+        "call it out"
+194. [faction] DF is ours again
+     expect alarm_response: 'woot'
+     -> intent dungeon | intent=Dungeon shape=-
+        "i would bring a healer and a mezzer for that one"
+        "take a healer, trust me"
+195. [faction] mids ganking at the dock
+     expect alarm_response: 'where?'
+     -> intent rvr | intent=RvR shape=-
+        "frontier is busy tonight"
+        "i might head out later"
+196. [group] INC
+     expect alarm_response: 'where?' / 'how many'
+     -> group warning | intent=Alarm shape=-
+        "on it, ty"
+197. [group] inc left
+     expect alarm_response: turn and engage
+     -> group warning | intent=Alarm shape=-
+        "k careful all"
+198. [group] sb on me!!
+     expect alarm_response: 'omw' / 'stick'
+     -> group warning | intent=Alarm shape=-
+        "thanks for the heads up, watching"
+199. [group] nuker on hill, kill it
+     expect alarm_response: 'assist me'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+200. [group] pull back to the keep
+     expect alarm_response: 'k'
+     -> shape player_order | intent=RvR shape=player_order
+        "k np"
+        "Alright alright."
+201. [guild] anyone near emain? we're getting zerged
+     expect alarm_response: 'omw'
+     -> live ask_inplace | intent=RvR shape=ask_inplace
+        "[from the world]"
+202. [faction] where's the zerg at?
+     expect alarm_response: 'at the keep'
+     -> live ask_enemy | intent=Alarm shape=ask_enemy
+        "[from the world]"
+203. [faction] Emain is hot tonight, hibs everywhere
+     expect alarm_response: 'omw'
+     -> intent rvr | intent=RvR shape=-
+        "the frontier was busy earlier"
+        "Stealthers everywhere, careful."
+204. [group] pulling
+     expect none: nothing / 'k'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+205. [group] inc pull
+     expect none: nothing; get ready
+     -> group warning | intent=Alarm shape=-
+        "k ty"
+206. [group] ADD!
+     expect alarm_response: 'got it' / taunt/mez the add (urgent group alert)
+     -> group warning | intent=Alarm shape=-
+        "eyes open"
+207. [group] oom
+     expect none: 'med up then' / nothing
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+208. [group] low pow, need a sec
+     expect answer_yesno: 'k'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+209. [group] wipe... rez me when u can
+     expect offer_help: 'omw'
+     -> intent rez | intent=Rez shape=-
+        "release and run back maybe, bind isnt far"
+        "been there gl"
+210. [group] gg we wiped lol
+     expect sympathy: 'lol ugh'
+     -> shape complaint | intent=Banter shape=complaint
+        "rough night huh"
+        "argh, hate that"
+211. [group] that was close
+     expect banter: 'too close lol'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+212. [group] mez the adds
+     expect none: chanter just does it
+     -> shape player_order | intent=Unknown shape=player_order
+        "kk will try"
+        "k, will try"
+213. [group] stop casting on the mezzed one!!!
+     expect banter: 'sry' / 'oops'
+     -> shape player_order | intent=Unknown shape=player_order
+        "ok ok"
+        "roger"
+214. [group] sorry, my fault
+     expect sympathy: 'np happens'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+215. [group] puller died again
+     expect sympathy: 'lol rez him'
+     -> shape complaint | intent=Grouping shape=complaint
+        "ugh typical"
+        "at least you saw something new on the way"
+216. [group] dont train the group!!
+     expect abuse: 'sorry' / 'my bad'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+217. [group] need heals here!!
+     expect offer_help: healer heals
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+218. [group] taunting
+     expect none: no reply
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+219. [group] i got the drop ty
+     expect thanks_ack: 'grats' / 'np'
+     -> shape player_goodnews | intent=Thanks shape=player_goodnews
+        "woot gz"
+        "gz!! so happy for you"
+220. [group] ugh 10% xp loss
+     expect sympathy: 'ouch' / 'get your grave'
+     -> shape complaint | intent=Grinding shape=complaint
+        "ugh, that sucks"
+        "happens to the best of us haha"
+221. [group] this camp sucks, nothing up
+     expect banter: 'lets move'
+     -> shape complaint | intent=Grinding shape=complaint
+        "yep, happened to me too"
+        "been there"
+222. [guild] DING 50!!!
+     expect congrats: 'GRATS!!!'
+     -> intent ding | intent=Ding shape=-
+        "Gz, long road."
+        "woo gz"
+223. [guild] ding 20
+     expect congrats: 'grats'
+     -> intent ding | intent=Ding shape=-
+        "gratz"
+        "gratz! new spells?"
+224. [guild] finally got my epic armor :D
+     expect congrats: 'grats!'
+     -> shape player_goodnews | intent=Trading shape=player_goodnews
+        "gz, about time"
+        "Sweet, grats."
+225. [guild] rr3!
+     expect congrats: 'gratz'
+     -> shape player_goodnews | intent=Unknown shape=player_goodnews
+        "nice one"
+        "oh nice, gz"
+226. [guild] got my first realm rank lol, rr2 baby
+     expect congrats: 'grats'
+     -> intent banter | intent=Banter shape=-
+        "lol sure u did"
+        "lol"
+227. [group] ding!
+     expect congrats: 'grats'
+     -> intent ding | intent=Ding shape=-
+        "gz gz"
+        "grats, now go train"
+228. [group] dinged 34
+     expect congrats: 'gz'
+     -> intent ding | intent=Ding shape=-
+        "grats!"
+        "gz, spend those points well"
+229. [group] ding 1/2 lol
+     expect congrats: 'grats lol'
+     -> intent ding | intent=Ding shape=-
+        "grats Wynn"
+        "ooh nice"
+230. [group] woot just got the named drop
+     expect congrats: 'nice grats'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+231. [group] first kill of the night and i dinged
+     expect congrats: 'grats'
+     -> intent ding | intent=Ding shape=-
+        "gz, the grind pays off"
+        "nice, grats"
+232. [faction] finally 50 after 4 months :D
+     expect congrats: 'grats!'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+233. [guild] i got my necro to 25!
+     expect congrats: 'nice grats'
+     -> classtalk | intent=ClassTalk shape=-
+        "fun but squishy"
+        "get a respec if you hate it"
+234. [guild] my first solo kill in rvr!!
+     expect congrats: 'nice!'
+     -> intent rvr | intent=RvR shape=-
+        "need more healers out there"
+        "the realm needs defenders more than attackers some nights"
+235. [guild] got a 99 quality on the first try!!
+     expect congrats: 'nice grats'
+     -> intent banter | intent=Banter shape=-
+        "lol so true"
+        "u and me both"
+236. [guild] gratz on 40 Sigrunn
+     expect congrats: others join in 'grats!'
+     -> intent congrats [gz: only a bot that just levelled] | intent=Congrats shape=-
+        "ty, only died twice on the way"
+        "ty off to the trainer now"
+237. [guild] ty for the grats all
+     expect none: nothing / ':)'
+     -> intent thanks | intent=Thanks shape=-
+        "yw, safe travels"
+        "glad to help"
+238. [guild] ugh lost 3 levels of con dying in emain
+     expect sympathy: 'ouch, get your grave'
+     -> shape complaint | intent=RvR shape=complaint
+        "hope the next hour goes better"
+        "heh, still beats a quiet night"
+239. [guild] laggy tonight?
+     expect answer_yesno: 'yeah its awful'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "beats me"
+        "I was wondering that too."
+240. [guild] server lag is killing me
+     expect sympathy: 'same'
+     -> shape complaint | intent=Grinding shape=complaint
+        "tell me abt it"
+        "story of my life :D"
+241. [guild] my comp keeps crashing
+     expect sympathy: 'that sucks'
+     -> shape complaint | intent=Unknown shape=complaint
+        "ugh, every time"
+        "that happened to me yesterday"
+242. [guild] worst day ever, boss yelled at me
+     expect sympathy: 'ugh sorry'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+243. [guild] got ganked 3 times leaving the portal keep
+     expect sympathy: 'ugh stealthers'
+     -> shape complaint | intent=RvR shape=complaint
+        "that stinks"
+        "grr, i know that one"
+244. [faction] this patch nerfed my class into the ground
+     expect sympathy: 'yeah sucks'
+     -> classtalk | intent=ClassTalk shape=-
+        "every class is fine with a good group"
+        "depends on your spec"
+245. [tell] lost all my coins buying a respec, so broke now
+     expect sympathy: 'ouch' / offers a few gold
+     -> intent trading | intent=Trading shape=-
+        "i would just vendor it"
+246. [group] i hate these stupid spiders
+     expect sympathy: 'lol same'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+247. [guild] lol
+     expect none: nothing
+     -> intent laugh | intent=Laugh shape=-
+        ":)"
+        "haha oh no"
+248. [guild] rofl
+     expect none: nothing
+     -> intent laugh | intent=Laugh shape=-
+        "lol, worth it"
+        "lol i know"
+249. [guild] who's buying the pizza
+     expect banter: 'not me lol'
+     -> shape player_rl_food | intent=Trading shape=player_rl_food
+        "now im hungry"
+        "mmm now im hungry"
+250. [guild] anyone watching the game tonight?
+     expect banter: talk about the game
+     -> shape player_rl_media | intent=Unknown shape=player_rl_media
+        "havent seen it yet"
+        "heard good things"
+251. [guild] bards are just mobile jukeboxes
+     expect banter: 'lol hey!'
+     -> classtalk | intent=ClassTalk shape=-
+        "solid in groups, rough solo"
+        "They got nerfed last patch."
+252. [guild] anyone else still lvling their crafter or am i the only nerd
+     expect banter: 'me too lol'
+     -> intent trading | intent=Trading shape=-
+        "might be worth something to a twink"
+        "my prices are fair ask any1"
+253. [guild] i fell off the bridge in tir na nog. again.
+     expect banter: 'lol'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+254. [guild] anyone play any other games?
+     expect banter: 'some UO back in the day'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "dunno"
+        "No clue."
+255. [guild] did u guys see the pic on the herald?
+     expect banter: 'lol yeah'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "cant help there sorry"
+        "ask around maybe"
+256. [guild] i think my cat just logged me out
+     expect banter: 'lol'
+     -> shape player_rl_pet | intent=Unknown shape=player_rl_pet
+        "lol cats"
+        "aw give them a pat for me"
+257. [guild] this game is crack i swear
+     expect banter: 'yup'
+     -> intent banter | intent=Banter shape=-
+        "ouch, been there"
+        "cant argue with that"
+258. [group] lol nice pull
+     expect banter: 'lol ty'
+     -> intent banter | intent=Banter shape=-
+        "lol yeah"
+        "lol"
+259. [group] imagine if we had a real tank lol
+     expect banter: 'hey!' / 'lol'
+     -> intent banter | intent=Banter shape=-
+        "haha love it"
+        "True story."
+260. [group] dont mind me, just dying over here
+     expect banter: 'lol sry'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+261. [group] mmm pizza while i med
+     expect banter: 'lucky'
+     -> shape player_rl_food | intent=Unknown shape=player_rl_food
+        "save me a slice lol"
+        "ooh, enjoy"
+262. [say] nice hat lol
+     expect banter: 'lol ty'
+     -> intent banter | intent=Banter shape=-
+        "lol so true"
+        "bet you cant solo it"
+263. [say] lol you just fell off the cliff
+     expect banter: 'shut up lol'
+     -> intent banter | intent=Banter shape=-
+        "you and me both"
+        "ha fair"
+264. [faction] rofl that alb just ran into our whole zerg
+     expect banter: 'lol'
+     -> intent rvr | intent=RvR shape=-
+        "The zerg moved on I think."
+        "been quiet out there lately"
+265. [tell] lol did u see that hunter fall off the bridge
+     expect banter: 'rofl yeah'
+     -> classtalk | intent=ClassTalk shape=-
+        "hunters and their pets lol"
+266. [guild] omg my kid just asked me if I'm a real wizard
+     expect banter: 'lol tell him yes'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+267. [guild] horse just dumped me in the middle of 4 reds lol
+     expect banter: 'lol rip'
+     -> intent banter | intent=Banter shape=-
+        "heh"
+        "Lol sure you did."
+268. [guild] :D
+     expect none: nothing
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+269. [guild] /me does a happy dance
+     expect banter: laughs
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+270. [say] noob
+     expect abuse: 'whatever' / ignore
+     -> intent banter | intent=Banter shape=-
+        "same here honestly"
+        "(nothing)"
+271. [say] ks much?
+     expect abuse: 'sry didnt see u' / 'it was free'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "pretty sure yes but dont quote me"
+        "someone said something about that earlier"
+272. [say] omg ur so bad
+     expect abuse: 'thanks'
+     -> intent banter | intent=Banter shape=-
+        "(nothing)"
+273. [faction] whoever pulled that train is an idiot
+     expect abuse: 'wasn't me'
+     -> intent abuse | intent=Abuse shape=-
+        "easy there"
+        "not worth arguing abt"
+274. [tell] u suck
+     expect abuse: ignore / 'k'
+     -> intent abuse | intent=Abuse shape=-
+        "lets keep it friendly"
+275. [tell] stop ksing my camp jerk
+     expect abuse: 'sorry' / 'its not ur camp'
+     -> shape player_order | intent=Grinding shape=player_order
+        "ok ok"
+276. [tell] ur a terrible healer
+     expect abuse: 'sorry' / 'ok'
+     -> intent abuse | intent=Abuse shape=-
+        "noted"
+277. [faction] gg albs, way to zerg
+     expect abuse: sarcasm reply 'lol'
+     -> intent rvr | intent=RvR shape=-
+        "relics are the real prize"
+        "the realm needs defenders more than attackers some nights heh"
+278. [group] can u not stand in the fire
+     expect abuse: 'oops' / 'sry'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "wish i knew"
+        "hmm not sure"
+279. [say] Hail, good sir. What news from Camelot?
+     expect banter: in character news
+     -> unknown? | intent=Unknown shape=-
+        "beats me"
+        "no idea, i just got here"
+280. [say] *bows deeply* My lady, may I offer my sword in thy service?
+     expect banter: accepts in character
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "couldnt tell you"
+        "i think so?"
+281. [say] By Odin's beard, these trolls stink worse than a kobold's boots!
+     expect banter: laughs in character
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+282. [say] The Morrigan watches over us tonight.
+     expect banter: solemn reply
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+283. [say] Ye be lookin' weary, friend. Rest by the fire.
+     expect banter: thanks in character
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+284. [say] Hail, warrior. Have ye seen any Albion scum near the river?
+     expect banter: in character report
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "good question"
+        "ask around maybe"
+285. [say] *wipes the blood off his blade* Another day, another dead goblin.
+     expect banter: comments in character
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+286. [say] What be thy name, stranger?
+     expect banter: introduces self in character
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "no clue"
+        "cant help there sorry"
+287. [say] I seek the tavern. My throat is drier than the Plains of Salisbury.
+     expect banter: points to tavern in character
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+288. [say] Pray tell, where might I find the Lady of the Lake?
+     expect banter: in character mystical answer
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "not a clue honestly"
+        "not sure"
+289. [say] The forest whispers of danger. Stay close.
+     expect banter: agrees in character
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+290. [guild] Brothers and sisters, we march at dusk to defend our lands!
+     expect banter: 'Aye!' in character
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+291. [say] *raises tankard* To Midgard!
+     expect banter: 'Skol!' / 'To Midgard!'
+     -> intent rvr | intent=RvR shape=-
+        "frontier is busy tonight"
+        "if you see the zerg coming, call it out"
+292. [say] I sense dark magic in this place...
+     expect banter: in character agreement
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+293. [say] Good morrow! A fine day for hunting, is it not?
+     expect banter: agrees in character
+     -> intent grinding | intent=Grinding shape=-
+        "blues and yellows, keep it steady"
+        "dont forget the camp bonus, find a quiet spot"
+294. [say] ((ooc: brb phone))
+     expect none: nothing; ooc aside, others wait
+     -> intent away | intent=Away shape=-
+        "no rush"
+        "kk"
+295. [say] Ye've the look of a druid about ye. Can ye mend my wounds?
+     expect banter: heals or apologizes in character
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "no idea sorry"
+        "i was wondering that too"
+296. [guild] Thoriel, you still need the hide for your quest?
+     expect answer_yesno: Thoriel 'yeah, got one?'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "dunno"
+        "(nothing)"
+297. [guild] Grimbold how much do u want for that hammer?
+     expect trade_response: Grimbold names a price
+     -> shape ask_price | intent=Trading shape=ask_price
+        "that would make a nice twink item :P"
+        "seen those go cheap on the exchange"
+298. [guild] Kaelynn what lvl r u now?
+     expect answer_info: '29!'
+     -> shape ask_level | intent=Help shape=ask_level
+        "30 here"
+        "30 slowly"
+299. [guild] Fenwick u coming to the raid?
+     expect answer_yesno: 'yeah' / 'cant tonight'
+     -> factual -> not sure (half the time) | intent=RvR shape=-
+        "pretty sure yes but dont quote me :P"
+        "someone said something about that earlier"
+300. [group] Eiliss can u mez the adds
+     expect answer_yesno: 'ok' / just mezzes
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+301. [group] Mordath stop pulling so fast lol
+     expect abuse: 'lol sry'
+     -> intent banter | intent=Banter shape=-
+        "true story"
+        "ha fair"
+302. [tell] Brannoc did u get the armor i sent?
+     expect answer_yesno: 'yeah ty!'
+     -> factual -> not sure (half the time) | intent=Trading shape=-
+        "(nothing)"
+303. [guild] Sigrunn where'd you get that cloak?
+     expect answer_info: 'crafted it' / 'from a quest'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "(nothing)"
+304. [group] Oswin do u have a rez?
+     expect answer_yesno: 'yeah one sec'
+     -> intent rez | intent=Rez shape=-
+        "not a rezzer, sorry"
+        "Where are you?"
+305. [guild] Thoriel wb!
+     expect thanks_ack: 'ty'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+306. [guild] hey Kaelynn congrats on the ding!
+     expect thanks_ack: 'ty!'
+     -> intent congrats [gz: only a bot that just levelled] | intent=Congrats shape=-
+        "Ty, the grind continues."
+        "thank u!"
+307. [guild] Grimbold, you around? need a smith
+     expect answer_yesno: 'yeah what u need'
+     -> unknown? | intent=Unknown shape=-
+        "(nothing)"
+308. [group] Fenwick r u afk?
+     expect answer_yesno: 'no here' / silence
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "wish i knew"
+        "hmm not sure"
+309. [guild] Eiliss u still mad at me for that pull? lol
+     expect banter: 'lol no'
+     -> intent banter | intent=Banter shape=-
+        "lol yeah"
+        "haha love it"
+310. [group] brb dinner, can someone hold my spot?
+     expect answer_yesno: 'k we'll keep u in grp'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "couldnt tell you"
+        "I think so?"
+311. [group] brb 5 min, dont pull without me
+     expect answer_yesno: 'k'
+     -> shape player_wait | intent=Away shape=player_wait
+        "K, say when."
+        "K, holding up."
+312. [guild] back, anyone up for DF? or still raiding?
+     expect answer_yesno: 'wb' + answer
+     -> shape ask_choice | intent=Grouping shape=ask_choice
+        "flip a coin lol"
+        "first one honestly"
+313. [guild] night all, raid at 9 tmrw right?
+     expect answer_yesno: 'night, yep 9'
+     -> intent farewell | intent=Farewell shape=-
+        "cya around"
+        "take it easy"
+314. [guild] hey all, anyone wanna group? im 32 now
+     expect join: 'hey' + 'sure'
+     -> intent grouping | intent=Grouping shape=-
+        "i can help if u are near Myrkwood Forest"
+        "where are you camping?"
+315. [group] ty for rez, how much xp did i lose?
+     expect answer_info: 'np, like 5%'
+     -> shape ask_price | intent=Rez shape=ask_price
+        "try the exchange, prices are fair"
+        "try the exchange"
+316. [tell] hey, u selling those boots? how much?
+     expect trade_response: 'yep, 20g'
+     -> fact selling | intent=Trading shape=ask_price
+        "not selling, sorry, i use it"
+317. [faction] new here, where's the trainer and how do i get money?
+     expect answer_info: directions + money tip
+     -> shape ask_advice | intent=Travel shape=ask_advice
+        "go slow, con everything"
+        "whatever works for u"
+318. [group] oom and adds incoming!! someone help
+     expect offer_help: mez/heal + 'got it'
+     -> group warning | intent=Alarm shape=-
+        "got it"
+319. [guild] dinged 30 and got a respec, now what spec lol
+     expect congrats: 'grats!' + spec advice
+     -> shape ask_advice | intent=Ding shape=ask_advice
+        "watch someone do it once"
+        "depends on what u want"
+320. [guild] brb, wife needs help. anyone want my spot in DF grp?
+     expect join: 'me!'
+     -> intent grouping | intent=Grouping shape=-
+        "pst me when you form up"
+        "keep at it someone will bite"
+321. [group] gtg soon, one more pull then im out
+     expect answer_yesno: 'k'
+     -> intent farewell | intent=Farewell shape=-
+        "bye :)"
+        "cya next time"
+322. [faction] were r the eldrich trainrs
+     expect answer_info: directions
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "Ask around maybe."
+        "not sure"
+323. [faction] how do u lvl a crafitng skil fast
+     expect answer_info: 'make items that con orange'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "no clue"
+        "cant help there sorry"
+324. [faction] ne1 kno were to fnd copper ore
+     expect answer_info: 'merchants sell it'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+325. [faction] w00t i pwned that alb
+     expect banter: 'lol gj'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+326. [faction] lfg pl0x
+     expect join: 'what lvl/class?'
+     -> intent grouping | intent=Grouping shape=-
+        "30 thane here if you need one"
+        "could join, 30 thane :)"
+327. [say] u r teh suck lol
+     expect abuse: 'lol ok'
+     -> intent banter | intent=Banter shape=-
+        "heh"
+        "Lol so true."
+328. [group] omg pwnd
+     expect none: nothing
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+329. [say] plz giv me money im poor
+     expect offer_help: 'no' / tosses a few silver
+     -> shape ask_charity | intent=Unknown shape=ask_charity
+        "cant spare any, saving for my epic"
+        "im broke too, sorry"
+330. [guild] ne1 on?
+     expect greeting: 'here'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "i was wondering that too"
+        "good question"
+331. [guild] wuts up wit da server tonite
+     expect answer_info: 'lag/maintenance'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+332. [faction] anyone kno how 2 get 2 hib frm alb lol
+     expect answer_info: 'you cant, diff realm'
+     -> intent banter | intent=Banter shape=-
+        "Can't argue with that."
+        "ouch, been there"
+333. [faction] were do i buy a bow im a scout
+     expect answer_info: directions
+     -> factual -> not sure (half the time) | intent=Trading shape=-
+        "not a clue honestly"
+        "dunno"
+334. [tell] u gotta spare rez?
+     expect answer_yesno: 'omw'
+     -> intent rez | intent=Rez shape=-
+        "Ouch, where did you die?"
+335. [guild] omg i jsut got 1 shotted by a grey con
+     expect banter: 'lol how'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+336. [faction] who teh hell pulls a whole cmp into town lol
+     expect abuse: laughs / 'not me'
+     -> intent banter | intent=Banter shape=-
+        "ha, fair"
+        "true story"
+337. [guild] gn ppl
+     expect farewell: 'gn'
+     -> intent farewell | intent=Farewell shape=-
+        "later"
+        "Sleep well, the mobs will still be here tomorrow."
+338. [guild] ty all 4 the help
+     expect thanks_ack: 'np'
+     -> intent thanks | intent=Thanks shape=-
+        "Np, have fun."
+        "glad to help"
+339. [group] k
+     expect none: nothing
+     -> ack | intent=Unknown shape=ack
+        "(nothing)"
+340. [group] omw
+     expect none: nothing
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+341. [group] 1 sec
+     expect none: nothing
+     -> intent away | intent=Away shape=-
+        "k. ill keep going"
+        "take ur time"
+342. [group] /assist me
+     expect none: players assist, no chat
+     -> shape player_order | intent=Unknown shape=player_order
+        "kk will try"
+        "ok ok"
+343. [faction] zerg left the keep
+     expect none: info only
+     -> intent rvr | intent=RvR shape=-
+        "the zerg moved on i think"
+        "the realm needs defenders more than attackers some nights"
+344. [faction] relic is safe, ty all
+     expect none: maybe 'gj' but no reply needed
+     -> intent thanks [faction ty: groupmates only] | intent=Thanks shape=-
+        "happy to help"
+        "any time Wynn"
+345. [guild] afk
+     expect none: nothing
+     -> intent away | intent=Away shape=-
+        "np ill be here"
+        "sure"
+346. [guild] brb
+     expect none: nothing / 'k'
+     -> intent away | intent=Away shape=-
+        "ok, ill be around"
+        "k"
+347. [say] /me sits by the fire
+     expect none: nothing
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+348. [say] ...
+     expect none: nothing
+     -> intent laugh | intent=Laugh shape=-
+        "haha"
+        "lolol"
+349. [faction] they're leaving, good job everyone
+     expect none: maybe 'gj' but not needed
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+350. [guild] lol nice
+     expect none: nothing
+     -> ack | intent=Banter shape=ack
+        "(nothing)"
+351. [group] /face
+     expect none: nothing
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+352. [say] hmm
+     expect none: nothing
+     -> ack | intent=Unknown shape=ack
+        "(nothing)"
+353. [guild] ^^
+     expect none: nothing
+     -> intent laugh | intent=Laugh shape=-
+        "lol right"
+        "heh, it happens lol"
+354. [faction] where do i get the quest for the lvl 10 shield?
+     expect answer_info: quest giver in town
+     -> live ask_hunt | intent=Travel shape=ask_hunt
+        "[from the world]"
+355. [faction] anyone know how to start the epic quest?
+     expect answer_info: 'talk to your trainer at 50'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "no idea i just got here"
+        "Ask around maybe."
+356. [guild] is the bone camp in muspelheim good xp?
+     expect answer_yesno: 'yeah if u got a group'
+     -> intent grinding | intent=Grinding shape=-
+        "xp is better in a group"
+        "anything that doesnt add"
+357. [faction] how do i get to the cursed forest
+     expect answer_info: directions
+     -> factual -> not sure (half the time) | intent=Travel shape=-
+        "i think so?"
+        "someone said something about that earlier"
+358. [faction] what lvl do keltoi mobs con
+     expect answer_info: level range
+     -> fact world | intent=Dungeon shape=-
+        "thats in albion lol, mostly 21-25"
+        "thats in albion lol, keltoi fogou is about 21-25"
+359. [faction] where do i get my first weapon upgrade lol
+     expect answer_info: 'merchant / quest'
+     -> intent travel | intent=Travel shape=-
+        "its a bit of a trek"
+        "it is a long walk, bring a friend"
+360. [faction] is there a way to see my rp count?
+     expect answer_info: 'realm tab'
+     -> factual -> not sure (half the time) | intent=RvR shape=-
+        "no idea sorry"
+        "wish i knew"
+361. [faction] where?
+     bot before: try the bone camp in Muspelheim, good xp at that lvl
+     expect answer_info: directions to Muspelheim
+     -> thread followup_where | intent=Unknown shape=-
+        "[where the bot is]"
+362. [trade] how much for 2?
+     bot before: i can make u that for 30g
+     expect trade_response: '55g'
+     -> shape ask_price | intent=Trading shape=ask_price
+        "check the exchange, people buy there"
+        "check the exchange, prices are fair"
+363. [trade] how much?
+     bot before: sure, 50g for the bow
+     expect trade_response: repeats price
+     -> shape ask_price | intent=Trading shape=ask_price
+        "try the exchange, it sells there"
+        "check the exchange first"
+364. [group] lol no
+     bot before: pulling next one, rdy?
+     expect followup: 'k, med up'
+     -> thread answer->closing | intent=Unknown shape=ack
+        "hm ok ty anyway"
+365. [guild] ok ty
+     bot before: ill help u with the epic tmrw
+     expect thanks_ack: 'np'
+     -> thread thanks->np | intent=Thanks shape=-
+        "dont mention it"
+366. [tell] at the bridge
+     bot before: omw, where r u?
+     expect followup: 'k almost there'
+     -> thread answer->closing | intent=Unknown shape=-
+        "nice nice"
+367. [faction] which wing?
+     bot before: go to the armsman trainer in the north wing
+     expect answer_info: clarifies
+     -> thread followup_which | intent=Unknown shape=-
+        "cant remember the name lol"
+368. [group] sure
+     bot before: want me to pull?
+     expect followup: pulls / 'k pulling'
+     -> thread answer->closing | intent=Unknown shape=ack
+        "ok good"
+369. [guild] 29 :(
+     bot before: im 34 now, you?
+     expect banter: 'u'll catch up'
+     -> thread answer->closing | intent=Unknown shape=-
+        "Oh wow."
+370. [tell] srsly? ty!
+     bot before: i have a spare 2h if u want
+     expect thanks_ack: 'np, opening trade'
+     -> intent thanks | intent=Thanks shape=-
+        "no problem"
+371. [lfg] 33 healer
+     bot before: sure, what lvl r u?
+     expect join: invites
+     -> thread answer->closing | intent=ClassTalk shape=-
+        "heh nice :D"
+372. [say] nope
+     bot before: u camping these?
+     expect followup: 'cool ty' / starts hunting
+     -> thread decline->closing | intent=Unknown shape=ack
+        "no worries"
+373. [trade] how about 45?
+     bot before: 60g for the set
+     expect trade_response: counter
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "not a clue honestly"
+        "couldnt tell you :P"
+374. [faction] ty
+     bot before: the dye merchant is in the market area
+     expect thanks_ack: 'np'
+     -> thread thanks->np | intent=Thanks shape=-
+        "np now go pull something big"
+375. [guild] me!
+     bot before: anyone want to go to DF?
+     expect join: invite
+     -> thread answer->closing | intent=Unknown shape=-
+        "ah ok"
+376. [group] where?
+     bot before: inc 3 albs
+     expect alarm_response: direction
+     -> thread followup_where | intent=Unknown shape=-
+        "[where the bot is]"
+377. [tell] k np
+     bot before: can't, in a grp sry
+     expect none: nothing
+     -> ack | intent=Unknown shape=ack
+        "(nothing)"
+378. [guild] grats
+     bot before: ding 40!
+     expect thanks_ack: 'ty!'
+     -> intent congrats [gz: only a bot that just levelled] | intent=Congrats shape=-
+        "thx, slow and steady"
+        "ty, that one hurt"
+379. [guild] k
+     bot before: brb
+     expect none: nothing
+     -> ack | intent=Unknown shape=ack
+        "(nothing)"
+380. [say] lol ty
+     bot before: nice hat lol
+     expect none: nothing
+     -> thread thanks->np | intent=Thanks shape=-
+        "np"
+381. [tell] too much
+     bot before: i'm selling it for 40g
+     expect trade_response: counter / 'ok 35'
+     -> ack | intent=Unknown shape=ack
+        "(nothing)"
+382. [group] yes pls
+     bot before: need a rez?
+     expect followup: rezzes
+     -> thread answer->closing | intent=Unknown shape=-
+        "K, on it."
+383. [guild] farming, u?
+     bot before: what are u doing tonight?
+     expect banter: 'same' / 'rvr'
+     -> factual -> not sure (half the time) | intent=Grinding shape=-
+        "good question"
+        "i was wondering that too"
+384. [guild] omw
+     bot before: we're in emain, come help
+     expect none: nothing
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+385. [faction] which trainer?
+     bot before: ask the trainer in town, he'll tell u
+     expect followup: clarifies
+     -> thread followup_which | intent=Help shape=-
+        "Not sure what its called."
+386. [tell] awesome, meet where?
+     bot before: sure i can port u
+     expect answer_info: 'at the portal'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "no clue"
+387. [group] k
+     bot before: loot is trash, sell it
+     expect none: nothing
+     -> ack | intent=Unknown shape=ack
+        "(nothing)"
+388. [say] hail. whither are you bound?
+     bot before: hail, traveler
+     expect banter: in character reply
+     -> thread followup_confirm | intent=Unknown shape=-
+        "yep yep"
+389. [guild] est or pst?
+     bot before: the raid is at 9
+     expect answer_info: 'est'
+     -> shape ask_choice | intent=Unknown shape=ask_choice
+        "started with the first, wish id done the second"
+        "both are fine honestly"
+390. [faction] ty, how far?
+     bot before: spindel is in the vale of mularn
+     expect answer_info: 'not far, follow the road'
+     -> intent thanks [faction ty: groupmates only] | intent=Thanks shape=-
+        "yw"
+        "np come back if it breaks"
+391. [tell] lol no
+     bot before: selling it for 1p
+     expect trade_response: 'ok 80g?'
+     -> ack | intent=Unknown shape=ack
+        "(nothing)"
+392. [guild] sure, where?
+     bot before: wanna duo?
+     expect answer_info: names a spot
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "no idea, i just got here"
+        "pretty sure yes but dont quote me"
+393. [group] ok cool, who's pulling?
+     bot before: i'm healing
+     expect answer_info: 'me'
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "cant help there sorry"
+        "beats me"
+394. [lfg] sent
+     bot before: pst for inv
+     expect followup: invites
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+395. [guild] ty lol i need it
+     bot before: gl on ur epic!
+     expect banter: 'lol'
+     -> thread thanks->np | intent=Thanks shape=-
+        "anytime"
+396. [say] what adds?
+     bot before: watch out for the adds here
+     expect answer_info: explains
+     -> factual -> not sure (half the time) | intent=Unknown shape=-
+        "i think so?"
+        "not sure heh"
+397. [tell] aw ok
+     bot before: i dont have one sorry
+     expect sympathy: 'gl'
+     -> unknown | intent=Unknown shape=-
+        "(nothing)"
+398. [group] maybe 30 min
+     bot before: wanna stay another hour?
+     expect followup: 'k'
+     -> thread answer->closing | intent=Unknown shape=-
+        "cool ty"
+399. [faction] huh?
+     bot before: the bindstone is by the bank
+     expect followup: clarifies
+     -> thread followup_what | intent=Unknown shape=-
+        "forget i said anything"
+400. [guild] ya pls
+     bot before: u need a healer?
+     expect offer_help: 'omw'
+     -> thread answer->closing | intent=Unknown shape=-
+        "nice, ok"

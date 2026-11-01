@@ -1,0 +1,902 @@
+[
+ {
+  "line": "hahaha ok that was good",
+  "truth": "bot",
+  "n": 1
+ },
+ {
+  "line": "aw ok",
+  "truth": "player",
+  "n": 2
+ },
+ {
+  "line": "Np, have fun.",
+  "truth": "bot",
+  "n": 3
+ },
+ {
+  "line": "new here, where's the trainer and how do i get money?",
+  "truth": "player",
+  "n": 4
+ },
+ {
+  "line": "got it",
+  "truth": "bot",
+  "n": 5
+ },
+ {
+  "line": "sb on me!!",
+  "truth": "player",
+  "n": 6
+ },
+ {
+  "line": "The Morrigan watches over us tonight.",
+  "truth": "player",
+  "n": 7
+ },
+ {
+  "line": "frontier is busy tonight",
+  "truth": "bot",
+  "n": 8
+ },
+ {
+  "line": "np",
+  "truth": "bot",
+  "n": 9
+ },
+ {
+  "line": "who sells the lvl 20 epic armor?",
+  "truth": "player",
+  "n": 10
+ },
+ {
+  "line": "mids ganking at the dock",
+  "truth": "player",
+  "n": 11
+ },
+ {
+  "line": "Caer Benowyc is gone, Midgard has it now",
+  "truth": "bot",
+  "n": 12
+ },
+ {
+  "line": "mhm agreed",
+  "truth": "bot",
+  "n": 13
+ },
+ {
+  "line": "anytime",
+  "truth": "bot",
+  "n": 14
+ },
+ {
+  "line": "good question",
+  "truth": "bot",
+  "n": 15
+ },
+ {
+  "line": "uther's shade haunts stonehenge barrows still watching over something older than the wight",
+  "truth": "bot",
+  "n": 16
+ },
+ {
+  "line": "druid group heals go off and the whole group breathes again",
+  "truth": "bot",
+  "n": 17
+ },
+ {
+  "line": "is there a way to see my rp count?",
+  "truth": "player",
+  "n": 18
+ },
+ {
+  "line": "anyone know a good weaponcrafter?",
+  "truth": "player",
+  "n": 19
+ },
+ {
+  "line": "the journal fell out of the sky at prydwen keep so the scribes write. one word left on it: golestandt",
+  "truth": "bot",
+  "n": 20
+ },
+ {
+  "line": "try the spiders by the road, worked for me",
+  "truth": "bot",
+  "n": 21
+ },
+ {
+  "line": "ya pls",
+  "truth": "player",
+  "n": 22
+ },
+ {
+  "line": "night all, raid at 9 tmrw right?",
+  "truth": "player",
+  "n": 23
+ },
+ {
+  "line": "kk will try",
+  "truth": "bot",
+  "n": 24
+ },
+ {
+  "line": "u suck",
+  "truth": "player",
+  "n": 25
+ },
+ {
+  "line": "hello hello",
+  "truth": "player",
+  "n": 26
+ },
+ {
+  "line": "mobs that evade everything should be against the law",
+  "truth": "bot",
+  "n": 27
+ },
+ {
+  "line": "about time",
+  "truth": "bot",
+  "n": 28
+ },
+ {
+  "line": "dunno",
+  "truth": "bot",
+  "n": 29
+ },
+ {
+  "line": "puller died again",
+  "truth": "player",
+  "n": 30
+ },
+ {
+  "line": "[JoinReply]",
+  "truth": "bot",
+  "n": 31
+ },
+ {
+  "line": "k",
+  "truth": "player",
+  "n": 32
+ },
+ {
+  "line": "wb!! missed you",
+  "truth": "bot",
+  "n": 33
+ },
+ {
+  "line": "lfg 41 wizard dungeon or camp dont mind",
+  "truth": "bot",
+  "n": 34
+ },
+ {
+  "line": "every year someone finds a new cave and everyone acts surprised. i stopped being surprised",
+  "truth": "bot",
+  "n": 35
+ },
+ {
+  "line": "who has more keeps now? heh",
+  "truth": "bot",
+  "n": 36
+ },
+ {
+  "line": "got room for a skald?",
+  "truth": "player",
+  "n": 37
+ },
+ {
+  "line": "where can i find the enchanter for my weapon",
+  "truth": "player",
+  "n": 38
+ },
+ {
+  "line": "anyone need trash loot? giving away",
+  "truth": "player",
+  "n": 39
+ },
+ {
+  "line": "gotta go, talk tomorrow?",
+  "truth": "player",
+  "n": 40
+ },
+ {
+  "line": "mhm. anyway, back to it",
+  "truth": "bot",
+  "n": 41
+ },
+ {
+  "line": "zerg left the keep",
+  "truth": "player",
+  "n": 42
+ },
+ {
+  "line": "lo all",
+  "truth": "player",
+  "n": 43
+ },
+ {
+  "line": "ok ok",
+  "truth": "bot",
+  "n": 44
+ },
+ {
+  "line": "anyone know how to start the epic quest?",
+  "truth": "player",
+  "n": 45
+ },
+ {
+  "line": "where do i get the quest for the lvl 10 shield?",
+  "truth": "player",
+  "n": 46
+ },
+ {
+  "line": "ty so much, that sword is perfect",
+  "truth": "player",
+  "n": 47
+ },
+ {
+  "line": "where is the best place to solo at 22 as a hunter?",
+  "truth": "player",
+  "n": 48
+ },
+ {
+  "line": "20 shaman lfg, lets get a group going",
+  "truth": "bot",
+  "n": 49
+ },
+ {
+  "line": "word in camelot says a scout saw a stair in the marsh again. no one has found it since",
+  "truth": "bot",
+  "n": 50
+ },
+ {
+  "line": "this camp sucks, nothing up",
+  "truth": "player",
+  "n": 51
+ },
+ {
+  "line": "1 sec",
+  "truth": "player",
+  "n": 52
+ },
+ {
+  "line": "you and me both",
+  "truth": "bot",
+  "n": 53
+ },
+ {
+  "line": "woot just got the named drop",
+  "truth": "player",
+  "n": 54
+ },
+ {
+  "line": "lf grp 9 warden, been playing a while",
+  "truth": "bot",
+  "n": 55
+ },
+ {
+  "line": "ha, i noticed",
+  "truth": "bot",
+  "n": 56
+ },
+ {
+  "line": "the bind stone and i are on first name terms",
+  "truth": "bot",
+  "n": 57
+ },
+ {
+  "line": "nice work all",
+  "truth": "bot",
+  "n": 58
+ },
+ {
+  "line": "depends who is buying",
+  "truth": "bot",
+  "n": 59
+ },
+ {
+  "line": "stop casting on the mezzed one!!!",
+  "truth": "player",
+  "n": 60
+ },
+ {
+  "line": "i cant figure out how to equip this",
+  "truth": "player",
+  "n": 61
+ },
+ {
+  "line": "try the exchange, prices are fair",
+  "truth": "bot",
+  "n": 62
+ },
+ {
+  "line": "everyone sit",
+  "truth": "bot",
+  "n": 63
+ },
+ {
+  "line": "anyone kno how 2 get 2 hib frm alb lol",
+  "truth": "player",
+  "n": 64
+ },
+ {
+  "line": "my character has walked off more cliffs than anyone alive",
+  "truth": "bot",
+  "n": 65
+ },
+ {
+  "line": "pretty sure mobs have a meeting about me when i log off",
+  "truth": "bot",
+  "n": 66
+ },
+ {
+  "line": "give me camelot hills over every hib forest",
+  "truth": "bot",
+  "n": 67
+ },
+ {
+  "line": "afk",
+  "truth": "player",
+  "n": 68
+ },
+ {
+  "line": "wish i could lol",
+  "truth": "bot",
+  "n": 69
+ },
+ {
+  "line": "Thanks to everyone who went.",
+  "truth": "bot",
+  "n": 70
+ },
+ {
+  "line": "im out, ty all",
+  "truth": "player",
+  "n": 71
+ },
+ {
+  "line": "i saw u selling a chain set, still have it?",
+  "truth": "player",
+  "n": 72
+ },
+ {
+  "line": "the vale of mularn is where most mid first learned to swing",
+  "truth": "bot",
+  "n": 73
+ },
+ {
+  "line": "lol ill try that next pull :D",
+  "truth": "bot",
+  "n": 74
+ },
+ {
+  "line": "check the exchange, people buy there",
+  "truth": "bot",
+  "n": 75
+ },
+ {
+  "line": "ADD!",
+  "truth": "player",
+  "n": 76
+ },
+ {
+  "line": "hail",
+  "truth": "player",
+  "n": 77
+ },
+ {
+  "line": "back sry",
+  "truth": "player",
+  "n": 78
+ },
+ {
+  "line": "[where the bot is]",
+  "truth": "bot",
+  "n": 79
+ },
+ {
+  "line": "inc at bled!!",
+  "truth": "player",
+  "n": 80
+ },
+ {
+  "line": "the elves reckon they look elegant, we have seen them fall off the stairs",
+  "truth": "bot",
+  "n": 81
+ },
+ {
+  "line": "ding 1/2 lol",
+  "truth": "player",
+  "n": 82
+ },
+ {
+  "line": "my first solo kill in rvr!!",
+  "truth": "player",
+  "n": 83
+ },
+ {
+  "line": "Thoriel, you still need the hide for your quest?",
+  "truth": "player",
+  "n": 84
+ },
+ {
+  "line": "I seek the tavern. My throat is drier than the Plains of Salisbury.",
+  "truth": "player",
+  "n": 85
+ },
+ {
+  "line": "ty for the grats all",
+  "truth": "player",
+  "n": 86
+ },
+ {
+  "line": "lfg 9 thane, not logging anytime soon",
+  "truth": "bot",
+  "n": 87
+ },
+ {
+  "line": "a bright seal is worth more than a dull one, even the imps know that",
+  "truth": "bot",
+  "n": 88
+ },
+ {
+  "line": "is the bone camp in muspelheim good xp?",
+  "truth": "player",
+  "n": 89
+ },
+ {
+  "line": "Ha yes, this exactly.",
+  "truth": "bot",
+  "n": 90
+ },
+ {
+  "line": "Healing mids is hard work, they run in before I finish.",
+  "truth": "bot",
+  "n": 91
+ },
+ {
+  "line": "i think so?",
+  "truth": "bot",
+  "n": 92
+ },
+ {
+  "line": "what lvl is the named here?",
+  "truth": "player",
+  "n": 93
+ },
+ {
+  "line": "LFG 34 bm",
+  "truth": "player",
+  "n": 94
+ },
+ {
+  "line": "a kobold with a grudge are worse than any troll",
+  "truth": "bot",
+  "n": 95
+ },
+ {
+  "line": "30 here",
+  "truth": "bot",
+  "n": 96
+ },
+ {
+  "line": "i once saw a mob chase someone across a whole zone",
+  "truth": "bot",
+  "n": 97
+ },
+ {
+  "line": "looking for group, lvl 12 mercenary",
+  "truth": "player",
+  "n": 98
+ },
+ {
+  "line": "anyone need a 36 wizard?",
+  "truth": "bot",
+  "n": 99
+ },
+ {
+  "line": "pulling",
+  "truth": "player",
+  "n": 100
+ },
+ {
+  "line": "where you guys hunting?",
+  "truth": "player",
+  "n": 101
+ },
+ {
+  "line": "gz gz",
+  "truth": "bot",
+  "n": 102
+ },
+ {
+  "line": "anyone near emain? we're getting zerged",
+  "truth": "player",
+  "n": 103
+ },
+ {
+  "line": "forming grp for keep take, need everyone at the milegate",
+  "truth": "player",
+  "n": 104
+ },
+ {
+  "line": "ty all 4 the help",
+  "truth": "player",
+  "n": 105
+ },
+ {
+  "line": "night all",
+  "truth": "player",
+  "n": 106
+ },
+ {
+  "line": "Grimbold how much do u want for that hammer?",
+  "truth": "player",
+  "n": 107
+ },
+ {
+  "line": "yeah i saw that too",
+  "truth": "bot",
+  "n": 108
+ },
+ {
+  "line": "me!",
+  "truth": "player",
+  "n": 109
+ },
+ {
+  "line": "Forest sauvage holds more beasts than the bard admits.",
+  "truth": "bot",
+  "n": 110
+ },
+ {
+  "line": "can u lower the price a bit?",
+  "truth": "player",
+  "n": 111
+ },
+ {
+  "line": "ok, ty for answering",
+  "truth": "bot",
+  "n": 112
+ },
+ {
+  "line": "they're leaving, good job everyone",
+  "truth": "player",
+  "n": 113
+ },
+ {
+  "line": "thx for buffs",
+  "truth": "player",
+  "n": 114
+ },
+ {
+  "line": "how do i get to the cursed forest",
+  "truth": "player",
+  "n": 115
+ },
+ {
+  "line": "re. kids are in bed finally",
+  "truth": "player",
+  "n": 116
+ },
+ {
+  "line": "i was wondering that too",
+  "truth": "bot",
+  "n": 117
+ },
+ {
+  "line": "brb",
+  "truth": "player",
+  "n": 118
+ },
+ {
+  "line": "not sure :)",
+  "truth": "bot",
+  "n": 119
+ },
+ {
+  "line": "who is calling targets?",
+  "truth": "player",
+  "n": 120
+ },
+ {
+  "line": "anyone around to help with my quest?",
+  "truth": "player",
+  "n": 121
+ },
+ {
+  "line": "got ganked 3 times leaving the portal keep",
+  "truth": "player",
+  "n": 122
+ },
+ {
+  "line": "heh nice :D",
+  "truth": "bot",
+  "n": 123
+ },
+ {
+  "line": "happy to help",
+  "truth": "bot",
+  "n": 124
+ },
+ {
+  "line": "inc pull",
+  "truth": "player",
+  "n": 125
+ },
+ {
+  "line": "i have no power, can someone give me some?",
+  "truth": "player",
+  "n": 126
+ },
+ {
+  "line": "just thinking out loud",
+  "truth": "bot",
+  "n": 127
+ },
+ {
+  "line": "hah, yes",
+  "truth": "bot",
+  "n": 128
+ },
+ {
+  "line": "where?",
+  "truth": "player",
+  "n": 129
+ },
+ {
+  "line": "hibernia has df right now",
+  "truth": "bot",
+  "n": 130
+ },
+ {
+  "line": "hey, im 18, you?",
+  "truth": "bot",
+  "n": 131
+ },
+ {
+  "line": "bring speed if you have it",
+  "truth": "bot",
+  "n": 132
+ },
+ {
+  "line": "they got our pwr relic, ugh",
+  "truth": "player",
+  "n": 133
+ },
+ {
+  "line": "u hear abt healers who never died once all the way to fifty. nobody i know has met one",
+  "truth": "bot",
+  "n": 134
+ },
+ {
+  "line": "Thoriel wb!",
+  "truth": "player",
+  "n": 135
+ },
+ {
+  "line": "Lol yes.",
+  "truth": "bot",
+  "n": 136
+ },
+ {
+  "line": "inc 1",
+  "truth": "bot",
+  "n": 137
+ },
+ {
+  "line": "what lvl can i do my epic",
+  "truth": "player",
+  "n": 138
+ },
+ {
+  "line": "where's the zerg at?",
+  "truth": "player",
+  "n": 139
+ },
+ {
+  "line": "how many rp for rr2?",
+  "truth": "player",
+  "n": 140
+ },
+ {
+  "line": "need a healer still?",
+  "truth": "bot",
+  "n": 141
+ },
+ {
+  "line": "how much for 2?",
+  "truth": "player",
+  "n": 142
+ },
+ {
+  "line": "ty lol i need it",
+  "truth": "player",
+  "n": 143
+ },
+ {
+  "line": "give me camelot hills over any hib forest",
+  "truth": "bot",
+  "n": 144
+ },
+ {
+  "line": "Heh yep, this exactly.",
+  "truth": "bot",
+  "n": 145
+ },
+ {
+  "line": "lol so true",
+  "truth": "bot",
+  "n": 146
+ },
+ {
+  "line": "back from dinner",
+  "truth": "player",
+  "n": 147
+ },
+ {
+  "line": "i fell off the bridge in tir na nog. again.",
+  "truth": "player",
+  "n": 148
+ },
+ {
+  "line": "how long does it take to get to 50",
+  "truth": "player",
+  "n": 149
+ },
+ {
+  "line": "can i get a speed song pls",
+  "truth": "player",
+  "n": 150
+ },
+ {
+  "line": "add!",
+  "truth": "bot",
+  "n": 151
+ },
+ {
+  "line": "trolls are the most loyal guildmates in the realm, ask anyone",
+  "truth": "bot",
+  "n": 152
+ },
+ {
+  "line": "anyone know where the healer is in this town",
+  "truth": "player",
+  "n": 153
+ },
+ {
+  "line": "Brothers and sisters, we march at dusk to defend our lands!",
+  "truth": "player",
+  "n": 154
+ },
+ {
+  "line": "Brannoc did u get the armor i sent?",
+  "truth": "player",
+  "n": 155
+ },
+ {
+  "line": "how many and where?",
+  "truth": "bot",
+  "n": 156
+ },
+ {
+  "line": "Which keep?",
+  "truth": "bot",
+  "n": 157
+ },
+ {
+  "line": "rofl that alb just ran into our whole zerg",
+  "truth": "player",
+  "n": 158
+ },
+ {
+  "line": "im off to bed, cya tomorrow",
+  "truth": "player",
+  "n": 159
+ },
+ {
+  "line": "srsly? ty!",
+  "truth": "player",
+  "n": 160
+ },
+ {
+  "line": "lol",
+  "truth": "player",
+  "n": 161
+ },
+ {
+  "line": "An alb dared a lurikeen to a staring contest, he never saw where the lurikeen went.",
+  "truth": "bot",
+  "n": 162
+ },
+ {
+  "line": "know what u mean",
+  "truth": "bot",
+  "n": 163
+ },
+ {
+  "line": "lf healer for xp grp, lvl 30ish",
+  "truth": "player",
+  "n": 164
+ },
+ {
+  "line": "did u guys see the pic on the herald?",
+  "truth": "player",
+  "n": 165
+ },
+ {
+  "line": "the goal is simple: kill, sit, repeat",
+  "truth": "bot",
+  "n": 166
+ },
+ {
+  "line": "where r u guys? cant find you",
+  "truth": "player",
+  "n": 167
+ },
+ {
+  "line": "sylvans standing still is exactly like a stump, any alb who learned the hard way",
+  "truth": "bot",
+  "n": 168
+ },
+ {
+  "line": "how do i get to the shrouded isles",
+  "truth": "player",
+  "n": 169
+ },
+ {
+  "line": "my favorite sound is a successful craft",
+  "truth": "bot",
+  "n": 170
+ },
+ {
+  "line": "a purple con walking past the group makes everyone go very quiet",
+  "truth": "bot",
+  "n": 171
+ },
+ {
+  "line": "a good drop feels so much better when the whole group cheers",
+  "truth": "bot",
+  "n": 172
+ },
+ {
+  "line": "who's buying the pizza",
+  "truth": "player",
+  "n": 173
+ },
+ {
+  "line": "no problem",
+  "truth": "bot",
+  "n": 174
+ },
+ {
+  "line": "i still look at every piece of loot twice, just in case",
+  "truth": "bot",
+  "n": 175
+ },
+ {
+  "line": "keep asking, someone will be up for it haha",
+  "truth": "bot",
+  "n": 176
+ },
+ {
+  "line": "which wing?",
+  "truth": "player",
+  "n": 177
+ },
+ {
+  "line": "sounds familiar",
+  "truth": "bot",
+  "n": 178
+ },
+ {
+  "line": "Mids always smell of fish and not one of them has noticed.",
+  "truth": "bot",
+  "n": 179
+ },
+ {
+  "line": "heh same with crafting",
+  "truth": "bot",
+  "n": 180
+ }
+]

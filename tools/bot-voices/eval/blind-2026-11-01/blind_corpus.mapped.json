@@ -1,0 +1,3202 @@
+[
+{
+"id": "b001",
+"channel": "guild",
+"context": "",
+"text": "evening all",
+"expect": "greeting",
+"note": "'evening' / 'hey X' from a couple of guildies"
+},
+{
+"id": "b002",
+"channel": "guild",
+"context": "",
+"text": "hey guys",
+"expect": "greeting",
+"note": "'hey' or 'yo'"
+},
+{
+"id": "b003",
+"channel": "guild",
+"context": "",
+"text": "lo all",
+"expect": "greeting",
+"note": "'lo' / 'hiya'"
+},
+{
+"id": "b004",
+"channel": "guild",
+"context": "",
+"text": "mornin",
+"expect": "greeting",
+"note": "'morning' maybe 'up early?'"
+},
+{
+"id": "b005",
+"channel": "guild",
+"context": "",
+"text": "sup ppl",
+"expect": "greeting",
+"note": "'sup' / 'not much, farming'"
+},
+{
+"id": "b006",
+"channel": "guild",
+"context": "Guild member Brannoc has logged in.",
+"text": "yo",
+"expect": "greeting",
+"note": "'yo Bran'"
+},
+{
+"id": "b007",
+"channel": "guild",
+"context": "",
+"text": "hello hello",
+"expect": "greeting",
+"note": "'hey' back"
+},
+{
+"id": "b008",
+"channel": "guild",
+"context": "",
+"text": "hiya all, what's everyone up to",
+"expect": "greeting",
+"note": "greeting + 'farming X' / 'RvR in emain'"
+},
+{
+"id": "b009",
+"channel": "guild",
+"context": "",
+"text": "hi guild, finally home from work",
+"expect": "greeting",
+"note": "'hey, wb from work' style greeting"
+},
+{
+"id": "b010",
+"channel": "guild",
+"context": "",
+"text": "evenin folks",
+"expect": "greeting",
+"note": "'evening'"
+},
+{
+"id": "b011",
+"channel": "guild",
+"context": "",
+"text": "heya guild, long day",
+"expect": "greeting",
+"note": "'hey, rough day?'"
+},
+{
+"id": "b012",
+"channel": "say",
+"context": "",
+"text": "hail",
+"expect": "greeting",
+"note": "'hail' back or nothing from strangers"
+},
+{
+"id": "b013",
+"channel": "say",
+"context": "",
+"text": "hello",
+"expect": "greeting",
+"note": "'hi'"
+},
+{
+"id": "b014",
+"channel": "say",
+"context": "Another player walks up to the bindstone next to you.",
+"text": "hey",
+"expect": "greeting",
+"note": "'hey' / nod emote"
+},
+{
+"id": "b015",
+"channel": "say",
+"context": "",
+"text": "greetings",
+"expect": "greeting",
+"note": "'greetings' or 'hi'"
+},
+{
+"id": "b016",
+"channel": "say",
+"context": "",
+"text": "evening",
+"expect": "greeting",
+"note": "'evening'"
+},
+{
+"id": "b017",
+"channel": "group",
+"context": "You join the group.",
+"text": "hi all",
+"expect": "greeting",
+"note": "'hi' / 'welcome'"
+},
+{
+"id": "b018",
+"channel": "group",
+"context": "",
+"text": "heya",
+"expect": "greeting",
+"note": "'hey'"
+},
+{
+"id": "b019",
+"channel": "group",
+"context": "A new member joined the group.",
+"text": "hello, what are we hunting?",
+"expect": "greeting",
+"note": "'hey' + 'trolls at X'"
+},
+{
+"id": "b020",
+"channel": "tell",
+"context": "",
+"text": "hi! long time no see",
+"expect": "greeting",
+"note": "'hey! yeah been busy'"
+},
+{
+"id": "b021",
+"channel": "tell",
+"context": "",
+"text": "hey u there?",
+"expect": "greeting",
+"note": "'yeah whats up'"
+},
+{
+"id": "b022",
+"channel": "say",
+"context": "",
+"text": "hail and well met, traveler",
+"expect": "greeting",
+"note": "RP-flavoured return 'well met'"
+},
+{
+"id": "b023",
+"channel": "guild",
+"context": "",
+"text": "hey Thoriel, you on tonight?",
+"expect": "greeting",
+"note": "Thoriel (or anyone) says 'hey, yep'"
+},
+{
+"id": "b024",
+"channel": "guild",
+"context": "",
+"text": "re",
+"expect": "welcome_back",
+"note": "'wb'"
+},
+{
+"id": "b025",
+"channel": "guild",
+"context": "",
+"text": "back",
+"expect": "welcome_back",
+"note": "'wb'"
+},
+{
+"id": "b026",
+"channel": "guild",
+"context": "",
+"text": "ok back, sorry dc'd",
+"expect": "welcome_back",
+"note": "'wb'"
+},
+{
+"id": "b027",
+"channel": "guild",
+"context": "",
+"text": "re all, isp died again",
+"expect": "welcome_back",
+"note": "'wb, ugh'"
+},
+{
+"id": "b028",
+"channel": "group",
+"context": "",
+"text": "back sry",
+"expect": "welcome_back",
+"note": "'wb' then carry on pulling"
+},
+{
+"id": "b029",
+"channel": "group",
+"context": "",
+"text": "re, crashed to desktop",
+"expect": "welcome_back",
+"note": "'wb'"
+},
+{
+"id": "b030",
+"channel": "group",
+"context": "",
+"text": "linkdead sorry, back now",
+"expect": "welcome_back",
+"note": "'wb'"
+},
+{
+"id": "b031",
+"channel": "guild",
+"context": "",
+"text": "back from dinner",
+"expect": "welcome_back",
+"note": "'wb'"
+},
+{
+"id": "b032",
+"channel": "guild",
+"context": "",
+"text": "re. kids are in bed finally",
+"expect": "welcome_back",
+"note": "'wb' / 'lol'"
+},
+{
+"id": "b033",
+"channel": "tell",
+"context": "",
+"text": "sry was afk, back",
+"expect": "welcome_back",
+"note": "'np, wb'"
+},
+{
+"id": "b034",
+"channel": "guild",
+"context": "",
+"text": "night all",
+"expect": "farewell",
+"note": "'night' / 'gn'"
+},
+{
+"id": "b035",
+"channel": "guild",
+"context": "",
+"text": "gn guild",
+"expect": "farewell",
+"note": "'gn'"
+},
+{
+"id": "b036",
+"channel": "guild",
+"context": "",
+"text": "im off to bed, cya tomorrow",
+"expect": "farewell",
+"note": "'night' / 'cya'"
+},
+{
+"id": "b037",
+"channel": "guild",
+"context": "",
+"text": "later guys",
+"expect": "farewell",
+"note": "'later'"
+},
+{
+"id": "b038",
+"channel": "guild",
+"context": "",
+"text": "logging, cya",
+"expect": "farewell",
+"note": "'cya'"
+},
+{
+"id": "b039",
+"channel": "guild",
+"context": "",
+"text": "wife says bed. gn all",
+"expect": "farewell",
+"note": "'lol gn'"
+},
+{
+"id": "b040",
+"channel": "group",
+"context": "",
+"text": "i have to go guys, sorry. thx for the group",
+"expect": "farewell",
+"note": "'np ty, cya' (thanks implied)"
+},
+{
+"id": "b041",
+"channel": "group",
+"context": "",
+"text": "gotta log, gl all",
+"expect": "farewell",
+"note": "'cya, ty'"
+},
+{
+"id": "b042",
+"channel": "group",
+"context": "",
+"text": "im out, ty all",
+"expect": "farewell",
+"note": "'ty, gn'"
+},
+{
+"id": "b043",
+"channel": "tell",
+"context": "",
+"text": "gotta go, talk tomorrow?",
+"expect": "farewell",
+"note": "'sure, cya'"
+},
+{
+"id": "b044",
+"channel": "say",
+"context": "",
+"text": "farewell friend",
+"expect": "farewell",
+"note": "'farewell'"
+},
+{
+"id": "b045",
+"channel": "group",
+"context": "",
+"text": "bed time for me, gn",
+"expect": "farewell",
+"note": "'gn'"
+},
+{
+"id": "b046",
+"channel": "guild",
+"context": "",
+"text": "cya all next week, going out of town",
+"expect": "farewell",
+"note": "'have fun, cya'"
+},
+{
+"id": "b047",
+"channel": "group",
+"context": "",
+"text": "ty for the rez",
+"expect": "thanks_ack",
+"note": "'np'"
+},
+{
+"id": "b048",
+"channel": "group",
+"context": "",
+"text": "thx for buffs",
+"expect": "thanks_ack",
+"note": "'np' / 'yw'"
+},
+{
+"id": "b049",
+"channel": "group",
+"context": "",
+"text": "ty heals :)",
+"expect": "thanks_ack",
+"note": "'np'"
+},
+{
+"id": "b050",
+"channel": "group",
+"context": "",
+"text": "great group guys, thx",
+"expect": "thanks_ack",
+"note": "'ty, was fun'"
+},
+{
+"id": "b051",
+"channel": "say",
+"context": "",
+"text": "ty!",
+"expect": "thanks_ack",
+"note": "'np'"
+},
+{
+"id": "b052",
+"channel": "say",
+"context": "",
+"text": "thx for the help with that mob",
+"expect": "thanks_ack",
+"note": "'np'"
+},
+{
+"id": "b053",
+"channel": "tell",
+"context": "",
+"text": "thanks again for the armor",
+"expect": "thanks_ack",
+"note": "'np, enjoy'"
+},
+{
+"id": "b054",
+"channel": "tell",
+"context": "",
+"text": "ty so much, that sword is perfect",
+"expect": "thanks_ack",
+"note": "'np glad it fits'"
+},
+{
+"id": "b055",
+"channel": "guild",
+"context": "",
+"text": "ty for the help earlier guys",
+"expect": "thanks_ack",
+"note": "'np anytime'"
+},
+{
+"id": "b056",
+"channel": "say",
+"context": "You toss a few silver to a newbie.",
+"text": "wow thx mister",
+"expect": "thanks_ack",
+"note": "'np, gl'"
+},
+{
+"id": "b057",
+"channel": "group",
+"context": "",
+"text": "ty for carrying me lol",
+"expect": "thanks_ack",
+"note": "'np' / 'lol'"
+},
+{
+"id": "b058",
+"channel": "group",
+"context": "The cleric rezzes you.",
+"text": "ty",
+"expect": "thanks_ack",
+"note": "'np'"
+},
+{
+"id": "b059",
+"channel": "say",
+"context": "",
+"text": "where is the armor trainer?",
+"expect": "answer_info",
+"note": "points to the building / 'by the bank'"
+},
+{
+"id": "b060",
+"channel": "say",
+"context": "",
+"text": "anyone know where the healer is in this town",
+"expect": "answer_info",
+"note": "'by the north gate'"
+},
+{
+"id": "b061",
+"channel": "faction",
+"context": "",
+"text": "where is a good place to lvl at 15?",
+"expect": "answer_info",
+"note": "names a zone/camp"
+},
+{
+"id": "b062",
+"channel": "faction",
+"context": "",
+"text": "where do i get my lvl 5 class training",
+"expect": "answer_info",
+"note": "'go to your class trainer in the capital'"
+},
+{
+"id": "b063",
+"channel": "faction",
+"context": "",
+"text": "where is the entrance to DF",
+"expect": "answer_info",
+"note": "'in the realm that owns it, by your capital'"
+},
+{
+"id": "b064",
+"channel": "faction",
+"context": "",
+"text": "anyone know where Dun Crauchon is?",
+"expect": "answer_info",
+"note": "'emain, far east side'"
+},
+{
+"id": "b065",
+"channel": "faction",
+"context": "",
+"text": "where can i find the enchanter for my weapon",
+"expect": "answer_info",
+"note": "'enchanter npc in town'"
+},
+{
+"id": "b066",
+"channel": "faction",
+"context": "",
+"text": "were do u go 2 get a horse ride",
+"expect": "answer_info",
+"note": "'stable master by the gate, buy a ticket'"
+},
+{
+"id": "b067",
+"channel": "guild",
+"context": "",
+"text": "where you guys hunting?",
+"expect": "answer_info",
+"note": "'Myrkwood' / 'giants in Malmohus'"
+},
+{
+"id": "b068",
+"channel": "guild",
+"context": "",
+"text": "where's everyone at?",
+"expect": "answer_info",
+"note": "'emain' / 'DF'"
+},
+{
+"id": "b069",
+"channel": "guild",
+"context": "",
+"text": "anyone know where the spellcraft merchant is?",
+"expect": "answer_info",
+"note": "'in the capital near the crafters'"
+},
+{
+"id": "b070",
+"channel": "group",
+"context": "",
+"text": "where are we going next?",
+"expect": "answer_info",
+"note": "'deeper in' / 'to X camp'"
+},
+{
+"id": "b071",
+"channel": "group",
+"context": "",
+"text": "where r u guys? cant find you",
+"expect": "answer_info",
+"note": "'by the tower' / '/loc' style answer"
+},
+{
+"id": "b072",
+"channel": "group",
+"context": "",
+"text": "which way to the camp",
+"expect": "answer_info",
+"note": "'north, past the bridge'"
+},
+{
+"id": "b073",
+"channel": "say",
+"context": "",
+"text": "where is the stable master?",
+"expect": "answer_info",
+"note": "'just outside gate'"
+},
+{
+"id": "b074",
+"channel": "tell",
+"context": "",
+"text": "hey where did u get that helm?",
+"expect": "answer_info",
+"note": "'dropped off X' / 'crafted it'"
+},
+{
+"id": "b075",
+"channel": "lfg",
+"context": "",
+"text": "where is the best place to solo at 22 as a hunter?",
+"expect": "answer_info",
+"note": "names a spot"
+},
+{
+"id": "b076",
+"channel": "faction",
+"context": "",
+"text": "were is the sauvage keep? im lost lol",
+"expect": "answer_info",
+"note": "'castle sauvage, camelot hills side'"
+},
+{
+"id": "b077",
+"channel": "faction",
+"context": "",
+"text": "anybody know were lvl 40 drakes spawn?",
+"expect": "answer_info",
+"note": "names a zone"
+},
+{
+"id": "b078",
+"channel": "faction",
+"context": "",
+"text": "how do i get to the shrouded isles",
+"expect": "answer_info",
+"note": "'take the boat from X'"
+},
+{
+"id": "b079",
+"channel": "say",
+"context": "",
+"text": "is this the way to the dungeon?",
+"expect": "answer_info",
+"note": "'yep straight ahead' (yes/no-ish but location)"
+},
+{
+"id": "b080",
+"channel": "faction",
+"context": "",
+"text": "where do the necros train",
+"expect": "answer_info",
+"note": "SI capital directions"
+},
+{
+"id": "b081",
+"channel": "faction",
+"context": "",
+"text": "how do i respec",
+"expect": "answer_info",
+"note": "'buy a respec stone / lvl 20 and 40 free'"
+},
+{
+"id": "b082",
+"channel": "faction",
+"context": "",
+"text": "what does the con colors mean",
+"expect": "answer_info",
+"note": "'grey=no xp, green easy... purple dont'"
+},
+{
+"id": "b083",
+"channel": "faction",
+"context": "",
+"text": "is it worth going 50 sword or should i split",
+"expect": "answer_info",
+"note": "spec opinion"
+},
+{
+"id": "b084",
+"channel": "faction",
+"context": "",
+"text": "whats the cap on str for a lvl 50",
+"expect": "answer_info",
+"note": "rough cap number"
+},
+{
+"id": "b085",
+"channel": "faction",
+"context": "",
+"text": "how do i get rid of my anon tag",
+"expect": "answer_info",
+"note": "'/anon again'"
+},
+{
+"id": "b086",
+"channel": "faction",
+"context": "",
+"text": "what lvl can i do my epic",
+"expect": "answer_info",
+"note": "'level 50'"
+},
+{
+"id": "b087",
+"channel": "faction",
+"context": "",
+"text": "how long does it take to get to 50",
+"expect": "answer_info",
+"note": "'depends... weeks'"
+},
+{
+"id": "b088",
+"channel": "faction",
+"context": "",
+"text": "does anyone know how the relic thing works",
+"expect": "answer_info",
+"note": "short explanation"
+},
+{
+"id": "b089",
+"channel": "guild",
+"context": "",
+"text": "how do i get my cloak with the guild emblem",
+"expect": "answer_info",
+"note": "'emblemeer in capital, need GL to set it'"
+},
+{
+"id": "b090",
+"channel": "guild",
+"context": "",
+"text": "should i go cleric or friar for my alt?",
+"expect": "answer_info",
+"note": "opinion"
+},
+{
+"id": "b091",
+"channel": "guild",
+"context": "",
+"text": "how many rp for rr2?",
+"expect": "answer_info",
+"note": "rough number"
+},
+{
+"id": "b092",
+"channel": "guild",
+"context": "",
+"text": "anyone know what time the relic raid is?",
+"expect": "answer_info",
+"note": "'9 est' / 'not sure'"
+},
+{
+"id": "b093",
+"channel": "guild",
+"context": "",
+"text": "who owns crauchon now?",
+"expect": "answer_info",
+"note": "answers with realm"
+},
+{
+"id": "b094",
+"channel": "group",
+"context": "",
+"text": "what lvl is the named here?",
+"expect": "answer_info",
+"note": "'like 28'"
+},
+{
+"id": "b095",
+"channel": "group",
+"context": "",
+"text": "how long till respawn?",
+"expect": "answer_info",
+"note": "'like 5 min'"
+},
+{
+"id": "b096",
+"channel": "group",
+"context": "",
+"text": "what does this mob drop",
+"expect": "answer_info",
+"note": "names loot"
+},
+{
+"id": "b097",
+"channel": "group",
+"context": "",
+"text": "what is camping",
+"expect": "answer_info",
+"note": "explains staying at one spot and killing spawns"
+},
+{
+"id": "b098",
+"channel": "faction",
+"context": "",
+"text": "whats the xp debt penalty if i die at 35?",
+"expect": "answer_info",
+"note": "explains con loss/xp"
+},
+{
+"id": "b099",
+"channel": "faction",
+"context": "",
+"text": "anyone know if spell crafting is worth it yet?",
+"expect": "answer_info",
+"note": "opinion"
+},
+{
+"id": "b100",
+"channel": "faction",
+"context": "",
+"text": "how do i get the stealth ability as an inf?",
+"expect": "answer_info",
+"note": "'you start with it'"
+},
+{
+"id": "b101",
+"channel": "faction",
+"context": "",
+"text": "do valkyn make good savages?",
+"expect": "answer_info",
+"note": "opinion"
+},
+{
+"id": "b102",
+"channel": "tell",
+"context": "",
+"text": "how do u get so many buffs on ur bar",
+"expect": "answer_info",
+"note": "explains quickbar"
+},
+{
+"id": "b103",
+"channel": "trade",
+"context": "",
+"text": "how do i sell stuff to other players?",
+"expect": "answer_info",
+"note": "'post wts here and trade window them'"
+},
+{
+"id": "b104",
+"channel": "say",
+"context": "",
+"text": "how do i talk to the trainer",
+"expect": "answer_info",
+"note": "'right click him'"
+},
+{
+"id": "b105",
+"channel": "faction",
+"context": "",
+"text": "what does purge do",
+"expect": "answer_info",
+"note": "'removes stuns/mez etc'"
+},
+{
+"id": "b106",
+"channel": "faction",
+"context": "",
+"text": "whats a buff bot",
+"expect": "answer_info",
+"note": "'second account just for buffs'"
+},
+{
+"id": "b107",
+"channel": "guild",
+"context": "",
+"text": "anyone up for DF?",
+"expect": "answer_yesno",
+"note": "'sure' / 'maybe later'"
+},
+{
+"id": "b108",
+"channel": "guild",
+"context": "",
+"text": "anyone have a spare 2h sword?",
+"expect": "answer_yesno",
+"note": "'no sorry' / 'maybe in vault'"
+},
+{
+"id": "b109",
+"channel": "guild",
+"context": "",
+"text": "is tonight's raid still on?",
+"expect": "answer_yesno",
+"note": "'yep 9pm'"
+},
+{
+"id": "b110",
+"channel": "group",
+"context": "",
+"text": "can we stay one more pull?",
+"expect": "answer_yesno",
+"note": "'sure' / 'ok one more'"
+},
+{
+"id": "b111",
+"channel": "group",
+"context": "",
+"text": "everyone rdy?",
+"expect": "answer_yesno",
+"note": "'rdy' / 'need pow'"
+},
+{
+"id": "b112",
+"channel": "group",
+"context": "",
+"text": "can i get a speed song pls",
+"expect": "answer_yesno",
+"note": "'sure' then turns it on"
+},
+{
+"id": "b113",
+"channel": "group",
+"context": "",
+"text": "can someone rez me?",
+"expect": "answer_yesno",
+"note": "'omw'"
+},
+{
+"id": "b114",
+"channel": "tell",
+"context": "",
+"text": "u still selling that bow?",
+"expect": "answer_yesno",
+"note": "'yep' / 'sold sry'"
+},
+{
+"id": "b115",
+"channel": "tell",
+"context": "",
+"text": "can u buff me? pretty pls",
+"expect": "answer_yesno",
+"note": "'sure' / 'sorry in a group'"
+},
+{
+"id": "b116",
+"channel": "faction",
+"context": "",
+"text": "is DF open?",
+"expect": "answer_yesno",
+"note": "'yes' / 'no'"
+},
+{
+"id": "b117",
+"channel": "say",
+"context": "",
+"text": "are you camping these?",
+"expect": "answer_yesno",
+"note": "'yes' / 'nah go ahead'"
+},
+{
+"id": "b118",
+"channel": "tell",
+"context": "",
+"text": "are u in a guild?",
+"expect": "answer_yesno",
+"note": "'yeah, X' / 'no'"
+},
+{
+"id": "b119",
+"channel": "faction",
+"context": "",
+"text": "who sells the lvl 20 epic armor?",
+"expect": "answer_info",
+"note": "names npc/crafter"
+},
+{
+"id": "b120",
+"channel": "faction",
+"context": "",
+"text": "anyone know a good weaponcrafter?",
+"expect": "answer_info",
+"note": "names a player or self-offer"
+},
+{
+"id": "b121",
+"channel": "faction",
+"context": "",
+"text": "who's leading the relic raid?",
+"expect": "answer_info",
+"note": "names a leader"
+},
+{
+"id": "b122",
+"channel": "guild",
+"context": "",
+"text": "who's on tonight?",
+"expect": "answer_info",
+"note": "lists names / 'just me'"
+},
+{
+"id": "b123",
+"channel": "guild",
+"context": "",
+"text": "who's GL now?",
+"expect": "answer_info",
+"note": "names the leader"
+},
+{
+"id": "b124",
+"channel": "guild",
+"context": "",
+"text": "who was that hunter that killed me lol",
+"expect": "answer_info",
+"note": "'no idea' / name"
+},
+{
+"id": "b125",
+"channel": "group",
+"context": "",
+"text": "who's the MA?",
+"expect": "answer_info",
+"note": "'follow me' / name"
+},
+{
+"id": "b126",
+"channel": "group",
+"context": "",
+"text": "whos pulling?",
+"expect": "answer_info",
+"note": "'me' / name"
+},
+{
+"id": "b127",
+"channel": "faction",
+"context": "",
+"text": "who is calling targets?",
+"expect": "answer_info",
+"note": "names caller"
+},
+{
+"id": "b128",
+"channel": "faction",
+"context": "",
+"text": "anyone know who crafts mastercrafted chain?",
+"expect": "answer_info",
+"note": "names a crafter"
+},
+{
+"id": "b129",
+"channel": "tell",
+"context": "",
+"text": "who are u?",
+"expect": "answer_info",
+"note": "introduces self"
+},
+{
+"id": "b130",
+"channel": "say",
+"context": "",
+"text": "help! im stuck under this rock",
+"expect": "offer_help",
+"note": "'/stuck' advice or 'coming'"
+},
+{
+"id": "b131",
+"channel": "say",
+"context": "",
+"text": "help please, this mob is killing me",
+"expect": "offer_help",
+"note": "someone runs over to help"
+},
+{
+"id": "b132",
+"channel": "faction",
+"context": "",
+"text": "help! train coming out of the dungeon",
+"expect": "offer_help",
+"note": "'omw' / 'run!'"
+},
+{
+"id": "b133",
+"channel": "faction",
+"context": "",
+"text": "im lost in the forest can someone help",
+"expect": "offer_help",
+"note": "offers directions"
+},
+{
+"id": "b134",
+"channel": "faction",
+"context": "",
+"text": "first char, very confused lol",
+"expect": "offer_help",
+"note": "'ask anything'"
+},
+{
+"id": "b135",
+"channel": "guild",
+"context": "",
+"text": "anyone around to help with my quest?",
+"expect": "offer_help",
+"note": "'sure, what is it'"
+},
+{
+"id": "b136",
+"channel": "guild",
+"context": "",
+"text": "corpse run anyone? died in spindel",
+"expect": "offer_help",
+"note": "'omw, where?'"
+},
+{
+"id": "b137",
+"channel": "guild",
+"context": "",
+"text": "can someone escort me through emain to my keep",
+"expect": "offer_help",
+"note": "'sure, meet at portal'"
+},
+{
+"id": "b138",
+"channel": "group",
+"context": "",
+"text": "im oom and getting hit",
+"expect": "offer_help",
+"note": "someone taunts/heals"
+},
+{
+"id": "b139",
+"channel": "group",
+"context": "",
+"text": "i have no power, can someone give me some?",
+"expect": "offer_help",
+"note": "'sec' (power transfer if possible)"
+},
+{
+"id": "b140",
+"channel": "tell",
+"context": "",
+"text": "do u have any spare gear for lvl 10?",
+"expect": "offer_help",
+"note": "gives stuff or 'no sry'"
+},
+{
+"id": "b141",
+"channel": "say",
+"context": "",
+"text": "is anyone around? need a bind",
+"expect": "offer_help",
+"note": "points at bindstone"
+},
+{
+"id": "b142",
+"channel": "faction",
+"context": "",
+"text": "need a healer at the cursed forest dock pls, dead",
+"expect": "offer_help",
+"note": "'omw'"
+},
+{
+"id": "b143",
+"channel": "say",
+"context": "",
+"text": "i cant figure out how to equip this",
+"expect": "offer_help",
+"note": "explains drag to paper doll"
+},
+{
+"id": "b144",
+"channel": "lfg",
+"context": "",
+"text": "lvl 22 cleric lfg",
+"expect": "join",
+"note": "invite sent / 'pst'"
+},
+{
+"id": "b145",
+"channel": "lfg",
+"context": "",
+"text": "lf healer for xp grp, lvl 30ish",
+"expect": "join",
+"note": "healer sends tell"
+},
+{
+"id": "b146",
+"channel": "lfg",
+"context": "",
+"text": "LFG 34 bm",
+"expect": "join",
+"note": "invite"
+},
+{
+"id": "b147",
+"channel": "lfg",
+"context": "",
+"text": "lfg 18 nightshade, can tank a lil",
+"expect": "join",
+"note": "invite"
+},
+{
+"id": "b148",
+"channel": "lfg",
+"context": "",
+"text": "looking for group, lvl 12 mercenary",
+"expect": "join",
+"note": "invite"
+},
+{
+"id": "b149",
+"channel": "lfg",
+"context": "",
+"text": "healer lfg, lvl 41, have spec heals",
+"expect": "join",
+"note": "fast invites"
+},
+{
+"id": "b150",
+"channel": "lfg",
+"context": "",
+"text": "LF puller, have full grp minus 1",
+"expect": "join",
+"note": "tell"
+},
+{
+"id": "b151",
+"channel": "lfg",
+"context": "",
+"text": "anyone lfg? need 2 for barrows",
+"expect": "join",
+"note": "'me!' tell"
+},
+{
+"id": "b152",
+"channel": "lfg",
+"context": "",
+"text": "lvl 45 bard lfg, can speed/heal/mez",
+"expect": "join",
+"note": "invite"
+},
+{
+"id": "b153",
+"channel": "lfg",
+"context": "",
+"text": "looking for a duo partner around 20",
+"expect": "join",
+"note": "tell"
+},
+{
+"id": "b154",
+"channel": "lfg",
+"context": "",
+"text": "lf grp for epic mobs",
+"expect": "join",
+"note": "'what lvl'"
+},
+{
+"id": "b155",
+"channel": "guild",
+"context": "",
+"text": "who wants a group? I'm 28",
+"expect": "join",
+"note": "'me, inv'"
+},
+{
+"id": "b156",
+"channel": "guild",
+"context": "",
+"text": "inv pls",
+"expect": "join",
+"note": "gets an invite"
+},
+{
+"id": "b157",
+"channel": "guild",
+"context": "",
+"text": "x for the raid",
+"expect": "join",
+"note": "invite to raid group"
+},
+{
+"id": "b158",
+"channel": "tell",
+"context": "",
+"text": "inv?",
+"expect": "join",
+"note": "invite"
+},
+{
+"id": "b159",
+"channel": "tell",
+"context": "",
+"text": "got room for a skald?",
+"expect": "join",
+"note": "'sure' / 'full sry'"
+},
+{
+"id": "b160",
+"channel": "tell",
+"context": "",
+"text": "u lfg? we need a dps",
+"expect": "join",
+"note": "'sure inv'"
+},
+{
+"id": "b161",
+"channel": "tell",
+"context": "",
+"text": "group?",
+"expect": "join",
+"note": "'sure'"
+},
+{
+"id": "b162",
+"channel": "say",
+"context": "",
+"text": "duo?",
+"expect": "join",
+"note": "'ok'"
+},
+{
+"id": "b163",
+"channel": "say",
+"context": "",
+"text": "wanna team up for these? we're both soloing them",
+"expect": "join",
+"note": "'sure inv'"
+},
+{
+"id": "b164",
+"channel": "faction",
+"context": "",
+"text": "forming grp for keep take, need everyone at the milegate",
+"expect": "join",
+"note": "'x' / 'omw'"
+},
+{
+"id": "b165",
+"channel": "group",
+"context": "",
+"text": "can we invite my friend? hes a healer",
+"expect": "join",
+"note": "'sure, inv him'"
+},
+{
+"id": "b166",
+"channel": "group",
+"context": "",
+"text": "we need a puller, anyone know one?",
+"expect": "join",
+"note": "suggests name / offers to pull"
+},
+{
+"id": "b167",
+"channel": "trade",
+"context": "",
+"text": "WTS 2h sword 99% qual, pst",
+"expect": "trade_response",
+"note": "tell asking price"
+},
+{
+"id": "b168",
+"channel": "trade",
+"context": "",
+"text": "wtb str buffed armor lvl 30, pst",
+"expect": "trade_response",
+"note": "seller tells"
+},
+{
+"id": "b169",
+"channel": "trade",
+"context": "",
+"text": "selling mc chain set lvl 40, 3p obo",
+"expect": "trade_response",
+"note": "offer or 'too much'"
+},
+{
+"id": "b170",
+"channel": "trade",
+"context": "",
+"text": "how much for a 99 quality staff?",
+"expect": "trade_response",
+"note": "price quote"
+},
+{
+"id": "b171",
+"channel": "trade",
+"context": "",
+"text": "anyone selling arrows?",
+"expect": "trade_response",
+"note": "'fletcher here pst'"
+},
+{
+"id": "b172",
+"channel": "trade",
+"context": "",
+"text": "wts loot from DF, cheap",
+"expect": "trade_response",
+"note": "'what u have?'"
+},
+{
+"id": "b173",
+"channel": "trade",
+"context": "",
+"text": "whats the going rate for a 5/5/5 sc'd armor piece?",
+"expect": "trade_response",
+"note": "price range"
+},
+{
+"id": "b174",
+"channel": "trade",
+"context": "",
+"text": "selling potions, 1g each, pst",
+"expect": "trade_response",
+"note": "buyer pst"
+},
+{
+"id": "b175",
+"channel": "trade",
+"context": "",
+"text": "need a tailor, have mats",
+"expect": "trade_response",
+"note": "tailor offers"
+},
+{
+"id": "b176",
+"channel": "tell",
+"context": "",
+"text": "how much for the bow?",
+"expect": "trade_response",
+"note": "price"
+},
+{
+"id": "b177",
+"channel": "tell",
+"context": "",
+"text": "i can make u that for 20g if u bring mats",
+"expect": "trade_response",
+"note": "'deal' / 'ok'"
+},
+{
+"id": "b178",
+"channel": "tell",
+"context": "",
+"text": "can u lower the price a bit?",
+"expect": "trade_response",
+"note": "counter"
+},
+{
+"id": "b179",
+"channel": "say",
+"context": "",
+"text": "wanna buy some arrows? cheap",
+"expect": "trade_response",
+"note": "'no thx' / 'how much'"
+},
+{
+"id": "b180",
+"channel": "guild",
+"context": "",
+"text": "anyone need trash loot? giving away",
+"expect": "trade_response",
+"note": "'me!' / 'what is it'"
+},
+{
+"id": "b181",
+"channel": "trade",
+"context": "",
+"text": "WTS ROG longsword 18 str 12 con, offers",
+"expect": "trade_response",
+"note": "offer"
+},
+{
+"id": "b182",
+"channel": "tell",
+"context": "",
+"text": "i saw u selling a chain set, still have it?",
+"expect": "trade_response",
+"note": "'yep' / 'sold'"
+},
+{
+"id": "b183",
+"channel": "faction",
+"context": "",
+"text": "INC EAST GATE",
+"expect": "alarm_response",
+"note": "'omw' / 'how many?'"
+},
+{
+"id": "b184",
+"channel": "faction",
+"context": "",
+"text": "inc at bled!!",
+"expect": "alarm_response",
+"note": "'omw'"
+},
+{
+"id": "b185",
+"channel": "faction",
+"context": "",
+"text": "Caer Benowyc under attack, need help asap",
+"expect": "alarm_response",
+"note": "'omw'"
+},
+{
+"id": "b186",
+"channel": "faction",
+"context": "",
+"text": "mids at the milegate, 2 fg",
+"expect": "alarm_response",
+"note": "'omw' / 'where exactly'"
+},
+{
+"id": "b187",
+"channel": "faction",
+"context": "",
+"text": "hibs taking our relic keep!!!",
+"expect": "alarm_response",
+"note": "'omw!!!'"
+},
+{
+"id": "b188",
+"channel": "faction",
+"context": "",
+"text": "relic raid at 9, meet at portal keep",
+"expect": "alarm_response",
+"note": "'x' / 'be there'"
+},
+{
+"id": "b189",
+"channel": "faction",
+"context": "",
+"text": "stealthers at the bridge, watch out",
+"expect": "alarm_response",
+"note": "'ty' / 'where'"
+},
+{
+"id": "b190",
+"channel": "faction",
+"context": "",
+"text": "they got our pwr relic, ugh",
+"expect": "alarm_response",
+"note": "sympathetic groan + 'lets take it back'"
+},
+{
+"id": "b191",
+"channel": "faction",
+"context": "",
+"text": "need defenders at dun crim NOW",
+"expect": "alarm_response",
+"note": "'omw'"
+},
+{
+"id": "b192",
+"channel": "faction",
+"context": "",
+"text": "inc 3 hib at the tower, 2 bards and a champ",
+"expect": "alarm_response",
+"note": "'omw'"
+},
+{
+"id": "b193",
+"channel": "faction",
+"context": "",
+"text": "keep under siege, everyone to Nottmoor",
+"expect": "alarm_response",
+"note": "'omw'"
+},
+{
+"id": "b194",
+"channel": "faction",
+"context": "",
+"text": "DF is ours again",
+"expect": "alarm_response",
+"note": "'woot'"
+},
+{
+"id": "b195",
+"channel": "faction",
+"context": "",
+"text": "mids ganking at the dock",
+"expect": "alarm_response",
+"note": "'where?'"
+},
+{
+"id": "b196",
+"channel": "group",
+"context": "",
+"text": "INC",
+"expect": "alarm_response",
+"note": "'where?' / 'how many'"
+},
+{
+"id": "b197",
+"channel": "group",
+"context": "",
+"text": "inc left",
+"expect": "alarm_response",
+"note": "turn and engage"
+},
+{
+"id": "b198",
+"channel": "group",
+"context": "",
+"text": "sb on me!!",
+"expect": "alarm_response",
+"note": "'omw' / 'stick'"
+},
+{
+"id": "b199",
+"channel": "group",
+"context": "",
+"text": "nuker on hill, kill it",
+"expect": "alarm_response",
+"note": "'assist me'"
+},
+{
+"id": "b200",
+"channel": "group",
+"context": "",
+"text": "pull back to the keep",
+"expect": "alarm_response",
+"note": "'k'"
+},
+{
+"id": "b201",
+"channel": "guild",
+"context": "",
+"text": "anyone near emain? we're getting zerged",
+"expect": "alarm_response",
+"note": "'omw'"
+},
+{
+"id": "b202",
+"channel": "faction",
+"context": "",
+"text": "where's the zerg at?",
+"expect": "alarm_response",
+"note": "'at the keep'"
+},
+{
+"id": "b203",
+"channel": "faction",
+"context": "",
+"text": "Emain is hot tonight, hibs everywhere",
+"expect": "alarm_response",
+"note": "'omw'"
+},
+{
+"id": "b204",
+"channel": "group",
+"context": "",
+"text": "pulling",
+"expect": "none",
+"note": "nothing / 'k'"
+},
+{
+"id": "b205",
+"channel": "group",
+"context": "",
+"text": "inc pull",
+"expect": "none",
+"note": "nothing; get ready"
+},
+{
+"id": "b206",
+"channel": "group",
+"context": "",
+"text": "ADD!",
+"expect": "alarm_response",
+"note": "'got it' / taunt/mez the add (urgent group alert)"
+},
+{
+"id": "b207",
+"channel": "group",
+"context": "",
+"text": "oom",
+"expect": "none",
+"note": "'med up then' / nothing"
+},
+{
+"id": "b208",
+"channel": "group",
+"context": "",
+"text": "low pow, need a sec",
+"expect": "answer_yesno",
+"note": "'k'"
+},
+{
+"id": "b209",
+"channel": "group",
+"context": "",
+"text": "wipe... rez me when u can",
+"expect": "offer_help",
+"note": "'omw'"
+},
+{
+"id": "b210",
+"channel": "group",
+"context": "",
+"text": "gg we wiped lol",
+"expect": "sympathy",
+"note": "'lol ugh'"
+},
+{
+"id": "b211",
+"channel": "group",
+"context": "",
+"text": "that was close",
+"expect": "banter",
+"note": "'too close lol'"
+},
+{
+"id": "b212",
+"channel": "group",
+"context": "",
+"text": "mez the adds",
+"expect": "none",
+"note": "chanter just does it"
+},
+{
+"id": "b213",
+"channel": "group",
+"context": "",
+"text": "stop casting on the mezzed one!!!",
+"expect": "banter",
+"note": "'sry' / 'oops'"
+},
+{
+"id": "b214",
+"channel": "group",
+"context": "",
+"text": "sorry, my fault",
+"expect": "sympathy",
+"note": "'np happens'"
+},
+{
+"id": "b215",
+"channel": "group",
+"context": "",
+"text": "puller died again",
+"expect": "sympathy",
+"note": "'lol rez him'"
+},
+{
+"id": "b216",
+"channel": "group",
+"context": "",
+"text": "dont train the group!!",
+"expect": "abuse",
+"note": "'sorry' / 'my bad'"
+},
+{
+"id": "b217",
+"channel": "group",
+"context": "",
+"text": "need heals here!!",
+"expect": "offer_help",
+"note": "healer heals"
+},
+{
+"id": "b218",
+"channel": "group",
+"context": "",
+"text": "taunting",
+"expect": "none",
+"note": "no reply"
+},
+{
+"id": "b219",
+"channel": "group",
+"context": "",
+"text": "i got the drop ty",
+"expect": "thanks_ack",
+"note": "'grats' / 'np'"
+},
+{
+"id": "b220",
+"channel": "group",
+"context": "",
+"text": "ugh 10% xp loss",
+"expect": "sympathy",
+"note": "'ouch' / 'get your grave'"
+},
+{
+"id": "b221",
+"channel": "group",
+"context": "",
+"text": "this camp sucks, nothing up",
+"expect": "banter",
+"note": "'lets move'"
+},
+{
+"id": "b222",
+"channel": "guild",
+"context": "",
+"text": "DING 50!!!",
+"expect": "congrats",
+"note": "'GRATS!!!'"
+},
+{
+"id": "b223",
+"channel": "guild",
+"context": "",
+"text": "ding 20",
+"expect": "congrats",
+"note": "'grats'"
+},
+{
+"id": "b224",
+"channel": "guild",
+"context": "",
+"text": "finally got my epic armor :D",
+"expect": "congrats",
+"note": "'grats!'"
+},
+{
+"id": "b225",
+"channel": "guild",
+"context": "",
+"text": "rr3!",
+"expect": "congrats",
+"note": "'gratz'"
+},
+{
+"id": "b226",
+"channel": "guild",
+"context": "",
+"text": "got my first realm rank lol, rr2 baby",
+"expect": "congrats",
+"note": "'grats'"
+},
+{
+"id": "b227",
+"channel": "group",
+"context": "",
+"text": "ding!",
+"expect": "congrats",
+"note": "'grats'"
+},
+{
+"id": "b228",
+"channel": "group",
+"context": "",
+"text": "dinged 34",
+"expect": "congrats",
+"note": "'gz'"
+},
+{
+"id": "b229",
+"channel": "group",
+"context": "",
+"text": "ding 1/2 lol",
+"expect": "congrats",
+"note": "'grats lol'"
+},
+{
+"id": "b230",
+"channel": "group",
+"context": "",
+"text": "woot just got the named drop",
+"expect": "congrats",
+"note": "'nice grats'"
+},
+{
+"id": "b231",
+"channel": "group",
+"context": "",
+"text": "first kill of the night and i dinged",
+"expect": "congrats",
+"note": "'grats'"
+},
+{
+"id": "b232",
+"channel": "faction",
+"context": "",
+"text": "finally 50 after 4 months :D",
+"expect": "congrats",
+"note": "'grats!'"
+},
+{
+"id": "b233",
+"channel": "guild",
+"context": "",
+"text": "i got my necro to 25!",
+"expect": "congrats",
+"note": "'nice grats'"
+},
+{
+"id": "b234",
+"channel": "guild",
+"context": "",
+"text": "my first solo kill in rvr!!",
+"expect": "congrats",
+"note": "'nice!'"
+},
+{
+"id": "b235",
+"channel": "guild",
+"context": "",
+"text": "got a 99 quality on the first try!!",
+"expect": "congrats",
+"note": "'nice grats'"
+},
+{
+"id": "b236",
+"channel": "guild",
+"context": "",
+"text": "gratz on 40 Sigrunn",
+"expect": "congrats",
+"note": "others join in 'grats!'"
+},
+{
+"id": "b237",
+"channel": "guild",
+"context": "",
+"text": "ty for the grats all",
+"expect": "none",
+"note": "nothing / ':)'"
+},
+{
+"id": "b238",
+"channel": "guild",
+"context": "",
+"text": "ugh lost 3 levels of con dying in emain",
+"expect": "sympathy",
+"note": "'ouch, get your grave'"
+},
+{
+"id": "b239",
+"channel": "guild",
+"context": "",
+"text": "laggy tonight?",
+"expect": "answer_yesno",
+"note": "'yeah its awful'"
+},
+{
+"id": "b240",
+"channel": "guild",
+"context": "",
+"text": "server lag is killing me",
+"expect": "sympathy",
+"note": "'same'"
+},
+{
+"id": "b241",
+"channel": "guild",
+"context": "",
+"text": "my comp keeps crashing",
+"expect": "sympathy",
+"note": "'that sucks'"
+},
+{
+"id": "b242",
+"channel": "guild",
+"context": "",
+"text": "worst day ever, boss yelled at me",
+"expect": "sympathy",
+"note": "'ugh sorry'"
+},
+{
+"id": "b243",
+"channel": "guild",
+"context": "",
+"text": "got ganked 3 times leaving the portal keep",
+"expect": "sympathy",
+"note": "'ugh stealthers'"
+},
+{
+"id": "b244",
+"channel": "faction",
+"context": "",
+"text": "this patch nerfed my class into the ground",
+"expect": "sympathy",
+"note": "'yeah sucks'"
+},
+{
+"id": "b245",
+"channel": "tell",
+"context": "",
+"text": "lost all my coins buying a respec, so broke now",
+"expect": "sympathy",
+"note": "'ouch' / offers a few gold"
+},
+{
+"id": "b246",
+"channel": "group",
+"context": "",
+"text": "i hate these stupid spiders",
+"expect": "sympathy",
+"note": "'lol same'"
+},
+{
+"id": "b247",
+"channel": "guild",
+"context": "",
+"text": "lol",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b248",
+"channel": "guild",
+"context": "",
+"text": "rofl",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b249",
+"channel": "guild",
+"context": "",
+"text": "who's buying the pizza",
+"expect": "banter",
+"note": "'not me lol'"
+},
+{
+"id": "b250",
+"channel": "guild",
+"context": "",
+"text": "anyone watching the game tonight?",
+"expect": "banter",
+"note": "talk about the game"
+},
+{
+"id": "b251",
+"channel": "guild",
+"context": "",
+"text": "bards are just mobile jukeboxes",
+"expect": "banter",
+"note": "'lol hey!'"
+},
+{
+"id": "b252",
+"channel": "guild",
+"context": "",
+"text": "anyone else still lvling their crafter or am i the only nerd",
+"expect": "banter",
+"note": "'me too lol'"
+},
+{
+"id": "b253",
+"channel": "guild",
+"context": "",
+"text": "i fell off the bridge in tir na nog. again.",
+"expect": "banter",
+"note": "'lol'"
+},
+{
+"id": "b254",
+"channel": "guild",
+"context": "",
+"text": "anyone play any other games?",
+"expect": "banter",
+"note": "'some UO back in the day'"
+},
+{
+"id": "b255",
+"channel": "guild",
+"context": "",
+"text": "did u guys see the pic on the herald?",
+"expect": "banter",
+"note": "'lol yeah'"
+},
+{
+"id": "b256",
+"channel": "guild",
+"context": "",
+"text": "i think my cat just logged me out",
+"expect": "banter",
+"note": "'lol'"
+},
+{
+"id": "b257",
+"channel": "guild",
+"context": "",
+"text": "this game is crack i swear",
+"expect": "banter",
+"note": "'yup'"
+},
+{
+"id": "b258",
+"channel": "group",
+"context": "",
+"text": "lol nice pull",
+"expect": "banter",
+"note": "'lol ty'"
+},
+{
+"id": "b259",
+"channel": "group",
+"context": "",
+"text": "imagine if we had a real tank lol",
+"expect": "banter",
+"note": "'hey!' / 'lol'"
+},
+{
+"id": "b260",
+"channel": "group",
+"context": "",
+"text": "dont mind me, just dying over here",
+"expect": "banter",
+"note": "'lol sry'"
+},
+{
+"id": "b261",
+"channel": "group",
+"context": "",
+"text": "mmm pizza while i med",
+"expect": "banter",
+"note": "'lucky'"
+},
+{
+"id": "b262",
+"channel": "say",
+"context": "",
+"text": "nice hat lol",
+"expect": "banter",
+"note": "'lol ty'"
+},
+{
+"id": "b263",
+"channel": "say",
+"context": "",
+"text": "lol you just fell off the cliff",
+"expect": "banter",
+"note": "'shut up lol'"
+},
+{
+"id": "b264",
+"channel": "faction",
+"context": "",
+"text": "rofl that alb just ran into our whole zerg",
+"expect": "banter",
+"note": "'lol'"
+},
+{
+"id": "b265",
+"channel": "tell",
+"context": "",
+"text": "lol did u see that hunter fall off the bridge",
+"expect": "banter",
+"note": "'rofl yeah'"
+},
+{
+"id": "b266",
+"channel": "guild",
+"context": "",
+"text": "omg my kid just asked me if I'm a real wizard",
+"expect": "banter",
+"note": "'lol tell him yes'"
+},
+{
+"id": "b267",
+"channel": "guild",
+"context": "",
+"text": "horse just dumped me in the middle of 4 reds lol",
+"expect": "banter",
+"note": "'lol rip'"
+},
+{
+"id": "b268",
+"channel": "guild",
+"context": "",
+"text": ":D",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b269",
+"channel": "guild",
+"context": "",
+"text": "/me does a happy dance",
+"expect": "banter",
+"note": "laughs"
+},
+{
+"id": "b270",
+"channel": "say",
+"context": "",
+"text": "noob",
+"expect": "abuse",
+"note": "'whatever' / ignore"
+},
+{
+"id": "b271",
+"channel": "say",
+"context": "",
+"text": "ks much?",
+"expect": "abuse",
+"note": "'sry didnt see u' / 'it was free'"
+},
+{
+"id": "b272",
+"channel": "say",
+"context": "",
+"text": "omg ur so bad",
+"expect": "abuse",
+"note": "'thanks'"
+},
+{
+"id": "b273",
+"channel": "faction",
+"context": "",
+"text": "whoever pulled that train is an idiot",
+"expect": "abuse",
+"note": "'wasn't me'"
+},
+{
+"id": "b274",
+"channel": "tell",
+"context": "",
+"text": "u suck",
+"expect": "abuse",
+"note": "ignore / 'k'"
+},
+{
+"id": "b275",
+"channel": "tell",
+"context": "",
+"text": "stop ksing my camp jerk",
+"expect": "abuse",
+"note": "'sorry' / 'its not ur camp'"
+},
+{
+"id": "b276",
+"channel": "tell",
+"context": "",
+"text": "ur a terrible healer",
+"expect": "abuse",
+"note": "'sorry' / 'ok'"
+},
+{
+"id": "b277",
+"channel": "faction",
+"context": "",
+"text": "gg albs, way to zerg",
+"expect": "abuse",
+"note": "sarcasm reply 'lol'"
+},
+{
+"id": "b278",
+"channel": "group",
+"context": "",
+"text": "can u not stand in the fire",
+"expect": "abuse",
+"note": "'oops' / 'sry'"
+},
+{
+"id": "b279",
+"channel": "say",
+"context": "",
+"text": "Hail, good sir. What news from Camelot?",
+"expect": "banter",
+"note": "in character news"
+},
+{
+"id": "b280",
+"channel": "say",
+"context": "",
+"text": "*bows deeply* My lady, may I offer my sword in thy service?",
+"expect": "banter",
+"note": "accepts in character"
+},
+{
+"id": "b281",
+"channel": "say",
+"context": "",
+"text": "By Odin's beard, these trolls stink worse than a kobold's boots!",
+"expect": "banter",
+"note": "laughs in character"
+},
+{
+"id": "b282",
+"channel": "say",
+"context": "",
+"text": "The Morrigan watches over us tonight.",
+"expect": "banter",
+"note": "solemn reply"
+},
+{
+"id": "b283",
+"channel": "say",
+"context": "",
+"text": "Ye be lookin' weary, friend. Rest by the fire.",
+"expect": "banter",
+"note": "thanks in character"
+},
+{
+"id": "b284",
+"channel": "say",
+"context": "",
+"text": "Hail, warrior. Have ye seen any Albion scum near the river?",
+"expect": "banter",
+"note": "in character report"
+},
+{
+"id": "b285",
+"channel": "say",
+"context": "",
+"text": "*wipes the blood off his blade* Another day, another dead goblin.",
+"expect": "banter",
+"note": "comments in character"
+},
+{
+"id": "b286",
+"channel": "say",
+"context": "",
+"text": "What be thy name, stranger?",
+"expect": "banter",
+"note": "introduces self in character"
+},
+{
+"id": "b287",
+"channel": "say",
+"context": "",
+"text": "I seek the tavern. My throat is drier than the Plains of Salisbury.",
+"expect": "banter",
+"note": "points to tavern in character"
+},
+{
+"id": "b288",
+"channel": "say",
+"context": "",
+"text": "Pray tell, where might I find the Lady of the Lake?",
+"expect": "banter",
+"note": "in character mystical answer"
+},
+{
+"id": "b289",
+"channel": "say",
+"context": "",
+"text": "The forest whispers of danger. Stay close.",
+"expect": "banter",
+"note": "agrees in character"
+},
+{
+"id": "b290",
+"channel": "guild",
+"context": "",
+"text": "Brothers and sisters, we march at dusk to defend our lands!",
+"expect": "banter",
+"note": "'Aye!' in character"
+},
+{
+"id": "b291",
+"channel": "say",
+"context": "",
+"text": "*raises tankard* To Midgard!",
+"expect": "banter",
+"note": "'Skol!' / 'To Midgard!'"
+},
+{
+"id": "b292",
+"channel": "say",
+"context": "",
+"text": "I sense dark magic in this place...",
+"expect": "banter",
+"note": "in character agreement"
+},
+{
+"id": "b293",
+"channel": "say",
+"context": "",
+"text": "Good morrow! A fine day for hunting, is it not?",
+"expect": "banter",
+"note": "agrees in character"
+},
+{
+"id": "b294",
+"channel": "say",
+"context": "",
+"text": "((ooc: brb phone))",
+"expect": "none",
+"note": "nothing; ooc aside, others wait"
+},
+{
+"id": "b295",
+"channel": "say",
+"context": "",
+"text": "Ye've the look of a druid about ye. Can ye mend my wounds?",
+"expect": "banter",
+"note": "heals or apologizes in character"
+},
+{
+"id": "b296",
+"channel": "guild",
+"context": "",
+"text": "Thoriel, you still need the hide for your quest?",
+"expect": "answer_yesno",
+"note": "Thoriel 'yeah, got one?'"
+},
+{
+"id": "b297",
+"channel": "guild",
+"context": "",
+"text": "Grimbold how much do u want for that hammer?",
+"expect": "trade_response",
+"note": "Grimbold names a price"
+},
+{
+"id": "b298",
+"channel": "guild",
+"context": "",
+"text": "Kaelynn what lvl r u now?",
+"expect": "answer_info",
+"note": "'29!'"
+},
+{
+"id": "b299",
+"channel": "guild",
+"context": "",
+"text": "Fenwick u coming to the raid?",
+"expect": "answer_yesno",
+"note": "'yeah' / 'cant tonight'"
+},
+{
+"id": "b300",
+"channel": "group",
+"context": "",
+"text": "Eiliss can u mez the adds",
+"expect": "answer_yesno",
+"note": "'ok' / just mezzes"
+},
+{
+"id": "b301",
+"channel": "group",
+"context": "",
+"text": "Mordath stop pulling so fast lol",
+"expect": "abuse",
+"note": "'lol sry'"
+},
+{
+"id": "b302",
+"channel": "tell",
+"context": "",
+"text": "Brannoc did u get the armor i sent?",
+"expect": "answer_yesno",
+"note": "'yeah ty!'"
+},
+{
+"id": "b303",
+"channel": "guild",
+"context": "",
+"text": "Sigrunn where'd you get that cloak?",
+"expect": "answer_info",
+"note": "'crafted it' / 'from a quest'"
+},
+{
+"id": "b304",
+"channel": "group",
+"context": "",
+"text": "Oswin do u have a rez?",
+"expect": "answer_yesno",
+"note": "'yeah one sec'"
+},
+{
+"id": "b305",
+"channel": "guild",
+"context": "",
+"text": "Thoriel wb!",
+"expect": "thanks_ack",
+"note": "'ty'"
+},
+{
+"id": "b306",
+"channel": "guild",
+"context": "",
+"text": "hey Kaelynn congrats on the ding!",
+"expect": "thanks_ack",
+"note": "'ty!'"
+},
+{
+"id": "b307",
+"channel": "guild",
+"context": "",
+"text": "Grimbold, you around? need a smith",
+"expect": "answer_yesno",
+"note": "'yeah what u need'"
+},
+{
+"id": "b308",
+"channel": "group",
+"context": "",
+"text": "Fenwick r u afk?",
+"expect": "answer_yesno",
+"note": "'no here' / silence"
+},
+{
+"id": "b309",
+"channel": "guild",
+"context": "",
+"text": "Eiliss u still mad at me for that pull? lol",
+"expect": "banter",
+"note": "'lol no'"
+},
+{
+"id": "b310",
+"channel": "group",
+"context": "",
+"text": "brb dinner, can someone hold my spot?",
+"expect": "answer_yesno",
+"note": "'k we'll keep u in grp'"
+},
+{
+"id": "b311",
+"channel": "group",
+"context": "",
+"text": "brb 5 min, dont pull without me",
+"expect": "answer_yesno",
+"note": "'k'"
+},
+{
+"id": "b312",
+"channel": "guild",
+"context": "",
+"text": "back, anyone up for DF? or still raiding?",
+"expect": "answer_yesno",
+"note": "'wb' + answer"
+},
+{
+"id": "b313",
+"channel": "guild",
+"context": "",
+"text": "night all, raid at 9 tmrw right?",
+"expect": "answer_yesno",
+"note": "'night, yep 9'"
+},
+{
+"id": "b314",
+"channel": "guild",
+"context": "",
+"text": "hey all, anyone wanna group? im 32 now",
+"expect": "join",
+"note": "'hey' + 'sure'"
+},
+{
+"id": "b315",
+"channel": "group",
+"context": "",
+"text": "ty for rez, how much xp did i lose?",
+"expect": "answer_info",
+"note": "'np, like 5%'"
+},
+{
+"id": "b316",
+"channel": "tell",
+"context": "",
+"text": "hey, u selling those boots? how much?",
+"expect": "trade_response",
+"note": "'yep, 20g'"
+},
+{
+"id": "b317",
+"channel": "faction",
+"context": "",
+"text": "new here, where's the trainer and how do i get money?",
+"expect": "answer_info",
+"note": "directions + money tip"
+},
+{
+"id": "b318",
+"channel": "group",
+"context": "",
+"text": "oom and adds incoming!! someone help",
+"expect": "offer_help",
+"note": "mez/heal + 'got it'"
+},
+{
+"id": "b319",
+"channel": "guild",
+"context": "",
+"text": "dinged 30 and got a respec, now what spec lol",
+"expect": "congrats",
+"note": "'grats!' + spec advice"
+},
+{
+"id": "b320",
+"channel": "guild",
+"context": "",
+"text": "brb, wife needs help. anyone want my spot in DF grp?",
+"expect": "join",
+"note": "'me!'"
+},
+{
+"id": "b321",
+"channel": "group",
+"context": "",
+"text": "gtg soon, one more pull then im out",
+"expect": "answer_yesno",
+"note": "'k'"
+},
+{
+"id": "b322",
+"channel": "faction",
+"context": "",
+"text": "were r the eldrich trainrs",
+"expect": "answer_info",
+"note": "directions"
+},
+{
+"id": "b323",
+"channel": "faction",
+"context": "",
+"text": "how do u lvl a crafitng skil fast",
+"expect": "answer_info",
+"note": "'make items that con orange'"
+},
+{
+"id": "b324",
+"channel": "faction",
+"context": "",
+"text": "ne1 kno were to fnd copper ore",
+"expect": "answer_info",
+"note": "'merchants sell it'"
+},
+{
+"id": "b325",
+"channel": "faction",
+"context": "",
+"text": "w00t i pwned that alb",
+"expect": "banter",
+"note": "'lol gj'"
+},
+{
+"id": "b326",
+"channel": "faction",
+"context": "",
+"text": "lfg pl0x",
+"expect": "join",
+"note": "'what lvl/class?'"
+},
+{
+"id": "b327",
+"channel": "say",
+"context": "",
+"text": "u r teh suck lol",
+"expect": "abuse",
+"note": "'lol ok'"
+},
+{
+"id": "b328",
+"channel": "group",
+"context": "",
+"text": "omg pwnd",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b329",
+"channel": "say",
+"context": "",
+"text": "plz giv me money im poor",
+"expect": "offer_help",
+"note": "'no' / tosses a few silver"
+},
+{
+"id": "b330",
+"channel": "guild",
+"context": "",
+"text": "ne1 on?",
+"expect": "greeting",
+"note": "'here'"
+},
+{
+"id": "b331",
+"channel": "guild",
+"context": "",
+"text": "wuts up wit da server tonite",
+"expect": "answer_info",
+"note": "'lag/maintenance'"
+},
+{
+"id": "b332",
+"channel": "faction",
+"context": "",
+"text": "anyone kno how 2 get 2 hib frm alb lol",
+"expect": "answer_info",
+"note": "'you cant, diff realm'"
+},
+{
+"id": "b333",
+"channel": "faction",
+"context": "",
+"text": "were do i buy a bow im a scout",
+"expect": "answer_info",
+"note": "directions"
+},
+{
+"id": "b334",
+"channel": "tell",
+"context": "",
+"text": "u gotta spare rez?",
+"expect": "answer_yesno",
+"note": "'omw'"
+},
+{
+"id": "b335",
+"channel": "guild",
+"context": "",
+"text": "omg i jsut got 1 shotted by a grey con",
+"expect": "banter",
+"note": "'lol how'"
+},
+{
+"id": "b336",
+"channel": "faction",
+"context": "",
+"text": "who teh hell pulls a whole cmp into town lol",
+"expect": "abuse",
+"note": "laughs / 'not me'"
+},
+{
+"id": "b337",
+"channel": "guild",
+"context": "",
+"text": "gn ppl",
+"expect": "farewell",
+"note": "'gn'"
+},
+{
+"id": "b338",
+"channel": "guild",
+"context": "",
+"text": "ty all 4 the help",
+"expect": "thanks_ack",
+"note": "'np'"
+},
+{
+"id": "b339",
+"channel": "group",
+"context": "",
+"text": "k",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b340",
+"channel": "group",
+"context": "",
+"text": "omw",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b341",
+"channel": "group",
+"context": "",
+"text": "1 sec",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b342",
+"channel": "group",
+"context": "",
+"text": "/assist me",
+"expect": "none",
+"note": "players assist, no chat"
+},
+{
+"id": "b343",
+"channel": "faction",
+"context": "",
+"text": "zerg left the keep",
+"expect": "none",
+"note": "info only"
+},
+{
+"id": "b344",
+"channel": "faction",
+"context": "",
+"text": "relic is safe, ty all",
+"expect": "none",
+"note": "maybe 'gj' but no reply needed"
+},
+{
+"id": "b345",
+"channel": "guild",
+"context": "",
+"text": "afk",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b346",
+"channel": "guild",
+"context": "",
+"text": "brb",
+"expect": "none",
+"note": "nothing / 'k'"
+},
+{
+"id": "b347",
+"channel": "say",
+"context": "",
+"text": "/me sits by the fire",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b348",
+"channel": "say",
+"context": "",
+"text": "...",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b349",
+"channel": "faction",
+"context": "",
+"text": "they're leaving, good job everyone",
+"expect": "none",
+"note": "maybe 'gj' but not needed"
+},
+{
+"id": "b350",
+"channel": "guild",
+"context": "",
+"text": "lol nice",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b351",
+"channel": "group",
+"context": "",
+"text": "/face",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b352",
+"channel": "say",
+"context": "",
+"text": "hmm",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b353",
+"channel": "guild",
+"context": "",
+"text": "^^",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b354",
+"channel": "faction",
+"context": "",
+"text": "where do i get the quest for the lvl 10 shield?",
+"expect": "answer_info",
+"note": "quest giver in town"
+},
+{
+"id": "b355",
+"channel": "faction",
+"context": "",
+"text": "anyone know how to start the epic quest?",
+"expect": "answer_info",
+"note": "'talk to your trainer at 50'"
+},
+{
+"id": "b356",
+"channel": "guild",
+"context": "",
+"text": "is the bone camp in muspelheim good xp?",
+"expect": "answer_yesno",
+"note": "'yeah if u got a group'"
+},
+{
+"id": "b357",
+"channel": "faction",
+"context": "",
+"text": "how do i get to the cursed forest",
+"expect": "answer_info",
+"note": "directions"
+},
+{
+"id": "b358",
+"channel": "faction",
+"context": "",
+"text": "what lvl do keltoi mobs con",
+"expect": "answer_info",
+"note": "level range"
+},
+{
+"id": "b359",
+"channel": "faction",
+"context": "",
+"text": "where do i get my first weapon upgrade lol",
+"expect": "answer_info",
+"note": "'merchant / quest'"
+},
+{
+"id": "b360",
+"channel": "faction",
+"context": "",
+"text": "is there a way to see my rp count?",
+"expect": "answer_info",
+"note": "'realm tab'"
+},
+{
+"id": "b361",
+"channel": "faction",
+"context": "try the bone camp in Muspelheim, good xp at that lvl",
+"text": "where?",
+"expect": "answer_info",
+"note": "directions to Muspelheim"
+},
+{
+"id": "b362",
+"channel": "trade",
+"context": "i can make u that for 30g",
+"text": "how much for 2?",
+"expect": "trade_response",
+"note": "'55g'"
+},
+{
+"id": "b363",
+"channel": "trade",
+"context": "sure, 50g for the bow",
+"text": "how much?",
+"expect": "trade_response",
+"note": "repeats price"
+},
+{
+"id": "b364",
+"channel": "group",
+"context": "pulling next one, rdy?",
+"text": "lol no",
+"expect": "followup",
+"note": "'k, med up'"
+},
+{
+"id": "b365",
+"channel": "guild",
+"context": "ill help u with the epic tmrw",
+"text": "ok ty",
+"expect": "thanks_ack",
+"note": "'np'"
+},
+{
+"id": "b366",
+"channel": "tell",
+"context": "omw, where r u?",
+"text": "at the bridge",
+"expect": "followup",
+"note": "'k almost there'"
+},
+{
+"id": "b367",
+"channel": "faction",
+"context": "go to the armsman trainer in the north wing",
+"text": "which wing?",
+"expect": "answer_info",
+"note": "clarifies"
+},
+{
+"id": "b368",
+"channel": "group",
+"context": "want me to pull?",
+"text": "sure",
+"expect": "followup",
+"note": "pulls / 'k pulling'"
+},
+{
+"id": "b369",
+"channel": "guild",
+"context": "im 34 now, you?",
+"text": "29 :(",
+"expect": "banter",
+"note": "'u'll catch up'"
+},
+{
+"id": "b370",
+"channel": "tell",
+"context": "i have a spare 2h if u want",
+"text": "srsly? ty!",
+"expect": "thanks_ack",
+"note": "'np, opening trade'"
+},
+{
+"id": "b371",
+"channel": "lfg",
+"context": "sure, what lvl r u?",
+"text": "33 healer",
+"expect": "join",
+"note": "invites"
+},
+{
+"id": "b372",
+"channel": "say",
+"context": "u camping these?",
+"text": "nope",
+"expect": "followup",
+"note": "'cool ty' / starts hunting"
+},
+{
+"id": "b373",
+"channel": "trade",
+"context": "60g for the set",
+"text": "how about 45?",
+"expect": "trade_response",
+"note": "counter"
+},
+{
+"id": "b374",
+"channel": "faction",
+"context": "the dye merchant is in the market area",
+"text": "ty",
+"expect": "thanks_ack",
+"note": "'np'"
+},
+{
+"id": "b375",
+"channel": "guild",
+"context": "anyone want to go to DF?",
+"text": "me!",
+"expect": "join",
+"note": "invite"
+},
+{
+"id": "b376",
+"channel": "group",
+"context": "inc 3 albs",
+"text": "where?",
+"expect": "alarm_response",
+"note": "direction"
+},
+{
+"id": "b377",
+"channel": "tell",
+"context": "can't, in a grp sry",
+"text": "k np",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b378",
+"channel": "guild",
+"context": "ding 40!",
+"text": "grats",
+"expect": "thanks_ack",
+"note": "'ty!'"
+},
+{
+"id": "b379",
+"channel": "guild",
+"context": "brb",
+"text": "k",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b380",
+"channel": "say",
+"context": "nice hat lol",
+"text": "lol ty",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b381",
+"channel": "tell",
+"context": "i'm selling it for 40g",
+"text": "too much",
+"expect": "trade_response",
+"note": "counter / 'ok 35'"
+},
+{
+"id": "b382",
+"channel": "group",
+"context": "need a rez?",
+"text": "yes pls",
+"expect": "followup",
+"note": "rezzes"
+},
+{
+"id": "b383",
+"channel": "guild",
+"context": "what are u doing tonight?",
+"text": "farming, u?",
+"expect": "banter",
+"note": "'same' / 'rvr'"
+},
+{
+"id": "b384",
+"channel": "guild",
+"context": "we're in emain, come help",
+"text": "omw",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b385",
+"channel": "faction",
+"context": "ask the trainer in town, he'll tell u",
+"text": "which trainer?",
+"expect": "followup",
+"note": "clarifies"
+},
+{
+"id": "b386",
+"channel": "tell",
+"context": "sure i can port u",
+"text": "awesome, meet where?",
+"expect": "answer_info",
+"note": "'at the portal'"
+},
+{
+"id": "b387",
+"channel": "group",
+"context": "loot is trash, sell it",
+"text": "k",
+"expect": "none",
+"note": "nothing"
+},
+{
+"id": "b388",
+"channel": "say",
+"context": "hail, traveler",
+"text": "hail. whither are you bound?",
+"expect": "banter",
+"note": "in character reply"
+},
+{
+"id": "b389",
+"channel": "guild",
+"context": "the raid is at 9",
+"text": "est or pst?",
+"expect": "answer_info",
+"note": "'est'"
+},
+{
+"id": "b390",
+"channel": "faction",
+"context": "spindel is in the vale of mularn",
+"text": "ty, how far?",
+"expect": "answer_info",
+"note": "'not far, follow the road'"
+},
+{
+"id": "b391",
+"channel": "tell",
+"context": "selling it for 1p",
+"text": "lol no",
+"expect": "trade_response",
+"note": "'ok 80g?'"
+},
+{
+"id": "b392",
+"channel": "guild",
+"context": "wanna duo?",
+"text": "sure, where?",
+"expect": "answer_info",
+"note": "names a spot"
+},
+{
+"id": "b393",
+"channel": "group",
+"context": "i'm healing",
+"text": "ok cool, who's pulling?",
+"expect": "answer_info",
+"note": "'me'"
+},
+{
+"id": "b394",
+"channel": "lfg",
+"context": "pst for inv",
+"text": "sent",
+"expect": "followup",
+"note": "invites"
+},
+{
+"id": "b395",
+"channel": "guild",
+"context": "gl on ur epic!",
+"text": "ty lol i need it",
+"expect": "banter",
+"note": "'lol'"
+},
+{
+"id": "b396",
+"channel": "say",
+"context": "watch out for the adds here",
+"text": "what adds?",
+"expect": "answer_info",
+"note": "explains"
+},
+{
+"id": "b397",
+"channel": "tell",
+"context": "i dont have one sorry",
+"text": "aw ok",
+"expect": "sympathy",
+"note": "'gl'"
+},
+{
+"id": "b398",
+"channel": "group",
+"context": "wanna stay another hour?",
+"text": "maybe 30 min",
+"expect": "followup",
+"note": "'k'"
+},
+{
+"id": "b399",
+"channel": "faction",
+"context": "the bindstone is by the bank",
+"text": "huh?",
+"expect": "followup",
+"note": "clarifies"
+},
+{
+"id": "b400",
+"channel": "guild",
+"context": "u need a healer?",
+"text": "ya pls",
+"expect": "offer_help",
+"note": "'omw'"
+}
+]
