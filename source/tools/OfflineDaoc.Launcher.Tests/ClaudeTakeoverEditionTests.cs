@@ -48,7 +48,7 @@ public sealed class ClaudeTakeoverEditionTests
         var disabled = Enumerable.Range(0, 1500).Select(_ => Roll(false)).ToList();
         Assert.That(disabled, Does.Not.Contain(63));
         var enabled = Enumerable.Range(0, 1500).Select(_ => Roll(true)).ToList();
-        Assert.That(enabled, Does.Contain(63), "the default (the b edition) keeps the Sluaghbinder in the Hibernian pool");
+        Assert.That(enabled, Does.Not.Contain(63), "the Sluaghbinder is discontinued (owner 2026-11-01): never rolled");
     }
 
     [TestCase(true, "VERSION 0.37b")]

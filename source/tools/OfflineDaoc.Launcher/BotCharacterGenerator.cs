@@ -54,12 +54,7 @@ internal static class BotCharacterGenerator
             new(50, "Ranger", (9, "Celt"), (11, "Elf"), (12, "Lurikeen")),
             new(55, "Animist", (9, "Celt"), (10, "Firbolg"), (15, "Sylvan")),
             new(56, "Valewalker", (9, "Celt"), (10, "Firbolg"), (15, "Sylvan")),
-            // Isolated Sluaghbinder test class. Keep this as one peer choice
-            // in the Hibernian pool so launcher batches roll it at the same
-            // rate as every other Hibernian class; only its legal player
-            // races are offered.
-            // Living Server keeps the Sluaghbinder behind its switch (enable_sluaghbinder, on in 0.37b) when it merged the base's final code, which discontinued it (owner 2026-11-01).
-            new(63, "Sluaghbinder", (9, "Celt"), (10, "Firbolg")),
+            // (0.38: the Sluaghbinder is discontinued, owner 2026-10-30.)
         ],
     };
 

@@ -638,8 +638,7 @@ public static class SluaghbinderEpicQuestRuntime
     }
 
     /// <summary>0.38: the class is discontinued; nothing of its quest line starts.</summary>
-    // Living Server keeps the Sluaghbinder behind its switch (enable_sluaghbinder, on in 0.37b) when it merged the base's final code, which discontinued it (owner 2026-11-01): the quest line runs whenever the class is on.
-    public static bool Discontinued => !ServerProperties.Properties.ENABLE_SLUAGHBINDER;
+    public const bool Discontinued = true;
 
     private static GameNPC Muirenn;
 

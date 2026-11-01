@@ -7,8 +7,8 @@ using NUnit.Framework;
 namespace DOL.GS.Tests
 {
     /// <summary>
-    /// Offline DAoC 0.33 editions share one server. classes/enable_sluaghbinder is on for 0.33b
-    /// (and by default) and off for the 0.33 "no custom class" edition.
+    /// The Sluaghbinder is discontinued (shadowofze 2026-10-30; Living Server 1.2, owner 2026-11-01): whatever
+    /// classes/enable_sluaghbinder says, no gamebot is made as one. Old characters still load.
     /// </summary>
     [TestFixture]
     [NonParallelizable]
@@ -22,21 +22,14 @@ namespace DOL.GS.Tests
         [TearDown]
         public void Restore() => Properties.ENABLE_SLUAGHBINDER = _original;
 
+        // Owner 2026-11-01: Living Server follows the base and discontinues the Sluaghbinder (shadowofze, 2026-10-30).
+        // With the switch on or off, no gamebot is made as one and it is never offered.
         [Test]
-        public void EnabledByDefault()
-        {
-            Assert.That(_original, Is.True);
-            Assert.That(AutonomousBotIdentityGenerator.GetEraClasses(eRealm.Hibernia), Does.Contain(eCharacterClass.Sluaghbinder));
-        }
-
-        [Test]
-        public void EnabledRollsAreUnchanged()
+        public void DiscontinuedEvenWithTheSwitchOn()
         {
             Properties.ENABLE_SLUAGHBINDER = true;
-            var first = Roll(new Random(4242));
-            var second = Roll(new Random(4242));
-            Assert.That(first, Is.EqualTo(second));
-            Assert.That(first, Does.Contain(eCharacterClass.Sluaghbinder), "an enabled Hibernian pool still rolls the class");
+            Assert.That(Roll(new Random(4242)), Does.Not.Contain(eCharacterClass.Sluaghbinder));
+            Assert.That(AutonomousBotIdentityGenerator.GetEraClasses(eRealm.Hibernia), Does.Not.Contain(eCharacterClass.Sluaghbinder));
         }
 
         [Test]
