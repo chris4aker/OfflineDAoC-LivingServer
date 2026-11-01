@@ -1786,7 +1786,10 @@ namespace DOL.GS
             Vector3 strategicDestination = directive.Camp == null
                 ? new Vector3(leader.X, leader.Y, leader.Z)
                 : new Vector3(directive.Camp.X, directive.Camp.Y, directive.Camp.Z);
-            if (directive.ObjectiveKind != eAutonomousObjectiveKind.GroupPve &&
+            // Owner 2026-11-01: only the leader may take an independent route (a town teleporter, a plotted leg). A member
+            // that took one every turn released its formation follow, the next turn re-issued it, and the party visibly
+            // jerked once per second instead of walking behind its leader.
+            if (directive.ObjectiveKind != eAutonomousObjectiveKind.GroupPve && bot == leader &&
                 TryBeginFasterStableRoute(bot, strategicDestination,
                     directive.Camp?.ZoneName ?? "the group leader"))
                 return true;
