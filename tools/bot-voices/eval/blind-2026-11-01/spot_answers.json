@@ -1,0 +1,1082 @@
+[
+ {
+  "n": 1,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 2,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 3,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "polished caps and punctuation, scripted feel"
+ },
+ {
+  "n": 4,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 5,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 6,
+  "call": "player",
+  "confidence": 1,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 7,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "capitalized roleplay prose, too polished"
+ },
+ {
+  "n": 8,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "news-ticker phrasing of world state"
+ },
+ {
+  "n": 9,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 10,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "game fact wrong for era"
+ },
+ {
+  "n": 11,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 12,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "news-ticker phrasing of world state"
+ },
+ {
+  "n": 13,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 14,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 15,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 16,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 17,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 18,
+  "call": "player",
+  "confidence": 2,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 19,
+  "call": "player",
+  "confidence": 2,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 20,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 21,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 22,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 23,
+  "call": "player",
+  "confidence": 2,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 24,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 25,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 26,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 27,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 28,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 29,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 30,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 31,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "unfilled template placeholder leaked"
+ },
+ {
+  "n": 32,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 33,
+  "call": "player",
+  "confidence": 2,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 34,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "lfg plus canned flavor tail"
+ },
+ {
+  "n": 35,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 36,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "news-ticker phrasing of world state"
+ },
+ {
+  "n": 37,
+  "call": "player",
+  "confidence": 2,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 38,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 39,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 40,
+  "call": "player",
+  "confidence": 1,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 41,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 42,
+  "call": "player",
+  "confidence": 1,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 43,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 44,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 45,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 46,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 47,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 48,
+  "call": "player",
+  "confidence": 2,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 49,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "lfg plus canned flavor tail"
+ },
+ {
+  "n": 50,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 51,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 52,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 53,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 54,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 55,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "lfg plus canned flavor tail"
+ },
+ {
+  "n": 56,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 57,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 58,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 59,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 60,
+  "call": "player",
+  "confidence": 3,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 61,
+  "call": "player",
+  "confidence": 2,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 62,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "advertises custom exchange, scripted advice"
+ },
+ {
+  "n": 63,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 64,
+  "call": "player",
+  "confidence": 1,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 65,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 66,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 67,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "near-duplicate of another line, template"
+ },
+ {
+  "n": 68,
+  "call": "player",
+  "confidence": 1,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 69,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 70,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "polished caps and punctuation, scripted feel"
+ },
+ {
+  "n": 71,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 72,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 73,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 74,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 75,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "advertises custom exchange, scripted advice"
+ },
+ {
+  "n": 76,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 77,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 78,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 79,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "unfilled template placeholder leaked"
+ },
+ {
+  "n": 80,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 81,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 82,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 83,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 84,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "polished caps and punctuation, scripted feel"
+ },
+ {
+  "n": 85,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "capitalized roleplay prose, too polished"
+ },
+ {
+  "n": 86,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 87,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "lfg plus canned flavor tail"
+ },
+ {
+  "n": 88,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 89,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 90,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "near-duplicate of another line, template"
+ },
+ {
+  "n": 91,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "polished caps and punctuation, scripted feel"
+ },
+ {
+  "n": 92,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 93,
+  "call": "player",
+  "confidence": 2,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 94,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 95,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "template slot grammar glitch"
+ },
+ {
+  "n": 96,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 97,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 98,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "polished caps and punctuation, scripted feel"
+ },
+ {
+  "n": 99,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 100,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 101,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 102,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 103,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 104,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 105,
+  "call": "player",
+  "confidence": 1,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 106,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 107,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 108,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 109,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 110,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "capitalized roleplay prose, too polished"
+ },
+ {
+  "n": 111,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 112,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 113,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 114,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 115,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 116,
+  "call": "player",
+  "confidence": 2,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 117,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 118,
+  "call": "player",
+  "confidence": 1,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 119,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 120,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 121,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 122,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 123,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 124,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 125,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 126,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "polished caps and punctuation, scripted feel"
+ },
+ {
+  "n": 127,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 128,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 129,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 130,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 131,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 132,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 133,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 134,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 135,
+  "call": "player",
+  "confidence": 1,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 136,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "polished caps and punctuation, scripted feel"
+ },
+ {
+  "n": 137,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 138,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 139,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 140,
+  "call": "player",
+  "confidence": 2,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 141,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 142,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 143,
+  "call": "player",
+  "confidence": 1,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 144,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "near-duplicate of another line, template"
+ },
+ {
+  "n": 145,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "near-duplicate of another line, template"
+ },
+ {
+  "n": 146,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 147,
+  "call": "player",
+  "confidence": 1,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 148,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 149,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 150,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 151,
+  "call": "player",
+  "confidence": 2,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 152,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 153,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 154,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "capitalized roleplay prose, too polished"
+ },
+ {
+  "n": 155,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 156,
+  "call": "player",
+  "confidence": 1,
+  "reason": "terse urgent combat callout, real"
+ },
+ {
+  "n": 157,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "polished caps and punctuation, scripted feel"
+ },
+ {
+  "n": 158,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 159,
+  "call": "player",
+  "confidence": 1,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 160,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 161,
+  "call": "player",
+  "confidence": 1,
+  "reason": "short natural ack, ambiguous"
+ },
+ {
+  "n": 162,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 163,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 164,
+  "call": "player",
+  "confidence": 2,
+  "reason": "natural abbreviation/shorthand"
+ },
+ {
+  "n": 165,
+  "call": "player",
+  "confidence": 2,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 166,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 167,
+  "call": "player",
+  "confidence": 2,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 168,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "template slot grammar glitch"
+ },
+ {
+  "n": 169,
+  "call": "player",
+  "confidence": 1,
+  "reason": "specific newbie question, natural"
+ },
+ {
+  "n": 170,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 171,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 172,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 173,
+  "call": "player",
+  "confidence": 1,
+  "reason": "real-life/social context, natural"
+ },
+ {
+  "n": 174,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 175,
+  "call": "bot",
+  "confidence": 2,
+  "reason": "lore/aphorism narration, nobody types this"
+ },
+ {
+  "n": 176,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 177,
+  "call": "player",
+  "confidence": 1,
+  "reason": "situational detail, reactive"
+ },
+ {
+  "n": 178,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ },
+ {
+  "n": 179,
+  "call": "bot",
+  "confidence": 3,
+  "reason": "capitalized roleplay prose, too polished"
+ },
+ {
+  "n": 180,
+  "call": "bot",
+  "confidence": 1,
+  "reason": "generic filler ack, fits any context"
+ }
+]

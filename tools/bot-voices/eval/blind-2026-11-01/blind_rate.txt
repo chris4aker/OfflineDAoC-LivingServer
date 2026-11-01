@@ -1,0 +1,189 @@
+read as expected: 212/400 (53.0 %)
+[guild] lo all | ctx  | expect greeting | got none unknown
+[guild] hiya all, what's everyone up to | ctx  | expect greeting | got shape ask_doing
+[guild] hi guild, finally home from work | ctx  | expect greeting | got shape player_rl_work
+[group] hello, what are we hunting? | ctx A new member joined the group. | expect greeting | got not sure
+[tell] hi! long time no see | ctx  | expect greeting | got none unknown
+[tell] hey u there? | ctx  | expect greeting | got not sure
+[guild] hey Thoriel, you on tonight? | ctx  | expect greeting | got not sure
+[guild] re all, isp died again | ctx  | expect welcome_back | got shape player_rl_tech
+[group] re, crashed to desktop | ctx  | expect welcome_back | got none unknown
+[guild] re. kids are in bed finally | ctx  | expect welcome_back | got none unknown
+[tell] sry was afk, back | ctx  | expect welcome_back | got intent away
+[group] i have to go guys, sorry. thx for the group | ctx  | expect farewell | got intent thanks
+[group] im out, ty all | ctx  | expect farewell | got intent thanks
+[guild] cya all next week, going out of town | ctx  | expect farewell | got intent travel
+[guild] where's everyone at? | ctx  | expect answer_info | got shape ask_whereall
+[group] where are we going next? | ctx  | expect answer_info | got shape ask_next
+[lfg] where is the best place to solo at 22 as a hunter? | ctx  | expect answer_info | got intent travel
+[faction] were is the sauvage keep? im lost lol | ctx  | expect answer_info | got intent travel
+[faction] is it worth going 50 sword or should i split | ctx  | expect answer_info | got shape ask_opinion
+[guild] should i go cleric or friar for my alt? | ctx  | expect answer_info | got shape ask_choice
+[guild] how many rp for rr2? | ctx  | expect answer_info | got shape player_goodnews
+[faction] anyone know if spell crafting is worth it yet? | ctx  | expect answer_info | got shape ask_opinion
+[faction] do valkyn make good savages? | ctx  | expect answer_info | got intent classtalk
+[guild] anyone up for DF? | ctx  | expect answer_yesno | got shape ask_on
+[group] can we stay one more pull? | ctx  | expect answer_yesno | got intent grouping
+[group] can someone rez me? | ctx  | expect answer_yesno | got intent rez
+[faction] anyone know a good weaponcrafter? | ctx  | expect answer_info | got intent trading
+[guild] who's on tonight? | ctx  | expect answer_info | got shape ask_on
+[guild] who was that hunter that killed me lol | ctx  | expect answer_info | got intent classtalk
+[say] help please, this mob is killing me | ctx  | expect offer_help | got shape complaint
+[faction] help! train coming out of the dungeon | ctx  | expect offer_help | got intent alarm
+[faction] im lost in the forest can someone help | ctx  | expect offer_help | got intent travel
+[faction] first char, very confused lol | ctx  | expect offer_help | got intent banter
+[guild] anyone around to help with my quest? | ctx  | expect offer_help | got live ask_inplace
+[guild] corpse run anyone? died in spindel | ctx  | expect offer_help | got intent dungeon
+[group] im oom and getting hit | ctx  | expect offer_help | got intent banter
+[tell] do u have any spare gear for lvl 10? | ctx  | expect offer_help | got shape ask_charity
+[say] is anyone around? need a bind | ctx  | expect offer_help | got live ask_inplace
+[faction] need a healer at the cursed forest dock pls, dead | ctx  | expect offer_help | got intent grouping
+[say] i cant figure out how to equip this | ctx  | expect offer_help | got none unknown
+[lfg] lvl 22 cleric lfg | ctx  | expect join | got intent grouping
+[lfg] lf healer for xp grp, lvl 30ish | ctx  | expect join | got intent grouping
+[lfg] LFG 34 bm | ctx  | expect join | got intent grouping
+[lfg] lfg 18 nightshade, can tank a lil | ctx  | expect join | got intent grouping
+[lfg] looking for group, lvl 12 mercenary | ctx  | expect join | got intent grouping
+[lfg] healer lfg, lvl 41, have spec heals | ctx  | expect join | got intent grouping
+[lfg] LF puller, have full grp minus 1 | ctx  | expect join | got intent grouping
+[lfg] anyone lfg? need 2 for barrows | ctx  | expect join | got intent grouping
+[lfg] lvl 45 bard lfg, can speed/heal/mez | ctx  | expect join | got intent grouping
+[lfg] looking for a duo partner around 20 | ctx  | expect join | got intent grouping
+[lfg] lf grp for epic mobs | ctx  | expect join | got intent grouping
+[guild] who wants a group? I'm 28 | ctx  | expect join | got intent grouping
+[guild] inv pls | ctx  | expect join | got intent grouping
+[guild] x for the raid | ctx  | expect join | got intent banter
+[tell] inv? | ctx  | expect join | got join
+[tell] got room for a skald? | ctx  | expect join | got join
+[tell] u lfg? we need a dps | ctx  | expect join | got join
+[tell] group? | ctx  | expect join | got join
+[say] duo? | ctx  | expect join | got join
+[say] wanna team up for these? we're both soloing them | ctx  | expect join | got join
+[faction] forming grp for keep take, need everyone at the milegate | ctx  | expect join | got intent grouping
+[group] can we invite my friend? hes a healer | ctx  | expect join | got intent grouping
+[group] we need a puller, anyone know one? | ctx  | expect join | got intent grouping
+[trade] anyone selling arrows? | ctx  | expect trade_response | got not sure
+[trade] whats the going rate for a 5/5/5 sc'd armor piece? | ctx  | expect trade_response | got not sure
+[tell] can u lower the price a bit? | ctx  | expect trade_response | got not sure
+[guild] anyone need trash loot? giving away | ctx  | expect trade_response | got not sure
+[faction] hibs taking our relic keep!!! | ctx  | expect alarm_response | got intent banter
+[faction] relic raid at 9, meet at portal keep | ctx  | expect alarm_response | got intent rvr
+[faction] they got our pwr relic, ugh | ctx  | expect alarm_response | got shape complaint
+[faction] need defenders at dun crim NOW | ctx  | expect alarm_response | got none unknown
+[faction] DF is ours again | ctx  | expect alarm_response | got intent banter
+[faction] mids ganking at the dock | ctx  | expect alarm_response | got intent banter
+[group] nuker on hill, kill it | ctx  | expect alarm_response | got none unknown
+[group] pull back to the keep | ctx  | expect alarm_response | got shape player_order
+[guild] anyone near emain? we're getting zerged | ctx  | expect alarm_response | got live ask_inplace
+[faction] where's the zerg at? | ctx  | expect alarm_response | got live ask_enemy
+[faction] Emain is hot tonight, hibs everywhere | ctx  | expect alarm_response | got intent rvr
+[group] inc pull | ctx  | expect none | got group warning
+[group] low pow, need a sec | ctx  | expect answer_yesno | got none unknown
+[group] wipe... rez me when u can | ctx  | expect offer_help | got intent rez
+[group] that was close | ctx  | expect banter | got none unknown
+[group] mez the adds | ctx  | expect none | got fact cant
+[group] stop casting on the mezzed one!!! | ctx  | expect banter | got shape player_order
+[group] sorry, my fault | ctx  | expect sympathy | got none unknown
+[group] need heals here!! | ctx  | expect offer_help | got none unknown
+[group] i got the drop ty | ctx  | expect thanks_ack | got shape player_goodnews
+[group] this camp sucks, nothing up | ctx  | expect banter | got shape complaint
+[guild] got my first realm rank lol, rr2 baby | ctx  | expect congrats | got intent banter
+[group] woot just got the named drop | ctx  | expect congrats | got none unknown
+[faction] finally 50 after 4 months :D | ctx  | expect congrats | got none unknown
+[guild] i got my necro to 25! | ctx  | expect congrats | got intent classtalk
+[guild] my first solo kill in rvr!! | ctx  | expect congrats | got intent banter
+[guild] got a 99 quality on the first try!! | ctx  | expect congrats | got intent banter
+[guild] gratz on 40 Sigrunn | ctx  | expect congrats | got intent congrats
+[guild] worst day ever, boss yelled at me | ctx  | expect sympathy | got none unknown
+[faction] this patch nerfed my class into the ground | ctx  | expect sympathy | got intent classtalk
+[tell] lost all my coins buying a respec, so broke now | ctx  | expect sympathy | got intent trading
+[group] i hate these stupid spiders | ctx  | expect sympathy | got none unknown
+[guild] who's buying the pizza | ctx  | expect banter | got shape player_rl_food
+[guild] anyone watching the game tonight? | ctx  | expect banter | got shape player_rl_media
+[guild] bards are just mobile jukeboxes | ctx  | expect banter | got intent classtalk
+[guild] anyone else still lvling their crafter or am i the only nerd | ctx  | expect banter | got intent trading
+[guild] i fell off the bridge in tir na nog. again. | ctx  | expect banter | got none unknown
+[guild] anyone play any other games? | ctx  | expect banter | got not sure
+[guild] did u guys see the pic on the herald? | ctx  | expect banter | got not sure
+[guild] i think my cat just logged me out | ctx  | expect banter | got shape player_rl_pet
+[group] dont mind me, just dying over here | ctx  | expect banter | got none unknown
+[group] mmm pizza while i med | ctx  | expect banter | got shape player_rl_food
+[tell] lol did u see that hunter fall off the bridge | ctx  | expect banter | got intent classtalk
+[guild] omg my kid just asked me if I'm a real wizard | ctx  | expect banter | got none unknown
+[guild] /me does a happy dance | ctx  | expect banter | got none unknown
+[say] noob | ctx  | expect abuse | got intent banter
+[say] ks much? | ctx  | expect abuse | got not sure
+[say] omg ur so bad | ctx  | expect abuse | got intent banter
+[tell] stop ksing my camp jerk | ctx  | expect abuse | got shape player_order
+[faction] gg albs, way to zerg | ctx  | expect abuse | got intent banter
+[group] can u not stand in the fire | ctx  | expect abuse | got not sure
+[say] Hail, good sir. What news from Camelot? | ctx  | expect banter | got not sure
+[say] *bows deeply* My lady, may I offer my sword in thy service? | ctx  | expect banter | got not sure
+[say] By Odin's beard, these trolls stink worse than a kobold's boots! | ctx  | expect banter | got none unknown
+[say] The Morrigan watches over us tonight. | ctx  | expect banter | got none unknown
+[say] Ye be lookin' weary, friend. Rest by the fire. | ctx  | expect banter | got none unknown
+[say] Hail, warrior. Have ye seen any Albion scum near the river? | ctx  | expect banter | got not sure
+[say] *wipes the blood off his blade* Another day, another dead goblin. | ctx  | expect banter | got none unknown
+[say] What be thy name, stranger? | ctx  | expect banter | got not sure
+[say] I seek the tavern. My throat is drier than the Plains of Salisbury. | ctx  | expect banter | got none unknown
+[say] Pray tell, where might I find the Lady of the Lake? | ctx  | expect banter | got not sure
+[say] The forest whispers of danger. Stay close. | ctx  | expect banter | got none unknown
+[guild] Brothers and sisters, we march at dusk to defend our lands! | ctx  | expect banter | got none unknown
+[say] I sense dark magic in this place... | ctx  | expect banter | got none unknown
+[say] Good morrow! A fine day for hunting, is it not? | ctx  | expect banter | got intent grinding
+[say] Ye've the look of a druid about ye. Can ye mend my wounds? | ctx  | expect banter | got not sure
+[guild] Kaelynn what lvl r u now? | ctx  | expect answer_info | got shape ask_level
+[group] Eiliss can u mez the adds | ctx  | expect answer_yesno | got none unknown
+[group] Mordath stop pulling so fast lol | ctx  | expect abuse | got intent banter
+[group] Oswin do u have a rez? | ctx  | expect answer_yesno | got intent rez
+[guild] Thoriel wb! | ctx  | expect thanks_ack | got none unknown
+[guild] hey Kaelynn congrats on the ding! | ctx  | expect thanks_ack | got intent congrats
+[group] brb 5 min, dont pull without me | ctx  | expect answer_yesno | got shape player_wait
+[guild] back, anyone up for DF? or still raiding? | ctx  | expect answer_yesno | got shape ask_choice
+[guild] night all, raid at 9 tmrw right? | ctx  | expect answer_yesno | got intent farewell
+[guild] hey all, anyone wanna group? im 32 now | ctx  | expect join | got intent grouping
+[faction] new here, where's the trainer and how do i get money? | ctx  | expect answer_info | got shape ask_advice
+[group] oom and adds incoming!! someone help | ctx  | expect offer_help | got group warning
+[guild] dinged 30 and got a respec, now what spec lol | ctx  | expect congrats | got shape ask_advice
+[guild] brb, wife needs help. anyone want my spot in DF grp? | ctx  | expect join | got intent grouping
+[group] gtg soon, one more pull then im out | ctx  | expect answer_yesno | got intent farewell
+[faction] ne1 kno were to fnd copper ore | ctx  | expect answer_info | got none unknown
+[faction] w00t i pwned that alb | ctx  | expect banter | got none unknown
+[faction] lfg pl0x | ctx  | expect join | got intent grouping
+[say] u r teh suck lol | ctx  | expect abuse | got intent banter
+[say] plz giv me money im poor | ctx  | expect offer_help | got shape ask_charity
+[guild] ne1 on? | ctx  | expect greeting | got not sure
+[guild] wuts up wit da server tonite | ctx  | expect answer_info | got none unknown
+[faction] anyone kno how 2 get 2 hib frm alb lol | ctx  | expect answer_info | got intent banter
+[tell] u gotta spare rez? | ctx  | expect answer_yesno | got intent rez
+[guild] omg i jsut got 1 shotted by a grey con | ctx  | expect banter | got none unknown
+[faction] who teh hell pulls a whole cmp into town lol | ctx  | expect abuse | got intent banter
+[group] /assist me | ctx  | expect none | got shape player_order
+[faction] zerg left the keep | ctx  | expect none | got intent banter
+[guild] is the bone camp in muspelheim good xp? | ctx  | expect answer_yesno | got intent grinding
+[faction] where do i get my first weapon upgrade lol | ctx  | expect answer_info | got intent travel
+[faction] where? | ctx try the bone camp in Muspelheim, good xp at that lvl | expect answer_info | got thread followup_where
+[group] lol no | ctx pulling next one, rdy? | expect followup | got thread answer
+[tell] at the bridge | ctx omw, where r u? | expect followup | got thread answer
+[faction] which wing? | ctx go to the armsman trainer in the north wing | expect answer_info | got thread followup_which
+[group] sure | ctx want me to pull? | expect followup | got thread answer
+[guild] 29 :( | ctx im 34 now, you? | expect banter | got thread answer
+[lfg] 33 healer | ctx sure, what lvl r u? | expect join | got thread answer
+[say] nope | ctx u camping these? | expect followup | got thread decline
+[trade] how about 45? | ctx 60g for the set | expect trade_response | got not sure
+[guild] me! | ctx anyone want to go to DF? | expect join | got join
+[group] where? | ctx inc 3 albs | expect alarm_response | got thread followup_where
+[guild] grats | ctx ding 40! | expect thanks_ack | got intent congrats
+[say] lol ty | ctx nice hat lol | expect none | got thread thanks
+[tell] too much | ctx i'm selling it for 40g | expect trade_response | got none ack
+[group] yes pls | ctx need a rez? | expect followup | got thread answer
+[guild] farming, u? | ctx what are u doing tonight? | expect banter | got not sure
+[say] hail. whither are you bound? | ctx hail, traveler | expect banter | got thread followup_confirm
+[guild] est or pst? | ctx the raid is at 9 | expect answer_info | got shape ask_choice
+[faction] ty, how far? | ctx spindel is in the vale of mularn | expect answer_info | got intent thanks
+[tell] lol no | ctx selling it for 1p | expect trade_response | got none ack
+[lfg] sent | ctx pst for inv | expect followup | got none unknown
+[guild] ty lol i need it | ctx gl on ur epic! | expect banter | got thread thanks
+[tell] aw ok | ctx i dont have one sorry | expect sympathy | got none unknown
+[group] maybe 30 min | ctx wanna stay another hour? | expect followup | got thread answer
+[guild] ya pls | ctx u need a healer? | expect offer_help | got thread answer
