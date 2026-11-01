@@ -4,7 +4,7 @@ Owner: Chris. Opened 2026-11-01 from community feedback on the Beta 1.1 post on 
 battleground RvR at about 30% of the population): the bots spot you from very far away, there are far too many pet
 classes (about ten Cabalist pets chasing him at once), the bots all follow the same path, and there's no way to get
 the specs a proper PBAE group needs. The fix is in how the world's own gamebots are built and how they play, not in
-summoning companions. This is the design; the stops are in [RELEASE-TRAIN.md](RELEASE-TRAIN.md).
+summoning companions. This is the design; it ships in 1.2 as phase B ([RELEASE-TRAIN.md](RELEASE-TRAIN.md)).
 
 ## What the code does today (checked 2026-11-01)
 
