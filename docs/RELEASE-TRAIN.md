@@ -117,6 +117,11 @@ read with "his final `main`" in place of "the `v0.38` tag".
       with 1.1.1's
 - [ ] Live events M0 alongside (measurement only: the cost per monster and per bot at the owner's roster, the
       timeline report)
+- [ ] Bot builds and RvR, first half ([BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md), from r/daoc feedback
+      2026-11-01): the era's builds and class shares researched and weighted (`bot-builds.json`), with a pet-class cap
+      per warband; RvR perception (noticing by chance and distance, a reaction delay, spotters calling "inc", an RvR
+      difficulty setting); warbands in lanes and small roaming groups; the battleground session measured before and
+      after
 - [ ] Played: one session per realm; a relic campaign watched end to end; a dragon raid with the new add control
 
 If decision 3 goes the other way (live events first), this stop becomes the harvest: his world scripts and the
@@ -134,6 +139,9 @@ Headline: live events. Design: [LIVE-EVENTS-1.2.md](LIVE-EVENTS-1.2.md) (the pla
 - [ ] The historical server (opt-in roster import)
 - [ ] Questing: the server-side quest harness and the quest audit script; the first world fixes; the epic chains
       linked by Setup (and unlinked by rollback)
+- [ ] Bot builds and RvR, second half: a playbook per build on the base's spell-use engine (PBAE casters, healers,
+      crowd control and tanks first); bot groups and warbands filled by role; `/lfg pbae|healer|cc|tank`, a bot's
+      build shown when you target or invite it, and respeccing a bot you group with
 - [ ] Played: one session per realm for the fight and the roaming threat; the guild tiers; two epic lines
 
 ### 1.4 — the realm has work to do
@@ -177,6 +185,11 @@ Taken on the owner's behalf in the 1.1.1 branches, to be confirmed or reversed a
   exactly what 1.1 paid (PR #45). The owner may prefer the cap always on.
 - Dragons count their timed-out raids as losses, as dungeons do, so a dragon whose last two raids timed out meets
   the Special Forces from the start on the day PR #44 is merged.
+
+Taken (2026-11-01): the answer to "too many pets, bots see you from miles, no PBAE group" is the world's own
+gamebots playing the era's builds properly, not summoned companions ([BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md)).
+It also strengthens the case for decision 3: the spell-use engine it builds on (area spells that fire, add control,
+tank guarding) is in shadowofze's final `main`.
 
 Open, decision 3 (2026-10-31), the owner's: **the last base merge as its own stop (1.2 as written above) or a
 harvest.** The case for the merge: the overlap only grows (41 shared server files today; crafting, events and
