@@ -263,6 +263,10 @@ var _unmorphed := {}                     # your figure while morphed: model, ani
 
 
 func morph(info: Dictionary) -> void:
+	# the spell effects' skeleton (SpellFx._skeleton caches the first one under you): looked up again for the body that
+	# shows - kept on your hidden figure, a shade's hand glow while casting drew on invisible hands (owner 2026-10-31)
+	if has_meta("fx_skel"):
+		remove_meta("fx_skel")
 	if _morph and is_instance_valid(_morph):
 		_morph.queue_free()
 	_morph = null
@@ -303,6 +307,8 @@ func morph(info: Dictionary) -> void:
 	_strides = info.get("strides_units", {})
 	_clip_len = info.get("clip_seconds", {})
 	_morph_casts = info.get("cast_clips", {})            # (its anim set's own clip per casting style: Npc.clip_for)
+	var sk := m.find_children("*", "Skeleton3D", true, false)
+	set_meta("fx_skel", sk[0] if sk.size() > 0 else null)  # (the form's own: its hands, or none - the chest then)
 	_apply_model_yaw()
 	_play("idle")
 

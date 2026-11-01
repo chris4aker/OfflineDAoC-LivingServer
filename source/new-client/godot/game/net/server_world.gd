@@ -1656,6 +1656,35 @@ func _add_object(d: Dictionary) -> void:
 	objects[oid] = holder
 
 
+## You crossed a zone border (seamless zones: the new zone moves to the origin, everything by -d). NpcManager moves the
+## livings; the server's ground objects and the movers' server places / destinations were left where they were, so
+## after a crossing every object already in view - loot bags, dropped gear, server props - hung off by the whole zone
+## offset, in the air or in the ground (owner 2026-10-31: floating bags, a shield and banners in Salisbury Plains and
+## Campacorentin, "everytime ive seen these floating objects ive been on a horse ride").
+func rebase(d: Vector3) -> void:
+	super.rebase(d)
+	for oid in objects:
+		var o = objects[oid]
+		if o is Node3D and is_instance_valid(o):
+			(o as Node3D).position -= d
+	for st in _mover:
+		var mv: Dictionary = _mover[st]
+		for k in ["srv_pos", "dest"]:
+			if mv.get(k) is Vector3:
+				mv[k] = (mv[k] as Vector3) - d
+		if mv.has("sy"):
+			mv["sy"] = float(mv.sy) - d.y
+	for oid in _parked:                                         # (out of view, kept to come back: off by d too)
+		var pk: Array = _parked[oid]
+		if pk.size() >= 8 and pk[7] is NpcState:
+			var ps := pk[7] as NpcState
+			ps.pos -= d
+			ps.home -= d
+			ps.walk_to -= d
+		if pk.size() > 0 and pk[0] is Node3D and is_instance_valid(pk[0]):
+			(pk[0] as Node3D).position -= d
+
+
 var target_object := 0                       # the targeted ground object's id (loot, a gravestone, a relic)
 
 

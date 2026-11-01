@@ -497,6 +497,11 @@ Sluaghbinder class is discontinued.
   signal; they used to rest standing).
 - A monster, bot or companion standing in a fight turns to face what it is hitting, as the original client turned
   fighters itself (with the server's own turn; bots that stepped to a flank kept facing the way they walked in).
+- Loot bags, dropped gear and other things the server lays on the ground no longer float after you cross a zone border
+  (most often on a stable horse). At a border everything moves with the new zone, but those objects stayed where they
+  were and hung in the air or sank into the ground somewhere else.
+- A Necromancer's shade (or anyone in another form, such as a Vendo) shows its spell glows on the body you see. They
+  were drawn on the hidden normal body, so the hands never glowed.
 
 **Credits**
 - Thanks to chris4aker's Living Server fork
