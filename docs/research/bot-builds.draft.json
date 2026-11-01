@@ -1,0 +1,2693 @@
+{
+ "meta": {
+  "era": "DAoC patch 1.65 (to 2003-10-08), Classic + Shrouded Isles, no Catacombs/ToA classes; Sluaghbinder excluded",
+  "generated": "2026-11-01",
+  "status": "draft for owner review",
+  "notes": [
+   "Build spec points come from dated 2002-2003 forum posts (FreddysHouse, European GOA servers). weight is an estimate informed by forumMentions; weightSourced=false everywhere.",
+   "forumMentions = number of dated posts (to 2003-10-08) in the 1,483 spec/template threads crawled whose top two spec lines match this build within 4 points.",
+   "use: rvr = mostly seen at 50 in RvR; levelling = mostly a levelling/PvE build; both.",
+   "Spec line names follow DOL.GS.Specs constants in the repo (e.g. Cold Magic, Wind Magic, Longbows, Polearm, Recurve Bow, Composite Bow)."
+  ]
+ },
+ "realms": {
+  "Albion": {
+   "classShareRvR": {
+    "Cleric": 0.12,
+    "Infiltrator": 0.11,
+    "Armsman": 0.09,
+    "Minstrel": 0.09,
+    "Paladin": 0.08,
+    "Mercenary": 0.08,
+    "Friar": 0.07,
+    "Scout": 0.07,
+    "Wizard": 0.07,
+    "Theurgist": 0.06,
+    "Sorcerer": 0.05,
+    "Cabalist": 0.04,
+    "Necromancer": 0.04,
+    "Reaver": 0.03
+   },
+   "classShareLevelling": {
+    "Cleric": 0.14,
+    "Infiltrator": 0.11,
+    "Armsman": 0.08,
+    "Minstrel": 0.08,
+    "Paladin": 0.07,
+    "Mercenary": 0.07,
+    "Friar": 0.07,
+    "Scout": 0.07,
+    "Wizard": 0.07,
+    "Theurgist": 0.06,
+    "Sorcerer": 0.05,
+    "Cabalist": 0.05,
+    "Necromancer": 0.05,
+    "Reaver": 0.03
+   },
+   "sharesSourced": false,
+   "shareBasis": "estimate; see ERA-BUILDS-1.65.md section 2 for the partial dated counts behind it"
+  },
+  "Midgard": {
+   "classShareRvR": {
+    "Healer": 0.15,
+    "Skald": 0.12,
+    "Shadowblade": 0.11,
+    "Warrior": 0.1,
+    "Berserker": 0.1,
+    "Shaman": 0.09,
+    "Savage": 0.07,
+    "Runemaster": 0.07,
+    "Hunter": 0.06,
+    "Thane": 0.05,
+    "Spiritmaster": 0.05,
+    "Bonedancer": 0.03
+   },
+   "classShareLevelling": {
+    "Shaman": 0.13,
+    "Healer": 0.12,
+    "Shadowblade": 0.12,
+    "Skald": 0.09,
+    "Hunter": 0.08,
+    "Warrior": 0.08,
+    "Berserker": 0.08,
+    "Thane": 0.07,
+    "Runemaster": 0.07,
+    "Spiritmaster": 0.06,
+    "Savage": 0.05,
+    "Bonedancer": 0.05
+   },
+   "sharesSourced": false,
+   "shareBasis": "estimate; see ERA-BUILDS-1.65.md section 2 for the partial dated counts behind it",
+   "sourcedSnapshot": {
+    "what": "level-50 characters, Midgard, Excalibur (GOA Europe), classic classes only",
+    "date": "2003-01-22",
+    "source": "https://forums.freddyshouse.com/threads/level-50-class-population-for-excal-midgard.111651/",
+    "counts": {
+     "Spiritmaster": 44,
+     "Shaman": 44,
+     "Hunter": 51,
+     "Berserker": 78,
+     "Thane": 94,
+     "Runemaster": 95,
+     "Shadowblade": 99,
+     "Warrior": 104,
+     "Healer": 117,
+     "Skald": 157
+    }
+   }
+  },
+  "Hibernia": {
+   "classShareRvR": {
+    "Druid": 0.12,
+    "Bard": 0.11,
+    "Nightshade": 0.11,
+    "Hero": 0.1,
+    "Ranger": 0.09,
+    "Eldritch": 0.09,
+    "Warden": 0.08,
+    "Blademaster": 0.08,
+    "Enchanter": 0.08,
+    "Champion": 0.06,
+    "Mentalist": 0.04,
+    "Valewalker": 0.02,
+    "Animist": 0.02
+   },
+   "classShareLevelling": {
+    "Druid": 0.12,
+    "Nightshade": 0.11,
+    "Bard": 0.1,
+    "Ranger": 0.09,
+    "Hero": 0.09,
+    "Eldritch": 0.09,
+    "Enchanter": 0.09,
+    "Blademaster": 0.08,
+    "Warden": 0.07,
+    "Champion": 0.06,
+    "Mentalist": 0.05,
+    "Valewalker": 0.025,
+    "Animist": 0.025
+   },
+   "sharesSourced": false,
+   "shareBasis": "estimate; see ERA-BUILDS-1.65.md section 2 for the partial dated counts behind it"
+  }
+ },
+ "classes": {
+  "Armsman": [
+   {
+    "label": "Polearm/Shield hybrid",
+    "role": "tank",
+    "use": "rvr",
+    "weight": 0.4,
+    "specs": {
+     "Polearm": 50,
+     "Shields": 42,
+     "Slash": 39,
+     "Parry": 6
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 16,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/armsman-spec-advice.134508/",
+     "https://forums.freddyshouse.com/threads/armsman-spec-question-purepole.130247/",
+     "https://forums.freddyshouse.com/threads/if-your-armsmen-has-a-full-respec-what-would-you-do.128208/"
+    ],
+    "sourceDates": [
+     "2003-07-11",
+     "2003-06-10",
+     "2003-06-01"
+    ]
+   },
+   {
+    "label": "Two-handed/Shield hybrid",
+    "role": "tank",
+    "use": "rvr",
+    "weight": 0.15,
+    "specs": {
+     "Two Handed": 50,
+     "Shields": 42,
+     "Slash": 39
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 6,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/2hand-armsman-spec.131215/",
+     "https://forums.freddyshouse.com/threads/99-2h-armsman-sc-template.128704/",
+     "https://forums.freddyshouse.com/threads/if-your-armsmen-has-a-full-respec-what-would-you-do.128208/"
+    ],
+    "sourceDates": [
+     "2003-06-14",
+     "2003-06-02",
+     "2003-05-30"
+    ]
+   },
+   {
+    "label": "Sword and board",
+    "role": "tank",
+    "use": "both",
+    "weight": 0.3,
+    "specs": {
+     "Slash": 50,
+     "Shields": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 14,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/99-armsman-template.145044/",
+     "https://forums.freddyshouse.com/threads/if-your-armsmen-has-a-full-respec-what-would-you-do.128208/",
+     "https://forums.freddyshouse.com/threads/armsman-spec.120340/"
+    ],
+    "sourceDates": [
+     "2003-09-05",
+     "2003-06-01",
+     "2003-04-03"
+    ]
+   },
+   {
+    "label": "Polearm/Shield hybrid (Thrust)",
+    "role": "tank",
+    "use": "rvr",
+    "weight": 0.15,
+    "specs": {
+     "Polearm": 50,
+     "Shields": 42,
+     "Thrust": 39,
+     "Parry": 6
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 16,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/armsman-spec-advice.134508/",
+     "https://forums.freddyshouse.com/threads/armsman-spec-question-purepole.130247/",
+     "https://forums.freddyshouse.com/threads/if-your-armsmen-has-a-full-respec-what-would-you-do.128208/"
+    ],
+    "sourceDates": [
+     "2003-07-11",
+     "2003-06-10",
+     "2003-06-01"
+    ]
+   }
+  ],
+  "Paladin": [
+   {
+    "label": "Chants/Shield/Parry",
+    "role": "tank-support",
+    "use": "rvr",
+    "weight": 0.4,
+    "specs": {
+     "Chants": 48,
+     "Shields": 42,
+     "Slash": 29,
+     "Parry": 30
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 55,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/paladin-spec-and-race.146293/",
+     "https://forums.freddyshouse.com/threads/pally-spec.141120/",
+     "https://forums.freddyshouse.com/threads/paladin-spec.136761/"
+    ],
+    "sourceDates": [
+     "2003-09-09",
+     "2003-08-13",
+     "2003-07-21"
+    ]
+   },
+   {
+    "label": "Chants/Shield/Slash",
+    "role": "tank-support",
+    "use": "both",
+    "weight": 0.3,
+    "specs": {
+     "Chants": 48,
+     "Shields": 42,
+     "Slash": 39,
+     "Parry": 15
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 55,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/paladin-spec-and-race.146293/",
+     "https://forums.freddyshouse.com/threads/pally-spec.141120/",
+     "https://forums.freddyshouse.com/threads/paladin-spec.136761/"
+    ],
+    "sourceDates": [
+     "2003-09-09",
+     "2003-08-13",
+     "2003-07-21"
+    ]
+   },
+   {
+    "label": "Full shield",
+    "role": "tank-support",
+    "use": "rvr",
+    "weight": 0.15,
+    "specs": {
+     "Shields": 50,
+     "Chants": 46,
+     "Slash": 29,
+     "Parry": 19
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 12,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/paladin-spec-and-race.146293/",
+     "https://forums.freddyshouse.com/threads/paladin-spec.136761/",
+     "https://forums.freddyshouse.com/threads/paladin-spec.132456/"
+    ],
+    "sourceDates": [
+     "2003-09-09",
+     "2003-07-21",
+     "2003-06-23"
+    ]
+   },
+   {
+    "label": "Two-handed chanter",
+    "role": "tank-support",
+    "use": "both",
+    "weight": 0.15,
+    "specs": {
+     "Chants": 46,
+     "Two Handed": 44,
+     "Parry": 20
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 4,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/paladin-spec-and-race.146293/",
+     "https://forums.freddyshouse.com/threads/paladin-spec-questions.103964/",
+     "https://forums.freddyshouse.com/threads/lvl-50-paladins-how-should-i-final-spec-only-4-more-lvls-to-go.94840/"
+    ],
+    "sourceDates": [
+     "2003-09-08",
+     "2002-11-09",
+     "2002-08-13"
+    ]
+   }
+  ],
+  "Mercenary": [
+   {
+    "label": "Thrust dual wield",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.45,
+    "specs": {
+     "Thrust": 50,
+     "Dual Wield": 50,
+     "Parry": 10
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 8,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/thrust-mercenary-sc-template.145900/",
+     "https://forums.freddyshouse.com/threads/mercenary-speccing-and-race.139816/",
+     "https://forums.freddyshouse.com/threads/mercfiltrator-or-5-spec-oppinions-plz.114839/"
+    ],
+    "sourceDates": [
+     "2003-09-07",
+     "2003-08-07",
+     "2003-02-26"
+    ]
+   },
+   {
+    "label": "Slash dual wield",
+    "role": "melee-dps",
+    "use": "both",
+    "weight": 0.4,
+    "specs": {
+     "Slash": 50,
+     "Dual Wield": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/merc-specs.114278/",
+     "https://forums.freddyshouse.com/threads/mercenary-spec-help-required.113127/",
+     "https://forums.freddyshouse.com/threads/how-have-you-speced-your-mercanery.100502/"
+    ],
+    "sourceDates": [
+     "2003-02-21",
+     "2003-02-03",
+     "2002-10-12"
+    ]
+   },
+   {
+    "label": "Defensive parry",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.15,
+    "specs": {
+     "Slash": 29,
+     "Dual Wield": 50,
+     "Parry": 49
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/merc-specs.114278/"
+    ],
+    "sourceDates": [
+     "2003-02-26"
+    ]
+   }
+  ],
+  "Reaver": [
+   {
+    "label": "Flex/Shield/Soulrending",
+    "role": "tank",
+    "use": "both",
+    "weight": 0.7,
+    "specs": {
+     "Flexible": 50,
+     "Shields": 42,
+     "Soulrending": 39,
+     "Parry": 6
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 23,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/new-reaver-spec.132053/",
+     "https://forums.freddyshouse.com/threads/reaver-spec.130996/",
+     "https://forums.freddyshouse.com/threads/reaver-spec.128895/"
+    ],
+    "sourceDates": [
+     "2003-06-23",
+     "2003-06-15",
+     "2003-05-31"
+    ]
+   },
+   {
+    "label": "Soulrending focus",
+    "role": "tank",
+    "use": "rvr",
+    "weight": 0.3,
+    "specs": {
+     "Soulrending": 45,
+     "Flexible": 44,
+     "Shields": 42,
+     "Parry": 10
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/reaver-spec-help.115670/",
+     "https://forums.freddyshouse.com/threads/how-you-speccing-your-reaver.114996/"
+    ],
+    "sourceDates": [
+     "2003-02-27",
+     "2003-02-23"
+    ]
+   }
+  ],
+  "Cleric": [
+   {
+    "label": "Rejuvenation healer",
+    "role": "healer",
+    "use": "rvr",
+    "weight": 0.35,
+    "specs": {
+     "Rejuvenation": 46,
+     "Enhancement": 27,
+     "Smite": 8
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 7,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/cleric-spec.132302/",
+     "https://forums.freddyshouse.com/threads/cleric-spec.132314/",
+     "https://forums.freddyshouse.com/threads/cleric-sc-template-opinions-please.117725/"
+    ],
+    "sourceDates": [
+     "2003-06-22",
+     "2003-06-21",
+     "2003-03-15"
+    ]
+   },
+   {
+    "label": "Enhancement/Rejuv (spec buffs)",
+    "role": "healer-buffer",
+    "use": "both",
+    "weight": 0.45,
+    "specs": {
+     "Enhancement": 40,
+     "Rejuvenation": 36,
+     "Smite": 4
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 7,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/cleric-spec.132314/",
+     "https://forums.freddyshouse.com/threads/cleric-spec.132302/",
+     "https://forums.freddyshouse.com/threads/cleric-sc-setup-so-near-yet-so-far.116565/"
+    ],
+    "sourceDates": [
+     "2003-06-21",
+     "2003-06-21",
+     "2003-03-12"
+    ]
+   },
+   {
+    "label": "Smite",
+    "role": "assist-dd",
+    "use": "levelling",
+    "weight": 0.2,
+    "specs": {
+     "Smite": 48,
+     "Rejuvenation": 23,
+     "Enhancement": 9
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 0,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/how-many-pure-smiters-we-got.93469/"
+    ],
+    "sourceDates": [
+     "2002-07-22"
+    ]
+   }
+  ],
+  "Friar": [
+   {
+    "label": "Enhance/Staff",
+    "role": "support-melee",
+    "use": "both",
+    "weight": 0.75,
+    "specs": {
+     "Enhancement": 45,
+     "Staff": 44,
+     "Rejuvenation": 15,
+     "Parry": 12
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 23,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/friar-sc-template.135338/",
+     "https://forums.freddyshouse.com/threads/friar-spec.117332/",
+     "https://forums.freddyshouse.com/threads/friar-spec.114639/"
+    ],
+    "sourceDates": [
+     "2003-07-09",
+     "2003-03-17",
+     "2003-02-22"
+    ]
+   },
+   {
+    "label": "Enhance/Staff/Rejuv",
+    "role": "support-melee",
+    "use": "rvr",
+    "weight": 0.25,
+    "specs": {
+     "Enhancement": 45,
+     "Staff": 39,
+     "Rejuvenation": 25,
+     "Parry": 12
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 31,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/friar-sc-template-yes-yes-again.131065/",
+     "https://forums.freddyshouse.com/threads/friar-spec.127463/",
+     "https://forums.freddyshouse.com/threads/sc-template-for-friars.121133/"
+    ],
+    "sourceDates": [
+     "2003-06-16",
+     "2003-05-27",
+     "2003-04-09"
+    ]
+   }
+  ],
+  "Minstrel": [
+   {
+    "label": "Instruments/Stealth/Slash",
+    "role": "cc-support",
+    "use": "rvr",
+    "weight": 0.45,
+    "specs": {
+     "Instruments": 50,
+     "Stealth": 50,
+     "Slash": 29
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 25,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/mincer-spec.147275/",
+     "https://forums.freddyshouse.com/threads/minstrel-sc-template.137188/",
+     "https://forums.freddyshouse.com/threads/post-a-reply-in-here-if-you-think-you-need-a-full-skill-or-ra-respec.130722/"
+    ],
+    "sourceDates": [
+     "2003-09-18",
+     "2003-07-23",
+     "2003-06-15"
+    ]
+   },
+   {
+    "label": "Instruments/Slash (no stealth)",
+    "role": "cc-support",
+    "use": "both",
+    "weight": 0.3,
+    "specs": {
+     "Instruments": 44,
+     "Slash": 44,
+     "Stealth": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/minstrel-spec.105153/",
+     "https://forums.freddyshouse.com/threads/speccing-a-minstrel.103715/",
+     "https://forums.freddyshouse.com/threads/minstrel-speccing.93675/"
+    ],
+    "sourceDates": [
+     "2002-11-30",
+     "2002-11-04",
+     "2002-07-29"
+    ]
+   },
+   {
+    "label": "Instruments/Thrust",
+    "role": "cc-support",
+    "use": "both",
+    "weight": 0.25,
+    "specs": {
+     "Instruments": 44,
+     "Thrust": 39,
+     "Stealth": 29
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/minstrel-spec.113887/",
+     "https://forums.freddyshouse.com/threads/minstrel-respec.102744/"
+    ],
+    "sourceDates": [
+     "2003-02-20",
+     "2002-11-02"
+    ]
+   }
+  ],
+  "Infiltrator": [
+   {
+    "label": "Thrust/CS assassin",
+    "role": "stealther",
+    "use": "rvr",
+    "weight": 0.4,
+    "specs": {
+     "Thrust": 50,
+     "Critical Strike": 34,
+     "Stealth": 35,
+     "Envenom": 36,
+     "Dual Wield": 10
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 59,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/which-infil-spec.150636/",
+     "https://forums.freddyshouse.com/threads/need-help-to-spec-a-infil.143569/",
+     "https://forums.freddyshouse.com/threads/my-specs-and-options.139910/"
+    ],
+    "sourceDates": [
+     "2003-10-05",
+     "2003-08-29",
+     "2003-08-07"
+    ]
+   },
+   {
+    "label": "Thrust/DW \"5-spec\"",
+    "role": "stealther",
+    "use": "rvr",
+    "weight": 0.35,
+    "specs": {
+     "Thrust": 50,
+     "Stealth": 35,
+     "Dual Wield": 35,
+     "Critical Strike": 34,
+     "Envenom": 33
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 71,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/which-infil-spec.150636/",
+     "https://forums.freddyshouse.com/threads/need-help-to-spec-a-infil.143569/",
+     "https://forums.freddyshouse.com/threads/my-specs-and-options.139910/"
+    ],
+    "sourceDates": [
+     "2003-10-06",
+     "2003-09-22",
+     "2003-08-07"
+    ]
+   },
+   {
+    "label": "Slash/CS assassin",
+    "role": "stealther",
+    "use": "both",
+    "weight": 0.25,
+    "specs": {
+     "Slash": 50,
+     "Critical Strike": 34,
+     "Stealth": 35,
+     "Envenom": 36,
+     "Dual Wield": 10
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 6,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/need-help-to-spec-a-infil.143569/",
+     "https://forums.freddyshouse.com/threads/infiltrator-race-starting-stat-points-and-infiltrator-templates.138925/",
+     "https://forums.freddyshouse.com/threads/2nd-oppinion-on-infil-spec-please.131623/"
+    ],
+    "sourceDates": [
+     "2003-08-27",
+     "2003-08-04",
+     "2003-06-17"
+    ]
+   }
+  ],
+  "Scout": [
+   {
+    "label": "Longbow archer",
+    "role": "archer",
+    "use": "both",
+    "weight": 0.75,
+    "specs": {
+     "Longbows": 50,
+     "Shields": 42,
+     "Stealth": 33,
+     "Thrust": 21
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 38,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/interesting-scout-spec.144286/",
+     "https://forums.freddyshouse.com/threads/scout-template-need-help.135542/",
+     "https://forums.freddyshouse.com/threads/how-to-specc-a-scout.132691/"
+    ],
+    "sourceDates": [
+     "2003-09-01",
+     "2003-07-16",
+     "2003-06-24"
+    ]
+   },
+   {
+    "label": "Longbow/Slash",
+    "role": "archer",
+    "use": "rvr",
+    "weight": 0.15,
+    "specs": {
+     "Longbows": 46,
+     "Shields": 42,
+     "Stealth": 33,
+     "Slash": 29
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 52,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/interesting-scout-spec.144286/",
+     "https://forums.freddyshouse.com/threads/scout-template-need-help.135542/",
+     "https://forums.freddyshouse.com/threads/how-to-specc-a-scout.132691/"
+    ],
+    "sourceDates": [
+     "2003-09-01",
+     "2003-07-16",
+     "2003-06-24"
+    ]
+   },
+   {
+    "label": "Melee scout",
+    "role": "melee-dps",
+    "use": "levelling",
+    "weight": 0.1,
+    "specs": {
+     "Thrust": 50,
+     "Shields": 42,
+     "Stealth": 20
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/interesting-scout-spec.144286/"
+    ],
+    "sourceDates": [
+     "2003-09-02"
+    ]
+   }
+  ],
+  "Theurgist": [
+   {
+    "label": "Air",
+    "role": "assist-dd",
+    "use": "rvr",
+    "weight": 0.5,
+    "specs": {
+     "Wind Magic": 45,
+     "Earth Magic": 26,
+     "Cold Magic": 14
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 14,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/someone-tell-me-how-i-should-spec-my-thurg.142027/",
+     "https://forums.freddyshouse.com/threads/help-w-theurg-sc-template.131762/",
+     "https://forums.freddyshouse.com/threads/theurgist-speccing-question.117859/",
+     "https://forums.freddyshouse.com/threads/theurgist-speccing-question.117859/"
+    ],
+    "sourceDates": [
+     "2003-08-17",
+     "2003-06-21",
+     "2003-03-17",
+     "2003-03-14"
+    ]
+   },
+   {
+    "label": "Earth (PBT)",
+    "role": "support-pbt",
+    "use": "rvr",
+    "weight": 0.3,
+    "specs": {
+     "Earth Magic": 50,
+     "Cold Magic": 26,
+     "Wind Magic": 11
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 6,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/help-w-theurg-sc-template.131762/",
+     "https://forums.freddyshouse.com/threads/air-theurgist-sc-template.126487/",
+     "https://forums.freddyshouse.com/threads/theurg-sc-setup.111555/"
+    ],
+    "sourceDates": [
+     "2003-06-21",
+     "2003-05-16",
+     "2003-01-22"
+    ]
+   },
+   {
+    "label": "Ice/Earth",
+    "role": "cc-root",
+    "use": "levelling",
+    "weight": 0.2,
+    "specs": {
+     "Cold Magic": 41,
+     "Earth Magic": 35
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/theurgist-spec-question.96528/",
+     "https://forums.freddyshouse.com/threads/theurgist-speccing-question.117859/"
+    ],
+    "sourceDates": [
+     "2002-08-27",
+     "2003-03-14"
+    ]
+   }
+  ],
+  "Wizard": [
+   {
+    "label": "Fire",
+    "role": "assist-dd",
+    "use": "both",
+    "weight": 0.45,
+    "specs": {
+     "Fire Magic": 50,
+     "Earth Magic": 18,
+     "Cold Magic": 8
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/wizard-respec.105489/",
+     "https://forums.freddyshouse.com/threads/how-many-wizards-are-respeccing-to-ice.103074/",
+     "https://forums.freddyshouse.com/threads/to-respec-or-not-to-respec-for-wizzies.95858/",
+     "https://forums.freddyshouse.com/threads/the-perfect-albion-rvr-group.109225/"
+    ],
+    "sourceDates": [
+     "2002-11-23",
+     "2002-11-03",
+     "2002-08-28",
+     "2003-01-07"
+    ]
+   },
+   {
+    "label": "Ice PBAE",
+    "role": "pbae",
+    "use": "rvr",
+    "weight": 0.35,
+    "specs": {
+     "Cold Magic": 50,
+     "Earth Magic": 20,
+     "Fire Magic": 20
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/ice-wizzy-spec.127027/",
+     "https://forums.freddyshouse.com/threads/how-many-wizards-are-respeccing-to-ice.103074/"
+    ],
+    "sourceDates": [
+     "2003-05-24",
+     "2002-11-03"
+    ]
+   },
+   {
+    "label": "Earth",
+    "role": "assist-dd",
+    "use": "levelling",
+    "weight": 0.2,
+    "specs": {
+     "Earth Magic": 48,
+     "Cold Magic": 24,
+     "Fire Magic": 4
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/to-all-wizards-respeccing-to-earth.102924/",
+     "https://forums.freddyshouse.com/threads/wizard-spec-at-40.140141/"
+    ],
+    "sourceDates": [
+     "2002-11-06",
+     "2003-08-06"
+    ]
+   }
+  ],
+  "Sorcerer": [
+   {
+    "label": "Mind/Body (AE mez)",
+    "role": "cc-mezzer",
+    "use": "rvr",
+    "weight": 0.4,
+    "specs": {
+     "Mind Magic": 44,
+     "Body Magic": 31
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 24,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/sorc-spec.138240/",
+     "https://forums.freddyshouse.com/threads/a-sorc-specc-dilemma.124565/",
+     "https://forums.freddyshouse.com/threads/any-offers-for-a-sorc-sc-template-please.123414/"
+    ],
+    "sourceDates": [
+     "2003-07-30",
+     "2003-05-03",
+     "2003-04-29"
+    ]
+   },
+   {
+    "label": "Body/Mind",
+    "role": "assist-dd",
+    "use": "rvr",
+    "weight": 0.35,
+    "specs": {
+     "Body Magic": 41,
+     "Mind Magic": 34
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 24,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/sorc-spec.138240/",
+     "https://forums.freddyshouse.com/threads/sorc-ac-template.128699/",
+     "https://forums.freddyshouse.com/threads/sorc-sc-template-40-body-36-mind.124682/"
+    ],
+    "sourceDates": [
+     "2003-07-31",
+     "2003-05-29",
+     "2003-05-04"
+    ]
+   },
+   {
+    "label": "Matter/Mind",
+    "role": "assist-dd",
+    "use": "levelling",
+    "weight": 0.25,
+    "specs": {
+     "Matter Magic": 41,
+     "Mind Magic": 34
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 10,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/sorc-spec.138240/",
+     "https://forums.freddyshouse.com/threads/solo-sorc-spec.123344/",
+     "https://forums.freddyshouse.com/threads/1-59-1-60-for-sorcs-how-will-you-spec.116573/"
+    ],
+    "sourceDates": [
+     "2003-07-31",
+     "2003-04-27",
+     "2003-03-06"
+    ]
+   }
+  ],
+  "Cabalist": [
+   {
+    "label": "Matter/Body",
+    "role": "pet-dot",
+    "use": "both",
+    "weight": 0.4,
+    "specs": {
+     "Matter Magic": 46,
+     "Body Magic": 28,
+     "Spirit Magic": 4
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/cabby-spec.140145/",
+     "https://forums.freddyshouse.com/threads/my-final-cabby-spec.111065/",
+     "https://forums.freddyshouse.com/threads/very-good-solo-cabalist-spec.110080/"
+    ],
+    "sourceDates": [
+     "2003-08-06",
+     "2003-01-23",
+     "2003-01-13"
+    ]
+   },
+   {
+    "label": "Matter/Spirit",
+    "role": "pet-dot",
+    "use": "both",
+    "weight": 0.3,
+    "specs": {
+     "Matter Magic": 46,
+     "Spirit Magic": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/givf-cabalist-sc-template-please.132870/",
+     "https://forums.freddyshouse.com/threads/my-final-cabby-spec.111065/"
+    ],
+    "sourceDates": [
+     "2003-06-26",
+     "2003-01-23"
+    ]
+   },
+   {
+    "label": "Body",
+    "role": "assist-dd",
+    "use": "rvr",
+    "weight": 0.15,
+    "specs": {
+     "Body Magic": 45,
+     "Matter Magic": 27
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/my-final-cabby-spec.111065/",
+     "https://forums.freddyshouse.com/threads/cabalist-spec.105667/"
+    ],
+    "sourceDates": [
+     "2003-01-23",
+     "2002-11-27"
+    ]
+   },
+   {
+    "label": "Spirit/Body",
+    "role": "pet",
+    "use": "levelling",
+    "weight": 0.15,
+    "specs": {
+     "Spirit Magic": 37,
+     "Body Magic": 34,
+     "Matter Magic": 19
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/cabalist-spec.137705/"
+    ],
+    "sourceDates": [
+     "2003-07-28"
+    ]
+   }
+  ],
+  "Necromancer": [
+   {
+    "label": "Deathsight",
+    "role": "pet-dd",
+    "use": "both",
+    "weight": 0.45,
+    "specs": {
+     "Deathsight": 48,
+     "Death Servant": 24,
+     "Painworking": 6
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/necro-spec.114235/"
+    ],
+    "sourceDates": [
+     "2003-02-18"
+    ]
+   },
+   {
+    "label": "Death Servant",
+    "role": "pet",
+    "use": "levelling",
+    "weight": 0.35,
+    "specs": {
+     "Death Servant": 47,
+     "Deathsight": 25,
+     "Painworking": 8
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/necro-spec.115325/",
+     "https://forums.freddyshouse.com/threads/necro-spec.114235/"
+    ],
+    "sourceDates": [
+     "2003-02-21",
+     "2003-02-18"
+    ]
+   },
+   {
+    "label": "Deathsight/Painworking",
+    "role": "pet-dd",
+    "use": "rvr",
+    "weight": 0.2,
+    "specs": {
+     "Deathsight": 48,
+     "Painworking": 24,
+     "Death Servant": 6
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/necro-50-spec.115758/"
+    ],
+    "sourceDates": [
+     "2003-03-04"
+    ]
+   }
+  ],
+  "Healer": [
+   {
+    "label": "Pacification (48 Pac)",
+    "role": "healer-cc",
+    "use": "rvr",
+    "weight": 0.45,
+    "specs": {
+     "Pacification": 48,
+     "Mending": 24,
+     "Augmentation": 6
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 6,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/pac-healer-spec.146828/",
+     "https://forums.freddyshouse.com/threads/is-it-worth-healer-speccing-high-pac-just-for-pom5.146011/",
+     "https://forums.freddyshouse.com/threads/speccing-a-pac-mend-healer.141439/",
+     "https://forums.freddyshouse.com/threads/statistics-and-other-lies.115851/",
+     "https://forums.freddyshouse.com/threads/looking-to-try-a-pbaoe-setup-mid-grp.140481/"
+    ],
+    "sourceDates": [
+     "2003-09-11",
+     "2003-09-10",
+     "2003-08-22",
+     "2003-02-26",
+     "2003-08-09"
+    ]
+   },
+   {
+    "label": "Pac/Mend",
+    "role": "healer-cc",
+    "use": "rvr",
+    "weight": 0.2,
+    "specs": {
+     "Pacification": 44,
+     "Mending": 31
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 10,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/pac-healer-spec.146828/",
+     "https://forums.freddyshouse.com/threads/speccing-a-pac-mend-healer.141439/",
+     "https://forums.freddyshouse.com/threads/pondering-a-respec.130691/"
+    ],
+    "sourceDates": [
+     "2003-09-11",
+     "2003-08-21",
+     "2003-06-15"
+    ]
+   },
+   {
+    "label": "Mend/Aug",
+    "role": "healer",
+    "use": "both",
+    "weight": 0.35,
+    "specs": {
+     "Mending": 39,
+     "Augmentation": 37,
+     "Pacification": 4
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 12,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/mend-aug-healer-spec-advice.139739/",
+     "https://forums.freddyshouse.com/threads/aug-spec-healer.126290/",
+     "https://forums.freddyshouse.com/threads/healer-spec-help.115996/"
+    ],
+    "sourceDates": [
+     "2003-08-06",
+     "2003-05-20",
+     "2003-03-04"
+    ]
+   }
+  ],
+  "Shaman": [
+   {
+    "label": "Cave/Aug",
+    "role": "healer-debuff",
+    "use": "both",
+    "weight": 0.55,
+    "specs": {
+     "Subterranean": 41,
+     "Augmentation": 32,
+     "Mending": 14
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 26,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/your-shaman-spec-ideas-welcome-p.148962/",
+     "https://forums.freddyshouse.com/threads/cave-shammy-spec-playstyle.146888/",
+     "https://forums.freddyshouse.com/threads/longwind-and-shammy-spec.145909/"
+    ],
+    "sourceDates": [
+     "2003-09-25",
+     "2003-09-15",
+     "2003-09-11"
+    ]
+   },
+   {
+    "label": "Aug/Cave (resist buffs, end regen)",
+    "role": "healer-buffer",
+    "use": "rvr",
+    "weight": 0.3,
+    "specs": {
+     "Augmentation": 38,
+     "Subterranean": 37,
+     "Mending": 9
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 15,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/your-shaman-spec-ideas-welcome-p.148962/",
+     "https://forums.freddyshouse.com/threads/shaman-spec.140479/",
+     "https://forums.freddyshouse.com/threads/shammie-spec.139526/",
+     "https://forums.freddyshouse.com/threads/looking-to-try-a-pbaoe-setup-mid-grp.140481/"
+    ],
+    "sourceDates": [
+     "2003-09-26",
+     "2003-08-19",
+     "2003-08-04",
+     "2003-08-09"
+    ]
+   },
+   {
+    "label": "Aug/Mend",
+    "role": "healer-buffer",
+    "use": "rvr",
+    "weight": 0.15,
+    "specs": {
+     "Augmentation": 42,
+     "Mending": 33,
+     "Subterranean": 7
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/best-rvr-shaman-spec.143170/",
+     "https://forums.freddyshouse.com/threads/shaman-spec-help-plz.138734/",
+     "https://forums.freddyshouse.com/threads/how-to-spec-a-shaman-at-40.120115/"
+    ],
+    "sourceDates": [
+     "2003-08-25",
+     "2003-07-31",
+     "2003-04-09"
+    ]
+   }
+  ],
+  "Skald": [
+   {
+    "label": "Battlesongs/Axe",
+    "role": "support-melee",
+    "use": "both",
+    "weight": 0.35,
+    "specs": {
+     "Battlesongs": 46,
+     "Axe": 44,
+     "Parry": 17
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/skald-template-stats.145278/",
+     "https://forums.freddyshouse.com/threads/advice-on-skald-spec.135495/",
+     "https://forums.freddyshouse.com/threads/skald-spec.121330/"
+    ],
+    "sourceDates": [
+     "2003-09-06",
+     "2003-07-09",
+     "2003-04-16"
+    ]
+   },
+   {
+    "label": "Two-handed sword",
+    "role": "melee-dps",
+    "use": "both",
+    "weight": 0.35,
+    "specs": {
+     "Sword": 50,
+     "Battlesongs": 43,
+     "Parry": 2
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 10,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/help-49-hammer-44-bs-skald-template.146703/",
+     "https://forums.freddyshouse.com/threads/skald-spec-question.144790/",
+     "https://forums.freddyshouse.com/threads/advice-on-skald-spec.135495/"
+    ],
+    "sourceDates": [
+     "2003-09-10",
+     "2003-08-29",
+     "2003-07-09"
+    ]
+   },
+   {
+    "label": "Battlesongs/Hammer",
+    "role": "support-melee",
+    "use": "rvr",
+    "weight": 0.3,
+    "specs": {
+     "Battlesongs": 46,
+     "Hammer": 44,
+     "Parry": 17
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/help-49-hammer-44-bs-skald-template.146703/",
+     "https://forums.freddyshouse.com/threads/skald-spec.121330/",
+     "https://forums.freddyshouse.com/threads/skald-spec-help.96987/"
+    ],
+    "sourceDates": [
+     "2003-09-11",
+     "2003-04-15",
+     "2002-09-03"
+    ]
+   }
+  ],
+  "Warrior": [
+   {
+    "label": "Axe/Shield/Parry",
+    "role": "tank",
+    "use": "both",
+    "weight": 0.45,
+    "specs": {
+     "Axe": 50,
+     "Shields": 42,
+     "Parry": 39
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 8,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/warrior-spec.140962/",
+     "https://forums.freddyshouse.com/threads/warrior-specs.120441/",
+     "https://forums.freddyshouse.com/threads/warrior-axe-shield-spec.102809/"
+    ],
+    "sourceDates": [
+     "2003-08-20",
+     "2003-04-07",
+     "2002-11-04"
+    ]
+   },
+   {
+    "label": "Hammer/Shield",
+    "role": "tank",
+    "use": "both",
+    "weight": 0.3,
+    "specs": {
+     "Hammer": 50,
+     "Shields": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/warrior-spec.140962/",
+     "https://forums.freddyshouse.com/threads/warrior-template-help.138864/",
+     "https://forums.freddyshouse.com/threads/warrior-specs.120441/"
+    ],
+    "sourceDates": [
+     "2003-08-22",
+     "2003-08-01",
+     "2003-04-02"
+    ]
+   },
+   {
+    "label": "Axe/Shield 50",
+    "role": "tank",
+    "use": "rvr",
+    "weight": 0.25,
+    "specs": {
+     "Axe": 50,
+     "Shields": 50,
+     "Parry": 18
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 9,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/warrior-spec.140962/",
+     "https://forums.freddyshouse.com/threads/anyone-got-a-nice-warrior-template.129013/",
+     "https://forums.freddyshouse.com/threads/warrior-specs.120441/"
+    ],
+    "sourceDates": [
+     "2003-08-16",
+     "2003-06-02",
+     "2003-04-03"
+    ]
+   }
+  ],
+  "Berserker": [
+   {
+    "label": "Axe/Left Axe",
+    "role": "melee-dps",
+    "use": "both",
+    "weight": 0.6,
+    "specs": {
+     "Axe": 50,
+     "Left Axe": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 7,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/best-zerker-spec.125989/",
+     "https://forums.freddyshouse.com/threads/beserker-spec-noob-query.120008/",
+     "https://forums.freddyshouse.com/threads/zerker-specc.118138/"
+    ],
+    "sourceDates": [
+     "2003-05-12",
+     "2003-04-01",
+     "2003-03-25"
+    ]
+   },
+   {
+    "label": "Hammer/Left Axe",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.25,
+    "specs": {
+     "Hammer": 50,
+     "Left Axe": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/best-zerker-spec.125989/",
+     "https://forums.freddyshouse.com/threads/zerker-spec-advise.116660/"
+    ],
+    "sourceDates": [
+     "2003-05-14",
+     "2003-03-13"
+    ]
+   },
+   {
+    "label": "Sword/Left Axe",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.15,
+    "specs": {
+     "Sword": 50,
+     "Left Axe": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/advice-specing-my-berserker.133028/"
+    ],
+    "sourceDates": [
+     "2003-06-27"
+    ]
+   }
+  ],
+  "Savage": [
+   {
+    "label": "Hand to Hand",
+    "role": "melee-dps",
+    "use": "both",
+    "weight": 0.65,
+    "specs": {
+     "Hand to Hand": 50,
+     "Savagery": 42,
+     "Parry": 9
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 14,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/2h-savage-spec.134856/",
+     "https://forums.freddyshouse.com/threads/suggestions-on-a-savage-spec.131381/",
+     "https://forums.freddyshouse.com/threads/savage-spec.128284/"
+    ],
+    "sourceDates": [
+     "2003-07-06",
+     "2003-06-19",
+     "2003-05-30"
+    ]
+   },
+   {
+    "label": "Two-handed (Sword/Hammer)",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.35,
+    "specs": {
+     "Sword": 50,
+     "Savagery": 42,
+     "Parry": 4
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/better-savage-spec-h2h-or-2h.135697/",
+     "https://forums.freddyshouse.com/threads/2h-savage-spec.134856/",
+     "https://forums.freddyshouse.com/threads/suggestions-on-a-savage-spec.131381/"
+    ],
+    "sourceDates": [
+     "2003-07-11",
+     "2003-07-06",
+     "2003-06-18"
+    ]
+   }
+  ],
+  "Thane": [
+   {
+    "label": "Storm/Hammer/Shield",
+    "role": "hybrid-dd",
+    "use": "both",
+    "weight": 0.7,
+    "specs": {
+     "Stormcalling": 46,
+     "Hammer": 44,
+     "Shields": 42
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 14,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/need-help-with-thane-specc.140628/",
+     "https://forums.freddyshouse.com/threads/slightly-different-thane-spec.135474/",
+     "https://forums.freddyshouse.com/threads/to-respecc-or-not-to-respecc.116546/"
+    ],
+    "sourceDates": [
+     "2003-08-07",
+     "2003-07-11",
+     "2003-03-09"
+    ]
+   },
+   {
+    "label": "Storm/Shield/Parry",
+    "role": "hybrid-dd",
+    "use": "rvr",
+    "weight": 0.3,
+    "specs": {
+     "Stormcalling": 48,
+     "Shields": 42,
+     "Hammer": 39,
+     "Parry": 15
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 23,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/need-help-with-thane-specc.140628/",
+     "https://forums.freddyshouse.com/threads/slightly-different-thane-spec.135474/",
+     "https://forums.freddyshouse.com/threads/thane-sc-template.125645/"
+    ],
+    "sourceDates": [
+     "2003-08-07",
+     "2003-07-11",
+     "2003-05-07"
+    ]
+   }
+  ],
+  "Shadowblade": [
+   {
+    "label": "Axe/Left Axe",
+    "role": "stealther",
+    "use": "both",
+    "weight": 0.4,
+    "specs": {
+     "Axe": 44,
+     "Left Axe": 44,
+     "Stealth": 35,
+     "Envenom": 35,
+     "Critical Strike": 10
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 12,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/about-my-spec.140177/",
+     "https://forums.freddyshouse.com/threads/kobold-sb-your-idea-about-a-spec.138914/",
+     "https://forums.freddyshouse.com/threads/best-sb-spec-after-1-62.137745/"
+    ],
+    "sourceDates": [
+     "2003-08-08",
+     "2003-07-30",
+     "2003-07-26"
+    ]
+   },
+   {
+    "label": "Sword/CS (2h or 1h)",
+    "role": "stealther",
+    "use": "rvr",
+    "weight": 0.35,
+    "specs": {
+     "Sword": 44,
+     "Critical Strike": 44,
+     "Stealth": 35,
+     "Envenom": 35
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 6,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/need-help-with-sb-spec.147706/",
+     "https://forums.freddyshouse.com/threads/need-some-help-with-sb-spec.130096/",
+     "https://forums.freddyshouse.com/threads/how-do-i-spec-my-sb.108510/"
+    ],
+    "sourceDates": [
+     "2003-09-25",
+     "2003-06-10",
+     "2002-12-28"
+    ]
+   },
+   {
+    "label": "Axe/CS",
+    "role": "stealther",
+    "use": "rvr",
+    "weight": 0.25,
+    "specs": {
+     "Axe": 44,
+     "Critical Strike": 39,
+     "Envenom": 34,
+     "Stealth": 34,
+     "Left Axe": 25
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 20,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/need-help-with-sb-spec.147706/",
+     "https://forums.freddyshouse.com/threads/re-biles-sb-spec-advice-on-vn-boards.145761/",
+     "https://forums.freddyshouse.com/threads/sb-spec.141836/"
+    ],
+    "sourceDates": [
+     "2003-09-25",
+     "2003-09-07",
+     "2003-08-14"
+    ]
+   }
+  ],
+  "Hunter": [
+   {
+    "label": "Bow/Spear",
+    "role": "archer",
+    "use": "both",
+    "weight": 0.55,
+    "specs": {
+     "Composite Bow": 45,
+     "Spear": 39,
+     "Stealth": 35,
+     "Beastcraft": 32
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 14,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/hunter-specs-pls.150620/",
+     "https://forums.freddyshouse.com/threads/hunter-spec.146661/",
+     "https://forums.freddyshouse.com/threads/hunter-spec.139096/"
+    ],
+    "sourceDates": [
+     "2003-10-02",
+     "2003-09-13",
+     "2003-08-01"
+    ]
+   },
+   {
+    "label": "Spear/Bow (melee hunter)",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.45,
+    "specs": {
+     "Spear": 44,
+     "Composite Bow": 40,
+     "Stealth": 35,
+     "Beastcraft": 32
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 17,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/hunter-spec.146661/",
+     "https://forums.freddyshouse.com/threads/hunter-specs-what-works.138239/",
+     "https://forums.freddyshouse.com/threads/hunter-specs-what-works.139555/"
+    ],
+    "sourceDates": [
+     "2003-09-13",
+     "2003-08-11",
+     "2003-08-11"
+    ]
+   }
+  ],
+  "Runemaster": [
+   {
+    "label": "Darkness",
+    "role": "assist-dd",
+    "use": "both",
+    "weight": 0.55,
+    "specs": {
+     "Darkness": 47,
+     "Suppression": 26
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 8,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/rm-spec.124523/",
+     "https://forums.freddyshouse.com/threads/runemaster-spec.120840/",
+     "https://forums.freddyshouse.com/threads/runemaster-spec.102985/"
+    ],
+    "sourceDates": [
+     "2003-05-02",
+     "2003-04-10",
+     "2002-11-03"
+    ]
+   },
+   {
+    "label": "Darkness 50",
+    "role": "assist-dd",
+    "use": "rvr",
+    "weight": 0.25,
+    "specs": {
+     "Darkness": 50,
+     "Suppression": 20
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 8,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/rm-spec.124523/",
+     "https://forums.freddyshouse.com/threads/runemaster-spec.108736/",
+     "https://forums.freddyshouse.com/threads/runemaster-spec.102985/"
+    ],
+    "sourceDates": [
+     "2003-05-01",
+     "2003-01-08",
+     "2002-11-08"
+    ]
+   },
+   {
+    "label": "Suppression (PBT)",
+    "role": "support-pbt",
+    "use": "rvr",
+    "weight": 0.2,
+    "specs": {
+     "Suppression": 50,
+     "Darkness": 24
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/runemaster-spec.120840/",
+     "https://forums.freddyshouse.com/threads/runemaster-spec.102985/"
+    ],
+    "sourceDates": [
+     "2003-04-09",
+     "2002-11-01"
+    ]
+   }
+  ],
+  "Spiritmaster": [
+   {
+    "label": "Suppression (PBAE)",
+    "role": "pbae",
+    "use": "rvr",
+    "weight": 0.45,
+    "specs": {
+     "Suppression": 49,
+     "Darkness": 25
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/wtb-single-line-respec-stone.140736/",
+     "https://forums.freddyshouse.com/threads/sm-spec.119658/",
+     "https://forums.freddyshouse.com/threads/looking-to-try-a-pbaoe-setup-mid-grp.140481/",
+     "https://forums.freddyshouse.com/threads/sm-spec.109396/"
+    ],
+    "sourceDates": [
+     "2003-08-12",
+     "2003-04-02",
+     "2003-08-09",
+     "2003-01-14"
+    ]
+   },
+   {
+    "label": "Darkness/Suppression",
+    "role": "assist-dd",
+    "use": "both",
+    "weight": 0.35,
+    "specs": {
+     "Darkness": 47,
+     "Suppression": 26
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/sm-spec.109396/"
+    ],
+    "sourceDates": [
+     "2003-01-14"
+    ]
+   },
+   {
+    "label": "Summoning",
+    "role": "pet",
+    "use": "levelling",
+    "weight": 0.2,
+    "specs": {
+     "Summoning": 50,
+     "Suppression": 20
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/summon-spec-spiritmaster.117177/",
+     "https://forums.freddyshouse.com/threads/sm-spec.109396/"
+    ],
+    "sourceDates": [
+     "2003-03-14",
+     "2003-01-14"
+    ]
+   }
+  ],
+  "Bonedancer": [
+   {
+    "label": "Suppression",
+    "role": "pet-dd",
+    "use": "both",
+    "weight": 0.55,
+    "specs": {
+     "Suppression": 47,
+     "Darkness": 26
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 9,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/bonedancer-spec-advice.140129/",
+     "https://forums.freddyshouse.com/threads/looking-for-some-bonedancer-template-for-insane-soloing.133785/",
+     "https://forums.freddyshouse.com/threads/bonedancers-how-will-you-spec-yours.113568/"
+    ],
+    "sourceDates": [
+     "2003-08-07",
+     "2003-07-06",
+     "2003-02-23"
+    ]
+   },
+   {
+    "label": "Bone Army",
+    "role": "pet",
+    "use": "levelling",
+    "weight": 0.45,
+    "specs": {
+     "Bone Army": 45,
+     "Suppression": 25,
+     "Darkness": 16
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/looking-for-some-bonedancer-template-for-insane-soloing.133785/",
+     "https://forums.freddyshouse.com/threads/bonedancer-spec.115633/",
+     "https://forums.freddyshouse.com/threads/bonedancers-how-will-you-spec-yours.113568/"
+    ],
+    "sourceDates": [
+     "2003-07-02",
+     "2003-02-24",
+     "2003-02-19"
+    ]
+   }
+  ],
+  "Druid": [
+   {
+    "label": "Regrowth/Nurture",
+    "role": "healer",
+    "use": "both",
+    "weight": 0.5,
+    "specs": {
+     "Regrowth": 41,
+     "Nurture": 35
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 19,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/rvr-grp-druid-spec.150179/",
+     "https://forums.freddyshouse.com/threads/druid-spec-help-needed.148472/",
+     "https://forums.freddyshouse.com/threads/druid-speccing.143389/"
+    ],
+    "sourceDates": [
+     "2003-10-03",
+     "2003-09-23",
+     "2003-09-02"
+    ]
+   },
+   {
+    "label": "Nurture/Regrowth (spec buffs)",
+    "role": "healer-buffer",
+    "use": "rvr",
+    "weight": 0.3,
+    "specs": {
+     "Nurture": 44,
+     "Regrowth": 31
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 14,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/druid-speccing.143389/",
+     "https://forums.freddyshouse.com/threads/abnormal-dr00d-specc.132480/",
+     "https://forums.freddyshouse.com/threads/what-is-a-good-druid-spec.129432/"
+    ],
+    "sourceDates": [
+     "2003-08-28",
+     "2003-06-24",
+     "2003-06-04"
+    ]
+   },
+   {
+    "label": "Nature",
+    "role": "healer-pet",
+    "use": "levelling",
+    "weight": 0.2,
+    "specs": {
+     "Nature": 36,
+     "Regrowth": 35,
+     "Nurture": 19
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 7,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/druid-spec-help-needed.148472/",
+     "https://forums.freddyshouse.com/threads/what-is-a-good-druid-spec.129432/",
+     "https://forums.freddyshouse.com/threads/final-druid-spec.122917/"
+    ],
+    "sourceDates": [
+     "2003-09-23",
+     "2003-06-04",
+     "2003-04-21"
+    ]
+   }
+  ],
+  "Bard": [
+   {
+    "label": "Music/Nurture",
+    "role": "cc-mezzer",
+    "use": "both",
+    "weight": 0.7,
+    "specs": {
+     "Music": 47,
+     "Nurture": 43,
+     "Regrowth": 16
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 42,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/bard-specs.148969/",
+     "https://forums.freddyshouse.com/threads/bard-spec-for-rvr.144244/",
+     "https://forums.freddyshouse.com/threads/bard-spec.137141/"
+    ],
+    "sourceDates": [
+     "2003-09-26",
+     "2003-08-31",
+     "2003-07-19"
+    ]
+   },
+   {
+    "label": "Regrowth/Nurture",
+    "role": "healer",
+    "use": "rvr",
+    "weight": 0.3,
+    "specs": {
+     "Regrowth": 47,
+     "Nurture": 43,
+     "Music": 16
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/bard-specs.148969/",
+     "https://forums.freddyshouse.com/threads/bard-spec.126023/",
+     "https://forums.freddyshouse.com/threads/bard-spec.118292/"
+    ],
+    "sourceDates": [
+     "2003-09-29",
+     "2003-05-14",
+     "2003-03-22"
+    ]
+   }
+  ],
+  "Warden": [
+   {
+    "label": "Nurture/Regrowth",
+    "role": "support-healer",
+    "use": "both",
+    "weight": 0.55,
+    "specs": {
+     "Nurture": 49,
+     "Regrowth": 33,
+     "Parry": 14
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 7,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/warden-spec.146822/",
+     "https://forums.freddyshouse.com/threads/warden-spec.141502/",
+     "https://forums.freddyshouse.com/threads/warden-spec-help.124124/"
+    ],
+    "sourceDates": [
+     "2003-09-17",
+     "2003-08-26",
+     "2003-04-30"
+    ]
+   },
+   {
+    "label": "Nurture/Blades",
+    "role": "support-melee",
+    "use": "levelling",
+    "weight": 0.45,
+    "specs": {
+     "Nurture": 49,
+     "Blades": 39,
+     "Regrowth": 16,
+     "Parry": 12
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 8,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/warden-spec.146822/",
+     "https://forums.freddyshouse.com/threads/warden-spec.141502/",
+     "https://forums.freddyshouse.com/threads/warden-spec-help.124124/"
+    ],
+    "sourceDates": [
+     "2003-09-17",
+     "2003-09-04",
+     "2003-04-30"
+    ]
+   }
+  ],
+  "Hero": [
+   {
+    "label": "Large Weapons/Shield",
+    "role": "tank",
+    "use": "both",
+    "weight": 0.4,
+    "specs": {
+     "Large Weapons": 50,
+     "Shields": 42,
+     "Parry": 39
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 8,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/hero-spec.134321/",
+     "https://forums.freddyshouse.com/threads/opinions-on-this-hero-spec.129372/",
+     "https://forums.freddyshouse.com/threads/hero-template-for-rvr-server-advice-needed.107638/"
+    ],
+    "sourceDates": [
+     "2003-07-02",
+     "2003-06-04",
+     "2002-12-19"
+    ]
+   },
+   {
+    "label": "Spear (Celtic Spear)/Shield",
+    "role": "tank",
+    "use": "rvr",
+    "weight": 0.25,
+    "specs": {
+     "Celtic Spear": 50,
+     "Shields": 42,
+     "Parry": 39
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/spearo-spec.102105/"
+    ],
+    "sourceDates": [
+     "2002-10-28"
+    ]
+   },
+   {
+    "label": "Sword and board",
+    "role": "tank",
+    "use": "both",
+    "weight": 0.35,
+    "specs": {
+     "Blades": 50,
+     "Shields": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/hero-spec.134321/",
+     "https://forums.freddyshouse.com/threads/help-with-sc-template.117080/"
+    ],
+    "sourceDates": [
+     "2003-07-02",
+     "2003-03-13"
+    ]
+   }
+  ],
+  "Champion": [
+   {
+    "label": "Large Weapons/Valor",
+    "role": "melee-dps",
+    "use": "both",
+    "weight": 0.8,
+    "specs": {
+     "Large Weapons": 50,
+     "Valor": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 19,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/champion-shield-blabes-spec.143560/",
+     "https://forums.freddyshouse.com/threads/spec-help-please.138805/",
+     "https://forums.freddyshouse.com/threads/champion-spec.135027/"
+    ],
+    "sourceDates": [
+     "2003-08-30",
+     "2003-08-03",
+     "2003-07-10"
+    ]
+   },
+   {
+    "label": "Large Weapons/Valor/Blades",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.2,
+    "specs": {
+     "Large Weapons": 50,
+     "Valor": 40,
+     "Blades": 39,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 4,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/champion-spec.135027/",
+     "https://forums.freddyshouse.com/threads/need-help-with-a-champ-spec-please.132792/"
+    ],
+    "sourceDates": [
+     "2003-07-11",
+     "2003-06-20"
+    ]
+   }
+  ],
+  "Blademaster": [
+   {
+    "label": "Blades/Celtic Dual",
+    "role": "melee-dps",
+    "use": "both",
+    "weight": 0.4,
+    "specs": {
+     "Blades": 50,
+     "Celtic Dual": 50,
+     "Parry": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/bm-speccing.132760/",
+     "https://forums.freddyshouse.com/threads/what-spec-are-bms-using-these-days.108211/"
+    ],
+    "sourceDates": [
+     "2003-06-27",
+     "2002-12-29"
+    ]
+   },
+   {
+    "label": "Piercing/Celtic Dual",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.35,
+    "specs": {
+     "Piercing": 50,
+     "Celtic Dual": 42,
+     "Parry": 39
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/what-spec-are-bms-using-these-days.108211/",
+     "https://forums.freddyshouse.com/threads/respeccing.103641/"
+    ],
+    "sourceDates": [
+     "2002-12-31",
+     "2002-11-07"
+    ]
+   },
+   {
+    "label": "Blunt/Celtic Dual",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.25,
+    "specs": {
+     "Blunt": 50,
+     "Celtic Dual": 41,
+     "Parry": 40
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/bm-speccing.132760/",
+     "https://forums.freddyshouse.com/threads/what-spec-are-bms-using-these-days.108211/"
+    ],
+    "sourceDates": [
+     "2003-06-27",
+     "2002-12-29"
+    ]
+   }
+  ],
+  "Nightshade": [
+   {
+    "label": "Piercing/CS",
+    "role": "stealther",
+    "use": "rvr",
+    "weight": 0.45,
+    "specs": {
+     "Piercing": 50,
+     "Critical Strike": 34,
+     "Stealth": 35,
+     "Envenom": 36
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/nightshade-template.126709/"
+    ],
+    "sourceDates": [
+     "2003-06-05"
+    ]
+   },
+   {
+    "label": "Critical Strike",
+    "role": "stealther",
+    "use": "both",
+    "weight": 0.35,
+    "specs": {
+     "Critical Strike": 44,
+     "Piercing": 39,
+     "Stealth": 40,
+     "Envenom": 36
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 5,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/anyone-got-a-spec-for-a-ns-if-he-auto-trains-stealth-to-50.141339/",
+     "https://forums.freddyshouse.com/threads/shade-specs-plz-help.122602/",
+     "https://forums.freddyshouse.com/threads/lvl-50-ns-spec.102245/"
+    ],
+    "sourceDates": [
+     "2003-08-15",
+     "2003-04-22",
+     "2002-10-24"
+    ]
+   },
+   {
+    "label": "Celtic Dual",
+    "role": "stealther",
+    "use": "rvr",
+    "weight": 0.2,
+    "specs": {
+     "Piercing": 44,
+     "Celtic Dual": 43,
+     "Envenom": 36,
+     "Stealth": 35
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/wta-full-skill-respec-stone.147403/",
+     "https://forums.freddyshouse.com/threads/wta-full-skill-respec-stone.145932/",
+     "https://forums.freddyshouse.com/threads/night-shade-spec-headache.132381/"
+    ],
+    "sourceDates": [
+     "2003-09-18",
+     "2003-09-18",
+     "2003-06-27"
+    ]
+   }
+  ],
+  "Ranger": [
+   {
+    "label": "Archery/Pathfinding",
+    "role": "archer",
+    "use": "both",
+    "weight": 0.6,
+    "specs": {
+     "Recurve Bow": 42,
+     "Pathfinding": 40,
+     "Stealth": 40,
+     "Piercing": 30
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 19,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/ranger-spec-questions-again.140520/",
+     "https://forums.freddyshouse.com/threads/ranger-spec-question.132826/",
+     "https://forums.freddyshouse.com/threads/ranger-rvr-spec.129040/"
+    ],
+    "sourceDates": [
+     "2003-08-13",
+     "2003-06-27",
+     "2003-06-04"
+    ]
+   },
+   {
+    "label": "Melee ranger (Piercing/CD)",
+    "role": "melee-dps",
+    "use": "rvr",
+    "weight": 0.4,
+    "specs": {
+     "Piercing": 44,
+     "Pathfinding": 36,
+     "Recurve Bow": 35,
+     "Stealth": 30,
+     "Celtic Dual": 21
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/ranger-rvr-spec.129040/",
+     "https://forums.freddyshouse.com/threads/ranger-spec.124132/",
+     "https://forums.freddyshouse.com/threads/the-perfect-ranger-template.87783/"
+    ],
+    "sourceDates": [
+     "2003-06-02",
+     "2003-05-08",
+     "2002-05-17"
+    ]
+   }
+  ],
+  "Eldritch": [
+   {
+    "label": "Mana (PBAE \"manabomb\")",
+    "role": "pbae",
+    "use": "rvr",
+    "weight": 0.4,
+    "specs": {
+     "Mana": 50,
+     "Light": 20,
+     "Void": 6
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 6,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/spec-eldritch.149703/",
+     "https://forums.freddyshouse.com/threads/eldritch-specs.140985/",
+     "https://forums.freddyshouse.com/threads/caster-noob-needs-eld-specc-advise.104762/",
+     "https://forums.freddyshouse.com/threads/so-respec-is-here-what-are-you-doing.103407/"
+    ],
+    "sourceDates": [
+     "2003-09-26",
+     "2003-08-12",
+     "2002-11-11",
+     "2002-11-06"
+    ]
+   },
+   {
+    "label": "Void",
+    "role": "assist-dd",
+    "use": "both",
+    "weight": 0.35,
+    "specs": {
+     "Void": 46,
+     "Mana": 26,
+     "Light": 10
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 4,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/what-rvr-spec-and-why.112903/",
+     "https://forums.freddyshouse.com/threads/eld-specing.100494/",
+     "https://forums.freddyshouse.com/threads/light-spec-eldritches.99042/"
+    ],
+    "sourceDates": [
+     "2003-02-13",
+     "2002-10-12",
+     "2002-09-20"
+    ]
+   },
+   {
+    "label": "Light",
+    "role": "assist-dd",
+    "use": "levelling",
+    "weight": 0.25,
+    "specs": {
+     "Light": 45,
+     "Mana": 29
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/eld-specing.100494/"
+    ],
+    "sourceDates": [
+     "2002-10-11"
+    ]
+   }
+  ],
+  "Enchanter": [
+   {
+    "label": "Mana (PBAE)",
+    "role": "pbae",
+    "use": "both",
+    "weight": 0.65,
+    "specs": {
+     "Mana": 50,
+     "Light": 20
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 4,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/mana-magician-template.132389/",
+     "https://forums.freddyshouse.com/threads/chanter-spec.128639/",
+     "https://forums.freddyshouse.com/threads/enchanter-spec.118542/"
+    ],
+    "sourceDates": [
+     "2003-06-21",
+     "2003-05-29",
+     "2003-03-22"
+    ]
+   },
+   {
+    "label": "Light",
+    "role": "assist-dd",
+    "use": "rvr",
+    "weight": 0.2,
+    "specs": {
+     "Light": 45,
+     "Mana": 29
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 3,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/light-spec-enchanters.147299/",
+     "https://forums.freddyshouse.com/threads/enchanter-spec.118542/"
+    ],
+    "sourceDates": [
+     "2003-09-17",
+     "2003-03-22"
+    ]
+   },
+   {
+    "label": "Enchantments (pet/buff)",
+    "role": "pet-buffer",
+    "use": "levelling",
+    "weight": 0.15,
+    "specs": {
+     "Mana": 39,
+     "Enchantments": 34,
+     "Light": 10
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/why-do-chanters-only-get-1-0-spec-points.99084/"
+    ],
+    "sourceDates": [
+     "2002-09-26"
+    ]
+   }
+  ],
+  "Mentalist": [
+   {
+    "label": "Light/Mana",
+    "role": "assist-dd",
+    "use": "both",
+    "weight": 0.6,
+    "specs": {
+     "Light": 45,
+     "Mana": 28,
+     "Mentalism": 6
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 16,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/mentalist-spec.129596/",
+     "https://forums.freddyshouse.com/threads/mentalist-specc.125786/",
+     "https://forums.freddyshouse.com/threads/mentalist-spec.114139/"
+    ],
+    "sourceDates": [
+     "2003-06-02",
+     "2003-05-13",
+     "2003-02-18"
+    ]
+   },
+   {
+    "label": "Mana/Mentalism",
+    "role": "pbae",
+    "use": "rvr",
+    "weight": 0.25,
+    "specs": {
+     "Mana": 46,
+     "Mentalism": 28
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 4,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/mentalist-spec.129596/",
+     "https://forums.freddyshouse.com/threads/mentalist-specc.125786/",
+     "https://forums.freddyshouse.com/threads/mentalist-spec.114139/"
+    ],
+    "sourceDates": [
+     "2003-06-01",
+     "2003-05-11",
+     "2003-02-19"
+    ]
+   },
+   {
+    "label": "Mentalism (heals)",
+    "role": "healer",
+    "use": "levelling",
+    "weight": 0.15,
+    "specs": {
+     "Mentalism": 45,
+     "Light": 25,
+     "Mana": 25
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/is-this-a-good-spec-for-a-mentalist.91578/"
+    ],
+    "sourceDates": [
+     "2002-07-04"
+    ]
+   }
+  ],
+  "Valewalker": [
+   {
+    "label": "Scythe/Arboreal",
+    "role": "melee-dps",
+    "use": "both",
+    "weight": 1.0,
+    "specs": {
+     "Scythe": 50,
+     "Arboreal Path": 38,
+     "Parry": 20
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 1,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/valewalker-bg-and-final-spec.118642/"
+    ],
+    "sourceDates": [
+     "2003-03-24"
+    ]
+   }
+  ],
+  "Animist": [
+   {
+    "label": "Arboreal (bomber/pet)",
+    "role": "pet",
+    "use": "both",
+    "weight": 1.0,
+    "specs": {
+     "Arboreal Path": 50,
+     "Creeping Path": 19,
+     "Verdant Path": 7
+    },
+    "sourced": true,
+    "weightSourced": false,
+    "forumMentions": 2,
+    "sources": [
+     "https://forums.freddyshouse.com/threads/how-to-specc-the-animist.135197/",
+     "https://forums.freddyshouse.com/threads/animist-spec.131459/"
+    ],
+    "sourceDates": [
+     "2003-07-10",
+     "2003-06-19"
+    ]
+   }
+  ]
+ }
+}
