@@ -1964,8 +1964,7 @@ namespace DOL.AI.Brain
                 return true;
             }
 
-            // A planned shopping trip (eWorldServiceKind.Shop) may buy again; an ordinary visit buys once per task.
-            if ((_lastBetweenTaskPurchaseAssignment != bot.PersistentRecord.ObjectiveAssignmentId || service == eWorldServiceKind.Shop) &&
+            if (_lastBetweenTaskPurchaseAssignment != bot.PersistentRecord.ObjectiveAssignmentId &&
                 AutonomousBotEconomy.TryBuyUsefulVendorUpgrade(bot, merchant, out DbInventoryItem purchased, out long spent))
             {
                 _lastBetweenTaskPurchaseAssignment = bot.PersistentRecord.ObjectiveAssignmentId;
@@ -1976,10 +1975,6 @@ namespace DOL.AI.Brain
                 return true;
             }
 
-            // A planned shopping trip that bought nothing here (sold out, price changed): don't plan this merchant again
-            // for a while, or the bot would walk back and forth.
-            if (service == eWorldServiceKind.Shop)
-                AutonomousWorldBotController.SkipShoppingAt(bot, merchant);
             _nextMerchantServiceTick = now + 20_000 + Random.Shared.Next(20_001);
             AutonomousBotEconomy.MarkEconomyChanged(bot.DatabaseID);
             return false;

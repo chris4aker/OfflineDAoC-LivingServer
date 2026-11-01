@@ -30,8 +30,6 @@ public enum eWorldServiceKind
     CraftStation,
     // A Darkness Falls seals merchant: seal gear bought with the bot's own looted seals (owner 2026-10-30).
     SealMerchant,
-    // A planned shopping trip: the merchant that sells the best gear upgrade the bot can afford (owner 2026-10-31).
-    Shop,
 }
 
 /// <summary>

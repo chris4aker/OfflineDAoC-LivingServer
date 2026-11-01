@@ -26,10 +26,6 @@ Sluaghbinder class is discontinued.
 - This changes the game a lot. Well-geared bots are a little softer than before at high level, and bots with little
   or no armor are much softer (a bot caster in cloth takes 2 to 3 times the melee damage it used to), so gear matters
   for them as it does for players.
-- Gamebots go shopping for it: a bot knows what every merchant it can reach sells and for how much, picks the best
-  upgrade it can afford and wear (at most one level above it, keeping a little coin back), and walks to that merchant
-  between tasks instead of browsing the nearest one. A merchant that turns out not to have it is skipped for 30
-  minutes.
 
 **Bots and raids**
 - Hibernian bots no longer get stuck at the door of their portal keep in Odin's Gate. Once out of the keep's

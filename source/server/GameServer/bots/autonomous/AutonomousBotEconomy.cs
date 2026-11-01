@@ -19,7 +19,7 @@ namespace DOL.GS;
     {
         private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
         private const string OwnerPrefix = "offlinebot:";
-        public const int MinimumEquipmentUpgrade = 8;
+        private const int MinimumEquipmentUpgrade = 8;
         // Owner 2026-10-29: 3 posts per bot (was 1; Codex's 10 made a launcher refresh take minutes before the launcher split
         // bot snapshots from the exchange). Players stay unlimited.
         public const int MaxBotRealmExchangeListings = 3;
@@ -380,10 +380,6 @@ namespace DOL.GS;
             if (!IsBackpackFull(bot) && FindBestUsefulExchangePurchase(bot) != null)
                 return eWorldServiceKind.RealmExchange;
 
-            // A gear upgrade the bot can afford at a known merchant: go and buy it (owner 2026-10-31).
-            if (!IsBackpackFull(bot) && AutonomousWorldBotController.ShoppingPlanFor(bot) != null)
-                return eWorldServiceKind.Shop;
-
             // In Darkness Falls, seals the bot has looted buy its realm's seal gear, or seal items to sell (owner 2026-10-30).
             return !IsBackpackFull(bot) && HasSealPurchase(bot) ? eWorldServiceKind.SealMerchant : null;
         }
@@ -689,12 +685,10 @@ namespace DOL.GS;
 
             // Only what the bot can pay for: the best upgrade overall was chosen first and, when it cost more than the
             // bot had, nothing was bought although cheaper upgrades were on the same list (run 1c, 2026-10-30).
-            // Within the shopping budget (a reserve stays for repairs and arrows) and at most one level above the bot,
-            // whose bonuses would be capped anyway (owner 2026-10-31).
-            long coin = AutonomousWorldBotController.ShoppingBudget(bot);
+            long coin = GetMoney(bot.DatabaseID);
             DbInventoryItem[] upgrades = merchant.TradeItems.GetAllItems().Values
                 .OfType<DbItemTemplate>()
-                .Where(template => AutonomousWorldBotController.ShoppingConsiders(bot, template, coin))
+                .Where(template => template.Price > 0 && template.Price <= coin)
                 .Select(GameInventoryItem.Create)
                 .Where(item => item != null && TryGetEquipmentUpgrade(bot, item, out _))
                 .OrderByDescending(EquipmentValue)
@@ -726,7 +720,6 @@ namespace DOL.GS;
             }
 
             TryEquipOwnedUpgrade(bot, purchased, "vendor");
-            AutonomousWorldBotController.ClearShoppingPlan(bot);
             MarkInventoryChanged(bot);
             bot.MarkAutonomousStateDirty();
             AutonomousBotStatusPersistence.Queue(bot, true);
