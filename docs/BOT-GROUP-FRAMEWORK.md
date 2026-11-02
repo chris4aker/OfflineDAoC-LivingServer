@@ -6,6 +6,20 @@ bias audit), [BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md), the builds research
 and shadowofze's spell-use engine merged in phase A (area spells, add control, Celerity, tank Protect/Guard/Intercept).
 Labels as in the chat framework: **[E]** period evidence, **[D]** borrowed design, **[O]** owner choice.
 
+## North star, and how decisions are made
+
+**The goal (owner 2026-11-01):** the smartest, best offline Dark Age of Camelot: amazing bots, and a real living
+server for the player to witness and play in.
+
+Every source serves that goal; none of them is the goal. So:
+- **No single source decides a design.** A mechanism goes in when at least two independent kinds of support agree
+  (period evidence, more than one shipped game, research, or our own measurements), or when it is cheap and our own
+  play test or soak shows it works. One game's choice (Erenshor, Left 4 Dead, RimWorld, EverQuest) is a candidate idea,
+  not a decision.
+- **Our own measurements break ties:** the blind chat evaluation, the soak metrics, the battleground before/after, and
+  the owner's play sessions outrank any outside source about this game.
+- **Ideas are tested where they will be judged:** in a DAoC world at full roster, not in the context they came from.
+
 ## 1. Goals
 
 1. A group of bots plays like a 2003 group: someone pulls, someone assists, crowd control holds, healers triage. [E]
@@ -15,6 +29,12 @@ Labels as in the chat framework: **[E]** period evidence, **[D]** borrowed desig
 4. Never the unforgivable: no friendly fire, no wandering off, no wasting the group's resources, no breaking the
    player's own mez. [D: Valve 2009]
 5. Explainable: every role decision logs a reason; `/lswhy` covers groups too.
+
+**Where unevenness goes (candidate, to be measured):** bots in the player's own group default to dependable, and
+sloppiness is a personality he can see and choose or avoid; unevenness stays full in world bots, pick-up groups and
+enemy realms. Support: Erenshor's developer equalised his SimPlayers after players restarted until the good ones were
+online; the WoW and FFXIV companion systems keep companions reliable; the bias audit's point that 2003 players were
+uneven still holds for the world around the player. Test: does the player keep or kick sloppy bots in play sessions.
 
 ## 2. Layers of control (cheapest first)
 
@@ -58,6 +78,9 @@ Labels as in the chat framework: **[E]** period evidence, **[D]** borrowed desig
 - **Perception** as in PR #53: noticing by distance and chance, a reaction delay, spotters, an awareness setting.
 - **Paths that aren't robotic:** look-ahead steering points and per-bot formation offsets; warbands spread over a few
   routes and send small roaming groups. [D: Valve 2009]
+- **No visible gear mistakes:** a bot never wears a downgrade it can see is worse, under the real-loot rules; item
+  mistakes without a personality behind them read as bugs (Erenshor's top AI complaint; Dwarf Fortress's lesson that
+  mistakes read as character only when a personality explains them). Test: a gear audit over a soak run.
 - **Stay with the team:** a bot far behind its group catches up out of the player's sight rather than running a lone
   line through enemies. [D: Valve 2009]
 

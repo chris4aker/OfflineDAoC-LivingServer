@@ -8,6 +8,20 @@ better than the average reply, a blind judge spots 72% of bot lines).
 Every rule below is labelled **[E]** (period evidence, cited in the research), **[D]** (a borrowed design, fit inferred)
 or **[O]** (an owner choice that is not period-accurate and says so).
 
+## North star, and how decisions are made
+
+**The goal (owner 2026-11-01):** the smartest, best offline Dark Age of Camelot: amazing bots, and a real living
+server for the player to witness and play in.
+
+Every source serves that goal; none of them is the goal. So:
+- **No single source decides a design.** A mechanism goes in when at least two independent kinds of support agree
+  (period evidence, more than one shipped game, research, or our own measurements), or when it is cheap and our own
+  play test or soak shows it works. One game's choice (Erenshor, Left 4 Dead, RimWorld, EverQuest) is a candidate idea,
+  not a decision.
+- **Our own measurements break ties:** the blind chat evaluation, the soak metrics, the battleground before/after, and
+  the owner's play sessions outrank any outside source about this game.
+- **Ideas are tested where they will be judged:** in a DAoC world at full roster, not in the context they came from.
+
 ## 1. Goals, in order
 
 1. **Reciprocal:** bots notice the player, reach out first, and their memory shows in what they say. [D: Erenshor,
@@ -84,6 +98,23 @@ is set from day one (Comme il Faut needed over 5,000 rules; the scope here stays
 A small **social circle per player** (a handful of bots who have grouped with or helped him, capped as it fills): they
 greet him by name when he logs in or passes, whisper an invite when they need his class, ask him to a raid, and congratulate
 his dings, from the social facts. How often new bots befriend the player is capped, so the circle grows like a real one.
+
+### 3.4.1 Candidate ideas to test (several sources each; none decided by one game)
+
+- **The circle keeps pace:** the player's social circle levels near him and visibly progresses while he is away (new
+  gear, new levels, news), consistent with what he would have seen (Erenshor's level tether and "new toys"; S.T.A.L.K.E.R.
+  A-Life's lesson that offline results must match the simulation).
+- **Emotion without grudges for wipes:** bots react to a wipe in character, then still want the player back (Erenshor;
+  the companion systems' reset-and-retry; period group culture). Grudges come from ninja looting, KS and insults.
+- **A soft consequence for insults:** a bot the player insults ignores him for a while (Erenshor; the period's /ignore
+  culture). An owner decision, since it bends the "memory never refuses you" rule.
+- **Rival guilds:** a standing antagonist guild per realm that won't group with the player and needles him, alongside
+  the nemesis bots (Erenshor's jerk guilds and rival sims; Shadow of Mordor's rivals; period guild rivalries).
+- **Zone questions and guild conversations** as content types: ambient questions other bots answer, guild topics a
+  player can join by keyword (Erenshor's modding framework; storylets).
+- **Community content packs:** a documented format for named bots (personality, typing quirks, their own line lists
+  falling back to the shared pools), zone chatter and guild conversations, shared with the historical-roster import
+  (Erenshor's most-used mod; Crusader Kings and RimWorld modding; the project's own roster-import plan).
 
 ### 3.5 Arbitration and anti-uniformity [E: OSRS, mod-ollama-chat; D]
 
