@@ -86,13 +86,13 @@ jobs:
           name: server-test-results
           path: "**/TestResults/*.trx"
 
-      # The launcher ships in the build too (its Living Server tab). Its own tests for that tab must pass;
-      # the rest of the launcher tests run in the informational launcher job below.
+      # The launcher ships in the build too (its Living Server tab and, from 1.1.2, its update check). Their own tests
+      # must pass; the rest of the launcher tests run in the informational launcher job below.
       - name: Build launcher and test the Living Server tab
         shell: bash
         run: |
           dotnet build source/tools/OfflineDaoc.Launcher/OfflineDaoc.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
-          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
+          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests|FullyQualifiedName~Tests.Update" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
           summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
           echo "::notice title=Living Server tab tests::${summary:-no summary line found}"
 

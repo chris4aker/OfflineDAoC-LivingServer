@@ -56,31 +56,49 @@ namespace LivingServerSetup
             }
         }
 
+        /// <summary>The package embedded in this exe (Beta 1.1.2: kept when a newer one from GitHub is used instead).</summary>
+        public static string EmbeddedBuildName { get; private set; } = "";
+
         public static void Load()
         {
             using (var s = Theme.Resource("LivingServer.zip"))
             using (var ms = new MemoryStream())
             {
                 s.CopyTo(ms);
-                zipBytes = ms.ToArray();
+                Use(ms.ToArray(), "embedded");
             }
-            using (var zip = new ZipArchive(new MemoryStream(zipBytes), ZipArchiveMode.Read))
+            EmbeddedBuildName = BuildName;
+        }
+
+        /// <summary>
+        /// Makes this package the one Setup installs: the embedded one, or a newer one PackageUpdate downloaded and checked.
+        /// Everything is read first and swapped in only when complete, so a bad package leaves the current one in place.
+        /// </summary>
+        public static void Use(byte[] bytes, string what)
+        {
+            var info = new Dictionary<string, string>();
+            string root;
+            using (var zip = new ZipArchive(new MemoryStream(bytes), ZipArchiveMode.Read))
             {
-                var info = zip.Entries.FirstOrDefault(e => e.FullName.Count(c => c == '/') == 1 && e.Name == "BUILD-INFO.txt")
-                    ?? throw new InvalidDataException("The embedded Living Server package has no BUILD-INFO.txt.");
-                RootFolder = info.FullName.Substring(0, info.FullName.IndexOf('/'));
-                using (var r = new StreamReader(info.Open()))
+                var entry = zip.Entries.FirstOrDefault(e => e.FullName.Count(c => c == '/') == 1 && e.Name == "BUILD-INFO.txt")
+                    ?? throw new InvalidDataException("The " + what + " Living Server package has no BUILD-INFO.txt.");
+                root = entry.FullName.Substring(0, entry.FullName.IndexOf('/'));
+                using (var r = new StreamReader(entry.Open()))
                 {
                     string line;
                     while ((line = r.ReadLine()) != null)
                     {
                         var m = Regex.Match(line, @"^\s*([^=#]+?)\s*=\s*(.*?)\s*$");
-                        if (m.Success) BuildInfo[m.Groups[1].Value] = m.Groups[2].Value;
+                        if (m.Success) info[m.Groups[1].Value] = m.Groups[2].Value;
                     }
                 }
             }
-            if (string.IsNullOrEmpty(BuildName) || string.IsNullOrEmpty(BaseRelease) || string.IsNullOrEmpty(ServerDll))
-                throw new InvalidDataException("The embedded Living Server package's BUILD-INFO.txt is incomplete.");
+            string Value(string key) => info.TryGetValue(key, out var v) ? v : "";
+            if (string.IsNullOrEmpty(Value("BuildName")) || string.IsNullOrEmpty(NewestRelease(Value("BaseRelease"))) || string.IsNullOrEmpty(Value("GameServer.dll")))
+                throw new InvalidDataException("The " + what + " Living Server package's BUILD-INFO.txt is incomplete.");
+            BuildInfo = info;
+            RootFolder = root;
+            zipBytes = bytes;
         }
 
         /// <summary>Unpacks the package into &lt;game&gt;\&lt;RootFolder&gt; (as a player would by hand) and returns that folder.

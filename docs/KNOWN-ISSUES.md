@@ -57,6 +57,16 @@ These apply even with every Living Server switch off:
   the launcher staying on STARTING, a party that doesn't disband, bots released in a battleground standing in the
   capital, the friends list, and the new client's hotbars. They are the 1.1.1 list.
 
+## Beta 1.1.2 (in development): updates from the launcher and Setup
+
+- **Not yet tried on a real Windows PC.** CI tests the update path without the window on a fake game folder, and
+  Setup's choice of package against GitHub. Still to check by hand: the GET UPDATE button, the dialog and its three
+  choices, the download progress line, the install window and its "Press Enter" step, the launcher opening again
+  and saying how it went, a 0.37c game (both launchers), a game folder in a path with spaces, Setup installing a
+  downloaded package all the way through its window, and SmartScreen or antivirus reactions to the PowerShell step.
+- **Releases marked as prereleases are never offered.** GitHub's "latest release" leaves them out, so a build is
+  offered only once its release is published as a full release (Beta 1.1.1's is still marked as a prerelease).
+
 ## How it was tested (Beta 1.0)
 
 - **Automated:** every build runs the full server test suite (3,400+ tests) and the installer tests

@@ -200,7 +200,7 @@ internal sealed partial class MainForm : Form
         _startButton = ActionButton("START SERVER", Color.FromArgb(110, 128, 70));
         _stopButton = ActionButton("STOP SERVER", Color.FromArgb(151, 67, 57));
         _playButton = ActionButton("ENTER REALM", Color.FromArgb(65, 94, 145));
-        _startButton.Click += (_, _) => StartServer();
+        _startButton.Click += (_, _) => OnStartButton();
         _stopButton.Click += async (_, _) => await StopServerAsync();
         _playButton.Click += (_, _) => LaunchClient();
 
@@ -242,6 +242,8 @@ internal sealed partial class MainForm : Form
             ScheduleNextAutoRefresh();
             UpdateAutoRefreshCountdown();
             _autoRefresh.Start();
+            // One quiet look for a newer Living Server (at most once a day; the player can turn it off).
+            await CheckForUpdatesAsync(asked: false);
         };
         FormClosing += (_, _) =>
         {
@@ -259,6 +261,7 @@ internal sealed partial class MainForm : Form
             _autoRefresh.Dispose();
             _serverReadinessPoll.Dispose();
             _helpTip.Dispose();
+            _releaseWeb?.Dispose();
         }
         base.Dispose(disposing);
     }
@@ -364,14 +367,17 @@ internal sealed partial class MainForm : Form
             ForeColor = Color.FromArgb(196, 145, 70),
             Location = new Point(97, 57),
         });
-        titlePanel.Controls.Add(new Label
+        var versionLabel = new Label
         {
             AutoSize = true,
             Text = _newClient ? $"VERSION {DisplayVersion}c" : VersionLabel(InstalledEditionHasCustomClass(_database)),
             Font = new Font("Georgia", 12f, FontStyle.Bold),
             ForeColor = DaocTheme.GoldLight,
             Location = new Point(97, 79),
-        });
+        };
+        titlePanel.Controls.Add(versionLabel);
+        // Living Server: its build, "Check for updates" and update news (MainForm.Updates.cs).
+        AddUpdateStrip(titlePanel, versionLabel);
         header.Controls.Add(titlePanel, 0, 0);
 
         var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(3, 5, 0, 0), BackColor = Color.Transparent };
@@ -1306,10 +1312,10 @@ internal sealed partial class MainForm : Form
             _helpTip.SetToolTip(_performanceValue, snapshot.BotAiDelay is { } aiPeak
                 ? $"{PerformanceHelp}{Environment.NewLine}Last minute: average {aiPeak.AverageMs:0.0} ms, slowest {aiPeak.PeakMs:N0} ms over {aiPeak.Samples:N0} ticks."
                 : $"{PerformanceHelp}{Environment.NewLine}Shown about a minute after the server starts.");
-            _startButton.Enabled = !_resettingKeepsRelics && !_savingXpRates && !_stoppingServer && snapshot.ServerState == "Stopped" && File.Exists(_serverExecutable);
+            _startButton.Enabled = !_updating && !_resettingKeepsRelics && !_savingXpRates && !_stoppingServer && snapshot.ServerState == "Stopped" && File.Exists(_serverExecutable);
             _resetKeepsRelics.Enabled = !_resettingKeepsRelics && !_savingXpRates && snapshot.ServerState == "Stopped" && BotGoalsServerStopped();
             _stopButton.Enabled = !_stoppingServer && snapshot.ServerState is "Running" or "Starting";
-            _playButton.Enabled = !_stoppingServer && snapshot.ServerState == "Running" && File.Exists(_clientConnector);
+            _playButton.Enabled = !_updating && !_stoppingServer && snapshot.ServerState == "Running" && File.Exists(_clientConnector);
             UpdateXpRateControls(snapshot);
             ApplyFilter();
             UpdateDeleteButton();

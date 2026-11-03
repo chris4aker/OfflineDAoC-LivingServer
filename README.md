@@ -146,6 +146,22 @@ restores the released 0.36 server and launcher from the installer's backups and 
 update the game to 0.37 with its downloader (choice 1, Update), and run `INSTALL.cmd`. If you install 0.37
 fresh instead and bring your progress over, see the package's README.txt for the one extra step.
 
+## Updating
+
+From Beta 1.1.2 the launcher looks for a new Living Server when it opens (at most once a day), or when you click
+**Check for updates** beside its version. When one is out, **START SERVER** reads **GET UPDATE**: click it and choose
+**Install**, **Later** or **Skip this version**.
+
+- **Your characters and world are kept.** The update runs the new package's own `INSTALL.cmd`, with the same checks
+  and backups as a manual install, and `ROLLBACK.cmd` in its folder undoes it.
+- **Nothing happens on its own.** It installs only when you click Install, with the server and the game closed. The
+  package is used only if it matches the SHA-256 digest GitHub publishes for it.
+- **Private.** The check is one request to GitHub's releases API that sends nothing about you or your game. Untick
+  **Check automatically** to turn it off. The steps are logged in `runtime\logs\launcher-updates.log`.
+- **Setup** also installs the newest release's package when it is newer than the one inside it.
+
+Beta 1.1.1 and earlier have no update check: install Beta 1.1.2 once by hand or with Setup.
+
 ## Getting started
 
 A fresh world has no bots yet, and most of these features need some.

@@ -62,7 +62,7 @@ namespace LivingServerSetup
         public bool NewClient;
     }
 
-    internal enum StepId { Check, Release, DownloadGame, UnpackGame, Client, UpdateGame, UpdateClient, FreshCopy, Import, LivingServer, NetFx, Shortcuts, Remove, Settings }
+    internal enum StepId { Package, Check, Release, DownloadGame, UnpackGame, Client, UpdateGame, UpdateClient, FreshCopy, Import, LivingServer, NetFx, Shortcuts, Remove, Settings }
 
     /// <summary>Runs an install plan step by step on a worker thread. The UI reads the public state on Changed.</summary>
     internal sealed class Engine
@@ -122,6 +122,8 @@ namespace LivingServerSetup
         void Plan()
         {
             var ls = "Living Server " + Payload.DisplayName;
+            // Which package: the newest release's, or the one inside Setup and why (PackageUpdate).
+            if (PackageUpdate.Note != null && !o.Remove) Add(StepId.Package, PackageUpdate.StepTitle, 0.01 * GB, PackageUpdate.Note);
             Add(StepId.Check, "Check your PC", 0.05 * GB);
             if (o.Remove)
             {
@@ -324,6 +326,7 @@ namespace LivingServerSetup
             var r = new InstallResult { GamePath = gamePath, CacheDir = Path.Combine(setupDir, ".downloads") };
             try
             {
+                if (Find(StepId.Package) != null) Set(StepId.Package, PackageUpdate.FellBack ? StepState.Skipped : StepState.Done);
                 Activate(StepId.Check, "Checking your PC...");
                 CheckPc();
                 Set(StepId.Check, StepState.Done);

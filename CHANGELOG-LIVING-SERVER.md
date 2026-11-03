@@ -8,6 +8,43 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.2 (in development)
+
+- **Updates from the launcher** (approved by the owner on 2026-11-03).
+  - **The check:** when the launcher opens (at most once a day), or when you click **Check for updates** beside its
+    version, it makes one request to GitHub's releases API for Living Server's newest release, with a generic
+    User-Agent and nothing about you or your game. Prereleases aren't offered. Any failure is silent unless you asked.
+    **Check automatically** beside the link turns the daily check off.
+  - **The offer:** when a newer build is out, START SERVER reads **GET UPDATE**, and the line beside the version shows
+    the build and the first line of its release notes. GET UPDATE asks "Update to Living Server Beta X? Your
+    characters and world are kept" with **Install**, **Later** (START SERVER is back for this session) and **Skip
+    this version** (not offered again until a newer one; Check for updates still shows it).
+  - **The install:** only with the server, both clients and any other launcher closed. The package downloads to
+    `runtime\updates\` with its progress shown, and is used only if it matches the SHA-256 digest GitHub publishes
+    for the file; a missing or wrong digest is refused and the file deleted. The zip must hold one
+    `LivingServer-<build>` folder whose `BUILD-INFO.txt` names the release's build. It is unpacked to a staging folder,
+    then moved into the game folder as a player would put it. The launcher then closes and `apply-update.ps1` waits
+    for it, runs the package's `INSTALL.cmd` without elevation (the same checks, backups and verified copies as a
+    double-click), checks the result and opens the launcher again, which says how it went. `ROLLBACK.cmd` in the new
+    package folder undoes it, as before. Every step goes to `runtime\logs\launcher-updates.log`.
+  - **Kept:** the downloaded package and the one before it stay in `runtime\updates\` (older ones are removed), and
+    the earlier package folder stays in the game folder, so either can be installed again. Your database and saves
+    are never touched. `OfflineDAoC.exe --apply-update <zip> --sha256 <hex>` does the same without the window (tests
+    and support).
+  - **The launcher knows its build:** it is stamped at build time from the server's `ForkBuildInfo.BuildName`.
+- **Setup installs the newest Living Server.** Before installing, Setup asks the same API for the newest release. If
+  its package is newer than the one inside Setup and made for the same Offline DAoC release, Setup downloads it,
+  checks it the same way and installs it. Offline, a rate limit, a bad or missing digest, or a package for another
+  release: Setup installs the package inside it and says why on the progress page's first step, which always names
+  the build being installed. `--no-update` skips the question (tests and offline installs); `--info` logs which
+  package it would install.
+- **Checked:** 69 new launcher tests (`Tests.Update*`: versions, the recorded release JSON, digests, the once-a-day and
+  skip rules, the package checks, the download and staging with a fake network) in the gated CI step. On Windows
+  CI: the launcher's update path end to end on a fake game folder (the published 1.1-beta package installed, then
+  1.1.1-beta applied with `--apply-update`, refusals for a wrong or missing digest and a running game, and
+  `ROLLBACK.cmd`), and Setup's choice of package against the live API with wrong and missing digests. Not yet seen on
+  a player's PC: see [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the
