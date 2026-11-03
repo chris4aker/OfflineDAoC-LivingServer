@@ -69,7 +69,10 @@ cap on how many bots notice one target). Era authenticity breaks ties; it doesn'
 
 - [ ] **Save safety:** the owner's `runtime/server/config/serverconfig.xml` checked (the default string turns the
       journal and sync off); WAL with `Synchronous=Normal`, a daily online backup with an integrity check and
-      rotation, and a backup before every install (lometur's HearthDAoC has working code)
+      rotation, and a backup before every install (lometur's HearthDAoC has working code); and the network
+      defaults checked in the same file: the code's defaults listen on every interface with router port-forwarding
+      (UPnP) on, and a missing config is rewritten with them. Defaults become this PC only and UPnP off, the release
+      build asserts them, and UPnP mappings are removed on stop ([coop_assumptions.md](audits/2026-11-03/coop_assumptions.md))
 - [ ] **Quests with bots** (PR #50: #44 dragons call the Special Forces, #45 quest XP by level range, #46 group kill
       credit and hand-ins), after the three-quest A/B on the test copy
 - [ ] **r/daoc fixes:** the Herald counts bots in a player's guild; bots in a player's guild earn merit and pay dues
@@ -143,6 +146,9 @@ Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x pat
 ### 1.2.x — play with friends (experimental, right after 1.2)
 
 Owner 2026-11-03: private co-op for about 1–4 players in a thriving bot world; no public server.
+- [ ] The must-fixes from the co-op audit: one region address per client, idle time-outs for remote players, account
+      names other than `offline`, the one-account-per-IP rule, bots following the group's current leader, `/pull` and
+      the pilot taking only your own bots, a server-wide companion cap
 - [ ] Host for Friends and Join Friend in the launcher, ported with credit from rambodolphin13's
       `feature/play-with-friends` (home network, Tailscale by default, an internet mode limited to listed friends,
       firewall rules for this game only); automatic account creation off while hosting
