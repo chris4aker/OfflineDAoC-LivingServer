@@ -21,6 +21,7 @@ param(
     [string]$To = 'v1.1.1-beta'
 )
 $ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'   # Invoke-WebRequest's progress bar makes Windows PowerShell 5.1 downloads crawl
 $Launcher = (Resolve-Path $Launcher).Path
 $failures = New-Object System.Collections.Generic.List[string]
 function Check([bool]$ok, [string]$what) {

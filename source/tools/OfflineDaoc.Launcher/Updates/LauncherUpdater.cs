@@ -274,8 +274,14 @@ public sealed class LauncherUpdater
         };
         foreach (string arg in new[] { "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", script,
                      "-LauncherPid", launcherProcessId.ToString(), "-PackageFolder", update.PackageFolder, "-GameFolder", GameFolder,
-                     "-Build", update.Build.Name, "-Log", Log.Path, "-Result", result, "-Restart", restart ?? "" })
+                     "-Build", update.Build.Name, "-Log", Log.Path, "-Result", result })
             start.ArgumentList.Add(arg);
+        // Only when there is one: Windows PowerShell can drop an empty "" argument and read the next switch as its value.
+        if (!string.IsNullOrEmpty(restart))
+        {
+            start.ArgumentList.Add("-Restart");
+            start.ArgumentList.Add(restart);
+        }
         if (noPause)
             start.ArgumentList.Add("-NoPause");
         Log.Write($"Handing over to {script}: it waits for the launcher (process {launcherProcessId}) to close, runs {Path.Combine(update.PackageFolder, "INSTALL.cmd")}" +
