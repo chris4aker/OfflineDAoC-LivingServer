@@ -36,154 +36,129 @@ is ticked here as it is done. The older plans ([RELEASE-PLAN.md](RELEASE-PLAN.md
 - 1.1's eight branches merged without conflicts because they were small and separate; crafting, events, quests
   and guilds all touch valuation, town routing, chat budgets, raids and voices.
 
-## The base: shadowofze has stopped (checked 2026-10-31)
+## The base: shadowofze has stopped (checked 2026-10-31, rechecked 2026-11-03)
 
-What is verified, from his repository:
-- His README (commit `f630845`, 2026-10-31) says the project **is on hold and will not receive any more updates**;
-  the 0.37 / 0.37b / 0.37c downloads stay; he has moved to a separate "True 1.65" version that uses only the new
-  client, with no release promised. He points people at the repository's forks and r/daoc.
-- There is **no `v0.38` tag** and the changelog still says "0.38 (not released yet)". 0.38 was going to be one
-  download with the new client only, the original client no longer supported and the Sluaghbinder discontinued
-  (the class code is still there; it is no longer offered).
-- His `main` kept moving after the note (five commits in the next three hours, to `b0b855d`), so the tree may not
-  be final yet.
-- Beta 1.1 already carries his server code as of `9da9091` (2026-10-20). What came after is 40 commits: 127 server
-  files (+6,293 / −539 lines), 41 of them files Living Server also changed, and 63 new-client files (+4,102 lines).
-  The server part is the largest bot upgrade in the project's history: area spells and add control for every
-  class, tank Protect/Guard/Intercept, Reaver auras, camp spread, bots holding one song, relic campaigns that can
-  take a relic home, raid loot shared with the player, three Exchange listings per bot, the tasks rework, seal
-  merchants, and dozens of fixes (ten or more credited to Living Server). It has no CI and nobody but him has played
-  it.
-- Living Server's installer needs a 0.37 / 0.37b / 0.37c game and will keep needing one; players are not forced
-  anywhere. The downloads being his, a private copy of the three 0.37 downloaders and packages is cheap insurance.
+- His README (2026-10-31) says the project **is on hold and will not receive any more updates**; the 0.37 / 0.37b /
+  0.37c downloads stay. There is **no `v0.38` tag**.
+- Living Server merged his final `main` (`cd2bf52`) into `release/1.2` on 2026-11-01 (decision 3), and his one later
+  commit (`12992146`, 2026-11-01: the Sluaghbinder follows the edition switch again) on 2026-11-03.
+- Rechecked 2026-11-03 together with every active fork: [audits/2026-11-03/FORK-SURVEY.md](audits/2026-11-03/FORK-SURVEY.md)
+  (on the audit branch, PR #58). No fork continues 1.65 Offline DAoC as a whole; several carry fixes and tools worth
+  porting, listed per stop below and credited to their authors.
 
-What it changes here: 1.2 can't wait for a release that isn't coming, and "every base release is merged first" has
-one last base state to apply. The owner's call (decision 3 below) is whether that last merge is its own stop now or
-is harvested piecemeal.
+## The North Star and how the order was set (2026-11-03)
+
+The goal (owner): the most amazing DAoC experience offline with bots and a world that feels like a fully alive peak
+server from the era, with added features and Easter eggs. The order below comes from the North Star audit and the
+reply to the independent audit ([NORTH-STAR-AUDIT.md](NORTH-STAR-AUDIT.md), PR #58): measure and protect first, then
+the cheapest things a player feels (being invited, replies that don't give bots away, a crowded prime time, a
+server with a past), with the two small foundations that stop real failures (a record of who owns a bot's time, a
+cap on how many bots notice one target). Era authenticity breaks ties; it doesn't veto aliveness.
 
 ## The stops
 
-### 1.1.1 — the community's first week (days)
+### 1.1.1 — the community's first week (merged; publishing is the owner's step)
 
-Fixes and verifications only; no new systems. Design: [QUESTING.md](QUESTING.md) §1–2 for the quest defects.
-State on 2026-10-31: every code item has a branch and a green CI run; the three large ones were reviewed by a
-second reader and their fixes applied; nothing is merged and nothing is played yet.
+- [x] Candidate A merged to `main` as Beta 1.1.1 (PR #47, `15f521e`): the doc drift (#41), party disband (#35),
+      base-class styles (#36), quiet song twisting (#37), the quest-marker colour (#42), the launcher port probe (#43),
+      the SQLite test wait (#48), unique install backup folders (#49)
+- [ ] The GitHub release `v1.1.1-beta` published (owner), then Setup built and tested on Windows by the installer
+      workflow
 
-- [ ] Community issues: #32 launcher stays STARTING when the listener isn't reported (PR #43); #33 party doesn't
-      disband (PR #35); #38 friends list and #39 bots released in a battleground stand in the capital (Cancain
-      has both in his fork: invite the pull requests); #34 new-client hotbars, stealth and the SELL button (fixed
-      in shadowofze's unreleased 0.38c client source; there is no upstream to send it to now, so it moves to 1.2
-      where Living Server ships client scripts itself); #40 Cancain's pull requests (`/friend` for bots,
-      battleground keep claims, `/allrelease`) reviewed and taken where they fit the owner's rules
-- [ ] PR #36 base classes get their weapon styles before level 5; PR #37 quiet song twisting (his `main` later
-      makes performers hold one song instead of twisting; #37 stays useful until that merge and is retired then)
-- [ ] Sieges played at the owner's roster now that their timers run (musters, marches, repels, the four-hour cap)
-- [ ] The talking update's "not checked in game yet" list (TALKING-UPDATE.md) worked through
-- [ ] Dragon raids call the Epic Special Forces after a wipe, as dungeon raids do (PR #44; the review found and
-      fixed the wipe count missing raiders who had released in the lair's region)
-- [ ] `Repair.IsAllowedToBeginWork` integer division (PR #44)
-- [ ] Quest defects that are code only (PR #46: kills by the player's bot group credit the player; a kill
-      advances a step once; hand-ins allowed above a quest's maximum level; the 25-quest limit at login; whisper
-      throttle and keyword clicks. PR #42: the new client's marker colour for "your current step", with its
-      installer entry. PR #45: quest XP follows XP by level range, decision 2 below). Left for 1.2: the
-      255-character journal text where the client allows more
-- [ ] The three-quest A/B on the test copy: 1.1 against stock 0.37b via `ROLLBACK.cmd` (a kill quest in a bot
-      group, a delivery, an epic step), as a normal account
-- [ ] Doc drift: KNOWN-ISSUES to 1.1 (PR #41); the changelog's Beta 1.1 header (PR #41); RELEASE-1.1's boxes
-      (PR #41); SHA-256s in the release notes (the owner, on the release page); the "wait for shadowofze's next
-      update" lines now that there won't be one (PR #41)
-- [ ] CI stability: the SQLite pool test waits the server's 60 s (PR #48); a second install within one second
-      gets its own backup folder (PR #49). Both tripped `build-and-test` on 2026-10-31 on unrelated pushes
-- [ ] Release notes written to the rules above. Suggested split (the owner's call): merge candidate A (#47) as
-      1.1.1 this week, since nothing in it needs a play test of its own, and candidate B (#50) as 1.1.2 after the
-      dragon, quest and siege checks; or merge B as the whole of 1.1.1 after the checks
+### 1.1.2 — safe and correct (days)
 
-### 1.2 — the comprehensive update (owner 2026-11-01: the old 1.3 folds into 1.2)
+- [ ] **Save safety:** the owner's `runtime/server/config/serverconfig.xml` checked (the default string turns the
+      journal and sync off); WAL with `Synchronous=Normal`, a daily online backup with an integrity check and
+      rotation, and a backup before every install (lometur's HearthDAoC has working code)
+- [ ] **Quests with bots** (PR #50: #44 dragons call the Special Forces, #45 quest XP by level range, #46 group kill
+      credit and hand-ins), after the three-quest A/B on the test copy
+- [ ] **r/daoc fixes:** the Herald counts bots in a player's guild; bots in a player's guild earn merit and pay dues
+      (owner decision); launcher options for mana regeneration and the below-50% halving, one rule for bots and
+      players
+- [ ] **Ported fixes:** grouped bots dying in a battleground go to the portal keep, `/friend` for gamebots, two stock
+      friends-list bugs, `/allrelease` (Cancain; issues #38, #39, #40); RvR and Darkness Falls XP rate on non-1×
+      worlds (rambodolphin13, BeezKneezItem9); Nikse77's six bot fixes (zone seams, group stalls, ranged pulls,
+      mezzed enemies, Darkness Falls stuck and re-login) and leaving a keep just taken (via rambodolphin13); water
+      breathing (Rmarcoux86); the camp-list guard (MoomoocowPlus)
+- [ ] **Release gates:** the temp-file cleanup race in `UT_AtomicExchangePersistence`, CI on pushes to `main`, a
+      README/version check, `main` protected with the owner able to bypass (owner approval)
+- [x] **No EA client files:** the 54 inherited from upstream removed (PR #59, merged into `release/1.2`); history
+      kept. The origin of the two splash `.mpk` files and `connect.exe` to be confirmed by the owner
+- [ ] PR #51, Setup's fallback copy of the base files: an owner and legal decision before it merges
+- [ ] Played: the three-quest A/B, a battleground death in a bot group, a guild of bots on the Herald
 
-Headline: the bots of shadowofze's final code, playing the era's builds, in a world that moves. One public release,
-built in four phases. Each phase is merged to a `release/1.2` branch and soaked overnight on its own before the next
-one goes in, so a regression can still be traced to one system (the rule above); only the whole ships. While 1.2 is
-being built, community fixes keep going out as 1.1.x patches.
+### 1.2 — the comprehensive update (owner 2026-11-01: one release, built in phases, each soaked on its own)
 
-**Phase A — the base.** Checklist: [UPSTREAM-RELEASES.md](UPSTREAM-RELEASES.md), read with "his final `main`" in
-place of "the `v0.38` tag".
-- [x] Merge his final `main` (owner 2026-11-01: start now, no waiting; anything he pushes later merges the same
-      way). Done on `release/1.2` (`1ac3406`, his `cd2bf52`; 15 files conflicted, the suite passes). Both clients
-      stay supported; the Sluaghbinder is discontinued as in the base (owner 2026-11-01, `50ecb30`)
-- [ ] His world scripts as Setup steps with rollbacks: `fix_quest_reward_stats.py`, Necromancer creation, the night
-      spawns, and `remove_sluaghbinder_npcs.py` (its trainer, wisp and quest monsters out of existing worlds)
-- [ ] Living Server's own new-client fixes shipped at last: the four scripts (`/lfg` and `/trade` as realm channels,
-      FACE/FOLLOW/STICK, the stick toggle, the PLAY double-click guard) go into `content-patches.json` like the
-      quest-marker script in 1.1.1; `/target` filling the target window needs the rebuilt C# client (`MMOEngine.dll`)
-      and is decided with it
-- [ ] Which of his 63 new-client files can be shipped the same way (stealth, abilities on the quickbar, the merchant
-      SELL button: issue #34; the crafting window), and which need converted content and can't
-- [ ] Setup's fallback to the copy of the release files (PR #51)
-- [ ] Soak: the full suite green, a week of overnight runs, the siege and raid ledgers compared with 1.1.x's; live
-      events M0 measured alongside (the cost per monster and per bot at the owner's roster, the timeline report)
+Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x patch rather than holding the release.
 
-**Phase B — bot builds and RvR** ([BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md), from r/daoc feedback 2026-11-01).
-- [ ] The era's builds and class shares researched and weighted (`bot-builds.json`), with a pet-class cap per warband
-- [ ] RvR perception: noticing by chance and distance, a reaction delay, spotters calling "inc", an RvR difficulty
-      setting; warbands in lanes and small roaming groups
-- [ ] A playbook per build on the base's spell-use engine (PBAE casters, healers, crowd control and tanks first)
-- [ ] Bot groups and warbands filled by role; `/lfg pbae|healer|cc|tank`; a bot's build shown when you target or
-      invite it; respeccing a bot you group with
+**Phase A — foundations.**
+- [x] The base's final `main` merged (`1ac3406`, `ebbaf83`); the Sluaghbinder follows the edition switch as in the
+      base (owner 2026-11-03)
+- [ ] `AI_PROFILE`: per-system and per-pulse cost and tick p50/p95/p99 once a minute, from lometur's CPU and
+      allocation meter plus stefanrows's bot think-time profiler; then the L300 and L600 baselines on `release/1.2`
+      before any new system lands
+- [ ] The test world (`make_test_world.py` from the clean release world, no saves) and a scripted player (starting
+      from lometur's headless client); nightly scenarios: login/save/restart, a kill quest in a bot group, a delivery
+- [ ] The duty lease record: raids and RvR events claim a bot's time with a priority; the watchdog exempts leased bots;
+      reason codes; `/lswhy` for bot decisions
+- [ ] His world scripts as Setup steps with row-level rollbacks (quest reward stats, Necromancer creation, the night
+      spawns; `remove_sluaghbinder_npcs.py` only on worlds with the class off)
+- [ ] The new-client scripts (PR #54, without the APPRAISE error) and his shippable client files (issue #34)
+- [ ] Soak: a week of overnight runs, the siege and raid ledgers compared with 1.1.x
+
+**Phase B — groups and RvR** ([BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md), the group framework in PR #57).
+- [ ] **You are wanted:** bots invite the player; bot-led groups the player can follow without leading (r/daoc
+      2026-11-03), with a toggle back to leading; a raid leader bot who invites the player
+- [ ] RvR perception (PR #53) with an observer cap per target and calibrated time-to-notice; then "watch the fight
+      before joining", varied routes out of the hub, memory of where groups died, a new leader when one dies
+      (stefanrows)
+- [ ] Pet caps per group and warband; era build weights (PR #55, provisional, with stefanrows's 118 plans as a second
+      source); stances, a named puller and main assist, the discipline trait
 - [ ] Soak and the battleground session measured before and after
 
-**Phase C — the world moves.** Design: [LIVE-EVENTS-1.2.md](LIVE-EVENTS-1.2.md),
-[LIVE-EVENTS-ENGINE.md](LIVE-EVENTS-ENGINE.md).
-- [ ] Live events M1: the engine on a scripted dragon fight (Script, Stage, Chorus, Chronicle, `/lstest event`)
-- [ ] Live events M2: the director and the roaming threat
-- [ ] Soak
+**Phase C — a crowded prime time** (the chat framework in PR #57, the blind evaluation in PR #56).
+- [ ] Replies: silence below a reply minimum (except direct tells and a bot's name), self-knowledge, context fits;
+      a separate ambient budget with floor and ceiling by hour and place
+- [ ] The era's channels with reach: public chat groups, town `/broadcast`, the LFG flag; `/lfg`, `/trade` and
+      `/faction` kept as labelled conveniences, on by default
+- [ ] A "2003 server" population preset (a level curve, earned gear), aged by running the world fast while no client
+      is connected (stefanrows, without its gear seeding); the `clock` schedule on by default; crowd targets
+- [ ] The chat benchmark's grounded-state and multi-turn tiers; the second blind round
 
-**Phase D — the social realm and quests.**
-- [ ] The guild social package as one unit (policies, standing, tier benefits and costs; the guild tiers entry in
-      the [backlog](LIVING-SERVER-BACKLOG.md))
-- [ ] The historical server (opt-in roster import)
-- [ ] Questing: the server-side quest harness and the quest audit script; the first world fixes; the epic chains
-      linked by Setup (and unlinked by rollback)
-- [ ] Soak
+**Phase D — a server with a past.**
+- [ ] The shared world-history record; the Herald as dated stories, "since you last played", the server first for a
+      big named kill
+- [ ] Live events M1 (the engine on a scripted dragon fight) with the timeline report; `LastSuccessful` and raid
+      cooldowns persisted
+- [ ] The economy ledger (instrumentation only)
+- [ ] Five Easter eggs from a sealed file (fishing, off by default, is a candidate)
+- [ ] Questing: the quest harness over the classic quests; the epic chains linked by Setup
 
 **Before it ships**
-- [ ] Played: one session per realm; a relic campaign watched end to end; a dragon raid with the new add control and
-      the scripted fight; the roaming threat; the guild tiers; two epic lines; the battleground session
+- [ ] An overnight run at 600 bots per realm within the tick budget; the second blind chat round better than the first
+- [ ] Played: one session per realm; invited into a group and a raid; a battleground session; a relic campaign watched;
+      a dragon raid; a returning session read on the Herald
 - [ ] Release notes to the rules above
 
-The trade-off, written down when the owner chose it: one big release instead of two means a longer gap between
-public releases (the 1.1.x patches fill it) and a larger play check at the end; in return the community gets one
-update that changes how the game feels, and the phases keep each system's soak separate. If decision 3 goes the
-other way, phase A becomes the harvest (his world scripts and small fixes cherry-picked) and phase B's playbooks must
-rebuild the spell-use fixes his code already has.
+### 1.3 — the world goes on without you
 
-### 1.3 — the realm has work to do
-
-Headline: the invasion. Design as above plus [CRAFTING-AND-ECONOMY.md](CRAFTING-AND-ECONOMY.md).
-
-- [ ] Live events M3: the realm invasion; M4: holiday festivals, then the war-effort chapter
-- [ ] Crafting M0: the audit on the PC (recipes, masters, stations, housing), the two bugs, calibration (his
-      `main` already fixes the salvage type bug and gives the new client a crafting window; count them)
-- [ ] Crafting M1: the player's side (era start, pace, upkeep, coin by band, firsts, the Herald)
-- [ ] Crafting M2: crafters exist (ledger crafters, stations, the visible loop, titles, /trade ads)
-- [ ] Questing: dialogue and links for the lines that only have pins, realm-equal; the level-50 epics check
-      their chains
-- [ ] The new client's quest tracker and book-page journal (there is no upstream to send them to now; they ship
-      the same way as the other client scripts)
-- [ ] Played: the invasion in each realm with the win rate logged; a crafter at each capital's station
+- [ ] A bounded catch-up when the server starts after days off (keeps, raid outcomes, bot levels, guild changes),
+      told by bots and the Herald; losses allowed, never gear; an opt-out (owner decision)
+- [ ] Durable event state and restart recovery; live events M2 (the director, the roaming threat) and M3 (the invasion)
+- [ ] Crafting M0–M2 after weeks of ledger data: crafters at stations, commissions, ads
+- [ ] The guild package (tiers, rival guilds), reputation tags, a realm summary for the director
+- [ ] Role playbooks for the RvR builds; warband lanes and roaming groups; stefanrows's group doctrine, untangled
+- [ ] Personas and longer storylines if the 1.2 chat measurements justify them; the historical server
 
 ### 2.0 — the complete realm
 
-- [ ] Crafting M3: crafting matters (stock into the Exchange, the gear check at town visits, template-aware
-      valuation at 50, the quartermaster's commissions, dyes in guild colours)
-- [ ] Crafting M4: the player trades (commissions by tell, hand-over delivery, drag-to-sell, bots buying the
-      player's crafts)
-- [ ] Crafting M5: sinks and services (bots' gear wears, repairs, potions, siege supply, the luxury sink, the
-      Exchange tax)
-- [ ] Crafting M6: the social layer (storylines, price wars, apprentice work, guild crafters)
-- [ ] Questing certified complete: the harness green over every row, the epic lines the owner plays finished end
-      to end
-- [ ] Two weeks of overnight runs with money supply flat and no price running away
+- [ ] Crafting M3–M6 (with no Exchange tax or new sink until the ledger shows a need); the war effort
+- [ ] Questing certified complete; the nightly scenarios gate every release
+- [ ] Overnight runs at 900 bots per realm; two weeks with the money supply flat
 - [ ] Release notes and the Reddit post for 2.0
+
+Cut: the per-bot JSON rule list. Kept out on purpose: Camlann full-PvP, roguelite modes, modern classes, free
+level-50 gear, teleports that skip stablemaster routes, grey monsters that drop nothing.
 
 ## Decisions taken and open
 
@@ -207,6 +182,10 @@ Taken (2026-11-01): **1.2 is one comprehensive update**: the old 1.3 (live event
 historical server, the quest harness) and both halves of the builds work fold into it, built in phases that are
 soaked one at a time; the invasion and crafting stop becomes 1.3.
 
+Taken (2026-11-03): **follow the base on the Sluaghbinder** (it follows the edition switch again, `12992146`), and
+**no EA client files in the repo** (the 54 inherited from upstream removed; history kept). The North Star order above
+and the purity rules in [NORTH-STAR-AUDIT.md](NORTH-STAR-AUDIT.md) §4 are proposed for the owner's confirmation.
+
 Taken (2026-11-01), decision 3: **the base's final code is merged whole** as 1.2's phase A, starting at once. The
 reasoning that led there, kept for the record: The case for the merge: the overlap only grows (41 shared server files today; crafting, events and
 quests all touch raids, valuation and `DataQuest`), it is the largest bot upgrade available anywhere and nobody else
@@ -229,8 +208,8 @@ Open, each listed with its options in the design document named:
 
 | Stop | State |
 |---|---|
-| 1.1.1 | In progress (2026-10-31): every branch open and green (#35–#37 the owner's, #41–#46, #48, #49 drafted here); #44–#46 reviewed and their fixes applied; two pre-merged candidates with their conflicts resolved: #47 (A: the small set) and #50 (B: everything, 4,110 tests passing). The merge, the played checks and the release notes wait for the owner |
-| 1.1.x | Patch stops for community fixes while 1.2 is built |
-| 1.2 | The comprehensive update: phase A merged on `release/1.2` (2026-11-01); phase B starting |
-| 1.3 | Planned (invasion, crafting M0–M2) |
+| 1.1.1 | Merged to `main` (`15f521e`); the GitHub release waits for the owner |
+| 1.1.2 | Planned (2026-11-03): PR #50 plus save safety, the r/daoc fixes, ported fork fixes, release gates; PR #59 (EA files) open |
+| 1.2 | Phase A: base merged and current (`ebbaf83`); profiling, harness and the duty record next |
+| 1.3 | Planned |
 | 2.0 | Planned |
