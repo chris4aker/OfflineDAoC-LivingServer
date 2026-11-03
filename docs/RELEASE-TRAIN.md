@@ -140,6 +140,15 @@ Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x pat
       a dragon raid; a returning session read on the Herald
 - [ ] Release notes to the rules above
 
+### 1.2.x — play with friends (experimental, right after 1.2)
+
+Owner 2026-11-03: private co-op for about 1–4 players in a thriving bot world; no public server.
+- [ ] Host for Friends and Join Friend in the launcher, ported with credit from rambodolphin13's
+      `feature/play-with-friends` (home network, Tailscale by default, an internet mode limited to listed friends,
+      firewall rules for this game only); automatic account creation off while hosting
+- [ ] The bot population scaled to the extra players' load; the original client first, the new client after
+- [ ] Played: a weekend session with two or three friends
+
 ### 1.3 — the world goes on without you
 
 - [ ] A bounded catch-up when the server starts after days off (keeps, raid outcomes, bot levels, guild changes),
@@ -149,6 +158,9 @@ Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x pat
 - [ ] The guild package (tiers, rival guilds), reputation tags, a realm summary for the director
 - [ ] Role playbooks for the RvR builds; warband lanes and roaming groups; stefanrows's group doctrine, untangled
 - [ ] Personas and longer storylines if the 1.2 chat measurements justify them; the historical server
+- [ ] Co-op made first-class: the systems that assume one human (memory and circles, "since you last played",
+      events that wait for the player, bots inviting the player, quest credit in bot groups) work for each of up to
+      four players
 
 ### 2.0 — the complete realm
 
@@ -181,6 +193,9 @@ tank guarding) is in shadowofze's final `main`.
 Taken (2026-11-01): **1.2 is one comprehensive update**: the old 1.3 (live events M1–M2, the guild package, the
 historical server, the quest harness) and both halves of the builds work fold into it, built in phases that are
 soaked one at a time; the invasion and crafting stop becomes 1.3.
+
+Taken (2026-11-03): **private co-op for about 1–4 players** in the bot world (1.2.x, first-class in 1.3); no public
+server, and nothing formal about taking over from shadowofze.
 
 Taken (2026-11-03): **follow the base on the Sluaghbinder** (it follows the edition switch again, `12992146`), and
 **no EA client files in the repo** (the 54 inherited from upstream removed; history kept). The North Star order above
