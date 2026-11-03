@@ -12,6 +12,8 @@ evidence supports them. This page is both. Three read-only audits stand behind i
 - [technical.md](audits/2026-11-03/technical.md): scale, data safety, reliability, delivery, tests, and a simulation of
   PR #53's perception ([perception_sim.py](audits/2026-11-03/perception_sim.py), output in
   [perception_sim_out.md](audits/2026-11-03/perception_sim_out.md)).
+- [FORK-SURVEY.md](audits/2026-11-03/FORK-SURVEY.md): shadowofze's main rechecked and every active fork read, with
+  what to take and where it fits (added later the same day).
 
 **Labels:** **[V]** verified (code, docs, `gh` or a run), **[I]** inferred, **[E]** estimate, **[O]** owner decision.
 Nothing here was played; no server was started; no branch other than this one was changed.
@@ -202,3 +204,6 @@ graph TD
 8. Cut G6 (the rule list); defer personas and storylets.
 9. Easter eggs: a sealed data file, five for 1.2, never in release notes.
 10. Insults: soft ignore (open since 2026-11-01).
+11. The Sluaghbinder: shadowofze restored it as an edition option on 2026-11-01, after our removal (FORK-SURVEY).
+    Follow him, or keep it removed.
+12. The 54 EA client files inherited from upstream (FORK-SURVEY): remove them at the tip; whether to purge history.
