@@ -37,7 +37,8 @@
     </Window.Resources>
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/img/options-bg.png" Stretch="UniformToFill" />
+            <!-- A plain colour: options-bg.png was the original client's own login art (removed 2026-11-03) -->
+            <SolidColorBrush Color="#FF1E1A16" />
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />

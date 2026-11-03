@@ -160,7 +160,6 @@
     <Resource Include="img\mid.png" />
     <Resource Include="img\button-pressed.png" />
     <Resource Include="img\button-unpressed.png" />
-    <Resource Include="img\options-bg.png" />
     <Resource Include="img\home-bg.png" />
     <Resource Include="img\icon.ico" />
     <Resource Include="img\logo.png" />

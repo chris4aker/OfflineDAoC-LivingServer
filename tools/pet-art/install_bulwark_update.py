@@ -217,8 +217,18 @@ def check_database(before, after, updates, inserts):
 
 
 # -------------------------------------------------------------------- actions
+def load_icon():
+    """The Barrow Deflection icon. The PNG is not in git (it sits on a stock icon frame); when it is missing it is
+    drawn from the player's own client by work/barrow-deflection/draw_icon.py."""
+    if ART.exists():
+        return Image.open(ART).convert("RGB")
+    sys.path.insert(0, str(ART.parent))
+    import draw_icon  # noqa: E402  (reads the stock spell sheets from runtime/client-opendaoc/app/icons)
+    return draw_icon.draw().convert("RGB")
+
+
 def build():
-    icon = Image.open(ART).convert("RGB")
+    icon = load_icon()
     bs.require(icon.size == (32, 32), "Icon art must be 32x32")
     sheets = {}
     for path in SHEETS:
