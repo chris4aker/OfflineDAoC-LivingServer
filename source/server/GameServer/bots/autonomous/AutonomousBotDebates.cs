@@ -850,7 +850,7 @@ public static class AutonomousBotDebates
             (int[] resets, OfflineBotSceneHeardRecord[] adds) = HeardWrites.Take();
             if (resets.Length == 0 && adds.Length == 0)
                 return;
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
             {
                 foreach (int realm in resets)
                 {

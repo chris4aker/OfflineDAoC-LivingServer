@@ -84,6 +84,7 @@ public static class AutonomousZoneRoads
         }
         long profiled = NavQueryProfile.Start();
         long started = System.Diagnostics.Stopwatch.GetTimestamp();
+        using var aiProfile = AiProfile.Scope(AiSystem.RouteRoad); // AI_PROFILE: measures only
         try { via = Solve(nav, zone, roads, start, end); }
         finally
         {

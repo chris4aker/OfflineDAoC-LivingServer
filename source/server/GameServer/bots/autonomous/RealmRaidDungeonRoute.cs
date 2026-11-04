@@ -261,6 +261,7 @@ namespace DOL.GS
         public static bool TryCreate(ushort region, Vector3 trigger, string[] finals, out RealmRaidDungeonRoute route,
             eRealm realm = eRealm.None, ushort homeRegion = 0, string[] objectives = null, Vector3? hub = null)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.RouteRaidDungeon); // AI_PROFILE: measures only
             route = null;
             var nav = PathfindingProvider.Instance;
             var why = new List<string>();
@@ -343,6 +344,7 @@ namespace DOL.GS
         /// <summary>The same certified chain for one realm's member (late raid members walk it to their post).</summary>
         public static bool TryDarknessFallsChain(IPathfindingMgr nav, Zone zone, eRealm realm, Vector3 encounter, out Vector3[] chain)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.RouteDarknessFallsChain); // AI_PROFILE: measures only
             // The answer depends on the realm, the post and the mesh only, never on the asking bot. Every
             // raider whose post was not one leg away re-ran the full search (8 approaches x ~38 candidate
             // points, ~300 path queries, ~1 s) on every AI turn; the Prince Abdin raid on 2026-10-12 made

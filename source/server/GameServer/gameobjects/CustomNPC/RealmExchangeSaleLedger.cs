@@ -33,7 +33,7 @@ public static class RealmExchangeSaleLedger
         IObjectDatabase database = GameServer.Database;
         State state = States.GetOrCreateValue(database);
         lock (RealmExchangeBroker.TransactionLock)
-        lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+        using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
         lock (state.Gate)
         {
             try { Initialize(database, state); }

@@ -30,6 +30,7 @@ jobs:
           python tools/bot-voices/build_corpus.py --verify
           python tools/bot-voices/check_runtime_names.py
           python -m unittest discover -s tools/claude-version/tests -v
+          python -m unittest discover -s tools/perf/tests -v
 
       - name: Create local server config (build only needs it to exist)
         shell: bash

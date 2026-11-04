@@ -56,7 +56,7 @@ public static class RealmExchangeExpiry
         foreach (DbInventoryItem item in MarketCache.SearchItems(new ItemQuery()).Where(item => IsExpired(item, utcNow)).Take(200))
         {
             lock (RealmExchangeBroker.TransactionLock)
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
             {
                 if (!IsExpired(item, utcNow) || !AutonomousBotEconomy.TryParseOwnerId(item.OwnerID, out long id)) continue;
                 if (!GameServer.Database.DeleteObject(item)) continue;

@@ -1748,6 +1748,7 @@ namespace DOL.AI.Brain
 
         private void MaybeAutonomousWorldChat()
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ChatBotTurn); // AI_PROFILE: measures only
             GameBot bot = BotBody;
             long nowTick = GameLoop.GameLoopTime;
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || nowTick < _nextAmbientChatCheckTick)
@@ -1814,6 +1815,7 @@ namespace DOL.AI.Brain
 
         private bool TryHandleAutonomousRealmExchange(RealmExchangeBroker arrivedBroker = null)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.EconomyExchange); // AI_PROFILE: measures only
             GameBot bot = BotBody;
             long now = GameLoop.GameLoopTime;
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup ||
@@ -1928,6 +1930,7 @@ namespace DOL.AI.Brain
         /// </summary>
         private bool TryHandleAutonomousMerchantService(GameMerchant arrivedMerchant = null)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.EconomyMerchant); // AI_PROFILE: measures only
             GameBot bot = BotBody;
             long now = GameLoop.GameLoopTime;
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup ||
@@ -3677,6 +3680,7 @@ namespace DOL.AI.Brain
 
         private void QueueUsableMeleeStyle()
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.CombatStyle); // AI_PROFILE: measures only
             if (Body.styleComponent.NextCombatStyle != null || Body.ActiveWeapon == null)
                 return;
             Body.styleComponent.NextCombatStyle = BotMeleeStylePolicy.Select(BotBody,
@@ -3978,6 +3982,7 @@ namespace DOL.AI.Brain
 
         public virtual bool CheckSpells(eCheckSpellType type)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.CombatSpells); // AI_PROFILE: measures only
             if (Body == null || Body.Spells == null || Body.Spells.Count <= 0)
                 return false;
 
@@ -5183,6 +5188,7 @@ namespace DOL.AI.Brain
 
         public bool CheckHeals()
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.CombatHeals); // AI_PROFILE: measures only
             const byte ManaThreshold = 90;
             const long CureDelay = 5000;
 

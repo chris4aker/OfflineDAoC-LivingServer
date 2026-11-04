@@ -36,6 +36,13 @@ public static class AutonomousAiBudget
         return (int)(mixed % (uint)interval);
     }
 
+    /// <summary>
+    /// How many deferred planning decisions may run this tick. Not called by the server yet: the deferral queue that
+    /// would call it (audit 2026-11-03 §8.4 step 2) is decided after the L300/L600 baselines. When it lands, it is
+    /// called from the serial planning as
+    /// <c>MaximumDecisionsThisTick(AiProfile.ElapsedThisTickMs(), AutonomousPopulationProperties.AI_BUDGET_MS, queue.Count)</c>;
+    /// combat, movement and retaliation are never deferred.
+    /// </summary>
     public static int MaximumDecisionsThisTick(double recentTickMilliseconds, double budgetMilliseconds, int queueCount)
     {
         if (queueCount <= 0 || budgetMilliseconds <= 0 || recentTickMilliseconds >= budgetMilliseconds)
