@@ -342,7 +342,11 @@ public static class AutonomousBotChatCoordinator
         AutonomousChatWhy.Record(speaker, "faction", "news " + topic, "said", RuleOf(picked.Line, "news"), VC.Specificity(picked.Line),
             witness ? "it was there" : "it heard the news", picked.Text, picked.Line?.Id);
         SendCorrection(speaker, true, picked.Correction);
-        ScheduleBotReplies(speaker, picked.Text, true, false, picked.Line);
+        // Beta 1.1.3: a big moment (a keep, a relic, a raid's end, Darkness Falls) draws a burst of reactions, and the capital hears it.
+        if (AutonomousChatBursts.BurstsOn(topic))
+            AutonomousChatBursts.React(speaker, speaker.Realm, topic, picked.Text, ["news_" + topic, "news"], slots, AutonomousChatBursts.ReachesTowns(topic));
+        else
+            ScheduleBotReplies(speaker, picked.Text, true, false, picked.Line);
         return true;
     }
 
