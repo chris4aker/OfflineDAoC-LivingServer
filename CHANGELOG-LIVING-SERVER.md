@@ -62,8 +62,9 @@ gates fell, and the Renegade Lord never dropped below 100%).
     `/spawn` companions out, are `/afk`, or are in a frontier, battleground or raid.
   - **How often:** unasked, at most once every 45 minutes and not in your first 10 minutes online. It counts as that
     period's bot tell, so a tell and an invite never stack.
-  - **Asking:** `/lfg` gets you an invite within a minute when a party fits (and then no duo offers), and so does a
-    tell to a bot leader with room ("room for a cleric?").
+  - **Asking:** `/lfg`, or a tell to a bot leader with room ("lfg?", "room for a cleric?"): when a party fits, its
+    leader answers by tell and the invite box follows within 15 seconds (and then no duo offers come). An asked invite
+    skips the 10-minute start, the 45-minute gap and the quiet after a no.
   - **Saying no:** No in the box, or "no thanks" to the tell. Then no unasked invite for 30 minutes, nothing from that
     leader for 6 hours, and no unasked invites for the rest of the session after three noes.
   - The server setting `bot_group_invite_player` (the launcher's Living Server tab, **Bot leaders invite you**) turns
@@ -87,17 +88,22 @@ gates fell, and the Renegade Lord never dropped below 100%).
     lead.
   - No raid, siege, RvR march, battleground rally or other gamebot group takes a gamebot from a party that hosts you
     (`/lswhy duty` on one says "leading a group with a player").
-- **Loot changes for every group with you and gamebots, whoever leads** (owner's decision): loot is shared with you and
-  weighted in your favour. You count as two members: coin is split evenly among the members in range with you counted
-  twice, and items go round the members in range with two turns for you (with seven gamebots nearby you get 2 of every
-  9 items and 2/9 of the coin). An item your class can use that beats what you wear comes to you first. Before, in a
-  group you led you got everything, and in a gamebot's group you would have got nothing. The share is the setting
-  `bot_group_player_loot_weight` (1 to 8; the launcher's **Your loot share**). Groups of only gamebots, and your
-  `/spawn` companions (who take no loot), are unchanged.
+- **Loot changes for every group with you and gamebots, whoever leads** (owner's decision): you get the primary
+  spoils, and the gamebots still gear up and fund their own improvements. Each item, in this order:
+  - an item your class can use that beats what you wear goes to you;
+  - otherwise, an item that is an upgrade for a gamebot nearby goes to the gamebot it improves most (gamebots start
+    without armour and earn it, so they need drops);
+  - everything else (most of the sell value) goes round the members in range with two turns for you: with seven
+    gamebots nearby you get 2 of every 9 of these items.
+  - Coin is split evenly among the members in range with you counted twice (2/9 with seven gamebots nearby).
+  - Before, in a group you led you got everything, and in a gamebot's group you would have got nothing. Your share is
+    the setting `bot_group_player_loot_weight` (1 to 8; the launcher's **Your loot share**). Groups of only gamebots,
+    and your `/spawn` companions (who take no loot), are unchanged.
 - **Gamebot chat:** the leader says what comes next in `/group`, short and lowercase ("moving to skeletons", "where u
   at?", "everyone med"). Lines like "you pull great" or "lead the way" are no longer said in a party a gamebot leads.
 - **For testers:** server log lines `BOT_LED_INVITE` (sent, not sent, declined, accepted, with the reason),
-  `BOT_LED_GROUP_HOSTING`, `BOT_LED_GROUP_GOING_ON`, `BOT_LED_PLAYER_LEFT` and `BOT_LED_LOOT`; the startup
+  `BOT_LED_GROUP_HOSTING`, `BOT_LED_GROUP_GOING_ON`, `BOT_LED_PLAYER_LEFT` and `BOT_LED_LOOT` (who got each item and
+  why: `upgrade-player`, `upgrade-bot` or `rotation`); the startup
   `FORK_BUILD` line shows both settings.
 - **Not yet:** `/lead` and handing the lead back, the join setting (follow or lead) and raid leaders who invite you
   come in the next parts. Gamebots don't yet ride the same horse or boat as you: the leader takes its own and waits

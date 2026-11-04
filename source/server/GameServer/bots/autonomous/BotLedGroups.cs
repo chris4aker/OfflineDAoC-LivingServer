@@ -32,8 +32,22 @@ public static partial class BotLedGroups
     public const long FirstInviteAfterLoginMs = 10 * 60_000L;
     /// <summary>At most one unasked invite every 45 minutes.</summary>
     public const long UnaskedGapMs = 45 * 60_000L;
-    /// <summary>An asked invite (/lfg, "lfg?" to a bot) can come within a minute of asking.</summary>
-    public const long AskedWindowMs = 60_000L;
+    /// <summary>
+    /// An asked invite (/lfg, "lfg?" to a bot): the leader answers by tell first, and the invite box follows within 15
+    /// seconds of asking (owner 2026-11-04).
+    /// </summary>
+    public const long AskedWindowMs = 15_000L;
+    /// <summary>The leader's answer to an ask comes 1 to 2.5 seconds after the invite is decided.</summary>
+    public const int AskedTellDelayMinMs = 1_000, AskedTellDelaySpreadMs = 1_500;
+    /// <summary>The box follows the answer 1.5 to 3 seconds later.</summary>
+    public const int AskedBoxDelayMinMs = 1_500, AskedBoxDelaySpreadMs = 1_500;
+    /// <summary>The longest an asked invite takes from the decision to the box.</summary>
+    public const long AskedLongestDelayMs = AskedTellDelayMinMs + AskedTellDelaySpreadMs + AskedBoxDelayMinMs + AskedBoxDelaySpreadMs;
+    /// <summary>
+    /// An ask is still served (by the 5-second pulse when no party fitted at once) only while the box can still come
+    /// within <see cref="AskedWindowMs"/>.
+    /// </summary>
+    public const long AskedLatestStartMs = AskedWindowMs - AskedLongestDelayMs;
     /// <summary>No unasked invite for 30 minutes after a no.</summary>
     public const long DeclineQuietMs = 30 * 60_000L;
     /// <summary>Nothing from a leader for 6 hours after the player said no to it.</summary>
@@ -173,15 +187,17 @@ public static partial class BotLedGroups
         /// <summary>The player asked for a group (/lfg, or "lfg?" by tell).</summary>
         public void Asked(long now) => AskedAt = now;
 
-        public bool IsAsking(long now) => now - AskedAt >= 0 && now - AskedAt <= AskedWindowMs;
+        /// <summary>The player asked recently enough that an invite decided now still shows its box within 15 seconds.</summary>
+        public bool IsAsking(long now) => now - AskedAt >= 0 && now - AskedAt <= AskedLatestStartMs;
 
         public bool LeaderDeclined(long leaderId, long now) =>
             DeclinedByLeader.TryGetValue(leaderId, out long at) && now - at < LeaderDeclineMs;
     }
 
     /// <summary>
-    /// Why no invite may be sent now, or null when one may. Asked (within a minute of /lfg or a tell): only a box that
-    /// is already waiting stops it. Unasked: invites on, 10 minutes online, 45 minutes since the last unasked invite and
+    /// Why no invite may be sent now, or null when one may. Asked (/lfg or a tell, served within 15 seconds): only a box
+    /// that is already waiting stops it; the 10-minute start, the 45-minute gap, the 30-minute quiet after a no and the
+    /// three-noes rule are for unasked invites. Unasked: invites on, 10 minutes online, 45 minutes since the last unasked invite and
     /// <paramref name="sinceLastBotTell"/> at least the bot tells' own gap (an unasked invite counts as that period's
     /// bot tell, so they never stack), 30 minutes since a no, fewer than three noes this session.
     /// </summary>
@@ -483,7 +499,8 @@ public static partial class BotLedGroups
 
     /// <summary>
     /// A group's item rotation: how many items it has handed out, and how many of them went to the player. The player
-    /// counts as <c>weight</c> members, so with seven gamebots nearby and weight 2 the player gets 2 of every 9 items.
+    /// counts as <c>weight</c> members, so with seven gamebots nearby and weight 2 the player gets 2 of every 9 of these
+    /// items. Upgrades (for the player or a gamebot) are given outside the rotation and not counted in it.
     /// </summary>
     public sealed class LootLedger
     {
@@ -502,17 +519,58 @@ public static partial class BotLedGroups
     public static int ClampWeight(int weight) => Math.Clamp(weight, 1, MaximumPlayerLootWeight);
 
     /// <summary>
-    /// Whether the next item goes to the player. An item the player's class can use that beats what they wear comes to
-    /// them first. Otherwise the player's turn comes whenever their items fall short of their share
-    /// (<c>weight / (weight + bots)</c>) of the items so far, the next one included: the first item, then e.g. the 5th
-    /// and 10th of 9-member rotations. With no gamebot in range every item is the player's.
+    /// The rotation: whether the next item that is no one's upgrade goes to the player. The player's turn comes whenever
+    /// their items fall short of their share (<c>weight / (weight + bots)</c>) of the rotation so far, the next one
+    /// included: the first item, then e.g. the 5th and 10th of 9-member rotations. With no gamebot in range every item is
+    /// the player's.
     /// </summary>
-    public static bool NextItemGoesToPlayer(LootLedger ledger, int playerWeight, int botsInRange, bool upgradeForPlayer)
+    public static bool NextItemGoesToPlayer(LootLedger ledger, int playerWeight, int botsInRange)
     {
-        if (upgradeForPlayer || botsInRange <= 0)
+        if (botsInRange <= 0)
             return true;
         int weight = ClampWeight(playerWeight);
         return (long)ledger.PlayerItems * (weight + botsInRange) < (long)(ledger.Items + 1) * weight;
+    }
+
+    /// <summary>Why an item went where it went (the BOT_LED_LOOT reason).</summary>
+    public enum LootRoute { UpgradePlayer, UpgradeBot, RotationPlayer, RotationBot }
+
+    public static string ReasonOf(LootRoute route) => route switch
+    {
+        LootRoute.UpgradePlayer => "upgrade-player",
+        LootRoute.UpgradeBot => "upgrade-bot",
+        _ => "rotation",
+    };
+
+    /// <summary>
+    /// Where an item goes in a group with the player and gamebots, whoever leads (owner 2026-11-04): the player gets the
+    /// primary spoils, and gamebots, who start without armour and earn it, still gear up from drops and fund their own
+    /// improvements. In order: (a) an upgrade for the player goes to the player; (b) otherwise an upgrade for a gamebot in
+    /// range goes to the gamebot it improves most; (c) everything else goes through the rotation, with the player counting
+    /// as <paramref name="playerWeight"/> members.
+    /// </summary>
+    public static LootRoute Route(bool upgradeForPlayer, bool upgradeForABot, LootLedger ledger, int playerWeight, int botsInRange,
+        bool playerInRange)
+    {
+        if (upgradeForPlayer && playerInRange)
+            return LootRoute.UpgradePlayer;
+        if (upgradeForABot && botsInRange > 0)
+            return LootRoute.UpgradeBot;
+        return playerInRange && NextItemGoesToPlayer(ledger, playerWeight, botsInRange) ? LootRoute.RotationPlayer : LootRoute.RotationBot;
+    }
+
+    /// <summary>
+    /// The gamebot an item improves most: the highest gain among those it is an upgrade for (null: not an upgrade for that
+    /// bot, by the gamebots' own appraisal, AutonomousBotEconomy.TryGetEquipmentUpgrade), the first of equals. -1 when it
+    /// is an upgrade for none.
+    /// </summary>
+    public static int PickBotForUpgrade(IReadOnlyList<int?> gains)
+    {
+        int best = -1;
+        for (int i = 0; i < gains.Count; i++)
+            if (gains[i] is int gain && (best < 0 || gain > gains[best]!.Value))
+                best = i;
+        return best;
     }
 
     /// <summary>
@@ -687,7 +745,7 @@ public static partial class BotLedGroups
 
     /// <summary>
     /// The player asked for a group (/lfg, or "lfg?" / "room for a cleric?" in a tell to a bot): an invite can come
-    /// within a minute. Returns whether a leader's invite is on its way (the caller then makes no duo offer).
+    /// within 15 seconds (the leader answers by tell first). Returns whether a leader's invite is on its way (the caller then makes no duo offer).
     /// <paramref name="askedBot"/>: the bot the player asked, which invites when it leads a party that fits.
     /// </summary>
     public static bool OnPlayerAsked(GamePlayer player, GameBot askedBot = null)
@@ -717,16 +775,21 @@ public static partial class BotLedGroups
         }
         memory.Pending = true;
         if (!asked)
+        {
             memory.LastUnaskedAt = now;
-        // An unasked invite is that period's bot tell: the next bot-started tell waits its full gap.
-        AutonomousLivingServer.CountInviteAsTell(player, now);
+            // An unasked invite is that period's bot tell: the next bot-started tell waits its full gap.
+            AutonomousLivingServer.CountInviteAsTell(player, now);
+        }
         LogInvite("sent", leader, player, asked ? "asked" : "unasked", asked, party);
         string tell = InviteTell(leader, asked);
-        AutonomousLivingServer.Later(leader, 1_500 + Random.Shared.Next(2_500), null, () =>
+        // Asked: the answer, then the box, within 15 seconds of the ask (AskedLatestStartMs + AskedLongestDelayMs).
+        int tellDelay = asked ? AskedTellDelayMinMs + Random.Shared.Next(AskedTellDelaySpreadMs) : 1_500 + Random.Shared.Next(2_500);
+        int boxDelay = asked ? AskedBoxDelayMinMs + Random.Shared.Next(AskedBoxDelaySpreadMs) : 2_500 + Random.Shared.Next(2_000);
+        AutonomousLivingServer.Later(leader, tellDelay, null, () =>
         {
             AutonomousLivingServer.Tell(leader, player, tell, InviteThread);
             // The player's dialog state belongs to the client service (as AutonomousBotGuildSocial's invites).
-            AutonomousLivingServer.Later(leader, 2_500 + Random.Shared.Next(2_000), null,
+            AutonomousLivingServer.Later(leader, boxDelay, null,
                 () => ClientService.Instance.Post(static state => SendInviteBox(state.Player, state.Leader, state.Asked),
                     (Player: player, Leader: leader, Asked: asked)));
         });
@@ -943,9 +1006,10 @@ public static partial class BotLedGroups
     }
 
     /// <summary>
-    /// An item in a group with the player and gamebots: an upgrade for the player comes to them first, otherwise the
-    /// rotation gives the player <see cref="LootWeight"/> shares in it and the rest go at random to the gamebots in range.
-    /// False when the group is not mixed (the old rules apply).
+    /// An item in a group with the player and gamebots (<see cref="Route"/>): an upgrade for the player goes to them; else
+    /// an upgrade for a gamebot in range goes to the one it improves most; else the rotation gives the player
+    /// <see cref="LootWeight"/> shares and the rest go at random to the gamebots in range. False when the group is not
+    /// mixed (the old rules apply).
     /// </summary>
     public static bool TrySplitItem(Group group, WorldInventoryItem item, out TryPickUpResult result)
     {
@@ -965,26 +1029,44 @@ public static partial class BotLedGroups
         LootLedger ledger = Ledgers.GetOrCreateValue(group);
         lock (ledger)
         {
+            // (a) an upgrade for the player, (b) else an upgrade for the gamebot it improves most, (c) else the rotation.
             GamePlayer upgradeFor = players.FirstOrDefault(player => IsUpgradeFor(player, item.Item));
-            bool toPlayer = players.Length > 0 && NextItemGoesToPlayer(ledger, LootWeight, bots.Length, upgradeFor != null);
-            IEnumerable<GamePlayer> playerOrder = upgradeFor == null ? players : players.Where(p => p != upgradeFor).Prepend(upgradeFor);
-            if (toPlayer && GiveToAPlayer(group, playerOrder, item, ledger, upgradeFor != null))
+            int?[] gains = bots.Select(bot => BotUpgradeGain(bot, item.Item)).ToArray();
+            LootRoute route = Route(upgradeFor != null, gains.Any(gain => gain != null), ledger, LootWeight, bots.Length, players.Length > 0);
+            if (route == LootRoute.UpgradePlayer && GiveToAPlayer(group, [upgradeFor], item, ledger, LootRoute.UpgradePlayer))
+            {
+                result = TryPickUpResult.Success;
+                return true;
+            }
+            if (route is LootRoute.UpgradePlayer or LootRoute.UpgradeBot)
+            {
+                // The bot it improves most first; one that can't carry it passes it to the next.
+                for (int pick = PickBotForUpgrade(gains); pick >= 0; pick = PickBotForUpgrade(gains))
+                {
+                    if (GiveToABot(group, bots[pick], item, ledger, LootRoute.UpgradeBot, gains[pick]))
+                    {
+                        result = TryPickUpResult.Success;
+                        return true;
+                    }
+                    gains[pick] = null;
+                }
+            }
+            bool playersTurn = players.Length > 0 && NextItemGoesToPlayer(ledger, LootWeight, bots.Length);
+            if (playersTurn && GiveToAPlayer(group, players, item, ledger, LootRoute.RotationPlayer))
             {
                 result = TryPickUpResult.Success;
                 return true;
             }
             foreach (GameBot bot in bots)
             {
-                if (bot.TryAutoPickUpItem(item) != TryPickUpResult.Success)
-                    continue;
-                ledger.Record(false);
-                group.SendMessageToGroupMembers(LanguageMgr.GetTranslation(Properties.DB_LANGUAGE, "GamePlayer.PickupObject.Autosplit",
-                    item.Item.GetName(1, true), bot.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
-                result = TryPickUpResult.Success;
-                return true;
+                if (GiveToABot(group, bot, item, ledger, LootRoute.RotationBot, null))
+                {
+                    result = TryPickUpResult.Success;
+                    return true;
+                }
             }
             // No gamebot could carry it: a player who can still has it.
-            if (!toPlayer && GiveToAPlayer(group, players, item, ledger, false))
+            if (!playersTurn && GiveToAPlayer(group, players, item, ledger, LootRoute.RotationPlayer))
             {
                 result = TryPickUpResult.Success;
                 return true;
@@ -994,7 +1076,45 @@ public static partial class BotLedGroups
         return true;
     }
 
-    private static bool GiveToAPlayer(Group group, IEnumerable<GamePlayer> players, WorldInventoryItem item, LootLedger ledger, bool upgrade)
+    /// <summary>
+    /// How much the item would improve this gamebot, by the gamebots' own appraisal (AutonomousBotEconomy.TryGetEquipmentUpgrade,
+    /// the rule loot, merchants and the Realm Exchange share), or null when it is no upgrade for it.
+    /// </summary>
+    private static int? BotUpgradeGain(GameBot bot, DbInventoryItem item)
+    {
+        try
+        {
+            if (item == null || item.IsStackable || !AutonomousBotEconomy.TryGetEquipmentUpgrade(bot, item, out eInventorySlot slot))
+                return null;
+            return AutonomousBotEconomy.EquipmentValue(item) - AutonomousBotEconomy.EquipmentValue(bot.Inventory.GetItem(slot));
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    private static void LogLoot(LootRoute route, string to, string item, int? gain = null)
+    {
+        if (Log.IsInfoEnabled)
+            Log.Info($"BOT_LED_LOOT to=\"{to}\" item=\"{item}\" reason={ReasonOf(route)}" + (gain is int value ? $" gain={value}" : string.Empty));
+    }
+
+    private static bool GiveToABot(Group group, GameBot bot, WorldInventoryItem item, LootLedger ledger, LootRoute route, int? gain)
+    {
+        string name = item.Item.Name, shown = item.Item.GetName(1, true);
+        // The bot's own pickup stores it and, when it is an upgrade, equips it (GameBot.TryAutoPickUpItem).
+        if (bot.TryAutoPickUpItem(item) != TryPickUpResult.Success)
+            return false;
+        if (route == LootRoute.RotationBot)
+            ledger.Record(false);
+        group.SendMessageToGroupMembers(LanguageMgr.GetTranslation(Properties.DB_LANGUAGE, "GamePlayer.PickupObject.Autosplit",
+            shown, bot.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+        LogLoot(route, bot.Name, name, gain);
+        return true;
+    }
+
+    private static bool GiveToAPlayer(Group group, IEnumerable<GamePlayer> players, WorldInventoryItem item, LootLedger ledger, LootRoute route)
     {
         foreach (GamePlayer player in players)
         {
@@ -1008,12 +1128,12 @@ public static partial class BotLedGroups
                     eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 continue;
             }
-            ledger.Record(true);
+            if (route == LootRoute.RotationPlayer)
+                ledger.Record(true);
             group.SendMessageToGroupMembers(LanguageMgr.GetTranslation(player.Client.Account.Language, "GamePlayer.PickupObject.Autosplit",
                 loot.GetName(1, true), player.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
             InventoryLogging.LogInventoryAction("(ground)", player, eInventoryActionType.Loot, loot.Template, loot.IsStackable ? loot.Count : 1);
-            if (upgrade && Log.IsInfoEnabled)
-                Log.Info($"BOT_LED_LOOT player=\"{player.Name}\" item=\"{loot.Name}\" reason=upgrade");
+            LogLoot(route, player.Name, loot.Name);
             _ = item.RemoveFromWorld();
             return true;
         }

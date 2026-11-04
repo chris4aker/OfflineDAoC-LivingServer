@@ -17,7 +17,7 @@ namespace DOL.UnitTests
         {
             var ledger = new LootLedger();
             for (int i = 0; i < drops; i++)
-                ledger.Record(NextItemGoesToPlayer(ledger, weight, bots, upgradeForPlayer: false));
+                ledger.Record(NextItemGoesToPlayer(ledger, weight, bots));
             return ledger.PlayerItems;
         }
 
@@ -36,25 +36,84 @@ namespace DOL.UnitTests
         public void TheFirstItemIsThePlayers()
         {
             var ledger = new LootLedger();
-            Assert.That(NextItemGoesToPlayer(ledger, 2, 7, false), Is.True);
+            Assert.That(NextItemGoesToPlayer(ledger, 2, 7), Is.True);
             ledger.Record(true);
-            Assert.That(NextItemGoesToPlayer(ledger, 2, 7, false), Is.False);
+            Assert.That(NextItemGoesToPlayer(ledger, 2, 7), Is.False);
+        }
+
+        // Owner 2026-11-04: the player gets the primary spoils, and gamebots, who start without armour and earn it, still
+        // gear up from drops. (a) the player's upgrade, (b) else a gamebot's upgrade, (c) else the rotation.
+        [Test]
+        public void AnUpgradeForThePlayerGoesToThePlayerBeforeAnything()
+        {
+            var ledger = new LootLedger();
+            ledger.Record(true);   // the player just had their rotation turn
+            Assert.Multiple(() =>
+            {
+                Assert.That(Route(true, true, ledger, 2, 7, playerInRange: true), Is.EqualTo(LootRoute.UpgradePlayer), "before a bot's upgrade");
+                Assert.That(Route(true, false, ledger, 2, 7, playerInRange: true), Is.EqualTo(LootRoute.UpgradePlayer), "whatever the rotation says");
+                Assert.That(ReasonOf(LootRoute.UpgradePlayer), Is.EqualTo("upgrade-player"));
+            });
         }
 
         [Test]
-        public void AnUpgradeComesToThePlayerFirstAndCountsAsTheirs()
+        public void OtherwiseAnUpgradeForAGamebotGoesToThatBotEvenOnThePlayersTurn()
+        {
+            var ledger = new LootLedger();   // the first item of the rotation would be the player's
+            Assert.Multiple(() =>
+            {
+                Assert.That(NextItemGoesToPlayer(ledger, 2, 7), Is.True);
+                Assert.That(Route(false, true, ledger, 2, 7, playerInRange: true), Is.EqualTo(LootRoute.UpgradeBot));
+                Assert.That(Route(true, true, ledger, 2, 7, playerInRange: false), Is.EqualTo(LootRoute.UpgradeBot), "the player isn't in range");
+                Assert.That(Route(false, true, ledger, 2, 0, playerInRange: true), Is.EqualTo(LootRoute.RotationPlayer), "no gamebot in range");
+                Assert.That(ReasonOf(LootRoute.UpgradeBot), Is.EqualTo("upgrade-bot"));
+            });
+        }
+
+        [Test]
+        public void EverythingElseGoesThroughTheRotation()
         {
             var ledger = new LootLedger();
-            ledger.Record(true);
-            Assert.That(NextItemGoesToPlayer(ledger, 2, 7, upgradeForPlayer: true), Is.True);
-            ledger.Record(true);
-            // Two items already: the rotation waits until the bots have had theirs (2 of 9).
-            for (int i = 0; i < 7; i++)
+            var routes = new System.Collections.Generic.List<LootRoute>();
+            for (int i = 0; i < 9; i++)
             {
-                Assert.That(NextItemGoesToPlayer(ledger, 2, 7, false), Is.False, $"item {i + 3}");
-                ledger.Record(false);
+                LootRoute route = Route(false, false, ledger, 2, 7, playerInRange: true);
+                routes.Add(route);
+                ledger.Record(route == LootRoute.RotationPlayer);
             }
-            Assert.That(NextItemGoesToPlayer(ledger, 2, 7, false), Is.True, "item 10 starts the next rotation");
+            Assert.Multiple(() =>
+            {
+                Assert.That(routes.Count(route => route == LootRoute.RotationPlayer), Is.EqualTo(2), "2 of every 9");
+                Assert.That(routes[0], Is.EqualTo(LootRoute.RotationPlayer));
+                Assert.That(Route(false, false, new LootLedger(), 2, 7, playerInRange: false), Is.EqualTo(LootRoute.RotationBot));
+                Assert.That(ReasonOf(LootRoute.RotationPlayer), Is.EqualTo("rotation"));
+                Assert.That(ReasonOf(LootRoute.RotationBot), Is.EqualTo("rotation"));
+            });
+        }
+
+        [Test]
+        public void UpgradesAreNotCountedInTheRotation()
+        {
+            // Upgrades are given outside the rotation (the ledger records rotation items only), so a run of upgrades for
+            // the gamebots does not take the player's rotation turns, and the player's upgrades don't spend them.
+            var ledger = new LootLedger();
+            Assert.That(Route(false, true, ledger, 2, 7, true), Is.EqualTo(LootRoute.UpgradeBot));
+            Assert.That(Route(true, false, ledger, 2, 7, true), Is.EqualTo(LootRoute.UpgradePlayer));
+            Assert.That((ledger.Items, ledger.PlayerItems), Is.EqualTo((0, 0)));
+            Assert.That(Route(false, false, ledger, 2, 7, true), Is.EqualTo(LootRoute.RotationPlayer), "the first rotation item is still the player's");
+        }
+
+        [Test]
+        public void TheBotItImprovesMostGetsIt()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(PickBotForUpgrade([null, 40, 120, 60]), Is.EqualTo(2));
+                Assert.That(PickBotForUpgrade([90, null, 90]), Is.EqualTo(0), "the first of equals");
+                Assert.That(PickBotForUpgrade([null, null]), Is.EqualTo(-1), "an upgrade for none");
+                Assert.That(PickBotForUpgrade([]), Is.EqualTo(-1));
+                Assert.That(PickBotForUpgrade([-5, null]), Is.EqualTo(0), "an upgrade the appraisal accepts with a low value gain (a Savage weapon) still counts");
+            });
         }
 
         [Test]

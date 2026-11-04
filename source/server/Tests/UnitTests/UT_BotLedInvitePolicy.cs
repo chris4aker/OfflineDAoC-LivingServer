@@ -132,19 +132,47 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void AskingGetsAnInviteWithinAMinuteEvenWithInvitesOffOrJustLoggedIn()
+        public void AskingGetsAnInviteWithin15SecondsEvenWithInvitesOffOrJustLoggedIn()
         {
             long now = 500 * Minute;
             InviteMemory memory = OnlineFor(1, now);
             memory.LastUnaskedAt = now - Minute;
             memory.Declined(7, now - Minute);
-            memory.Asked(now - 30_000);
+            memory.Declined(8, now - Minute);
+            memory.Declined(9, now - Minute);
+            memory.Asked(now - 5_000);
             Assert.Multiple(() =>
             {
                 Assert.That(memory.IsAsking(now), Is.True);
-                Assert.That(CadenceBlocks(memory, now, invitesOn: false, 0), Is.Null);
-                Assert.That(CadenceBlocks(memory, now + 31_000, invitesOn: false, 0), Is.EqualTo("invites_off"), "the ask lasts a minute");
+                Assert.That(CadenceBlocks(memory, now, invitesOn: false, 0), Is.Null,
+                    "asked: no 10-minute start, 45-minute gap, 30-minute quiet or three-noes rule");
+                Assert.That(CadenceBlocks(memory, now - 5_000 + AskedLatestStartMs + 1, invitesOn: false, 0), Is.EqualTo("invites_off"),
+                    "too late for a box within 15 seconds: back to the unasked rules");
             });
+        }
+
+        [Test]
+        public void AnAskedInvitesAnswerAndBoxComeWithin15Seconds()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(AskedWindowMs, Is.EqualTo(15_000));
+                Assert.That(AskedTellDelayMinMs, Is.GreaterThan(0), "the leader answers first");
+                Assert.That(AskedBoxDelayMinMs, Is.GreaterThan(0), "then the box");
+                Assert.That(AskedLatestStartMs + AskedLongestDelayMs, Is.LessThanOrEqualTo(AskedWindowMs));
+                Assert.That(AskedLatestStartMs, Is.GreaterThanOrEqualTo(BotLedGroups.PulseIntervalMs), "the pulse gets one more try");
+            });
+        }
+
+        [Test]
+        public void UnaskedInvitesKeepEveryRule()
+        {
+            long now = 500 * Minute;
+            InviteMemory memory = OnlineFor(200, now);
+            memory.Asked(now - 20_000);
+            Assert.That(memory.IsAsking(now), Is.False);
+            memory.Declined(7, now - Minute);
+            Assert.That(CadenceBlocks(memory, now, true, long.MaxValue), Is.EqualTo("declined_recently"));
         }
 
         [Test]

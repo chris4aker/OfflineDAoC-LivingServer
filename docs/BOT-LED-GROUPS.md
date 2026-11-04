@@ -18,8 +18,9 @@ to group with you says "invite me". In 1.2 a gamebot leading a group can invite 
 - First a tell, the way a 2003 leader did it: *"lf 1 more for skellies in Cursed Forest, want in?"* Then the usual
   group invite box: *"Brannoc has invited you to join his group. Do you wish to join?"* Yes or No.
 - **Never** while you are fighting, dead, riding, on a boat, in another yes/no box, trading, in a group, with `/spawn`
-  companions out, `/afk`, in a frontier, battleground or raid, or in your first 10 minutes online.
-- **How often:** when you ask (`/lfg`, or a tell like "lfg?" to a bot), an invite can come within a minute. Otherwise
+  companions out, `/afk`, or in a frontier, battleground or raid. Never unasked in your first 10 minutes online.
+- **How often:** when you ask (`/lfg`, or a tell like "lfg?" to a bot), the leader answers by tell and the invite
+  box follows within 15 seconds (owner 2026-11-04). Otherwise
   at most one unasked invite every 45 minutes, and it counts as that period's bot tell, so tells and invites never
   stack.
 - **Saying no:** press No, or answer the tell "no thanks". No unasked invite for 30 minutes after a no, nothing from
@@ -53,9 +54,10 @@ back; that bot picks a camp near where you stand. The launcher has **When you jo
 With *lead*, saying yes makes you the leader at once.
 
 **Loot, quests, XP.** Real loot, as everywhere, shared with you and weighted in your favour, whether you follow or
-lead (owner 2026-11-04): you count as two members in the coin split and in the item rotation, so with seven bots
-nearby you get 2 of every 9 items and 2/9 of the coin. Items your class can use and that beat what you wear come to
-you first. The weight is a setting (default 2). A kill by
+lead (owner 2026-11-04): an item your class can use that beats what you wear comes to you; otherwise an upgrade for a
+gamebot nearby goes to the bot it improves most (they start without armour and earn it); everything else goes round
+with you counting as two members, so with seven bots nearby you get 2 of every 9 of those items. Coin is split evenly
+with you counting as two (2/9 with seven bots). The weight is a setting (default 2). A kill by
 the bots counts for your kill quests when you are alive and in range, as it does now in a group you lead. XP is the
 game's normal group XP. Selling happens only at natural breaks: the end of the session, after a wipe, or "last pull
 then town to sell" when bags fill. The group never leaves a camp because one bot wants a merchant.
@@ -185,7 +187,8 @@ About 2,000-2,500 lines of server code and 1,000 of tests, in three pull request
 2. **Loot:** in every group with you and gamebots, following *or* leading, loot is shared with you and skewed in your
    favour: you count as two members in the coin split and the item rotation (a setting, default 2), and an item your
    class can use that beats what you wear comes to you first. This changes the player-led rule too (today everything
-   goes to you when you lead); confirmed by the owner, so it ships with a changelog line and the setting.
+   goes to you when you lead); confirmed by the owner, so it ships with a changelog line and the setting. Refined after
+   the B1 review: upgrades for a gamebot in range go to that bot before the rotation (see B1 as built).
 3. **Camp difficulty:** capped at 6 levels above you while you are in the group. Accepted.
 4. **AFK:** keep pulling in place up to 15 minutes, hold to 30, then let you go at the next break. Accepted.
 5. **Order:** after the duty lease record; if the lease slips, B1 ships with the interim flag. Accepted.
@@ -205,15 +208,27 @@ Branch `feature/bot-led-groups-b1`, stacked on the duty lease (`feature/duty-lea
 | 9. Chat | `data/chat/bot_led_groups.lines`, `group_talk.lines`, `AutonomousBotVoices` | Topics `lead_*` (flag `lead_call`, so only the leader's calls say them) with plain fallbacks; flag `bot_leads`, and `!bot_leads` on the lines that assume the player leads. |
 | 10. Settings | `ServerProperties`, the launcher's `SocialExpansionSettings` and its tab, `ForkBuildInfo` | `bot_group_invite_player` (on), `bot_group_player_loot_weight` (2). |
 
-**Decisions taken while building** (open to the owner):
-- An asked invite (`/lfg`, a tell) skips the 10-minute start, the 45-minute gap, the 30-minute quiet after a no and the
-  three-noes rule; it still respects every "never" state, a box already open and the 6 hours per leader. With invites
-  off, asking still works, as the page says.
-- The coin split counts the player as `bot_group_player_loot_weight` members among the members in range, as decision 2
-  says; the item rotation gives the player the first item and then their share of each round; an upgrade counts as one
-  of the player's items. The manual pickup of a coin or an item in such a group follows the same split.
-- The leader's informational calls (where to meet, going on, where u at, med up) are not held by the chat budget's
-  gaps: there are a few an hour by construction. The flavour talk of the group stays under the budget.
+**Decisions (owner 2026-11-04, after the B1 review):**
+- **Asked invites come within 15 seconds.** When the player asks (`/lfg`, or "lfg?" or the like by tell), the leader
+  answers first with a tell, then the invite box follows within 15 seconds of the ask (`AskedWindowMs`; the answer
+  1-2.5 s after the decision, the box 1.5-3 s after the answer, and an ask the pulse picks up later is served only
+  while that still fits). Asked invites skip the 10-minute start, the 45-minute gap, the 30-minute quiet after a no and
+  the three-noes rule; they still respect every "never" state, a box already open and the 6 hours per leader. With
+  invites off, asking still works. Unasked invites keep every rule.
+- **Loot: the player gets the primary spoils, and gamebots still gear up and fund their improvements.** Each item in a
+  group with the player and gamebots, whoever leads (`BotLedGroups.Route`): (a) an upgrade for the player goes to the
+  player; (b) otherwise an upgrade for a gamebot in range goes to the bot it improves most, by the gamebots' own
+  appraisal (`AutonomousBotEconomy.TryGetEquipmentUpgrade`, ranked by `EquipmentValue` gain); (c) everything else goes
+  through the rotation with the player counting as `bot_group_player_loot_weight` members. Upgrades are given outside
+  the rotation and not counted in it. Coin is split evenly among the members in range with the player counting as
+  that weight. A manual pickup in such a group follows the same rules. `BOT_LED_LOOT` logs each item's reason
+  (`upgrade-player`, `upgrade-bot`, `rotation`).
+- **The leader's calls skip the chat budget's gaps.** Where to meet, still waiting, going on, where u at and med up
+  carry what the player needs to follow, and there are only a few an hour by construction, so they are not held by
+  the group channel's gaps. The group's flavour talk stays under the budget.
+- `bot_led_group_join_mode` and `bot_raid_invite_player` come with B2 and B3.
+
+**Decided while building:**
 - A hosted party's camp is never in a frontier, battleground or Darkness Falls, so the frontier boarding queue is not
   needed in B1.
 
