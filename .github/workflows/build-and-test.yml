@@ -3,8 +3,8 @@
 name: build-and-test
 
 on:
+  # Every push, main included, so main is tested again after each merge.
   push:
-    branches-ignore: [main]
   pull_request:
   workflow_dispatch:
 
@@ -12,6 +12,18 @@ permissions:
   contents: read
 
 jobs:
+  # README.md, ForkBuildInfo.BuildName, MainForm.DisplayVersion and the newest released changelog heading must name the
+  # same release (audit 2026-11-03 §8.6; main said Beta 1.1 after 1.1.1 was out). Also the release scripts' own tests.
+  versions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the README and release versions agree
+        run: |
+          python3 tools/release/check_versions.py
+          python3 -m unittest discover -s tools/release/tests -v
+
   server:
     runs-on: windows-latest
     timeout-minutes: 45
