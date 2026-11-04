@@ -9,11 +9,11 @@ internal static class Runner
     public static IReadOnlyList<Scenario> All { get; } = new Scenario[]
     {
         new LoginSaveRestart(), new ChatBetweenPlayers(), new GroupInvite(),
-        new TellGamebot(), new FactionRate(), new KillQuestInBotGroup(), new DeliveryQuest(),
+        new TellGamebot(), new FactionRate(), new KillQuestInBotGroup(), new DeliveryQuest(), new GuildDues(),
     };
 
     /// <summary>The hook scenarios: what they cannot do yet is reported as Incomplete, never as a pass or a failure.</summary>
-    private static readonly HashSet<string> Hooks = new() { "kill-quest-bot-group", "delivery-quest" };
+    private static readonly HashSet<string> Hooks = new();
 
     public static async Task<RunReport> RunAsync(IReadOnlyList<Scenario> scenarios, PlaytestOptions options, TestWorld world,
         string? serverDir, string workDir, TextWriter progress, bool keepServerCopy = false)

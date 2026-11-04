@@ -184,6 +184,67 @@ public class ProtocolTests
     }
 
     [Test]
+    public void PositionTellsTheServerTheTargetIsInView()
+    {
+        // ProcessActionFlags: TARGET_IN_VIEW (0x30) on every position update, or melee says "X is not in view!"
+        byte[] without = ClientPackets.Position(1, 2, 3, 0, 1, 2, 0, 0, 100).Item2.ToArray();
+        byte[] with = ClientPackets.Position(1, 2, 3, 0, 1, 2, 0, 0, 100, targetInView: true).Item2.ToArray();
+        int action = 20 + 2 + 2 + 2 + 1 + 1 + 2 + 2;
+        Assert.That(without[action], Is.EqualTo(0));
+        Assert.That(with[action], Is.EqualTo(0x30));
+    }
+
+    [Test]
+    public void TrainSpecNamesTheLineByItsPlaceThenTheLevel()
+    {
+        // PlayerTrainHandler: 8 codes ending at 0xFFFFFFFF, then a level for each code, realm abilities from byte 64
+        var (code, body) = ClientPackets.TrainSpec(3, 9);
+        byte[] b = body.ToArray();
+        Assert.That(code, Is.EqualTo(0x53));
+        var r = new PacketReader(b);
+        Assert.That(r.Int(), Is.EqualTo(3u));
+        Assert.That(r.Int(), Is.EqualTo(0xFFFFFFFFu));
+        r.Skip(24);
+        Assert.That(r.Int(), Is.EqualTo(9u));
+        Assert.That(b.Length, Is.EqualTo(64 + 200));
+    }
+
+    [Test]
+    public void TrainerWindowListsTheSpecsAndPoints()
+    {
+        var w = new PacketWriter();
+        w.Byte(2); w.Byte(80); w.Byte(0); w.Byte(0);
+        w.Byte(0); w.Byte(1); w.Byte(2); w.Pascal("Slash");
+        w.Byte(1); w.Byte(1); w.Byte(2); w.Pascal("Shields");
+        var t = (TrainerSpecs)ServerPackets.Decode(0x7B, w.ToArray(), 0);
+        Assert.That(t.Points, Is.EqualTo(80));
+        Assert.That(t.Specs.Select(sp => (sp.Index, sp.Name)), Is.EqualTo(new[] { (0, "Slash"), (1, "Shields") }));
+    }
+
+    [Test]
+    public void MoneyIsCountedInCopper()
+    {
+        var w = new PacketWriter();
+        w.Byte(5); w.Byte(3); w.Short(2); w.Short(0); w.Short(1);   // 5 copper, 3 silver, 2 gold, 0 mithril, 1 platinum
+        var m = (MoneyUpdate)ServerPackets.Decode(0xFA, w.ToArray(), 0);
+        Assert.That(m.Copper, Is.EqualTo(1L * 1000 * 100 * 100 + 2 * 100 * 100 + 3 * 100 + 5));
+        Assert.That(GuildDues.ParseMoney("1 gold, 2 silver, 3 copper,"), Is.EqualTo(10203));
+        Assert.That(GuildDues.ParseMoney("0 copper pieces"), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void ObjectUpdatesArePlacedInTheirZone()
+    {
+        // ObjectUpdate (168): zone-relative x / y, the zone in its own byte (bit 8 in the flags)
+        var w = new PacketWriter();
+        w.Short(0); w.Short(0);
+        w.Short(500); w.Short(0); w.Short(700); w.Short(0); w.Short(2300); w.Short(0);
+        w.Short(42); w.Short(0); w.Byte(55); w.Byte(0); w.Byte(3); w.Byte(3);
+        var m = (ObjectMoved)ServerPackets.Decode(0xA1, w.ToArray(), 0);
+        Assert.That((m.ObjectId, m.Zone, m.X, m.Y, m.Z, m.Health), Is.EqualTo((42, 3, 500, 700, 2300, 55)));
+    }
+
+    [Test]
     public void FreshNamesAreNamesTheServerTakes()
     {
         for (int i = 0; i < 50; i++)

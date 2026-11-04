@@ -71,7 +71,8 @@ class FromReleaseTests(unittest.TestCase):
                     "ClassName TEXT, RaceId INT, RaceName TEXT, Gender INT, Level INT, Experience INT, RealmPoints INT, ZoneName TEXT, "
                     "Activity TEXT, IsOnline INT, IsAlive INT, LastUpdateUtc TEXT, MoneyCopper INT, InventoryRevision INT, ZoneId INT, "
                     "X INT, Y INT, Z INT, RegionId INT, Health INT, Mana INT, Endurance INT, BindRegionId INT, BindX INT, BindY INT, "
-                    "BindZ INT, CurrentGoal TEXT, ObjectiveProgress TEXT, LastMeaningfulProgressUtc TEXT, IsRetired INT)")
+                    "BindZ INT, CurrentGoal TEXT, ObjectiveProgress TEXT, LastMeaningfulProgressUtc TEXT, IsRetired INT, "
+                    "SerializedAbilities TEXT DEFAULT '', SerializedSpecs TEXT DEFAULT '', UnspentSpecPoints INT DEFAULT 0)")
         con.commit()
         con.close()
 
@@ -110,6 +111,32 @@ class FromReleaseTests(unittest.TestCase):
         report = mtw.verify_test_world(con)
         self.assertEqual(report["accounts"]["playtestergm"], 3)
         con.close()
+
+    def test_the_helper_bot_is_levelled_and_trained_for_it(self):
+        out = self.dir / "copy.db"
+        mtw.read_only_copy(self.world, out)
+        con = sqlite3.connect(out)
+        mtw.add_test_bots(con, 2, helper_level=10)
+        rows = con.execute("SELECT Realm, ClassId, Level, Experience, SerializedAbilities, SerializedSpecs, UnspentSpecPoints "
+                           "FROM offline_world_bots ORDER BY BotId").fetchall()
+        con.close()
+        helpers = [r for r in rows if r[2] == 10]
+        self.assertEqual([r[0] for r in helpers], [1, 2, 3], "one helper a realm, the first bot")
+        for realm, class_id, level, xp, abilities, specs, left in helpers:
+            self.assertEqual(xp, 203950, "the experience of level 10 (GamePlayer.XPForLevel)")
+            self.assertEqual(abilities, "trained-level|10|realm-points|0")
+            spent = sum(sum(range(2, int(lvl) + 1)) for lvl in (part.split("|")[1] for part in specs.split(";")))
+            self.assertEqual(spent + left, mtw.spec_points(10), f"{class_id}: every point spent or left over")
+        self.assertTrue(all(r[2] == 1 and r[4] in ("", None) for r in rows if r[2] != 10), "the rest stay level 1, untrained")
+
+    def test_spec_points_follow_the_servers_formula(self):
+        # GameBot.GetSpecPointsForLevel for a multiplier-20 class: the level up to 5, then 2 x level
+        self.assertEqual(mtw.spec_points(1), 0)
+        self.assertEqual(mtw.spec_points(5), 2 + 3 + 4 + 5)
+        self.assertEqual(mtw.spec_points(10), 14 + 12 + 14 + 16 + 18 + 20)
+        specs, left = mtw.helper_specs(2, 10)
+        self.assertTrue(specs.startswith("Slash|9;Shields|7;Parry|5"))
+        self.assertEqual(left, 9)
 
     def test_a_world_with_someone_elses_account_fails_the_check(self):
         out = self.dir / "copy.db"

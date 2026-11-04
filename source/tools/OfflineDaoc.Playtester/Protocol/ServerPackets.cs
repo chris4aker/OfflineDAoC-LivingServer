@@ -12,7 +12,8 @@ internal sealed record CharacterList(IReadOnlyList<CharacterSlot> Characters) : 
 internal sealed record PositionAndObjectId(float X, float Y, float Z, int ObjectId, int Heading, int Region) : ServerEvent;
 internal sealed record LivingCreated(int ObjectId, string Name, string Guild, int Level, bool IsPlayer, int X, int Y, int Z) : ServerEvent;
 internal sealed record ObjectRemoved(int ObjectId) : ServerEvent;
-internal sealed record ObjectMoved(int ObjectId, int Health) : ServerEvent;
+/// <summary>ObjectUpdate: X / Y are zone-relative (the zone is given), Z absolute.</summary>
+internal sealed record ObjectMoved(int ObjectId, int Health, int Zone, int X, int Y, int Z, int Target) : ServerEvent;
 internal sealed record PlayerMoved(int SessionId, int ObjectId, float X, float Y, float Z) : ServerEvent;
 internal sealed record ChatMessage(int Type, string Text, bool Popup) : ServerEvent;
 internal sealed record DialogBox(int Code, int Data1, int Data2, int Data3, int Data4, int Type, string Text, string QuestTitle) : ServerEvent;
@@ -29,6 +30,10 @@ internal sealed record TargetChanged(int ObjectId) : ServerEvent;
 internal sealed record Died(int ObjectId, int Killer) : ServerEvent;
 internal sealed record PointsUpdate(long RealmPoints, long Experience) : ServerEvent;
 internal sealed record Disconnected(string Why) : ServerEvent;
+/// <summary>TrainerWindow code 0: the points to spend and each trainable specialization (its place, level, name).</summary>
+internal sealed record TrainerSpecs(int Points, IReadOnlyList<(int Index, int Level, string Name)> Specs) : ServerEvent;
+/// <summary>MoneyUpdate: the purse in copper (Money.GetMoney: mithril, platinum, gold, silver, copper).</summary>
+internal sealed record MoneyUpdate(long Copper) : ServerEvent;
 internal sealed record InventoryUpdate(IReadOnlyList<InventoryItem> Items) : ServerEvent;
 internal sealed record InventoryItem(int Slot, string Name, int Level, int Count);
 internal sealed record OtherPacket(int Code, int Length) : ServerEvent;
@@ -82,11 +87,18 @@ internal static class ServerPackets
                 string name = r.Pascal();
                 return new LivingCreated(oid, name, r.Pascal(), level, true, (int)x, (int)y, (int)z);
             }
-            case 0xA1:                                    // ObjectUpdate (168)
-            {
-                r.Skip(16);
-                int oid = r.Short(); r.Short();
-                return new ObjectMoved(oid, r.Byte());
+            case 0xA1:                                    // ObjectUpdate (168): speed, heading, x, target x, y, target y, z,
+            {                                             // target z (zone-relative), the object, its target, health, flags, zone
+                r.Short(); r.Short();
+                int x = r.Short(); r.Short();
+                int y = r.Short(); r.Short();
+                int z = r.Short(); r.Short();
+                int oid = r.Short();
+                int target = r.Short();
+                int health = r.Byte();
+                int flags = r.Byte();
+                int zone = r.Byte() | ((flags & 0x04) << 6);
+                return new ObjectMoved(oid, health, zone, x, y, (short)z, target);
             }
             case 0xA9:                                    // PlayerPosition (PlayerPositionUpdateHandler.CreateOutPak1127):
             {                                             // another player's position, sent to the players around
@@ -203,6 +215,26 @@ internal static class ServerPackets
                 return new TargetChanged(r.Short());
             case 0xAE:                                    // PlayerDeath
                 return new Died(r.Short(), r.Short());
+            case 0x7B:                                    // TrainerWindow (1105): count, points, code, 0; code 0 = the specs
+            {
+                int count = r.Byte(), points = r.Byte(), tcode = r.Byte();
+                r.Byte();
+                if (tcode != 0)
+                    return new OtherPacket(code, data.Length);
+                var specs = new List<(int, int, string)>();
+                for (int i = 0; i < count && r.Left > 0; i++)
+                {
+                    int index = r.Byte(), level = r.Byte();
+                    r.Byte();                             // the next level's cost
+                    specs.Add((index, level, r.Pascal()));
+                }
+                return new TrainerSpecs(points, specs);
+            }
+            case 0xFA:                                    // MoneyUpdate: copper, silver, gold, mithril, platinum
+            {
+                long copper = r.Byte(), silver = r.Byte(), gold = r.Short(), mithril = r.Short(), platinum = r.Short();
+                return new MoneyUpdate((((mithril * 1000 + platinum) * 1000 + gold) * 100 + silver) * 100 + copper);
+            }
             case 0x91:                                    // CharacterPointsUpdate (190)
             {
                 long rp = r.Int();

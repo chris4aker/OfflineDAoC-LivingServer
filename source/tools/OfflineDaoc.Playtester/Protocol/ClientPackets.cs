@@ -136,7 +136,10 @@ internal static class ClientPackets
     }
 
     /// <summary>PlayerPositionUpdateHandler.HandlePacketSince1124 (+ the 1.127 object id).</summary>
-    public static (byte, PacketWriter) Position(float x, float y, float z, float speed, int session, int objectId, int zone, int heading, int health)
+    /// <param name="targetInView">ActionFlags.TARGET_IN_VIEW (0x30): the server's melee and spells check it on every update
+    /// (ProcessActionFlags; without it an attack only says "X is not in view!", first fight here, 2026-11-04)</param>
+    public static (byte, PacketWriter) Position(float x, float y, float z, float speed, int session, int objectId, int zone, int heading, int health,
+        bool targetInView = false)
     {
         var w = new PacketWriter();
         w.FloatLE(x); w.FloatLE(y); w.FloatLE(z); w.FloatLE(speed); w.FloatLE(0);
@@ -147,7 +150,7 @@ internal static class ClientPackets
         w.Byte(0);
         w.Short(0x8000);                                  // on the ground
         w.Short((ushort)(heading & 0xFFF));
-        w.Byte(0);                                        // action flags
+        w.Byte((byte)(targetInView ? 0x30 : 0));          // action flags
         w.Bytes(new byte[2]);
         w.Byte((byte)health);
         w.Bytes(new byte[4]);
@@ -222,6 +225,30 @@ internal static class ClientPackets
         w.Short((ushort)fromSlot);
         w.Short((ushort)count);
         return (0xDD, w);
+    }
+
+    /// <summary>PlayerTrainHandler (0x53): a specialization, by its place in the trainer window's list, to a level.</summary>
+    public static (byte, PacketWriter) TrainSpec(int index, int level)
+    {
+        var w = new PacketWriter();
+        w.Int((uint)index);
+        for (int i = 1; i < 8; i++) w.Int(0xFFFFFFFF);
+        w.Int((uint)level);
+        for (int i = 36; i < 64; i++) w.Byte(0);
+        for (int i = 0; i < 50; i++) w.Int(0);
+        return (0x53, w);
+    }
+
+    /// <summary>PlayerBuyRequestHandler: from the targeted merchant, its item at page * 30 + slot.</summary>
+    public static (byte, PacketWriter) Buy(int x, int y, int session, int itemSlot, int count, int menu = 0)
+    {
+        var w = new PacketWriter();
+        w.Int((uint)x); w.Int((uint)y);
+        w.Short((ushort)session);
+        w.Short((ushort)itemSlot);
+        w.Byte((byte)count);
+        w.Byte((byte)menu);
+        return (0x78, w);
     }
 
     /// <summary>PlayerCreationRequestHandler (CreatePlayerRequest 0xD5, 1.126+ little-endian): ask for a player whose position came but no create.</summary>

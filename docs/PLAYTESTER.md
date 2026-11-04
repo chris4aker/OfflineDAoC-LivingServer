@@ -43,7 +43,10 @@ You need the .NET 10 SDK (as for building the server) and Python 3.
        --out C:\Games\OfflineDAoC\playtest\test-world.db
    ```
    It prints what it found and did. If you have played in that folder, the "saves in source" line shows it; the copy
-   has none of them. `--bots-per-realm 6` is the default: 18 level-1 gamebots in total.
+   has none of them. `--bots-per-realm 6` is the default: 18 gamebots in total. Each realm's first one (an Armsman,
+   Warrior or Blademaster) is the **helper**: level 12 (`--helper-level`) and already trained for it, with its specs
+   and trained level written in its record, as a gamebot of that level would have them. The kill-quest and guild
+   scenarios group with it. The others are level 1.
 4. **Run the scenarios.** Make a fresh test world for each run, or keep a clean copy of `test-world.db` and copy it
    each time. A run adds characters and moves bots.
    ```
@@ -84,7 +87,7 @@ the first login:
 |---|---|---|
 | `playtester` | player | most scenarios |
 | `playtester2` | player | the second player in the chat and group scenarios |
-| `playtestergm` | GM (plvl 3) | the quest scenarios (`/jump`, `/player level`) |
+| `playtestergm` | GM (plvl 3) | the quest and guild scenarios: `/jump`, `/player level`, `/player class`, `/player money`, `/player jump group`, `/heal`, `/gc create` |
 
 ## The scenarios
 
@@ -96,7 +99,8 @@ the first login:
 | `tell-gamebot` | gamebots | Wait for gamebots of the realm to be online (the world database's `IsOnline`). Tell up to three of them "hey, how's it going?". Each must answer with a tell within `--reply-seconds` (default 45). |
 | `faction-rate` | gamebots | Say one `/faction` line, then listen for `--listen-seconds` (default 180). Count the gamebots' /faction lines: lines a minute, speakers, and lines in the first minute. It fails below `--min-faction-per-minute` (default 0.5). |
 | `delivery-quest` | release world | The GM takes the first delivery quest of the region from the world data (DataQuest whose first step is Deliver). It interacts with the giver and whispers the quest's AcceptText. Then for each step it `/jump`s to the target, gives the step's item from the backpack (or interacts), and checks the quest moves on. It must end with "You have completed the ... quest". |
-| `kill-quest-bot-group` | release world, gamebots | **A hook, reported as Incomplete.** The GM `/jump`s to an online gamebot, invites it by name and checks it joins the group. It sets its level to 5 and takes the first kill quest of the region. Killing the target with the bot and the turn-in are TODO in the scenario and in the report. |
+| `kill-quest-bot-group` | release world, gamebots | A player (not the GM) does a kill quest with a gamebot, set up the way a player would meet it. The quest is the region's kill quest with a hand-in and the weakest target. The GM makes the player an Armsman (`/player class`) and sets its level 4 above the target, inside the quest's range. The player trains at an Armsman trainer (`/train`), and the GM gives it the coin to buy a slashing weapon of its level from a merchant, which it wields. The player takes the quest, meets the helper gamebot (level 12: above the player and 5 above this target), invites it, and the GM brings the group to the target (`/player jump group`). They fight it, with full health first (`/heal`). The kill must count for the quest (the step item, the journal or "completed"), the hand-in steps run, and it must end with "You have completed the ... quest". It reports the experience of the kill and of the hand-in. |
+| `guild-dues` | release world, gamebots | The GM forms a guild with the player as leader (`/gc create`, after `/gc quit` from the starting guild). The leader sets dues (`/gc dues 50`; the server caps them at its maximum). Two levels (`/player levelup`) must earn the guild merit. The leader invites the helper gamebot into the guild (`/gc invite`) and the group. The group kills up to 8 monsters near the start until a kill drops coin. `/gc info` before and after must show the dues in the guild bank. It reports the coin picked up, the dues paid and any merit lines naming the bot. |
 
 The scenarios run in this order against one server. Each one quits its players at the end. In the first minute after a
 server start, the quit timer runs up to 60 seconds, so some scenarios wait that long.
@@ -126,11 +130,11 @@ it is on your PC.
 
 ## Still to do
 
-- **Kill quest in a bot group:** walk or `/jump` the group to the target's camp, `/target` and attack with the bot
-  assisting, wait for the journal goal, then turn in at the giver. That means answering the reward window
-  (QuestRewardChosen, 0x40).
 - **The quest offer window** (Dialog 0x22) is answered through DialogResponse's QuestSubscribe case. No giver in these
   runs opened one, so the accept packet is not confirmed against game.dll.
-- **A guild with gamebots paying dues**, the third check the 1.1.2 playtest could not do. It is not a scenario yet:
-  `/gc` commands plus a wait for the dues line.
-- Movement is straight lines at running speed, with no navmesh of its own. Long walks should use `/jump` (GM).
+- **The reward window** (Dialog 0x21, QuestRewardChosen 0x40) of a quest with item choices is not answered yet. The
+  kill and delivery quests found here pay coin and experience only.
+- **Merit from the gamebot:** a gamebot earns its guild merit when it gains a level. The guild scenario does not
+  level the helper, so it only reports any such line.
+- **Travel:** movement is straight lines at running speed, with no navmesh of its own. Long trips use the GM's
+  `/jump` and `/player jump group`, so the gamebot's own pathing to the player is not tested.

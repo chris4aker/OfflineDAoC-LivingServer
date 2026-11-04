@@ -14,13 +14,18 @@ Older entries below keep the names they were written with.
 release was checked by hand in the game client. A scripted player can now run the same checks with no person at the
 keyboard, overnight or in CI:
 - **`make_test_world.py`** makes a test world from a clean release world: a new file, every save emptied as a release
-  is, three test accounts and a small roster of level-1 gamebots. It only reads the world you give it and never writes
-  over a file. A `minimal` world needs no game files at all.
+  is, three test accounts and a small roster of gamebots. Each realm's first gamebot is level 12 and trained for it,
+  so the group scenarios have someone to group with. It only reads the world you give it and never writes over a
+  file. A `minimal` world needs no game files at all.
 - **`OfflineDaoc.Playtester`** connects to the server as the original 1.127 client does, logs in, makes characters
   and plays scenarios: log in, save and restart the server (the character comes back where it quit); say and tells
   between two players; a group invite with group chat; a tell to a gamebot (it answers); /faction lines a minute; a
-  delivery quest taken, carried and handed in; a group with a gamebot and a kill quest taken (killing the target is
-  not scripted yet). Each run writes a report in Markdown and JSON with timings and every chat line it saw.
+  delivery quest taken, carried and handed in.
+  - **A kill quest in a group with a gamebot.** A player is made an Armsman a few levels above the quest. It trains
+    at its trainer, buys a weapon, invites the level-12 gamebot, kills the target with it and hands the quest in.
+  - **Guild dues and merit.** A player's own guild sets dues, earns merit for its levels and takes a gamebot in. The
+    dues from the coin they loot together go to the guild bank.
+  - Each run writes a report in Markdown and JSON with timings and every chat line it saw.
 - It refuses any database that `make_test_world.py` did not make, and runs the server from a copy of its folder, so a
   test run leaves nothing in your install.
 - Its protocol code comes from the new client's network client (`source/new-client`); lometur's HearthDAoC headless

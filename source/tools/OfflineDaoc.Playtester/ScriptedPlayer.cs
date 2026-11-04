@@ -16,7 +16,8 @@ internal sealed record ChatLine(double At, int Type, string Text, string Player)
     public string Channel => ChatTypes.Name(Type);
 }
 
-internal sealed record SeenLiving(int ObjectId, string Name, bool IsPlayer, int Level, int X, int Y, int Z);
+internal sealed record SeenLiving(int ObjectId, string Name, bool IsPlayer, int Level, int X, int Y, int Z, int Health = 100, int Target = 0,
+    double UpdatedAt = 0);
 
 internal sealed class ScriptedPlayer : IAsyncDisposable
 {
@@ -35,6 +36,15 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
     private readonly List<object> _log = new();
     private readonly object _sync = new();
     private readonly HashSet<int> _asked = new();
+    private bool _targetInView;
+    private readonly HashSet<(int Who, int Whom)> _targeted = new();   // which living had which target (ObjectUpdate)
+
+    /// <summary>Whether a living was seen with this target (its object updates carry its target).</summary>
+    public bool HasTargeted(int who, int whom)
+    {
+        lock (_sync)
+            return _targeted.Contains((who, whom));
+    }                          // we have a target and tell the server it is in view
     private TaskCompletionSource _changed = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private DaocConnection? _net;
     private Task? _pump;
@@ -58,6 +68,7 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
     public string? DisconnectReason { get; private set; }
     public Dictionary<int, SeenLiving> Seen { get; } = new();
     public long Experience { get; private set; } = -1;
+    public long Money { get; private set; } = -1;
     /// <summary>The inventory by slot (40-79 the backpack), as the server's inventory updates describe it.</summary>
     public Dictionary<int, InventoryItem> Inventory { get; } = new();
     public IReadOnlyList<GroupMember> Group { get; private set; } = Array.Empty<GroupMember>();
@@ -71,12 +82,16 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
     }
 
     /// <param name="zoneOf">the zone id at a region position (the test world's Zones table), for position updates</param>
-    public ScriptedPlayer(string label, Stopwatch clock, Func<int, int, int, int?> zoneOf)
+    /// <param name="zoneOrigin">a zone's region offset (its OffsetX / OffsetY times 8192), to place objects' updates</param>
+    public ScriptedPlayer(string label, Stopwatch clock, Func<int, int, int, int?> zoneOf, Func<int, (int X, int Y)?>? zoneOrigin = null)
     {
         Label = label;
         _clock = clock;
         _zoneOf = zoneOf;
+        _zoneOrigin = zoneOrigin ?? (_ => null);
     }
+
+    private readonly Func<int, (int X, int Y)?> _zoneOrigin;
 
     public double Now => _clock.Elapsed.TotalSeconds;
 
@@ -213,6 +228,115 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
             }
         created ??= await WaitForOrNullAsync<LivingCreated>(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase), timeout, since);
         return created == null ? null : new SeenLiving(created.ObjectId, created.Name, created.IsPlayer, created.Level, created.X, created.Y, created.Z);
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex XpLine = new(@"^You get ([\d,]+) experience points", System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>The experience the server announced since a time ("You get 2,300 experience points." lines), summed.</summary>
+    public long ExperienceAnnouncedSince(double at) =>
+        ChatSnapshot().Where(l => l.At >= at).Select(l => XpLine.Match(l.Text)).Where(m => m.Success)
+            .Sum(m => long.Parse(m.Groups[1].Value.Replace(",", "")));
+
+    /// <summary>Buys from the targeted merchant (its window's page * 30 + slot).</summary>
+    public void Buy(int page, int slot, int count = 1) => Send(ClientPackets.Buy((int)X, (int)Y, _net?.SessionId ?? 0, page * 30 + slot, count));
+
+    /// <summary>Moves an item between slots (10 = the right hand, 40-79 the backpack).</summary>
+    public void MoveItem(int fromSlot, int toSlot, int count = 1) => Send(ClientPackets.MoveItem(_net?.SessionId ?? 0, fromSlot, toSlot, count));
+
+    /// <summary>Trains a specialization to a level at the trainer whose window is open (its place in the window's list).</summary>
+    public void TrainSpec(int index, int level) => Send(ClientPackets.TrainSpec(index, level));
+
+    /// <summary>Answers the next dialog of this code with yes (or no) and returns it (null when none came).</summary>
+    public async Task<DialogBox?> AnswerDialogAsync(int code, bool yes, TimeSpan timeout, int since)
+    {
+        var dialog = await WaitForOrNullAsync<DialogBox>(d => d.Code == code, timeout, since);
+        if (dialog != null)
+            Send(ClientPackets.DialogResponse(dialog.Data1, dialog.Data2, dialog.Data3, dialog.Code, yes ? 1 : 0));
+        return dialog;
+    }
+
+    /// <summary>The living with this object id as last seen (its place follows its updates).</summary>
+    public SeenLiving? SeenById(int objectId)
+    {
+        lock (_sync)
+            return Seen.GetValueOrDefault(objectId);
+    }
+
+    /// <summary>Attack mode on / off (the client's attack key) on the current target.</summary>
+    public void Attack(bool on) => Send(ClientPackets.Attack(on));
+
+    /// <summary>
+    /// Melee as a player at the keyboard does: target it, close in to 80 units facing it, attack, and keep facing and
+    /// following it until it dies (health 0, a death line naming it, or it leaves view), or the time is up or we die.
+    /// Returns how it ended.
+    /// </summary>
+    public async Task<string> FightAsync(int objectId, TimeSpan timeout)
+    {
+        var watch = Stopwatch.StartNew();
+        var first = SeenById(objectId) ?? throw new PlaytestException($"object {objectId} is not in view");
+        int mark = Mark();
+        Send(ClientPackets.Target(objectId));
+        _targetInView = true;
+        bool attacking = false;
+        int lastHealth = first.Health;
+        while (watch.Elapsed < timeout)
+        {
+            var now = SeenById(objectId);
+            if (now == null)
+            {
+                StopFighting();
+                // gone from view: a kill only if it was hurt (a mob that walks or is moved off is not one)
+                if (lastHealth >= 100)
+                    throw new PlaytestException($"{first.Name} left view unhurt");
+                return $"it left view at {lastHealth}% health (dead and removed)";
+            }
+            lastHealth = now.Health;
+            if (now.Health == 0)
+            {
+                StopFighting();
+                return "its health reached 0";
+            }
+            var mine = await WaitForOrNullAsync<ChatLine>(l => l.Text.StartsWith("You have died", StringComparison.Ordinal) ||
+                l.Text.StartsWith(CharacterName + " was just killed", StringComparison.Ordinal), TimeSpan.FromMilliseconds(1), mark);
+            if (mine != null)
+            {
+                StopFighting();
+                throw new PlaytestException($"{CharacterName} died fighting {first.Name} ({mine.Text})");
+            }
+            var died = await WaitForOrNullAsync<ChatLine>(l => (CharacterName.Length == 0 || !l.Text.StartsWith(CharacterName, StringComparison.Ordinal)) &&
+                l.Text.Contains(first.Name, StringComparison.OrdinalIgnoreCase) &&
+                (l.Text.Contains(" dies", StringComparison.Ordinal) || l.Text.Contains("killed", StringComparison.OrdinalIgnoreCase)),
+                TimeSpan.FromMilliseconds(50), mark);
+            if (died != null)
+            {
+                StopFighting();
+                return died.Text;
+            }
+            double dx = now.X - X, dy = now.Y - Y, dist = Math.Sqrt(dx * dx + dy * dy);
+            Heading = (int)((Math.Atan2(-dx, dy) * 2048 / Math.PI + 4096) % 4096);
+            if (dist > 120 && dist < 3000)
+            {
+                double step = Math.Min(dist - 80, 191 * 0.4);
+                SendPosition((float)(X + dx / dist * step), (float)(Y + dy / dist * step), now.Z, 191);
+            }
+            else
+                SendPosition(X, Y, Z, 0);
+            if (!attacking && dist < 300)
+            {
+                Send(ClientPackets.Target(objectId));
+                Attack(true);
+                attacking = true;
+            }
+            await Task.Delay(400);
+        }
+        StopFighting();
+        throw new PlaytestException($"{first.Name} still alive after {timeout.TotalSeconds:0} s");
+    }
+
+    private void StopFighting()
+    {
+        Attack(false);
+        _targetInView = false;
     }
 
     /// <summary>Targets a living seen nearby by its name (the server created it for us).</summary>
@@ -396,16 +520,27 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
             case LivingCreated c:
                 lock (_sync)
                 {
-                    Seen[c.ObjectId] = new SeenLiving(c.ObjectId, c.Name, c.IsPlayer, c.Level, c.X, c.Y, c.Z);
+                    Seen[c.ObjectId] = new SeenLiving(c.ObjectId, c.Name, c.IsPlayer, c.Level, c.X, c.Y, c.Z, UpdatedAt: Now);
                     _asked.Remove(c.ObjectId);
                 }
                 break;
             case ObjectMoved moved when moved.ObjectId != ObjectId:
                 // An update for a living never created for us: ask for it, as game.dll did (CreateObjectRequest 0xBE;
-                // the new client does the same: its DaocClient.RequestObject).
+                // the new client does the same: its DaocClient.RequestObject). A known one gets its new place and health.
                 bool ask;
                 lock (_sync)
+                {
                     ask = !Seen.ContainsKey(moved.ObjectId) && _asked.Add(moved.ObjectId);
+                    if (Seen.TryGetValue(moved.ObjectId, out var known))
+                    {
+                        var origin = _zoneOrigin(moved.Zone);
+                        Seen[moved.ObjectId] = origin is { } o
+                            ? known with { X = o.X + moved.X, Y = o.Y + moved.Y, Z = moved.Z, Health = moved.Health, Target = moved.Target, UpdatedAt = Now }
+                            : known with { Health = moved.Health, Target = moved.Target, UpdatedAt = Now };
+                        if (moved.Target != 0)
+                            _targeted.Add((moved.ObjectId, moved.Target));
+                    }
+                }
                 if (ask)
                     Send(ClientPackets.RequestObject(moved.ObjectId));
                 break;
@@ -435,6 +570,9 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
                 lock (_sync)
                     foreach (var item in inv.Items)
                         if (item.Name.Length == 0) Inventory.Remove(item.Slot); else Inventory[item.Slot] = item;
+                break;
+            case MoneyUpdate money:
+                Money = money.Copper;
                 break;
             case PointsUpdate points:
                 Experience = points.Experience;
@@ -467,7 +605,7 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
     {
         X = x; Y = y; Z = z;
         Zone = _zoneOf(Region, (int)x, (int)y) ?? Zone;
-        Send(ClientPackets.Position(x, y, z, speed, _net!.SessionId, ObjectId, Zone, Heading, 100));
+        Send(ClientPackets.Position(x, y, z, speed, _net!.SessionId, ObjectId, Zone, Heading, 100, _targetInView));
     }
 
     /// <summary>PLAYTESTER_TRACE=1 prints every packet code sent and received (for working out a protocol question).</summary>

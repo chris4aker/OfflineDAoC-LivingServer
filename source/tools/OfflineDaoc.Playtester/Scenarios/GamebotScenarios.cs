@@ -1,5 +1,7 @@
 // The scenarios that need autonomous gamebots (the real test world: make_test_world.py from-release adds a roster).
 // On the minimal world, which has none, they are skipped, never passed.
+using System.Text.RegularExpressions;
+
 namespace OfflineDaoc.Playtester.Scenarios;
 
 internal static class Gamebots
@@ -27,6 +29,35 @@ internal static class Gamebots
             return string.Join(", ", online.Select(b => $"{b.Name} ({b.ClassName} {b.Level})"));
         });
         return online;
+    }
+
+    /// <summary>
+    /// Waits until a gamebot is online and has trained up to its level (its record's "trained-level|N" = its level: a
+    /// helper bot from make_test_world.py trains at its trainer after its first login). Untrained after the time limit,
+    /// the scenario goes on with it and says so.
+    /// </summary>
+    public static async Task<WorldBot> WaitTrainedAsync(ScenarioContext ctx, string name, TimeSpan timeout)
+    {
+        WorldBot? bot = null;
+        await ctx.Step($"wait for {name} to be online and trained", async () =>
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            (int Level, int Trained)? training = null;
+            while (watch.Elapsed < timeout)
+            {
+                bot = ctx.World.Bots(1).FirstOrDefault(b => b.Name == name && b.Online);
+                training = ctx.World.BotTraining(name);
+                if (bot != null && training is { } t && t.Trained >= t.Level)
+                    break;
+                await Task.Delay(3000);
+            }
+            ScenarioContext.Check(bot != null, $"{name} did not come online within {timeout.TotalSeconds:0} s");
+            bool trained = training is { } done && done.Trained >= done.Level;
+            ctx.Measure("helper trained", trained ? $"yes, to level {training!.Value.Trained}" : $"no (trained to {training?.Trained})");
+            ctx.Measure("seconds until the helper was ready", Math.Round(watch.Elapsed.TotalSeconds, 1));
+            return $"{name}, level {bot!.Level} {bot.ClassName}, " + (trained ? "trained" : $"NOT trained (trained-level {training?.Trained})");
+        });
+        return bot!;
     }
 }
 
@@ -105,27 +136,74 @@ internal sealed class FactionRate : Scenario
     }
 }
 
-/// <summary>(c) Hook: a kill quest done in a group with a gamebot. The group part runs; the quest steps are marked TODO.</summary>
+/// <summary>
+/// (c) A kill quest done in a group with a gamebot, as a player meets one: the player is made a trained, armed Armsman a
+/// few levels above the target, takes the quest, meets a gamebot above its level (the test world's helper), invites
+/// it, fights the target with it, gets the kill credit and hands the quest in.
+/// </summary>
 internal sealed class KillQuestInBotGroup : Scenario
 {
     public override string Id => "kill-quest-bot-group";
-    public override string Title => "A kill quest in a group with a gamebot (hook)";
-    public override string Checks => "The GM jumps to an online gamebot, invites it by name and checks it joins; then finds a kill quest " +
-        "for the group's level in the world data, jumps to its giver and asks for the offer. Killing and the turn-in are still TODO.";
+    public override string Title => "A kill quest in a group with a gamebot";
+    public override string Checks => "The region's kill quest with a hand-in and the weakest target: the GM makes a player an Armsman 4 " +
+        "levels above the target (/player class, /player level); it trains at its trainer (/train), buys and wields a weapon of its " +
+        "level, takes the quest, meets the test world's helper gamebot (above it), invites it; the GM brings the group to " +
+        "the target (/player jump group), they fight it, the kill must count (step item, journal or completed), the hand-in steps " +
+        "run and the quest must complete. Reports the experience of the kill and of the hand-in.";
 
     public override async Task RunAsync(ScenarioContext ctx)
     {
         _ = ctx.World.Bots(1).Count > 0 ? 0 : throw new SkipScenario("no gamebots in the test world (the minimal world has none)");
         ScenarioContext.Check(ctx.World.AccountPrivLevel("playtestergm") >= 2, "the test world's playtestergm account is not a GM");
+        // the helper: the highest level bot of the realm (make_test_world.py --helper-level, 10 by default)
+        var helper = ctx.World.Bots(1).OrderByDescending(b => b.Level).First();
+        if (helper.Level < 3)
+            throw new SkipScenario("the test world has no helper bot above level 2 (make_test_world.py from-release --helper-level)");
         var gm = await ctx.LoginAsync("gm", "playtestergm");
+        var player = await ctx.LoginAsync("player", "playtester");
         await ctx.PlayAsync(gm, "Ptgm");
-        var online = await Gamebots.OnlineAsync(ctx, 1);
-        await BotGroup.JoinAsync(ctx, gm, online);
-        await Quests.TakeQuestAsync(ctx, gm, new[] { 0, 1 }, "kill");
-        ctx.Todo("kill the quest target with the gamebot assisting: /jump to the target's camp (Mob rows named in TargetName), /target it, " +
-            "attack, and wait for the QuestEntry goal to show done; check the bot gets its kill credit (UT_QuestCredit covers the rule)");
-        ctx.Todo("turn the quest in at the giver: interact, wait for the reward window (Dialog 0x21), answer it (QuestRewardChosen 0x40) " +
-            "and check the journal entry is gone and the reward XP / money arrived (PointsUpdate)");
+        await ctx.PlayAsync(player, "Ptkill");   // a Fighter (the server starts every Albion fighter as one); an Armsman below
+        var choices = ctx.World.KillQuests(player.Region, (int)player.X, (int)player.Y, maxPlayerLevel: helper.Level - 1);
+        ctx.Measure("kill quests for the group", choices.Count);
+        if (choices.Count == 0)
+            throw new SkipScenario($"no kill quest in region {player.Region} for a level below the helper's {helper.Level}");
+        // one with a hand-in, the weakest target first (a player picks a quest it can do with the group it has)
+        var kill = choices.Where(c => c.Steps.Count > 1).OrderBy(c => c.TargetLevel).ThenBy(c => c.Distance).FirstOrDefault() ?? choices[0];
+        var quest = kill.Quest;
+        ctx.Measure("quest", $"{quest.Name} (DataQuest {quest.Id}): kill {kill.Steps[0].Target} (level {kill.TargetLevel}, " +
+            $"{kill.Distance:0} units away), {kill.Steps.Count} step(s)");
+
+        await Party.MakeArmsmanAsync(ctx, gm, player, kill.PlayerLevel);
+        await Party.BuyWeaponAsync(ctx, gm, player, kill.PlayerLevel);
+        await Quests.TakeQuestAsync(ctx, player, gm, quest);
+        var bot = await Gamebots.WaitTrainedAsync(ctx, helper.Name, ctx.Options.BotsOnlineTimeout);
+        var botSeen = await Party.MeetAndGroupAsync(ctx, gm, player, bot);
+        double killStart = player.Now;
+        int killMark = player.Mark();
+        var target = (await Party.GoToAsync(ctx, gm, player, botSeen, kill.Steps[0].Target, kill.TargetX, kill.TargetY, kill.TargetZ))!;
+        await Party.FightAsync(ctx, player, botSeen, target, gm);
+        double creditAt = player.Now;
+        await ctx.Step("the kill counts for the quest and gives experience", async () =>
+        {
+            await Task.Delay(2000);
+            var lines = player.ChatSnapshot().Where(l => l.At >= killStart).Select(l => l.Text).ToList();
+            long gained = player.ExperienceAnnouncedSince(killStart);
+            ctx.Measure("experience from the kill", gained);
+            ScenarioContext.Check(gained > 0, "no experience for the kill");
+            // KillFinish ends the quest; a Kill step moves it on: the target's step item ("You receive the Slith's Tail from
+            // Slith!", the next step's delivery), or the journal entry sent again
+            bool finished = lines.Any(l => l.StartsWith($"You have completed the {quest.Name} quest", StringComparison.OrdinalIgnoreCase));
+            string? item = lines.FirstOrDefault(l => l.StartsWith("You receive the ", StringComparison.Ordinal) &&
+                l.Contains($"from {kill.Steps[0].Target}", StringComparison.OrdinalIgnoreCase));
+            var entry = await player.WaitForOrNullAsync<Protocol.QuestEntry>(q => q.Name == quest.Name, TimeSpan.FromSeconds(2), killMark);
+            bool advanced = finished || item != null || entry != null;
+            ScenarioContext.Check(advanced, "the quest did not move on after the kill");
+            ctx.Measure("kill credit", finished ? "the quest completed" : item ?? $"journal: {entry!.Text}");
+            return $"{gained} experience; " + (finished ? "quest completed" : item ?? $"journal now: {entry!.Text}");
+        });
+        if (kill.Steps.Count > 1)
+            await Quests.RunStepsAsync(ctx, player, gm, quest, fromStep: 1);
+        ctx.Measure("experience from the hand-in", player.ExperienceAnnouncedSince(creditAt + 2.5));
     }
 }
 
@@ -145,59 +223,442 @@ internal sealed class DeliveryQuest : Scenario
         ScenarioContext.Check(ctx.World.AccountPrivLevel("playtestergm") >= 2, "the test world's playtestergm account is not a GM");
         var gm = await ctx.LoginAsync("gm", "playtestergm");
         await ctx.PlayAsync(gm, "Ptdeliv");
-        var quest = await Quests.TakeQuestAsync(ctx, gm, new[] { 2, 3 }, "delivery");
-        await Quests.RunStepsAsync(ctx, gm, quest);
+        var candidates = ctx.World.QuestCandidates(gm.Region, new[] { 2, 3 }, maxMinLevel: 5);
+        ctx.Measure($"delivery quests in region {gm.Region} for levels up to 5", candidates.Count);
+        if (candidates.Count == 0)
+            throw new SkipScenario($"no delivery quest found in region {gm.Region}");
+        var quest = candidates[0];
+        ctx.Measure("quest", $"{quest.Name} (DataQuest {quest.Id}) from {quest.Giver}, first target {quest.Target}");
+        await ctx.Step("/player level 5 (the GM's own character, for the quest's level)", async () =>
+        {
+            int mark = gm.Mark();
+            gm.Command("/player level 5");
+            var line = await gm.WaitForChatAsync(l => l.Type == ChatTypes.System, TimeSpan.FromSeconds(5), mark);
+            return line?.Text ?? "(no answer)";
+        });
+        await Quests.TakeQuestAsync(ctx, gm, gm, quest);
+        await Quests.RunStepsAsync(ctx, gm, gm, quest);
     }
 }
 
-internal static class BotGroup
+/// <summary>
+/// Guild dues and merit with a gamebot in the guild (the check the 1.1.2 playtest could not make): a player's own guild
+/// with dues on, a gamebot invited into it and into the group, a few monsters killed together for their coin, and the
+/// guild bank and merit read back with /gc info.
+/// </summary>
+internal sealed class GuildDues : Scenario
 {
-    /// <summary>The GM jumps to a gamebot (its last saved position), sees it, invites it by name and waits for the group window.</summary>
-    public static async Task JoinAsync(ScenarioContext ctx, ScriptedPlayer gm, IReadOnlyList<WorldBot> online)
+    public override string Id => "guild-dues";
+    public override string Title => "Guild dues and merit with a gamebot in the guild";
+    public override string Checks => "The GM forms a guild with the player as leader (/gc create); the player sets dues (/gc dues 50), levels " +
+        "up twice (/player levelup: merit for each level), invites the test world's helper gamebot into the guild (/gc invite) and the group, " +
+        "and kills up to four monsters with it for their coin. /gc info before and after gives the dues paid into the bank and the merit.";
+
+    private static readonly Regex MeritLine = new(@"Merit Points: (\d+)", RegexOptions.Compiled);
+    private static readonly Regex DuesLine = new(@"Dues: (\d+)%? Guild Bank: (.*)", RegexOptions.Compiled);
+    private static readonly Regex Coin = new(@"(\d+) (mithril|platinum|gold|silver|copper)", RegexOptions.Compiled);
+
+    /// <summary>"1 gold, 2 silver, 3 copper" (Money.GetString) in copper.</summary>
+    internal static long ParseMoney(string text)
     {
-        WorldBot? joined = null;
-        foreach (var bot in online.Take(3))
+        long total = 0;
+        foreach (Match m in Coin.Matches(text))
+            total += long.Parse(m.Groups[1].Value) * m.Groups[2].Value switch
+            {
+                "mithril" => 100_000_000_000L, "platinum" => 100_000_000L, "gold" => 10_000L, "silver" => 100L, _ => 1L,
+            };
+        return total;
+    }
+
+    /// <summary>/gc info: (merit, dues percent, bank in copper).</summary>
+    internal static async Task<(long Merit, long Dues, long Bank)> InfoAsync(ScriptedPlayer player, TimeSpan timeout)
+    {
+        await Task.Delay(1000);       // /gc's spam guard
+        int mark = player.Mark();
+        player.Command("/gc info");
+        var merit = await player.WaitForChatAsync(l => MeritLine.IsMatch(l.Text), timeout, mark);
+        var dues = await player.WaitForChatAsync(l => DuesLine.IsMatch(l.Text), timeout, mark);
+        if (merit == null || dues == null)
+            throw new PlaytestException("no /gc info answer");
+        var d = DuesLine.Match(dues.Text);
+        return (long.Parse(MeritLine.Match(merit.Text).Groups[1].Value), long.Parse(d.Groups[1].Value), ParseMoney(d.Groups[2].Value));
+    }
+
+    public override async Task RunAsync(ScenarioContext ctx)
+    {
+        _ = ctx.World.Bots(1).Count > 0 ? 0 : throw new SkipScenario("no gamebots in the test world (the minimal world has none)");
+        ScenarioContext.Check(ctx.World.AccountPrivLevel("playtestergm") >= 2, "the test world's playtestergm account is not a GM");
+        var helper = ctx.World.Bots(1).OrderByDescending(b => b.Level).First();
+        if (helper.Level < 3)
+            throw new SkipScenario("the test world has no helper bot above level 2 (make_test_world.py from-release --helper-level)");
+        var gm = await ctx.LoginAsync("gm", "playtestergm");
+        var player = await ctx.LoginAsync("player", "playtester");
+        await ctx.PlayAsync(gm, "Ptgm");
+        await ctx.PlayAsync(player, "Ptguild");
+        int level = Math.Max(2, helper.Level - 3);
+        await Party.MakeArmsmanAsync(ctx, gm, player, level);
+        await Party.BuyWeaponAsync(ctx, gm, player, level);
+        string guild = "Playtest " + char.ToUpperInvariant(Names.Fresh("x")[1]) + Names.Fresh("x")[2..];
+
+        await ctx.Step("leave the starting guild (/gc quit, confirm)", async () =>
         {
-            bool inView = false;
-            await ctx.Step($"/jump to {bot.Name} and see it", async () =>
+            int mark = player.Mark();
+            player.Command("/gc quit");
+            var dialog = await player.AnswerDialogAsync(0x08, yes: true, TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(dialog != null, "no leave-guild dialog");
+            var line = await player.WaitForChatAsync(l => l.Text.Contains("left", StringComparison.OrdinalIgnoreCase) || l.Text.Contains("leave", StringComparison.OrdinalIgnoreCase),
+                TimeSpan.FromSeconds(5), mark);
+            return line?.Text ?? dialog!.Text;
+        });
+        await ctx.Step($"the GM forms \"{guild}\" with {player.CharacterName} as leader (/gc create)", async () =>
+        {
+            await Party.GmTargetsAsync(gm, player);
+            int mark = gm.Mark();
+            gm.Command($"/gc create {guild}");
+            var line = await gm.WaitForChatAsync(l => l.Text.Contains(guild), TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(line != null, "the guild was not formed");
+            return line!.Text;
+        });
+        await ctx.Step("the leader sets dues (/gc dues 50)", async () =>
+        {
+            await Task.Delay(1000);   // /gc's spam guard (500 ms) ignores a command after the last one
+            int mark = player.Mark();
+            player.Command("/gc dues 50");
+            var line = await player.WaitForChatAsync(l => l.Type is ChatTypes.System or 0x1a, TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(line != null, "no answer to /gc dues");
+            ScenarioContext.Check(line!.Text.Contains("dues", StringComparison.OrdinalIgnoreCase), line.Text);
+            return line.Text;
+        });
+        var before = (Merit: 0L, Dues: 0L, Bank: 0L);
+        await ctx.Step("/gc info before", async () =>
+        {
+            before = await InfoAsync(player, ctx.Options.NetTimeout);
+            ScenarioContext.Check(before.Dues > 0, $"dues are {before.Dues}%");
+            return $"merit {before.Merit}, dues {before.Dues}%, bank {before.Bank} copper";
+        });
+        await ctx.Step("two levels (/player levelup) earn the guild merit", async () =>
+        {
+            var lines = new List<string>();
+            for (int i = 0; i < 2; i++)
             {
-                // /jump to <name> finds NPCs by name (JumpCommandHandler: WorldMgr.GetNPCsByName), gamebots included; the
-                // bot's saved position is the fallback (it is minutes old: the first run here found the bot gone from it).
-                int mark = gm.Mark();
-                gm.Command($"/jump to {bot.Name}");
-                var seen = await gm.SeeAsync(bot.Name, TimeSpan.FromSeconds(15), mark);
-                string how = "by name";
-                if (seen == null)
-                {
-                    var fresh = ctx.World.Bots(bot.Realm).FirstOrDefault(b => b.Name == bot.Name) ?? bot;
-                    mark = gm.Mark();
-                    gm.Command($"/jump to {fresh.X} {fresh.Y} {fresh.Z} {fresh.Region}");
-                    seen = await gm.SeeAsync(bot.Name, TimeSpan.FromSeconds(15), mark);
-                    how = "to its saved position";
-                }
-                inView = seen != null;
-                return inView ? $"jumped {how}: {bot.Name} in view (object {seen!.ObjectId})" : $"{bot.Name} not in view after both jumps";
-            });
-            if (!inView)
+                await Party.GmTargetsAsync(gm, player);
+                int mark = player.Mark();
+                gm.Command("/player levelup");
+                var line = await player.WaitForChatAsync(l => l.Text.Contains("merit points for your guild"), TimeSpan.FromSeconds(10), mark);
+                lines.Add(line?.Text ?? "(no merit line)");
+            }
+            var now = await InfoAsync(player, ctx.Options.NetTimeout);
+            ctx.Measure("merit from two levels", now.Merit - before.Merit);
+            ScenarioContext.Check(now.Merit > before.Merit, $"merit stayed {now.Merit}");
+            before = now;
+            return string.Join(" / ", lines) + $"; merit now {now.Merit}";
+        });
+
+        var bot = await Gamebots.WaitTrainedAsync(ctx, helper.Name, ctx.Options.BotsOnlineTimeout);
+        var botSeen = await Party.MeetAndGroupAsync(ctx, gm, player, bot);
+        await ctx.Step($"/gc invite {bot.Name}: it joins the guild", async () =>
+        {
+            await Task.Delay(1000);
+            int mark = player.Mark();
+            player.Command($"/gc invite {bot.Name}");
+            var line = await player.WaitForChatAsync(l => l.Text.Contains(bot.Name), TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(line != null, $"no line about {bot.Name} joining");
+            ScenarioContext.Check(!line!.Text.Contains("could not", StringComparison.OrdinalIgnoreCase), line.Text);
+            return line.Text;
+        });
+
+        long purse = player.Money;
+        double huntStart = player.Now;
+        int now = level + 2;   // after the two levels
+        var monsters = ctx.World.MonstersNear(player.Region, (int)player.X, (int)player.Y, 25000, Math.Max(1, now - 5), now - 1)
+            .GroupBy(m => m.Name).Select(g => g.First()).Take(8).ToList();   // not every kill drops coin: up to 8 tries
+        ctx.Measure("monsters to hunt", string.Join(", ", monsters.Select(m => $"{m.Name} ({m.Level})")));
+        ScenarioContext.Check(monsters.Count > 0, $"no monster of level {now - 4}-{now - 1} near the start");
+        int kills = 0;
+        foreach (var monster in monsters)
+        {
+            // one that is not up (dead, or roamed off) or that the scripted player cannot reach (a flier): the next
+            var target = await Party.GoToAsync(ctx, gm, player, botSeen, monster.Name, monster.X, monster.Y, monster.Z, optional: true);
+            if (target == null || !await Party.FightAsync(ctx, player, botSeen, target, gm, optional: true, timeout: TimeSpan.FromSeconds(60)))
                 continue;
-            await ctx.Step($"/invite {bot.Name}: it joins the group", async () =>
-            {
-                int mark = gm.Mark();
-                gm.Invite(bot.Name);
-                var group = await gm.WaitForOrNullAsync<Protocol.GroupWindow>(g => g.Members.Any(m => m.Name.Equals(bot.Name, StringComparison.OrdinalIgnoreCase)),
-                    TimeSpan.FromSeconds(60), mark);
-                if (group == null)
-                {
-                    var why = gm.ChatSnapshot().LastOrDefault(l => l.Type == ChatTypes.System && l.Text.Contains(bot.Name));
-                    throw new PlaytestException($"{bot.Name} did not join within 60 s{(why != null ? ": " + why.Text : "")}");
-                }
-                return "group: " + string.Join(", ", group.Members.Select(m => $"{m.Name} ({m.ClassName} {m.Level})"));
-            });
-            joined = bot;
-            break;
+            kills++;
+            await Task.Delay(3000);           // the coin is picked up (autoloot) and split
+            var info = await InfoAsync(player, ctx.Options.NetTimeout);
+            if (info.Bank > before.Bank)
+                break;
         }
-        ScenarioContext.Check(joined != null, "no gamebot could be reached to invite");
-        ctx.Measure("gamebot in the group", joined!.Name);
+        ctx.Measure("monsters killed", kills);
+        await ctx.Step("/gc info after: the dues are in the bank", async () =>
+        {
+            var after = await InfoAsync(player, ctx.Options.NetTimeout);
+            long earned = player.Money - purse;
+            long picked = player.ChatSnapshot().Where(l => l.At >= huntStart && l.Text.StartsWith("You pick up ", StringComparison.Ordinal))
+                .Sum(l => ParseMoney(l.Text));
+            ctx.Measure("coin picked up", picked);
+            ctx.Measure("coin the player kept", earned);
+            ctx.Measure("dues paid into the guild bank", after.Bank - before.Bank);
+            ctx.Measure("merit after the hunt", after.Merit - before.Merit);
+            var lines = player.ChatSnapshot().Where(l => l.Text.Contains("merit points for your guild") && l.Text.Contains(bot.Name)).Select(l => l.Text).ToList();
+            ctx.Measure("merit lines naming the bot", lines.Count > 0 ? string.Join(" / ", lines) : "none (it gained no level)");
+            ScenarioContext.Check(after.Bank > before.Bank, $"the bank stayed at {after.Bank} copper after {kills} kill(s) (coin kept: {earned})");
+            return $"bank {before.Bank} -> {after.Bank} copper ({before.Dues}% of {picked} picked up is {picked * before.Dues / 100}), " +
+                $"merit {before.Merit} -> {after.Merit}, the player kept {earned} copper";
+        });
+    }
+}
+
+/// <summary>A player and a gamebot as a group, with the GM's help for levels and travel.</summary>
+internal static class Party
+{
+    /// <summary>
+    /// The GM targets the player for a GM command, going to it first when it is far (a GM command works on the target,
+    /// and an out-of-range target falls back to the GM itself: "You gave &lt;GM&gt; gold", first runs here).
+    /// </summary>
+    public static async Task GmTargetsAsync(ScriptedPlayer gm, ScriptedPlayer player)
+    {
+        double off = Math.Sqrt(Math.Pow(gm.X - player.X, 2) + Math.Pow(gm.Y - player.Y, 2));
+        if (gm.Region != player.Region || off > 1000)
+        {
+            int mark = gm.Mark();
+            gm.Command($"/jump to {player.CharacterName}");
+            await gm.WaitForOrNullAsync<Protocol.ServerEvent>(e => e is Protocol.Jumped or Protocol.PositionAndObjectId, TimeSpan.FromSeconds(10), mark);
+            await Task.Delay(500);
+        }
+        var seen = await gm.SeeAsync(player.CharacterName, TimeSpan.FromSeconds(10), 0);
+        if (seen == null)
+            throw new PlaytestException($"the GM does not see {player.CharacterName}");
+        gm.Target(player.CharacterName);
+        await Task.Delay(200);
+    }
+
+    /// <summary>The GM targets the player and sets its level (/player level).</summary>
+    public static async Task SetLevelAsync(ScenarioContext ctx, ScriptedPlayer gm, ScriptedPlayer player, int level)
+    {
+        await ctx.Step($"the GM sets {player.CharacterName} to level {level} (/player level)", async () =>
+        {
+            await GmTargetsAsync(gm, player);
+            int mark = player.Mark();
+            gm.Command($"/player level {level}");
+            var line = await player.WaitForChatAsync(l => l.Text.Contains($"level to {level}"), TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(line != null, "the level change did not arrive");
+            return line!.Text;
+        });
+    }
+
+    /// <summary>
+    /// The player as a player of that level is: the GM makes it an Armsman (/player class: the Fighter would otherwise
+    /// stop at level 5 until it joins its class) and sets its level; then the GM brings it to an Armsman trainer, where
+    /// it opens the trainer window (/train) and spends its points: the main weapon first, then shield and parry, in the
+    /// shares a level-10 tank has (Slash 9, Shields 7, Parry 5), as make_test_world.py trains its helper.
+    /// </summary>
+    public static async Task MakeArmsmanAsync(ScenarioContext ctx, ScriptedPlayer gm, ScriptedPlayer player, int level)
+    {
+        await ctx.Step($"the GM makes {player.CharacterName} an Armsman (/player class 2)", async () =>
+        {
+            await GmTargetsAsync(gm, player);
+            int mark = player.Mark();
+            gm.Command("/player class 2");
+            var line = await player.WaitForChatAsync(l => l.Text.Contains("Armsman", StringComparison.OrdinalIgnoreCase) ||
+                l.Text.Contains("class", StringComparison.OrdinalIgnoreCase), TimeSpan.FromSeconds(10), mark);
+            return line?.Text ?? "(no line; checked by the trainer below)";
+        });
+        await SetLevelAsync(ctx, gm, player, level);
+        var trainer = ctx.World.Trainers(player.Region, "ArmsmanTrainer").FirstOrDefault();
+        ScenarioContext.Check(trainer.Name != null, $"no Armsman trainer in region {player.Region}");
+        await ctx.Step($"train at {trainer.Name} (/train, then each line in the trainer window)", async () =>
+        {
+            int mark = player.Mark();
+            gm.Command(Quests.JumpCommand(gm, player, trainer.X, trainer.Y, trainer.Z, player.Region));
+            var seen = await player.SeeAsync(trainer.Name, TimeSpan.FromSeconds(15), mark);
+            ScenarioContext.Check(seen != null, $"{trainer.Name} not in view");
+            player.Target(trainer.Name);
+            await Task.Delay(500);
+            // /train opens the trainer window (TrainerWindow code 0), or, with the server's custom_train on (as in the
+            // release world), answers with its syntax: then each line is trained by typing /train <line> <level>.
+            mark = player.Mark();
+            player.Command("/train");
+            var answer = await player.WaitForOrNullAsync<object>(e => e is Protocol.TrainerSpecs ||
+                e is ChatLine l && l.Text.StartsWith("/train <line>", StringComparison.Ordinal), TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(answer != null, "no trainer window and no /train answer");
+            var window = answer as Protocol.TrainerSpecs;
+            await Task.Delay(1700);   // /train's spam guard: a second /train within 1.5 s is ignored
+            var trained = new List<string>();
+            int left = window?.Points ?? int.MaxValue;
+            foreach (var (line, share) in new[] { ("Slash", 0.9), ("Shields", 0.7), ("Parry", 0.5) })
+            {
+                var spec = window?.Specs.FirstOrDefault(sp => sp.Name.Equals(line, StringComparison.OrdinalIgnoreCase)) ?? (-1, 1, line);
+                if (spec.Name == null)
+                    continue;
+                int want = Math.Max(spec.Level, (int)Math.Round(level * share));
+                while (window != null && want > spec.Level && Enumerable.Range(spec.Level + 1, want - spec.Level).Sum() > left)
+                    want--;
+                if (want <= spec.Level)
+                    continue;
+                if (window != null)
+                {
+                    left -= Enumerable.Range(spec.Level + 1, want - spec.Level).Sum();
+                    player.TrainSpec(spec.Index, want);
+                }
+                else
+                    player.Command($"/train {line} {want}");
+                trained.Add($"{line} {want}");
+                await Task.Delay(1700);   // the command's spam guard
+            }
+            int points = window?.Points ?? -1;
+            var spent = player.ChatSnapshot().Where(l => l.At >= player.Now - 10 && l.Text.StartsWith("You spend", StringComparison.Ordinal)).Select(l => l.Text).ToList();
+            ctx.Measure("player's training", string.Join(", ", trained) + (points >= 0 ? $" ({points} points)" : " (typed /train)"));
+            ScenarioContext.Check(spent.Count > 0, "the trainer took no points: " +
+                string.Join(" / ", player.ChatSnapshot().Where(l => l.At >= player.Now - 10 && l.Type == ChatTypes.System).Select(l => l.Text).TakeLast(3)));
+            return string.Join(" / ", spent);
+        });
+    }
+
+    /// <summary>
+    /// The player buys a weapon of its level as a player would: the GM gives it the coin (/player money), brings it to a
+    /// merchant of the region who sells a one-handed slashing weapon, it buys it and wields it in its right hand.
+    /// </summary>
+    public static async Task BuyWeaponAsync(ScenarioContext ctx, ScriptedPlayer gm, ScriptedPlayer player, int level)
+    {
+        var sale = ctx.World.WeaponOnSale(player.Region, 3, Math.Max(1, level - 4), level);
+        if (sale == null)
+        {
+            ctx.Measure("weapon", "none on sale for the level: the practice sword");
+            return;
+        }
+        var w = sale.Value;
+        await ctx.Step($"buy a {w.Item} (level {w.Level}) from {w.Merchant} and wield it", async () =>
+        {
+            await GmTargetsAsync(gm, player);
+            int mark = player.Mark();
+            gm.Command($"/player money gold {Math.Max(1, w.Price / 10000 + 1)}");
+            var paid = await player.WaitForChatAsync(l => l.Text.Contains("has given you some gold"), TimeSpan.FromSeconds(5), mark);
+            ScenarioContext.Check(paid != null, "the coin did not reach the player");
+            mark = player.Mark();
+            gm.Command(Quests.JumpCommand(gm, player, w.X, w.Y, w.Z, player.Region));
+            var merchant = await player.SeeAsync(w.Merchant, TimeSpan.FromSeconds(15), mark);
+            ScenarioContext.Check(merchant != null, $"{w.Merchant} not in view");
+            player.Target(w.Merchant);
+            player.Interact(merchant!.ObjectId);
+            await Task.Delay(800);
+            mark = player.Mark();
+            player.Buy(w.Page, w.Slot);
+            var got = await player.WaitForOrNullAsync<Protocol.InventoryUpdate>(u => u.Items.Any(i => i.Name.Equals(w.Item, StringComparison.OrdinalIgnoreCase)),
+                TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(got != null, $"no {w.Item} in the backpack after buying: " +
+                string.Join(" / ", player.ChatSnapshot().Where(l => l.At >= player.Now - 10).Select(l => l.Text).TakeLast(2)));
+            int slot = got!.Items.First(i => i.Name.Equals(w.Item, StringComparison.OrdinalIgnoreCase)).Slot;
+            mark = player.Mark();
+            player.MoveItem(slot, 10);
+            var wield = await player.WaitForChatAsync(l => l.Text.StartsWith("You wield", StringComparison.Ordinal) && l.Text.Contains(w.Item, StringComparison.OrdinalIgnoreCase),
+                TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(wield != null, $"the {w.Item} was not wielded");
+            ctx.Measure("weapon", $"{w.Item} (level {w.Level}, {w.Price} copper) from {w.Merchant}");
+            return wield!.Text;
+        });
+    }
+
+    /// <summary>The GM jumps to the gamebot and brings the player (/jump name to me); the player invites it into the group.</summary>
+    public static async Task<SeenLiving> MeetAndGroupAsync(ScenarioContext ctx, ScriptedPlayer gm, ScriptedPlayer player, WorldBot bot)
+    {
+        SeenLiving? botSeen = null;
+        await ctx.Step($"meet {bot.Name} (level {bot.Level}): the GM jumps to it, then brings {player.CharacterName}", async () =>
+        {
+            int mark = gm.Mark();
+            gm.Command($"/jump to {bot.Name}");
+            var gmSees = await gm.SeeAsync(bot.Name, TimeSpan.FromSeconds(15), mark);
+            ScenarioContext.Check(gmSees != null, $"{bot.Name} not in view after /jump to {bot.Name}");
+            mark = player.Mark();
+            gm.Command($"/jump {player.CharacterName} to me");
+            botSeen = await player.SeeAsync(bot.Name, TimeSpan.FromSeconds(15), mark);
+            ScenarioContext.Check(botSeen != null, $"{player.CharacterName} does not see {bot.Name}");
+            return $"{bot.Name} is object {botSeen!.ObjectId}, at {botSeen.X},{botSeen.Y}";
+        });
+        await ctx.Step($"{player.CharacterName} invites {bot.Name}: it joins", async () =>
+        {
+            int mark = player.Mark();
+            player.Invite(bot.Name);
+            var group = await player.WaitForOrNullAsync<Protocol.GroupWindow>(g => g.Members.Any(m => m.Name == bot.Name), TimeSpan.FromSeconds(60), mark);
+            ScenarioContext.Check(group != null, $"{bot.Name} did not join within 60 s");
+            return string.Join(", ", group!.Members.Select(m => $"{m.Name} ({m.ClassName} {m.Level})"));
+        });
+        return botSeen!;
+    }
+
+    /// <summary>
+    /// The GM jumps 500 units short of a place, then moves the whole group to itself (/player jump group: every member,
+    /// the gamebot too, Player.cs). A long walk would test the bot's pathing instead, and in a world without navmeshes
+    /// (this container) a gamebot does not move at all (first run: it stayed 26,000 units behind). Returns the target.
+    /// </summary>
+    public static async Task<SeenLiving?> GoToAsync(ScenarioContext ctx, ScriptedPlayer gm, ScriptedPlayer player, SeenLiving bot,
+        string targetName, int x, int y, int z, bool optional = false)
+    {
+        SeenLiving? target = null;
+        double distance = Math.Sqrt(Math.Pow(x - player.X, 2) + Math.Pow(y - player.Y, 2));
+        Func<string, Func<Task<string>>, Task> step = optional ? (n, b) => ctx.TryStep(n, b) : ctx.Step;
+        await step($"the group goes to {targetName} ({distance:0} units off): the GM jumps there, then /player jump group", async () =>
+        {
+            double angle = Math.Atan2(y - player.Y, x - player.X);
+            int gx = (int)(x - Math.Cos(angle) * 500), gy = (int)(y - Math.Sin(angle) * 500);
+            gm.Command($"/jump to {gx} {gy} {z} {player.Region}");
+            await Task.Delay(1500);
+            int mark = player.Mark();
+            gm.Command($"/player jump group {player.CharacterName}");
+            var moved = await player.WaitForOrNullAsync<Protocol.ServerEvent>(e => e is Protocol.Jumped or Protocol.PositionAndObjectId, TimeSpan.FromSeconds(10), mark);
+            ScenarioContext.Check(moved != null, "the player was not moved");
+            await Task.Delay(2000);
+            target = await player.SeeAsync(targetName, TimeSpan.FromSeconds(20), mark);
+            ScenarioContext.Check(target != null, $"{targetName} not in view at its camp");
+            // the bot came along when an update or a create places it here after the jump (an old entry is not proof)
+            double jumped = player.Now - 4;
+            SeenLiving? b = null;
+            for (int i = 0; i < 20 && (b == null || b.UpdatedAt < jumped); i++)
+            {
+                b = player.SeenById(bot.ObjectId);
+                if (b == null || b.UpdatedAt < jumped)
+                    await Task.Delay(500);
+            }
+            bool here = b != null && b.UpdatedAt >= jumped;
+            double off = here ? Math.Sqrt(Math.Pow(b!.X - player.X, 2) + Math.Pow(b.Y - player.Y, 2)) : -1;
+            ctx.Measure($"{bot.Name} at {targetName}", here ? $"{off:0} units from the player" : "no fresh update from it after the jump");
+            return $"{targetName} in view (object {target!.ObjectId}); {bot.Name} " + (here ? $"{off:0} units away" : "not confirmed here");
+        });
+        return target;
+    }
+
+    /// <summary>The player fights the target with the gamebot in its group; counts the bot's hits among the combat lines.</summary>
+    public static async Task<bool> FightAsync(ScenarioContext ctx, ScriptedPlayer player, SeenLiving bot, SeenLiving target, ScriptedPlayer? gm = null,
+        bool optional = false, TimeSpan? timeout = null)
+    {
+        bool won = false;
+        Func<string, Func<Task<string>>, Task> step = optional ? (n, b) => ctx.TryStep(n, b) : ctx.Step;
+        await step($"fight {target.Name} with {bot.Name}", async () =>
+        {
+            // Full health first, as a player rests before a pull (the GM's /heal on the player).
+            if (gm != null)
+            {
+                await GmTargetsAsync(gm, player);
+                gm.Command("/heal");
+                await Task.Delay(500);
+            }
+            double start = player.Now;
+            try
+            {
+                string end = await player.FightAsync(target.ObjectId, timeout ?? TimeSpan.FromMinutes(3));
+                won = true;
+                return end;
+            }
+            finally
+            {
+                await Task.Delay(1500);
+                var lines = player.ChatSnapshot().Where(l => l.At >= start && (l.Type is 0x11 or 0x12 or 0x17 or 0x1d || l.Text.Contains(target.Name)))
+                    .Select(l => l.Text).ToList();
+                int botLines = lines.Count(l => l.StartsWith(bot.Name + " ", StringComparison.Ordinal));
+                bool botEngaged = player.HasTargeted(bot.ObjectId, target.ObjectId);
+                ctx.Measure($"fight with {target.Name}", $"{player.Now - start:0} s, {lines.Count} combat lines, {botLines} of them {bot.Name}'s; " +
+                    $"{bot.Name} {(botEngaged ? "targeted it" : "was never seen targeting it")}");
+            }
+        });
+        return won;
     }
 }
 
@@ -208,11 +669,11 @@ internal static class Quests
     /// name, give it the step's item from the backpack (Deliver) or interact with it (Interact), and wait for the quest to
     /// move on. A kill, whisper, search or collect step is left as a TODO.
     /// </summary>
-    public static async Task RunStepsAsync(ScenarioContext ctx, ScriptedPlayer gm, QuestCandidate quest)
+    public static async Task RunStepsAsync(ScenarioContext ctx, ScriptedPlayer gm, ScriptedPlayer jumper, QuestCandidate quest, int fromStep = 0)
     {
         var steps = ctx.World.QuestSteps(quest.Id);
         long xpBefore = gm.Experience;
-        foreach (var step in steps)
+        foreach (var step in steps.Skip(fromStep))
         {
             if (step.Type is not (2 or 3 or 4 or 5))
             {
@@ -225,7 +686,7 @@ internal static class Quests
                 // /jump to <name> takes one word (a second one is read as a realm), so jump to the NPC's Mob row.
                 var at = ctx.World.MobPosition(step.Target, gm.Region) ?? throw new PlaytestException($"no Mob row named {step.Target}");
                 int mark = gm.Mark();
-                gm.Command($"/jump to {at.X} {at.Y} {at.Z} {at.Region}");
+                jumper.Command(JumpCommand(jumper, gm, at.X, at.Y, at.Z, at.Region));
                 target = await gm.SeeAsync(step.Target, TimeSpan.FromSeconds(15), mark);
                 ScenarioContext.Check(target != null, $"{step.Target} not in view at {at.X},{at.Y} region {at.Region}");
                 return $"{step.Target} is object {target!.ObjectId}";
@@ -271,31 +732,19 @@ internal static class Quests
         e is ChatLine l && l.Text.StartsWith("You have been given the ", StringComparison.Ordinal) ||
         e is Protocol.QuestEntry q && q.Name.Length > 0 && !q.Name.StartsWith("You have no current", StringComparison.Ordinal);
 
-    /// <summary>Picks a quest whose first step is one of the step types, sets the GM to its level, jumps to the giver,
-    /// interacts and waits for the offer window (Dialog 0x22); accepts it (QuestSubscribe 0x64) and waits for the journal.</summary>
-    public static async Task<QuestCandidate> TakeQuestAsync(ScenarioContext ctx, ScriptedPlayer gm, int[] stepTypes, string kind)
+    /// <summary>The GM's jump: itself to a place, or (another player) "/jump name to x y z region".</summary>
+    public static string JumpCommand(ScriptedPlayer jumper, ScriptedPlayer who, int x, int y, int z, int region) =>
+        ReferenceEquals(jumper, who) ? $"/jump to {x} {y} {z} {region}" : $"/jump {who.CharacterName} to {x} {y} {z} {region}";
+
+    /// <summary>The GM (jumper) puts the player at the quest's giver; the player interacts and, when the giver only talks,
+    /// whispers the AcceptText. An offer window (Dialog 0x22) is accepted (QuestSubscribe 0x64).</summary>
+    public static async Task TakeQuestAsync(ScenarioContext ctx, ScriptedPlayer gm, ScriptedPlayer jumper, QuestCandidate quest)
     {
-        var candidates = ctx.World.QuestCandidates(gm.Region, stepTypes, maxMinLevel: 5);
-        ctx.Measure($"{kind} quests in region {gm.Region} for levels up to 5", candidates.Count);
-        if (candidates.Count == 0)
-        {
-            ctx.Todo($"no {kind} data quest with a giver in region {gm.Region} up to level 5: pick another region or level");
-            throw new SkipScenario($"no {kind} quest found in region {gm.Region}");
-        }
-        var quest = candidates[0];
-        ctx.Measure("quest", $"{quest.Name} (DataQuest {quest.Id}) from {quest.Giver}, first target {quest.Target}");
-        await ctx.Step("/player level 5 (the GM's own character, for the quest's level)", async () =>
-        {
-            int mark = gm.Mark();
-            gm.Command("/player level 5");
-            var line = await gm.WaitForChatAsync(l => l.Type == ChatTypes.System, TimeSpan.FromSeconds(5), mark);
-            return line?.Text ?? "(no answer)";
-        });
         SeenLiving? giver = null;
-        await ctx.Step($"/jump to {quest.Giver} and see them", async () =>
+        await ctx.Step($"{gm.CharacterName}: to {quest.Giver} (/jump), who is in view", async () =>
         {
             int mark = gm.Mark();
-            gm.Command($"/jump to {quest.GiverX} {quest.GiverY} {quest.GiverZ} {quest.Region}");
+            jumper.Command(JumpCommand(jumper, gm, quest.GiverX, quest.GiverY, quest.GiverZ, quest.Region));
             giver = await gm.SeeAsync(quest.Giver, TimeSpan.FromSeconds(20), mark);
             ScenarioContext.Check(giver != null, $"{quest.Giver} not in view at {quest.GiverX},{quest.GiverY}");
             return $"{quest.Giver} is object {giver!.ObjectId}";
@@ -336,6 +785,5 @@ internal static class Quests
             ctx.Measure("quest taken", given?.Text ?? "(journal entry)");
             return $"{how}: {given?.Text ?? "journal entry added"}";
         });
-        return quest;
     }
 }

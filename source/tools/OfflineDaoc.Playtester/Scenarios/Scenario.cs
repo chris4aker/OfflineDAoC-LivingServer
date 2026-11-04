@@ -54,7 +54,7 @@ internal sealed class ScenarioContext : IAsyncDisposable
     /// <summary>A new scripted player (disposed with the scenario; its chat goes into the report).</summary>
     public ScriptedPlayer NewPlayer(string label)
     {
-        var player = new ScriptedPlayer(label, Clock, World.ZoneOf);
+        var player = new ScriptedPlayer(label, Clock, World.ZoneOf, World.ZoneOrigin);
         _players.Add(player);
         return player;
     }
@@ -143,6 +143,26 @@ internal sealed class ScenarioContext : IAsyncDisposable
         finally
         {
             step.Seconds = Math.Round(watch.Elapsed.TotalSeconds, 2);
+        }
+    }
+
+    /// <summary>
+    /// A step the scenario may give up on (one monster of several): a failure is recorded as Skipped with its reason and
+    /// the scenario goes on. Returns whether it passed.
+    /// </summary>
+    public async Task<bool> TryStep(string name, Func<Task<string>> body)
+    {
+        try
+        {
+            await Step(name, body);
+            return true;
+        }
+        catch (StepFailed)
+        {
+            var step = Result.Steps[^1];
+            step.Outcome = Outcome.Skipped;
+            step.Detail = "gave up: " + step.Detail;
+            return false;
         }
     }
 

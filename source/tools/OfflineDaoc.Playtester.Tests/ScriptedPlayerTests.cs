@@ -169,4 +169,42 @@ public class ScriptedPlayerTests
         var members = await joined;
         Assert.That(members.Select(m => m.Name), Is.EqualTo(new[] { "Ptlead", "Ptmemb" }));
     }
+
+    private static void SendNpc(FakeServer server, int oid, string name)
+    {
+        var npc = new PacketWriter();
+        npc.Short((ushort)oid); npc.Short(0); npc.Short(0); npc.Short(100); npc.Int(1000); npc.Int(1000);
+        npc.Short(0); npc.Short(0); npc.Byte(50); npc.Byte(8); npc.Byte(0); npc.Byte(0); npc.Byte(0); npc.Byte(0); npc.Short(0);
+        npc.Pascal(name); npc.Pascal("");
+        server.Send(0xDA, npc);
+    }
+
+    [Test]
+    public async Task AFightEndsWhenTheTargetDiesAndSaysSoWhenWeDie()
+    {
+        using var server = new FakeServer();
+        await using var player = NewPlayer();
+        var accept = server.AcceptAsync();
+        await player.ConnectAsync("127.0.0.1", server.Port, TimeSpan.FromSeconds(5));
+        await accept;
+        SendNpc(server, 77, "Hugrath Wormly");
+        Assert.That(await player.SeeAsync("Hugrath Wormly", TimeSpan.FromSeconds(5), 0), Is.Not.Null);
+        var fight = player.FightAsync(77, TimeSpan.FromSeconds(10));
+        await server.ExpectAsync(0xB0);                    // it targets the mob
+        var killed = new PacketWriter();
+        killed.Byte(0x17);
+        killed.CString("@@Hugrath Wormly dies!");
+        server.Send(0xAF, killed);
+        Assert.That(await fight, Does.Contain("dies"));
+
+        SendNpc(server, 78, "Throatripper");
+        await player.SeeAsync("Throatripper", TimeSpan.FromSeconds(5), 0);
+        var lost = player.FightAsync(78, TimeSpan.FromSeconds(10));
+        var died = new PacketWriter();
+        died.Byte(0x15);
+        died.CString("@@You have died.  Type /release to return to your last bindpoint.");
+        server.Send(0xAF, died);
+        var e = Assert.ThrowsAsync<PlaytestException>(async () => await lost);
+        Assert.That(e!.Message, Does.Contain("died fighting Throatripper"));
+    }
 }
