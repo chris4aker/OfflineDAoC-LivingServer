@@ -32,8 +32,8 @@ namespace DOL.UnitTests
                 3, GuardLevel, GuardHealth);
             Assert.Multiple(() =>
             {
-                Assert.That(alone, Is.EqualTo(14), "level 22s against the lord alone");
-                Assert.That(withGuards, Is.EqualTo(30), "three level-28 guards beside him");
+                Assert.That(alone, Is.EqualTo(12), "level 22s against the lord alone");
+                Assert.That(withGuards, Is.EqualTo(24), "three level-28 guards beside him");
                 // The playtest's waves went in with 8 and 9 (BG_WAVE_ASSAULT gathered=8/9) and never touched him.
                 Assert.That(alone, Is.GreaterThan(9));
             });
@@ -85,14 +85,33 @@ namespace DOL.UnitTests
         }
 
         [TestCase(14, 14, 0, true)]                 // all there
-        [TestCase(13, 14, 4 * 60_000, false)]       // one short, not yet patient
-        [TestCase(9, 14, 5 * 60_000, true)]         // patient: 60% of 14 is 9
-        [TestCase(8, 14, 5 * 60_000, false)]
-        [TestCase(8, 30, 10 * 60_000, true)]        // last call: whoever is there, at least 8
+        [TestCase(13, 14, 2 * 60_000, false)]       // one short, not yet patient
+        [TestCase(13, 26, 3 * 60_000, true)]        // patient after 3 minutes: half of 26 is 13
+        [TestCase(12, 26, 3 * 60_000, false)]
+        [TestCase(8, 14, 3 * 60_000, true)]         // half of 14 is 7, but never fewer than 8
+        [TestCase(8, 30, 6 * 60_000, true)]         // last call after 6 minutes: whoever is there, at least 8
+        [TestCase(8, 30, 6 * 60_000 - 1, false)]
         [TestCase(7, 30, 30 * 60_000, false)]       // never a handful
         [TestCase(9, 9, 0, true)]
         public void TheRallyGoesUpWithEnough(int rallied, int needed, long gathering, bool goes) =>
             Assert.That(Rally.ShouldStorm(rallied, needed, gathering), Is.EqualTo(goes));
+
+        [Test]
+        public void ARealPlayerAtTheRallyCountsAsTwoBots()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.PlayerWeight, Is.EqualTo(2));
+                Assert.That(Rally.RallyStrength(12, 0), Is.EqualTo(12));
+                Assert.That(Rally.RallyStrength(10, 1), Is.EqualTo(12), "you and ten bots go up where twelve bots would");
+                Assert.That(Rally.RallyStrength(0, 1), Is.EqualTo(2));
+                Assert.That(Rally.RallyStrength(-1, -1), Is.EqualTo(0));
+                // With you there, a 12-bot rally starts with 10 gamebots.
+                int needed = Rally.NeededAttackers(ThidrankiLordLevel, ThidrankiLordHealth, AttackerLevel, AttackerHealth);
+                Assert.That(Rally.ShouldStorm(Rally.RallyStrength(needed - 2, 1), needed, 0), Is.True);
+                Assert.That(Rally.ShouldStorm(Rally.RallyStrength(needed - 3, 1), needed, 0), Is.False);
+            });
+        }
 
         [Test]
         public void ARallyThatLapsedStartsOver()

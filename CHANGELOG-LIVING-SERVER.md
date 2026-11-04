@@ -17,9 +17,12 @@ gates fell, and the Renegade Lord never dropped below 100%).
 - **Now:** each realm rallies just inside the broken gate, under the lord's room. Its gamebots fight whatever comes at
   them there, and go up to the lord together once there are enough of them.
   - **"Enough"** is worked out from the lord's real level and health, the guards standing with him, and the levels and
-    health of the bots at the rally. In Thidranki that is about 14 level-22s against the lord alone, and about 30 with
-    three guards beside him. A lord already down to half health needs fewer.
-  - **No endless waiting:** after 5 minutes the rally goes up with 60% of what it needs. After 10 minutes it goes up
+    health of the bots at the rally, with no extra safety margin: the realm tries often and accepts that some attempts
+    fail. In Thidranki that is about 12 level-22s against the lord alone, and about 24 with three guards beside him. A
+    lord already down to half health needs fewer.
+  - **You count double.** A real player standing at the rally counts as two gamebots, so you and ten bots go up where
+    twelve bots would. The server log's `BG_RALLY_STORM` line shows how many players went up (`players=`).
+  - **No endless waiting:** after 3 minutes the rally goes up with half of what it needs. After 6 minutes it goes up
     with whoever is there, never fewer than 8.
   - **A failed attempt** ends like a raid attempt: half the stormers fell, the lord healed back to 95%, or he lost
     nothing for 3 minutes. The survivors then rally again.

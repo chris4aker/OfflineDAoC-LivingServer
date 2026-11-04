@@ -40,12 +40,13 @@ public static class AutonomousBattlegroundKeepRally
     public const float InTheFightRadius = 900f;
 
     public const long CountMilliseconds = 5_000;
-    /// <summary>After this long gathering, a rally goes up with 60% of what it needs.</summary>
-    public const long RallyPatienceMilliseconds = 5 * 60_000;
-    public const int PatientSharePercent = 60;
+    /// <summary>After this long gathering, a rally goes up with half of what it needs (owner, 2026-11-04: the first cut of
+    /// 5 minutes and 60% was too cautious).</summary>
+    public const long RallyPatienceMilliseconds = 3 * 60_000;
+    public const int PatientSharePercent = 50;
     /// <summary>After this long, a rally goes up with whoever is there (at least <see cref="MinimumRally"/>): the owner wants
     /// failures to come from the fight, not from the gathering (RealmRaidRecruitmentPolicy).</summary>
-    public const long RallyLastCallMilliseconds = 10 * 60_000;
+    public const long RallyLastCallMilliseconds = 6 * 60_000;
     public const int MinimumRally = AutonomousBattlegroundWave.MinimumWave;
     public const int MaximumRally = 60;
     /// <summary>An attempt in which the lord lost nothing for this long is over.</summary>
@@ -64,8 +65,15 @@ public static class AutonomousBattlegroundKeepRally
     public static double GuardTakes(int guardLevel) => 1 - Math.Clamp(guardLevel / 2 + 1, 0, 50) / 100.0;
     /// <summary>Square law: the attempt may lose this share of its stormers before the lord falls (the raid's wipe line).</summary>
     public const double AcceptableLosses = 0.5;
-    /// <summary>Model choice: healers and support deal little damage, and guards respawn during the attempt.</summary>
-    public const double Margin = 1.25;
+    /// <summary>Model choice: no safety margin on top of the square law. The owner wants keeps attempted more often and
+    /// accepts that more attempts fail (2026-11-04; the first cut was 1.25).</summary>
+    public const double Margin = 1.0;
+
+    /// <summary>A real player at the rally counts as this many gamebots (owner, 2026-11-04).</summary>
+    public const int PlayerWeight = 2;
+
+    /// <summary>What the rally counts as present: its gamebots plus <see cref="PlayerWeight"/> per real player. Pure.</summary>
+    public static int RallyStrength(int bots, int players) => Math.Max(0, bots) + Math.Max(0, players) * PlayerWeight;
 
     /// <summary>The reference weapon DPS of a level (BotWeaponStats.NormalDps, in tenths there).</summary>
     public static double WeaponDps(int level) => BotWeaponStats.NormalDps(level) / 10.0;
@@ -151,7 +159,7 @@ public static class AutonomousBattlegroundKeepRally
         public Vector3? Point;
         public bool Storming;
         public long GatherSince, AttemptSince, LastProgress, NextCount, LastAsked;
-        public int Rallied, Needed, Engaged, LowestPercent;
+        public int Rallied, RalliedPlayers, Needed, Engaged, LowestPercent;
         public readonly HashSet<long> Committed = new();
     }
 
@@ -221,8 +229,9 @@ public static class AutonomousBattlegroundKeepRally
                 rally.LowestPercent = lord.HealthPercent;
                 rally.Engaged = 0;
                 int going = Commit(rally, bot.Realm, bracket.RegionId, point);
+                int players = rally.RalliedPlayers;
                 Log.Info($"BG_RALLY_STORM battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
-                         $"going={going} needed={rally.Needed} lordLevel={lord.Level} lord={lord.HealthPercent}% " +
+                         $"going={going} players={players} needed={rally.Needed} lordLevel={lord.Level} lord={lord.HealthPercent}% " +
                          $"minutes={(now - rally.GatherSince) / 60_000.0:0.0} rally={point.X:0},{point.Y:0},{point.Z:0}");
                 if (rally.Committed.Contains(bot.DatabaseID))
                     return new Order(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}");
@@ -280,6 +289,7 @@ public static class AutonomousBattlegroundKeepRally
         }
         rally.Engaged += joined;
         rally.Rallied = 0;
+        rally.RalliedPlayers = 0;
         return joined;
     }
 
@@ -308,7 +318,8 @@ public static class AutonomousBattlegroundKeepRally
             }
         }
         GameBot[] rallied = realmBots.Where(other => !rally.Committed.Contains(other.DatabaseID) && AtRally(other, point)).ToArray();
-        rally.Rallied = rallied.Length;
+        rally.RalliedPlayers = PlayersAtRally(realm, bracket.RegionId, point);
+        rally.Rallied = RallyStrength(rallied.Length, rally.RalliedPlayers);
         // "Enough" is worked out from the attackers who are there (or, before anyone is, the realm's bots in the battleground).
         GameBot[] sample = rallied.Length > 0 ? rallied : realmBots;
         int attackerLevel = sample.Length == 0 ? bracket.MaxLevel : (int)Math.Round(sample.Average(other => (double)other.Level));
@@ -319,6 +330,15 @@ public static class AutonomousBattlegroundKeepRally
         rally.Needed = NeededAttackers(lord.Level, lord.Health, attackerLevel, attackerHealth, withLord.Length,
             withLord.Length == 0 ? 0 : (int)Math.Round(withLord.Average(guard => (double)guard.Level)),
             withLord.Length == 0 ? 0 : (long)withLord.Average(guard => (double)guard.MaxHealth));
+    }
+
+    /// <summary>Living real players of the realm standing at the rally (any privilege level, so a tester's GM character counts).</summary>
+    private static int PlayersAtRally(eRealm realm, ushort region, Vector3 point)
+    {
+        Region here = WorldMgr.GetRegion(region);
+        if (here == null) return 0;
+        return ClientService.Instance.GetPlayersOfRegionAndRealm(here, realm)
+            .Count(player => player != null && player.IsAlive && AtRally(player, point));
     }
 
     /// <summary>The broken (or open) main gate nearest the lord: the breach the realm goes up from.</summary>
