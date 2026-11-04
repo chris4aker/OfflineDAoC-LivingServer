@@ -491,6 +491,7 @@ public sealed class AutonomousBotVoiceCorpus
     #region Slots
 
     private static readonly Regex SlotPattern = new(@"\{(\w+)\}", RegexOptions.CultureInvariant);
+    private static readonly Regex ArticleBeforeSlot = new(@"\b([Aa]) \{(\w+)\}", RegexOptions.CultureInvariant);
 
     /// <summary>Optional openers for {q}; empty half the time.</summary>
     public static readonly string[] Openers = ["", "", "", "hey", "so", "random question but", "quick question,", "ok so"];
@@ -499,7 +500,14 @@ public sealed class AutonomousBotVoiceCorpus
     public static bool TryFill(string template, IReadOnlyDictionary<string, string> slots, out string filled)
     {
         bool ok = true;
-        string result = SlotPattern.Replace(template ?? string.Empty, match =>
+        // "a {class}" before a vowel reads "an elementalist" (playtest 2026-11-04: "first to 50 as a elementalist"). Not
+        // before u: "a unique".
+        template = ArticleBeforeSlot.Replace(template ?? string.Empty, match =>
+            slots != null && slots.TryGetValue(match.Groups[2].Value, out string next) && next is { Length: > 0 } &&
+            "aeioAEIO".Contains(next[0])
+                ? match.Groups[1].Value + "n {" + match.Groups[2].Value + "}"
+                : match.Value);
+        string result = SlotPattern.Replace(template, match =>
         {
             if (slots != null && slots.TryGetValue(match.Groups[1].Value, out string value) && value != null &&
                 (value.Length > 0 || match.Groups[1].Value == "q"))

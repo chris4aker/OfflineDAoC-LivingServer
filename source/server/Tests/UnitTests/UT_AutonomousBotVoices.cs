@@ -261,6 +261,18 @@ namespace DOL.GS.Tests
             Assert.That(VC.TryFill("pc on {item}?", null, out _), Is.False);
         }
 
+        // Playtest 2026-11-04: "first to 50 as a elementalist".
+        [TestCase("elementalist", "as an elementalist i get no respect")]
+        [TestCase("Armsman", "as an Armsman i get no respect")]
+        [TestCase("cleric", "as a cleric i get no respect")]
+        [TestCase("unique", "as a unique i get no respect")]
+        public void TryFill_UsesAnBeforeAVowel(string value, string expected)
+        {
+            var slots = new Dictionary<string, string> { ["class"] = value };
+            Assert.That(VC.TryFill("as a {class} i get no respect", slots, out string filled), Is.True);
+            Assert.That(filled, Is.EqualTo(expected));
+        }
+
         [Test]
         public void TryFill_EmptyOpenerIsTrimmed()
         {
