@@ -30,7 +30,7 @@ public class UT_ChatRegulars
     {
         int Count(int bots, long now, Func<long, BotPersonalityType> type) =>
             Enumerable.Range(1, bots).Count(id => Regulars.IsRegular(id, type(id), now, bots));
-        // Averaged over ten evenings: about 15 at 1,000 bots (8-15 at a busy peak), about 5 at 300.
+        // Averaged over ten evenings: about 12 at 1,000 bots (8-15 at a busy peak), about 5 at 300.
         double Mean(int bots) => Enumerable.Range(0, 10).Average(night => Count(bots, night * 24 * 60 * 60_000L, id => (BotPersonalityType)(id % 6)));
         Assert.That(Mean(1_000), Is.InRange(8.0, 18.0), "8-15 at a busy peak");
         Assert.That(Mean(300), Is.InRange(3.0, 8.0));
@@ -73,6 +73,15 @@ public class UT_ChatRegulars
         Assert.That(Field.FollowUp(said, true, new Random(1), memory, 60_000), Is.Null);
     }
 
+    [Test]
+    public void AFollowUpNamesItsSubjectNotItsKey()
+    {
+        var random = new Random(3);
+        for (int i = 0; i < 400; i++)
+            if (Field.Line("faction", Facts(i, 10 + i % 40), null, random) is { Unanswered: { } pool })
+                Assert.That(pool.Where(line => line.Contains(':')), Is.Empty, string.Join(" | ", pool));
+    }
+
     // ---- 2. ideas rest --------------------------------------------------------------------------------------------------------
 
     [Test]
@@ -87,12 +96,12 @@ public class UT_ChatRegulars
     [Test]
     public void FamiliesRestMinutesAndIdeasHalfAnHourOrMore()
     {
-        Assert.That(Field.Memory.FamilyRestMs("camp_free"), Is.InRange(4 * 60_000, 8 * 60_000));
+        Assert.That(Field.Memory.FamilyRestMs("camp_free"), Is.InRange(3 * 60_000, 6 * 60_000));
         Assert.That(Field.Memory.IdeaRestMs("camp:large skeleton"), Is.InRange(30 * 60_000, 60 * 60_000));
         var memory = new Field.Memory();
         memory.Use("camp_free", "camp:large skeleton", 0);
-        Assert.That(memory.Rested("camp_free", null, 3 * 60_000), Is.True);
-        Assert.That(memory.Rested("camp_free", null, 9 * 60_000), Is.False);
+        Assert.That(memory.Rested("camp_free", null, 2 * 60_000), Is.True);
+        Assert.That(memory.Rested("camp_free", null, 7 * 60_000), Is.False);
         Assert.That(memory.Rested(null, "camp:large skeleton", 20 * 60_000), Is.True);
         Assert.That(memory.Rested(null, "camp:large skeleton", 61 * 60_000), Is.False);
     }
@@ -125,7 +134,7 @@ public class UT_ChatRegulars
         {
             long[] times = group.Select(h => h.At).ToArray();
             for (int i = 1; i < times.Length; i++)
-                Assert.That(times[i] - times[i - 1], Is.GreaterThanOrEqualTo(4 * 60_000), group.Key);
+                Assert.That(times[i] - times[i - 1], Is.GreaterThanOrEqualTo(3 * 60_000), group.Key);
         }
     }
 
@@ -171,7 +180,7 @@ public class UT_ChatRegulars
     // ---- 4. answers fit the line before ---------------------------------------------------------------------------------------
 
     private static readonly Regex Recruits = new(
-        @"\b(grp for|anyone$|later\??$|anyone around|anyone up for|up for|any1 lf grp|lf duo|wanna duo|wanna xp|duo|grp\??$|grp anyone|forming|if anyone wants|want to group|lf guildies|need 1 more|lf grp|lfg|lf\d?m|anyone grouping|who's on for|who's up|who's around|anyone want|keep take|take .* back|lets take|who wants|free for guild|up for grabs|spare|free to|selling my old|any .*s on\??|any1 at|anyone at|anyone out|anyone in|who's on|anyone heading|anyone on|hit a keep|lf rvr|need a |lf (heal|tank|mezzer|bard|cleric|druid|shaman|puller)|anyone\?)",
+        @"\b(lf |need |grp for|anyone$|later\??$|anyone around|anyone up for|up for|any1 lf grp|lf duo|wanna duo|wanna xp|duo|grp\??$|grp anyone|forming|if anyone wants|want to group|lf guildies|need 1 more|lf grp|lfg|lf\d?m|anyone grouping|who's on for|who's up|who's around|anyone want|keep take|take .* back|lets take|who wants|free for guild|up for grabs|spare|free to|selling my old|any .*s on\??|any1 at|anyone at|anyone out|anyone in|who's on|anyone heading|anyone on|hit a keep|lf rvr|need a |lf (heal|tank|mezzer|bard|cleric|druid|shaman|puller)|anyone\?)",
         RegexOptions.CultureInvariant);
 
     [Test]

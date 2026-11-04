@@ -16,10 +16,10 @@ public static class AutonomousChatRegulars
     public const long RotationMs = 3 * 60 * 60_000;
 
     /// <summary>A regular's rest between its own unprompted lines (others rest 2-4 minutes).</summary>
-    public const long RegularRestMs = 45_000;
+    public const long RegularRestMs = 35_000;
 
     /// <summary>A regular's chance to talk at a chat check once rested (others: about 1%).</summary>
-    public const double RegularChance = 0.5;
+    public const double RegularChance = 0.7;
 
     /// <summary>How often a bot that isn't a regular takes a /faction or guild turn when the channel is near its target.</summary>
     public const double OthersShare = 0.08;
@@ -27,8 +27,8 @@ public static class AutonomousChatRegulars
     /// <summary>Under this share of its target, a channel takes anyone's line (the regulars alone can't always fill it).</summary>
     public const double OthersBelow = 0.8;
 
-    /// <summary>How many regulars a realm has with this many bots online: 1.5% of them, 5 to 15.</summary>
-    public static int TargetCount(int realmBots) => Math.Clamp((int)Math.Round(realmBots * 0.015), 5, 15);
+    /// <summary>How many regulars a realm has with this many bots online: 1.2% of them, 5 to 15.</summary>
+    public static int TargetCount(int realmBots) => Math.Clamp((int)Math.Round(realmBots * 0.012), 5, 15);
 
     /// <summary>How many regulars a guild has with this many members online: a fifth of them, 2 to 6.</summary>
     public static int GuildTargetCount(int online) => Math.Clamp((int)Math.Round(online * 0.2), 2, 6);

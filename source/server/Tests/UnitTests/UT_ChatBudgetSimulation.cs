@@ -620,6 +620,8 @@ public class UT_ChatBudgetSimulation
         else
             TestContext.Out.WriteLine(report);
         Result before = results[(1_000, false)], after = results[(1_000, true)];
+        // The owner's standing rule: never quiet. /faction meets its busy-peak target of 4 a minute at 1,000 bots.
+        Assert.That(after.PerMinute("faction"), Is.GreaterThanOrEqualTo(4.0), "/faction at its target at 1,000 bots");
         // TALK_BUDGET_SAMPLE: the first lines of each channel at 1,000 bots, to read.
         string sample = Environment.GetEnvironmentVariable("TALK_BUDGET_SAMPLE");
         if (!string.IsNullOrEmpty(sample))
@@ -636,7 +638,8 @@ public class UT_ChatBudgetSimulation
                 Assert.That(results[(bots, true)].TopSpeakerShare(channel), Is.LessThan(0.15), $"busiest bot in {channel} at {bots}");
             // Round 5: regulars. /faction has fewer speakers than lines, and its top tenth of speakers carry 40-65% of the lines.
             var shape = speakerShape[(bots, true)];
-            Assert.That(shape.TopFaction, Is.InRange(0.40, 0.65), $"top tenth's share of /faction at {bots}");
+            // Round 6: 45-55% at a busy peak (research: about 60%); a small server's few regulars may carry a little more.
+            Assert.That(shape.TopFaction, bots >= 1_000 ? Is.InRange(0.45, 0.55) : Is.InRange(0.40, 0.70), $"top tenth's share of /faction at {bots}");
             Assert.That(shape.Per30Faction, Is.LessThanOrEqualTo(22), $"speakers per 30 /faction lines at {bots}");
             // Round 4: at least 80% of an hour's lines of three words or more are distinct, in every channel.
             foreach ((string channel, double share) in distinctShares[(bots, true)])
@@ -677,8 +680,11 @@ public class UT_ChatBudgetSimulation
             File.WriteAllText(path, report.ToString());
         else
             TestContext.Out.WriteLine(report);
+        // Round 6: at least 95% of the lines of three words or more are distinct over three hours.
         foreach (string channel in DistinctChannels)
-            Assert.That(evening.DistinctShare(channel), Is.GreaterThanOrEqualTo(0.8), channel);
+            Assert.That(evening.DistinctShare(channel), Is.GreaterThanOrEqualTo(0.95), channel);
+        Assert.That(evening.TopTenthShare("faction"), Is.InRange(0.45, 0.60), "the regulars carry about half of /faction");
+        Assert.That(evening.SpeakersPer30("faction"), Is.LessThanOrEqualTo(22));
         List<string> faction = evening.Lines["faction"];
         Assert.That(faction.GroupBy(t => t).Max(g => g.Count()) / (double)faction.Count, Is.LessThan(0.02), "no one short reply carries /faction");
     }
