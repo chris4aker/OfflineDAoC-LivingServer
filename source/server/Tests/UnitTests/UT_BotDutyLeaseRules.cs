@@ -252,6 +252,22 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void SlashWhyDutyShowsTheLeaseThenTheNewestClaims()
+        {
+            Bot bot = Gamebot();
+            Player chris = RealPlayer();
+            JoinPlayersGroup(bot, chris);
+            BotDutyLeases.Claim(bot, Kind.RealmRaid, "dragon-alb", DutyLeaseReason.RaidReserved);
+            long now = BotDutyLeases.Current(bot).Since + 5_000;
+            var lines = BotDutyLeases.WhyLines(bot, bot.Name, now, 3);
+            Assert.That(lines[0], Does.StartWith("duty: in a player's group"));
+            Assert.That(lines[1], Is.EqualTo("  5s ago refused realm raid (dragon-alb): in_players_group, held by in a player's group"));
+            Assert.That(lines[2], Does.Contain("granted in a player's group"));
+            Assert.That(BotDutyLeases.WhyLines(bot, bot.Name, now, 3, eRealm.Midgard), Has.Count.EqualTo(1), "another realm reads no claims");
+            Assert.That(BotDutyLeases.WhyLines(null, "Nobody", now, 3)[0], Is.EqualTo("duty: not online"));
+        }
+
+        [Test]
         public void SlashWhyReadsTheLeaseAndTheDecisionsAsPlainLines()
         {
             Bot bot = Gamebot();

@@ -228,7 +228,7 @@ public static class BotDutyLeases
     }
 
     /// <summary>The newest decisions about one bot (by id, or by name when the id is unknown), at most <paramref name="max"/>.</summary>
-    public static List<Decision> ForBot(long botId, string name, int max)
+    public static List<Decision> ForBot(long botId, string name, int max, eRealm realm = eRealm.None)
     {
         var found = new List<Decision>(Math.Clamp(max, 0, 32));
         lock (Ring)
@@ -236,7 +236,8 @@ public static class BotDutyLeases
             for (int i = 0; i < _count && found.Count < max; i++)
             {
                 Decision decision = Ring[(_next - 1 - i + Capacity) % Capacity];
-                if (botId > 0 ? decision.BotId == botId : !string.IsNullOrEmpty(name) && string.Equals(decision.Bot, name, StringComparison.OrdinalIgnoreCase))
+                if ((botId > 0 ? decision.BotId == botId : !string.IsNullOrEmpty(name) && string.Equals(decision.Bot, name, StringComparison.OrdinalIgnoreCase)) &&
+                    (realm == eRealm.None || decision.Realm == realm))
                     found.Add(decision);
             }
         }
@@ -280,6 +281,23 @@ public static class BotDutyLeases
                 text.Append(" (").Append(decision.HeldOwner).Append(')');
         }
         return text.ToString();
+    }
+
+    /// <summary>
+    /// What /lswhy shows about a bot's time: its lease now and its last <paramref name="decisions"/> claim decisions (granted,
+    /// refused and why, ended), newest first. <paramref name="bot"/> may be null for a bot that is offline (decisions by name);
+    /// <paramref name="realm"/> limits those to one realm's bots (a player reads only their own realm's).
+    /// </summary>
+    public static List<string> WhyLines(GameBot bot, string name, long now, int decisions, eRealm realm = eRealm.None)
+    {
+        var lines = new List<string>(decisions + 1);
+        if (bot != null)
+            lines.Add(DescribeLease(Current(bot, now), now));
+        else
+            lines.Add("duty: not online");
+        foreach (Decision decision in ForBot(bot?.DatabaseID ?? 0, bot?.Name ?? name, decisions, realm))
+            lines.Add("  " + Describe(decision, now));
+        return lines;
     }
 
     /// <summary>Forgets every lease and decision (tests).</summary>
