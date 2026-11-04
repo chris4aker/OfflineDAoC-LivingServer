@@ -26,8 +26,9 @@ public class UT_ChatFiller
         VC.Line plain = Line("ambient", "grouping", "anyone want to duo near prydwen");
         Assert.That(AutonomousChatFiller.IsMusing(lore) && AutonomousChatFiller.IsMusing(musing));
         Assert.That(AutonomousChatFiller.IsMusing(plain), Is.False);
-        Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.01)), Is.True, "now and then in /faction");
-        Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.1)), Is.False, "rarely: 5% (round 2)");
+        Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.01)), Is.False, "round 5: no lore recitation unprompted");
+        Assert.That(AutonomousChatFiller.AmbientAllowed(musing, true, new FixedRandom(0.01)), Is.True, "another musing now and then in /faction");
+        Assert.That(AutonomousChatFiller.AmbientAllowed(musing, true, new FixedRandom(0.1)), Is.False, "rarely: 5% (round 2)");
         Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.5)), Is.False);
         Assert.That(AutonomousChatFiller.AmbientAllowed(lore, false, new FixedRandom(0.0)), Is.False, "never in /say or /broadcast");
         Assert.That(AutonomousChatFiller.AmbientAllowed(plain, false, new FixedRandom(0.9)), Is.True);

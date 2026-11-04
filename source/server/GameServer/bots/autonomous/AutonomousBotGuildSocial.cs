@@ -473,8 +473,12 @@ public static class AutonomousBotGuildSocial
         // Beta 1.1.3, round 4: a written guild line only when it is short and plain (no check-ins, life filler, jokes or "...").
         foreach (string topic in topics)
             if (AutonomousBotVoices.TryLine(bot, "guild", out VC.Picked picked, topic: topic, requireVoices: false,
-                    filter: AutonomousBotVoices.Enabled ? line => !AutonomousChatFiller.IsCrafted(line) && !AutonomousChatFiller.IsGeneric(line.Text) : null))
+                    filter: AutonomousBotVoices.Enabled ? line => !AutonomousChatFiller.IsCrafted(line) && !AutonomousChatFiller.IsGeneric(line.Text) &&
+                        !AutonomousChatFieldTalk.MemoryOfGuild(bot.Guild?.GuildID).Rested(null, AutonomousChatFiller.IdeaOf(line), GameLoop.GameLoopTime) : null))
+            {
+                AutonomousChatFieldTalk.MemoryOfGuild(bot.Guild?.GuildID).Use(null, AutonomousChatFiller.IdeaOf(picked.Line), GameLoop.GameLoopTime);
                 return picked;
+            }
         return null;
     }
 
@@ -567,6 +571,18 @@ public static class AutonomousBotGuildSocial
             return false;
 
         GameBot[] online = guild.GetOnlineBotMembers();
+        // Beta 1.1.3, round 5: guild chat is mostly the guild's regulars; anyone else now and then, or when it runs thin.
+        if (AutonomousBotVoices.Enabled && !allianceLine)
+        {
+            long now = GameLoop.GameLoopTime;
+            BotPersonalityType type = AutonomousBotPersonality.For(bot).Type;
+            bool regular = AutonomousChatRegulars.IsGuildRegular(bot.DatabaseID, type, now, online.Length) ||
+                           AutonomousChatRegulars.IsRegular(bot.DatabaseID, type, now, AutonomousBotChatCoordinator.RealmBots(bot.Realm));
+            if (!regular && Random.Shared.NextDouble() >= AutonomousChatRegulars.OthersShare &&
+                AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Guild, KeyOf(guild), now) >=
+                AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Guild, online.Length + 1).Floor)
+                return false;
+        }
         if (AutonomousBotVoices.Enabled)
         {
             // Beta 1.1.3: the guild channel's budget (chat-budget.json "guild"), growing with the members online, no cap.

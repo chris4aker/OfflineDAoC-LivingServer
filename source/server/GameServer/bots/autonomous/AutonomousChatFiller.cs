@@ -43,9 +43,61 @@ public static class AutonomousChatFiller
         // Beta 1.1.3, round 2: generic agreement is never an opener either.
         if (IsGeneric(line.Text))
             return false;
+        // Round 5: no lore recitation unprompted at all; a lore line answers a real question only (the knowledge route).
+        if (line.Topic == "lore")
+            return false;
         if (IsMusing(line))
             return musing;
         return crafted || !IsCrafted(line);
+    }
+
+    private static readonly (string Concept, string[] Words)[] Concepts =
+    [
+        ("loot", ["drop", "drops", "dropped", "loot", "looted", "looting", "roll", "rolled", "ninja"]),
+        ("camp", ["camp", "camped", "camping", "spot", "spawn", "spawns", "respawn"]),
+        ("pull", ["pull", "pulls", "pulling", "puller", "train", "trained", "aggro", "add", "adds"]),
+        ("heal", ["heal", "heals", "healer", "healers", "cleric", "druid", "rez", "rezz", "res"]),
+        ("death", ["died", "die", "dead", "death", "rip", "corpse", "gravestone"]),
+        ("xp", ["xp", "exp", "level", "levels", "lvl", "ding", "dinged", "bubble", "bubbles", "grind"]),
+        ("craft", ["craft", "crafting", "crafter", "smith", "armorcraft", "spellcraft", "tailor", "fletch", "alchemy", "materials", "skill"]),
+        ("money", ["gold", "plat", "money", "coin", "coins", "copper", "silver", "broke", "cost", "price", "prices"]),
+        ("gear", ["armor", "armour", "sword", "weapon", "shield", "cloak", "gear", "helm", "boots", "gloves", "ring"]),
+        ("pet", ["pet", "pets"]),
+        ("bags", ["bag", "bags", "inventory", "full"]),
+        ("rvr", ["keep", "keeps", "relic", "relics", "frontier", "rvr", "rps", "siege", "door", "zerg"]),
+        ("travel", ["horse", "stable", "route", "walk", "port", "ride"]),
+        ("mana", ["mana", "power", "pow", "oom"]),
+        ("group", ["group", "grp", "duo", "solo", "soloing", "groups"]),
+        ("lag", ["lag", "laggy", "crash", "crashed", "server"]),
+        ("food", ["food", "dinner", "eat", "lunch", "snack"]),
+        ("night", ["night", "late", "bed", "sleep", "tired"]),
+    ];
+
+    private static readonly HashSet<string> IdeaStop = new(StringComparer.Ordinal)
+    {
+        "the", "and", "that", "this", "with", "from", "have", "just", "your", "they", "them", "then", "than", "when", "what", "were", "will",
+        "would", "could", "should", "about", "always", "never", "every", "still", "really", "there", "here", "some", "more", "into", "like",
+        "only", "been", "being", "dont", "cant", "wont", "thats", "its", "youre", "anyone", "everyone", "again", "twice", "today", "tonight",
+    };
+
+    /// <summary>
+    /// What a written line is about, so its rewordings rest with it (round 5: "check every drop twice" three times in four
+    /// minutes): its topic and up to two concepts it names (loot, camp, pull, heal...), else its longest content word. Pure.
+    /// </summary>
+    public static string IdeaOf(VC.Line line) => line == null ? null : IdeaOf(line.Topic, line.Text);
+
+    /// <inheritdoc cref="IdeaOf(VC.Line)"/>
+    public static string IdeaOf(string topic, string text)
+    {
+        string[] words = AutonomousChatIntentModel.Words(text ?? string.Empty);
+        var found = new SortedSet<string>(StringComparer.Ordinal);
+        foreach ((string concept, string[] list) in Concepts)
+            if (words.Any(word => list.Contains(word)))
+                found.Add(concept);
+        string subject = found.Count > 0 ? string.Join("+", found.Take(2))
+            : words.Where(word => word.Length >= 4 && !IdeaStop.Contains(word) && !word.StartsWith('{')).OrderByDescending(word => word.Length)
+                .FirstOrDefault() ?? "misc";
+        return (topic ?? "line") + ":" + subject;
     }
 
     /// <summary>The share of /faction openers that may still be a crafted line (round 3; the rest come from the field, see AutonomousChatFieldTalk).</summary>
@@ -73,7 +125,7 @@ public static class AutonomousChatFiller
         // sentimental check-ins and life filler in guild chat (round 4)
         "best part of my", "here for you", "rough week", "rough day", "missed the", "regret nothing", "just saying", "reminder:", "reminder ",
         "love this guild", "love you guys", "you guys are", "family", "proud of", "grateful", "means a lot", "soda", "snack", "pizza", " beer",
-        " tea ", "finals", "exams", "my brain", "how is everyone", "hows everyone", "how's everyone", "everyones night", "everyone's night",
+        " tea ", "baby", " kid ", "asleep", "typing quietly", "typing very", "finals", "exams", "my brain", "how is everyone", "hows everyone", "how's everyone", "everyones night", "everyone's night",
         "hope everyone", "hope you all", "hope yall", "took a week off", "a week off", "my week", "long week", "hugs", "<3", "not a dare", "pro move", "life hack", "fun fact",
         // narration
         "feels like", "nothing like", "best kind of", "smells like", "i miss", "makes the time", "is louder than", "like a ", "like geese",
@@ -148,6 +200,10 @@ public static class AutonomousChatFiller
         "sure thing", "yeah that is about right", "that is about right", "yeah thats about right", "anyway back to it", "mhm anyway",
         "interesting thought", "good point", "very true", "so true", "lol so true", "true that", "cant disagree", "cant argue there",
         "fair", "i suppose", "i guess so", "maybe maybe not", "if you say so", "you never know", "who knows",
+        // Beta 1.1.3, round 5: canned agreement after a musing ("i know right", "yeah its always like that").
+        "i know right", "ikr", "yeah its always like that", "its always like that", "always like that", "yep that is how it goes",
+        "thats how it goes", "that is how it goes", "yep thats how it goes", "story of my life", "tell me about it", "you said it",
+        "isnt that the truth", "aint that the truth", "so true lol", "too true", "yep yep", "right there with you", "same here",
         // Beta 1.1.3, round 3: agreement filler between bots in /faction and /say.
         "cant say youre wrong", "cant say you are wrong", "that is pretty accurate", "pretty accurate", "thats accurate", "so accurate", "accurate",
         "this is true", "thats true", "that is true", "true enough", "fair enough i guess", "cant argue", "couldnt agree more",

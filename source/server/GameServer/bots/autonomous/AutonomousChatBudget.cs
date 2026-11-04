@@ -136,15 +136,18 @@ public static class AutonomousChatBudget
     }
 
     /// <summary>
-    /// The wait before a channel's next unprompted line: a minute over the target, varied from 0.4 to 1.6 times so chat
-    /// comes in bursts and lulls. Never under 4 s; "never" (a very long wait) when the target is 0.
+    /// The wait before a channel's next unprompted line, around a minute over the target. Round 5: bursty, not even (the
+    /// stream test's minor tell): most gaps are short (0.15-0.6 times), some ordinary (0.6-1.6), and one in ten a lull (2.5-5
+    /// times), about 0.95 times the mean overall. Never under 3 s; "never" (a very long wait) when the target is 0.
     /// </summary>
     public static long GapMs(double targetPerMinute, Random random)
     {
         if (targetPerMinute <= 0.0005)
             return long.MaxValue / 4;
         double mean = 60_000.0 / targetPerMinute;
-        return (long)Math.Max(4_000, mean * (0.4 + 1.2 * random.NextDouble()));
+        double kind = random.NextDouble(), within = random.NextDouble();
+        double factor = kind < 0.6 ? 0.15 + 0.45 * within : kind < 0.9 ? 0.6 + 1.0 * within : 2.5 + 2.5 * within;
+        return (long)Math.Max(3_000, mean * factor);
     }
 
     /// <summary>What the gate says about a line a bot wants to start.</summary>

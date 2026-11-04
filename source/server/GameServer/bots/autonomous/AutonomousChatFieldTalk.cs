@@ -11,7 +11,10 @@ namespace DOL.GS;
 /// near-copies). Real 2003 chat was mostly terse and about the game in front of you: "lfg 38 sm", "wts 99% chain /send",
 /// "anyone up for tg?", "inc mmg", "who has the relic", "brb food". A line here names the bot's real level, class, zone, camp,
 /// bag item and the realm's real keeps and relics, so lines vary because the world varies, not because a template has
-/// wordings. Lowercase, mostly unpunctuated, with the period's abbreviations. Pure but for <see cref="Of"/> and
+/// wordings. Lowercase, mostly unpunctuated, with the period's abbreviations.
+/// Round 5 (the stream test): every line belongs to a family (its shape, "ask_xp", "camp_free") and an idea (the family and
+/// its subject, "camp_free:large skeletons"); a realm doesn't hear a family again for 4-8 minutes or an idea for 30-60, and
+/// each line carries its own answers, so "me" answers only a line that recruits. Pure but for <see cref="Of"/> and
 /// <see cref="World"/>, which read the live bot and the live frontier (cached).
 /// </summary>
 public static class AutonomousChatFieldTalk
@@ -51,21 +54,62 @@ public static class AutonomousChatFieldTalk
 
     /// <summary>
     /// A line and what it is: <paramref name="Kind"/> (lfg, lfm, wts, wtb, ask_xp, ask_group, ask_keep, inc, ding, death, social,
-    /// camp, travel, rvr, relic, crafter, and the guild kinds), and <paramref name="Answers"/>, short true answers another bot
-    /// may give, or null. An answer may name the answerer's own {cls}, {lvl} and {zone} (see <see cref="Answer"/>).
-    /// <paramref name="Item"/> is the item a sale names, so a realm doesn't hear one item advertised all evening.
+    /// camp, travel, rvr, relic, crafter, and the guild kinds), and <paramref name="Answers"/>, short answers that fit this very
+    /// line, or null. An answer may name the answerer's own {cls}, {lvl} and {zone}; one marked {healer} only a healer gives
+    /// (see <see cref="Answer"/>). <paramref name="Item"/> is the item a sale names.
     /// </summary>
-    public sealed record Said(string Text, string Kind, string[] Answers, string Item = null);
+    public sealed record Said(string Text, string Kind, string[] Answers, string Item = null)
+    {
+        /// <summary>The shape of the line ("ask_xp", "camp_free"), resting 4-8 minutes; null for calls, sales and events, which may repeat.</summary>
+        public string Family { get; init; }
+
+        /// <summary>The family and its subject ("camp_free:large skeletons").</summary>
+        public string Idea { get; init; }
+
+        /// <summary>What the speaker says a while later when nobody answered ("still lf healer", "nm found one").</summary>
+        public string[] Unanswered { get; init; }
+
+        /// <summary>What the speaker says after an answer ("ty", "k x").</summary>
+        public string[] Thanks { get; init; }
+    }
 
     private static string[] Pool(params string[] answers) => answers;
 
-    /// <summary>The skeletons a realm's field lines used lately, so the same line isn't said twice in an evening.</summary>
+    /// <summary>One way to say a kind of line: its text, its family, and the answers that fit it.</summary>
+    private readonly record struct V(string Text, string Family, string[] Answers = null);
+
+    /// <summary>
+    /// A line from one of the ways, with its idea and its follow-ups. The idea is the kind and its subject ("ask_keep:caer
+    /// renaris"), so every rewording of it rests together; with no subject, the way's family. "{s}" in a follow-up is the subject.
+    /// </summary>
+    private static Said Make(Random random, string kind, string subject, string[] unanswered, string[] thanks, params V[] ways)
+    {
+        V way = ways[random.Next(ways.Length)];
+        return new Said(way.Text, kind, way.Answers)
+        {
+            Family = way.Family,
+            Idea = way.Family == null ? null : subject == null ? way.Family : kind + ":" + subject,
+            Unanswered = unanswered?.Select(line => line.Replace("{s}", subject ?? string.Empty).Trim()).ToArray(),
+            Thanks = way.Answers == null ? null : thanks,
+        };
+    }
+
+    // Answer pools by what a line asks. "me" and "x" answer only a line that recruits (round 5).
+    private static readonly string[] Joins = ["me", "x", "me pls", "x me", "can i come", "me, {cls} {lvl}", "{lvl} {cls} here", "{cls} {lvl}, x?", "inv pls", "sec, me"];
+    private static readonly string[] SeekThanks = ["ty, inv", "k x", "inv sent", "ty", "kk inv", "got one ty"];
+    private static readonly string[] SeekStill = ["still lf {s}", "anyone for {s}?", "nvm found one", "nm", "solo it is then", "still looking for {s}",
+        "{s} anyone?", "nm got a grp", "nvm, going solo", "bump {s}"];
+
+    /// <summary>The skeletons, families, ideas and items a realm used lately, so it doesn't hear the same thing twice in an evening.</summary>
     public sealed class Memory
     {
         private readonly int _size;
         private readonly string[] _ring;
         private readonly HashSet<string> _seen = new(StringComparer.Ordinal);
         private int _next;
+        private readonly Dictionary<string, long> _items = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, long> _used = new(StringComparer.Ordinal);
+        private long _lastWritten = long.MinValue / 2;
 
         /// <param name="size">How many recent lines it holds: a realm's evening is several thousand (round 4: a 3-hour run).</param>
         public Memory(int size = 4096)
@@ -74,16 +118,44 @@ public static class AutonomousChatFieldTalk
             _ring = new string[_size];
         }
 
+        /// <summary>How long one item rests after it was advertised (Beta 1.1.3, round 4: an hour).</summary>
+        public const long ItemRestMs = 60 * 60_000;
+
+        /// <summary>A written musing at most once in 20 minutes per realm (round 5).</summary>
+        public const long WrittenGapMs = 20 * 60_000;
+
+        /// <summary>How long a family rests: 4-8 minutes, the same for a family each time.</summary>
+        public static long FamilyRestMs(string family) => 4 * 60_000 + (long)(StableFraction(family) * 4 * 60_000);
+
+        /// <summary>How long an idea rests: 30-60 minutes, the same for an idea each time.</summary>
+        public static long IdeaRestMs(string idea) => 30 * 60_000 + (long)(StableFraction(idea) * 30 * 60_000);
+
+        private static double StableFraction(string key)
+        {
+            uint hash = 2166136261;
+            foreach (char c in key ?? string.Empty)
+                hash = (hash ^ c) * 16777619;
+            return hash % 10_000 / 10_000.0;
+        }
+
         public bool Seen(string skeleton)
         {
             lock (_ring)
                 return _seen.Contains(skeleton);
         }
 
-        private readonly Dictionary<string, long> _items = new(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>How long one item rests after it was advertised (Beta 1.1.3, round 4: an hour).</summary>
-        public const long ItemRestMs = 60 * 60_000;
+        public void Add(string skeleton)
+        {
+            lock (_ring)
+            {
+                if (!_seen.Add(skeleton))
+                    return;
+                if (_ring[_next] != null)
+                    _seen.Remove(_ring[_next]);
+                _ring[_next] = skeleton;
+                _next = (_next + 1) % _size;
+            }
+        }
 
         /// <summary>True (and remembered) when the item wasn't advertised here in the last hour.</summary>
         public bool TryItem(string item, long now)
@@ -101,17 +173,42 @@ public static class AutonomousChatFieldTalk
             }
         }
 
-        public void Add(string skeleton)
+        /// <summary>Whether a family (4-8 min) or an idea (30-60 min) was used too lately to be heard again.</summary>
+        public bool Rested(string family, string idea, long now)
+        {
+            lock (_ring)
+                return Resting("f:" + family, family, now, FamilyRestMs) || Resting("i:" + idea, idea, now, IdeaRestMs);
+        }
+
+        private bool Resting(string key, string name, long now, Func<string, long> rest) =>
+            name != null && _used.TryGetValue(key, out long at) && now >= at && now - at < rest(name);
+
+        /// <summary>A family and an idea were just used.</summary>
+        public void Use(string family, string idea, long now)
         {
             lock (_ring)
             {
-                if (!_seen.Add(skeleton))
-                    return;
-                if (_ring[_next] != null)
-                    _seen.Remove(_ring[_next]);
-                _ring[_next] = skeleton;
-                _next = (_next + 1) % _size;
+                if (_used.Count > 8192)
+                    _used.Clear();
+                if (family != null)
+                    _used["f:" + family] = now;
+                if (idea != null)
+                    _used["i:" + idea] = now;
             }
+        }
+
+        /// <summary>Whether a written musing may be said now (none in the last 20 minutes).</summary>
+        public bool WrittenAllowed(long now)
+        {
+            lock (_ring)
+                return now - _lastWritten >= WrittenGapMs || now < _lastWritten;
+        }
+
+        /// <summary>A written musing was just said.</summary>
+        public void NoteWritten(long now)
+        {
+            lock (_ring)
+                _lastWritten = now;
         }
     }
 
@@ -146,14 +243,14 @@ public static class AutonomousChatFieldTalk
     }
 
     /// <summary>
-    /// A field line for a channel (faction, say, lfg, trade, broadcast), or null when the facts give nothing to say there.
-    /// Tries a few draws for one the realm hasn't heard lately. Pure.
+    /// A field line for a channel (faction, say, lfg, trade, broadcast, guild), or null when the facts give nothing to say
+    /// there. Tries a few draws for one whose text, family, idea and item the realm hasn't heard lately. Pure.
     /// </summary>
     public static Said Line(string channel, Facts facts, Memory memory, Random random, long now = 0)
     {
         if (facts == null)
             return null;
-        for (int attempt = 0; attempt < 8; attempt++)
+        for (int attempt = 0; attempt < 16; attempt++)
         {
             Said said = channel switch
             {
@@ -164,7 +261,7 @@ public static class AutonomousChatFieldTalk
                 {
                     < 0.5 => Trade(facts, random),
                     < 0.75 => Lfg(facts, random),
-                    _ => Say(facts with { InTown = true }, random),
+                    _ => Say(facts with { InTown = true }, random, broadcast: true),
                 },
                 "guild" => Guild(facts, random),
                 _ => Faction(facts, random),
@@ -173,21 +270,24 @@ public static class AutonomousChatFieldTalk
                 continue;
             said = said with { Text = Finish(said.Text, random) };
             string skeleton = AutonomousChatFiller.Skeleton(said.Text);
-            if (memory != null && memory.Seen(skeleton))
+            // Short lines ("brb", "back", "lol") may repeat, as in the live near-copy rule; anything longer once an evening.
+            bool reaction = skeleton.IndexOf(' ') < 0 || skeleton.Split(' ').Length <= 2 && skeleton.Length <= 10;
+            if (memory != null && (!reaction && memory.Seen(skeleton) || memory.Rested(said.Family, said.Idea, now)))
                 continue;
             // One item advertised at most once an hour (round 4: three of 120 lines sold the same ring).
             if (said.Item != null && memory != null && !memory.TryItem(said.Item, now))
                 continue;
             memory?.Add(skeleton);
+            memory?.Use(said.Family, said.Idea, now);
             return said;
         }
         return null;
     }
 
     /// <summary>
-    /// Another bot's short answer to a field line, in its own words: "me, thane 31" names the answerer's class and level. Tries
-    /// a few for one the channel hasn't heard lately (lines of three words or more; "me" and "omw" may repeat). Null for none.
-    /// Pure.
+    /// Another bot's short answer to a field line, in its own words: "me, thane 31" names the answerer's class and level; an
+    /// answer marked {healer} comes only from a healer. Tries a few for one the channel hasn't heard lately (three words or
+    /// more; "me" and "omw" may repeat). Null for none. Pure.
     /// </summary>
     public static string Answer(Said said, Facts answerer, Memory memory, Random random)
     {
@@ -196,6 +296,12 @@ public static class AutonomousChatFieldTalk
         for (int attempt = 0; attempt < 5; attempt++)
         {
             string text = said.Answers[random.Next(said.Answers.Length)];
+            if (text.StartsWith("{healer}", StringComparison.Ordinal))
+            {
+                if (answerer?.IsHealer != true)
+                    continue;
+                text = text["{healer}".Length..];
+            }
             if (answerer != null)
                 text = text.Replace("{cls}", ShortClass(answerer.ClassName, random)).Replace("{lvl}", answerer.Level.ToString())
                     .Replace("{zone}", ShortZone(answerer.Zone, random));
@@ -214,21 +320,43 @@ public static class AutonomousChatFieldTalk
         return null;
     }
 
-    /// <summary>How likely another bot answers a field line in /faction.</summary>
+    /// <summary>A follow-up from the speaker: thanks after an answer, or "still lf"/"nm" when nobody answered. Null for none. Pure.</summary>
+    public static string FollowUp(Said said, bool answered, Random random, Memory memory = null, long now = 0)
+    {
+        string[] pool = answered ? said?.Thanks : said?.Unanswered;
+        if (pool == null || pool.Length == 0)
+            return null;
+        // Round 5: the same follow-up ("nvm", "anyone?") isn't heard again in the realm for a while.
+        for (int attempt = 0; attempt < 3; attempt++)
+        {
+            string text = Finish(pool[random.Next(pool.Length)], random);
+            string key = "u:" + text;
+            if (memory != null && memory.Rested(null, key, now))
+                continue;
+            memory?.Use(null, key, now);
+            return text;
+        }
+        return null;
+    }
+
+    /// <summary>How likely another bot answers a field line that has answers.</summary>
     public static double AnswerChance(string kind) => kind switch
     {
-        "ask_keep" or "relic" => 0.65,
-        "ask_xp" or "travel" => 0.55,
-        "inc" => 0.5,
-        "ding" => 0.6,
-        "death" => 0.4,
-        "social" => 0.35,
-        "ask_group" or "crafter" => 0.45,
-        "camp" or "rvr" => 0.35,
-        "raid" or "guild_group" or "guild_craft" or "guild_sell" => 0.45,
-        "guild_ding" or "guild_hello" => 0.5,
+        "ask_keep" or "relic" => 0.7,
+        "ask_xp" or "travel" => 0.6,
+        "inc" => 0.55,
+        "ding" => 0.65,
+        "death" => 0.45,
+        "social" => 0.5,
+        "ask_group" or "crafter" => 0.6,
+        "camp" or "rvr" => 0.5,
+        "raid" or "guild_group" or "guild_craft" or "guild_sell" => 0.55,
+        "guild_ding" or "guild_hello" => 0.55,
         _ => 0.0,
     };
+
+    /// <summary>How likely the speaker follows up its own line: thanks after an answer, or a "still lf" when none came.</summary>
+    public static double FollowUpChance(bool answered) => answered ? 0.55 : 0.5;
 
     // ---- the channels --------------------------------------------------------------------------------------------------------
 
@@ -252,7 +380,7 @@ public static class AutonomousChatFieldTalk
         if ((f.InRvR || f.Level >= 40) && random.NextDouble() < 0.35)
             return new Said(Pick(random,
                 $"lfg rvr {lvl} {cls}", $"{lvl} {cls} lf rvr grp", $"any rvr grps lf {cls}?", $"lf rvr grp {cls} {lvl} pst",
-                $"{cls} lfg rvr", $"lfg {f.World.Frontier?.ToLowerInvariant() ?? "rvr"} {cls}"), "lfg", null);
+                $"{cls} lfg rvr", $"lfg {f.World?.Frontier?.ToLowerInvariant() ?? "rvr"} {cls}"), "lfg", null);
         string zone = ShortZone(f.Zone, random);
         return new Said(Pick(random,
             $"lfg {lvl} {cls}", $"{lvl} {cls} lfg", $"lfg {lvl} {cls} pst", $"lf grp {lvl} {cls}", $"{cls} {lvl} lfg",
@@ -279,13 +407,12 @@ public static class AutonomousChatFieldTalk
         string want = WantFor(f, random);
         return new Said(Pick(random,
             $"wtb {want} pst", $"wtb {want}", want.Any(char.IsDigit) ? $"wtb {want} asap" : $"wtb {want} for {f.Level} {ShortClass(f.ClassName, random)}",
-            $"anyone selling {want}?",
-            $"lf {want} pst", $"wtb {want}, paying ok", $"any1 selling {want}"), "wtb", null);
+            $"anyone selling {want}?", $"lf {want} pst", $"wtb {want}, paying ok", $"any1 selling {want}"), "wtb", null);
     }
 
     private static Said Faction(Facts f, Random random)
     {
-        var options = new List<(Func<Said> Make, double Weight)>(10);
+        var options = new List<(Func<Said> Make, double Weight)>(12);
         WorldView w = f.World ?? WorldView.Empty;
         if (w.AttackedKeeps.Length > 0)
             options.Add((() => Inc(f, w, random), f.InRvR ? 4 : f.Level >= 35 ? 1 : 0.3));
@@ -301,18 +428,23 @@ public static class AutonomousChatFieldTalk
             options.Add((() => Death(f, random), 6));
         if (!f.InRvR && f.Level < 50)
         {
-            options.Add((() => AskXp(f, random), 2));
+            options.Add((() => AskXp(f, random), 1.5));
             options.Add((() => AskGroup(f, random), 3));
+            options.Add((() => NeedClass(f, random), 1.2));
         }
         if (f.AtCamp && f.Monster != null)
             options.Add((() => Camp(f, random), 1.5));
         if (f.Destination != null)
             options.Add((() => Travel(f, random), 1.5));
         options.Add((() => Crafter(f, random), 0.8));
+        options.Add((() => PriceCheck(f, random), 0.8));
+        options.Add((() => Status(f, random), 2.0));
+        options.Add((() => AskAround(f, random), 1.2));
         options.Add((() => Social(f, random), 1.2));
         if (f.Bubbles > 0 && f.Level < 50)
-            options.Add((() => new Said(Pick(random, $"{f.Bubbles} bubbles to {f.Level + 1}", $"{f.Bubbles} bubs to go", $"almost {f.Level + 1}",
-                $"{f.Bubbles} bubbles til {f.Level + 1} ugh"), "social", null), 0.6));
+            options.Add((() => Make(random, "social", null, null, null,
+                new V($"{f.Bubbles} bubbles to {f.Level + 1}", "bubbles"), new V($"{f.Bubbles} bubs to go", "bubbles"),
+                new V($"almost {f.Level + 1}", "almost"), new V($"{f.Bubbles} bubbles til {f.Level + 1} ugh", "bubbles")), 0.6));
         double total = options.Sum(o => o.Weight), draw = random.NextDouble() * total;
         foreach ((Func<Said> make, double weight) in options)
         {
@@ -323,17 +455,26 @@ public static class AutonomousChatFieldTalk
         return Social(f, random);
     }
 
-    private static Said Say(Facts f, Random random)
+    private static Said Say(Facts f, Random random, bool broadcast = false)
     {
         string cls = ShortClass(f.ClassName, random);
         if (f.InTown)
         {
             if (f.Item != null && random.NextDouble() < 0.4)
                 return Trade(f, random);
-            return new Said(Pick(random,
-                $"lfg {f.Level} {cls}", "anyone grouping?", "brb", "back", "any healers around?", "anyone heading out?",
-                f.Destination != null ? $"which stable for {ShortZone(f.Destination, random)}?" : "where is the trainer",
-                $"{f.Level} {cls} lf grp", "afk 5", "anyone selling pots?", "brb selling"), "social", null);
+            // A town /broadcast carries no "brb" or "afk" (round 5: those were said to a whole town).
+            if (broadcast)
+                return Make(random, "social", null, SeekStill, SeekThanks,
+                    new V($"lfg {f.Level} {cls}", null, Joins), new V("anyone grouping?", "say_grouping", Joins),
+                    new V("any healers around?", "say_healers", Pool("{healer}me", "{healer}me, {lvl}")),
+                    new V("anyone heading out?", "say_out", Pool("me", "in a bit", "me, where to?")), new V($"{f.Level} {cls} lf grp", null, Joins),
+                    new V("anyone selling pots?", "say_pots"), new V($"any {cls}s around? need tips", "say_tips"));
+            return Make(random, "social", null, SeekStill, SeekThanks,
+                new V($"lfg {f.Level} {cls}", null, Joins), new V("anyone grouping?", "say_grouping", Joins), new V("brb", "brb"),
+                new V("back", "back"), new V("any healers around?", "say_healers", Pool("{healer}me", "{healer}me, {lvl}")),
+                new V("anyone heading out?", "say_out", Pool("me", "in a bit", "me, where to?")),
+                f.Destination != null ? new V($"which stable for {ShortZone(f.Destination, random)}?", "say_stable") : new V("where is the trainer", "say_trainer"),
+                new V($"{f.Level} {cls} lf grp", null, Joins), new V("afk 5", "afk"), new V("anyone selling pots?", "say_pots"), new V("brb selling", "brb_selling"));
         }
         string monster = f.Monster;
         string monsters = monster == null ? null : AutonomousBotVoiceCorpus.Plural(monster);
@@ -341,11 +482,14 @@ public static class AutonomousChatFieldTalk
             return new Said(Pick(random,
                 "pulling", "inc", "oom", "sitting", "need pow", "brb", "rdy", "1 sec", "wait for heals",
                 monster != null ? $"{monster} inc" : "adds", monster != null ? $"careful {monsters} link" : "careful"), "social", null);
-        return new Said(Pick(random,
-            "this camp taken?", "anyone grouping here?", $"lf grp here {f.Level} {cls}", "sry ks", "camp free if u want it", "anyone camping this?",
-            monster != null ? $"{monster} up?" : "anything up?", monster != null ? $"anyone need {monster} drops?" : "anyone need anything?",
-            monster != null ? $"who's camping {monsters}?" : "who's camping here?", "anyone wanna duo?", "oom brb", "careful adds",
-            f.IsHealer ? "need heals?" : "any healers here?"), "camp", Pool("go ahead", "its free", "sure", "x me", "ya sry"));
+        return Make(random, "camp", monster, null, null,
+            new V("this camp taken?", "say_taken", Pool("go ahead", "its free", "ya sry", "were leaving soon")),
+            new V("anyone grouping here?", "say_grouping", Joins), new V($"lf grp here {f.Level} {cls}", null, Joins), new V("sry ks", null),
+            new V("camp free if u want it", "say_free", Pool("ty", "ty!", "thx")), new V("anyone camping this?", "say_taken", Pool("ya", "me sry", "go ahead")),
+            new V(monster != null ? $"{monster} up?" : "anything up?", "say_up"),
+            new V("anyone wanna duo?", "say_duo", Joins), new V("oom brb", "oom"), new V("careful adds", "adds"),
+            new V(f.IsHealer ? "need heals?" : "any healers here?", f.IsHealer ? "say_offerheal" : "say_healers",
+                f.IsHealer ? Pool("ya pls", "nah im ok", "ty") : Pool("{healer}me", "{healer}me, sec")));
     }
 
     // ---- the faction kinds -------------------------------------------------------------------------------------------------
@@ -355,90 +499,177 @@ public static class AutonomousChatFieldTalk
         string keep = ShortKeep(w.AttackedKeeps[random.Next(w.AttackedKeeps.Length)], random);
         string enemy = EnemyWord(f.Realm, random);
         int count = 3 + random.Next(20);
-        return new Said(Pick(random,
-            $"inc {keep}", $"{keep} inc", $"{enemy} at {keep}", $"{count} {enemy} at {keep}", $"{keep} under attack", $"need def {keep}",
-            $"def {keep} pls", $"{keep} is being hit", $"{enemy} zerg at {keep}", $"{enemy} hitting {keep} door", $"inc {keep}, {count}+",
-            $"rams on {keep}"), "inc", Pool("omw", "omw", "k", "how many?", "porting", $"omw {keep}", $"omw to {keep}", $"porting to {keep}"));
+        string[] omw = Pool("omw", "omw", "k", "how many?", "porting", $"omw {keep}", $"omw to {keep}", $"porting to {keep}");
+        return Make(random, "inc", null, null, null,
+            new V($"inc {keep}", "inc_call", omw), new V($"{keep} inc", "inc_call", omw), new V($"{enemy} at {keep}", "inc_call", omw),
+            new V($"{count} {enemy} at {keep}", "inc_call", omw), new V($"{keep} under attack", "inc_call", omw), new V($"need def {keep}", "inc_call", omw),
+            new V($"def {keep} pls", "inc_call", omw), new V($"{keep} is being hit", "inc_call", omw), new V($"{enemy} zerg at {keep}", "inc_call", omw),
+            new V($"{enemy} hitting {keep} door", "inc_call", omw), new V($"inc {keep}, {count}+", "inc_call", omw), new V($"rams on {keep}", "inc_call", omw));
     }
 
     private static Said AskKeep(Facts f, WorldView w, Random random)
     {
         int index = random.Next(w.LostKeeps.Length);
-        string keep = ShortKeep(w.LostKeeps[index], random), owner = RealmWord(w.LostTo[index], random);
-        return new Said(Pick(random, $"who has {keep}?", $"who has {keep}", $"{keep} still {owner}?", $"is {keep} ours?", $"anyone taking {keep} back?",
-            $"{owner} still have {keep}?", $"grp for {keep}?"), "ask_keep",
-            Pool(Plural(owner), $"{Plural(owner)} have {keep}", $"still {Plural(owner)}", $"{Plural(owner)} :/", $"{Plural(owner)} since {Since(random)}"));
+        string keep = ShortKeep(w.LostKeeps[index], random), owner = RealmWord(w.LostTo[index], random), owners = Plural(owner);
+        string[] who = Pool(owners, $"{owners} have {keep}", $"still {owners}", $"{owners} :/", $"{owners} since {Since(random)}");
+        string subject = w.LostKeeps[index].ToLowerInvariant();
+        return Make(random, "ask_keep", subject, Pool("nm, still theirs", "anyone?"), Pool("ty", "ugh", "figures"),
+            new V($"who has {keep}?", "keep_who", who), new V($"who has {keep}", "keep_who", who), new V($"{keep} still {owner}?", "keep_still", who),
+            new V($"is {keep} ours?", "keep_ours", Pool($"no, {owners}", $"nope {owners}", $"{owners} have it")),
+            new V($"anyone taking {keep} back?", "keep_back", Pool("tonight maybe", "if we get a grp", "im in", "x me if so")),
+            new V($"{owners} still have {keep}?", "keep_still", who), new V($"grp for {keep}?", "keep_back", Pool("im in", "x", "me", "later maybe")));
     }
 
     private static Said Relic(Facts f, WorldView w, Random random)
     {
         if (w.RelicsLost > 0)
-            return new Said(Pick(random, "who has our relic?", "who has the relic", "relic still gone?", "where is our relic", "any relic raid tonight?",
-                "relic raid when?"), "relic", Pool("still gone", "not ours", "gone still", $"{EnemyWord(f.Realm, random)} have it", $"gone since {Since(random)}"));
-        return new Said(Pick(random, $"we have {w.RelicsHeld} relics now", "still have their relic?", "relic still ours?", "anyone guarding the relic?"),
-            "relic", Pool("still ours", "ya", "for now", $"ours since {Since(random)}"));
+        {
+            string[] gone = Pool("still gone", "not ours", "gone still", $"{Plural(EnemyWord(f.Realm, random))} have it", $"gone since {Since(random)}");
+            return Make(random, "relic", "lost", null, Pool("ty", "ugh"),
+                new V("who has our relic?", "relic_who", gone), new V("who has the relic", "relic_who", gone), new V("relic still gone?", "relic_who", gone),
+                new V("where is our relic", "relic_who", gone), new V("any relic raid tonight?", "relic_raid", Pool("hope so", "dunno", "ask in guild")),
+                new V("relic raid when?", "relic_raid", Pool("dunno", "this weekend maybe", "no idea")));
+        }
+        return Make(random, "relic", "held", null, null,
+            new V($"we have {w.RelicsHeld} relics now", "relic_count"), new V("still have their relic?", "relic_still", Pool("still ours", "ya", "for now")),
+            new V("relic still ours?", "relic_still", Pool("still ours", "ya", $"ours since {Since(random)}")),
+            new V("anyone guarding the relic?", "relic_guard", Pool("dunno", "few ppl", "not enough")));
     }
 
     private static Said Rvr(Facts f, WorldView w, Random random)
     {
         string frontier = f.World?.Frontier?.ToLowerInvariant() ?? "the frontier";
         string own = w.OwnKeeps.Length > 0 ? ShortKeep(w.OwnKeeps[random.Next(w.OwnKeeps.Length)], random) : "the keep";
-        return new Said(Pick(random,
-            "any grps out?", "anyone out tonight?", $"anyone in {frontier}?", "rvr grp forming pst", "where's the zerg", "where is everyone",
-            $"any1 at {own}?", $"quiet in {frontier}", "port to frontier up?", "any stealthers out?", "lf rvr grp", "anyone want to hit a keep?",
-            $"{EnemyWord(f.Realm, random)} out?", "where are the enemies at"), "rvr",
-            w.AttackedKeeps.Length > 0 ? Pool($"{ShortKeep(w.AttackedKeeps[0], random)} under attack", $"at {ShortKeep(w.AttackedKeeps[0], random)}")
-                : Pool("not much", "dunno", "quiet", $"quiet at {own}", $"dead in {frontier}", $"{EnemyWord(f.Realm, random)} near {own}?"));
+        string[] where = w.AttackedKeeps.Length > 0
+            ? Pool($"{ShortKeep(w.AttackedKeeps[0], random)} under attack", $"at {ShortKeep(w.AttackedKeeps[0], random)}", $"hitting {ShortKeep(w.AttackedKeeps[0], random)}")
+            : null;
+        return Make(random, "rvr", null, Pool("anyone?", "nm"), Pool("ty", "k omw", "omw"),
+            new V("any grps out?", "rvr_grps", where), new V("anyone out tonight?", "rvr_out", Pool("me", "few of us", "me, {cls}")),
+            new V($"anyone in {frontier}?", "rvr_out", Pool("me", "few of us", "on my way")),
+            new V("rvr grp forming pst", "rvr_form", Joins), new V("where's the zerg", "rvr_zerg", where), new V("where is everyone", "rvr_zerg", where),
+            new V($"any1 at {own}?", "rvr_keep"), new V($"quiet in {frontier}", "rvr_quiet"), new V("port to frontier up?", "rvr_port"),
+            new V("any stealthers out?", "rvr_stealth"), new V("lf rvr grp", "rvr_lf", Pool("x", "me too", "x me")),
+            new V("anyone want to hit a keep?", "rvr_hit", Pool("me", "im in", "which one?", "x")), new V($"{EnemyWord(f.Realm, random)} out?", "rvr_enemy", where));
     }
 
     private static Said AskXp(Facts f, Random random)
     {
         string lvl = f.Level.ToString(), cls = ShortClass(f.ClassName, random);
-        return new Said(Pick(random,
-            $"where do {lvl}s xp?", $"where to xp at {lvl}?", $"good xp for {lvl} {cls}?", $"where should a {lvl} {cls} hunt",
-            f.Dungeon != null ? $"{ShortDungeon(f.Dungeon, random)} ok at {lvl}?" : $"where at {lvl}?", $"{lvl} where to go", $"xp spot for {lvl}?"),
-            "ask_xp", f.Dungeon != null ? Pool(ShortDungeon(f.Dungeon, random), $"try {ShortDungeon(f.Dungeon, random)}",
-                $"{ShortDungeon(f.Dungeon, random)} prob", $"{ShortDungeon(f.Dungeon, random)} at {lvl}", $"{ShortDungeon(f.Dungeon, random)} if u get a grp",
-                $"{ShortDungeon(f.Dungeon, random)} is ok at {lvl}", $"{ShortDungeon(f.Dungeon, random)} or solo outside") : null);
+        string dun = ShortDungeon(f.Dungeon, random);
+        string[] answers = f.Dungeon == null ? null
+            : Pool(dun, $"try {dun}", $"{dun} prob", $"{dun} at {lvl}", $"{dun} if u get a grp", $"{dun} is ok at {lvl}", $"{dun} or solo outside");
+        return Make(random, "ask_xp", (f.Level / 5).ToString(), Pool("nm found one", $"anyone? {lvl} here", "nm, trying {s} solo", $"no one? ok {dun ?? "solo"} it is"),
+            Pool("ty", "ty!", "k ty", "kk", "cool ty", "ty, omw"),
+            new V($"where do {lvl}s xp?", "ask_xp", answers), new V($"good xp for {lvl} {cls}?", "ask_xp", answers),
+            new V(dun != null ? $"{dun} ok at {lvl}?" : $"where at {lvl}?", "ask_xp_place",
+                dun != null ? Pool("ya", "ya with a grp", "should be", "ya, bring a healer", "fine at that lvl") : answers),
+            new V($"xp spot for {lvl}?", "ask_xp", answers));
     }
 
     private static Said AskGroup(Facts f, Random random)
     {
-        string dun = ShortDungeon(f.Dungeon, random), zone = ShortZone(f.Zone, random);
-        return new Said(Pick(random,
-            dun != null ? $"anyone up for {dun}?" : "anyone xping?", dun != null ? $"any grps in {dun}?" : "any grps out?",
-            $"anyone wanna duo in {zone}?", $"anyone xping in {zone}?", $"lf duo {f.Level} {ShortClass(f.ClassName, random)}", $"{zone} anyone?",
-            dun != null ? $"{dun} grp?" : "grp anyone?", "any healers on?", "any1 lf grp?", $"anyone near {zone}?"), "ask_group",
-            Pool("me", "x", "pst", "me pls", "x me", "can i come", "o/", "me!", "inv pls", "later", "sec", "me, {cls} {lvl}", "{lvl} {cls} here", "{cls} {lvl}, x?", "room for a {cls}?", "whats ur lvl?", "after this camp, {zone}"));
+        string dun = ShortDungeon(f.Dungeon, random), zone = ShortZone(f.Zone, random), lvl = f.Level.ToString(), cls = ShortClass(f.ClassName, random);
+        return Make(random, "ask_group", (dun ?? zone) + ":" + f.Level / 5, SeekStill, SeekThanks,
+            new V(dun != null ? $"anyone up for {dun}?" : "anyone xping?", "group_up", Joins),
+            new V(dun != null ? $"any grps in {dun}?" : "any grps out?", "group_any"),
+            new V($"anyone wanna duo in {zone}?", "group_duo", Joins), new V($"lf duo {lvl} {cls}", "group_duo", Joins),
+            new V($"anyone xping in {zone}?", "group_where"), new V($"{zone} anyone?", "group_where"),
+            new V(dun != null ? $"{dun} grp?" : "grp anyone?", "group_up", Joins), new V("any1 lf grp?", "group_lf", Pool("me", "x", "me, {lvl}", "me pls")),
+            new V($"anyone near {zone}?", "group_where"));
+    }
+
+    private static Said NeedClass(Facts f, Random random)
+    {
+        string need = Pick(random, "healer", "tank", "mezzer", "bard", "cleric", "druid", "shaman", "puller");
+        string dun = ShortDungeon(f.Dungeon, random) ?? ShortZone(f.Zone, random);
+        string[] fits = need is "healer" or "cleric" or "druid" or "shaman" ? Pool("{healer}me", "{healer}me, {lvl}", "{healer}x", "{healer}{lvl} {cls} here") : null;
+        return Make(random, "ask_group", need + ":" + dun + ":" + f.Level / 5, SeekStill, SeekThanks,
+            new V($"any {need}s on?", "need_class", fits), new V($"need a {need} for {dun}", "need_class", fits),
+            new V($"lf {need} {f.Level - 2}-{f.Level + 2}", "need_class", fits), new V($"{need} anyone? {dun}", "need_class", fits));
     }
 
     private static Said Camp(Facts f, Random random)
     {
         string monsters = AutonomousBotVoiceCorpus.Plural(f.Monster), zone = ShortZone(f.Zone, random);
-        return new Said(Pick(random,
-            $"{monsters} in {zone} camped?", $"anyone camping {monsters}?", $"{monsters} drop anything good?", $"{f.Monster} up anyone?",
-            $"who's on {monsters}?", $"{monsters} are camped lol", $"camping {monsters} if anyone wants to join"), "camp",
-            Pool("dunno", "me", "free", $"free earlier in {zone}", $"{monsters} were free", "camped"));
+        return Make(random, "camp", f.Monster, Pool("nm got it", $"nm, {monsters} were free", "nvm found a spot"), Pool("ty", "k", "kk"),
+            new V($"{monsters} in {zone} free?", "camp_free"), new V($"anyone camping {monsters}?", "camp_free"),
+            new V($"{monsters} drop anything good?", "camp_drops"), new V($"{f.Monster} up anyone?", "camp_up"),
+            new V($"camping {monsters} if anyone wants to join", "camp_join", Pool("me", "where at?", "x", "me, {lvl}")));
     }
 
     private static Said Travel(Facts f, Random random)
     {
         string dest = ShortZone(f.Destination, random);
-        return new Said(Pick(random, $"where is {dest}?", $"how do i get to {dest}", $"which stable for {dest}?", $"{dest} from here?",
-            $"fastest way to {dest}?"), "travel", null);
+        return Make(random, "travel", dest, Pool("nm found it", $"nm, found {dest}"), null,
+            new V($"where is {dest}?", "ask_way"), new V($"how do i get to {dest}", "ask_way"), new V($"which stable for {dest}?", "ask_stable"),
+            new V($"fastest way to {dest}?", "ask_way"));
+    }
+
+    /// <summary>A word on what the bot is doing (round 5: regulars talk about their own evening): its camp, its trip, its power.</summary>
+    private static Said Status(Facts f, Random random)
+    {
+        var ways = new List<V>(8);
+        string zone = ShortZone(f.Zone, random);
+        if (f.AtCamp && f.Monster != null)
+        {
+            string monsters = AutonomousBotVoiceCorpus.Plural(f.Monster);
+            ways.Add(new V($"back to {monsters}", "status_camp"));
+            ways.Add(new V($"more {monsters} lol", "status_camp"));
+            ways.Add(new V($"{monsters} hit hard tonight", "status_camp_hard", Pool("lol", "ya they do", "bring a healer")));
+            ways.Add(new V($"{monsters} again, {f.Bubbles} bubs to go", "status_camp"));
+        }
+        if (f.Destination != null)
+        {
+            string dest = ShortZone(f.Destination, random);
+            ways.Add(new V($"heading to {dest}", "status_travel"));
+            ways.Add(new V($"off to {dest}, back in a bit", "status_travel"));
+            ways.Add(new V($"on the horse to {dest}", "status_travel"));
+        }
+        if (f.InDungeon)
+            ways.Add(new V($"{zone} is busy tonight", "status_dungeon", Pool("ya", "always is")));
+        ways.Add(new V($"{f.Level} {ShortClass(f.ClassName, random)}, still grinding", "status_grind"));
+        ways.Add(new V($"back in {zone}", "status_zone"));
+        ways.Add(new V(f.IsHealer ? "sitting for pow" : "sitting, need hp", "status_sit"));
+        return Make(random, "social", (f.Monster ?? f.Destination ?? zone)?.ToLowerInvariant() + ":" + f.Level / 5, null, null, ways.ToArray());
+    }
+
+    /// <summary>Asking the realm for something: an item, a trainer, a spec (round 5: more ways to ask, each its own idea).</summary>
+    private static Said AskAround(Facts f, Random random)
+    {
+        string cls = ShortClass(f.ClassName, random), lvl = f.Level.ToString();
+        string want = WantFor(f, random);
+        return Make(random, "ask", cls + ":" + want, Pool("nm found it", $"nobody? ok", $"still need {want}"), Pool("ty", "ty!", "k ty", "cool"),
+            new V($"anyone have {want}?", "ask_have"), new V($"anyone got spare {want}", "ask_have"),
+            new V($"where's the {cls} trainer", "ask_trainer"), new V($"what spec for a {lvl} {cls}?", "ask_spec"),
+            new V($"{cls}s, what do u put points in at {lvl}?", "ask_spec"),
+            want.Any(char.IsDigit) ? new V($"anyone selling {want}?", "ask_have") : new V($"is {want} worth it at {lvl}?", "ask_worth"));
     }
 
     private static Said Crafter(Facts f, Random random)
     {
         string craft = Pick(random, "armorcrafters", "weaponcrafters", "fletchers", "tailors", "spellcrafters", "alchemists");
         string one = craft[..^1], article = "aeiou".Contains(one[0]) ? "an" : "a";
-        return new Said(Pick(random, $"any {craft} on?", $"need {article} {one} pst", $"any good {craft} around?", $"{one} on? pst"),
-            "crafter", Pool("me, pst", "me", "/t me", $"{one} here", $"me, {one}"));
+        return Make(random, "crafter", one + ":" + f.Level / 10, Pool("nm found one", "still lf " + article + " " + one, $"any {craft}? anyone", $"no {craft} on? ok"), null,
+            new V($"any {craft} on?", "need_crafter"), new V($"need {article} {one} pst", "need_crafter"), new V($"any good {craft} around?", "need_crafter"),
+            new V($"{one} on? pst", "need_crafter"));
+    }
+
+    private static Said PriceCheck(Facts f, Random random)
+    {
+        if (f.Item == null || !f.ItemIsGear)
+            return Social(f, random);
+        string item = f.Item.ToLowerInvariant();
+        string[] price = Pool(PriceFor(f.Level, random), $"{PriceFor(f.Level, random)} maybe", "dunno, try the broker", "not much");
+        return Make(random, "crafter", item, Pool("nm", "guess ill keep it"), Pool("ty", "k ty"),
+            new V($"pc {item}?", "price_check", price), new V($"what's {article(item)} {item} worth?", "price_check", price),
+            new V($"how much for {article(item)} {f.ItemQuality}% {item}?", "price_check", price));
+
+        static string article(string word) => "aeiou".Contains(word[0]) ? "an" : "a";
     }
 
     private static Said Ding(Facts f, Random random) =>
         new(Pick(random, $"ding {f.Level}", "ding", "ding!", $"{f.Level} finally", $"dinged {f.Level}", $"ding {f.Level} :)", $"{f.Level}!!"), "ding",
-            Pool("gz", "grats", "gz!", "gratz", "nice gz"));
+            Pool("gz", "grats", "gz!", "gratz", "nice gz")) { Thanks = Pool("ty", "ty!", "thx :)") };
 
     private static Said Death(Facts f, Random random) =>
         new(Pick(random, "died lol", "rip me", f.Monster != null ? $"died to {AutonomousBotVoiceCorpus.Plural(f.Monster)} ugh" : "died ugh",
@@ -449,10 +680,13 @@ public static class AutonomousChatFieldTalk
     {
         int hour = f.LocalHour;
         bool late = hour >= 23 || hour < 4, evening = hour is >= 17 and < 23;
-        return new Said(Pick(random,
-            "brb food", "brb", "back", "anyone on?", late ? "gn all" : evening ? "evening all" : "hi all", "quiet tonight", "who's on",
-            late ? "one more lvl then bed" : "lol", "afk 5", "brb phone", "ok back", f.BagFull ? "bags full brb" : "brb drink",
-            late ? "late crew still here" : "busy tonight"), "social", Pool("ya", "here", "o/", "wb", "lol"));
+        return Make(random, "social", null, null, null,
+            new V("brb food", "brb_food"), new V("brb", "brb"), new V("back", "back", Pool("wb", "wb!")), new V("anyone on?", "anyone_on", Pool("ya", "here", "o/")),
+            new V(late ? "gn all" : evening ? "evening all" : "hi all", "hello_all", late ? Pool("gn", "night") : Pool("o/", "hey", "heya")),
+            new V("quiet tonight", "quiet"), new V("who's on", "anyone_on", Pool("me", "here", "o/")),
+            new V(late ? "one more lvl then bed" : "lol", late ? "bedtime" : "lol"), new V("afk 5", "afk"), new V("brb phone", "brb_phone"),
+            new V("ok back", "back", Pool("wb")), new V(f.BagFull ? "bags full brb" : "brb drink", "brb_bags"),
+            new V(late ? "late crew still here" : "busy tonight", "busy_night"));
     }
 
     // ---- guild chat ----------------------------------------------------------------------------------------------------------
@@ -461,7 +695,7 @@ public static class AutonomousChatFieldTalk
     /// A guild line from the bot's state and the guild's (round 4: guild ambient was still the old written lines, 39 of 40
     /// caught): a group call with its level and zone, raid and keep plans with the guild's real keep, a "gz" to a guildmate who
     /// really dinged, an "o/" to one who logged in, a crafter wanted, an old item offered, and the small talk of a channel
-    /// ("brb", "back", "lag?", "night all"). Pure.
+    /// ("brb", "back", "lag?", "night all"). Each way carries the answers that fit it (round 5: "benow doors ok?" drew "me"). Pure.
     /// </summary>
     private static Said Guild(Facts f, Random random)
     {
@@ -469,55 +703,78 @@ public static class AutonomousChatFieldTalk
         string lvl = f.Level.ToString(), cls = ShortClass(f.ClassName, random), zone = ShortZone(f.Zone, random);
         string dun = ShortDungeon(f.Dungeon, random);
         WorldView w = f.World ?? WorldView.Empty;
+        string[] gz = Pool("gz", "grats!", "gz gz", "woot");
         if (f.GuildmateDinged != null)
         {
             string mate = f.GuildmateDinged.ToLowerInvariant();
-            options.Add((() => new Said(Pick(random, $"gz {mate}", $"grats {mate}", $"gz {mate}!", $"nice {mate} gz", $"gratz {mate}"), "guild_ding",
-                Pool("gz", "grats!", "gz gz", "woot")), 8));
+            options.Add((() => Make(random, "guild_ding", null, null, null, new V($"gz {mate}", null, gz), new V($"grats {mate}", null, gz),
+                new V($"gz {mate}!", null, gz), new V($"nice {mate} gz", null, gz), new V($"gratz {mate}", null, gz)), 8));
         }
         if (f.GuildmateArrived != null)
         {
             string mate = f.GuildmateArrived.ToLowerInvariant();
-            options.Add((() => new Said(Pick(random, $"o/ {mate}", $"hey {mate}", $"wb {mate}", $"{mate}!", $"yo {mate}"), "guild_hello",
-                Pool("o/", "hey", "wb", "heya")), 8));
+            string[] hi = Pool("o/", "hey", "wb", "heya");
+            options.Add((() => Make(random, "guild_hello", null, null, null, new V($"o/ {mate}", null, hi), new V($"hey {mate}", null, hi),
+                new V($"wb {mate}", null, hi), new V($"{mate}!", null, hi), new V($"yo {mate}", null, hi)), 8));
         }
         if (f.JustLeveled)
             options.Add((() => Ding(f, random) with { Kind = "guild_ding" }, 6));
         if (f.Level < 50 && !f.InRvR)
-            options.Add((() => new Said(Pick(random,
-                $"anyone want to group, {lvl} in {zone}", $"anyone around {lvl}? {zone}", $"any1 {Math.Max(1, f.Level - 2)}-{Math.Min(50, f.Level + 2)} wanna xp?",
-                dun != null ? $"{dun} anyone? {lvl} {cls}" : $"xp anyone? {lvl} {cls}", $"lf guildies for {dun ?? zone}", $"who's {lvl}ish, wanna duo",
-                $"need 1 more for {dun ?? zone}", $"{lvl} {cls} lf grp in guild?"), "guild_group",
-                Pool("me", "x", "me pls", "sec", "me, {cls} {lvl}", "{lvl} {cls} here", "after this lvl", "can i come", "wheres that?", "sure, omw")), 3));
+            options.Add((() => Make(random, "guild_group", dun ?? zone, SeekStill, SeekThanks,
+                new V($"anyone want to group, {lvl} in {zone}", "g_group", Joins), new V($"anyone around {lvl}? {zone}", "g_around", Joins),
+                new V($"any1 {Math.Max(1, f.Level - 2)}-{Math.Min(50, f.Level + 2)} wanna xp?", "g_group", Joins),
+                new V(dun != null ? $"{dun} anyone? {lvl} {cls}" : $"xp anyone? {lvl} {cls}", "g_dun", Joins),
+                new V($"lf guildies for {dun ?? zone}", "g_dun", Joins), new V($"who's {lvl}ish, wanna duo", "g_duo", Joins),
+                new V($"need 1 more for {dun ?? zone}", "g_more", Joins), new V($"{lvl} {cls} lf grp in guild?", "g_group", Joins)), 3));
         if (f.Level >= 35)
-            options.Add((() => new Said(Pick(random,
-                "who's on for df tonight", "raid tonight?", "anyone up for a keep take later", "relic raid when?", "who's up for rvr after",
-                w.LostKeeps.Length > 0 ? $"lets take {ShortKeep(w.LostKeeps[random.Next(w.LostKeeps.Length)], random)} back" : "keep run tonight?",
-                f.GuildKeep != null ? $"anyone at {ShortKeep(f.GuildKeep, random)}?" : "df later?",
-                f.GuildKeep != null ? $"{ShortKeep(f.GuildKeep, random)} doors ok?" : "rvr later anyone", "dragon this weekend?", "who's around for df"), "raid",
-                Pool("me", "maybe", "after this lvl", "im in", "later maybe", "what time?", "count me in", "me if im on")), f.InRvR ? 3 : 1.5));
+        {
+            string keep = f.GuildKeep != null ? ShortKeep(f.GuildKeep, random) : null;
+            string[] plan = Pool("me", "maybe", "after this lvl", "im in", "later maybe", "count me in", "me if im on");
+            string[] when = Pool("dunno", "ask the gl", "think so", "maybe sat", "no idea");
+            options.Add((() => Make(random, "raid", keep, Pool("anyone?", "nobody? ok lol"), Pool("k", "cool", "k, 9ish then"),
+                new V("who's on for df tonight", "g_df", plan), new V("raid tonight?", "g_raid", when), new V("anyone up for a keep take later", "g_keep_take", plan),
+                new V("relic raid when?", "g_relic", when), new V("who's up for rvr after", "g_rvr", plan),
+                w.LostKeeps.Length > 0 ? new V($"lets take {ShortKeep(w.LostKeeps[random.Next(w.LostKeeps.Length)], random)} back", "g_keep_take", plan)
+                    : new V("keep run tonight?", "g_keep_take", when),
+                keep != null ? new V($"anyone at {keep}?", "g_keep_at") : new V("df later?", "g_df", plan),
+                keep != null ? new V($"{keep} doors ok?", "g_keep_doors", Pool("dunno", "were fine earlier", "havent looked")) : new V("rvr later anyone", "g_rvr", plan),
+                new V("dragon this weekend?", "g_dragon", when), new V("who's around for df", "g_df", plan)), f.InRvR ? 3 : 1.5));
+        }
         if (f.GuildKeep != null && w.AttackedKeeps.Contains(f.GuildKeep))
-            options.Add((() => new Said(Pick(random, $"{ShortKeep(f.GuildKeep, random)} under attack", $"our keep is being hit, {ShortKeep(f.GuildKeep, random)}",
-                $"def {ShortKeep(f.GuildKeep, random)} pls", $"inc {ShortKeep(f.GuildKeep, random)}"), "inc", Pool("omw", "porting", "omw!", "on it")), 4));
+        {
+            string keep = ShortKeep(f.GuildKeep, random);
+            string[] omw = Pool("omw", "porting", "omw!", "on it");
+            options.Add((() => Make(random, "inc", null, null, null, new V($"{keep} under attack", "g_inc", omw), new V($"our keep is being hit, {keep}", "g_inc", omw),
+                new V($"def {keep} pls", "g_inc", omw), new V($"inc {keep}", "g_inc", omw)), 4));
+        }
         string craft = Pick(random, "smith", "armorcrafter", "tailor", "fletcher", "spellcrafter", "alchemist");
         int skill = 300 + 50 * random.Next(13);
-        options.Add((() => new Said(Pick(random, $"need a {craft}, anyone {skill}+?", $"any {craft}s on? need {skill}+", $"{craft} on? pst",
-            $"who's our best {craft} now", $"lf {craft} {skill}+"), "guild_craft",
-            Pool("me, whats it for", "me, {lvl}?", "ask the gl", "/t me", "not me sry", "me but only 400", "sec, me")), 1));
+        options.Add((() => Make(random, "guild_craft", craft, Pool("nm", "still need one"), null,
+            new V($"need a {craft}, anyone {skill}+?", "g_craft"), new V($"any {craft}s on? need {skill}+", "g_craft"), new V($"{craft} on? pst", "g_craft"),
+            new V($"who's our best {craft} now", "g_craft_best", Pool("ask the gl", "dunno", "not me lol")), new V($"lf {craft} {skill}+", "g_craft")), 1));
         if (f.Item != null)
         {
             string item = f.Item.ToLowerInvariant();
             string article = "aeiou".Contains(item[0]) ? "an" : "a";
-            options.Add((() => new Said(f.ItemIsGear
-                ? Pick(random, $"selling my old {item} if anyone wants", $"anyone need {article} {item}? free for guild", $"got {article} {item} spare, anyone?",
-                    $"{item} up for grabs", $"who wants {article} {item}", $"old {item} free to a guildie")
-                : Pick(random, $"anyone need {item}?", $"got some {item} if anyone needs it", $"{item} free to whoever wants it", $"who collects {item}"), "guild_sell",
-                Pool("me!", "me pls", "what lvl?", "me, i need one", "what stats?", "dibs"), item), 1.2));
+            string[] want = Pool("me!", "me pls", "what lvl?", "me, i need one", "what stats?", "dibs");
+            options.Add((() => (f.ItemIsGear
+                ? Make(random, "guild_sell", item, Pool("nobody? ok merchant it is", "last call"), Pool("sending", "trade me", "k, where r u"),
+                    new V($"selling my old {item} if anyone wants", "g_sell", want), new V($"anyone need {article} {item}? free for guild", "g_give", want),
+                    new V($"got {article} {item} spare, anyone?", "g_give", want), new V($"{item} up for grabs", "g_give", want),
+                    new V($"who wants {article} {item}", "g_give", want), new V($"old {item} free to a guildie", "g_give", want))
+                : Make(random, "guild_sell", item, null, Pool("sending", "trade me"),
+                    new V($"anyone need {item}?", "g_drop", Pool("me", "what for?", "nah")), new V($"got some {item} if anyone needs it", "g_drop", Pool("me", "how many?")),
+                    new V($"{item} free to whoever wants it", "g_drop", want), new V($"who collects {item}", "g_drop", Pool("me lol", "nobody lol")))) with { Item = item }, 1.2));
         }
         bool late = f.LocalHour >= 23 || f.LocalHour < 4;
-        options.Add((() => new Said(Pick(random, "brb", "back", "lag?", "lag", "brb food", "afk 5", late ? "night all" : "hey all", late ? "gn guild" : "o/",
-            "quiet tonight", "who's on", "ok back", "brb phone", "laggy for anyone else?", late ? "bed, night" : "evening"), "social",
-            Pool("ya", "o/", "here", "wb", "yep", "lag here too", "not for me")), 2.2));
+        options.Add((() => Make(random, "social", null, null, null,
+            new V("brb", "g_brb"), new V("back", "g_back", Pool("wb", "wb!")), new V("lag?", "g_lag", Pool("lag here too", "not for me", "ya, bad")),
+            new V("lag", "g_lag", Pool("same", "ya")), new V("brb food", "g_food"), new V("afk 5", "g_afk"),
+            new V(late ? "night all" : "hey all", "g_hello", late ? Pool("night", "gn") : Pool("o/", "hey", "heya")),
+            new V(late ? "gn guild" : "o/", "g_hello", late ? Pool("night", "gn") : Pool("o/", "hey")),
+            new V("quiet tonight", "g_quiet"), new V("who's on", "g_who", Pool("me", "here", "o/")), new V("ok back", "g_back", Pool("wb")),
+            new V("brb phone", "g_phone"), new V("laggy for anyone else?", "g_lag", Pool("ya", "fine here", "bit")),
+            new V(late ? "bed, night" : "evening", "g_hello", late ? Pool("night", "gn") : Pool("o/", "evening"))), 2.2));
         double total = options.Sum(o => o.Weight), draw = random.NextDouble() * total;
         foreach ((Func<Said> make, double weight) in options)
         {
@@ -527,7 +784,6 @@ public static class AutonomousChatFieldTalk
         }
         return null;
     }
-
 
     // ---- words ---------------------------------------------------------------------------------------------------------------
 

@@ -1677,9 +1677,11 @@ namespace DOL.AI.Brain
             double pressure = AutonomousBotVoices.Enabled
                 ? AutonomousChatBudget.LivePressure(bot, AutonomousBotChatCoordinator.RealmBots(bot.Realm), nowTick)
                 : 1.0;
+            // Beta 1.1.3, round 5: the realm's regulars (and a guild's) talk far more often than everyone else.
+            bool regular = AutonomousBotVoices.Enabled && AutonomousBotChatCoordinator.IsRegular(bot, nowTick);
             if (!AutonomousBotChat.ShouldSpeak(now, _lastIdleRoleplayUtc,
                     bot.InCombat || bot.IsAttacking || bot.IsCasting || bot.IsOnStableMasterRoute,
-                    null, AutonomousBotPersonality.ChatRateFactor(bot), pressure))
+                    null, AutonomousBotPersonality.ChatRateFactor(bot), pressure, regular))
                 return;
 
             OfflineWorldBotRecord record = bot.PersistentRecord;

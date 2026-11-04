@@ -586,10 +586,11 @@ namespace DOL.GS.Tests
                 Is.LessThan(AutonomousBotChatCoordinator.FactionGapMs(400, 21, 1.0, fixedDraw)));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(3_000, 21, 1.0, fixedDraw),
                 Is.LessThan(AutonomousBotChatCoordinator.FactionGapMs(1_000, 21, 1.0, fixedDraw)));
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(100_000, 21, 3.0, new FixedRandom(0.0)), Is.GreaterThanOrEqualTo(4_000), "never a flood");
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(100_000, 21, 3.0, new FixedRandom(0.0)), Is.GreaterThanOrEqualTo(3_000), "never a flood");
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 14, 0, fixedDraw), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds),
                 "rate 0: bots only answer");
-            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(1_000, 21, 1.0, fixedDraw), Is.EqualTo(30_000), "a target of 2 /say lines a minute");
+            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(1_000, 21, 1.0, fixedDraw), Is.EqualTo(AutonomousChatBudget.GapMs(2.0, fixedDraw)),
+                "a target of 2 /say lines a minute");
             Assert.That(AutonomousBotChatCoordinator.LocalGapMs(1_000, 14, 0, fixedDraw), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds));
             // Beta 1.1.1's evening gap at 1,000 bots was 2-4 minutes over 1.8 x 1.35: 74 s on average. The budget's is shorter.
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(1_000, 21, 1.0, fixedDraw), Is.LessThan(74_000));

@@ -121,6 +121,13 @@ keep, "brb", "lag?", "night all". Written guild lines are kept to short, plain o
 and speak for whoever answers ("me, thane 27"), one item is advertised at most once an hour per realm, and nobody trails
 off with "...".
 
+Each realm also has its regulars: about one bot in seventy online (5 to 15), mostly the sociable ones, who carry much of
+/faction and guild chat for an evening. They talk more often, answer each other, and follow up their own lines ("ty",
+"still lf healer", "nm found one"); most other bots speak there only now and then. A line's idea (a camp, a dungeon at a
+level, a keep) rests for 30 to 60 minutes once said, and its wording family for 4 to 8, so the realm doesn't hear one
+thought reworded. Written lines are at most one per realm in 20 minutes, lore is never recited unasked, and nobody answers a
+remark with "i know right". Gaps between lines are uneven: quick runs, ordinary stretches and the odd lull.
+
 ### Filler rules
 
 - **Musings:** lines that narrate the game instead of playing it appear only now and then as /faction openers. They
