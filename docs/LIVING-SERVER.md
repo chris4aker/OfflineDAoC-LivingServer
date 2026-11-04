@@ -272,6 +272,22 @@ it went ("thanks a lot ..." or "cant believe that worked"). He is a damage deale
 usually a Daredevil or No-lifer. Never on a retry after a wipe. Logs `RAID_LEEROY_ROLLED`, `RAID_LEEROY`,
 `REALM_EXPEDITION_LEEROY` (dungeons) and `REALM_RAID_LEEROY_START` (dragons).
 
+### Raid wipes and the Epic Special Forces (always on)
+A raid that wipes at a named encounter is not over: it regroups, rests and rebuffs for at least five minutes, and goes
+in once more together when 70% of its roster is back (40% after 20 minutes). On the first wipe the realm's **Epic
+Special Forces** answer: up to 24 geared level 50s, one party fewer for every win and one more for every loss over that
+raid's last six results in the Herald, nobody after three wins in a row. They arrive at the raid's muster hub, walk in
+like a late party, take no loot and leave when the raid ends. Two failed attempts and the raid is **Defeated** and goes
+home. Dungeon raids have done this since 0.37-se.2; dragon raids do it since 2026-10-30 (Beta 1.1.1): an attempt at the
+dragon ends when it is out of combat after the approach or has taken no damage for five minutes while a trickle keeps
+it busy, and it was a wipe by the same half-the-raid-fallen or healed-back-to-95% rule (a raider who died and released
+counts as fallen even though it is back on its feet, since dragon raiders release to a bind in the dragon's own
+region). The regroup is at the staging ring around the lair, outside the dragon's aggro, the retry waits for the dragon
+to land, and a ring nobody has reached for twenty minutes ends the raid as Defeated. Logs: `REALM_RAID_WIPE`,
+`REALM_RAID_DRAGON_WIPE`, `REALM_RAID_DRAGON_REGROUP`, `REALM_RAID_DRAGON_ENGAGE`, `REALM_RAID_DRAGON_REGROUP_UNREACHABLE`,
+`REALM_RAID_SPECIAL_FORCES_ARRIVED` / `_NOT_NEEDED`. The dragon part has automated tests (`UT_DragonRaidWipes`) and has
+not been played in game yet.
+
 ### Bot names (always on)
 New bots are named the way a 2003 server's players named themselves:
 - **Three in four in the 2003 style:**

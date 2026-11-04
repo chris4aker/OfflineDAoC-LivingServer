@@ -92,6 +92,8 @@ namespace DOL.GS
             /// <summary>Formation slots with no staging or hub post (tight ground by the entrance); skipped from then on.</summary>
             public readonly HashSet<int> UnusableSlots = new();
             public RealmRaidDungeonRoute DungeonRoute;
+            /// <summary>A dragon raid's attempts and regroups (2026-10-30); null for a dungeon raid.</summary>
+            public RealmRaidDragonFight DragonFight;
             public readonly RealmRaidLootOwner.Ledger LootLedger = new();
             public readonly Dictionary<Group, Party> Parties = new();
             public GameLiving[] Support = [];
@@ -399,10 +401,13 @@ namespace DOL.GS
                             RealmEventRecords.Progress(raid.Definition.Id, "Battle", "Expedition began advancing to the encounter.", raid.Support.Length, present);
                             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
                                 $"The {raid.Definition.Name} expedition is advancing with {present} staged level-50 adventurers.");
-                            // An expedition that lost here the last two times brings the Epic Special Forces from the start.
-                            if (raid.Definition.IsDungeon && AutonomousEpicSpecialForces.ComesFromStart(raid.Definition.Id))
+                            // An expedition that lost here the last two times brings the Epic Special Forces from the start
+                            // (dragon raids too since 2026-10-30; their record is the dragon's own ledger).
+                            if (AutonomousEpicSpecialForces.ComesFromStart(raid.Definition.Id))
                                 AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm,
                                     "the last two expeditions here were defeated");
+                            // A dragon raid's first attempt: everyone at the staging ring is in it.
+                            raid.DragonFight?.Engage(StagedBots(raid).OfType<GameBot>().Select(b => b.DatabaseID), DragonState(raid), now);
                             if (leeroy != null && AutonomousRaidLeeroy.Charge(leeroy, raid.Boss, staged, raid.Definition.Name))
                                 raid.LeeroyName = leeroy.Name;
                         }
@@ -423,6 +428,19 @@ namespace DOL.GS
                         { End(raid, now, "Route blocked: no remaining encounter was reachable from the raid's positions for 20 minutes."); continue; }
                         if (raid.DungeonRoute.Complete)
                         { End(raid, now, CompletionReason(raid, $"The {raid.Definition.Name} expedition defeated the final encounter.")); continue; }
+                    }
+                    // A dragon raid's wipe (2026-10-30): the same regroup and Special Forces call as a dungeon raid's.
+                    if (raid.Started && raid.DragonFight is { } fight)
+                    {
+                        fight.Advance(DragonRaiders(raid), DragonState(raid), now);
+                        while (fight.TryTakeWipe(out int failures))
+                            OnWipe(raid, raid.Boss.Name, failures, now);
+                        if (fight.Defeated)
+                        {
+                            // "after 2 failed attempts", or a regroup nobody reached for 20 minutes (2026-10-31).
+                            End(raid, now, $"Defeated at {fight.DefeatedAt} {fight.DefeatedHow}.");
+                            continue;
+                        }
                     }
                     foreach (Party party in raid.Parties.Values) UpdateView(raid, party);
                 }
@@ -538,6 +556,8 @@ namespace DOL.GS
                         }
                         candidate.DungeonRoute = route;
                     }
+                    else
+                        candidate.DragonFight = new RealmRaidDragonFight(candidate.Boss.Name);
                     bool staged = TryStaging(candidate, 0, out var destination);
                     bool posted = TryHubPost(candidate, 0, out var origin);
                     if (!staged || !posted || !RealmRaidMuster.TryRoute(WorldMgr.GetRegion(hub.Region), PathfindingProvider.Instance, realm,
@@ -588,6 +608,34 @@ namespace DOL.GS
             RealmRaidStaging.DragonCountsAsLanded((raid.Boss.Flags & GameNPC.eFlags.FLYING) != 0,
                 raid.Boss.IsWithinRadius(DragonLairPlacement.Home(raid.Definition.Realm), 2000), raid.Boss.InCombat);
 
+        /// <summary>The dragon as its raid's fight tracker sees it this pulse (RealmRaidDragonFight).</summary>
+        private static RealmRaidDragonFight.Dragon DragonState(Raid raid) =>
+            new(raid.Boss.InCombat, DragonLanded(raid), DragonLairPlacement.IsOutOfLair(raid.Boss), raid.Boss.HealthPercent, raid.Boss.Health);
+
+        /// <summary>
+        /// The raid's roster as the fight tracker sees it: standing (alive, in the dragon's region, not walking back from
+        /// a release), at the dragon (within the dungeon route's presence radius) and at the staging ring.
+        /// Review fix, 2026-10-31: a dragon raider releases to a bind in the dragon's own region (TryRaidRelease is for
+        /// dungeons), and the autonomous controller clears IsReturningAfterRelease on its next turn, so a released raider
+        /// is "standing" again seconds after it fell. The tracker therefore remembers who fell during an attempt instead
+        /// of judging the wipe from the corpses of the last minute and a half.
+        /// </summary>
+        private static List<RealmRaidDragonFight.Raider> DragonRaiders(Raid raid)
+        {
+            var raiders = new List<RealmRaidDragonFight.Raider>(raid.Support.Length);
+            foreach (GameBot bot in raid.Support.OfType<GameBot>())
+            {
+                bool standing = bot.IsAlive && bot.CurrentRegionID == raid.Definition.Region && !bot.IsReturningAfterRelease;
+                raiders.Add(new(bot.DatabaseID, standing,
+                    standing && bot.IsWithinRadius(raid.Boss, RealmRaidDungeonRoute.TargetPresenceRadius),
+                    standing && IsStaged(raid, bot)));
+            }
+            return raiders;
+        }
+
+        /// <summary>A dragon raid regrouping at its staging ring after a wipe (RealmRaidDragonFight).</summary>
+        private static bool Regrouping(Raid raid) => raid.DragonFight?.Regrouping == true;
+
         private static int PresentAtHub(Raid raid, Party party) => party.Members.Count(b => IsAtHub(raid, party, b));
 
         private static bool IsAtHub(Raid raid, Party party, GameBot b) => IsEligible(b) && b.IsAlive && !b.IsReturningAfterRelease && !b.IsOnStableMasterRoute &&
@@ -631,11 +679,12 @@ namespace DOL.GS
             return true;
         }
 
-        private static int PresentAtStaging(Raid raid) => raid.Parties.Values
-            .Sum(p =>
-            p.Members.Count(b => IsEligible(b) && b.IsAlive && !b.IsOnStableMasterRoute && b.Group != null &&
-                b.CurrentRegionID == (raid.Definition.IsDungeon ? raid.DungeonRoute.Entrance.SourceRegion : raid.Definition.Region) &&
-                AtStaging(raid, b)));
+        private static int PresentAtStaging(Raid raid) => raid.Parties.Values.Sum(p => p.Members.Count(b => IsStaged(raid, b)));
+
+        /// <summary>A living member standing on the raid's staging ring (outside a dungeon's door, around a dragon's lair).</summary>
+        private static bool IsStaged(Raid raid, GameBot b) => IsEligible(b) && b.IsAlive && !b.IsOnStableMasterRoute && b.Group != null &&
+            b.CurrentRegionID == (raid.Definition.IsDungeon ? raid.DungeonRoute.Entrance.SourceRegion : raid.Definition.Region) &&
+            AtStaging(raid, b);
 
         private static GameLiving[] StagedBots(Raid raid) => raid.Parties.Values
             .SelectMany(p => p.Members.Where(b => IsEligible(b) && b.IsAlive && !b.IsOnStableMasterRoute && b.Group != null &&
@@ -649,13 +698,15 @@ namespace DOL.GS
                 home == null ? null : new Vector3(home.X,home.Y,home.Z));
         }
 
+        /// <summary>A dragon raid gathering at its staging ring, before it starts or while it regroups after a wipe: its
+        /// members in the dragon's region walk the checked route around the lair, never through it.</summary>
         public static bool TryPendingDragonRally(GameBot bot, out Vector3 home)
         {
             home=default;
             if (bot?.IsAutonomousWorldBot != true || bot.Group == null) return false;
             lock(Sync)
             {
-                if (!Membership.TryGetValue(bot.Group,out var raid) || raid.Started || raid.Definition.IsDungeon ||
+                if (!Membership.TryGetValue(bot.Group,out var raid) || raid.Started && !Regrouping(raid) || raid.Definition.IsDungeon ||
                     !raid.HubDeparted || bot.CurrentRegionID != raid.Definition.Region) return false;
                 var point=DragonLairPlacement.Home(raid.Definition.Realm);
                 home=new(point.X,point.Y,point.Z);
@@ -663,10 +714,11 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>The raid's dragon while the raid is not going in: nobody pulls it alone (also during a regroup).</summary>
         public static bool IsPendingDragonTarget(GameBot bot, GameLiving target)
         {
             if(bot?.IsAutonomousWorldBot != true || bot.Group == null || target == null) return false;
-            lock(Sync) return Membership.TryGetValue(bot.Group,out var raid) && !raid.Started &&
+            lock(Sync) return Membership.TryGetValue(bot.Group,out var raid) && (!raid.Started || Regrouping(raid)) &&
                 !raid.Definition.IsDungeon && ReferenceEquals(raid.Boss,target);
         }
 
@@ -981,7 +1033,10 @@ namespace DOL.GS
                 return;
             }
             bool landed = DragonLanded(raid);
-            bool hold = !raid.Started || !landed;
+            // After a wipe the raid regroups at its staging ring, outside the dragon's aggro, and goes in again together
+            // (RealmRaidDragonFight, 2026-10-30).
+            bool regrouping = Regrouping(raid);
+            bool hold = !raid.Started || !landed || regrouping;
             // A dragon drawn out of its lair is immune there: the raid forms at the lair and draws it home
             // (Gjalpinulva, 2026-10-20: the raid's posts followed her out and she stayed at 100% for an hour).
             Vector3 point = hold ? party.Staging :
@@ -991,6 +1046,7 @@ namespace DOL.GS
             { point = party.Anchor ?? party.Staging; hold = true; }
             string state = !raid.Started ? !landed
                 ? "Raid rally — dragon airborne" : "Raid rally"
+                : regrouping ? "RAID — regrouping at the staging ring after a wipe"
                 : !landed ? "Waiting for dragon landing" : hold ? "RAID — waiting for a clear formation post" : "RAID — fighting";
             party.DestinationView = new(raid.Definition.Id, state,
                 new($"realm-event-{raid.Definition.Id}", raid.Boss.Name, raid.Boss.CurrentZone?.Description ?? raid.Definition.Name,
@@ -1339,7 +1395,7 @@ namespace DOL.GS
                      $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} reason=\"{reason}\"");
             if (outcome == "Defeated")
                 GameWideAnnouncements.Queue(AnnouncementKind.PveRealmEvent, GameWideAnnouncements.RaidDefeated(raid.Definition.Realm,
-                    raid.DungeonRoute?.DefeatedAt ?? raid.Definition.BossType, raid.Definition.Name));
+                    raid.DungeonRoute?.DefeatedAt ?? raid.DragonFight?.DefeatedAt ?? raid.Definition.BossType, raid.Definition.Name));
             // Owner 2026-10-07: every realm hears when a raid (automatic or forced) brings down the final boss of an
             // epic dungeon, Summoner's Hall or Darkness Falls.
             if (outcome == "Boss defeated" && raid.Definition.IsDungeon)
@@ -1388,7 +1444,8 @@ namespace DOL.GS
 
         private const string StoppedByPlayer = "Stopped by the player";
 
-        /// <summary>A named encounter wiped the raid: the realm hears it, and the raid regroups for one more attempt.</summary>
+        /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
+        /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
         private static void OnWipe(Raid raid, string boss, int failures, long now)
         {
             Log.Info($"REALM_RAID_WIPE event={raid.Definition.Id} boss=\"{boss}\" failures={failures} support={raid.Support.Length} " +
@@ -1435,7 +1492,7 @@ namespace DOL.GS
             lock (Sync) return Definitions.Select(d =>
             {
                 if (Raids.TryGetValue(d.Id, out var r)) return new Summary(d.Id, d.Name, GlobalConstants.RealmToName(d.Realm),
-                    r.Started ? "RAID — " + (r.DungeonRoute?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :
+                    r.Started ? "RAID — " + (r.DungeonRoute?.Status ?? r.DragonFight?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :
                     $"Raid rally — {(r.Forced ? "forced" : "automatic")} — {(r.HubDeparted ? "travel/final staging" : r.Hub.Name)}" +
                         (r.Forced ? " — starts when 200 are staged" + (!DragonLanded(r) ? " and the dragon lands" : "") :
                         GameLoop.GameLoopTime >= r.Deadline ? !DragonLanded(r) ? " — waiting for dragon landing" : " — waiting for arrivals" : ""),

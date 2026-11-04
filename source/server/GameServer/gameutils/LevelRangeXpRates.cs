@@ -36,7 +36,17 @@ namespace DOL.GS
         /// <summary>The rate for a real player character of this level.</summary>
         public static double PlayerRate(int level)
         {
-            return EffectiveRate(ServerProperties.Properties.XP_RATE_BY_LEVEL, level, ServerProperties.Properties.XP_RATE,
+            return PlayerRate(level, ServerProperties.Properties.XP_RATE);
+        }
+
+        /// <summary>
+        /// The rate for a real player character of this level, with <paramref name="flatRate"/> instead of xp_rate
+        /// for levels outside every range (2026-10-30: quest XP never used xp_rate, so it passes 1 and stays as it was
+        /// outside the ranges). Same cache and log as <see cref="PlayerRate(int)"/>.
+        /// </summary>
+        public static double PlayerRate(int level, double flatRate)
+        {
+            return EffectiveRate(ServerProperties.Properties.XP_RATE_BY_LEVEL, level, flatRate,
                 ref _playerCache, "xp_rate_by_level");
         }
 

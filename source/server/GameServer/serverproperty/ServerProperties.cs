@@ -755,6 +755,13 @@ namespace DOL.GS.ServerProperties
 		public static string BOT_XP_RATE_BY_LEVEL;
 
 		/// <summary>
+		/// Quest experience follows xp_rate_by_level (owner 2026-10-30, see QuestExperience). On, and a range covers the
+		/// player's level: the quest's XP is multiplied by that level's rate. Off, no range or no setting: quest XP as before.
+		/// </summary>
+		[ServerProperty("rates", "quest_xp_by_level", "Quest experience follows xp_rate_by_level. When true (the default) and one of its ranges covers the player's level, the XP of data quests, reward quests, bounties and the daily, weekly and battleground quests is multiplied by that level's rate (a bounty's xp_rate is replaced by it). While true, one quest payment never pays more than one level. False is a kill switch (2026-10-31): no rate and no cap, quest XP exactly as before 1.1.1. No range for the level or no xp_rate_by_level leaves the amount as it was.", true)]
+		public static bool QUEST_XP_BY_LEVEL;
+
+		/// <summary>
 		/// The CL Experience Rate
 		/// </summary>
 		[ServerProperty("rates", "cl_xp_rate", "The Champion Level Experience Points Rate Modifier - Edit this to change the rate at which you gain CL experience points e.g 1.5 is 50% more 2.0 is twice the amount (100%) 0.5 is half the amount (50%)", 1.0)]

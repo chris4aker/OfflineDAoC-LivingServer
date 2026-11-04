@@ -32,7 +32,12 @@ namespace DOL.GS.Scripts
                         SayTo(player, "Thank you! Your service to the church will been noted!");
                         player.Inventory.RemoveItem(item);
                         SayTo(player, "Well done! You've helped the children get over the harsh winter.");
-                        player.GainExperience(eXPSource.Quest, 200, true);
+                        // Quest experience at your pace (owner 2026-10-31, after review): the 200 points for the cloak went
+                        // through the kill path (xp_rate and the zone bonus applied, the quest_xp_by_level setting
+                        // skipped); they now pay like every other quest. A player who turned experience off (/xp off)
+                        // still gets nothing, as before.
+                        if (player.GainXP)
+                            player.GainQuestExperience(200, "Wolf Pelt Cloak");
                         return;
                     }
                 }
