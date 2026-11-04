@@ -193,8 +193,28 @@ namespace DOL.GS
         private static readonly Dictionary<GameNPC, FinishedLoot> CompletedLoot = new();
         private static long _nextPulse;
         private static long _nextForcedRecruitment;
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<long, string> Reservations = new();
-        public static bool IsReserved(GameBot bot) => bot != null && Reservations.ContainsKey(bot.DatabaseID);
+        // A raid's claim on a bot is its duty lease (docs/DUTY-LEASE.md): raid_reserved while it is a planned recruit (or
+        // an Epic Special Force, for the whole raid), raid_party once its party has formed, bound to that party's group.
+        // Only the reserved stage is what "reserved" means here, as the old reservation map did.
+        public static bool IsReserved(GameBot bot) => BotDutyLeases.HoldsWithReason(bot, eDutyLeaseKind.RealmRaid, DutyLeaseReason.RaidReserved);
+
+        private static void Reserve(GameBot bot, Raid raid) =>
+            BotDutyLeases.Claim(bot, eDutyLeaseKind.RealmRaid, raid.Definition.Id, DutyLeaseReason.RaidReserved, raid.Definition.Name);
+
+        private static void EndReservation(GameBot bot, string id)
+        {
+            if (IsReservedFor(bot, id)) BotDutyLeases.Release(bot, eDutyLeaseKind.RealmRaid, id);
+        }
+
+        /// <summary>The bot is in one of the raid's parties: its lease moves to raid_party, bound to the party's group.</summary>
+        private static void ClaimPartyLease(GameBot bot, Raid raid, Group group) =>
+            BotDutyLeases.Claim(bot, eDutyLeaseKind.RealmRaid, raid.Definition.Id, DutyLeaseReason.RaidParty, raid.Definition.Name, group);
+
+        private static void EndPartyLease(GameBot bot, string id)
+        {
+            if (BotDutyLeases.HoldsWithReason(bot, eDutyLeaseKind.RealmRaid, DutyLeaseReason.RaidParty, id))
+                BotDutyLeases.Release(bot, eDutyLeaseKind.RealmRaid, id);
+        }
 
         /// <summary>A member of a raid party whose rally has not begun its battle yet (hub, travel or staging).</summary>
         public static bool IsInRally(GameBot bot)
@@ -203,7 +223,8 @@ namespace DOL.GS
             if (group == null) return false;
             lock (Sync) return Membership.TryGetValue(group, out Raid raid) && !raid.Started && raid.Parties.ContainsKey(group);
         }
-        public static bool IsReservedFor(GameBot bot, string id) => bot != null && Reservations.GetValueOrDefault(bot.DatabaseID) == id;
+        public static bool IsReservedFor(GameBot bot, string id) =>
+            id != null && BotDutyLeases.HoldsWithReason(bot, eDutyLeaseKind.RealmRaid, DutyLeaseReason.RaidReserved, id);
         public static bool IsForcedExpedition(string id)
         {
             lock (Sync) return Raids.TryGetValue(id, out var raid) && raid.Forced;
@@ -505,6 +526,7 @@ namespace DOL.GS
                 raid.Parties[leader.Group] = party;
                 Membership[leader.Group] = raid;
                 DefenseGroups[leader.Group] = 0;
+                foreach (GameBot member in members) ClaimPartyLease(member, raid, leader.Group);
                 raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
                 UpdateView(raid, party);
                 view = party.View;
@@ -588,7 +610,7 @@ namespace DOL.GS
                 RealmEventRecords.Begin(id, definition.Name, definition.IsNeutral ? "Neutral raid" : definition.IsDungeon ? "Epic dungeon" : "Dragon",
                     GlobalConstants.RealmToName(realm), (forced ? "Forced" : "Automatic") + " rally via " + raid.Hub.Name);
                 raid.ForcedParties.AddRange(recruits);
-                foreach (GameBot bot in recruits.SelectMany(p => p)) Reservations[bot.DatabaseID] = id;
+                foreach (GameBot bot in recruits.SelectMany(p => p)) Reserve(bot, raid);
                 string startCondition = ForcedStartCondition(definition.IsDungeon);
                 // One quiet top-of-screen line for the realm's players (automatic and launcher-forced alike),
                 // so a player can join the bots at the rally point.
@@ -750,8 +772,7 @@ namespace DOL.GS
                         {
                             raid.ForcedParties.Remove(stale);
                             foreach (var b in stale)
-                                if (Reservations.GetValueOrDefault(b.DatabaseID) == raid.Definition.Id)
-                                    Reservations.TryRemove(b.DatabaseID, out _);
+                                EndReservation(b, raid.Definition.Id);
                         }
                     // An automatic raid holds up to three planned parties at once and forms whichever eight (or the final
                     // four) are free first: one fixed roster of solo grinders was rarely out of combat all at once, and
@@ -766,7 +787,7 @@ namespace DOL.GS
                         if (waiting != null)
                         {
                             raid.ForcedParties.Add(waiting);
-                            foreach (var b in waiting) Reservations[b.DatabaseID] = raid.Definition.Id;
+                            foreach (var b in waiting) Reserve(b, raid);
                         }
                     }
                     // A bot riding a stable route can join: it lands and travels to the hub
@@ -829,7 +850,14 @@ namespace DOL.GS
                         raid.ForcedParties.Clear();
                         raid.ForcedParties.AddRange(remaining);
                     }
-                    foreach (GameBot bot in members) Reservations.TryRemove(bot.DatabaseID, out _);
+                    // The recruits are a party now: no longer reserved, but still the raid's (raid_party).
+                    foreach (GameBot bot in members)
+                    {
+                        if (raid != null && Raids.ContainsKey(id) && bot.Group != null && Membership.GetValueOrDefault(bot.Group) == raid)
+                            ClaimPartyLease(bot, raid, bot.Group);
+                        else if (IsReserved(bot))
+                            BotDutyLeases.Release(bot, eDutyLeaseKind.RealmRaid);
+                    }
                 }
             }
         }
@@ -844,6 +872,7 @@ namespace DOL.GS
                 party.Members = party.Members.Where(member => member != bot).ToArray();
                 party.CatchingUp.Remove(bot.DatabaseID);
                 raid.Released.Add(bot.DatabaseID);
+                EndPartyLease(bot, raid.Definition.Id);
                 raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
             }
         }
@@ -861,6 +890,7 @@ namespace DOL.GS
                     !RealmRaidRecruitmentPolicy.NeedsReplacement(party.Target, party.Members.Length) ||
                     raid.Support.Length >= RealmRaidRecruitmentPolicy.MaximumBots) return false;
                 party.Members = party.Members.Append(bot).ToArray();
+                ClaimPartyLease(bot, raid, group);
                 if (raid.HubDeparted || raid.Started) party.CatchingUp.Add(bot.DatabaseID);
                 raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
                 UpdateView(raid, party);
@@ -903,7 +933,7 @@ namespace DOL.GS
                 if (members.Length is not (4 or 8) ||
                     !specialForces && raid.Support.Length + members.Length > RealmRaidRecruitmentPolicy.MaximumBots ||
                     members.Any(b => !IsEligible(b) || b.Realm != raid.Definition.Realm ||
-                    Reservations.GetValueOrDefault(b.DatabaseID) != id)) return false;
+                    !IsReservedFor(b, id))) return false;
                 if (!TryFreeSlot(raid, out int slot, out var staging, out var hubPost)) return false;
                 var party = new Party { Members = members, FormationSlot = slot, Staging = staging, HubPost = hubPost, Target = members.Length };
                 // They arrive at the hub after the raid has left it, and walk in like late members.
@@ -942,7 +972,10 @@ namespace DOL.GS
         /// <summary>A Special Forces member is reserved for its raid like a recruit, so it can be formed into a party.</summary>
         public static void ReserveSpecialForce(GameBot bot, string id)
         {
-            if (bot?.IsEpicSpecialForce == true) Reservations[bot.DatabaseID] = id;
+            if (bot?.IsEpicSpecialForce != true) return;
+            lock (Sync)
+                if (Raids.TryGetValue(id, out Raid raid)) Reserve(bot, raid);
+                else BotDutyLeases.Claim(bot, eDutyLeaseKind.RealmRaid, id, DutyLeaseReason.RaidReserved);
         }
 
         private static bool Available(string id) => !Raids.ContainsKey(id) &&
@@ -1383,6 +1416,8 @@ namespace DOL.GS
                 if (Membership.Remove(group, out Raid raid))
                 {
                     DefenseGroups.TryRemove(group, out _);
+                    if (raid.Parties.TryGetValue(group, out Party leaving))
+                        foreach (GameBot member in leaving.Members) EndPartyLease(member, raid.Definition.Id);
                     raid.Parties.Remove(group);
                     raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
                 }
@@ -1435,7 +1470,7 @@ namespace DOL.GS
             raid.Parties.Clear();
             raid.Support = [];
             Raids.Remove(raid.Definition.Id);
-            foreach (var reservation in Reservations.Where(p => p.Value == raid.Definition.Id).ToArray()) Reservations.TryRemove(reservation.Key, out _);
+            BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RealmRaid, raid.Definition.Id);
             // A player stop is not a failed attempt: no cooldown, so it can be restarted at once.
             if (!stoppedByPlayer)
                 Cooldowns[raid.Definition.Id] = now + (30 + Random.Shared.Next(61)) * 60_000L;
