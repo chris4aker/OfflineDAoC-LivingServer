@@ -313,7 +313,10 @@ namespace DOL.GS
                             foreach (long id in force.MemberIds) previous.Present.Remove(id);
                         }
                         foreach (GameBot bot in candidate.Members)
+                        {
                             bot.TempProperties.SetProperty("RvrEventForce", force.GroupId);
+                            BotDutyLeases.Claim(bot, eDutyLeaseKind.RvrEvent, force.GroupId, DutyLeaseReason.RvrForce, active.Target.Name);
+                        }
                         // The keep's own realm gathers first and marches in as one wave (allies and third realm do not).
                         if (active.DefenseReaction && force.Realm == active.DefenderRealm && !active.DefenseMustering && !active.DefenseMarching)
                             BeginDefenseMuster(active, now, PlayerDefenseMusterMilliseconds);

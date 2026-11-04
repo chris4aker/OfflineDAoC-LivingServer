@@ -82,7 +82,10 @@ public static partial class AutonomousBotGroupCoordinator
             }
             Sessions[group] = session;
             foreach (GameBot member in joined)
+            {
                 member.TempProperties.SetProperty("RvrEventForce", session.Id);
+                BotDutyLeases.Claim(member, eDutyLeaseKind.RvrEvent, session.Id, DutyLeaseReason.SiegeParty, roster.EventId, group);
+            }
             WriteSessionMetadata(session, joined);
             Log.Info($"RVR_SIEGE_PARTY_FORMED event={roster.EventId} group={session.Id} realm={GlobalConstants.RealmToName(roster.Realm)} " +
                      $"size={joined.Length} marching={roster.Marching} members=\"{string.Join(",", joined.Select(b => b.Name))}\"");
