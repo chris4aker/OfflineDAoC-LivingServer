@@ -183,8 +183,7 @@ About 2,000-2,500 lines of server code and 1,000 of tests, in three pull request
 2. **Loot:** in every group with you and gamebots, following *or* leading, loot is shared with you and skewed in your
    favour: you count as two members in the coin split and the item rotation (a setting, default 2), and an item your
    class can use that beats what you wear comes to you first. This changes the player-led rule too (today everything
-   goes to you when you lead), so it ships with a changelog line and the setting.
+   goes to you when you lead); confirmed by the owner, so it ships with a changelog line and the setting.
 3. **Camp difficulty:** capped at 6 levels above you while you are in the group. Accepted.
-4. **AFK:** keep pulling in place up to 15 minutes, hold to 30, then let you go at the next break. Recommended; awaiting the
-   owner's answer after a plain-words explanation (2026-11-04); confirm or change before B1.
+4. **AFK:** keep pulling in place up to 15 minutes, hold to 30, then let you go at the next break. Accepted.
 5. **Order:** after the duty lease record; if the lease slips, B1 ships with the interim flag. Accepted.
