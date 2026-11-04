@@ -50,8 +50,10 @@ you exactly as invited bots do now (`/pull`, your camps, your pace). `/lead bot`
 back; that bot picks a camp near where you stand. The launcher has **When you join a bot's group: follow / lead**.
 With *lead*, saying yes makes you the leader at once.
 
-**Loot, quests, XP.** Real loot, as everywhere: coin is split evenly among everyone in range, you included, and
-items go round the group in turn so you get one in every N, where N is the number of members nearby. A kill by
+**Loot, quests, XP.** Real loot, as everywhere, shared with you and weighted in your favour, whether you follow or
+lead (owner 2026-11-04): you count as two members in the coin split and in the item rotation, so with seven bots
+nearby you get 2 of every 9 items and 2/9 of the coin. Items your class can use and that beat what you wear come to
+you first. The weight is a setting (default 2). A kill by
 the bots counts for your kill quests when you are alive and in range, as it does now in a group you lead. XP is the
 game's normal group XP. Selling happens only at natural breaks: the end of the session, after a wipe, or "last pull
 then town to sell" when bags fill. The group never leaves a camp because one bot wants a merchant.
@@ -174,16 +176,15 @@ About 2,000-2,500 lines of server code and 1,000 of tests, in three pull request
 (steps 1-3, 5-7, 9-10; the largest), **B2** the `/lead` toggle and handover (step 4), **B3** the raid leader
 (step 8). Roughly three build sessions plus a soak, after the lease record and before RvR perception.
 
-## Open questions for the owner
+## Decisions (owner 2026-11-04)
 
-1. **Defaults.** Recommendation: invites on, follow as the join mode, unasked invites at most every 45 minutes (asked
-   ones within a minute).
-2. **Your share of loot in a bot-led group.** Recommendation: a fair share, one item in N and an even coin split, like
-   a real autosplit that can't skip you. The alternative is the player-led rule (everything to you), which makes
-   following strictly better than leading.
-3. **Camp difficulty.** Bot groups pick camps 3-10 levels above the group. Recommendation: cap it at 6 above your
-   level while you are in the group.
-4. **AFK.** Recommendation: keep pulling in place up to 15 minutes, hold to 30, then let you go at the next break.
-   Stricter (hold at once) is kinder to the bots; looser is kinder to a passive player.
-5. **Order.** Recommendation: build after the duty lease record so "spoken for" is a lease kind, not a second flag;
-   if the lease slips, ship B1 with the interim flag.
+1. **Defaults:** invites on, follow as the join mode, unasked invites at most every 45 minutes (asked ones within a
+   minute). Accepted as recommended.
+2. **Loot:** in every group with you and gamebots, following *or* leading, loot is shared with you and skewed in your
+   favour: you count as two members in the coin split and the item rotation (a setting, default 2), and an item your
+   class can use that beats what you wear comes to you first. This changes the player-led rule too (today everything
+   goes to you when you lead), so it ships with a changelog line and the setting.
+3. **Camp difficulty:** capped at 6 levels above you while you are in the group. Accepted.
+4. **AFK:** keep pulling in place up to 15 minutes, hold to 30, then let you go at the next break. Recommended; awaiting the
+   owner's answer after a plain-words explanation (2026-11-04); confirm or change before B1.
+5. **Order:** after the duty lease record; if the lease slips, B1 ships with the interim flag. Accepted.
