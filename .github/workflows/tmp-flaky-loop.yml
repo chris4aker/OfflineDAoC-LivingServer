@@ -36,15 +36,19 @@ jobs:
       - name: 50 runs
         shell: bash
         run: |
-          pass=0; fail=0; warned=0
+          # cleanup = the delete in the finally (the PR #56 failure); body = anything else (e.g. "database is locked")
+          pass=0; cleanup=0; body=0; warned=0
           for i in $(seq 1 50); do
             if dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "FullyQualifiedName~UT_AtomicExchangePersistence" > run.log 2>&1; then
               pass=$((pass+1))
+            elif grep -q "being used by another process" run.log; then
+              cleanup=$((cleanup+1)); echo "--- run $i: cleanup failure"; grep -E -A3 "^\s*Failed |Error Message" run.log | head -n 8
             else
-              fail=$((fail+1)); echo "--- run $i failed"; grep -E "Failed |Error Message|IOException" run.log | head -n 6
+              body=$((body+1)); echo "--- run $i: test body failure"; grep -E -A3 "^\s*Failed |Error Message" run.log | head -n 8
             fi
             if grep -q "Warning: left the test folder" run.log; then warned=$((warned+1)); fi
           done
           left=$(ls "$TEMP" | grep -c '^daoc-atomic-exchange-' || true)
-          echo "::notice title=${{ matrix.version }}: 50 runs of UT_AtomicExchangePersistence::passed $pass, failed $fail, runs with a left-folder warning $warned, daoc-atomic-exchange entries left in TEMP $left"
-          if [ "${{ matrix.version }}" = after ] && [ $fail -ne 0 ]; then exit 1; fi
+          echo "::notice title=${{ matrix.version }}: 50 runs of UT_AtomicExchangePersistence::passed $pass, cleanup failures $cleanup, test-body failures $body, runs with a left-folder warning $warned, daoc-atomic-exchange entries left in TEMP $left"
+          # The fix is for the cleanup; body failures are a separate production race, reported, not hidden.
+          if [ "${{ matrix.version }}" = after ] && [ $cleanup -ne 0 ]; then exit 1; fi
