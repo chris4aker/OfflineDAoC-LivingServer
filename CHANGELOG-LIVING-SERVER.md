@@ -8,6 +8,15 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.2 (in development)
+
+- **Release gates** (audit 2026-11-03, §8.6). CI also runs on pushes to main. A `versions` check fails when
+  README.md, the build name and this changelog name different releases (README.md still said Beta 1.1; it now says
+  1.1.1, without the test count that went stale). A release workflow builds Setup from a published release's package,
+  runs the installer's end-to-end tests, attaches the exe and puts its SHA-256 in the notes; see "Releasing Living
+  Server" in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). The SQLite tests' cleanup no longer fails on Windows while a
+  closing connection still holds the file (PR #56): each test has its own temporary folder, deleted with retries.
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the

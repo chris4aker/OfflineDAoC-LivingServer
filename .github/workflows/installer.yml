@@ -16,6 +16,17 @@ on:
         description: "Run the real-download end-to-end tests (about 30-60 minutes)"
         type: boolean
         default: true
+  # The release workflow (release.yml) builds and tests a published release's Setup with these same jobs.
+  workflow_call:
+    inputs:
+      package_release:
+        description: "Living Server release tag whose package Setup embeds"
+        type: string
+        required: true
+      e2e:
+        description: "Run the real-download end-to-end tests"
+        type: boolean
+        default: true
 
 permissions:
   contents: read
