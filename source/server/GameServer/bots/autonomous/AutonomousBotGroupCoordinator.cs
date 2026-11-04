@@ -1636,7 +1636,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (objectiveKind == eAutonomousObjectiveKind.GroupPve)
             AutonomousGroupSupply.Update(activeRoster.Where(bot => bot.Group == null && !AutonomousRealmRaid.IsReserved(bot)));
         GameBot[] available = activeRoster
-            .Where(bot => bot.IsAlive && !bot.IsTemporaryGroupHelper && !bot.IsPlayerLedGroup && bot.Group == null && bot.CurrentRegion != null &&
+            .Where(bot => bot.IsAlive && !bot.IsTemporaryGroupHelper && !BotDutyLeases.IsSpokenForByPlayer(bot) && bot.Group == null && bot.CurrentRegion != null &&
                           !AutonomousRealmRaid.IsReserved(bot) &&
                           // siege recruits are merged into full parties by FormSiegeParties, not random warbands
                           !(objectiveKind == eAutonomousObjectiveKind.RvR &&

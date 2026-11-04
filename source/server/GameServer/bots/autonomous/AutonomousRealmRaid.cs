@@ -209,7 +209,7 @@ namespace DOL.GS
             lock (Sync) return Raids.TryGetValue(id, out var raid) && raid.Forced;
         }
         public static bool IsEligible(GameBot bot) => bot != null && !AutonomousBeggars.Is(bot) && RealmRaidRecruitmentPolicy.Eligible(
-            bot.Level, bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper, bot.IsPlayerLedGroup);
+            bot.Level, bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper, BotDutyLeases.IsSpokenForByPlayer(bot));
 
         /// <summary>
         /// An automatic raid recruits level 50s waiting for a group and level 50s grinding solo (who earn no

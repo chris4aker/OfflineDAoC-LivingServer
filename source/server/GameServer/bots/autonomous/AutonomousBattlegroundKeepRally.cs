@@ -266,7 +266,7 @@ public static class AutonomousBattlegroundKeepRally
 
     /// <summary>A living gamebot of the realm on its own battleground tour here (a player's group follows the player).</summary>
     private static bool IsMember(GameBot other, eRealm realm, ushort region) =>
-        other.IsAlive && other.Realm == realm && other.CurrentRegionID == region && !other.IsPlayerLedGroup &&
+        other.IsAlive && other.Realm == realm && other.CurrentRegionID == region && !BotDutyLeases.IsSpokenForByPlayer(other) &&
         AutonomousObjectiveAssignments.Is(other, eAutonomousObjectiveKind.Battleground);
 
     /// <summary>At the rally: near the point and on its floor (the lord's room above the breach doesn't count).</summary>

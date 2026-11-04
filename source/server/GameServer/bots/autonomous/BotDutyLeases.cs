@@ -52,7 +52,7 @@ public static class BotDutyLeases
     }
 
     /// <summary>Only autonomous gamebots hold leases: real players are never leased, and /spawn companions keep their own owner rules.</summary>
-    public static bool CanHold(GameBot bot) => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper;
+    public static bool CanHold(GameBot bot) => bot?.IsAutonomousWorldBot == true;
 
     #region Reading
 

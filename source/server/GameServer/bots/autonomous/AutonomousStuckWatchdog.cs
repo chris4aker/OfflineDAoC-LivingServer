@@ -400,7 +400,7 @@ public static class AutonomousStuckWatchdog
     /// 15- or 45-minute clocks: the player decides where it goes.
     /// </summary>
     public static bool HasHumanCompany(GameBot bot) =>
-        bot.IsPlayerLedGroup || bot.Group?.GetPlayersInTheGroup().Count > 0;
+        BotDutyLeaseRules.ExemptsFromWatchdog(BotDutyLeases.KindOf(bot)) || bot.Group?.GetPlayersInTheGroup().Count > 0;
 
     // The group check takes the coordinator's global lock, which every grouped
     // actor's Pulse also holds. These clocks are 15 and 45 minutes long, so a

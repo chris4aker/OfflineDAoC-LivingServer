@@ -91,7 +91,7 @@ public static class AutonomousFrontierTransport
 
     private static AutonomousRvrEventLayer.Plan ActiveSiegePlan(GameBot bot)
     {
-        if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || bot.IsTemporaryGroupHelper ||
+        if (bot?.IsAutonomousWorldBot != true || BotDutyLeases.IsSpokenForByPlayer(bot) || bot.IsTemporaryGroupHelper ||
             !AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR)) return null;
         string force = bot.TempProperties.GetProperty<string>("RvrEventForce") ?? $"rvr-{bot.DatabaseID}";
         return AutonomousRvrEventLayer.KeepPlan(force, bot.Realm, GameLoop.GameLoopTime);
@@ -135,7 +135,7 @@ public static class AutonomousFrontierTransport
 
     public static bool Ready(GameBot bot, OFTeleporter porter, Request request) =>
         bot is { IsAutonomousWorldBot: true, IsAlive: true } && bot.Realm == porter.Realm &&
-        !bot.IsPlayerLedGroup && !bot.IsTemporaryGroupHelper && !bot.IsStunned && !bot.IsMezzed &&
+        !BotDutyLeases.IsSpokenForByPlayer(bot) && !bot.IsTemporaryGroupHelper && !bot.IsStunned && !bot.IsMezzed &&
         bot.ObjectState == GameObject.eObjectState.Active && bot.CurrentRegion == porter.CurrentRegion &&
         bot.IsWithinRadius(porter, BoardingRadius) && !bot.InCombat && !bot.IsAttacking &&
         (bot.Brain as BotBrain)?.HasAggro != true && !GameRelic.IsPlayerCarryingRelic(bot) &&

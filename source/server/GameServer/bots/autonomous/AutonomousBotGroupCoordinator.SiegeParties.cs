@@ -30,7 +30,7 @@ public static partial class AutonomousBotGroupCoordinator
                 .Select(id => byId.GetValueOrDefault(id))
                 .Where(bot => bot != null && bot.IsAlive && bot.Group == null && bot.Realm == roster.Realm &&
                               bot.CurrentRegion != null && !bot.InCombat && !bot.IsTemporaryGroupHelper &&
-                              !bot.IsPlayerLedGroup && !bot.IsOnStableMasterRoute && !AutonomousRealmRaid.IsReserved(bot) &&
+                              !BotDutyLeases.IsSpokenForByPlayer(bot) && !bot.IsOnStableMasterRoute && !AutonomousRealmRaid.IsReserved(bot) &&
                               !GameRelic.IsPlayerCarryingRelic(bot))
                 .ToList();
             int minimum = roster.Marching ? SiegePartyMinimumWhileMarching : SiegePartySize;
