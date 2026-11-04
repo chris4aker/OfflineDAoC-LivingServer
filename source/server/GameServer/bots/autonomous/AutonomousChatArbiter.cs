@@ -83,7 +83,10 @@ public static class AutonomousChatArbiter
         int thinking = 300 + random.Next(1_201);
         double charsPerMs = Math.Clamp(wpm, 5, 200) * 5 / 60_000.0;
         int typing = (int)((reply?.Length ?? 0) / charsPerMs);
-        int due = reading + thinking + typing;
+        // Round 8: never faster than a person can read and answer: about 2 s plus 0.3 s a word, with a little jitter (the stream
+        // judge saw /faction answers 1-2 s after the question).
+        int words = string.IsNullOrWhiteSpace(reply) ? 1 : reply.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+        int due = Math.Max(reading + thinking + typing, 2_000 + 300 * words + random.Next(601));
         return after > 0 ? Math.Max(due, after + 800 + random.Next(1_700)) : due;
     }
 }

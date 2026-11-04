@@ -79,14 +79,14 @@ public class UT_ChatBudget
     public void GapsVaryAroundTheTargetAndNeverFlood()
     {
         // Round 5: bursty. Most gaps short, some ordinary, one in ten a lull; about the target on average.
-        Assert.That(Budget.GapMs(2.0, new FixedRandom(0.0)), Is.EqualTo(4_500), "a short gap: 0.15 of the mean");
-        Assert.That(Budget.GapMs(2.0, new FixedRandom(0.9999)), Is.EqualTo(150_000).Within(10), "a lull: up to 5 times the mean");
+        Assert.That(Budget.GapMs(2.0, new FixedRandom(0.0)), Is.EqualTo(7_500), "a short gap: a quarter of the mean");
+        Assert.That(Budget.GapMs(2.0, new FixedRandom(0.9999)), Is.EqualTo(135_000).Within(10), "a lull: up to 4.5 times the mean");
         var random = new Random(3);
         long[] gaps = Enumerable.Range(0, 20_000).Select(_ => Budget.GapMs(2.0, random)).ToArray();
         Assert.That(gaps.Average(), Is.InRange(0.85 * 30_000, 1.0 * 30_000), "the per-minute target holds on average");
         Assert.That(gaps.Count(gap => gap <= 18_000) / (double)gaps.Length, Is.GreaterThan(0.55), "bursts");
         Assert.That(gaps.Count(gap => gap >= 75_000) / (double)gaps.Length, Is.InRange(0.08, 0.12), "lulls");
-        Assert.That(Budget.GapMs(1_000, new FixedRandom(0.0)), Is.EqualTo(3_000), "never under 3 s");
+        Assert.That(Budget.GapMs(1_000, new FixedRandom(0.0)), Is.EqualTo(4_000), "never under 4 s");
         Assert.That(Budget.GapMs(0, new FixedRandom(0.5)), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds));
     }
 

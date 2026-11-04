@@ -369,6 +369,15 @@ public static class AutonomousBotChatCoordinator
         return (answerer, third);
     }
 
+    /// <summary>A short wait when the channel just carried a line, so two lines don't land within 2 s (round 8).</summary>
+    private static int SpacingDelay(eRealm realm, bool faction)
+    {
+        if (!faction)
+            return 0;
+        long since = GameLoop.GameLoopTime - AutonomousChatBudget.Meter.LastLine(AutonomousChatBudget.Channel.Faction, (long)realm);
+        return since is >= 0 and < 2_000 ? 2_000 + Random.Shared.Next(2_000) : 0;
+    }
+
     /// <summary>Says a thread's lines on time, each by its speaker, while it can still talk and someone hears.</summary>
     private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule)
     {
@@ -378,8 +387,16 @@ public static class AutonomousBotChatCoordinator
             if (bot == null)
                 continue;
             string text = AutonomousChatIdiolect.Apply(step.Text, bot.DatabaseID, false, Random.Shared, terse: true);
-            Schedule(bot, Math.Max(500, step.AtMs), () =>
+            int waits = 0;
+            void Fire()
             {
+                // Round 8: not within 2 s of the channel's last line; wait a moment (three times at most).
+                if (waits < 3 && SpacingDelay(bot.Realm, faction) is > 0 and var wait)
+                {
+                    waits++;
+                    Schedule(bot, wait, Fire);
+                    return;
+                }
                 if (faction && HasFactionAudience(bot.Realm))
                 {
                     BroadcastFaction(bot.Name, bot.Realm, text);
@@ -390,7 +407,8 @@ public static class AutonomousBotChatCoordinator
                 else
                     return;
                 AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null);
-            });
+            }
+            Schedule(bot, Math.Max(500, step.AtMs), Fire);
         }
     }
 
@@ -427,10 +445,17 @@ public static class AutonomousBotChatCoordinator
             if (bot == null)
                 continue;
             string text = step.Text;
+            int waits = 0;
             _ = new ECSGameTimer(bot, _ =>
             {
                 if (bot.ObjectState != GameObject.eObjectState.Active || !HasFactionAudience(bot.Realm))
                     return 0;
+                // Round 8: not within 2 s of the channel's last line; wait a moment (three times at most).
+                if (waits < 3 && GameLoop.GameLoopTime - AutonomousChatBudget.Meter.LastLine(AutonomousChatBudget.Channel.Faction, (long)bot.Realm) < 2_000)
+                {
+                    waits++;
+                    return 2_000 + Random.Shared.Next(2_000);
+                }
                 BroadcastFaction(bot.Name, bot.Realm, text);
                 Note(AutonomousChatThreads.Faction(bot.Realm), bot, text, null);
                 AutonomousChatWhy.Record(bot, "faction", "story " + kind, "said", "story " + kind, AutonomousChatReplyFit.Known, "a story from a real event", text, null);

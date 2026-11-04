@@ -137,8 +137,8 @@ public static class AutonomousChatBudget
 
     /// <summary>
     /// The wait before a channel's next unprompted line, around a minute over the target. Round 5: bursty, not even (the
-    /// stream test's minor tell): most gaps are short (0.15-0.6 times), some ordinary (0.6-1.6), and one in ten a lull (2.5-5
-    /// times), about 0.95 times the mean overall. Never under 3 s; "never" (a very long wait) when the target is 0.
+    /// stream test's minor tell): most gaps are short (0.25-0.6 times), some ordinary (0.6-1.6), and one in ten a lull (2.5-4.5
+    /// times), about 0.93 times the mean overall. Never under 4 s; "never" (a very long wait) when the target is 0.
     /// </summary>
     public static long GapMs(double targetPerMinute, Random random)
     {
@@ -146,8 +146,9 @@ public static class AutonomousChatBudget
             return long.MaxValue / 4;
         double mean = 60_000.0 / targetPerMinute;
         double kind = random.NextDouble(), within = random.NextDouble();
-        double factor = kind < 0.6 ? 0.15 + 0.45 * within : kind < 0.9 ? 0.6 + 1.0 * within : 2.5 + 2.5 * within;
-        return (long)Math.Max(3_000, mean * factor);
+        // Round 8: short gaps start at a quarter of the mean, and never under 4 s.
+        double factor = kind < 0.6 ? 0.25 + 0.35 * within : kind < 0.9 ? 0.6 + 1.0 * within : 2.5 + 2.0 * within;
+        return (long)Math.Max(4_000, mean * factor);
     }
 
     /// <summary>What the gate says about a line a bot wants to start.</summary>
@@ -214,6 +215,17 @@ public static class AutonomousChatBudget
             public int Next;
             public long NextDue;
             public long LastAmbient;
+            public long LastLine = long.MinValue / 2;
+        }
+
+        /// <summary>No unprompted line starts within this long of the channel's last line of any kind (round 8: lines 1-2 s apart).</summary>
+        public const long MinSpacingMs = 3_000;
+
+        /// <summary>When the channel moment last carried a line of any kind (long.MinValue / 2: never).</summary>
+        public long LastLine(Channel channel, long key)
+        {
+            lock (_rings)
+                return _rings.TryGetValue((channel, key), out Ring ring) ? ring.LastLine : long.MinValue / 2;
         }
 
         private readonly Dictionary<(Channel, long), Ring> _rings = new();
@@ -237,6 +249,7 @@ public static class AutonomousChatBudget
                 Ring ring = For(channel, key);
                 ring.At[ring.Next] = now;
                 ring.Next = (ring.Next + 1) % Slots;
+                ring.LastLine = Math.Max(ring.LastLine, now);
             }
         }
 
@@ -266,6 +279,8 @@ public static class AutonomousChatBudget
                     if (at > 0 && now - at < WindowMs && at <= now)
                         count++;
                 Verdict verdict = Decide(count * 60_000.0 / WindowMs, band, now, ring.NextDue);
+                if (verdict is Verdict.Speak or Verdict.SpeakUnderFloor && now - ring.LastLine < MinSpacingMs && now >= ring.LastLine)
+                    verdict = Verdict.HoldGap;
                 if (verdict is Verdict.Speak or Verdict.SpeakUnderFloor)
                 {
                     ring.NextDue = now + GapMs(band.Target, random);

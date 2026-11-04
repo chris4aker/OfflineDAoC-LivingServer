@@ -84,7 +84,7 @@ public static class AutonomousChatFiller
     /// written line at most once in 20 minutes. Pure but for the memory read.
     /// </summary>
     public static bool GuildCorpusFits(VC.Line line, AutonomousChatFieldTalk.Memory memory, long now) =>
-        line != null && !IsCrafted(line) && !IsGeneric(line.Text) && memory.WrittenAllowed(now) &&
+        line != null && !IsCrafted(line) && !IsGeneric(line.Text) && memory.WrittenAllowed(now) && !memory.Seen(Skeleton(line.Text)) &&
         !memory.Rested(null, IdeaOf(line), now) && (!IsLife(line) || memory.LifeAllowed(now));
 
     /// <summary>A written guild line was said: its idea rests, the guild's written gap starts, and a life line uses up the evening's one.</summary>
@@ -93,6 +93,7 @@ public static class AutonomousChatFiller
         if (line == null)
             return;
         memory.Use(null, IdeaOf(line), now);
+        memory.Add(Skeleton(line.Text));
         memory.NoteWritten(now);
         if (IsLife(line))
             memory.NoteLife(now);

@@ -94,7 +94,8 @@ public static class AutonomousChatFieldTalk
         return new Said(way.Text, kind, way.Answers)
         {
             Family = way.Family,
-            Frame = way.Family != null && HelpKinds.Contains(kind) ? way.Family : null,
+            // Round 8: every family is a frame (help questions, lfg and crafter lines, level questions alike), but a call to arms.
+            Frame = way.Family != null && way.Family is not ("inc_call" or "g_inc") ? way.Family : null,
             Idea = way.Family == null ? null : subject == null ? way.Family : kind + ":" + subject,
             // "{s}" is the subject as said ("keltoi", "cleric"), not its key ("keltoi:4").
             Unanswered = unanswered?.Select(line => line.Replace("{s}", subject?.Split(':')[0] ?? string.Empty).Trim()).ToArray(),
@@ -364,7 +365,8 @@ public static class AutonomousChatFieldTalk
     {
         if (said?.Answers == null || said.Answers.Length == 0)
             return null;
-        for (int attempt = 0; attempt < 5; attempt++)
+        string asked = QuestionKind(said.Text);
+        for (int attempt = 0; attempt < 6; attempt++)
         {
             string text = said.Answers[random.Next(said.Answers.Length)];
             if (text.StartsWith("{healer}", StringComparison.Ordinal))
@@ -379,6 +381,9 @@ public static class AutonomousChatFieldTalk
             else if (text.Contains('{'))
                 continue;
             text = Finish(text, random);
+            // Round 8: the answer gives what the question asks for.
+            if (!Fits(text, asked))
+                continue;
             string skeleton = AutonomousChatFiller.Skeleton(text);
             if (memory != null && skeleton.Split(' ').Length > 2)
             {
@@ -388,7 +393,7 @@ public static class AutonomousChatFieldTalk
             }
             return text;
         }
-        return null;
+        return asked == null ? null : AnswerFor(asked, answerer, random) is { } plain ? Finish(plain, random) : null;
     }
 
     /// <summary>A follow-up from the speaker: thanks after an answer, or "still lf"/"nm" when nobody answered. Null for none. Pure.</summary>
@@ -404,10 +409,14 @@ public static class AutonomousChatFieldTalk
             string key = "u:" + text;
             // Its frame too: "still lf...", "nobody? ok..." at most four an hour (round 7).
             string frame = "fu:" + string.Join(' ', AutonomousChatIntentModel.Words(text).Take(2));
-            if (memory != null && (memory.Rested(null, key, now) || !memory.FrameAllowed(frame, now)))
+            string skeleton = AutonomousChatFiller.Skeleton(text);
+            bool once = skeleton.Split(' ').Length > 2;
+            if (memory != null && (memory.Rested(null, key, now) || !memory.FrameAllowed(frame, now) || once && memory.Seen(skeleton)))
                 continue;
             memory?.Use(null, key, now);
             memory?.UseFrame(frame, now);
+            if (once)
+                memory?.Add(skeleton);
             return text;
         }
         return null;
@@ -458,12 +467,15 @@ public static class AutonomousChatFieldTalk
                 $"lfg rvr {lvl} {cls}", $"{lvl} {cls} lf rvr grp", $"any rvr grps lf {cls}?", $"lf rvr grp {cls} {lvl} pst",
                 $"{cls} lfg rvr", $"lfg {f.World?.Frontier?.ToLowerInvariant() ?? "rvr"} {cls}"), "lfg", null);
         string zone = ShortZone(f.Zone, random);
-        return new Said(Pick(random,
-            $"lfg {lvl} {cls}", $"{lvl} {cls} lfg", $"lfg {lvl} {cls} pst", $"lf grp {lvl} {cls}", $"{cls} {lvl} lfg",
-            dun != null ? $"lfg {dun} {lvl} {cls}" : $"lfg {lvl} {cls} any",
-            dun != null ? $"{lvl} {cls} lfg {dun}" : $"{lvl} {cls} lfg xp",
-            $"{lvl} {cls} lf xp grp", $"any grps for {lvl} {cls}?", $"lfg {lvl} {cls}, {zone}", $"{lvl} {cls} lf duo {zone}",
-            $"lfg {cls} {lvl} /t", $"{cls} lfg {lvl}, x me", $"{lvl} {cls} lfg anything"), "lfg", null);
+        // Round 8: the terse posts ("lfg 38 thane") may repeat as on any server; the sentence shapes are frames, rested and capped.
+        return Make(random, "lfg", cls + ":" + lvl, null, null,
+            new V($"lfg {lvl} {cls}", null), new V($"{lvl} {cls} lfg", null), new V($"lfg {lvl} {cls} pst", null), new V($"lf grp {lvl} {cls}", null),
+            new V($"{cls} {lvl} lfg", null), new V(dun != null ? $"lfg {dun} {lvl} {cls}" : $"lfg {lvl} {cls} any", null),
+            new V(dun != null ? $"{lvl} {cls} lfg {dun}" : $"{lvl} {cls} lfg xp", null), new V($"{lvl} {cls} lf xp grp", null),
+            new V($"lfg {lvl} {cls}, {zone}", null), new V($"lfg {cls} {lvl} /t", null), new V($"{cls} lfg {lvl}, x me", null),
+            new V($"any grps for {lvl} {cls}?", "lfg_anygrps"), new V($"{lvl} {cls} lf duo {zone}", "lfg_duo"), new V($"{lvl} {cls} lfg anything", "lfg_anything"),
+            new V($"any room for a {lvl} {cls}?", "lfg_room"), new V($"{cls} {lvl} looking for a grp", "lfg_looking"), new V($"lf xp grp, {lvl} {cls}", "lfg_xpgrp"),
+            new V($"{lvl} {cls} free for grps", "lfg_free"), new V($"{lvl} {cls} wants a grp in {dun ?? zone}", "lfg_wants"));
     }
 
     private static Said Trade(Facts f, Random random)
@@ -481,9 +493,12 @@ public static class AutonomousChatFieldTalk
                 $"wts {quality}{item} x me"), "wts", null, item);
         }
         string want = WantFor(f, random);
-        return new Said(Pick(random,
-            $"wtb {want} pst", $"wtb {want}", want.Any(char.IsDigit) ? $"wtb {want} asap" : $"wtb {want} for {f.Level} {ShortClass(f.ClassName, random)}",
-            $"anyone selling {want}?", $"lf {want} pst", $"wtb {want}, paying ok", $"any1 selling {want}"), "wtb", null);
+        return Make(random, "wtb", want, null, null,
+            new V($"wtb {want} pst", null), new V($"wtb {want}", null),
+            new V(want.Any(char.IsDigit) ? $"wtb {want} asap" : $"wtb {want} for {f.Level} {ShortClass(f.ClassName, random)}", want.Any(char.IsDigit) ? null : "wtb_for"),
+            new V($"anyone selling {want}?", "wtb_anyone"), new V($"lf {want} pst", null), new V($"wtb {want}, paying ok", "wtb_paying"),
+            new V($"any1 selling {want}", "wtb_any1"), new V($"need {want}, anyone?", "wtb_need"), new V($"who has {want}?", "wtb_who"),
+            new V($"buying {want}", "wtb_buying"), new V($"looking for {want}, will pay", "wtb_looking"));
     }
 
     private static Said Faction(Facts f, Random random)
@@ -650,10 +665,11 @@ public static class AutonomousChatFieldTalk
             : Pool(dun, $"try {dun}", $"{dun} prob", $"{dun} at {lvl}", $"{dun} if u get a grp", $"{dun} is ok at {lvl}", $"{dun} or solo outside");
         return Make(random, "ask_xp", (f.Level / 5).ToString(), Pool("nm found one", $"anyone? {lvl} here", "nm, trying {s} solo", $"no one? ok {dun ?? "solo"} it is"),
             Pool("ty", "ty!", "k ty", "kk", "cool ty", "ty, omw"),
-            new V($"where do {lvl}s xp?", "ask_xp", answers), new V($"good xp for {lvl} {cls}?", "ask_xp", answers),
+            new V($"where do {lvl}s xp?", "ask_xp", answers), new V($"good xp for {lvl} {cls}?", "ask_xp_good", answers),
             new V(dun != null ? $"{dun} ok at {lvl}?" : $"where at {lvl}?", "ask_xp_place",
                 dun != null ? Pool("ya", "ya with a grp", "should be", "ya, bring a healer", "fine at that lvl") : answers),
-            new V($"xp spot for {lvl}?", "ask_xp", answers));
+            new V($"xp spot for {lvl}?", "ask_xp_spot", answers), new V($"best xp at {lvl}?", "ask_xp_best", answers),
+            new V($"{lvl} here, where should i go", "ask_xp_go", answers), new V($"any good spots for {lvl}s?", "ask_xp_spots", answers));
     }
 
     private static Said AskGroup(Facts f, Random random)
@@ -675,7 +691,7 @@ public static class AutonomousChatFieldTalk
         string[] fits = need is "healer" or "cleric" or "druid" or "shaman" ? Pool("{healer}me", "{healer}me, {lvl}", "{healer}x", "{healer}{lvl} {cls} here") : null;
         return Make(random, "ask_group", need + ":" + dun + ":" + f.Level / 5, SeekStill, SeekThanks,
             new V($"any {need}s on?", "need_class", fits), new V($"need a {need} for {dun}", "need_class", fits),
-            new V($"lf {need} {f.Level - 2}-{f.Level + 2}", "need_class", fits), new V($"{need} anyone? {dun}", "need_class", fits));
+            new V($"lf {need} {Math.Max(1, f.Level - 2)}-{Math.Min(50, f.Level + 2)}", "need_class", fits), new V($"{need} anyone? {dun}", "need_class", fits));
     }
 
     private static Said Camp(Facts f, Random random)
@@ -769,7 +785,7 @@ public static class AutonomousChatFieldTalk
             Pool("ty", "ty!", "makes sense ty", "k ty"),
             new V($"{cls}s, sc or drops at {lvl}?", "class_gear"), new V($"what weapon for a {lvl} {cls}?", "class_weapon"),
             new V($"{cls} {lvl}, what should i put points in?", "class_spec"), new V($"any {cls}s on? quick q", "class_q", Pool("me, whats up", "me", "sup")),
-            new V($"is {cls} fun after {f.Level + 5}?", "class_later"), new V($"{cls}s, where did u xp at {lvl}?", "class_xp"));
+            f.Level <= 45 ? new V($"is {cls} fun after {f.Level + 5}?", "class_later") : new V($"anyone else play {cls}?", "class_others", Pool("me", "my alt is one", "{healer}not me")), new V($"{cls}s, where did u xp at {lvl}?", "class_xp"));
     }
 
     /// <summary>A word on what the bot is doing (round 5: regulars talk about their own evening): its camp, its trip, its power.</summary>
@@ -794,7 +810,12 @@ public static class AutonomousChatFieldTalk
         }
         if (f.InDungeon)
             ways.Add(new V($"{zone} is busy tonight", "status_dungeon", Pool("ya", "always is")));
-        ways.Add(new V($"{f.Level} {ShortClass(f.ClassName, random)}, still grinding", "status_grind"));
+        ways.Add(random.Next(3) switch
+        {
+            0 => new V($"{f.Level} {ShortClass(f.ClassName, random)}, still grinding", "status_grind"),
+            1 => new V($"grinding {zone} at {f.Level}", "status_grind_zone"),
+            _ => new V($"still {f.Level} lol", "status_still"),
+        });
         ways.Add(new V($"back in {zone}", "status_zone"));
         ways.Add(new V(f.IsHealer ? "sitting for pow" : "sitting, need hp", "status_sit"));
         return Make(random, "social", (f.Monster ?? f.Destination ?? zone)?.ToLowerInvariant() + ":" + f.Level / 5, null, null, ways.ToArray());
@@ -839,7 +860,7 @@ public static class AutonomousChatFieldTalk
             Pool("gz", "grats", "gz!", "gratz", "nice gz"))
         {
             Thanks = Pool("ty", "ty!", "thx :)", "ty all", "ty ty"),
-            Unanswered = Pool("off to train", $"{f.Level + 1} next lol", "trainer time", "finally lol"),
+            Unanswered = f.Level >= 50 ? Pool("finally lol", "now what", "rvr time") : Pool("off to train", $"{f.Level + 1} next lol", "trainer time", "finally lol"),
         };
 
     private static Said Death(Facts f, Random random) =>
@@ -900,7 +921,9 @@ public static class AutonomousChatFieldTalk
                 new V($"any1 {Math.Max(1, f.Level - 2)}-{Math.Min(50, f.Level + 2)} wanna xp?", "g_group", Joins),
                 new V(dun != null ? $"{dun} anyone? {lvl} {cls}" : $"xp anyone? {lvl} {cls}", "g_dun", Joins),
                 new V($"lf guildies for {dun ?? zone}", "g_dun", Joins), new V($"who's {lvl}ish, wanna duo", "g_duo", Joins),
-                new V($"need 1 more for {dun ?? zone}", "g_more", Joins), new V($"{lvl} {cls} lf grp in guild?", "g_group", Joins)), 3));
+                new V($"need 1 more for {dun ?? zone}", "g_more", Joins), new V($"{lvl} {cls} lf grp in guild?", "g_lfgrp", Joins),
+                new V($"anyone in guild near {lvl}?", "g_near", Joins), new V($"guild grp for {dun ?? zone}?", "g_grp_for", Joins),
+                new V($"who wants to xp, {lvl} {cls} here", "g_who_xp", Joins), new V($"{dun ?? zone} tonight, anyone?", "g_tonight", Joins)), 3));
         if (f.Level >= 35)
         {
             string keep = f.GuildKeep != null ? ShortKeep(f.GuildKeep, random) : null;
@@ -925,8 +948,9 @@ public static class AutonomousChatFieldTalk
         string craft = Pick(random, "smith", "armorcrafter", "tailor", "fletcher", "spellcrafter", "alchemist");
         int skill = 300 + 50 * random.Next(13);
         options.Add((() => Make(random, "guild_craft", craft, Pool("nm", "still need one"), null,
-            new V($"need a {craft}, anyone {skill}+?", "g_craft"), new V($"any {craft}s on? need {skill}+", "g_craft"), new V($"{craft} on? pst", "g_craft"),
-            new V($"who's our best {craft} now", "g_craft_best", Pool("ask the gl", "dunno", "not me lol")), new V($"lf {craft} {skill}+", "g_craft")), 1));
+            new V($"need a {craft}, anyone {skill}+?", "g_craft_need"), new V($"any {craft}s on? need {skill}+", "g_craft_any"), new V($"{craft} on? pst", "g_craft_on"),
+            new V($"who's our best {craft} now", "g_craft_best", Pool("ask the gl", "dunno", "not me lol")), new V($"lf {craft} {skill}+", "g_craft_lf"),
+            new V($"who has {craft} at {skill}?", "g_craft_who", Pool("dunno", "ask the gl")), new V($"{craft} {skill}+ around?", "g_craft_around")), 1));
         if (f.Item != null)
         {
             string item = f.Item.ToLowerInvariant();
@@ -988,7 +1012,7 @@ public static class AutonomousChatFieldTalk
         ["keeps"] = (["when?", "who took it?"], ["earlier tonight", "while i was afk lol", "dunno, saw it on the map"], ["we'll get it back", "ugh", "always on my break"]),
         ["rally"] = (["how many?", "where r they?"], ["big grp", "10+ at the door", "at the gate", "inside already"], ["porting too", "omw also", "bringing my grp"]),
         ["class"] = (["solo or grp?", "what race?"], ["depends, solo or grp?", "sc gear if u can afford it", "whatever drops lol", "main line first"], ["^", "+1", "what he said"]),
-        ["help"] = (["where exactly?", "what lvl for that?"], ["dunno exactly, ask a guard", "near the town, i think", "{lvl}ish", "the map helps"], ["^ that", "i did it at {lvl}"]),
+        ["help"] = (["where exactly?", "which part?", "near what?", "what lvl for that?", "how long does it take?"], ["dunno exactly, ask a guard", "near the town, i think", "{lvl}ish", "the map helps"], ["^ that", "i did it at {lvl}"]),
         ["rvr"] = (["how many?", "which way?"], ["few grps", "small grp", "through the mg"], ["count me in", "omw too"]),
         ["raid"] = (["what time?", "who's leading?"], ["9ish", "after dinner", "gl is"], ["im in too", "same"]),
         ["guild_group"] = (["what lvl?", "where at?"], ["{lvl}", "{zone}", "{lvl} {cls}"], ["me too", "room for 1?"]),
@@ -1014,6 +1038,12 @@ public static class AutonomousChatFieldTalk
         }
         int at = AutonomousChatArbiter.DelayMs(said.Text, answer, 40, 0, random);
         steps.Add(new Step(1, answer, at));
+        // The follow-up's answer gives what it asks ("where at?" a place, never a level).
+        string FreshFitting(string[] pool, Facts speaker, string kind)
+        {
+            string[] fitting = pool.Where(text => Fits(Fill(text, speaker, random), kind)).ToArray();
+            return fitting.Length == 0 ? null : Fresh(fitting, speaker);
+        }
         // A line of three words or more is heard once an evening; with none fresh, the thread stops there.
         string Fresh(string[] pool, Facts speaker)
         {
@@ -1031,7 +1061,7 @@ public static class AutonomousChatFieldTalk
             return null;
         }
         if (random.NextDouble() < LongThreadChance && More.TryGetValue(said.Kind, out var more) && Fresh(more.Ask, asker) is { } ask &&
-            Fresh(more.Reply, answerer) is { } reply)
+            (FreshFitting(more.Reply, answerer, QuestionKind(ask)) ?? (AnswerFor(QuestionKind(ask), answerer, random) is { } plain ? Finish(plain, random) : null)) is { } reply)
         {
             at = AutonomousChatArbiter.DelayMs(answer, ask, 40, at, random);
             steps.Add(new Step(0, ask, at));
@@ -1131,6 +1161,80 @@ public static class AutonomousChatFieldTalk
         return Finish(text.Replace("{cls}", ShortClass(facts.ClassName, random)).Replace("{lvl}", facts.Level.ToString())
             .Replace("{zone}", ShortZone(facts.Zone, random)).Replace("{dun}", ShortDungeon(facts.Dungeon, random) ?? ShortZone(facts.Zone, random))
             .Replace("{monsters}", facts.Monster == null ? "adds" : AutonomousBotVoiceCorpus.Plural(facts.Monster)), random);
+    }
+
+    // ---- answers that fit the question (round 8) ------------------------------------------------------------------------------
+
+    /// <summary>
+    /// What a question asks for (round 8: "where at??" got "43"): "place" for where, which camp or side, how far; "price" for
+    /// how much, worth, a price check; "count" for how many; "time" for when, what time, how long; "who" for who and which
+    /// class; "level" for what level. Null for anything else (a yes or no, a call, a recruit). Pure.
+    /// </summary>
+    public static string QuestionKind(string text)
+    {
+        string t = " " + AutonomousChatQuestions.Normalize(text ?? string.Empty) + " ";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (how much|price|pc|worth|cost) "))
+            return "price";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" how many "))
+            return "count";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (where|wheres|where s)| where (at|is|r|are|do|did|exactly|in) | which (camp|side|way|zone|keep|room|dungeon) | (u|you) close | how far "))
+            return "place";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (when|what time)| when | what time | how long "))
+            return "time";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (who|whos|who s) | (what|which) (class|race) "))
+            return "who";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (what|wat) (lvl|level) | lvl $| how high "))
+            return "level";
+        return null;
+    }
+
+    private static readonly HashSet<string> NotAnAnswer = new(StringComparer.Ordinal)
+        { "me", "x", "me pls", "x me", "inv pls", "sure", "sec", "later", "me!", "can i come", "sec, me", "ya", "yep", "k", "lol" };
+
+    /// <summary>Whether an answer gives what its question asks for: a place for where, a price for how much, a time for when. Pure.</summary>
+    public static bool Fits(string answer, string kind)
+    {
+        if (kind == null || string.IsNullOrWhiteSpace(answer))
+            return true;
+        string a = AutonomousChatQuestions.Normalize(answer);
+        bool dunno = System.Text.RegularExpressions.Regex.IsMatch(" " + a + " ", @" (dunno|no idea|not sure|idk|ask) ");
+        switch (kind)
+        {
+            case "place":
+                return dunno || !NotAnAnswer.Contains(a) && !System.Text.RegularExpressions.Regex.IsMatch(a, @"(^\d|\b\d{1,2}\b)") &&
+                       !System.Text.RegularExpressions.Regex.IsMatch(a, @"^(few|big grp|small grp|lots|couple|a few|many)$");
+            case "price":
+                return dunno || System.Text.RegularExpressions.Regex.IsMatch(a, @"\b\d+ ?(p|g|s|plat|gold|silver)\b|not much|cheap|broker|offers|free|worth|nothing");
+            case "count":
+                return dunno || System.Text.RegularExpressions.Regex.IsMatch(a, @"\d|\b(few|big|small|lots|many|couple|bunch|handful|zerg|grp|grps|nobody|none)\b");
+            case "time":
+                return dunno || System.Text.RegularExpressions.Regex.IsMatch(a,
+                    @"\d+ ?ish|\d+ ?(pm|am)\b|\b(tonight|later|tomorrow|sat|sun|weekend|after|earlier|ago|last night|morning|soon|now|dinner|lunch|tuesday|yesterday|hour|hours|min|mins|while|long)\b");
+            case "who":
+                return !System.Text.RegularExpressions.Regex.IsMatch(a, @"^\d+$");
+            case "level":
+                return dunno || System.Text.RegularExpressions.Regex.IsMatch(a, @"\d");
+            default:
+                return true;
+        }
+    }
+
+    /// <summary>A plain answer of the asked kind from the answerer's own state, when no written answer fits. Pure.</summary>
+    public static string AnswerFor(string kind, Facts answerer, Random random)
+    {
+        if (answerer == null)
+            return kind is "time" or "price" or "count" ? "dunno" : null;
+        string zone = ShortZone(answerer.Zone, random), dun = ShortDungeon(answerer.Dungeon, random);
+        return kind switch
+        {
+            "place" => Pick(random, $"in {zone}", zone, dun != null ? $"near {dun}" : $"by {zone}", $"{zone}, near the camp"),
+            "level" => Pick(random, answerer.Level.ToString(), $"{answerer.Level} {ShortClass(answerer.ClassName, random)}"),
+            "time" => Pick(random, "dunno", "later tonight", "9ish", "after dinner"),
+            "price" => Pick(random, PriceFor(answerer.Level, random), "dunno", "not much"),
+            "count" => Pick(random, "few", "5 or 6", "big grp", "dunno"),
+            "who" => Pick(random, ShortClass(answerer.ClassName, random), "dunno, ask the gl"),
+            _ => null,
+        };
     }
 
     // ---- help questions (round 7) --------------------------------------------------------------------------------------------

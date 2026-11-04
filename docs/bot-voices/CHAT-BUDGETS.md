@@ -135,6 +135,11 @@ in five runs on for a few lines, with a follow-up question, its answer, a thanks
 death now and then, and a bot group's wipe become short stories the realm riffs on. A guild hears at most one life line
 (weather, school, work, pets) an evening.
 
+Every bot answer takes at least about 2 seconds plus a third of a second a word, and no new line starts within 3 seconds of
+the last one in a channel. Every sentence shape, from "any grps for 38 thane?" to "is cleric fun after 40?", rests 10-15
+minutes and is heard at most four times an hour per realm; the terse "lfg 38 thane" posts may repeat, as on any server. An
+answer gives what was asked: a place for "where", a price for "how much", a time for "when", a name or class for "who".
+
 ### Filler rules
 
 - **Musings:** lines that narrate the game instead of playing it appear only now and then as /faction openers. They

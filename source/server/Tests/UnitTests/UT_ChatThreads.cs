@@ -128,6 +128,120 @@ public class UT_ChatThreads
         Assert.That(told.Distinct().Count(), Is.EqualTo(told.Count));
     }
 
+    // ---- round 8: typing time, frames for every family, answers that fit the question ----------------------------------------
+
+    [Test]
+    public void EveryBotAnswerTakesAtLeastTwoSecondsAndAWordMore()
+    {
+        var random = new Random(1);
+        foreach (string reply in new[] { "me", "x", "omw", "in lyonesse", "keltoi with a grp, back rooms" })
+            for (int i = 0; i < 200; i++)
+            {
+                int words = reply.Split(' ').Length;
+                Assert.That(AutonomousChatArbiter.DelayMs("where at?", reply, 200, 0, random), Is.GreaterThanOrEqualTo(2_000 + 300 * words), reply);
+            }
+        // Every line of a thread after the opener, too.
+        var said = new Field.Said("anyone up for keltoi?", "ask_group", ["me", "x"]);
+        for (int i = 0; i < 300; i++)
+            foreach (Field.Step step in Field.Thread(said, Facts(i), Facts(i + 1), Facts(i + 2), null, random).Where(step => step.Who != 0 || step.AtMs > 0))
+                Assert.That(step.AtMs, Is.GreaterThanOrEqualTo(2_300));
+    }
+
+    [Test]
+    public void LfgCrafterAndLevelFamiliesAreFramesToo()
+    {
+        var memory = new Field.Memory();
+        var random = new Random(12);
+        var heard = new List<(long At, Field.Said Said)>();
+        for (int i = 0; i < 2_400; i++)
+        {
+            long now = i * 4_500L;
+            foreach (string channel in new[] { "faction", "lfg", "trade", "guild" })
+                if (Field.Line(channel, Facts(i), memory, random, now) is { } said)
+                    heard.Add((now, said));
+        }
+        string[] named = ["g_lfgrp", "class_later", "wtb_any1", "g_craft_any", "g_more", "ask_xp_good", "ask_xp_place", "status_grind"];
+        foreach (var frame in heard.Where(h => named.Contains(h.Said.Family)).GroupBy(h => h.Said.Family))
+        {
+            Assert.That(frame.All(h => h.Said.Frame == frame.Key), Is.True, frame.Key);
+            for (int hour = 0; hour < 3; hour++)
+                Assert.That(frame.Count(h => h.At >= hour * 3_600_000L && h.At < (hour + 1) * 3_600_000L), Is.LessThanOrEqualTo(Field.Memory.FramesPerHour), frame.Key);
+        }
+        Assert.That(heard.Where(h => h.Said.Kind == "lfg").Any(h => h.Said.Frame == null), Is.True, "terse lfg posts may repeat as on any server");
+    }
+
+    [TestCase("where at??", "place")]
+    [TestCase("where do 21s xp?", "place")]
+    [TestCase("which camp there?", "place")]
+    [TestCase("how much for a 99% sword?", "price")]
+    [TestCase("pc ghostly cloak?", "price")]
+    [TestCase("how many?", "count")]
+    [TestCase("when did we lose rena?", "time")]
+    [TestCase("raid tonight, what time?", "time")]
+    [TestCase("who's leading?", "who")]
+    [TestCase("what class?", "who")]
+    [TestCase("what lvl r u?", "level")]
+    [TestCase("anyone up for keltoi?", null)]
+    public void AQuestionAsksForAKindOfAnswer(string question, string kind) => Assert.That(Field.QuestionKind(question), Is.EqualTo(kind), question);
+
+    [TestCase("place", "in lyonesse", true)]
+    [TestCase("place", "keltoi", true)]
+    [TestCase("place", "43", false)]
+    [TestCase("place", "43 thane", false)]
+    [TestCase("place", "me", false)]
+    [TestCase("place", "few", false)]
+    [TestCase("price", "2p", true)]
+    [TestCase("price", "50g obo", true)]
+    [TestCase("price", "keltoi", false)]
+    [TestCase("time", "9ish", true)]
+    [TestCase("time", "dunno", true)]
+    [TestCase("time", "big grp", false)]
+    [TestCase("who", "thane", true)]
+    [TestCase("who", "43", false)]
+    [TestCase("count", "10+ at the door", true)]
+    [TestCase("count", "at the gate", false)]
+    [TestCase("level", "27", true)]
+    [TestCase("level", "in lyonesse", false)]
+    public void AnAnswerGivesWhatTheQuestionAsks(string kind, string answer, bool fits) => Assert.That(Field.Fits(answer, kind), Is.EqualTo(fits), $"{kind}: {answer}");
+
+    [Test]
+    public void AWhereNeverGetsALevelInAThread()
+    {
+        var random = new Random(8);
+        var said = new Field.Said("anyone up for keltoi?", "ask_group", ["me", "x", "{lvl} {cls} here"]);
+        int checkedAsks = 0;
+        for (int i = 0; i < 3_000; i++)
+        {
+            List<Field.Step> steps = Field.Thread(said, Facts(i), Facts(i + 1), Facts(i + 2), null, random);
+            for (int k = 0; k + 1 < steps.Count; k++)
+                if (steps[k].Who == 0 && Field.QuestionKind(steps[k].Text) is { } kind && steps[k + 1].Who == 1)
+                {
+                    checkedAsks++;
+                    Assert.That(Field.Fits(steps[k + 1].Text, kind), Is.True, $"{steps[k].Text} -> {steps[k + 1].Text}");
+                }
+        }
+        Assert.That(checkedAsks, Is.GreaterThan(50));
+        Assert.That(Field.Answer(new Field.Said("where at??", "ask_group", ["43", "{lvl} {cls}"]), Facts(5), null, random), Does.Not.Match(@"^\d"),
+            "no written answer fits, so a place from the answerer's own state");
+    }
+
+    [Test]
+    public void NoLevelPastFifty()
+    {
+        var random = new Random(3);
+        for (int i = 0; i < 2_000; i++)
+        {
+            Field.Facts top = Facts(i) with { Level = 50, JustLeveled = i % 2 == 0 };
+            foreach (string channel in new[] { "faction", "lfg", "guild" })
+                if (Field.Line(channel, top, null, random) is { } said)
+                {
+                    foreach (string text in new[] { said.Text }.Concat(said.Unanswered ?? []).Concat(said.Thanks ?? []))
+                        foreach (System.Text.RegularExpressions.Match number in System.Text.RegularExpressions.Regex.Matches(text, @"\b(\d{2})\b(?!%)"))
+                            Assert.That(int.Parse(number.Value), Is.LessThanOrEqualTo(50), text);
+                }
+        }
+    }
+
     // ---- 3. life lines in guild ------------------------------------------------------------------------------------------------
 
     [TestCase("freezing outside, my hands are numb")]

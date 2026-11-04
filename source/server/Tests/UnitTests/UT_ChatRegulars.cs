@@ -180,7 +180,7 @@ public class UT_ChatRegulars
     // ---- 4. answers fit the line before ---------------------------------------------------------------------------------------
 
     private static readonly Regex Recruits = new(
-        @"\b(lf |need |grp for|anyone$|later\??$|anyone around|anyone up for|up for|any1 lf grp|lf duo|wanna duo|wanna xp|duo|grp\??$|grp anyone|forming|if anyone wants|want to group|lf guildies|need 1 more|lf grp|lfg|lf\d?m|anyone grouping|who's on for|who's up|who's around|anyone want|keep take|take .* back|lets take|who wants|free for guild|up for grabs|spare|free to|selling my old|any .*s on\??|any1 at|anyone at|anyone out|anyone in|who's on|anyone heading|anyone on|hit a keep|lf rvr|need a |lf (heal|tank|mezzer|bard|cleric|druid|shaman|puller)|anyone\?)",
+        @"\b(anyone else|lf |need |grp for|anyone$|later\??$|anyone around|anyone up for|up for|any1 lf grp|lf duo|wanna duo|wanna xp|duo|grp\??$|grp anyone|forming|if anyone wants|want to group|lf guildies|need 1 more|lf grp|lfg|lf\d?m|anyone grouping|who's on for|who's up|who's around|anyone want|keep take|take .* back|lets take|who wants|free for guild|up for grabs|spare|free to|selling my old|any .*s on\??|any1 at|anyone at|anyone out|anyone in|who's on|anyone heading|anyone on|hit a keep|lf rvr|need a |lf (heal|tank|mezzer|bard|cleric|druid|shaman|puller)|anyone\?)",
         RegexOptions.CultureInvariant);
 
     [Test]
