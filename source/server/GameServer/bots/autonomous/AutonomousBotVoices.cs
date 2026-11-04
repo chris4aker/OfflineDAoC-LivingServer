@@ -271,7 +271,8 @@ public static class AutonomousBotVoices
         OfflineWorldBotRecord record = bot.PersistentRecord;
         string zone = bot.CurrentZone?.Description;
         string item = bot.Inventory?.AllItems.FirstOrDefault(entry => entry != null &&
-            entry.SlotPosition >= (int)eInventorySlot.FirstBackpack && entry.SlotPosition <= (int)eInventorySlot.LastBackpack)?.Name;
+            entry.SlotPosition >= (int)eInventorySlot.FirstBackpack && entry.SlotPosition <= (int)eInventorySlot.LastBackpack &&
+            AutonomousBotChatCoordinator.IsAdvertisableItemName(entry.Name))?.Name;
         // In a player's group the bot hunts what the player hunts, so its solo camp target and camp are stale. Play test
         // 2026-10-28: a friar brought along to Camelot Hills said "mountain algaes at Camelot Hills are the best xp for my
         // level", her last solo target (in Aldland) placed in the zone she stood in. Only a live fight is named then.

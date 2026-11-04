@@ -136,6 +136,27 @@ public class UT_ChatResponsive
             Assert.That(AutonomousChatQuestions.AnswerSelf(kind, question, Me, new Random(seed)), Does.Contain(contains));
     }
 
+    // Playtest 2026-11-04: "what does your guild do mostly?" by tell drew only the guild's name.
+    [TestCase("hi, what does your guild do mostly?")]
+    [TestCase("what kind of guild are u in")]
+    [TestCase("is your guild rvr?")]
+    public void AskedWhatTheGuildDoesABotSaysWhatItDoesNotItsName(string question)
+    {
+        Assert.That(AutonomousChatQuestions.SelfQuestion(question), Is.EqualTo("guildwhat"));
+        var member = Me with { Guild = "Salisbury Brethren" };
+        string first = null;
+        for (int seed = 0; seed < 8; seed++)
+        {
+            string answer = AutonomousChatQuestions.AnswerSelf("guildwhat", question, member, new Random(seed));
+            Assert.That(answer, Is.Not.EqualTo("Salisbury Brethren"));
+            string focus = answer.Replace("Salisbury Brethren? ", "");
+            first ??= focus;
+            Assert.That(focus, Is.EqualTo(first), "every member of a guild tells the same story");
+        }
+        Assert.That(AutonomousChatQuestions.SelfQuestion("what guild are you in?"), Is.EqualTo("guild"), "which guild is still its name");
+        Assert.That(AutonomousChatQuestions.AnswerSelf("guildwhat", question, Me, new Random(1)), Does.Contain("no").Or.Contain("not"));
+    }
+
     [TestCase("i cant figure out how to equip this", "drag")]
     [TestCase("how do i bind?", "/bind")]
     [TestCase("how do i get unstuck", "/stuck")]

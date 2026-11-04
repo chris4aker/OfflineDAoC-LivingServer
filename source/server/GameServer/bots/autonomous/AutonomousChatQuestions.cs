@@ -104,6 +104,9 @@ public static class AutonomousChatQuestions
         (new Regex(@"\b(whats (ur|your|thy) name|what is (ur|your|thy) name|what be (ur|your|thy) name|who (are|r) (you|u|ye)|(ur|your|thy) name\b|who art thou)"), "name"),
         (new Regex(@"\b((are|r) (you|u) (in a group|grouped|in a grp|solo|soloing)|(you|u) (grouped|solo|soloing)|(you|u) in a (group|grp)|who (are|r) (you|u) (grouped|with)|(ur|your) group)\b"), "group"),
         (new Regex(@"\bwhat (are|r) (you|u|we) (hunting|killing|camping|farming)\b|\bwhat (you|u) (hunting|killing|camping|farming)\b"), "hunting"),
+        // What the guild is about, before which guild (playtest 2026-11-04: "what does your guild do mostly?" by tell drew
+        // only the guild's name).
+        (new Regex(@"\b(what (does|do|is) (ur|your|the) guild (do|doing|into|about|like|focus on)|what (kind|sort|type) of guild|(ur|your) guild (do|into|about|like|focus)|is (ur|your) guild (rvr|pve|casual|hardcore|raiding|social))\b"), "guildwhat"),
         (new Regex(@"\b(what guild (are |r )?(you|u)|(ur|your) guild|(are|r|you|u) (you |u |still )?in a guild)\b"), "guild"),
         (new Regex(@"\b((is this|this) (ur|your) main|(ur|your) main|(an|ur|your) alt|how many (chars|alts|toons|characters) (do )?(you|u) (got|have)|(you|u) (got|have) (a|an|any) (\w+ )?(alt|alts))\b"), "main"),
         (new Regex(@"\b((are |r )?(you|u) busy|(you|u) free (now|atm|rn)|(are |r )?(you|u) (doing anything|in the middle of))\b"), "busy"),
@@ -116,6 +119,17 @@ public static class AutonomousChatQuestions
         (new Regex(@"\b(whats (ur|your) spec|how (are|r) (you|u) specced|(ur|your) spec|what spec (are|r) (you|u)|what (are|r) (you|u) specced|(you|u) (specd|specced|spec d) (for|in|into))\b"), "spec"),
         (new Regex(@"\b((you|u) (going|goin|gonna go|heading|headed|coming) (to|out)\b(?! (sell|buy|make|be|need|pull|rez|heal|help|give|trade|craft)\b)|what (are |r )?(you|u) (doing|up to) (tonight|later|tomorrow)|(you|u) (doing|running) (rvr|df|emain|a raid)|(you|u) (going|goin) \w+ (later|tonight)|whatcha (up to|doing)|(you|u) (heading|headed|going|goin) (anywhere|somewhere)|(you|u) still (lvling|leveling|levelling|pve|rvr|grinding))"), "plans"),
     ];
+
+    private static int StableHash(string text)
+    {
+        unchecked
+        {
+            int hash = 17;
+            foreach (char c in text.ToLowerInvariant())
+                hash = hash * 31 + c;
+            return hash;
+        }
+    }
 
     /// <summary>What a question asks about the bot it is said to ("level", "class", "rank"...), or null.</summary>
     public static string SelfQuestion(string text)
@@ -239,6 +253,22 @@ public static class AutonomousChatQuestions
                 return random.Next(3) switch { 0 => "busy with rl stuff", 1 => "around, just quiet", _ => "work ate my week" };
             case "online":
                 return random.Next(3) switch { 0 => "probably for a bit", 1 => "should be", _ => "maybe later on" };
+            case "guildwhat":
+            {
+                if (string.IsNullOrWhiteSpace(bot.Guild))
+                    return random.Next(2) == 0 ? "no guild right now" : "not in one atm";
+                // One focus per guild, so every member tells the same story.
+                int focus = (int)((uint)StableHash(bot.Guild) % 5);
+                string what = focus switch
+                {
+                    0 => "mostly rvr, some pve when keeps are quiet",
+                    1 => "lvling and helping each other out, pretty casual",
+                    2 => "bit of everything, raids on weekends",
+                    3 => "pve mostly, dungeons and epics",
+                    _ => "rvr groups at night, lvling during the day",
+                };
+                return random.Next(3) == 0 ? $"{bot.Guild}? {what}" : what;
+            }
             case "guild":
                 return string.IsNullOrWhiteSpace(bot.Guild)
                     ? random.Next(2) == 0 ? "no guild right now" : "guildless atm"

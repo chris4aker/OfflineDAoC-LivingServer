@@ -1467,7 +1467,10 @@ public static class AutonomousChatFieldTalk
             foreach (var entry in bot.Inventory.AllItems)
             {
                 if (entry == null || entry.SlotPosition < (int)eInventorySlot.FirstBackpack || entry.SlotPosition > (int)eInventorySlot.LastBackpack ||
-                    string.IsNullOrWhiteSpace(entry.Name) || entry.Price <= best)
+                    string.IsNullOrWhiteSpace(entry.Name) || entry.Price <= best ||
+                    // The level 50 starter kits ("Offline level 50 Reaver 3/10") are no item to sell (playtest 2026-11-04:
+                    // "wts offline level 50 reaver 3/10 pst" in /trade).
+                    !AutonomousBotChatCoordinator.IsAdvertisableItemName(entry.Name))
                     continue;
                 best = entry.Price;
                 item = entry.Name;
