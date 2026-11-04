@@ -58,6 +58,22 @@ here changes gameplay. The WAL settings and the backup design are ported from lo
     (`NETWORK_EXPOSURE Your server can be reached from other computers...`) and says how to turn it off.
   - `build_release_037.py` sets and checks `127.0.0.1` and UPnP off in every shipped `serverconfig.xml`, and
     `assemble_release_037.py` checks the finished package again.
+- **No more "database is locked" on a busy read.** Found by the release-gates work: about 3 runs in 50 on Windows,
+  the pooled WAL test failed when a `SelectAllObjects` read met a brief lock and gave up in under a second.
+  - **The cause:** the read path that `SelectAllObjects` and every other `WhereClause` select use had no retry, unlike
+    the server's other read path. Connections also had no native busy wait (SQLite's default wait is zero).
+  - **Now:** that path retries a brief lock conflict the same way, up to 40 times with a short back-off (about 1.7 s
+    in all), and other errors are not retried. Every SQLite database the server opens waits at least 10 s for a
+    lock (`BusyTimeout`), even with a `serverconfig.xml` that sets none.
+  - **Cleanup:** the command is disposed before its connection, and connections are disposed as well as closed.
+  - **A second race in the same test:** a query clause shared between threads (the empty clause every
+    `SelectAllObjects` uses) was marked ready before its parameters were set. A second thread could then read no
+    parameters and fail with a NullReferenceException. This was seen once in a 50-run loop before the fix. The
+    parameters are now set first.
+  - **Checked:** 6 new tests (`UT_SqlitePooledReadContention`: the retry, its bound, the busy wait, disposal, a clause
+    read by many threads at once, and three rounds of pooled readers and writers on every read path). A local loop (Linux) ran these with the two existing WAL pool tests: 49 of
+    50 runs passed before the fix (the one failure was the NullReferenceException), and 60 of 60 passed after it, run
+    as three processes at once to add CPU contention.
 - **Checked:** these are automated tests only. 17 new server tests (`UT_WorldDatabaseSafety`: the connection string,
   WAL on a file that was journal-off, the integrity check on a damaged file, backup names, rotation, the
   once-a-day rule, the online copy, the stop checkpoint, the ledger move and merge, the network defaults and

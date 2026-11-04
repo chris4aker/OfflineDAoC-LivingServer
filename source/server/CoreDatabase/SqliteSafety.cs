@@ -80,6 +80,21 @@ namespace DOL.Database
             return new Result(builder.ConnectionString, path, changes);
         }
 
+        /// <summary>
+        /// The string with a native busy wait of at least <see cref="MinimumBusyTimeoutMs"/> and nothing else changed
+        /// (every SqliteObjectDatabase gets it). Without BusyTimeout, SQLite's own wait is 0: the PRAGMAs a connection
+        /// runs while it opens fail at once with "database is locked" when another connection holds a lock for a moment.
+        /// </summary>
+        public static string WithBusyTimeout(string connectionString)
+        {
+            var builder = new SQLiteConnectionStringBuilder(connectionString ?? string.Empty);
+            if (builder.ContainsKey("BusyTimeout") && builder.BusyTimeout >= MinimumBusyTimeoutMs)
+                return connectionString;
+
+            builder.BusyTimeout = MinimumBusyTimeoutMs;
+            return builder.ConnectionString;
+        }
+
         private static string Describe(SQLiteConnectionStringBuilder builder, string key) =>
             builder.TryGetValue(key, out object value) && value != null ? value.ToString() : "(none)";
 

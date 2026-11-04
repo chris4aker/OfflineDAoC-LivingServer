@@ -741,7 +741,7 @@ namespace DOL.Database
                         {
                             // A SELECT has no side effects, so a transient
                             // lock-contention error is safe to retry briefly.
-                            bool transientRead = IsTransientReadContention(e) && ++readContentionRetries <= MaxReadContentionRetries;
+                            bool transientRead = WaitBeforeRetryingRead(e, ref readContentionRetries);
                             if (!transientRead && !HandleException(e))
                             {
                                 if (log.IsErrorEnabled)
@@ -749,8 +749,6 @@ namespace DOL.Database
 
                                 throw;
                             }
-                            if (transientRead)
-                                Thread.Sleep(Math.Min(50, 5 * readContentionRetries));
                             repeat = true;
                         }
                     }
@@ -773,67 +771,81 @@ namespace DOL.Database
 
             bool repeat;
             var current = 0;
+            int readContentionRetries = 0;
             do
             {
                 repeat = false;
-                var conn = CreateConnection(ConnectionString);
+                DbConnection conn = null;
 
-                using (var cmd = conn.CreateCommand())
+                try
                 {
-                    try
+                    conn = CreateConnection(ConnectionString);
+
+                    // Living Server 1.1.2 (release-gates finding, about 3 runs in 50 on Windows): this is the path
+                    // SelectAllObjects and every WhereClause select take, and it had no retry, so a brief lock conflict
+                    // while a pooled WAL connection opened ("database is locked" in under a second) failed the read.
+                    // It now retries like the other select path. The command is disposed before the connection.
+                    using (var cmd = conn.CreateCommand())
                     {
-                        OpenConnection(conn);
-                        long start = MonotonicTime.NowMs;
-
-                        foreach (var whereClause in whereClauseBatch.Skip(current))
+                        try
                         {
-                            cmd.CommandText = selectFromExpression + whereClause.ParameterizedText;
-                            FillSQLParameter(whereClause.Parameters, cmd.Parameters);
+                            OpenConnection(conn);
+                            long start = MonotonicTime.NowMs;
 
-                            using (var reader = cmd.ExecuteReader())
+                            foreach (var whereClause in whereClauseBatch.Skip(current))
                             {
-                                try
+                                cmd.CommandText = selectFromExpression + whereClause.ParameterizedText;
+                                FillSQLParameter(whereClause.Parameters, cmd.Parameters);
+
+                                using (var reader = cmd.ExecuteReader())
                                 {
-                                    Reader(reader);
+                                    try
+                                    {
+                                        Reader(reader);
+                                    }
+                                    catch (Exception es)
+                                    {
+                                        if (log.IsWarnEnabled)
+                                            log.WarnFormat("ExecuteSelectImpl: Exception in Select Callback : {2}{0}{2}{1}", es, Environment.StackTrace, Environment.NewLine);
+                                    }
+                                    finally
+                                    {
+                                        reader.Close();
+                                    }
                                 }
-                                catch (Exception es)
-                                {
-                                    if (log.IsWarnEnabled)
-                                        log.WarnFormat("ExecuteSelectImpl: Exception in Select Callback : {2}{0}{2}{1}", es, Environment.StackTrace, Environment.NewLine);
-                                }
-                                finally
-                                {
-                                    reader.Close();
-                                }
+                                current++;
                             }
-                            current++;
+
+                            if (log.IsDebugEnabled)
+                                log.DebugFormat("ExecuteSelectImpl: SQL Select exec time {0}ms", MonotonicTime.NowMs - start);
+                            else if (log.IsWarnEnabled)
+                            {
+                                long diff = MonotonicTime.NowMs - start;
+
+                                if (diff > LONG_EXEC_THRESHOLD)
+                                    log.WarnFormat("ExecuteSelectImpl: SQL Select took {0}ms!\n{1}", diff, selectFromExpression);
+                            }
                         }
-
-                        if (log.IsDebugEnabled)
-                            log.DebugFormat("ExecuteSelectImpl: SQL Select exec time {0}ms", MonotonicTime.NowMs - start);
-                        else if (log.IsWarnEnabled)
+                        catch (Exception e)
                         {
-                            long diff = MonotonicTime.NowMs - start;
+                            // A SELECT has no side effects, so a transient
+                            // lock-contention error is safe to retry briefly.
+                            bool transientRead = WaitBeforeRetryingRead(e, ref readContentionRetries);
+                            if (!transientRead && !HandleException(e))
+                            {
+                                if (log.IsErrorEnabled)
+                                    log.ErrorFormat("ExecuteSelectImpl: UnHandled Exception in Select Query \"{0}\"\n{1}", selectFromExpression, e);
 
-                            if (diff > LONG_EXEC_THRESHOLD)
-                                log.WarnFormat("ExecuteSelectImpl: SQL Select took {0}ms!\n{1}", diff, selectFromExpression);
+                                throw;
+                            }
+                            repeat = true;
                         }
                     }
-                    catch (Exception e)
-                    {
-                        if (!HandleException(e))
-                        {
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat("ExecuteSelectImpl: UnHandled Exception in Select Query \"{0}\"\n{1}", selectFromExpression, e);
-
-                            throw;
-                        }
-                        repeat = true;
-                    }
-                    finally
-                    {
+                }
+                finally
+                {
+                    if (conn != null)
                         CloseConnection(conn);
-                    }
                 }
             }
             while (repeat);
@@ -1089,6 +1101,19 @@ namespace DOL.Database
         protected abstract bool HandleSQLException(Exception e);
 
         private const int MaxReadContentionRetries = 40;
+
+        /// <summary>
+        /// For the SELECT paths: true when <paramref name="e"/> is a transient lock conflict and the bounded retry has
+        /// tries left, after a short back-off (5 ms, 10 ms, ... at most 50 ms; about 1.7 s over 40 tries).
+        /// </summary>
+        protected bool WaitBeforeRetryingRead(Exception e, ref int retries)
+        {
+            if (!IsTransientReadContention(e) || ++retries > MaxReadContentionRetries)
+                return false;
+
+            Thread.Sleep(Math.Min(50, 5 * retries));
+            return true;
+        }
 
         /// <summary>
         /// True for a transient engine lock-contention error on a read. Only
