@@ -281,6 +281,94 @@ namespace DOL.UnitTests
             });
         }
 
+        // A classic step whose monsters drop what it collects (classic-quests.json Custom with Drops and no Kind): the
+        // world report found 44 such quests (Hill Cat Hunt: hill cats drop the teeth Thordia collects).
+
+        [TestCase(KillBy.Player)]
+        [TestCase(KillBy.Gamebot)]
+        public void AClassicCollectStepIsFarmedFromTheMonstersThatDropIt(KillBy killBy)
+        {
+            DbDataQuest row = Row(20003, "Wolf Pelts", S(DataQuest.eStepType.Collect, Lady, collect: "cq_pelt;2"),
+                S(DataQuest.eStepType.InteractFinish, Giver));
+            row.ClassType = ClassicType;
+            var info = new ClassicQuests.QuestInfo();
+            info.Steps.Add(null);
+            info.Steps.Add(new ClassicQuests.StepInfo
+            {
+                Custom = new ClassicQuests.CustomStep { Drops = new() { new ClassicQuests.StepDrop { Mob = "grey wolf", Item = "cq_pelt", Chance = 100 } } },
+            });
+            info.Steps.Add(new ClassicQuests.StepInfo());
+            var config = new ClassicQuests.Config();
+            config.Quests[row.ID] = info;
+
+            QuestWalk walk = QuestWalker.Walk(Harness(World(row), config), row, new WalkOptions { KillBy = killBy });
+            AssertFinished(walk);
+            Assert.That(walk.Steps[0].Action, Does.StartWith("kill grey wolf").And.Contain("give cq_pelt to Lady Elaine"),
+                "the pelts came from the wolves, not from the harness");
+        }
+
+        // A classic step that spawns its monster from an NPC template (classic-quests.json Spawn): the world report's 12
+        // NullReferenceExceptions were the template lookup logging on a logger the harness had not given a queue.
+
+        [Test]
+        public void AClassicEventMonsterIsMadeFromItsNpcTemplate()
+        {
+            DbDataQuest row = Row(20004, "Shades", S(DataQuest.eStepType.Kill, "restless shade"), S(DataQuest.eStepType.InteractFinish, Giver));
+            row.ClassType = ClassicType;
+            var info = new ClassicQuests.QuestInfo();
+            info.Steps.Add(null);
+            info.Steps.Add(new ClassicQuests.StepInfo
+            {
+                Spawn = new ClassicQuests.EventSpawn { Name = "restless shade", TemplateId = 60167680, Level = 12, TriggerRadius = 0 },
+            });
+            info.Steps.Add(new ClassicQuests.StepInfo());
+            var config = new ClassicQuests.Config();
+            config.Quests[row.ID] = info;
+            QuestWorld world = World(row);
+            world.NpcTemplates.Add(new DbNpcTemplate { TemplateId = 60167680, Name = "restless shade", Level = "12", Model = "445" });
+
+            QuestWalk walk = QuestWalker.Walk(Harness(world, config), row);
+            Assert.That(walk.Passed, Is.True, walk.ToString());
+            Assert.That(walk.HarnessProblem, Is.Null);
+        }
+
+        [Test]
+        public void ALoggerWithoutAQueueIsAHarnessProblemNotAQuestFailure()
+        {
+            Exception logged = null;
+            try { new DOL.Logging.Logger(null).Error("an error on a logger nobody set up"); }
+            catch (Exception ex) { logged = ex; }
+            Exception elsewhere = null;
+            try { string text = null; _ = text.Length; }
+            catch (Exception ex) { elsewhere = ex; }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(QuestWalker.HarnessProblemIn(logged), Does.Contain("logger"));
+                Assert.That(QuestWalker.HarnessProblemIn(elsewhere), Is.Null, "any other exception is the quest code's");
+            });
+        }
+
+        // Quest 401 (Human Leg XP Item): its row collects "Human_Leg", the item template is "Human_leg". The server finds
+        // templates without case, so the leg exists and drops, but the collection compared ids with case.
+
+        [Test]
+        public void ACollectionQuestTakesItsItemWhateverTheCaseOfItsId()
+        {
+            var row = new DbDataQuest
+            {
+                ID = 1020, Name = "Human Leg XP Item", StartType = (byte)DataQuest.eStartType.Collection, StartName = "Dera", StartRegionID = 1,
+                Description = "Hey, I am looking for Human Legs, do you have some?", SourceText = "Thank you for the Human Leg!",
+                StepText = "I can't get this from you yet, come back when you are stronger!", TargetText = "Wow a Human Leg, do you have more?",
+                CollectItemTemplate = "Human_Leg", MaxCount = 30, MinLevel = 14, MaxLevel = 16, RewardXP = "1",
+            };
+            QuestWorld world = World(row);
+            world.Add(QuestWorld.Template("Human_leg", "Human Leg"));
+            QuestWalk walk = QuestWalker.Walk(Harness(world), row);
+            Assert.That(walk.Passed, Is.True, walk.ToString());
+            Assert.That(walk.Experience, Is.GreaterThan(0));
+        }
+
         // XP at the XP-by-level rate
 
         [Test]

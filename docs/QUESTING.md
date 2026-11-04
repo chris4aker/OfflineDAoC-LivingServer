@@ -208,4 +208,15 @@ stops the step *before* the delivery (the item is handed when that step ends, an
 player talks to the NPC and nothing happens. The world report shows these as "interacting with ... did not advance" with
 "StepItemTemplate ... not found" from the server's log.
 
-**Next:** run the world report on your PC (above) and send it; it turns "feels broken" into the list of section 2.
+**First world report (2026-11-04, a copy of the owner's test world, 1,540 quest rows):**
+the first run said 1,253 finished. Almost all of the rest were the harness's own gaps, now closed: the player didn't walk
+to the kill, so a gamebot's kill credited nobody (214); classic steps whose monsters drop what they collect weren't
+farmed (44, "unknown classic step kind"); the NPC templates of classic event monsters weren't loaded, and the template
+lookup's logger threw (12; a logger failure is now reported as a harness problem, apart from the quests); and drop
+chances got too few tries (2 or 3 per run by luck). One was a real defect, fixed in 1.2: **quest 401 Human Leg XP Item**
+collects `Human_Leg` while its item template is `Human_leg`; the server finds templates without case, so the leg drops,
+but the collection compared ids with case and Dera never took it. Now all 1,540 finish every walk (the player alone,
+kills by a gamebot in the group, outlevelled before the hand-ins), with no world problems found. That is the harness's
+verdict on the rows and the code, not a play test (section 6, "Reading it honestly").
+
+**Next:** play the three quests of section 1 (a kill quest in a bot group, a delivery, an epic step) as a normal account.

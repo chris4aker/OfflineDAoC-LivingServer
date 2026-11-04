@@ -45,6 +45,7 @@ namespace DOL.UnitTests.QuestHarness
         private readonly List<(DOLEvent Event, DOLEventHandler Handler)> _classicHandlers = new();
         private long _clock;
         private int _players;
+        private bool _loadedTemplates;
 
         private static readonly PropertyInfo Clock = typeof(GameLoop).GetProperty(nameof(GameLoop.GameLoopTime));
 
@@ -61,6 +62,12 @@ namespace DOL.UnitTests.QuestHarness
             // After the server double: reading GameObject's logger runs its static constructor, which reads the
             // database's data quest rows.
             Logs = new LogCapture();
+            // The NPC templates the classic event monsters are made from (NpcTemplateMgr reads them at server start).
+            if (World.NpcTemplates.Count > 0)
+            {
+                NpcTemplateMgr.Init();
+                _loadedTemplates = true;
+            }
             ClassicQuests.Use(classic ?? new ClassicQuests.Config());
             _clock = 1_000_000;
             Clock.SetValue(null, _clock);
@@ -72,6 +79,11 @@ namespace DOL.UnitTests.QuestHarness
             foreach (var (e, handler) in _classicHandlers)
                 GameEventMgr.RemoveHandler(e, handler);
             ClassicQuests.Use(new ClassicQuests.Config());
+            if (_loadedTemplates)
+            {
+                foreach (string table in new[] { "m_mobTemplates", "m_mobTemplatesByName" })
+                    ((System.Collections.Hashtable)typeof(NpcTemplateMgr).GetField(table, HiddenStatic).GetValue(null)).Clear();
+            }
             Clock.SetValue(null, _previousClock);
             GameServer.LoadTestDouble(_previousServer);
             _language.Dispose();
@@ -343,6 +355,7 @@ namespace DOL.UnitTests.QuestHarness
         // Item templates are looked up without case, as the server's pre-cache does (DataTableHandler).
         public Dictionary<string, DbItemTemplate> Items { get; } = new(StringComparer.OrdinalIgnoreCase);
         public List<DbCharacterXDataQuest> CharacterQuests { get; } = new();
+        public List<DbNpcTemplate> NpcTemplates { get; } = new();
         /// <summary>Writes the quest code asked of tables that are world data (DataQuest, ItemTemplate): always none.</summary>
         public List<string> WorldWrites { get; } = new();
         private int _nextId = 1;
@@ -435,6 +448,8 @@ namespace DOL.UnitTests.QuestHarness
                 case nameof(IObjectDatabase.SelectAllObjects):
                     if (type == typeof(DbDataQuest))
                         return World.Quests.Values.Select(QuestWorld.Copy).ToList();
+                    if (type == typeof(DbNpcTemplate))
+                        return World.NpcTemplates.ToList();
                     return Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
                 case nameof(IObjectDatabase.MultipleSelectObjects):
                     return Activator.CreateInstance(typeof(List<>).MakeGenericType(typeof(IList<>).MakeGenericType(type)));
@@ -741,7 +756,7 @@ namespace DOL.UnitTests.QuestHarness
         {
             typeof(DataQuest), typeof(AbstractQuest), typeof(ClassicQuests), typeof(GameObject), typeof(GameLiving),
             typeof(GameNPC), typeof(GamePlayer), typeof(GameLivingInventory), typeof(GamePlayerInventory),
-            typeof(GameInventoryItem), typeof(QuestIndicators), typeof(InventoryLogging), typeof(ScriptMgr), typeof(GameBot),
+            typeof(GameInventoryItem), typeof(QuestIndicators), typeof(InventoryLogging), typeof(ScriptMgr), typeof(GameBot), typeof(NpcTemplateMgr),
             typeof(Group), typeof(QuestMgr), typeof(GameEventMgr), typeof(GameServer), typeof(DOLEventHandlerChain), typeof(DOLEventHandlerCollection),
         };
 

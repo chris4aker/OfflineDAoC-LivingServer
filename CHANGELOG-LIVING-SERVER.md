@@ -32,6 +32,8 @@ Older entries below keep the names they were written with.
   before, until the world report shows how the classic quests use 0.
 - **Deliveries in quests without a collect column can be handed in.** A quest whose row had no CollectItemTemplate at
   all ignored every item you gave, so its delivery steps could never be done.
+- **Collection quests take their item whatever the case of its name.** Dera's Human Leg XP Item never took a human leg:
+  the quest asks for `Human_Leg` and the item is `Human_leg`, and the turn-in compared the names letter case and all.
 - **Classic quest steps run on the game loop.** The classic quests' 5-second check (map markers, the monsters that appear
   for your step, items handed to you, places reached, items held) ran beside the game loop and could race with it ("it
   just didn't count"). The timer now only asks the game loop to run it.
@@ -41,8 +43,9 @@ Older entries below keep the names they were written with.
   walks every quest of a game's world database the same way (read from a copy, never written) and lists which quests
   can't be completed and why. How to run it on your PC: docs/QUESTING.md section 6.
 - **Checked:** automated only. New tests `UT_QuestHarness`, `UT_QuestHarnessWorld`, `UT_EpicChainLinks`; the full server
-  suite passes (4,791 tests); the chain links match `epic_chains.py`'s output exactly on its own test world; the installer
-  tests pass with the new rollback checks. Not played in game; the world report has not been run on a real world yet.
+  suite passes (4,796 tests); the chain links match `epic_chains.py`'s output exactly on its own test world; the installer
+  tests pass with the new rollback checks. The world report on a copy of the owner's test world: all 1,540 quest rows finish
+  every walk. Not played in game.
 
 ## Beta 1.1.2 (in development)
 

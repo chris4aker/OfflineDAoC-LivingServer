@@ -60,6 +60,8 @@ namespace DOL.UnitTests.QuestHarness
         public bool Finished;
         /// <summary>Why the walk stopped short, or null.</summary>
         public string Stuck;
+        /// <summary>The harness itself failed (not the quest): the walk says nothing about the quest.</summary>
+        public string HarnessProblem;
         public int StepsTotal;
         public int StepReached;
         public eQuestIndicator? GiverMarkerBefore;
@@ -95,6 +97,9 @@ namespace DOL.UnitTests.QuestHarness
             }
             catch (Exception ex)
             {
+                walk.HarnessProblem = HarnessProblemIn(ex);
+                if (walk.HarnessProblem != null)
+                    walk.Stuck = "harness problem: " + walk.HarnessProblem;
                 walk.Stuck ??= "the quest code threw " + ex.GetType().Name + ": " + ex.Message;
                 walk.Log.Add(ex.ToString().Split('\n').Take(6).Aggregate((a, b) => a + " | " + b.Trim()));
             }
@@ -311,16 +316,19 @@ namespace DOL.UnitTests.QuestHarness
             if (target != null && (QuestIndicators.PendsHere(quest.StepType) || QuestIndicators.FinishesHere(quest.StepType)))
                 record.TargetMarker = target.GetQuestIndicator(harness.Player);
 
-            if (info?.Custom != null)
+            // A Custom with a Kind is a classic step of its own; one with only Drops (and no Kind) is an ordinary step whose
+            // monsters drop what it collects (ClassicQuests.DropForSteps).
+            if (!string.IsNullOrEmpty(info?.Custom?.Kind))
                 Custom(harness, row, quest, info.Custom, record, options);
             else
-                Standard(harness, row, quest, target, record, options);
+                Standard(harness, row, quest, target, record, options, info?.Custom?.Drops);
 
             record.Advanced = harness.Finished(row.ID) || harness.Active(row.ID)?.Step != step;
             return record;
         }
 
-        private static void Standard(QuestHarness harness, DbDataQuest row, DataQuest quest, HarnessNpc target, StepRecord record, WalkOptions options)
+        private static void Standard(QuestHarness harness, DbDataQuest row, DataQuest quest, HarnessNpc target, StepRecord record, WalkOptions options,
+            List<ClassicQuests.StepDrop> drops)
         {
             int step = quest.Step;
             bool Moved() => harness.Finished(row.ID) || harness.Active(row.ID)?.Step != step;
@@ -369,13 +377,7 @@ namespace DOL.UnitTests.QuestHarness
                     for (int i = 0; i < tries && !Moved(); i++)
                     {
                         HarnessNpc mob = harness.Monster(target.Name, quest.TargetRegion);
-                        GameLiving attacker = options.KillBy switch
-                        {
-                            KillBy.Groupmate => harness.Player.Group.GetPlayersInTheGroup().First(p => p != harness.Player),
-                            KillBy.Gamebot => harness.Player.Group.GetMembersInTheGroup().OfType<GameBot>().First(),
-                            _ => harness.Player,
-                        };
-                        harness.Kill(mob, attacker);
+                        harness.Kill(mob, Attacker(harness, options));
                     }
                     if (!Moved())
                         record.Note = tries > 1 ? $"{tries} kills of {target.Name} never dropped {stepItem}" : $"killing {target.Name} did not advance step {step}";
@@ -385,7 +387,7 @@ namespace DOL.UnitTests.QuestHarness
                 case DataQuest.eStepType.DeliverFinish:
                 case DataQuest.eStepType.Collect:
                 case DataQuest.eStepType.CollectFinish:
-                    HandIn(harness, row, quest, target, record, stepItem, collectId, collectCount, Moved);
+                    HandIn(harness, row, quest, target, record, stepItem, collectId, collectCount, Moved, options, drops);
                     return;
 
                 case DataQuest.eStepType.Search:
@@ -410,8 +412,16 @@ namespace DOL.UnitTests.QuestHarness
             }
         }
 
+        /// <summary>Who makes a kill: the player, a groupmate, or the gamebot in the group (WalkOptions.KillBy).</summary>
+        private static GameLiving Attacker(QuestHarness harness, WalkOptions options) => options.KillBy switch
+        {
+            KillBy.Groupmate => harness.Player.Group.GetPlayersInTheGroup().First(p => p != harness.Player),
+            KillBy.Gamebot => harness.Player.Group.GetMembersInTheGroup().OfType<GameBot>().First(),
+            _ => harness.Player,
+        };
+
         private static void HandIn(QuestHarness harness, DbDataQuest row, DataQuest quest, HarnessNpc target, StepRecord record,
-            string stepItem, string collectId, int collectCount, Func<bool> moved)
+            string stepItem, string collectId, int collectCount, Func<bool> moved, WalkOptions options, List<ClassicQuests.StepDrop> drops)
         {
             int step = quest.Step;
             bool delivery = record.Type is DataQuest.eStepType.Deliver or DataQuest.eStepType.DeliverFinish;
@@ -427,6 +437,22 @@ namespace DOL.UnitTests.QuestHarness
             for (int i = 0; item == null && delivery && i < 13; i++)
             {
                 harness.ClassicRefresh();
+                item = harness.Carried(id);
+            }
+            // A classic step whose monsters drop the item: kill them until the player carries enough.
+            ClassicQuests.StepDrop drop = drops?.FirstOrDefault(d => string.Equals(d.Item, id, StringComparison.OrdinalIgnoreCase));
+            if (drop != null && Count(harness, id) < collectCount)
+            {
+                int kills = 0;
+                for (; kills < options.MaxTriesPerStep && Count(harness, id) < collectCount; kills++)
+                    harness.Kill(harness.Monster(drop.Mob), Attacker(harness, options));
+                if (Count(harness, id) < collectCount)
+                {
+                    record.Action = $"kill {drop.Mob} ({options.KillBy}) for {collectCount} {id}";
+                    record.Note = $"{kills} kills of {drop.Mob} gave {Count(harness, id)} of the {collectCount} {id} step {step} needs";
+                    return;
+                }
+                record.Action = $"kill {drop.Mob} ({options.KillBy}) {kills}x for {collectCount} {id}; ";
                 item = harness.Carried(id);
             }
             if (item == null)
@@ -617,6 +643,31 @@ namespace DOL.UnitTests.QuestHarness
 
         // Row helpers
 
+        private static int Count(QuestHarness harness, string id) =>
+            harness.Player.Inventory.GetItemRange(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack)
+                .Where(i => string.Equals(i.Id_nb, id, StringComparison.OrdinalIgnoreCase)).Sum(i => Math.Max(1, i.Count));
+
+        /// <summary>
+        /// Whether an exception is the harness's own failure rather than the quest code's: a server logger that has no
+        /// queue in the harness (loggers made before logging is set up throw on an error; LogCapture gives the quest
+        /// code's loggers one). Returns what to fix, or null.
+        /// </summary>
+        public static string HarnessProblemIn(Exception ex)
+        {
+            for (Exception e = ex; e != null; e = e.InnerException)
+            {
+                if (e is not NullReferenceException || e.StackTrace == null)
+                    continue;
+                string[] frames = e.StackTrace.Split('\n').Select(f => f.Trim()).Where(f => f.StartsWith("at ", StringComparison.Ordinal)).ToArray();
+                if (frames.Length == 0 || !frames[0].StartsWith("at DOL.Logging.Logger.", StringComparison.Ordinal))
+                    continue;
+                string caller = frames.FirstOrDefault(f => !f.StartsWith("at DOL.Logging.", StringComparison.Ordinal)) ?? "an unknown caller";
+                int paren = caller.IndexOf('(');
+                return $"a server logger has no queue in the harness ({(paren > 0 ? caller[..paren] : caller)}): give its type's logger one in LogCapture";
+            }
+            return null;
+        }
+
         public static string[] Split(string value) => string.IsNullOrEmpty(value) ? Array.Empty<string>() : value.Split('|');
 
         public static int? FirstClass(string allowed)
@@ -644,7 +695,8 @@ namespace DOL.UnitTests.QuestHarness
             return config?.Quests != null && config.Quests.TryGetValue(id, out ClassicQuests.QuestInfo info) ? info : null;
         }
 
-        /// <summary>How many kills or searches a step with a drop chance ("item;25") gets: enough for 99.9%.</summary>
+        /// <summary>How many kills or searches a step with a drop chance ("item;25") gets: enough that a drop that works is missed
+        /// once in a million steps (at 99.9%, the world report's ~1,000 chance steps walked three ways missed two or three by luck).</summary>
         public static int KillTries(string stepItem, int max)
         {
             string[] parts = (stepItem ?? string.Empty).Split(';');
@@ -652,7 +704,7 @@ namespace DOL.UnitTests.QuestHarness
                 return 1;
             if (chance <= 0)
                 return 1;
-            return Math.Min(max, (int)Math.Ceiling(Math.Log(0.001) / Math.Log(1 - chance / 100.0)));
+            return Math.Min(max, (int)Math.Ceiling(Math.Log(0.000001) / Math.Log(1 - chance / 100.0)));
         }
 
         /// <summary>Whether SourceName defines a SEARCH area for this step ("SEARCH;step;text;region;x;y;radius;seconds").</summary>

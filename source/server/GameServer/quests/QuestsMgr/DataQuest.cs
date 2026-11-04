@@ -2380,7 +2380,10 @@ namespace DOL.GS.Quests
 			//log.DebugFormat("Checking collection quests: '{0}' of type '{1}', wants item '{2}'", Name, (eStartType)DBDataQuest.StartType, DBDataQuest.CollectItemTemplate == null ? "" : DBDataQuest.CollectItemTemplate);
 			// check to see if this object has a collection quest and if so accept the item and generate the reward
 			// collection quests do not go into the GamePlayer quest lists
-			if (StartType == eStartType.Collection && item.Id_nb.Equals(DBDataQuest.CollectItemTemplate))
+			// Ids compare without case, as the server finds item templates (its pre-cache is case-insensitive): quest 401
+			// Human Leg XP Item collects "Human_Leg" and its template is "Human_leg", so the leg dropped but Dera never
+			// took it (quest harness world report, 2026-11-04).
+			if (StartType == eStartType.Collection && string.Equals(item.Id_nb, DBDataQuest.CollectItemTemplate, StringComparison.OrdinalIgnoreCase))
 			{
 				DbCharacterXDataQuest charQuest = GetCharacterQuest(player, ID, true);
 

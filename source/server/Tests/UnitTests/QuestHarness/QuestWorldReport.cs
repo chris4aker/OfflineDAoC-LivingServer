@@ -142,6 +142,10 @@ namespace DOL.UnitTests.QuestHarness
         public readonly List<QuestWalk> Walks = new();
         public readonly List<string> WorldProblems = new();
         public bool Passed => Walks.Count > 0 && Walks.All(w => w.Passed);
+        /// <summary>The harness failed on this row (not the quest): what to fix in the harness, or null.</summary>
+        public string HarnessProblem => Walks.FirstOrDefault(w => w.HarnessProblem != null)?.HarnessProblem;
+        /// <summary>The quest can't be completed: a walk failed on the quest's own account.</summary>
+        public bool Fails => !Passed && HarnessProblem == null;
     }
 
     /// <summary>
@@ -156,6 +160,7 @@ namespace DOL.UnitTests.QuestHarness
             var data = new QuestWorld();
             foreach (DbItemTemplate item in world.All<DbItemTemplate>())
                 data.Add(item);
+            data.NpcTemplates.AddRange(world.All<DbNpcTemplate>());
             List<DbDataQuest> rows = world.All<DbDataQuest>().OrderBy(r => r.ID).ToList();
             foreach (DbDataQuest row in rows)
                 data.Add(row);
@@ -293,7 +298,9 @@ namespace DOL.UnitTests.QuestHarness
             text.AppendLine($"- World: `{world.Original}` (SHA-256 `{world.OriginalSha256}`, read from a copy; the file was not changed)");
             text.AppendLine($"- classic-quests.json: {(classicPath == null ? "none" : "`" + classicPath + "`")}");
             text.AppendLine($"- Run: {when:yyyy-MM-dd HH:mm} UTC");
-            text.AppendLine($"- Quest rows walked: {walked}; finished by every walk: {passed}; can't be completed: {walked - passed}");
+            int harness = reports.Count(r => !r.Passed && r.HarnessProblem != null);
+            text.AppendLine($"- Quest rows walked: {walked}; finished by every walk: {passed}; can't be completed: {reports.Count(r => r.Fails)}" +
+                            (harness == 0 ? string.Empty : $"; not walked to the end because of a harness problem: {harness}"));
             text.AppendLine($"- Rows with world problems (giver, targets, items, dependencies): {reports.Count(r => r.WorldProblems.Count > 0)}");
             text.AppendLine();
             text.AppendLine("These are automated walks on the server's quest code with a fake player; none of it was played in game.");
@@ -301,9 +308,20 @@ namespace DOL.UnitTests.QuestHarness
 
             text.AppendLine("## Why quests can't be completed");
             text.AppendLine();
-            foreach (var group in reports.Where(r => !r.Passed).GroupBy(r => Category(r.Walks.First(w => !w.Passed).Stuck)).OrderByDescending(g => g.Count()))
+            foreach (var group in reports.Where(r => r.Fails).GroupBy(r => Category(r.Walks.First(w => !w.Passed).Stuck)).OrderByDescending(g => g.Count()))
                 text.AppendLine($"- {group.Key}: {group.Count()}");
             text.AppendLine();
+
+            if (harness > 0)
+            {
+                text.AppendLine("## Harness problems (not quest failures)");
+                text.AppendLine();
+                text.AppendLine("The harness itself failed on these rows; they say nothing about the quest until the harness is fixed.");
+                text.AppendLine();
+                foreach (var group in reports.Where(r => !r.Passed && r.HarnessProblem != null).GroupBy(r => r.HarnessProblem))
+                    text.AppendLine($"- {group.Key}: {string.Join(", ", group.Select(r => r.Row.ID))}");
+                text.AppendLine();
+            }
 
             text.AppendLine("## Repeatable rows (QUESTING.md defect 5)");
             text.AppendLine();
@@ -315,7 +333,7 @@ namespace DOL.UnitTests.QuestHarness
             text.AppendLine();
             text.AppendLine("| ID | Quest | Start | Levels | Classes | Stuck at | Why |");
             text.AppendLine("|---|---|---|---|---|---|---|");
-            foreach (QuestRowReport report in reports.Where(r => !r.Passed))
+            foreach (QuestRowReport report in reports.Where(r => r.Fails))
             {
                 QuestWalk walk = report.Walks.First(w => !w.Passed);
                 text.AppendLine($"| {report.Row.ID} | {Cell(report.Row.Name)} | {(DataQuest.eStartType)report.Row.StartType} | {report.Row.MinLevel}-{report.Row.MaxLevel} | " +
