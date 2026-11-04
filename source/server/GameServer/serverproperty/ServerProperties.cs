@@ -877,10 +877,19 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Health Regen Rate
 		/// </summary>
-		[ServerProperty("rates", "mana_regen_amount_modifier", "Mana regen amount modifier", 1.0)]
+		/// <summary>
+		/// Power regeneration multiplier. Living Server 1.1.2 (owner 2026-11-03, from a r/daoc report): 1.5 by default. The base
+		/// rate is the pre-1.87 one (patch 1.87 doubled it, about 23 per tick at level 50 instead of 12), so 1.5 is a middle ground.
+		/// Worlds that still had the old untouched default (1) get 1.5 once (LivingServerSettingsUpgrade).
+		/// </summary>
+		[ServerProperty("rates", "mana_regen_amount_modifier", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab.", 1.5)]
 		public static double MANA_REGEN_AMOUNT_MODIFIER;
 
-		[ServerProperty("rates", "mana_regen_amount_halved_below_50_percent", "Should the mana regen amount be halved below 50%? Affects list casters only.", true)]
+		/// <summary>
+		/// The classic list-caster rule: half power regeneration below 50% power. Living Server 1.1.2: off by default, and it applies
+		/// to real players and GameBots alike when on (bots were exempt before).
+		/// </summary>
+		[ServerProperty("rates", "mana_regen_amount_halved_below_50_percent", "Halve power regeneration below 50% power for list casters (the classic rule). Applies to real players and gamebots alike. Off by default in the Living Server; set in the launcher's Living Server tab.", false)]
 		public static bool MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT;
 
 		/// <summary>
@@ -2387,8 +2396,15 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Guilded gamebots pay dues from real looted coin, earn merit points, and bot guild leaders buy guild buffs.
 		/// </summary>
-		[ServerProperty("guild", "bot_guild_economy", "When bot guilds are on: guilded gamebots pay their guild's dues from the real coin they loot, their level-ups earn the guild merit points as a player's do, and bot guild leaders spend 1,000 merit points on a 24-hour guild buff.", true)]
+		[ServerProperty("guild", "bot_guild_economy", "When bot guilds are on: guilded gamebots pay their guild's dues from the real coin they loot, their level-ups and realm ranks earn the guild merit points as a player's do, and bot guild leaders spend 1,000 merit points on a 24-hour guild buff.", true)]
 		public static bool BOT_GUILD_ECONOMY;
+
+		/// <summary>
+		/// Gamebots a player invited into his guild (AutonomousBotGuilds) pay its dues and earn it merit points, as players do
+		/// (owner 2026-11-03, from a r/daoc report). Guild realm points, keep claims and guild buffs still never count a bot.
+		/// </summary>
+		[ServerProperty("guild", "bot_player_guild_economy", "Gamebots you invite into your guild pay its dues (the rate its leader set) from the real coin they loot, and their level-ups and realm ranks earn it merit points as a player's do. Guild realm points, keep claims and guild buffs still never count a bot. Works whether bot guilds are on or off.", true)]
+		public static bool BOT_PLAYER_GUILD_ECONOMY;
 
 		/// <summary>
 		/// Each realm's RvR and raiding bot guilds form one alliance.

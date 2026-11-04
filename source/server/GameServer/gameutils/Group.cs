@@ -599,8 +599,9 @@ namespace DOL.GS
             for (int index = 0; index < eligible.Length; index++)
             {
                 long share = quotient + (index < remainder ? 1 : 0);
+                // Each share pays the bot's guild dues as a solo pickup does (bot or player guild; a full bank leaves it with the bot).
                 if (share > 0)
-                    AutonomousBotEconomy.AddMoney(eligible[index].DatabaseID, share);
+                    AutonomousBotGuildEconomy.PayLootShare(eligible[index], share);
             }
             _ = money.RemoveFromWorld();
             return TryPickUpResult.Success;

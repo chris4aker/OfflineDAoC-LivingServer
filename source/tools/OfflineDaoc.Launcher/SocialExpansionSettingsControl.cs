@@ -28,6 +28,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _guildClaims = Switch("Keep claims", part: true);
     private readonly CheckBox _guildEconomy = Switch("Dues and merit", part: true);
     private readonly CheckBox _guildAlliances = Switch("Alliances", part: true);
+    private readonly CheckBox _playerGuildEconomy = Switch("Bots in your guild");
     private readonly CheckBox _personalities = Switch("Bot personalities");
     private readonly CheckBox _voices = Switch("Bot voices");
     private readonly CheckBox _debates = Switch("/faction debates", part: true);
@@ -47,6 +48,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _rumours = Switch("True rumours");
     private readonly CheckBox _holidays = Switch("Holiday chatter");
     private readonly CheckBox _leeroy = Switch("Leeroy in raids");
+    private readonly NumericUpDown _manaRate = Rate("Power regeneration rate");
+    private readonly CheckBox _manaHalved = Switch("Half below 50% power");
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
     private readonly XpRow _botXp = new("AUTONOMOUS BOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
     private readonly Label _status = new()
@@ -85,7 +88,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BackColor = DaocTheme.Panel;
         ForeColor = DaocTheme.Text;
 
-        var guilds = Card("BOT GUILDS", DaocTheme.Gold, 8);
+        var guilds = Card("BOT GUILDS", DaocTheme.Gold, 9);
         Add(guilds, _guilds, null, "Bots form realm guilds, wear guild names, group with guildmates, recruit you, and accept your /ginvite.");
         Func<SocialExpansionSettings, bool> guildsOn = v => v.BotGuilds;
         Dependent(Caption("BOTS IN GUILDS"), Add(guilds, null, WithUnit(_share, "%"), "Share of eligible autonomous bots placed in a guild."), guildsOn);
@@ -96,6 +99,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Dependent(_guildClaims, Add(guilds, _guildClaims, null, "Bot guilds claim the keeps their realm takes and defend them first. Never while you are inside."), guildsOn);
         Dependent(_guildEconomy, Add(guilds, _guildEconomy, null, "Dues from real loot, merit points from level-ups, and 24-hour guild buffs."), guildsOn);
         Dependent(_guildAlliances, Add(guilds, _guildAlliances, null, "Each realm's RvR and raiding bot guilds form one alliance. Your own guild's alliances are never touched."), guildsOn);
+        Add(guilds, _playerGuildEconomy, null, "Gamebots you /ginvite pay your guild's dues from real loot and earn it merit from levels and realm ranks. Even with bot guilds off.");
 
         var voices = Card("PERSONALITIES AND VOICES", DaocTheme.Gold, 3);
         Add(voices, _personalities, null, "Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, tilting how each bot spends its time. Target a bot and type /personality.");
@@ -121,6 +125,18 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(living, _rumours, null, "Bots pass on true rumours: a rare named that just spawned, an enemy keep with its guards down.");
         Add(living, _holidays, null, "Around Halloween, Christmas, New Year and other holidays on your PC's calendar, bots talk about them and wish you well.");
         Add(living, _leeroy, null, "One end-game raid in twenty has a bot who charges the final boss early, yelling his name. The raid follows him in.");
+
+        var power = Card("POWER REGENERATION", DaocTheme.Gold, 3);
+        Captioned(Caption("REGENERATION RATE", part: false), Add(power, null, WithUnit(_manaRate, "×"),
+            "1 is the classic rate; patch 1.87 doubled it. 1.5 (the default) is a middle ground. Players and bots alike."));
+        Add(power, _manaHalved, null, "The classic rule: list casters regenerate at half speed below half power. Players and bots alike.");
+        var powerNote = new Label
+        {
+            Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
+            Text = "For the classic regeneration choose 1 and switch the halving on. ALL OFF leaves these as they are.",
+        };
+        power.Grid.Controls.Add(powerNote, 0, power.Grid.RowCount - 1);
+        power.Grid.SetColumnSpan(powerNote, 3);
 
         var xp = Card("XP BY LEVEL RANGE", DaocTheme.Gold, 5);
         xp = xp with { Height = TitleRow + 2 * (XpRow.Height + XpRow.ErrorHeight) + Row + CardPadding };
@@ -155,6 +171,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             (guilds.Panel, guilds.Height),
             (voices.Panel, voices.Height),
             (living.Panel, living.Height),
+            (power.Panel, power.Height),
             (xp.Panel, xp.Height),
         ];
         page.RowCount = parts.Length;
@@ -173,12 +190,14 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Controls.Add(scroller);
         scroller.BringToFront();   // docked last, so it fills what the footer leaves
 
-        foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _personalities, _voices, _debates,
+        foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved,
+                     _personalities, _voices, _debates,
                      _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy })
             box.CheckedChanged += (_, _) => Edited();
         _schedule.SelectedIndexChanged += (_, _) => Edited();
         _share.ValueChanged += (_, _) => Edited();
         _minLevel.ValueChanged += (_, _) => Edited();
+        _manaRate.ValueChanged += (_, _) => Edited();
         _playerXp.Changed += Edited;
         _botXp.Changed += Edited;
         _save.Click += (_, _) => SaveSettings();
@@ -224,6 +243,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         GuildClaims = _guildClaims.Checked,
         GuildEconomy = _guildEconomy.Checked,
         GuildAlliances = _guildAlliances.Checked,
+        PlayerGuildEconomy = _playerGuildEconomy.Checked,
         Personalities = _personalities.Checked,
         Voices = _voices.Checked,
         Debates = _debates.Checked,
@@ -245,6 +265,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         LivingLeeroy = _leeroy.Checked,
         PlayerXpByLevel = _playerXp.Value,
         BotXpByLevel = _botXp.Value,
+        ManaRegenModifier = (double)_manaRate.Value,
+        ManaHalvedBelowHalf = _manaHalved.Checked,
     };
 
     private void SetValues(SocialExpansionSettings settings)
@@ -258,6 +280,10 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _guildClaims.Checked = settings.GuildClaims;
         _guildEconomy.Checked = settings.GuildEconomy;
         _guildAlliances.Checked = settings.GuildAlliances;
+        _playerGuildEconomy.Checked = settings.PlayerGuildEconomy;
+        _manaRate.Value = (decimal)Math.Clamp(double.IsNaN(settings.ManaRegenModifier) ? SocialExpansionSettings.DefaultManaRegenModifier : settings.ManaRegenModifier,
+            SocialExpansionSettings.MinManaRegenModifier, SocialExpansionSettings.MaxManaRegenModifier);
+        _manaHalved.Checked = settings.ManaHalvedBelowHalf;
         _personalities.Checked = settings.Personalities;
         _voices.Checked = settings.Voices;
         _debates.Checked = settings.Debates;
@@ -500,6 +526,19 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private static NumericUpDown Number(int minimum, int maximum, string name)
     {
         var number = new NumericUpDown { Minimum = minimum, Maximum = maximum, Width = 62, AccessibleName = name, TextAlign = HorizontalAlignment.Right };
+        StyleInput(number);
+        return number;
+    }
+
+    /// <summary>A multiplier input: 0.25 to 10 in steps of 0.25, two decimals.</summary>
+    private static NumericUpDown Rate(string name)
+    {
+        var number = new NumericUpDown
+        {
+            Minimum = (decimal)SocialExpansionSettings.MinManaRegenModifier, Maximum = (decimal)SocialExpansionSettings.MaxManaRegenModifier,
+            DecimalPlaces = 2, Increment = 0.25m, Value = (decimal)SocialExpansionSettings.DefaultManaRegenModifier,
+            Width = 62, AccessibleName = name, TextAlign = HorizontalAlignment.Right,
+        };
         StyleInput(number);
         return number;
     }

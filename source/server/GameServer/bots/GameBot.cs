@@ -1652,7 +1652,7 @@ namespace DOL.GS
         public TryPickUpResult TryAutoPickUpMoney(GameMoney money)
         {
             money.AssertLockAcquisition();
-            long share = AutonomousBotGuildEconomy.ShareAfterDues(this, money.Value, out long dues);
+            long share = AutonomousBotGuildEconomy.ShareAfterDues(this, money.Value, out long dues, out Guild duesGuild);
             // The whole coin must fit in the purse before it is split, so returned dues can never be lost (audit 2026-10-16).
             // The Epic Special Forces take nothing: the realm's own raiders keep every coin and drop.
             if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || DatabaseID <= 0 ||
@@ -1660,7 +1660,7 @@ namespace DOL.GS
                 !AutonomousBotEconomy.AddMoney(DatabaseID, share))
                 return TryPickUpResult.DoesNotWant;
             // Guild dues come out of the same real coin; a full bank leaves them with the bot.
-            if (!AutonomousBotGuildEconomy.DepositDues(this, dues))
+            if (!AutonomousBotGuildEconomy.DepositDues(duesGuild, dues))
                 AutonomousBotEconomy.AddMoney(DatabaseID, dues);
 
             money.RemoveFromWorld();
@@ -1757,7 +1757,11 @@ namespace DOL.GS
             AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.RealmPoints);
             MarkAutonomousStateDirty();
             if (RealmLevel != previousRealmLevel)
+            {
+                // Realm ranks earn the bot's guild merit points as a player's do (GuildEvents.RealmRankUp).
+                AutonomousBotGuildEconomy.OnBotRealmLevelsGained(this, previousRealmLevel);
                 AutonomousLivingServer.OnBotRealmLevel(this, previousRealmLevel);
+            }
         }
 
         public override void GainRealmPoints(long amount) => GainRealmPoints(amount, true);

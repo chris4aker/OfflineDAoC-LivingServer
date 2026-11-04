@@ -139,8 +139,10 @@ namespace DOL.UnitTests
         [TestCase(typeof(ClassEldritch))] [TestCase(typeof(ClassAnimist))]
         [TestCase(typeof(ClassSorcerer))] [TestCase(typeof(ClassTheurgist))]
         [TestCase(typeof(ClassMentalist))] [TestCase(typeof(ClassNecromancer))]
-        public void BotLowPowerDoesNotHalveRegen_AndFastRestUsesSameRateAcrossRealms(Type type)
+        public void BotLowPowerFollowsThePlayersHalvingRule_AndFastRestUsesSameRateAcrossRealms(Type type)
         {
+            // Living Server 1.1.2 (owner 2026-11-03): one rule for bots and players. With the classic halving on, a list caster
+            // bot below 50% power regenerates at half speed like a player; it used to be exempt.
             bool previousPenalty = GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT;
             double previousModifier = GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_MODIFIER;
             try
@@ -153,8 +155,10 @@ namespace DOL.UnitTests
                     bot.Mana = 20;
                     int low = new PowerRegenerationAmountCalculator().CalcValue(bot, eProperty.PowerRegenerationAmount);
                     bot.Mana = 75;
-                    Assert.That(new PowerRegenerationAmountCalculator().CalcValue(bot, eProperty.PowerRegenerationAmount), Is.EqualTo(low));
-                    Assert.That(low, Is.EqualTo(3));
+                    int high = new PowerRegenerationAmountCalculator().CalcValue(bot, eProperty.PowerRegenerationAmount);
+                    Assert.That(high, Is.EqualTo(3), "level 7: (int)(2.5 + 7 x 0.2)");
+                    Assert.That(low, Is.EqualTo(1), "half of 3.9, as for a player");
+                    // The fast rest floor (10% of max power a tick) is unchanged, so a resting bot recovers the same either way.
                     foreach (int start in new[] { 20, 75 })
                     {
                         bot.Mana = start; SetRecovery(bot, true);
@@ -177,6 +181,58 @@ namespace DOL.UnitTests
                 GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT = previousPenalty;
                 GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_MODIFIER = previousModifier;
             }
+        }
+
+        // Level 7: 2.5 + 7 x 0.2 = 3.9 a tick before the halving and the modifier, for a bot and a player alike.
+        [TestCase(true, 1.0, 20, 1)] [TestCase(true, 1.0, 75, 3)]
+        [TestCase(false, 1.0, 20, 3)] [TestCase(false, 1.0, 75, 3)]
+        [TestCase(false, 1.5, 20, 5)] [TestCase(false, 1.5, 75, 5)]   // the Living Server default: 1.5 and no halving
+        [TestCase(true, 1.5, 20, 2)] [TestCase(true, 1.5, 75, 5)]
+        [TestCase(false, 2.0, 20, 7)]                                  // about patch 1.87's doubled rate
+        public void PowerRegen_BotsAndPlayersFollowOneRule(bool halved, double modifier, int manaPercent, int expected)
+        {
+            bool previousPenalty = GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT;
+            double previousModifier = GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_MODIFIER;
+            try
+            {
+                GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT = halved;
+                GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_MODIFIER = modifier;
+                foreach (bool temporary in new[] { false, true })
+                {
+                    var bot = NewRestBot(typeof(ClassWizard), temporary);
+                    bot.Mana = manaPercent;   // MaxMana is 100
+                    Assert.That(new PowerRegenerationAmountCalculator().CalcValue(bot, eProperty.PowerRegenerationAmount), Is.EqualTo(expected),
+                        temporary ? "companion" : "gamebot");
+                }
+                Player human = Actor<Player>(); human.Class = new ClassWizard(); human.Level = 7; human.Stat = 100;
+                Field(typeof(GameLiving), human, "m_mana", human.MaxMana * manaPercent / 100);
+                Assert.That(human.ManaPercent, Is.EqualTo(manaPercent).Within(1));
+                Assert.That(new PowerRegenerationAmountCalculator().CalcValue(human, eProperty.PowerRegenerationAmount), Is.EqualTo(expected), "player");
+            }
+            finally
+            {
+                GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT = previousPenalty;
+                GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_MODIFIER = previousModifier;
+            }
+        }
+
+        [Test]
+        public void PowerRegen_TheHalvingIsForListCastersOnly()
+        {
+            Assert.That(PowerRegenerationAmountCalculator.IsListCasterBelowHalf(new ClassWizard(), 49), Is.True);
+            Assert.That(PowerRegenerationAmountCalculator.IsListCasterBelowHalf(new ClassWizard(), 50), Is.False);
+            Assert.That(PowerRegenerationAmountCalculator.IsListCasterBelowHalf(new ClassCleric(), 10), Is.False, "a hybrid or healer keeps its rate");
+            Assert.That(PowerRegenerationAmountCalculator.IsListCasterBelowHalf(null, 10), Is.False);
+        }
+
+        [Test]
+        public void PowerRegen_TheLivingServerDefaultsAreFasterAndUnhalved()
+        {
+            var fields = typeof(GS.ServerProperties.Properties);
+            object Default(string field) => ((GS.ServerProperties.ServerPropertyAttribute)fields.GetField(field)
+                .GetCustomAttributes(typeof(GS.ServerProperties.ServerPropertyAttribute), false)[0]).DefaultValue;
+            Assert.That(Default(nameof(GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_MODIFIER)), Is.EqualTo(1.5));
+            Assert.That(Default(nameof(GS.ServerProperties.Properties.MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT)), Is.EqualTo(false));
         }
 
         private RestBot NewRestBot(Type type, bool temporary = false)
