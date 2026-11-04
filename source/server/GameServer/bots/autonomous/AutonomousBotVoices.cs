@@ -207,7 +207,10 @@ public static class AutonomousBotVoices
         !IsCapitalRegion(bot.CurrentRegionID) && (bot.CurrentRegion?.IsDungeon == true || bot.CurrentZone?.IsDungeon == true);
 
     /// <summary>A realm dungeon a bot of this level would use (Kirstena's 2002 ranges, checked against the world database).</summary>
-    public static string DungeonFor(eRealm realm, int level)
+    public static string DungeonFor(eRealm realm, int level) => DungeonFor(realm, level, Random.Shared);
+
+    /// <summary>A dungeon of the realm for a level, drawn with <paramref name="random"/>.</summary>
+    public static string DungeonFor(eRealm realm, int level, Random random)
     {
         (string Name, int Low, int High)[] dungeons = realm switch
         {
@@ -224,7 +227,7 @@ public static class AutonomousBotVoices
         var fitting = dungeons.Where(d => level >= d.Low - 2 && level <= d.High + 2).ToArray();
         if (fitting.Length == 0)
             fitting = dungeons.OrderBy(d => Math.Abs((d.Low + d.High) / 2 - level)).Take(1).ToArray();
-        return fitting.Length == 0 ? null : fitting[Random.Shared.Next(fitting.Length)].Name;
+        return fitting.Length == 0 ? null : fitting[random.Next(fitting.Length)].Name;
     }
 
     public static string CapitalOf(eRealm realm) => realm switch

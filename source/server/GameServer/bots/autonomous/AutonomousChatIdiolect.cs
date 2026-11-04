@@ -29,7 +29,8 @@ public static class AutonomousChatIdiolect
     }
 
     /// <summary>Applies a bot's habits to a line it is about to say. <paramref name="tidy"/>: a careful writer, left alone.</summary>
-    public static string Apply(string text, long botId, bool tidy, Random random)
+    /// <paramref name="terse"/>: a short functional line ("lfg 38 sm"), which takes no "lol" tail and no trailing "...".
+    public static string Apply(string text, long botId, bool tidy, Random random, bool terse = false)
     {
         if (string.IsNullOrEmpty(text) || tidy || botId <= 0)
             return text;
@@ -42,10 +43,10 @@ public static class AutonomousChatIdiolect
         string trimmed = result.TrimEnd();
         if (habits.HasFlag(Habit.DoubleQuestion) && trimmed.EndsWith('?') && !trimmed.EndsWith("??") && random.NextDouble() < 0.5)
             result = trimmed + "?";
-        else if (habits.HasFlag(Habit.TrailOff) && !trimmed.EndsWith('?') && !trimmed.EndsWith('!') && trimmed.Split(' ').Length >= 4 &&
+        else if (!terse && habits.HasFlag(Habit.TrailOff) && !trimmed.EndsWith('?') && !trimmed.EndsWith('!') && trimmed.Split(' ').Length >= 4 &&
                  random.NextDouble() < 0.3)
             result = trimmed.TrimEnd('.') + "...";
-        if (habits.HasFlag(Habit.LolTail) && random.NextDouble() < 0.15 && !Contains(result, "lol") && !Contains(result, "heh") &&
+        if (!terse && habits.HasFlag(Habit.LolTail) && random.NextDouble() < 0.15 && !Contains(result, "lol") && !Contains(result, "heh") &&
             !Contains(result, "haha") && result.Split(' ').Length >= 3)
             result = result.TrimEnd('.') + " lol";
         return result.Length <= AutonomousBotVoiceCorpus.MaxLength ? result : text;

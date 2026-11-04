@@ -23,7 +23,15 @@ public static class AutonomousChatScreen
         @"you (have )?won|u (have )?won|u won a|congratulations you won|free (item|mount|gold|plat|platinum) (for|if|when)|click (here|the link)|" +
         @"(wts|selling|sell) (my |\d+ )?(accounts?|accts?|chars? with account)|buying accounts|account for sale|" +
         @"(cheap|cheapest|fast|instant) (plat|platinum|gold|pl4t|g0ld)|(plat|platinum|gold) (for|4) (sale|cash|\$)|power ?level(ing)? service|" +
-        @"ascii)\b",
+        @"ascii|" +
+        // Beta 1.1.3, round 3: doubling scams, free plat, password and account requests, more fake staff.
+        @"(i|ill|i ll|i will|i can) double (ur|your|it|the)|double (ur|your) (gold|plat|platinum|money|coins|cash)|send (me )?\d+ ?(g|p|gold|plat) (and|&) (i|ill|get)|" +
+        @"free (plat|platinum|gold|money|coins|cash)\b(?! (for|from) (the )?(quest|drop|mob|mobs))|giving away (plat|gold|platinum|free)|" +
+        @"(ur|your|my|the) (password|passwd|pass word|pw|login|log in|acct info|account info|account details|account name)|(password|passwd|login details|account details)\b|" +
+        @"(buy|buying|wtb|purchase) (ur|your|my|an?|any|old) (account|acct|accounts|char|character|toon)|sell (me )?(ur|your) (account|acct|char|character|toon)|" +
+        @"(i am|im|i m|this is) (a |an |the )?(gm|game master|admin|administrator|moderator|mod|staff|mythic( staff| employee)?|support)\b|" +
+        @"(gm|admin|staff|support|mythic) (team|here|speaking|notice|warning)|customer (service|support)|account (review|verification|security)|" +
+        @"(credit|debit) card|paypal|western union|gift card)\b",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     /// <summary>Words that mix letters and digits as chat always has ("lf2m", "rr4", "w00t", "ne1", "3L1").</summary>
@@ -120,6 +128,41 @@ public static class AutonomousChatScreen
         Match lead = Regex.Match(trimmed, @"^(?<name>[A-Z][a-z'\-]{2,15}) (?:ty|thx|thanks|wanna|want|u |you |r u|are you|can u|can you|gz|grats|gn|lol|plz|pls|come|wait|stop|where|did|have|is that)",
             RegexOptions.CultureInvariant);
         return lead.Success && IsName(lead.Groups["name"].Value) ? lead.Groups["name"].Value : null;
+    }
+
+    /// <summary>A bot near a player's /say line: how far, whether the player faces it or targets it, whether it spoke last there.</summary>
+    public readonly record struct Near(long Id, double Distance, bool InFront, bool Targeted, bool SpokeLast);
+
+    /// <summary>"A few metres" for a /say line to one bot (game units; melee reach is about 200).</summary>
+    public const double CloseRadius = 250;
+
+    /// <summary>How soon after a bot's own /say line a player's line is taken as an answer to it.</summary>
+    public const long FollowsBotLineMs = 20_000;
+
+    /// <summary>
+    /// The bot a /say line is aimed at without naming it (Beta 1.1.3, round 3): the one the player targets; else the one whose
+    /// line it follows (within 20 seconds); else the one within a few metres the player faces, when nobody else (bot or player)
+    /// is that close. Null when the line is to the room. Pure.
+    /// </summary>
+    public static long? SayAddressee(IReadOnlyList<Near> bots, int otherPlayersClose)
+    {
+        if (bots == null || bots.Count == 0)
+            return null;
+        foreach (Near bot in bots)
+            if (bot.Targeted)
+                return bot.Id;
+        foreach (Near bot in bots)
+            if (bot.SpokeLast)
+                return bot.Id;
+        Near? close = null;
+        int closeCount = 0;
+        foreach (Near bot in bots)
+            if (bot.Distance <= CloseRadius)
+            {
+                closeCount++;
+                close = bot;
+            }
+        return closeCount == 1 && otherPlayersClose == 0 && close.Value.InFront ? close.Value.Id : null;
     }
 
     /// <summary>

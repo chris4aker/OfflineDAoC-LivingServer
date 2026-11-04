@@ -21,7 +21,7 @@ public static class AutonomousChatQuestions
     /// <param name="Spec">Beta 1.1.3: its trained spec, as a player says it ("44 shield, 30 slash"), or null.</param>
     public sealed record BotFacts(long Id, int Level, string ClassName, eRealm Realm, int RealmLevel, BotPersonalityType Type,
         bool HasSpeed, int Potions, string Guild, int Equipped = 0, int Crafted = 0, bool Busy = false, string Name = null, string Zone = null,
-        int GroupSize = 1, string Target = null, string Spec = null);
+        int GroupSize = 1, string Target = null, string Spec = null, string Weapon = null, int WeaponQuality = 0);
 
     /// <summary>What the bot's realm knows of the world.</summary>
     public sealed record WorldFacts(eRealm DfOwner, IReadOnlyList<(string Name, eRealm Owner, eRealm Home, bool Mounted)> Relics,
@@ -79,8 +79,14 @@ public static class AutonomousChatQuestions
     /// <summary>The realm rank as the server writes it (API/Player.cs GetRR): RealmLevel 0 is 1L0, 13 is 2L3.</summary>
     public static string RankText(int realmLevel) => $"{realmLevel / 10 + 1}L{realmLevel % 10}";
 
+    /// <summary>"what weapon is that", "is that a 99%", "whats that sword": a question about the bot's weapon (Beta 1.1.3, round 3).</summary>
+    private static readonly Regex WeaponAsked = new(
+        @"\b(what (weapon|sword|axe|hammer|staff|bow|spear|blade|blades|mace|club|polearm|2h|2hander) (is that|is it|r u using|are you using|are u using|do (you|u) use|(you|u) using)|whats? (that|ur|your) (weapon|sword|axe|hammer|staff|bow|spear|mace|2h)|(is that|thats|is it) (a |an )?(8\d|9\d|100)( ?%| percent| qual| quality)?$|(is that|thats|is it) (a |an )?(8\d|9\d|100) (sword|axe|hammer|staff|bow|spear|mace|weapon)|what (are|r) (you|u) (using|wielding|swinging)|what (qua|qual|quality|%) is (that|it|ur|your)|(ur|your) (weapon|sword|axe|hammer|staff|bow|spear|mace) (any good|what %|quality))");
+
     private static readonly (Regex Pattern, string Kind)[] SelfQuestions =
     [
+        // Beta 1.1.3, round 3: "how old r u" is the player's age question, before "how old is ur toon" (playing).
+        (new Regex(@"\b(how old (are|r) (you|u)( irl)?|(ur|your) age|asl)\b"), "age"),
         (new Regex(@"\b(what (lvl|level) (are|r) (you|u)|what (lvl|level) (you|u)|(you|u|r u|are you|are u) (\d+|fifty) yet|how high (are|r) (you|u)|(r|are) (u|you) (\d{2}|[5-9])( yet| already| now)?$|ur level|your level|(you|u) (hit|dinged|reach|reached|made) (\d+|fifty)\b)"), "level"),
         (new Regex(@"\b(what class (are|r) (you|u)|what (are|r) (you|u) playing|what do (you|u) play|(you|u|ur) an? (healer|tank|caster|cleric|druid|bard|shaman|healer))\b"), "class"),
         (new Regex(@"\b(whats (ur|your) (rr|realm rank|rank)|what (rr|realm rank) (are|r) (you|u)|(ur|your) (rr|realm rank))\b"), "rank"),
@@ -118,11 +124,14 @@ public static class AutonomousChatQuestions
         // "nice armor where from", "is that a sc suit or drops" said to a bot by name ask about its gear without a "you".
         if (!You.IsMatch(t))
             return Regex.IsMatch(t, @"\bis (that|it) (the|ur|your) epic\b") ? "epic"
+                : WeaponAsked.IsMatch(t) ? "weapon"
                 // "hello, what are we hunting?" to a groupmate (Beta 1.1.3).
                 : Regex.IsMatch(t, @"\bwhat (are|r) we (hunting|killing|camping|farming|doing here)\b") ? "hunting"
                 : SelfQuestions.First(question => question.Kind == "gear").Pattern.IsMatch(t) ? "gear"
                 : Regex.IsMatch(t, @"^((hey|hi|yo|so|oi) )?(what|wat) (class|race) (is that|is this|are those)\b") ? "class"
                 : null;
+        if (WeaponAsked.IsMatch(t))
+            return "weapon";
         foreach ((Regex pattern, string kind) in SelfQuestions)
             if (pattern.IsMatch(t))
                 return kind;
@@ -140,6 +149,31 @@ public static class AutonomousChatQuestions
         ["caster"] = ["Wizard", "Theurgist", "Sorcerer", "Cabalist", "Necromancer", "Runemaster", "Spiritmaster", "Bonedancer",
             "Eldritch", "Enchanter", "Mentalist", "Animist"],
     };
+
+    private static readonly Regex AddressedShort = new(
+        @"^(so |hey |yo |and )?(what|wat|whats|wats|ur|your|what s)? ?(spec|lvl|level|class|rr|rank|realm rank|age|weapon|guild)( is it| r u| are you| are u| u| then)?$");
+
+    /// <summary>
+    /// A bare question to the bot by tell or by name ("spec?", "lvl?", "whats ur rr", "age?"): what it asks about the bot, or
+    /// null (Beta 1.1.3, round 3: "spec?" by tell drew "hmm no clue"). Pure.
+    /// </summary>
+    public static string AddressedSelfQuestion(string text)
+    {
+        string t = Normalize(text);
+        Match match = AddressedShort.Match(t);
+        if (!match.Success)
+            return SelfQuestion(text);
+        return match.Groups[3].Value switch
+        {
+            "spec" => "spec",
+            "lvl" or "level" => "level",
+            "class" => "class",
+            "rr" or "rank" or "realm rank" => "rank",
+            "age" => "age",
+            "weapon" => "weapon",
+            _ => "guild",
+        };
+    }
 
     /// <summary>The bot's answer to a question about itself, from what is true of it. Pure.</summary>
     public static string AnswerSelf(string kind, string text, BotFacts bot, Random random)
@@ -276,6 +310,21 @@ public static class AutonomousChatQuestions
                         ? random.Next(2) == 0 ? "maybe, not sure yet" : "probably at some point"
                         : random.Next(2) == 0 ? "nah, leveling" : "prob just leveling",
                 };
+            case "age":
+            {
+                // One answer per bot, the same each time it is asked.
+                int age = 17 + (int)(Math.Abs(bot.Id) % 26);
+                return (bot.Id / 26 % 4) switch { 0 => $"{age}", 1 => $"{age}, u?", 2 => $"{age} lol why", _ => $"{age}" };
+            }
+            case "weapon":
+            {
+                if (string.IsNullOrWhiteSpace(bot.Weapon))
+                    return random.Next(2) == 0 ? "nothing special, whatever i had" : "just a merchant one lol";
+                string weapon = bot.Weapon.ToLowerInvariant();
+                return bot.WeaponQuality >= 94
+                    ? random.Next(3) switch { 0 => $"{bot.WeaponQuality}% {weapon}", 1 => $"its a {bot.WeaponQuality}% {weapon}", _ => $"{weapon}, {bot.WeaponQuality}%" }
+                    : random.Next(2) == 0 ? $"just a {weapon}" : $"{weapon}, only {Math.Max(bot.WeaponQuality, 85)}% lol";
+            }
             case "spec":
                 if (!string.IsNullOrEmpty(bot.Spec))
                     return random.Next(3) switch { 0 => bot.Spec, 1 => $"{bot.Spec} atm", _ => $"{bot.Spec}, rest is spread" };

@@ -18,10 +18,23 @@ public static class AutonomousChatFiller
     /// <summary>
     /// Whether an ambient corpus line may be said in this channel now: a lore musing (the blind spot-the-bot judge's top tell,
     /// "the bind stone and i are on first name terms") only now and then as a /faction opener, never in /say or /broadcast;
-    /// the Realm Exchange only in a seller's own listing (the owner's feature stays; bots don't plug it unasked). Pure but for
-    /// the random draw.
+    /// a crafted line (a joke, a tip, life filler, a long remark) as rarely; the Realm Exchange only in a seller's own listing
+    /// (the owner's feature stays; bots don't plug it unasked). Pure but for the random draws.
     /// </summary>
-    public static bool AmbientAllowed(VC.Line line, bool faction, Random random)
+    public static bool AmbientAllowed(VC.Line line, bool faction, Random random) => AmbientFilter(faction, random)(line);
+
+    /// <summary>
+    /// The ambient line filter for one opener: whether this opener may be a musing or a crafted line is drawn once, so the
+    /// shares hold however many lines the picker looks at (Beta 1.1.3, round 3). Pure but for the draws.
+    /// </summary>
+    public static Func<VC.Line, bool> AmbientFilter(bool faction, Random random)
+    {
+        bool crafted = faction && random.NextDouble() < CraftedShare;
+        bool musing = faction && random.NextDouble() < MusingShare;
+        return line => AmbientFits(line, crafted, musing);
+    }
+
+    private static bool AmbientFits(VC.Line line, bool crafted, bool musing)
     {
         if (line == null)
             return false;
@@ -31,15 +44,54 @@ public static class AutonomousChatFiller
         if (IsGeneric(line.Text))
             return false;
         if (IsMusing(line))
-            return faction && random.NextDouble() < MusingShare;
-        // Polished one-liners written as jokes (round 2: "the healer npc greets me by name now") are rarer, and only realm-wide.
-        if (line.Kind == "ambient" && line.Invites == "joke")
-            return faction && random.NextDouble() < QuipShare;
-        return true;
+            return musing;
+        return crafted || !IsCrafted(line);
     }
 
-    /// <summary>The share of joke one-liners a /faction opener may still use (round 2).</summary>
-    public const double QuipShare = 0.2;
+    /// <summary>The share of /faction openers that may still be a crafted line (round 3; the rest come from the field, see AutonomousChatFieldTalk).</summary>
+    public const double CraftedShare = 0.12;
+
+    /// <summary>The share of joke one-liners a /faction opener may still use (round 2; round 3 folds them into the crafted share).</summary>
+    public const double QuipShare = CraftedShare;
+
+    private static readonly HashSet<string> CraftedTopics = new(StringComparer.Ordinal)
+    {
+        "lore", "general", "class", "classes", "realm_pride", "places", "places_here", "veteran", "latenight", "reallife", "explorer",
+        "daredevil", "leveler", "socialite", "nolifer", "crafter", "boast", "banter", "roles", "newbie", "lowlevel", "capital", "town",
+        "solo", "evening", "night", "waiting", "mobs", "leveling", "crafting", "money", "gripe", "dungeon", "travel",
+        "frontier", "frontier_alb", "frontier_mid", "frontier_hib", "battlegrounds",
+    };
+
+    private static readonly string[] CraftedMarkers =
+    [
+        // unprompted tips
+        "always ", "never pull", "remember to", "dont forget", "don't forget", "make sure", "worth every", "is worth it", "the key is", "tip:",
+        "trick is", "golden rule", "rule:", "you should", "u should", "if you ", "if u ", "best way to", "learned the hard way", "the hard way",
+        // life filler
+        " work", " job", "my boss", " kids", "my wife", "my husband", "girlfriend", "boyfriend", "school", "homework", "coffee", "my cat", "my dog",
+        "weekend", "monday", "the wife", "my mom", "my dad",
+        // narration
+        "feels like", "nothing like", "best kind of", "smells like", "i miss", "makes the time", "is louder than", "like a ", "like geese",
+    ];
+
+    /// <summary>
+    /// A written line that reads as written: a joke, a tip, life filler, narration, or anything over nine words (round 3: real
+    /// ambient lines were short and about the game in front of you). Pure.
+    /// </summary>
+    public static bool IsCrafted(VC.Line line)
+    {
+        if (line == null)
+            return false;
+        if (line.Invites == "joke")
+            return true;
+        if (line.Kind is "ambient" or "rvr" or "camp" or "group" && line.Topic != null && CraftedTopics.Contains(line.Topic))
+            return true;
+        string text = line.Text ?? string.Empty;
+        if (text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 9)
+            return true;
+        string padded = " " + text.ToLowerInvariant() + " ";
+        return CraftedMarkers.Any(marker => padded.Contains(marker, StringComparison.Ordinal));
+    }
 
     private static readonly string[] MusingMarkers =
     [
@@ -88,6 +140,10 @@ public static class AutonomousChatFiller
         "sure thing", "yeah that is about right", "that is about right", "yeah thats about right", "anyway back to it", "mhm anyway",
         "interesting thought", "good point", "very true", "so true", "lol so true", "true that", "cant disagree", "cant argue there",
         "fair", "i suppose", "i guess so", "maybe maybe not", "if you say so", "you never know", "who knows",
+        // Beta 1.1.3, round 3: agreement filler between bots in /faction and /say.
+        "cant say youre wrong", "cant say you are wrong", "that is pretty accurate", "pretty accurate", "thats accurate", "so accurate", "accurate",
+        "this is true", "thats true", "that is true", "true enough", "fair enough i guess", "cant argue", "couldnt agree more",
+        "you got that right", "ya got that right", "spot on", "exactly", "exactly this", "pretty much", "pretty much yeah", "basically",
     };
 
     /// <summary>

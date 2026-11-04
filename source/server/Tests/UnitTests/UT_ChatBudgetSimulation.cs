@@ -69,7 +69,10 @@ public class UT_ChatBudgetSimulation
             list.Add(text);
         }
 
-        /// <summary>The share of a channel's lines that repeat an earlier line of it exactly, and nearly (same skeleton).</summary>
+        /// <summary>
+        /// The share of a channel's lines that repeat an earlier line of it exactly, and nearly (same skeleton). Short reactions
+        /// ("gz", "omw", "lol rip": two words at most) are left out, as the live near-copy rule leaves them out (Beta 1.1.3).
+        /// </summary>
         public (double Exact, double Near) Duplicates(string channel)
         {
             if (!Lines.TryGetValue(channel, out var list) || list.Count == 0)
@@ -79,9 +82,12 @@ public class UT_ChatBudgetSimulation
             int exact = 0, near = 0;
             foreach (string text in list)
             {
+                string skeleton = AutonomousChatFiller.Skeleton(text);
+                if (skeleton.IndexOf(' ') < 0 || skeleton.Split(' ').Length <= 2 && skeleton.Length <= 10)
+                    continue;
                 if (!seen.Add(text))
                     exact++;
-                if (!skeletons.Add(AutonomousChatFiller.Skeleton(text)))
+                if (!skeletons.Add(skeleton))
                     near++;
             }
             return (exact / (double)list.Count, near / (double)list.Count);
@@ -127,6 +133,29 @@ public class UT_ChatBudgetSimulation
         ["item"] = "a bone-studded ring", ["count"] = "3", ["player"] = "Wynn", ["q"] = "", ["bubbles"] = "4",
     };
 
+    private static readonly string[][] Zones =
+    [
+        ["Camelot Hills", "Salisbury Plains", "Black Mountains South"], ["Campacorentin Forest", "Llyn Barfog", "Black Mountains North"],
+        ["Lyonesse", "Dartmoor", "Cornwall"], ["Avalon Marsh", "Lyonesse", "Dartmoor"], ["Salisbury Plains", "Dartmoor", "Avalon Marsh"],
+    ];
+
+    private static readonly string[] Monsters = ["large skeleton", "bwgan horde", "black wolf", "ghoulic viper", "moor boogey", "giant spider"];
+    private static readonly string[] Items = ["Bone-studded Ring", "Ghostly Cloak", "Silver Bracer", "Rusty Gladius", "Spider Silk", "Kobold Tooth",
+        "Bloodied Chain Hauberk", "Studded Leggings", "Glowing Gem", "Pristine Bear Pelt"];
+
+    /// <summary>A modelled frontier: seven keeps, one lost to Midgard, one under attack for the first half of the hour, one relic gone.</summary>
+    private static AutonomousChatFieldTalk.WorldView WorldAt(long now) => new(
+        ["Caer Benowyc", "Caer Berkstead", "Caer Erasleigh", "Caer Boldiam", "Caer Sursbrooke", "Caer Hurbury"],
+        now < 40 * 60_000 ? ["Caer Benowyc"] : [], ["Caer Renaris"], ["Midgard"], 0, 1, "Forest Sauvage");
+
+    private static AutonomousChatFieldTalk.Facts FactsOf(Bot bot, long now, Random random) => new(
+        bot.Id, eRealm.Albion, bot.Class, bot.Level, Zones[Math.Min(4, bot.Level / 10)][(int)(bot.Id % 3)],
+        AutonomousBotVoices.DungeonFor(eRealm.Albion, bot.Level, random), bot.Level >= 40 && bot.Id % 4 == 0, false, bot.NearPlayer || bot.InBroadcast,
+        !bot.Solo, bot.Solo ? 1 : 2 + (int)(bot.Id % 6), random.NextDouble() < 0.03, random.NextDouble() < 0.02, bot.Id % 7 == 0, bot.Solo && bot.Id % 2 == 0,
+        Monsters[(int)(bot.Id % Monsters.Length)], bot.Id % 3 == 0 ? null : Items[(int)((bot.Id / 3) % Items.Length)], 85 + (int)(bot.Id % 16),
+        (bot.Id / 3) % Items.Length is 0 or 1 or 2 or 3 or 6 or 7,
+        bot.Id % 11 == 0 ? "Camelot" : null, 1 + (int)(bot.Id % 9), 20, bot.Class is "Cleric" or "Friar", WorldAt(now));
+
     private static bool Pick(VC.RecentLines recent, DateTime now, Random random, string kind, VC.Speaker speaker, out VC.Picked picked,
         string answers = null, Func<VC.Line, bool> filter = null) =>
         Corpus.TryPick(new VC.Request(kind, speaker, Slots(speaker), recent, now, random)
@@ -141,6 +170,7 @@ public class UT_ChatBudgetSimulation
         var recent = new VC.RecentLines();
         var meter = new Budget.ChannelMeter();
         var fresh = new AutonomousChatFiller.RecentTexts();
+        var field = new AutonomousChatFieldTalk.Memory();
         Budget.Settings settings = Budget.Current;
         var result = new Result { Minutes = 60 };
         var all = new List<Bot>(bots);
@@ -317,6 +347,24 @@ public class UT_ChatBudgetSimulation
                 options.RemoveAt(pick);
                 if (meter.TryStart(choice.Channel, 1, now, choice.Band, random) is Budget.Verdict.HoldCeiling or Budget.Verdict.HoldGap)
                     continue;
+                // Beta 1.1.3, round 3: most unprompted lines are field lines from the bot's state (AutonomousChatFieldTalk).
+                if (random.NextDouble() < AutonomousChatFieldTalk.Share(choice.Name) &&
+                    AutonomousChatFieldTalk.Line(choice.Name, FactsOf(bot, now, random), field, random) is { } said)
+                {
+                    string text = AutonomousChatIdiolect.Apply(said.Text, bot.Id, false, random, terse: true);
+                    if (!fresh.TryAdd(choice.Name.GetHashCode(), text, now))
+                        continue;
+                    Say(now, choice.Name, text, bot.Id);
+                    if (choice.Name == "broadcast" && said.Kind == "wts")
+                        Macro(now, text, bot.Id);
+                    if (choice.Name is "faction" or "say" && said.Answer != null && random.NextDouble() < AutonomousChatFieldTalk.AnswerChance(said.Kind))
+                    {
+                        Bot mate = all[random.Next(all.Count)];
+                        dueReplies.Add((now + AutonomousBotChatCoordinator.ReplyDelayMs(said.Answer, 0, random), choice.Name,
+                            AutonomousChatIdiolect.Apply(said.Answer, mate.Id, false, random, terse: true), mate.Id));
+                    }
+                    return true;
+                }
                 string kind = choice.Name switch
                 {
                     "lfg" => "lfg", "trade" => "trade",
@@ -324,25 +372,30 @@ public class UT_ChatBudgetSimulation
                     _ => AmbientKind(bot, choice.Name == "faction") is var k && k is "lfg" or "trade" && random.NextDouble() < 0.7 ? "ambient" : k,
                 };
                 VC.Speaker speaker = choice.Name == "broadcast" ? SpeakerOf(bot, "in_town") : SpeakerOf(bot);
-                if (!Pick(recent, clock, random, kind, speaker, out VC.Picked picked, filter: line => AutonomousChatFiller.AmbientAllowed(line, choice.Name != "say", random)) &&
+                if (!Pick(recent, clock, random, kind, speaker, out VC.Picked picked, filter: AutonomousChatFiller.AmbientFilter(choice.Name is "faction" or "broadcast", random)) &&
                     (choice.Name is "lfg" or "trade" || !Pick(recent, clock, random, "ambient", speaker, out picked)))
                     continue;
                 if (!fresh.TryAdd(choice.Name.GetHashCode(), picked.Text, now))
                     continue;
                 Say(now, choice.Name, picked.Text, bot.Id);
                 // A seller's macro (AutonomousChatBroadcast.StartMacro): again every few minutes for a while, under the ceiling.
-                if (choice.Name == "broadcast" && picked.Line?.Kind == "trade" && random.NextDouble() < settings.MacroChance)
-                {
-                    long until = now + 1_000L * (settings.MacroLastMinS + random.Next(settings.MacroLastMaxS - settings.MacroLastMinS));
-                    for (long at = now + 1_000L * (settings.MacroRepeatMinS + random.Next(settings.MacroRepeatMaxS - settings.MacroRepeatMinS)); at < until;
-                         at += 1_000L * (settings.MacroRepeatMinS + random.Next(settings.MacroRepeatMaxS - settings.MacroRepeatMinS)))
-                        macros.Add((at, picked.Text, bot.Id));
-                }
+                if (choice.Name == "broadcast" && picked.Line?.Kind == "trade")
+                    Macro(now, picked.Text, bot.Id);
                 if (choice.Name is "faction" or "say")
                     Replies(now, bot, choice.Name, picked, clock);
                 return true;
             }
             return false;
+        }
+
+        void Macro(long now, string text, long who)
+        {
+            if (random.NextDouble() >= settings.MacroChance)
+                return;
+            long until = now + 1_000L * (settings.MacroLastMinS + random.Next(settings.MacroLastMaxS - settings.MacroLastMinS));
+            for (long at = now + 1_000L * (settings.MacroRepeatMinS + random.Next(settings.MacroRepeatMaxS - settings.MacroRepeatMinS)); at < until;
+                 at += 1_000L * (settings.MacroRepeatMinS + random.Next(settings.MacroRepeatMaxS - settings.MacroRepeatMinS)))
+                macros.Add((at, text, who));
         }
 
         string AmbientKind(Bot bot, bool faction)
@@ -418,6 +471,10 @@ public class UT_ChatBudgetSimulation
         else
             TestContext.Out.WriteLine(report);
         Result before = results[(1_000, false)], after = results[(1_000, true)];
+        // TALK_BUDGET_SAMPLE: the first lines of each channel at 1,000 bots, to read.
+        string sample = Environment.GetEnvironmentVariable("TALK_BUDGET_SAMPLE");
+        if (!string.IsNullOrEmpty(sample))
+            File.WriteAllLines(sample, Channels.Where(after.Lines.ContainsKey).SelectMany(c => after.Lines[c].Take(80).Select(line => $"[{c}] {line}")));
         Assert.That(after.Total, Is.GreaterThan(before.Total * 1.5), "the ambient world at 1,000 bots a realm is clearly busier");
         Assert.That(after.PerMinute("faction"), Is.GreaterThan(before.PerMinute("faction")), "/faction is busier");
         Assert.That(results[(300, true)].Total, Is.GreaterThanOrEqualTo(results[(300, false)].Total), "and never quieter at 300");

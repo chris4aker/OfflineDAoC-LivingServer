@@ -22,7 +22,8 @@ public class UT_ChatFiller
     {
         VC.Line lore = Line("ambient", "lore", "heard lady nimue still walks the marsh");
         VC.Line musing = Line("ambient", "banter", "the bind stone and i are on first name terms");
-        VC.Line plain = Line("ambient", "general", "anyone want to duo near prydwen");
+        // Round 3: a "general" topic line counts as crafted; a short grouping line is plain.
+        VC.Line plain = Line("ambient", "grouping", "anyone want to duo near prydwen");
         Assert.That(AutonomousChatFiller.IsMusing(lore) && AutonomousChatFiller.IsMusing(musing));
         Assert.That(AutonomousChatFiller.IsMusing(plain), Is.False);
         Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.01)), Is.True, "now and then in /faction");

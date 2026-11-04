@@ -208,6 +208,9 @@ public static class AutonomousBotGroupChatter
             BotChatTranscript.Player("group", player, message);
         if (!AutonomousBotVoices.Enabled || player?.Group == null || string.IsNullOrWhiteSpace(message))
             return;
+        // Beta 1.1.3: the screen runs before every route, the thread follow-ups too (round 3).
+        if (AutonomousBotChatCoordinator.Screened(player, message, "group"))
+            return;
         Group group = player.Group;
         GameBot[] mates = group.GetMembersInTheGroup().OfType<GameBot>()
             .Where(mate => mate.IsAutonomousWorldBot && !mate.IsTemporaryGroupHelper && mate.IsAlive && !mate.InCombat && !mate.IsCasting)
@@ -226,9 +229,7 @@ public static class AutonomousBotGroupChatter
             next.LastPlayerReply = GameLoop.GameLoopTime;
         }
         GameBot[] named = mates.Where(mate => AutonomousBotChatCoordinator.ContainsMention(message, mate.Name)).ToArray();
-        // Beta 1.1.3, second pass: spam draws nothing; a line to someone else in the group draws at most a laugh (light teasing).
-        if (AutonomousBotChatCoordinator.Screened(player, message, "group"))
-            return;
+        // Beta 1.1.3, second pass: a line to someone else in the group draws at most a laugh (light teasing).
         if (named.Length == 0 && AutonomousChatScreen.OtherAddressee(message, null) is { } other)
         {
             eAutonomousChatIntent toOther = AutonomousChatIntentModel.Predict(message);
@@ -257,7 +258,7 @@ public static class AutonomousBotGroupChatter
         eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
         // The talking update audit: "adds!!", "INC", "train coming RUN" in a PvE group drew "im nowhere near the frontier". A
         // groupmate takes the warning ("got it", "on it").
-        if (intent == eAutonomousChatIntent.Alarm)
+        if (AutonomousChatReplyBudget.IsAlarm(message, intent))
         {
             GameBot heard = pool[0];
             // Beta 1.1.3, round 2: an inc call gets a terse "where" or "on it", not "ty for the heads up" (too polite for a call).

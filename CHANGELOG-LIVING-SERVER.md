@@ -34,7 +34,12 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
     question nobody knows gets one "dunno" in a group or guild. No more "ask around maybe" to a question anyone could
     answer.
   - **Silence where it belongs:** spam and scams (links, real-money prices, fake GMs, "your account has been flagged",
-    account sales) and lines said to someone else by name get no answer.
+    account sales, doubling offers, free plat, password requests) and lines said to someone else by name get no answer.
+  - **Honest answers:** "spec?", "lvl?", "what weapon is that?" by tell get the bot's real spec, level and weapon. A call
+    gets "where?" or "omw", a cry for heals the truth for the bot's class, a "45+" raid "too low lol" from a level 30,
+    and a thane never says "np" to thanks for heals.
+  - **/say to the bot in front of you:** a /say line counts as said to a bot when you target it, answer its line, or
+    stand right in front of it with nobody else close.
   - **More places to ask:** bots answer `/advice` when one of them knows, and questions in `/broadcast` and chat groups
     by tell.
   - **About themselves:** bots answer their name, class, spec, level, zone, group and what they're hunting from their
@@ -51,7 +56,11 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
 - **One answer, then maybe a few more.** A question gets one answer. A hello or a ding gets a few. A joke now and then
   draws a "lol" or "+1". Replies take longer to type the longer they are, at each bot's own typing speed.
 - **Less filler.**
-  - **Musings and quips:** lore musings and polished jokes appear only rarely in /faction, never as replies.
+  - **Chat about the game in front of them:** most unprompted lines are now short and real: "lfg 38 zerk", "wts 97%
+    chain hauberk /send", "anyone up for vendo?", "inc beno", "who has rena?", from the bot's real level, class, zone and
+    bags and the realm's real keeps and relics.
+  - **Musings and quips:** lore musings, polished jokes, tips and life stories appear only rarely in /faction, never as
+    replies.
   - **Generic agreement:** "good question", "very true" and the like are gone.
   - **Repeats and polish:** near-copies are dropped, the wordings of one line rest for hours once one is said, and most
     bots type in lowercase. Typos are rarer and look typed (a dropped letter).
@@ -63,8 +72,8 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
   busy each channel around you is.
 - **Checked:**
   - **Automated:** new tests for every part; the full server suite passes.
-  - **Simulated evening at 1,000 bots a realm:** about 11.7 lines a minute across the channels a player hears, up from
-    about 2.0. At 300 bots it's about 5.2, up from 1.3.
+  - **Simulated evening at 1,000 bots a realm:** about 11.4 lines a minute across the channels a player hears, up from
+    about 2.0. At 300 bots it's about 4.7, up from 1.3.
   - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to about 70%, and about a quarter
     of those lines now get no reply. Those lines are known, so this is a regression check; a fresh blind round judges
     the result.

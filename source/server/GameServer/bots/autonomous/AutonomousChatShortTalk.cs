@@ -489,6 +489,25 @@ public static class AutonomousChatShortTalk
         return null;
     }
 
+    /// <summary>
+    /// The level band a group or raid post asks for: "45+", "lvl 40 and up", "20-25", "need 45 or higher", "50s only", or null
+    /// (Beta 1.1.3, round 3: a level 30 bot accepted a "45+" raid). Pure.
+    /// </summary>
+    public static (int Min, int Max)? LevelBand(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return null;
+        string t = text.ToLowerInvariant();
+        System.Text.RegularExpressions.Match range = System.Text.RegularExpressions.Regex.Match(t, @"\b(?:lvl |level |lv )?([1-4]?\d|50) ?(?:-|to) ?([1-4]?\d|50)\b(?! ?(?:%|g\b|p\b|s\b|min|mins|gold|plat))");
+        if (range.Success && int.TryParse(range.Groups[1].Value, out int low) && int.TryParse(range.Groups[2].Value, out int high) &&
+            low >= 5 && high <= 50 && low < high && high - low <= 15)
+            return (low, high);
+        System.Text.RegularExpressions.Match plus = System.Text.RegularExpressions.Regex.Match(t, @"\b(?:lvl |level |lv )?([1-4]\d|50) ?(?:\+|plus\b| and up\b| or higher\b| or above\b| or better\b|s only\b| only\b)");
+        if (plus.Success && int.TryParse(plus.Groups[1].Value, out int min) && min >= 10)
+            return (min, 50);
+        return null;
+    }
+
     /// <summary>The role a group asks for ("lfm vendo need healer pst" -> "healer"; "need tank and cc" -> "tank"), or null. Pure.</summary>
     public static string NeededRole(string text)
     {

@@ -28,7 +28,11 @@ public static class AutonomousChatArbiter
             return null;
         if (route is "shape player_mishap" or "intent laugh" or "intent banter laugh" or "shape player_goodnews" || intent == eAutonomousChatIntent.Laugh)
             return route == "shape player_goodnews" ? "cheer" : "laugh";
-        if (route is "shape ask_opinion" or "shape complaint" or "context rvr" || route.StartsWith("shape player_rl", StringComparison.Ordinal))
+        // A call ("zerg at mmg", "free rps at amg") draws its own short answers, never "+1" or "same" (Beta 1.1.3, round 3).
+        if (route.StartsWith("context inc", StringComparison.Ordinal) || route.StartsWith("context rvr", StringComparison.Ordinal) ||
+            intent is eAutonomousChatIntent.Alarm or eAutonomousChatIntent.RvR or eAutonomousChatIntent.Rez)
+            return null;
+        if (route is "shape ask_opinion" or "shape complaint" || route.StartsWith("shape player_rl", StringComparison.Ordinal))
             return "agree";
         return null;
     }

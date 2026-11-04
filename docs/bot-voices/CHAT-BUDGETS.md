@@ -104,6 +104,17 @@ server first, and a bot killed by or paying back its nemesis each start a burst 
 
 A keep lost, a relic moved or Darkness Falls also reaches the capital's /broadcast, wherever a player can hear it.
 
+### What bots say unprompted
+
+Most unprompted lines (about nine in ten) are short and about the game in front of the bot, built from what is true right
+now: its level, class, zone, camp and the best item in its bags, and the realm's keeps and relics. "lfg 38 zerk",
+"wts 97% chain hauberk /send", "anyone up for vendo?", "inc beno", "who has rena?", "ding 27", "brb food". A keep call
+names a keep that really is under attack; "who has X?" asks about a keep the realm really lost; a ding comes only right
+after a level. Lines are lowercase, rarely punctuated, with the period's abbreviations ("sm", "zerk", "pst", "x me").
+Now and then another bot answers one with the truth: the keep's owner, "omw", "gz". A realm doesn't hear the same line
+twice in an evening. The rest come from the written lines, kept to the short and plain ones; jokes, tips, life stories and
+long remarks are rare and only in /faction.
+
 ### Filler rules
 
 - **Musings:** lines that narrate the game instead of playing it appear only now and then as /faction openers. They
@@ -111,7 +122,7 @@ A keep lost, a relic moved or Darkness Falls also reaches the capital's /broadca
 - **The Realm Exchange:** bots name it only to someone asking where to buy or sell, and in a seller's own listing.
 - **Generic agreement** ("good question", "happy to help", "sounds familiar", "very true"): never said, as an opener
   or a reply.
-- **Quips and polished jokes:** rare, and only as /faction openers.
+- **Quips, jokes, tips and life filler:** rare, and only as /faction openers.
 - **Template families:** a line written with several wordings counts as one; once a bot says one wording, the realm
   doesn't hear its siblings for six hours.
 - **Typing slips:** rarer, and mostly a dropped letter in a long word, never the first letter.
@@ -143,8 +154,18 @@ most common fault. The second showed bots had become too quiet, so the fallbacks
   that is highest in a group and lowest in /faction. A question nobody can answer gets one "dunno" in a group or guild,
   less often in /say and /faction.
 - **Silence** is kept for spam and scams (links, real-money prices, "your account has been flagged", fake GMs, account
-  sales), for a line said to someone else by name (in a group, a light laugh now and then is fine), and for lines
-  nobody could read.
+  sales or purchases, doubling offers, free plat, password requests), for a line said to someone else by name (in a
+  group, a light laugh now and then is fine), and for lines nobody could read. A scam is never answered, not even with
+  "oh ok".
+- **Questions about the bot** (its level, class, spec, weapon, age) are answered from what is true of it, also as a bare
+  "spec?" by tell. An offer to sell it something gets "how much?" or a no.
+- **Reactions fit the line:** a call gets "where?" or "omw", never "lol same"; "need heal!!" gets "cant heal sry" or
+  "use a pot" from a bot with no heals; a joke a laugh, bad luck an "ugh".
+- **Honest about itself:** a bot outside a group's or raid's level band ("45+") says "too low lol" instead of joining,
+  and never takes thanks for heals or a rez it can't give.
+- **/say to one bot:** a /say line is for one bot when it names it, when the player targets it, when it answers that
+  bot's own line within 20 seconds, or when the player stands right in front of it with nobody else that close. That bot
+  answers, once.
 
 Roleplay gets an answer in kind: a challenge, a question, a greeting, a mourning (a bow), a toast (a toast back), or
 otherwise an emote such as *nods*.
