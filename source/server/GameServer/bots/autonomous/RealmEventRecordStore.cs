@@ -116,6 +116,26 @@ public static class RealmEventRecordStore
         outcomes.Reverse();
         return outcomes;
     }
+    /// <summary>Details of a keep siege the bots answered because a player attacked (not a bot siege; SiegeDefenseBalance skips it).</summary>
+    public const string PlayerAttackPrefix="Player attack: ";
+    /// <summary>
+    /// The last <paramref name="limit"/> finished bot keep sieges, oldest first: true when the keep was captured, false when
+    /// it was defended. Rally failures, superseded rallies and sieges answering a player's attack are not results.
+    /// </summary>
+    public static List<bool> SiegeResults(string path,int limit)
+    {
+        var results=new List<bool>();
+        if(!File.Exists(path))return results;
+        using var connection=Open(path,true);using var command=connection.CreateCommand();
+        command.CommandText="SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Events'";
+        if((long)command.ExecuteScalar()==0)return results;
+        command.CommandText="SELECT Outcome FROM Events WHERE Kind IN ('Keep','Relic keep') AND Outcome IN ('Captured','Defended','Defended (timeout)') AND substr(Details,1,length(@player))<>@player AND EndedUtc<>'' ORDER BY EndedUtc DESC,Id DESC LIMIT @limit";
+        command.Parameters.AddWithValue("@player",PlayerAttackPrefix);command.Parameters.AddWithValue("@limit",limit);
+        using var reader=command.ExecuteReader();
+        while(reader.Read())results.Add(reader.GetString(0)=="Captured");
+        results.Reverse();
+        return results;
+    }
     public static (List<RealmEventRecord> Rows,long Total) Read(string path,string realm,string kind,string outcome,string search,int page,int pageSize=100)
     {
         if(!File.Exists(path))return (new(),0);

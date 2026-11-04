@@ -95,6 +95,35 @@ realm that feels like a full server at its busiest. How it works and how to tune
     the result.
   - **In game:** not yet played.
 
+**Raids that keep winning bring fewer bots** (2026-11-04)
+- The goal for raids is "mostly successful, high stakes, never a guarantee": about two wins in three. Losing raids
+  already got help (the Epic Special Forces). Now the other half: a raid that keeps winning recruits fewer of the
+  realm's level 50s next time, so the stakes stay real. **The bosses are never weakened**; only the raid's own size
+  changes.
+- **How it works:** every automatic raid (dragons, epic dungeons, Summoner's Hall, Darkness Falls and the other raid
+  dungeons) is sized from that encounter's own record in the Herald. Each win trims the next raid there by 5% of its full
+  size; each defeat or time-out adds 10% back. Two wins and a defeat leave it where it was, so the size settles where
+  the encounter is won about two times in three. It never goes under 60% of the full size (a 200 raid needs 120, a 120
+  raid 72) or above the full size; past that the Special Forces are the help. Both levers read the same record, and
+  raids cut short by a restart, beaten to the boss by another realm, failed rallies and stopped raids don't count.
+  Example: Summoner's Hall won three times in a row gathers 170 and recruits up to 256, not 200 and 300.
+- **Parties that answer on their own** now stop at the raid's recruit limit too. Before, they could fill any automatic
+  raid to 300, so a trimmed raid would have grown back to full size by itself.
+- **The Special Forces** count the last six wins and losses, as intended; before, a server restart or a failed rally
+  could push a real result out of their count.
+- Raids you start from the launcher keep their 200 and 300. `realm_raid_minimum_bots`, when set, is used as it stands.
+- **Settings:** `realm_raid_target_win_percent` (67; 0 turns the sizing off), `realm_raid_smallest_size_percent` (60),
+  `realm_raid_largest_size_percent` (100) and `realm_raid_win_trim_percent` (5).
+- **Seeing it:** `/lstest raid` names the size and why, and the server log has a `REALM_RAID_SIZED` line for every
+  automatic raid (full size, size, required, recruit limit, wins and losses, the Special Forces it would get, and why);
+  `REALM_RAID_SCHEDULED` now shows the size too.
+- **Keep sieges:** the siege balance that moves the defenders' share by up to 0.25 forgot everything at every restart,
+  and needed three sieges in one session before it moved at all. It is now rebuilt from the Herald's last bot sieges at
+  start (sieges answering a player's attack are left out), and every change is logged (`SIEGE_DEFENSE_BALANCE`).
+- Checked: unit tests (`UT_RealmRaidWinBalance`), including a simulation of 2,000 raids against a simple model of the
+  chance to win by raid size, which settles at 66-68% wins. The model is a guess, not a measurement; not played in game
+  yet.
+
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
   back by twos and threes to a dragon at full health, until it died or the four hours ran out, and the Special Forces

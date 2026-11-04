@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DOL.GS.ServerProperties;
 
 namespace DOL.GS;
@@ -44,6 +45,128 @@ public static class RealmRaidRecruitmentPolicy
     /// <summary>A scaled raid recruits a quarter above what it needs, in whole parties, so late losses don't stall it (a full 200 raid keeps the 300 cap).</summary>
     public static int RecruitCap(int required) => required >= AutonomousMinimumPresent ? MaximumBots
         : Math.Min(MaximumBots, (required * 5 / 4 + 7) / 8 * 8);
+
+    // ---- Win-rate sizing (owner 2026-10-19: "mostly successful... high stakes but not a guarantee", about 2 in 3) ----
+    // "If it keeps winning easily, it needs fewer bots next time, so the stakes stay up." The bosses are never touched:
+    // the lever is the raid's own size. Each automatic raid (dragons too) is sized from its own encounter's record:
+    // a win trims WinTrim points of today's size, a loss adds WinTrim * target / (100 - target) back (10 at 67%), so
+    // the size stops moving exactly where the encounter is won target% of the time. It is a running total, not an
+    // average of the last few: it settles at the size that wins 2 in 3, not at a size that still wins more often.
+    // The other lever is the Epic Special Forces (AutonomousEpicSpecialForces): the help a raid gets after a wipe, from
+    // the same record. Size sets the stakes; the Special Forces answer a loss.
+
+    [ServerProperty("autonomous", "realm_raid_target_win_percent",
+        "Automatic realm raids (dragons too) are sized so each encounter is won about this often: a win trims the next raid at that encounter, a loss adds back. 0 = off (every automatic raid recruits its full size). Bosses are never weakened.", 67)]
+    public static int TargetWinPercentSetting = 67;
+
+    [ServerProperty("autonomous", "realm_raid_smallest_size_percent",
+        "The smallest an automatic realm raid that keeps winning gets, as a percentage of its full size (the size realm_raid_minimum_bots and the roster give it).", 60)]
+    public static int SmallestSizePercentSetting = 60;
+
+    [ServerProperty("autonomous", "realm_raid_largest_size_percent",
+        "The largest an automatic realm raid that keeps losing gets, as a percentage of its full size (100 = never above it; beyond that the Epic Special Forces help).", 100)]
+    public static int LargestSizePercentSetting = 100;
+
+    [ServerProperty("autonomous", "realm_raid_win_trim_percent",
+        "Points of its full size an automatic realm raid loses for each win at its encounter (a loss adds more back, so the size settles at the target win rate).", 5)]
+    public static int WinTrimPercentSetting = 5;
+
+    /// <summary>The sizing rules, made safe: target 50-90% (0 = off), smallest 25-100%, largest smallest-150%, trim 1-25 points.</summary>
+    public readonly record struct SizingRules(int TargetWinPercent, int SmallestPercent, int LargestPercent, int WinTrimPercent)
+    {
+        public static readonly SizingRules Default = new(67, 60, 100, 5);
+        public bool On => TargetWinPercent > 0;
+        public SizingRules Normalized()
+        {
+            int smallest = Math.Clamp(SmallestPercent, 25, 100);
+            return new(TargetWinPercent <= 0 ? 0 : Math.Clamp(TargetWinPercent, 50, 90), smallest,
+                Math.Clamp(LargestPercent, smallest, 150), Math.Clamp(WinTrimPercent, 1, 25));
+        }
+        /// <summary>Points a loss adds back: the trim times target / (100 - target), so wins and losses balance at the target.</summary>
+        public double LossAddPercent => On ? WinTrimPercent * (double)TargetWinPercent / (100 - TargetWinPercent) : 0;
+    }
+
+    public static SizingRules RulesFromSettings() =>
+        new SizingRules(TargetWinPercentSetting, SmallestSizePercentSetting, LargestSizePercentSetting, WinTrimPercentSetting).Normalized();
+
+    /// <summary>
+    /// The raid's size as a percentage of its full size, from its encounter's results (oldest first; only wins and
+    /// losses count): it starts at the largest size (100% = today's) and each win trims, each loss adds, never past
+    /// the limits.
+    /// </summary>
+    public static double SizePercent(IEnumerable<string> outcomesOldestFirst, SizingRules rules)
+    {
+        rules = rules.Normalized();
+        if (!rules.On) return 100;
+        double percent = rules.LargestPercent;
+        foreach (string outcome in outcomesOldestFirst ?? [])
+        {
+            if (AutonomousEpicSpecialForces.IsWin(outcome)) percent -= rules.WinTrimPercent;
+            else if (AutonomousEpicSpecialForces.IsLoss(outcome)) percent += rules.LossAddPercent;
+            else continue;
+            percent = Math.Clamp(percent, rules.SmallestPercent, rules.LargestPercent);
+        }
+        return percent;
+    }
+
+    /// <summary>Bots a sized raid must stage: its share of the full size, never under 40 or over 300.</summary>
+    public static int SizedRequired(int fullRequired, double percent) =>
+        Math.Clamp((int)Math.Round(fullRequired * percent / 100), Math.Min(MinimumScaledBots, fullRequired), MaximumBots);
+
+    /// <summary>The bots a sized raid recruits: the same share of the full raid's cap, in whole parties, never under
+    /// what it must stage. Scaling the cap itself keeps it smooth: a 200 raid at 95% recruits 288, not RecruitCap(190) = 240.</summary>
+    public static int SizedRecruitCap(int fullRequired, double percent, int required) =>
+        Math.Clamp((int)Math.Ceiling(RecruitCap(fullRequired) * percent / 100 / 8) * 8, Math.Min(required, MaximumBots), MaximumBots);
+
+    /// <summary>An automatic raid's size and help, and why (REALM_RAID_SIZED).</summary>
+    public sealed record RaidSizing(int FullRequired, double Percent, int Required, int RecruitCap, int Wins, int Losses,
+        int Streak, int SpecialForcesOnWipe, bool SpecialForcesFromStart, string Why);
+
+    /// <summary>
+    /// One policy for both levers: the raid's size (this record's running total) and the Epic Special Forces call-up
+    /// (its last six results). <paramref name="fixedSize"/> = the owner set realm_raid_minimum_bots, which is honoured
+    /// as it stands; <paramref name="recordLoaded"/> false = the ledger is still loading, so today's size.
+    /// </summary>
+    public static RaidSizing Size(int fullRequired, IReadOnlyCollection<string> outcomesOldestFirst, SizingRules rules,
+        bool recordLoaded = true, bool fixedSize = false)
+    {
+        rules = rules.Normalized();
+        string[] counted = (outcomesOldestFirst ?? []).Where(o => AutonomousEpicSpecialForces.IsWin(o) || AutonomousEpicSpecialForces.IsLoss(o)).ToArray();
+        int wins = counted.Count(AutonomousEpicSpecialForces.IsWin), losses = counted.Length - wins;
+        int streak = 0;
+        for (int i = counted.Length - 1; i >= 0; i--)
+        {
+            bool win = AutonomousEpicSpecialForces.IsWin(counted[i]);
+            if (streak != 0 && win != streak > 0) break;
+            streak += win ? 1 : -1;
+        }
+        int callUp = AutonomousEpicSpecialForces.CallUpParties(counted);
+        bool fromStart = AutonomousEpicSpecialForces.ComesFromStart(counted);
+        string why;
+        double percent;
+        if (fixedSize) { percent = 100; why = "realm_raid_minimum_bots is set: that size, not sized by results"; }
+        else if (!rules.On) { percent = 100; why = "sizing is off (realm_raid_target_win_percent 0)"; }
+        else if (!recordLoaded) { percent = 100; why = "the record is still loading: full size"; }
+        else
+        {
+            percent = SizePercent(counted, rules);
+            string run = streak > 1 ? $", the last {streak} won" : streak < -1 ? $", the last {-streak} lost" : "";
+            why = counted.Length == 0 ? "no wins or losses here yet: full size"
+                : $"{wins} won and {losses} lost here{run}: each win trims {rules.WinTrimPercent} points, each loss adds " +
+                  $"{rules.LossAddPercent:0.#}, aiming at {rules.TargetWinPercent}% wins" +
+                  (percent <= rules.SmallestPercent ? " (at the smallest size)" : percent >= rules.LargestPercent ? " (at the largest size)" : "");
+        }
+        int required = percent == 100 ? fullRequired : SizedRequired(fullRequired, percent);
+        int cap = percent == 100 ? RecruitCap(fullRequired) : SizedRecruitCap(fullRequired, percent, required);
+        return new(fullRequired, percent, required, cap, wins, losses, streak, callUp, fromStart, why);
+    }
+
+    /// <summary>The log line of an automatic raid's size (REALM_RAID_SIZED), written when its rally opens.</summary>
+    public static string SizedLine(string eventId, string realm, RaidSizing sizing) =>
+        $"REALM_RAID_SIZED event={eventId} realm={realm} full={sizing.FullRequired} size={sizing.Percent:0.#}% " +
+        $"required={sizing.Required} recruitCap={sizing.RecruitCap} won={sizing.Wins} lost={sizing.Losses} " +
+        $"specialForcesOnWipe={sizing.SpecialForcesOnWipe * AutonomousEpicSpecialForces.PartySize} " +
+        $"specialForcesFromStart={sizing.SpecialForcesFromStart} why=\"{sizing.Why}\"";
 
     /// <summary>A realm's next scheduled raid opens when the slot is due, none of its raids is running and it has enough level 50s online.</summary>
     public static bool ScheduledRaidDue(long now, long due, bool realmHasRaid, int onlineLevelFifty, int scheduleMinutes) =>
@@ -160,11 +283,16 @@ public static class RealmRaidRecruitmentPolicy
     /// <summary>
     /// Why a raid cannot take another party, or null when it can. The realm's limits (38 parties, 300 bots) count only
     /// the realm's own parties and bots; the Epic Special Forces come on top of them, up to their own three parties.
+    /// <paramref name="recruitCap"/>: an automatic raid's own cap (its sized RecruitCap), which a party that answers on
+    /// its own (TryJoin) is held to as well; before 2026-11-04 those parties could fill any raid to 300, so a raid
+    /// trimmed after its wins would have grown back to full size by itself.
     /// </summary>
-    public static string PartyCapRefusal(bool specialForces, int realmParties, int realmBots, int specialForcesParties, int joining) =>
+    public static string PartyCapRefusal(bool specialForces, int realmParties, int realmBots, int specialForcesParties, int joining,
+        int recruitCap = MaximumBots) =>
         specialForces
             ? specialForcesParties >= AutonomousEpicSpecialForces.MaximumParties
                 ? $"the raid already has {specialForcesParties} Special Forces parties" : null
             : realmParties >= MaximumParties ? $"the raid already has its {MaximumParties} parties"
-            : realmBots + joining > MaximumBots ? $"the raid would have {realmBots + joining} of its {MaximumBots} bots" : null;
+            : realmBots + joining > Math.Min(MaximumBots, recruitCap)
+                ? $"the raid would have {realmBots + joining} of its {Math.Min(MaximumBots, recruitCap)} bots" : null;
 }

@@ -58,6 +58,10 @@ public static class RealmEventRecords
             if(moved!="none")DOL.Logging.LoggerManager.Create(typeof(RealmEventRecords)).Info($"REALM_EVENT_LEDGER {moved}: {LegacyPathName} -> {PathName}");
         }
         catch(Exception ex){DOL.Logging.LoggerManager.Create(typeof(RealmEventRecords)).Warn($"Realm event ledger could not be moved to {PathName}; the old file stays where it is.",ex);}
+        // 2026-11-04: the siege balance survives a restart (it was in memory only). One small read at start, before any
+        // siege of this session can end; an unreadable ledger leaves the balance where a fresh start puts it.
+        try{SiegeDefenseBalance.Load(RealmEventRecordStore.SiegeResults(PathName,SiegeDefenseBalance.LedgerResults));}
+        catch(Exception ex){SiegeDefenseBalance.Load([]);DOL.Logging.LoggerManager.Create(typeof(RealmEventRecords)).Warn("Siege balance could not read the realm event ledger; it starts from the setting.",ex);}
         _writer=new Timer(_=>Flush(),null,1000,2000);
     }
     [GameServerStoppedEvent]

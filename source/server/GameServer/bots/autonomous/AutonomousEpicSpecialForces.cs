@@ -19,6 +19,10 @@ namespace DOL.GS;
 /// next time, every defeat one more, from the dungeon's last <see cref="HistoryDepth"/> results in the event
 /// ledger (the launcher's Herald). A realm that keeps winning stops calling them.
 ///
+/// The other half of the same balance (2026-11-04): a raid that keeps winning also recruits fewer of the realm's own
+/// bots next time (RealmRaidRecruitmentPolicy.Size). Both read one record per encounter (RealmRaidRecord) and count the
+/// same results: wins (<see cref="IsWin"/>) and losses (<see cref="IsLoss"/>), nothing else.
+///
 /// Each member is made for one raid and lives in memory only: never saved, never in the roster or the population
 /// count, no loot or coin from the raid (that stays with the realm's own raiders), and removed when the raid ends.
 /// A crash or restart leaves nothing behind.
@@ -47,10 +51,6 @@ public static class AutonomousEpicSpecialForces
     private static readonly HashSet<string> Answered = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, List<GameBot>> Members = new(StringComparer.Ordinal);
     private static readonly HashSet<GameBot> SeenOutOfWorld = new();
-    // Each dungeon's last results, oldest first; loaded once from the ledger off the game loop.
-    private static Dictionary<string, List<string>> _history;
-    private static readonly List<(string Id, string Outcome)> EndedBeforeLoad = new();
-    private static int _loading;
     private static long _nextCleanup;
 
     /// <summary>One party per realm, in the shape every expedition party takes: tank, healers, support, damage.</summary>
@@ -68,11 +68,12 @@ public static class AutonomousEpicSpecialForces
     /// <summary>Beaten by the fight: defeated at an encounter, or still fighting when the four hours ran out.</summary>
     public static bool IsLoss(string outcome) => outcome is "Defeated" or "Timed out";
 
-    /// <summary>Parties the realm sends (0-3): three with no record, one fewer per win, one more per loss.</summary>
+    /// <summary>Parties the realm sends (0-3): three with no record, one fewer per win, one more per loss, over the last
+    /// <see cref="HistoryDepth"/> counted results (an interrupted or failed raid no longer pushes a result out).</summary>
     public static int CallUpParties(IEnumerable<string> outcomesOldestFirst)
     {
         int parties = MaximumParties;
-        foreach (string outcome in outcomesOldestFirst ?? [])
+        foreach (string outcome in (outcomesOldestFirst ?? []).Where(o => IsWin(o) || IsLoss(o)).TakeLast(HistoryDepth))
         {
             if (IsWin(outcome)) parties = Math.Max(0, parties - 1);
             else if (IsLoss(outcome)) parties = Math.Min(MaximumParties, parties + 1);
@@ -91,10 +92,7 @@ public static class AutonomousEpicSpecialForces
 
     public static bool ComesFromStart(string raidId) => ComesFromStart(History(raidId));
 
-    private static List<string> History(string raidId)
-    {
-        lock (Sync) return _history?.GetValueOrDefault(raidId)?.ToList() ?? [];
-    }
+    private static List<string> History(string raidId) => RealmRaidRecord.Get(raidId);
 
     /// <summary>Asks for the raid's call-up; the members arrive on the next coordinator tick. Safe inside the raid lock.</summary>
     public static void Request(string raidId, string raidName, eRealm realm, string reason)
@@ -121,40 +119,14 @@ public static class AutonomousEpicSpecialForces
         {
             Answered.Remove(raidId);
             Dismissals.Enqueue(raidId);
-            if (_history == null) EndedBeforeLoad.Add((raidId, outcome));
-            else Append(_history, raidId, outcome);
         }
-    }
-
-    private static void Append(Dictionary<string, List<string>> history, string raidId, string outcome)
-    {
-        if (!history.TryGetValue(raidId, out var list)) history[raidId] = list = new();
-        list.Add(outcome);
-        if (list.Count > HistoryDepth) list.RemoveRange(0, list.Count - HistoryDepth);
-    }
-
-    private static void EnsureHistoryLoading()
-    {
-        if (Interlocked.Exchange(ref _loading, 1) != 0) return;
-        string[] ids = AutonomousRealmRaid.Definitions.Select(d => d.Id).ToArray();
-        Task.Run(() =>
-        {
-            var loaded = new Dictionary<string, List<string>>(StringComparer.Ordinal);
-            foreach (string id in ids)
-                loaded[id] = RealmEventRecords.FinishedOutcomes(id, HistoryDepth);
-            lock (Sync)
-            {
-                foreach (var (id, outcome) in EndedBeforeLoad) Append(loaded, id, outcome);
-                EndedBeforeLoad.Clear();
-                _history = loaded;
-            }
-        });
+        RealmRaidRecord.Add(raidId, outcome);
     }
 
     /// <summary>Game loop, coordinator phase, outside the raid and coordinator locks: arrivals and departures.</summary>
     public static void Pulse(long now)
     {
-        EnsureHistoryLoading();
+        RealmRaidRecord.EnsureLoading();
         while (true)
         {
             string dismissed;
@@ -312,20 +284,12 @@ public static class AutonomousEpicSpecialForces
         lock (Sync)
         {
             Calls.Clear(); Dismissals.Clear(); Answered.Clear(); Members.Clear(); SeenOutOfWorld.Clear();
-            _history = new(StringComparer.Ordinal); EndedBeforeLoad.Clear();
         }
-        Interlocked.Exchange(ref _loading, 1);
+        RealmRaidRecord.ResetForTests();
     }
 
     /// <summary>Tests only: the dungeon's record, oldest first.</summary>
-    public static void SetHistoryForTests(string raidId, params string[] outcomes)
-    {
-        lock (Sync)
-        {
-            _history ??= new(StringComparer.Ordinal);
-            _history[raidId] = outcomes.ToList();
-        }
-    }
+    public static void SetHistoryForTests(string raidId, params string[] outcomes) => RealmRaidRecord.SetForTests(raidId, outcomes);
 
     /// <summary>Tests only: calls waiting to arrive.</summary>
     public static int PendingCalls
