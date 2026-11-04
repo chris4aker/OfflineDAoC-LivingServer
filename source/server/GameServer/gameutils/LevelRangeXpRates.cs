@@ -40,6 +40,18 @@ namespace DOL.GS
                 ref _playerCache, "xp_rate_by_level");
         }
 
+        /// <summary>
+        /// The kill rate for a real player character of this level: <see cref="PlayerRate(int)"/>, times
+        /// <c>rvr_zones_xp_rate</c> in RvR regions and zones (battlegrounds, frontiers, Darkness Falls), as gamebots get.
+        /// </summary>
+        public static double PlayerRate(int level, bool isRvR)
+        {
+            double rate = PlayerRate(level);
+            if (isRvR)
+                rate *= ServerProperties.Properties.RvR_XP_RATE;
+            return rate;
+        }
+
         /// <summary>The rate for an autonomous gamebot of this level (before the RvR-zone multiplier).</summary>
         public static double BotRate(int level)
         {

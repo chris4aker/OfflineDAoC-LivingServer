@@ -3057,12 +3057,18 @@ public static partial class AutonomousBotGroupCoordinator
         activeSize >= 3 && activeSize <= 8 && activeSize == lockedSize &&
         tanks > 0 && healers > 0 && attackers > 0;
 
+    // Owner 2026-10-29: a Necromancer is never the puller unless the party can offer no one else, and a Cleric only
+    // when no other class can pull.
+    public static int PullerClassPenalty(GameBot member) => member.CharacterClass == null ? 0 :
+        (eCharacterClass)member.CharacterClass.ID switch { eCharacterClass.Necromancer => 2, eCharacterClass.Cleric => 1, _ => 0 };
+
     private static GameBot ChooseLockedPvePuller(Session session, GameBot[] members)
     {
         if (AutonomousDefensivePull.UsesDefensivePull(true, members.Length, members.All(member => member.Level == 50)))
         {
             GameBot ranged = members.Where(AutonomousDefensivePull.HasRangedPull)
-                .OrderBy(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role)
+                .OrderBy(PullerClassPenalty)
+                .ThenBy(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role)
                     ? role == BotPveGroupRole.Tank ? 0 : role == BotPveGroupRole.Healer ? 2 : 1 : 3)
                 .ThenBy(MemberKey).FirstOrDefault();
             if (ranged != null) return ranged;

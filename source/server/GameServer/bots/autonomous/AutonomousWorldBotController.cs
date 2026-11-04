@@ -65,6 +65,11 @@ namespace DOL.GS
         private long _nextPlanTick;
         private long _nextMeetupPlanTick;
         private long _nextTargetSearchTick;
+        // The ranged-pull check before the camp point has its own throttle. It used to share _nextTargetSearchTick with WorkCamp:
+        // whenever the check ran and declined (no firing point in reach, the five minutes of ordinary pulls after failed ranged
+        // pulls), it re-armed the throttle, WorkCamp found it closed on every turn and returned without pulling, and the party
+        // stood at its camp (2026-10-29: seven bots 30 minutes with no kill, five more 3 minutes and counting).
+        private long _nextRangedPullCheckTick;
         private long _nextFailedSoloPullRoutePruneTick;
         private readonly Dictionary<ushort, SavageBotCombatPolicy.FailedSoloPullRoute> _failedSoloPullRoutes = new();
         private long _nextFailedSavageMeleePullPruneTick;
@@ -115,6 +120,12 @@ namespace DOL.GS
         private Vector3 _pathSegmentOrigin;
         private AutonomousZoneBoundaryRouting.Step? _resolvedBoundaryStep;
         private Zone _resolvedBoundaryZone;
+        // The last seam step handed out for the current goal and how many times the next one took it back (see IsReversal).
+        private AutonomousZoneBoundaryRouting.Step? _lastSeamStep;
+        private Vector3 _lastSeamGoal;
+        private long _lastSeamStepTick;
+        private int _seamReversals;
+        public const int MaximumSeamReversals = 3;
         private Vector3? _patrolDestination;
         // RvR uses the same collision-safe/stable/zone route machinery as PvE,
         // but never treats the destination as a monster camp.
@@ -771,9 +782,9 @@ namespace DOL.GS
                 if (campDistance <= 2000 && _groupDirective?.Puller == bot &&
                     AutonomousBotGroupCoordinator.UsesDefensivePullGroup(bot.Group) &&
                     AutonomousBotGroupCoordinator.CanInitiateNewPull(bot) &&
-                    GameLoop.GameLoopTime >= _nextTargetSearchTick)
+                    GameLoop.GameLoopTime >= _nextRangedPullCheckTick)
                 {
-                    _nextTargetSearchTick = GameLoop.GameLoopTime + 1500;
+                    _nextRangedPullCheckTick = GameLoop.GameLoopTime + 1500;
                     GameNPC nearbyGoal = FindCampTarget(bot);
                     if (nearbyGoal != null && AutonomousDefensivePull.TryBeginFlyingHandoff(bot, nearbyGoal))
                     {
@@ -1679,6 +1690,13 @@ namespace DOL.GS
             GameBot leader = directive.Leader;
             if (leader == null || !leader.IsAlive)
                 return true;
+
+            // A member stalled for minutes (a pocket of the navigation mesh) is brought to its leader.
+            if (AutonomousGroupMemberStall.TryRecoverToLeader(bot, leader))
+            {
+                ResetRouteOrderState();
+                return true;
+            }
 
             if (directive.ObjectiveKind == eAutonomousObjectiveKind.GroupPve && directive.Camp != null &&
                 bot.CurrentRegionID != leader.CurrentRegionID)
@@ -3676,6 +3694,12 @@ namespace DOL.GS
 
         private static CampCatalogCell[] BuildCampCatalogDraft(CampMonster[] snapshot)
         {
+                // Pruned test worlds (world-set gym) can serve mobs whose zone
+                // rows no longer exist: a null CurrentZone NRE'd the whole
+                // catalog draft, leaving every autonomous bot goalless
+                // ("Searching for a valid XP camp" forever). Drop them before
+                // any grouping touches CurrentZone.
+                snapshot = snapshot.Where(npc => npc?.CurrentZone != null).ToArray();
                 var cells = new List<CampCatalogCell>();
                 Dictionary<(ushort ZoneId, string Name), CampMonster[]> liveByZoneAndName = snapshot
                     .GroupBy(npc => (npc.CurrentZone.ID, npc.Name.Trim().ToLowerInvariant()))
@@ -4570,6 +4594,37 @@ namespace DOL.GS
                             return true;
                         RejectPendingBoarding(bot, "No safe connected zone seam on the approach");
                         AbandonCamp(bot, "No safe connected zone seam on the selected route");
+                        return false;
+                    }
+                    long seamNow = GameLoop.GameLoopTime;
+                    if (_lastSeamStep is { } lastSeam && seamNow - _lastSeamStepTick < 5 * 60_000 &&
+                        Vector3.DistanceSquared(_lastSeamGoal, destination) < 500f * 500f &&
+                        AutonomousZoneBoundaryRouting.IsReversal(lastSeam, resolved))
+                        _seamReversals++;
+                    else
+                        _seamReversals = 0;
+                    _lastSeamStep = resolved;
+                    _lastSeamGoal = destination;
+                    _lastSeamStepTick = seamNow;
+                    if (_seamReversals >= MaximumSeamReversals)
+                    {
+                        // Each zone sends the bot back to the other: it stands on ground that joins neither zone's main ground.
+                        // The planner never fails here, so the failure paths below never ran; take them now.
+                        _seamReversals = 0;
+                        _lastSeamStep = null;
+                        _resolvedBoundaryStep = null;
+                        _resolvedBoundaryZone = null;
+                        Log.Warn($"AUTONOMOUS_ZONE_SEAM_CYCLE bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                                 $"realm={GlobalConstants.RealmToName(bot.Realm)} region={bot.CurrentRegionID} zone={currentZone.ID} " +
+                                 $"position={bot.X},{bot.Y},{bot.Z} goalZone={destinationZone.ID} goal={(int)destination.X},{(int)destination.Y},{(int)destination.Z} " +
+                                 $"step={(int)resolved.Inside.X},{(int)resolved.Inside.Y}>{(int)resolved.Outside.X},{(int)resolved.Outside.Y} " +
+                                 $"activity=\"{bot.PersistentRecord?.Activity}\"");
+                        if (TryPlanCapitalTransit(bot, destination))
+                            return HandleCapitalTransit(bot);
+                        if (TryEscapeTerminalRoutePocket(bot, current))
+                            return true;
+                        RejectPendingBoarding(bot, "A zone seam route that turns back on itself");
+                        AbandonCamp(bot, "A zone seam route that turns back on itself");
                         return false;
                     }
                     _resolvedBoundaryStep = resolved;

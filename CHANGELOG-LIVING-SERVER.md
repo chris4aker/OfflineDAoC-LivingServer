@@ -87,6 +87,63 @@ here changes gameplay. The WAL settings and the backup design are ported from lo
   Server" in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). The SQLite tests' cleanup no longer fails on Windows while a
   closing connection still holds the file (PR #56): each test has its own temporary folder, deleted with retries.
 
+- **Gamebots in your group who die in a battleground come back to you** (issue #39; from Cancain's fork, by Cancain).
+  - **The bug:** battlegrounds have no bind points, so a gamebot in a player's group released to its capital and stood
+    there for good: its way back did nothing while it and its leader were in different regions.
+  - **Now:** it releases to its realm's portal keep (under the battleground's level cap), walks back on a planned route,
+    waits while you are dead, and rejoins the group on arrival. Solo gamebots and bot-only groups release as before.
+  - **Adapted for Living Server:** the way back keeps our detours around hostile monsters and our stablemaster routes.
+    A gamebot that makes no headway first plans its way back again, and only when that stalls too is it moved to you;
+    never during a stablemaster ride. From another region (no route to try) it joins you after 20 seconds, as in
+    Cancain's version. His battleground keep claims (also offered in #40) are not taken: grouped bots don't count for
+    keep claims.
+  - **Checked:** Cancain's tests plus nine new ones (`UT_BotGroupRelease`). Not yet seen in game here.
+- **`/friend` works with gamebots, and two stock friends-list bugs are fixed** (issues #40 and #38; by Cancain).
+  Online and parked gamebots of your realm join your friends list by exact name; a real character of the same name wins. Their
+  logins and logouts show as "just entered / left the game" in both clients. Adding a friend no longer wipes the old
+  client's Friends Monitor, and the first friend on an empty list gets its status. Tests: `UT_BotFriends`.
+- **`/allrelease`** (also `/grouprelease`) releases every dead bot in your group at once (issue #40; by Cancain).
+  `/spawn` companions still wait while you are dead or a fight is near.
+- **On a world with a raised XP rate, Darkness Falls, battlegrounds and the frontiers get it too** (by rambodolphin13;
+  BeezKneezItem9 found the same bug).
+  - **The bug:** in RvR regions and zones a player's kill XP used `rvr_zones_xp_rate` (1 by default) in place of
+    `xp_rate`, so a 10× world was 1× in DF while gamebots there got 10×. The base game's rule (from OpenDAoC),
+    unchanged in 0.37b.
+  - **Now:** players get `xp_rate` (or `xp_rate_by_level`) times `rvr_zones_xp_rate`, the rule gamebots already had.
+  - **Checked:** two new tests in `UT_LevelRangeXpRates`. Not yet seen in game.
+- **Gamebot fixes from long soak runs** (by Nikse77, via rambodolphin13; the keep doors by rambodolphin13). Autonomous
+  gamebots only; `/spawn` companions and players are unchanged.
+  - **Zone seams:** a route that steps over a zone seam and straight back three times is treated as a route failure,
+    so the bot takes its usual way out instead of standing there (bots stood 10 to 40 minutes in Vindsaul Faste).
+  - **Group stalls:** a member of a bot-only group stalled for 3 minutes, idle and in its leader's region, is moved to
+    its leader (at most once in five minutes; never on a stablemaster ride, never in a player's group). The stall log
+    names both zones and the member's recent trail.
+  - **Ranged pulls:** a declined ranged pull no longer holds up the ordinary pull (a party of seven stood 30 minutes at
+    its camp). A Necromancer pulls only when no one else can, a Cleric only before that.
+  - **Mezzed enemies:** a mezzed enemy is left alone only while another free enemy is within 1,500 units; when the mez
+    is all that is left, bots finish it instead of walking away.
+  - **Darkness Falls:** a bot with no certified route out of DF probes less often after four empty tries and, after
+    three minutes, goes to its realm's capital. A gamebot saved inside DF logs back in at its realm's entrance of the
+    dungeon, not in a pack. DF stays open to solo bots.
+  - **Keep doors:** an army inside a keep it just took can leave through the doors (four captured keeps held their
+    armies: 661 route give-ups, then 213 teleports home).
+  - **Checked:** their tests (`UT_AutonomousZoneSeamCycle`, `UT_SupportReachAndGroupStall`,
+    `UT_DarknessFallsLoginEntrance`, `UT_FrontierTravelContracts`) and a new `UT_DarknessFallsExitHold`. Not yet seen
+    in game here. Not taken: the travelling-Minstrel song change (it conflicts with our bot brain) and the forks'
+    route-threat and zone-crossing changes, where our route code has diverged.
+- **Water breathing potions work again** (by Rmarcoux86). Nereid potions and other water-breathing spells did
+  nothing: their handler still used the old effect system, which the server no longer runs. They now let you breathe
+  under water and swim faster for their duration, as before. Base game code; players only, as in the original handler.
+  Not taken: the fork's default swim speed for everyone and its Nereid's Blessing buff. Checked: two new tests
+  (`UT_WaterBreathingEffect`). Not yet tried in game.
+- **The gamebots' camp list no longer breaks on a monster with no zone** (by MoomoocowPlus). One such monster stopped
+  the whole list from being built, so every gamebot kept "Searching for a valid XP camp". It is now left out.
+- **The Herald counts the gamebots you invited into your guild** (from a r/daoc report). Its "Guilds of Note" read
+  only the bot guilds' members, so a player's guild with 30 invited gamebots showed 1 member. It now also reads the
+  invitations (`offline_world_bot_guild`) and counts each gamebot once; retired gamebots still don't count. Our own
+  launcher bug. Checked: a new `HeraldPageTests` case on a small SQLite world (run on Linux here; CI runs it on
+  Windows).
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the

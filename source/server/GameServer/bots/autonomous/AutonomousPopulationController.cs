@@ -221,6 +221,20 @@ public static class AutonomousPopulationController
                 PlaceAtCapitalFallback(bot, record);
             }
 
+            // Owner 2026-10-29: after a restart 16 to 29 solo gamebots a time died within minutes in Darkness Falls, where they were
+            // saved: they came back standing in the middle of a pack, no camp, no party (13-23 monsters around, 3-5 attacking).
+            // A bot saved inside the dungeon returns at its realm's entrance of Darkness Falls, inside the dungeon.
+            if (record.RegionId == AutonomousDarknessFallsPolicy.RegionId &&
+                AutonomousDarknessFallsNavigation.TryGetRealmEntrance((eRealm)record.Realm, out Vector3 dungeonEntrance))
+            {
+                Log.Info($"AUTONOMOUS_DF_LOGIN_AT_ENTRANCE bot={record.Name} id={record.BotId} realm={(eRealm)record.Realm} " +
+                         $"saved={record.X},{record.Y},{record.Z} entrance={(int)dungeonEntrance.X},{(int)dungeonEntrance.Y},{(int)dungeonEntrance.Z}");
+                bot.CurrentRegionID = AutonomousDarknessFallsPolicy.RegionId;
+                bot.X = (int)dungeonEntrance.X;
+                bot.Y = (int)dungeonEntrance.Y;
+                bot.Z = (int)dungeonEntrance.Z;
+            }
+
             // GameNPC keeps a separate interpolated movement position. Before
             // AddToWorld it still contains the constructor default (0,0,0),
             // even after the authoritative saved/start coordinates were set.

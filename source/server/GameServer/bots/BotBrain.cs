@@ -1245,6 +1245,7 @@ namespace DOL.AI.Brain
 
         public override void Think()
         {
+            if (BotGroupRelease.TryUnstick(BotBody)) return; // Fork: first, whatever below would keep a released bot from its player
             // Living Server linkdead (bot_living_breaks): the bot stands still and does nothing until it
             // "reconnects" (30-90 s) or is attacked (AutonomousBotSchedule.OnAttacked wakes it).
             if (AutonomousBotSchedule.IsFrozen(BotBody))
