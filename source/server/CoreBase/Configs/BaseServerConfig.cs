@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
@@ -51,17 +52,20 @@ namespace DOL.Config
 
 		/// <summary>
 		/// Constructs a server configuration with default values.
+		/// Living Server 1.1.2 (audit 2026-11-03): the defaults reach this PC only. The upstream defaults listened on every
+		/// network (0.0.0.0) and asked the router to open the ports to the internet (UPnP), so a lost serverconfig.xml was
+		/// rewritten with a server open to the internet. Hosting friends is a choice made in serverconfig.xml.
 		/// </summary>
 		protected BaseServerConfig()
 		{
 			_port = 10300;
-			_ip = IPAddress.Any;
-			_regionIP = IPAddress.Any;
+			_ip = IPAddress.Loopback;
+			_regionIP = IPAddress.Loopback;
 			_regionPort = 10400;
-			_udpIP = IPAddress.Any;
+			_udpIP = IPAddress.Loopback;
 			_udpPort = 10400;
-			_detectRegionIP = true;
-			_enableUPnP = true;
+			_detectRegionIP = false;
+			_enableUPnP = false;
 		}
 
 		/// <summary>
@@ -142,15 +146,16 @@ namespace DOL.Config
 		/// <param name="root">the root config element</param>
 		protected virtual void LoadFromConfig(ConfigElement root)
 		{
-			string ip = root["Server"]["IP"].GetString("any");
+			// A setting the file leaves out takes the safe default above ("any" is still read as 0.0.0.0).
+			string ip = root["Server"]["IP"].GetString(_ip.ToString());
 			_ip = ip == "any" ? IPAddress.Any : IPAddress.Parse(ip);
 			_port = (ushort) root["Server"]["Port"].GetInt(_port);
 
-			ip = root["Server"]["RegionIP"].GetString("any");
+			ip = root["Server"]["RegionIP"].GetString(_regionIP.ToString());
 			_regionIP = ip == "any" ? IPAddress.Any : IPAddress.Parse(ip);
 			_regionPort = (ushort) root["Server"]["RegionPort"].GetInt(_regionPort);
 
-			ip = root["Server"]["UdpIP"].GetString("any");
+			ip = root["Server"]["UdpIP"].GetString(_udpIP.ToString());
 
 			_udpIP = ip == "any" ? IPAddress.Any : IPAddress.Parse(ip);
 			_udpPort = (ushort) root["Server"]["UdpPort"].GetInt(_udpPort);
@@ -159,6 +164,30 @@ namespace DOL.Config
 			_detectRegionIP = root["Server"]["DetectRegionIP"].GetBoolean(_detectRegionIP);
 
 
+		}
+
+		/// <summary>
+		/// Plain-English warnings for a configuration that can be reached from beyond this PC (logged at every start).
+		/// Empty when the server listens on this PC only and UPnP is off.
+		/// </summary>
+		public IReadOnlyList<string> ExposureWarnings()
+		{
+			var warnings = new List<string>();
+			var open = new List<string>();
+			if (!IPAddress.IsLoopback(_ip))
+				open.Add($"TCP {Describe(_ip)}:{_port}");
+			if (!IPAddress.IsLoopback(_udpIP))
+				open.Add($"UDP {Describe(_udpIP)}:{_udpPort}");
+			if (open.Count > 0)
+				warnings.Add("Your server can be reached from other computers: it listens on " + string.Join(" and ", open) +
+					", not only on this PC (127.0.0.1). If you don't host friends, set <IP> and <UdpIP> to 127.0.0.1 in " +
+					@"runtime\server\config\serverconfig.xml (server stopped).");
+			if (_enableUPnP)
+				warnings.Add($"UPnP is on: while it runs, the server asks your router to open TCP {_port} and UDP {_udpPort} to the internet " +
+					@"(they are closed again when it stops). If you don't host friends over the internet, set <EnableUPnP>False</EnableUPnP> in runtime\server\config\serverconfig.xml.");
+			return warnings;
+
+			static string Describe(IPAddress address) => address.Equals(IPAddress.Any) ? "0.0.0.0 (every network this PC is on)" : address.ToString();
 		}
 
 		/// <summary>

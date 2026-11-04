@@ -160,3 +160,32 @@ function Get-BytesSha256([byte[]]$Bytes) {
 function Get-ContentPath([string]$Game, [string]$Relative) {
     return (Join-Path $Game ($Relative.Replace('/', [IO.Path]::DirectorySeparatorChar)))
 }
+
+# The world database and its WAL files, when present (Living Server 1.1.2: the installer backs them up first). With the
+# server closed, the database file and its -wal are a consistent set; -shm is only an index SQLite rebuilds.
+function Get-WorldDatabaseFiles([string]$Game) {
+    $db = Join-Path $Game 'runtime\data\opendaoc.sqlite3.db'
+    if (!(Test-Path -LiteralPath $db)) { return @() }
+    $files = @($db)
+    foreach ($suffix in @('-wal', '-shm')) { if (Test-Path -LiteralPath "$db$suffix") { $files += "$db$suffix" } }
+    return $files
+}
+
+function Get-FreeBytes([string]$Path) {
+    try {
+        $root = [IO.Path]::GetPathRoot([IO.Path]::GetFullPath($Path))
+        return (New-Object IO.DriveInfo $root).AvailableFreeSpace
+    } catch { return $null }
+}
+
+# Keeps the world database copies of the newest $Keep installs (each install's data\ folder) and removes older ones. Only
+# the data\ folders go; the server and launcher backups stay, so ROLLBACK.cmd and -ToRelease work as before.
+function Remove-OldDatabaseBackups([string]$Game, [int]$Keep) {
+    $root = Join-Path $Game 'runtime\server\deployment-backups'
+    if (!(Test-Path -LiteralPath $root)) { return 0 }
+    $withData = @(Get-ChildItem -LiteralPath $root -Directory -Filter 'fork-build-*' | Sort-Object Name |
+        Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'data') })
+    $old = if ($withData.Count -gt $Keep) { $withData[0..($withData.Count - $Keep - 1)] } else { @() }
+    foreach ($folder in $old) { Remove-Item -LiteralPath (Join-Path $folder.FullName 'data') -Recurse -Force }
+    return @($old).Count
+}

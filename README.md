@@ -174,6 +174,25 @@ A fresh world has no bots yet, and most of these features need some.
   game files the install replaced or fixed. If you installed more than one build, run it once per build.
   The new tables and settings stay in your database; the original server ignores them.
 
+## Backups (from 1.1.2)
+
+- **Where they are:**
+  - **Daily copies:** while the server runs, it copies your world once a day to
+    `runtime\data\backups\opendaoc-<date>-<time>-daily.sqlite3.db`. The time in the name is UTC. The last 7 are
+    kept (server setting `db_backup_keep`; 0 turns them off).
+  - **Before each install:** `INSTALL.cmd` copies the world to
+    `runtime\server\deployment-backups\fork-build-<time>\data\`. The newest 3 installs keep that copy.
+- **To restore one:**
+  1. Close the launcher, the game and the server.
+  2. In `runtime\data`, rename `opendaoc.sqlite3.db` to keep it, and delete `opendaoc.sqlite3.db-wal` and
+     `opendaoc.sqlite3.db-shm` if they're there.
+  3. Copy the backup into `runtime\data` and name it `opendaoc.sqlite3.db`. An installer copy may come with its own
+     `-wal` file: copy it too, renamed to match.
+  4. Start the server. The log's `DB_INTEGRITY ... result=ok` line confirms the restored world is sound.
+- **The server only listens on this PC.** If your `serverconfig.xml` lets other computers in, or has UPnP on, the
+  log warns at each start (`NETWORK_EXPOSURE`) and says how to turn it off. See
+  [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
+
 ## Details
 
 - [Known issues and what's not tested yet](docs/KNOWN-ISSUES.md)

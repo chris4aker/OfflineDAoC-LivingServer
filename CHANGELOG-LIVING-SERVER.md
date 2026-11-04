@@ -8,6 +8,78 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.2 (in development)
+
+Save safety and network defaults, from the technical audit of 2026-11-03 (§2 and the co-op bind defaults). Nothing
+here changes gameplay. The WAL settings and the backup design are ported from lometur's HearthDAoC fork.
+
+- **The world database always opens in a crash-safe mode.**
+  - **The problem:** the server's code default opened the database with the journal off and syncing off
+    (`Journal Mode=Off;Synchronous=Off`, unpooled). If the server crashed or the PC lost power during a save, the
+    world could be corrupted. Setup's world import puts the file in WAL, but a server with that default switched it
+    back on each open.
+  - **Now:** whatever `serverconfig.xml` says, the server opens the world in WAL with `Synchronous=Normal`, pooled
+    connections and a busy timeout of at least 10 s. The file isn't rewritten, so your other settings stay. The log
+    says what it changed (`DB_SAFETY ... changed="journal Off -> WAL; ..."`) and confirms the mode
+    (`DB_SAFETY journal_mode=wal confirmed`). At a clean stop the server moves the WAL into the database file.
+  - **Why pooled:** the server's fast read path for WAL needs it. In a test (1,000 saves, then 1,000 reads), pooled
+    WAL took 0.7 s and 0.45 s, unpooled WAL 3.8 s and 1.0 s, and the old unpooled journal-off default 1.4 s and 1.2 s.
+- **An integrity check at each start.** The server runs SQLite's `quick_check` before it loads the world, and logs
+  the time (`DB_INTEGRITY mode=quick_check result=ok ms=...`). On a 537 MB test database it took 0.5 s (the full
+  `integrity_check` took 4.5 s). The server setting `db_integrity_check` picks `quick` (default), `full` or `off`. A
+  damaged database is logged as an error saying how to restore a backup, and daily backups pause so they can't
+  replace a good one. The server still starts.
+- **Daily backups.** Once a day, while the server runs, it writes an online copy of the world to
+  `runtime\data\backups\opendaoc-<UTC time>-daily.sqlite3.db`.
+  - The copy is taken with SQLite's backup API while you play. It's written under a temporary name, checked with
+    `quick_check`, and only then renamed. The oldest daily copies beyond the last 7 are deleted afterwards
+    (`db_backup_keep`; 0 turns daily backups off). A failed backup deletes nothing.
+  - It runs on a timer thread, never on the game loop. The first look is 5 minutes after the start, then hourly, and
+    it skips when the last daily copy is under 24 hours old or the disk is short of space. The log says
+    `DB_BACKUP result=written|skipped|failed` with the reason.
+- **The installer backs up your world before installing.** `INSTALL.cmd` copies `runtime\data\opendaoc.sqlite3.db`
+  (with its `-wal` and `-shm` files) into its backup folder (`runtime\server\deployment-backups\fork-build-<time>\data`)
+  and checks the copy by SHA-256 before it replaces any file. It stops if the disk can't hold the copy. The newest 3
+  installs keep their database copy, and older installs keep only their server files. `ROLLBACK.cmd` is unchanged:
+  it never puts the database back, because that would undo your play since.
+- **The realm event ledger moved to `runtime\data`.** `realm-event-records.sqlite3` (the Herald's and the Realm
+  Records tab's history) was in `runtime\server`, where backups and progress transfers missed it. The server moves it
+  at its first start (`REALM_EVENT_LEDGER moved`). If an older build wrote a new one later, the server merges it in
+  without duplicates. The launcher reads it from either place. The progress importer now carries it
+  (`progress-policy.json` `ProgressFiles`).
+- **Network defaults reach this PC only.**
+  - **The problem:** the code defaults listened on every network (`0.0.0.0`) with UPnP on, so a lost
+    `serverconfig.xml` came back with the router asked to open TCP 10300 and UDP 10400 to the internet. The server
+    never removed those router mappings.
+  - **Now:** the defaults are `127.0.0.1` with UPnP and DetectRegionIP off. A missing config is written that way, and
+    a setting a config leaves out takes the safe value. The UPnP mappings a server added are removed when it stops
+    (`UPNP_MAPPING removed ...`), and mappings it didn't add are left alone.
+  - **Your own config isn't changed.** When it listens beyond this PC or has UPnP on, the log warns at each start
+    (`NETWORK_EXPOSURE Your server can be reached from other computers...`) and says how to turn it off.
+  - `build_release_037.py` sets and checks `127.0.0.1` and UPnP off in every shipped `serverconfig.xml`, and
+    `assemble_release_037.py` checks the finished package again.
+- **No more "database is locked" on a busy read.** Found by the release-gates work: about 3 runs in 50 on Windows,
+  the pooled WAL test failed when a `SelectAllObjects` read met a brief lock and gave up in under a second.
+  - **The cause:** the read path that `SelectAllObjects` and every other `WhereClause` select use had no retry, unlike
+    the server's other read path. Connections also had no native busy wait (SQLite's default wait is zero).
+  - **Now:** that path retries a brief lock conflict the same way, up to 40 times with a short back-off (about 1.7 s
+    in all), and other errors are not retried. Every SQLite database the server opens waits at least 10 s for a
+    lock (`BusyTimeout`), even with a `serverconfig.xml` that sets none.
+  - **Cleanup:** the command is disposed before its connection, and connections are disposed as well as closed.
+  - **A second race in the same test:** a query clause shared between threads (the empty clause every
+    `SelectAllObjects` uses) was marked ready before its parameters were set. A second thread could then read no
+    parameters and fail with a NullReferenceException. This was seen once in a 50-run loop before the fix. The
+    parameters are now set first.
+  - **Checked:** 6 new tests (`UT_SqlitePooledReadContention`: the retry, its bound, the busy wait, disposal, a clause
+    read by many threads at once, and three rounds of pooled readers and writers on every read path). A local loop (Linux) ran these with the two existing WAL pool tests: 49 of
+    50 runs passed before the fix (the one failure was the NullReferenceException), and 60 of 60 passed after it, run
+    as three processes at once to add CPU contention.
+- **Checked:** these are automated tests only. 17 new server tests (`UT_WorldDatabaseSafety`: the connection string,
+  WAL on a file that was journal-off, the integrity check on a damaged file, backup names, rotation, the
+  once-a-day rule, the online copy, the stop checkpoint, the ledger move and merge, the network defaults and
+  warnings, and the UPnP clean-up with a fake router). There are also 8 new installer checks and 5 Python tests for
+  the release config. None of this has run on a real install or in game yet.
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the

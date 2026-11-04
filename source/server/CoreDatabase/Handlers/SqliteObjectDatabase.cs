@@ -16,7 +16,7 @@ namespace DOL.Database.Handlers
         /// </summary>
         /// <param name="ConnectionString">Database Connection String</param>
         public SqliteObjectDatabase(string ConnectionString)
-            : base(ConnectionString)
+            : base(SqliteSafety.WithBusyTimeout(ConnectionString))
         {
         }
 
@@ -792,7 +792,10 @@ namespace DOL.Database.Handlers
 
         protected override void CloseConnection(DbConnection connection)
         {
+            // Dispose, not only Close: an undisposed connection keeps its native handle (and the file) until the
+            // finalizer runs. A pooled one goes back to the pool either way.
             connection.Close();
+            connection.Dispose();
         }
 
         protected override DbParameter ConvertToDBParameter(QueryParameter queryParameter)

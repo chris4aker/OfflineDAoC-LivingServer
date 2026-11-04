@@ -14,6 +14,9 @@
 #   and, on 0.37c, in new-client\runtime\ (checked against new-client\PACKAGE MANIFEST.sha256);
 # - backs up every file it replaces under runtime\server\deployment-backups\fork-build-<time>\ and
 #   verifies every copy by SHA-256. ROLLBACK.cmd restores the backup;
+# - first backs up the world database (runtime\data\opendaoc.sqlite3.db, with its -wal and -shm files when present) into
+#   that folder's data\ folder, verified the same way (Living Server 1.1.2). The game is closed, so the files are a
+#   consistent set. ROLLBACK.cmd never puts it back (that would undo your play since); README.txt says how to restore it;
 # - fixes game files listed in content-patches.json in place, only where the file is the released one (anything else is
 #   left alone and reported), backed up the same way.
 param(
@@ -175,6 +178,15 @@ if ($DryRun) {
 }
 
 # 5. Back up, copy, verify.
+# The world database first: room for its copy, or nothing is changed.
+$databaseFiles = @(Get-WorldDatabaseFiles $game)
+$databaseBytes = 0
+foreach ($file in $databaseFiles) { $databaseBytes += (Get-Item -LiteralPath $file).Length }
+$free = Get-FreeBytes (Join-Path $game 'runtime\server')
+if ($databaseFiles.Count -gt 0 -and $null -ne $free -and $free -lt ($databaseBytes + 256MB)) {
+    Stop-WithMessage ("Not enough free disk space to back up your world database first ($([math]::Round($databaseBytes / 1MB)) MB, " +
+        "$([math]::Round($free / 1MB)) MB free). Free some space and run INSTALL.cmd again.")
+}
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $backup = Join-Path $game "runtime\server\deployment-backups\fork-build-$stamp"
 # Owner 2026-10-31: the folder is named to the second, so a second install inside the same second (INSTALL.cmd
@@ -184,6 +196,24 @@ $backup = Join-Path $game "runtime\server\deployment-backups\fork-build-$stamp"
 $same = 1
 while (Test-Path -LiteralPath $backup) { $same++; $backup = Join-Path $game "runtime\server\deployment-backups\fork-build-$stamp-$same" }
 New-Item -ItemType Directory -Path $backup | Out-Null
+$databaseEntries = @()
+if ($databaseFiles.Count -eq 0) {
+    Write-Host 'No world database in runtime\data yet; nothing to back up there.'
+} else {
+    $savedData = Join-Path $backup 'data'
+    New-Item -ItemType Directory -Path $savedData | Out-Null
+    foreach ($file in $databaseFiles) {
+        $hash = Get-Sha256 $file
+        Copy-Item -LiteralPath $file -Destination $savedData
+        $copy = Join-Path $savedData (Split-Path -Leaf $file)
+        if ((Get-Sha256 $copy) -ne $hash) {
+            Remove-Item -LiteralPath $backup -Recurse -Force
+            Stop-WithMessage "The backup of your world database ($(Split-Path -Leaf $file)) failed verification. Nothing was installed."
+        }
+        $databaseEntries += [pscustomobject]@{ Name = (Split-Path -Leaf $file); Hash = $hash }
+    }
+    Write-Host "World database backed up: $savedData" -ForegroundColor Green
+}
 $entries = @()
 foreach ($item in $plan) {
     $source = Join-Path $game $item.Folder
@@ -247,7 +277,7 @@ if (Test-Path -LiteralPath $helperSource) {
 $record = [pscustomobject]@{
     BuildName = $info['BuildName']; BaseRelease = $base; Commit = $info['Commit']
     Installed = (Get-Date).ToString('o'); GameFolder = $game; Folders = $entries; Helpers = $helpers
-    LauncherFolders = $launcherEntries; ContentFiles = $contentEntries
+    LauncherFolders = $launcherEntries; ContentFiles = $contentEntries; Database = $databaseEntries
 }
 $record | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $backup 'install-record.json') -Encoding UTF8
 
@@ -315,6 +345,8 @@ Write-Host ''
 Write-Host ("Installed $($info['BuildName']): the server into $($entries.Count) folder(s), the launcher into $($launcherEntries.Count), " +
     "$($contentEntries.Count) game file(s) fixed.") -ForegroundColor Green
 Write-Host "Backup: $backup"
+$pruned = Remove-OldDatabaseBackups $game 3
+if ($pruned -gt 0) { Write-Host "Removed the world database copies of $pruned older install(s) (the newest 3 are kept; their server files stay)." }
 Write-Host "Start the game as usual. The server log shows: FORK_BUILD name=$($info['BuildName']) commit=$($info['Commit'])"
 Write-Host 'Every new feature is OFF until you switch it on: launcher -> Living Server tab (server stopped). To undo: ROLLBACK.cmd'
 exit 0

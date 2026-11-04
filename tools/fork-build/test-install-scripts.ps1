@@ -29,7 +29,8 @@ function New-FakeLauncher([string]$dir, [string]$prefix) {
 }
 # -ReleaseNotes: the layout of a game updated by a patch (0.37 on): no editions\ folder, and the manifest lists each
 # release's docs/RELEASE-<version>.md up to this one.
-function New-FakeGame([string]$root, [string]$edition, [switch]$NewClient, [string[]]$ReleaseNotes = @()) {
+# -NoDatabase: a game whose runtime\data has no world database yet. -Wal: the database has a -wal file beside it (WAL mode).
+function New-FakeGame([string]$root, [string]$edition, [switch]$NewClient, [string[]]$ReleaseNotes = @(), [switch]$NoDatabase, [switch]$Wal) {
     $folders = @('runtime/server', 'runtime/server/lib', 'runtime/server/win-x64')
     $lines = @()
     foreach ($folder in $folders) {
@@ -41,6 +42,11 @@ function New-FakeGame([string]$root, [string]$edition, [switch]$NewClient, [stri
         $lines += "$(Sha (Join-Path $dir 'GameServer.pdb'))  $folder/GameServer.pdb"
     }
     $lines += New-FakeLauncher (Join-Path $root 'runtime') 'runtime'
+    if (!$NoDatabase) {
+        New-Item -ItemType Directory -Path (Join-Path $root 'runtime\data') -Force | Out-Null
+        [IO.File]::WriteAllText((Join-Path $root 'runtime\data\opendaoc.sqlite3.db'), 'the player''s world and saves')
+        if ($Wal) { [IO.File]::WriteAllText((Join-Path $root 'runtime\data\opendaoc.sqlite3.db-wal'), 'saves not yet in the main file') }
+    }
     if ($NewClient) {
         $client = New-FakeLauncher (Join-Path $root 'new-client\runtime') 'new-client/runtime'
         Set-Content -LiteralPath (Join-Path $root 'new-client\PACKAGE MANIFEST.sha256') -Value $client -Encoding UTF8
@@ -108,6 +114,40 @@ $nothing = Run 'rollback-server-build.ps1' @('-GameFolder', $game)
 Check ($nothing.Code -ne 0) 'a second rollback has nothing to undo'
 $reinstall = Run 'install-server-build.ps1' @('-GameFolder', $game)
 Check ($reinstall.Code -eq 0) 'install works again after a rollback'
+
+# Living Server 1.1.2: the world database is backed up before an install, with its -wal file, verified; a rollback never
+# puts it back (that would undo the play since); only the newest 3 installs keep their database copy.
+$dbGame = Join-Path $work 'database'
+New-FakeGame $dbGame $base -Wal
+$db = Join-Path $dbGame 'runtime\data\opendaoc.sqlite3.db'
+$dbHash = Sha $db; $walHash = Sha "$db-wal"
+$dbDry = Run 'install-server-build.ps1' @('-GameFolder', $dbGame, '-DryRun')
+Check ($dbDry.Code -eq 0 -and !(Test-Path (Join-Path $dbGame 'runtime\server\deployment-backups'))) "database: a dry run backs nothing up`n$($dbDry.Output)"
+$dbInstall = Run 'install-server-build.ps1' @('-GameFolder', $dbGame)
+$dbBackup = @(Get-ChildItem (Join-Path $dbGame 'runtime\server\deployment-backups') -Directory)[0].FullName
+Check ($dbInstall.Code -eq 0 -and (Test-Path (Join-Path $dbBackup 'data\opendaoc.sqlite3.db')) -and
+       (Sha (Join-Path $dbBackup 'data\opendaoc.sqlite3.db')) -eq $dbHash -and (Sha (Join-Path $dbBackup 'data\opendaoc.sqlite3.db-wal')) -eq $walHash) "database: the install backs up the database and its -wal first`n$($dbInstall.Output)"
+Check ($dbInstall.Output -match 'World database backed up') 'database: the install says where the database copy is'
+$dbRecord = Get-Content -LiteralPath (Join-Path $dbBackup 'install-record.json') -Raw | ConvertFrom-Json
+Check (@($dbRecord.Database).Count -eq 2 -and @($dbRecord.Database | Where-Object { $_.Name -eq 'opendaoc.sqlite3.db' -and $_.Hash -eq $dbHash }).Count -eq 1) 'database: the install record lists the database copy'
+Check ((Sha $db) -eq $dbHash) 'database: the install leaves the database itself unchanged'
+[IO.File]::WriteAllText($db, 'the world after more play')
+$played = Sha $db
+$dbRollback = Run 'rollback-server-build.ps1' @('-GameFolder', $dbGame)
+Check ($dbRollback.Code -eq 0 -and (Sha $db) -eq $played -and (Test-Path (Join-Path $dbBackup 'data\opendaoc.sqlite3.db'))) "database: rollback keeps the played database and its pre-install copy`n$($dbRollback.Output)"
+foreach ($round in 1..3) {
+    $null = Run 'install-server-build.ps1' @('-GameFolder', $dbGame)
+    if ($round -lt 3) { $null = Run 'rollback-server-build.ps1' @('-GameFolder', $dbGame) }
+}
+$dataFolders = @(Get-ChildItem (Join-Path $dbGame 'runtime\server\deployment-backups') -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'data') })
+$allFolders = @(Get-ChildItem (Join-Path $dbGame 'runtime\server\deployment-backups') -Directory)
+Check ($allFolders.Count -eq 4 -and $dataFolders.Count -eq 3 -and !(Test-Path (Join-Path $dbBackup 'data')) -and
+       (Test-Path (Join-Path $dbBackup 'runtime_server\GameServer.dll'))) "database: only the newest 3 installs keep a database copy; their server backups all stay ($($allFolders.Count) folders, $($dataFolders.Count) with data)"
+$noDb = Join-Path $work 'no-database'
+New-FakeGame $noDb $base -NoDatabase
+$noDbInstall = Run 'install-server-build.ps1' @('-GameFolder', $noDb)
+Check ($noDbInstall.Code -eq 0 -and (Sha (Join-Path $noDb 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll'] -and
+       $noDbInstall.Output -match 'No world database') "database: a game with no database yet still installs`n$($noDbInstall.Output)"
 
 # Wrong release: refused, nothing changed.
 $other = Join-Path $work 'other'
