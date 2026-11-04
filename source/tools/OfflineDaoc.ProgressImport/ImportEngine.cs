@@ -8,7 +8,9 @@ namespace OfflineDaoc.ProgressImport;
 
 // OptionalProgressTables are carried like ProgressTables when both databases have them; a server
 // creates them on its first start, so an older or never-started database may lack them.
-public sealed record Policy(string[] ProgressTables, string[] ClearTables, string[]? OptionalProgressTables = null);
+// ProgressFiles (Living Server 1.1.2) are SQLite files beside the world database (runtime\data, or runtime\server where
+// earlier builds kept them), carried whole: the realm event ledger.
+public sealed record Policy(string[] ProgressTables, string[] ClearTables, string[]? OptionalProgressTables = null, string[]? ProgressFiles = null);
 
 /// <summary>What an old folder contains, shown before anything is changed.</summary>
 public sealed record ImportSummary(long Accounts, long Characters, long Bots, long InventoryItems)
@@ -94,6 +96,33 @@ public static class ImportEngine
         using var from=Open(source,true);
         using var to=new SQLiteConnection(new SQLiteConnectionStringBuilder {DataSource=destination,Pooling=false}.ConnectionString);
         to.Open();from.BackupDatabase(to,"main","main",-1,null,0);
+    }
+    /// <summary>
+    /// Copies each ProgressFiles file of the old folder into the new folder's data folder (a consistent SQLite copy), after
+    /// saving the new folder's own copy to the backup. A file that can't be carried is named in the notes; the
+    /// progress already installed stays.
+    /// </summary>
+    static void CarryProgressFiles(string old,string current,string backup,List<string> notes,Action<string> progress)
+    {
+        foreach(string name in Rules.ProgressFiles??Array.Empty<string>())
+        {
+            try
+            {
+                string? source=new[]{Path.Combine(old,"data",name),Path.Combine(old,"server",name)}.FirstOrDefault(File.Exists);
+                if(source==null)continue;
+                progress($"Transferring {name}…");
+                string target=Path.Combine(current,"data",name),legacy=Path.Combine(current,"server",name);
+                string staged=target+".import";
+                if(File.Exists(staged))File.Delete(staged);
+                Backup(source,staged);
+                using(var check=Open(staged,true))Integrity(check);
+                foreach(string existing in new[]{target,legacy})
+                    if(File.Exists(existing))File.Move(existing,Path.Combine(backup,(existing==legacy?"server-":"")+name));
+                File.Move(staged,target);
+                notes.Add($"{name}: carried from {source} (the new folder's own copy is in this backup).");
+            }
+            catch(Exception ex){notes.Add($"Not transferred: {name} ({ex.Message}). Your characters and bots were transferred; copy it by hand if you want its history.");}
+        }
     }
     static void Integrity(SQLiteConnection c)
     {
@@ -325,6 +354,7 @@ public static class ImportEngine
                 if(File.Exists(targetCredentials))File.Replace(credentialStage,targetCredentials,null);else File.Move(credentialStage,targetCredentials);
             }
             using(var verified=Open(newDb,true))Integrity(verified);
+            CarryProgressFiles(old,current,backup,notes,progress);
             File.Delete(snapshot);
             File.WriteAllText(Path.Combine(backup,"IMPORT RESULT.txt"),"Import completed. Previous destination database and account.txt are rollback copies. Original old folder was not changed. XP=1x; GM off.\r\n"+
                 string.Join("\r\n",notes)+"\r\n"+

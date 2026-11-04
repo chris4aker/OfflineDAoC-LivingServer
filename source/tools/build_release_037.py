@@ -35,8 +35,10 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import sqlite3
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -266,6 +268,52 @@ def set_auto_account_creation(config: Path):
     assert "<AutoAccountCreation>True</AutoAccountCreation>" in config.read_text(encoding="utf-8-sig")
 
 
+# The shipped server listens on this PC only and never asks the router to open ports (Living Server 1.1.2, audit
+# 2026-11-03): the server's own defaults are the same since 1.1.2. A player who hosts friends changes them on purpose.
+NETWORK_DEFAULTS = {"IP": "127.0.0.1", "UdpIP": "127.0.0.1", "EnableUPnP": "False", "DetectRegionIP": "False"}
+LOOPBACK = {"127.0.0.1", "localhost", "::1"}
+# Every serverconfig.xml in a runtime folder the server may start from.
+SHIPPED_CONFIGS = ("server/config/serverconfig.xml", "server/win-x64/config/serverconfig.xml", "server/lib/config/serverconfig.xml")
+
+
+def set_network_defaults(config: Path):
+    """Sets the bind addresses to 127.0.0.1 and UPnP off in place, keeping the file's encoding and line endings."""
+    raw = config.read_bytes()
+    bom = raw.startswith(b"\xef\xbb\xbf")
+    text = raw[3:].decode("utf-8") if bom else raw.decode("utf-8")
+    newline = "\r\n" if "\r\n" in text else "\n"
+    for tag, value in NETWORK_DEFAULTS.items():
+        text, count = re.subn(rf"<{tag}>[^<]*</{tag}>", f"<{tag}>{value}</{tag}>", text)
+        if count == 0:
+            indent = re.search(r"([ \t]*)<Port>", text)
+            text = text.replace("</Server>", f"{indent.group(1) if indent else '  '}<{tag}>{value}</{tag}>{newline}</Server>", 1)
+    config.write_bytes((b"\xef\xbb\xbf" if bom else b"") + text.encode("utf-8"))
+    check_network_defaults(config)
+
+
+def check_network_defaults(config: Path):
+    """The shipped config can't be reached from another computer and doesn't use UPnP."""
+    server = ET.parse(config).getroot().find("Server")
+    assert server is not None, f"{config}: no <Server> element"
+    values = {tag: (server.findtext(tag) or "").strip() for tag in NETWORK_DEFAULTS}
+    assert values["IP"] in LOOPBACK, f"{config}: <IP> is {values['IP']!r}; the release must listen on 127.0.0.1 only"
+    assert values["UdpIP"] in LOOPBACK, f"{config}: <UdpIP> is {values['UdpIP']!r}; the release must listen on 127.0.0.1 only"
+    assert values["EnableUPnP"].lower() == "false", f"{config}: <EnableUPnP> is {values['EnableUPnP']!r}; it must be False"
+    assert values["DetectRegionIP"].lower() == "false", f"{config}: <DetectRegionIP> is {values['DetectRegionIP']!r}; it must be False"
+    return values
+
+
+def shipped_configs(runtime: Path) -> list[Path]:
+    found = [runtime / name for name in SHIPPED_CONFIGS if (runtime / name).is_file()]
+    assert found, f"no serverconfig.xml under {runtime}"
+    return found
+
+
+def check_shipped_configs(runtime: Path) -> dict:
+    """Run by this build and again by assemble_release_037.py on the finished package."""
+    return {config.relative_to(runtime).as_posix(): check_network_defaults(config) for config in shipped_configs(runtime)}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--snapshot", type=Path, required=True)
@@ -298,6 +346,9 @@ def main():
     world_data = check_world_data(database, repo)
 
     set_auto_account_creation(runtime / "server/config/serverconfig.xml")
+    for config in shipped_configs(runtime):
+        set_network_defaults(config)
+    network = check_shipped_configs(runtime)
     (runtime / "client-opendaoc/app/paths.dat").write_bytes(f"[paths]\r\nsettings={CLIENT_PROFILE}".encode("ascii"))
 
     print("Installing the release server and launcher builds...", flush=True)
@@ -340,6 +391,7 @@ def main():
         "runtime_files_copied": len(copied),
         "world": world,
         "world_data": world_data,
+        "network_defaults": network,
         "no_custom_class_edition": no_class,
         "replaced_on_purpose": replaced,
         "copied_hashes": copied,

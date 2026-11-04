@@ -524,7 +524,7 @@ internal sealed partial class MainForm : Form
         events.Controls.Add(BuildRealmEventsPanel());
         tabs.TabPages.Add(events);
         var records = new TabPage("Realm Records") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
-        var eventRecords = new RealmEventRecordsControl(Path.Combine(_serverDirectory, "realm-event-records.sqlite3"));
+        var eventRecords = new RealmEventRecordsControl(() => RealmEventRecordStore.Locate(_root));
         records.Controls.Add(eventRecords);
         records.Enter += async (_, _) => await eventRecords.RefreshAsync();
         tabs.TabPages.Add(records);

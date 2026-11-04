@@ -179,6 +179,10 @@ foreach ($item in $contentRestore) {
 Set-Content -LiteralPath (Join-Path $record.BackupFolder 'rolled-back.txt') -Value "Rolled back at $(Get-Date -Format o)."
 Write-Host ''
 Write-Host "Rolled back $($record.BuildName). The files it replaced are back." -ForegroundColor Green
+# Living Server 1.1.2: the world database is never rolled back (that would undo your play since that install).
+if (Test-Path -LiteralPath (Join-Path $record.BackupFolder 'data\opendaoc.sqlite3.db')) {
+    Write-Host "Your world database was left as it is. Its copy from before that install: $(Join-Path $record.BackupFolder 'data')"
+}
 Write-Host 'Settings it switched on stay in the database, where the original server ignores them. To clear them, turn'
 Write-Host 'everything off in the Living Server tab before you roll back.'
 exit 0

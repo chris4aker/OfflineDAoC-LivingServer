@@ -11,6 +11,51 @@ public sealed record RealmEventRecord(string Id, string EventId, string Name, st
 
 public static class RealmEventRecordStore
 {
+    public const string FileName="realm-event-records.sqlite3";
+    /// <summary>
+    /// Living Server 1.1.2: the ledger lives beside the world database in runtime\data, so backups of that folder and
+    /// progress transfers carry it. Earlier builds kept it in runtime\server (audit 2026-11-03).
+    /// </summary>
+    public static string PathIn(string dataFolder)=>Path.Combine(dataFolder,FileName);
+    /// <summary>The ledger of a runtime folder: runtime\data, or runtime\server until the server has moved it there.</summary>
+    public static string Locate(string runtime)
+    {
+        string data=PathIn(Path.Combine(runtime,"data")),legacy=Path.Combine(runtime,"server",FileName);
+        return File.Exists(data)||!File.Exists(legacy)?data:legacy;
+    }
+    /// <summary>
+    /// Moves the ledger an earlier build left at <paramref name="legacyPath"/> to <paramref name="path"/> (the server does
+    /// it at start, before it writes). If both exist (an older build ran again after a rollback) the old file's events are
+    /// added to the new one, none twice. Returns what it did: "none", "moved" or "merged N".
+    /// </summary>
+    public static string MoveLegacy(string legacyPath, string path)
+    {
+        if(!File.Exists(legacyPath)||string.Equals(Path.GetFullPath(legacyPath),Path.GetFullPath(path),StringComparison.OrdinalIgnoreCase))return "none";
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
+        // Opening it once finishes or rolls back a write an unclean stop left in its journal, so the file moves whole.
+        using(var settle=Open(legacyPath,false)){using var command=settle.CreateCommand();command.CommandText="PRAGMA journal_mode=DELETE";command.ExecuteScalar();}
+        if(!File.Exists(path))
+        {
+            File.Move(legacyPath,path);
+            return "moved";
+        }
+        long added;
+        using(var connection=Open(path,false))
+        {
+            using(var schema=connection.CreateCommand()){schema.CommandText=Schema;schema.ExecuteNonQuery();}
+            using(var attach=connection.CreateCommand()){attach.CommandText="ATTACH DATABASE @old AS old";attach.Parameters.AddWithValue("@old",legacyPath);attach.ExecuteNonQuery();}
+            using(var command=connection.CreateCommand())
+            {
+                command.CommandText="SELECT count(*) FROM old.sqlite_master WHERE type='table' AND name='Events'";
+                added=(long)command.ExecuteScalar()==0?0:-1;
+                if(added<0){command.CommandText="INSERT OR IGNORE INTO main.Events SELECT * FROM old.Events";added=command.ExecuteNonQuery();}
+                command.CommandText="DETACH DATABASE old";command.ExecuteNonQuery();
+            }
+        }
+        foreach(string file in new[]{legacyPath,legacyPath+"-journal"})if(File.Exists(file))File.Delete(file);
+        return $"merged {added}";
+    }
+    private const string Schema="CREATE TABLE IF NOT EXISTS Events(Id TEXT PRIMARY KEY, EventId TEXT NOT NULL, Name TEXT NOT NULL, Kind TEXT NOT NULL, Realm TEXT NOT NULL, StartedUtc TEXT NOT NULL, EndedUtc TEXT NOT NULL, Phase TEXT NOT NULL, Outcome TEXT NOT NULL, Details TEXT NOT NULL, Assigned INTEGER NOT NULL, Present INTEGER NOT NULL); CREATE INDEX IF NOT EXISTS EventTime ON Events(StartedUtc DESC);";
     private static SQLiteConnection Open(string path, bool readOnly)
     {
         var connection = new SQLiteConnection(new SQLiteConnectionStringBuilder { DataSource=path, ReadOnly=readOnly,
@@ -24,7 +69,7 @@ public static class RealmEventRecordStore
         using var connection=Open(path,false);
         using (var schema=connection.CreateCommand())
         {
-            schema.CommandText="CREATE TABLE IF NOT EXISTS Events(Id TEXT PRIMARY KEY, EventId TEXT NOT NULL, Name TEXT NOT NULL, Kind TEXT NOT NULL, Realm TEXT NOT NULL, StartedUtc TEXT NOT NULL, EndedUtc TEXT NOT NULL, Phase TEXT NOT NULL, Outcome TEXT NOT NULL, Details TEXT NOT NULL, Assigned INTEGER NOT NULL, Present INTEGER NOT NULL); CREATE INDEX IF NOT EXISTS EventTime ON Events(StartedUtc DESC);";
+            schema.CommandText=Schema;
             schema.ExecuteNonQuery();
         }
         using var tx=connection.BeginTransaction();

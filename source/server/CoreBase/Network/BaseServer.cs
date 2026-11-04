@@ -25,6 +25,7 @@ namespace DOL.Network
         private Socket _listen;
         private Socket _udpSocket;
         private SessionIdAllocator _sessionIdAllocator = new();
+        private UpnpPortMappings _upnp;
 
         public BaseServerConfig Configuration { get; }
         public bool IsRunning => _listen != null; // Not a great way to check if the server is running.
@@ -46,6 +47,7 @@ namespace DOL.Network
                 return false;
 
             InitializeUdpSocket();
+            WarnIfReachableFromOtherComputers();
 
             if (Configuration.EnableUPnP)
                 ConfigureUpnp();
@@ -58,46 +60,9 @@ namespace DOL.Network
 
             void ConfigureUpnp()
             {
-                try
-                {
-                    UpnpNat nat = new();
-
-                    if (!nat.Discover())
-                        throw new Exception("[UPNP] Unable to access the UPnP Internet Gateway Device");
-
-                    if (log.IsDebugEnabled)
-                    {
-                        log.Debug("[UPNP] Current UPnP mappings:");
-
-                        foreach (UpnpNat.PortForwarding info in nat.ListForwardedPort())
-                            log.Debug($"[UPNP] {info.description} - {info.externalPort} -> {info.internalIP}:{info.internalPort}({info.protocol}) ({(info.enabled ? "enabled" : "disabled")})");
-                    }
-
-                    IPAddress localAddress = Configuration.IP;
-                    nat.ForwardPort(Configuration.UDPPort, Configuration.UDPPort, ProtocolType.Udp, "DOL UDP", localAddress);
-                    nat.ForwardPort(Configuration.Port, Configuration.Port, ProtocolType.Tcp, "DOL TCP", localAddress);
-
-                    if (Configuration.DetectRegionIP)
-                    {
-                        try
-                        {
-                            Configuration.RegionIP = nat.GetExternalIP();
-
-                            if (log.IsDebugEnabled)
-                                log.Debug($"[UPNP] Found the RegionIP: {Configuration.RegionIP}");
-                        }
-                        catch (Exception e)
-                        {
-                            if (log.IsErrorEnabled)
-                                log.Error("[UPNP] Unable to detect the RegionIP, It is possible that no mappings exist yet", e);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    if (log.IsErrorEnabled)
-                        log.Error($"{nameof(ConfigureUpnp)}", e);
-                }
+                // The mappings are remembered, so Stop removes them again (Living Server 1.1.2).
+                _upnp = new UpnpPortMappings(CreateUpnpGateway());
+                _upnp.Open(Configuration);
             }
 
             bool StartListen()
@@ -266,6 +231,25 @@ namespace DOL.Network
             }
         }
 
+        /// <summary>The router UPnP talks to (tests replace it).</summary>
+        protected virtual IUpnpGateway CreateUpnpGateway()
+        {
+            return new UpnpNatGateway();
+        }
+
+        /// <summary>
+        /// One warning line per way this server can be reached beyond this PC (Living Server 1.1.2). A player's own
+        /// serverconfig.xml keeps working as it is; the log says what it allows and how to turn it off.
+        /// </summary>
+        private void WarnIfReachableFromOtherComputers()
+        {
+            foreach (string warning in Configuration.ExposureWarnings())
+            {
+                if (log.IsWarnEnabled)
+                    log.Warn($"NETWORK_EXPOSURE {warning}");
+            }
+        }
+
         protected virtual BaseClient GetNewClient(Socket socket)
         {
             return new BaseClient(socket);
@@ -319,6 +303,18 @@ namespace DOL.Network
 
         public virtual void Stop()
         {
+            try
+            {
+                // Close the router ports this server opened (UPnP); upstream left them open after the server stopped.
+                _upnp?.Close();
+                _upnp = null;
+            }
+            catch (Exception e)
+            {
+                if (log.IsErrorEnabled)
+                    log.Error(e);
+            }
+
             try
             {
                 if (_listen != null)

@@ -324,6 +324,10 @@ namespace DOL.GS
 					return false;
 
 				//---------------------------------------------------------------
+				//Living Server 1.1.2: the world database's integrity check (logged; never stops the start)
+				InitComponent(WorldDatabaseSafety.CheckAtStart(), "World database check");
+
+				//---------------------------------------------------------------
 				//Try loading the commands
 				if (!InitComponent(ScriptMgr.LoadCommands(), "Loading Commands"))
 					return false;
@@ -1028,6 +1032,9 @@ namespace DOL.GS
 				SaveTimerProc(null);
 			}
 
+			// Living Server 1.1.2: the last saves go from the WAL into the database file.
+			WorldDatabaseSafety.CheckpointAtStop();
+
 			base.Stop();
 
 			if (log.IsInfoEnabled)
@@ -1187,7 +1194,9 @@ namespace DOL.GS
 		{
 			if (m_database == null)
 			{
-				m_database = ObjectDatabase.GetObjectDatabase(Configuration.DBType, Configuration.DBConnectionString);
+				// Living Server 1.1.2: WAL, Synchronous=Normal, pooling and a busy timeout, whatever serverconfig.xml says.
+				string connectionString = WorldDatabaseSafety.PrepareConnectionString(Configuration.DBType, Configuration.DBConnectionString);
+				m_database = ObjectDatabase.GetObjectDatabase(Configuration.DBType, connectionString);
 
 				try
 				{
@@ -1223,6 +1232,8 @@ namespace DOL.GS
 					return false;
 				}
 			}
+
+			WorldDatabaseSafety.ConfirmJournal();
 
 			if (log.IsInfoEnabled)
 				log.Info("Database Initialization: true");

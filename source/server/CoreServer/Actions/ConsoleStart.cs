@@ -74,8 +74,11 @@ namespace DOL.DOLServer.Actions
             {
                 if (!configFile.Directory.Exists)
                     configFile.Directory.Create();
+                // Living Server 1.1.2: the code defaults are this PC only (127.0.0.1), UPnP off and the database in WAL,
+                // so a lost serverconfig.xml no longer comes back open to the network.
                 config.SaveToXMLFile(configFile);
-                if (File.Exists(currentAssembly.DirectoryName + Path.DirectorySeparatorChar + "DOLConfig.exe"))
+                Console.WriteLine($"No config file found: wrote {configFile.FullName} with the safe defaults (this PC only, UPnP off).");
+                if (currentAssembly != null && File.Exists(currentAssembly.DirectoryName + Path.DirectorySeparatorChar + "DOLConfig.exe"))
                 {
                     Console.WriteLine("No config file found, launching with default config and embedded database... (SQLite)");
                 }

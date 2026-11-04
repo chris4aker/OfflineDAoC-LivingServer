@@ -314,7 +314,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         try
         {
             string runtime = Path.GetDirectoryName(Path.GetDirectoryName(_database)!)!;
-            string records = Path.Combine(runtime, "server", "realm-event-records.sqlite3");
+            string records = DOL.GS.RealmEventRecordStore.Locate(runtime);
             string path = await Task.Run(() => HeraldPage.Write(_database, records, Path.Combine(runtime, "herald"), DateTime.Now));
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
             SetNotice("HERALD WRITTEN: " + path, error: false);
