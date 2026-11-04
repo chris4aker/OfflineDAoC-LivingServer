@@ -54,7 +54,7 @@ public static partial class AutonomousBotGroupCoordinator
     private static bool TryFormSiegeParty(AutonomousRvrEventLayer.SoloSiegeRoster roster, GameBot[] members)
     {
         GameBot leader = members[0];
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             var group = new Group(leader);
             GroupMgr.AddGroup(group);

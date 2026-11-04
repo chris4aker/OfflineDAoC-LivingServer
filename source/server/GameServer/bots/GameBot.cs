@@ -3425,11 +3425,11 @@ namespace DOL.GS
                 return false;
 
             bool saved;
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 saved = record.IsPersisted ? GameServer.Database.SaveObject(record) : GameServer.Database.AddObject(record);
             if (includeInventory && Inventory is BotInventory persistentInventory)
             {
-                lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                     saved &= persistentInventory.SaveIntoDatabase(InternalID);
             }
             if (saved)

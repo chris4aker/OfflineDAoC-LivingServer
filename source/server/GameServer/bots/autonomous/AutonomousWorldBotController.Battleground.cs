@@ -25,6 +25,7 @@ namespace DOL.GS
 
         private bool ExecuteBattleground(BotBrain brain, GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerBattleground); // AI_PROFILE: measures only
             BattlegroundBrackets.Bracket bracket = BattlegroundBrackets.ForLevel(bot.Level);
             if (bracket == null)
             {

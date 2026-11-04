@@ -199,12 +199,12 @@ namespace DOL.GS
         {
             Group group = bot?.Group;
             if (group == null) return false;
-            lock (Sync) return Membership.TryGetValue(group, out Raid raid) && !raid.Started && raid.Parties.ContainsKey(group);
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Membership.TryGetValue(group, out Raid raid) && !raid.Started && raid.Parties.ContainsKey(group);
         }
         public static bool IsReservedFor(GameBot bot, string id) => bot != null && Reservations.GetValueOrDefault(bot.DatabaseID) == id;
         public static bool IsForcedExpedition(string id)
         {
-            lock (Sync) return Raids.TryGetValue(id, out var raid) && raid.Forced;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Raids.TryGetValue(id, out var raid) && raid.Forced;
         }
         public static bool IsEligible(GameBot bot) => bot != null && !AutonomousBeggars.Is(bot) && RealmRaidRecruitmentPolicy.Eligible(
             bot.Level, bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper, bot.IsPlayerLedGroup);
@@ -260,7 +260,7 @@ namespace DOL.GS
         /// </summary>
         public static bool StartAutomaticForTest(eRealm realm, bool dragon, out string reason)
         {
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 int online = OnlineLevelFifty(realm);
                 if (Raids.Values.Any(r => r.Definition.Realm == realm))
@@ -307,7 +307,7 @@ namespace DOL.GS
 
         public static void Pulse(long now)
         {
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (now < _nextPulse) return;
                 _nextPulse = now + 10_000;
@@ -458,7 +458,7 @@ namespace DOL.GS
             // A whole PvE party of five to eight level 50s may answer (most parties form with five or six).
             if (members.Length is < RealmRaidRecruitmentPolicy.MinimumJoiningParty or > 8 || members.Any(b => !IsEligible(b) || IsReserved(b) ||
                 b.Realm != leader.Realm || !AutonomousObjectiveAssignments.Is(b, eAutonomousObjectiveKind.GroupPve))) return false;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (Membership.TryGetValue(leader.Group, out Raid joined)) { view = joined.Parties[leader.Group].View; return true; }
                 Raid raid = Raids.Values.FirstOrDefault(r => r.Definition.Realm == leader.Realm && !r.Forced && r.Parties.Count < RealmRaidRecruitmentPolicy.MaximumParties);
@@ -516,7 +516,7 @@ namespace DOL.GS
                 reason = $"Not started: only {recruits.Sum(p => p.Length)}/300 eligible level-50 bots could be reserved. No tasks were cancelled.";
                 return false;
             }
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 Definition definition = Definitions.FirstOrDefault(d => d.Id == id && d.Realm == realm);
                 if (definition == null || !Available(id)) { reason = "The encounter is not alive/available, or this event is on cooldown."; return false; }
@@ -661,7 +661,7 @@ namespace DOL.GS
         {
             home=default;
             if (bot?.IsAutonomousWorldBot != true || bot.Group == null) return false;
-            lock(Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(bot.Group,out var raid) || raid.Started || raid.Definition.IsDungeon ||
                     !raid.HubDeparted || bot.CurrentRegionID != raid.Definition.Region) return false;
@@ -674,7 +674,7 @@ namespace DOL.GS
         public static bool IsPendingDragonTarget(GameBot bot, GameLiving target)
         {
             if(bot?.IsAutonomousWorldBot != true || bot.Group == null || target == null) return false;
-            lock(Sync) return Membership.TryGetValue(bot.Group,out var raid) && !raid.Started &&
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Membership.TryGetValue(bot.Group,out var raid) && !raid.Started &&
                 !raid.Definition.IsDungeon && ReferenceEquals(raid.Boss,target);
         }
 
@@ -685,7 +685,7 @@ namespace DOL.GS
         public static void RecruitForcedParty(long now)
         {
             var batch = new List<(string Id, GameBot[] Members)>();
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (now < _nextForcedRecruitment) return;
                 _nextForcedRecruitment = now + 5_000;
@@ -749,7 +749,7 @@ namespace DOL.GS
             // instead of staying short (Galladoria, 2026-10-06: 296/300 after four members were
             // trapped in Dun Lamfhota). The newcomer joins as a late member and travels on its own.
             var refills = new List<(string Id, Group Group, RealmRaidMuster.Hub Hub, bool Forced, long[] Released)>();
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 foreach (var raid in Raids.Values)
                 {
@@ -766,7 +766,7 @@ namespace DOL.GS
             foreach (var (id, members) in batch)
             {
                 if (!AutonomousBotGroupCoordinator.FormForcedRaidParty(id, members)) continue;
-                lock (Sync)
+                using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 {
                     if (Raids.TryGetValue(id, out var raid) && !raid.ForcedParties.Remove(members))
                     {
@@ -786,7 +786,7 @@ namespace DOL.GS
         public static void ReleasePartyMember(Group group, GameBot bot)
         {
             if (group == null || bot == null) return;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out Raid raid) || !raid.Parties.TryGetValue(group, out Party party)) return;
                 party.Members = party.Members.Where(member => member != bot).ToArray();
@@ -803,7 +803,7 @@ namespace DOL.GS
         public static bool AddReplacement(Group group, GameBot bot)
         {
             if (group == null || bot == null) return false;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out Raid raid) || !raid.Parties.TryGetValue(group, out Party party) ||
                     !RealmRaidRecruitmentPolicy.NeedsReplacement(party.Target, party.Members.Length) ||
@@ -819,7 +819,7 @@ namespace DOL.GS
         public static bool TryGetForcedStaging(string id, out AutonomousBotGroupCoordinator.SharedCamp camp)
         {
             camp = null;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Raids.TryGetValue(id, out var raid) || raid.Parties.Count >= RealmRaidRecruitmentPolicy.MaximumParties) return false;
                 if (!TryFreeSlot(raid, out int slot, out _, out var staging))
@@ -841,7 +841,7 @@ namespace DOL.GS
 
         public static bool CommitForcedParty(string id, Group group)
         {
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Raids.TryGetValue(id, out var raid) ||
                     raid.Parties.Count >= RealmRaidRecruitmentPolicy.MaximumParties || Membership.ContainsKey(group)) return false;
@@ -873,7 +873,7 @@ namespace DOL.GS
         public static bool TryGetSpecialForcesPost(string id, out ushort region, out Vector3 point)
         {
             region = 0; point = default;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Raids.TryGetValue(id, out var raid) || raid.Hub == null) return false;
                 region = raid.Hub.Region;
@@ -884,7 +884,7 @@ namespace DOL.GS
 
         public static bool IsRunning(string id)
         {
-            lock (Sync) return Raids.ContainsKey(id);
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Raids.ContainsKey(id);
         }
 
         /// <summary>A Special Forces member is reserved for its raid like a recruit, so it can be formed into a party.</summary>
@@ -1034,7 +1034,7 @@ namespace DOL.GS
         public static View GetView(Group group)
         {
             if (group == null) return null;
-            lock (Sync) return Membership.TryGetValue(group, out var raid) && raid.Parties.TryGetValue(group, out var party) ? party.View : null;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Membership.TryGetValue(group, out var raid) && raid.Parties.TryGetValue(group, out var party) ? party.View : null;
         }
 
         // A late or released member follows the current encounter, never an
@@ -1043,7 +1043,7 @@ namespace DOL.GS
         {
             Group group = bot?.Group;
             if (group == null) return null;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
                 return raid.HubDeparted && party.CatchingUp.Contains(bot.DatabaseID)
@@ -1058,7 +1058,7 @@ namespace DOL.GS
             destination = default; via = null;
             Group group = bot?.Group;
             if (group == null) return false;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party) ||
                     !raid.HubDeparted || bot.CurrentRegionID != raid.Hub.Region ||
@@ -1080,7 +1080,7 @@ namespace DOL.GS
             region = 0; point = null;
             Group group = bot?.Group;
             if (group == null) return false;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || raid.DungeonRoute == null || raid.Hub == null) return false;
                 region = raid.Hub.Region;
@@ -1093,7 +1093,7 @@ namespace DOL.GS
         {
             Group group = bot?.Group;
             if (group == null) return;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 if (Membership.TryGetValue(group, out var raid) && raid.Parties.TryGetValue(group, out var party))
                 {
                     party.CatchingUp.Add(bot.DatabaseID);
@@ -1105,7 +1105,7 @@ namespace DOL.GS
         {
             Group group = bot?.Group;
             if (group == null) return;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 if (Membership.TryGetValue(group, out var raid) && raid.Parties.TryGetValue(group, out var party))
                     party.CorpseSince.Remove(bot.DatabaseID);
         }
@@ -1113,7 +1113,7 @@ namespace DOL.GS
         public static AutonomousBotGroupCoordinator.PveCorpseDisposition CorpseRecovery(GameBot bot)
         {
             Group group = bot?.Group;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (group == null || !Membership.TryGetValue(group, out var raid) ||
                     !raid.Parties.TryGetValue(group, out var party))
@@ -1138,7 +1138,7 @@ namespace DOL.GS
         public static object SupportScope(GameBot bot)
         {
             Group group = bot?.Group;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 if (group != null && Membership.TryGetValue(group, out var raid)) return raid;
             return RealmWarbandSupport.Get(bot)?.Scope ?? bot?.Group;
         }
@@ -1152,7 +1152,7 @@ namespace DOL.GS
         public static bool IsHighEndRaidEncounter(GameNPC victim)
         {
             if (victim is IGameEpicNpc) return true;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 return CompletedLoot.ContainsKey(victim) || Raids.Values.Any(r => ReferenceEquals(r.Boss, victim) ||
                     r.DungeonRoute?.FinalBosses.Contains(victim) == true);
         }
@@ -1167,7 +1167,7 @@ namespace DOL.GS
         /// </summary>
         public static IGameStaticItemOwner LootOwner(GameNPC victim, IReadOnlyDictionary<GameBot, double> damageByBot)
         {
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 GameBot[] damaging = damageByBot.Keys.ToArray();
                 Raid raid = damageByBot.Where(p => p.Key?.Group != null)
@@ -1214,7 +1214,7 @@ namespace DOL.GS
         public static GameLiving[] SupportMembers(GameBot bot)
         {
             Group group = bot?.Group;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 if (group != null && Membership.TryGetValue(group, out var raid)) return raid.Support;
             // Never acquire a group lock while holding the expedition lock;
             // group disbanding calls RemoveParty in the opposite direction.
@@ -1227,7 +1227,7 @@ namespace DOL.GS
         public static GameLiving[] ClaimNearbyDefenseBroadcast(GameBot victim, long now)
         {
             if (victim?.Group == null || !DefenseGroups.ContainsKey(victim.Group)) return [];
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (victim?.Group == null || !Membership.TryGetValue(victim.Group, out var raid) ||
                     now < raid.NextDefenseBroadcast) return [];
@@ -1239,14 +1239,14 @@ namespace DOL.GS
         public static bool SameExpedition(GameBot first, GameBot second)
         {
             if (first?.IsAutonomousWorldBot != true || second?.IsAutonomousWorldBot != true) return false;
-            lock (Sync) return first.Group != null && second.Group != null &&
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return first.Group != null && second.Group != null &&
                 Membership.TryGetValue(first.Group, out var raid) && Membership.GetValueOrDefault(second.Group) == raid;
         }
 
         public static bool Protects(GameBot bot)
         {
             if (bot?.IsAlive != true || !bot.IsAutonomousWorldBot) return false;
-            lock(Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 if(bot.Group != null && Membership.TryGetValue(bot.Group,out var raid) &&
                     raid.HubDeparted && !raid.Started && !bot.IsOnStableMasterRoute &&
                     bot.CurrentRegionID == (raid.Definition.IsDungeon ? raid.DungeonRoute.Entrance.SourceRegion : raid.Definition.Region) &&
@@ -1254,7 +1254,7 @@ namespace DOL.GS
             // A started dungeon expedition fights wherever its route leads (a boss
             // room can be far from the next route point). Real combat inside the
             // expedition's own dungeon is never a 15-minute "no movement" stall.
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 if (bot.InCombat && bot.Group != null && Membership.TryGetValue(bot.Group, out var raid) &&
                     raid.Started && raid.DungeonRoute != null && bot.CurrentRegionID == raid.Definition.Region)
                     return true;
@@ -1274,7 +1274,7 @@ namespace DOL.GS
         {
             region = 0; point = default;
             if (bot?.Group == null) return false;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(bot.Group, out var raid) || raid.DungeonRoute == null || !raid.Started ||
                     bot.CurrentRegionID != raid.Definition.Region)
@@ -1321,7 +1321,7 @@ namespace DOL.GS
         public static void RemoveParty(Group group)
         {
             if (group == null) return;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 Released.Remove(group);
                 if (Membership.Remove(group, out Raid raid))
@@ -1335,7 +1335,7 @@ namespace DOL.GS
 
         public static bool TryConsumeRelease(Group group, out string reason)
         {
-            lock (Sync) return Released.Remove(group, out reason);
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Released.Remove(group, out reason);
         }
 
         private static void End(Raid raid, long now, string reason)
@@ -1426,7 +1426,7 @@ namespace DOL.GS
         // started yet (no cooldown), the way a forced siege supersedes an unstarted automatic siege.
         private static void SupersedeAutomatic(eRealm realm, string forcedId)
         {
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
                 foreach (Raid automatic in Raids.Values.Where(r => r.Definition.Realm == realm && !r.Forced && !r.Started &&
                              r.Definition.Id != forcedId).ToArray())
                     End(automatic, GameLoop.GameLoopTime, $"{StoppedByPlayer}: superseded by the forced {forcedId} expedition.");
@@ -1435,7 +1435,7 @@ namespace DOL.GS
         /// <summary>Launcher "Stop event": ends an active dragon or epic dungeon expedition now.</summary>
         public static bool Stop(string id, out string reason)
         {
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Raids.TryGetValue(id, out Raid raid))
                 { reason = "This expedition is not running."; return false; }
@@ -1447,12 +1447,12 @@ namespace DOL.GS
 
         public static bool ResetCooldown(string id)
         {
-            lock (Sync) { if (Raids.ContainsKey(id)) return false; Cooldowns.Remove(id); return true; }
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) { if (Raids.ContainsKey(id)) return false; Cooldowns.Remove(id); return true; }
         }
 
         public static Summary[] Snapshot()
         {
-            lock (Sync) return Definitions.Select(d =>
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid)) return Definitions.Select(d =>
             {
                 if (Raids.TryGetValue(d.Id, out var r)) return new Summary(d.Id, d.Name, GlobalConstants.RealmToName(d.Realm),
                     r.Started ? "RAID — " + (r.DungeonRoute?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :

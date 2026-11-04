@@ -106,7 +106,7 @@ public static partial class AutonomousBotGroupCoordinator
         // Validate the raid post before cancelling anybody's work.
         if (!AutonomousRealmRaid.TryGetForcedStaging(eventId, out SharedCamp staging)) return false;
         bool forced = AutonomousRealmRaid.IsForcedExpedition(eventId);
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             // Reservations normally exclude these applicants from matchmaking.
             // Still fail closed if one acquired a party before this commit.
@@ -156,7 +156,7 @@ public static partial class AutonomousBotGroupCoordinator
         bool forced, long[] released)
     {
         if (group == null) return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!Sessions.TryGetValue(group, out Session session) || session.Ending ||
                 session.RaidMusterEvent == null && AutonomousRealmRaid.GetView(group) == null) return false;

@@ -179,14 +179,17 @@ public static class AutonomousBotStatusPersistence
             foreach ((GameBot Bot, OfflineWorldBotRecord Record)[] batch in snapshots.Chunk(WriteBatchSize))
             {
                 bool saved;
-                lock (DatabaseWriteLock)
+                // AI_PROFILE: the wait for the write lock, the status rows and the inventory rows are timed apart.
+                using (AiProfile.Lock(DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 {
-                    saved = GameServer.Database.SaveObject(batch.Select(entry => (DataObject)entry.Record));
+                    using (AiProfile.Scope(AiSystem.DbStatusBatch))
+                        saved = GameServer.Database.SaveObject(batch.Select(entry => (DataObject)entry.Record));
                     if (saved)
                     {
-                        saved = BotInventory.SaveManyIntoDatabase(batch
-                            .Where(entry => inventoryIds.Contains(entry.Bot.DatabaseID) && entry.Bot.Inventory is BotInventory)
-                            .Select(entry => ((BotInventory)entry.Bot.Inventory, entry.Bot.InternalID)));
+                        using (AiProfile.Scope(AiSystem.DbInventoryBatch))
+                            saved = BotInventory.SaveManyIntoDatabase(batch
+                                .Where(entry => inventoryIds.Contains(entry.Bot.DatabaseID) && entry.Bot.Inventory is BotInventory)
+                                .Select(entry => ((BotInventory)entry.Bot.Inventory, entry.Bot.InternalID)));
                     }
                 }
 

@@ -48,6 +48,7 @@ namespace DOL.GS
         /// </summary>
         private bool GuardOpenWorldTravel(GameBot bot, Vector3 destination)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerRouteThreats); // AI_PROFILE: measures only
             if (!AutonomousRouteThreatPolicy.Enabled || bot.Brain is not BotBrain brain ||
                 bot.CurrentZone == null || bot.CurrentZone.IsDungeon || bot.CurrentRegion?.IsDungeon == true ||
                 bot.IsOnStableMasterRoute || bot.IsPlayerLedGroup || brain.HasAggro || bot.InCombat || bot.IsAttacking ||

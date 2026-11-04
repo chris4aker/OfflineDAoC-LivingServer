@@ -325,6 +325,7 @@ public static class AutonomousPetSupport
         out string activity,
         Func<Spell, bool> spellAllowed = null)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.PetsMaintain); // AI_PROFILE: measures only
         if (owner is GameBot petOwner && PetEaterNear(petOwner) is { } eater)
         {
             if (petOwner.ControlledBrain?.Body != null)
@@ -719,6 +720,7 @@ public static class AutonomousPetSupport
         IControlledBrain petBrain,
         GameLiving combatTarget)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.PetsSync); // AI_PROFILE: measures only
         if (owner is not GameBot { Brain: BotBrain ownerBrain } ||
             petBrain?.Body?.IsAlive != true ||
             petBrain.Body.ObjectState is not GameObject.eObjectState.Active)

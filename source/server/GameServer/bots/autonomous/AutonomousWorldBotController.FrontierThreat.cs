@@ -139,6 +139,8 @@ public sealed partial class AutonomousWorldBotController
             (brain.HasAggro || bot.InCombat || bot.IsAttacking) && previousEngine == null ||
             brain.FSM.GetCurrentState()?.StateType == eFSMStateType.PASSIVE ||
             !_frontierThreat.Due(GameLoop.GameLoopTime, bot.DatabaseID) || IsSafeArea(bot)) return false;
+        // AI_PROFILE: only the scan itself is timed, not the cheap checks above that skip it.
+        using var aiProfile = AiProfile.Scope(AiSystem.FrontierThreatScan);
 
         var nav = PathfindingProvider.Instance;
         if (!nav.IsAvailable || !nav.HasNavmesh(bot.CurrentZone)) return false;
