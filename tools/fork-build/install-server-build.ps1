@@ -432,4 +432,7 @@ $pruned = Remove-OldDatabaseBackups $game 3
 if ($pruned -gt 0) { Write-Host "Removed the world database copies of $pruned older install(s) (the newest 3 are kept; their server files stay)." }
 Write-Host "Start the game as usual. The server log shows: FORK_BUILD name=$($info['BuildName']) commit=$($info['Commit'])"
 Write-Host 'Every new feature is OFF until you switch it on: launcher -> Living Server tab (server stopped). To undo: ROLLBACK.cmd'
+# Living Server 1.2: the epic chains need no step here (and no Python): the server links them as it reads the quests,
+# in memory, so the world keeps its released rows and ROLLBACK.cmd has nothing to undo for them.
+Write-Host 'The epic chains are linked by the server as it reads the quests; nothing is written to your world for them (/epic shows a chain).'
 exit 0

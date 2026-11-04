@@ -34,6 +34,20 @@ $game = Find-GameFolder $GameFolder $PSScriptRoot
 Write-Host "Game folder: $game"
 Assert-GameClosed
 
+# The epic chains (Living Server 1.2): the server links them in memory as it reads the quests and never writes them to
+# the world, so a rollback has nothing to undo there. A world that epic_chains.py --apply wrote them into (as Beta 1.1
+# asked) still holds them, and the released server reads those links as quest names: it would never offer the Guild
+# of Shadows again. epic_chains.py and the server leave this note beside the server for such a world.
+$epicNote = Join-Path $game 'runtime\server\epic-chains-in-world.txt'
+if (Test-Path -LiteralPath $epicNote) {
+    if (!$Force) {
+        Stop-WithMessage ("This world's quest rows hold the epic chain links that epic_chains.py wrote into them. The released server " +
+            "reads them as quest names, so the Guild of Shadows would never be offered after this. Put them back first (Python " +
+            "needed): python tools\claude-version\epic_chains.py rollback --apply - then run this again. -Force rolls back anyway.")
+    }
+    Write-Host 'The epic chain links stay written into this world (-Force); the Guild of Shadows will not be offered by the released server.' -ForegroundColor Yellow
+}
+
 if ($ToRelease) {
     $manifest = Read-PackageManifest $game
     if ($null -eq $manifest) { Stop-WithMessage "No PACKAGE MANIFEST.sha256 in $game, so the released files can't be told apart." }

@@ -66,6 +66,8 @@
         <EmbeddedResource Include=".\bots\autonomous\data\dungeon_navigation_points.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\darkness_falls_raid_event_mobs.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\darkness_falls_navigation_proofs.json" />
+        <!-- The epic chains (EpicChainLinks): the data file tools/claude-version/epic_chains.py reads, built in. -->
+        <EmbeddedResource Include="..\..\..\tools\claude-version\epic_chains_data.json" LogicalName="epic_chains_data.json" />
         <TranslationFiles Include=".\language\**\*.txt" />
         <APIDocs Include=".\API\docs\*" />
         <Content Include="API\docs\index.css" />
