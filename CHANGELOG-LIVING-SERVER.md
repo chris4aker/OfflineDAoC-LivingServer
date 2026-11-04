@@ -34,6 +34,26 @@ Older entries below keep the names they were written with.
     unchanged in 0.37b.
   - **Now:** players get `xp_rate` (or `xp_rate_by_level`) times `rvr_zones_xp_rate`, the rule gamebots already had.
   - **Checked:** two new tests in `UT_LevelRangeXpRates`. Not yet seen in game.
+- **Gamebot fixes from long soak runs** (by Nikse77, via rambodolphin13; the keep doors by rambodolphin13). Autonomous
+  gamebots only; `/spawn` companions and players are unchanged.
+  - **Zone seams:** a route that steps over a zone seam and straight back three times is treated as a route failure,
+    so the bot takes its usual way out instead of standing there (bots stood 10 to 40 minutes in Vindsaul Faste).
+  - **Group stalls:** a member of a bot-only group stalled for 3 minutes, idle and in its leader's region, is moved to
+    its leader (at most once in five minutes; never on a stablemaster ride, never in a player's group). The stall log
+    names both zones and the member's recent trail.
+  - **Ranged pulls:** a declined ranged pull no longer holds up the ordinary pull (a party of seven stood 30 minutes at
+    its camp). A Necromancer pulls only when no one else can, a Cleric only before that.
+  - **Mezzed enemies:** a mezzed enemy is left alone only while another free enemy is within 1,500 units; when the mez
+    is all that is left, bots finish it instead of walking away.
+  - **Darkness Falls:** a bot with no certified route out of DF probes less often after four empty tries and, after
+    three minutes, goes to its realm's capital. A gamebot saved inside DF logs back in at its realm's entrance of the
+    dungeon, not in a pack. DF stays open to solo bots.
+  - **Keep doors:** an army inside a keep it just took can leave through the doors (four captured keeps held their
+    armies: 661 route give-ups, then 213 teleports home).
+  - **Checked:** their tests (`UT_AutonomousZoneSeamCycle`, `UT_SupportReachAndGroupStall`,
+    `UT_DarknessFallsLoginEntrance`, `UT_FrontierTravelContracts`) and a new `UT_DarknessFallsExitHold`. Not yet seen
+    in game here. Not taken: the travelling-Minstrel song change (it conflicts with our bot brain) and the forks'
+    route-threat and zone-crossing changes, where our route code has diverged.
 
 ## Beta 1.1.1 — 2026-10-31
 
