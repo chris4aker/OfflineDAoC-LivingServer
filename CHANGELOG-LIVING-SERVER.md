@@ -80,6 +80,13 @@ here changes gameplay. The WAL settings and the backup design are ported from lo
   warnings, and the UPnP clean-up with a fake router). There are also 8 new installer checks and 5 Python tests for
   the release config. None of this has run on a real install or in game yet.
 
+- **Release gates** (audit 2026-11-03, §8.6). CI also runs on pushes to main. A `versions` check fails when
+  README.md, the build name and this changelog name different releases (README.md still said Beta 1.1; it now says
+  1.1.1, without the test count that went stale). A release workflow builds Setup from a published release's package,
+  runs the installer's end-to-end tests, attaches the exe and puts its SHA-256 in the notes; see "Releasing Living
+  Server" in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). The SQLite tests' cleanup no longer fails on Windows while a
+  closing connection still holds the file (PR #56): each test has its own temporary folder, deleted with retries.
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the

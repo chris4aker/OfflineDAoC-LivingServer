@@ -1,0 +1,125 @@
+# Finishes a published Living Server release (docs/DEVELOPMENT.md, "Releasing Living Server"): builds Setup on Windows
+# from the release's own package, runs the installer's end-to-end tests, attaches LivingServer-Setup-<build>.exe and
+# puts its SHA-256 in the notes' file table in place of "(filled in when the exe is built)".
+#
+# Safe to run again (tools/release/publish_setup.py): an exe attached with the same SHA-256 isn't uploaded twice,
+# notes that show it aren't edited, and an attached exe with another SHA-256 is never replaced (the run stops).
+# A dry run does everything except upload and edit, with a read-only token.
+name: release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, e.g. v1.1.2-beta"
+        required: true
+      dry_run:
+        description: "Dry run: build and test, but don't upload or edit the release"
+        type: boolean
+        default: true
+      e2e:
+        description: "Dry runs only: run the real-download end-to-end tests (a real run always runs them)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      tag: ${{ steps.what.outputs.tag }}
+      dry_run: ${{ steps.what.outputs.dry_run }}
+      e2e: ${{ steps.what.outputs.e2e }}
+      done: ${{ steps.release.outputs.done }}
+      setup_name: ${{ steps.release.outputs.setup_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Which release, and a real run or a dry run
+        id: what
+        env:
+          EVENT: ${{ github.event_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_E2E: ${{ inputs.e2e }}
+        run: |
+          case "$EVENT" in
+            release) tag="$RELEASE_TAG"; dry_run=false; e2e=true ;;
+            workflow_dispatch) tag="$INPUT_TAG"; dry_run="$INPUT_DRY_RUN"; e2e="$INPUT_E2E" ;;
+            *) echo "::error::release.yml runs on a published release or by hand, not on $EVENT"; exit 1 ;;
+          esac
+          [ "$dry_run" = true ] || { dry_run=false; e2e=true; }   # a real run is always tested end to end
+          [ "$e2e" = true ] || e2e=false
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "dry_run=$dry_run" >> "$GITHUB_OUTPUT"
+          echo "e2e=$e2e" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Release::$tag (dry run: $dry_run, end-to-end tests: $e2e)"
+      - name: Check the release and what is left to do
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/release/publish_setup.py plan --tag "${{ steps.what.outputs.tag }}"
+
+  # The installer workflow's own build and end-to-end jobs, with this release's package. Skipped when a real run finds
+  # nothing left to do; a dry run always builds and tests.
+  installer:
+    needs: plan
+    if: needs.plan.outputs.done != 'true' || needs.plan.outputs.dry_run == 'true'
+    uses: ./.github/workflows/installer.yml
+    with:
+      package_release: ${{ needs.plan.outputs.tag }}
+      e2e: ${{ needs.plan.outputs.e2e == 'true' }}
+
+  publish:
+    needs: [plan, installer]
+    if: needs.plan.outputs.dry_run == 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingServer-Setup
+          path: setup
+      - name: Attach Setup and put its SHA-256 in the notes
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SETUP_NAME: ${{ needs.plan.outputs.setup_name }}
+        run: |
+          exe=$(find setup -type f -name "$SETUP_NAME" | head -n 1)
+          pkg=$(find setup -type f -name LivingServer.zip | head -n 1)
+          [ -n "$exe" ] || { echo "::error::No $SETUP_NAME in the build (the package's BUILD-INFO names another build?)"; ls -R setup; exit 1; }
+          python3 tools/release/publish_setup.py publish --tag "${{ needs.plan.outputs.tag }}" --exe "$exe" --package "$pkg"
+
+  # Everything publish does, with a read-only token and --dry-run: prints what it would upload and the new notes.
+  dry-run:
+    needs: [plan, installer]
+    if: needs.plan.outputs.dry_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingServer-Setup
+          path: setup
+      - name: What a real run would do
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SETUP_NAME: ${{ needs.plan.outputs.setup_name }}
+        run: |
+          exe=$(find setup -type f -name "$SETUP_NAME" | head -n 1)
+          pkg=$(find setup -type f -name LivingServer.zip | head -n 1)
+          [ -n "$exe" ] || { echo "::error::No $SETUP_NAME in the build (the package's BUILD-INFO names another build?)"; ls -R setup; exit 1; }
+          python3 tools/release/publish_setup.py publish --tag "${{ needs.plan.outputs.tag }}" --exe "$exe" --package "$pkg" --dry-run

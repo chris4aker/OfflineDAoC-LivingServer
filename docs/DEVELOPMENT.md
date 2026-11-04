@@ -145,6 +145,44 @@ design. To make one:
 Patches are cumulative from the base: the next one (0.38) is built against the same 0.36 baseline, with the
 previous patch's file fingerprints accepted too.
 
+## Releasing Living Server
+
+The owner publishes the release with its package and notes; the release workflow does the rest.
+
+1. **Name the release on main.** Rename the changelog's `## Beta X (in development)` heading to `## Beta X — <date>`,
+   set `ForkBuildInfo.BuildName` to `X-beta`, and move README.md to Beta X: its "**Beta X is out.**" sentence, its
+   release links and the file names it quotes. Build-and-test's `versions` job fails while these disagree
+   (`python tools/release/check_versions.py` says what is off). A heading marked "(in development)" isn't released, so
+   README.md stays on the last release until then.
+2. **Publish the release.** Make it as a draft with tag `vX-beta`, attach the package
+   `OfflineDAoC-LivingServer-X-beta.zip`, write the notes and publish. In the notes' file table, the Setup row is
+   ```
+   | `LivingServer-Setup-X-beta.exe` | (filled in when the exe is built) |
+   ```
+   The package must be attached before publishing: the workflow starts at that moment.
+3. **The release workflow takes over** (`.github/workflows/release.yml`). It builds Setup on Windows from the release's
+   own package (the installer workflow's build and end-to-end jobs, called as a reusable workflow), runs the real
+   download tests (one to three hours), then attaches `LivingServer-Setup-X-beta.exe` and replaces the placeholder with
+   its SHA-256. It checks that the package Setup embeds is the release's zip, byte for byte. If a test fails, nothing
+   is attached or edited.
+
+Running it again is safe (`tools/release/publish_setup.py`): an exe already attached with the same SHA-256 isn't
+uploaded again, notes that show it aren't edited, and an exe attached with a different SHA-256 is never replaced (the
+run stops and says so; delete the asset by hand to attach a new build). To run it by hand, use Actions → release →
+Run workflow with the tag. **Dry run** is on by default: it builds and tests, then prints what it would upload and the
+notes it would write, with a read-only token. On publish the workflow runs from the tag's commit; by hand, from the
+branch you pick (GitHub only offers it once the file is on main).
+
+### Recommended settings for main
+
+Not applied by any script; the owner sets them under Settings → Branches (or Rules):
+- require a pull request before merging, with no required review (a single maintainer couldn't merge otherwise);
+- require the status checks `server` and `versions` (build-and-test) to pass;
+- block force pushes and block deletion;
+- let the owner (repository admin) bypass, for hotfixes.
+
+CI runs on every push to main as well, so a direct push or a merge is still tested afterwards.
+
 ## Sharing safely
 
 - **Never commit a played database.** It contains accounts, characters, bot rosters, inventories

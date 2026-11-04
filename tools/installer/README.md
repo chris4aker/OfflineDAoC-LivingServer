@@ -85,6 +85,9 @@ Exit codes: 0 done, 1 failed, 2 stopped, 3 bad arguments or a game Setup can't h
 
 Not covered: a real player's PC (antivirus, SmartScreen, odd folders), and playing the game.
 
+`.github/workflows/release.yml` runs these same jobs for every published release, then attaches the tested exe and
+puts its SHA-256 in the release notes ("Releasing Living Server" in [docs/DEVELOPMENT.md](../../docs/DEVELOPMENT.md)).
+
 ## Notes
 
 - The exe isn't code-signed, so Windows SmartScreen shows "Windows protected your PC" the first time: More info, then
