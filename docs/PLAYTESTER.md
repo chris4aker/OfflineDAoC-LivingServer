@@ -104,13 +104,22 @@ server start, the quit timer runs up to 60 seconds, so some scenarios wait that 
 ## What ran for real (in the development container, 2026-11-04)
 
 These runs used the server built from this branch on Linux, without navmeshes or the Detour library:
-- **Minimal world:** `login-save-restart`, `chat-players` and `group-players` passed.
-- **A test world made by `make_test_world.py from-release`** from a copy of the 0.37b test install's world, with 18
-  test gamebots:
-  - `tell-gamebot` passed: Aldric answered "good, slow xp but good :)" after 12.9 s.
-  - `faction-rate` passed at the low mark: 1 line in 2 minutes from the 1 to 2 bots online by then.
-  - `delivery-quest` passed: Simple Request, Lieutenant Brude to Lieutenant Kuebler and back, 2,300 XP.
-  - `kill-quest-bot-group` ran its group part: Brennan, then Aldric, joined the GM's group.
+- **Minimal world:** `login-save-restart`, `chat-players` and `group-players` passed. The four gamebot and quest
+  scenarios were skipped. This is the run the nightly workflow does.
+- **A test world made by `make_test_world.py from-release`** from a copy of the 0.37b test install's world. The copy
+  held 1 account, 4 characters and 2,711 bots, none of which were kept; 18 test gamebots were added. All seven
+  scenarios ran in one 13-minute run:
+  - `login-save-restart` passed. The character came back 0 units from where it quit, and the restart took 42 s.
+  - `chat-players` and `group-players` passed.
+  - `tell-gamebot` passed. Aldric and Brennan answered in 11.8 s and 7.1 s ("same old, killing things", "tired but
+    still leveling" in an earlier run).
+  - `faction-rate` passed: 7 lines from 3 speakers in 3 minutes (2.3 a minute) with 3 gamebots online.
+  - `delivery-quest` passed. Simple Request went from Lieutenant Brude to Lieutenant Kuebler and back, ended with "You
+    have completed the Simple Request quest!" and gave 2,300 XP.
+  - `kill-quest-bot-group` was Incomplete, as designed. Aldric joined the GM's group and the Ripper quest was taken;
+    killing Throatripper and the turn-in are the two TODOs.
+- The server console logs of that run hold about 700 lines marked ERR, mostly from missing navmeshes on Linux.
+  Nobody has gone through them.
 
 None of this has been run on Windows or against the original client. Gamebot behaviour without navmeshes is not what
 it is on your PC.
