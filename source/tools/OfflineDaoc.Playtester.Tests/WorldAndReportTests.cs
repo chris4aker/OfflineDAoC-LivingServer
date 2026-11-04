@@ -159,6 +159,20 @@ public class WorldAndReportTests
     }
 
     [Test]
+    public async Task AStepTheScenarioMayGiveUpOnIsSkippedNotFailed()
+    {
+        var world = TestWorld.Open(MakeDb(marker: true));
+        var ctx = new ScenarioContext(Runner.All[0], new PlaytestOptions(), world, null, System.Diagnostics.Stopwatch.StartNew());
+        bool ok = await ctx.TryStep("fight a flier", () => throw new PlaytestException("still alive after 60 s"));
+        Assert.That(ok, Is.False);
+        Assert.That(ctx.Result.Steps[0].Outcome, Is.EqualTo(Outcome.Skipped));
+        Assert.That(ctx.Result.Steps[0].Detail, Does.StartWith("gave up: still alive"));
+        Assert.That(await ctx.TryStep("fight a bandit", () => Task.FromResult("The bandit dies!")), Is.True);
+        Assert.ThrowsAsync<StepFailed>(async () => await ctx.Step("must pass", () => throw new PlaytestException("no")));
+        await ctx.DisposeAsync();
+    }
+
+    [Test]
     public void TheReportSaysWhatRanAndWhatIsStillToDo()
     {
         var report = new RunReport { StartedUtc = DateTimeOffset.Parse("2026-11-04T18:00:00Z"), World = "w.db", Server = "test" };

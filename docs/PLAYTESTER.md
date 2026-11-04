@@ -56,7 +56,7 @@ You need the .NET 10 SDK (as for building the server) and Python 3.
        --server-dir C:\Games\OfflineDAoC\playable-v0.37b-fresh\runtime\server ^
        --out C:\Games\OfflineDAoC\playtest\reports\first
    ```
-   The server runs with the folder's bundled .NET (`tools\dotnet`). A full run takes about 15 minutes, mostly waiting:
+   The server runs with the folder's bundled .NET (`tools\dotnet`). A full run takes about 20 minutes, mostly waiting:
    the quit timer, gamebots logging in, and three minutes of /faction.
 5. **Read the report**: `report.md` in the `--out` folder. `report.json` holds the same data plus every chat line. The
    server's console logs are in the same folder (`server-console-1.log`, and `-2` after the restart).
@@ -100,7 +100,7 @@ the first login:
 | `faction-rate` | gamebots | Say one `/faction` line, then listen for `--listen-seconds` (default 180). Count the gamebots' /faction lines: lines a minute, speakers, and lines in the first minute. It fails below `--min-faction-per-minute` (default 0.5). |
 | `delivery-quest` | release world | The GM takes the first delivery quest of the region from the world data (DataQuest whose first step is Deliver). It interacts with the giver and whispers the quest's AcceptText. Then for each step it `/jump`s to the target, gives the step's item from the backpack (or interacts), and checks the quest moves on. It must end with "You have completed the ... quest". |
 | `kill-quest-bot-group` | release world, gamebots | A player (not the GM) does a kill quest with a gamebot, set up the way a player would meet it. The quest is the region's kill quest with a hand-in and the weakest target. The GM makes the player an Armsman (`/player class`) and sets its level 4 above the target, inside the quest's range. The player trains at an Armsman trainer (`/train`), and the GM gives it the coin to buy a slashing weapon of its level from a merchant, which it wields. The player takes the quest, meets the helper gamebot (level 12: above the player and 5 above this target), invites it, and the GM brings the group to the target (`/player jump group`). They fight it, with full health first (`/heal`). The kill must count for the quest (the step item, the journal or "completed"), the hand-in steps run, and it must end with "You have completed the ... quest". It reports the experience of the kill and of the hand-in. |
-| `guild-dues` | release world, gamebots | The GM forms a guild with the player as leader (`/gc create`, after `/gc quit` from the starting guild). The leader sets dues (`/gc dues 50`; the server caps them at its maximum). Two levels (`/player levelup`) must earn the guild merit. The leader invites the helper gamebot into the guild (`/gc invite`) and the group. The group kills up to 8 monsters near the start until a kill drops coin. `/gc info` before and after must show the dues in the guild bank. It reports the coin picked up, the dues paid and any merit lines naming the bot. |
+| `guild-dues` | release world, gamebots | The GM forms a guild with the player as leader (`/gc create`, after `/gc quit` from the starting guild). The leader sets dues (`/gc dues 50`; the server caps them at its maximum). Two levels (`/player levelup`) must earn the guild merit. The leader invites the helper gamebot into the guild (`/gc invite`) and the group. The group kills up to 8 monsters 6,000 to 30,000 units from the start (away from the village guards), green to blue for the player, until a kill drops coin. A lost fight is given up: the GM brings the player back (`/player rez`) and the next monster is tried. `/gc info` before and after must show the dues in the guild bank. It reports the coin picked up, the dues paid and any merit lines naming the bot. |
 
 The scenarios run in this order against one server. Each one quits its players at the end. In the first minute after a
 server start, the quit timer runs up to 60 seconds, so some scenarios wait that long.
@@ -108,22 +108,35 @@ server start, the quit timer runs up to 60 seconds, so some scenarios wait that 
 ## What ran for real (in the development container, 2026-11-04)
 
 These runs used the server built from this branch on Linux, without navmeshes or the Detour library:
-- **Minimal world:** `login-save-restart`, `chat-players` and `group-players` passed. The four gamebot and quest
+- **Minimal world:** `login-save-restart`, `chat-players` and `group-players` passed. The five gamebot and quest
   scenarios were skipped. This is the run the nightly workflow does.
-- **A test world made by `make_test_world.py from-release`** from a copy of the 0.37b test install's world. The copy
-  held 1 account, 4 characters and 2,711 bots, none of which were kept; 18 test gamebots were added. All seven
-  scenarios ran in one 13-minute run:
-  - `login-save-restart` passed. The character came back 0 units from where it quit, and the restart took 42 s.
+- **Test worlds made by `make_test_world.py from-release`** from a copy of the 0.37b test install's world. The copy
+  held 1 account, 4 characters and 2,711 bots, none of which were kept; 18 test gamebots were added. In the last full
+  run of all eight scenarios (20 minutes), six passed:
+  - `login-save-restart` passed. The character came back 0 units from where it quit, and the restart took 24 s.
   - `chat-players` and `group-players` passed.
-  - `tell-gamebot` passed. Aldric and Brennan answered in 11.8 s and 7.1 s ("same old, killing things", "tired but
-    still leveling" in an earlier run).
-  - `faction-rate` passed: 7 lines from 3 speakers in 3 minutes (2.3 a minute) with 3 gamebots online.
-  - `delivery-quest` passed. Simple Request went from Lieutenant Brude to Lieutenant Kuebler and back, ended with "You
-    have completed the Simple Request quest!" and gave 2,300 XP.
-  - `kill-quest-bot-group` was Incomplete, as designed. Aldric joined the GM's group and the Ripper quest was taken;
-    killing Throatripper and the turn-in are the two TODOs.
-- The server console logs of that run hold about 700 lines marked ERR, mostly from missing navmeshes on Linux.
+  - `tell-gamebot` passed: the bots answered in 15.5 s and 5.2 s.
+  - `faction-rate` **failed** at 1 line in 3 minutes (0.33 a minute) with 3 gamebots online. An earlier run passed
+    with 7 lines from 3 speakers (2.3 a minute). With so few bots the rate is close to the pass mark.
+  - `delivery-quest` passed: Simple Request, completed, 2,300 XP.
+  - `kill-quest-bot-group` passed. The quest was Hunt for Slith. The Armsman (level 11, Slash 10, an iron bastard
+    sword bought from Alburn Hale) and Aldric (level 12) killed Slith. Aldric was seen targeting it and hit it. The
+    kill gave "You receive the Slith's Tail from Slith!" and the hand-in completed the quest, worth 9,900 XP and 9
+    silver 55 copper. The kill itself showed 459,950 XP (see Found below).
+  - `guild-dues` failed in that run: its monsters were by the village, and no kill there gave coin. With the change
+    that hunts away from the village, it passed in two of two further runs. In those, 79 and 100 copper were picked
+    up, 19 and 25 went to the bank (25%, the server's cap), and merit was 71 from the two levels.
+- The server console logs of these runs hold about 700 lines marked ERR, mostly from missing navmeshes on Linux.
   Nobody has gone through them.
+
+Found along the way (not fixed here):
+- A character set to a level by the GM (`/player level`, `/player levelup`) got exactly 459,950 XP for its next kill.
+  That is the experience of level 11, which it already had. This is probably an effect of the GM's level change,
+  not of the kill.
+- In the first minute after a server start, `/quit` takes up to 60 s. `/jump to <name>` reads a two-word NPC name as
+  a name and a realm.
+- Without navmeshes (this container) gamebots do not walk to the player. The scenarios move the group with
+  `/player jump group`.
 
 None of this has been run on Windows or against the original client. Gamebot behaviour without navmeshes is not what
 it is on your PC.

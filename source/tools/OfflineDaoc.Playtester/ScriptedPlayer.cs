@@ -481,9 +481,16 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
         ? $"CharacterList [{string.Join("; ", list.Characters)}]"
         : e.ToString();
 
+    /// <summary>Dead since "You have died", alive again at "You have been resurrected" or a release.</summary>
+    public bool IsDead { get; private set; }
+
     private ChatLine AddChat(ChatMessage m)
     {
         var line = new ChatLine(Math.Round(Now, 2), m.Type, m.Text, Label);
+        if (m.Text.StartsWith("You have died", StringComparison.Ordinal))
+            IsDead = true;
+        else if (m.Text.StartsWith("You have been resurrected", StringComparison.Ordinal) || m.Text.StartsWith("You release", StringComparison.Ordinal))
+            IsDead = false;
         lock (_sync)
             _chat.Add(line);
         return line;

@@ -370,10 +370,18 @@ internal sealed class GuildDues : Scenario
         long purse = player.Money;
         double huntStart = player.Now;
         int now = level + 2;   // after the two levels
-        var monsters = ctx.World.MonstersNear(player.Region, (int)player.X, (int)player.Y, 25000, Math.Max(1, now - 5), now - 1)
-            .GroupBy(m => m.Name).Select(g => g.First()).Take(8).ToList();   // not every kill drops coin: up to 8 tries
+        // green to blue for the player: not grey (no experience, no coin: "You gain no experience from this kill!"), and
+        // nothing a lone player cannot solo when the gamebot does not join in (level-9 camps came in threes and killed a
+        // level-11 Armsman in 9 s; in this container the bot seldom fights, without navmeshes)
+        // ... and away from the start village: a kill a guard helps with is worth nothing either (AbstractServerRules:
+        // "if a guard is involved, don't give any XP, drop any loot"). The cutpurses and poachers by Cotswold gave no
+        // experience and no coin in four runs, most likely for this reason (not confirmed in the server log).
+        double sx = player.X, sy = player.Y;
+        var monsters = ctx.World.MonstersNear(player.Region, (int)sx, (int)sy, 30000, Math.Max(1, now - 5), now - 3)
+            .Where(m => Math.Sqrt(Math.Pow(m.X - sx, 2) + Math.Pow(m.Y - sy, 2)) > 6000)
+            .GroupBy(m => m.Name).Select(g => g.First()).Take(8).ToList();
         ctx.Measure("monsters to hunt", string.Join(", ", monsters.Select(m => $"{m.Name} ({m.Level})")));
-        ScenarioContext.Check(monsters.Count > 0, $"no monster of level {now - 4}-{now - 1} near the start");
+        ScenarioContext.Check(monsters.Count > 0, $"no monster of level {now - 5}-{now - 3} near the start");
         int kills = 0;
         foreach (var monster in monsters)
         {
@@ -388,6 +396,12 @@ internal sealed class GuildDues : Scenario
                 break;
         }
         ctx.Measure("monsters killed", kills);
+        if (player.IsDead)
+        {
+            await Party.GmTargetsAsync(gm, player);
+            gm.Command("/player rez");
+            await Task.Delay(1000);
+        }
         await ctx.Step("/gc info after: the dues are in the bank", async () =>
         {
             var after = await InfoAsync(player, ctx.Options.NetTimeout);
@@ -637,6 +651,11 @@ internal static class Party
             if (gm != null)
             {
                 await GmTargetsAsync(gm, player);
+                if (player.IsDead)
+                {
+                    gm.Command("/player rez");   // after a lost fight: back on its feet where the GM stands
+                    await Task.Delay(1000);
+                }
                 gm.Command("/heal");
                 await Task.Delay(500);
             }
