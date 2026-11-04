@@ -986,6 +986,14 @@ public static partial class AutonomousBotGroupCoordinator
                 reason = $"Holding at the inside arrival point while the party loads ({inside}/{members.Length} inside)";
                 return true;
             }
+            // Bot-led groups: the party waits on the far side of the entrance for the player it hosts, until the
+            // follow rules let the player catch up on their own (10 minutes not getting closer).
+            if (HostedPlayerPresent(session) && session.Follow is { Released: false } &&
+                session.HostedPlayer.IsAlive && session.HostedPlayer.CurrentRegionID != directive.Camp.RegionId)
+            {
+                reason = $"Holding at the inside arrival point for {session.HostedPlayer.Name}";
+                return true;
+            }
 
             Vector3 staging = session.DungeonInteriorStagingPoint;
             if (staging != default)

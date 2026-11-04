@@ -233,6 +233,24 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void TheBotsGoAlongWithTheHostedPlayerAsWithAnInvitingOne()
+        {
+            Bot invited = Gamebot(20), hosted = Gamebot(20), alone = Gamebot(20);
+            Player leader = RealPlayer(), guest = RealPlayer();
+            JoinPlayersGroup(invited, leader);
+            Group party = GroupOf(hosted, guest);
+            BotLedGroups.SetHosted(party, new BotLedGroups.HostedView(guest, "g-9"));
+            alone.Group = Token();
+            Assert.Multiple(() =>
+            {
+                Assert.That(TemporaryGroupStableTravel.PlayerTheBotTravelsWith(invited), Is.SameAs(leader));
+                Assert.That(TemporaryGroupStableTravel.PlayerTheBotTravelsWith(hosted), Is.SameAs(guest));
+                Assert.That(TemporaryGroupStableTravel.PlayerTheBotTravelsWith(alone), Is.Null, "a bot-only party");
+                Assert.That(TemporaryGroupStableTravel.PlayerTheBotTravelsWith(null), Is.Null);
+            });
+        }
+
+        [Test]
         public void WhenThePlayerLeavesThePartyGoesOnAndItsLeasesComeBack()
         {
             Bot leader = Gamebot(20), member = Gamebot(20);
