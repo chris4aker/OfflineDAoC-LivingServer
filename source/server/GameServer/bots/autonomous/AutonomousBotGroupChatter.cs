@@ -35,6 +35,9 @@ public static class AutonomousBotGroupChatter
     public static long NextGapMs(bool first, Random random) =>
         first ? FirstLineMinMs + random.Next(FirstLineMaxMs - FirstLineMinMs + 1) : MinGapMs + random.Next(MaxGapMs - MinGapMs + 1);
 
+    /// <summary>The budget meter's key for a group.</summary>
+    internal static long KeyOf(Group group) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(group);
+
     /// <summary>True when it is this group's turn to hear a line now (and books the next turn).</summary>
     public static bool TakeTurn(object sync, Func<long> get, Action<long> set, long now, Random random, bool known)
     {
@@ -92,13 +95,29 @@ public static class AutonomousBotGroupChatter
             return false;
         bool known = Groups.TryGetValue(group, out Next next);
         next ??= Groups.GetValue(group, _ => new Next());
-        if (!TakeTurn(next, () => next.At, value => next.At = value, GameLoop.GameLoopTime, Random.Shared, known))
+        // Beta 1.1.3: the group channel's budget paces the banter (chat-budget.json "group"), after a first quiet minute or two.
+        long now = GameLoop.GameLoopTime;
+        long key = KeyOf(group);
+        if (!known)
+        {
+            AutonomousChatBudget.Meter.Delay(AutonomousChatBudget.Channel.Group, key, now + NextGapMs(true, Random.Shared));
             return false;
+        }
+        var verdict = AutonomousChatBudget.Meter.TryStart(AutonomousChatBudget.Channel.Group, key, now,
+            AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Group, 0), Random.Shared);
+        if (verdict is AutonomousChatBudget.Verdict.HoldCeiling or AutonomousChatBudget.Verdict.HoldGap)
+        {
+            AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Group,
+                verdict == AutonomousChatBudget.Verdict.HoldCeiling ? AutonomousChatWhy.Held.Ceiling : AutonomousChatWhy.Held.Gap);
+            return false;
+        }
         bool hunted = AutonomousBotCombatCalls.FoughtRecently(group, GameLoop.GameLoopTime);
         if (!AutonomousBotVoices.TryLine(bot, "group", out VC.Picked picked,
                 filter: hunted ? null : line => !AutonomousBotCombatCalls.IsHuntTalk(line.Text)))
             return false;
         Send(bot, picked.Text, picked.Line?.Invites ?? "");
+        AutonomousChatWhy.Record(bot, "group", "ambient", "said", AutonomousBotChatCoordinator.RuleOf(picked.Line, "group"), VC.Specificity(picked.Line),
+            "the group channel's turn, out of combat", picked.Text, picked.Line?.Id);
         if (!string.IsNullOrEmpty(picked.Correction))
             AutonomousLivingServer.Later(bot, 1_200 + Random.Shared.Next(1_400), () => bot.Group == group, () => Send(bot, picked.Correction, remember: false));
         Answer(bot, group, picked);
@@ -249,7 +268,7 @@ public static class AutonomousBotGroupChatter
         for (int i = 0; i < pool.Length && used.Count < count; i++)
         {
             GameBot mate = pool[i];
-            AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotChatCoordinator.ReplyChoiceToPlayer(mate, player, message);
+            AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotChatCoordinator.ReplyChoiceToPlayer(mate, player, message, named.Length > 0);
             lastRoute = choice.Route;
             if (string.IsNullOrEmpty(choice.Text) || !AutonomousBotChatCoordinator.TryAddDistinctResponse(used, choice.Text, out string reply))
                 continue;
@@ -275,6 +294,7 @@ public static class AutonomousBotGroupChatter
         {
             bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
             BotChatTranscript.Bot("group", bot.Name, bot.Realm, text);
+            AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Group, KeyOf(bot.Group), GameLoop.GameLoopTime);
             if (remember)
                 AutonomousChatThreads.Log.Record(AutonomousChatThreads.GroupChannel(bot.Group), bot.DatabaseID, bot.Name, text, invites,
                     GameLoop.GameLoopTime, to);

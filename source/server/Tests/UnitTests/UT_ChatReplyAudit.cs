@@ -138,15 +138,20 @@ namespace DOL.GS.Tests
             ChatAuditRoute.Item[] items = JsonSerializer.Deserialize<ChatAuditRoute.Item[]>(File.ReadAllText(input));
             var sb = new StringBuilder();
             int hits = 0;
+            var outcomes = new Dictionary<string, int>(StringComparer.Ordinal) { ["answer"] = 0, ["ack"] = 0, ["silent"] = 0 };
             foreach (ChatAuditRoute.Item item in items)
             {
                 (string path, _) = ChatAuditRoute.Route(item, new Random(1));
+                // Beta 1.1.3: what the reply budget makes of it (a real answer, an acknowledgement, or nothing).
+                (string outcome, _) = ChatAuditRoute.Budget(item, path);
+                outcomes[outcome]++;
                 if (ChatAuditRoute.Fits(item.expect, path))
                     hits++;
                 else
-                    sb.AppendLine($"[{item.channel}] {item.text} | ctx {item.context} | expect {item.expect} | got {path}");
+                    sb.AppendLine($"[{item.channel}] {item.text} | ctx {item.context} | expect {item.expect} | got {path} | {outcome}");
             }
-            sb.Insert(0, $"read as expected: {hits}/{items.Length} ({(double)hits / items.Length:P1})\n");
+            sb.Insert(0, $"read as expected: {hits}/{items.Length} ({(double)hits / items.Length:P1})\n" +
+                         $"reply budget: {outcomes["answer"]} answered, {outcomes["ack"]} acknowledged, {outcomes["silent"]} silent\n");
             File.WriteAllText(output, sb.ToString());
         }
 
@@ -164,6 +169,7 @@ namespace DOL.GS.Tests
             Item[] items = JsonSerializer.Deserialize<Item[]>(File.ReadAllText(input));
             var sb = new StringBuilder();
             int n = 0;
+            var tally = new Dictionary<string, int>(StringComparer.Ordinal) { ["answer"] = 0, ["ack"] = 0, ["silent"] = 0 };
             foreach (Item item in items)
             {
                 n++;
@@ -269,9 +275,24 @@ namespace DOL.GS.Tests
                     sb.AppendLine($"     bot before: {item.context}");
                 sb.AppendLine($"     expect {item.expect}: {item.note}");
                 sb.AppendLine($"     -> {path} | intent={intent} shape={AutonomousChatShortTalk.QuestionShape(text) ?? "-"}");
+                // Beta 1.1.3: the reply budget on the route the server takes (ChatAuditRoute) decides what is really said.
+                var auditItem = new ChatAuditRoute.Item(item.text, item.channel, item.context, item.expect, item.note, item.to);
+                (string route, string fixedAnswer) = ChatAuditRoute.Route(auditItem, new Random(1));
+                (string outcome, int fit) = ChatAuditRoute.Budget(auditItem, route);
+                if (outcome == "answer" && replies.Count > 0 && replies[0] != null && AutonomousChatReplyBudget.IsBrushOff(replies[0]))
+                    outcome = auditItem.channel == "tell" || !string.IsNullOrEmpty(item.to) || item.expect == "directed" ? "ack" : "silent";
+                tally[outcome]++;
+                sb.AppendLine($"     budget: {outcome} (route {route}, fit {fit})");
+                if (outcome == "ack")
+                    replies = [AutonomousChatReplyBudget.Ack(500 + n, false, Rng)];
+                else if (outcome == "silent")
+                    replies = [null];
+                else if (fixedAnswer != null)
+                    replies = [fixedAnswer];
                 foreach (string r in replies)
                     sb.AppendLine($"        \"{r ?? "(nothing)"}\"");
             }
+            sb.Insert(0, $"reply budget: {tally["answer"]} answered, {tally["ack"]} acknowledged, {tally["silent"]} silent\n");
             File.WriteAllText(output, sb.ToString());
         }
     }

@@ -128,6 +128,22 @@ namespace DOL.GS.Tests
             return ("intent " + AutonomousBotVoices.IntentName(intent), null);
         }
 
+        /// <summary>
+        /// What the reply budget makes of a route (Beta 1.1.3, as AutonomousBotChatCoordinator.Budgeted): "answer", "ack" (a tell or
+        /// a line naming the bot, under the minimum fit) or "silent", with the route's fit.
+        /// </summary>
+        internal static (string Outcome, int Fit) Budget(Item item, string path)
+        {
+            bool addressed = item.channel == "tell" || item.expect == "directed" || !string.IsNullOrEmpty(item.to);
+            int fit = AutonomousChatReplyFit.Of(path, item.text);
+            return (AutonomousChatReplyBudget.Decide(fit, addressed, AutonomousChatBudget.MinReplyFit) switch
+            {
+                AutonomousChatReplyBudget.Outcome.Answer => "answer",
+                AutonomousChatReplyBudget.Outcome.Ack => "ack",
+                _ => "silent",
+            }, fit);
+        }
+
         /// <summary>Whether a route is what a sensible player expects for the line's label.</summary>
         internal static bool Fits(string expect, string path) => expect switch
         {

@@ -106,6 +106,23 @@ public static class AutonomousChatWhy
         return text.ToString();
     }
 
+    #region Ambient counts (no text: they happen on bot ticks)
+
+    /// <summary>Why an ambient opening was held back.</summary>
+    public enum Held { Ceiling, Gap, NoLine, Duplicate }
+
+    private static readonly long[] HeldCounts = new long[4 * (int)AutonomousChatBudget.Channel.Count];
+
+    /// <summary>Counts an ambient opening held back in a channel (no allocation).</summary>
+    public static void CountHeld(AutonomousChatBudget.Channel channel, Held why) =>
+        System.Threading.Interlocked.Increment(ref HeldCounts[(int)why * (int)AutonomousChatBudget.Channel.Count + (int)channel]);
+
+    /// <summary>How many ambient openings were held back in a channel for this reason since the server started.</summary>
+    public static long HeldCount(AutonomousChatBudget.Channel channel, Held why) =>
+        System.Threading.Interlocked.Read(ref HeldCounts[(int)why * (int)AutonomousChatBudget.Channel.Count + (int)channel]);
+
+    #endregion
+
     /// <summary>Forgets every decision and count (tests).</summary>
     public static void Clear()
     {
@@ -115,5 +132,6 @@ public static class AutonomousChatWhy
             _next = 0;
             _count = 0;
         }
+        Array.Clear(HeldCounts);
     }
 }

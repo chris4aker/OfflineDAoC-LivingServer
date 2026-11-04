@@ -79,13 +79,16 @@ public static class AutonomousBotChat
     }
 
     public static bool ShouldSpeak(DateTime utcNow, DateTime lastSpokeUtc, bool inCombat, Random random = null,
-        double rateFactor = 1.0)
+        double rateFactor = 1.0, double pressure = 1.0)
     {
-        if (inCombat || utcNow - lastSpokeUtc < TimeSpan.FromMinutes(4))
+        // pressure (Beta 1.1.3): the chat budget's push when the bot's channels run under target, 1-4. It shortens the
+        // bot's own rest between lines (4 minutes, down to 2) and raises its chance to speak.
+        pressure = Math.Clamp(pressure, 1.0, 4.0);
+        if (inCombat || utcNow - lastSpokeUtc < TimeSpan.FromMinutes(4 / Math.Min(pressure, 2.0)))
             return false;
         random ??= Random.Shared;
         // rateFactor: a personality's chattiness (1.0 = unchanged; AutonomousBotPersonality).
-        return random.NextDouble() < 0.012 * Math.Clamp(rateFactor, 0.0, 3.0);
+        return random.NextDouble() < 0.012 * Math.Clamp(rateFactor, 0.0, 3.0) * pressure;
     }
 
     private static string Fill(string text, Context context)

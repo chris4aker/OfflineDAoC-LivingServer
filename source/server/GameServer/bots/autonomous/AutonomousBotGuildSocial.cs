@@ -360,9 +360,23 @@ public static class AutonomousBotGuildSocial
             // (0.36-se.4: "haha true" answered any guild line that wasn't a question).
             // Unknown and real-world lines keep today's guild replies; nobody here says "omw" to a rez ask.
             VC.Picked picked = null;
+            // Beta 1.1.3: with bot voices on, a guildmate answers as /faction and /group do, through the reply budget: a reply
+            // that fits, an acknowledgement when named, or nothing (blind round 1: guild replies that ignored the line).
+            string line;
+            if (AutonomousBotVoices.Enabled)
+            {
+                AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotChatCoordinator.ReplyChoiceToPlayer(bot, player, message, mentioned.Length > 0);
+                AutonomousChatWhy.Record(bot, "guild", "player " + player.Name, choice.Text == null ? "silent" : choice.Route.StartsWith("ack") ? "ack" : "said",
+                    choice.Route, AutonomousChatReplyFit.Of(choice.Route, message), mentioned.Length > 0 ? "named in the line" : "a guildmate answers",
+                    choice.Text, choice.Line?.Id, player.Name);
+                if (string.IsNullOrEmpty(choice.Text))
+                    continue;
+                line = choice.Text;
+            }
+            else
             // The question type first, whatever the intent ("anyone on?" reads as none; live test 2026-10-18: it drew
             // "hmm, i would ask a trainer").
-            string line = AutonomousBotVoices.TryShapedReply(bot, message, out picked, slots, relax: true, requireVoices: false, asker: player) ||
+            line = AutonomousBotVoices.TryShapedReply(bot, message, out picked, slots, relax: true, requireVoices: false, asker: player) ||
                           intent is not (eAutonomousChatIntent.Unknown or eAutonomousChatIntent.IgnoreOutOfWorld) &&
                           (intent == eAutonomousChatIntent.Greeting
                               ? AutonomousBotVoices.TryGreetingReply(bot, message, out picked, slots, relax: true, requireVoices: false)
@@ -423,7 +437,8 @@ public static class AutonomousBotGuildSocial
     public static string VoicedPlayerGuildReply(GameBot bot, GamePlayer player, string message) =>
         AutonomousBotVoices.Enabled && bot != null && player != null
             ? AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge) ? AutonomousBotVoices.StyleFor(bot, knowledge)
-                : AutonomousBotChatCoordinator.ReplyToPlayer(bot, player, message)
+                : AutonomousBotChatCoordinator.ReplyChoiceToPlayer(bot, player, message,
+                    AutonomousBotChatCoordinator.ContainsMention(message, bot.Name)).Text
             : null;
 
     #endregion
@@ -466,13 +481,28 @@ public static class AutonomousBotGuildSocial
             return false;
 
         GameBot[] online = guild.GetOnlineBotMembers();
-        lock (Sync)
+        if (AutonomousBotVoices.Enabled)
         {
-            if (LastIdleByGuild.TryGetValue(guild.GuildID, out long last) &&
-                GameLoop.GameLoopTime - last < IdleIntervalMs(charter, online.Length))
+            // Beta 1.1.3: the guild channel's budget (chat-budget.json "guild"), growing with the members online, no cap.
+            var band = AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Guild, online.Length + 1);
+            AutonomousChatBudget.NoteGuildPressure(KeyOf(guild), AutonomousChatBudget.Pressure(
+                AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Guild, KeyOf(guild), GameLoop.GameLoopTime), band.Target));
+            var verdict = AutonomousChatBudget.Meter.TryStart(AutonomousChatBudget.Channel.Guild, KeyOf(guild), GameLoop.GameLoopTime, band, Random.Shared);
+            if (verdict is AutonomousChatBudget.Verdict.HoldCeiling or AutonomousChatBudget.Verdict.HoldGap)
+            {
+                AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Guild,
+                    verdict == AutonomousChatBudget.Verdict.HoldCeiling ? AutonomousChatWhy.Held.Ceiling : AutonomousChatWhy.Held.Gap);
                 return false;
-            LastIdleByGuild[guild.GuildID] = GameLoop.GameLoopTime;
+            }
         }
+        else
+            lock (Sync)
+            {
+                if (LastIdleByGuild.TryGetValue(guild.GuildID, out long last) &&
+                    GameLoop.GameLoopTime - last < IdleIntervalMs(charter, online.Length))
+                    return false;
+                LastIdleByGuild[guild.GuildID] = GameLoop.GameLoopTime;
+            }
         VC.Picked voiced = CorpusIdle(bot, charter);
         string idle = voiced?.Text ?? AutonomousBotVoices.StyleFor(bot, Lines.Idle(charter, bot.ClassName, bot.Level, bot.CurrentZone?.Description, Random.Shared));
         if (allianceLine)
@@ -768,8 +798,12 @@ public static class AutonomousBotGuildSocial
             safe = safe[..Lines.MaxLength];
         guild.SendMessageToGuildMembers($"[Guild] {speaker}: \"{safe}\"", eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
         NoteHeard(guild.GuildID, safe, GameLoop.GameLoopTime);
+        AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Guild, KeyOf(guild), GameLoop.GameLoopTime);
         BotChatTranscript.Bot("guild", speaker, (eRealm)guild.Realm, safe, guild.Name);
     }
+
+    /// <summary>The budget meter's key for a guild.</summary>
+    internal static long KeyOf(Guild guild) => StringComparer.Ordinal.GetHashCode(guild?.GuildID ?? string.Empty);
 
     private static bool Eligible(GameBot bot) => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper && bot.IsAlive &&
         bot.ObjectState == GameObject.eObjectState.Active && !bot.InCombat && !bot.IsCasting;

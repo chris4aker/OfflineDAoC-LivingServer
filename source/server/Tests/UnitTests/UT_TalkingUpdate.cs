@@ -573,24 +573,26 @@ namespace DOL.GS.Tests
         [Test]
         public void FactionChatIsBusierInTheEveningAndWithMoreBots()
         {
+            // Beta 1.1.3: the gap comes from the ambient budget (chat-budget.json); the middle draw gives its mean.
             var fixedDraw = new FixedRandom(0.5);
             long normal = AutonomousBotChatCoordinator.FactionGapMs(120, 14, 1.0, fixedDraw);
-            Assert.That(normal, Is.EqualTo(120_000));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 21, 1.0, fixedDraw), Is.LessThan(normal));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 4, 1.0, fixedDraw), Is.GreaterThan(normal));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(400, 14, 1.0, fixedDraw), Is.LessThan(normal));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(20, 14, 1.0, fixedDraw), Is.GreaterThan(normal));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 14, 2.0, fixedDraw), Is.LessThan(normal));
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(10_000, 21, 3.0, fixedDraw), Is.GreaterThanOrEqualTo(40_000), "never a flood");
+            // No population cap: Beta 1.1.1 stopped getting busier at about 390 bots a realm.
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(1_000, 21, 1.0, fixedDraw),
+                Is.LessThan(AutonomousBotChatCoordinator.FactionGapMs(400, 21, 1.0, fixedDraw)));
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(3_000, 21, 1.0, fixedDraw),
+                Is.LessThan(AutonomousBotChatCoordinator.FactionGapMs(1_000, 21, 1.0, fixedDraw)));
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(100_000, 21, 3.0, new FixedRandom(0.0)), Is.GreaterThanOrEqualTo(4_000), "never a flood");
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 14, 0, fixedDraw), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds),
                 "rate 0: bots only answer");
-            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(14, 1.0, fixedDraw), Is.EqualTo(60_000));
-            // The longest draw too (the fixed draw above is the shortest).
-            var longest = new LongestRandom();
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 14, 1.0, longest), Is.EqualTo(240_000));
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 4, 1.0, longest), Is.LessThanOrEqualTo(20 * 60_000));
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(10, 4, 0.1, longest), Is.EqualTo(20 * 60_000), "never silent for hours");
-            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(14, 0, fixedDraw), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds));
+            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(1_000, 21, 1.0, fixedDraw), Is.EqualTo(60_000), "a target of 1 /say line a minute");
+            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(1_000, 14, 0, fixedDraw), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds));
+            // Beta 1.1.1's evening gap at 1,000 bots was 2-4 minutes over 1.8 x 1.35: 74 s on average. The budget's is shorter.
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(1_000, 21, 1.0, fixedDraw), Is.LessThan(74_000));
         }
 
         #endregion
