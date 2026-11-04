@@ -254,6 +254,34 @@ public sealed class AutonomousBotVoiceCorpus
         return cut > 0 ? invites[..cut] : invites;
     }
 
+    /// <summary>
+    /// How specific a line is (the chat framework's rule score, C0): one point for each criterion it names beyond its kind, so
+    /// a line for one intent, topic or question, realm, class, level band or situation outscores a line that fits anything.
+    /// 0 for no line. Pure.
+    /// </summary>
+    public static int Specificity(Line line)
+    {
+        if (line == null)
+            return 0;
+        int score = 0;
+        if (!string.IsNullOrEmpty(line.Topic) && line.Topic is not ("general" or ""))
+            score++;
+        if (!string.IsNullOrEmpty(line.Intent))
+            score++;
+        if (line.Answers.Length > 0)
+            score += line.Answers.Any(answer => answer.Contains('_')) ? 2 : 1;
+        if (line.Who.Length > 0)
+            score++;
+        if (line.Realm != "*")
+            score++;
+        if (line.Classes.Length > 0)
+            score++;
+        if (line.LevelLow > 1 || line.LevelHigh < 50)
+            score++;
+        score += line.Needs.Length;
+        return score;
+    }
+
     /// <summary>A line's draw weight for this speaker: lines written for its personality type count triple.</summary>
     public static double WeightFor(Line line, Speaker speaker) =>
         Math.Max(0.01, line.Weight) * (line.Who.Length > 0 && TypeFits(line.Who, speaker.Type) ? 3.0 : line.Who.Length > 0 ? 0.0 : 1.0);

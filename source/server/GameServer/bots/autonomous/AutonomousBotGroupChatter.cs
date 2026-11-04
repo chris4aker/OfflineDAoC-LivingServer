@@ -245,16 +245,26 @@ public static class AutonomousBotGroupChatter
             intent is eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Ding ? 2 : 1);
         var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         int due = 0;
+        string lastRoute = null;
         for (int i = 0; i < pool.Length && used.Count < count; i++)
         {
             GameBot mate = pool[i];
-            string reply = AutonomousBotChatCoordinator.ReplyToPlayer(mate, player, message);
-            if (string.IsNullOrEmpty(reply) || !AutonomousBotChatCoordinator.TryAddDistinctResponse(used, reply, out reply))
+            AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotChatCoordinator.ReplyChoiceToPlayer(mate, player, message);
+            lastRoute = choice.Route;
+            if (string.IsNullOrEmpty(choice.Text) || !AutonomousBotChatCoordinator.TryAddDistinctResponse(used, choice.Text, out string reply))
                 continue;
             due = AutonomousBotChatCoordinator.ReplyDelayMs(reply, due, Random.Shared);
             string text = reply;
-            AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () => Send(mate, text, "", player.Name));
+            AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () =>
+            {
+                Send(mate, text, "", player.Name);
+                AutonomousChatWhy.Record(mate, "group", "player " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, message),
+                    named.Length > 0 ? "named in the line" : "a groupmate answers", text, choice.Line?.Id, player.Name);
+            });
         }
+        if (used.Count == 0)
+            AutonomousChatWhy.RecordSilence(player.Realm, "group", "player " + player.Name, lastRoute ?? "none", AutonomousChatReplyFit.Of(lastRoute, message),
+                count == 0 ? $"a line like this ({intent}) draws no answer" : "no reply fits it", player.Name);
     }
 
     /// <summary>A bot's line in /group. The talking update: remembered in the group's thread (with what it invites, and the
