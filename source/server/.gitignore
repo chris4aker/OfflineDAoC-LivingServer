@@ -20,6 +20,8 @@
 mono_crash.*
 
 # Build results
+# The projects' intermediate output (BaseIntermediateOutputPath ..\build\<project>)
+/build/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/

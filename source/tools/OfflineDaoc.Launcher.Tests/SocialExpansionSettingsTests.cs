@@ -131,6 +131,24 @@ public class SocialExpansionSettingsTests
         Assert.That(rows.ContainsKey("bot_guilds_enabled"), Is.False);
     }
 
+    [Test] public void TheChatRateIsSavedReadAndChecked()
+    {
+        // Beta 1.1.3: bot_voices_chat_rate in the tab; 1 is a busy peak server, 2 to 3 very busy.
+        Assert.That(SocialExpansionSettings.Defaults.ChatRate, Is.EqualTo(1.0));
+        Assert.That(SocialExpansionSettings.ChatRateDescription, Does.Contain("busy peak server").And.Not.Contain("quiet"));
+        (SocialExpansionSettings.Defaults with { ChatRate = 2.5 }).Save(_database, null, () => _stopped);
+        Assert.That(Rows()["bot_voices_chat_rate"], Is.EqualTo("2.5"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).ChatRate, Is.EqualTo(2.5));
+        Assert.That(problems, Is.Empty);
+        var bad = new Dictionary<string, string?> { ["bot_voices_chat_rate"] = "7" };
+        var keys = new HashSet<string>();
+        Assert.That(SocialExpansionSettings.FromStoredValues(bad, problems, keys).ChatRate, Is.EqualTo(3.0));
+        Assert.That(keys, Does.Contain("bot_voices_chat_rate"));
+        Assert.That(SocialExpansionSettings.FromStoredValues(new Dictionary<string, string?> { ["bot_voices_chat_rate"] = "lots" }, problems).ChatRate,
+            Is.EqualTo(0.0), "what the server reads");
+    }
+
     [Test] public void UnreadableValuesAreReportedAndShownAsDefaults()
     {
         Exec("""

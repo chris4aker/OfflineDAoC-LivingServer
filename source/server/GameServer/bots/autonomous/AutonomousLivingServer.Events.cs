@@ -188,6 +188,10 @@ public static partial class AutonomousLivingServer
                         Speak(bot, Channel.Faction, line);
                 });
             }
+            // Beta 1.1.3: the realm joins in, a burst of "gz" and "woot" over the next minute or so.
+            if (AutonomousBotVoices.Enabled)
+                AutonomousChatBursts.React(who as GameBot, who.Realm, "first", null, ["player_goodnews", "boast"],
+                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = who.Name });
         }
         return true;
     }
@@ -425,7 +429,12 @@ public static partial class AutonomousLivingServer
         Later(bot, 4_000 + Random.Shared.Next(6_000), () => !AutonomousBotDebates.IsRunning(bot.Realm), () =>
         {
             if (AutonomousBotVoices.TryEventLine(bot, "nemesis", out string line, slots: slots))
+            {
                 Speak(bot, Channel.Faction, line);
+                // Beta 1.1.3: the realm commiserates, a short burst.
+                AutonomousChatBursts.React(bot, bot.Realm, "nemesis", line, ["complaint"],
+                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name });
+            }
         });
     }
 
@@ -450,7 +459,12 @@ public static partial class AutonomousLivingServer
         Later(bot, 1_500 + Random.Shared.Next(2_500), () => bot.IsAlive && !AutonomousBotDebates.IsRunning(bot.Realm), () =>
         {
             if (AutonomousBotVoices.TryEventLine(bot, "revenge", out string line, slots: slots))
+            {
                 Speak(bot, Channel.Faction, line);
+                // Beta 1.1.3: a nemesis paid back draws cheers, a short burst.
+                AutonomousChatBursts.React(bot, bot.Realm, "revenge", line, ["boast"],
+                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name });
+            }
         });
     }
 

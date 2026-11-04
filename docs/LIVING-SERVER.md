@@ -357,6 +357,13 @@ through the part's own code, lines and logging, in your realm and around you.
 | `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once |
 | `/lstest raid [dragon] [alb, mid, hib]` | A realm's automatic raid (yours unless named) opens now, sized to its free level 50s (at least 40; raids from the launcher need 300) |
 
+## Why a bot said that: /lswhy (every player)
+
+`/lswhy` shows the last chat decisions of your target, or of the last gamebot that spoke to or near you. Each one gives
+the channel, what set it off, the rule and score it used, and why, or why it stayed quiet. `/lswhy <name>` shows one bot,
+`/lswhy last [n]` the realm's last decisions, and `/lswhy budget` how busy each channel around you is against its
+floor, target and ceiling. How bots decide how much to say: [bot-voices/CHAT-BUDGETS.md](bot-voices/CHAT-BUDGETS.md).
+
 ## Tests
 
 Automated (no running world):

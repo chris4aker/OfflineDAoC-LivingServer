@@ -229,7 +229,8 @@ public static class AutonomousChatLiveAnswers
     /// <summary>What a bot knows about itself, for "r u 50 yet", "are u a healer", "do u have speed", "u got pots?".</summary>
     public static AutonomousChatQuestions.BotFacts FactsOf(GameBot bot)
     {
-        int potions = 0, equipped = 0, crafted = 0;
+        int potions = 0, equipped = 0, crafted = 0, weaponQuality = 0;
+        string weapon = null;
         try
         {
             potions = bot.Inventory?.AllItems.Count(item => item != null && item.SlotPosition >= (int)eInventorySlot.FirstBackpack &&
@@ -244,6 +245,13 @@ public static class AutonomousChatLiveAnswers
                 equipped++;
                 if (item.IsCrafted)
                     crafted++;
+                // "what weapon is that" (Beta 1.1.3, round 3): the weapon in hand, two-handed first.
+                if (item.SlotPosition is (int)eInventorySlot.TwoHandWeapon or (int)eInventorySlot.RightHandWeapon or (int)eInventorySlot.DistanceWeapon &&
+                    (weapon == null || item.SlotPosition == (int)eInventorySlot.TwoHandWeapon) && !string.IsNullOrWhiteSpace(item.Name))
+                {
+                    weapon = item.Name;
+                    weaponQuality = item.Quality;
+                }
             }
         }
         catch (InvalidOperationException)
@@ -252,7 +260,25 @@ public static class AutonomousChatLiveAnswers
         bool speed = bot.Spells?.Any(spell => spell?.SpellType == eSpellType.SpeedEnhancement && spell.Level <= bot.Level) == true;
         return new AutonomousChatQuestions.BotFacts(bot.DatabaseID, bot.Level, bot.CharacterClass?.Name ?? bot.ClassName, bot.Realm,
             bot.RealmLevel, AutonomousBotPersonality.For(bot).Type, speed, potions, bot.Guild?.Name, equipped, crafted,
-            bot.InCombat || BotGroupInvite.DutyOf(bot) != BotGroupInvite.Duty.None);
+            bot.InCombat || BotGroupInvite.DutyOf(bot) != BotGroupInvite.Duty.None, bot.Name, bot.CurrentZone?.Description,
+            (int)(bot.Group?.MemberCount ?? 1), bot.PersistentRecord?.TargetName, SpecText(bot), weapon, weaponQuality);
+    }
+
+    /// <summary>A bot's spec as a player says it: its two highest trained lines ("44 shield, 30 slash"), or null (Beta 1.1.3).</summary>
+    public static string SpecText(GameBot bot)
+    {
+        try
+        {
+            if (bot?.BotSpec?.SpecLines == null)
+                return null;
+            var lines = bot.BotSpec.SpecLines.Select(line => (Name: line.Spec, Level: bot.GetBaseSpecLevel(line.Spec)))
+                .Where(line => line.Level > 1 && !string.IsNullOrEmpty(line.Name)).OrderByDescending(line => line.Level).Take(2).ToArray();
+            return lines.Length == 0 ? null : string.Join(", ", lines.Select(line => $"{line.Level} {line.Name.ToLowerInvariant()}"));
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
     private static readonly Dictionary<eRealm, (long At, AutonomousChatQuestions.WorldFacts Facts)> Worlds = new();

@@ -27,7 +27,7 @@ public static class AutonomousBotGuildChatLines
 
     public static string Greeting(string player, Random random) => Pick(random,
         $"hey {player}", $"hi {player}", $"evening {player}", $"{player}!", $"wb {player}", $"yo {player}",
-        $"hey {player}, good timing", $"o/ {player}", $"look who it is, hi {player}", $"hiya {player}");
+        $"o/ {player}", $"hiya {player}", "o/", $"heya {player}");
 
     public static string GreetingToBot(string bot, Random random) => Pick(random,
         $"hey {bot}", $"wb {bot}", $"hi {bot}", $"{bot}!", $"evening {bot}");
@@ -37,11 +37,10 @@ public static class AutonomousBotGuildChatLines
         $"ding grats {name}", $"woot, grats {name}");
 
     public static string OwnDing(int level, Random random) => Pick(random,
-        $"ding {level}!", $"ding {level}", $"finally {level}", $"{level}! about time", $"ding, {level}. off to the trainer");
+        $"ding {level}!", $"ding {level}", $"finally {level}", $"{level}!", $"{level} :)", $"ding {level} :)");
 
     public static string OwnDeath(string zone, Random random) => Pick(random,
-        $"ugh, died in {zone}", $"well that pull went badly. dead in {zone}", $"anyone near {zone} with a rez?",
-        "note to self: check the con before pulling", "died. the run back is the worst part", $"{zone} 1, me 0");
+        $"ugh, died in {zone}", $"dead in {zone}", $"anyone near {zone} with a rez?", "died lol", "argh dead", $"rez in {zone}?");
 
     public static string Welcome(string player, string guild, Random random) => Pick(random,
         $"welcome to {guild}, {player}!", $"welcome {player}!", $"glad to have you {player}", $"welcome aboard {player}",
@@ -59,7 +58,7 @@ public static class AutonomousBotGuildChatLines
 
     public static string KeepClaimed(string keep, string guild, Random random) => Pick(random,
         $"{keep} is ours! claimed for {guild}", $"we claimed {keep}, nice work everyone", $"{guild} holds {keep} now. lets keep it",
-        $"claimed {keep}. somebody bring the guards some tea");
+        $"claimed {keep}", $"{keep} is ours gj");
 
     public static string KeepUnderAttack(string keep, Random random) => Pick(random,
         $"{keep} is under attack! everyone who can, get there", $"they are hitting our keep at {keep}, need bodies",

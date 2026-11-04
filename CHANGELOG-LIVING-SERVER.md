@@ -10,11 +10,90 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.2 (in development)
 
-Playing with your bot group: dragon raids that regroup after a wipe and call the Epic Special Forces, quest credit
-and hand-ins, and quest XP that follows your XP-by-level rate. Gamebots in your guild earn merit and pay dues, power
-comes back faster, fixes from other forks of Offline DAoC, updates from the launcher, and a world database that is
-safe from crashes and backed up every day. Built and tested; it ships once it has been played (the checks are in
-[docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md)).
+Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
+that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
+XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
+Offline DAoC, updates from the launcher, and a world database that is safe from crashes and backed up every day.
+Built and tested; it ships once it has been played (the checks are in [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md)).
+
+**Chat: a busier, more human realm** (owner 2026-11-04: shipped in 1.1.2, not as a separate 1.1.3). The goal is a
+realm that feels like a full server at its busiest. How it works and how to tune it:
+[docs/bot-voices/CHAT-BUDGETS.md](docs/bot-voices/CHAT-BUDGETS.md).
+- **More chat, scaled to the crowd.**
+  - **Before:** chat stopped growing at about 390 bots a realm.
+  - **Now:** /faction, /lfg, /trade, /say near you, town /broadcast, guild and group talk each have a floor, a target and
+    a ceiling. They rise with the bots online, with no cap, and follow the time of day.
+  - **Town /broadcast:** bots now use it the way players did in 2003: selling (sometimes as a repeating macro), looking
+    for a group, a little chatter. You hear it where the base game's /broadcast reaches.
+  - **One file:** all the numbers are in `chat-budget.json`, with comments. Research into 2003 chat gives the shape
+    (which channels, places and hours, sellers' macros, bursts). The levels are set for a busy peak server, on purpose
+    busier than the 2003 estimates. Nights are calmer, never dead.
+  - **Turn it up:** the launcher's Living Server tab has a new **How much they talk** setting (0–3). 1 is a busy peak
+    server, 2–3 very busy.
+- **Big moments ripple through chat.** A keep taken or lost, a relic moved, a raid won or wiped, Darkness Falls changing
+  hands, a server first and a nemesis paid back each draw a short burst of reactions in /faction. The realm-wide ones also
+  reach the capital's /broadcast.
+- **Bots answer what you said.**
+  - **Weak replies:** a reply that doesn't fit your line is dropped for something short that does. A tell gets a reply
+    to what it says ("ty", "not selling sry", "nah im good ty", "no heals on a thane sry", "cool"); only "hi" or "u
+    there?" gets "?" or "ya?". Banter and bad luck get a "lol" or "ugh" back now and then, most in a group, and a
+    question nobody knows gets one "dunno" in a group or guild. No more "ask around maybe" to a question anyone could
+    answer.
+  - **Silence where it belongs:** spam and scams (links, real-money prices, fake GMs, "your account has been flagged",
+    account sales, doubling offers, free plat, password requests) and lines said to someone else by name get no answer.
+  - **Honest answers:** "spec?", "lvl?", "what weapon is that?" by tell get the bot's real spec, level and weapon. A call
+    gets "where?" or "omw", a cry for heals the truth for the bot's class, a "45+" raid "too low lol" from a level 30,
+    and a thane never says "np" to thanks for heals.
+  - **/say to the bot in front of you:** a /say line counts as said to a bot when you target it, answer its line, or
+    stand right in front of it with nobody else close.
+  - **More places to ask:** bots answer `/advice` when one of them knows, and questions in `/broadcast` and chat groups
+    by tell.
+  - **About themselves:** bots answer their name, class, spec, level, zone, group and what they're hunting from their
+    real state.
+  - **How things work:** they explain equipping, binding, `/stuck`, `/anon`, `/release`, training, and how many realm
+    points a realm rank takes.
+  - **By situation:** "gn" gets a goodnight, "stuck" gets `/stuck`, "inc" gets "where?" or "omw", a call for help an offer
+    to come, a sale a price or a no, and a counter-offer to a bot's price a counter or a deal.
+  - **Words they now read:** "lo", "re", "wb", "long time no see", "u there?", "ne1 on?", mishaps ("lol rip"),
+    apologies, offers of help, "where?" after a bot named a place, "thx mythic" (sarcasm, not thanks), "free rps at…"
+    (a rally), "loot the named" and "fake inc" ("k"). A call that already says where and how many gets "omw", not "how
+    many?". `/stuck` is for you, not your pet.
+  - **Roleplay in kind:** a challenge gets a challenge, a toast a toast, a mourning a bow, otherwise an emote.
+- **One answer, then maybe a few more.** A question gets one answer. A hello or a ding gets a few. A joke now and then
+  draws a "lol" or "+1". Replies take longer to type the longer they are, at each bot's own typing speed.
+- **Less filler.**
+  - **Chat about the game in front of them:** most unprompted lines are now short and real: "lfg 38 zerk", "wts 97%
+    chain hauberk /send", "anyone up for vendo?", "inc beno", "who has rena?", from the bot's real level, class, zone and
+    bags and the realm's real keeps and relics: camps for its level, "lf a healer for keltoi", class questions, rallies
+    while a keep is under attack, and how many keeps the realm holds. Guild chat too: group calls, raid and keep plans, "gz" to a guildmate
+    who really dinged, a crafter wanted, an old item offered, "brb" and "night all". The same item isn't advertised all
+    evening, and short answers vary.
+  - **Regulars:** each realm and guild has a few talkative regulars for the evening who carry much of the chat, answer
+    each other and follow up their own lines; one thought isn't reworded by someone else minutes later, and chat comes
+    in runs and lulls rather than evenly.
+  - **Threads and stories:** a question usually gets an answer, and some run on for a few lines between two or three
+    bots. A ding to 50, a death or a group's wipe becomes a short story others riff on. Help questions come in many
+    shapes, and guild chat hears at most one weather-or-school line an evening. Answers take typing time and give what
+    was asked ("where" gets a place, "how much" a price).
+  - **Musings and quips:** lore musings, polished jokes, tips and life stories appear only rarely in /faction, never as
+    replies.
+  - **Generic agreement:** "good question", "very true" and the like are gone.
+  - **Repeats and polish:** near-copies are dropped, the wordings of one line rest for hours once one is said, and most
+    bots type in lowercase. Typos are rarer and look typed (a dropped letter).
+  - **The Realm Exchange:** bots mention it only when someone asks where to buy or sell.
+  - **Templates:** a few grammar slips are fixed.
+- **Typing habits.** About a third of bots have small habits of their own: "u" and "ur", "??", "...", a trailing "lol",
+  and for a rare few, the period's leetspeak.
+- **`/lswhy`** (every player) shows why a bot said what it said, or why nobody answered, and `/lswhy budget` shows how
+  busy each channel around you is.
+- **Checked:**
+  - **Automated:** new tests for every part; the full server suite passes.
+  - **Simulated evening at 1,000 bots a realm:** about 12.7 lines a minute across the channels a player hears, up from
+    about 1.9, with /faction above its busy-peak target of 4 a minute. At 300 bots it's about 5.9, up from 1.2.
+  - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to about 70%, and about a quarter
+    of those lines now get no reply. Those lines are known, so this is a regression check; a fresh blind round judges
+    the result.
+  - **In game:** not yet played.
 
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked

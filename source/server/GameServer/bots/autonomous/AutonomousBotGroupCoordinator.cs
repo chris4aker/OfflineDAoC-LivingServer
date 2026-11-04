@@ -2112,6 +2112,9 @@ public static partial class AutonomousBotGroupCoordinator
         if (session.Recovery.Observe(RecoveryMembers(session, members, false), session.TaskClock.HasStarted))
         {
             session.Wipes++;
+            // Beta 1.1.2, round 7: a wipe is a story one of the party may tell in /faction.
+            if (members.Length > 0 && Random.Shared.NextDouble() < 0.5)
+                AutonomousBotChatCoordinator.TellStory("wipe", members[Random.Shared.Next(members.Length)]);
             session.WipePenalty = session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve
                 ? AutonomousGroupTargetPolicy.PenaltyAfterWipe((int)Math.Round(members.Average(member => member.Level)),
                     members.Length, session.WipePenalty, session.Camp?.TargetLevel ?? 0)

@@ -28,6 +28,9 @@ public sealed class AutonomousBotVoiceCorpus
 
         /// <summary>The line names a place only to talk about it ("@about place"), not to say the speaker is there.</summary>
         public bool About { get; init; }
+
+        /// <summary>The template the line is one way of saying ("[a|b]" choices), or empty (Beta 1.1.3).</summary>
+        public string Family { get; init; } = string.Empty;
     }
 
     public sealed record Beat(string Role, string[] Variants, bool Optional, int PauseSeconds)
@@ -125,6 +128,7 @@ public sealed class AutonomousBotVoiceCorpus
             Invites = Str(e, "invites"),
             Answers = Strs(e, "answers"),
             About = Bool(e, "about"),
+            Family = Str(e, "family"),
         };
     }
 
@@ -254,6 +258,34 @@ public sealed class AutonomousBotVoiceCorpus
         return cut > 0 ? invites[..cut] : invites;
     }
 
+    /// <summary>
+    /// How specific a line is (the chat framework's rule score, C0): one point for each criterion it names beyond its kind, so
+    /// a line for one intent, topic or question, realm, class, level band or situation outscores a line that fits anything.
+    /// 0 for no line. Pure.
+    /// </summary>
+    public static int Specificity(Line line)
+    {
+        if (line == null)
+            return 0;
+        int score = 0;
+        if (!string.IsNullOrEmpty(line.Topic) && line.Topic is not ("general" or ""))
+            score++;
+        if (!string.IsNullOrEmpty(line.Intent))
+            score++;
+        if (line.Answers.Length > 0)
+            score += line.Answers.Any(answer => answer.Contains('_')) ? 2 : 1;
+        if (line.Who.Length > 0)
+            score++;
+        if (line.Realm != "*")
+            score++;
+        if (line.Classes.Length > 0)
+            score++;
+        if (line.LevelLow > 1 || line.LevelHigh < 50)
+            score++;
+        score += line.Needs.Length;
+        return score;
+    }
+
     /// <summary>A line's draw weight for this speaker: lines written for its personality type count triple.</summary>
     public static double WeightFor(Line line, Speaker speaker) =>
         Math.Max(0.01, line.Weight) * (line.Who.Length > 0 && TypeFits(line.Who, speaker.Type) ? 3.0 : line.Who.Length > 0 ? 0.0 : 1.0);
@@ -325,10 +357,18 @@ public sealed class AutonomousBotVoiceCorpus
     /// <summary>A picked line: its text as sent, the corpus line, and a typo correction the speaker may send after it ("*word").</summary>
     public sealed record Picked(string Text, Line Line, string Correction);
 
+    /// <summary>
+    /// How long a template's other ways of saying it rest after one was said (Beta 1.1.3: the blind judge heard "that horse
+    /// ride took so long i aged a year" and "... i grew a beard" in one evening). The relaxed pick ignores it.
+    /// </summary>
+    public static readonly TimeSpan FamilyRest = TimeSpan.FromHours(6);
+
     public bool TryPick(Request request, out Picked result)
     {
         result = null;
-        if (TryPickFrom(request, line => request.Recent == null || !request.Recent.WasUsed(request.Speaker.Realm, line.Id, request.Now),
+        if (TryPickFrom(request, line => request.Recent == null || !request.Recent.WasUsed(request.Speaker.Realm, line.Id, request.Now) &&
+                                         (line.Family.Length == 0 ||
+                                          !request.Recent.UsedWithin(request.Speaker.Realm, "f:" + line.Family, request.Now, FamilyRest)),
                 out result))
             return true;
         return request.RelaxTo is TimeSpan relax && request.Recent != null &&
@@ -364,8 +404,14 @@ public sealed class AutonomousBotVoiceCorpus
                 continue;
             if (request.LocalHour is int hour)
                 filled = ForTimeOfDay(filled, hour);
-            string text = Style(filled, VoiceFor(speaker.Id), random, out string correction);
+            Voice voice = VoiceFor(speaker.Id);
+            string text = Style(filled, voice, random, out string correction);
+            // Beta 1.1.3, the style layer: the bot's own typing habits on top of its writing style.
+            // In-character lines keep their diction.
+            text = AutonomousChatIdiolect.Apply(text, speaker.Id, voice.Capitalize || line.Kind == "roleplay" || line.Intent == "roleplay", random);
             request.Recent?.Use(speaker.Realm, line.Id, request.Now);
+            if (line.Family.Length > 0)
+                request.Recent?.Use(speaker.Realm, "f:" + line.Family, request.Now);
             result = new Picked(text, line, correction);
             return true;
         }
@@ -501,7 +547,9 @@ public sealed class AutonomousBotVoiceCorpus
         string result = text;
         // A "proper" writer still types chat words as chat words: "lol" and "ty ty", not "Lol." or "Thanks thanks."
         // (audit 2026-10-18).
-        bool chatToken = IsChatToken(text);
+        // Beta 1.1.3: "np, back to it", "lol yeah thats it": a line that starts with a chat word stays as typed, even by a
+        // tidy writer.
+        bool chatToken = IsChatToken(text) || StartsWithChatToken(text);
         foreach ((string from, string to) in voice.Abbreviate)
             result = Regex.Replace(result, $@"(?<=^|\s){Regex.Escape(from)}(?=$|[\s,.?!])", to, RegexOptions.CultureInvariant);
         if (voice.Expand.Count > 0 && !chatToken)
@@ -521,7 +569,8 @@ public sealed class AutonomousBotVoiceCorpus
             result = char.ToUpperInvariant(result[0]) + result[1..];
         if (voice.CapitalizeSentences)
             result = Regex.Replace(result, @"([.!?] )([a-z])", m => m.Groups[1].Value + m.Groups[2].Value.ToUpperInvariant());
-        if (voice.EndPeriod && result.Length > 0 && !chatToken)
+        // Beta 1.1.3: even a tidy writer leaves a short reply unstopped ("Np, have fun", not "Np, have fun.").
+        if (voice.EndPeriod && result.Length > 0 && !chatToken && result.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 3)
         {
             string[] after = voice.NoPeriodAfter.Length > 0 ? voice.NoPeriodAfter : new[] { ".", "!", "?" };
             if (!after.Any(end => result.EndsWith(end, StringComparison.Ordinal)))
@@ -533,23 +582,37 @@ public sealed class AutonomousBotVoiceCorpus
     /// <summary>Swaps two neighboring letters in one word of four or more letters.</summary>
     public static string SwapTypo(string text, Random random) => SwapTypo(text, random, out _);
 
-    /// <summary>Swaps two neighboring letters in one word of four or more letters; <paramref name="original"/> is that word as it should be.</summary>
+    /// <summary>
+    /// A typing slip in one word of five or more letters; <paramref name="original"/> is that word as it should be. Beta 1.1.3:
+    /// mostly a dropped letter ("realy", "everone"), as fast typists made; a swap of two neighbours now and then, never the
+    /// first letter (the blind judge read "repaet" as planted).
+    /// </summary>
     public static string SwapTypo(string text, Random random, out string original)
     {
         original = null;
         string[] words = text.Split(' ');
         int[] eligible = words.Select((word, index) => (word, index))
-            .Where(x => x.word.Length >= 4 && x.word.All(char.IsLetter)).Select(x => x.index).ToArray();
+            .Where(x => x.word.Length >= 5 && x.word.All(char.IsLetter) && x.word.All(char.IsLower)).Select(x => x.index).ToArray();
         if (eligible.Length == 0)
             return text;
         int pick = eligible[random.Next(eligible.Length)];
-        char[] letters = words[pick].ToCharArray();
-        int at = random.Next(letters.Length - 1);
-        if (letters[at] == letters[at + 1])
+        string word = words[pick];
+        int at = 1 + random.Next(word.Length - 2);
+        string typed;
+        if (random.NextDouble() < 0.75)
+            typed = word.Remove(at, 1);
+        else
+        {
+            if (word[at] == word[at + 1])
+                return text;
+            char[] letters = word.ToCharArray();
+            (letters[at], letters[at + 1]) = (letters[at + 1], letters[at]);
+            typed = new string(letters);
+        }
+        if (typed == word)
             return text;
-        original = words[pick];
-        (letters[at], letters[at + 1]) = (letters[at + 1], letters[at]);
-        words[pick] = new string(letters);
+        original = word;
+        words[pick] = typed;
         return string.Join(' ', words);
     }
 
@@ -558,7 +621,17 @@ public sealed class AutonomousBotVoiceCorpus
         "lol", "heh", "hehe", "haha", "ha", "rofl", "lmao", "gz", "grats", "gratz", "ty", "thx", "np", "k", "kk", "ok", "brb",
         "afk", "wb", "gn", "gl", "omw", "inc", "re", "hm", "hmm", "huh", "yw", "sry", "nm", "nvm", "pst", "ding", "lfg", "lfm",
         "oom", "med", "rez", "r", "y", "n", "yep", "nope", "ikr", "bah", "ugh", "doh", "w00t", "woot",
+        // Beta 1.1.3: "Lol yes." read as a bot (the blind spot-the-bot judge); short acks stay lowercase for every writer.
+        "yes", "ya", "yeah", "yea", "no", "nah", "sure", "same", "true", "nice", "cool", "hey", "hi", "yo", "sup", "cya", "later", "night",
+        "rip", "oof", "phew", "gg", "x", "this", "agreed", "hehe", "lmao",
     };
+
+    /// <summary>A line whose first word is a chat word ("np, back to it"). Pure.</summary>
+    public static bool StartsWithChatToken(string text)
+    {
+        string first = Regex.Match(text ?? string.Empty, @"^[a-zA-Z0-9]+").Value;
+        return first.Length > 0 && ChatTokens.Contains(first) && !first.Equals("i", StringComparison.OrdinalIgnoreCase);
+    }
 
     /// <summary>A line made only of chat words ("lol", "ty ty", "gz!"), which no writer capitalizes or ends with a period.</summary>
     public static bool IsChatToken(string text)
