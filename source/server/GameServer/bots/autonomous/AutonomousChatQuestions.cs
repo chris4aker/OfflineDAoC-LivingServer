@@ -18,8 +18,10 @@ public static class AutonomousChatQuestions
     /// <summary>What a bot knows about itself.</summary>
     /// <param name="Equipped">Worn armor, weapon and jewelry pieces; <paramref name="Crafted"/> of them made by a crafter (IsCrafted).</param>
     /// <param name="Busy">In a fight, or on something it can't leave (a keep, a relic, a raid).</param>
+    /// <param name="Spec">Beta 1.1.3: its trained spec, as a player says it ("44 shield, 30 slash"), or null.</param>
     public sealed record BotFacts(long Id, int Level, string ClassName, eRealm Realm, int RealmLevel, BotPersonalityType Type,
-        bool HasSpeed, int Potions, string Guild, int Equipped = 0, int Crafted = 0, bool Busy = false);
+        bool HasSpeed, int Potions, string Guild, int Equipped = 0, int Crafted = 0, bool Busy = false, string Name = null, string Zone = null,
+        int GroupSize = 1, string Target = null, string Spec = null);
 
     /// <summary>What the bot's realm knows of the world.</summary>
     public sealed record WorldFacts(eRealm DfOwner, IReadOnlyList<(string Name, eRealm Owner, eRealm Home, bool Mounted)> Relics,
@@ -67,7 +69,7 @@ public static class AutonomousChatQuestions
         // "who keeps rolling need on everything lol" is a remark, "hmm where did i put that note" talking to oneself (the holdout check).
         !Regex.IsMatch(Normalize(text), @"\b(lol|lmao|rofl|haha|heh)$|^(hmm |um |uh |ugh )?(where|what) did i (put|leave|drop|do with)\b");
 
-    private static readonly Regex You = new(@"\b(u|you|ur|your|youre|ya|yours|yourself|whatcha|watcha|wyd)\b");
+    private static readonly Regex You = new(@"\b(u|you|ur|your|youre|ya|yours|yourself|whatcha|watcha|wyd|thy|thee|thou|ye)\b");
 
     #region About the bot
 
@@ -88,6 +90,11 @@ public static class AutonomousChatQuestions
         (new Regex(@"\b(sent (u|you) the|gave (u|you) the|traded (u|you) the|sent (u|you) some)\b"), "received"),
         (new Regex(@"\b(where (have )?(you|u) been|(havent|haven t|not) seen (you|u)|where u been)\b"), "away"),
         (new Regex(@"\b((are|r|will) (you|u) (be )?on (tonight|later|tomorrow)|(you|u) on (tonight|later|tomorrow))\b"), "online"),
+        // Beta 1.1.3: the bot's name, its group and its hunt, from its own state (blind round 1: "what be thy name, stranger?",
+        // "hello, what are we hunting?" drew "not sure").
+        (new Regex(@"\b(whats (ur|your|thy) name|what is (ur|your|thy) name|what be (ur|your|thy) name|who (are|r) (you|u|ye)|(ur|your|thy) name\b|who art thou)"), "name"),
+        (new Regex(@"\b((are|r) (you|u) (in a group|grouped|in a grp|solo|soloing)|(you|u) (grouped|solo|soloing)|(you|u) in a (group|grp)|who (are|r) (you|u) (grouped|with)|(ur|your) group)\b"), "group"),
+        (new Regex(@"\bwhat (are|r) (you|u|we) (hunting|killing|camping|farming)\b|\bwhat (you|u) (hunting|killing|camping|farming)\b"), "hunting"),
         (new Regex(@"\b(what guild (are |r )?(you|u)|(ur|your) guild|(are|r|you|u) (you |u |still )?in a guild)\b"), "guild"),
         (new Regex(@"\b((is this|this) (ur|your) main|(ur|your) main|(an|ur|your) alt|how many (chars|alts|toons|characters) (do )?(you|u) (got|have)|(you|u) (got|have) (a|an|any) (\w+ )?(alt|alts))\b"), "main"),
         (new Regex(@"\b((are |r )?(you|u) busy|(you|u) free (now|atm|rn)|(are |r )?(you|u) (doing anything|in the middle of))\b"), "busy"),
@@ -108,6 +115,8 @@ public static class AutonomousChatQuestions
         // "nice armor where from", "is that a sc suit or drops" said to a bot by name ask about its gear without a "you".
         if (!You.IsMatch(t))
             return Regex.IsMatch(t, @"\bis (that|it) (the|ur|your) epic\b") ? "epic"
+                // "hello, what are we hunting?" to a groupmate (Beta 1.1.3).
+                : Regex.IsMatch(t, @"\bwhat (are|r) we (hunting|killing|camping|farming|doing here)\b") ? "hunting"
                 : SelfQuestions.First(question => question.Kind == "gear").Pattern.IsMatch(t) ? "gear"
                 : Regex.IsMatch(t, @"^((hey|hi|yo|so|oi) )?(what|wat) (class|race) (is that|is this|are those)\b") ? "class"
                 : null;
@@ -265,7 +274,24 @@ public static class AutonomousChatQuestions
                         : random.Next(2) == 0 ? "nah, leveling" : "prob just leveling",
                 };
             case "spec":
+                if (!string.IsNullOrEmpty(bot.Spec))
+                    return random.Next(3) switch { 0 => bot.Spec, 1 => $"{bot.Spec} atm", _ => $"{bot.Spec}, rest is spread" };
                 return random.Next(2) == 0 ? "still figuring it out lol" : "mostly my main line, bit of the rest";
+            case "name":
+                if (string.IsNullOrEmpty(bot.Name))
+                    return null;
+                if (System.Text.RegularExpressions.Regex.IsMatch(t, @"\b(thy|be|art|ye)\b"))
+                    return random.Next(2) == 0 ? $"they call me {bot.Name}" : $"{bot.Name}, of {GlobalConstants.RealmToName(bot.Realm)}";
+                return random.Next(3) switch { 0 => bot.Name, 1 => $"its {bot.Name}", _ => $"{bot.Name}, why?" };
+            case "group":
+                return bot.GroupSize > 1
+                    ? random.Next(2) == 0 ? $"yeah, {bot.GroupSize} of us" : $"grouped, {bot.GroupSize} of us atm"
+                    : random.Next(2) == 0 ? "solo atm" : "nope, solo";
+            case "hunting":
+                if (!string.IsNullOrEmpty(bot.Target))
+                    return string.IsNullOrEmpty(bot.Zone) ? AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant())
+                        : $"{AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant())} in {bot.Zone}";
+                return random.Next(2) == 0 ? "nothing yet, looking for a camp" : "not sure yet, ideas?";
         }
         return null;
     }

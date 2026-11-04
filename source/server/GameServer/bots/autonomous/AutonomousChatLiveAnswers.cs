@@ -252,7 +252,25 @@ public static class AutonomousChatLiveAnswers
         bool speed = bot.Spells?.Any(spell => spell?.SpellType == eSpellType.SpeedEnhancement && spell.Level <= bot.Level) == true;
         return new AutonomousChatQuestions.BotFacts(bot.DatabaseID, bot.Level, bot.CharacterClass?.Name ?? bot.ClassName, bot.Realm,
             bot.RealmLevel, AutonomousBotPersonality.For(bot).Type, speed, potions, bot.Guild?.Name, equipped, crafted,
-            bot.InCombat || BotGroupInvite.DutyOf(bot) != BotGroupInvite.Duty.None);
+            bot.InCombat || BotGroupInvite.DutyOf(bot) != BotGroupInvite.Duty.None, bot.Name, bot.CurrentZone?.Description,
+            (int)(bot.Group?.MemberCount ?? 1), bot.PersistentRecord?.TargetName, SpecText(bot));
+    }
+
+    /// <summary>A bot's spec as a player says it: its two highest trained lines ("44 shield, 30 slash"), or null (Beta 1.1.3).</summary>
+    public static string SpecText(GameBot bot)
+    {
+        try
+        {
+            if (bot?.BotSpec?.SpecLines == null)
+                return null;
+            var lines = bot.BotSpec.SpecLines.Select(line => (Name: line.Spec, Level: bot.GetBaseSpecLevel(line.Spec)))
+                .Where(line => line.Level > 1 && !string.IsNullOrEmpty(line.Name)).OrderByDescending(line => line.Level).Take(2).ToArray();
+            return lines.Length == 0 ? null : string.Join(", ", lines.Select(line => $"{line.Level} {line.Name.ToLowerInvariant()}"));
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
     private static readonly Dictionary<eRealm, (long At, AutonomousChatQuestions.WorldFacts Facts)> Worlds = new();

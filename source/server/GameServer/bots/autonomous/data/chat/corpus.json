@@ -540096,6 +540096,1270 @@
     50
    ],
    "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "well met, friend",
+   "id": "6c256890fac9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "hail and well met",
+   "id": "fb5888825881"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "aye, well met",
+   "id": "a9ec7c2a6e2a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "*nods* well met, traveler",
+   "id": "5ba3e78e9046"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "greetings to ye",
+   "id": "4fd4a653fc86"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "and to you, friend",
+   "id": "c0c030ed56a8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "aye, tis a dark night for it",
+   "id": "a7fe25e2c94f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "the roads are not safe of late, keep thy blade close",
+   "id": "852b82ce875f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "rest a while, the fire is warm",
+   "id": "329ef37deb50"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "*tips hat*",
+   "id": "f632d73a2b30"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "safe travels to thee",
+   "id": "b709ab532e4f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "aye, i have seen worse",
+   "id": "1f7b9b670ae3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "mind the shadows, friend",
+   "id": "4994a3f1f829"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "a fine evening for it, aye",
+   "id": "838fe5a2dbc2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "*raises a mug*",
+   "id": "302c451b1cc5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "what news, traveler?",
+   "id": "bd161742e3a1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "i would not wander alone tonight",
+   "id": "819f35a1bd12"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "*grins* aye",
+   "id": "aab559d1ab54"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "well met {player}, sit and share the fire",
+   "id": "eac6ae8e377f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "*bows* well met, {player}",
+   "id": "337fe6f3eaba"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "aye, and i hunger for a fight",
+   "id": "59b41f0b5d51"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "let them come, my blade is thirsty",
+   "id": "df1d8d09f9d8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "i have walked many roads, few as strange as this one",
+   "id": "cd9c0669f750"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "the far hills hold stranger things still",
+   "id": "b58fd6506c01"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "for Albion!",
+   "id": "8d6772f2a1e9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "may Camelot stand forever",
+   "id": "7acbdc252485"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "the news from Camelot is grim as ever, friend",
+   "id": "df8dc88aa2b5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "by Odin, aye",
+   "id": "cd22d8dc9ddd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "Midgard stands, as ever",
+   "id": "ff233cd02b5b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "may Lugh guide thy hand",
+   "id": "27c457ee5294"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "the Morrigan watches us all",
+   "id": "bdffc8d0dc60"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "roleplay",
+   "mood": "",
+   "weight": 1.0,
+   "text": "Hibernia remembers, friend",
+   "id": "0b56ef220e26"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "lol rip",
+   "id": "1c7eb1a4e095"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "rip lol",
+   "id": "25ec5a4de0f1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "ouch lol",
+   "id": "4a2dfdf7ae86"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "lol been there",
+   "id": "68a4ba6c7418"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "happens to everyone heh",
+   "id": "91b01f753665"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "haha classic",
+   "id": "f44e84e435bb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "rofl nice",
+   "id": "5a832f2d2277"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "lol nice one",
+   "id": "b479ae5e7b5e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "gg",
+   "id": "e3fb7bc7fac8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "oof, rip",
+   "id": "d044c4d05525"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "we have all done that",
+   "id": "78a7d013a523"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "lol again?",
+   "id": "a8549b17f472"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "hah, smooth",
+   "id": "9c21d5c02df9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "did that once, never again",
+   "id": "3ee4bf661177"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "aww lol, you ok?",
+   "id": "f9cac5919494"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_mishap"
+   ],
+   "text": "lol thats how i do it too",
+   "id": "3092a951a1f3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "too close lol",
+   "id": "b380cb6e3bc9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "phew",
+   "id": "0b64b0416e03"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "heart attack lol",
+   "id": "b770b18225e2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "nice save there",
+   "id": "09f5835dbd9a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "yeah that was close",
+   "id": "10e661f6d898"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "lol my heart",
+   "id": "3fcef2837e2d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "i thought we were dead",
+   "id": "3f7014499ebe"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "close one heh",
+   "id": "9878a318ec16"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_close"
+   ],
+   "text": "close? that was fun lol",
+   "id": "7c4090bd1335"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "no worries at all",
+   "id": "51c849b2e40b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "its ok",
+   "id": "e41b3170fde9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "happens",
+   "id": "f5ed3220849d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "all good",
+   "id": "b9bb427a5f0e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "dont worry about it",
+   "id": "62e41a72ce5b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "np, happens to everyone",
+   "id": "78bc40fa93a4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "nah its fine",
+   "id": "cbb8f935f270"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "aw no worries {player}",
+   "id": "9934fb8051c5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_sorry"
+   ],
+   "text": "np, just dont do it again lol",
+   "id": "8e069440766d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
    "intent": "",
    "mood": "",
    "weight": 1.0,

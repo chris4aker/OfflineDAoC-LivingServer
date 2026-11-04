@@ -365,7 +365,7 @@ public static class AutonomousBotGuildSocial
             string line;
             if (AutonomousBotVoices.Enabled)
             {
-                AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotChatCoordinator.ReplyChoiceToPlayer(bot, player, message, mentioned.Length > 0);
+                AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotChatCoordinator.ReplyChoiceToPlayer(bot, player, message, mentioned.Length > 0, "guild");
                 AutonomousChatWhy.Record(bot, "guild", "player " + player.Name, choice.Text == null ? "silent" : choice.Route.StartsWith("ack") ? "ack" : "said",
                     choice.Route, AutonomousChatReplyFit.Of(choice.Route, message), mentioned.Length > 0 ? "named in the line" : "a guildmate answers",
                     choice.Text, choice.Line?.Id, player.Name);
@@ -438,7 +438,7 @@ public static class AutonomousBotGuildSocial
         AutonomousBotVoices.Enabled && bot != null && player != null
             ? AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge) ? AutonomousBotVoices.StyleFor(bot, knowledge)
                 : AutonomousBotChatCoordinator.ReplyChoiceToPlayer(bot, player, message,
-                    AutonomousBotChatCoordinator.ContainsMention(message, bot.Name)).Text
+                    AutonomousBotChatCoordinator.ContainsMention(message, bot.Name), "guild").Text
             : null;
 
     #endregion

@@ -122,7 +122,9 @@ TIME_FLAGS = {'day', 'evening', 'night'}
 INTENTS = {'unknown', 'greeting', 'banter', 'abuse', 'grouping', 'grinding', 'travel', 'dungeon', 'rvr',
            'trading', 'help', 'farewell', 'ignoreoutofworld',
            # 0.36-se.4: short chat players type
-           'thanks', 'congrats', 'ding', 'laugh', 'away', 'back', 'rez', 'alarm', 'classtalk', 'botcheck'}
+           'thanks', 'congrats', 'ding', 'laugh', 'away', 'back', 'rez', 'alarm', 'classtalk', 'botcheck',
+           # Beta 1.1.3: an in-character line from the player
+           'roleplay'}
 MOODS = {'friendly', 'neutral', 'cool', 'rival'}
 SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'count', 'camp', 'dungeon',
          'capital', 'enemy', 'keep', 'frontier', 'player', 'player_class', 'place', 'q',

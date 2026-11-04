@@ -95,7 +95,8 @@ namespace DOL.GS.Tests
                 return ("followup(no thread)", null);
             if (AutonomousChatQuestions.IsFactual(incoming) && value is not (eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Thanks or
                     eAutonomousChatIntent.Rez or eAutonomousChatIntent.Alarm or eAutonomousChatIntent.Grouping or eAutonomousChatIntent.BotCheck or
-                    eAutonomousChatIntent.Abuse or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Ding or eAutonomousChatIntent.Congrats))
+                    eAutonomousChatIntent.Abuse or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Ding or eAutonomousChatIntent.Congrats or
+                    eAutonomousChatIntent.Roleplay))
                 return ("factual -> not sure (half the time)", Pick(i, answers: "ask", filter: l => !l.Text.Contains("trainer") && !l.Text.Contains("guard")));
             if (value == eAutonomousChatIntent.Unknown)
                 return incoming.Contains('?') ? ("unknown?", Pick(i, answers: "ask", filter: l => !l.Text.Contains("trainer") && !l.Text.Contains("guard"))) : ("unknown", null);
@@ -279,7 +280,7 @@ namespace DOL.GS.Tests
                 var auditItem = new ChatAuditRoute.Item(item.text, item.channel, item.context, item.expect, item.note, item.to);
                 (string route, string fixedAnswer) = ChatAuditRoute.Route(auditItem, new Random(1));
                 (string outcome, int fit) = ChatAuditRoute.Budget(auditItem, route);
-                if (outcome == "answer" && replies.Count > 0 && replies[0] != null && AutonomousChatReplyBudget.IsBrushOff(replies[0]))
+                if (outcome == "answer" && fixedAnswer == null && replies.Count > 0 && replies[0] != null && AutonomousChatReplyBudget.IsBrushOff(replies[0]))
                     outcome = auditItem.channel == "tell" || !string.IsNullOrEmpty(item.to) || item.expect == "directed" ? "ack" : "silent";
                 tally[outcome]++;
                 sb.AppendLine($"     budget: {outcome} (route {route}, fit {fit})");

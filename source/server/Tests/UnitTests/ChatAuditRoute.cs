@@ -27,7 +27,8 @@ namespace DOL.GS.Tests
         }
 
         internal static readonly AutonomousChatQuestions.BotFacts Me =
-            new(501, 30, "Thane", eRealm.Midgard, 13, BotPersonalityType.Leveler, false, 2, null);
+            new(501, 30, "Thane", eRealm.Midgard, 13, BotPersonalityType.Leveler, false, 2, null, Name: "Brannoc", Zone: "Myrkwood Forest",
+                Target: "Large Frost Giant", Spec: "39 hammer, 30 shield");
 
         internal static AutonomousChatQuestions.WorldFacts World => new(eRealm.Hibernia,
             [("Hibernia's Relic of Lugh", eRealm.Hibernia, eRealm.Hibernia, true), ("Midgard's Relic of Thor", eRealm.Albion, eRealm.Midgard, true),
@@ -39,6 +40,7 @@ namespace DOL.GS.Tests
             eAutonomousChatIntent.Greeting, eAutonomousChatIntent.Thanks, eAutonomousChatIntent.Rez, eAutonomousChatIntent.Alarm,
             eAutonomousChatIntent.Grouping, eAutonomousChatIntent.BotCheck, eAutonomousChatIntent.Abuse, eAutonomousChatIntent.Farewell,
             eAutonomousChatIntent.Ding, eAutonomousChatIntent.Congrats, eAutonomousChatIntent.Back, eAutonomousChatIntent.Away,
+            eAutonomousChatIntent.Roleplay,
         ];
 
         /// <summary>The route a line takes ("thread followup_why", "fact world", "shape player_offer", "intent banter", "none"...),
@@ -69,6 +71,9 @@ namespace DOL.GS.Tests
                 word = null;
             if (word != null && last != null)
                 return ("thread followup_" + word, null);
+            // Beta 1.1.3: a counter-offer to the bot's price (as TryThreadReply and TellReply).
+            if (last != null && AutonomousChatContext.Price(last.Text) is { } asking && AutonomousChatContext.CounterOffer(text, asking, random) is { } counter)
+                return ("context counter", counter);
             if (open != null && AutonomousChatThreads.SaysYes(text) == false)
                 return ("thread decline", null);
             if (last != null && intent == eAutonomousChatIntent.Thanks && !text.Contains('?'))
@@ -100,7 +105,7 @@ namespace DOL.GS.Tests
                 return ("none laugh", null);
             if (item.channel == "faction" && intent == eAutonomousChatIntent.Congrats)
                 return ("none gz", null);
-            if (AutonomousChatKnowledge.TryExplainTerm(text, out string term))
+            if (AutonomousChatKnowledge.TryExplainTerm(text, out string term) || AutonomousChatKnowledge.TryAnswerHowTo(text, out term))
                 return ("knowledge", term);
             if (shape == "player_order" && AutonomousChatQuestions.CantDo(text, Me) is { } cant)
                 return ("fact cant", cant);
@@ -112,6 +117,11 @@ namespace DOL.GS.Tests
                 if (fact != null)
                     return ("fact " + (self ?? "world"), fact);
             }
+            // Beta 1.1.3: the situation (AutonomousChatContext), as VoicedChoice reads it after the facts.
+            var facts = new AutonomousChatContext.Facts("Brannoc", "Wynn", item.channel, item.channel is "say" or "group", false, false, Me.Level,
+                string.IsNullOrEmpty(item.context) ? null : item.context, "Jordheim");
+            if (AutonomousChatContext.Reply(text, intent, AutonomousChatShortTalk.QuestionShape(text), facts, random) is { } situation)
+                return (situation.Route, situation.Text);
             if (shape is "ask_whereyou" or "ask_inplace" or "ask_hunt" or "ask_enemy")
                 return ("live " + shape, null);
             if (shape != null)
@@ -148,26 +158,30 @@ namespace DOL.GS.Tests
         internal static bool Fits(string expect, string path) => expect switch
         {
             "greeting" => path is "intent greeting" or "shape ask_howareyou",
-            "farewell" => path is "intent farewell",
+            // Beta 1.1.3 routes: a reply chosen by the situation ("context ...") and the new shapes read the same labels.
+            "farewell" => path is "intent farewell" or "context farewell",
             "thanks_ack" => path is "intent thanks" or "thread thanks",
             "congrats" => path is "intent ding" or "shape player_goodnews",
             "welcome_back" => path is "intent back" or "intent greeting",
             "brb_ack" => path is "intent away" or "shape player_wait",
             "answer_yesno" or "answer_info" => path.StartsWith("fact") || path.StartsWith("live") || path is "knowledge" or "not sure" or
-                "shape ask_price" or "shape ask_help",
+                "shape ask_price" or "shape ask_help" or "context stuck",
             "answer_opinion" => path is "shape ask_opinion" or "shape ask_choice" or "intent classtalk" or "intent dungeon" or "fact world",
             "answer_choice" => path is "shape ask_choice",
-            "offer_help" => path is "shape player_offer" or "shape ask_help" or "shape ask_anyone" or "shape ask_advice" or "intent help" or "not sure" ||
+            "offer_help" => path is "shape player_offer" or "shape ask_help" or "shape ask_anyone" or "shape ask_advice" or "intent help" or "not sure" or
+                "context help" or "context stuck" or "shape player_help" ||
                 path.StartsWith("fact"),
-            "join_reply" => path is "join" or "tell invited",
+            // "join" is the blind corpus's name for the same label (scorer alias, Beta 1.1.3; reported apart).
+            "join_reply" or "join" => path is "join" or "tell invited",
             "lfg_response" => path is "intent grouping",
             "rez_response" => path is "intent rez" or "shape player_wait",
-            "alarm_response" => path is "intent alarm" or "group warning" or "shape player_headsup",
-            "trade_response" => path is "intent trading" or "shape ask_price" or "shape player_offer" or "shape ask_anyone" || path.StartsWith("fact"),
-            "followup" => path.StartsWith("thread followup"),
+            "alarm_response" => path is "intent alarm" or "group warning" or "shape player_headsup" or "context inc" or "context rvr",
+            "trade_response" => path is "intent trading" or "shape ask_price" or "shape player_offer" or "shape ask_anyone" or "context sell" or
+                "context wtb" or "context counter" || path.StartsWith("fact"),
+            "followup" => path.StartsWith("thread followup") || path is "context counter",
             "answer_to_bot" => path is "thread answer" or "thread decline" or "thread thanks" or "thread wait",
             "sympathy" => path is "shape complaint" || path.StartsWith("shape player_rl"),
-            "banter" => path is "intent banter" or "intent laugh" or "shape player_goodnews",
+            "banter" => path is "intent banter" or "intent laugh" or "shape player_goodnews" or "intent roleplay" or "shape player_mishap",
             "bot_check" => path is "intent botcheck",
             "abuse" => path is "intent abuse" or "none unknown",
             "out_of_world" => path.StartsWith("shape player_rl") || path is "shape ask_choice",
