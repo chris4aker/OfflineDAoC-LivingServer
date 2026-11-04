@@ -56,12 +56,27 @@ namespace DOL.GS
                     return TryPickUpResult.Blocked;
                 if (Log.IsInfoEnabled)
                     Log.Info($"REALM_RAID_LOOT_MONEY copper={money.Value} recipients={recipients.Length} region={money.CurrentRegionID}");
+                PayRaidDues(recipients, money.Value);
                 money.Value = 0; // Paid bags can never be paid again, including after a save-queue failure.
                 money.RemoveFromWorld();
                 foreach (GameBot bot in recipients)
                     AutonomousBotStatusPersistence.Queue(bot);
             }
             return TryPickUpResult.Success;
+        }
+
+        // Caller holds the normal economy lock, after TryAllocateMoney paid every share: each raider's guild takes its dues
+        // out of that share into the bank, as for a solo pickup. A full bank leaves the dues with the raider.
+        private static void PayRaidDues(GameBot[] recipients, long copper)
+        {
+            long quotient = copper / recipients.Length, remainder = copper % recipients.Length;
+            for (int i = 0; i < recipients.Length; i++)
+            {
+                long share = quotient + (i < remainder ? 1 : 0);
+                AutonomousBotGuildEconomy.ShareAfterDues(recipients[i], share, out long dues, out Guild guild);
+                if (dues > 0 && AutonomousBotGuildEconomy.DepositDues(guild, dues))
+                    recipients[i].PersistentRecord.MoneyCopper -= dues;
+            }
         }
 
         // Caller holds the normal economy lock. Validate the entire allocation

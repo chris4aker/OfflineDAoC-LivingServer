@@ -8,6 +8,41 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.2 (in development)
+
+**Gamebots in your guild earn merit and pay dues, like players** (from a r/daoc report; owner's choice 2026-11-03: "Merit + dues")
+- **The problem:** a gamebot you `/gc invite` joined your guild in name only. Its levels and realm ranks earned the guild
+  nothing and it paid no dues, so a guild of level-50 bots earned almost no merit.
+- **Now:** a gamebot in your guild earns it merit points for each level it gains and each realm level it reaches, with
+  the player formulas (`GuildEvents.LevelUp` and `GuildEvents.RealmRankUp`), and pays the dues rate your guild leader set
+  from the real coin it loots into the guild bank. If the bank is full the coin stays with the bot, so nothing is created
+  or lost. Guild realm points, keep claims and guild buffs still never count a bot. `/spawn` companions never join guilds.
+- **Bot guilds too:** bot guild members now earn realm-rank merit as well, and every gamebot pays dues on group-split and
+  dragon-raid coin, not only on coin it picks up alone (that was missing for bot guilds as well).
+- **What you see:** at most one line per guild every five minutes, such as "Seraorith has earned 69 merit points for
+  your guild!", or "3 guildmates have earned ..." when several did. Your own merit keeps its usual line.
+- **Setting:** `bot_player_guild_economy`, on by default, works whether bot guilds are on or off: the launcher's Living
+  Server tab, **Bots in your guild**.
+- **Checked:** unit tests for the dues split, merit for levels and realm ranks, the full bank, the switch off and the
+  merit lines. Not yet seen in game.
+
+**Faster power regeneration by default, the same rule for bots and players** (from a r/daoc report; owner's choice
+2026-11-03: "Faster by default")
+- **The problem:** power came back slowly. The server uses the pre-1.87 rate (about 12 a tick at level 50; patch 1.87
+  doubled it to about 23), and list casters below half power got half of that. Gamebots and companions were exempt
+  from the halving, so the player's own caster recovered slower than the bots around him.
+- **Now:** the rate is 1.5 times the classic one (`mana_regen_amount_modifier` 1.5, a middle ground between the classic
+  rate and 1.87's doubling), and the halving below 50% is off (`mana_regen_amount_halved_below_50_percent` False). When
+  you switch the halving on, it applies to players, gamebots and companions alike. A bot's out-of-combat fast rest is
+  unchanged.
+- **Existing worlds:** on the first start of this build, a world whose two settings are still the untouched old defaults
+  (1 and True, written by the server itself) gets the new ones once. A value you set yourself, or saved from the
+  launcher, is kept. The server log says what changed.
+- **Setting:** the launcher's Living Server tab, **Power regeneration**: the rate (0.25 to 10) and the halving. For the
+  classic regeneration choose 1 and switch the halving on.
+- **Checked:** unit tests for bot and player parity, the halving on and off, the rate, and the settings upgrade. Not
+  yet played.
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the

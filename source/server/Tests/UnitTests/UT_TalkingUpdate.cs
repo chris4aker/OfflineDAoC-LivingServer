@@ -454,6 +454,43 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void FasterPowerRegenReachesAnUntouchedWorldOnce()
+        {
+            // Living Server 1.1.2 (a r/daoc report): modifier 1 -> 1.5 and the halving True -> False, only where the server
+            // wrote the old default itself and nobody changed it.
+            var untouched = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["mana_regen_amount_modifier"] = ("1", "1"),
+                ["mana_regen_amount_halved_below_50_percent"] = ("True", "True"),
+                ["bot_voices_enabled"] = ("True", "True"),   // already upgraded by 1.1
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", untouched),
+                Is.EqualTo(new[] { "mana_regen_amount_modifier", "mana_regen_amount_halved_below_50_percent" }));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("", untouched), Has.Length.EqualTo(2), "a world that never ran 1.1");
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1.2", untouched), Is.Empty, "once only");
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.2", untouched), Is.Empty, "a newer build already ran");
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1", untouched).Select(c => c.NewDefault),
+                Is.EqualTo(new[] { "1.5", "False" }));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Version, Is.EqualTo("1.1.2"));
+
+            var chosen = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["mana_regen_amount_modifier"] = ("2", "1"),                       // the player set 2
+                ["mana_regen_amount_halved_below_50_percent"] = ("True", ""),      // the launcher wrote it: the player's choice
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", chosen), Is.Empty);
+            var spelledOut = new Dictionary<string, (string Value, string DefaultValue)> { ["mana_regen_amount_modifier"] = ("1.0", "1") };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", spelledOut), Is.EqualTo(new[] { "mana_regen_amount_modifier" }),
+                "1.0 is the same number as the default 1");
+            var fresh = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["mana_regen_amount_modifier"] = ("1.5", "1.5"),                   // a new world starts on the new defaults
+                ["mana_regen_amount_halved_below_50_percent"] = ("False", "False"),
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("", fresh), Is.Empty);
+        }
+
+        [Test]
         public void LowHealthAndOomAreCalledOnTheWayDownOnly()
         {
             var state = new AutonomousBotCombatCalls.BotState();
