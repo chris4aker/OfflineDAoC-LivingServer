@@ -207,7 +207,10 @@ public static class AutonomousBotVoices
         !IsCapitalRegion(bot.CurrentRegionID) && (bot.CurrentRegion?.IsDungeon == true || bot.CurrentZone?.IsDungeon == true);
 
     /// <summary>A realm dungeon a bot of this level would use (Kirstena's 2002 ranges, checked against the world database).</summary>
-    public static string DungeonFor(eRealm realm, int level)
+    public static string DungeonFor(eRealm realm, int level) => DungeonFor(realm, level, Random.Shared);
+
+    /// <summary>A dungeon of the realm for a level, drawn with <paramref name="random"/>.</summary>
+    public static string DungeonFor(eRealm realm, int level, Random random)
     {
         (string Name, int Low, int High)[] dungeons = realm switch
         {
@@ -224,7 +227,7 @@ public static class AutonomousBotVoices
         var fitting = dungeons.Where(d => level >= d.Low - 2 && level <= d.High + 2).ToArray();
         if (fitting.Length == 0)
             fitting = dungeons.OrderBy(d => Math.Abs((d.Low + d.High) / 2 - level)).Take(1).ToArray();
-        return fitting.Length == 0 ? null : fitting[Random.Shared.Next(fitting.Length)].Name;
+        return fitting.Length == 0 ? null : fitting[random.Next(fitting.Length)].Name;
     }
 
     public static string CapitalOf(eRealm realm) => realm switch
@@ -268,7 +271,8 @@ public static class AutonomousBotVoices
         OfflineWorldBotRecord record = bot.PersistentRecord;
         string zone = bot.CurrentZone?.Description;
         string item = bot.Inventory?.AllItems.FirstOrDefault(entry => entry != null &&
-            entry.SlotPosition >= (int)eInventorySlot.FirstBackpack && entry.SlotPosition <= (int)eInventorySlot.LastBackpack)?.Name;
+            entry.SlotPosition >= (int)eInventorySlot.FirstBackpack && entry.SlotPosition <= (int)eInventorySlot.LastBackpack &&
+            AutonomousBotChatCoordinator.IsAdvertisableItemName(entry.Name))?.Name;
         // In a player's group the bot hunts what the player hunts, so its solo camp target and camp are stale. Play test
         // 2026-10-28: a friar brought along to Camelot Hills said "mountain algaes at Camelot Hills are the best xp for my
         // level", her last solo target (in Aldland) placed in the zone she stood in. Only a live fight is named then.
@@ -456,19 +460,27 @@ public static class AutonomousBotVoices
             if (slots != null)
                 foreach (var pair in slots)
                     all[pair.Key] = pair.Value;
-            return Corpus.TryPick(new VC.Request(kind, speaker, all, Recent, DateTime.UtcNow, random)
+            // Beta 1.1.2: a reply or closing is kept free of musings, unasked Exchange plugs and repeated generic filler.
+            AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
+            Func<VC.Line, bool> allowed = kind is "reply" or "closing"
+                ? filter == null ? line => AutonomousChatFiller.ReplyAllowed(line, scope) : line => AutonomousChatFiller.ReplyAllowed(line, scope) && filter(line)
+                : filter;
+            bool picked = Corpus.TryPick(new VC.Request(kind, speaker, all, Recent, DateTime.UtcNow, random)
             {
                 Intent = intent,
                 Answers = answers,
                 Topic = topic,
                 RequireNeed = requireNeed,
-                Filter = filter,
+                Filter = allowed,
                 // Answering a player: a short reply may come back after 40 minutes. Anything else: after six hours,
                 // once the three-day pool for its kind is used up.
                 RelaxTo = relax ? ShortReplyRest : VC.RecentLines.Relaxed,
                 LocalHour = DateTime.Now.Hour,
                 NeedSlots = NeedSlotsFor(bot),
             }, out result);
+            if (picked && scope != null && kind is "reply" or "closing" && AutonomousChatFiller.IsGeneric(result.Text))
+                AutonomousChatFiller.NoteGeneric(scope.ChannelKey, scope.Now);
+            return picked;
         }
         catch (Exception exception)
         {
@@ -526,8 +538,14 @@ public static class AutonomousBotVoices
     }
 
     /// <summary>A text in this bot's writing style (knowledge answers and other fixed text).</summary>
-    public static string StyleFor(GameBot bot, string text) =>
-        !Enabled || bot == null || string.IsNullOrEmpty(text) ? text : VC.Style(text, Corpus.VoiceFor(bot.DatabaseID), Random.Shared);
+    public static string StyleFor(GameBot bot, string text)
+    {
+        if (!Enabled || bot == null || string.IsNullOrEmpty(text))
+            return text;
+        VC.Voice voice = Corpus.VoiceFor(bot.DatabaseID);
+        // Beta 1.1.2: the bot's own typing habits too (AutonomousChatIdiolect).
+        return AutonomousChatIdiolect.Apply(VC.Style(text, voice, Random.Shared), bot.DatabaseID, voice.Capitalize, Random.Shared);
+    }
 
     /// <summary>
     /// A line for a Living Server event (docs/LIVING-SERVER.md). Needs only the corpus, so it works
@@ -611,13 +629,22 @@ public static class AutonomousBotVoices
     {
         NoteLevelUp(bot);
         SayMoment(bot, "ding", 0.35, 1_500);
+        // Beta 1.1.2, round 7: a ding to 50 is a story the realm hears.
+        if (bot?.Level == 50)
+            AutonomousBotChatCoordinator.TellStory("ding50", bot);
     }
 
     public static void OnBotDeath(GameBot bot)
     {
         NoteDeath(bot);
         SayMoment(bot, "death", 0.25, 3_000);
+        // Round 7: now and then a death becomes a short story in /faction.
+        if (bot != null && Random.Shared.NextDouble() < StoryDeathChance)
+            AutonomousBotChatCoordinator.TellStory("death", bot);
     }
+
+    /// <summary>How often a gamebot's death becomes a short /faction story (round 7).</summary>
+    public const double StoryDeathChance = 0.04;
 
     private static void SayMoment(GameBot bot, string kind, double chance, int delayMs)
     {

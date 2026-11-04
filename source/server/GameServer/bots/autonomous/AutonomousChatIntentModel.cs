@@ -31,6 +31,8 @@ public enum eAutonomousChatIntent
     Alarm,
     ClassTalk,
     BotCheck,
+    // Beta 1.1.2: an in-character line, answered in kind
+    Roleplay,
 }
 
 /// <summary>
@@ -131,7 +133,11 @@ public static partial class AutonomousChatIntentModel
                 "nice pull genius", "nice going genius", "great job genius", "real smooth genius",
                 // Play test 2026-10-27: "Duggreigan ur guild sucks lol" read as banter, and drew "Howth smells like salt and fresh bread."
                 "ur guild sucks", "your guild sucks", "ur guild is trash", "your guild is trash", "ur guild is garbage", "your guild is garbage",
-                "ur guild is terrible", "your guild is terrible", "ur guild is a joke", "your guild is a joke"))
+                "ur guild is terrible", "your guild is terrible", "ur guild is a joke", "your guild is a joke",
+                // Beta 1.1.2 (blind round 1: read as banter or a question): "ks much?", "stop ksing my camp jerk", "omg ur so bad",
+                // "u r teh suck lol", "gg albs, way to zerg", "can u not stand in the fire", a lone "noob" said to someone.
+                "ks much", "stop ksing", "quit ksing", "stop ks", "ksing my", "ks er", "kser", "ur so bad", "you re so bad", "youre so bad", "u r so bad",
+                "you are so bad", "teh suck", "u suck", "you suck", "way to zerg", "nice zerg", "zerg much", "stand in the fire", "learn 2 play", "l2p noob"))
             return true;
         if (!words.Any(Targets.Contains))
             return false;
@@ -193,8 +199,13 @@ public static partial class AutonomousChatIntentModel
             return AutonomousChatShortTalk.TryRead(text, words, out eAutonomousChatIntent symbols) ? symbols : eAutonomousChatIntent.Unknown;
         if (tokens.Any(HardOutOfWorld.Contains))
             return eAutonomousChatIntent.IgnoreOutOfWorld;
-        if (IsAbuse(words))
+        if (IsAbuse(words) || words.Length == 1 && words[0] is "noob" or "n00b" or "newb" or "nub" or "jerk" or "loser" ||
+            words.Length <= 6 && words.Contains("jerk"))
             return eAutonomousChatIntent.Abuse;
+        // Beta 1.1.2: an in-character line ("Hail, good sir. What news from Camelot?", "*bows deeply* My lady...", "By Odin's
+        // beard...", "Ye be lookin' weary, friend") is answered in kind (blind round 1: 16 of 17 roleplay lines were missed).
+        if (AutonomousChatShortTalk.IsRoleplay(text, words))
+            return eAutonomousChatIntent.Roleplay;
         // Holiday wishes are greetings (holiday chatter, 2026-10-28): bots answer them with the holiday's own lines.
         if (HolidayWish.IsMatch(text))
             return eAutonomousChatIntent.Greeting;

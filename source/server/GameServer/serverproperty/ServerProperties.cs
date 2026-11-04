@@ -744,7 +744,7 @@ namespace DOL.GS.ServerProperties
 		/// Optional XP rates by level range for real players, replacing XP_RATE inside each listed
 		/// range (see LevelRangeXpRates). Empty keeps the flat rate.
 		/// </summary>
-		[ServerProperty("rates", "xp_rate_by_level", "Optional XP rate by level range for real player characters, for example 1-19:3;20-34:5;35-50:12. Inside a listed range its rate replaces xp_rate; other levels keep xp_rate. RvR zones keep rvr_zones_xp_rate. Empty (the default) or an invalid value keeps the flat xp_rate.", "")]
+		[ServerProperty("rates", "xp_rate_by_level", "Optional XP rate by level range for real player characters, for example 1-19:3;20-34:5;35-50:12. Inside a listed range its rate replaces xp_rate; other levels keep xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate. Empty (the default) or an invalid value keeps the flat xp_rate.", "")]
 		public static string XP_RATE_BY_LEVEL;
 
 		/// <summary>
@@ -755,6 +755,13 @@ namespace DOL.GS.ServerProperties
 		public static string BOT_XP_RATE_BY_LEVEL;
 
 		/// <summary>
+		/// Quest experience follows xp_rate_by_level (owner 2026-10-30, see QuestExperience). On, and a range covers the
+		/// player's level: the quest's XP is multiplied by that level's rate. Off, no range or no setting: quest XP as before.
+		/// </summary>
+		[ServerProperty("rates", "quest_xp_by_level", "Quest experience follows xp_rate_by_level. When true (the default) and one of its ranges covers the player's level, the XP of data quests, reward quests, bounties and the daily, weekly and battleground quests is multiplied by that level's rate (a bounty's xp_rate is replaced by it). While true, one quest payment never pays more than one level. False is a kill switch (2026-10-31): no rate and no cap, quest XP exactly as before 1.1.1. No range for the level or no xp_rate_by_level leaves the amount as it was.", true)]
+		public static bool QUEST_XP_BY_LEVEL;
+
+		/// <summary>
 		/// The CL Experience Rate
 		/// </summary>
 		[ServerProperty("rates", "cl_xp_rate", "The Champion Level Experience Points Rate Modifier - Edit this to change the rate at which you gain CL experience points e.g 1.5 is 50% more 2.0 is twice the amount (100%) 0.5 is half the amount (50%)", 1.0)]
@@ -763,7 +770,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// RvR Zones XP Rate
 		/// </summary>
-		[ServerProperty("rates", "rvr_zones_xp_rate", "The RvR zones Experience Points Rate Modifier", 1.0)]
+		[ServerProperty("rates", "rvr_zones_xp_rate", "An extra Experience Points multiplier in RvR zones (battlegrounds, frontiers, Darkness Falls), applied on top of xp_rate and bot_xp_rate. 1.0 gives RvR zones the same rate as everywhere else.", 1.0)]
 		public static double RvR_XP_RATE;
 
 		/// <summary>
@@ -877,10 +884,19 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Health Regen Rate
 		/// </summary>
-		[ServerProperty("rates", "mana_regen_amount_modifier", "Mana regen amount modifier", 1.0)]
+		/// <summary>
+		/// Power regeneration multiplier. Living Server 1.1.2 (owner 2026-11-03, from a r/daoc report): 1.5 by default. The base
+		/// rate is the pre-1.87 one (patch 1.87 doubled it, about 23 per tick at level 50 instead of 12), so 1.5 is a middle ground.
+		/// Worlds that still had the old untouched default (1) get 1.5 once (LivingServerSettingsUpgrade).
+		/// </summary>
+		[ServerProperty("rates", "mana_regen_amount_modifier", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab.", 1.5)]
 		public static double MANA_REGEN_AMOUNT_MODIFIER;
 
-		[ServerProperty("rates", "mana_regen_amount_halved_below_50_percent", "Should the mana regen amount be halved below 50%? Affects list casters only.", true)]
+		/// <summary>
+		/// The classic list-caster rule: half power regeneration below 50% power. Living Server 1.1.2: off by default, and it applies
+		/// to real players and GameBots alike when on (bots were exempt before).
+		/// </summary>
+		[ServerProperty("rates", "mana_regen_amount_halved_below_50_percent", "Halve power regeneration below 50% power for list casters (the classic rule). Applies to real players and gamebots alike. Off by default in the Living Server; set in the launcher's Living Server tab.", false)]
 		public static bool MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT;
 
 		/// <summary>
@@ -2387,8 +2403,15 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Guilded gamebots pay dues from real looted coin, earn merit points, and bot guild leaders buy guild buffs.
 		/// </summary>
-		[ServerProperty("guild", "bot_guild_economy", "When bot guilds are on: guilded gamebots pay their guild's dues from the real coin they loot, their level-ups earn the guild merit points as a player's do, and bot guild leaders spend 1,000 merit points on a 24-hour guild buff.", true)]
+		[ServerProperty("guild", "bot_guild_economy", "When bot guilds are on: guilded gamebots pay their guild's dues from the real coin they loot, their level-ups and realm ranks earn the guild merit points as a player's do, and bot guild leaders spend 1,000 merit points on a 24-hour guild buff.", true)]
 		public static bool BOT_GUILD_ECONOMY;
+
+		/// <summary>
+		/// Gamebots a player invited into his guild (AutonomousBotGuilds) pay its dues and earn it merit points, as players do
+		/// (owner 2026-11-03, from a r/daoc report). Guild realm points, keep claims and guild buffs still never count a bot.
+		/// </summary>
+		[ServerProperty("guild", "bot_player_guild_economy", "Gamebots you invite into your guild pay its dues (the rate its leader set) from the real coin they loot, and their level-ups and realm ranks earn it merit points as a player's do. Guild realm points, keep claims and guild buffs still never count a bot. Works whether bot guilds are on or off.", true)]
+		public static bool BOT_PLAYER_GUILD_ECONOMY;
 
 		/// <summary>
 		/// Each realm's RvR and raiding bot guilds form one alliance.
@@ -2427,9 +2450,10 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_VOICES_TELLS;
 
 		/// <summary>
-		/// How busy realm chat is (the talking update): a multiplier on how often bots start /faction and /say lines.
+		/// How busy realm chat is (the talking update; from Beta 1.1.2 the default is 2, a busy server; 1 is calmer, 3 very busy): a multiplier on every
+		/// channel's target in chat-budget.json. The launcher's Living Server tab sets it.
 		/// </summary>
-		[ServerProperty("bots", "bot_voices_chat_rate", "When bot voices are on: how much bots talk unprompted, from 0 (only answers) to 3 (very busy). 1 is a normal evening; it already rises and falls with how many bots are on and the hour.", 1.0)]
+		[ServerProperty("bots", "bot_voices_chat_rate", "When bot voices are on: how much bots talk on their own, from 0 (they only answer) to 3. 2 (the default) sounds like a busy server; 1 is calmer, 3 very busy. Chat already rises and falls with the hour and with how many bots are on (chat-budget.json).", 2.0)]
 		public static double BOT_VOICES_CHAT_RATE;
 
 		public const string LIVING_SERVER_SETTINGS_VERSION_KEY = "living_server_settings_version";

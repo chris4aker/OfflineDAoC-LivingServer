@@ -38,5 +38,14 @@ namespace DOL.UnitTests
         [TestCase(400f, 1L, 45_001L, ExpectedResult = false, TestName = "Moving, just behind a moving leader")]
         public bool AGroupMemberStuckFor45SecondsNoLongerHoldsTheGroup(float moved, long since, long now) =>
             AutonomousGroupMemberStall.IsStalled(moved, since, now);
+
+        // A member still stalled after three minutes goes to its leader, at most once in five minutes.
+        [TestCase(1L, 179_000L, 0L, ExpectedResult = false, TestName = "Stalled 179 s: not yet")]
+        [TestCase(1L, 180_001L, 0L, ExpectedResult = true, TestName = "Stalled 3 minutes: moved to the leader")]
+        [TestCase(0L, 400_000L, 0L, ExpectedResult = false, TestName = "No first observation")]
+        [TestCase(1L, 400_000L, 250_000L, ExpectedResult = false, TestName = "Moved to the leader 150 s ago: wait")]
+        [TestCase(1L, 600_000L, 250_000L, ExpectedResult = true, TestName = "Moved to the leader 350 s ago: again")]
+        public bool AMemberStalledForThreeMinutesIsMovedToItsLeader(long since, long now, long lastRecovered) =>
+            AutonomousGroupMemberStall.ShouldRecover(since, now, lastRecovered);
     }
 }

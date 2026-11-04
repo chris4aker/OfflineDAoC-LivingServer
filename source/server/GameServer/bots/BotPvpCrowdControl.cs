@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using DOL.AI.Brain;
 
@@ -9,6 +10,9 @@ namespace DOL.GS
     {
         private sealed class Claim { public long Until; public eRealm Realm; public WeakReference<GameBot> Caster; }
         private static readonly ConditionalWeakTable<GameLiving, Claim> Claims = new();
+        private sealed class FreeEnemyScan { public long Until; public bool Found; }
+        private static readonly ConditionalWeakTable<GameBot, FreeEnemyScan> FreeEnemyScans = new();
+        public const ushort FreeEnemyRadius = 1500;
         public static bool PlayerLike(GameLiving living) => living is GamePlayer or GameBot ||
             living is GameNPC npc && npc.Brain is IControlledBrain pet && pet.GetLivingOwner() is IGamePlayer;
         public static bool Protected(GameLiving attacker, GameLiving target)
@@ -20,11 +24,30 @@ namespace DOL.GS
             if (CompanionPvpEngagement.Focused(attacker, target) || CompanionPvpEngagement.Defending(attacker, target)) return false;
             // A real player's explicit attack remains authoritative.
             if (bot.Owner is GamePlayer player && player.IsAttacking && player.TargetObject == target) return false;
-            if (target.IsMezzed) return true;
+            if (target.IsMezzed) return OtherEnemyFree(bot);
             if (!Claims.TryGetValue(target, out Claim claim)) return false;
             lock (claim) return claim.Realm == bot.Realm && claim.Until > GameLoop.GameLoopTime &&
                 claim.Caster != null && claim.Caster.TryGetTarget(out GameBot caster) && caster.IsAlive && caster != bot;
         }
+        // Owner 2026-10-27: a mesmerized enemy is left alone only while another enemy is still free to fight nearby.
+        // Once the mez is all that is left, the bots finish it instead of walking away from it.
+        // Plain realm checks, not LegalEnemy: that asks the server rules, which ask this class again.
+        // One scan a second per bot.
+        private static bool OtherEnemyFree(GameBot bot)
+        {
+            FreeEnemyScan scan = FreeEnemyScans.GetOrCreateValue(bot);
+            lock (scan)
+            {
+                long now = GameLoop.GameLoopTime;
+                if (now < scan.Until) return scan.Found;
+                scan.Until = now + 1000;
+                return scan.Found = bot.GetPlayersInRadius(FreeEnemyRadius).Cast<GameLiving>()
+                    .Concat(bot.GetNPCsInRadius(FreeEnemyRadius).Where(PlayerLike))
+                    .Any(t => t.IsAlive && t.ObjectState == GameObject.eObjectState.Active &&
+                        !t.IsMezzed && !t.IsStealthed && t.Realm != eRealm.None && t.Realm != bot.Realm);
+            }
+        }
+
         public static bool Reserve(GameBot caster, GameLiving target, int duration)
         {
             Claim claim = Claims.GetOrCreateValue(target);

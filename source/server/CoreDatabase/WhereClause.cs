@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Linq;
 using System.Text;
 
@@ -33,26 +34,36 @@ namespace DOL.Database
 
         private void EnsureProcessed()
         {
-            if (_parameterizedText != null)
+            if (Volatile.Read(ref _parameterizedText) != null)
                 return;
 
             List<IAtom> representation = IntermediateRepresentation;
+            string text;
+            QueryParameter[] parameters;
 
             if (representation.Count == 0)
             {
-                _parameterizedText = string.Empty;
-                _parameters = [];
-                return;
+                text = string.Empty;
+                parameters = [];
+            }
+            else
+            {
+                QueryBuilder builder = new();
+                builder.AddSqlText("WHERE");
+
+                foreach (IAtom atom in representation)
+                    atom.Process(builder);
+
+                text = builder.ParameterizedText;
+                parameters = builder.Parameters;
             }
 
-            QueryBuilder builder = new();
-            builder.AddSqlText("WHERE");
-
-            foreach (IAtom atom in representation)
-                atom.Process(builder);
-
-            _parameterizedText = builder.ParameterizedText;
-            _parameters = builder.Parameters;
+            // Living Server 1.1.2: the parameters first, then the text that marks the clause as processed, so another
+            // thread that sees the text also sees the parameters. A clause shared between threads (WhereClause.Empty,
+            // which every SelectAllObjects uses) set the text first: a second thread could read null parameters and
+            // fail with a NullReferenceException (seen once in 50 runs of the pooled WAL test, 2026-11-04).
+            _parameters = parameters;
+            Volatile.Write(ref _parameterizedText, text);
         }
 
         public virtual WhereClause And(WhereClause rightExpression)

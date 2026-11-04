@@ -17,6 +17,10 @@ namespace LivingServerSetup
         public static bool IsWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
         public static bool Silent;
         public static bool DemoMode;
+        /// <summary>Ask GitHub for a newer Living Server package before installing (off with --no-update or --offline).</summary>
+        public static bool CheckNewest = true;
+        /// <summary>Tests: GitHub's release answer read from this file instead (--release-json).</summary>
+        public static string ReleaseJson;
 
         [STAThread]
         static int Main(string[] argv)
@@ -38,7 +42,15 @@ namespace LivingServerSetup
                 return 3;
             }
 
-            if (args.Has("--info")) return 0;
+            CheckNewest = !args.Has("--no-update") && !args.Has("--offline");
+            ReleaseJson = args.Get("--release-json");
+            if (args.Has("--info"))
+            {
+                // which package this Setup would install now (with a newer one from GitHub unless --no-update)
+                PackageUpdate.Run(CheckNewest, ReleaseJson, null);
+                Log.Write("WOULD INSTALL " + Payload.BuildName + " (" + Payload.DisplayName + ") for Offline DAoC " + Payload.BaseRelease);
+                return 0;
+            }
             if (args.Has("--scan"))
             {
                 foreach (var p in GameScanner.FindGames(Path.GetDirectoryName(Application.ExecutablePath)).Concat(args.All("--game")))
@@ -114,6 +126,8 @@ namespace LivingServerSetup
 
         static int RunSilent(Args a)
         {
+            // Before the game is read: whether it already has "this build" depends on which package is installed.
+            if (!a.Has("--remove") && (a.Has("--new") || a.Get("--game") != null)) PackageUpdate.Run(CheckNewest, ReleaseJson, null);
             var o = new InstallOptions
             {
                 Shortcuts = !a.Has("--no-shortcuts"),
@@ -142,7 +156,7 @@ namespace LivingServerSetup
             }
             else
             {
-                Log.Write("Usage: LivingServerSetup.exe --silent (--new [--dest DIR] [--classic] [--new-client] [--import-from DIR] | --game DIR [--add-client] [--remove] [--force] [--fresh-copy]) [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--log FILE]");
+                Log.Write("Usage: LivingServerSetup.exe --silent (--new [--dest DIR] [--classic] [--new-client] [--import-from DIR] | --game DIR [--add-client] [--remove] [--force] [--fresh-copy]) [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--no-update] [--log FILE]");
                 return 3;
             }
             // As in the window: a first install of Living Server gets every feature on at the suggested settings.

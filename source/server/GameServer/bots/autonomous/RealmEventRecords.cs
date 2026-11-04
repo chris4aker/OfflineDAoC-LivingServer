@@ -16,7 +16,9 @@ public static class RealmEventRecords
     private static Timer _writer;
     private static bool _reconcile;
     private static DateTime _nextWarningUtc;
-    private static string PathName=>Path.Combine(AppContext.BaseDirectory,"realm-event-records.sqlite3");
+    // Living Server 1.1.2: beside the world database (runtime\data), where backups and progress transfers find it.
+    private static string LegacyPathName=>Path.Combine(AppContext.BaseDirectory,RealmEventRecordStore.FileName);
+    private static string PathName=>WorldDatabaseSafety.DataDirectory is { } data?RealmEventRecordStore.PathIn(data):LegacyPathName;
     public static void Begin(string eventId,string name,string kind,string realm,string details)
     {
         lock(Sync)
@@ -50,6 +52,12 @@ public static class RealmEventRecords
     public static void Start(DOLEvent e,object sender,EventArgs args)
     {
         _writer?.Dispose();lock(Sync){Active.Clear();Pending.Clear();_reconcile=true;}
+        try
+        {
+            string moved=RealmEventRecordStore.MoveLegacy(LegacyPathName,PathName);
+            if(moved!="none")DOL.Logging.LoggerManager.Create(typeof(RealmEventRecords)).Info($"REALM_EVENT_LEDGER {moved}: {LegacyPathName} -> {PathName}");
+        }
+        catch(Exception ex){DOL.Logging.LoggerManager.Create(typeof(RealmEventRecords)).Warn($"Realm event ledger could not be moved to {PathName}; the old file stays where it is.",ex);}
         _writer=new Timer(_=>Flush(),null,1000,2000);
     }
     [GameServerStoppedEvent]

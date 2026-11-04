@@ -454,6 +454,57 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void FasterPowerRegenReachesAnUntouchedWorldOnce()
+        {
+            // Living Server 1.1.2 (a r/daoc report): modifier 1 -> 1.5 and the halving True -> False, only where the server
+            // wrote the old default itself and nobody changed it.
+            var untouched = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["mana_regen_amount_modifier"] = ("1", "1"),
+                ["mana_regen_amount_halved_below_50_percent"] = ("True", "True"),
+                ["bot_voices_enabled"] = ("True", "True"),   // already upgraded by 1.1
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", untouched),
+                Is.EqualTo(new[] { "mana_regen_amount_modifier", "mana_regen_amount_halved_below_50_percent" }));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("", untouched), Has.Length.EqualTo(2), "a world that never ran 1.1");
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1.2", untouched), Is.Empty, "once only");
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.2", untouched), Is.Empty, "a newer build already ran");
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1", untouched).Select(c => c.NewDefault),
+                Is.EqualTo(new[] { "1.5", "False" }));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Version, Is.EqualTo("1.1.2"));
+
+            var chosen = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["mana_regen_amount_modifier"] = ("2", "1"),                       // the player set 2
+                ["mana_regen_amount_halved_below_50_percent"] = ("True", ""),      // the launcher wrote it: the player's choice
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", chosen), Is.Empty);
+            var spelledOut = new Dictionary<string, (string Value, string DefaultValue)> { ["mana_regen_amount_modifier"] = ("1.0", "1") };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", spelledOut), Is.EqualTo(new[] { "mana_regen_amount_modifier" }),
+                "1.0 is the same number as the default 1");
+            var fresh = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["mana_regen_amount_modifier"] = ("1.5", "1.5"),                   // a new world starts on the new defaults
+                ["mana_regen_amount_halved_below_50_percent"] = ("False", "False"),
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("", fresh), Is.Empty);
+        }
+
+        [Test]
+        public void BusierChatReachesAnUntouchedWorldOnce()
+        {
+            // Owner 2026-11-04, after the playtest: bot_voices_chat_rate 1 -> 2 where the server wrote 1 itself.
+            var untouched = new Dictionary<string, (string Value, string DefaultValue)> { ["bot_voices_chat_rate"] = ("1", "1") };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", untouched), Is.EqualTo(new[] { "bot_voices_chat_rate" }));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1", untouched).Single().NewDefault, Is.EqualTo("2"));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1.2", untouched), Is.Empty, "once only");
+            var chosen = new Dictionary<string, (string Value, string DefaultValue)> { ["bot_voices_chat_rate"] = ("1", "") };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", chosen), Is.Empty, "set in the launcher: the player's choice");
+            var other = new Dictionary<string, (string Value, string DefaultValue)> { ["bot_voices_chat_rate"] = ("2.5", "1") };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", other), Is.Empty);
+        }
+
+        [Test]
         public void LowHealthAndOomAreCalledOnTheWayDownOnly()
         {
             var state = new AutonomousBotCombatCalls.BotState();
@@ -573,24 +624,27 @@ namespace DOL.GS.Tests
         [Test]
         public void FactionChatIsBusierInTheEveningAndWithMoreBots()
         {
+            // Beta 1.1.2: the gap comes from the ambient budget (chat-budget.json); the middle draw gives its mean.
             var fixedDraw = new FixedRandom(0.5);
             long normal = AutonomousBotChatCoordinator.FactionGapMs(120, 14, 1.0, fixedDraw);
-            Assert.That(normal, Is.EqualTo(120_000));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 21, 1.0, fixedDraw), Is.LessThan(normal));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 4, 1.0, fixedDraw), Is.GreaterThan(normal));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(400, 14, 1.0, fixedDraw), Is.LessThan(normal));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(20, 14, 1.0, fixedDraw), Is.GreaterThan(normal));
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 14, 2.0, fixedDraw), Is.LessThan(normal));
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(10_000, 21, 3.0, fixedDraw), Is.GreaterThanOrEqualTo(40_000), "never a flood");
+            // No population cap: Beta 1.1.1 stopped getting busier at about 390 bots a realm.
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(1_000, 21, 1.0, fixedDraw),
+                Is.LessThan(AutonomousBotChatCoordinator.FactionGapMs(400, 21, 1.0, fixedDraw)));
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(3_000, 21, 1.0, fixedDraw),
+                Is.LessThan(AutonomousBotChatCoordinator.FactionGapMs(1_000, 21, 1.0, fixedDraw)));
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(100_000, 21, 3.0, new FixedRandom(0.0)), Is.GreaterThanOrEqualTo(3_000), "never a flood");
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 14, 0, fixedDraw), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds),
                 "rate 0: bots only answer");
-            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(14, 1.0, fixedDraw), Is.EqualTo(60_000));
-            // The longest draw too (the fixed draw above is the shortest).
-            var longest = new LongestRandom();
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 14, 1.0, longest), Is.EqualTo(240_000));
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 4, 1.0, longest), Is.LessThanOrEqualTo(20 * 60_000));
-            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(10, 4, 0.1, longest), Is.EqualTo(20 * 60_000), "never silent for hours");
-            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(14, 0, fixedDraw), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds));
+            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(1_000, 21, 1.0, fixedDraw), Is.EqualTo(AutonomousChatBudget.GapMs(2.0, fixedDraw)),
+                "a target of 2 /say lines a minute");
+            Assert.That(AutonomousBotChatCoordinator.LocalGapMs(1_000, 14, 0, fixedDraw), Is.GreaterThan(TimeSpan.FromDays(365).TotalMilliseconds));
+            // Beta 1.1.1's evening gap at 1,000 bots was 2-4 minutes over 1.8 x 1.35: 74 s on average. The budget's is shorter.
+            Assert.That(AutonomousBotChatCoordinator.FactionGapMs(1_000, 21, 1.0, fixedDraw), Is.LessThan(74_000));
         }
 
         #endregion

@@ -35,6 +35,9 @@ public static class AutonomousBotGroupChatter
     public static long NextGapMs(bool first, Random random) =>
         first ? FirstLineMinMs + random.Next(FirstLineMaxMs - FirstLineMinMs + 1) : MinGapMs + random.Next(MaxGapMs - MinGapMs + 1);
 
+    /// <summary>The budget meter's key for a group.</summary>
+    internal static long KeyOf(Group group) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(group);
+
     /// <summary>True when it is this group's turn to hear a line now (and books the next turn).</summary>
     public static bool TakeTurn(object sync, Func<long> get, Action<long> set, long now, Random random, bool known)
     {
@@ -92,13 +95,29 @@ public static class AutonomousBotGroupChatter
             return false;
         bool known = Groups.TryGetValue(group, out Next next);
         next ??= Groups.GetValue(group, _ => new Next());
-        if (!TakeTurn(next, () => next.At, value => next.At = value, GameLoop.GameLoopTime, Random.Shared, known))
+        // Beta 1.1.2: the group channel's budget paces the banter (chat-budget.json "group"), after a first quiet minute or two.
+        long now = GameLoop.GameLoopTime;
+        long key = KeyOf(group);
+        if (!known)
+        {
+            AutonomousChatBudget.Meter.Delay(AutonomousChatBudget.Channel.Group, key, now + NextGapMs(true, Random.Shared));
             return false;
+        }
+        var verdict = AutonomousChatBudget.Meter.TryStart(AutonomousChatBudget.Channel.Group, key, now,
+            AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Group, 0), Random.Shared);
+        if (verdict is AutonomousChatBudget.Verdict.HoldCeiling or AutonomousChatBudget.Verdict.HoldGap)
+        {
+            AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Group,
+                verdict == AutonomousChatBudget.Verdict.HoldCeiling ? AutonomousChatWhy.Held.Ceiling : AutonomousChatWhy.Held.Gap);
+            return false;
+        }
         bool hunted = AutonomousBotCombatCalls.FoughtRecently(group, GameLoop.GameLoopTime);
         if (!AutonomousBotVoices.TryLine(bot, "group", out VC.Picked picked,
                 filter: hunted ? null : line => !AutonomousBotCombatCalls.IsHuntTalk(line.Text)))
             return false;
         Send(bot, picked.Text, picked.Line?.Invites ?? "");
+        AutonomousChatWhy.Record(bot, "group", "ambient", "said", AutonomousBotChatCoordinator.RuleOf(picked.Line, "group"), VC.Specificity(picked.Line),
+            "the group channel's turn, out of combat", picked.Text, picked.Line?.Id);
         if (!string.IsNullOrEmpty(picked.Correction))
             AutonomousLivingServer.Later(bot, 1_200 + Random.Shared.Next(1_400), () => bot.Group == group, () => Send(bot, picked.Correction, remember: false));
         Answer(bot, group, picked);
@@ -189,6 +208,9 @@ public static class AutonomousBotGroupChatter
             BotChatTranscript.Player("group", player, message);
         if (!AutonomousBotVoices.Enabled || player?.Group == null || string.IsNullOrWhiteSpace(message))
             return;
+        // Beta 1.1.2: the screen runs before every route, the thread follow-ups too (round 3).
+        if (AutonomousBotChatCoordinator.Screened(player, message, "group"))
+            return;
         Group group = player.Group;
         GameBot[] mates = group.GetMembersInTheGroup().OfType<GameBot>()
             .Where(mate => mate.IsAutonomousWorldBot && !mate.IsTemporaryGroupHelper && mate.IsAlive && !mate.InCombat && !mate.IsCasting)
@@ -207,6 +229,21 @@ public static class AutonomousBotGroupChatter
             next.LastPlayerReply = GameLoop.GameLoopTime;
         }
         GameBot[] named = mates.Where(mate => AutonomousBotChatCoordinator.ContainsMention(message, mate.Name)).ToArray();
+        // Beta 1.1.2, second pass: a line to someone else in the group draws at most a laugh (light teasing).
+        if (named.Length == 0 && AutonomousChatScreen.OtherAddressee(message, null) is { } other)
+        {
+            eAutonomousChatIntent toOther = AutonomousChatIntentModel.Predict(message);
+            if (AutonomousChatScreen.MayReactToOthers("group", toOther) && Random.Shared.NextDouble() < 0.4)
+            {
+                GameBot teaser = mates[0];
+                string laugh = AutonomousBotVoices.StyleFor(teaser, AutonomousChatReplyBudget.Reaction("laugh", Random.Shared));
+                AutonomousLivingServer.Later(teaser, AutonomousBotChatCoordinator.ReplyDelayMs(teaser, message, laugh, 0, Random.Shared),
+                    () => teaser.Group == group && teaser.IsAlive, () => Send(teaser, laugh, "", player.Name));
+            }
+            else
+                AutonomousChatWhy.RecordSilence(player.Realm, "group", "player " + player.Name, "none other", 0, $"said to {other}", player.Name);
+            return;
+        }
         GameBot[] pool = named.Length > 0 ? named : mates;
         // "eithne what spec r u": the name says who it is for (the holdout check).
         if (named.Length > 0 && AutonomousChatThreads.WithoutName(message, named[0].Name) is { Length: > 0 } unnamed)
@@ -221,10 +258,18 @@ public static class AutonomousBotGroupChatter
         eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
         // The talking update audit: "adds!!", "INC", "train coming RUN" in a PvE group drew "im nowhere near the frontier". A
         // groupmate takes the warning ("got it", "on it").
-        if (intent == eAutonomousChatIntent.Alarm)
+        if (AutonomousChatReplyBudget.IsAlarm(message, intent))
         {
             GameBot heard = pool[0];
-            if (AutonomousBotVoices.TryLine(heard, "reply", out VC.Picked ok, answers: "player_headsup", relax: true))
+            // Beta 1.1.2, round 2: an inc call gets a terse "where" or "on it", not "ty for the heads up" (too polite for a call).
+            if (AutonomousChatContext.Reply(message, intent, AutonomousChatShortTalk.QuestionShape(message),
+                    AutonomousBotChatCoordinator.ContextFor(heard, player, "group"), Random.Shared) is { } call)
+            {
+                string callText = AutonomousBotVoices.StyleFor(heard, call.Text);
+                AutonomousLivingServer.Later(heard, AutonomousBotChatCoordinator.ReplyDelayMs(heard, message, callText, 0, Random.Shared) / 2,
+                    () => heard.Group == group && heard.IsAlive, () => Send(heard, callText, "none", player.Name));
+            }
+            else if (AutonomousBotVoices.TryLine(heard, "reply", out VC.Picked ok, answers: "player_headsup", relax: true))
                 AutonomousLivingServer.Later(heard, AutonomousBotChatCoordinator.ReplyDelayMs(ok.Text, 0, Random.Shared) / 2,
                     () => heard.Group == group && heard.IsAlive, () => Send(heard, ok.Text, "none", player.Name));
             return;
@@ -245,16 +290,26 @@ public static class AutonomousBotGroupChatter
             intent is eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Ding ? 2 : 1);
         var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         int due = 0;
+        string lastRoute = null;
         for (int i = 0; i < pool.Length && used.Count < count; i++)
         {
             GameBot mate = pool[i];
-            string reply = AutonomousBotChatCoordinator.ReplyToPlayer(mate, player, message);
-            if (string.IsNullOrEmpty(reply) || !AutonomousBotChatCoordinator.TryAddDistinctResponse(used, reply, out reply))
+            AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotChatCoordinator.ReplyChoiceToPlayer(mate, player, message, named.Length > 0);
+            lastRoute = choice.Route;
+            if (string.IsNullOrEmpty(choice.Text) || !AutonomousBotChatCoordinator.TryAddDistinctResponse(used, choice.Text, out string reply))
                 continue;
-            due = AutonomousBotChatCoordinator.ReplyDelayMs(reply, due, Random.Shared);
+            due = AutonomousBotChatCoordinator.ReplyDelayMs(mate, message, reply, due, Random.Shared);
             string text = reply;
-            AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () => Send(mate, text, "", player.Name));
+            AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () =>
+            {
+                Send(mate, text, "", player.Name);
+                AutonomousChatWhy.Record(mate, "group", "player " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, message),
+                    named.Length > 0 ? "named in the line" : "a groupmate answers", text, choice.Line?.Id, player.Name);
+            });
         }
+        if (used.Count == 0)
+            AutonomousChatWhy.RecordSilence(player.Realm, "group", "player " + player.Name, lastRoute ?? "none", AutonomousChatReplyFit.Of(lastRoute, message),
+                count == 0 ? $"a line like this ({intent}) draws no answer" : "no reply fits it", player.Name);
     }
 
     /// <summary>A bot's line in /group. The talking update: remembered in the group's thread (with what it invites, and the
@@ -265,6 +320,7 @@ public static class AutonomousBotGroupChatter
         {
             bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
             BotChatTranscript.Bot("group", bot.Name, bot.Realm, text);
+            AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Group, KeyOf(bot.Group), GameLoop.GameLoopTime);
             if (remember)
                 AutonomousChatThreads.Log.Record(AutonomousChatThreads.GroupChannel(bot.Group), bot.DatabaseID, bot.Name, text, invites,
                     GameLoop.GameLoopTime, to);

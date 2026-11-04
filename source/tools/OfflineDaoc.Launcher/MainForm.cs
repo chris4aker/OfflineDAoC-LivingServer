@@ -200,7 +200,7 @@ internal sealed partial class MainForm : Form
         _startButton = ActionButton("START SERVER", Color.FromArgb(110, 128, 70));
         _stopButton = ActionButton("STOP SERVER", Color.FromArgb(151, 67, 57));
         _playButton = ActionButton("ENTER REALM", Color.FromArgb(65, 94, 145));
-        _startButton.Click += (_, _) => StartServer();
+        _startButton.Click += (_, _) => OnStartButton();
         _stopButton.Click += async (_, _) => await StopServerAsync();
         _playButton.Click += (_, _) => LaunchClient();
 
@@ -242,6 +242,8 @@ internal sealed partial class MainForm : Form
             ScheduleNextAutoRefresh();
             UpdateAutoRefreshCountdown();
             _autoRefresh.Start();
+            // One quiet look for a newer Living Server (at most once a day; the player can turn it off).
+            await CheckForUpdatesAsync(asked: false);
         };
         FormClosing += (_, _) =>
         {
@@ -259,6 +261,7 @@ internal sealed partial class MainForm : Form
             _autoRefresh.Dispose();
             _serverReadinessPoll.Dispose();
             _helpTip.Dispose();
+            _releaseWeb?.Dispose();
         }
         base.Dispose(disposing);
     }
@@ -364,14 +367,17 @@ internal sealed partial class MainForm : Form
             ForeColor = Color.FromArgb(196, 145, 70),
             Location = new Point(97, 57),
         });
-        titlePanel.Controls.Add(new Label
+        var versionLabel = new Label
         {
             AutoSize = true,
             Text = _newClient ? $"VERSION {DisplayVersion}c" : VersionLabel(InstalledEditionHasCustomClass(_database)),
             Font = new Font("Georgia", 12f, FontStyle.Bold),
             ForeColor = DaocTheme.GoldLight,
             Location = new Point(97, 79),
-        });
+        };
+        titlePanel.Controls.Add(versionLabel);
+        // Living Server: its build, "Check for updates" and update news (MainForm.Updates.cs).
+        AddUpdateStrip(titlePanel, versionLabel);
         header.Controls.Add(titlePanel, 0, 0);
 
         var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(3, 5, 0, 0), BackColor = Color.Transparent };
@@ -474,11 +480,15 @@ internal sealed partial class MainForm : Form
         return button;
     }
 
+    // Ctrl-click makes 100, Shift-click 10. The keys are read as they were when the click arrived (Control.ModifierKeys
+    // reads GetKeyState), not as they are now: a fast click from remote-desktop or automation tools releases the key
+    // before the click is handled, and GetAsyncKeyState then saw no key (playtest 2026-11-04). Either Ctrl or Shift.
     private static int GetGenerationBatchSize()
     {
-        if ((GetAsyncKeyState(VkLeftControl) & 0x8000) != 0)
+        Keys held = Control.ModifierKeys;
+        if ((held & Keys.Control) != 0)
             return 100;
-        if ((GetAsyncKeyState(VkLeftShift) & 0x8000) != 0)
+        if ((held & Keys.Shift) != 0)
             return 10;
         return 1;
     }
@@ -524,7 +534,7 @@ internal sealed partial class MainForm : Form
         events.Controls.Add(BuildRealmEventsPanel());
         tabs.TabPages.Add(events);
         var records = new TabPage("Realm Records") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
-        var eventRecords = new RealmEventRecordsControl(Path.Combine(_serverDirectory, "realm-event-records.sqlite3"));
+        var eventRecords = new RealmEventRecordsControl(() => RealmEventRecordStore.Locate(_root));
         records.Controls.Add(eventRecords);
         records.Enter += async (_, _) => await eventRecords.RefreshAsync();
         tabs.TabPages.Add(records);
@@ -1306,10 +1316,10 @@ internal sealed partial class MainForm : Form
             _helpTip.SetToolTip(_performanceValue, snapshot.BotAiDelay is { } aiPeak
                 ? $"{PerformanceHelp}{Environment.NewLine}Last minute: average {aiPeak.AverageMs:0.0} ms, slowest {aiPeak.PeakMs:N0} ms over {aiPeak.Samples:N0} ticks."
                 : $"{PerformanceHelp}{Environment.NewLine}Shown about a minute after the server starts.");
-            _startButton.Enabled = !_resettingKeepsRelics && !_savingXpRates && !_stoppingServer && snapshot.ServerState == "Stopped" && File.Exists(_serverExecutable);
+            _startButton.Enabled = !_updating && !_resettingKeepsRelics && !_savingXpRates && !_stoppingServer && snapshot.ServerState == "Stopped" && File.Exists(_serverExecutable);
             _resetKeepsRelics.Enabled = !_resettingKeepsRelics && !_savingXpRates && snapshot.ServerState == "Stopped" && BotGoalsServerStopped();
             _stopButton.Enabled = !_stoppingServer && snapshot.ServerState is "Running" or "Starting";
-            _playButton.Enabled = !_stoppingServer && snapshot.ServerState == "Running" && File.Exists(_clientConnector);
+            _playButton.Enabled = !_updating && !_stoppingServer && snapshot.ServerState == "Running" && File.Exists(_clientConnector);
             UpdateXpRateControls(snapshot);
             ApplyFilter();
             UpdateDeleteButton();
@@ -2642,7 +2652,18 @@ internal sealed partial class MainForm : Form
         // and the TCP listener coming online.  Without it, a second click can
         // start another CoreServer while the first one is still loading the
         // world, and both processes then contend for the same SQLite database.
-        if (_resettingKeepsRelics || _savingXpRates || _serverProcess is { HasExited: false } || IsServerRunning() || FindExactServerProcess() is not null) return;
+        // Each refusal says why in the footer: a silent START SERVER looked broken (playtest 2026-11-04).
+        string? busy = _resettingKeepsRelics ? "keeps and relics are being reset"
+            : _savingXpRates ? "a setting is being saved"
+            : _serverProcess is { HasExited: false } ? "this launcher's server is still running"
+            : FindExactServerProcess() is not null ? "this game's server (CoreServer) is already running"
+            : IsServerRunning() ? $"another program is using port {ServerPortProbe.GameServerPort} (another Offline DAoC server?)"
+            : null;
+        if (busy != null)
+        {
+            _footer.Text = "Not starting: " + busy + ".";
+            return;
+        }
         if (_botGoalsSettings?.HasUnsavedChanges == true)
         {
             MessageBox.Show(this, "Save or undo your edits in Bot Goals Setting before starting the server.", "Unsaved bot goals");
@@ -2691,11 +2712,20 @@ internal sealed partial class MainForm : Form
             _serverProcess = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
             _serverProcess.OutputDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine(args.Data); };
             _serverProcess.ErrorDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine("ERROR: " + args.Data); };
+            Process started = _serverProcess;
             _serverProcess.Exited += (_, _) => BeginInvoke(async () =>
             {
                 _serverReadinessPoll.Stop();
+                // A stop nobody asked for (a crash at start looked like START SERVER doing nothing, playtest
+                // 2026-11-04): the footer says so and where the reason is.
+                bool unasked = !_stoppingServer;
+                int? code = null;
+                try { code = started.ExitCode; } catch (InvalidOperationException) { }
                 _stoppingServer = false;
                 await RefreshDashboardAsync();
+                if (unasked)
+                    _footer.Text = $"The server stopped by itself{(code is int c ? $" (exit code {c})" : "")}. " +
+                                   "The end of runtime\\logs\\server-console.log says why.";
             });
             _serverProcess.Start();
             ShowStartingState();
@@ -3237,12 +3267,6 @@ internal sealed partial class MainForm : Form
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool GlobalMemoryStatusEx(ref MemoryStatus status);
-
-    private const int VkLeftShift = 0xA0;
-    private const int VkLeftControl = 0xA2;
-
-    [DllImport("user32.dll")]
-    private static extern short GetAsyncKeyState(int virtualKey);
 
     private static ulong AvailableMemoryBytes()
     {

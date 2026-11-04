@@ -9,6 +9,13 @@ namespace DOL.GS.Spells
 	{
 		public WaterBreathingSpellHandler(GameLiving caster, Spell spell, SpellLine line) : base(caster, spell, line) { }
 
+		// Fork (owner 2026-10-25): the effect below is the old effect system's, which the server no longer runs, so water
+		// breathing (Nereid potions) did nothing. The ECS effect does the same work.
+		public override ECSGameSpellEffect CreateECSEffect(in ECSGameEffectInitParams initParams)
+		{
+			return ECSGameEffectFactory.Create(initParams, static (in i) => new WaterBreathingECSGameEffect(i));
+		}
+
 		protected override int CalculateEffectDuration(GameLiving target)
 		{
 			double duration = Spell.Duration;

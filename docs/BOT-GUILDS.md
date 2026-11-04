@@ -112,8 +112,8 @@ Protectors, Tir na Nog Adventurers).
   - for a bot guild, you see its members only if you're in it.
 - **`/ginvite` on a bot** (targeted or by name), into your guild. Since 0.37 this is the base game's
   feature (`AutonomousBotGuilds`, upstream): any gamebot of your realm joins at once, shows your guild's
-  name and emblem, and talks in your guild chat, but never counts for merit, realm points, keep claims or
-  buffs. With bot guilds on, a member of a bot guild answers for itself first (`AutonomousBotRealmGuilds`,
+  name and emblem, and talks in your guild chat. Since 1.1.2 it earns your guild merit and pays its dues (section 3.8),
+  but never counts for guild realm points, keep claims or buffs. With bot guilds on, a member of a bot guild answers for itself first (`AutonomousBotRealmGuilds`,
   this code, renamed from `AutonomousBotGuilds` in the 0.37 merge). It answers in /say when you are near
   and by /send when you are not, and declines if it is:
   - in combat;
@@ -204,7 +204,14 @@ something (docs/bot-voices/DESIGN.md 3.7). The lines in `AutonomousBotGuildChatL
 
   Your guild keeps whatever dues its leader set; bots you invited pay them.
 - **Merit points:** a bot's level-ups earn its guild the same merit points as a player's
-  (`level × (3 + level/25)`, one award per level gained).
+  (`level × (3 + level/25)`, one award per level gained), and since 1.1.2 its realm ranks do too
+  (`GuildEvents.RealmRankUp`: `(3 × (rank − 1))²` per realm level above RR2L0, none for RR2–RR5 L0).
+- **Bots in your guild (1.1.2, from a r/daoc report, owner 2026-11-03: "Merit + dues"):** a gamebot you invited
+  (`AutonomousBotGuilds`, kept off the bot's `Guild`) pays your leader's dues rate from the real coin it loots, alone,
+  in a group split or in a dragon raid, and earns your guild merit for levels and realm ranks, as above. Setting
+  `bot_player_guild_economy` (on; independent of `bot_guilds_enabled`; launcher: **Bots in your guild**). Guild realm
+  points, keep claims and buffs still never count a bot. Online members see at most one merit line per guild every
+  five minutes ("Seraorith has earned 69 merit points for your guild!"). Tests: `UT_AutonomousBotGuildEconomy`.
 - **Buffs:** a bot guild's leader spends 1,000 merit points on a 24-hour buff, the same price and
   effect as `/gc buff`, and only buff types the server offers:
   - RvR: realm points;
@@ -251,6 +258,7 @@ something (docs/bot-voices/DESIGN.md 3.7). The lines in `AutonomousBotGuildChatL
 | `bot_guild_claims_keeps` | True | keep claims and claim defense (phase 4) |
 | `bot_guild_economy` | True | dues, merit points, buffs (phase 5) |
 | `bot_guild_alliances` | True | realm alliances (phase 6) |
+| `bot_player_guild_economy` | True | dues and merit for gamebots in **your** guild (1.1.2); works with bot guilds off |
 
 Phase 3 (grouping) has no switch of its own; it follows `bot_guilds_enabled`.
 

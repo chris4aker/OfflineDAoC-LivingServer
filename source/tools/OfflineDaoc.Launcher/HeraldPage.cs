@@ -85,9 +85,15 @@ public static class HeraldPage
             foreach (var r in Rows(c, "SELECT GuildID, GuildName, Realm, RealmPoints, MeritPoints FROM Guild WHERE COALESCE(IsStartingGuild,0)=0"))
                 guildNames[Str(r[0])] = (Str(r[1]), Int(r[2]), Long(r[3]), Long(r[4]));
         }
+        // A gamebot's guild, one per bot so it is counted once: a bot guild's member (offline_bot_guild_members), or a
+        // player's guild it was invited into (offline_world_bot_guild, AutonomousBotGuilds), which wins over a bot-guild
+        // row for the same bot. Before 1.1.2 only the first table was read, so a player's guild of 30 bots showed 1 member.
         var botGuild = new Dictionary<long, string>();
         if (tables.Contains("offline_bot_guild_members"))
             foreach (var r in Rows(c, "SELECT BotId, GuildId FROM offline_bot_guild_members"))
+                botGuild[Long(r[0])] = Str(r[1]);
+        if (tables.Contains("offline_world_bot_guild"))
+            foreach (var r in Rows(c, "SELECT BotId, GuildID FROM offline_world_bot_guild"))
                 botGuild[Long(r[0])] = Str(r[1]);
 
         var characters = new List<Character>();

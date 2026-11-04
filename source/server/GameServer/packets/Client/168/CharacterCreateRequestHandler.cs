@@ -998,6 +998,15 @@ namespace DOL.GS.PacketHandler.Client.v168
                     valid = false;
                 }
 
+                if (!GlobalConstants.STARTING_STATS_DICT.ContainsKey((eRace)ch.Race))
+                {
+                    // The client offers every race up to Labyrinth; this server's world is Classic and Shrouded Isles.
+                    if (log.IsWarnEnabled)
+                        log.Warn($"Race {(eRace)ch.Race} ({ch.Race}) is not playable on this server (Catacombs and later races are off): character creation refused for Account: {ch.AccountName}");
+
+                    return false;
+                }
+
                 valid &= CharacterStatValidator.Validate(ch, out int distributedPoints);
 
                 if (distributedPoints != CharacterStatValidator.PointDistributionBudget)

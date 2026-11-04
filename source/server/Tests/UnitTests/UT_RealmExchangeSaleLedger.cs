@@ -18,7 +18,7 @@ public sealed class UT_RealmExchangeSaleLedger
     [SetUp]
     public void SetUp()
     {
-        _path = Path.Combine(Path.GetTempPath(), "daoc-sale-ledger-" + Guid.NewGuid().ToString("N") + ".sqlite3");
+        _path = TemporarySqlite.NewDatabasePath("daoc-sale-ledger");
         _database = Open();
         _payment = new DbSinglePermission { PlayerID = "ledger-test", Command = "before" };
         Assert.That(_database.AddObject(_payment), Is.True);
@@ -35,7 +35,7 @@ public sealed class UT_RealmExchangeSaleLedger
     [TearDown]
     public void TearDown()
     {
-        if (File.Exists(_path)) File.Delete(_path);
+        TemporarySqlite.DeleteDatabase(_path);
     }
 
     private static RealmExchangeSaleLedger.Sale Sale(int number = 1, string seller = "player-one", string buyer = "offlinebot:2") =>

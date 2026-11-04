@@ -22,6 +22,10 @@ namespace DOL.GS;
 /// Each member is made for one raid and lives in memory only: never saved, never in the roster or the population
 /// count, no loot or coin from the raid (that stays with the realm's own raiders), and removed when the raid ends.
 /// A crash or restart leaves nothing behind.
+///
+/// Since 2026-10-30 dragon raids call them too, on the same terms: a wipe at the dragon (RealmRaidDragonFight) asks
+/// for the call-up sized by that dragon's own record, they arrive at the raid's muster hub and walk to the staging
+/// ring like any late party, and two defeats in a row at the dragon bring them from the start.
 /// </summary>
 public static class AutonomousEpicSpecialForces
 {

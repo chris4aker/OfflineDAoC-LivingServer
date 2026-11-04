@@ -57,6 +57,16 @@ These apply even with every Living Server switch off:
   the launcher staying on STARTING, a party that doesn't disband, bots released in a battleground standing in the
   capital, the friends list, and the new client's hotbars. They are the 1.1.1 list.
 
+## Beta 1.1.2 (in development): updates from the launcher and Setup
+
+- **Not yet tried on a real Windows PC.** CI tests the update path without the window on a fake game folder, and
+  Setup's choice of package against GitHub. Still to check by hand: the GET UPDATE button, the dialog and its three
+  choices, the download progress line, the install window and its "Press Enter" step, the launcher opening again
+  and saying how it went, a 0.37c game (both launchers), a game folder in a path with spaces, Setup installing a
+  downloaded package all the way through its window, and SmartScreen or antivirus reactions to the PowerShell step.
+- **Releases marked as prereleases are never offered.** GitHub's "latest release" leaves them out, so a build is
+  offered only once its release is published as a full release (Beta 1.1.1's is still marked as a prerelease).
+
 ## How it was tested (Beta 1.0)
 
 - **Automated:** every build runs the full server test suite (3,400+ tests) and the installer tests
@@ -148,6 +158,27 @@ meetup fix drop two no-shows (in the server log).
   Myrddraxis).
 - **Moving to 0.37:** `PREPARE-FOR-UPDATE.cmd` was used for a real update (the owner's 0.36c game to 0.37c).
   `carry_social_tables.py` was tested on test folders and databases only.
+
+## Save safety and network (1.1.2, in development)
+
+- **Not run on a real install yet.** WAL, the start check, the daily backups, the installer's database copy and the
+  ledger move have only run in automated tests (Linux and the Windows CI). The first real start should log
+  `DB_SAFETY ...`, `DB_SAFETY journal_mode=wal confirmed` and `DB_INTEGRITY ... result=ok`. About 5 minutes later it
+  should log `DB_BACKUP result=written`.
+- **"Your server can be reached from other computers" in the log.** Your `runtime\server\config\serverconfig.xml`
+  listens beyond this PC (`<IP>` or `<UdpIP>` is `0.0.0.0` or a network address), or has UPnP on. The server still
+  does what your config says; 1.1.2 changes only the defaults used when a setting is missing. If you don't host
+  friends, stop the server and set these in that file:
+  - `<IP>127.0.0.1</IP>`
+  - `<UdpIP>127.0.0.1</UdpIP>`
+  - `<EnableUPnP>False</EnableUPnP>`
+  - `<DetectRegionIP>False</DetectRegionIP>`
+
+  If there is a `runtime\server\win-x64\config\serverconfig.xml` too, change it the same way. With UPnP on, the
+  server now removes the router mappings it added when it stops. A server that is force-closed can't remove them, so
+  they stay until the next clean stop or until you remove them in the router.
+- **Disk space.** Seven daily copies and three installer copies of a 500 MB world take about 5 GB. Lower
+  `db_backup_keep` to keep fewer.
 
 ## Reporting a problem
 

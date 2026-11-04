@@ -276,13 +276,17 @@ namespace DOL.GS
         // A realm's portal keep is where its bots arrive in the frontier: every bot of that realm leaves through its door.
         // Run 22 (2026-10-18): 136 Hibernian bots without an RvR objective could not leave Hibernia's portal keep in
         // Odin's Gate (120 route give-ups, door 115000902 held 35 times).
+        // A bot inside its realm's keep leaves through the doors like anyone else: when a keep falls the army's objective
+        // turns back to PvE with the army still inside. On 2026-10-30 four captured keeps held their armies
+        // (661 route give-ups, each starting right after the capture), and 213 bots were then teleported home.
         public static bool CanUseFriendlyKeepDoor(GameNPC owner, GameKeepDoor door) =>
             owner is GameBot { IsAutonomousWorldBot: true, IsAlive: true } bot &&
             (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) ||
              BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
              door?.Component?.Keep?.IsPortalKeep == true ||
              bot.TempProperties?.GetProperty<AutonomousFrontierTransport.Request>(AutonomousFrontierTransport.RequestKey)
-                 ?.Passage?.Medallion == "home_necklace") &&
+                 ?.Passage?.Medallion == "home_necklace" ||
+             door?.Component?.Keep is { } keep && AutonomousKeepGateGoals.IsWithinWalls(keep, bot.X, bot.Y)) &&
             door?.Component?.Keep != null && bot.Realm != eRealm.None && door.Realm == bot.Realm;
 
         private bool TryUsePathDoor()

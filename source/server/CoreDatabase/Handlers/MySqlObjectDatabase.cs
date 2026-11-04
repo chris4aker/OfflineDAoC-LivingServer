@@ -625,6 +625,7 @@ namespace DOL.Database.Handlers
         protected override void CloseConnection(DbConnection connection)
         {
             connection.Close();
+            connection.Dispose();
         }
 
         protected override DbParameter ConvertToDBParameter(QueryParameter queryParameter)

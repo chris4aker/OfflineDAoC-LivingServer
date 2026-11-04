@@ -361,7 +361,7 @@ namespace DOL.GS.WeeklyQuest.Hibernia
 
         public override void FinishQuest()
         {
-            m_questPlayer.ForceGainExperience((m_questPlayer.ExperienceForNextLevel - m_questPlayer.ExperienceForCurrentLevel));
+            m_questPlayer.GainQuestExperience((m_questPlayer.ExperienceForNextLevel - m_questPlayer.ExperienceForCurrentLevel), Name);
             m_questPlayer.AddMoney(Money.GetMoney(0, 0, m_questPlayer.Level * 5, 0, Util.Random(50)), "You receive {0} as a reward.");
             AtlasROGManager.GenerateReward(m_questPlayer, 1500);
             _deadGallaBossMob = 0;

@@ -227,7 +227,7 @@ namespace DOL.GS.Tests
         [TestCase("finished my epic quest finally", "guild", "shape player_goodnews")] // nothing
         [TestCase("back from dinner", "guild", "intent back")]                         // nothing
         [TestCase("stealthers near the dock watch out", "faction", "shape player_headsup")] // "If you see the zerg coming, call it out."
-        [TestCase("adds!!", "group", "group warning")]                                 // nothing
+        [TestCase("adds!!", "group", "context inc")]   // Beta 1.1.2, round 2: a terse "where?" or "on it"                                 // nothing
         [TestCase("dont rez me yet adds still up", "group", "shape player_wait")]      // "wish i could, no rez spell"
         [TestCase("hey u human", "tell", "intent botcheck")]                           // a greeting
         [TestCase("worst healer ever", "group", "intent abuse")]                       // class remarks

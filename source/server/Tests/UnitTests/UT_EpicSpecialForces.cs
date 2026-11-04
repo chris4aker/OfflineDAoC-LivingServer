@@ -138,7 +138,7 @@ namespace DOL.UnitTests
         [Test]
         public void TheLedgerGivesADungeonsFinishedOutcomesOldestFirst()
         {
-            string path = Path.Combine(Path.GetTempPath(), $"ledger-{Guid.NewGuid():N}.sqlite3");
+            string path = TemporarySqlite.NewDatabasePath("ledger");
             try
             {
                 Assert.That(RealmEventRecordStore.Outcomes(path, "epic-hibernia", 6), Is.Empty, "no ledger yet");
@@ -154,8 +154,7 @@ namespace DOL.UnitTests
             }
             finally
             {
-                System.Data.SQLite.SQLiteConnection.ClearAllPools();
-                if (File.Exists(path)) File.Delete(path);
+                TemporarySqlite.DeleteDatabase(path);
             }
         }
 

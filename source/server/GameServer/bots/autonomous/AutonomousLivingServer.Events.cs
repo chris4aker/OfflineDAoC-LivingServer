@@ -38,7 +38,7 @@ public static partial class AutonomousLivingServer
                 TryClaimFirst("First to reach level 50", who, "level 50");
                 string className = ClassOf(who);
                 if (!string.IsNullOrEmpty(className))
-                    TryClaimFirst($"First {className} to reach level 50", who, $"50 as a {className.ToLowerInvariant()}");
+                    TryClaimFirst($"First {className} to reach level 50", who, $"50 as {("aeio".Contains(char.ToLowerInvariant(className[0])) ? "an" : "a")} {className.ToLowerInvariant()}");
             }
             if (GratsOn)
                 Grats(who, level);
@@ -150,11 +150,17 @@ public static partial class AutonomousLivingServer
         }
     }
 
+    /// <summary>A GM or admin account (the launcher's "Make Me a GM" too): its levels and ranks are set by command.</summary>
+    public static bool IsStaff(GameLiving who) =>
+        who is GamePlayer { Client.Account: { } account } && account.PrivLevel > (uint)ePrivLevel.Player;
+
     /// <summary>Claims a first once. The achiever's realm cheers in /faction; everyone gets one system line.</summary>
     public static bool TryClaimFirst(string title, GameLiving who, string what)
     {
-        // Server firsts belong to the realm's own characters, never a visiting Epic Special Forces member.
-        if (who is GameBot { IsEpicSpecialForce: true })
+        // Server firsts belong to the realm's own characters, never a visiting Epic Special Forces member, and never a GM
+        // (playtest 2026-11-04: "/player level 50" on a GM test character announced "the first on the server to reach
+        // level 50" to every realm and put it in the Herald).
+        if (who is GameBot { IsEpicSpecialForce: true } || IsStaff(who))
             return false;
         var row = new OfflineServerFirstRecord
         {
@@ -188,6 +194,10 @@ public static partial class AutonomousLivingServer
                         Speak(bot, Channel.Faction, line);
                 });
             }
+            // Beta 1.1.2: the realm joins in, a burst of "gz" and "woot" over the next minute or so.
+            if (AutonomousBotVoices.Enabled)
+                AutonomousChatBursts.React(who as GameBot, who.Realm, "first", null, ["player_goodnews", "boast"],
+                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = who.Name });
         }
         return true;
     }
@@ -425,7 +435,12 @@ public static partial class AutonomousLivingServer
         Later(bot, 4_000 + Random.Shared.Next(6_000), () => !AutonomousBotDebates.IsRunning(bot.Realm), () =>
         {
             if (AutonomousBotVoices.TryEventLine(bot, "nemesis", out string line, slots: slots))
+            {
                 Speak(bot, Channel.Faction, line);
+                // Beta 1.1.2: the realm commiserates, a short burst.
+                AutonomousChatBursts.React(bot, bot.Realm, "nemesis", line, ["complaint"],
+                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name });
+            }
         });
     }
 
@@ -450,7 +465,12 @@ public static partial class AutonomousLivingServer
         Later(bot, 1_500 + Random.Shared.Next(2_500), () => bot.IsAlive && !AutonomousBotDebates.IsRunning(bot.Realm), () =>
         {
             if (AutonomousBotVoices.TryEventLine(bot, "revenge", out string line, slots: slots))
+            {
                 Speak(bot, Channel.Faction, line);
+                // Beta 1.1.2: a nemesis paid back draws cheers, a short burst.
+                AutonomousChatBursts.React(bot, bot.Realm, "revenge", line, ["boast"],
+                    new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = bot.Name });
+            }
         });
     }
 

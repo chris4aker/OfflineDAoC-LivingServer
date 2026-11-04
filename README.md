@@ -15,7 +15,7 @@
 
 # Offline DAoC: Living Server
 
-### Your single-player Camelot, alive like a 2003 server. **Beta 1.1 is out.**
+### Your single-player Camelot, alive like a 2003 server. **Beta 1.1.1 is out.**
 
 ![Offline DAoC: Living Server](tools/installer/src/Assets/hero.jpg)
 
@@ -29,14 +29,17 @@ the single-player Classic + Shrouded Isles server. Its bots already level, group
 Server gives them a life: personalities, guilds, memories, opinions and a voice, and an endgame they
 run themselves, whether or not you come along.
 
-> **[Download Beta 1.1](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1-beta)**:
+> **[Download Beta 1.1.1](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta)**:
 > one Setup installs Offline DAoC and Living Server from nothing, or adds Living Server to the 0.36 or 0.37
 > game you have (0.37 or 0.37b, with or without the 0.37c new client). Free, every part has its own
 > switch, and one click rolls it back. Formerly the **Social Expansion**: if you had it, install over it
-> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1-beta) ·
+> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta) ·
 > [Known issues](docs/KNOWN-ISSUES.md)
 
 ## New in Beta 1.1
+
+Beta 1.1.1 is a fixes-only update to it, for the community's first reports
+([what's fixed](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta)).
 
 - **One-click Setup.** No game yet? It downloads Offline DAoC with shadowofze's own downloader. On 0.36? It
   updates you to 0.37 with his official updater and keeps your saves. Then it adds Living Server.
@@ -110,7 +113,7 @@ run themselves, whether or not you come along.
   safer routes are always on.
 - **Undo any time.** The installer checks your game version, backs up every file it replaces and verifies
   each copy. `ROLLBACK.cmd` puts the originals back.
-- **Tested hard.** 4,093 automated server tests on every build, Windows installer tests with real downloads,
+- **Tested hard.** The full automated server suite on every build, Windows installer tests with real downloads,
   and two days of play with up to about 1,000 bots online. It's a beta: what hasn't been seen in game yet is
   listed in [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
 
@@ -118,8 +121,8 @@ run themselves, whether or not you come along.
 
 **The easy way: Setup.**
 
-1. Download `LivingServer-Setup-1.1-beta.exe` from the
-   [Beta 1.1 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1-beta) and run it.
+1. Download `LivingServer-Setup-1.1.1-beta.exe` from the
+   [Beta 1.1.1 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta) and run it.
    - No game yet? It downloads Offline DAoC with shadowofze's own downloader.
    - On 0.36? It updates the game to 0.37 with his official updater, keeping your saves.
    - Then it adds Living Server.
@@ -131,20 +134,36 @@ run themselves, whether or not you come along.
 
 1. Install Offline DAoC 0.37 or 0.37b (or 0.37c) from [shadowofze's releases](https://github.com/shadowofze/OfflineDAoC/releases),
    or update your 0.36 game to it (below).
-2. Download `OfflineDAoC-LivingServer-1.1-beta.zip` from the
-   [Beta 1.1 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1-beta),
+2. Download `OfflineDAoC-LivingServer-1.1.1-beta.zip` from the
+   [Beta 1.1.1 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta),
    unzip it and put its folder in your game folder.
 3. Close the game and server, then double-click `INSTALL.cmd` in that folder.
 4. Open the launcher as usual. It now has a **Living Server** tab.
 
-**Had Beta 1.0 or the Social Expansion?** Either way installs over it. Your characters, bots, bot guilds,
+**Had Beta 1.1, Beta 1.0 or the Social Expansion?** Either way installs over it. Your characters, bots, bot guilds,
 bot memory and settings stay as they were.
 
 **Still on 0.36 with the Social Expansion?** The 0.37 update only applies to the game's own files, so put
-them back first: put the Beta 1.1 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
+them back first: put the Beta 1.1.1 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
 restores the released 0.36 server and launcher from the installer's backups and checks each one). Then
 update the game to 0.37 with its downloader (choice 1, Update), and run `INSTALL.cmd`. If you install 0.37
 fresh instead and bring your progress over, see the package's README.txt for the one extra step.
+
+## Updating
+
+From Beta 1.1.2 the launcher looks for a new Living Server when it opens (at most once a day), or when you click
+**Check for updates** beside its version. When one is out, **START SERVER** reads **GET UPDATE**: click it and choose
+**Install**, **Later** or **Skip this version**.
+
+- **Your characters and world are kept.** The update runs the new package's own `INSTALL.cmd`, with the same checks
+  and backups as a manual install, and `ROLLBACK.cmd` in its folder undoes it.
+- **Nothing happens on its own.** It installs only when you click Install, with the server and the game closed. The
+  package is used only if it matches the SHA-256 digest GitHub publishes for it.
+- **Private.** The check is one request to GitHub's releases API that sends nothing about you or your game. Untick
+  **Check automatically** to turn it off. The steps are logged in `runtime\logs\launcher-updates.log`.
+- **Setup** also installs the newest release's package when it is newer than the one inside it.
+
+Beta 1.1.1 and earlier have no update check: install Beta 1.1.2 once by hand or with Setup.
 
 ## Getting started
 
@@ -159,7 +178,7 @@ A fresh world has no bots yet, and most of these features need some.
    in, or come back after half an hour away, and the first /faction scenes come within about its first
    half hour.
 4. **Check it's running.** The server log (`runtime\server\logs\server.log`) has a line starting
-   `FORK_BUILD name=1.1-beta` that lists which features are on.
+   `FORK_BUILD name=1.1.1-beta` that lists which features are on.
 
 ## Undo and uninstall
 
@@ -173,6 +192,25 @@ A fresh world has no bots yet, and most of these features need some.
 - **Uninstall:** after the steps above, double-click `ROLLBACK.cmd`. It restores the server, launcher and
   game files the install replaced or fixed. If you installed more than one build, run it once per build.
   The new tables and settings stay in your database; the original server ignores them.
+
+## Backups (from 1.1.2)
+
+- **Where they are:**
+  - **Daily copies:** while the server runs, it copies your world once a day to
+    `runtime\data\backups\opendaoc-<date>-<time>-daily.sqlite3.db`. The time in the name is UTC. The last 7 are
+    kept (server setting `db_backup_keep`; 0 turns them off).
+  - **Before each install:** `INSTALL.cmd` copies the world to
+    `runtime\server\deployment-backups\fork-build-<time>\data\`. The newest 3 installs keep that copy.
+- **To restore one:**
+  1. Close the launcher, the game and the server.
+  2. In `runtime\data`, rename `opendaoc.sqlite3.db` to keep it, and delete `opendaoc.sqlite3.db-wal` and
+     `opendaoc.sqlite3.db-shm` if they're there.
+  3. Copy the backup into `runtime\data` and name it `opendaoc.sqlite3.db`. An installer copy may come with its own
+     `-wal` file: copy it too, renamed to match.
+  4. Start the server. The log's `DB_INTEGRITY ... result=ok` line confirms the restored world is sound.
+- **The server only listens on this PC.** If your `serverconfig.xml` lets other computers in, or has UPnP on, the
+  log warns at each start (`NETWORK_EXPOSURE`) and says how to turn it off. See
+  [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
 
 ## Details
 

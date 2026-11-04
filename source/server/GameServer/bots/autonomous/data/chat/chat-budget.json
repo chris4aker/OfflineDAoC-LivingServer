@@ -1,0 +1,66 @@
+// The gamebots' chat budget (Living Server Beta 1.1.2). How it works: docs/bot-voices/CHAT-BUDGETS.md.
+//
+// Two budgets:
+// - "ambient": how much the world talks on its own. Each channel has a floor, a target and a ceiling in lines per
+//   minute, as one player hears that channel, at the design point: "design_bots_per_realm" gamebots online in the
+//   realm at prime time (a full server). They are scaled by the hour and by how many bots are online, with no cap.
+//   The floor keeps a channel from going dead, the target is the pace bots start lines at, the ceiling counts every
+//   bot line in the channel (answers, news and bursts too) and nothing new starts above it.
+// - "reply": how sure a bot must be before it answers a player. Below "min_fit" it says nothing, unless it was sent a
+//   tell or named, when it gives a short acknowledgement.
+//
+// The levels are set for a busy peak server, deliberately busier than the 2003 estimates (owner decision, 2026-11-03:
+// "I don't want the chat to be quiet, even if something in our research says the old servers were quiet"). The 2003
+// chat-volume research (research notes "Peak server chat volume 2003", chat_volume.md) gives only the shape: which
+// channels carry what, how talk moves with the hour and the place, and the texture (sellers' macros, bursts after big
+// moments, a few talkative regulars). Every number is an estimate to tune by playing. "/faction", "/lfg" and "/trade"
+// are this server's own realm channels [O]; they carry the realm-wide talk that 2003 spread over chat groups and guilds.
+//
+// To tune: copy this file next to the server (runtime/server/chat-budget.json) and edit it; the server reads that copy
+// at start instead. bot_voices_chat_rate (the launcher's "How much they talk", 0-3) multiplies every ambient target:
+// 2 (the default from 1.1.2) sounds like a busy server, 1 is calmer, 3 very busy, 0 only answers. Measured in the
+// 2026-11-04 playtest at 900 bots a realm, about 10 am, in Albion: 1 gave 6.4 lines a minute, 2.5 about 15.
+{
+  "version": 1,
+  "design_bots_per_realm": 1000,
+  // Volume grows as (bots / design_bots_per_realm) ^ exponent, with no cap (Beta 1.1.1 stopped growing at about 390 bots
+  // a realm). Below 1 it rises more slowly than the crowd, so a small roster still sounds lively: with 0.65, 300 bots a
+  // realm talk at 46% of a full server, 3,000 at 204%.
+  "population_exponent": 0.65,
+  "channels": {
+    // Realm-wide talk [O]: heard everywhere, so it is the player's main sense of a busy realm.
+    "faction":   { "floor": 2.0, "target": 4.0, "ceiling": 10.0, "scale": "realm" },
+    // The realm's lfg and trade channels [O] (2003 shape: public chat groups, mostly groups forming and items for sale).
+    "lfg":       { "floor": 0.6, "target": 1.6, "ceiling": 4.0, "scale": "realm" },
+    "trade":     { "floor": 0.5, "target": 1.3, "ceiling": 3.5, "scale": "realm" },
+    // /say near the player (2003 shape: busiest at camps, dungeon entrances and in towns).
+    "say":       { "floor": 0.5, "target": 2.0, "ceiling": 5.0, "scale": "realm" },
+    // /broadcast in a capital (2003 shape: mostly selling, looking for a group and recruiting, a little chatter).
+    "capital":   { "floor": 1.5, "target": 4.0, "ceiling": 7.0, "scale": "realm" },
+    // /broadcast in another town with a broadcast area (a bind town).
+    "town":      { "floor": 0.4, "target": 1.5, "ceiling": 3.5, "scale": "realm" },
+    // One guild's chat, at "members" online; it grows as (online / members) ^ 0.8, so a big guild is busier still.
+    "guild":     { "floor": 0.5, "target": 4.0, "ceiling": 8.0, "scale": "members", "members": 50, "members_exponent": 0.8 },
+    // Gamebots' banter in the player's group out of combat; fight calls come on top. Beta 1.1.1 said a line every 4-8 minutes.
+    "group":     { "floor": 0.3, "target": 1.0, "ceiling": 3.0, "scale": "none" }
+  },
+  // By the PC's local hour, 0-23, prime time = 1. Used when every bot stays online all day (bot_schedule_mode off or
+  // session): it carries the whole day's curve. Nights are calmer than prime time, never dead.
+  "hours": [0.62, 0.55, 0.5, 0.46, 0.45, 0.45, 0.47, 0.5, 0.56, 0.6, 0.64, 0.68, 0.72, 0.72, 0.72, 0.75, 0.8, 0.86, 0.92, 0.97, 1.0, 1.0, 0.95, 0.78],
+  // Used with bot_schedule_mode clock, where fewer bots are online at night already: only how much each one talks.
+  "hours_clock_schedule": [0.84, 0.78, 0.74, 0.71, 0.7, 0.7, 0.72, 0.76, 0.8, 0.83, 0.86, 0.88, 0.9, 0.9, 0.9, 0.91, 0.93, 0.96, 0.98, 1.0, 1.0, 1.0, 0.98, 0.92],
+  "texture": {
+    // A seller's WTS line in a capital may become a macro: said again every 3-8 minutes for 15-40 minutes.
+    "macro_chance": 0.5, "macro_repeat_min_s": 180, "macro_repeat_max_s": 480, "macro_last_min_s": 900, "macro_last_max_s": 2400,
+    // A big moment (a keep, a relic, a raid, a first) draws a burst of 3-6 reactions over about 90 seconds.
+    "burst_min": 3, "burst_max": 6, "burst_spread_s": 90
+  },
+  "reply": {
+    // A reply to a player needs this fit (AutonomousChatReplyFit: 4 known, 3 specific, 2 fits, 1 weak).
+    "min_fit": 2,
+    // After the one primary answer, at most this many short pile-ons ("lol", "+1", "this") in a busy channel.
+    "pileon_cap": 2,
+    // Typing speeds by personality, words per minute (a word = 5 characters).
+    "wpm_min": 25, "wpm_max": 60
+  }
+}

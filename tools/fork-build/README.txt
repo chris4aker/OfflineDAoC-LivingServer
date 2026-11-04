@@ -2,7 +2,8 @@ OFFLINE DAOC: LIVING SERVER - BETA 1.0   (github.com/chris4aker/OfflineDAoC-Soci
 =========================================================================================
 
 An add-on for Offline DAoC 0.37 / 0.37b (with or without the 0.37c new client) that makes the
-world feel like a live 2003 server. It replaces the server (GameServer.dll) and the launcher
+world feel like a live 2003 server. It replaces the server (GameServer.dll and, from 1.1.2, its
+libraries CoreBase, CoreDatabase and CoreServer) and the launcher
 (OfflineDAoC.exe, which gets a Living Server tab).
 
 ALWAYS ON (the bots' own game, nothing to switch):
@@ -47,6 +48,11 @@ launcher in new-client\runtime is replaced too), refuses while anything is runni
 every file it replaces (runtime\server\deployment-backups\fork-build-<time>) and checks every
 copy. It also puts three settings helpers in tools\claude-version and these docs in
 docs\fork-build-<name>.
+
+Before it replaces anything it also backs up your world database (runtime\data\opendaoc.sqlite3.db
+and its -wal/-shm files) into that backup folder's data\ folder and checks the copy. The newest 3
+installs keep their database copy. ROLLBACK.cmd never puts the database back (that would undo your
+play since). To restore one by hand, see BACKUPS below.
 
 It also fixes a few game files in place (listed in content-patches.json). It changes a file only
 if it is exactly the released one, checks the result, and backs the original up first; a file
@@ -107,6 +113,17 @@ Your characters in a bot guild go back to their realm's starting guild; your own
 Uninstalling: close everything and double-click ROLLBACK.cmd. It puts back exactly the files the
 install replaced or fixed (server, launcher, game files). If you installed more than one build,
 run it once per build. The new database tables and settings stay; the original server ignores them.
+
+BACKUPS
+-------
+While the server runs it copies your world once a day to
+  runtime\data\backups\opendaoc-<date>-<time>-daily.sqlite3.db   (time in UTC; the last 7 are kept)
+INSTALL.cmd also copies it before each install to
+  runtime\server\deployment-backups\fork-build-<time>\data\
+To restore a copy: close the launcher, game and server. In runtime\data, rename opendaoc.sqlite3.db
+to keep it and delete opendaoc.sqlite3.db-wal and -shm if present. Copy the backup in as
+opendaoc.sqlite3.db (an installer copy's -wal file too, renamed to match), then start the server.
+The log line DB_INTEGRITY ... result=ok confirms it.
 
 BEFORE THE NEXT OFFLINE DAOC UPDATE
 -----------------------------------

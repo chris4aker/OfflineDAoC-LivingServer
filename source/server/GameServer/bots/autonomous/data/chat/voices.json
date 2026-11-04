@@ -3,7 +3,7 @@
  "note": "Writing styles applied after a line is chosen (docs/bot-voices/DESIGN.md section 1.2). A bot's voice is fixed from its database id.",
  "voices": {
   "plain": {
-   "share": 0.35,
+   "share": 0.46,
    "capitalize": false,
    "end_period": false,
    "abbreviate": {},
@@ -12,7 +12,7 @@
    "typo_chance": 0.0
   },
   "proper": {
-   "share": 0.15,
+   "share": 0.04,
    "capitalize": true,
    "capitalize_sentences": true,
    "end_period": true,
@@ -49,7 +49,7 @@
    "abbreviate": {"you": "u"},
    "expand": {},
    "emote_chance": 0.0,
-   "typo_chance": 0.17,
+   "typo_chance": 0.08,
    "typo_rule": "swap two adjacent letters in one word of at least 4 letters; at most one typo per line"
   }
  },

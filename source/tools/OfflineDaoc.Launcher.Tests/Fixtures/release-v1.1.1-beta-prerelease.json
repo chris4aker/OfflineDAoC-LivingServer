@@ -1,0 +1,37 @@
+{
+  "url": "https://api.github.com/repos/chris4aker/OfflineDAoC-LivingServer/releases/433266366",
+  "assets_url": "https://api.github.com/repos/chris4aker/OfflineDAoC-LivingServer/releases/433266366/assets",
+  "upload_url": "https://uploads.github.com/repos/chris4aker/OfflineDAoC-LivingServer/releases/433266366/assets{?name,label}",
+  "html_url": "https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.1-beta",
+  "id": 433266366,
+  "node_id": "RE_kwDOVFEGm84Z0x6-",
+  "tag_name": "v1.1.1-beta",
+  "target_commitish": "main",
+  "name": "Living Server Beta 1.1.1",
+  "draft": false,
+  "immutable": false,
+  "prerelease": true,
+  "created_at": "2026-10-31T18:28:52Z",
+  "updated_at": "2026-11-03T22:03:48Z",
+  "published_at": "2026-11-03T22:03:48Z",
+  "assets": [
+    {
+      "url": "https://api.github.com/repos/chris4aker/OfflineDAoC-LivingServer/releases/assets/707251461",
+      "id": 707251461,
+      "node_id": "RA_kwDOVFEGm84qJ80F",
+      "name": "OfflineDAoC-LivingServer-1.1.1-beta.zip",
+      "label": null,
+      "content_type": "application/zip",
+      "state": "uploaded",
+      "size": 30976549,
+      "digest": "sha256:c640533245d815aa0aa5c5c4385591ba8217fe6505b5329f1de102599cee8c93",
+      "download_count": 2,
+      "created_at": "2026-11-03T22:03:29Z",
+      "updated_at": "2026-11-03T22:03:44Z",
+      "browser_download_url": "https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/download/v1.1.1-beta/OfflineDAoC-LivingServer-1.1.1-beta.zip"
+    }
+  ],
+  "tarball_url": "https://api.github.com/repos/chris4aker/OfflineDAoC-LivingServer/tarball/v1.1.1-beta",
+  "zipball_url": "https://api.github.com/repos/chris4aker/OfflineDAoC-LivingServer/zipball/v1.1.1-beta",
+  "body": "### Your first reports, fixed\r\n\r\nBeta 1.1 went out three days ago, and you started sending reports the next morning. 1.1.1 fixes the first of them, plus a few things found along the way. It's a small update: no new systems, nothing to switch on.\r\n\r\nIt's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client, like 1.1.\r\n\r\n### What's fixed\r\n\r\n- **Disbanding works again with invited bots.** With two or more gamebots in your group, `/disband` left them following you and refusing new invites until you logged out. Now they follow another player still in the group, or leave and go back to their own play. (#33, reported by nindybrew-svg)\r\n- **The launcher no longer sits on STARTING.** On some Windows PCs the launcher couldn't see the server's port even though it was running. It now checks with a short local connection as well. The reporter tested the fix on the affected PC and confirmed it. (#32, reported and tested by joshuaforehand)\r\n- **Base classes have their weapon styles before level 5.** A Fighter, Viking, Guardian or any other base class had no styles at all until it chose its class. It now gets the styles its classes have in the weapon line it trains. (reported on r/daoc by Zarthol)\r\n- **Bot Bards, Minstrels and Skalds are quieter.** Every song restart played its cast music and start sound to everyone nearby. Restarts are now silent; the first start of each song is still heard. (from a r/daoc report by ThatRebelKid)\r\n- **New client: quest markers mean what they say.** The NPC your current quest step needs is now marked green (\"go to them now\"), not orange. This is also the first new-client file Living Server ships: the installer patches it in place, only if it's the original file, and `ROLLBACK.cmd` puts it back.\r\n\r\n### Coming next\r\n\r\n- **Dragon raids that regroup after a wipe** and call in the Epic Special Forces, as dungeon raids already do.\r\n- **Quests with your bot group:** kills by your invited bots count for your quests, a kill counts once, you can hand in a quest you've outlevelled, and quest XP follows your XP-by-level setting.\r\n\r\nBoth are built and pass their automated tests. They ship once they've been played.\r\n\r\n### Offline DAoC is on hold\r\n\r\nshadowofze has put Offline DAoC on hold; his 0.37 downloads stay up. Living Server carries on, on 0.37: the next big update, 1.2, is built on his final code.\r\n\r\n### Install\r\n\r\n- **New to Offline DAoC, or adding Living Server:** run `LivingServer-Setup-1.1.1-beta.exe`.\r\n- **Have 1.1 already:** run the Setup, or unzip `OfflineDAoC-LivingServer-1.1.1-beta.zip` into your game folder and run `INSTALL.cmd` with the game and server closed.\r\n- **To undo:** `ROLLBACK.cmd`.\r\n\r\n### How it was tested\r\n\r\n- **Automated:** the full server suite and the launcher suite pass on every build.\r\n- **In game:** the launcher fix was confirmed on the reporter's PC. The other fixes have their own tests but haven't been played yet. Please report anything odd on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the `FORK_BUILD` line from `runtime\\server\\logs\\server.log`.\r\n\r\n### Files\r\n\r\n| File | SHA-256 |\r\n|---|---|\r\n| `LivingServer-Setup-1.1.1-beta.exe` | (filled in when the exe is built) |\r\n| `OfflineDAoC-LivingServer-1.1.1-beta.zip` | `c640533245d815aa0aa5c5c4385591ba8217fe6505b5329f1de102599cee8c93` |\r\n\r\nFull details: [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md). Known issues: [docs/KNOWN-ISSUES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/KNOWN-ISSUES.md).\r\n\r\nLiving Server is a free, non-commercial fan project, not affiliated with Electronic Arts or Broadsword.\r\n"
+}

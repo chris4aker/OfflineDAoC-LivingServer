@@ -27,8 +27,12 @@ namespace DOL.GS
         };
 
         public static string RaidWipe(string name, string boss) =>
-            Pick($"{boss} has struck down our company in {name}! Regroup at the front: we go in once more together.",
-                $"We have fallen to {boss}. Rise, rebuff and gather; one more assault on {boss} awaits.");
+            // A dragon raid is named after its dragon (2026-10-30): no "Golestandt struck us down in Golestandt".
+            string.Equals(name, boss, StringComparison.Ordinal)
+                ? Pick($"{boss} has struck down our company! Regroup at the staging ring: we go in once more together.",
+                    $"We have fallen to {boss}. Rise, rebuff and gather at the ring; one more assault on the dragon awaits.")
+                : Pick($"{boss} has struck down our company in {name}! Regroup at the front: we go in once more together.",
+                    $"We have fallen to {boss}. Rise, rebuff and gather; one more assault on {boss} awaits.");
 
         public static string SiegeReminder(string name, bool defender) => defender
             ? $"Stand ready at {name}! The enemy's muster has about twenty minutes left; keep shields and supplies close."

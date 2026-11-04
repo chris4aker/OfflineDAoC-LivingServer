@@ -8,6 +8,403 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.2 (in development)
+
+Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
+that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
+XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
+Offline DAoC, updates from the launcher, and a world database that is safe from crashes and backed up every day.
+Built and tested; it ships once it has been played (the checks are in [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md)).
+
+**Chat: a busier, more human realm** (owner 2026-11-04: shipped in 1.1.2, not as a separate 1.1.3). The goal is a
+realm that feels like a full server at its busiest. How it works and how to tune it:
+[docs/bot-voices/CHAT-BUDGETS.md](docs/bot-voices/CHAT-BUDGETS.md).
+- **More chat, scaled to the crowd.**
+  - **Before:** chat stopped growing at about 390 bots a realm.
+  - **Now:** /faction, /lfg, /trade, /say near you, town /broadcast, guild and group talk each have a floor, a target and
+    a ceiling. They rise with the bots online, with no cap, and follow the time of day.
+  - **Town /broadcast:** bots now use it the way players did in 2003: selling (sometimes as a repeating macro), looking
+    for a group, a little chatter. You hear it where the base game's /broadcast reaches.
+  - **One file:** all the numbers are in `chat-budget.json`, with comments. Research into 2003 chat gives the shape
+    (which channels, places and hours, sellers' macros, bursts). The levels are set for a busy peak server, on purpose
+    busier than the 2003 estimates. Nights are calmer, never dead.
+  - **Turn it up:** the launcher's Living Server tab has a new **How much they talk** setting (0–3). 1 is a busy peak
+    server, 2–3 very busy.
+- **Big moments ripple through chat.** A keep taken or lost, a relic moved, a raid won or wiped, Darkness Falls changing
+  hands, a server first and a nemesis paid back each draw a short burst of reactions in /faction. The realm-wide ones also
+  reach the capital's /broadcast.
+- **Bots answer what you said.**
+  - **Weak replies:** a reply that doesn't fit your line is dropped for something short that does. A tell gets a reply
+    to what it says ("ty", "not selling sry", "nah im good ty", "no heals on a thane sry", "cool"); only "hi" or "u
+    there?" gets "?" or "ya?". Banter and bad luck get a "lol" or "ugh" back now and then, most in a group, and a
+    question nobody knows gets one "dunno" in a group or guild. No more "ask around maybe" to a question anyone could
+    answer.
+  - **Silence where it belongs:** spam and scams (links, real-money prices, fake GMs, "your account has been flagged",
+    account sales, doubling offers, free plat, password requests) and lines said to someone else by name get no answer.
+  - **Honest answers:** "spec?", "lvl?", "what weapon is that?" by tell get the bot's real spec, level and weapon. A call
+    gets "where?" or "omw", a cry for heals the truth for the bot's class, a "45+" raid "too low lol" from a level 30,
+    and a thane never says "np" to thanks for heals.
+  - **/say to the bot in front of you:** a /say line counts as said to a bot when you target it, answer its line, or
+    stand right in front of it with nobody else close.
+  - **More places to ask:** bots answer `/advice` when one of them knows, and questions in `/broadcast` and chat groups
+    by tell.
+  - **About themselves:** bots answer their name, class, spec, level, zone, group and what they're hunting from their
+    real state.
+  - **How things work:** they explain equipping, binding, `/stuck`, `/anon`, `/release`, training, and how many realm
+    points a realm rank takes.
+  - **By situation:** "gn" gets a goodnight, "stuck" gets `/stuck`, "inc" gets "where?" or "omw", a call for help an offer
+    to come, a sale a price or a no, and a counter-offer to a bot's price a counter or a deal.
+  - **Words they now read:** "lo", "re", "wb", "long time no see", "u there?", "ne1 on?", mishaps ("lol rip"),
+    apologies, offers of help, "where?" after a bot named a place, "thx mythic" (sarcasm, not thanks), "free rps at…"
+    (a rally), "loot the named" and "fake inc" ("k"). A call that already says where and how many gets "omw", not "how
+    many?". `/stuck` is for you, not your pet.
+  - **Roleplay in kind:** a challenge gets a challenge, a toast a toast, a mourning a bow, otherwise an emote.
+- **One answer, then maybe a few more.** A question gets one answer. A hello or a ding gets a few. A joke now and then
+  draws a "lol" or "+1". Replies take longer to type the longer they are, at each bot's own typing speed.
+- **Less filler.**
+  - **Chat about the game in front of them:** most unprompted lines are now short and real: "lfg 38 zerk", "wts 97%
+    chain hauberk /send", "anyone up for vendo?", "inc beno", "who has rena?", from the bot's real level, class, zone and
+    bags and the realm's real keeps and relics: camps for its level, "lf a healer for keltoi", class questions, rallies
+    while a keep is under attack, and how many keeps the realm holds. Guild chat too: group calls, raid and keep plans, "gz" to a guildmate
+    who really dinged, a crafter wanted, an old item offered, "brb" and "night all". The same item isn't advertised all
+    evening, and short answers vary.
+  - **Regulars:** each realm and guild has a few talkative regulars for the evening who carry much of the chat, answer
+    each other and follow up their own lines; one thought isn't reworded by someone else minutes later, and chat comes
+    in runs and lulls rather than evenly.
+  - **Threads and stories:** a question usually gets an answer, and some run on for a few lines between two or three
+    bots. A ding to 50, a death or a group's wipe becomes a short story others riff on. Help questions come in many
+    shapes, and guild chat hears at most one weather-or-school line an evening. Answers take typing time and give what
+    was asked ("where" gets a place, "how much" a price).
+  - **Musings and quips:** lore musings, polished jokes, tips and life stories appear only rarely in /faction, never as
+    replies.
+  - **Generic agreement:** "good question", "very true" and the like are gone.
+  - **Repeats and polish:** near-copies are dropped, the wordings of one line rest for hours once one is said, and most
+    bots type in lowercase. Typos are rarer and look typed (a dropped letter).
+  - **The Realm Exchange:** bots mention it only when someone asks where to buy or sell.
+  - **Templates:** a few grammar slips are fixed.
+- **Typing habits.** About a third of bots have small habits of their own: "u" and "ur", "??", "...", a trailing "lol",
+  and for a rare few, the period's leetspeak.
+- **`/lswhy`** (every player) shows why a bot said what it said, or why nobody answered, and `/lswhy budget` shows how
+  busy each channel around you is.
+- **Checked:**
+  - **Automated:** new tests for every part; the full server suite passes.
+  - **Simulated evening at 1,000 bots a realm:** about 12.7 lines a minute across the channels a player hears, up from
+    about 1.9, with /faction above its busy-peak target of 4 a minute. At 300 bots it's about 5.9, up from 1.2.
+  - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to about 70%, and about a quarter
+    of those lines now get no reply. Those lines are known, so this is a regression check; a fresh blind round judges
+    the result.
+  - **In game:** not yet played.
+
+**Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
+- Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
+  back by twos and threes to a dragon at full health, until it died or the four hours ran out, and the Special Forces
+  were never called. A dragon raid now keeps the dungeon raids' rules. An attempt begins when the raid goes in from its
+  staging ring and ends when the dragon is out of combat after the three-minute approach, or when it has taken no
+  damage for five minutes while a trickle keeps it busy; the attempt was a wipe when half the raiders in it fell, or
+  the dragon healed back to 95% after being taken to 85% or lower. The raid then regroups at its staging ring, outside
+  the dragon's aggro, by the checked route around the lair: the fallen walk back, the living rest and rebuff for at
+  least five minutes, and the raid goes in again once 70% of its roster stands there (40% after 20 minutes) and the
+  dragon has landed. After two failed attempts the raid is **Defeated** and goes home, and every realm hears it. The
+  lair radius, the 600 damage cap and the landing rule are unchanged.
+- Review fixes (2026-10-31): who fell is remembered for the whole attempt. A dragon raider releases to a bind in the
+  dragon's own region and is on its feet again seconds later, so judging the wipe from the corpses at the moment the
+  dragon left combat would have called most wipes a break-off and left the raid trickling back as before. And a
+  regroup nobody has reached for twenty minutes (the dungeon muster's rule) is given up and the raid is Defeated, so a
+  forced dragon raid, which has no four-hour window, cannot hold at an empty ring until the player presses Stop
+  (`REALM_RAID_DRAGON_REGROUP_UNREACHABLE`).
+- On the first wipe the realm hears that the raid fell, and the Epic Special Forces are asked for on the same terms as
+  at a dungeon: up to 24, one party fewer per win and one more per loss over that dragon's last six results in the
+  Herald, nobody after three kills in a row. They arrive at the raid's muster hub and walk to the staging ring like any
+  late party. A dragon beaten twice in a row (defeats and time-outs) brings them from the start, as a dungeon does.
+- The launcher's Realm Events tab shows "RAID — regrouping at the staging ring after a wipe (staged/needed, attempt 2 of
+  2)". Logs: `REALM_RAID_WIPE` now for dragons too, `REALM_RAID_DRAGON_WIPE` (engaged, fallen, health, how),
+  `REALM_RAID_DRAGON_REGROUP`, `REALM_RAID_DRAGON_ENGAGE` (the retry) and `REALM_RAID_DRAGON_BROKE_OFF` (an attempt
+  that ended with most of the raid standing). Automated tests only (`UT_DragonRaidWipes`); not played in game yet.
+
+**Quests with your bot group** (2026-10-30, review fixes 2026-10-31; [docs/QUESTING.md](docs/QUESTING.md))
+- A kill by the gamebots in your group counts for your quests. Before, only a kill you damaged yourself, or your own
+  `/spawn` companion made, gave quest credit, so a player who healed, nuked late or only tagged while the invited bots
+  made the kill got nothing and no classic step drop. The group's leader is now credited as a companion's owner is,
+  when the bot still fights in the leader's group and the leader stands alive in the same region within the group's
+  kill-credit range (6,000 units); who gets the experience, the loot and the coin does not change.
+- A kill advances a quest step once. The killer's own quests heard the same kill once more for every groupmate in
+  range who hadn't attacked, so a quest with consecutive kill steps jumped two or three steps on one kill. The quest
+  now remembers the last kill it counted (two seconds), which also keeps the forced credit that nine named monsters
+  (the dragons, Legion, Olcasgean, Myrddraxis, Xanxicar, Nosdoden, King Tuscar) give to everyone in sight.
+- A hand-in is accepted above the quest's maximum level: a player who outlevelled a quest they already hold could not
+  hand its item in while the kill, talk and whisper steps still worked. The level window stays where a quest is offered.
+- More than 25 quests at login: a save with more than the client's 25 active quests kept them all and said so at
+  login, instead of losing the ones past the limit; finishing one brings the next hidden quest into the journal.
+- Whispering a keyword to a quest NPC twice quickly works: the silent 1.5-second pause between whispers now applies
+  to whispers to players only, so two quick keyword clicks both arrive.
+- Automated tests only (`UT_QuestKillCredit`, `UT_QuestLevelWindow`, `UT_QuestJournal`, `UT_WhisperThrottle`); not
+  played in game yet. The in-game check for the owner: a kill quest as a normal account in a group of invited bots.
+
+**Quest XP follows your XP-by-level rate** (2026-10-30, review fixes 2026-10-31)
+- Quest XP follows your XP-by-level rate. When `xp_rate_by_level` covers your level, the experience from quests,
+  bounties and the daily, weekly and battleground quests is multiplied by that level's rate (quest XP used to skip
+  every rate); the 0.36 "share of your level" amounts stay the base, one payment never pays more than one level, and
+  the offer window shows what you will actually get. New server setting `quest_xp_by_level`, on by default. It is a
+  kill switch: off, the rate and the one-level cap are both gone and quests and bounties pay exactly as before
+  (2026-10-31). With it on, a bounty's `xp_rate` is replaced by the range rate inside a range and a bounty pays at
+  most one level, where the launcher's 5× and 10× presets used to pay several. The three Shrouded Isles quests
+  Ancestral Secrets, The Lost Seed and Lost Stone of Arawn and the Wolf Pelt Cloak payments, which paid outside
+  every rate, now pay like every other quest. Details in [docs/XP-BY-LEVEL-RANGE.md](docs/XP-BY-LEVEL-RANGE.md).
+  Automated tests only; not played in game yet.
+
+**Gamebots in your guild earn merit and pay dues, like players** (from a r/daoc report; owner's choice 2026-11-03: "Merit + dues")
+- **The problem:** a gamebot you `/gc invite` joined your guild in name only. Its levels and realm ranks earned the guild
+  nothing and it paid no dues, so a guild of level-50 bots earned almost no merit.
+- **Now:** a gamebot in your guild earns it merit points for each level it gains and each realm level it reaches, with
+  the player formulas (`GuildEvents.LevelUp` and `GuildEvents.RealmRankUp`), and pays the dues rate your guild leader set
+  from the real coin it loots into the guild bank. If the bank is full the coin stays with the bot, so nothing is created
+  or lost. Guild realm points, keep claims and guild buffs still never count a bot. `/spawn` companions never join guilds.
+- **Bot guilds too:** bot guild members now earn realm-rank merit as well, and every gamebot pays dues on group-split and
+  dragon-raid coin, not only on coin it picks up alone (that was missing for bot guilds as well).
+- **What you see:** at most one line per guild every five minutes, such as "Seraorith has earned 69 merit points for
+  your guild!", or "3 guildmates have earned ..." when several did. Your own merit keeps its usual line.
+- **Setting:** `bot_player_guild_economy`, on by default, works whether bot guilds are on or off: the launcher's Living
+  Server tab, **Bots in your guild**.
+- **Checked:** unit tests for the dues split, merit for levels and realm ranks, the full bank, the switch off and the
+  merit lines. Not yet seen in game.
+
+**Faster power regeneration by default, the same rule for bots and players** (from a r/daoc report; owner's choice
+2026-11-03: "Faster by default")
+- **The problem:** power came back slowly. The server uses the pre-1.87 rate (about 12 a tick at level 50; patch 1.87
+  doubled it to about 23), and list casters below half power got half of that. Gamebots and companions were exempt
+  from the halving, so the player's own caster recovered slower than the bots around him.
+- **Now:** the rate is 1.5 times the classic one (`mana_regen_amount_modifier` 1.5, a middle ground between the classic
+  rate and 1.87's doubling), and the halving below 50% is off (`mana_regen_amount_halved_below_50_percent` False). When
+  you switch the halving on, it applies to players, gamebots and companions alike. A bot's out-of-combat fast rest is
+  unchanged.
+- **Existing worlds:** on the first start of this build, a world whose two settings are still the untouched old defaults
+  (1 and True, written by the server itself) gets the new ones once. A value you set yourself, or saved from the
+  launcher, is kept. The server log says what changed.
+- **Setting:** the launcher's Living Server tab, **Power regeneration**: the rate (0.25 to 10) and the halving. For the
+  classic regeneration choose 1 and switch the halving on.
+- **Checked:** unit tests for bot and player parity, the halving on and off, the rate, and the settings upgrade. Not
+  yet played.
+
+**From other forks of Offline DAoC** (chosen by the fork survey of 2026-11-03; each entry credits its author)
+- **Gamebots in your group who die in a battleground come back to you** (issue #39; from Cancain's fork, by Cancain).
+  - **The bug:** battlegrounds have no bind points, so a gamebot in a player's group released to its capital and stood
+    there for good: its way back did nothing while it and its leader were in different regions.
+  - **Now:** it releases to its realm's portal keep (under the battleground's level cap), walks back on a planned route,
+    waits while you are dead, and rejoins the group on arrival. Solo gamebots and bot-only groups release as before.
+  - **Adapted for Living Server:** the way back keeps our detours around hostile monsters and our stablemaster routes.
+    A gamebot that makes no headway first plans its way back again, and only when that stalls too is it moved to you;
+    never during a stablemaster ride. From another region (no route to try) it joins you after 20 seconds, as in
+    Cancain's version. His battleground keep claims (also offered in #40) are not taken: grouped bots don't count for
+    keep claims.
+  - **Checked:** Cancain's tests plus nine new ones (`UT_BotGroupRelease`). Not yet seen in game here.
+- **`/friend` works with gamebots, and two stock friends-list bugs are fixed** (issues #40 and #38; by Cancain).
+  Online and parked gamebots of your realm join your friends list by exact name; a real character of the same name wins. Their
+  logins and logouts show as "just entered / left the game" in both clients. Adding a friend no longer wipes the old
+  client's Friends Monitor, and the first friend on an empty list gets its status. Tests: `UT_BotFriends`.
+- **`/allrelease`** (also `/grouprelease`) releases every dead bot in your group at once (issue #40; by Cancain).
+  `/spawn` companions still wait while you are dead or a fight is near.
+- **On a world with a raised XP rate, Darkness Falls, battlegrounds and the frontiers get it too** (by rambodolphin13;
+  BeezKneezItem9 found the same bug).
+  - **The bug:** in RvR regions and zones a player's kill XP used `rvr_zones_xp_rate` (1 by default) in place of
+    `xp_rate`, so a 10× world was 1× in DF while gamebots there got 10×. The base game's rule (from OpenDAoC),
+    unchanged in 0.37b.
+  - **Now:** players get `xp_rate` (or `xp_rate_by_level`) times `rvr_zones_xp_rate`, the rule gamebots already had.
+  - **Checked:** two new tests in `UT_LevelRangeXpRates`. Not yet seen in game.
+- **Gamebot fixes from long soak runs** (by Nikse77, via rambodolphin13; the keep doors by rambodolphin13). Autonomous
+  gamebots only; `/spawn` companions and players are unchanged.
+  - **Zone seams:** a route that steps over a zone seam and straight back three times is treated as a route failure,
+    so the bot takes its usual way out instead of standing there (bots stood 10 to 40 minutes in Vindsaul Faste).
+  - **Group stalls:** a member of a bot-only group stalled for 3 minutes, idle and in its leader's region, is moved to
+    its leader (at most once in five minutes; never on a stablemaster ride, never in a player's group). The stall log
+    names both zones and the member's recent trail.
+  - **Ranged pulls:** a declined ranged pull no longer holds up the ordinary pull (a party of seven stood 30 minutes at
+    its camp). A Necromancer pulls only when no one else can, a Cleric only before that.
+  - **Mezzed enemies:** a mezzed enemy is left alone only while another free enemy is within 1,500 units; when the mez
+    is all that is left, bots finish it instead of walking away.
+  - **Darkness Falls:** a bot with no certified route out of DF probes less often after four empty tries and, after
+    three minutes, goes to its realm's capital. A gamebot saved inside DF logs back in at its realm's entrance of the
+    dungeon, not in a pack. DF stays open to solo bots.
+  - **Keep doors:** an army inside a keep it just took can leave through the doors (four captured keeps held their
+    armies: 661 route give-ups, then 213 teleports home).
+  - **Checked:** their tests (`UT_AutonomousZoneSeamCycle`, `UT_SupportReachAndGroupStall`,
+    `UT_DarknessFallsLoginEntrance`, `UT_FrontierTravelContracts`) and a new `UT_DarknessFallsExitHold`. Not yet seen
+    in game here. Not taken: the travelling-Minstrel song change (it conflicts with our bot brain) and the forks'
+    route-threat and zone-crossing changes, where our route code has diverged.
+- **Water breathing potions work again** (by Rmarcoux86). Nereid potions and other water-breathing spells did
+  nothing: their handler still used the old effect system, which the server no longer runs. They now let you breathe
+  under water and swim faster for their duration, as before. Base game code; players only, as in the original handler.
+  Not taken: the fork's default swim speed for everyone and its Nereid's Blessing buff. Checked: two new tests
+  (`UT_WaterBreathingEffect`). Not yet tried in game.
+- **The gamebots' camp list no longer breaks on a monster with no zone** (by MoomoocowPlus). One such monster stopped
+  the whole list from being built, so every gamebot kept "Searching for a valid XP camp". It is now left out.
+
+**Fixes**
+- Repairing an item never checked the crafter's skill: the gate was written as `(percentNeeded / 100) * craftLevel`,
+  integer division, so the 50% a repair asks for became 0 and anyone could start one (with a 0% chance below 44% of the
+  item's craft level). A repair now needs half the item's craft level in the skill, a repair in the trade window the
+  full level, as intended (`Repair.HasSkillToRepair`, `UT_RepairSkillGate`).
+- **The Herald counts the gamebots you invited into your guild** (from a r/daoc report). Its "Guilds of Note" read
+  only the bot guilds' members, so a player's guild with 30 invited gamebots showed 1 member. It now also reads the
+  invitations (`offline_world_bot_guild`) and counts each gamebot once; retired gamebots still don't count. Our own
+  launcher bug. Checked: a new `HeraldPageTests` case on a small SQLite world (run on Linux here; CI runs it on
+  Windows).
+- **Bots talk twice as much by default: "How much they talk" is 2** (owner 2026-11-04, after the playtest measured it at
+  your roster: 900 bots a realm, about 10 am, Albion heard 6.4 lines a minute across /faction, /lfg and /trade with 1,
+  and about 15 with 2.5). An install that never changed the setting moves from 1 to 2 once, at its first start; one where
+  it was set in the launcher keeps its value. Each channel's ceiling still holds, so it can't become spam. Checked: unit
+  tests for the default, the one-time move and a value set in the launcher; the levels themselves were measured in game.
+- **Creating a character of a race this server doesn't offer is refused cleanly** (found in the 2026-11-04 playtest; also
+  offered to the base game). The game client shows every race up to Labyrinth, but the server's world is Classic and
+  Shrouded Isles: Half Ogre, Frostalf, Shar and the Minotaurs have no starting stats. Creating one (a Half Ogre wizard)
+  threw an exception in the stat check; it is now an invalid character with a log line that says why. The player still
+  only sees the character not appear: the character screen has no message for it. Checked: a new
+  `UT_CharacterStatValidator` case.
+- **A GM's level or rank set by command is no server first** (found in the 2026-11-04 playtest: `/player level 50` on a
+  GM test character announced "the first on the server to reach level 50" to every realm, put it in the Herald and set
+  off a wave of grats). Server firsts now skip GM and admin accounts, the launcher's "Make Me a GM" included. Not
+  covered by a unit test (it needs a logged-in client); checked by reading the code.
+- **"an elementalist", not "a elementalist"** (same playtest: "first to 50 as a elementalist"). The server-first text and
+  every bot line with "a {slot}" use "an" before a vowel. Checked: new `UT_AutonomousBotVoices` cases.
+- **Bots no longer sell their level 50 starter kit in chat** (found in the 2026-11-04 playtest: "wts offline level 50
+  reaver 3/10 pst" in /trade). The new trade and voice lines named the most valuable item in a bot's bags, which for a
+  launcher-made level 50 is its starter kit. They now skip it, as the Realm Exchange adverts already did.
+- **"What does your guild do?" gets an answer about the guild, not just its name** (same playtest: a tell asking it drew
+  "Salisbury Brethren"). Each guild has one focus (RvR, levelling, a bit of everything...), so every member tells the
+  same story; "what guild are you in?" still gets the name. Checked: a new `UT_ChatResponsive` case.
+- **The 1.1.2 server failed to start on a real game: the package now ships the server's own libraries** (found in the
+  2026-11-04 playtest, before release). Save safety and the network defaults changed `CoreDatabase`, `CoreBase` and
+  `CoreServer` as well as `GameServer.dll`, but the package carried only `GameServer.dll`, so the new server stopped at
+  start beside the released libraries ("Could not load type 'Result' from assembly 'CoreDatabase'"). CI didn't see it:
+  its tests build everything together and its installer tests use a fake game. The package now has a `core\` folder:
+  `INSTALL.cmd` replaces each of those libraries where the game has one (the original or a Living Server build only,
+  backed up and checked like `GameServer.dll`), `ROLLBACK.cmd` and `PREPARE-FOR-UPDATE.cmd` put them back, and Setup's
+  safety copy before an Offline DAoC update includes them. Checked: new installer checks (each library replaced where the game has one and nowhere else, rollback, -ToRelease, a hand-changed library refused), and on the playtest PC the
+  repacked build installed over the broken one and the server started.
+- **The launcher says when the server stops by itself.** A server that stopped while starting left the launcher on
+  STOPPED with no word, which looked like START SERVER doing nothing. The footer now says it stopped, with its exit
+  code, and that the end of `runtime\logs\server-console.log` says why.
+- **The installer installs into the game folder it sits in, even with other installs beside it** (found in the
+  2026-11-04 playtest). With the build inside one game and other `playable*` folders next to it, `INSTALL.cmd` stopped
+  with "More than one game folder found". The folder the build sits in now wins; the search of nearby folders is only
+  for a build placed elsewhere. Checked: a new installer check with two side-by-side fake games.
+- **Ctrl-click and Shift-click on the launcher's "+ Lv." buttons work from remote-desktop and automation tools** (found
+  in the same playtest). They read the keys as they are when the click is handled, and a fast click had already let go
+  of Ctrl, so one bot was made instead of 100. They now read the keys as they were when the click arrived, and either
+  Ctrl or Shift key counts. Checked in the playtest: a remote Ctrl-click made 100 bots.
+
+**Updates from the launcher, and Setup installs the newest package**
+- **Updates from the launcher** (approved by the owner on 2026-11-03).
+  - **The check:** when the launcher opens (at most once a day), or when you click **Check for updates** beside its
+    version, it makes one request to GitHub's releases API for Living Server's newest release, with a generic
+    User-Agent and nothing about you or your game. Prereleases aren't offered. Any failure is silent unless you asked.
+    **Check automatically** beside the link turns the daily check off.
+  - **The offer:** when a newer build is out, START SERVER reads **GET UPDATE**, and the line beside the version shows
+    the build and the first line of its release notes. GET UPDATE asks "Update to Living Server Beta X? Your
+    characters and world are kept" with **Install**, **Later** (START SERVER is back for this session) and **Skip
+    this version** (not offered again until a newer one; Check for updates still shows it).
+  - **The install:** only with the server, both clients and any other launcher closed. The package downloads to
+    `runtime\updates\` with its progress shown, and is used only if it matches the SHA-256 digest GitHub publishes
+    for the file; a missing or wrong digest is refused and the file deleted. The zip must hold one
+    `LivingServer-<build>` folder whose `BUILD-INFO.txt` names the release's build. It is unpacked to a staging folder,
+    then moved into the game folder as a player would put it. The launcher then closes and `apply-update.ps1` waits
+    for it, runs the package's `INSTALL.cmd` without elevation (the same checks, backups and verified copies as a
+    double-click), checks the result and opens the launcher again, which says how it went. `ROLLBACK.cmd` in the new
+    package folder undoes it, as before. Every step goes to `runtime\logs\launcher-updates.log`.
+  - **Kept:** the downloaded package and the one before it stay in `runtime\updates\` (older ones are removed), and
+    the earlier package folder stays in the game folder, so either can be installed again. Your database and saves
+    are never touched. `OfflineDAoC.exe --apply-update <zip> --sha256 <hex>` does the same without the window (tests
+    and support).
+  - **The launcher knows its build:** it is stamped at build time from the server's `ForkBuildInfo.BuildName`.
+- **Setup installs the newest Living Server.** Before installing, Setup asks the same API for the newest release. If
+  its package is newer than the one inside Setup and made for the same Offline DAoC release, Setup downloads it,
+  checks it the same way and installs it. Offline, a rate limit, a bad or missing digest, or a package for another
+  release: Setup installs the package inside it and says why on the progress page's first step, which always names
+  the build being installed. `--no-update` skips the question (tests and offline installs); `--info` logs which
+  package it would install.
+- **Checked:** 69 new launcher tests (`Tests.Update*`: versions, the recorded release JSON, digests, the once-a-day and
+  skip rules, the package checks, the download and staging with a fake network) in the gated CI step. On Windows
+  CI: the launcher's update path end to end on a fake game folder (the published 1.1-beta package installed, then
+  1.1.1-beta applied with `--apply-update`, refusals for a wrong or missing digest and a running game, and
+  `ROLLBACK.cmd`), and Setup's choice of package against the live API with wrong and missing digests. Not yet seen on
+  a player's PC: see [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
+
+**Save safety and network defaults** (technical audit of 2026-11-03, §2 and the co-op bind defaults). Nothing
+here changes gameplay. The WAL settings and the backup design are ported from lometur's HearthDAoC fork.
+- **The world database always opens in a crash-safe mode.**
+  - **The problem:** the server's code default opened the database with the journal off and syncing off
+    (`Journal Mode=Off;Synchronous=Off`, unpooled). If the server crashed or the PC lost power during a save, the
+    world could be corrupted. Setup's world import puts the file in WAL, but a server with that default switched it
+    back on each open.
+  - **Now:** whatever `serverconfig.xml` says, the server opens the world in WAL with `Synchronous=Normal`, pooled
+    connections and a busy timeout of at least 10 s. The file isn't rewritten, so your other settings stay. The log
+    says what it changed (`DB_SAFETY ... changed="journal Off -> WAL; ..."`) and confirms the mode
+    (`DB_SAFETY journal_mode=wal confirmed`). At a clean stop the server moves the WAL into the database file.
+  - **Why pooled:** the server's fast read path for WAL needs it. In a test (1,000 saves, then 1,000 reads), pooled
+    WAL took 0.7 s and 0.45 s, unpooled WAL 3.8 s and 1.0 s, and the old unpooled journal-off default 1.4 s and 1.2 s.
+- **An integrity check at each start.** The server runs SQLite's `quick_check` before it loads the world, and logs
+  the time (`DB_INTEGRITY mode=quick_check result=ok ms=...`). On a 537 MB test database it took 0.5 s (the full
+  `integrity_check` took 4.5 s). The server setting `db_integrity_check` picks `quick` (default), `full` or `off`. A
+  damaged database is logged as an error saying how to restore a backup, and daily backups pause so they can't
+  replace a good one. The server still starts.
+- **Daily backups.** Once a day, while the server runs, it writes an online copy of the world to
+  `runtime\data\backups\opendaoc-<UTC time>-daily.sqlite3.db`.
+  - The copy is taken with SQLite's backup API while you play. It's written under a temporary name, checked with
+    `quick_check`, and only then renamed. The oldest daily copies beyond the last 7 are deleted afterwards
+    (`db_backup_keep`; 0 turns daily backups off). A failed backup deletes nothing.
+  - It runs on a timer thread, never on the game loop. The first look is 5 minutes after the start, then hourly, and
+    it skips when the last daily copy is under 24 hours old or the disk is short of space. The log says
+    `DB_BACKUP result=written|skipped|failed` with the reason.
+- **The installer backs up your world before installing.** `INSTALL.cmd` copies `runtime\data\opendaoc.sqlite3.db`
+  (with its `-wal` and `-shm` files) into its backup folder (`runtime\server\deployment-backups\fork-build-<time>\data`)
+  and checks the copy by SHA-256 before it replaces any file. It stops if the disk can't hold the copy. The newest 3
+  installs keep their database copy, and older installs keep only their server files. `ROLLBACK.cmd` is unchanged:
+  it never puts the database back, because that would undo your play since.
+- **The realm event ledger moved to `runtime\data`.** `realm-event-records.sqlite3` (the Herald's and the Realm
+  Records tab's history) was in `runtime\server`, where backups and progress transfers missed it. The server moves it
+  at its first start (`REALM_EVENT_LEDGER moved`). If an older build wrote a new one later, the server merges it in
+  without duplicates. The launcher reads it from either place. The progress importer now carries it
+  (`progress-policy.json` `ProgressFiles`).
+- **Network defaults reach this PC only.**
+  - **The problem:** the code defaults listened on every network (`0.0.0.0`) with UPnP on, so a lost
+    `serverconfig.xml` came back with the router asked to open TCP 10300 and UDP 10400 to the internet. The server
+    never removed those router mappings.
+  - **Now:** the defaults are `127.0.0.1` with UPnP and DetectRegionIP off. A missing config is written that way, and
+    a setting a config leaves out takes the safe value. The UPnP mappings a server added are removed when it stops
+    (`UPNP_MAPPING removed ...`), and mappings it didn't add are left alone.
+  - **Your own config isn't changed.** When it listens beyond this PC or has UPnP on, the log warns at each start
+    (`NETWORK_EXPOSURE Your server can be reached from other computers...`) and says how to turn it off.
+  - `build_release_037.py` sets and checks `127.0.0.1` and UPnP off in every shipped `serverconfig.xml`, and
+    `assemble_release_037.py` checks the finished package again.
+- **No more "database is locked" on a busy read.** Found by the release-gates work: about 3 runs in 50 on Windows,
+  the pooled WAL test failed when a `SelectAllObjects` read met a brief lock and gave up in under a second.
+  - **The cause:** the read path that `SelectAllObjects` and every other `WhereClause` select use had no retry, unlike
+    the server's other read path. Connections also had no native busy wait (SQLite's default wait is zero).
+  - **Now:** that path retries a brief lock conflict the same way, up to 40 times with a short back-off (about 1.7 s
+    in all), and other errors are not retried. Every SQLite database the server opens waits at least 10 s for a
+    lock (`BusyTimeout`), even with a `serverconfig.xml` that sets none.
+  - **Cleanup:** the command is disposed before its connection, and connections are disposed as well as closed.
+  - **A second race in the same test:** a query clause shared between threads (the empty clause every
+    `SelectAllObjects` uses) was marked ready before its parameters were set. A second thread could then read no
+    parameters and fail with a NullReferenceException. This was seen once in a 50-run loop before the fix. The
+    parameters are now set first.
+  - **Checked:** 6 new tests (`UT_SqlitePooledReadContention`: the retry, its bound, the busy wait, disposal, a clause
+    read by many threads at once, and three rounds of pooled readers and writers on every read path). A local loop (Linux) ran these with the two existing WAL pool tests: 49 of
+    50 runs passed before the fix (the one failure was the NullReferenceException), and 60 of 60 passed after it, run
+    as three processes at once to add CPU contention.
+- **Checked:** these are automated tests only. 17 new server tests (`UT_WorldDatabaseSafety`: the connection string,
+  WAL on a file that was journal-off, the integrity check on a damaged file, backup names, rotation, the
+  once-a-day rule, the online copy, the stop checkpoint, the ledger move and merge, the network defaults and
+  warnings, and the UPnP clean-up with a fake router). There are also 8 new installer checks and 5 Python tests for
+  the release config. None of this has run on a real install or in game yet.
+
+**Release gates**
+- **Release gates** (audit 2026-11-03, §8.6). CI also runs on pushes to main. A `versions` check fails when
+  README.md, the build name and this changelog name different releases (README.md still said Beta 1.1; it now says
+  1.1.1, without the test count that went stale). A release workflow builds Setup from a published release's package,
+  runs the installer's end-to-end tests, attaches the exe and puts its SHA-256 in the notes; see "Releasing Living
+  Server" in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). The SQLite tests' cleanup no longer fails on Windows while a
+  closing connection still holds the file (PR #56): each test has its own temporary folder, deleted with retries.
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the
@@ -714,7 +1111,7 @@ evening's earlier 0.37-se.1 session; see "Checked" below).
 - They are the one exception to gamebots earning their armor. They live in memory only: they are never saved, never
   counted in the population or a guild roster, take no loot or coin (with only them nearby a drop stays where it
   fell), claim no server firsts, and leave when the raid ends. A restart leaves nothing behind.
-- Dragon raids don't call them yet.
+- Dragon raids don't call them yet (they do from Beta 1.1.2, above).
 - Logs: `REALM_RAID_SPECIAL_FORCES_ARRIVED`, `_NOT_NEEDED`, `_FAILED`, `_LEFT`, and `specialForces=` on `REALM_RAID_ENDED`.
 
 **From the first 600-per-realm night (2026-10-19/20)**

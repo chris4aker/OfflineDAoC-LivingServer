@@ -49,10 +49,16 @@ namespace DOL.GS.Tests
             {
                 ["player"] = "Wynn", ["me"] = "Brannoc", ["class"] = "thane", ["level"] = "30", ["realm"] = "Midgard", ["zone"] = "Myrkwood Forest",
             };
-            return Corpus.TryPick(new VC.Request("reply", Speaker(i), slots, Recent, Now, Rng)
+            // Beta 1.1.2: the server's reply filter (no musings, no unasked Exchange plugs, generic filler once an hour a channel).
+            AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
+            bool picked = Corpus.TryPick(new VC.Request("reply", Speaker(i), slots, Recent, Now, Rng)
             {
-                Intent = intent, Answers = answers, Filter = filter, RelaxTo = TimeSpan.FromMinutes(40), LocalHour = 20,
-            }, out VC.Picked picked) ? picked.Text : null;
+                Intent = intent, Answers = answers, Filter = line => AutonomousChatFiller.ReplyAllowed(line, scope) && (filter == null || filter(line)),
+                RelaxTo = TimeSpan.FromMinutes(40), LocalHour = 20,
+            }, out VC.Picked chosen);
+            if (picked && scope != null && AutonomousChatFiller.IsGeneric(chosen.Text))
+                AutonomousChatFiller.NoteGeneric(scope.ChannelKey, scope.Now);
+            return picked ? chosen.Text : null;
         }
 
         /// <summary>What VoicedReply would draw for the line, as (path, reply).</summary>
@@ -75,6 +81,12 @@ namespace DOL.GS.Tests
                 if (fact != null)
                     return ("fact " + (self ?? "world"), fact);
             }
+            // Beta 1.1.2, round 2: roleplay in kind, by what the line does (as VoicedChoice).
+            if (value == eAutonomousChatIntent.Roleplay)
+            {
+                string act = AutonomousChatShortTalk.RoleplayAct(incoming);
+                return ("intent roleplay", Pick(i, answers: "player_rp_" + act) ?? Pick(i, answers: "player_rp_emote") ?? "*nods*");
+            }
             string shape = AutonomousChatShortTalk.QuestionShape(incoming);
             if (shape == "ask_howareyou")
                 return ("shape howareyou", Pick(i, answers: "ask_howareyou") ?? Pick(i, intent: "greeting"));
@@ -95,7 +107,8 @@ namespace DOL.GS.Tests
                 return ("followup(no thread)", null);
             if (AutonomousChatQuestions.IsFactual(incoming) && value is not (eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Thanks or
                     eAutonomousChatIntent.Rez or eAutonomousChatIntent.Alarm or eAutonomousChatIntent.Grouping or eAutonomousChatIntent.BotCheck or
-                    eAutonomousChatIntent.Abuse or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Ding or eAutonomousChatIntent.Congrats))
+                    eAutonomousChatIntent.Abuse or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Ding or eAutonomousChatIntent.Congrats or
+                    eAutonomousChatIntent.Roleplay))
                 return ("factual -> not sure (half the time)", Pick(i, answers: "ask", filter: l => !l.Text.Contains("trainer") && !l.Text.Contains("guard")));
             if (value == eAutonomousChatIntent.Unknown)
                 return incoming.Contains('?') ? ("unknown?", Pick(i, answers: "ask", filter: l => !l.Text.Contains("trainer") && !l.Text.Contains("guard"))) : ("unknown", null);
@@ -138,15 +151,21 @@ namespace DOL.GS.Tests
             ChatAuditRoute.Item[] items = JsonSerializer.Deserialize<ChatAuditRoute.Item[]>(File.ReadAllText(input));
             var sb = new StringBuilder();
             int hits = 0;
+            var outcomes = new Dictionary<string, int>(StringComparer.Ordinal) { ["answer"] = 0, ["short"] = 0, ["rescue"] = 0, ["ack"] = 0, ["silent"] = 0 };
             foreach (ChatAuditRoute.Item item in items)
             {
                 (string path, _) = ChatAuditRoute.Route(item, new Random(1));
+                // Beta 1.1.2: what the reply budget makes of it (a real answer, an acknowledgement, or nothing).
+                (string outcome, _, _) = ChatAuditRoute.Budget(item, path, new Random(item.text.Length));
+                outcomes[outcome]++;
                 if (ChatAuditRoute.Fits(item.expect, path))
                     hits++;
                 else
-                    sb.AppendLine($"[{item.channel}] {item.text} | ctx {item.context} | expect {item.expect} | got {path}");
+                    sb.AppendLine($"[{item.channel}] {item.text} | ctx {item.context} | expect {item.expect} | got {path} | {outcome}");
             }
-            sb.Insert(0, $"read as expected: {hits}/{items.Length} ({(double)hits / items.Length:P1})\n");
+            sb.Insert(0, $"read as expected: {hits}/{items.Length} ({(double)hits / items.Length:P1})\n" +
+                         $"reply budget: {outcomes["answer"]} answered, {outcomes["short"]} short replies to tells, {outcomes["rescue"]} short reactions or dunnos, " +
+                         $"{outcomes["ack"]} acknowledged, {outcomes["silent"]} silent ({(double)outcomes["silent"] / items.Length:P0})\n");
             File.WriteAllText(output, sb.ToString());
         }
 
@@ -164,12 +183,15 @@ namespace DOL.GS.Tests
             Item[] items = JsonSerializer.Deserialize<Item[]>(File.ReadAllText(input));
             var sb = new StringBuilder();
             int n = 0;
+            var tally = new Dictionary<string, int>(StringComparer.Ordinal) { ["answer"] = 0, ["short"] = 0, ["rescue"] = 0, ["ack"] = 0, ["silent"] = 0 };
             foreach (Item item in items)
             {
                 n++;
                 string text = item.text;
                 if (!string.IsNullOrEmpty(item.to) && AutonomousChatThreads.WithoutName(text, item.to) is { Length: > 0 } unnamed)
                     text = unnamed;
+                using AutonomousChatFiller.ReplyScope fillerScope = AutonomousChatFiller.Replying(text, "audit:" + item.channel,
+                    (long)(Now - new DateTime(2026, 10, 26, 20, 0, 0, DateTimeKind.Utc)).TotalMilliseconds);
                 string path;
                 var replies = new List<string>();
                 eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(text);
@@ -269,9 +291,32 @@ namespace DOL.GS.Tests
                     sb.AppendLine($"     bot before: {item.context}");
                 sb.AppendLine($"     expect {item.expect}: {item.note}");
                 sb.AppendLine($"     -> {path} | intent={intent} shape={AutonomousChatShortTalk.QuestionShape(text) ?? "-"}");
+                // Beta 1.1.2: the reply budget on the route the server takes (ChatAuditRoute) decides what is really said.
+                var auditItem = new ChatAuditRoute.Item(item.text, item.channel, item.context, item.expect, item.note, item.to);
+                (string route, string fixedAnswer) = ChatAuditRoute.Route(auditItem, new Random(1));
+                // A brush-off picked as the answer counts as weak, as Budgeted counts it.
+                bool brushOff = fixedAnswer == null && !route.StartsWith("none", StringComparison.Ordinal) && replies.Count > 0 && replies[0] != null &&
+                                AutonomousChatReplyBudget.IsBrushOff(replies[0]);
+                (string outcome, int fit, string budgetText) = ChatAuditRoute.Budget(auditItem, brushOff ? "intent unknown -> not sure" : route, Rng);
+                // The route answers but the corpus pick found nothing (world answers show as markers): the server's budget then
+                // decides as for a weak reply, unless the answer comes from the world.
+                if (outcome == "answer" && (replies.Count == 0 || replies[0] == null) && fixedAnswer == null && fit < AutonomousChatReplyFit.Known)
+                    (outcome, fit, budgetText) = ChatAuditRoute.Budget(auditItem, "none " + route, Rng);
+                tally[outcome]++;
+                sb.AppendLine($"     budget: {outcome} (route {route}, fit {fit})");
+                if (outcome == "ack")
+                    replies = [AutonomousChatReplyBudget.Ack(500 + n, false, Rng)];
+                else if (outcome is "short" or "rescue")
+                    replies = [budgetText];
+                else if (outcome == "silent")
+                    replies = [null];
+                else if (fixedAnswer != null)
+                    replies = [fixedAnswer];
                 foreach (string r in replies)
                     sb.AppendLine($"        \"{r ?? "(nothing)"}\"");
             }
+            sb.Insert(0, $"reply budget: {tally["answer"]} answered, {tally["short"]} short replies to tells, {tally["rescue"]} short reactions or dunnos, " +
+                         $"{tally["ack"]} acknowledged, {tally["silent"]} silent ({(double)tally["silent"] / items.Length:P0})\n");
             File.WriteAllText(output, sb.ToString());
         }
     }

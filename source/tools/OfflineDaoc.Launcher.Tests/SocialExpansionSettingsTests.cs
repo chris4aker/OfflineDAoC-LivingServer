@@ -78,15 +78,17 @@ public class SocialExpansionSettingsTests
 
     [Test] public void RecommendedTurnsEveryFeatureOnAndSavesAsIs()
     {
-        // Setup applies these on a first install (owner 2026-10-28): every switch on, the suggested XP ranges.
+        // Setup applies these on a first install (owner 2026-10-28): every switch on, the suggested XP ranges. The power
+        // regeneration halving is a classic rule, not a feature: off, as the 1.1.2 default (owner 2026-11-03).
         var r = SocialExpansionSettings.Recommended;
         var switches = typeof(SocialExpansionSettings).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(p => p.PropertyType == typeof(bool) && p.CanWrite).ToArray();
+            .Where(p => p.PropertyType == typeof(bool) && p.CanWrite && p.Name != nameof(SocialExpansionSettings.ManaHalvedBelowHalf)).ToArray();
         Assert.That(switches.Length, Is.GreaterThanOrEqualTo(24));
         Assert.That(switches.Where(p => !(bool)p.GetValue(r)!).Select(p => p.Name), Is.Empty);
         Assert.That(r.PlayerXpByLevel, Is.EqualTo(SocialExpansionSettings.SuggestedPlayerXp));
         Assert.That(r.BotXpByLevel, Is.EqualTo(SocialExpansionSettings.SuggestedBotXp));
         Assert.That(r.ScheduleMode, Is.EqualTo("clock"));
+        Assert.That((r.ManaRegenModifier, r.ManaHalvedBelowHalf), Is.EqualTo((1.5, false)));
         Assert.That(r.Validate(), Is.Null);
         r.Save(_database, null, () => true);
         var problems = new List<string>();
@@ -127,6 +129,24 @@ public class SocialExpansionSettingsTests
         Assert.That(rows["bot_guild_share"], Is.EqualTo("0.655"), "an untouched setting keeps its exact value");
         Assert.That(rows["bot_personalities_enabled"], Is.EqualTo("True"));
         Assert.That(rows.ContainsKey("bot_guilds_enabled"), Is.False);
+    }
+
+    [Test] public void TheChatRateIsSavedReadAndChecked()
+    {
+        // Beta 1.1.2: bot_voices_chat_rate in the tab; 2 by default (owner 2026-11-04, after the playtest).
+        Assert.That(SocialExpansionSettings.Defaults.ChatRate, Is.EqualTo(2.0));
+        Assert.That(SocialExpansionSettings.ChatRateDescription, Does.Contain("2 (the default)").And.Not.Contain("quiet"));
+        (SocialExpansionSettings.Defaults with { ChatRate = 2.5 }).Save(_database, null, () => _stopped);
+        Assert.That(Rows()["bot_voices_chat_rate"], Is.EqualTo("2.5"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).ChatRate, Is.EqualTo(2.5));
+        Assert.That(problems, Is.Empty);
+        var bad = new Dictionary<string, string?> { ["bot_voices_chat_rate"] = "7" };
+        var keys = new HashSet<string>();
+        Assert.That(SocialExpansionSettings.FromStoredValues(bad, problems, keys).ChatRate, Is.EqualTo(3.0));
+        Assert.That(keys, Does.Contain("bot_voices_chat_rate"));
+        Assert.That(SocialExpansionSettings.FromStoredValues(new Dictionary<string, string?> { ["bot_voices_chat_rate"] = "lots" }, problems).ChatRate,
+            Is.EqualTo(0.0), "what the server reads");
     }
 
     [Test] public void UnreadableValuesAreReportedAndShownAsDefaults()
@@ -217,6 +237,52 @@ public class SocialExpansionSettingsTests
         Assert.That(Rows().Keys, Is.EquivalentTo(new[] { "bot_personalities_enabled" }), "SaveSettings refuses after a failed read");
         ((Button)type.GetField("_undo", Hidden)!.GetValue(panel)!).PerformClick();
         Assert.That(((CheckBox)type.GetField("_personalities", Hidden)!.GetValue(panel)!).Checked, Is.True, "UNDO EDITS reads them again");
+    }
+
+    /// <summary>Living Server 1.1.2 (owner 2026-11-03, a r/daoc report): bots in your guild, and the power regeneration rate.</summary>
+    [Test] public void PowerRegenAndBotsInYourGuildAreSavedAndReadLikeTheServer()
+    {
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That((d.PlayerGuildEconomy, d.ManaRegenModifier, d.ManaHalvedBelowHalf), Is.EqualTo((true, 1.5, false)));
+        var classic = d with { PlayerGuildEconomy = false, ManaRegenModifier = 1, ManaHalvedBelowHalf = true };
+        classic.Save(_database, d, () => _stopped);
+        var rows = Rows();
+        Assert.That((rows["bot_player_guild_economy"], rows["mana_regen_amount_modifier"], rows["mana_regen_amount_halved_below_50_percent"]),
+            Is.EqualTo(("False", "1", "True")));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(classic));
+        Assert.That(problems, Is.Empty);
+        Assert.That(classic.AllOff() is { ManaRegenModifier: 1, ManaHalvedBelowHalf: true }, Is.True, "ALL OFF leaves the rates alone");
+
+        (classic with { ManaRegenModifier = 1.75 }).Save(_database, classic, () => _stopped);
+        Assert.That(Rows()["mana_regen_amount_modifier"], Is.EqualTo("1.75"));
+        Assert.That((d with { ManaRegenModifier = 0.1 }).Validate(), Does.Contain("power regeneration"));
+        Assert.That((d with { ManaRegenModifier = 11 }).Validate(), Does.Contain("power regeneration"));
+
+        Exec("UPDATE ServerProperty SET Value='fast' WHERE `Key`='mana_regen_amount_modifier'");
+        var keys = new HashSet<string>();
+        problems.Clear();
+        var bad = SocialExpansionSettings.Load(_database, problems, keys);
+        Assert.That(keys, Is.EquivalentTo(new[] { "mana_regen_amount_modifier" }));
+        Assert.That(bad.ManaRegenModifier, Is.EqualTo(SocialExpansionSettings.MinManaRegenModifier));
+        Exec("UPDATE ServerProperty SET Value='25' WHERE `Key`='mana_regen_amount_modifier'");
+        Assert.That(SocialExpansionSettings.Load(_database, new List<string>()).ManaRegenModifier, Is.EqualTo(SocialExpansionSettings.MaxManaRegenModifier));
+
+        // The tab shows and saves them.
+        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        Exec("UPDATE ServerProperty SET Value='1.5' WHERE `Key`='mana_regen_amount_modifier'");
+        using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
+        var rate = (NumericUpDown)type.GetField("_manaRate", Hidden)!.GetValue(panel)!;
+        var halved = (CheckBox)type.GetField("_manaHalved", Hidden)!.GetValue(panel)!;
+        var inYourGuild = (CheckBox)type.GetField("_playerGuildEconomy", Hidden)!.GetValue(panel)!;
+        Assert.That((rate.Value, halved.Checked, inYourGuild.Checked), Is.EqualTo((1.5m, true, false)));
+        rate.Value = 2m;
+        halved.Checked = false;
+        inYourGuild.Checked = true;
+        type.GetMethod("SaveSettings", Hidden)!.Invoke(panel, null);
+        rows = Rows();
+        Assert.That((rows["bot_player_guild_economy"], rows["mana_regen_amount_modifier"], rows["mana_regen_amount_halved_below_50_percent"]),
+            Is.EqualTo(("True", "2", "False")));
     }
 
     /// <summary>The keys and defaults here must be the server's (ServerProperties.cs), or the tab would show the wrong state.</summary>

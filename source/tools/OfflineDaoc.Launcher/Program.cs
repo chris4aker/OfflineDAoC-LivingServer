@@ -17,6 +17,12 @@ internal static class Program
             Environment.ExitCode = ApplyRecommendedSettings();
             return;
         }
+        if (args.Length >= 2 && args[0] == "--apply-update")
+        {
+            // Tests and support: a Living Server update from a package on disk, without the window (Updates/ApplyUpdateCommand.cs).
+            Environment.ExitCode = Updates.ApplyUpdateCommand.Run(args, MainForm.ServerRootFor(AppContext.BaseDirectory));
+            return;
+        }
         ApplicationConfiguration.Initialize();
         Application.Run(new MainForm());
     }

@@ -2,13 +2,13 @@
 <root>
     <Server>
         <Port>10300</Port>
-        <IP>0.0.0.0</IP>
-        <RegionIP>0.0.0.0</RegionIP>
+        <IP>127.0.0.1</IP>
+        <RegionIP>127.0.0.1</RegionIP>
         <RegionPort>10400</RegionPort>
-        <UdpIP>0.0.0.0</UdpIP>
+        <UdpIP>127.0.0.1</UdpIP>
         <UdpPort>10400</UdpPort>
-        <EnableUPnP>True</EnableUPnP>
-        <DetectRegionIP>True</DetectRegionIP>
+        <EnableUPnP>False</EnableUPnP>
+        <DetectRegionIP>False</DetectRegionIP>
         <ServerName>OpenDAoC</ServerName>
         <ServerNameShort>CoreServer</ServerNameShort>
         <LogConfigFile>./config/logconfig.xml</LogConfigFile>

@@ -10,10 +10,15 @@
 #   the game's own PACKAGE MANIFEST.sha256;
 # - replaces only a GameServer.dll that is the original release file or a fork build this script
 #   installed; anything else is refused unless -Force;
+# - the same for the server's own libraries (core\: CoreBase, CoreDatabase, CoreServer, Living Server 1.1.2), in each
+#   server folder that has them;
 # - the same for the launcher (OfflineDAoC.exe and its files, with the Living Server tab) in runtime\
 #   and, on 0.37c, in new-client\runtime\ (checked against new-client\PACKAGE MANIFEST.sha256);
 # - backs up every file it replaces under runtime\server\deployment-backups\fork-build-<time>\ and
 #   verifies every copy by SHA-256. ROLLBACK.cmd restores the backup;
+# - first backs up the world database (runtime\data\opendaoc.sqlite3.db, with its -wal and -shm files when present) into
+#   that folder's data\ folder, verified the same way (Living Server 1.1.2). The game is closed, so the files are a
+#   consistent set. ROLLBACK.cmd never puts it back (that would undo your play since); README.txt says how to restore it;
 # - fixes game files listed in content-patches.json in place, only where the file is the released one (anything else is
 #   left alone and reported), backed up the same way.
 param(
@@ -47,6 +52,22 @@ if (Test-Path -LiteralPath (Join-Path $buildDir 'content-patches.json')) {
     $expected = $info['content-patches.json']
     if (!$expected -or (Get-Sha256 (Join-Path $buildDir 'content-patches.json')) -ne $expected.ToLowerInvariant()) {
         Stop-WithMessage "content-patches.json doesn't match BUILD-INFO.txt (damaged download?). Download the build again."
+    }
+}
+
+# The server's own libraries (core\), when this build ships them: every one listed in BUILD-INFO.txt must be there.
+$coreBuild = Join-Path $buildDir 'core'
+$coreNew = @{}
+foreach ($name in $Script:CoreFiles) {
+    foreach ($file in @($name, [IO.Path]::ChangeExtension($name, '.pdb'))) {
+        $expected = $info["core/$file"]
+        $path = Join-Path $coreBuild $file
+        if (!$expected -and !(Test-Path -LiteralPath $path)) { continue }
+        if (!$expected -or !(Test-Path -LiteralPath $path)) { Stop-WithMessage "core\$file is missing from this build folder or BUILD-INFO.txt." }
+        if ((Get-Sha256 $path) -ne $expected.ToLowerInvariant()) {
+            Stop-WithMessage "core\$file doesn't match BUILD-INFO.txt (damaged download?). Download the build again."
+        }
+        $coreNew[$file] = $expected.ToLowerInvariant()
     }
 }
 
@@ -102,6 +123,36 @@ foreach ($folder in $Script:ServerFolders) {
 if ($plan.Count -eq 0) { Stop-WithMessage 'No GameServer.dll found under runtime\server.' }
 if (@($plan | Where-Object { $_.State -eq 'unknown' }).Count -gt 0 -and !$Force) {
     Stop-WithMessage ("A GameServer.dll above is neither the original $base file nor a fork build this script installed. " +
+        'Someone changed it by hand? Restore the original first, or run with -Force to replace it anyway (it is still backed up).')
+}
+
+# The server's own libraries, in each server folder that has them.
+$knownCore = @{}
+foreach ($record in Get-InstallRecords $game) {
+    foreach ($entry in @($record.CoreFiles)) { if ($entry -and $entry.NewHash) { $knownCore[$entry.NewHash] = $record.BuildName } }
+}
+$corePlan = @()
+foreach ($folder in $Script:ServerFolders) {
+    foreach ($name in $Script:CoreFiles) {
+        if (!$coreNew.ContainsKey($name)) { continue }
+        $path = Join-Path $game (Join-Path $folder $name)
+        if (!(Test-Path -LiteralPath $path)) { continue }
+        $hash = Get-Sha256 $path
+        $pdbName = [IO.Path]::ChangeExtension($name, '.pdb')
+        $pdbPath = Join-Path $game (Join-Path $folder $pdbName)
+        $withPdb = $coreNew.ContainsKey($pdbName) -and (Test-Path -LiteralPath $pdbPath)
+        $pdbDone = !$withPdb -or (Get-Sha256 $pdbPath) -eq $coreNew[$pdbName]
+        $state = if ($hash -eq $coreNew[$name] -and $pdbDone) { 'this build' }
+            elseif ($hash -eq $coreNew[$name]) { 'this build, .pdb differs' }
+            elseif ($manifest["$folder/$name"] -and $hash -eq $manifest["$folder/$name"]) { "original $base" }
+            elseif ($knownCore.ContainsKey($hash)) { "fork build $($knownCore[$hash])" }
+            else { 'unknown' }
+        $corePlan += [pscustomobject]@{ Folder = $folder; Name = $name; Hash = $hash; State = $state; WithPdb = $withPdb }
+        Write-Host ("  {0,-26} {1}" -f "$folder/$name", $state)
+    }
+}
+if (@($corePlan | Where-Object { $_.State -eq 'unknown' }).Count -gt 0 -and !$Force) {
+    Stop-WithMessage ("A server library above is neither the original $base file nor a fork build this script installed. " +
         'Someone changed it by hand? Restore the original first, or run with -Force to replace it anyway (it is still backed up).')
 }
 
@@ -163,6 +214,7 @@ foreach ($patch in $contentPatches) {
     Write-Host "  $($patch.Path): $state"
 }
 if (@($plan | Where-Object { $_.State -ne 'this build' }).Count -eq 0 -and
+    @($corePlan | Where-Object { $_.State -ne 'this build' }).Count -eq 0 -and
     @($launcherPlan | Where-Object { $_.State -ne 'this build' }).Count -eq 0 -and $contentPlan.Count -eq 0) {
     Write-Host ''
     Write-Host "Already installed: $($info['BuildName']). Nothing to do." -ForegroundColor Green
@@ -175,6 +227,15 @@ if ($DryRun) {
 }
 
 # 5. Back up, copy, verify.
+# The world database first: room for its copy, or nothing is changed.
+$databaseFiles = @(Get-WorldDatabaseFiles $game)
+$databaseBytes = 0
+foreach ($file in $databaseFiles) { $databaseBytes += (Get-Item -LiteralPath $file).Length }
+$free = Get-FreeBytes (Join-Path $game 'runtime\server')
+if ($databaseFiles.Count -gt 0 -and $null -ne $free -and $free -lt ($databaseBytes + 256MB)) {
+    Stop-WithMessage ("Not enough free disk space to back up your world database first ($([math]::Round($databaseBytes / 1MB)) MB, " +
+        "$([math]::Round($free / 1MB)) MB free). Free some space and run INSTALL.cmd again.")
+}
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $backup = Join-Path $game "runtime\server\deployment-backups\fork-build-$stamp"
 # Owner 2026-10-31: the folder is named to the second, so a second install inside the same second (INSTALL.cmd
@@ -184,6 +245,24 @@ $backup = Join-Path $game "runtime\server\deployment-backups\fork-build-$stamp"
 $same = 1
 while (Test-Path -LiteralPath $backup) { $same++; $backup = Join-Path $game "runtime\server\deployment-backups\fork-build-$stamp-$same" }
 New-Item -ItemType Directory -Path $backup | Out-Null
+$databaseEntries = @()
+if ($databaseFiles.Count -eq 0) {
+    Write-Host 'No world database in runtime\data yet; nothing to back up there.'
+} else {
+    $savedData = Join-Path $backup 'data'
+    New-Item -ItemType Directory -Path $savedData | Out-Null
+    foreach ($file in $databaseFiles) {
+        $hash = Get-Sha256 $file
+        Copy-Item -LiteralPath $file -Destination $savedData
+        $copy = Join-Path $savedData (Split-Path -Leaf $file)
+        if ((Get-Sha256 $copy) -ne $hash) {
+            Remove-Item -LiteralPath $backup -Recurse -Force
+            Stop-WithMessage "The backup of your world database ($(Split-Path -Leaf $file)) failed verification. Nothing was installed."
+        }
+        $databaseEntries += [pscustomobject]@{ Name = (Split-Path -Leaf $file); Hash = $hash }
+    }
+    Write-Host "World database backed up: $savedData" -ForegroundColor Green
+}
 $entries = @()
 foreach ($item in $plan) {
     $source = Join-Path $game $item.Folder
@@ -197,6 +276,24 @@ foreach ($item in $plan) {
     }
     if ((Get-Sha256 (Join-Path $saved 'GameServer.dll')) -ne $item.Hash) { Stop-WithMessage "Backup of $($item.Folder) failed verification." }
     $entries += [pscustomobject]@{ Folder = $item.Folder; OldDll = $item.Hash; OldPdb = $oldPdb; NewDll = $newDll; NewPdb = $newPdb }
+}
+
+$coreEntries = @()
+foreach ($item in $corePlan) {
+    $source = Join-Path $game $item.Folder
+    $saved = Join-Path $backup ((Get-BackupName $item.Folder) + '_core')
+    New-Item -ItemType Directory -Path $saved -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $source $item.Name) -Destination $saved
+    if ((Get-Sha256 (Join-Path $saved $item.Name)) -ne $item.Hash) { Stop-WithMessage "Backup of $($item.Folder)\$($item.Name) failed verification." }
+    $pdbName = [IO.Path]::ChangeExtension($item.Name, '.pdb')
+    # Own names: $oldPdb and $newPdb above belong to GameServer.pdb.
+    $coreOldPdb = $null; $coreNewPdb = $null
+    if ($item.WithPdb) {
+        Copy-Item -LiteralPath (Join-Path $source $pdbName) -Destination $saved
+        $coreOldPdb = Get-Sha256 (Join-Path $saved $pdbName)
+        $coreNewPdb = $coreNew[$pdbName]
+    }
+    $coreEntries += [pscustomobject]@{ Folder = $item.Folder; Name = $item.Name; OldHash = $item.Hash; NewHash = $coreNew[$item.Name]; OldPdb = $coreOldPdb; NewPdb = $coreNewPdb }
 }
 
 $launcherEntries = @()
@@ -247,7 +344,7 @@ if (Test-Path -LiteralPath $helperSource) {
 $record = [pscustomobject]@{
     BuildName = $info['BuildName']; BaseRelease = $base; Commit = $info['Commit']
     Installed = (Get-Date).ToString('o'); GameFolder = $game; Folders = $entries; Helpers = $helpers
-    LauncherFolders = $launcherEntries; ContentFiles = $contentEntries
+    LauncherFolders = $launcherEntries; ContentFiles = $contentEntries; Database = $databaseEntries; CoreFiles = $coreEntries
 }
 $record | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $backup 'install-record.json') -Encoding UTF8
 
@@ -258,6 +355,16 @@ try {
         Copy-Item -LiteralPath (Join-Path $buildDir 'GameServer.pdb') -Destination $target -Force
         if ((Get-Sha256 (Join-Path $target 'GameServer.dll')) -ne $newDll -or (Get-Sha256 (Join-Path $target 'GameServer.pdb')) -ne $newPdb) {
             throw "Copy into $($entry.Folder) failed verification."
+        }
+    }
+    foreach ($entry in $coreEntries) {
+        $target = Join-Path $game $entry.Folder
+        Copy-Item -LiteralPath (Join-Path $coreBuild $entry.Name) -Destination $target -Force
+        if ((Get-Sha256 (Join-Path $target $entry.Name)) -ne $entry.NewHash) { throw "Copy of $($entry.Name) into $($entry.Folder) failed verification." }
+        if ($entry.NewPdb) {
+            $pdbName = [IO.Path]::ChangeExtension($entry.Name, '.pdb')
+            Copy-Item -LiteralPath (Join-Path $coreBuild $pdbName) -Destination $target -Force
+            if ((Get-Sha256 (Join-Path $target $pdbName)) -ne $entry.NewPdb) { throw "Copy of $pdbName into $($entry.Folder) failed verification." }
         }
     }
     foreach ($entry in $launcherEntries) {
@@ -294,6 +401,12 @@ try {
         if ($entry.OldPdb) { Copy-Item -LiteralPath (Join-Path $saved 'GameServer.pdb') -Destination $target -Force }
         elseif (Test-Path -LiteralPath (Join-Path $target 'GameServer.pdb')) { Remove-Item -LiteralPath (Join-Path $target 'GameServer.pdb') }
     }
+    foreach ($entry in $coreEntries) {
+        $saved = Join-Path $backup ((Get-BackupName $entry.Folder) + '_core')
+        $target = Join-Path $game $entry.Folder
+        Copy-Item -LiteralPath (Join-Path $saved $entry.Name) -Destination $target -Force
+        if ($entry.OldPdb) { Copy-Item -LiteralPath (Join-Path $saved ([IO.Path]::ChangeExtension($entry.Name, '.pdb'))) -Destination $target -Force }
+    }
     foreach ($entry in $launcherEntries) {
         $saved = Join-Path $backup ((Get-BackupName $entry.Folder) + '_launcher')
         $target = Join-Path $game $entry.Folder
@@ -312,9 +425,11 @@ try {
 }
 
 Write-Host ''
-Write-Host ("Installed $($info['BuildName']): the server into $($entries.Count) folder(s), the launcher into $($launcherEntries.Count), " +
+Write-Host ("Installed $($info['BuildName']): the server into $($entries.Count) folder(s) ($($coreEntries.Count) server librar$(if ($coreEntries.Count -eq 1) { 'y' } else { 'ies' })), the launcher into $($launcherEntries.Count), " +
     "$($contentEntries.Count) game file(s) fixed.") -ForegroundColor Green
 Write-Host "Backup: $backup"
+$pruned = Remove-OldDatabaseBackups $game 3
+if ($pruned -gt 0) { Write-Host "Removed the world database copies of $pruned older install(s) (the newest 3 are kept; their server files stay)." }
 Write-Host "Start the game as usual. The server log shows: FORK_BUILD name=$($info['BuildName']) commit=$($info['Commit'])"
 Write-Host 'Every new feature is OFF until you switch it on: launcher -> Living Server tab (server stopped). To undo: ROLLBACK.cmd'
 exit 0

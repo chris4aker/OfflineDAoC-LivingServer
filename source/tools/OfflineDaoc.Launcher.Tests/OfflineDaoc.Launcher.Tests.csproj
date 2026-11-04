@@ -11,4 +11,8 @@
     <PackageReference Include="NUnit" Version="4.5.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="6.1.0" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- Recorded answers of GitHub's releases API for the update tests (no test touches the network). -->
+    <None Update="Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

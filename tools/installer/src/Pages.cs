@@ -118,6 +118,11 @@ namespace LivingServerSetup
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 Manifests.TryRefresh();   // first: the new client's update fingerprint comes from it
+                // Beta 1.1.2: a newer Living Server package from GitHub, before the games are read against it
+                PackageUpdate.Run(Program.CheckNewest, Program.ReleaseJson, line =>
+                {
+                    try { BeginInvoke((Action)(() => { scanning = line; Invalidate(); })); } catch { }
+                });
                 var games = new List<GameInfo>();
                 try
                 {

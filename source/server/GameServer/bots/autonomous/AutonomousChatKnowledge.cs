@@ -43,6 +43,8 @@ public static class AutonomousChatKnowledge
             return true;
         if (LooksLikeTrainerQuestion(query) && TryAnswerTrainer(player.Realm, query, player.CharacterClass?.ID ?? 0, player, out answer))
             return true;
+        if (TryAnswerHowTo(query, out answer))
+            return true;
         return LooksLikeLocationQuestion(query) && TryAnswerLocation(player.Realm, query, out answer);
     }
 
@@ -155,6 +157,60 @@ public static class AutonomousChatKnowledge
             return true;
         return LooksLikeLocationQuestion(query) && TryAnswerLocation(realm, query, out answer);
     }
+
+    #region How do I (Beta 1.1.2)
+
+    /// <summary>
+    /// "how do i equip this", "how do i bind", "how many rp for rr2", "how do i get to hib from alb", "how do i go anon":
+    /// questions about how the game works, answered as a player would (blind round 1: "i cant figure out how to equip this"
+    /// drew nothing, "how many rp for rr2?" drew "nice, gz"). The realm-rank numbers are the server's own table. Pure.
+    /// </summary>
+    public static bool TryAnswerHowTo(string text, out string answer)
+    {
+        answer = string.Empty;
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        bool how = System.Text.RegularExpressions.Regex.IsMatch(t, @" (how (do|can|to|would) (i|you|u|one|ya)|how to|cant figure out how|cant figure how|whats the command|what s the command|is there a command|how does one) ");
+        var rank = System.Text.RegularExpressions.Regex.Match(t, @" how (many|much) (rp|rps|realm points)( do i need| do you need| for| to get)?( to)?( get)? (to )?(rr|realm rank )(?<rank>\d{1,2}) ");
+        if (rank.Success && int.TryParse(rank.Groups["rank"].Value, out int rr) && rr is >= 2 and <= 13)
+        {
+            long[] table = GamePlayer.REALMPOINTS_FOR_LEVEL;
+            int index = (rr - 1) * 10;
+            if (index < table.Length)
+            {
+                answer = Pick($"{table[index]:N0} for rr{rr}", $"{table[index]:N0} rps for rr{rr}", $"rr{rr} is {table[index]:N0} rps");
+                return true;
+            }
+        }
+        if (!how)
+            return false;
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (equip|wear|put on|wield|use this (sword|weapon|shield|armor|staff|bow)) "))
+            answer = Pick("open your inventory and drag it onto your character", "drag it from your bag onto the paperdoll", "inventory, then drag it onto yourself");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (bind|set my bind|bind point|bind stone|bindstone) "))
+            answer = Pick("stand by the bindstone in town and type /bind", "/bind next to a bindstone", "go to the bindstone and /bind");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (unstuck|get unstuck|stuck) "))
+            answer = Pick("/stuck", "type /stuck", "/stuck, takes a few secs");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (go anon|be anon|anonymous|hide from who) "))
+            answer = Pick("/anon", "type /anon", "/anon toggles it");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (release|go to my bind|respawn) "))
+            answer = Pick("/release takes you to your bind", "type /release", "/release, but you lose more xp than a rez");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (train|spend my (spec|points)|spec points|level my skills|raise my skills) "))
+            answer = Pick("talk to your trainer, he spends the points", "your class trainer, right click him", "visit your trainer after every level");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (get|go) to (hib|hibernia|mid|midgard|alb|albion) ") &&
+                 System.Text.RegularExpressions.Regex.IsMatch(t, @" (from|frm) (hib|hibernia|mid|midgard|alb|albion) "))
+            answer = Pick("you cant, other realms are the enemy. you only meet them in the frontier", "cant cross over, only in rvr lol",
+                "you cant, they kill you on sight. the frontier is where you meet them");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (talk to|speak to) (my )?(guild|group|someone|people) "))
+            answer = Pick("/gu for guild, /g for group, /send name for a tell", "/send name msg for a tell, /gu for guild");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (see|check) (my )?(xp|experience|level progress|bubbles) "))
+            answer = Pick("the xp bar at the bottom, each bubble is a tenth", "watch the bubbles on the xp bar");
+        else if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (group|invite someone|inv someone|start a group) "))
+            answer = Pick("/invite name", "target them and /invite", "/invite their name");
+        return answer.Length > 0;
+    }
+
+    #endregion
 
     #region Chat words (0.36-se.4)
 

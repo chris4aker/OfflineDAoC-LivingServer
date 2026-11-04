@@ -8,12 +8,15 @@ Copies from the repository (never from anyone's playable folder):
   * source/ without build output, local config or test results,
   * tools/pet-art, tools/claude-version and tools/asset-tool,
   * the built progress importer into tools/ProgressImporter.
+Then checks that every shipped serverconfig.xml listens on 127.0.0.1 only with UPnP off (build_release_037.py).
 """
 from __future__ import annotations
 
 import argparse
 import shutil
 from pathlib import Path
+
+from build_release_037 import check_shipped_configs
 
 ROOT_FILES = ("README.md", "CHANGELOG.md", "AGENTS.md", "CLAUDE.md", "LICENSE", "THIRD_PARTY.md",
               "QUICK COMMANDS.txt", "ALL SERVER COMMANDS.txt", "DEVELOPMENT - START HERE.md", "RELEASE VERIFICATION.txt")
@@ -68,6 +71,9 @@ def main():
         "Use them only on a NEW install: the database is a clean world with no saves.\r\n", encoding="utf-8")
     for name, count in counts.items():
         print(f"{name}: {count} files")
+    # The finished package's server still listens on this PC only, with UPnP off (Living Server 1.1.2).
+    for config, values in check_shipped_configs(package / "runtime").items():
+        print(f"{config}: {values}")
 
 
 if __name__ == "__main__":
