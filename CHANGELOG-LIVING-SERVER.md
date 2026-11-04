@@ -61,6 +61,11 @@ Older entries below keep the names they were written with.
   (`UT_WaterBreathingEffect`). Not yet tried in game.
 - **The gamebots' camp list no longer breaks on a monster with no zone** (by MoomoocowPlus). One such monster stopped
   the whole list from being built, so every gamebot kept "Searching for a valid XP camp". It is now left out.
+- **The Herald counts the gamebots you invited into your guild** (from a r/daoc report). Its "Guilds of Note" read
+  only the bot guilds' members, so a player's guild with 30 invited gamebots showed 1 member. It now also reads the
+  invitations (`offline_world_bot_guild`) and counts each gamebot once; retired gamebots still don't count. Our own
+  launcher bug. Checked: a new `HeraldPageTests` case on a small SQLite world (run on Linux here; CI runs it on
+  Windows).
 
 ## Beta 1.1.1 — 2026-10-31
 
