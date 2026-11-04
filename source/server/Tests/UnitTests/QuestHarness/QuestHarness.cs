@@ -228,6 +228,9 @@ namespace DOL.UnitTests.QuestHarness
         public List<GamePlayer> Kill(HarnessNpc monster, params GameLiving[] attackers)
         {
             Tick();
+            // The player stands by the kill, as in the game: a gamebot's kill credits its leader only in the kill's
+            // region and range (QuestKillCredit.GroupLeaderFor), and the step's target may stand in another region.
+            WalkTo(monster);
             monster.SetAttackers(attackers);
             var told = new List<GameLiving>();
             AttackerTracker tracker = monster.attackComponent.AttackerTracker;
