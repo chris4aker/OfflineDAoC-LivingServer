@@ -1016,6 +1016,7 @@ namespace DOL.GS
             IsReturningAfterRelease = false;
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
+            BotDutyLeases.OnDied(this); // a battleground rally drops its dead (BotDutyLeaseRules.EndsOnDeath)
 
             if (IsAutonomousWorldBot && PersistentRecord != null)
             {
