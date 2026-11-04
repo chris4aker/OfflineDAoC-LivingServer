@@ -54,6 +54,11 @@ Older entries below keep the names they were written with.
     `UT_DarknessFallsLoginEntrance`, `UT_FrontierTravelContracts`) and a new `UT_DarknessFallsExitHold`. Not yet seen
     in game here. Not taken: the travelling-Minstrel song change (it conflicts with our bot brain) and the forks'
     route-threat and zone-crossing changes, where our route code has diverged.
+- **Water breathing potions work again** (by Rmarcoux86). Nereid potions and other water-breathing spells did
+  nothing: their handler still used the old effect system, which the server no longer runs. They now let you breathe
+  under water and swim faster for their duration, as before. Base game code; players only, as in the original handler.
+  Not taken: the fork's default swim speed for everyone and its Nereid's Blessing buff. Checked: two new tests
+  (`UT_WaterBreathingEffect`). Not yet tried in game.
 
 ## Beta 1.1.1 — 2026-10-31
 
