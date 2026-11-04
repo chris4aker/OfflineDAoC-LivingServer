@@ -252,6 +252,10 @@ realm that feels like a full server at its busiest. How it works and how to tune
   2026-11-04 playtest). With the build inside one game and other `playable*` folders next to it, `INSTALL.cmd` stopped
   with "More than one game folder found". The folder the build sits in now wins; the search of nearby folders is only
   for a build placed elsewhere. Checked: a new installer check with two side-by-side fake games.
+- **Ctrl-click and Shift-click on the launcher's "+ Lv." buttons work from remote-desktop and automation tools** (found
+  in the same playtest). They read the keys as they are when the click is handled, and a fast click had already let go
+  of Ctrl, so one bot was made instead of 100. They now read the keys as they were when the click arrived, and either
+  Ctrl or Shift key counts. Checked in the playtest: a remote Ctrl-click made 100 bots.
 
 **Updates from the launcher, and Setup installs the newest package**
 - **Updates from the launcher** (approved by the owner on 2026-11-03).

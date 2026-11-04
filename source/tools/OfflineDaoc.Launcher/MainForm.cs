@@ -480,11 +480,15 @@ internal sealed partial class MainForm : Form
         return button;
     }
 
+    // Ctrl-click makes 100, Shift-click 10. The keys are read as they were when the click arrived (Control.ModifierKeys
+    // reads GetKeyState), not as they are now: a fast click from remote-desktop or automation tools releases the key
+    // before the click is handled, and GetAsyncKeyState then saw no key (playtest 2026-11-04). Either Ctrl or Shift.
     private static int GetGenerationBatchSize()
     {
-        if ((GetAsyncKeyState(VkLeftControl) & 0x8000) != 0)
+        Keys held = Control.ModifierKeys;
+        if ((held & Keys.Control) != 0)
             return 100;
-        if ((GetAsyncKeyState(VkLeftShift) & 0x8000) != 0)
+        if ((held & Keys.Shift) != 0)
             return 10;
         return 1;
     }
@@ -3243,12 +3247,6 @@ internal sealed partial class MainForm : Form
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool GlobalMemoryStatusEx(ref MemoryStatus status);
-
-    private const int VkLeftShift = 0xA0;
-    private const int VkLeftControl = 0xA2;
-
-    [DllImport("user32.dll")]
-    private static extern short GetAsyncKeyState(int virtualKey);
 
     private static ulong AvailableMemoryBytes()
     {
