@@ -34,18 +34,36 @@ public static class AutonomousChatContext
         // A counter-offer to the bot's own price ("how about 45?", "too much", "lol no" after "60g for the set").
         if (Price(facts.LastBotLine) is { } asked && CounterOffer(incoming, asked, random) is { } counter)
             return ("context counter", counter);
+        // An offer to the bot ("want a res?", "need heals?"): a polite no, never "need a healer for that" (blind round 2).
+        if (Regex.IsMatch(text, @"^ (want|need|u want|you want|u need|you need) (a |some )?(res|rez|heal|heals|buff|buffs|port|speed|help) ") && incoming.Contains('?'))
+            return ("context offer", Pick(random, "nah im good ty", "im ok ty", "nah ty", "all good ty"));
+        // "loot the named", "grab the drop": the group's loot, said to the group.
+        if (facts.Channel is "group" or "say" && Regex.IsMatch(text, @"^ (pls |ok |k )?(loot|grab|take) (the |that |it|ur |your )?(named|drop|drops|corpse|chest|loot|it|bag)? "))
+            return ("context loot", Pick(random, "k", "on it", "got it", "looting", "k, anyone need it?", "rolling"));
+        // "fake inc dont bother", "nvm inc": an inc called off.
+        if (Regex.IsMatch(text, @" (fake inc|false alarm|no inc|nvm inc|inc nvm|not inc|was a pet|just a pet|was nothing) "))
+            return ("context inc", Pick(random, "k", "kk", "ok", "k ty"));
+        if (Regex.IsMatch(text, @" (free rps|free rp|free realm points|free kills|easy rps|come get rps) "))
+            return ("context rvr", Pick(random, "omw", "on my way", "omw!", "coming", "omw, save me some"));
         if (Stuck(words, text))
             return ("context stuck", Pick(random, "/stuck", "type /stuck", "try /stuck, takes a few secs", "/stuck works for that", "/stuck then run back",
                 "/stuck, happens to everyone"));
         if (intent == eAutonomousChatIntent.Farewell)
             return ("context farewell", Farewell(text, player, random));
         // A warning ("stealthers near the dock watch out") gets thanks from its own set; a call ("inc 3 albs at amg") a question or "omw".
-        if (intent == eAutonomousChatIntent.Alarm && facts.Channel != "group" && shape != "player_headsup")
-            return ("context inc", NamesAPlace(incoming, text)
-                ? facts.Near || facts.InRvr || facts.Level >= 35
-                    ? Pick(random, "omw", "on my way", "omw, 2 min", "coming", "omw, how many?", "omw!!")
-                    : Pick(random, "how many?", "how many are there?", "ugh, not again")
-                : Pick(random, "where?", "where at?", "where?? how many", "how many and where?", "where"));
+        // "inc": never ask what the line already says (blind round 2: "zerg at mmg, 40+ hibs" drew "how many?").
+        if (intent == eAutonomousChatIntent.Alarm && shape != "player_headsup")
+        {
+            bool place = NamesAPlace(incoming, text), count = SaysHowMany(text);
+            bool come = facts.Near || facts.InRvr || facts.Level >= 35;
+            if (facts.Channel == "group")
+                return ("context inc", place || count ? Pick(random, "on it", "k", "got it", "ok") : Pick(random, "where", "where?", "which way", "where?!"));
+            string reply = place && count ? come ? Pick(random, "omw", "on my way", "omw, 2 min", "coming", "omw!!") : Pick(random, "ugh", "ugh, again", "gl all", "not again")
+                : place ? come ? Pick(random, "omw", "omw, how many?", "how many?", "coming") : Pick(random, "how many?", "how many are there?")
+                : count ? Pick(random, "where?", "where at?", "where??")
+                : Pick(random, "where?", "where at?", "how many and where?", "where");
+            return ("context inc", reply);
+        }
         if (shape == "player_help")
             return ("context help", Help(text, facts, random));
         if (RealmNews(text, random) is { } news)
@@ -65,6 +83,8 @@ public static class AutonomousChatContext
 
     private static bool Stuck(string[] words, string text) =>
         words.Contains("stuck") && !Regex.IsMatch(text, @" stuck (at|on) (level|lvl|\d)| stuck with | xp | stuck lfg| stuck in town waiting") &&
+        // A pet or a mob stuck behind a door is no /stuck for the player (blind round 2).
+        !Regex.IsMatch(text, @" (pet|pets|mob|mobs|add|adds|monster|npc|horse|minion|summon|named|boss|it|he|she|they) (is|s|got|was|keeps|keep|getting) stuck | stuck (pet|mob)") &&
         Regex.IsMatch(text, @" (im|i m|i am|got|get|getting|totally|so|still) stuck | stuck (in|under|on|behind|inside|between|at) | help stuck | stuck help ");
 
     private static string Farewell(string text, string player, Random random)
@@ -115,6 +135,11 @@ public static class AutonomousChatContext
         Regex.IsMatch(text, @" (at|near|by|in|on|outside|behind|inside) (the )?[a-z]{3,}") ||
         AutonomousChatQuestions.PlaceNamed(incoming, AutonomousChatPlaces.All) != null ||
         Regex.IsMatch(text, @" (amg|hmg|mmg|mg|dock|bridge|gate|keep|relic|pk|portal|caer|dun|faste|fort|castle|tower|milegate) ");
+
+    /// <summary>"40+ hibs", "3 grps", "2 fg", "a zerg", "8 man": the line says how many. Pure.</summary>
+    private static bool SaysHowMany(string text) =>
+        Regex.IsMatch(text, @" \d+\+? ?(hibs?|mids?|albs?|enemies|grps?|groups?|fgs?|man|men|people|ppl|of them|stealthers?|assassins?|bards?|champs?|heroes|clerics?)? | (zerg|fg|full group|two groups|three groups|a few|lots of|tons of|a bunch) ") &&
+        !Regex.IsMatch(text, @" (rr|level|lvl)\d");
 
     private static bool Selling(string text) => Regex.IsMatch(text, @" (wts|selling|for sale|obo) ") && !Regex.IsMatch(text, @" (anyone|anybody|any1|who s|whos|who is) selling ");
 

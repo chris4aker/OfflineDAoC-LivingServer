@@ -55,6 +55,9 @@ public static class AutonomousChatQuestions
             return false;
         if (text.TrimEnd().EndsWith('?'))
             return true;
+        // "we're in emain" lost its apostrophe as "were in emain": no question (Beta 1.1.3).
+        if (System.Text.RegularExpressions.Regex.IsMatch(text.TrimStart(), @"^(we|they|you|u)['’]re\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+            return false;
         string t = Normalize(text);
         // "hi all, anyone know..." / "ok so where is...": the question may follow a greeting or filler.
         t = Regex.Replace(t, @"^(hi|hey|hello|yo|ok|so|um|hmm|quick question|question|q|all|guys|everyone|realm)( (all|guys|everyone|so))? ", "");

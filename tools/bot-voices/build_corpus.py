@@ -186,6 +186,9 @@ AGREEMENT_RE = re.compile(r"^(a|an|one) [a-z']+( (with|holding|of|in|on|a|an|the
 
 
 def check_text(text, tags, where, problems):
+    # Beta 1.1.3: a "[, ]" without a "|" leaked into lines as written ("lfg[, ]got time pst").
+    if '[' in text or ']' in text:
+        problems.append(f'{where}: a "[" or "]" left in the line as said (a choice needs a "|"): {text}')
     if AGREEMENT_RE.search(text.lower()):
         problems.append(f'{where}: a singular subject with "are" (write the choices as whole phrases): {text}')
     if len(text) > MAX_RAW:
@@ -459,6 +462,9 @@ def parse_file(path, problems):
             if len(family) > 1:
                 line['weight'] = round(weight, 4)
                 line['_family'] = True
+                # Beta 1.1.3: the ways of saying one template share a family, so a realm doesn't hear two of them close
+                # together ("that horse ride took so long i aged a year" / "... i grew a beard").
+                line['family'] = hashlib.sha1((tags['kind'] + '|' + text).encode()).hexdigest()[:10]
             if tags['kind'] in OPENER_KINDS:
                 line['invites'] = tags['invites'] or infer_invites(said, tags['kind'])
                 # A plain "ask" tag takes a more specific question type when the words show one ("how is everyone?").

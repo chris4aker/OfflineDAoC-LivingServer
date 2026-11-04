@@ -7,10 +7,11 @@ budgets:
 - **The ambient budget** sets how much the world says on its own: openers, answers between bots, news, bursts, town
   broadcasts, guild and group talk. It has a floor and a ceiling per channel, and it grows with the number of bots
   online, with no cap.
-- **The reply budget** sets when a bot answers *you*. A reply has to fit what you said. A weak reply becomes silence,
-  or a short "?" or "ya?" when you sent the bot a tell or named it.
+- **The reply budget** sets when a bot answers *you*. A reply has to fit what you said. A weak reply becomes something
+  short that does fit ("ty", "lol", "dunno", "no heals on a thane sry"), or silence for spam, scams and lines said to
+  someone else.
 
-Silence is only ever the answer to a weak reply to the player. The ambient world is never held back to avoid a bad line:
+Silence is only ever the answer to a line no bot should answer, or to a weak reply nothing short can fix. The ambient world is never held back to avoid a bad line:
 it picks another line or another channel.
 
 All the numbers live in one file, `source/server/GameServer/bots/autonomous/data/chat/chat-budget.json`, which has
@@ -108,7 +109,12 @@ A keep lost, a relic moved or Darkness Falls also reaches the capital's /broadca
 - **Musings:** lines that narrate the game instead of playing it appear only now and then as /faction openers. They
   never appear as replies, in /say or in /broadcast.
 - **The Realm Exchange:** bots name it only to someone asking where to buy or sell, and in a seller's own listing.
-- **Generic agreement** ("good question", "happy to help", "sounds familiar"): at most once per channel per hour.
+- **Generic agreement** ("good question", "happy to help", "sounds familiar", "very true"): never said, as an opener
+  or a reply.
+- **Quips and polished jokes:** rare, and only as /faction openers.
+- **Template families:** a line written with several wordings counts as one; once a bot says one wording, the realm
+  doesn't hear its siblings for six hours.
+- **Typing slips:** rarer, and mostly a dropped letter in a long word, never the first letter.
 - **Near-copies:** a line that differs from one the channel carried in the last half hour only by an interjection or a
   number isn't said again. Short reactions ("lol", "gz", "omw") are exempt.
 
@@ -125,9 +131,26 @@ line's topic. Each route has a fit:
 | 2, fits | a social reply to a social line (hello, thanks, gz, gn, brb, a laugh), roleplay in kind |
 | 1, weak | a remark on the topic, a stock "not sure", a brush-off ("ask around maybe", "beats me") |
 
-A reply needs `reply.min_fit` (2). Below it, the bot stays quiet. A tell to it, or a line that names it, gets a short
-acknowledgement ("?", "ya?", "hm?", or "sec" when it's busy) instead. The first blind evaluation set this rule: silence
-scored better than the average reply, and brush-offs to answerable questions were the most common fault.
+A reply needs `reply.min_fit` (2). Below it, the bot falls back to something short that still fits. The first blind
+evaluation set the bar: silence scored better than the average reply, and brush-offs to answerable questions were the
+most common fault. The second showed bots had become too quiet, so the fallbacks are:
+
+- **A tell or a line naming the bot:** a short reply to what it says. A compliment gets "ty", an offer to buy "not
+  selling sry", an offer of help "nah im good ty", a call for heals or a rez the truth for the bot's class ("thane, no
+  heals sry"), a question "no clue sry", and an answer to the bot's own question "cool". Only a line with nothing in it
+  ("hi", "u there?") still gets "?" or "ya?".
+- **Group, guild, /say and /faction:** a short laugh, "ugh" or "same" to banter, a joke or a bad-luck story, at a rate
+  that is highest in a group and lowest in /faction. A question nobody can answer gets one "dunno" in a group or guild,
+  less often in /say and /faction.
+- **Silence** is kept for spam and scams (links, real-money prices, "your account has been flagged", fake GMs, account
+  sales), for a line said to someone else by name (in a group, a light laugh now and then is fine), and for lines
+  nobody could read.
+
+Roleplay gets an answer in kind: a challenge, a question, a greeting, a mourning (a bow), a toast (a toast back), or
+otherwise an emote such as *nods*.
+
+Bots also answer `/advice` (one knowledgeable bot of your realm, when it knows the answer), and questions in
+`/broadcast` and chat groups, by tell.
 
 **Who answers, and when:**
 - **One primary answer.** A hello, a ding, a goodbye or a call may draw up to `reply.pileon_cap` (2) more short ones. A

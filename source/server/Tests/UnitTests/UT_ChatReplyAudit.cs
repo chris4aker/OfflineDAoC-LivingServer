@@ -81,6 +81,12 @@ namespace DOL.GS.Tests
                 if (fact != null)
                     return ("fact " + (self ?? "world"), fact);
             }
+            // Beta 1.1.3, round 2: roleplay in kind, by what the line does (as VoicedChoice).
+            if (value == eAutonomousChatIntent.Roleplay)
+            {
+                string act = AutonomousChatShortTalk.RoleplayAct(incoming);
+                return ("intent roleplay", Pick(i, answers: "player_rp_" + act) ?? Pick(i, answers: "player_rp_emote") ?? "*nods*");
+            }
             string shape = AutonomousChatShortTalk.QuestionShape(incoming);
             if (shape == "ask_howareyou")
                 return ("shape howareyou", Pick(i, answers: "ask_howareyou") ?? Pick(i, intent: "greeting"));
@@ -145,12 +151,12 @@ namespace DOL.GS.Tests
             ChatAuditRoute.Item[] items = JsonSerializer.Deserialize<ChatAuditRoute.Item[]>(File.ReadAllText(input));
             var sb = new StringBuilder();
             int hits = 0;
-            var outcomes = new Dictionary<string, int>(StringComparer.Ordinal) { ["answer"] = 0, ["ack"] = 0, ["silent"] = 0 };
+            var outcomes = new Dictionary<string, int>(StringComparer.Ordinal) { ["answer"] = 0, ["short"] = 0, ["rescue"] = 0, ["ack"] = 0, ["silent"] = 0 };
             foreach (ChatAuditRoute.Item item in items)
             {
                 (string path, _) = ChatAuditRoute.Route(item, new Random(1));
                 // Beta 1.1.3: what the reply budget makes of it (a real answer, an acknowledgement, or nothing).
-                (string outcome, _) = ChatAuditRoute.Budget(item, path);
+                (string outcome, _, _) = ChatAuditRoute.Budget(item, path, new Random(item.text.Length));
                 outcomes[outcome]++;
                 if (ChatAuditRoute.Fits(item.expect, path))
                     hits++;
@@ -158,7 +164,8 @@ namespace DOL.GS.Tests
                     sb.AppendLine($"[{item.channel}] {item.text} | ctx {item.context} | expect {item.expect} | got {path} | {outcome}");
             }
             sb.Insert(0, $"read as expected: {hits}/{items.Length} ({(double)hits / items.Length:P1})\n" +
-                         $"reply budget: {outcomes["answer"]} answered, {outcomes["ack"]} acknowledged, {outcomes["silent"]} silent\n");
+                         $"reply budget: {outcomes["answer"]} answered, {outcomes["short"]} short replies to tells, {outcomes["rescue"]} short reactions or dunnos, " +
+                         $"{outcomes["ack"]} acknowledged, {outcomes["silent"]} silent ({(double)outcomes["silent"] / items.Length:P0})\n");
             File.WriteAllText(output, sb.ToString());
         }
 
@@ -176,7 +183,7 @@ namespace DOL.GS.Tests
             Item[] items = JsonSerializer.Deserialize<Item[]>(File.ReadAllText(input));
             var sb = new StringBuilder();
             int n = 0;
-            var tally = new Dictionary<string, int>(StringComparer.Ordinal) { ["answer"] = 0, ["ack"] = 0, ["silent"] = 0 };
+            var tally = new Dictionary<string, int>(StringComparer.Ordinal) { ["answer"] = 0, ["short"] = 0, ["rescue"] = 0, ["ack"] = 0, ["silent"] = 0 };
             foreach (Item item in items)
             {
                 n++;
@@ -287,13 +294,20 @@ namespace DOL.GS.Tests
                 // Beta 1.1.3: the reply budget on the route the server takes (ChatAuditRoute) decides what is really said.
                 var auditItem = new ChatAuditRoute.Item(item.text, item.channel, item.context, item.expect, item.note, item.to);
                 (string route, string fixedAnswer) = ChatAuditRoute.Route(auditItem, new Random(1));
-                (string outcome, int fit) = ChatAuditRoute.Budget(auditItem, route);
-                if (outcome == "answer" && fixedAnswer == null && replies.Count > 0 && replies[0] != null && AutonomousChatReplyBudget.IsBrushOff(replies[0]))
-                    outcome = auditItem.channel == "tell" || !string.IsNullOrEmpty(item.to) || item.expect == "directed" ? "ack" : "silent";
+                // A brush-off picked as the answer counts as weak, as Budgeted counts it.
+                bool brushOff = fixedAnswer == null && !route.StartsWith("none", StringComparison.Ordinal) && replies.Count > 0 && replies[0] != null &&
+                                AutonomousChatReplyBudget.IsBrushOff(replies[0]);
+                (string outcome, int fit, string budgetText) = ChatAuditRoute.Budget(auditItem, brushOff ? "intent unknown -> not sure" : route, Rng);
+                // The route answers but the corpus pick found nothing (world answers show as markers): the server's budget then
+                // decides as for a weak reply, unless the answer comes from the world.
+                if (outcome == "answer" && (replies.Count == 0 || replies[0] == null) && fixedAnswer == null && fit < AutonomousChatReplyFit.Known)
+                    (outcome, fit, budgetText) = ChatAuditRoute.Budget(auditItem, "none " + route, Rng);
                 tally[outcome]++;
                 sb.AppendLine($"     budget: {outcome} (route {route}, fit {fit})");
                 if (outcome == "ack")
                     replies = [AutonomousChatReplyBudget.Ack(500 + n, false, Rng)];
+                else if (outcome is "short" or "rescue")
+                    replies = [budgetText];
                 else if (outcome == "silent")
                     replies = [null];
                 else if (fixedAnswer != null)
@@ -301,7 +315,8 @@ namespace DOL.GS.Tests
                 foreach (string r in replies)
                     sb.AppendLine($"        \"{r ?? "(nothing)"}\"");
             }
-            sb.Insert(0, $"reply budget: {tally["answer"]} answered, {tally["ack"]} acknowledged, {tally["silent"]} silent\n");
+            sb.Insert(0, $"reply budget: {tally["answer"]} answered, {tally["short"]} short replies to tells, {tally["rescue"]} short reactions or dunnos, " +
+                         $"{tally["ack"]} acknowledged, {tally["silent"]} silent ({(double)tally["silent"] / items.Length:P0})\n");
             File.WriteAllText(output, sb.ToString());
         }
     }

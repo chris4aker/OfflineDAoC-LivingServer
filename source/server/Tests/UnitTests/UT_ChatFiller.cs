@@ -25,7 +25,8 @@ public class UT_ChatFiller
         VC.Line plain = Line("ambient", "general", "anyone want to duo near prydwen");
         Assert.That(AutonomousChatFiller.IsMusing(lore) && AutonomousChatFiller.IsMusing(musing));
         Assert.That(AutonomousChatFiller.IsMusing(plain), Is.False);
-        Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.1)), Is.True, "now and then in /faction");
+        Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.01)), Is.True, "now and then in /faction");
+        Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.1)), Is.False, "rarely: 5% (round 2)");
         Assert.That(AutonomousChatFiller.AmbientAllowed(lore, true, new FixedRandom(0.5)), Is.False);
         Assert.That(AutonomousChatFiller.AmbientAllowed(lore, false, new FixedRandom(0.0)), Is.False, "never in /say or /broadcast");
         Assert.That(AutonomousChatFiller.AmbientAllowed(plain, false, new FixedRandom(0.9)), Is.True);
@@ -48,25 +49,18 @@ public class UT_ChatFiller
     }
 
     [Test]
-    public void GenericFillerIsSaidAtMostOnceAChannelAnHour()
+    public void GenericFillerIsNeverSaid()
     {
-        foreach (string text in new[] { "good question", "Happy to help.", "sounds familiar :)", "Ha yes, this exactly." })
+        // Beta 1.1.3, round 2: the spot-the-bot judge's most common reason; removed from replies and openers.
+        foreach (string text in new[] { "good question", "Happy to help.", "sounds familiar :)", "Ha yes, this exactly.", "could be, tell me more",
+                     "yeah that is about right :D", "just thinking out loud", "sure thing", "hey!! how is everyone doing tonight" })
             Assert.That(AutonomousChatFiller.IsGeneric(text), Is.True, text);
         Assert.That(AutonomousChatFiller.IsGeneric("try the spiders by prydwen"), Is.False);
         VC.Line generic = Line("reply", "general", "good question");
         using (var scope = AutonomousChatFiller.Replying("is df open?", "faction:Albion:filler-test", 1_000))
-        {
-            Assert.That(AutonomousChatFiller.ReplyAllowed(generic, scope), Is.True);
-            AutonomousChatFiller.NoteGeneric(scope.ChannelKey, scope.Now);
-        }
-        bool At(string channel, long now)
-        {
-            using var scope = AutonomousChatFiller.Replying("x", channel, now);
-            return AutonomousChatFiller.ReplyAllowed(generic, scope);
-        }
-        Assert.That(At("faction:Albion:filler-test", 30 * 60_000), Is.False);
-        Assert.That(At("faction:Midgard:filler-test", 30 * 60_000), Is.True, "another channel");
-        Assert.That(At("faction:Albion:filler-test", 62 * 60_000), Is.True);
+            Assert.That(AutonomousChatFiller.ReplyAllowed(generic, scope), Is.False);
+        Assert.That(AutonomousChatFiller.ReplyAllowed(generic, null), Is.False);
+        Assert.That(AutonomousChatFiller.AmbientAllowed(Line("ambient", "general", "just thinking out loud"), true, new FixedRandom(0)), Is.False);
     }
 
     [Test]

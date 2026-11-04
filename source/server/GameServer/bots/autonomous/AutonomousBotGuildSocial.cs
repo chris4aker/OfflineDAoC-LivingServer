@@ -120,7 +120,7 @@ public static class AutonomousBotGuildSocial
             Lines.ReplyKind.Thanks or Lines.ReplyKind.Grouping or Lines.ReplyKind.Abuse => 1,
             // A question to your own guild is answered (played 2026-10-18: "where is everyone?" drew nothing).
             Lines.ReplyKind.Question => roll < 0.3 ? 2 : 1,
-            Lines.ReplyKind.Banter => roll < 0.4 ? 1 : 0,
+            Lines.ReplyKind.Banter => roll < 0.75 ? 1 : 0,
             _ => 0,
         };
         return Math.Min(available, wanted);
@@ -308,6 +308,9 @@ public static class AutonomousBotGuildSocial
             return;
         BotChatTranscript.Player("guild", player, message, player.Guild.Name);
         Guild guild = player.Guild;
+        // Beta 1.1.3, second pass: spam draws nothing.
+        if (AutonomousBotChatCoordinator.Screened(player, message, "guild"))
+            return;
         GameBot[] speakers = Speakers(guild);
         if (speakers.Length == 0)
             return;
@@ -332,6 +335,12 @@ public static class AutonomousBotGuildSocial
         }
 
         GameBot[] mentioned = speakers.Where(bot => AutonomousBotChatCoordinator.ContainsMention(message, bot.Name)).ToArray();
+        // A line to a guildmate who isn't a bot that hears it ("gz Tovah", "Elarwen, u on?") is theirs to answer.
+        if (AutonomousBotVoices.Enabled && mentioned.Length == 0 && AutonomousChatScreen.OtherAddressee(message, null) is { } other)
+        {
+            AutonomousChatWhy.RecordSilence(player.Realm, "guild", "player " + player.Name, "none other", 0, $"said to {other}", player.Name);
+            return;
+        }
         if (AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge))
         {
             GameBot answerer = mentioned.FirstOrDefault() ?? speakers[0];
@@ -439,7 +448,8 @@ public static class AutonomousBotGuildSocial
 
     /// <summary>With bot voices on, a gamebot's answer to a player's /gu line (as /faction and /group answer); else null.</summary>
     public static string VoicedPlayerGuildReply(GameBot bot, GamePlayer player, string message) =>
-        AutonomousBotVoices.Enabled && bot != null && player != null
+        AutonomousBotVoices.Enabled && bot != null && player != null && !AutonomousChatScreen.IsSpam(message) &&
+        (AutonomousBotChatCoordinator.ContainsMention(message, bot.Name) || AutonomousChatScreen.OtherAddressee(message, bot.Name) == null)
             ? AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge) ? AutonomousBotVoices.StyleFor(bot, knowledge)
                 : AutonomousBotChatCoordinator.ReplyChoiceToPlayer(bot, player, message,
                     AutonomousBotChatCoordinator.ContainsMention(message, bot.Name), "guild").Text

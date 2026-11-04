@@ -294,6 +294,9 @@ public static class AutonomousChatShortTalk
         // A real-life remark (guild and group chat in 2003 were full of them): a short reply in kind, by subject.
         // "afk 5 pizza here" is a brb first (the holdout check).
         // "re all, isp died again" is a hello back first (Beta 1.1.3).
+        // "game crashed 3 times today, thx mythic": a complaint (Beta 1.1.3, round 2).
+        if (HasPhrase(words, "thx", "thanks", "ty", "thank") && IsSarcasticThanks(words))
+            return "complaint";
         if (!words.Any(AwayWords.Contains) && words.Length > 0 && words[0] is not ("re" or "back") && RealLife(words) is { } life)
             return "player_rl_" + life;
         // "so i died to a blue con mob?" is a complaint with a question mark, not a question.
@@ -319,6 +322,28 @@ public static class AutonomousChatShortTalk
                 words.Any(word => word is "sucks" or "ugh" or "annoying" or "wiped" or "argh" or "sigh")))
             return "complaint";
         return null;
+    }
+
+    /// <summary>
+    /// What an in-character line does, for a reply in kind (Beta 1.1.3, round 2): "challenge" ("Halt! State thy business"),
+    /// "question" ("Knowest thou where...", "Have ye seen..."), "greeting" ("Hail, good sir", "Well met"), "mourn" ("*lights a
+    /// candle for the fallen*"), "toast" ("*raises a mug* To Midgard!"), or "emote" for anything else. Pure.
+    /// </summary>
+    public static string RoleplayAct(string text)
+    {
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        bool emote = (text ?? string.Empty).TrimStart().StartsWith('*') || (text ?? string.Empty).TrimStart().StartsWith("/me", StringComparison.OrdinalIgnoreCase);
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (halt|stand fast|who goes there|state (thy|your) (business|name)|declare (thyself|yourself)|draw (thy|your) (blade|sword)|have at (thee|you)|i challenge|en garde|defend (thyself|yourself)) "))
+            return "challenge";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (candle|fallen|mourn|grieve|rest in peace|rip|the dead|lost a brother|lost a sister|in memory|kneels|bows (his|her) head|weeps|lament) "))
+            return "mourn";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (raises (a|his|her|my) (mug|tankard|cup|glass|horn|ale)|a toast|toast to|to midgard|to albion|to hibernia|skal|skol|cheers|drinks to|for the realm) "))
+            return "toast";
+        if (AutonomousChatQuestions.IsQuestion(text) || System.Text.RegularExpressions.Regex.IsMatch(t, @" (knowest thou|pray tell|have ye|hast thou|canst thou|where might|whither|what news|tell me) "))
+            return "question";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^ (hail|well met|greetings|good morrow|good evening|good day|good eve|hello|hey|hi) "))
+            return "greeting";
+        return emote ? "emote" : "remark";
     }
 
     private static readonly HashSet<string> ArchaicWords = Set("thee", "thy", "thou", "thine", "hast", "dost", "doth", "forsooth",
@@ -352,6 +377,11 @@ public static class AutonomousChatShortTalk
         return words.Length >= 6 && char.IsUpper(trimmed[0]) && (trimmed.EndsWith('.') || trimmed.EndsWith('!')) && !trimmed.EndsWith("..") &&
                HasPhrase(words, "the gods", "the realm", "our lands", "this place", "the shadows", "the night", "the darkness", "the forest", "my blade");
     }
+
+    /// <summary>"thx mythic", "thanks a lot lag", "ty goa", "game crashed again, thanks": thanks that complain. Pure.</summary>
+    public static bool IsSarcasticThanks(string[] words) =>
+        words.Any(word => word is "mythic" or "goa" or "ea" or "lag" or "server" or "patch" or "isp" or "aol" or "comcast" or "crashed" or "crash" or
+            "crashes" or "crashing" or "ld" or "linkdead" or "nerf" or "nerfed" or "bug" or "bugged" or "disconnected" or "dc");
 
     /// <summary>A mishap told for a laugh: a fall, a one-shot, a death by something grey or silly. Pure.</summary>
     public static bool IsMishap(string[] words) =>
@@ -488,6 +518,9 @@ public static class AutonomousChatShortTalk
     public static bool IsGoodNews(string[] words)
     {
         if (words.Length == 0)
+            return false;
+        // Beta 1.1.3, round 2: "50 cleric lfg rvr, rr4" is a group post, not news to cheer.
+        if (words.Any(word => GroupWords.Contains(word) && word is not ("group" or "party")))
             return false;
         if (words[0] is "woot" or "w00t" or "yay" or "finally" && words.Length <= 4 && words.Skip(1).Any(word => word.Length > 0 &&
                 (char.IsDigit(word[0]) || word.StartsWith("rr", StringComparison.Ordinal))))
@@ -747,6 +780,9 @@ public static class AutonomousChatShortTalk
         // question gets an honest answer or a "not sure". A short "ty, any more?" stays thanks.
         if (thanks && question && words.Count(word => !ThanksWords.Contains(word)) >= 5)
             return Is(eAutonomousChatIntent.Unknown, out intent);
+        // "game crashed 3 times today, thx mythic", "thanks lag": sarcasm, a complaint (blind round 2: read as thanks).
+        if (thanks && IsSarcasticThanks(words))
+            return Is(eAutonomousChatIntent.Banter, out intent);
         if (thanks)
             return Is(eAutonomousChatIntent.Thanks, out intent);
 
@@ -760,6 +796,9 @@ public static class AutonomousChatShortTalk
             (n <= 3 || words.Contains("level") || words.Contains("lvl")))
             return Is(eAutonomousChatIntent.Ding, out intent);
 
+        // "free rps at mmg, mids are afk": a rally, not an away (Beta 1.1.3, round 2).
+        if (HasPhrase(words, "free rps", "free rp", "free realm points", "free kills", "easy rps", "come get rps"))
+            return Is(eAutonomousChatIntent.RvR, out intent);
         // "inventory full, gonna run to the merchant brb": a brb at the end of a longer line is still a brb (the audit).
         if ((n <= 6 && HasPhrase(words, "be right back", "be back in", "one sec", "1 sec", "afk for", "hang on", "hold on", "doorbell", "door bell",
                  "phone ringing", "phone call", "gotta get the door", "gotta answer") || Any(words, AwayWords) && !question) && words[^1] != "back" &&

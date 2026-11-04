@@ -27,23 +27,34 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
 - **Big moments ripple through chat.** A keep taken or lost, a relic moved, a raid won or wiped, Darkness Falls changing
   hands, a server first and a nemesis paid back each draw a short burst of reactions in /faction. The realm-wide ones also
   reach the capital's /broadcast.
-- **Bots answer what you said, or say nothing.**
-  - **Weak replies:** a reply that doesn't fit your line is dropped. A tell or a line that names the bot gets "?", "ya?"
-    or "sec" instead. No more "ask around maybe" to a question anyone could answer.
+- **Bots answer what you said.**
+  - **Weak replies:** a reply that doesn't fit your line is dropped for something short that does. A tell gets a reply
+    to what it says ("ty", "not selling sry", "nah im good ty", "no heals on a thane sry", "cool"); only "hi" or "u
+    there?" gets "?" or "ya?". Banter and bad luck get a "lol" or "ugh" back now and then, most in a group, and a
+    question nobody knows gets one "dunno" in a group or guild. No more "ask around maybe" to a question anyone could
+    answer.
+  - **Silence where it belongs:** spam and scams (links, real-money prices, fake GMs, "your account has been flagged",
+    account sales) and lines said to someone else by name get no answer.
+  - **More places to ask:** bots answer `/advice` when one of them knows, and questions in `/broadcast` and chat groups
+    by tell.
   - **About themselves:** bots answer their name, class, spec, level, zone, group and what they're hunting from their
     real state.
   - **How things work:** they explain equipping, binding, `/stuck`, `/anon`, `/release`, training, and how many realm
     points a realm rank takes.
   - **By situation:** "gn" gets a goodnight, "stuck" gets `/stuck`, "inc" gets "where?" or "omw", a call for help an offer
     to come, a sale a price or a no, and a counter-offer to a bot's price a counter or a deal.
-  - **Words they now read:** "lo", "re", "wb", "long time no see", "u there?", "ne1 on?", roleplay (answered in kind),
-    mishaps ("lol rip"), apologies, offers of help, and "where?" after a bot named a place.
+  - **Words they now read:** "lo", "re", "wb", "long time no see", "u there?", "ne1 on?", mishaps ("lol rip"),
+    apologies, offers of help, "where?" after a bot named a place, "thx mythic" (sarcasm, not thanks), "free rps at…"
+    (a rally), "loot the named" and "fake inc" ("k"). A call that already says where and how many gets "omw", not "how
+    many?". `/stuck` is for you, not your pet.
+  - **Roleplay in kind:** a challenge gets a challenge, a toast a toast, a mourning a bow, otherwise an emote.
 - **One answer, then maybe a few more.** A question gets one answer. A hello or a ding gets a few. A joke now and then
   draws a "lol" or "+1". Replies take longer to type the longer they are, at each bot's own typing speed.
 - **Less filler.**
-  - **Musings:** lore musings appear only now and then in /faction, never as replies.
-  - **Generic agreement:** "good question" and the like come at most once an hour per channel.
-  - **Repeats and polish:** near-copies are dropped, and fewer bots write with capitals and full stops.
+  - **Musings and quips:** lore musings and polished jokes appear only rarely in /faction, never as replies.
+  - **Generic agreement:** "good question", "very true" and the like are gone.
+  - **Repeats and polish:** near-copies are dropped, the wordings of one line rest for hours once one is said, and most
+    bots type in lowercase. Typos are rarer and look typed (a dropped letter).
   - **The Realm Exchange:** bots mention it only when someone asks where to buy or sell.
   - **Templates:** a few grammar slips are fixed.
 - **Typing habits.** About a third of bots have small habits of their own: "u" and "ur", "??", "...", a trailing "lol",
@@ -52,10 +63,11 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
   busy each channel around you is.
 - **Checked:**
   - **Automated:** new tests for every part; the full server suite passes.
-  - **Simulated evening at 1,000 bots a realm:** about 11.8 lines a minute across the channels a player hears, up from
-    about 2.0. At 300 bots it's about 5.1, up from 1.2.
-  - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to 71%. Those lines are known
-    now, so this is a regression check; a fresh blind round comes next.
+  - **Simulated evening at 1,000 bots a realm:** about 11.7 lines a minute across the channels a player hears, up from
+    about 2.0. At 300 bots it's about 5.2, up from 1.3.
+  - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to about 70%, and about a quarter
+    of those lines now get no reply. Those lines are known, so this is a regression check; a fresh blind round judges
+    the result.
   - **In game:** not yet played.
 
 ## Beta 1.1.1 — 2026-10-31

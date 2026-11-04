@@ -226,6 +226,23 @@ public static class AutonomousBotGroupChatter
             next.LastPlayerReply = GameLoop.GameLoopTime;
         }
         GameBot[] named = mates.Where(mate => AutonomousBotChatCoordinator.ContainsMention(message, mate.Name)).ToArray();
+        // Beta 1.1.3, second pass: spam draws nothing; a line to someone else in the group draws at most a laugh (light teasing).
+        if (AutonomousBotChatCoordinator.Screened(player, message, "group"))
+            return;
+        if (named.Length == 0 && AutonomousChatScreen.OtherAddressee(message, null) is { } other)
+        {
+            eAutonomousChatIntent toOther = AutonomousChatIntentModel.Predict(message);
+            if (AutonomousChatScreen.MayReactToOthers("group", toOther) && Random.Shared.NextDouble() < 0.4)
+            {
+                GameBot teaser = mates[0];
+                string laugh = AutonomousBotVoices.StyleFor(teaser, AutonomousChatReplyBudget.Reaction("laugh", Random.Shared));
+                AutonomousLivingServer.Later(teaser, AutonomousBotChatCoordinator.ReplyDelayMs(teaser, message, laugh, 0, Random.Shared),
+                    () => teaser.Group == group && teaser.IsAlive, () => Send(teaser, laugh, "", player.Name));
+            }
+            else
+                AutonomousChatWhy.RecordSilence(player.Realm, "group", "player " + player.Name, "none other", 0, $"said to {other}", player.Name);
+            return;
+        }
         GameBot[] pool = named.Length > 0 ? named : mates;
         // "eithne what spec r u": the name says who it is for (the holdout check).
         if (named.Length > 0 && AutonomousChatThreads.WithoutName(message, named[0].Name) is { Length: > 0 } unnamed)
@@ -243,7 +260,15 @@ public static class AutonomousBotGroupChatter
         if (intent == eAutonomousChatIntent.Alarm)
         {
             GameBot heard = pool[0];
-            if (AutonomousBotVoices.TryLine(heard, "reply", out VC.Picked ok, answers: "player_headsup", relax: true))
+            // Beta 1.1.3, round 2: an inc call gets a terse "where" or "on it", not "ty for the heads up" (too polite for a call).
+            if (AutonomousChatContext.Reply(message, intent, AutonomousChatShortTalk.QuestionShape(message),
+                    AutonomousBotChatCoordinator.ContextFor(heard, player, "group"), Random.Shared) is { } call)
+            {
+                string callText = AutonomousBotVoices.StyleFor(heard, call.Text);
+                AutonomousLivingServer.Later(heard, AutonomousBotChatCoordinator.ReplyDelayMs(heard, message, callText, 0, Random.Shared) / 2,
+                    () => heard.Group == group && heard.IsAlive, () => Send(heard, callText, "none", player.Name));
+            }
+            else if (AutonomousBotVoices.TryLine(heard, "reply", out VC.Picked ok, answers: "player_headsup", relax: true))
                 AutonomousLivingServer.Later(heard, AutonomousBotChatCoordinator.ReplyDelayMs(ok.Text, 0, Random.Shared) / 2,
                     () => heard.Group == group && heard.IsAlive, () => Send(heard, ok.Text, "none", player.Name));
             return;

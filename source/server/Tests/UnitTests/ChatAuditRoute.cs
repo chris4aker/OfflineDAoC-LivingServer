@@ -55,11 +55,20 @@ namespace DOL.GS.Tests
             bool group = item.channel == "group";
             bool directed = item.expect == "directed" || !string.IsNullOrEmpty(item.to);
             bool addressed = tell || group || directed || item.channel == "say";
+            // Beta 1.1.3, round 2: spam and lines to someone else are screened out first, on every channel (as Screened and
+            // SchedulePlayerReplies do).
+            if (AutonomousChatScreen.IsSpam(text))
+                return ("none spam", null);
+            if (!directed && !tell && AutonomousChatScreen.OtherAddressee(text, item.to) is not null)
+                return AutonomousChatScreen.MayReactToOthers(item.channel, intent) ? ("intent laugh", null) : ("none other", null);
+            // /broadcast and /chatgroup lines are answered only when they ask something (OnPlayerOpenChannel).
+            if (item.channel is "broadcast" or "chatgroup" && !AutonomousBotChatCoordinator.NeedsAnswer(text))
+                return ("none open", null);
             // The thread: the bot's line before, if any.
             var log = new ChatThreadLog();
             const string channel = "audit";
             if (!string.IsNullOrEmpty(item.context))
-                log.Record(channel, 9, "Brannoc", item.context, item.context.TrimEnd().EndsWith('?') ? "ask" : "chat", 1_000, "Wynn");
+                log.Record(channel, 9, "Brannoc", item.context, AutonomousChatQuestions.IsQuestion(item.context) ? "ask" : "chat", 1_000, "Wynn");
             ChatThreadLog.Said last = log.Last(channel, 5_000, AutonomousChatThreads.FollowUpWindowMs);
             ChatThreadLog.Said open = log.OpenQuestion(channel, 5_000, AutonomousChatThreads.AnswerWindowMs);
             if (AutonomousChatThreads.JoinsCall(text) && last != null && AutonomousChatThreads.CallsForGroup(last.Text))
@@ -83,7 +92,10 @@ namespace DOL.GS.Tests
             if (open != null && AutonomousChatThreads.ReadsAsAnswer(text, intent))
                 return (AutonomousChatShortTalk.QuestionShape(text) == "player_wait" ? "thread wait" : "thread answer", null);
             if (group && intent == eAutonomousChatIntent.Alarm)
-                return ("group warning", null);
+                return AutonomousChatContext.Reply(text, intent, AutonomousChatShortTalk.QuestionShape(text),
+                    new AutonomousChatContext.Facts("Brannoc", "Wynn", "group", true, false, false, Me.Level, null, "Jordheim"), random) is { } call
+                    ? (call.Route, call.Text)
+                    : ("group warning", null);
             if (tell)
             {
                 if (AutonomousBotChatCoordinator.SaysInvited(text))
@@ -144,14 +156,33 @@ namespace DOL.GS.Tests
         /// </summary>
         internal static (string Outcome, int Fit) Budget(Item item, string path)
         {
+            (string outcome, int fit, _) = Budget(item, path, new Random(1));
+            return (outcome, fit);
+        }
+
+        /// <summary>
+        /// The reply budget as Budgeted applies it (Beta 1.1.3, second pass): "answer"; "short" (a tell's content, the text given);
+        /// "ack"; "rescue" (a short reaction or a "dunno", the text given); or "silent". /advice answers only from what is known.
+        /// </summary>
+        internal static (string Outcome, int Fit, string Text) Budget(Item item, string path, Random random)
+        {
             bool addressed = item.channel == "tell" || item.expect == "directed" || !string.IsNullOrEmpty(item.to);
             int fit = AutonomousChatReplyFit.Of(path, item.text);
-            return (AutonomousChatReplyBudget.Decide(fit, addressed, AutonomousChatBudget.MinReplyFit) switch
-            {
-                AutonomousChatReplyBudget.Outcome.Answer => "answer",
-                AutonomousChatReplyBudget.Outcome.Ack => "ack",
-                _ => "silent",
-            }, fit);
+            if (path is "none spam" or "none other" or "none open" or "none ack")
+                return ("silent", 0, null);
+            if (item.channel == "advice")
+                return fit >= AutonomousChatReplyFit.Specific ? ("answer", fit, null) : ("silent", fit, null);
+            var outcome = AutonomousChatReplyBudget.Decide(fit, addressed, AutonomousChatBudget.MinReplyFit);
+            if (outcome == AutonomousChatReplyBudget.Outcome.Answer)
+                return ("answer", fit, null);
+            string text = item.text;
+            if (!string.IsNullOrEmpty(item.to) && AutonomousChatThreads.WithoutName(text, item.to) is { Length: > 0 } unnamed)
+                text = unnamed;
+            var moment = new AutonomousChatReplyBudget.Moment(text, item.channel, addressed, AutonomousChatIntentModel.Predict(text), Me.ClassName, false, false,
+                false, string.IsNullOrEmpty(item.context) ? null : item.context);
+            if (outcome == AutonomousChatReplyBudget.Outcome.Ack)
+                return AutonomousChatReplyBudget.ToContent(moment, random) is { } content ? ("short", fit, content) : ("ack", fit, null);
+            return AutonomousChatReplyBudget.Rescue(moment, path, random) is { } rescue ? ("rescue", fit, rescue) : ("silent", fit, null);
         }
 
         /// <summary>Whether a route is what a sensible player expects for the line's label.</summary>

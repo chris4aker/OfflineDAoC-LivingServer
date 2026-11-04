@@ -1,10 +1,11 @@
 # Beta 1.1.3: replies for lines the first blind evaluation found the bots could not read.
 # New writing (see docs/bot-voices/WRITING-GUIDE.md). {player} is whoever is being answered.
 
-# ---- roleplay: the player spoke in character ("Hail, good sir", "*bows deeply*", "By Odin's beard") ---------------------
-# Answered in kind: a few bots play along, in the same register. Short, never a lecture.
+# ---- roleplay: the player spoke in character. Each act gets a reply in kind (Beta 1.1.3, round 2: stock musings didn't fit).
+# A greeting is returned, a challenge answered, a question answered as well as a stranger can, a mourning met with respect,
+# a toast with a toast; anything else gets an emote. Short, never a lecture.
 @kind reply
-@intent roleplay
+@answers player_rp_greeting
 @who *
 well met, friend
 hail and well met
@@ -12,38 +13,85 @@ aye, well met
 *nods* well met, traveler
 greetings to ye
 and to you, friend
-aye, tis a dark night for it
-the roads are not safe of late, keep thy blade close
-rest a while, the fire is warm
-*tips hat*
-safe travels to thee
-aye, i have seen worse
-mind the shadows, friend
-a fine evening for it, aye
-*raises a mug*
-what news, traveler?
-i would not wander alone tonight
-*grins* aye
+*tips hat* hail
+hail, friend. fair travels
+*bows* well met
 @who Socialite
 well met {player}, sit and share the fire
 *bows* well met, {player}
+
+@kind reply
+@answers player_rp_challenge
+@who *
+peace, friend. i am of the realm
+*raises hands* no quarrel here
+easy, i am but a traveler
+i come in peace, friend
+*sheathes blade* a friend of the realm
+nay, no trouble from me
 @who Daredevil
-aye, and i hunger for a fight
-let them come, my blade is thirsty
-@who Explorer
-i have walked many roads, few as strange as this one
-the far hills hold stranger things still
+*grips sword* name the place and time
 @realm alb
-for Albion!
-may Camelot stand forever
-the news from Camelot is grim as ever, friend
+peace, i serve Albion as you do
 @realm mid
-by Odin, aye
-Midgard stands, as ever
+peace, i fight for Midgard same as you
 @realm hib
-may Lugh guide thy hand
-the Morrigan watches us all
-Hibernia remembers, friend
+peace, i am of Hibernia, same as thee
+
+@kind reply
+@answers player_rp_question
+@who *
+i know not, friend. ask at the guard post
+nay, i have not seen such a one
+alas, i cannot say
+i know not, but the guards may
+*shakes head* i cannot help ye there
+not that i have seen, traveler
+ask the townsfolk, they know more than i
+
+@kind reply
+@answers player_rp_mourn
+@who *
+*bows head*
+*kneels a moment*
+may they rest well
+*lowers eyes* they will be remembered
+*bows low*
+rest easy, friend
+
+@kind reply
+@answers player_rp_toast
+@who *
+*raises a mug*
+*raises a tankard* aye!
+*drinks*
+to the realm!
+*clinks mugs*
+@realm alb
+to Albion!
+@realm mid
+to Midgard!
+@realm hib
+to Hibernia!
+
+@kind reply
+@answers player_rp_emote
+@who *
+*nods*
+*bows*
+*smiles*
+*nods slowly*
+*waves*
+*grins*
+
+@kind reply
+@answers player_rp_remark
+@who *
+aye
+aye, true enough
+*nods* aye
+well said, friend
+aye, that it is
 
 # ---- a mishap told for a laugh ("i fell off the bridge again", "1 shotted by a grey con") -------------------------------
 @kind reply

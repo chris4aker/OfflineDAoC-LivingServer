@@ -83,7 +83,7 @@ public class UT_ChatArbiter
             beforeTotal += wanted;
             beforeMax = Math.Max(beforeMax, wanted);
             (string path, _) = ChatAuditRoute.Route(item, new Random(1));
-            (string outcome, _) = ChatAuditRoute.Budget(item, path);
+            (string outcome, _, _) = ChatAuditRoute.Budget(item, path, random);
             int after = outcome == "silent" ? 0
                 : AutonomousChatArbiter.Arrange(wanted, intent, path, false, AutonomousChatQuestions.IsQuestion(item.text), 300,
                     AutonomousChatBudget.Current.PileOnCap, random).Total;
