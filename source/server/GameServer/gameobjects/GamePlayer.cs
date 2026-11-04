@@ -10251,7 +10251,8 @@ namespace DOL.GS
 
                 var innerTasks = characterDataQuests.Select(async characterQuest =>
                 {
-                    var dbDataQuest = await DOLDB<DbDataQuest>.FindObjectByKeyAsync(characterQuest.DataQuestID);
+                    // As the data quest cache reads it: with the epic chains linked (EpicChainLinks, Living Server 1.2).
+                    var dbDataQuest = Quests.EpicChainLinks.Link(await DOLDB<DbDataQuest>.FindObjectByKeyAsync(characterQuest.DataQuestID));
 
                     if (dbDataQuest == null || (DataQuest.eStartType)dbDataQuest.StartType is DataQuest.eStartType.Collection)
                         return null;

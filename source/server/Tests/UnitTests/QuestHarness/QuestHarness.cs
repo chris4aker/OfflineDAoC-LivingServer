@@ -367,6 +367,23 @@ namespace DOL.UnitTests.QuestHarness
 
         internal int NextId() => _nextId++;
 
+        /// <summary>A quest row as a database read hands it out: a new object each time, so the server's changes to
+        /// what it read (EpicChainLinks links rows in memory) never reach the world's own rows.</summary>
+        public static DbDataQuest Copy(DbDataQuest row)
+        {
+            if (row == null)
+                return null;
+            var copy = new DbDataQuest();
+            foreach (PropertyInfo property in typeof(DbDataQuest).GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (property.CanRead && property.CanWrite && property.GetIndexParameters().Length == 0 && property.DeclaringType == typeof(DbDataQuest))
+                    property.SetValue(copy, property.GetValue(row));
+            }
+            copy.IsPersisted = true;
+            copy.Dirty = false;
+            return copy;
+        }
+
         internal DbCharacterXDataQuest Copy(DbCharacterXDataQuest stored)
         {
             // A real database hands out a new object on every read; the quest code relies on nothing else.
@@ -392,7 +409,7 @@ namespace DOL.UnitTests.QuestHarness
                     if (type == typeof(DbItemTemplate))
                         return World.Item(args[0] as string);
                     if (type == typeof(DbDataQuest))
-                        return World.Quests.GetValueOrDefault(Convert.ToInt32(args[0]));
+                        return QuestWorld.Copy(World.Quests.GetValueOrDefault(Convert.ToInt32(args[0])));
                     if (type == typeof(DbCharacterXDataQuest))
                     {
                         int id = Convert.ToInt32(args[0]);
@@ -414,7 +431,7 @@ namespace DOL.UnitTests.QuestHarness
                 case nameof(IObjectDatabase.SelectObjects):
                 case nameof(IObjectDatabase.SelectAllObjects):
                     if (type == typeof(DbDataQuest))
-                        return World.Quests.Values.ToList();
+                        return World.Quests.Values.Select(QuestWorld.Copy).ToList();
                     return Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
                 case nameof(IObjectDatabase.MultipleSelectObjects):
                     return Activator.CreateInstance(typeof(List<>).MakeGenericType(typeof(IList<>).MakeGenericType(type)));

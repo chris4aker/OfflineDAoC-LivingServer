@@ -8,6 +8,42 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+**Quests: the epic chains linked on every install, repeatable quests, deliveries, and a machine that plays them**
+([docs/QUESTING.md](docs/QUESTING.md))
+- **The epic chains are linked on a normal install.**
+  - **Before:** Beta 1.1 put the Guild of Shadows chain (levels 7 to 48, the Camelot and Shrouded Isles routes) in order,
+    with its period dialogue, and pinned every other guild's epic steps in order, but only if you ran
+    `epic_chains.py --apply` by hand with Python, which the game doesn't ship. On a normal install `/epic` said "no epic
+    chain linked by quest IDs", and a world it was applied to broke the released game's Guild of Shadows after a
+    rollback.
+  - **Now:** the server makes the same changes itself each time it reads the quests, in memory. Nothing is written to
+    your world, so ROLLBACK.cmd and PREPARE-FOR-UPDATE.cmd have nothing to undo for them and the released game's quests
+    are as they were. Quest rows you changed yourself are left alone, as the tool did. Setting `epic_chains_linked` (on)
+    switches it off.
+  - **A world you ran `epic_chains.py --apply` on** still holds the links in its rows. ROLLBACK.cmd and
+    PREPARE-FOR-UPDATE.cmd now refuse on such a world until you put them back with
+    `python tools\claude-version\epic_chains.py rollback --apply` (or run them with `-Force`), because the released
+    server would never offer the Guild of Shadows. The server notices such a world when it starts and says so in its
+    log and in `runtime\server\epic-chains-in-world.txt`.
+- **Repeatable quests are offered again.** A quest written to be done several times (MaxCount 2 or more) was never
+  offered after you finished it once. Quests with no limit (MaxCount 0) and one-time quests are still offered once, as
+  before, until the world report shows how the classic quests use 0.
+- **Deliveries in quests without a collect column can be handed in.** A quest whose row had no CollectItemTemplate at
+  all ignored every item you gave, so its delivery steps could never be done.
+- **Classic quest steps run on the game loop.** The classic quests' 5-second check (map markers, the monsters that appear
+  for your step, items handed to you, places reached, items held) ran beside the game loop and could race with it ("it
+  just didn't count"). The timer now only asks the game loop to run it.
+- **The quest harness.** A test plays a quest from offer to finish on the server's own quest code with a fake player:
+  talking, kills by you, by a groupmate and by a gamebot in your group, deliveries, collections, whispers, searches and
+  every classic custom step, checking the rewards, the XP at your XP-by-level rate and the quest markers. A world report
+  walks every quest of a game's world database the same way (read from a copy, never written) and lists which quests
+  can't be completed and why. How to run it on your PC: docs/QUESTING.md section 6.
+- **Checked:** automated only. New tests `UT_QuestHarness`, `UT_QuestHarnessWorld`, `UT_EpicChainLinks`; the full server
+  suite passes (4,791 tests); the chain links match `epic_chains.py`'s output exactly on its own test world; the installer
+  tests pass with the new rollback checks. Not played in game; the world report has not been run on a real world yet.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids

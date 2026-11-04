@@ -187,15 +187,8 @@ namespace DOL.UnitTests.QuestHarness
             return reports;
         }
 
-        // Each walk gets its own copy of the row: the quest code may not change world rows, and this keeps one walk
-        // from seeing another's.
-        private static DbDataQuest Copy(DbDataQuest row)
-        {
-            var copy = new DbDataQuest();
-            foreach (PropertyInfo property in typeof(DbDataQuest).GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.CanWrite && p.CanRead))
-                property.SetValue(copy, property.GetValue(row));
-            return copy;
-        }
+        // Each walk gets its own copy of the row, so one walk never sees another's.
+        private static DbDataQuest Copy(DbDataQuest row) => QuestWorld.Copy(row);
 
         private static QuestWalk Tagged(QuestWalk walk, string how)
         {
