@@ -47,6 +47,21 @@ public class UT_ChatBudgetSimulation
         public double PerMinute(string channel) => ((Lines.TryGetValue(channel, out var list) ? list.Count : 0) +
             (channel == "broadcast" && Lines.TryGetValue("macro", out var macros) ? macros.Count : 0)) / (double)Minutes;
         public double Total => Lines.Values.Sum(list => list.Count) / (double)Minutes;
+        /// <summary>Who said each channel's lines, for the share of the busiest speaker.</summary>
+        public readonly Dictionary<string, List<long>> Speakers = new();
+
+        /// <summary>The share of a channel's lines said by its busiest bot.</summary>
+        public double TopSpeakerShare(string channel) =>
+            Speakers.TryGetValue(channel, out var who) && who.Count > 0 ? who.GroupBy(id => id).Max(g => g.Count()) / (double)who.Count : 0;
+
+        public void Add(string channel, string text, long speaker)
+        {
+            if (!Speakers.TryGetValue(channel, out var who))
+                Speakers[channel] = who = new List<long>();
+            who.Add(speaker);
+            Add(channel, text);
+        }
+
         public void Add(string channel, string text)
         {
             if (!Lines.TryGetValue(channel, out var list))
@@ -140,12 +155,12 @@ public class UT_ChatBudgetSimulation
             });
         long lastFaction = -1, factionGap = 0, lastLocal = -1, localGap = 0, lastGuild = -1, nextGroup = 90_000;
         long start = 10 * 60_000, end = start + 60 * 60_000;
-        var dueReplies = new List<(long At, string Channel, string Text)>();
-        var macros = new List<(long At, string Text)>();
-        void Say(long now, string channel, string text)
+        var dueReplies = new List<(long At, string Channel, string Text, long Who)>();
+        var macros = new List<(long At, string Text, long Who)>();
+        void Say(long now, string channel, string text, long who)
         {
             if (now >= start && now < end)
-                result.Add(channel, text);
+                result.Add(channel, text, who);
             Budget.Channel? metered = channel switch
             {
                 "faction" => Budget.Channel.Faction, "lfg" => Budget.Channel.Lfg, "trade" => Budget.Channel.Trade, "say" => Budget.Channel.Say,
@@ -166,7 +181,7 @@ public class UT_ChatBudgetSimulation
                             filter: line => AutonomousChatShortTalk.ReplyFits(opener.Text, line.Text)))
                     {
                         due = AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, due, random);
-                        dueReplies.Add((now + due, channel, reply.Text));
+                        dueReplies.Add((now + due, channel, reply.Text, mate.Id));
                         break;
                     }
             }
@@ -179,13 +194,13 @@ public class UT_ChatBudgetSimulation
                 {
                     var capital = Budget.Band(settings, Budget.Channel.Capital, bots, 20, false, 1.0);
                     if (meter.PerMinute(Budget.Channel.Capital, 1, now) < capital.Ceiling)
-                        Say(now, "macro", macros[i].Text);
+                        Say(now, "macro", macros[i].Text, macros[i].Who);
                     macros.RemoveAt(i);
                 }
             for (int i = dueReplies.Count - 1; i >= 0; i--)
                 if (dueReplies[i].At <= now)
                 {
-                    Say(now, dueReplies[i].Channel, dueReplies[i].Text);
+                    Say(now, dueReplies[i].Channel, dueReplies[i].Text, dueReplies[i].Who);
                     dueReplies.RemoveAt(i);
                 }
             // AutonomousChatBudget.LivePressure: the realm's /faction, and the bot's own /say, capital and guild channels.
@@ -211,7 +226,7 @@ public class UT_ChatBudgetSimulation
                     else if (turn = now >= nextGroup)
                         nextGroup = now + AutonomousBotGroupChatter.NextGapMs(false, random);
                     if (turn && Pick(recent, clock, random, "group", SpeakerOf(bot, "in_player_group"), out VC.Picked g))
-                        Say(now, "group", g.Text);
+                        Say(now, "group", g.Text, bot.Id);
                     continue;
                 }
                 double pressure = Math.Max(Math.Max(factionPressure, bot.NearPlayer ? sayPressure : 1),
@@ -229,7 +244,7 @@ public class UT_ChatBudgetSimulation
                         lastGuild = now;
                     if (turn && Pick(recent, clock, random, "guild", SpeakerOf(bot), out VC.Picked gl))
                     {
-                        Say(now, "guild", gl.Text);
+                        Say(now, "guild", gl.Text, bot.Id);
                         bot.LastSpoke = now;
                         continue;
                     }
@@ -263,10 +278,10 @@ public class UT_ChatBudgetSimulation
                 return false;
             if (faction && picked.Line.Kind is "lfg" or "trade" && random.NextDouble() < 0.7)
             {
-                Say(now, picked.Line.Kind, picked.Text);
+                Say(now, picked.Line.Kind, picked.Text, bot.Id);
                 return true;
             }
-            Say(now, faction ? "faction" : "say", picked.Text);
+            Say(now, faction ? "faction" : "say", picked.Text, bot.Id);
             Replies(now, bot, faction ? "faction" : "say", picked, clock);
             return true;
         }
@@ -314,14 +329,14 @@ public class UT_ChatBudgetSimulation
                     continue;
                 if (!fresh.TryAdd(choice.Name.GetHashCode(), picked.Text, now))
                     continue;
-                Say(now, choice.Name, picked.Text);
+                Say(now, choice.Name, picked.Text, bot.Id);
                 // A seller's macro (AutonomousChatBroadcast.StartMacro): again every few minutes for a while, under the ceiling.
                 if (choice.Name == "broadcast" && picked.Line?.Kind == "trade" && random.NextDouble() < settings.MacroChance)
                 {
                     long until = now + 1_000L * (settings.MacroLastMinS + random.Next(settings.MacroLastMaxS - settings.MacroLastMinS));
                     for (long at = now + 1_000L * (settings.MacroRepeatMinS + random.Next(settings.MacroRepeatMaxS - settings.MacroRepeatMinS)); at < until;
                          at += 1_000L * (settings.MacroRepeatMinS + random.Next(settings.MacroRepeatMaxS - settings.MacroRepeatMinS)))
-                        macros.Add((at, picked.Text));
+                        macros.Add((at, picked.Text, bot.Id));
                 }
                 if (choice.Name is "faction" or "say")
                     Replies(now, bot, choice.Name, picked, clock);
@@ -349,6 +364,9 @@ public class UT_ChatBudgetSimulation
 
     private static readonly string[] Channels = ["faction", "lfg", "trade", "say", "broadcast", "guild", "group"];
 
+    /// <summary>The near-repeat share of each run's spoken lines (within an evening, macros left out).</summary>
+    public static readonly Dictionary<(int, bool), double> nearRepeats = new();
+
     public static string Report(int[] populations, out Dictionary<(int, bool), Result> results)
     {
         results = new Dictionary<(int, bool), Result>();
@@ -358,8 +376,8 @@ public class UT_ChatBudgetSimulation
         text.AppendLine();
         text.AppendLine("Broadcast includes sellers' macros (the same WTS line every 3-8 min, by design); repeats are counted without them.");
         text.AppendLine();
-        text.AppendLine("| bots/realm | side | " + string.Join(" | ", Channels) + " | total | macro repeats | exact repeats | near repeats |");
-        text.AppendLine("|---|---|" + string.Concat(Channels.Select(_ => "---|")) + "---|---|---|---|");
+        text.AppendLine("| bots/realm | side | " + string.Join(" | ", Channels) + " | total | macro repeats | exact repeats | near repeats | busiest bot (faction / lfg / trade / say / broadcast) |");
+        text.AppendLine("|---|---|" + string.Concat(Channels.Select(_ => "---|")) + "---|---|---|---|---|");
         foreach (int bots in populations)
             foreach (bool budget in new[] { false, true })
             {
@@ -372,8 +390,9 @@ public class UT_ChatBudgetSimulation
                     Result evening = Evening(bots, budget, seed + bots);
                     result.Minutes += evening.Minutes;
                     foreach (var pair in evening.Lines)
-                        foreach (string line in pair.Value)
-                            result.Add(pair.Key, line);
+                        for (int k = 0; k < pair.Value.Count; k++)
+                            result.Add(pair.Key, pair.Value[k], evening.Speakers.TryGetValue(pair.Key, out var who) && k < who.Count
+                                ? seed * 1_000_000L + who[k] : 0);
                     // Repeats within one evening (the server keeps its no-repeat memory across evenings).
                     string[] spoken = evening.Lines.Keys.Where(c => c != "macro").ToArray();
                     int lines = Math.Max(1, spoken.Sum(c => evening.Lines[c].Count));
@@ -382,7 +401,9 @@ public class UT_ChatBudgetSimulation
                 }
                 results[(bots, budget)] = result;
                 text.AppendLine($"| {bots} | {(budget ? "after" : "before")} | " + string.Join(" | ", Channels.Select(c => result.PerMinute(c).ToString("0.00"))) +
-                                $" | {result.Total:0.00} | {(result.Lines.TryGetValue("macro", out var m) ? m.Count / (double)result.Minutes : 0):0.00}/min | {exact:P1} | {near:P1} |");
+                                $" | {result.Total:0.00} | {(result.Lines.TryGetValue("macro", out var m) ? m.Count / (double)result.Minutes : 0):0.00}/min | {exact:P1} | {near:P1} | " +
+                                string.Join(" / ", new[] { "faction", "lfg", "trade", "say", "broadcast" }.Select(c => result.TopSpeakerShare(c).ToString("P0"))) + " |");
+                nearRepeats[(bots, budget)] = near;
             }
         return text.ToString();
     }
@@ -401,6 +422,13 @@ public class UT_ChatBudgetSimulation
         Assert.That(after.PerMinute("faction"), Is.GreaterThan(before.PerMinute("faction")), "/faction is busier");
         Assert.That(results[(300, true)].Total, Is.GreaterThanOrEqualTo(results[(300, false)].Total), "and never quieter at 300");
         Assert.That(after.Total, Is.GreaterThan(results[(300, true)].Total), "more bots, more chat");
+        // Busy, not spam (owner, 2026-11-03): few near-repeats, and no one bot carries a realm channel.
+        foreach (int bots in new[] { 300, 1_000 })
+        {
+            Assert.That(nearRepeats[(bots, true)], Is.LessThan(0.02), $"near-repeats at {bots}");
+            foreach (string channel in new[] { "faction", "lfg", "trade" })
+                Assert.That(results[(bots, true)].TopSpeakerShare(channel), Is.LessThan(0.15), $"busiest bot in {channel} at {bots}");
+        }
         // The owner's rule (2026-11-03): the amount of chatting must not go down, in any channel the player hears.
         foreach (int bots in new[] { 300, 1_000 })
             foreach (string channel in Channels)

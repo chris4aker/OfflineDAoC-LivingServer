@@ -31,6 +31,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _personalities = Switch("Bot personalities");
     private readonly CheckBox _voices = Switch("Bot voices");
     private readonly CheckBox _debates = Switch("/faction debates", part: true);
+    private readonly NumericUpDown _chatRate = Rate("How much bots talk");
     private readonly CheckBox _memory = Switch("Bots remember you");
     private readonly CheckBox _grats = Switch("Grats");
     private readonly CheckBox _firsts = Switch("Server firsts");
@@ -97,11 +98,13 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Dependent(_guildEconomy, Add(guilds, _guildEconomy, null, "Dues from real loot, merit points from level-ups, and 24-hour guild buffs."), guildsOn);
         Dependent(_guildAlliances, Add(guilds, _guildAlliances, null, "Each realm's RvR and raiding bot guilds form one alliance. Your own guild's alliances are never touched."), guildsOn);
 
-        var voices = Card("PERSONALITIES AND VOICES", DaocTheme.Gold, 3);
+        var voices = Card("PERSONALITIES AND VOICES", DaocTheme.Gold, 4);
         Add(voices, _personalities, null, "Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, tilting how each bot spends its time. Target a bot and type /personality.");
         Add(voices, _voices, null, "Period chat lines from 2002–2003, chosen by realm, class, level and moment, each bot in its own writing style.");
         Dependent(_debates, Add(voices, _debates, null, "Spec arguments, relic alerts and long threads in /faction, every 30–45 minutes while you play. Needs bot voices."),
             v => v.Voices);
+        Dependent(Caption("HOW MUCH THEY TALK"), Add(voices, null, WithUnit(_chatRate, "×"),
+            "1 is a busy peak server; 2 to 3 very busy; 0 only answers. Chat still follows the hour and the bots online. Needs bot voices."), v => v.Voices);
 
         var living = Card("SERVER LIFE", DaocTheme.Gold, 16);
         Add(living, _memory, null, "Bots of your realm remember grouping with you, your rezzes and rude words: they greet and thank you by name.");
@@ -178,6 +181,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             box.CheckedChanged += (_, _) => Edited();
         _schedule.SelectedIndexChanged += (_, _) => Edited();
         _share.ValueChanged += (_, _) => Edited();
+        _chatRate.ValueChanged += (_, _) => Edited();
         _minLevel.ValueChanged += (_, _) => Edited();
         _playerXp.Changed += Edited;
         _botXp.Changed += Edited;
@@ -227,6 +231,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Personalities = _personalities.Checked,
         Voices = _voices.Checked,
         Debates = _debates.Checked,
+        ChatRate = (double)_chatRate.Value,
         LivingMemory = _memory.Checked,
         LivingGrats = _grats.Checked,
         LivingFirsts = _firsts.Checked,
@@ -261,6 +266,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _personalities.Checked = settings.Personalities;
         _voices.Checked = settings.Voices;
         _debates.Checked = settings.Debates;
+        _chatRate.Value = (decimal)Math.Clamp(settings.ChatRate, 0, 3);
         _memory.Checked = settings.LivingMemory;
         _grats.Checked = settings.LivingGrats;
         _firsts.Checked = settings.LivingFirsts;
@@ -500,6 +506,18 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private static NumericUpDown Number(int minimum, int maximum, string name)
     {
         var number = new NumericUpDown { Minimum = minimum, Maximum = maximum, Width = 62, AccessibleName = name, TextAlign = HorizontalAlignment.Right };
+        StyleInput(number);
+        return number;
+    }
+
+    /// <summary>A 0-3 rate in steps of 0.1 (bot_voices_chat_rate).</summary>
+    private static NumericUpDown Rate(string name)
+    {
+        var number = new NumericUpDown
+        {
+            Minimum = 0, Maximum = 3, DecimalPlaces = 1, Increment = 0.1m, Value = 1, Width = 62, AccessibleName = name,
+            TextAlign = HorizontalAlignment.Right,
+        };
         StyleInput(number);
         return number;
     }

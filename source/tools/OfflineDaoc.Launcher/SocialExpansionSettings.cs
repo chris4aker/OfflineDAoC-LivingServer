@@ -26,6 +26,8 @@ public sealed record SocialExpansionSettings
     public bool Personalities { get; init; }
     public bool Voices { get; init; } = true;
     public bool Debates { get; init; } = true;
+    /// <summary>How much bots talk unprompted, 0 to 3 (bot_voices_chat_rate): 1 is a busy peak server, 2 to 3 very busy (Beta 1.1.3).</summary>
+    public double ChatRate { get; init; } = 1.0;
     public bool LivingMemory { get; init; } = true;
     public bool LivingGrats { get; init; } = true;
     public bool LivingFirsts { get; init; }
@@ -81,6 +83,7 @@ public sealed record SocialExpansionSettings
         ("bot_personalities_enabled", "bots", "Autonomous gamebots get a personality and traits that tilt town breaks, goals, dungeons, camps and chattiness (see docs/BOT-PERSONALITIES.md)."),
         ("bot_voices_enabled", "bots", "Autonomous gamebots say pre-written, period lines in their own writing style (docs/bot-voices/DESIGN.md)."),
         ("bot_voices_debates", "bots", "When bot voices are on: bots of a realm play debates and long threads in /faction while you are online."),
+        ("bot_voices_chat_rate", "bots", ChatRateDescription),
         ("bot_living_memory", "bots", "Server life: autonomous gamebots of your realm remember grouping with you, your rezzes and rude words; they greet you by name, thank you for an old rez, answer you by name, mention you in /faction now and then, and stay cool after insults. Chat only. False keeps today's bots."),
         ("bot_living_grats", "bots", "Server life: when you or a bot gains a level, groupmates say grats in /group and bots nearby in /say, and a realm's bots cheer a new level 50 in /faction."),
         ("bot_living_firsts", "bots", "Server life: the first character on the server (you or a bot) to reach level 50, the first of each class to reach 50 and the first to each realm rank from 2 up are announced to everyone and recorded for the Camelot Herald."),
@@ -101,6 +104,10 @@ public sealed record SocialExpansionSettings
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
     ];
 
+    /// <summary>The server's description of bot_voices_chat_rate (ServerProperties.BOT_VOICES_CHAT_RATE).</summary>
+    public const string ChatRateDescription =
+        "When bot voices are on: how much bots talk on their own, from 0 (they only answer) to 3. 1 is a busy peak server, 2 to 3 very busy. Chat already rises and falls with the hour and with how many bots are on (chat-budget.json).";
+
     /// <summary>The value the server would read for each key.</summary>
     public IReadOnlyDictionary<string, string> ToStoredValues() => new Dictionary<string, string>
     {
@@ -115,6 +122,7 @@ public sealed record SocialExpansionSettings
         ["bot_personalities_enabled"] = Bool(Personalities),
         ["bot_voices_enabled"] = Bool(Voices),
         ["bot_voices_debates"] = Bool(Debates),
+        ["bot_voices_chat_rate"] = ChatRate.ToString("0.##", CultureInfo.InvariantCulture),
         ["bot_living_memory"] = Bool(LivingMemory),
         ["bot_living_grats"] = Bool(LivingGrats),
         ["bot_living_firsts"] = Bool(LivingFirsts),
@@ -191,6 +199,22 @@ public sealed record SocialExpansionSettings
             else
                 minLevel = level;
         }
+        double chatRate = d.ChatRate;
+        if (stored.TryGetValue("bot_voices_chat_rate", out string? rateText) && !string.IsNullOrWhiteSpace(rateText))
+        {
+            if (!double.TryParse(rateText.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double rate))
+            {
+                Problem("bot_voices_chat_rate", $"bot_voices_chat_rate = \"{rateText}\" is not a number, so the server reads it as 0 (bots only answer).");
+                chatRate = 0;
+            }
+            else if (rate < 0 || rate > 3)
+            {
+                Problem("bot_voices_chat_rate", $"bot_voices_chat_rate = \"{rateText}\" is outside 0 to 3.");
+                chatRate = Math.Clamp(rate, 0, 3);
+            }
+            else
+                chatRate = rate;
+        }
         string schedule = d.ScheduleMode;
         if (stored.TryGetValue("bot_schedule_mode", out string? scheduleText) && !string.IsNullOrWhiteSpace(scheduleText))
         {
@@ -214,6 +238,7 @@ public sealed record SocialExpansionSettings
             Personalities = ReadBool("bot_personalities_enabled", d.Personalities),
             Voices = ReadBool("bot_voices_enabled", d.Voices),
             Debates = ReadBool("bot_voices_debates", d.Debates),
+            ChatRate = chatRate,
             LivingMemory = ReadBool("bot_living_memory", d.LivingMemory),
             LivingGrats = ReadBool("bot_living_grats", d.LivingGrats),
             LivingFirsts = ReadBool("bot_living_firsts", d.LivingFirsts),

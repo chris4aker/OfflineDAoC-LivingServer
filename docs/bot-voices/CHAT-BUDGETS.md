@@ -1,7 +1,7 @@
 # The chat budgets: how busy the world is, and when a bot answers you
 
 Living Server Beta 1.1.3. The goal (owner, 2026-11-03): chat that feels like about 3,000 players across the three
-realms on a busy 2003 evening, realistic and responsive, and never quieter than before. Bot chat has two separate
+realms on a busy peak evening, realistic and responsive, and busier than before. Bot chat has two separate
 budgets:
 
 - **The ambient budget** sets how much the world says on its own: openers, answers between bots, news, bursts, town
@@ -10,8 +10,8 @@ budgets:
 - **The reply budget** sets when a bot answers *you*. A reply has to fit what you said. A weak reply becomes silence,
   or a short "?" or "ya?" when you sent the bot a tell or named it.
 
-Silence is only ever the answer to a weak reply to the player. The ambient world never goes quiet to avoid a bad line.
-It picks another line or another channel.
+Silence is only ever the answer to a weak reply to the player. The ambient world is never held back to avoid a bad line:
+it picks another line or another channel.
 
 All the numbers live in one file, `source/server/GameServer/bots/autonomous/data/chat/chat-budget.json`, which has
 comments on every value. It is built into the server. To tune a running install, copy it to `runtime/server/chat-budget.json`
@@ -62,25 +62,32 @@ A bot that wants to talk picks the channel it can be heard in that runs furthest
 
 ### Where the starting values come from
 
-Every number is an estimate **[E]**. They are calibrated against the 2003 chat-volume research of 2026-11-03 (research
-notes, *Peak server chat volume 2003*, `chat_volume.md`, section 6 and its texture rules). No counted 2003 figure exists,
-so that research brackets the rates from server populations. The defaults sit toward the likely-to-high end of each
-range, because the owner's first rule is that the server feels alive and busy at prime time. They are never below the
-Beta 1.1.1 volume at 1,000 bots a realm.
+**The research gives the shape; the level is set busier on purpose.** The owner decided on 2026-11-03: "I don't want
+the chat to be quiet, even if something in our research says the old servers were quiet."
 
-| Research, prime time (lines a minute, likely / high) | Default target / ceiling |
-|---|---|
-| Capital /broadcast, 1.5 / 4 | `capital` 2.5 / 4 |
-| Bind town /broadcast, 0.6 / 2 | `town` 0.8 / 2 |
-| Busy camp area /say, 0.8 / 3 | `say` 1.0 / 3 |
-| Public LFG or trade chat group, 1 / 3 | `lfg` 1.0 / 3, `trade` 0.8 / 2.5 |
-| Guild, 50 online, 2.5 / 5; 150 online, 6 / 12 | `guild` 3.0 / 6 at 50 online, growing as members ^ 0.8 |
-| PvE camp group, 1.5 / 4 (everyone, calls included) | `group` 0.6 / 2 (bot banter only) |
-| A player in Camelot sees 3–6 lines a minute in all | about 4 from /broadcast, /say, guild and group, plus the realm channels |
+- **The shape:** the 2003 chat-volume research of 2026-11-03 (research notes, *Peak server chat volume 2003*,
+  `chat_volume.md`) gives:
+  - which channels carry what (capital /broadcast is mostly selling, groups and recruiting);
+  - how talk moves with the hour and the place;
+  - the texture: sellers' macros, bursts after big moments, a few talkative regulars.
+- **The level:** the defaults are a **busy peak server**, deliberately above the research's own high estimates. Every
+  number is an estimate to tune by playing.
 
-Texture rules taken from the research: sellers' macros repeat every 3–8 minutes for 15–40 minutes; an alarm or a big
-moment sets off a burst that fades with a half-life of about two minutes; a few talkative bots carry much of the
-chat. The last one already holds: about one bot in seven talks two and a half times as often as the rest.
+| Channel | Floor / target / ceiling at 1,000 bots, prime time | The research's 2003 estimate (likely / high) |
+|---|---|---|
+| `faction` | 2.0 / 4.0 / 10 | none; this server's own channel [O] |
+| `lfg` | 0.6 / 1.6 / 4 | public LFG chat group, 1 / 3 |
+| `trade` | 0.5 / 1.3 / 3.5 | public trade chat group, 1 / 3 |
+| `say` | 0.5 / 2.0 / 5 | busy camp area, 0.8 / 3 |
+| `capital` | 1.5 / 4.0 / 7 | capital /broadcast, 1.5 / 4 |
+| `town` | 0.4 / 1.5 / 3.5 | bind town /broadcast, 0.6 / 2 |
+| `guild` (50 online) | 0.5 / 4.0 / 8 | 2.5 / 5 at 50 online, 6 / 12 at 150 |
+| `group` | 0.3 / 1.0 / 3 (bot banter; fight calls come on top) | PvE camp group, 1.5 / 4 counting calls |
+
+- **Nights:** calmer than prime time, never dead. The lowest hour factor is 0.45, or 0.7 with the clock schedule.
+- **Small rosters:** `population_exponent` is 0.65, so a 300-bot realm still talks at 46% of a full server.
+- **Turning it up:** in the launcher's Living Server tab, *Personalities and voices*, set **How much they talk**
+  (`bot_voices_chat_rate`, 0–3) to 2–3 for very busy. 1 is a busy peak server.
 
 The research also found that `/advice` was probably not a public channel in 2002–2003. Bots never use it.
 
@@ -134,16 +141,17 @@ scored better than the average reply, and brush-offs to answerable questions wer
 
 `/lswhy` (every player) shows why your target, or the last gamebot that spoke to or near you, said what it said. Each
 entry gives the channel, what set it off, the rule it used, its score and the reason. `/lswhy <name>` shows one bot,
-`/lswhy last [n]` shows the realm's last decisions (the quiet ones too), and `/lswhy budget` shows each channel's floor,
+`/lswhy last [n]` shows the realm's last decisions (the silences too), and `/lswhy budget` shows each channel's floor,
 target, ceiling and current rate around you.
 
 ## Tuning
 
-- **More or less chat everywhere:** `bot_voices_chat_rate`, or every `target` in the file.
+- **More or less chat everywhere:** `bot_voices_chat_rate` (the launcher's **How much they talk**), or every `target`
+  in the file.
 - **A channel too busy or too dead:** that channel's `target`. Raise its `floor` to keep it alive with few bots; lower
   its `ceiling` to cap a crowd.
-- **Bigger or smaller servers:** `population_exponent`. Use 1 for linear growth with bots online, and lower values to
-  flatten it.
+- **Bigger or smaller servers:** `population_exponent`. 1 grows linearly with bots online; lower values keep a small
+  roster livelier.
 - **The day:** `hours`, 24 factors from midnight.
 - **Replies:** `reply.min_fit` 1 lets weak replies through (the Beta 1.1.1 behaviour); 3 keeps only specific ones.
 - **After a change:** run `UT_ChatBudgetSimulation` with `TALK_BUDGET_OUT=<file>` for an evening hour at 300 and

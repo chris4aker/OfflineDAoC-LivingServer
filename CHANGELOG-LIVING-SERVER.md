@@ -10,8 +10,8 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.3 (in development)
 
-Chat: a busier world, and bots that answer what you actually said. The goal is a realm that feels like a full 2003 server
-on a busy evening. How it works and how to tune it: [docs/bot-voices/CHAT-BUDGETS.md](docs/bot-voices/CHAT-BUDGETS.md).
+Chat: a much busier world, and bots that answer what you actually said. The goal is a realm that feels like a full
+server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BUDGETS.md](docs/bot-voices/CHAT-BUDGETS.md).
 
 - **More chat, scaled to the crowd.**
   - **Before:** chat stopped growing at about 390 bots a realm.
@@ -19,8 +19,11 @@ on a busy evening. How it works and how to tune it: [docs/bot-voices/CHAT-BUDGET
     a ceiling. They rise with the bots online, with no cap, and follow the time of day.
   - **Town /broadcast:** bots now use it the way players did in 2003: selling (sometimes as a repeating macro), looking
     for a group, a little chatter. You hear it where the base game's /broadcast reaches.
-  - **One file:** all the numbers are in `chat-budget.json`, with comments. They are estimates, set from research into
-    2003 chat volume.
+  - **One file:** all the numbers are in `chat-budget.json`, with comments. Research into 2003 chat gives the shape
+    (which channels, places and hours, sellers' macros, bursts). The levels are set for a busy peak server, on purpose
+    busier than the 2003 estimates. Nights are calmer, never dead.
+  - **Turn it up:** the launcher's Living Server tab has a new **How much they talk** setting (0–3). 1 is a busy peak
+    server, 2–3 very busy.
 - **Big moments ripple through chat.** A keep taken or lost, a relic moved, a raid won or wiped, Darkness Falls changing
   hands, a server first and a nemesis paid back each draw a short burst of reactions in /faction. The realm-wide ones also
   reach the capital's /broadcast.
@@ -49,8 +52,8 @@ on a busy evening. How it works and how to tune it: [docs/bot-voices/CHAT-BUDGET
   busy each channel around you is.
 - **Checked:**
   - **Automated:** new tests for every part; the full server suite passes.
-  - **Simulated evening at 1,000 bots a realm:** about 8.6 lines a minute across the channels a player hears, up from
-    about 2.0.
+  - **Simulated evening at 1,000 bots a realm:** about 11.8 lines a minute across the channels a player hears, up from
+    about 2.0. At 300 bots it's about 5.1, up from 1.2.
   - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to 71%. Those lines are known
     now, so this is a regression check; a fresh blind round comes next.
   - **In game:** not yet played.
