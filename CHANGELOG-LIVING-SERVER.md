@@ -8,6 +8,38 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+**Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the
+gates fell, and the Renegade Lord never dropped below 100%).
+- **Before:** once the gates were down, every gamebot walked up to the lord on its own, from wherever its last fight or
+  its release had left it. They reached him one at a time and died to him one at a time.
+- **Now:** each realm rallies just inside the broken gate, under the lord's room. Its gamebots fight whatever comes at
+  them there, and go up to the lord together once there are enough of them.
+  - **"Enough"** is worked out from the lord's real level and health, the guards standing with him, and the levels and
+    health of the bots at the rally, with no extra safety margin: the realm tries often and accepts that some attempts
+    fail. In Thidranki that is about 12 level-22s against the lord alone, and about 24 with three guards beside him. A
+    lord already down to half health needs fewer.
+  - **You count double.** A real player standing at the rally counts as two gamebots, so you and ten bots go up where
+    twelve bots would. The server log's `BG_RALLY_STORM` line shows how many players went up (`players=`).
+  - **No endless waiting:** after 3 minutes the rally goes up with half of what it needs. After 6 minutes it goes up
+    with whoever is there, never fewer than 8.
+  - **A failed attempt** ends like a raid attempt: half the stormers fell, the lord healed back to 95%, or he lost
+    nothing for 3 minutes. The survivors then rally again.
+  - **The dead rejoin the rally.** A bot that died comes back to the rally instead of running up to the lord alone.
+    Bots that arrive while an attempt is running go up in groups of at least 4.
+  - **Only the bots changed.** The lord, his guards, their respawns and the gates are exactly as the base game has them.
+- **Smaller fixes:**
+  - A gamebot that has left the lord (it died, or was chased out) comes back in through a gate again. Before, once it
+    had passed a gate it walked straight at the lord for the rest of the tour.
+  - Gamebots roaming the field around an enemy-held keep stay outside its walls. Before, they were sent to points in
+    its courtyard and on its walls with the gates shut, and gave up their route ("route recovery" in the log).
+  - A battleground fight is logged under the battleground goal. Before, the server log showed "Find a reachable
+    level-appropriate XP camp" for almost every battleground death.
+- **For testers:** the server log's `BG_KEEP_STATUS` line now shows each realm's rally (`rally="Albion:rallying 9/14"`),
+  and new lines say when a rally goes up (`BG_RALLY_STORM`), when late arrivals join it (`BG_RALLY_REINFORCE`) and
+  why an attempt ended (`BG_RALLY_REGROUP`).
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
