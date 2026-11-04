@@ -441,7 +441,8 @@ namespace LivingServerSetup
             var dest = Path.Combine(game, "runtime", "server", "deployment-backups", "setup-before-update-" + DateTime.Now.ToString("yyyyMMdd-HHmmss"));
             var files = new List<string>();
             foreach (var f in new[] { @"runtime\server", @"runtime\server\lib", @"runtime\server\win-x64" })
-                foreach (var n in new[] { "GameServer.dll", "GameServer.pdb" }) files.Add(Path.Combine(f, n));
+                foreach (var n in new[] { "GameServer.dll", "GameServer.pdb", "CoreBase.dll", "CoreBase.pdb", "CoreDatabase.dll", "CoreDatabase.pdb", "CoreServer.dll", "CoreServer.pdb" })
+                    files.Add(Path.Combine(f, n));
             foreach (var f in new[] { "runtime", @"new-client\runtime" })
                 foreach (var n in new[] { "OfflineDAoC.dll", "OfflineDAoC.exe", "OfflineDAoC.pdb", "OfflineDAoC.deps.json", "OfflineDAoC.runtimeconfig.json" }) files.Add(Path.Combine(f, n));
             foreach (var rel in files)

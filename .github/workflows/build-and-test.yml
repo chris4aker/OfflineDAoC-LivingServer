@@ -145,13 +145,24 @@ jobs:
             Copy-Item "$launcher/$file" "$dir/launcher"
             $launcherInfo += "launcher/$file=$((Get-FileHash "$dir/launcher/$file" -Algorithm SHA256).Hash.ToLowerInvariant())"
           }
+          # The server's own libraries (1.1.2 on): a GameServer.dll built against changed ones fails at start beside the
+          # released ones (playtest 2026-11-04), so they always ship with it.
+          New-Item -ItemType Directory -Path "$dir/core" -Force | Out-Null
+          $coreInfo = @()
+          foreach ($file in "lib/CoreBase.dll", "lib/CoreBase.pdb", "lib/CoreDatabase.dll", "lib/CoreDatabase.pdb", "CoreServer.dll", "CoreServer.pdb") {
+            $from = "source/server/Release/$file"
+            if (!(Test-Path $from)) { throw "No $from" }
+            Copy-Item $from "$dir/core"
+            $leaf = Split-Path -Leaf $file
+            $coreInfo += "core/$leaf=$((Get-FileHash "$dir/core/$leaf" -Algorithm SHA256).Hash.ToLowerInvariant())"
+          }
           $dll = (Get-FileHash "$dir/GameServer.dll" -Algorithm SHA256).Hash.ToLowerInvariant()
           $pdb = (Get-FileHash "$dir/GameServer.pdb" -Algorithm SHA256).Hash.ToLowerInvariant()
           $content = (Get-FileHash "$dir/content-patches.json" -Algorithm SHA256).Hash.ToLowerInvariant()
           Set-Content -Path "$dir/BUILD-INFO.txt" -Encoding UTF8 -Value (@(
             "BuildName=$name", "BaseRelease=$base", "Commit=${{ github.sha }}", "Branch=${{ github.ref_name }}",
             "Built=$((Get-Date).ToUniversalTime().ToString('o'))", "GameServer.dll=$dll", "GameServer.pdb=$pdb",
-            "content-patches.json=$content") + $launcherInfo)
+            "content-patches.json=$content") + $coreInfo + $launcherInfo)
           "dir=$dir" >> $env:GITHUB_OUTPUT
           "artifact=OfflineDAoC-LivingServer-$name-$short" >> $env:GITHUB_OUTPUT
           Write-Host "::notice title=Server build package::$name commit $short GameServer.dll sha256 $dll"

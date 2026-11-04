@@ -2652,7 +2652,18 @@ internal sealed partial class MainForm : Form
         // and the TCP listener coming online.  Without it, a second click can
         // start another CoreServer while the first one is still loading the
         // world, and both processes then contend for the same SQLite database.
-        if (_resettingKeepsRelics || _savingXpRates || _serverProcess is { HasExited: false } || IsServerRunning() || FindExactServerProcess() is not null) return;
+        // Each refusal says why in the footer: a silent START SERVER looked broken (playtest 2026-11-04).
+        string? busy = _resettingKeepsRelics ? "keeps and relics are being reset"
+            : _savingXpRates ? "a setting is being saved"
+            : _serverProcess is { HasExited: false } ? "this launcher's server is still running"
+            : FindExactServerProcess() is not null ? "this game's server (CoreServer) is already running"
+            : IsServerRunning() ? $"another program is using port {ServerPortProbe.GameServerPort} (another Offline DAoC server?)"
+            : null;
+        if (busy != null)
+        {
+            _footer.Text = "Not starting: " + busy + ".";
+            return;
+        }
         if (_botGoalsSettings?.HasUnsavedChanges == true)
         {
             MessageBox.Show(this, "Save or undo your edits in Bot Goals Setting before starting the server.", "Unsaved bot goals");
@@ -2701,11 +2712,20 @@ internal sealed partial class MainForm : Form
             _serverProcess = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
             _serverProcess.OutputDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine(args.Data); };
             _serverProcess.ErrorDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine("ERROR: " + args.Data); };
+            Process started = _serverProcess;
             _serverProcess.Exited += (_, _) => BeginInvoke(async () =>
             {
                 _serverReadinessPoll.Stop();
+                // A stop nobody asked for (a crash at start looked like START SERVER doing nothing, playtest
+                // 2026-11-04): the footer says so and where the reason is.
+                bool unasked = !_stoppingServer;
+                int? code = null;
+                try { code = started.ExitCode; } catch (InvalidOperationException) { }
                 _stoppingServer = false;
                 await RefreshDashboardAsync();
+                if (unasked)
+                    _footer.Text = $"The server stopped by itself{(code is int c ? $" (exit code {c})" : "")}. " +
+                                   "The end of runtime\\logs\\server-console.log says why.";
             });
             _serverProcess.Start();
             ShowStartingState();

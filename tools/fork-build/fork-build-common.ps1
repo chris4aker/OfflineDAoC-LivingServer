@@ -5,6 +5,11 @@ $Script:ServerFolders = @('runtime/server', 'runtime/server/lib', 'runtime/serve
 # The launcher (its Living Server tab): the game's own copy, and the 0.37c new client's copy when present.
 $Script:LauncherFolders = @('runtime', 'new-client/runtime')
 $Script:LauncherFiles = @('OfflineDAoC.dll', 'OfflineDAoC.exe', 'OfflineDAoC.pdb', 'OfflineDAoC.deps.json', 'OfflineDAoC.runtimeconfig.json')
+# The server's own libraries beside GameServer.dll, shipped in the build's core\ folder (Living Server 1.1.2: save safety
+# changed CoreDatabase, CoreBase and CoreServer, and a server whose GameServer.dll was new but CoreDatabase.dll released
+# stopped at start, playtest 2026-11-04). Each one replaces the folder's copy only where the folder has one; its .pdb
+# goes with it where the folder has a .pdb too.
+$Script:CoreFiles = @('CoreBase.dll', 'CoreDatabase.dll', 'CoreServer.dll')
 # Also the 0.37c new client and its launcher, which share the game's runtime.
 $Script:ProcessNames = @('CoreServer', 'DOLServer', 'OfflineDAoC', 'game', 'camelot', 'connect', 'Godot_v4.7.2-stable_mono_win64')
 

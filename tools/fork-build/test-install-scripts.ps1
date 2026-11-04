@@ -17,6 +17,11 @@ function RunIn([string]$dir, [string]$scriptName, [string[]]$arguments) {
     $out = & $shell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $dir $scriptName) @arguments 2>&1 | Out-String
     return [pscustomobject]@{ Code = $LASTEXITCODE; Output = $out }
 }
+$coreLayout = @{
+    'runtime/server' = @('CoreBase.dll', 'CoreBase.pdb', 'CoreDatabase.dll', 'CoreDatabase.pdb', 'CoreServer.dll', 'CoreServer.pdb')
+    'runtime/server/lib' = @('CoreBase.dll', 'CoreBase.pdb', 'CoreDatabase.dll', 'CoreDatabase.pdb')
+    'runtime/server/win-x64' = @('CoreBase.dll', 'CoreDatabase.dll', 'CoreServer.dll')
+}
 $launcherFiles = @('OfflineDAoC.dll', 'OfflineDAoC.exe', 'OfflineDAoC.pdb', 'OfflineDAoC.deps.json', 'OfflineDAoC.runtimeconfig.json')
 function New-FakeLauncher([string]$dir, [string]$prefix) {
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
@@ -40,6 +45,11 @@ function New-FakeGame([string]$root, [string]$edition, [switch]$NewClient, [stri
         [IO.File]::WriteAllText((Join-Path $dir 'GameServer.pdb'), "original release symbols")
         $lines += "$(Sha (Join-Path $dir 'GameServer.dll'))  $folder/GameServer.dll"
         $lines += "$(Sha (Join-Path $dir 'GameServer.pdb'))  $folder/GameServer.pdb"
+        # The server's own libraries as the release has them: CoreServer only beside the exe, no .pdb in win-x64.
+        foreach ($name in $coreLayout[$folder]) {
+            [IO.File]::WriteAllText((Join-Path $dir $name), "original release $folder/$name")
+            $lines += "$(Sha (Join-Path $dir $name))  $folder/$name"
+        }
     }
     $lines += New-FakeLauncher (Join-Path $root 'runtime') 'runtime'
     if (!$NoDatabase) {
@@ -91,6 +101,16 @@ foreach ($folder in @('runtime', 'new-client\runtime')) {
         Check ((Sha (Join-Path $game "$folder\$name")) -eq $info["launcher/$name"]) "new launcher $name in $folder"
     }
 }
+# The server's own libraries (1.1.2 on): each one the folder has is replaced, with its .pdb where the folder has one,
+# and none is added where the folder has none.
+$shipsCore = [bool]$info['core/CoreDatabase.dll']
+Check $shipsCore 'the build ships the server libraries (core\)'
+foreach ($folder in $coreLayout.Keys) {
+    foreach ($name in $coreLayout[$folder]) {
+        Check ((Sha (Join-Path $game "$folder\$name")) -eq $info["core/$name"]) "new $name in $folder"
+    }
+}
+Check (!(Test-Path (Join-Path $game 'runtime\server\lib\CoreServer.dll')) -and !(Test-Path (Join-Path $game 'runtime\server\win-x64\CoreBase.pdb'))) 'no server library is added where the release has none'
 Check (Test-Path (Join-Path $game 'tools\claude-version\set_bot_guilds.py')) 'helper scripts installed'
 Check (Test-Path (Join-Path $game 'tools\claude-version\set_bot_social.py')) 'social switch installed'
 Check (@(Get-ChildItem (Join-Path $game 'runtime\server\deployment-backups') -Directory).Count -eq 1) 'one backup folder'
@@ -106,6 +126,13 @@ Check ($rollbackHalf.Code -eq 0) "rollback of the repair install`n$($rollbackHal
 $rollback = Run 'rollback-server-build.ps1' @('-GameFolder', $game)
 Check ($rollback.Code -eq 0) "rollback succeeds`n$($rollback.Output)"
 Check ((Sha (Join-Path $game 'runtime\server\lib\GameServer.dll')) -eq $original) 'rollback restores the original dll'
+$coreBack = $true
+foreach ($folder in $coreLayout.Keys) {
+    foreach ($name in $coreLayout[$folder]) {
+        if ([IO.File]::ReadAllText((Join-Path $game "$folder\$name")) -ne "original release $folder/$name") { $coreBack = $false }
+    }
+}
+Check $coreBack 'rollback restores the original server libraries and their .pdb files'
 Check ((Sha (Join-Path $game 'runtime\OfflineDAoC.dll')) -eq $originalLauncher) 'rollback restores the original launcher'
 Check ([IO.File]::ReadAllText((Join-Path $game 'new-client\runtime\OfflineDAoC.dll')) -eq 'original launcher OfflineDAoC.dll') 'rollback restores the new client launcher'
 Check (!(Test-Path (Join-Path $game 'tools\claude-version\set_bot_guilds.py'))) 'rollback removes helpers it added'
@@ -172,6 +199,14 @@ New-FakeGame $changed $base
 $unknown = Run 'install-server-build.ps1' @('-GameFolder', $changed)
 Check ($unknown.Code -ne 0 -and (Sha (Join-Path $changed 'runtime\server\lib\GameServer.dll')) -ne $info['GameServer.dll']) 'an unknown dll is refused'
 
+# A hand-changed server library: refused, and nothing is touched.
+$changedCore = Join-Path $work 'changed-core'
+New-FakeGame $changedCore $base
+[IO.File]::WriteAllText((Join-Path $changedCore 'runtime\server\CoreDatabase.dll'), 'someone else''s database layer')
+$unknownCore = Run 'install-server-build.ps1' @('-GameFolder', $changedCore)
+Check ($unknownCore.Code -ne 0 -and (Sha (Join-Path $changedCore 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll'] -and
+       (Sha (Join-Path $changedCore 'runtime\server\lib\CoreDatabase.dll')) -ne $info['core/CoreDatabase.dll']) "an unknown server library is refused`n$($unknownCore.Output)"
+
 # A hand-changed launcher: refused, and the server is not touched either.
 $changedLauncher = Join-Path $work 'changed-launcher'
 New-FakeGame $changedLauncher $base
@@ -208,6 +243,13 @@ foreach ($folder in @('runtime\server', 'runtime\server\lib', 'runtime\server\wi
 }
 Check ($toRelease.Code -eq 0 -and $allBack -and (Sha (Join-Path $chain 'runtime\OfflineDAoC.dll')) -eq $releasedLauncher -and
        (Sha (Join-Path $chain 'new-client\runtime\OfflineDAoC.dll')) -eq $releasedClient) "-ToRelease puts the released server and launchers back`n$($toRelease.Output)"
+$coreReleased = $true
+foreach ($folder in $coreLayout.Keys) {
+    foreach ($name in $coreLayout[$folder]) {
+        if ([IO.File]::ReadAllText((Join-Path $chain "$folder\$name")) -ne "original release $folder/$name") { $coreReleased = $false }
+    }
+}
+Check $coreReleased "-ToRelease puts the released server libraries back`n$($toRelease.Output)"
 $nothingLeft = Run 'rollback-server-build.ps1' @('-GameFolder', $chain)
 Check ($nothingLeft.Code -ne 0) 'after -ToRelease no install is left to undo'
 $reinstall = Run 'install-server-build.ps1' @('-GameFolder', $chain)

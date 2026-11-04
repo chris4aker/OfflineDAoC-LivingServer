@@ -2,7 +2,8 @@ OFFLINE DAOC: LIVING SERVER - BETA 1.0   (github.com/chris4aker/OfflineDAoC-Soci
 =========================================================================================
 
 An add-on for Offline DAoC 0.37 / 0.37b (with or without the 0.37c new client) that makes the
-world feel like a live 2003 server. It replaces the server (GameServer.dll) and the launcher
+world feel like a live 2003 server. It replaces the server (GameServer.dll and, from 1.1.2, its
+libraries CoreBase, CoreDatabase and CoreServer) and the launcher
 (OfflineDAoC.exe, which gets a Living Server tab).
 
 ALWAYS ON (the bots' own game, nothing to switch):
