@@ -5559,7 +5559,7 @@ namespace DOL.AI.Brain
             BotBody.TargetObject = corpse;
             if (BotBody.CastSpell(resurrection, m_mobSpellLine, false))
             {
-                log.Info($"AUTONOMOUS_SIEGE_RESURRECTION healer=\"{BotBody.Name}\" corpse=\"{corpse.Name}\" realm={BotBody.Realm} " +
+                log.Info($"AUTONOMOUS_SIEGE_RESURRECTION healer=\"{BotBody.Name}\" corpse=\"{corpse.Name}\" realm={GlobalConstants.RealmToName(BotBody.Realm)} " +
                          $"region={BotBody.CurrentRegionID} at={BotBody.X},{BotBody.Y},{BotBody.Z}");
                 return true;
             }

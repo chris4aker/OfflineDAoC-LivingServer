@@ -307,8 +307,8 @@ public static class AutonomousChatNews
             return;
         Invalidate(item.Realm);
         if (Log.IsInfoEnabled)
-            Log.Info($"CHAT_NEWS topic={item.Topic} realm={item.Realm} keep=\"{item.Keep}\" relic=\"{item.Relic}\" raid=\"{item.Raid}\" " +
-                     $"winner={item.Winner} loser={item.Loser}");
+            Log.Info($"CHAT_NEWS topic={item.Topic} realm={GlobalConstants.RealmToName(item.Realm)} keep=\"{item.Keep}\" relic=\"{item.Relic}\" raid=\"{item.Raid}\" " +
+                     $"winner={GlobalConstants.RealmToName(item.Winner)} loser={GlobalConstants.RealmToName(item.Loser)}");
         if (!voice)
             return;
         long now = GameLoop.GameLoopTime;

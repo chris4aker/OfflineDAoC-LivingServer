@@ -146,7 +146,7 @@ public static class AutonomousBotGuildKeeps
 
         keep.ClaimForGuild(guild);
         if (Log.IsInfoEnabled)
-            Log.Info($"BOT_GUILD_CLAIM keep=\"{keep.Name}\" guild=\"{guild.Name}\" realm={keep.Realm} present={membersPresent}");
+            Log.Info($"BOT_GUILD_CLAIM keep=\"{keep.Name}\" guild=\"{guild.Name}\" realm={GlobalConstants.RealmToName(keep.Realm)} present={membersPresent}");
         GameBot speaker = byGuild.First(group => group.Key.GuildID == chosenId)
             .OrderBy(bot => bot.GuildRank?.RankLevel ?? AutonomousBotGuildPlanner.LowestRank).First();
         AutonomousBotGuildSocial.OnKeepClaimed(speaker, guild, keep.Name);

@@ -227,7 +227,7 @@ public static class AutonomousPopulationController
             if (record.RegionId == AutonomousDarknessFallsPolicy.RegionId &&
                 AutonomousDarknessFallsNavigation.TryGetRealmEntrance((eRealm)record.Realm, out Vector3 dungeonEntrance))
             {
-                Log.Info($"AUTONOMOUS_DF_LOGIN_AT_ENTRANCE bot={record.Name} id={record.BotId} realm={(eRealm)record.Realm} " +
+                Log.Info($"AUTONOMOUS_DF_LOGIN_AT_ENTRANCE bot={record.Name} id={record.BotId} realm={GlobalConstants.RealmToName((eRealm)record.Realm)} " +
                          $"saved={record.X},{record.Y},{record.Z} entrance={(int)dungeonEntrance.X},{(int)dungeonEntrance.Y},{(int)dungeonEntrance.Z}");
                 bot.CurrentRegionID = AutonomousDarknessFallsPolicy.RegionId;
                 bot.X = (int)dungeonEntrance.X;

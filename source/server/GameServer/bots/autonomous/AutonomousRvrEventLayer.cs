@@ -444,7 +444,7 @@ public static partial class AutonomousRvrEventLayer
                 RealmSiegeReady.Remove(force.Realm);
                 RealmLastAttackTick[force.Realm] = nowTick;
                 if (Log.IsInfoEnabled) Log.Info($"RVR_EVENT_OPENED target={selected.Id} name=\"{selected.Name}\" relic={selected.IsRelicKeep} " +
-                         $"attacker={force.Realm} defender={selected.OwningRealm} warband={force.GroupId} size={force.MemberCount}");
+                         $"attacker={GlobalConstants.RealmToName(force.Realm)} defender={GlobalConstants.RealmToName(selected.OwningRealm)} warband={force.GroupId} size={force.MemberCount}");
                 RealmEventRecords.Begin(selected.Id, selected.Name, selected.IsRelicKeep ? "Relic keep" : "Keep", GlobalConstants.RealmToName(force.Realm), "Automatic continuous siege; defender: " + GlobalConstants.RealmToName(selected.OwningRealm));
                 if (!StagedAssault)
                     StartBattle(active, nowTick, "automatic assault opened; each assigned bot converges without formation staging");

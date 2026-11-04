@@ -70,7 +70,7 @@ public static class AutonomousBotGuildAlliances
             }
             catch (Exception exception)
             {
-                Log.Error($"Bot guilds: alliance reconcile failed for {realm}", exception);
+                Log.Error($"Bot guilds: alliance reconcile failed for {GlobalConstants.RealmToName(realm)}", exception);
             }
         }
     }
@@ -121,7 +121,7 @@ public static class AutonomousBotGuildAlliances
                 continue;
             alliance.AddGuild(guild);
             if (Log.IsInfoEnabled)
-                Log.Info($"Bot guilds: \"{guild.Name}\" joined the alliance of \"{alliance.DbAlliance.AllianceName}\" ({realm})");
+                Log.Info($"Bot guilds: \"{guild.Name}\" joined the alliance of \"{alliance.DbAlliance.AllianceName}\" ({GlobalConstants.RealmToName(realm)})");
         }
     }
 
