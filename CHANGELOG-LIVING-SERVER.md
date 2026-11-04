@@ -8,6 +8,53 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.3 (in development)
+
+Chat: a busier world, and bots that answer what you actually said. The goal is a realm that feels like a full 2003 server
+on a busy evening. How it works and how to tune it: [docs/bot-voices/CHAT-BUDGETS.md](docs/bot-voices/CHAT-BUDGETS.md).
+
+- **More chat, scaled to the crowd.**
+  - **Before:** chat stopped growing at about 390 bots a realm.
+  - **Now:** /faction, /lfg, /trade, /say near you, town /broadcast, guild and group talk each have a floor, a target and
+    a ceiling. They rise with the bots online, with no cap, and follow the time of day.
+  - **Town /broadcast:** bots now use it the way players did in 2003: selling (sometimes as a repeating macro), looking
+    for a group, a little chatter. You hear it where the base game's /broadcast reaches.
+  - **One file:** all the numbers are in `chat-budget.json`, with comments. They are estimates, set from research into
+    2003 chat volume.
+- **Big moments ripple through chat.** A keep taken or lost, a relic moved, a raid won or wiped, Darkness Falls changing
+  hands, a server first and a nemesis paid back each draw a short burst of reactions in /faction. The realm-wide ones also
+  reach the capital's /broadcast.
+- **Bots answer what you said, or say nothing.**
+  - **Weak replies:** a reply that doesn't fit your line is dropped. A tell or a line that names the bot gets "?", "ya?"
+    or "sec" instead. No more "ask around maybe" to a question anyone could answer.
+  - **About themselves:** bots answer their name, class, spec, level, zone, group and what they're hunting from their
+    real state.
+  - **How things work:** they explain equipping, binding, `/stuck`, `/anon`, `/release`, training, and how many realm
+    points a realm rank takes.
+  - **By situation:** "gn" gets a goodnight, "stuck" gets `/stuck`, "inc" gets "where?" or "omw", a call for help an offer
+    to come, a sale a price or a no, and a counter-offer to a bot's price a counter or a deal.
+  - **Words they now read:** "lo", "re", "wb", "long time no see", "u there?", "ne1 on?", roleplay (answered in kind),
+    mishaps ("lol rip"), apologies, offers of help, and "where?" after a bot named a place.
+- **One answer, then maybe a few more.** A question gets one answer. A hello or a ding gets a few. A joke now and then
+  draws a "lol" or "+1". Replies take longer to type the longer they are, at each bot's own typing speed.
+- **Less filler.**
+  - **Musings:** lore musings appear only now and then in /faction, never as replies.
+  - **Generic agreement:** "good question" and the like come at most once an hour per channel.
+  - **Repeats and polish:** near-copies are dropped, and fewer bots write with capitals and full stops.
+  - **The Realm Exchange:** bots mention it only when someone asks where to buy or sell.
+  - **Templates:** a few grammar slips are fixed.
+- **Typing habits.** About a third of bots have small habits of their own: "u" and "ur", "??", "...", a trailing "lol",
+  and for a rare few, the period's leetspeak.
+- **`/lswhy`** (every player) shows why a bot said what it said, or why nobody answered, and `/lswhy budget` shows how
+  busy each channel around you is.
+- **Checked:**
+  - **Automated:** new tests for every part; the full server suite passes.
+  - **Simulated evening at 1,000 bots a realm:** about 8.6 lines a minute across the channels a player hears, up from
+    about 2.0.
+  - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to 71%. Those lines are known
+    now, so this is a regression check; a fresh blind round comes next.
+  - **In game:** not yet played.
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the
