@@ -54,6 +54,55 @@ gates fell, and the Renegade Lord never dropped below 100%).
 - **For testers:** `DUTY_LEASE` lines in the server log record each claim granted, taken, refused (with its reason)
   and ended, once per change.
 
+**Gamebot leaders invite you, and you can just follow** (bot-led groups, first part; docs/BOT-LED-GROUPS.md).
+- **The invite:** the leader of a gamebot party of your realm, within 3 levels of you on average, with room and
+  hunting where you can walk or ride, may send you a tell ("lf 1 more for skeletons in Cursed Forest, want in?") and
+  then the usual group invite box. Yes puts you in its group; the gamebot stays the leader.
+  - **Never** while you fight, are dead, ride, are on a boat, have another yes/no box open, trade, are in a group, have
+    `/spawn` companions out, are `/afk`, or are in a frontier, battleground or raid.
+  - **How often:** unasked, at most once every 45 minutes and not in your first 10 minutes online. It counts as that
+    period's bot tell, so a tell and an invite never stack.
+  - **Asking:** `/lfg` gets you an invite within a minute when a party fits (and then no duo offers), and so does a
+    tell to a bot leader with room ("room for a cleric?").
+  - **Saying no:** No in the box, or "no thanks" to the tell. Then no unasked invite for 30 minutes, nothing from that
+    leader for 6 hours, and no unasked invites for the rest of the session after three noes.
+  - The server setting `bot_group_invite_player` (the launcher's Living Server tab, **Bot leaders invite you**) turns
+    unasked invites off; `/lfg` still gets you one.
+- **Following:** the leader runs the party as a gamebot party does: the camp, the pulls, the breaks.
+  - The camp is for the group's level counting you, and never more than 6 levels above you.
+  - The leader tells you where to meet and waits there up to 20 minutes (it says where it is at 5 and 10), then goes
+    on and keeps your spot. You travel yourself: you are never teleported, summoned or given money. Gamebots beside
+    you when you take a porter come with you, as invited gamebots do.
+  - On the way the leader stops when you fall 1,500 units behind, asks "where u at?" after 2 minutes, and after 10
+    minutes with you not getting closer goes on to the camp and says so in `/group`. Inside a dungeon entrance the
+    party waits for you the same way.
+  - The party pulls only when you are near, alive, not sitting and up on health and power like the rest.
+  - **Away:** `/afk`, or 10 minutes without doing anything: the party pulls where it stands but goes nowhere new; at 15
+    minutes it holds; at 30 it lets you go at the next break, with a tell. Linkdead for 5 minutes counts as leaving.
+  - **Leaving:** `/disband` at any time. The party carries on without you.
+  - A gamebot party hosting you counts your class: when you are its only healer, it still has a healer.
+  - `/pull` in a party a gamebot leads says the gamebot is leading instead of taking over. Taking the lead
+    (`/lead`) comes in the next part.
+  - Quest kills: a kill by the party counts for your kill quests when you are alive and in range, as in a group you
+    lead.
+  - No raid, siege, RvR march, battleground rally or other gamebot group takes a gamebot from a party that hosts you
+    (`/lswhy duty` on one says "leading a group with a player").
+- **Loot changes for every group with you and gamebots, whoever leads** (owner's decision): loot is shared with you and
+  weighted in your favour. You count as two members: coin is split evenly among the members in range with you counted
+  twice, and items go round the members in range with two turns for you (with seven gamebots nearby you get 2 of every
+  9 items and 2/9 of the coin). An item your class can use that beats what you wear comes to you first. Before, in a
+  group you led you got everything, and in a gamebot's group you would have got nothing. The share is the setting
+  `bot_group_player_loot_weight` (1 to 8; the launcher's **Your loot share**). Groups of only gamebots, and your
+  `/spawn` companions (who take no loot), are unchanged.
+- **Gamebot chat:** the leader says what comes next in `/group`, short and lowercase ("moving to skeletons", "where u
+  at?", "everyone med"). Lines like "you pull great" or "lead the way" are no longer said in a party a gamebot leads.
+- **For testers:** server log lines `BOT_LED_INVITE` (sent, not sent, declined, accepted, with the reason),
+  `BOT_LED_GROUP_HOSTING`, `BOT_LED_GROUP_GOING_ON`, `BOT_LED_PLAYER_LEFT` and `BOT_LED_LOOT`; the startup
+  `FORK_BUILD` line shows both settings.
+- **Not yet:** `/lead` and handing the lead back, the join setting (follow or lead) and raid leaders who invite you
+  come in the next parts. Gamebots don't yet ride the same horse or boat as you: the leader takes its own and waits
+  for you at the other end. Nothing here has been played in game yet.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
