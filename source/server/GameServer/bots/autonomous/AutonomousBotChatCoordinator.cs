@@ -365,6 +365,10 @@ public static class AutonomousBotChatCoordinator
 
     private static readonly Dictionary<eRealm, (int Count, long At)> RealmCounts = new();
 
+    /// <summary>A bot's typing speed, fixed from its id and personality (chat-budget.json wpm_min/wpm_max).</summary>
+    internal static int Wpm(GameBot bot) =>
+        AutonomousChatBudget.TypingWpm(AutonomousChatBudget.Current, bot?.DatabaseID ?? 0, bot == null ? BotPersonalityType.Leveler : AutonomousBotPersonality.For(bot).Type);
+
     /// <summary>The realm's gamebots online (cached 30 s).</summary>
     internal static int RealmBots(eRealm realm) => RealmBotsOnline(realm);
 
@@ -592,7 +596,7 @@ public static class AutonomousBotChatCoordinator
             AutonomousChatWhy.Record(bot, ScopeName(scope), "player " + player?.Name, "said", rule, AutonomousChatReplyFit.Of(rule),
                 "follows on from the conversation", text, to: player?.Name);
             return 0;
-        }, ReplyDelayMs(text, 0, Random.Shared));
+        }, ReplyDelayMs(bot, null, text, 0, Random.Shared));
     }
 
     private static string ScopeName(ThreadScope scope) => scope switch { ThreadScope.Faction => "faction", ThreadScope.Say => "say", _ => "group" };
@@ -630,11 +634,14 @@ public static class AutonomousBotChatCoordinator
     /// (0.36-se.4; replies came at fixed 1.3-1.8 s steps whatever their length). <paramref name="after"/> is when
     /// the previous reply was due, so replies stay in order.
     /// </summary>
-    public static int ReplyDelayMs(string reply, int after, Random random)
-    {
-        int typing = (reply?.Length ?? 0) * (40 + random.Next(21));
-        return Math.Max(after + 900, 1_200 + random.Next(1_400) + typing) + (after > 0 ? random.Next(900) : 0);
-    }
+    public static int ReplyDelayMs(string reply, int after, Random random) =>
+        // Beta 1.1.3: reading, a think pause and typing at an average 40 words a minute (AutonomousChatArbiter.DelayMs); the
+        // bot's own speed where the caller knows the bot.
+        AutonomousChatArbiter.DelayMs(null, reply, 40, after, random);
+
+    /// <summary>How long this bot takes to answer <paramref name="incoming"/> with <paramref name="reply"/> at its own typing speed.</summary>
+    public static int ReplyDelayMs(GameBot bot, string incoming, string reply, int after, Random random) =>
+        AutonomousChatArbiter.DelayMs(incoming, reply, Wpm(bot), after, random);
 
     public static void OnPlayerFactionChat(GamePlayer player, string message)
     {
@@ -750,15 +757,23 @@ public static class AutonomousBotChatCoordinator
             ReplyChoice reply = Budgeted(TellReply(bot, player, message, intent), bot, message, true);
             if (!string.IsNullOrWhiteSpace(reply.Text))
             {
-                AutonomousLivingServer.Tell(bot, player, reply.Text);
-                AutonomousChatWhy.Record(bot, "tell", "tell from " + player.Name, "said", reply.Route, AutonomousChatReplyFit.Of(reply.Route, message),
-                    "a tell to it gets an answer", reply.Text, reply.Line?.Id, player.Name);
+                // Beta 1.1.3: the reply is worked out after reading the tell, then typed at the bot's own speed.
+                int typing = AutonomousBotVoices.Enabled ? (int)(reply.Text.Length / (Wpm(bot) * 5 / 60_000.0)) : 0;
+                _ = new ECSGameTimer(bot, _ =>
+                {
+                    if (!AutonomousLivingServer.IsSpeaker(bot) || !bot.IsAlive || player.ObjectState != GameObject.eObjectState.Active)
+                        return 0;
+                    AutonomousLivingServer.Tell(bot, player, reply.Text);
+                    AutonomousChatWhy.Record(bot, "tell", "tell from " + player.Name, reply.Route.StartsWith("ack", StringComparison.Ordinal) ? "ack" : "said",
+                        reply.Route, AutonomousChatReplyFit.Of(reply.Route, message), "a tell to it gets an answer", reply.Text, reply.Line?.Id, player.Name);
+                    return 0;
+                }, Math.Max(1, typing));
             }
             else
                 AutonomousChatWhy.Record(bot, "tell", "tell from " + player.Name, "silent", reply.Route, AutonomousChatReplyFit.Of(reply.Route, message),
                     "no reply fits", to: player.Name);
             return 0;
-        }, 2_500 + Random.Shared.Next(3_000));
+        }, AutonomousBotVoices.Enabled ? 1_000 + Math.Min(3_000, message.Length * 20) + Random.Shared.Next(1_500) : 2_500 + Random.Shared.Next(3_000));
     }
 
     /// <summary>
@@ -1386,37 +1401,72 @@ public static class AutonomousBotChatCoordinator
         int planned = 0;
         string lastRoute = null;
         string why = faction ? "faction" : "say";
-        for (int index = 0; index < count; index++)
+        // Beta 1.1.3, arbitration: one primary answer; then, where a crowd would, a few pile-ons (more hellos for a hello, a
+        // "lol" or "+1" for a joke or a remark), never a second answer to a question. Each reply arrives after its bot read the
+        // line, thought and typed at its own speed.
+        AutonomousChatArbiter.Plan plan = new(count > 0 ? 1 : 0, 0, 0);
+        bool question = AutonomousChatQuestions.IsQuestion(message);
+        int social = 0, reactions = 0;
+        string reactionKind = null;
+        for (int index = 0; index < eligible.Length && index < count + 3 && planned < plan.Total; index++)
         {
             GameBot responder = eligible[index];
-            ReplyChoice choice = noneNearLevel != null
-                ? new ReplyChoice(AutonomousBotVoices.StyleFor(responder, noneNearLevel), "live none_near_level")
-                : hasKnowledge
-                ? new ReplyChoice(AutonomousBotVoices.StyleFor(responder, knowledge), "knowledge")
-                : directed
-                    ? KnownChoice(responder, player, message, () => VoicedChoice(responder, message, () => GenerateDirectedReply(message), player, intent,
-                        addressed: true, channel: why))
-                    // With voices on, a line no reply fits gets none: the old formal lines ("Things seem steady from where I am.")
-                    // answered anything (chat audit 2026-10-21).
-                    : VoicedChoice(responder, message, () => voices ? null : faction ? GenerateFactionReply(message) : GenerateLocalReply(responder, message),
-                        // In /say a "u" is the bot nearby ("u selling that sword?"); in /faction it is nobody in particular.
-                        player, intent, addressed: !faction, channel: why);
-            // The reply budget: under the minimum fit, a bot named in the line acknowledges it and any other stays quiet.
-            if (noneNearLevel == null && !hasKnowledge)
-                choice = Budgeted(choice, responder, message, directed);
-            lastRoute = choice.Route;
+            bool primary = planned == 0;
+            ReplyChoice choice;
+            if (!primary && reactions < plan.Reactions)
+            {
+                choice = new ReplyChoice(AutonomousBotVoices.StyleFor(responder, AutonomousChatArbiter.Reaction(reactionKind, Random.Shared)),
+                    "pileon " + reactionKind);
+                reactions++;
+            }
+            else
+            {
+                choice = noneNearLevel != null
+                    ? new ReplyChoice(AutonomousBotVoices.StyleFor(responder, noneNearLevel), "live none_near_level")
+                    : hasKnowledge
+                    ? new ReplyChoice(AutonomousBotVoices.StyleFor(responder, knowledge), "knowledge")
+                    : directed
+                        ? KnownChoice(responder, player, message, () => VoicedChoice(responder, message, () => GenerateDirectedReply(message), player, intent,
+                            addressed: true, channel: why))
+                        // With voices on, a line no reply fits gets none: the old formal lines ("Things seem steady from where I am.")
+                        // answered anything (chat audit 2026-10-21).
+                        : VoicedChoice(responder, message, () => voices ? null : faction ? GenerateFactionReply(message) : GenerateLocalReply(responder, message),
+                            // In /say a "u" is the bot nearby ("u selling that sword?"); in /faction it is nobody in particular.
+                            player, intent, addressed: !faction, channel: why);
+                // The reply budget: under the minimum fit, a bot named in the line acknowledges it and any other stays quiet.
+                if (noneNearLevel == null && !hasKnowledge)
+                    choice = Budgeted(choice, responder, message, directed);
+                if (!primary)
+                    social++;
+            }
+            lastRoute ??= choice.Route;
             if (!TryAddDistinctResponse(scheduledResponses, choice.Text, out string response))
+            {
+                if (!primary && choice.Route.StartsWith("pileon", StringComparison.Ordinal))
+                    reactions--;
+                continue;
+            }
+            if (primary)
+            {
+                plan = voices
+                    ? AutonomousChatArbiter.Arrange(count, intent, choice.Route, directed, question, eligible.Length, AutonomousChatBudget.Current.PileOnCap, Random.Shared)
+                    : new AutonomousChatArbiter.Plan(1, Math.Max(0, count - 1), 0);
+                reactionKind = AutonomousChatArbiter.ReactionKind(choice.Route, intent);
+                lastRoute = choice.Route;
+            }
+            else if (social > plan.Social && !choice.Route.StartsWith("pileon", StringComparison.Ordinal))
                 continue;
             planned++;
-            due = ReplyDelayMs(response, due, Random.Shared);
+            due = voices ? AutonomousChatArbiter.DelayMs(message, response, Wpm(responder), due, Random.Shared) : ReplyDelayMs(response, due, Random.Shared);
             if (faction)
                 NoteFactionResponder(player.Realm, responder);
             // A bot named in the line answers itself; otherwise a busy bot's reply goes to the next bot that could say it.
-            GameBot[] standIns = directed ? [] : eligible.Skip(count).Take(PlayerReplyStandIns).ToArray();
+            GameBot[] standIns = directed ? [] : eligible.Skip(count + 3).Take(PlayerReplyStandIns).ToArray();
             string text = response;
             string route = choice.Route;
             string lineId = choice.Line?.Id;
             int fit = AutonomousChatReplyFit.Of(route, message);
+            string outcome = primary ? route.StartsWith("ack", StringComparison.Ordinal) ? "ack" : "said" : "pileon";
             _ = new ECSGameTimer(player, _ =>
             {
                 GameBot speaker = PickSpeaker(responder, standIns,
@@ -1431,12 +1481,17 @@ public static class AutonomousBotChatCoordinator
                     return 0;
                 Note(faction ? AutonomousChatThreads.Faction(speaker.Realm) : AutonomousChatThreads.Say(speaker.CurrentRegionID), speaker, text, "",
                     player.Name);
-                AutonomousChatWhy.Record(speaker, why, "player " + player.Name, "said", route, fit,
-                    speaker == responder ? (directed ? "named in the line" : "the best fit of " + eligible.Length + " who heard it")
-                        : "stood in for " + responder.Name + ", who was busy", text, lineId, player.Name);
+                AutonomousChatWhy.Record(speaker, why, "player " + player.Name, outcome, route, fit,
+                    outcome == "pileon" ? "a bystander joins in after the first answer"
+                    : speaker == responder ? (directed ? "named in the line" : "the best fit of " + eligible.Length + " who heard it")
+                    : "stood in for " + responder.Name + ", who was busy", text, lineId, player.Name);
                 return 0;
             }, due);
         }
+        // The speaking lock: no unprompted line starts in this channel until the answers are out.
+        if (planned > 0)
+            AutonomousChatBudget.Meter.Delay(faction ? AutonomousChatBudget.Channel.Faction : AutonomousChatBudget.Channel.Say,
+                faction ? (long)player.Realm : player.CurrentRegionID, GameLoop.GameLoopTime + due + 2_000);
         if (planned == 0)
             AutonomousChatWhy.RecordSilence(player.Realm, why, "player " + player.Name, lastRoute ?? "none", AutonomousChatReplyFit.Of(lastRoute, message),
                 eligible.Length == 0 ? "no bot that heard it could answer" : count == 0 ? $"a line like this ({intent}) draws no answer here"

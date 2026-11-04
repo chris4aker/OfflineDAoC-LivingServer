@@ -272,7 +272,7 @@ public static class AutonomousBotGroupChatter
             lastRoute = choice.Route;
             if (string.IsNullOrEmpty(choice.Text) || !AutonomousBotChatCoordinator.TryAddDistinctResponse(used, choice.Text, out string reply))
                 continue;
-            due = AutonomousBotChatCoordinator.ReplyDelayMs(reply, due, Random.Shared);
+            due = AutonomousBotChatCoordinator.ReplyDelayMs(mate, message, reply, due, Random.Shared);
             string text = reply;
             AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () =>
             {

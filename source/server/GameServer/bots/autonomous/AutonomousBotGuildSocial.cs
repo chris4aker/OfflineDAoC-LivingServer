@@ -347,6 +347,9 @@ public static class AutonomousBotGuildSocial
         int count = mentioned.Length > 0 && kind != Lines.ReplyKind.None
             ? 1
             : ResponderCount(kind, pool.Length, Random.Shared.NextDouble());
+        // Beta 1.1.3, arbitration: one answer to anything but a hello, a ding, a goodbye or a call, which a few guildmates answer.
+        if (AutonomousBotVoices.Enabled && !AutonomousChatArbiter.IsSocial(intent))
+            count = Math.Min(count, 1);
         var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name };
         var spoken = new HashSet<GameBot>();
@@ -388,7 +391,8 @@ public static class AutonomousBotGuildSocial
                 : AutonomousBotVoices.StyleFor(bot, Lines.Reply(kind, player.Name, bot.Level, bot.CurrentZone?.Description, Random.Shared));
             if (!AutonomousBotChatCoordinator.TryAddDistinctResponse(used, line, out line))
                 continue;
-            due = AutonomousBotChatCoordinator.ReplyDelayMs(line, due, Random.Shared) + 600;
+            due = (AutonomousBotVoices.Enabled ? AutonomousBotChatCoordinator.ReplyDelayMs(bot, message, line, due, Random.Shared)
+                : AutonomousBotChatCoordinator.ReplyDelayMs(line, due, Random.Shared)) + 600;
             string text = line;
             GameBot chosen = bot;
             _ = new ECSGameTimer(player, _ =>
