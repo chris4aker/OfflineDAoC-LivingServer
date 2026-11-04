@@ -42,10 +42,11 @@ public static class RealmEventRecords
     /// <summary>
     /// The outcomes of an event's last finished runs, oldest first, from this ledger (what the launcher's Herald shows).
     /// File I/O: call it off the game loop. Empty when the ledger cannot be read; nothing depends on it being there.
+    /// <paramref name="automaticOnly"/> leaves out raids started from the launcher.
     /// </summary>
-    public static List<string> FinishedOutcomes(string eventId,int limit)
+    public static List<string> FinishedOutcomes(string eventId,int limit,bool automaticOnly=false)
     {
-        try{return RealmEventRecordStore.Outcomes(PathName,eventId,limit);}
+        try{return RealmEventRecordStore.Outcomes(PathName,eventId,limit,automaticOnly);}
         catch(Exception){return new();}
     }
     [GameServerStartedEvent]

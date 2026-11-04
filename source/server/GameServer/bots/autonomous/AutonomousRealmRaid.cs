@@ -1425,9 +1425,12 @@ namespace DOL.GS
             string[] named = raid.DungeonRoute?.NamedDefeated.ToArray() ?? [];
             if (outcome != "Boss defeated" && named.Length > 0)
                 reason += $" Named encounters defeated: {string.Join(", ", named)}.";
-            RealmEventRecords.Finish(raid.Definition.Id, outcome, reason, raid.Support.Length);
+            // A raid started from the launcher is marked in the ledger: its result is not part of the encounter's record
+            // for raid sizing or the Special Forces (owner, 2026-11-04).
+            RealmEventRecords.Finish(raid.Definition.Id, outcome, raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason,
+                raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
-            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, outcome);
+            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, outcome, raid.Forced);
             Log.Info($"REALM_RAID_ENDED event={raid.Definition.Id} outcome=\"{outcome}\" support={raid.Support.Length} required={raid.Required} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
                      $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} reason=\"{reason}\"");

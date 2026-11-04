@@ -111,7 +111,9 @@ realm that feels like a full server at its busiest. How it works and how to tune
   raid to 300, so a trimmed raid would have grown back to full size by itself.
 - **The Special Forces** count the last six wins and losses, as intended; before, a server restart or a failed rally
   could push a real result out of their count.
-- Raids you start from the launcher keep their 200 and 300. `realm_raid_minimum_bots`, when set, is used as it stands.
+- Raids you start from the launcher keep their 200 and 300, and their wins and losses count for neither the raid's size
+  nor the Special Forces: the Herald now marks them ("Forced raid: ..."), and older unmarked records count as
+  automatic. `realm_raid_minimum_bots`, when set, is used as it stands.
 - **Settings:** `realm_raid_target_win_percent` (67; 0 turns the sizing off), `realm_raid_smallest_size_percent` (60),
   `realm_raid_largest_size_percent` (100) and `realm_raid_win_trim_percent` (5).
 - **Seeing it:** `/lstest raid` names the size and why, and the server log has a `REALM_RAID_SIZED` line for every

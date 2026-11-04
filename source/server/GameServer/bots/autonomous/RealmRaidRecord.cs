@@ -11,7 +11,9 @@ namespace DOL.GS;
 /// event ledger (the launcher's Herald), kept in memory and updated as raids end. One record serves both halves of the
 /// raid balance (owner 2026-10-19, "about 2 in 3"): the Epic Special Forces call-up (its last six results) and the
 /// raid's own size (RealmRaidRecruitmentPolicy.Size, all of it). Interrupted, beaten-to-it, failed and stopped raids are
-/// not results: logistics and restarts are fixed, not balanced. Loaded once off the game loop; until it has loaded,
+/// not results: logistics and restarts are fixed, not balanced. Nor are raids the player started from the launcher
+/// (owner, 2026-11-04): their ledger rows are marked (RealmEventRecordStore.ForcedRaidPrefix) and left out, and an
+/// unmarked older row counts as automatic. Loaded once off the game loop; until it has loaded,
 /// <see cref="Loaded"/> is false and raids recruit today's full size.
 /// </summary>
 public static class RealmRaidRecord
@@ -52,10 +54,10 @@ public static class RealmRaidRecord
         lock (Sync) return _record?.GetValueOrDefault(raidId)?.ToList() ?? [];
     }
 
-    /// <summary>A raid ended: a win or a loss joins its record (anything else is ignored).</summary>
-    public static void Add(string raidId, string outcome)
+    /// <summary>A raid ended: a win or a loss of an automatic raid joins its record (anything else is ignored).</summary>
+    public static void Add(string raidId, string outcome, bool forced = false)
     {
-        if (!Counted(outcome)) return;
+        if (forced || !Counted(outcome)) return;
         lock (Sync)
         {
             if (_record == null) EndedBeforeLoad.Add((raidId, outcome));
@@ -79,7 +81,7 @@ public static class RealmRaidRecord
         {
             var loaded = new Dictionary<string, List<string>>(StringComparer.Ordinal);
             foreach (string id in ids)
-                loaded[id] = CountedOf(RealmEventRecords.FinishedOutcomes(id, LedgerRows));
+                loaded[id] = CountedOf(RealmEventRecords.FinishedOutcomes(id, LedgerRows, automaticOnly: true));
             lock (Sync)
             {
                 foreach (var (id, outcome) in EndedBeforeLoad) Append(loaded, id, outcome);

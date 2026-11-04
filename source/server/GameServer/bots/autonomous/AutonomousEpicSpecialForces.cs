@@ -112,15 +112,16 @@ public static class AutonomousEpicSpecialForces
         }
     }
 
-    /// <summary>The raid ended: its result joins the dungeon's record and its Special Forces go home.</summary>
-    public static void RaidEnded(string raidId, string outcome)
+    /// <summary>The raid ended: its Special Forces go home, and an automatic raid's result joins the dungeon's record
+    /// (a raid started from the launcher is not part of it, owner 2026-11-04).</summary>
+    public static void RaidEnded(string raidId, string outcome, bool forced = false)
     {
         lock (Sync)
         {
             Answered.Remove(raidId);
             Dismissals.Enqueue(raidId);
         }
-        RealmRaidRecord.Add(raidId, outcome);
+        RealmRaidRecord.Add(raidId, outcome, forced);
     }
 
     /// <summary>Game loop, coordinator phase, outside the raid and coordinator locks: arrivals and departures.</summary>

@@ -209,6 +209,56 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void ALauncherRaidsResultIsNotPartOfTheRecord()
+        {
+            // Owner 2026-11-04: a raid the player started from the launcher counts for neither the size nor the Special Forces.
+            RealmRaidRecord.SetForTests("epic-hibernia", Win);
+            AutonomousEpicSpecialForces.RaidEnded("epic-hibernia", Win, forced: true);
+            AutonomousEpicSpecialForces.RaidEnded("epic-hibernia", Loss, forced: true);
+            Assert.That(RealmRaidRecord.Get("epic-hibernia"), Is.EqualTo(new[] { Win }));
+            AutonomousEpicSpecialForces.RaidEnded("epic-hibernia", Loss);
+            Assert.That(RealmRaidRecord.Get("epic-hibernia"), Is.EqualTo(new[] { Win, Loss }), "an automatic raid's result still counts");
+            // Nor while the record is still loading.
+            RealmRaidRecord.UnloadForTests();
+            RealmRaidRecord.Add("epic-hibernia", Win, forced: true);
+            RealmRaidRecord.ResetForTests();
+            Assert.That(RealmRaidRecord.Get("epic-hibernia"), Is.Empty);
+        }
+
+        [Test]
+        public void TheLedgerLeavesOutLauncherRaidsAndCountsUnmarkedOldRowsAsAutomatic()
+        {
+            string folder = Path.Combine(Path.GetTempPath(), "ut-raid-ledger-" + Guid.NewGuid().ToString("N"));
+            string path = RealmEventRecordStore.PathIn(folder);
+            try
+            {
+                int n = 0;
+                RealmEventRecord Row(string outcome, string details) =>
+                    new(Guid.NewGuid().ToString("N"), "epic-albion", "Caer Sidi", "Epic dungeon", "Albion",
+                        $"2026-11-04T10:{n:00}:00.0000000Z", $"2026-11-04T11:{n++:00}:00.0000000Z", "Ended", outcome, details, 200, 180);
+                RealmEventRecordStore.Save(path, [
+                    Row(Win, "The Caer Sidi expedition defeated the final encounter."),       // an old row: no marker, automatic
+                    Row(Win, RealmEventRecordStore.ForcedRaidPrefix + "The Caer Sidi expedition defeated the final encounter."),
+                    Row(Loss, "Defeated at Apocalypse after 2 failed attempts."),
+                    Row(Loss, RealmEventRecordStore.ForcedRaidPrefix + "Defeated at Apocalypse after 2 failed attempts."),
+                    Row("Interrupted", "Server stopped before the event reached a final outcome."),
+                ]);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(RealmEventRecordStore.Outcomes(path, "epic-albion", 10, automaticOnly: true),
+                        Is.EqualTo(new[] { Win, Loss, "Interrupted" }));
+                    Assert.That(RealmRaidRecord.CountedOf(RealmEventRecordStore.Outcomes(path, "epic-albion", 10, automaticOnly: true)),
+                        Is.EqualTo(new[] { Win, Loss }));
+                    Assert.That(RealmEventRecordStore.Outcomes(path, "epic-albion", 10), Has.Count.EqualTo(5), "the Herald's own read is unchanged");
+                });
+            }
+            finally
+            {
+                if (Directory.Exists(folder)) Directory.Delete(folder, true);
+            }
+        }
+
+        [Test]
         public void TheRecordKeepsItsLastFourHundredResults()
         {
             Assert.That(RealmRaidRecord.Depth, Is.EqualTo(400));

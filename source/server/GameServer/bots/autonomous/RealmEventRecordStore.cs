@@ -101,16 +101,23 @@ public static class RealmEventRecordStore
         command.CommandText="DELETE FROM Events";
         return command.ExecuteNonQuery();
     }
-    /// <summary>The outcomes of an event's last <paramref name="limit"/> finished runs, oldest first.</summary>
-    public static List<string> Outcomes(string path,string eventId,int limit)
+    /// <summary>
+    /// Details of a raid the player started from the launcher (a forced raid). Its result is not part of the encounter's
+    /// record for raid sizing or the Epic Special Forces (owner, 2026-11-04). Rows written before this marker existed
+    /// have none and count as automatic.
+    /// </summary>
+    public const string ForcedRaidPrefix="Forced raid: ";
+    /// <summary>The outcomes of an event's last <paramref name="limit"/> finished runs, oldest first;
+    /// <paramref name="automaticOnly"/> leaves out forced raids (<see cref="ForcedRaidPrefix"/>).</summary>
+    public static List<string> Outcomes(string path,string eventId,int limit,bool automaticOnly=false)
     {
         var outcomes=new List<string>();
         if(!File.Exists(path))return outcomes;
         using var connection=Open(path,true);using var command=connection.CreateCommand();
         command.CommandText="SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Events'";
         if((long)command.ExecuteScalar()==0)return outcomes;
-        command.CommandText="SELECT Outcome FROM Events WHERE EventId=@event AND EndedUtc<>'' ORDER BY StartedUtc DESC,Id DESC LIMIT @limit";
-        command.Parameters.AddWithValue("@event",eventId);command.Parameters.AddWithValue("@limit",limit);
+        command.CommandText="SELECT Outcome FROM Events WHERE EventId=@event AND EndedUtc<>''"+(automaticOnly?" AND substr(Details,1,length(@forced))<>@forced":"")+" ORDER BY StartedUtc DESC,Id DESC LIMIT @limit";
+        command.Parameters.AddWithValue("@event",eventId);command.Parameters.AddWithValue("@limit",limit);command.Parameters.AddWithValue("@forced",ForcedRaidPrefix);
         using var reader=command.ExecuteReader();
         while(reader.Read())outcomes.Add(reader.GetString(0));
         outcomes.Reverse();
