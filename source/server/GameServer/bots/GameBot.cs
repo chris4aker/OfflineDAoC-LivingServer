@@ -1297,6 +1297,26 @@ namespace DOL.GS
             _stableReturnPlan = null;
         }
 
+        /// <summary>
+        /// Living Server: a gamebot in a player's group that stalled on its way back plans it again from where it stands
+        /// (a stablemaster route when one is faster, else a walk with detours around hostile monsters) before
+        /// BotGroupRelease lets it join the leader. False when that can't apply here.
+        /// </summary>
+        public bool RestartReturnToLeader(GamePlayer leader)
+        {
+            if (!IsAlive || IsOnStableMasterRoute || leader == null || leader.CurrentRegionID != CurrentRegionID)
+                return false;
+            StopFollowing();
+            StopMovingOnPath();
+            StopMoving();
+            WakeRecoveryRest();
+            (Brain as BotBrain)?.Disengage();
+            _stableReturnPlan = null;
+            IsReturningAfterRelease = true;
+            Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
+            return true;
+        }
+
         public bool ContinueReturnJourney()
         {
             if (!IsReturningAfterRelease || !IsAlive)
@@ -1314,7 +1334,17 @@ namespace DOL.GS
                 : _deathLocation;
             if (BotGroupRelease.WaitsForLeader(this)) return true; // Fork: its corpse is no goal, the group goes on where the player comes back
             if ((CurrentRegionID != _deathRegionId || BotGroupRelease.IsGroupReturn(this)) && (leader == null || leader.CurrentRegionID != CurrentRegionID)) // Fork: its leader left the region it died in
+            {
+                // Living Server: a stablemaster ride in progress ends at its stable before the bot may join its leader.
+                if (IsOnStableMasterRoute)
+                {
+                    MaintainStableMasterRoute();
+                    if (IsMovingOnPath || CurrentPathPoint != null || !TryCompleteStableMasterRouteAfterArrival())
+                        return true;
+                    _stableReturnPlan = null;
+                }
                 return BotGroupRelease.TryReturnToLeader(this, _deathTick); // Fork: it stood here for good, nothing else moves a bot in a player's group
+            }
 
             if (GetDistanceTo(destination) <= 350)
             {
@@ -1382,10 +1412,10 @@ namespace DOL.GS
         {
             Vector3 current = new(X, Y, Z);
             Vector3 desired = new(destination.X, destination.Y, destination.Z);
-            AutonomousThreatAwarePathing.SafeStep step = BotGroupRelease.IsGroupReturn(this)
-                ? new(desired, false, string.Empty) // Fork: 900-unit steps stopped at the first wall, a planned route finds the door
-                : AutonomousThreatAwarePathing.ChooseStep(this, current, desired, 900);
-            PathTo(step.Position, MaxSpeed);
+            // Fork: 900-unit steps stopped at the first wall, a planned route finds the door. Living Server: a detour around a
+            // hostile monster still comes first, so only a clear way is walked as one planned route.
+            AutonomousThreatAwarePathing.SafeStep step = AutonomousThreatAwarePathing.ChooseStep(this, current, desired, 900);
+            PathTo(BotGroupRelease.ReturnStepTarget(BotGroupRelease.IsGroupReturn(this), step.Detouring, step.Position, desired), MaxSpeed);
             if (PersistentRecord != null)
             {
                 PersistentRecord.Activity = step.Detouring ? step.Reason : "Walking back to the party";

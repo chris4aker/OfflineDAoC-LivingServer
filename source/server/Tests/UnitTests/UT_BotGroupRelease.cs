@@ -58,6 +58,31 @@ namespace DOL.UnitTests
             Assert.That(BotGroupRelease.ReturnStalled(1_000, 1_000 + BotGroupRelease.ReturnStallMilliseconds), Is.True);
         }
 
+        // Living Server: routes first, the move to the leader last, and never off a stablemaster ride.
+        [TestCase(false, 0, BotGroupRelease.StallAction.Reroute, TestName = "First stall plans the way back again")]
+        [TestCase(false, 1, BotGroupRelease.StallAction.Join, TestName = "A second stall joins the leader")]
+        [TestCase(true, 0, BotGroupRelease.StallAction.Wait, TestName = "Riding: wait for the stable")]
+        [TestCase(true, 1, BotGroupRelease.StallAction.Wait, TestName = "Riding after a reroute: still wait")]
+        public void Stall_ReroutesBeforeItJoins_AndNeverLeavesARide(bool onStableRoute, int reroutes,
+            BotGroupRelease.StallAction expected) =>
+            Assert.That(BotGroupRelease.ChooseStallAction(onStableRoute, reroutes), Is.EqualTo(expected));
+
+        [Test]
+        public void Stall_NeverJoinsBeforeARouteWasTriedAgain() =>
+            Assert.That(BotGroupRelease.ChooseStallAction(false, 0), Is.Not.EqualTo(BotGroupRelease.StallAction.Join));
+
+        [TestCase(true, false, "destination", TestName = "Group return, clear way: one planned route")]
+        [TestCase(true, true, "step", TestName = "Group return, hostile ahead: the detour step")]
+        [TestCase(false, false, "step", TestName = "Solo gamebot: the bounded step as before")]
+        [TestCase(false, true, "step", TestName = "Solo gamebot detouring: the detour step")]
+        public void ReturnStep_KeepsTheDetoursAroundHostiles(bool groupReturn, bool detouring, string expected)
+        {
+            var step = new System.Numerics.Vector3(900, 0, 0);
+            var destination = new System.Numerics.Vector3(20_000, 0, 0);
+            Assert.That(BotGroupRelease.ReturnStepTarget(groupReturn, detouring, step, destination),
+                Is.EqualTo(expected == "step" ? step : destination));
+        }
+
         [Test]
         public void Report_NoDeadBots()
         {

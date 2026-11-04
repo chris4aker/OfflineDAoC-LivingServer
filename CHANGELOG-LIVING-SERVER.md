@@ -8,6 +8,26 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Beta 1.1.2 (in development)
+
+- **Gamebots in your group who die in a battleground come back to you** (issue #39; from Cancain's fork, by Cancain).
+  - **The bug:** battlegrounds have no bind points, so a gamebot in a player's group released to its capital and stood
+    there for good: its way back did nothing while it and its leader were in different regions.
+  - **Now:** it releases to its realm's portal keep (under the battleground's level cap), walks back on a planned route,
+    waits while you are dead, and rejoins the group on arrival. Solo gamebots and bot-only groups release as before.
+  - **Adapted for Living Server:** the way back keeps our detours around hostile monsters and our stablemaster routes.
+    A gamebot that makes no headway first plans its way back again, and only when that stalls too is it moved to you;
+    never during a stablemaster ride. From another region (no route to try) it joins you after 20 seconds, as in
+    Cancain's version. His battleground keep claims (also offered in #40) are not taken: grouped bots don't count for
+    keep claims.
+  - **Checked:** Cancain's tests plus nine new ones (`UT_BotGroupRelease`). Not yet seen in game here.
+- **`/friend` works with gamebots, and two stock friends-list bugs are fixed** (issues #40 and #38; by Cancain).
+  Online and parked gamebots of your realm join your friends list by exact name; a real character of the same name wins. Their
+  logins and logouts show as "just entered / left the game" in both clients. Adding a friend no longer wipes the old
+  client's Friends Monitor, and the first friend on an empty list gets its status. Tests: `UT_BotFriends`.
+- **`/allrelease`** (also `/grouprelease`) releases every dead bot in your group at once (issue #40; by Cancain).
+  `/spawn` companions still wait while you are dead or a fight is near.
+
 ## Beta 1.1.1 — 2026-10-31
 
 Fixes only, for the first week after Beta 1.1: the community's first reports (the party that wouldn't disband, the

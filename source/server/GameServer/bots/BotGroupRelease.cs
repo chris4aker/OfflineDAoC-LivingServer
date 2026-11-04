@@ -8,6 +8,7 @@ using DOL.GS.Keeps;
 
 namespace DOL.GS;
 
+// Ported from Cancain/OfflineDAoC-LivingServer (GPL-3.0), Beta 1.1.2.
 /// <summary>
 /// /allrelease and the way back to a player's group after a release. Kept out of upstream's GameBot, which only calls
 /// in here, so it stays easy to merge.
@@ -21,6 +22,13 @@ namespace DOL.GS;
 ///   stood at the wall of Midgard's portal keep, whose way out is a door. While that player is dead it waits where it is,
 ///   and once there it takes up the group as after an invitation.
 /// - For a while after its release a gamebot that makes no headway far from that player joins it, whatever holds it up.
+/// Living Server adaptation (Beta 1.1.2): routes come first and the move to the leader is the last resort.
+/// - In the leader's region the way back keeps our detours around hostile monsters (AutonomousThreatAwarePathing): a
+///   detour step is taken as it is, and only a clear way is walked as one planned route (<see cref="ReturnStepTarget"/>).
+/// - A stalled gamebot first plans its way back again, stablemaster routes included (GameBot.RestartReturnToLeader); it
+///   joins the leader only when that second try stalls too (<see cref="ChooseStallAction"/>). Never during a ride.
+/// - In another region than the leader the return code has no route to try (stable routes stay in their region), so
+///   the wait there stands in for the teleporter, as before. A ride in progress ends at its stable first.
 /// </summary>
 public static class BotGroupRelease
 {
@@ -44,7 +52,27 @@ public static class BotGroupRelease
     private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(BotGroupRelease));
 
     private sealed record ReturnWait(long DeathTick, long SinceTick);
-    private sealed record ReturnHeadway(Point3D Position, long SinceTick);
+    private sealed record ReturnHeadway(Point3D Position, long SinceTick, int Reroutes);
+
+    /// <summary>How many times a stalled gamebot plans its way back again before it may join its leader.</summary>
+    public const int ReroutesBeforeJoin = 1;
+
+    public enum StallAction { Wait, Reroute, Join }
+
+    /// <summary>
+    /// Pure rule (Living Server): what a gamebot that made no headway for <see cref="ReturnStallMilliseconds"/> does.
+    /// It never leaves a stablemaster ride, plans its route again first, and joins its leader only after that.
+    /// </summary>
+    public static StallAction ChooseStallAction(bool onStableRoute, int reroutesTried) =>
+        onStableRoute ? StallAction.Wait : reroutesTried < ReroutesBeforeJoin ? StallAction.Reroute : StallAction.Join;
+
+    /// <summary>
+    /// Pure rule (Living Server): where a step of the way back goes. A detour around a hostile monster is taken as
+    /// AutonomousThreatAwarePathing chose it; a gamebot going back to a player's group walks a clear way as one planned
+    /// route (it finds the door a 900-unit step stops at); everyone else keeps the bounded step.
+    /// </summary>
+    public static Vector3 ReturnStepTarget(bool groupReturn, bool detouring, Vector3 step, Vector3 destination) =>
+        groupReturn && !detouring ? destination : step;
 
     /// <summary>Solo gamebots and bot-only groups keep upstream's walk: their own controllers take them back.</summary>
     public static bool IsGroupReturn(GameBot bot) => bot.IsAutonomousWorldBot && bot.IsPlayerLedGroup;
@@ -152,7 +180,8 @@ public static class BotGroupRelease
     /// <summary>While the player who leads it is dead, a gamebot on its way back stands where it is.</summary>
     public static bool WaitsForLeader(GameBot bot)
     {
-        if (!IsGroupReturn(bot) || bot.PlayerGroupLeader.IsAlive)
+        // Living Server: a stablemaster ride is never cut short; the bot waits at its end.
+        if (!IsGroupReturn(bot) || bot.PlayerGroupLeader.IsAlive || bot.IsOnStableMasterRoute)
             return false;
         if (bot.IsMoving)
         {
@@ -175,7 +204,8 @@ public static class BotGroupRelease
 
     /// <summary>
     /// One look at a gamebot in a player's group, at the top of its brain's Think, so nothing there can keep this from
-    /// running. Returns true when it made no headway for <see cref="ReturnStallMilliseconds"/> and joined that player.
+    /// running. Returns true when it made no headway for <see cref="ReturnStallMilliseconds"/> and planned its way back
+    /// again (the first time) or joined that player (once that try stalled too).
     /// </summary>
     public static bool TryUnstick(GameBot bot)
     {
@@ -194,13 +224,31 @@ public static class BotGroupRelease
         ReturnHeadway headway = bot.TempProperties.GetProperty<ReturnHeadway>(ReturnHeadwayKey);
         if (headway == null || bot.GetDistanceTo(headway.Position) >= ReturnHeadwayDistance)
         {
-            bot.TempProperties.SetProperty(ReturnHeadwayKey, new ReturnHeadway(new Point3D(bot.X, bot.Y, bot.Z), now));
+            // Headway made: the clock starts over, the reroute already tried still counts.
+            bot.TempProperties.SetProperty(ReturnHeadwayKey,
+                new ReturnHeadway(new Point3D(bot.X, bot.Y, bot.Z), now, headway?.Reroutes ?? 0));
             return false;
         }
         if (!ReturnStalled(headway.SinceTick, now))
             return false;
-        bot.TempProperties.RemoveProperty(ReturnHeadwayKey);
-        return JoinLeader(bot, leader, "BOT_GROUP_RELEASE_UNSTUCK", StuckDetail(bot));
+
+        switch (ChooseStallAction(bot.IsOnStableMasterRoute, headway.Reroutes))
+        {
+            case StallAction.Wait:
+                return false;
+            case StallAction.Reroute:
+                string detail = StuckDetail(bot);
+                bot.TempProperties.SetProperty(ReturnHeadwayKey,
+                    new ReturnHeadway(new Point3D(bot.X, bot.Y, bot.Z), now, headway.Reroutes + 1));
+                if (!bot.RestartReturnToLeader(leader))
+                    return false;
+                Log.Info($"BOT_GROUP_RELEASE_REROUTE bot=\"{bot.Name}\" id={bot.DatabaseID} at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} " +
+                         $"to=player:{leader.Name} distance={bot.GetDistanceTo(leader)}{detail}");
+                return true;
+            default:
+                bot.TempProperties.RemoveProperty(ReturnHeadwayKey);
+                return JoinLeader(bot, leader, "BOT_GROUP_RELEASE_UNSTUCK", StuckDetail(bot));
+        }
     }
 
     /// <summary>What held the bot up, read before the move clears it.</summary>

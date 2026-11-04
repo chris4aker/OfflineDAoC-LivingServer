@@ -9,6 +9,7 @@ using DOL.Network;
 
 namespace DOL.GS;
 
+// Ported from Cancain/OfflineDAoC-LivingServer (GPL-3.0), Beta 1.1.2.
 /// <summary>
 /// Autonomous gamebots on the friends list (/friend). Kept out of upstream's FriendsManager and /friend command,
 /// which only call in here, so they stay easy to merge.
