@@ -62,8 +62,8 @@ cap on how many bots notice one target). Era authenticity breaks ties; it doesn'
 - [x] Candidate A merged to `main` as Beta 1.1.1 (PR #47, `15f521e`): the doc drift (#41), party disband (#35),
       base-class styles (#36), quiet song twisting (#37), the quest-marker colour (#42), the launcher port probe (#43),
       the SQLite test wait (#48), unique install backup folders (#49)
-- [ ] The GitHub release `v1.1.1-beta` published (owner), then Setup built and tested on Windows by the installer
-      workflow
+- [x] The GitHub release `v1.1.1-beta` published (owner, 2026-11-03), Setup built and tested on Windows by the
+      installer workflow and attached
 
 ### 1.1.2 — safe and correct (days)
 
@@ -84,7 +84,8 @@ cap on how many bots notice one target). Era authenticity breaks ties; it doesn'
       mezzed enemies, Darkness Falls stuck and re-login) and leaving a keep just taken (via rambodolphin13); water
       breathing (Rmarcoux86); the camp-list guard (MoomoocowPlus)
 - [ ] **Release gates:** the temp-file cleanup race in `UT_AtomicExchangePersistence`, CI on pushes to `main`, a
-      README/version check, `main` protected with the owner able to bypass (owner approval)
+      README/version check, `main` protected with the owner able to bypass (owner approval); a release workflow that
+      builds and tests Setup, attaches it to the owner's release and fills in its SHA-256 (the owner only publishes)
 - [x] **No EA client files:** the 54 inherited from upstream removed (PR #59, merged into `release/1.2`); history
       kept. The origin of the two splash `.mpk` files and `connect.exe` to be confirmed by the owner
 - [ ] PR #51, Setup's fallback copy of the base files: an owner and legal decision before it merges
@@ -229,7 +230,7 @@ Open, each listed with its options in the design document named:
 
 | Stop | State |
 |---|---|
-| 1.1.1 | Merged to `main` (`15f521e`); the GitHub release waits for the owner |
+| 1.1.1 | Released 2026-11-03 (`v1.1.1-beta`, the latest release; Setup built and tested on Windows by CI) |
 | 1.1.2 | Planned (2026-11-03): PR #50 plus save safety, the r/daoc fixes, ported fork fixes, release gates; PR #59 (EA files) open |
 | 1.2 | Phase A: base merged and current (`ebbaf83`); profiling, harness and the duty record next |
 | 1.3 | Planned |
