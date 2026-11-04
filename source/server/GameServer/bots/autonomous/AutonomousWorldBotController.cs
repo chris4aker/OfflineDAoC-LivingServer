@@ -3402,7 +3402,11 @@ namespace DOL.GS
                                         IsZoneAccessible(bot.Realm, cell.Zone, bot.CurrentRegionID) &&
                                         AutonomousOrdinaryPveRealmPolicy.CanAssignCamp(bot.Realm, cell.RegionId,
                                             cell.Zone?.ID ?? 0, planningLevel) &&
-                                        AutonomousAuditedCampPolicy.CanAssignToParty(cell.Id, groupSize)))
+                                        AutonomousAuditedCampPolicy.CanAssignToParty(cell.Id, groupSize) &&
+                                        // Bot-led groups: a party hosting the player hunts where the player can walk or ride.
+                                        (_groupDirective?.HostedPlayer == null || !cell.IsFrontier &&
+                                         cell.RegionId != AutonomousDarknessFallsPolicy.RegionId &&
+                                         !BattlegroundBrackets.IsBattlegroundRegion(cell.RegionId))))
             {
                 // Filled into a reused buffer; only a camp that qualifies gets its own array (this per-cell
                 // filter was the largest single allocation in a 30 s trace, 2026-10-17).

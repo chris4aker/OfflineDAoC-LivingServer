@@ -1,6 +1,13 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using DOL.Database;
+using DOL.GS.PacketHandler;
+using DOL.GS.ServerProperties;
+using DOL.Language;
+using DOL.Logging;
 
 namespace DOL.GS;
 
@@ -547,6 +554,508 @@ public static partial class BotLedGroups
         bool armourOrJewellerySlot, int newValue, int wornValue, int minimumGain) =>
         classCanUse && slotKnown && levelRequirement <= playerLevel &&
         (slotHoldsItem ? newValue - wornValue > minimumGain : armourOrJewellerySlot);
+
+    #endregion
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// The game glue: the invite (a tell, then the native group box), the hosted view the party's pace and pulls read, the
+// leader's lines, and the loot of a group with the player and gamebots.
+// ---------------------------------------------------------------------------------------------------------------------
+public static partial class BotLedGroups
+{
+    private static readonly Logger Log = LoggerManager.Create(typeof(BotLedGroups));
+
+    /// <summary>The thread tag of a leader's invite tell, so "no thanks" to it counts as a no (AutonomousBotChatCoordinator).</summary>
+    public const string InviteThread = "bot_led_invite";
+
+    /// <summary>Unasked invites are on (bot_group_invite_player). Asking (/lfg) works either way.</summary>
+    public static bool InvitesOn => Properties.BOT_GROUP_INVITE_PLAYER;
+
+    /// <summary>What the player counts as in the loot (bot_group_player_loot_weight).</summary>
+    public static int LootWeight => ClampWeight(Properties.BOT_GROUP_PLAYER_LOOT_WEIGHT);
+
+    #region The hosted view (read without the coordinator's lock)
+
+    /// <summary>
+    /// A party that hosts the player, as its members' movement and pulls read it every tick: the coordinator writes it
+    /// under its own lock once per pass; readers never take that lock.
+    /// </summary>
+    public sealed class HostedView
+    {
+        public HostedView(GamePlayer player, string sessionId)
+        {
+            Player = player;
+            SessionId = sessionId;
+        }
+
+        public GamePlayer Player { get; }
+        public string SessionId { get; }
+        public volatile bool HoldsPace;
+        public volatile bool BlocksPull;
+        public volatile bool BlocksNewTravel;
+    }
+
+    private static readonly ConcurrentDictionary<Group, HostedView> Hosted = new(ReferenceEqualityComparer.Instance);
+
+    /// <summary>The party's hosted view, or null when the group hosts no player (or the player has left it).</summary>
+    public static HostedView ViewOf(Group group) =>
+        group != null && Hosted.TryGetValue(group, out HostedView view) && view.Player.Group == group ? view : null;
+
+    /// <summary>The group is a gamebot party that hosts a real player (the bots lead).</summary>
+    public static bool IsHostedGroup(Group group) => ViewOf(group) != null;
+
+    /// <summary>The real player a gamebot party hosts, or null.</summary>
+    public static GamePlayer HostedPlayerOf(Group group) => ViewOf(group)?.Player;
+
+    /// <summary>The coordinator publishes a hosted party here (and tests do).</summary>
+    public static void SetHosted(Group group, HostedView view) => Hosted[group] = view;
+
+    public static void ClearHosted(Group group)
+    {
+        if (group != null)
+            Hosted.TryRemove(group, out _);
+    }
+
+    /// <summary>Forgets every hosted group, player memory and loot ledger (tests).</summary>
+    public static void Clear()
+    {
+        Hosted.Clear();
+        Memories.Clear();
+    }
+
+    #endregion
+
+    #region The invite
+
+    private static readonly ConcurrentDictionary<string, InviteMemory> Memories = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly ConcurrentDictionary<string, long> LastSeen = new(StringComparer.OrdinalIgnoreCase);
+    /// <summary>A player unseen this long started a new session when they come back (the 10-minute start, three noes).</summary>
+    public const long NewSessionAfterMs = 2 * 60_000L;
+    public const int PulseIntervalMs = 5_000;
+    private static long _nextPulse;
+
+    internal static InviteMemory MemoryOf(GamePlayer player, long now) => Memories.GetOrAdd(player.Name, _ => new InviteMemory(now));
+
+    /// <summary>The player's state for the invite rules, read from the live player.</summary>
+    public static PlayerState StateOf(GamePlayer player) => new(
+        Alive: player.IsAlive,
+        InCombat: player.InCombat,
+        Riding: player.IsRiding || player.IsOnHorse,
+        OnBoat: player.Steed is GameBoat,
+        DialogOpen: player.CustomDialogCallback != null,
+        Trading: player.TradeWindow != null,
+        Grouped: player.Group != null,
+        HasCompanions: BotManager.GetBotsForOwner(player).Any(bot => bot.ObjectState == GameObject.eObjectState.Active),
+        Afk: player.TempProperties.GetProperty<string>(GamePlayer.AFK_MESSAGE) != null,
+        InFrontier: player.CurrentZone?.IsRvR == true || player.CurrentRegion?.IsRvR == true,
+        InBattleground: BattlegroundBrackets.IsBattlegroundRegion(player.CurrentRegionID),
+        InRaid: player.TempProperties.GetProperty<BattleGroup>(BattleGroup.BATTLEGROUP_PROPERTY) != null,
+        Linkdead: player.Client?.ClientState == GameClient.eClientState.Linkdead);
+
+    /// <summary>Every five seconds (AutonomousLivingServer's pulse): unasked invites, and asked ones still waiting for a leader.</summary>
+    public static void Pulse(long now)
+    {
+        if (now < _nextPulse)
+            return;
+        _nextPulse = now + PulseIntervalMs;
+        foreach (GamePlayer player in ClientService.Instance.GetPlayers())
+        {
+            if (player?.Client == null || player.ObjectState != GameObject.eObjectState.Active || player.CurrentRegion == null)
+                continue;
+            try
+            {
+                InviteMemory memory = MemoryOf(player, now);
+                if (LastSeen.TryGetValue(player.Name, out long seen) && now - seen > NewSessionAfterMs)
+                {
+                    memory.OnlineSince = now;
+                    memory.SessionDeclines = 0;
+                    memory.Pending = false;
+                }
+                LastSeen[player.Name] = now;
+                if (StateBlocks(StateOf(player)) != null ||
+                    CadenceBlocks(memory, now, InvitesOn, AutonomousLivingServer.SinceLastBotTell(player, now)) != null)
+                    continue;
+                TryInvite(player, memory, now);
+            }
+            catch (Exception exception)
+            {
+                Log.Warn($"BOT_LED_INVITE pulse failed for {player.Name}", exception);
+            }
+        }
+    }
+
+    /// <summary>
+    /// The player asked for a group (/lfg, or "lfg?" / "room for a cleric?" in a tell to a bot): an invite can come
+    /// within a minute. Returns whether a leader's invite is on its way (the caller then makes no duo offer).
+    /// <paramref name="askedBot"/>: the bot the player asked, which invites when it leads a party that fits.
+    /// </summary>
+    public static bool OnPlayerAsked(GamePlayer player, GameBot askedBot = null)
+    {
+        if (player?.Client == null || player.ObjectState != GameObject.eObjectState.Active)
+            return false;
+        long now = GameLoop.GameLoopTime;
+        InviteMemory memory = MemoryOf(player, now);
+        memory.Asked(now);
+        string blocked = StateBlocks(StateOf(player)) ?? CadenceBlocks(memory, now, InvitesOn, long.MaxValue);
+        if (blocked != null)
+        {
+            LogInvite("not_sent", null, player, blocked, asked: true);
+            return false;
+        }
+        return TryInvite(player, memory, now, askedBot);
+    }
+
+    private static bool TryInvite(GamePlayer player, InviteMemory memory, long now, GameBot askedBot = null)
+    {
+        bool asked = memory.IsAsking(now);
+        if (!AutonomousBotGroupCoordinator.TryPickHostingLeader(player, memory, now, askedBot, out GameBot leader, out Candidate party))
+        {
+            if (asked && askedBot != null)
+                LogInvite("not_sent", askedBot, player, "no_party_fits", asked);
+            return false;
+        }
+        memory.Pending = true;
+        if (!asked)
+            memory.LastUnaskedAt = now;
+        // An unasked invite is that period's bot tell: the next bot-started tell waits its full gap.
+        AutonomousLivingServer.CountInviteAsTell(player, now);
+        LogInvite("sent", leader, player, asked ? "asked" : "unasked", asked, party);
+        string tell = InviteTell(leader, asked);
+        AutonomousLivingServer.Later(leader, 1_500 + Random.Shared.Next(2_500), null, () =>
+        {
+            AutonomousLivingServer.Tell(leader, player, tell, InviteThread);
+            // The player's dialog state belongs to the client service (as AutonomousBotGuildSocial's invites).
+            AutonomousLivingServer.Later(leader, 2_500 + Random.Shared.Next(2_000), null,
+                () => ClientService.Instance.Post(static state => SendInviteBox(state.Player, state.Leader, state.Asked),
+                    (Player: player, Leader: leader, Asked: asked)));
+        });
+        return true;
+    }
+
+    private static string InviteTell(GameBot leader, bool asked)
+    {
+        string zone = AutonomousBotGroupCoordinator.HuntingPlace(leader) ?? leader.CurrentZone?.Description ?? "town";
+        string target = AutonomousBotGroupCoordinator.HuntingTarget(leader);
+        var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["zone"] = zone, ["monsters"] = target ?? "stuff" };
+        if (AutonomousBotVoices.TryLine(leader, "tell", out AutonomousBotVoiceCorpus.Picked picked, topic: asked ? "lead_invite_asked" : "lead_invite",
+                slots: slots))
+            return picked.Text;
+        return asked
+            ? "got room, sending you an inv"
+            : target != null ? $"lf 1 more for {target} in {zone}, want in?" : $"lf 1 more, heading out from {zone}, want in?";
+    }
+
+    private static void SendInviteBox(GamePlayer player, GameBot leader, bool asked)
+    {
+        long now = GameLoop.GameLoopTime;
+        InviteMemory memory = MemoryOf(player, now);
+        string blocked = player?.Out == null ? "offline" : StateBlocks(StateOf(player));
+        if (blocked == null && !AutonomousBotGroupCoordinator.StillHosting(leader))
+            blocked = "party_changed";
+        if (blocked != null)
+        {
+            memory.Pending = false;
+            LogInvite("not_sent", leader, player, blocked, asked);
+            return;
+        }
+        string pronoun = leader.GenderId == (byte)eGender.Female ? "her" : "his";
+        player.Out.SendCustomDialog($"{leader.Name} has invited you to join {pronoun} group. Do you wish to join?", (answering, response) =>
+        {
+            long at = GameLoop.GameLoopTime;
+            InviteMemory answer = MemoryOf(answering, at);
+            answer.Pending = false;
+            if (response != 0x01)
+            {
+                answer.Declined(leader.DatabaseID, at);
+                LogInvite("declined", leader, answering, "box", asked);
+                return;
+            }
+            string why = StateBlocks(StateOf(answering) with { DialogOpen = false });
+            if (why == null && AutonomousBotGroupCoordinator.TryHostPlayer(leader, answering, out why))
+            {
+                LogInvite("accepted", leader, answering, asked ? "asked" : "unasked", asked);
+                return;
+            }
+            LogInvite("not_joined", leader, answering, why, asked);
+            AutonomousLivingServer.Tell(leader, answering, why == "full" ? "sorry, we just filled up" : "nvm, plans changed, sorry");
+        });
+    }
+
+    /// <summary>The player answered the leader's invite tell: "no thanks" counts as a no to that leader.</summary>
+    public static void OnInviteTellAnswered(GameBot leader, GamePlayer player, bool yes)
+    {
+        if (leader == null || player == null || yes)
+            return;
+        MemoryOf(player, GameLoop.GameLoopTime).Declined(leader.DatabaseID, GameLoop.GameLoopTime);
+        LogInvite("declined", leader, player, "tell", asked: false);
+    }
+
+    private static void LogInvite(string outcome, GameBot leader, GamePlayer player, string reason, bool asked, Candidate? party = null)
+    {
+        if (!Log.IsInfoEnabled)
+            return;
+        Log.Info($"BOT_LED_INVITE outcome={outcome} player=\"{player?.Name}\" level={player?.Level} leader=\"{leader?.Name}\" id={leader?.DatabaseID ?? 0} " +
+                 $"asked={asked} reason={reason}" +
+                 (party is { } p ? $" groupLevel={p.AverageLevel} members={p.Members} distance={(int)p.Distance}" : string.Empty));
+    }
+
+    #endregion
+
+    #region The leader's lines
+
+    /// <summary>What the leader says to the group it hosts the player in (topic lead_* in the voice corpus, with a plain fallback).</summary>
+    public enum Lead { Welcome, WelcomeOnTheWay, MeetupReminder, MeetupGoingOn, WhereAreYou, GoingOn, AfkHold, AfkLetGo, Move, Farewell, PlayerLeft }
+
+    internal static string Topic(Lead what) => what switch
+    {
+        Lead.Welcome => "lead_welcome",
+        Lead.WelcomeOnTheWay => "lead_welcome_out",
+        Lead.MeetupReminder => "lead_wait",
+        Lead.MeetupGoingOn => "lead_going_on",
+        Lead.WhereAreYou => "lead_where",
+        Lead.GoingOn => "lead_going_on",
+        Lead.AfkHold => "lead_afk_hold",
+        Lead.AfkLetGo => "lead_afk_let_go",
+        Lead.Move => "lead_move",
+        Lead.Farewell => "lead_break",
+        Lead.PlayerLeft => "lead_player_left",
+        _ => "lead",
+    };
+
+    /// <summary>The plain line when no voice line fits (voices off). {place}, {camp}, {player} are filled in.</summary>
+    public static string Fallback(Lead what) => what switch
+    {
+        Lead.Welcome => "welcome! meet up at {place}",
+        Lead.WelcomeOnTheWay => "welcome! we're at {place}, come find us. /follow me if you're close",
+        Lead.MeetupReminder => "still at {place}, waiting on you",
+        Lead.MeetupGoingOn => "heading on to {camp}, catch up when you can, spot's saved",
+        Lead.WhereAreYou => "where u at?",
+        Lead.GoingOn => "going on to {camp}, meet us there",
+        Lead.AfkHold => "waiting on {player}, everyone med",
+        Lead.AfkLetGo => "had to move on, send me a tell when you're back",
+        Lead.Move => "moving to {camp}",
+        Lead.Farewell => "thats it for me, good group all",
+        Lead.PlayerLeft => "{player} went ld, we carry on",
+        _ => string.Empty,
+    };
+
+    /// <summary>Fills a line's {place}, {camp} and {player}.</summary>
+    public static string Fill(string text, IReadOnlyDictionary<string, string> slots)
+    {
+        if (string.IsNullOrEmpty(text) || slots == null)
+            return text;
+        foreach ((string key, string value) in slots)
+            text = text.Replace("{" + key + "}", value ?? string.Empty, StringComparison.Ordinal);
+        return text;
+    }
+
+    /// <summary>
+    /// The leader says it in /group (a let-go goes by tell to the player). These lines carry what the player needs to
+    /// follow (where to meet, where the group went), so they are not held by the chat budget's gaps; there are only a few
+    /// an hour by construction. Flavour talk keeps going through the group chatter and its budget.
+    /// </summary>
+    internal static void Announce(GameBot leader, Lead what, GamePlayer player, string place, string camp)
+    {
+        if (leader == null || player == null)
+            return;
+        var slots = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["place"] = string.IsNullOrWhiteSpace(place) ? "the camp" : place,
+            ["camp"] = string.IsNullOrWhiteSpace(camp) ? "the camp" : camp,
+            ["player"] = player.Name,
+        };
+        string text = AutonomousBotVoices.TryLine(leader, what == Lead.AfkLetGo ? "tell" : "group", out AutonomousBotVoiceCorpus.Picked picked,
+            topic: Topic(what), slots: slots)
+            ? picked.Text
+            : Fill(Fallback(what), slots);
+        AutonomousLivingServer.Later(leader, 800 + Random.Shared.Next(1_500), null, () =>
+        {
+            if (what == Lead.AfkLetGo)
+                AutonomousLivingServer.Tell(leader, player, text);
+            else
+                AutonomousLivingServer.Speak(leader, AutonomousLivingServer.Channel.Group, text);
+        });
+    }
+
+    #endregion
+
+    #region Loot
+
+    private static readonly ConditionalWeakTable<Group, LootLedger> Ledgers = new();
+
+    /// <summary>An autonomous gamebot near a drop that takes a loot share (not a companion, not the Epic Special Forces).</summary>
+    private static bool TakesLoot(GameBot bot, GameObject drop) =>
+        bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper && !bot.IsEpicSpecialForce && bot.DatabaseID > 0 &&
+        bot.ObjectState == GameObject.eObjectState.Active && bot.CurrentRegion == drop.CurrentRegion &&
+        bot.IsWithinRadius(drop, WorldMgr.VISIBILITY_DISTANCE);
+
+    /// <summary>A group with the real player and at least one autonomous gamebot, whoever leads.</summary>
+    public static bool IsMixed(List<GameLiving> members) =>
+        members.Any(member => member is GamePlayer) &&
+        members.Any(member => member is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false });
+
+    /// <summary>
+    /// Coin in a group with the player and gamebots: split evenly among the members in range, the player counting as
+    /// <see cref="LootWeight"/> members. False when the group is not mixed (the old rules apply).
+    /// </summary>
+    public static bool TrySplitMoney(Group group, GameMoney money, out TryPickUpResult result)
+    {
+        result = TryPickUpResult.DoesNotWant;
+        if (group == null || money == null)
+            return false;
+        List<GameLiving> members = group.GetMembersInTheGroup();
+        if (!IsMixed(members))
+            return false;
+        money.AssertLockAcquisition();
+        if (!group.AutosplitCoins)
+            return true;
+        GamePlayer[] players = members.OfType<GamePlayer>()
+            .Where(player => player.ObjectState == GameObject.eObjectState.Active && player.CanSeeObject(money)).ToArray();
+        GameBot[] bots = members.OfType<GameBot>().Where(bot => TakesLoot(bot, money)).ToArray();
+        if (players.Length + bots.Length == 0)
+        {
+            result = TryPickUpResult.Blocked;
+            return true;
+        }
+        (long[] toPlayers, long[] toBots) = CoinShares(money.Value, LootWeight, players.Length, bots.Length);
+        for (int i = 0; i < players.Length; i++)
+        {
+            long share = players[i].ApplyGuildDues(toPlayers[i]);
+            if (share <= 0)
+                continue;
+            players[i].AddMoney(share, LanguageMgr.GetTranslation(players[i].Client.Account.Language, "GamePlayer.PickupObject.YourLootShare",
+                Money.GetString(toPlayers[i])));
+            InventoryLogging.LogInventoryAction("(ground)", players[i], eInventoryActionType.Loot, share);
+        }
+        for (int i = 0; i < bots.Length; i++)
+            if (toBots[i] > 0)
+                AutonomousBotGuildEconomy.PayLootShare(bots[i], toBots[i]);
+        _ = money.RemoveFromWorld();
+        result = TryPickUpResult.Success;
+        return true;
+    }
+
+    /// <summary>
+    /// An item in a group with the player and gamebots: an upgrade for the player comes to them first, otherwise the
+    /// rotation gives the player <see cref="LootWeight"/> shares in it and the rest go at random to the gamebots in range.
+    /// False when the group is not mixed (the old rules apply).
+    /// </summary>
+    public static bool TrySplitItem(Group group, WorldInventoryItem item, out TryPickUpResult result)
+    {
+        result = TryPickUpResult.DoesNotWant;
+        if (group == null || item == null)
+            return false;
+        List<GameLiving> members = group.GetMembersInTheGroup();
+        if (!IsMixed(members))
+            return false;
+        item.AssertLockAcquisition();
+        if (!group.AutosplitLoot || item.IsPlayerDiscarded)
+            return true;
+        GamePlayer[] players = members.OfType<GamePlayer>()
+            .Where(player => player.ObjectState == GameObject.eObjectState.Active && player.AutoSplitLoot && player.CanSeeObject(item))
+            .OrderBy(_ => Random.Shared.Next()).ToArray();
+        GameBot[] bots = members.OfType<GameBot>().Where(bot => TakesLoot(bot, item)).OrderBy(_ => Random.Shared.Next()).ToArray();
+        LootLedger ledger = Ledgers.GetOrCreateValue(group);
+        lock (ledger)
+        {
+            GamePlayer upgradeFor = players.FirstOrDefault(player => IsUpgradeFor(player, item.Item));
+            bool toPlayer = players.Length > 0 && NextItemGoesToPlayer(ledger, LootWeight, bots.Length, upgradeFor != null);
+            IEnumerable<GamePlayer> playerOrder = upgradeFor == null ? players : players.Where(p => p != upgradeFor).Prepend(upgradeFor);
+            if (toPlayer && GiveToAPlayer(group, playerOrder, item, ledger, upgradeFor != null))
+            {
+                result = TryPickUpResult.Success;
+                return true;
+            }
+            foreach (GameBot bot in bots)
+            {
+                if (bot.TryAutoPickUpItem(item) != TryPickUpResult.Success)
+                    continue;
+                ledger.Record(false);
+                group.SendMessageToGroupMembers(LanguageMgr.GetTranslation(Properties.DB_LANGUAGE, "GamePlayer.PickupObject.Autosplit",
+                    item.Item.GetName(1, true), bot.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                result = TryPickUpResult.Success;
+                return true;
+            }
+            // No gamebot could carry it: a player who can still has it.
+            if (!toPlayer && GiveToAPlayer(group, players, item, ledger, false))
+            {
+                result = TryPickUpResult.Success;
+                return true;
+            }
+        }
+        result = TryPickUpResult.Blocked;
+        return true;
+    }
+
+    private static bool GiveToAPlayer(Group group, IEnumerable<GamePlayer> players, WorldInventoryItem item, LootLedger ledger, bool upgrade)
+    {
+        foreach (GamePlayer player in players)
+        {
+            DbInventoryItem loot = item.Item;
+            bool stored = loot.IsStackable
+                ? player.Inventory.AddTemplate(loot, loot.Count, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack)
+                : player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, loot);
+            if (!stored)
+            {
+                player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "GamePlayer.PickupObject.BackpackFull"),
+                    eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                continue;
+            }
+            ledger.Record(true);
+            group.SendMessageToGroupMembers(LanguageMgr.GetTranslation(player.Client.Account.Language, "GamePlayer.PickupObject.Autosplit",
+                loot.GetName(1, true), player.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+            InventoryLogging.LogInventoryAction("(ground)", player, eInventoryActionType.Loot, loot.Template, loot.IsStackable ? loot.Count : 1);
+            if (upgrade && Log.IsInfoEnabled)
+                Log.Info($"BOT_LED_LOOT player=\"{player.Name}\" item=\"{loot.Name}\" reason=upgrade");
+            _ = item.RemoveFromWorld();
+            return true;
+        }
+        return false;
+    }
+
+    private static readonly eInventorySlot[] ArmourAndJewellery =
+    [
+        eInventorySlot.HeadArmor, eInventorySlot.HandsArmor, eInventorySlot.FeetArmor, eInventorySlot.TorsoArmor, eInventorySlot.Cloak,
+        eInventorySlot.LegsArmor, eInventorySlot.ArmsArmor, eInventorySlot.Jewelry, eInventorySlot.Neck, eInventorySlot.Waist,
+        eInventorySlot.LeftBracer, eInventorySlot.RightBracer, eInventorySlot.LeftRing, eInventorySlot.RightRing, eInventorySlot.Mythical,
+    ];
+
+    private static readonly eInventorySlot[] Weapons =
+        [eInventorySlot.RightHandWeapon, eInventorySlot.LeftHandWeapon, eInventorySlot.TwoHandWeapon, eInventorySlot.DistanceWeapon];
+
+    /// <summary>The item beats what the player wears in its slot (rings and bracers: the weaker of the two), and the class can use it.</summary>
+    public static bool IsUpgradeFor(GamePlayer player, DbInventoryItem item)
+    {
+        if (player?.Inventory == null || item?.Template == null || item.IsStackable)
+            return false;
+        try
+        {
+            var slot = (eInventorySlot)item.Item_Type;
+            bool armour = ArmourAndJewellery.Contains(slot);
+            bool known = armour || Weapons.Contains(slot);
+            if (!known)
+                return false;
+            DbInventoryItem worn = slot is eInventorySlot.LeftRing or eInventorySlot.RightRing
+                ? Weaker(player.Inventory.GetItem(eInventorySlot.LeftRing), player.Inventory.GetItem(eInventorySlot.RightRing))
+                : slot is eInventorySlot.LeftBracer or eInventorySlot.RightBracer
+                ? Weaker(player.Inventory.GetItem(eInventorySlot.LeftBracer), player.Inventory.GetItem(eInventorySlot.RightBracer))
+                : player.Inventory.GetItem(slot);
+            bool canUse = GameServer.ServerRules.CheckAbilityToUseItem(player, item.Template);
+            return IsUpgradeForPlayer(canUse, item.LevelRequirement, player.Level, true, worn != null, armour,
+                AutonomousBotEconomy.EquipmentValue(item), AutonomousBotEconomy.EquipmentValue(worn), MinimumUpgradeGain);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        static DbInventoryItem Weaker(DbInventoryItem a, DbInventoryItem b) =>
+            a == null || b == null ? null : AutonomousBotEconomy.EquipmentValue(a) <= AutonomousBotEconomy.EquipmentValue(b) ? a : b;
+    }
+
+    /// <summary>The gamebots' own upgrade margin (AutonomousBotEconomy).</summary>
+    public const int MinimumUpgradeGain = 8;
 
     #endregion
 }

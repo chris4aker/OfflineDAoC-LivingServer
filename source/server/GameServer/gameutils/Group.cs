@@ -321,6 +321,9 @@ namespace DOL.GS
 
             GameLiving soleMemberToRemove = null;
             string newLeaderName = null;
+            // Bot-led groups: a gamebot party that hosts the player keeps a gamebot leader (read outside the member lock,
+            // like every call into the autonomous layer here).
+            bool hostsPlayer = BotLedGroups.IsHostedGroup(this);
             lock (_groupMembersLock)
             {
                 int memberCount = _groupMembers.Count;
@@ -345,7 +348,13 @@ namespace DOL.GS
                     // Autonomous bot-only groups have no GamePlayer member;
                     // use one when present, otherwise elect the first remaining
                     // living member instead of throwing on an empty sequence.
-                    LivingLeader = _groupMembers.OfType<GamePlayer>().FirstOrDefault() ??
+                    // A party hosting the player elects a gamebot, never the player (docs/BOT-LED-GROUPS.md).
+                    int botLeader = hostsPlayer
+                        ? BotLedGroups.ElectLeader(_groupMembers.Select(member => new BotLedGroups.MemberView(member is GamePlayer,
+                            member is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false }, member.IsAlive)).ToArray())
+                        : -1;
+                    LivingLeader = botLeader >= 0 ? _groupMembers[botLeader] :
+                                   _groupMembers.OfType<GamePlayer>().FirstOrDefault() ??
                                    _groupMembers.FirstOrDefault(member => member.IsAlive) ??
                                    _groupMembers[0];
                     newLeaderName = LivingLeader.Name;
@@ -580,6 +589,10 @@ namespace DOL.GS
 
         public TryPickUpResult TryAutoPickUpMoney(GameMoney money)
         {
+            // A group with the player and gamebots, whoever leads: coin split by member in range, the player counting
+            // as two (owner 2026-11-04, BotLedGroups.TrySplitMoney).
+            if (BotLedGroups.TrySplitMoney(this, money, out TryPickUpResult mixed))
+                return mixed;
             if (Leader != null)
                 return TryPickUpMoney(Leader, money);
 
@@ -609,6 +622,10 @@ namespace DOL.GS
 
         public TryPickUpResult TryAutoPickUpItem(WorldInventoryItem inventoryItem)
         {
+            // A group with the player and gamebots, whoever leads: the item rotation with the player's share and
+            // upgrades first (owner 2026-11-04, BotLedGroups.TrySplitItem).
+            if (BotLedGroups.TrySplitItem(this, inventoryItem, out TryPickUpResult mixed))
+                return mixed;
             if (Leader == null)
             {
                 inventoryItem.AssertLockAcquisition();
@@ -630,6 +647,8 @@ namespace DOL.GS
 
         public TryPickUpResult TryPickUpMoney(GamePlayer source, GameMoney money)
         {
+            if (BotLedGroups.TrySplitMoney(this, money, out TryPickUpResult mixed))
+                return mixed;
             money.AssertLockAcquisition();
 
             if (!AutosplitCoins)
@@ -675,6 +694,8 @@ namespace DOL.GS
 
         public TryPickUpResult TryPickUpItem(GamePlayer source, WorldInventoryItem item)
         {
+            if (BotLedGroups.TrySplitItem(this, item, out TryPickUpResult mixed))
+                return mixed;
             item.AssertLockAcquisition();
 
             // A group is only able to pick up items if auto split is enabled. Otherwise, solo logic should apply.
