@@ -255,7 +255,7 @@ realm that feels like a full server at its busiest. How it works and how to tune
   its tests build everything together and its installer tests use a fake game. The package now has a `core\` folder:
   `INSTALL.cmd` replaces each of those libraries where the game has one (the original or a Living Server build only,
   backed up and checked like `GameServer.dll`), `ROLLBACK.cmd` and `PREPARE-FOR-UPDATE.cmd` put them back, and Setup's
-  safety copy before an Offline DAoC update includes them. Checked: 11 new installer checks, and on the playtest PC the
+  safety copy before an Offline DAoC update includes them. Checked: new installer checks (each library replaced where the game has one and nowhere else, rollback, -ToRelease, a hand-changed library refused), and on the playtest PC the
   repacked build installed over the broken one and the server started.
 - **The launcher says when the server stops by itself.** A server that stopped while starting left the launcher on
   STOPPED with no word, which looked like START SERVER doing nothing. The footer now says it stopped, with its exit
