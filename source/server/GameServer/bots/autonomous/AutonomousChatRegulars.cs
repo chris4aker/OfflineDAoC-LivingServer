@@ -3,7 +3,7 @@ using System;
 namespace DOL.GS;
 
 /// <summary>
-/// The regulars (Beta 1.1.3, round 5: in the stream test every /faction line had a new speaker, and nobody talked twice;
+/// The regulars (Beta 1.1.2, round 5: in the stream test every /faction line had a new speaker, and nobody talked twice;
 /// on a real server the top tenth of speakers produce most of the lines). Each realm has a rotating set of talkative bots,
 /// about 8-15 at a busy peak, chosen by personality (Socialites most, then the always-online), who carry a large share of
 /// /faction and guild chat, follow up their own lines and answer each other; most other bots speak there rarely. Who is a

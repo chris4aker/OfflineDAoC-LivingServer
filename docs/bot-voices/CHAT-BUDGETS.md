@@ -1,6 +1,6 @@
 # The chat budgets: how busy the world is, and when a bot answers you
 
-Living Server Beta 1.1.3. The goal (owner, 2026-11-03): chat that feels like about 3,000 players across the three
+Living Server Beta 1.1.2. The goal (owner, 2026-11-03): chat that feels like about 3,000 players across the three
 realms on a busy peak evening, realistic and responsive, and busier than before. Bot chat has two separate
 budgets:
 

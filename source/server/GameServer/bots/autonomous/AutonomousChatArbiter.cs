@@ -3,7 +3,7 @@ using System;
 namespace DOL.GS;
 
 /// <summary>
-/// Who answers a player's line, and when (Beta 1.1.3, the chat framework's arbitration, docs/bot-voices/CHAT-BUDGETS.md).
+/// Who answers a player's line, and when (Beta 1.1.2, the chat framework's arbitration, docs/bot-voices/CHAT-BUDGETS.md).
 /// One primary responder per player line per channel; then, where a crowd would, a few pile-ons: more hellos for a hello
 /// or a ding, a "lol" or "+1" for a joke or a remark, never a second answer to a question. A reply arrives after the bot
 /// has read the line, thought for a moment and typed it at its own speed, so a long answer takes longer than "?". Pure.
@@ -28,7 +28,7 @@ public static class AutonomousChatArbiter
             return null;
         if (route is "shape player_mishap" or "intent laugh" or "intent banter laugh" or "shape player_goodnews" || intent == eAutonomousChatIntent.Laugh)
             return route == "shape player_goodnews" ? "cheer" : "laugh";
-        // A call ("zerg at mmg", "free rps at amg") draws its own short answers, never "+1" or "same" (Beta 1.1.3, round 3).
+        // A call ("zerg at mmg", "free rps at amg") draws its own short answers, never "+1" or "same" (Beta 1.1.2, round 3).
         if (route.StartsWith("context inc", StringComparison.Ordinal) || route.StartsWith("context rvr", StringComparison.Ordinal) ||
             intent is eAutonomousChatIntent.Alarm or eAutonomousChatIntent.RvR or eAutonomousChatIntent.Rez)
             return null;

@@ -194,7 +194,7 @@ namespace DOL.GS.Tests
             VC.Voice proper = Corpus.Voices.Single(voice => voice.Name == "proper");
             Assert.That(VC.Style("i cant go, im afk", proper, new Random(1)), Is.EqualTo("I can't go, I'm afk."));
             Assert.That(VC.Style("anyone for tomb?", proper, new Random(1)), Is.EqualTo("Anyone for tomb?"));
-            // Beta 1.1.3: a short ack stays as players typed it, even from a tidy writer; a short line takes no full stop.
+            // Beta 1.1.2: a short ack stays as players typed it, even from a tidy writer; a short line takes no full stop.
             Assert.That(VC.Style("nice :)", proper, new Random(1)), Is.EqualTo("nice :)"));
             Assert.That(VC.Style("np, have fun", proper, new Random(1)), Is.EqualTo("np, have fun"), "a line that starts with a chat word stays as typed");
         }
@@ -221,7 +221,7 @@ namespace DOL.GS.Tests
         [Test]
         public void SwapTypo_SlipsOneLetterInOneLongWord()
         {
-            // Beta 1.1.3: mostly a dropped letter, sometimes a swap, never the first letter, only in words of five or more.
+            // Beta 1.1.2: mostly a dropped letter, sometimes a swap, never the first letter, only in words of five or more.
             var random = new Random(3);
             int dropped = 0;
             for (int draw = 0; draw < 100; draw++)

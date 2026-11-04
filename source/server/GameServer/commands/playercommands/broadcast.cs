@@ -56,7 +56,7 @@ namespace DOL.GS.Commands
             Broadcast(client.Player, message);
             client.Player.TempProperties.SetProperty(BROAD_TICK, client.Player.CurrentRegion.Time);
             AutonomousBeggars.OnPlayerAsked(client.Player, message, "broadcast");
-            // Living Server 1.1.3: a gamebot nearby may answer an LFG post, a WTB or a question by tell.
+            // Living Server 1.1.2: a gamebot nearby may answer an LFG post, a WTB or a question by tell.
             AutonomousBotChatCoordinator.OnPlayerOpenChannel(client.Player, message, "broadcast");
         }
 

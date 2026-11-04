@@ -9,7 +9,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// Beta 1.1.3, the second pass after blind round 2, one test per fix category: spam, other addressees, tells with content,
+/// Beta 1.1.2, the second pass after blind round 2, one test per fix category: spam, other addressees, tells with content,
 /// fewer silences, roleplay acts, intent and alarm fixes, ambient realism, polish. Written from the categories, not from the
 /// round 2 lines.
 /// </summary>

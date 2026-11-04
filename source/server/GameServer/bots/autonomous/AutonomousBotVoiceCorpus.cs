@@ -29,7 +29,7 @@ public sealed class AutonomousBotVoiceCorpus
         /// <summary>The line names a place only to talk about it ("@about place"), not to say the speaker is there.</summary>
         public bool About { get; init; }
 
-        /// <summary>The template the line is one way of saying ("[a|b]" choices), or empty (Beta 1.1.3).</summary>
+        /// <summary>The template the line is one way of saying ("[a|b]" choices), or empty (Beta 1.1.2).</summary>
         public string Family { get; init; } = string.Empty;
     }
 
@@ -358,7 +358,7 @@ public sealed class AutonomousBotVoiceCorpus
     public sealed record Picked(string Text, Line Line, string Correction);
 
     /// <summary>
-    /// How long a template's other ways of saying it rest after one was said (Beta 1.1.3: the blind judge heard "that horse
+    /// How long a template's other ways of saying it rest after one was said (Beta 1.1.2: the blind judge heard "that horse
     /// ride took so long i aged a year" and "... i grew a beard" in one evening). The relaxed pick ignores it.
     /// </summary>
     public static readonly TimeSpan FamilyRest = TimeSpan.FromHours(6);
@@ -406,7 +406,7 @@ public sealed class AutonomousBotVoiceCorpus
                 filled = ForTimeOfDay(filled, hour);
             Voice voice = VoiceFor(speaker.Id);
             string text = Style(filled, voice, random, out string correction);
-            // Beta 1.1.3, the style layer: the bot's own typing habits on top of its writing style.
+            // Beta 1.1.2, the style layer: the bot's own typing habits on top of its writing style.
             // In-character lines keep their diction.
             text = AutonomousChatIdiolect.Apply(text, speaker.Id, voice.Capitalize || line.Kind == "roleplay" || line.Intent == "roleplay", random);
             request.Recent?.Use(speaker.Realm, line.Id, request.Now);
@@ -547,7 +547,7 @@ public sealed class AutonomousBotVoiceCorpus
         string result = text;
         // A "proper" writer still types chat words as chat words: "lol" and "ty ty", not "Lol." or "Thanks thanks."
         // (audit 2026-10-18).
-        // Beta 1.1.3: "np, back to it", "lol yeah thats it": a line that starts with a chat word stays as typed, even by a
+        // Beta 1.1.2: "np, back to it", "lol yeah thats it": a line that starts with a chat word stays as typed, even by a
         // tidy writer.
         bool chatToken = IsChatToken(text) || StartsWithChatToken(text);
         foreach ((string from, string to) in voice.Abbreviate)
@@ -569,7 +569,7 @@ public sealed class AutonomousBotVoiceCorpus
             result = char.ToUpperInvariant(result[0]) + result[1..];
         if (voice.CapitalizeSentences)
             result = Regex.Replace(result, @"([.!?] )([a-z])", m => m.Groups[1].Value + m.Groups[2].Value.ToUpperInvariant());
-        // Beta 1.1.3: even a tidy writer leaves a short reply unstopped ("Np, have fun", not "Np, have fun.").
+        // Beta 1.1.2: even a tidy writer leaves a short reply unstopped ("Np, have fun", not "Np, have fun.").
         if (voice.EndPeriod && result.Length > 0 && !chatToken && result.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 3)
         {
             string[] after = voice.NoPeriodAfter.Length > 0 ? voice.NoPeriodAfter : new[] { ".", "!", "?" };
@@ -583,7 +583,7 @@ public sealed class AutonomousBotVoiceCorpus
     public static string SwapTypo(string text, Random random) => SwapTypo(text, random, out _);
 
     /// <summary>
-    /// A typing slip in one word of five or more letters; <paramref name="original"/> is that word as it should be. Beta 1.1.3:
+    /// A typing slip in one word of five or more letters; <paramref name="original"/> is that word as it should be. Beta 1.1.2:
     /// mostly a dropped letter ("realy", "everone"), as fast typists made; a swap of two neighbours now and then, never the
     /// first letter (the blind judge read "repaet" as planted).
     /// </summary>
@@ -621,7 +621,7 @@ public sealed class AutonomousBotVoiceCorpus
         "lol", "heh", "hehe", "haha", "ha", "rofl", "lmao", "gz", "grats", "gratz", "ty", "thx", "np", "k", "kk", "ok", "brb",
         "afk", "wb", "gn", "gl", "omw", "inc", "re", "hm", "hmm", "huh", "yw", "sry", "nm", "nvm", "pst", "ding", "lfg", "lfm",
         "oom", "med", "rez", "r", "y", "n", "yep", "nope", "ikr", "bah", "ugh", "doh", "w00t", "woot",
-        // Beta 1.1.3: "Lol yes." read as a bot (the blind spot-the-bot judge); short acks stay lowercase for every writer.
+        // Beta 1.1.2: "Lol yes." read as a bot (the blind spot-the-bot judge); short acks stay lowercase for every writer.
         "yes", "ya", "yeah", "yea", "no", "nah", "sure", "same", "true", "nice", "cool", "hey", "hi", "yo", "sup", "cya", "later", "night",
         "rip", "oof", "phew", "gg", "x", "this", "agreed", "hehe", "lmao",
     };

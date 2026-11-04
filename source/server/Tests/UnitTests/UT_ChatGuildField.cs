@@ -8,7 +8,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// Beta 1.1.3, the fourth pass after the ambient spot test: guild chat from the field (the bot's and the guild's state), and
+/// Beta 1.1.2, the fourth pass after the ambient spot test: guild chat from the field (the bot's and the guild's state), and
 /// less repetition across the stream (varied short replies, one item advertised at most once an hour, no trailing "...").
 /// Written from the categories, not from the judged lines.
 /// </summary>

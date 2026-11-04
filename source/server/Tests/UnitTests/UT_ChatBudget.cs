@@ -5,7 +5,7 @@ using Budget = DOL.GS.AutonomousChatBudget;
 
 namespace DOL.GS.Tests;
 
-/// <summary>Beta 1.1.3: the two chat budgets (chat-budget.json, AutonomousChatBudget, AutonomousChatReplyBudget).</summary>
+/// <summary>Beta 1.1.2: the two chat budgets (chat-budget.json, AutonomousChatBudget, AutonomousChatReplyBudget).</summary>
 [TestFixture]
 public class UT_ChatBudget
 {

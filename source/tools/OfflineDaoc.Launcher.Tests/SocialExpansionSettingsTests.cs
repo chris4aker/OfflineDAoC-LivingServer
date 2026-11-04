@@ -133,7 +133,7 @@ public class SocialExpansionSettingsTests
 
     [Test] public void TheChatRateIsSavedReadAndChecked()
     {
-        // Beta 1.1.3: bot_voices_chat_rate in the tab; 1 is a busy peak server, 2 to 3 very busy.
+        // Beta 1.1.2: bot_voices_chat_rate in the tab; 1 is a busy peak server, 2 to 3 very busy.
         Assert.That(SocialExpansionSettings.Defaults.ChatRate, Is.EqualTo(1.0));
         Assert.That(SocialExpansionSettings.ChatRateDescription, Does.Contain("busy peak server").And.Not.Contain("quiet"));
         (SocialExpansionSettings.Defaults with { ChatRate = 2.5 }).Save(_database, null, () => _stopped);

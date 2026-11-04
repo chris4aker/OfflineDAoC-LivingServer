@@ -5,7 +5,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 
 namespace DOL.GS.Tests;
 
-/// <summary>Beta 1.1.3, cutting the filler: musings, unasked Exchange plugs, generic acks, tidy capitals.</summary>
+/// <summary>Beta 1.1.2, cutting the filler: musings, unasked Exchange plugs, generic acks, tidy capitals.</summary>
 [TestFixture]
 public class UT_ChatFiller
 {
@@ -53,7 +53,7 @@ public class UT_ChatFiller
     [Test]
     public void GenericFillerIsNeverSaid()
     {
-        // Beta 1.1.3, round 2: the spot-the-bot judge's most common reason; removed from replies and openers.
+        // Beta 1.1.2, round 2: the spot-the-bot judge's most common reason; removed from replies and openers.
         foreach (string text in new[] { "good question", "Happy to help.", "sounds familiar :)", "Ha yes, this exactly.", "could be, tell me more",
                      "yeah that is about right :D", "just thinking out loud", "sure thing", "hey!! how is everyone doing tonight" })
             Assert.That(AutonomousChatFiller.IsGeneric(text), Is.True, text);

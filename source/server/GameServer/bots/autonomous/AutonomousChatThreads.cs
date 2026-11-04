@@ -199,7 +199,7 @@ public static class AutonomousChatThreads
     {
         if (string.IsNullOrWhiteSpace(message))
             return false;
-        // "farming, u?", "29, wbu?": an answer that asks back (Beta 1.1.3).
+        // "farming, u?", "29, wbu?": an answer that asks back (Beta 1.1.2).
         bool asksBack = Regex.IsMatch(message, @"^[^?,]{1,40},\s*(u|you|wbu|hbu|and you|and u|urself|yourself)\s*\?\s*$|^[^?]{1,40}\b(wbu|hbu)\s*\??\s*$",
             RegexOptions.IgnoreCase);
         if (!asksBack && FollowUpWord(message) is { } word && word != "y")
@@ -308,7 +308,7 @@ public static class AutonomousChatThreads
 
     /// <summary>
     /// The answer to "where?" about a place the bot just named ("try the bone camp in Muspelheim" -> "muspelheim, take a horse
-    /// from jordheim"), or null when the line named none (Beta 1.1.3, a short thread memory). Pure.
+    /// from jordheim"), or null when the line named none (Beta 1.1.2, a short thread memory). Pure.
     /// </summary>
     public static string WhereIsIt(string botLine, string capital, Random random)
     {

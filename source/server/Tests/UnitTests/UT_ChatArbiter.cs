@@ -10,7 +10,7 @@ using Intent = DOL.GS.eAutonomousChatIntent;
 
 namespace DOL.GS.Tests;
 
-/// <summary>Beta 1.1.3, arbitration and timing (AutonomousChatArbiter): one primary answer, capped pile-ons, typed replies.</summary>
+/// <summary>Beta 1.1.2, arbitration and timing (AutonomousChatArbiter): one primary answer, capped pile-ons, typed replies.</summary>
 [TestFixture]
 public class UT_ChatArbiter
 {

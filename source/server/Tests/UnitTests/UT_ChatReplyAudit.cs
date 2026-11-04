@@ -49,7 +49,7 @@ namespace DOL.GS.Tests
             {
                 ["player"] = "Wynn", ["me"] = "Brannoc", ["class"] = "thane", ["level"] = "30", ["realm"] = "Midgard", ["zone"] = "Myrkwood Forest",
             };
-            // Beta 1.1.3: the server's reply filter (no musings, no unasked Exchange plugs, generic filler once an hour a channel).
+            // Beta 1.1.2: the server's reply filter (no musings, no unasked Exchange plugs, generic filler once an hour a channel).
             AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
             bool picked = Corpus.TryPick(new VC.Request("reply", Speaker(i), slots, Recent, Now, Rng)
             {
@@ -81,7 +81,7 @@ namespace DOL.GS.Tests
                 if (fact != null)
                     return ("fact " + (self ?? "world"), fact);
             }
-            // Beta 1.1.3, round 2: roleplay in kind, by what the line does (as VoicedChoice).
+            // Beta 1.1.2, round 2: roleplay in kind, by what the line does (as VoicedChoice).
             if (value == eAutonomousChatIntent.Roleplay)
             {
                 string act = AutonomousChatShortTalk.RoleplayAct(incoming);
@@ -155,7 +155,7 @@ namespace DOL.GS.Tests
             foreach (ChatAuditRoute.Item item in items)
             {
                 (string path, _) = ChatAuditRoute.Route(item, new Random(1));
-                // Beta 1.1.3: what the reply budget makes of it (a real answer, an acknowledgement, or nothing).
+                // Beta 1.1.2: what the reply budget makes of it (a real answer, an acknowledgement, or nothing).
                 (string outcome, _, _) = ChatAuditRoute.Budget(item, path, new Random(item.text.Length));
                 outcomes[outcome]++;
                 if (ChatAuditRoute.Fits(item.expect, path))
@@ -291,7 +291,7 @@ namespace DOL.GS.Tests
                     sb.AppendLine($"     bot before: {item.context}");
                 sb.AppendLine($"     expect {item.expect}: {item.note}");
                 sb.AppendLine($"     -> {path} | intent={intent} shape={AutonomousChatShortTalk.QuestionShape(text) ?? "-"}");
-                // Beta 1.1.3: the reply budget on the route the server takes (ChatAuditRoute) decides what is really said.
+                // Beta 1.1.2: the reply budget on the route the server takes (ChatAuditRoute) decides what is really said.
                 var auditItem = new ChatAuditRoute.Item(item.text, item.channel, item.context, item.expect, item.note, item.to);
                 (string route, string fixedAnswer) = ChatAuditRoute.Route(auditItem, new Random(1));
                 // A brush-off picked as the answer counts as weak, as Budgeted counts it.

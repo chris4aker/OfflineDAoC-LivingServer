@@ -6,7 +6,7 @@ using Intent = DOL.GS.eAutonomousChatIntent;
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// Beta 1.1.3, responsive replies: the period's short words, roleplay, calls for help, mishaps and apologies are read;
+/// Beta 1.1.2, responsive replies: the period's short words, roleplay, calls for help, mishaps and apologies are read;
 /// replies follow the situation (AutonomousChatContext); bots answer about themselves from their state; "how do i"
 /// questions get the game's answer; "where?" after a bot named a place asks where that place is.
 /// </summary>

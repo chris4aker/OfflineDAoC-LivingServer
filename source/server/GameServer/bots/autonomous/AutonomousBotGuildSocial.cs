@@ -308,7 +308,7 @@ public static class AutonomousBotGuildSocial
             return;
         BotChatTranscript.Player("guild", player, message, player.Guild.Name);
         Guild guild = player.Guild;
-        // Beta 1.1.3, second pass: spam draws nothing.
+        // Beta 1.1.2, second pass: spam draws nothing.
         if (AutonomousBotChatCoordinator.Screened(player, message, "guild"))
             return;
         GameBot[] speakers = Speakers(guild);
@@ -356,7 +356,7 @@ public static class AutonomousBotGuildSocial
         int count = mentioned.Length > 0 && kind != Lines.ReplyKind.None
             ? 1
             : ResponderCount(kind, pool.Length, Random.Shared.NextDouble());
-        // Beta 1.1.3, arbitration: one answer to anything but a hello, a ding, a goodbye or a call, which a few guildmates answer.
+        // Beta 1.1.2, arbitration: one answer to anything but a hello, a ding, a goodbye or a call, which a few guildmates answer.
         if (AutonomousBotVoices.Enabled && !AutonomousChatArbiter.IsSocial(intent))
             count = Math.Min(count, 1);
         var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -372,7 +372,7 @@ public static class AutonomousBotGuildSocial
             // (0.36-se.4: "haha true" answered any guild line that wasn't a question).
             // Unknown and real-world lines keep today's guild replies; nobody here says "omw" to a rez ask.
             VC.Picked picked = null;
-            // Beta 1.1.3: with bot voices on, a guildmate answers as /faction and /group do, through the reply budget: a reply
+            // Beta 1.1.2: with bot voices on, a guildmate answers as /faction and /group do, through the reply budget: a reply
             // that fits, an acknowledgement when named, or nothing (blind round 1: guild replies that ignored the line).
             string line;
             if (AutonomousBotVoices.Enabled)
@@ -427,7 +427,7 @@ public static class AutonomousBotGuildSocial
         invites = null;
         if (!AutonomousBotVoices.Enabled || bot == null)
             return null;
-        // Beta 1.1.3, round 4: mostly a field line from the bot's and the guild's state.
+        // Beta 1.1.2, round 4: mostly a field line from the bot's and the guild's state.
         if (FieldLine(bot, bot.Guild) is { } field)
         {
             invites = FieldInvites + field.Kind;
@@ -470,7 +470,7 @@ public static class AutonomousBotGuildSocial
     {
         string own = charter.ToString().ToLowerInvariant();
         string[] topics = Random.Shared.NextDouble() < 0.65 ? [own, "general"] : ["general", own];
-        // Beta 1.1.3, round 4: a written guild line only when it is short and plain (no check-ins, life filler, jokes or "...").
+        // Beta 1.1.2, round 4: a written guild line only when it is short and plain (no check-ins, life filler, jokes or "...").
         // Round 7: and a life line ("freezing outside", "aced my test") at most once a guild evening (AutonomousChatFiller.GuildCorpusFits).
         AutonomousChatFieldTalk.Memory memory = AutonomousChatFieldTalk.MemoryOfGuild(bot.Guild?.GuildID);
         long now = GameLoop.GameLoopTime;
@@ -574,7 +574,7 @@ public static class AutonomousBotGuildSocial
             return false;
 
         GameBot[] online = guild.GetOnlineBotMembers();
-        // Beta 1.1.3, round 5: guild chat is mostly the guild's regulars; anyone else now and then, or when it runs thin.
+        // Beta 1.1.2, round 5: guild chat is mostly the guild's regulars; anyone else now and then, or when it runs thin.
         if (AutonomousBotVoices.Enabled && !allianceLine)
         {
             long now = GameLoop.GameLoopTime;
@@ -588,7 +588,7 @@ public static class AutonomousBotGuildSocial
         }
         if (AutonomousBotVoices.Enabled)
         {
-            // Beta 1.1.3: the guild channel's budget (chat-budget.json "guild"), growing with the members online, no cap.
+            // Beta 1.1.2: the guild channel's budget (chat-budget.json "guild"), growing with the members online, no cap.
             var band = AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Guild, online.Length + 1);
             AutonomousChatBudget.NoteGuildPressure(KeyOf(guild), AutonomousChatBudget.Pressure(
                 AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Guild, KeyOf(guild), GameLoop.GameLoopTime), band.Target));
@@ -608,7 +608,7 @@ public static class AutonomousBotGuildSocial
                     return false;
                 LastIdleByGuild[guild.GuildID] = GameLoop.GameLoopTime;
             }
-        // Beta 1.1.3, round 4: most guild lines come from the field (the bot's and the guild's state); a written one only now
+        // Beta 1.1.2, round 4: most guild lines come from the field (the bot's and the guild's state); a written one only now
         // and then, and only a short, plain one; the field again when none fits.
         AutonomousChatFieldTalk.Said field = FieldLine(bot, guild);
         VC.Picked voiced = field == null ? CorpusIdle(bot, charter) : null;

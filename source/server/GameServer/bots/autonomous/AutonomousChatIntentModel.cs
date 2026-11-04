@@ -31,7 +31,7 @@ public enum eAutonomousChatIntent
     Alarm,
     ClassTalk,
     BotCheck,
-    // Beta 1.1.3: an in-character line, answered in kind
+    // Beta 1.1.2: an in-character line, answered in kind
     Roleplay,
 }
 
@@ -134,7 +134,7 @@ public static partial class AutonomousChatIntentModel
                 // Play test 2026-10-27: "Duggreigan ur guild sucks lol" read as banter, and drew "Howth smells like salt and fresh bread."
                 "ur guild sucks", "your guild sucks", "ur guild is trash", "your guild is trash", "ur guild is garbage", "your guild is garbage",
                 "ur guild is terrible", "your guild is terrible", "ur guild is a joke", "your guild is a joke",
-                // Beta 1.1.3 (blind round 1: read as banter or a question): "ks much?", "stop ksing my camp jerk", "omg ur so bad",
+                // Beta 1.1.2 (blind round 1: read as banter or a question): "ks much?", "stop ksing my camp jerk", "omg ur so bad",
                 // "u r teh suck lol", "gg albs, way to zerg", "can u not stand in the fire", a lone "noob" said to someone.
                 "ks much", "stop ksing", "quit ksing", "stop ks", "ksing my", "ks er", "kser", "ur so bad", "you re so bad", "youre so bad", "u r so bad",
                 "you are so bad", "teh suck", "u suck", "you suck", "way to zerg", "nice zerg", "zerg much", "stand in the fire", "learn 2 play", "l2p noob"))
@@ -202,7 +202,7 @@ public static partial class AutonomousChatIntentModel
         if (IsAbuse(words) || words.Length == 1 && words[0] is "noob" or "n00b" or "newb" or "nub" or "jerk" or "loser" ||
             words.Length <= 6 && words.Contains("jerk"))
             return eAutonomousChatIntent.Abuse;
-        // Beta 1.1.3: an in-character line ("Hail, good sir. What news from Camelot?", "*bows deeply* My lady...", "By Odin's
+        // Beta 1.1.2: an in-character line ("Hail, good sir. What news from Camelot?", "*bows deeply* My lady...", "By Odin's
         // beard...", "Ye be lookin' weary, friend") is answered in kind (blind round 1: 16 of 17 roleplay lines were missed).
         if (AutonomousChatShortTalk.IsRoleplay(text, words))
             return eAutonomousChatIntent.Roleplay;

@@ -2450,7 +2450,7 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_VOICES_TELLS;
 
 		/// <summary>
-		/// How busy realm chat is (the talking update; Beta 1.1.3: 1 is a busy peak server, 2-3 very busy): a multiplier on every
+		/// How busy realm chat is (the talking update; Beta 1.1.2: 1 is a busy peak server, 2-3 very busy): a multiplier on every
 		/// channel's target in chat-budget.json. The launcher's Living Server tab sets it.
 		/// </summary>
 		[ServerProperty("bots", "bot_voices_chat_rate", "When bot voices are on: how much bots talk on their own, from 0 (they only answer) to 3. 1 is a busy peak server, 2 to 3 very busy. Chat already rises and falls with the hour and with how many bots are on (chat-budget.json).", 1.0)]

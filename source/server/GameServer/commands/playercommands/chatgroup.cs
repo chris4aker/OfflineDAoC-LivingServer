@@ -51,7 +51,7 @@ namespace DOL.GS.Commands
 			{
 				ply.Out.SendMessage(message, eChatType.CT_Chat, eChatLoc.CL_ChatWindow);
 			}
-			// Living Server 1.1.3: a gamebot of the realm may answer an LFG post, a WTB or a question by tell.
+			// Living Server 1.1.2: a gamebot of the realm may answer an LFG post, a WTB or a question by tell.
 			AutonomousBotChatCoordinator.OnPlayerOpenChannel(client.Player, string.Join(" ", args, 1, args.Length - 1), "chatgroup");
 		}
 	}

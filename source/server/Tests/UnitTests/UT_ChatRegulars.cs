@@ -10,7 +10,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// Beta 1.1.3, the fifth pass after the stream test: regulars who carry the channel, ideas that rest, no canned agreement
+/// Beta 1.1.2, the fifth pass after the stream test: regulars who carry the channel, ideas that rest, no canned agreement
 /// after a musing, answers that fit the line before, and bursty pacing. Written from the judges' categories.
 /// </summary>
 [TestFixture]

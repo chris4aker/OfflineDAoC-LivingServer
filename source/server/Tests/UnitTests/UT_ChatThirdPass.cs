@@ -11,7 +11,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// Beta 1.1.3, the third pass after blind round 3, one group of tests per fix category: ambient lines from the field, scams get
+/// Beta 1.1.2, the third pass after blind round 3, one group of tests per fix category: ambient lines from the field, scams get
 /// silence, tell replies with content, reactions that fit the line, state consistency, and /say lines aimed at a bot. Written
 /// from the categories; the round 3 lines were not seen.
 /// </summary>

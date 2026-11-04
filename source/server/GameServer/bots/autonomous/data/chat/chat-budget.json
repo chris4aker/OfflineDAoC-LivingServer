@@ -1,4 +1,4 @@
-// The gamebots' chat budget (Living Server Beta 1.1.3). How it works: docs/bot-voices/CHAT-BUDGETS.md.
+// The gamebots' chat budget (Living Server Beta 1.1.2). How it works: docs/bot-voices/CHAT-BUDGETS.md.
 //
 // Two budgets:
 // - "ambient": how much the world talks on its own. Each channel has a floor, a target and a ceiling in lines per

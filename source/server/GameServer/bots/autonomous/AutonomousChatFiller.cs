@@ -7,7 +7,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 namespace DOL.GS;
 
 /// <summary>
-/// Keeps filler out of the bots' chat (Beta 1.1.3): near-copies of a line a channel just carried, and the kinds of line the
+/// Keeps filler out of the bots' chat (Beta 1.1.2): near-copies of a line a channel just carried, and the kinds of line the
 /// first blind evaluation marked as the bot tell. Pure rules plus a small ring of recent lines per channel moment.
 /// </summary>
 public static class AutonomousChatFiller
@@ -25,7 +25,7 @@ public static class AutonomousChatFiller
 
     /// <summary>
     /// The ambient line filter for one opener: whether this opener may be a musing or a crafted line is drawn once, so the
-    /// shares hold however many lines the picker looks at (Beta 1.1.3, round 3). Pure but for the draws.
+    /// shares hold however many lines the picker looks at (Beta 1.1.2, round 3). Pure but for the draws.
     /// </summary>
     public static Func<VC.Line, bool> AmbientFilter(bool faction, Random random)
     {
@@ -40,7 +40,7 @@ public static class AutonomousChatFiller
             return false;
         if (MentionsExchange(line.Text) && !line.Needs.Contains("has_listing", StringComparer.Ordinal))
             return false;
-        // Beta 1.1.3, round 2: generic agreement is never an opener either.
+        // Beta 1.1.2, round 2: generic agreement is never an opener either.
         if (IsGeneric(line.Text))
             return false;
         // Round 5: no lore recitation unprompted at all; a lore line answers a real question only (the knowledge route).
@@ -206,7 +206,7 @@ public static class AutonomousChatFiller
         "makes everyone", "on first name terms", "is where most", "haunts", "nothing says", "there is something about", "they say the",
         "legend says", "the old stories", "an old skald", "an old guildmate swore", "heard lady", "is older than", "built over the bones",
         "people forget that", "every realm has", "you know youre", "you know you are",
-        // Beta 1.1.3, round 2: preachy etiquette and guidebook observations.
+        // Beta 1.1.2, round 2: preachy etiquette and guidebook observations.
         "basic manners", "is basic", "etiquette", "people should", "nobody should", "you should always", "always ask before",
         "or so they say", "or so sylvans claim", "or so the", "sees the whole", "they claim", "is said to", "the bards say",
         "folk say", "old timers say", "rule of thumb", "the secret to", "the trick is", "pro tip",
@@ -243,16 +243,16 @@ public static class AutonomousChatFiller
         "this exactly", "cant argue with that", "fair enough", "interesting", "true story", "so true", "same here honestly", "i hear that",
         "i hear you", "glad to help", "tell me more", "could be", "if you say so", "uh huh", "mhm", "well said", "makes sense", "fair point",
         "i was wondering that too", "good to know", "noted", "right", "indeed",
-        // Beta 1.1.3, round 2 (the spot-the-bot judge's most common reason).
+        // Beta 1.1.2, round 2 (the spot-the-bot judge's most common reason).
         "could be tell me more", "shout someone might be close", "hey how is everyone doing tonight", "how is everyone doing tonight",
         "sure thing", "yeah that is about right", "that is about right", "yeah thats about right", "anyway back to it", "mhm anyway",
         "interesting thought", "good point", "very true", "so true", "lol so true", "true that", "cant disagree", "cant argue there",
         "fair", "i suppose", "i guess so", "maybe maybe not", "if you say so", "you never know", "who knows",
-        // Beta 1.1.3, round 5: canned agreement after a musing ("i know right", "yeah its always like that").
+        // Beta 1.1.2, round 5: canned agreement after a musing ("i know right", "yeah its always like that").
         "i know right", "ikr", "yeah its always like that", "its always like that", "always like that", "yep that is how it goes",
         "thats how it goes", "that is how it goes", "yep thats how it goes", "story of my life", "tell me about it", "you said it",
         "isnt that the truth", "aint that the truth", "so true lol", "too true", "yep yep", "right there with you", "same here",
-        // Beta 1.1.3, round 3: agreement filler between bots in /faction and /say.
+        // Beta 1.1.2, round 3: agreement filler between bots in /faction and /say.
         "cant say youre wrong", "cant say you are wrong", "that is pretty accurate", "pretty accurate", "thats accurate", "so accurate", "accurate",
         "this is true", "thats true", "that is true", "true enough", "fair enough i guess", "cant argue", "couldnt agree more",
         "you got that right", "ya got that right", "spot on", "exactly", "exactly this", "pretty much", "pretty much yeah", "basically",
@@ -329,7 +329,7 @@ public static class AutonomousChatFiller
             return false;
         if (MentionsExchange(line.Text) && !AsksWhereToBuyOrSell(scope?.Incoming))
             return false;
-        // Beta 1.1.3, round 2: generic agreement is removed from replies altogether.
+        // Beta 1.1.2, round 2: generic agreement is removed from replies altogether.
         if (IsGeneric(line.Text))
             return false;
         return true;

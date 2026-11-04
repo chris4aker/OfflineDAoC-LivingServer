@@ -10,7 +10,7 @@ using Budget = DOL.GS.AutonomousChatBudget;
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// Beta 1.1.3: an evening hour of one realm's ambient chat, before (Beta 1.1.1's gaps, capped at 1.8) and after (the
+/// Beta 1.1.2: an evening hour of one realm's ambient chat, before (Beta 1.1.1's gaps, capped at 1.8) and after (the
 /// ambient budget), through the real corpus picker, the real gap and budget rules and the real reply counts. An approximate
 /// model, not a world: each bot checks whether to talk every 15-35 s as BotBrain does, is free (not fighting or riding)
 /// 55% of the time, and passes AutonomousBotChat.ShouldSpeak with its personality's rate; the player stands in their
@@ -131,7 +131,7 @@ public class UT_ChatBudgetSimulation
         }
 
         /// <summary>
-        /// The share of distinct lines among a channel's lines of three words or more (Beta 1.1.3, round 4: a 3-hour run had 810
+        /// The share of distinct lines among a channel's lines of three words or more (Beta 1.1.2, round 4: a 3-hour run had 810
         /// /faction lines and 531 distinct). Short reactions ("me", "gz", "omw") are left out; 1 when there are none.
         /// </summary>
         public double DistinctShare(string channel)
@@ -144,7 +144,7 @@ public class UT_ChatBudgetSimulation
 
         /// <summary>
         /// The share of a channel's lines that repeat an earlier line of it exactly, and nearly (same skeleton). Short reactions
-        /// ("gz", "omw", "lol rip": two words at most) are left out, as the live near-copy rule leaves them out (Beta 1.1.3).
+        /// ("gz", "omw", "lol rip": two words at most) are left out, as the live near-copy rule leaves them out (Beta 1.1.2).
         /// </summary>
         public (double Exact, double Near) Duplicates(string channel)
         {
@@ -178,7 +178,7 @@ public class UT_ChatBudgetSimulation
         public double Rate;
     }
 
-    /// <summary>Beta 1.1.1's /faction gap (AutonomousBotChatCoordinator.FactionGapMs before 1.1.3), for the "before" side.</summary>
+    /// <summary>Beta 1.1.1's /faction gap (AutonomousBotChatCoordinator.FactionGapMs before 1.1.2), for the "before" side.</summary>
     private static long OldFactionGapMs(int bots, Random random)
     {
         double population = Math.Clamp(Math.Sqrt(Math.Max(0, bots) / 120.0), 0.5, 1.8);
@@ -441,7 +441,7 @@ public class UT_ChatBudgetSimulation
                             is Budget.Verdict.Speak or Budget.Verdict.SpeakUnderFloor;
                     else if (turn = lastGuild < 0 || now - lastGuild >= AutonomousBotGuildSocial.IdleIntervalMs(BotGuildCharter.Social, guildSize))
                         lastGuild = now;
-                    // Beta 1.1.3, round 4: guild lines come mostly from the field (AutonomousBotGuildSocial.FieldLine), a short
+                    // Beta 1.1.2, round 4: guild lines come mostly from the field (AutonomousBotGuildSocial.FieldLine), a short
                     // written one now and then.
                     if (turn && budget && random.NextDouble() < AutonomousChatFieldTalk.Share("guild") &&
                         AutonomousChatFieldTalk.Line("guild", FactsOf(bot, now, random) with
@@ -547,7 +547,7 @@ public class UT_ChatBudgetSimulation
                 options.RemoveAt(pick);
                 if (meter.TryStart(choice.Channel, 1, now, choice.Band, random) is Budget.Verdict.HoldCeiling or Budget.Verdict.HoldGap)
                     continue;
-                // Beta 1.1.3, round 3: most unprompted lines are field lines from the bot's state (AutonomousChatFieldTalk).
+                // Beta 1.1.2, round 3: most unprompted lines are field lines from the bot's state (AutonomousChatFieldTalk).
                 if (random.NextDouble() < AutonomousChatFieldTalk.Share(choice.Name) &&
                     AutonomousChatFieldTalk.Line(choice.Name, FactsOf(bot, now, random), field, random, now) is { } said)
                 {
@@ -652,7 +652,7 @@ public class UT_ChatBudgetSimulation
         results = new Dictionary<(int, bool), Result>();
         var text = new StringBuilder();
         text.AppendLine("An evening hour (20:00, three evenings averaged) of one realm's ambient chat, lines a minute as the player hears each channel (UT_ChatBudgetSimulation).");
-        text.AppendLine("Before = Beta 1.1.1 gaps (population factor capped at 1.8); after = the Beta 1.1.3 ambient budget (chat-budget.json).");
+        text.AppendLine("Before = Beta 1.1.1 gaps (population factor capped at 1.8); after = the Beta 1.1.2 ambient budget (chat-budget.json).");
         text.AppendLine();
         text.AppendLine("Broadcast includes sellers' macros (the same WTS line every 3-8 min, by design); repeats are counted without them.");
         text.AppendLine();

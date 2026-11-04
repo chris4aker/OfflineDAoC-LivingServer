@@ -81,7 +81,7 @@ public static class AutonomousBotChat
     public static bool ShouldSpeak(DateTime utcNow, DateTime lastSpokeUtc, bool inCombat, Random random = null,
         double rateFactor = 1.0, double pressure = 1.0, bool regular = false)
     {
-        // pressure (Beta 1.1.3): the chat budget's push when the bot's channels run under target, 1-4. It shortens the
+        // pressure (Beta 1.1.2): the chat budget's push when the bot's channels run under target, 1-4. It shortens the
         // bot's own rest between lines (4 minutes, down to 2) and raises its chance to speak.
         pressure = Math.Clamp(pressure, 1.0, 4.0);
         // regular (round 5): one of the realm's talkative regulars rests a little over a minute and talks far more often.

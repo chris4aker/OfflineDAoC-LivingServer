@@ -4,7 +4,7 @@ using System.Linq;
 namespace DOL.GS;
 
 /// <summary>
-/// The reply budget (Beta 1.1.3, docs/bot-voices/CHAT-BUDGETS.md): a bot answers a player only with a reply that fits the
+/// The reply budget (Beta 1.1.2, docs/bot-voices/CHAT-BUDGETS.md): a bot answers a player only with a reply that fits the
 /// line (AutonomousChatReplyFit at least chat-budget.json's "min_fit"). Below it the bot says nothing, unless the line was
 /// a tell to it or named it, which gets a short human acknowledgement ("?", "ya?", "sec"), never a stock brush-off. The
 /// first blind evaluation found silence read more human than the weak replies (3.99 against 3.30 of 6). This budget is

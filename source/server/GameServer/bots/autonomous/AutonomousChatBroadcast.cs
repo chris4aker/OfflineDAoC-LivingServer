@@ -7,7 +7,7 @@ using DOL.Language;
 namespace DOL.GS;
 
 /// <summary>
-/// Gamebots' /broadcast in towns (Beta 1.1.3): the 2003 place for "WTS ..." macros, "lfg 24 ranger" and recruiting
+/// Gamebots' /broadcast in towns (Beta 1.1.2): the 2003 place for "WTS ..." macros, "lfg 24 ranger" and recruiting
 /// (docs/bot-voices/CHAT-BUDGETS.md). A bot broadcasts as the /broadcast command does for a player: with the server's
 /// broadcast_type (area by default), only from a place that allows it and only to players there. Its own budget is the
 /// "capital" or "town" channel. A seller's line may repeat as a macro every few minutes, as players' macros did.

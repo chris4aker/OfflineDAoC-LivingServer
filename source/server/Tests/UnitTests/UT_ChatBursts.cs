@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace DOL.GS.Tests;
 
-/// <summary>Beta 1.1.3, world-driven bursts (AutonomousChatBursts): their size, timing and which events start them.</summary>
+/// <summary>Beta 1.1.2, world-driven bursts (AutonomousChatBursts): their size, timing and which events start them.</summary>
 [TestFixture]
 public class UT_ChatBursts
 {

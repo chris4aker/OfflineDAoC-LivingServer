@@ -42,7 +42,7 @@ public static class AutonomousChatReplyFit
             return None;
         if (route.StartsWith("none", StringComparison.Ordinal) || route.StartsWith("silent", StringComparison.Ordinal))
             return None;
-        // Beta 1.1.3, second pass: the budget's own short replies (a tell's content, a reaction, a "dunno").
+        // Beta 1.1.2, second pass: the budget's own short replies (a tell's content, a reaction, a "dunno").
         if (route.StartsWith("short", StringComparison.Ordinal) || route.StartsWith("rescue", StringComparison.Ordinal))
             return Fits;
         if (route.StartsWith("ack", StringComparison.Ordinal))

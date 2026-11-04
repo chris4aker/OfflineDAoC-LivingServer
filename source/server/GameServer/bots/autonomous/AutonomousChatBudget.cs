@@ -7,7 +7,7 @@ using System.Text.Json;
 namespace DOL.GS;
 
 /// <summary>
-/// The gamebots' two chat budgets (Beta 1.1.3, docs/bot-voices/CHAT-BUDGETS.md), read from <c>chat-budget.json</c>:
+/// The gamebots' two chat budgets (Beta 1.1.2, docs/bot-voices/CHAT-BUDGETS.md), read from <c>chat-budget.json</c>:
 /// <list type="bullet">
 /// <item>the <b>ambient budget</b>: per channel, a floor, a target and a ceiling in lines per minute, by the hour and by
 /// how many bots are online, with no population cap. <see cref="Gate"/> decides whether a bot may start a line now, and

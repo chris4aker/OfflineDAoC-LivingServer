@@ -55,7 +55,7 @@ namespace DOL.GS.Tests
             bool group = item.channel == "group";
             bool directed = item.expect == "directed" || !string.IsNullOrEmpty(item.to);
             bool addressed = tell || group || directed || item.channel == "say";
-            // Beta 1.1.3, round 2: spam and lines to someone else are screened out first, on every channel (as Screened and
+            // Beta 1.1.2, round 2: spam and lines to someone else are screened out first, on every channel (as Screened and
             // SchedulePlayerReplies do).
             if (AutonomousChatScreen.IsSpam(text))
                 return ("none spam", null);
@@ -80,7 +80,7 @@ namespace DOL.GS.Tests
                 word = null;
             if (word != null && last != null)
                 return ("thread followup_" + word, null);
-            // Beta 1.1.3: a counter-offer to the bot's price (as TryThreadReply and TellReply).
+            // Beta 1.1.2: a counter-offer to the bot's price (as TryThreadReply and TellReply).
             if (last != null && AutonomousChatContext.Price(last.Text) is { } asking && AutonomousChatContext.CounterOffer(text, asking, random) is { } counter)
                 return ("context counter", counter);
             if (open != null && AutonomousChatThreads.SaysYes(text) == false)
@@ -129,7 +129,7 @@ namespace DOL.GS.Tests
                 if (fact != null)
                     return ("fact " + (self ?? "world"), fact);
             }
-            // Beta 1.1.3: the situation (AutonomousChatContext), as VoicedChoice reads it after the facts.
+            // Beta 1.1.2: the situation (AutonomousChatContext), as VoicedChoice reads it after the facts.
             var facts = new AutonomousChatContext.Facts("Brannoc", "Wynn", item.channel, item.channel is "say" or "group", false, false, Me.Level,
                 string.IsNullOrEmpty(item.context) ? null : item.context, "Jordheim");
             if (AutonomousChatContext.Reply(text, intent, AutonomousChatShortTalk.QuestionShape(text), facts, random) is { } situation)
@@ -151,7 +151,7 @@ namespace DOL.GS.Tests
         }
 
         /// <summary>
-        /// What the reply budget makes of a route (Beta 1.1.3, as AutonomousBotChatCoordinator.Budgeted): "answer", "ack" (a tell or
+        /// What the reply budget makes of a route (Beta 1.1.2, as AutonomousBotChatCoordinator.Budgeted): "answer", "ack" (a tell or
         /// a line naming the bot, under the minimum fit) or "silent", with the route's fit.
         /// </summary>
         internal static (string Outcome, int Fit) Budget(Item item, string path)
@@ -161,7 +161,7 @@ namespace DOL.GS.Tests
         }
 
         /// <summary>
-        /// The reply budget as Budgeted applies it (Beta 1.1.3, second pass): "answer"; "short" (a tell's content, the text given);
+        /// The reply budget as Budgeted applies it (Beta 1.1.2, second pass): "answer"; "short" (a tell's content, the text given);
         /// "ack"; "rescue" (a short reaction or a "dunno", the text given); or "silent". /advice answers only from what is known.
         /// </summary>
         internal static (string Outcome, int Fit, string Text) Budget(Item item, string path, Random random)
@@ -189,7 +189,7 @@ namespace DOL.GS.Tests
         internal static bool Fits(string expect, string path) => expect switch
         {
             "greeting" => path is "intent greeting" or "shape ask_howareyou",
-            // Beta 1.1.3 routes: a reply chosen by the situation ("context ...") and the new shapes read the same labels.
+            // Beta 1.1.2 routes: a reply chosen by the situation ("context ...") and the new shapes read the same labels.
             "farewell" => path is "intent farewell" or "context farewell",
             "thanks_ack" => path is "intent thanks" or "thread thanks",
             "congrats" => path is "intent ding" or "shape player_goodnews",
@@ -202,7 +202,7 @@ namespace DOL.GS.Tests
             "offer_help" => path is "shape player_offer" or "shape ask_help" or "shape ask_anyone" or "shape ask_advice" or "intent help" or "not sure" or
                 "context help" or "context stuck" or "shape player_help" ||
                 path.StartsWith("fact"),
-            // "join" is the blind corpus's name for the same label (scorer alias, Beta 1.1.3; reported apart).
+            // "join" is the blind corpus's name for the same label (scorer alias, Beta 1.1.2; reported apart).
             "join_reply" or "join" => path is "join" or "tell invited",
             "lfg_response" => path is "intent grouping",
             "rez_response" => path is "intent rez" or "shape player_wait",

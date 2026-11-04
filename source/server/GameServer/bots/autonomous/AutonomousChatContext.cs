@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace DOL.GS;
 
 /// <summary>
-/// Replies chosen by the player's situation, not only by the words' intent (Beta 1.1.3, the blind evaluation's fix 3):
+/// Replies chosen by the player's situation, not only by the words' intent (Beta 1.1.2, the blind evaluation's fix 3):
 /// goodnights get "gn", "stuck" gets "/stuck", "inc" a direction question or "omw", a call for help an offer to come, a
 /// sale a price or a no, a counter-offer a price, realm news a reaction in kind. Pure: the caller gives the bot's facts and
 /// styles the text. Routes are "context ..." (AutonomousChatReplyFit: known).

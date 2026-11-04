@@ -459,7 +459,7 @@ public static class AutonomousBotVoices
             if (slots != null)
                 foreach (var pair in slots)
                     all[pair.Key] = pair.Value;
-            // Beta 1.1.3: a reply or closing is kept free of musings, unasked Exchange plugs and repeated generic filler.
+            // Beta 1.1.2: a reply or closing is kept free of musings, unasked Exchange plugs and repeated generic filler.
             AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
             Func<VC.Line, bool> allowed = kind is "reply" or "closing"
                 ? filter == null ? line => AutonomousChatFiller.ReplyAllowed(line, scope) : line => AutonomousChatFiller.ReplyAllowed(line, scope) && filter(line)
@@ -542,7 +542,7 @@ public static class AutonomousBotVoices
         if (!Enabled || bot == null || string.IsNullOrEmpty(text))
             return text;
         VC.Voice voice = Corpus.VoiceFor(bot.DatabaseID);
-        // Beta 1.1.3: the bot's own typing habits too (AutonomousChatIdiolect).
+        // Beta 1.1.2: the bot's own typing habits too (AutonomousChatIdiolect).
         return AutonomousChatIdiolect.Apply(VC.Style(text, voice, Random.Shared), bot.DatabaseID, voice.Capitalize, Random.Shared);
     }
 
@@ -628,7 +628,7 @@ public static class AutonomousBotVoices
     {
         NoteLevelUp(bot);
         SayMoment(bot, "ding", 0.35, 1_500);
-        // Beta 1.1.3, round 7: a ding to 50 is a story the realm hears.
+        // Beta 1.1.2, round 7: a ding to 50 is a story the realm hears.
         if (bot?.Level == 50)
             AutonomousBotChatCoordinator.TellStory("ding50", bot);
     }

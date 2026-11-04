@@ -245,7 +245,7 @@ public static class AutonomousChatLiveAnswers
                 equipped++;
                 if (item.IsCrafted)
                     crafted++;
-                // "what weapon is that" (Beta 1.1.3, round 3): the weapon in hand, two-handed first.
+                // "what weapon is that" (Beta 1.1.2, round 3): the weapon in hand, two-handed first.
                 if (item.SlotPosition is (int)eInventorySlot.TwoHandWeapon or (int)eInventorySlot.RightHandWeapon or (int)eInventorySlot.DistanceWeapon &&
                     (weapon == null || item.SlotPosition == (int)eInventorySlot.TwoHandWeapon) && !string.IsNullOrWhiteSpace(item.Name))
                 {
@@ -264,7 +264,7 @@ public static class AutonomousChatLiveAnswers
             (int)(bot.Group?.MemberCount ?? 1), bot.PersistentRecord?.TargetName, SpecText(bot), weapon, weaponQuality);
     }
 
-    /// <summary>A bot's spec as a player says it: its two highest trained lines ("44 shield, 30 slash"), or null (Beta 1.1.3).</summary>
+    /// <summary>A bot's spec as a player says it: its two highest trained lines ("44 shield, 30 slash"), or null (Beta 1.1.2).</summary>
     public static string SpecText(GameBot bot)
     {
         try

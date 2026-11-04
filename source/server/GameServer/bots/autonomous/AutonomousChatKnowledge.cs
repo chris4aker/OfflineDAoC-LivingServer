@@ -158,7 +158,7 @@ public static class AutonomousChatKnowledge
         return LooksLikeLocationQuestion(query) && TryAnswerLocation(realm, query, out answer);
     }
 
-    #region How do I (Beta 1.1.3)
+    #region How do I (Beta 1.1.2)
 
     /// <summary>
     /// "how do i equip this", "how do i bind", "how many rp for rr2", "how do i get to hib from alb", "how do i go anon":

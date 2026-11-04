@@ -610,7 +610,7 @@ namespace DOL.GS.Tests
         [Test]
         public void FactionChatIsBusierInTheEveningAndWithMoreBots()
         {
-            // Beta 1.1.3: the gap comes from the ambient budget (chat-budget.json); the middle draw gives its mean.
+            // Beta 1.1.2: the gap comes from the ambient budget (chat-budget.json); the middle draw gives its mean.
             var fixedDraw = new FixedRandom(0.5);
             long normal = AutonomousBotChatCoordinator.FactionGapMs(120, 14, 1.0, fixedDraw);
             Assert.That(AutonomousBotChatCoordinator.FactionGapMs(120, 21, 1.0, fixedDraw), Is.LessThan(normal));

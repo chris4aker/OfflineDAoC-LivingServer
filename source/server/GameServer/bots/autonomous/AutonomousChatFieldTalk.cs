@@ -6,7 +6,7 @@ using DOL.GS.Keeps;
 namespace DOL.GS;
 
 /// <summary>
-/// Short, functional chat built from what a bot really is and what the world really is (Beta 1.1.3, blind round 3: the
+/// Short, functional chat built from what a bot really is and what the world really is (Beta 1.1.2, blind round 3: the
 /// ambient world was the biggest giveaway, 85% caught, for life filler, crafted jokes, unprompted tips, capitals and
 /// near-copies). Real 2003 chat was mostly terse and about the game in front of you: "lfg 38 sm", "wts 99% chain /send",
 /// "anyone up for tg?", "inc mmg", "who has the relic", "brb food". A line here names the bot's real level, class, zone, camp,
@@ -127,7 +127,7 @@ public static class AutonomousChatFieldTalk
             _ring = new string[_size];
         }
 
-        /// <summary>How long one item rests after it was advertised (Beta 1.1.3, round 4: an hour).</summary>
+        /// <summary>How long one item rests after it was advertised (Beta 1.1.2, round 4: an hour).</summary>
         public const long ItemRestMs = 60 * 60_000;
 
         /// <summary>A written musing at most once in 20 minutes per realm (round 5).</summary>

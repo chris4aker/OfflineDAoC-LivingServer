@@ -4,7 +4,7 @@ using System.Text;
 namespace DOL.GS;
 
 /// <summary>
-/// The style layer (Beta 1.1.3): small typing habits fixed from a bot's id, applied to every corpus line it says after its
+/// The style layer (Beta 1.1.2): small typing habits fixed from a bot's id, applied to every corpus line it says after its
 /// writing style (AutonomousBotVoiceCorpus.Style), so two bots with the same line still type it differently. A bot may write
 /// "u" and "r", double its question marks, trail off with "...", tag a "lol" on, or, rarely, type 2003 leetspeak ("teh",
 /// "ne1", "l8r"). Only lowercase chat words change: names, places and capitalised words are left as they are, and a tidy
@@ -43,7 +43,7 @@ public static class AutonomousChatIdiolect
         string trimmed = result.TrimEnd();
         if (habits.HasFlag(Habit.DoubleQuestion) && trimmed.EndsWith('?') && !trimmed.EndsWith("??") && random.NextDouble() < 0.5)
             result = trimmed + "?";
-        // Beta 1.1.3, round 4: no trailing "..." any more (the blind judge's tell); the TrailOff habit is kept for its id draw.
+        // Beta 1.1.2, round 4: no trailing "..." any more (the blind judge's tell); the TrailOff habit is kept for its id draw.
         if (!terse && habits.HasFlag(Habit.LolTail) && random.NextDouble() < 0.15 && !Contains(result, "lol") && !Contains(result, "heh") &&
             !Contains(result, "haha") && result.Split(' ').Length >= 3)
             result = result.TrimEnd('.') + " lol";

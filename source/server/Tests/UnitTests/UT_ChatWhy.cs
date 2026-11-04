@@ -5,7 +5,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 
 namespace DOL.GS.Tests;
 
-/// <summary>Beta 1.1.3, C0: every chat decision records why (AutonomousChatWhy, /lswhy), with a rule score.</summary>
+/// <summary>Beta 1.1.2, C0: every chat decision records why (AutonomousChatWhy, /lswhy), with a rule score.</summary>
 [TestFixture, NonParallelizable]
 public class UT_ChatWhy
 {

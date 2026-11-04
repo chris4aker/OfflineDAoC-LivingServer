@@ -5,7 +5,7 @@ using Habit = DOL.GS.AutonomousChatIdiolect.Habit;
 
 namespace DOL.GS.Tests;
 
-/// <summary>Beta 1.1.3, the style layer: per-bot typing habits, fixed from the id, on lowercase chat words only.</summary>
+/// <summary>Beta 1.1.2, the style layer: per-bot typing habits, fixed from the id, on lowercase chat words only.</summary>
 [TestFixture]
 public class UT_ChatIdiolect
 {

@@ -113,7 +113,7 @@ public static class AutonomousChatShortTalk
         string[] words = AutonomousChatIntentModel.Words(text).Select(word => word.Replace("'", string.Empty)).ToArray();
         if (HasPhrase(words, "anyone here from", "anybody here from", "anyone on from"))
             return false;
-        // Beta 1.1.3: "ne1 on?", "hey u there?", "you around?" (blind round 1: read as nothing or "not sure").
+        // Beta 1.1.2: "ne1 on?", "hey u there?", "you around?" (blind round 1: read as nothing or "not sure").
         if (words.Length <= 5 && HasPhrase(words, "ne1 on", "ne1 here", "ne1 around", "u there", "you there", "r u there", "are you there",
                 "are u there", "u around", "you around", "r u around", "u still on", "you still on", "u awake", "you awake", "u still there",
                 "you still there"))
@@ -132,7 +132,7 @@ public static class AutonomousChatShortTalk
         if (IsAcknowledgement(text))
             return "ack";
         string[] said = AutonomousChatIntentModel.Words(text).Select(word => word.Replace("'", string.Empty)).ToArray();
-        // "re all, isp died again", "re, crashed to desktop": a hello back first, read as one (Beta 1.1.3).
+        // "re all, isp died again", "re, crashed to desktop": a hello back first, read as one (Beta 1.1.2).
         if (said.Length is > 0 and <= 8 && said[0] is "re" or "rehi" && !text.Contains('?'))
             return null;
         // The talking update audit (2026-10-26): a decline nobody asked for ("no thanks im good" in /faction, to someone else)
@@ -283,7 +283,7 @@ public static class AutonomousChatShortTalk
                 "better than", "or is it me", "or is it just me", "is it just me", "what do u guys think", "what do you guys think",
                 "what do yall think", "what does everyone think", "hows the new", "how is the new", "how are the new") || HasPhrase(words, "should i") && !words.Any(word => word is "what" or "where" or "how" or "which" or "when" or "who")))
             return "ask_opinion";
-        // Beta 1.1.3: a mishap told for a laugh ("i fell off the bridge in tir na nog. again.", "omg i jsut got 1 shotted by a grey
+        // Beta 1.1.2: a mishap told for a laugh ("i fell off the bridge in tir na nog. again.", "omg i jsut got 1 shotted by a grey
         // con", "dont mind me, just dying over here"): "lol rip", not advice.
         if (!text.Contains('?') && IsMishap(words))
             return "player_mishap";
@@ -293,14 +293,14 @@ public static class AutonomousChatShortTalk
             return "player_help";
         // A real-life remark (guild and group chat in 2003 were full of them): a short reply in kind, by subject.
         // "afk 5 pizza here" is a brb first (the holdout check).
-        // "re all, isp died again" is a hello back first (Beta 1.1.3).
-        // "game crashed 3 times today, thx mythic": a complaint (Beta 1.1.3, round 2).
+        // "re all, isp died again" is a hello back first (Beta 1.1.2).
+        // "game crashed 3 times today, thx mythic": a complaint (Beta 1.1.2, round 2).
         if (HasPhrase(words, "thx", "thanks", "ty", "thank") && IsSarcasticThanks(words))
             return "complaint";
         if (!words.Any(AwayWords.Contains) && words.Length > 0 && words[0] is not ("re" or "back") && RealLife(words) is { } life)
             return "player_rl_" + life;
         // "so i died to a blue con mob?" is a complaint with a question mark, not a question.
-        // Beta 1.1.3: "that was close" (relief), "sorry, my fault" (an apology): their own short replies.
+        // Beta 1.1.2: "that was close" (relief), "sorry, my fault" (an apology): their own short replies.
         if (!text.Contains('?') && words.Length <= 6 && HasPhrase(words, "that was close", "close one", "too close", "that was a close one", "phew", "whew",
                 "almost died", "nearly died", "that was scary"))
             return "player_close";
@@ -325,7 +325,7 @@ public static class AutonomousChatShortTalk
     }
 
     /// <summary>
-    /// What an in-character line does, for a reply in kind (Beta 1.1.3, round 2): "challenge" ("Halt! State thy business"),
+    /// What an in-character line does, for a reply in kind (Beta 1.1.2, round 2): "challenge" ("Halt! State thy business"),
     /// "question" ("Knowest thou where...", "Have ye seen..."), "greeting" ("Hail, good sir", "Well met"), "mourn" ("*lights a
     /// candle for the fallen*"), "toast" ("*raises a mug* To Midgard!"), or "emote" for anything else. Pure.
     /// </summary>
@@ -351,7 +351,7 @@ public static class AutonomousChatShortTalk
         "wouldst", "shouldst", "couldst", "canst", "shalt", "wilt", "naught", "yon", "yonder", "begone", "hither", "thither");
 
     /// <summary>
-    /// An in-character line (Beta 1.1.3): archaic words ("thy", "whither", "good morrow"), "ye" as a pronoun, an emote written
+    /// An in-character line (Beta 1.1.2): archaic words ("thy", "whither", "good morrow"), "ye" as a pronoun, an emote written
     /// out ("*bows deeply* My lady...", "/me does a happy dance"), an oath ("By Odin's beard"), or a formal sentence in the
     /// voice of a story ("The Morrigan watches over us tonight.", "I seek the tavern."). Not chat words like "lol", "u" or "pls".
     /// Pure.
@@ -491,7 +491,7 @@ public static class AutonomousChatShortTalk
 
     /// <summary>
     /// The level band a group or raid post asks for: "45+", "lvl 40 and up", "20-25", "need 45 or higher", "50s only", or null
-    /// (Beta 1.1.3, round 3: a level 30 bot accepted a "45+" raid). Pure.
+    /// (Beta 1.1.2, round 3: a level 30 bot accepted a "45+" raid). Pure.
     /// </summary>
     public static (int Min, int Max)? LevelBand(string text)
     {
@@ -538,7 +538,7 @@ public static class AutonomousChatShortTalk
     {
         if (words.Length == 0)
             return false;
-        // Beta 1.1.3, round 2: "50 cleric lfg rvr, rr4" is a group post, not news to cheer.
+        // Beta 1.1.2, round 2: "50 cleric lfg rvr, rr4" is a group post, not news to cheer.
         if (words.Any(word => GroupWords.Contains(word) && word is not ("group" or "party")))
             return false;
         if (words[0] is "woot" or "w00t" or "yay" or "finally" && words.Length <= 4 && words.Skip(1).Any(word => word.Length > 0 &&
@@ -560,7 +560,7 @@ public static class AutonomousChatShortTalk
                 @"\b(finally|just) (hit|made|got|reached) (\d{1,2}|fifty|rr\d+|level \d+|lvl \d+|legendary|grandmaster|master|my \w+)\b") ||
             HasPhrase(words, "made legendary", "hit legendary", "made grandmaster", "made master", "got legendary"))
             return true;
-        // Beta 1.1.3 (blind round 1: read as banter or nothing): "my first solo kill in rvr!!", "got a 99 quality on the first try!!",
+        // Beta 1.1.2 (blind round 1: read as banter or nothing): "my first solo kill in rvr!!", "got a 99 quality on the first try!!",
         // "i got my necro to 25!", "woot just got the named drop", "finally 50 after 4 months :D".
         // A sale or a price check of a 99% item is no news ("WTS 2h sword 99% qual, pst").
         if (words.Any(word => word is "wts" or "wtb" or "selling" or "sell" or "buying" or "pc" or "price" or "much" or "obo" or "pst"))
@@ -815,7 +815,7 @@ public static class AutonomousChatShortTalk
             (n <= 3 || words.Contains("level") || words.Contains("lvl")))
             return Is(eAutonomousChatIntent.Ding, out intent);
 
-        // "free rps at mmg, mids are afk": a rally, not an away (Beta 1.1.3, round 2).
+        // "free rps at mmg, mids are afk": a rally, not an away (Beta 1.1.2, round 2).
         if (HasPhrase(words, "free rps", "free rp", "free realm points", "free kills", "easy rps", "come get rps"))
             return Is(eAutonomousChatIntent.RvR, out intent);
         // "inventory full, gonna run to the merchant brb": a brb at the end of a longer line is still a brb (the audit).
@@ -832,7 +832,7 @@ public static class AutonomousChatShortTalk
             return Is(eAutonomousChatIntent.Back, out intent);
         if (words[0] == "wb" && n <= 3)
             return Is(eAutonomousChatIntent.Greeting, out intent);
-        // Beta 1.1.3, the period's short words: "lo", "lo all" (hello), "re", "re all, isp died again", "re. kids are in bed
+        // Beta 1.1.2, the period's short words: "lo", "lo all" (hello), "re", "re all, isp died again", "re. kids are in bed
         // finally" (back), "sry was afk, back" (blind round 1: all read as nothing).
         if (!question && words[0] == "lo" && words.Skip(1).All(word => GreetingObjects.Contains(word) || IsNoise(word)))
             return Is(eAutonomousChatIntent.Greeting, out intent);
@@ -870,7 +870,7 @@ public static class AutonomousChatShortTalk
             "stealther" or "stealthers" or "gankers" or "realm" or "group" or "fg" or "train" or "assassins" or "infils" or "nightshades" or
             "shadowblades" or "ns" or "sb" or "sbs");
         if (!income && (Any(words, AlarmWords) || HasPhrase(words, "under attack", "under siege", "albs at", "mids at", "hibs at",
-                // Beta 1.1.3 (blind round 1): "need defenders at dun crim NOW", "mids ganking at the dock".
+                // Beta 1.1.2 (blind round 1): "need defenders at dun crim NOW", "mids ganking at the dock".
                 "need defenders", "defenders at", "defenders needed", "need def", "ganking at", "ganking near", "ganking by", "camping the dock",
                 "enemies at", "enemy at", "stealthers at", "zerg at", "zerg heading", "zerg coming", "stealthers near", "stealther near",
                 "stealthers by", "hibs pushing", "mids pushing", "albs pushing", "at our relic", "hitting our", "train coming", "train inc") ||

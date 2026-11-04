@@ -9,7 +9,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// Beta 1.1.3, the seventh pass after R3d: help frames rest and are capped, lines that invite a reply get one and some run on,
+/// Beta 1.1.2, the seventh pass after R3d: help frames rest and are capped, lines that invite a reply get one and some run on,
 /// stories from real events, and life lines at most once a guild evening. Written from the judges' categories.
 /// </summary>
 [TestFixture]

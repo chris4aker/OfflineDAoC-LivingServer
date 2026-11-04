@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace DOL.GS;
 
 /// <summary>
-/// Lines no bot should answer (Beta 1.1.3, the second blind round): spam and scams, and lines said to someone else. Checked
+/// Lines no bot should answer (Beta 1.1.2, the second blind round): spam and scams, and lines said to someone else. Checked
 /// before any reply on every channel and in tells. Pure.
 /// </summary>
 public static class AutonomousChatScreen
@@ -24,7 +24,7 @@ public static class AutonomousChatScreen
         @"(wts|selling|sell) (my |\d+ )?(accounts?|accts?|chars? with account)|buying accounts|account for sale|" +
         @"(cheap|cheapest|fast|instant) (plat|platinum|gold|pl4t|g0ld)|(plat|platinum|gold) (for|4) (sale|cash|\$)|power ?level(ing)? service|" +
         @"ascii|" +
-        // Beta 1.1.3, round 3: doubling scams, free plat, password and account requests, more fake staff.
+        // Beta 1.1.2, round 3: doubling scams, free plat, password and account requests, more fake staff.
         @"(i|ill|i ll|i will|i can) double (ur|your|it|the)|double (ur|your) (gold|plat|platinum|money|coins|cash)|send (me )?\d+ ?(g|p|gold|plat) (and|&) (i|ill|get)|" +
         @"free (plat|platinum|gold|money|coins|cash)\b(?! (for|from) (the )?(quest|drop|mob|mobs))|giving away (plat|gold|platinum|free)|" +
         @"(ur|your|my|the) (password|passwd|pass word|pw|login|log in|acct info|account info|account details|account name)|(password|passwd|login details|account details)\b|" +
@@ -140,7 +140,7 @@ public static class AutonomousChatScreen
     public const long FollowsBotLineMs = 20_000;
 
     /// <summary>
-    /// The bot a /say line is aimed at without naming it (Beta 1.1.3, round 3): the one the player targets; else the one whose
+    /// The bot a /say line is aimed at without naming it (Beta 1.1.2, round 3): the one the player targets; else the one whose
     /// line it follows (within 20 seconds); else the one within a few metres the player faces, when nobody else (bot or player)
     /// is that close. Null when the line is to the room. Pure.
     /// </summary>

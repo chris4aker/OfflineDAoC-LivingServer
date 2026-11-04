@@ -6,7 +6,7 @@ using VC = DOL.GS.AutonomousBotVoiceCorpus;
 namespace DOL.GS;
 
 /// <summary>
-/// World-driven bursts (Beta 1.1.3, docs/bot-voices/CHAT-BUDGETS.md): a keep taken, a relic moved, a raid won or wiped, a
+/// World-driven bursts (Beta 1.1.2, docs/bot-voices/CHAT-BUDGETS.md): a keep taken, a relic moved, a raid won or wiped, a
 /// server first or a nemesis paid back sets off a short burst of varied reactions in /faction ("again??", "omw", "gj all"),
 /// and for the realm's big moments a line or two in a capital's /broadcast where a player hears it, the way a 2003 alarm
 /// rippled through every channel. 3-6 lines (chat-budget.json), early ones close together and later ones spread out (a

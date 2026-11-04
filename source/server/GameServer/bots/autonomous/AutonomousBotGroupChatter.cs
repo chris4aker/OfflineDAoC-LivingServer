@@ -95,7 +95,7 @@ public static class AutonomousBotGroupChatter
             return false;
         bool known = Groups.TryGetValue(group, out Next next);
         next ??= Groups.GetValue(group, _ => new Next());
-        // Beta 1.1.3: the group channel's budget paces the banter (chat-budget.json "group"), after a first quiet minute or two.
+        // Beta 1.1.2: the group channel's budget paces the banter (chat-budget.json "group"), after a first quiet minute or two.
         long now = GameLoop.GameLoopTime;
         long key = KeyOf(group);
         if (!known)
@@ -208,7 +208,7 @@ public static class AutonomousBotGroupChatter
             BotChatTranscript.Player("group", player, message);
         if (!AutonomousBotVoices.Enabled || player?.Group == null || string.IsNullOrWhiteSpace(message))
             return;
-        // Beta 1.1.3: the screen runs before every route, the thread follow-ups too (round 3).
+        // Beta 1.1.2: the screen runs before every route, the thread follow-ups too (round 3).
         if (AutonomousBotChatCoordinator.Screened(player, message, "group"))
             return;
         Group group = player.Group;
@@ -229,7 +229,7 @@ public static class AutonomousBotGroupChatter
             next.LastPlayerReply = GameLoop.GameLoopTime;
         }
         GameBot[] named = mates.Where(mate => AutonomousBotChatCoordinator.ContainsMention(message, mate.Name)).ToArray();
-        // Beta 1.1.3, second pass: a line to someone else in the group draws at most a laugh (light teasing).
+        // Beta 1.1.2, second pass: a line to someone else in the group draws at most a laugh (light teasing).
         if (named.Length == 0 && AutonomousChatScreen.OtherAddressee(message, null) is { } other)
         {
             eAutonomousChatIntent toOther = AutonomousChatIntentModel.Predict(message);
@@ -261,7 +261,7 @@ public static class AutonomousBotGroupChatter
         if (AutonomousChatReplyBudget.IsAlarm(message, intent))
         {
             GameBot heard = pool[0];
-            // Beta 1.1.3, round 2: an inc call gets a terse "where" or "on it", not "ty for the heads up" (too polite for a call).
+            // Beta 1.1.2, round 2: an inc call gets a terse "where" or "on it", not "ty for the heads up" (too polite for a call).
             if (AutonomousChatContext.Reply(message, intent, AutonomousChatShortTalk.QuestionShape(message),
                     AutonomousBotChatCoordinator.ContextFor(heard, player, "group"), Random.Shared) is { } call)
             {
