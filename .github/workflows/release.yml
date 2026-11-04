@@ -10,10 +10,6 @@ name: release
 on:
   release:
     types: [published]
-  # TEMPORARY (chore/release-gates only, removed before review): workflow_dispatch needs the file on main first, so a
-  # push to this branch runs the requested dry run against v1.1.1-beta instead.
-  push:
-    branches: [chore/release-gates]
   workflow_dispatch:
     inputs:
       tag:
@@ -59,7 +55,6 @@ jobs:
           case "$EVENT" in
             release) tag="$RELEASE_TAG"; dry_run=false; e2e=true ;;
             workflow_dispatch) tag="$INPUT_TAG"; dry_run="$INPUT_DRY_RUN"; e2e="$INPUT_E2E" ;;
-            push) tag=v1.1.1-beta; dry_run=true; e2e=true ;;   # TEMPORARY: always a dry run
             *) echo "::error::release.yml runs on a published release or by hand, not on $EVENT"; exit 1 ;;
           esac
           [ "$dry_run" = true ] || { dry_run=false; e2e=true; }   # a real run is always tested end to end
