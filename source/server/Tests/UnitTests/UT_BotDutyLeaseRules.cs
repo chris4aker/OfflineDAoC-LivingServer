@@ -23,7 +23,7 @@ namespace DOL.UnitTests
                 Assert.That(Priority(Kind.PlayerGroup), Is.GreaterThan(Priority(Kind.BotLedGroupWithPlayer)));
                 Assert.That(Priority(Kind.BotLedGroupWithPlayer), Is.GreaterThan(Priority(Kind.RealmRaid)));
                 Assert.That(Priority(Kind.RealmRaid), Is.GreaterThan(Priority(Kind.RvrEvent)));
-                Assert.That(Priority(Kind.RvrEvent), Is.GreaterThan(Priority(Kind.BattlegroundWave)));
+                Assert.That(Priority(Kind.RvrEvent), Is.EqualTo(Priority(Kind.BattlegroundWave)), "owner 2026-11-04: equal");
                 Assert.That(Priority(Kind.BattlegroundWave), Is.GreaterThan(Priority(Kind.BotGroupSession)));
                 Assert.That(Priority(Kind.None), Is.Zero);
             });
@@ -94,7 +94,7 @@ namespace DOL.UnitTests
             foreach (Kind incoming in Automatic)
             {
                 Verdict verdict = Decide(Lease(held, "old"), incoming, "new");
-                if (Priority(incoming) >= Priority(held))
+                if (Priority(incoming) > Priority(held) || incoming == held)
                     Assert.That(verdict.Outcome, Is.EqualTo(Outcome.Taken), $"{incoming} over {held}");
                 else
                 {
@@ -104,6 +104,21 @@ namespace DOL.UnitTests
             }
             Assert.That(Decide(Lease(Kind.RealmRaid, "dragon"), Kind.RealmRaid, "galladoria").Reason, Is.EqualTo(DutyLeaseReason.Moved),
                 "a newer raid reservation moves the bot, as the reservation map did");
+        }
+
+        [Test]
+        public void AnRvrMarchAndABattlegroundRallyNeverTakeABotFromEachOther()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Decide(Lease(Kind.BattlegroundWave, "bg"), Kind.RvrEvent, "force").Outcome, Is.EqualTo(Outcome.Refused));
+                Assert.That(Decide(Lease(Kind.BattlegroundWave, "bg"), Kind.RvrEvent, "force").Reason, Is.EqualTo(DutyLeaseReason.OnBattleground));
+                Assert.That(Decide(Lease(Kind.RvrEvent, "force"), Kind.BattlegroundWave, "bg").Outcome, Is.EqualTo(Outcome.Refused));
+                Assert.That(Decide(Lease(Kind.RvrEvent, "force"), Kind.BattlegroundWave, "bg").Reason, Is.EqualTo(DutyLeaseReason.OnRvrEvent));
+                Assert.That(Decide(Lease(Kind.RvrEvent, "a"), Kind.RvrEvent, "b").Outcome, Is.EqualTo(Outcome.Taken), "one force to another, as before");
+                Assert.That(Decide(Lease(Kind.BattlegroundWave, "bg"), Kind.RealmRaid, "dragon").Outcome, Is.EqualTo(Outcome.Taken), "a raid still takes either");
+                Assert.That(Decide(Lease(Kind.BotGroupSession, "g"), Kind.BattlegroundWave, "bg").Outcome, Is.EqualTo(Outcome.Taken));
+            });
         }
 
         [Test]

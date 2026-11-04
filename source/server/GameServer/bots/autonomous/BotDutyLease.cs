@@ -99,8 +99,9 @@ public static class BotDutyLeaseRules
 
     /// <summary>
     /// Higher wins where taking is allowed. A player's own group is the top claim and is never taken by anything
-    /// automatic; a raid outranks an RvR event (raid recruitment never waited for the frontier), which outranks a
-    /// battleground rally, which outranks an ordinary bot group.
+    /// automatic; a raid outranks an RvR event and a battleground rally (raid recruitment never waited for the frontier),
+    /// which outrank an ordinary bot group. An RvR event and a battleground rally are equal (owner 2026-11-04: the
+    /// frontier is for level 50s, the battlegrounds for the levels below), so neither pulls a bot from the other.
     /// </summary>
     public static int Priority(eDutyLeaseKind kind) => kind switch
     {
@@ -108,7 +109,7 @@ public static class BotDutyLeaseRules
         eDutyLeaseKind.BotLedGroupWithPlayer => 90,
         eDutyLeaseKind.RealmRaid => 40,
         eDutyLeaseKind.RvrEvent => 30,
-        eDutyLeaseKind.BattlegroundWave => 20,
+        eDutyLeaseKind.BattlegroundWave => 30,
         eDutyLeaseKind.BotGroupSession => 10,
         _ => 0,
     };
@@ -127,8 +128,10 @@ public static class BotDutyLeaseRules
     /// <item>A bot a player has (either player kind) is never taken by anything else.</item>
     /// <item>A bot-led group taking in a player (reserved for phase B) takes only its own kind of hold, an ordinary
     /// bot group; a raid, an RvR event or a rally keeps the bot.</item>
-    /// <item>Otherwise the higher priority takes the lower, and among equals the newer claim moves the bot (one raid
-    /// reservation, one RvR force, one rally, one group at a time, as before the lease). A lower claim is refused.</item>
+    /// <item>Otherwise the higher priority takes the lower. Among equals of the same kind the newer claim moves the bot
+    /// (one raid reservation, one RvR force, one rally, one group at a time, as before the lease); among equals of
+    /// different kinds (an RvR event and a battleground rally) the bot keeps what it is doing. A lower claim is
+    /// refused.</item>
     /// </list>
     /// </summary>
     public static Verdict Decide(BotDutyLease held, eDutyLeaseKind kind, string owner)
@@ -151,7 +154,9 @@ public static class BotDutyLeaseRules
         if (incoming > current)
             return new(Outcome.Taken, DutyLeaseReason.Taken);
         if (incoming == current)
-            return new(Outcome.Taken, DutyLeaseReason.Moved);
+            return held.Kind == kind
+                ? new(Outcome.Taken, DutyLeaseReason.Moved)
+                : new(Outcome.Refused, DutyLeaseReason.HeldBy(held.Kind));
         return new(Outcome.Refused, DutyLeaseReason.HeldBy(held.Kind));
     }
 

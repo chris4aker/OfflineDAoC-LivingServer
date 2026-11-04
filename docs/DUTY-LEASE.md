@@ -20,13 +20,14 @@ not either (their owner rules stay as they are).
 | `BotLedGroupWithPlayer` | 90 | reserved for phase B: defined, claimed by nothing yet | |
 | `RealmRaid` | 40 | raid reservation (`raid_reserved`), formed/joined party or replacement (`raid_party`, bound to the group) | released member, party leaves the raid, raid ends, logout |
 | `RvrEvent` | 30 | defense response (`rvr_force`), siege party (`siege_party`, bound to the group) | `RemoveForce`, the event or relic escort ends, a superseded siege's defenders |
-| `BattlegroundWave` | 20 | a gamebot going up with its realm's keep rally (`bg_rally`) | regroup, new keep holder, lapsed rally, death, released |
+| `BattlegroundWave` | 30 | a gamebot going up with its realm's keep rally (`bg_rally`) | regroup, new keep holder, lapsed rally, death, released |
 | `BotGroupSession` | 10 | the coordinator publishing a bot-only party (`group_session`, bound to the group) | member leaves, party disbands |
 
 **Rules** (`BotDutyLeaseRules.Decide`): a player's group always gets the bot (the invite checks the bot's duty first:
 dead, siege crew, relic, RvR march, raid reservation, stable route) and is never taken by anything automatic; a
-bot-led group hosting a player takes only from its own bot group; otherwise the higher priority takes the lower and
-equals move the bot to the newer claim; a lower claim is refused with the holder's reason (`in_players_group`,
+bot-led group hosting a player takes only from its own bot group; otherwise the higher priority takes the lower,
+equals of the same kind move the bot to the newer claim, and equals of different kinds (an RvR event and a battleground
+rally, equal by the owner's decision of 2026-11-04) leave the bot where it is; a lower claim is refused with the holder's reason (`in_players_group`,
 `hosting_player`, `on_realm_raid`, `on_rvr_event`, `on_battleground`, `in_bot_group`).
 
 **Endings:** a group lease ends when the bot leaves that group; only a rally lease ends on death (the others' activities
