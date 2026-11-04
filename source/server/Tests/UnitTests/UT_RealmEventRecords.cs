@@ -35,7 +35,7 @@ public class UT_RealmEventRecords
     [Test]
     public void DeleteAllEmptiesOnlyTheRecordLedger()
     {
-        string folder=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"realm-records-"+Guid.NewGuid().ToString("N"));
+        string folder=TemporarySqlite.NewFolder("realm-records");
         string path=System.IO.Path.Combine(folder,"realm-event-records.sqlite3");
         string neighbour=System.IO.Path.Combine(folder,"opendaoc.sqlite3.db");
         try
@@ -53,6 +53,6 @@ public class UT_RealmEventRecords
             RealmEventRecordStore.Save(path,new[]{new RealmEventRecord("c","keep","Caer Benowyc","Keep","Midgard","2026-10-03T00:00:00Z","","Battle","In progress","",50,40)});
             Assert.That(RealmEventRecordStore.Read(path,"","","","",0).Total,Is.EqualTo(1));
         }
-        finally{System.Data.SQLite.SQLiteConnection.ClearAllPools();if(System.IO.Directory.Exists(folder))System.IO.Directory.Delete(folder,true);}
+        finally{TemporarySqlite.DeleteFolder(folder);}
     }
 }

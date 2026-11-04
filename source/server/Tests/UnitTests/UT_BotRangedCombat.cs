@@ -266,7 +266,7 @@ public class UT_BotRangedCombat
     [Test]
     public void InventorySavePersistsUniqueWeaponRelation()
     {
-        string path = Path.Combine(Path.GetTempPath(), "daoc-ranged-" + Guid.NewGuid().ToString("N") + ".sqlite3");
+        string path = TemporarySqlite.NewDatabasePath("daoc-ranged");
         try
         {
             var db = new SqliteObjectDatabase($"Data Source={path};Version=3;Pooling=False;");
@@ -279,6 +279,6 @@ public class UT_BotRangedCombat
             Assert.That(db.SelectAllObjects<DbItemUnique>().Single().SPD_ABS, Is.EqualTo(20));
             Assert.That(db.SelectAllObjects<DbInventoryItem>().Single().Template.Model, Is.EqualTo(333));
         }
-        finally { if (File.Exists(path)) File.Delete(path); }
+        finally { TemporarySqlite.DeleteDatabase(path); }
     }
 }

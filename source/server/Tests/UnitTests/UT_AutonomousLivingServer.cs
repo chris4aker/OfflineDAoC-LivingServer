@@ -200,8 +200,7 @@ namespace DOL.GS.Tests
         public void TablesWriteChangesDeletesAndReloadThemFromSqlite()
         {
             // Review 2026-10-16: rows were only ever inserted, never updated, because changed rows weren't dirty.
-            string folder = Path.Combine(Path.GetTempPath(), "living-" + Guid.NewGuid().ToString("N"));
-            Directory.CreateDirectory(folder);
+            string folder = DOL.UnitTests.TemporarySqlite.NewFolder("living");
             try
             {
                 var database = DOL.Database.ObjectDatabase.GetObjectDatabase(DOL.Database.Connection.EConnectionType.DATABASE_SQLITE,
@@ -228,8 +227,7 @@ namespace DOL.GS.Tests
             }
             finally
             {
-                System.Data.SQLite.SQLiteConnection.ClearAllPools();
-                try { Directory.Delete(folder, true); } catch (IOException) { }
+                DOL.UnitTests.TemporarySqlite.DeleteFolder(folder);
             }
         }
 
