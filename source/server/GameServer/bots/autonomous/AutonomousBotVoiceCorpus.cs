@@ -392,7 +392,11 @@ public sealed class AutonomousBotVoiceCorpus
                 continue;
             if (request.LocalHour is int hour)
                 filled = ForTimeOfDay(filled, hour);
-            string text = Style(filled, VoiceFor(speaker.Id), random, out string correction);
+            Voice voice = VoiceFor(speaker.Id);
+            string text = Style(filled, voice, random, out string correction);
+            // Beta 1.1.3, the style layer: the bot's own typing habits on top of its writing style.
+            // In-character lines keep their diction.
+            text = AutonomousChatIdiolect.Apply(text, speaker.Id, voice.Capitalize || line.Kind == "roleplay" || line.Intent == "roleplay", random);
             request.Recent?.Use(speaker.Realm, line.Id, request.Now);
             result = new Picked(text, line, correction);
             return true;

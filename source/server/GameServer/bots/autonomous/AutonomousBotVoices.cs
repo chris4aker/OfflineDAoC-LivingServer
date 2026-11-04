@@ -534,8 +534,14 @@ public static class AutonomousBotVoices
     }
 
     /// <summary>A text in this bot's writing style (knowledge answers and other fixed text).</summary>
-    public static string StyleFor(GameBot bot, string text) =>
-        !Enabled || bot == null || string.IsNullOrEmpty(text) ? text : VC.Style(text, Corpus.VoiceFor(bot.DatabaseID), Random.Shared);
+    public static string StyleFor(GameBot bot, string text)
+    {
+        if (!Enabled || bot == null || string.IsNullOrEmpty(text))
+            return text;
+        VC.Voice voice = Corpus.VoiceFor(bot.DatabaseID);
+        // Beta 1.1.3: the bot's own typing habits too (AutonomousChatIdiolect).
+        return AutonomousChatIdiolect.Apply(VC.Style(text, voice, Random.Shared), bot.DatabaseID, voice.Capitalize, Random.Shared);
+    }
 
     /// <summary>
     /// A line for a Living Server event (docs/LIVING-SERVER.md). Needs only the corpus, so it works
