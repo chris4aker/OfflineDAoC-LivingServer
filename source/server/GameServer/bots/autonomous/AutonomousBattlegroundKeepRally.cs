@@ -160,7 +160,21 @@ public static class AutonomousBattlegroundKeepRally
         public bool Storming;
         public long GatherSince, AttemptSince, LastProgress, NextCount, LastAsked;
         public int Rallied, RalliedPlayers, Needed, Engaged, LowestPercent;
+        /// <summary>The gamebots that went up. Each also holds a battleground-wave duty lease for this rally (docs/DUTY-LEASE.md).</summary>
         public readonly HashSet<long> Committed = new();
+        public string LeaseOwner = string.Empty, KeepName = string.Empty;
+    }
+
+    /// <summary>The duty lease owner of a realm's rally in a battleground.</summary>
+    public static string RallyLeaseOwner(ushort region, eRealm realm) => $"bg-rally:{region}:{(int)realm}";
+
+    /// <summary>A gamebot goes up with the rally: it is committed, and its time is the rally's until the attempt ends or it dies.
+    /// Real players are never leased; they only add weight to the count (PlayersAtRally).</summary>
+    private static bool CommitBot(Rally rally, GameBot bot)
+    {
+        if (!rally.Committed.Add(bot.DatabaseID)) return false;
+        BotDutyLeases.Claim(bot, eDutyLeaseKind.BattlegroundWave, rally.LeaseOwner, DutyLeaseReason.BattlegroundRally, rally.KeepName);
+        return true;
     }
 
     private static readonly ConcurrentDictionary<(ushort Region, eRealm Realm), Rally> Rallies = new();
@@ -172,7 +186,8 @@ public static class AutonomousBattlegroundKeepRally
     public static Order Decide(GameBot bot, BattlegroundBrackets.Bracket bracket, AbstractGameKeep keep, GameKeepGuard lord)
     {
         long now = GameLoop.GameLoopTime;
-        Rally rally = Rallies.GetOrAdd((bracket.RegionId, bot.Realm), _ => new Rally { GatherSince = now });
+        Rally rally = Rallies.GetOrAdd((bracket.RegionId, bot.Realm),
+            _ => new Rally { GatherSince = now, LeaseOwner = RallyLeaseOwner(bracket.RegionId, bot.Realm) });
         lock (rally)
         {
             if (rally.KeepId != keep.KeepID || rally.KeepRealm != keep.Realm)
@@ -181,6 +196,7 @@ public static class AutonomousBattlegroundKeepRally
                 Reset(rally, now);
                 rally.KeepId = keep.KeepID;
                 rally.KeepRealm = keep.Realm;
+                rally.KeepName = keep.Name ?? string.Empty;
                 rally.Point = null;
             }
             else if (IsLapsed(rally.LastAsked, now))
@@ -204,7 +220,7 @@ public static class AutonomousBattlegroundKeepRally
             if (rally.Storming && OnLordFloor(bot, lord))
             {
                 // Already beside him (resurrected there, or fought its way up): it stays in the fight.
-                rally.Committed.Add(bot.DatabaseID);
+                CommitBot(rally, bot);
                 rally.Engaged++;
                 return new Order(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}");
             }
@@ -260,6 +276,7 @@ public static class AutonomousBattlegroundKeepRally
         rally.Storming = false;
         rally.GatherSince = now;
         rally.Committed.Clear();
+        BotDutyLeases.ReleaseOwner(eDutyLeaseKind.BattlegroundWave, rally.LeaseOwner);
         rally.Engaged = 0;
         rally.NextCount = 0;
     }
@@ -285,7 +302,7 @@ public static class AutonomousBattlegroundKeepRally
         foreach (GameBot other in AutonomousBotRegistry.Snapshot())
         {
             if (!IsMember(other, realm, region) || !AtRally(other, point)) continue;
-            if (rally.Committed.Add(other.DatabaseID)) joined++;
+            if (CommitBot(rally, other)) joined++;
         }
         rally.Engaged += joined;
         rally.Rallied = 0;
@@ -303,6 +320,9 @@ public static class AutonomousBattlegroundKeepRally
             // The dead (and the released, gone to their bind point) leave the attempt; they rejoin the rally when back.
             var alive = new HashSet<long>(realmBots.Select(other => other.DatabaseID));
             rally.Committed.RemoveWhere(id => !alive.Contains(id));
+            foreach (GameBot gone in BotDutyLeases.HoldersOf(eDutyLeaseKind.BattlegroundWave, rally.LeaseOwner))
+                if (!alive.Contains(gone.DatabaseID))
+                    BotDutyLeases.Release(gone, eDutyLeaseKind.BattlegroundWave, rally.LeaseOwner);
             if (lord.HealthPercent < rally.LowestPercent)
             {
                 rally.LowestPercent = lord.HealthPercent;
