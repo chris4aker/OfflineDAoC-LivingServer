@@ -1327,6 +1327,8 @@ internal sealed partial class MainForm : Form
             RenderActiveRvr();
             _dashboardFooterSummary = $"Realm Exchange {_auctions.Count:N0} listings • Memory {snapshot.ServerMemoryMb:0} MB • Bot status updated {DateTime.Now:T}";
             _footer.Text = _dashboardFooterSummary;
+            if (snapshotStarting && !_stoppingServer && ServerPortProbe.StuckServerHint(ServerProcessAge()) is { } stuck)
+                _footer.Text = stuck;
             UpdateAutoRefreshCountdown();
         }
         catch (Exception exception)
@@ -2818,6 +2820,20 @@ internal sealed partial class MainForm : Form
         {
             externalProcess?.Dispose();
             await RefreshDashboardAsync();
+        }
+    }
+
+    /// <summary>How long this game's CoreServer process has run, or null when there is none or it can't be read.</summary>
+    private TimeSpan? ServerProcessAge()
+    {
+        try
+        {
+            using Process? server = FindExactServerProcess();
+            return server == null ? null : DateTime.Now - server.StartTime;
+        }
+        catch (Exception exception) when (exception is InvalidOperationException or System.ComponentModel.Win32Exception)
+        {
+            return null;
         }
     }
 

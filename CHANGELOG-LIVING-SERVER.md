@@ -280,6 +280,12 @@ realm that feels like a full server at its busiest. How it works and how to tune
   backed up and checked like `GameServer.dll`), `ROLLBACK.cmd` and `PREPARE-FOR-UPDATE.cmd` put them back, and Setup's
   safety copy before an Offline DAoC update includes them. Checked: new installer checks (each library replaced where the game has one and nowhere else, rollback, -ToRelease, a hand-changed library refused), and on the playtest PC the
   repacked build installed over the broken one and the server started.
+- **The launcher says what to do when the server is stuck on STARTING** (a Reddit report, 2026-11-04: "stuck at
+  Starting…, Enter Realm greyed out; yesterday it worked"). When this game's server has run for 3 minutes without
+  answering, the footer says so (most likely a server left from an earlier session, or one stuck while loading) and
+  points to STOP SERVER, which already offers to end a server this launcher didn't start, and to the log. The other
+  known cause, Windows leaving the server out of its listener list, was fixed in 1.1.1 (issue #32). Checked: a new
+  `ServerPortProbeTests` case (Windows CI).
 - **The launcher says when the server stops by itself.** A server that stopped while starting left the launcher on
   STOPPED with no word, which looked like START SERVER doing nothing. The footer now says it stopped, with its exit
   code, and that the end of `runtime\logs\server-console.log` says why.

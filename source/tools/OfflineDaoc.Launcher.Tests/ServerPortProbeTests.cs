@@ -9,6 +9,17 @@ namespace OfflineDaoc.Launcher.Tests;
 [TestFixture]
 public class ServerPortProbeTests
 {
+    // Reddit 2026-11-04: "stuck at Starting…, Enter Realm greyed out; yesterday it worked".
+    [Test]
+    public void AServerThatHasntAnsweredForMinutesGetsAHint()
+    {
+        Assert.That(ServerPortProbe.StuckServerHint(null), Is.Null, "no server process");
+        Assert.That(ServerPortProbe.StuckServerHint(TimeSpan.FromSeconds(50)), Is.Null, "a normal start");
+        Assert.That(ServerPortProbe.StuckServerHint(TimeSpan.FromMinutes(2.9)), Is.Null);
+        string? hint = ServerPortProbe.StuckServerHint(TimeSpan.FromMinutes(14.6));
+        Assert.That(hint, Does.Contain("14 minutes").And.Contain("STOP SERVER").And.Contain("server-console.log"));
+    }
+
     [Test]
     public void TheTableAloneIsEnough()
     {

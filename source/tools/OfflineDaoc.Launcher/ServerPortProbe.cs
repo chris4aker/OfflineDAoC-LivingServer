@@ -14,6 +14,20 @@ public static class ServerPortProbe
     public const int GameServerPort = 10300;
     public const int ConnectTimeoutMilliseconds = 150;
 
+    public const int StuckServerMinutes = 3;
+
+    /// <summary>
+    /// The launcher footer's hint when this game's CoreServer has run for minutes without answering on the game port (a
+    /// Reddit report 2026-11-04: "stuck at Starting…, Enter Realm greyed out; yesterday it worked"). A normal start answers
+    /// within about a minute, so after <see cref="StuckServerMinutes"/> it is most likely a server left from an earlier
+    /// session or one stuck while loading. STOP SERVER already offers to force-close a server this launcher didn't start.
+    /// </summary>
+    public static string? StuckServerHint(TimeSpan? processAge) =>
+        processAge is { } age && age >= TimeSpan.FromMinutes(StuckServerMinutes)
+            ? $"The server has been starting for {Math.Floor(age.TotalMinutes):0} minutes without answering (a server left from an earlier session, " +
+              "or one stuck while loading). Click STOP SERVER to end it, then START SERVER. The end of runtime\\logs\\server-console.log says where it stopped."
+            : null;
+
     public static bool IsListening(int port = GameServerPort) =>
         ListedByTable(port) || ConnectSucceeds(port, ConnectTimeoutMilliseconds);
 
