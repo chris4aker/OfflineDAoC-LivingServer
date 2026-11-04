@@ -353,7 +353,7 @@ public class UT_ChatBudgetSimulation
     {
         results = new Dictionary<(int, bool), Result>();
         var text = new StringBuilder();
-        text.AppendLine("An evening hour (20:00) of one realm's ambient chat, lines a minute as the player hears each channel (UT_ChatBudgetSimulation).");
+        text.AppendLine("An evening hour (20:00, three evenings averaged) of one realm's ambient chat, lines a minute as the player hears each channel (UT_ChatBudgetSimulation).");
         text.AppendLine("Before = Beta 1.1.1 gaps (population factor capped at 1.8); after = the Beta 1.1.3 ambient budget (chat-budget.json).");
         text.AppendLine();
         text.AppendLine("Broadcast includes sellers' macros (the same WTS line every 3-8 min, by design); repeats are counted without them.");
@@ -363,14 +363,26 @@ public class UT_ChatBudgetSimulation
         foreach (int bots in populations)
             foreach (bool budget in new[] { false, true })
             {
-                Result result = Evening(bots, budget, 1103 + bots);
+                // Three evenings, so the averages don't hang on one draw.
+                Result result = new() { Minutes = 0 };
+                double exact = 0, near = 0;
+                int[] seeds = [1103, 2207, 3301];
+                foreach (int seed in seeds)
+                {
+                    Result evening = Evening(bots, budget, seed + bots);
+                    result.Minutes += evening.Minutes;
+                    foreach (var pair in evening.Lines)
+                        foreach (string line in pair.Value)
+                            result.Add(pair.Key, line);
+                    // Repeats within one evening (the server keeps its no-repeat memory across evenings).
+                    string[] spoken = evening.Lines.Keys.Where(c => c != "macro").ToArray();
+                    int lines = Math.Max(1, spoken.Sum(c => evening.Lines[c].Count));
+                    exact += spoken.Sum(c => evening.Duplicates(c).Exact * evening.Lines[c].Count) / lines / seeds.Length;
+                    near += spoken.Sum(c => evening.Duplicates(c).Near * evening.Lines[c].Count) / lines / seeds.Length;
+                }
                 results[(bots, budget)] = result;
-                string[] spoken = result.Lines.Keys.Where(c => c != "macro").ToArray();
-                int lines = spoken.Sum(c => result.Lines[c].Count);
-                double exact = spoken.Sum(c => result.Duplicates(c).Exact * result.Lines[c].Count) / Math.Max(1, lines);
-                double near = spoken.Sum(c => result.Duplicates(c).Near * result.Lines[c].Count) / Math.Max(1, lines);
                 text.AppendLine($"| {bots} | {(budget ? "after" : "before")} | " + string.Join(" | ", Channels.Select(c => result.PerMinute(c).ToString("0.00"))) +
-                                $" | {result.Total:0.00} | {(result.Lines.TryGetValue("macro", out var m) ? m.Count / 60.0 : 0):0.00}/min | {exact:P1} | {near:P1} |");
+                                $" | {result.Total:0.00} | {(result.Lines.TryGetValue("macro", out var m) ? m.Count / (double)result.Minutes : 0):0.00}/min | {exact:P1} | {near:P1} |");
             }
         return text.ToString();
     }
@@ -389,6 +401,11 @@ public class UT_ChatBudgetSimulation
         Assert.That(after.PerMinute("faction"), Is.GreaterThan(before.PerMinute("faction")), "/faction is busier");
         Assert.That(results[(300, true)].Total, Is.GreaterThanOrEqualTo(results[(300, false)].Total), "and never quieter at 300");
         Assert.That(after.Total, Is.GreaterThan(results[(300, true)].Total), "more bots, more chat");
+        // The owner's rule (2026-11-03): the amount of chatting must not go down, in any channel the player hears.
+        foreach (int bots in new[] { 300, 1_000 })
+            foreach (string channel in Channels)
+                Assert.That(results[(bots, true)].PerMinute(channel), Is.GreaterThanOrEqualTo(results[(bots, false)].PerMinute(channel)),
+                    $"{channel} at {bots} bots a realm");
         Budget.Settings settings = Budget.Current;
         foreach ((string name, Budget.Channel channel) in new[] { ("faction", Budget.Channel.Faction), ("lfg", Budget.Channel.Lfg),
                      ("trade", Budget.Channel.Trade), ("broadcast", Budget.Channel.Capital) })
