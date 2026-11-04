@@ -81,6 +81,21 @@ public class UT_ChatBudgetSimulation
             return sum / windows;
         }
 
+        /// <summary>Per channel, each inviting field line's thread: 0 when nobody answered, else its length in lines (opener included).</summary>
+        public readonly Dictionary<string, List<int>> Threads = new();
+
+        /// <summary>The share of inviting lines that got an answer.</summary>
+        public double ThreadRate(string channel) => Threads.TryGetValue(channel, out var list) && list.Count > 0 ? list.Count(n => n > 0) / (double)list.Count : 0;
+
+        /// <summary>The average length of answered threads, and the share that ran to three lines or more.</summary>
+        public (double Mean, double Long) ThreadLength(string channel)
+        {
+            if (!Threads.TryGetValue(channel, out var list) || list.All(n => n == 0))
+                return (0, 0);
+            int[] answered = list.Where(n => n > 0).ToArray();
+            return (answered.Average(), answered.Count(n => n >= 4) / (double)answered.Length);
+        }
+
         /// <summary>The share of a channel's lines said by its top tenth of speakers (round 5; research: about 60% on a live server).</summary>
         public double TopTenthShare(string channel)
         {
@@ -257,26 +272,40 @@ public class UT_ChatBudgetSimulation
             }
             return fallback ?? all[random.Next(all.Count)];
         }
+        Bot Near(long now, Bot to, Func<Bot, bool> pool)
+        {
+            // AutonomousBotChatCoordinator.Repliers: a regular first, then a bot near the speaker's level, then anyone.
+            Bot near = null, any = null;
+            for (int tries = 0; tries < 200; tries++)
+            {
+                Bot mate = all[random.Next(all.Count)];
+                if (mate == to || !pool(mate))
+                    continue;
+                if (Regular(mate, now))
+                    return mate;
+                if (near == null && Math.Abs(mate.Level - to.Level) <= 5)
+                    near = mate;
+                any ??= mate;
+            }
+            return near ?? any;
+        }
+        void Play(long now, string channel, List<AutonomousChatFieldTalk.Step> steps, Bot[] speakers, bool invited)
+        {
+            foreach (AutonomousChatFieldTalk.Step step in steps)
+                if (speakers[step.Who] is { } who)
+                    dueReplies.Add((now + Math.Max(500, step.AtMs), channel, AutonomousChatIdiolect.Apply(step.Text, who.Id, false, random, terse: true), who.Id));
+            if (now < start || now >= end || !invited)
+                return;
+            result.Threads.TryAdd(channel, new List<int>());
+            result.Threads[channel].Add(steps.Any(step => step.Who == 1) ? 1 + steps.Count : 0);
+        }
         void Field(long now, Bot bot, string channel, AutonomousChatFieldTalk.Said said, AutonomousChatFieldTalk.Memory memory, Func<Bot, bool> pool)
         {
-            int answeredAt = -1;
-            if (said.Answers != null && random.NextDouble() < AutonomousChatFieldTalk.AnswerChance(said.Kind))
-            {
-                Bot mate = Answerer(now, pool);
-                if (mate != bot && AutonomousChatFieldTalk.Answer(said, FactsOf(mate, now, random), memory, random) is { } answer)
-                {
-                    answeredAt = AutonomousBotChatCoordinator.ReplyDelayMs(answer, 0, random);
-                    dueReplies.Add((now + answeredAt, channel, AutonomousChatIdiolect.Apply(answer, mate.Id, false, random, terse: true), mate.Id));
-                }
-            }
-            // AutonomousBotChatCoordinator.ScheduleFieldFollowUp: "ty" after an answer, "still lf" or "nm" when none came.
-            bool answered = answeredAt >= 0;
-            if (random.NextDouble() < AutonomousChatFieldTalk.FollowUpChance(answered) && AutonomousChatFieldTalk.FollowUp(said, answered, random, memory, now) is { } follow)
-            {
-                string text = AutonomousChatIdiolect.Apply(follow, bot.Id, false, random, terse: true);
-                dueReplies.Add((now + (answered ? answeredAt + AutonomousBotChatCoordinator.ReplyDelayMs(text, 0, random) : 90_000 + random.Next(120_000)),
-                    channel, text, bot.Id));
-            }
+            // AutonomousBotChatCoordinator.ScheduleFieldThread.
+            Bot mate = Near(now, bot, pool), third = Near(now, bot, other => other != mate && pool(other));
+            var steps = AutonomousChatFieldTalk.Thread(said, FactsOf(bot, now, random), mate == null ? null : FactsOf(mate, now, random),
+                third == null ? null : FactsOf(third, now, random), memory, random, now);
+            Play(now, channel, steps, [bot, mate, third], said.Answers != null);
         }
         void Replies(long now, Bot starter, string channel, VC.Picked opener, DateTime clock)
         {
@@ -316,6 +345,18 @@ public class UT_ChatBudgetSimulation
                         Say(now, "macro", macros[i].Text, macros[i].Who);
                     macros.RemoveAt(i);
                 }
+            // Round 7: stories from real events (AutonomousBotChatCoordinator.TellStory): deaths, wipes, dings to 50, at a modelled
+            // rate of about one every 6 minutes at 1,000 bots.
+            if (budget && now % 60_000 == 0 && random.NextDouble() < 0.17 * bots / 1_000.0)
+            {
+                Bot teller = all[random.Next(all.Count)];
+                Bot mate = Near(now, teller, _ => true), third = Near(now, teller, other => other != mate);
+                double roll = random.NextDouble();
+                string story = roll < 0.6 ? "death" : roll < 0.95 ? "wipe" : "ding50";
+                foreach (AutonomousChatFieldTalk.Step step in AutonomousChatFieldTalk.Story(story, FactsOf(teller, now, random), FactsOf(mate, now, random),
+                             third == null ? null : FactsOf(third, now, random), random, field))
+                    dueReplies.Add((now + 2_000 + step.AtMs, "faction", step.Text, (step.Who switch { 0 => teller, 1 => mate, _ => third ?? mate }).Id));
+            }
             for (int i = dueReplies.Count - 1; i >= 0; i--)
                 if (dueReplies[i].At <= now)
                 {
@@ -373,15 +414,19 @@ public class UT_ChatBudgetSimulation
                             }, guildField, random, now) is { } gsaid)
                     {
                         Say(now, "guild", AutonomousChatIdiolect.Apply(gsaid.Text, bot.Id, false, random, terse: true), bot.Id);
-                        if (random.NextDouble() < AutonomousChatFieldTalk.AnswerChance(gsaid.Kind) && all[random.Next(guildSize)] is var gmate && gmate != bot &&
-                            AutonomousChatFieldTalk.Answer(gsaid, FactsOf(gmate, now, random), guildField, random) is { } ganswer)
-                            dueReplies.Add((now + AutonomousBotChatCoordinator.ReplyDelayMs(ganswer, 0, random) + 1_000, "guild", ganswer, gmate.Id));
+                        Bot gmate = all[random.Next(guildSize)], gthird = all[random.Next(guildSize)];
+                        if (gmate == bot) gmate = null;
+                        if (gthird == bot || gthird == gmate) gthird = null;
+                        Play(now, "guild", AutonomousChatFieldTalk.Thread(gsaid, FactsOf(bot, now, random), gmate == null ? null : FactsOf(gmate, now, random),
+                            gthird == null ? null : FactsOf(gthird, now, random), guildField, random, now), [bot, gmate, gthird], gsaid.Answers != null);
                         bot.LastSpoke = now;
                         continue;
                     }
                     if (turn && Pick(recent, clock, random, "guild", SpeakerOf(bot), out VC.Picked gl,
-                            filter: budget ? line => !AutonomousChatFiller.IsCrafted(line) && !AutonomousChatFiller.IsGeneric(line.Text) : null))
+                            filter: budget ? line => AutonomousChatFiller.GuildCorpusFits(line, guildField, now) : null))
                     {
+                        if (budget)
+                            AutonomousChatFiller.NoteGuildCorpus(gl.Line, guildField, now);
                         Say(now, "guild", gl.Text, bot.Id);
                         bot.LastSpoke = now;
                         continue;
@@ -547,6 +592,12 @@ public class UT_ChatBudgetSimulation
 
     private static readonly string[] DistinctChannels = ["faction", "lfg", "trade", "broadcast", "guild"];
 
+    /// <summary>/faction threads: the share of inviting lines answered, the mean length of answered threads, the share of 4+ lines.</summary>
+    public static readonly Dictionary<(int, bool), (double Rate, double Mean, double Long)> threadShape = new();
+
+    /// <summary>The most life lines (weather, school, work, pets...) one evening's guild heard.</summary>
+    public static readonly Dictionary<(int, bool), int> lifeShape = new();
+
     /// <summary>Speakers per 30 lines and the top tenth's share, for /faction and guild (averaged over the evenings).</summary>
     public static readonly Dictionary<(int, bool), (double Per30Faction, double TopFaction, double Per30Guild, double TopGuild)> speakerShape = new();
 
@@ -565,8 +616,8 @@ public class UT_ChatBudgetSimulation
         text.AppendLine();
         text.AppendLine("Broadcast includes sellers' macros (the same WTS line every 3-8 min, by design); repeats are counted without them.");
         text.AppendLine();
-        text.AppendLine("| bots/realm | side | " + string.Join(" | ", Channels) + " | total | macro repeats | exact repeats | near repeats | busiest bot (faction / lfg / trade / say / broadcast) | distinct, 3+ words (faction / lfg / trade / broadcast / guild, worst hour) | speakers per 30 lines (faction / guild) | top 10% of speakers' share (faction / guild) |");
-        text.AppendLine("|---|---|" + string.Concat(Channels.Select(_ => "---|")) + "---|---|---|---|---|---|---|---|");
+        text.AppendLine("| bots/realm | side | " + string.Join(" | ", Channels) + " | total | macro repeats | exact repeats | near repeats | busiest bot (faction / lfg / trade / say / broadcast) | distinct, 3+ words (faction / lfg / trade / broadcast / guild, worst hour) | speakers per 30 lines (faction / guild) | top 10% of speakers' share (faction / guild) | threads: answered / mean lines / 4+ lines (faction) |");
+        text.AppendLine("|---|---|" + string.Concat(Channels.Select(_ => "---|")) + "---|---|---|---|---|---|---|---|---|");
         foreach (int bots in populations)
             foreach (bool budget in new[] { false, true })
             {
@@ -574,7 +625,8 @@ public class UT_ChatBudgetSimulation
                 Result result = new() { Minutes = 0 };
                 double exact = 0, near = 0;
                 var distinct = DistinctChannels.ToDictionary(c => c, _ => 1.0);
-                double per30Faction = 0, per30Guild = 0, topFaction = 0, topGuild = 0;
+                int lifeLines = 0;
+                double per30Faction = 0, per30Guild = 0, topFaction = 0, topGuild = 0, threadRate = 0, threadMean = 0, threadLong = 0;
                 int[] seeds = [1103, 2207, 3301];
                 foreach (int seed in seeds)
                 {
@@ -596,13 +648,19 @@ public class UT_ChatBudgetSimulation
                     per30Guild += evening.SpeakersPer30("guild") / seeds.Length;
                     topFaction += evening.TopTenthShare("faction") / seeds.Length;
                     topGuild += evening.TopTenthShare("guild") / seeds.Length;
+                    threadRate += evening.ThreadRate("faction") / seeds.Length;
+                    threadMean += evening.ThreadLength("faction").Mean / seeds.Length;
+                    threadLong += evening.ThreadLength("faction").Long / seeds.Length;
+                    lifeLines = Math.Max(lifeLines, evening.Lines.TryGetValue("guild", out var guildLines) ? guildLines.Count(AutonomousChatFiller.IsLife) : 0);
                 }
                 results[(bots, budget)] = result;
                 text.AppendLine($"| {bots} | {(budget ? "after" : "before")} | " + string.Join(" | ", Channels.Select(c => result.PerMinute(c).ToString("0.00"))) +
                                 $" | {result.Total:0.00} | {(result.Lines.TryGetValue("macro", out var m) ? m.Count / (double)result.Minutes : 0):0.00}/min | {exact:P1} | {near:P1} | " +
                                 string.Join(" / ", new[] { "faction", "lfg", "trade", "say", "broadcast" }.Select(c => result.TopSpeakerShare(c).ToString("P0"))) + " | " +
                                 string.Join(" / ", DistinctChannels.Select(c => distinct[c].ToString("P0"))) +
-                                $" | {per30Faction:0.0} / {per30Guild:0.0} | {topFaction:P0} / {topGuild:P0} |");
+                                $" | {per30Faction:0.0} / {per30Guild:0.0} | {topFaction:P0} / {topGuild:P0} | {threadRate:P0} / {threadMean:0.0} / {threadLong:P0} |");
+                threadShape[(bots, budget)] = (threadRate, threadMean, threadLong);
+                lifeShape[(bots, budget)] = lifeLines;
                 speakerShape[(bots, budget)] = (per30Faction, topFaction, per30Guild, topGuild);
                 nearRepeats[(bots, budget)] = near;
                 distinctShares[(bots, budget)] = distinct;
@@ -641,6 +699,11 @@ public class UT_ChatBudgetSimulation
             // Round 6: 45-55% at a busy peak (research: about 60%); a small server's few regulars may carry a little more.
             Assert.That(shape.TopFaction, bots >= 1_000 ? Is.InRange(0.45, 0.55) : Is.InRange(0.40, 0.70), $"top tenth's share of /faction at {bots}");
             Assert.That(shape.Per30Faction, Is.LessThanOrEqualTo(22), $"speakers per 30 /faction lines at {bots}");
+            // Round 7: a line that invites a reply usually gets one, and some threads run on; a guild hears one life line an evening at most.
+            var threads = threadShape[(bots, true)];
+            Assert.That(threads.Rate, Is.InRange(0.6, 0.85), $"inviting /faction lines answered at {bots}");
+            Assert.That(threads.Long, Is.InRange(0.12, 0.35), $"threads of 4+ lines at {bots}");
+            Assert.That(lifeShape[(bots, true)], Is.LessThanOrEqualTo(1), $"life lines in one guild evening at {bots}");
             // Round 4: at least 80% of an hour's lines of three words or more are distinct, in every channel.
             foreach ((string channel, double share) in distinctShares[(bots, true)])
                 Assert.That(share, Is.GreaterThanOrEqualTo(0.8), $"distinct lines in {channel} at {bots}");

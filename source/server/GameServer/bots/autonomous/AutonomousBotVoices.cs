@@ -628,13 +628,22 @@ public static class AutonomousBotVoices
     {
         NoteLevelUp(bot);
         SayMoment(bot, "ding", 0.35, 1_500);
+        // Beta 1.1.3, round 7: a ding to 50 is a story the realm hears.
+        if (bot?.Level == 50)
+            AutonomousBotChatCoordinator.TellStory("ding50", bot);
     }
 
     public static void OnBotDeath(GameBot bot)
     {
         NoteDeath(bot);
         SayMoment(bot, "death", 0.25, 3_000);
+        // Round 7: now and then a death becomes a short story in /faction.
+        if (bot != null && Random.Shared.NextDouble() < StoryDeathChance)
+            AutonomousBotChatCoordinator.TellStory("death", bot);
     }
+
+    /// <summary>How often a gamebot's death becomes a short /faction story (round 7).</summary>
+    public const double StoryDeathChance = 0.04;
 
     private static void SayMoment(GameBot bot, string kind, double chance, int delayMs)
     {

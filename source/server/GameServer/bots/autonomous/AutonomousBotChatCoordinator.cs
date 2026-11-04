@@ -317,89 +317,126 @@ public static class AutonomousBotChatCoordinator
         AutonomousChatWhy.Record(starter, channel, "ambient", "said", "field " + said.Kind, AutonomousChatReplyFit.Known, reason, text, null);
         if (channel is "faction" or "say")
         {
-            int answeredAt = ScheduleFieldAnswer(starter, said, channel == "faction");
-            ScheduleFieldFollowUp(starter, said, channel == "faction", answeredAt);
+            ScheduleFieldThread(starter, said, channel == "faction");
         }
         return true;
     }
 
     /// <summary>
-    /// The speaker follows up its own line now and then (round 5: real channels have regulars who do): "ty" after an answer,
-    /// "still lf healer" or "nm found one" a couple of minutes later when nobody answered.
+    /// The thread a field line starts (round 7: lines invited replies that never came): about seven in ten inviting lines get
+    /// an answer from a regular, a bot near the asker's level, or anyone free; one in five runs on for a few lines, sometimes
+    /// with a third bot (AutonomousChatFieldTalk.Thread). Scans a slice of the roster, not all of it.
     /// </summary>
-    private static void ScheduleFieldFollowUp(GameBot starter, AutonomousChatFieldTalk.Said said, bool faction, int answeredAt)
+    private static void ScheduleFieldThread(GameBot starter, AutonomousChatFieldTalk.Said said, bool faction)
     {
         var random = Random.Shared;
-        bool answered = answeredAt >= 0;
-        if (random.NextDouble() >= AutonomousChatFieldTalk.FollowUpChance(answered) ||
-            AutonomousChatFieldTalk.FollowUp(said, answered, random, AutonomousChatFieldTalk.MemoryOf(starter.Realm), GameLoop.GameLoopTime) is not { } line)
-            return;
-        string text = AutonomousChatIdiolect.Apply(line, starter.DatabaseID, false, random, terse: true);
-        int delay = answered ? answeredAt + ReplyDelayMs(text, 0, random) : 90_000 + random.Next(120_000);
-        Schedule(starter, delay, () =>
-        {
-            if (faction && HasFactionAudience(starter.Realm))
-                BroadcastFaction(starter.Name, starter.Realm, text);
-            else if (!faction && HasLocalAudience(starter))
-                SayLine(starter, text);
-            else
-                return;
-            AutonomousChatWhy.Record(starter, faction ? "faction" : "say", said.Text, "said", "field follow-up " + said.Kind, AutonomousChatReplyFit.Known,
-                answered ? "thanks for an answer" : "nobody answered its line", text, null);
-        });
+        long now = GameLoop.GameLoopTime;
+        (GameBot answerer, GameBot third) = Repliers(starter, faction, now, random);
+        AutonomousChatFieldTalk.Memory memory = AutonomousChatFieldTalk.MemoryOf(starter.Realm);
+        List<AutonomousChatFieldTalk.Step> steps = AutonomousChatFieldTalk.Thread(said, AutonomousChatFieldTalk.Of(starter, random),
+            answerer == null ? null : AutonomousChatFieldTalk.Of(answerer, random), third == null ? null : AutonomousChatFieldTalk.Of(third, random),
+            memory, random, now);
+        PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind);
     }
 
-    /// <summary>
-    /// One short, true answer to a field line from another bot now and then: "who has beno?" gets "mids", "inc bled" gets
-    /// "omw", "ding 30" gets "gz". Scans a slice of the roster, not all of it.
-    /// </summary>
-    /// <returns>When the answer is due (ms from now), or -1 for none.</returns>
-    private static int ScheduleFieldAnswer(GameBot starter, AutonomousChatFieldTalk.Said said, bool faction)
+    /// <summary>Who answers a line and who may chime in: a regular first, then a bot near the speaker's level, then anyone free.</summary>
+    private static (GameBot Answerer, GameBot Third) Repliers(GameBot starter, bool faction, long now, Random random)
     {
-        var random = Random.Shared;
-        if (said.Answers == null || random.NextDouble() >= AutonomousChatFieldTalk.AnswerChance(said.Kind))
-            return -1;
         GameBot[] roster = AutonomousBotRegistry.Snapshot();
         if (roster.Length < 2)
-            return -1;
-        // Round 5: a regular answers first when one is about (they answer each other); else anyone free.
-        GameBot responder = null, fallback = null;
-        long now = GameLoop.GameLoopTime;
+            return (null, null);
         int realmBots = RealmBots(starter.Realm);
-        for (int i = 0, at = random.Next(roster.Length); i < Math.Min(roster.Length, 160); i++, at = (at + 1) % roster.Length)
+        GameBot regular = null, near = null, any = null, second = null;
+        for (int i = 0, at = random.Next(roster.Length); i < Math.Min(roster.Length, 200); i++, at = (at + 1) % roster.Length)
         {
             GameBot bot = roster[at];
             if (bot == starter || bot.Realm != starter.Realm || !Eligible(bot) ||
                 !faction && (bot.CurrentRegion != starter.CurrentRegion || !bot.IsWithinRadius(starter, WorldMgr.SAY_DISTANCE)))
                 continue;
-            if (!faction || AutonomousChatRegulars.IsRegular(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type, now, realmBots))
-            {
-                responder = bot;
-                break;
-            }
-            fallback ??= bot;
-        }
-        responder ??= fallback;
-        if (responder == null)
-            return -1;
-        // In the answerer's own words ("me, thane 31"), and not one the realm just heard.
-        string answer = AutonomousChatFieldTalk.Answer(said, AutonomousChatFieldTalk.Of(responder, random), AutonomousChatFieldTalk.MemoryOf(starter.Realm), random);
-        if (answer == null)
-            return -1;
-        answer = AutonomousChatIdiolect.Apply(answer, responder.DatabaseID, false, random, terse: true);
-        int due = ReplyDelayMs(answer, 0, random);
-        Schedule(responder, due, () =>
-        {
-            if (faction && HasFactionAudience(responder.Realm))
-                BroadcastFaction(responder.Name, responder.Realm, answer);
-            else if (!faction && HasLocalAudience(responder))
-                SayLine(responder, answer);
+            if (regular == null && AutonomousChatRegulars.IsRegular(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type, now, realmBots))
+                regular = bot;
+            else if (near == null && Math.Abs(bot.Level - starter.Level) <= 5)
+                near = bot;
+            else if (any == null)
+                any = bot;
             else
-                return;
-            AutonomousChatWhy.Record(responder, faction ? "faction" : "say", said.Text, "said", "field answer " + said.Kind, AutonomousChatReplyFit.Known,
-                "a short true answer to a field line", answer, null);
-        });
-        return due;
+                second ??= bot;
+            if (regular != null && near != null)
+                break;
+        }
+        GameBot answerer = regular ?? near ?? any;
+        GameBot third = new[] { near, any, second }.FirstOrDefault(bot => bot != null && bot != answerer);
+        return (answerer, third);
+    }
+
+    /// <summary>Says a thread's lines on time, each by its speaker, while it can still talk and someone hears.</summary>
+    private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule)
+    {
+        foreach (AutonomousChatFieldTalk.Step step in steps)
+        {
+            GameBot bot = step.Who < speakers.Length ? speakers[step.Who] : null;
+            if (bot == null)
+                continue;
+            string text = AutonomousChatIdiolect.Apply(step.Text, bot.DatabaseID, false, Random.Shared, terse: true);
+            Schedule(bot, Math.Max(500, step.AtMs), () =>
+            {
+                if (faction && HasFactionAudience(bot.Realm))
+                {
+                    BroadcastFaction(bot.Name, bot.Realm, text);
+                    Note(AutonomousChatThreads.Faction(bot.Realm), bot, text, null);
+                }
+                else if (!faction && HasLocalAudience(bot))
+                    SayLine(bot, text);
+                else
+                    return;
+                AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null);
+            });
+        }
+    }
+
+    /// <summary>
+    /// A small story from a real event (round 7): a ding to 50, a death, a wipe in a bot group. The bot it happened to tells it
+    /// in /faction and a regular or two riff on it for a minute (AutonomousChatFieldTalk.Story). Below the channel's ceiling only.
+    /// </summary>
+    public static void TellStory(string kind, GameBot teller)
+    {
+        if (!AutonomousBotVoices.Enabled || teller == null || !teller.IsAutonomousWorldBot || !HasFactionAudience(teller.Realm) ||
+            AutonomousBotDebates.IsRunning(teller.Realm))
+            return;
+        long now = GameLoop.GameLoopTime;
+        var band = AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Faction, RealmBots(teller.Realm));
+        if (AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)teller.Realm, now) >= band.Ceiling)
+            return;
+        var random = Random.Shared;
+        (GameBot mate, GameBot third) = Repliers(teller, true, now, random);
+        if (mate == null)
+            return;
+        List<AutonomousChatFieldTalk.Step> steps = AutonomousChatFieldTalk.Story(kind, AutonomousChatFieldTalk.Of(teller, random),
+            AutonomousChatFieldTalk.Of(mate, random), third == null ? null : AutonomousChatFieldTalk.Of(third, random), random,
+            AutonomousChatFieldTalk.MemoryOf(teller.Realm));
+        // The teller says its first line even while still on the ground: a dead bot can type.
+        var timed = steps.Select(step => step with { AtMs = step.AtMs + 2_000 + random.Next(2_000) }).ToList();
+        PlayStory(timed, [teller, mate, third], kind);
+    }
+
+    private static void PlayStory(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, string kind)
+    {
+        foreach (AutonomousChatFieldTalk.Step step in steps)
+        {
+            GameBot bot = step.Who < speakers.Length ? speakers[step.Who] : null;
+            if (bot == null)
+                continue;
+            string text = step.Text;
+            _ = new ECSGameTimer(bot, _ =>
+            {
+                if (bot.ObjectState != GameObject.eObjectState.Active || !HasFactionAudience(bot.Realm))
+                    return 0;
+                BroadcastFaction(bot.Name, bot.Realm, text);
+                Note(AutonomousChatThreads.Faction(bot.Realm), bot, text, null);
+                AutonomousChatWhy.Record(bot, "faction", "story " + kind, "said", "story " + kind, AutonomousChatReplyFit.Known, "a story from a real event", text, null);
+                return 0;
+            }, Math.Max(500, step.AtMs));
+        }
     }
 
     /// <summary>A line that is not a near-copy of one the channel carried in the last half hour (Beta 1.1.3).</summary>

@@ -65,6 +65,9 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
   - **Regulars:** each realm and guild has a few talkative regulars for the evening who carry much of the chat, answer
     each other and follow up their own lines; one thought isn't reworded by someone else minutes later, and chat comes
     in runs and lulls rather than evenly.
+  - **Threads and stories:** a question usually gets an answer, and some run on for a few lines between two or three
+    bots. A ding to 50, a death or a group's wipe becomes a short story others riff on. Help questions come in many
+    shapes, and guild chat hears at most one weather-or-school line an evening.
   - **Musings and quips:** lore musings, polished jokes, tips and life stories appear only rarely in /faction, never as
     replies.
   - **Generic agreement:** "good question", "very true" and the like are gone.
@@ -78,8 +81,8 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
   busy each channel around you is.
 - **Checked:**
   - **Automated:** new tests for every part; the full server suite passes.
-  - **Simulated evening at 1,000 bots a realm:** about 12.4 lines a minute across the channels a player hears, up from
-    about 1.9, with /faction at its busy-peak target of 4 a minute. At 300 bots it's about 5.4, up from 1.2.
+  - **Simulated evening at 1,000 bots a realm:** about 13 lines a minute across the channels a player hears, up from
+    about 1.9, with /faction above its busy-peak target of 4 a minute. At 300 bots it's about 5.9, up from 1.2.
   - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to about 70%, and about a quarter
     of those lines now get no reply. Those lines are known, so this is a regression check; a fresh blind round judges
     the result.

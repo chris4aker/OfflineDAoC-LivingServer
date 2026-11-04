@@ -66,6 +66,9 @@ public static class AutonomousChatFieldTalk
         /// <summary>The family and its subject ("camp_free:large skeletons").</summary>
         public string Idea { get; init; }
 
+        /// <summary>The help question's frame (its shape across wordings), resting 10-15 minutes and capped at 4 an hour; null for others.</summary>
+        public string Frame { get; init; }
+
         /// <summary>What the speaker says a while later when nobody answered ("still lf healer", "nm found one").</summary>
         public string[] Unanswered { get; init; }
 
@@ -74,6 +77,9 @@ public static class AutonomousChatFieldTalk
     }
 
     private static string[] Pool(params string[] answers) => answers;
+
+    /// <summary>The kinds whose families are help or request frames (round 7), resting longer and capped per hour.</summary>
+    private static readonly HashSet<string> HelpKinds = new(StringComparer.Ordinal) { "ask_xp", "class", "ask", "crafter", "camp", "ask_group", "travel", "help" };
 
     /// <summary>One way to say a kind of line: its text, its family, and the answers that fit it.</summary>
     private readonly record struct V(string Text, string Family, string[] Answers = null);
@@ -88,6 +94,7 @@ public static class AutonomousChatFieldTalk
         return new Said(way.Text, kind, way.Answers)
         {
             Family = way.Family,
+            Frame = way.Family != null && HelpKinds.Contains(kind) ? way.Family : null,
             Idea = way.Family == null ? null : subject == null ? way.Family : kind + ":" + subject,
             // "{s}" is the subject as said ("keltoi", "cleric"), not its key ("keltoi:4").
             Unanswered = unanswered?.Select(line => line.Replace("{s}", subject?.Split(':')[0] ?? string.Empty).Trim()).ToArray(),
@@ -198,6 +205,68 @@ public static class AutonomousChatFieldTalk
             }
         }
 
+        private readonly Dictionary<string, Queue<long>> _frames = new(StringComparer.Ordinal);
+
+        /// <summary>How long a help frame rests: 10-15 minutes (round 7: "good xp for..." 14 times in three hours).</summary>
+        public static long FrameRestMs(string frame) => 10 * 60_000 + (long)(StableFraction(frame) * 5 * 60_000);
+
+        /// <summary>A frame is heard at most this often an hour per realm.</summary>
+        public const int FramesPerHour = 4;
+
+        /// <summary>Whether a help frame (a question's shape across its wordings) may be heard now: rested, and under its hourly cap.</summary>
+        public bool FrameAllowed(string frame, long now)
+        {
+            if (frame == null)
+                return true;
+            lock (_ring)
+            {
+                if (!_frames.TryGetValue(frame, out Queue<long> uses))
+                    return true;
+                while (uses.Count > 0 && (now - uses.Peek() >= 60 * 60_000 || now < uses.Peek()))
+                    uses.Dequeue();
+                if (uses.Count >= FramesPerHour)
+                    return false;
+                long last = uses.Count == 0 ? long.MinValue / 2 : uses.Last();
+                return now - last >= FrameRestMs(frame);
+            }
+        }
+
+        /// <summary>A help frame was just heard.</summary>
+        public void UseFrame(string frame, long now)
+        {
+            if (frame == null)
+                return;
+            lock (_ring)
+            {
+                if (!_frames.TryGetValue(frame, out Queue<long> uses))
+                {
+                    if (_frames.Count > 4096)
+                        _frames.Clear();
+                    _frames[frame] = uses = new Queue<long>();
+                }
+                uses.Enqueue(now);
+            }
+        }
+
+        private readonly Dictionary<string, long> _life = new(StringComparer.Ordinal);
+
+        /// <summary>One life line (weather, school, work, pets, check-ins) per guild per evening (round 7).</summary>
+        public const long LifeGapMs = 6 * 60 * 60_000;
+
+        /// <summary>Whether a life line may be said now (none in the last six hours).</summary>
+        public bool LifeAllowed(long now)
+        {
+            lock (_ring)
+                return !_life.TryGetValue("life", out long at) || now - at >= LifeGapMs || now < at;
+        }
+
+        /// <summary>A life line was just said.</summary>
+        public void NoteLife(long now)
+        {
+            lock (_ring)
+                _life["life"] = now;
+        }
+
         /// <summary>Whether a written musing may be said now (none in the last 20 minutes).</summary>
         public bool WrittenAllowed(long now)
         {
@@ -273,13 +342,14 @@ public static class AutonomousChatFieldTalk
             string skeleton = AutonomousChatFiller.Skeleton(said.Text);
             // Short lines ("brb", "back", "lol") may repeat, as in the live near-copy rule; anything longer once an evening.
             bool reaction = skeleton.IndexOf(' ') < 0 || skeleton.Split(' ').Length <= 2 && skeleton.Length <= 10;
-            if (memory != null && (!reaction && memory.Seen(skeleton) || memory.Rested(said.Family, said.Idea, now)))
+            if (memory != null && (!reaction && memory.Seen(skeleton) || memory.Rested(said.Family, said.Idea, now) || !memory.FrameAllowed(said.Frame, now)))
                 continue;
             // One item advertised at most once an hour (round 4: three of 120 lines sold the same ring).
             if (said.Item != null && memory != null && !memory.TryItem(said.Item, now))
                 continue;
             memory?.Add(skeleton);
             memory?.Use(said.Family, said.Idea, now);
+            memory?.UseFrame(said.Frame, now);
             return said;
         }
         return null;
@@ -332,9 +402,12 @@ public static class AutonomousChatFieldTalk
         {
             string text = Finish(pool[random.Next(pool.Length)], random);
             string key = "u:" + text;
-            if (memory != null && memory.Rested(null, key, now))
+            // Its frame too: "still lf...", "nobody? ok..." at most four an hour (round 7).
+            string frame = "fu:" + string.Join(' ', AutonomousChatIntentModel.Words(text).Take(2));
+            if (memory != null && (memory.Rested(null, key, now) || !memory.FrameAllowed(frame, now)))
                 continue;
             memory?.Use(null, key, now);
+            memory?.UseFrame(frame, now);
             return text;
         }
         return null;
@@ -352,6 +425,7 @@ public static class AutonomousChatFieldTalk
         "ask_group" or "crafter" => 0.6,
         "camp" or "rvr" or "keeps" or "class" => 0.5,
         "rally" => 0.55,
+        "help" => 0.6,
         "raid" or "guild_group" or "guild_craft" or "guild_sell" => 0.55,
         "guild_ding" or "guild_hello" => 0.55,
         _ => 0.0,
@@ -430,7 +504,7 @@ public static class AutonomousChatFieldTalk
             options.Add((() => Death(f, random), 6));
         if (!f.InRvR && f.Level < 50)
         {
-            options.Add((() => AskXp(f, random), 1.5));
+            options.Add((() => AskXp(f, random), 0.6));
             options.Add((() => AskGroup(f, random), 3));
             options.Add((() => NeedClass(f, random), 1.2));
         }
@@ -454,7 +528,8 @@ public static class AutonomousChatFieldTalk
             if (f.Dungeon != null || f.InDungeon)
                 options.Add((() => Named(f, random), 0.8));
         }
-        options.Add((() => ClassTalk(f, random), 1.2));
+        options.Add((() => ClassTalk(f, random), 0.6));
+        options.Add((() => Help(f, random), 2.2));
         options.Add((() => Social(f, random), 1.2));
         if (f.Bubbles > 0 && f.Level < 50)
             options.Add((() => Make(random, "social", null, null, null,
@@ -883,6 +958,213 @@ public static class AutonomousChatFieldTalk
             draw -= weight;
         }
         return null;
+    }
+
+    // ---- threads and stories (round 7) ---------------------------------------------------------------------------------------
+
+    /// <summary>One line of a thread: who says it (0 the opener's speaker, 1 the answerer, 2 a third bot), what, and when (ms after the opener).</summary>
+    public readonly record struct Step(int Who, string Text, int AtMs);
+
+    /// <summary>
+    /// How likely a line that invites a reply gets one (round 7: real channels answer about seven in ten). Lines with no
+    /// answers invite nothing; the small talk of a channel ("brb", "back") is answered less.
+    /// </summary>
+    public static double ReplyChance(Said said) => said?.Answers == null ? 0 : said.Kind == "social" ? 0.45 : Math.Max(0.7, AnswerChance(said.Kind));
+
+    /// <summary>The share of answered lines that try to run on (a follow-up question, its answer, a thanks); about one in five does.</summary>
+    public const double LongThreadChance = 0.28;
+
+    // A line's thread after the first answer: the opener's follow-up question, the answerer's reply, and what a third bot may
+    // add. {cls}, {lvl}, {zone}, {dun}, {monsters} are the speaker's own.
+    private static readonly Dictionary<string, (string[] Ask, string[] Reply, string[] Chime)> More = new(StringComparer.Ordinal)
+    {
+        ["ask_xp"] = (["grp or solo?", "which camp there?", "how far in?", "is it busy?", "solo ok there?", "what mobs?", "how long to {lvl}?"],
+            ["grp is better", "solo outside is ok", "front rooms are easy", "back rooms if u have a healer", "was quiet earlier"],
+            ["bring pots", "^ that", "watch the adds", "was there earlier, busy"]),
+        ["ask_group"] = (["what lvl r u?", "where u at?", "what class?", "u close?", "how far r u?"], ["{lvl}", "{lvl} {cls}", "in {zone}", "{cls}, {lvl}", "coming from {zone}"],
+            ["room for 1 more?", "me too if room", "x2"]),
+        ["camp"] = (["how many up?", "is it camped?", "which side?"], ["few", "2 last i saw", "was empty", "dunno, just got here", "north side"],
+            ["watch the adds there", "they link", "bring a healer", "{monsters} hit hard at {lvl}", "was there at {lvl}"]),
+        ["keeps"] = (["when?", "who took it?"], ["earlier tonight", "while i was afk lol", "dunno, saw it on the map"], ["we'll get it back", "ugh", "always on my break"]),
+        ["rally"] = (["how many?", "where r they?"], ["big grp", "10+ at the door", "at the gate", "inside already"], ["porting too", "omw also", "bringing my grp"]),
+        ["class"] = (["solo or grp?", "what race?"], ["depends, solo or grp?", "sc gear if u can afford it", "whatever drops lol", "main line first"], ["^", "+1", "what he said"]),
+        ["help"] = (["where exactly?", "what lvl for that?"], ["dunno exactly, ask a guard", "near the town, i think", "{lvl}ish", "the map helps"], ["^ that", "i did it at {lvl}"]),
+        ["rvr"] = (["how many?", "which way?"], ["few grps", "small grp", "through the mg"], ["count me in", "omw too"]),
+        ["raid"] = (["what time?", "who's leading?"], ["9ish", "after dinner", "gl is"], ["im in too", "same"]),
+        ["guild_group"] = (["what lvl?", "where at?"], ["{lvl}", "{zone}", "{lvl} {cls}"], ["me too", "room for 1?"]),
+        ["guild_sell"] = (["what stats?", "what lvl is it?"], ["decent", "dunno, check it", "{lvl}ish"], ["dibs after"]),
+    };
+
+    /// <summary>
+    /// The thread a field line starts (round 7: lines invited replies that never came, and nothing ran on). About seven in ten
+    /// inviting lines get an answer; one in five of those runs on to a follow-up question, its answer and a thanks, and a third
+    /// bot sometimes chimes in. With no answer the speaker may follow up alone. Every line is from the speaker's own state. Pure.
+    /// </summary>
+    public static List<Step> Thread(Said said, Facts asker, Facts answerer, Facts third, Memory memory, Random random, long now = 0)
+    {
+        var steps = new List<Step>(6);
+        if (said == null)
+            return steps;
+        string answer = answerer != null && random.NextDouble() < ReplyChance(said) ? Answer(said, answerer, memory, random) : null;
+        if (answer == null)
+        {
+            if (random.NextDouble() < FollowUpChance(false) && FollowUp(said, false, random, memory, now) is { } alone)
+                steps.Add(new Step(0, alone, 90_000 + random.Next(120_000)));
+            return steps;
+        }
+        int at = AutonomousChatArbiter.DelayMs(said.Text, answer, 40, 0, random);
+        steps.Add(new Step(1, answer, at));
+        // A line of three words or more is heard once an evening; with none fresh, the thread stops there.
+        string Fresh(string[] pool, Facts speaker)
+        {
+            for (int attempt = 0; attempt < 5; attempt++)
+            {
+                string text = Fill(pool[random.Next(pool.Length)], speaker, random);
+                string skeleton = AutonomousChatFiller.Skeleton(text);
+                if (memory == null || skeleton.Split(' ').Length <= 2)
+                    return text;
+                if (memory.Seen(skeleton))
+                    continue;
+                memory.Add(skeleton);
+                return text;
+            }
+            return null;
+        }
+        if (random.NextDouble() < LongThreadChance && More.TryGetValue(said.Kind, out var more) && Fresh(more.Ask, asker) is { } ask &&
+            Fresh(more.Reply, answerer) is { } reply)
+        {
+            at = AutonomousChatArbiter.DelayMs(answer, ask, 40, at, random);
+            steps.Add(new Step(0, ask, at));
+            at = AutonomousChatArbiter.DelayMs(ask, reply, 40, at, random);
+            steps.Add(new Step(1, reply, at));
+            if (third != null && random.NextDouble() < 0.4 && Fresh(more.Chime, third) is { } chime)
+            {
+                at = AutonomousChatArbiter.DelayMs(reply, chime, 40, at, random);
+                steps.Add(new Step(2, chime, at));
+            }
+            if (FollowUp(said, true, random, memory, now) is { } thanks)
+                steps.Add(new Step(0, thanks, AutonomousChatArbiter.DelayMs(reply, thanks, 40, at, random)));
+            return steps;
+        }
+        if (random.NextDouble() < FollowUpChance(true) && FollowUp(said, true, random, memory, now) is { } done)
+            steps.Add(new Step(0, done, AutonomousChatArbiter.DelayMs(answer, done, 40, at, random)));
+        return steps;
+    }
+
+    /// <summary>
+    /// A small story from a real event, for regulars to riff on for a minute or two (round 7): a ding to 50, a death, a wipe in
+    /// a bot group. Three to six lines between two or three speakers, from their own state. Pure.
+    /// </summary>
+    public static List<Step> Story(string kind, Facts teller, Facts mate, Facts third, Random random, Memory memory = null)
+    {
+        var lines = new List<(int Who, string Text)>(6);
+        // A line of three words or more is told once an evening: the next story picks another way to say it, or leaves it out.
+        string Pick(Random r, params string[] options)
+        {
+            for (int attempt = 0; attempt < 6; attempt++)
+            {
+                string text = options[r.Next(options.Length)];
+                string skeleton = AutonomousChatFiller.Skeleton(text);
+                if (memory == null || skeleton.Split(' ').Length <= 2)
+                    return text;
+                if (memory.Seen(skeleton))
+                    continue;
+                memory.Add(skeleton);
+                return text;
+            }
+            return null;
+        }
+        string monsters = teller?.Monster == null ? "adds" : AutonomousBotVoiceCorpus.Plural(teller.Monster);
+        switch (kind)
+        {
+            case "ding50":
+                lines.Add((0, Pick(random, "DING 50", "50!!!", "ding 50 finally", "50 :D", "DING 50!!")));
+                lines.Add((1, Pick(random, "gz!!", "grats man", "gratz!", "about time lol", "gz gz")));
+                if (third != null)
+                    lines.Add((2, Pick(random, "gz", "grats!", "nice gz", "woot")));
+                lines.Add((1, Pick(random, "what now, rvr?", "epic next?", "alt time?", "now the real game starts lol", "rvr now?", "time for rps?")));
+                lines.Add((0, Pick(random, "rvr tomorrow, bed now", "epic first", "sleep lol", "frontier tomorrow", "alt maybe", "bed, gz me tomorrow lol")));
+                break;
+            case "death":
+                string zone = ShortZone(teller?.Zone, random);
+                lines.Add((0, Pick(random, $"died to {monsters} again", $"{monsters} got me lol", "dead. again.", $"train of {monsters}, im dead",
+                    $"{monsters} in {zone} hate me", $"killed by {monsters} at {teller?.Level}")));
+                lines.Add((1, Pick(random, "rip", "lol rip", "ouch", "where?", "oof")));
+                lines.Add((0, Pick(random, $"{zone}, near the camp", $"third time tonight in {zone}", "lost a bubble too", $"by the {zone} camp",
+                    $"{monsters} x3, no chance", "pulled two by accident")));
+                if (third != null && random.NextDouble() < 0.5)
+                    lines.Add((2, Pick(random, $"they hit hard at {third.Level}", $"{monsters} are nasty at {teller?.Level}", "bring a healer lol",
+                        $"same happened to me in {ShortZone(third.Zone, random)}", "happens")));
+                break;
+            case "wipe":
+                string where = ShortDungeon(teller?.Dungeon, random) ?? ShortZone(teller?.Zone, random);
+                lines.Add((0, Pick(random, "wiped lol", "whole grp wiped", "wipe. ugh", $"wiped on {monsters}", $"grp wiped in {where}", $"{where} wipe lol")));
+                lines.Add((1, Pick(random, "what happened?", "lol how", "rip grp", "ouch", "how?")));
+                lines.Add((0, Pick(random, "pulled 3 at once", "healer went oom", "adds from nowhere", "someone pulled the named", $"{monsters} linked, all of them",
+                    "tank ran lol", "a train came through", $"{monsters} respawned on us")));
+                if (third != null)
+                    lines.Add((2, Pick(random, "classic", "happens lol", "rip", $"{where} does that", "lol")));
+                lines.Add((0, Pick(random, "back to it", "running back", "regrouping", $"back to {where}", "rezzing up")));
+                break;
+            default:
+                return [];
+        }
+        var steps = new List<Step>(lines.Count);
+        int at = 0;
+        string before = null;
+        foreach ((int who, string text) in lines)
+        {
+            if (text == null)
+                continue;
+            string finished = text.Contains("DING") || text.Contains(":D") ? text : Finish(text, random);
+            at = before == null ? 0 : AutonomousChatArbiter.DelayMs(before, finished, 40, at, random);
+            steps.Add(new Step(who, finished, at));
+            before = finished;
+        }
+        return steps;
+    }
+
+    private static string Fill(string text, Facts facts, Random random)
+    {
+        if (facts == null)
+            return Finish(text.Replace("{cls}", "").Replace("{lvl}", "").Replace("{zone}", "").Replace("{dun}", "").Trim(), random);
+        return Finish(text.Replace("{cls}", ShortClass(facts.ClassName, random)).Replace("{lvl}", facts.Level.ToString())
+            .Replace("{zone}", ShortZone(facts.Zone, random)).Replace("{dun}", ShortDungeon(facts.Dungeon, random) ?? ShortZone(facts.Zone, random))
+            .Replace("{monsters}", facts.Monster == null ? "adds" : AutonomousBotVoiceCorpus.Plural(facts.Monster)), random);
+    }
+
+    // ---- help questions (round 7) --------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// A help question on something other than xp and spec (round 7: those frames dominated): gear, quests, travel, crafting,
+    /// the frontier, trainers, named monsters, epic steps, binding, ports. Each frame rests and is capped (see
+    /// <see cref="Memory.FrameAllowed"/>). Pure.
+    /// </summary>
+    private static Said Help(Facts f, Random random)
+    {
+        string cls = ShortClass(f.ClassName, random), lvl = f.Level.ToString(), zone = ShortZone(f.Zone, random);
+        string dun = ShortDungeon(f.Dungeon, random);
+        var ways = new List<V>(12)
+        {
+            new($"anyone know the {lvl}ish quest in {zone}?", "q_quest", Pool("which one?", "the one by the town?", "did it, kill 10 then go back", "dunno that one")),
+            new($"where do i hand in the {zone} quest?", "q_handin", Pool("back in town", "the guy that gave it", "dunno, check the journal")),
+            new($"how do i get to {f.World?.Frontier?.ToLowerInvariant() ?? "the frontier"} from here?", "q_frontier", Pool("port from the capital", "horse to the border keep", "porter in town")),
+            new($"where do i bind in {zone}?", "q_bind", Pool("at the bindstone in town", "nearest town", "by the inn")),
+            new($"anyone know where to buy {cls} stuff at {lvl}?", "q_gear", Pool("merchants in the capital", "crafters, pst one", "the broker")),
+            new("what do i need to start crafting?", "q_craft", Pool("go see the crafting trainer", "tools from the merchant", "lots of money lol")),
+            new($"is there a port to {dun ?? zone}?", "q_port", Pool("no, run", "horse most of the way", "dunno")),
+        };
+        if (f.Item != null)
+            ways.Add(new V($"{(f.ItemIsGear ? f.ItemQuality + "% " : "")}{f.Item.ToLowerInvariant()} any good for {cls}?", "q_item",
+                Pool("not really", "ok for now", "sell it", "keep it till {lvl}")));
+        if (f.Level >= 45)
+            ways.Add(new V($"anyone done the {cls} epic?", "q_epic", Pool("not yet", "{healer}did mine last week", "need a grp for it", "ask in guild")));
+        if (dun != null)
+            ways.Add(new V($"what's the named in {dun} drop?", "q_named", Pool("dunno, never got it", "decent stuff", "jewelry mostly i think")));
+        if (f.InRvR || f.Level >= 35)
+            ways.Add(new V("how do realm points work?", "q_rps", Pool("kill enemies, get rps", "kills and keeps", "keeps give a lot")));
+        return Make(random, "help", (f.Level / 5) + ":" + zone, Pool("nm found it", "nobody? ok", "guess ill figure it out"), Pool("ty", "ty!", "k ty", "cool"),
+            ways.ToArray());
     }
 
     // ---- words ---------------------------------------------------------------------------------------------------------------

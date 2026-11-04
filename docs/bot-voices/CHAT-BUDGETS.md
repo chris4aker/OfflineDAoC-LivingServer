@@ -128,6 +128,13 @@ level, a keep) rests for 30 to 60 minutes once said, and its wording family for 
 thought reworded. Written lines are at most one per realm in 20 minutes, lore is never recited unasked, and nobody answers a
 remark with "i know right". Gaps between lines are uneven: quick runs, ordinary stretches and the odd lull.
 
+Questions come in many shapes (gear, quests, travel, crafting, the frontier, trainers, named monsters, epic steps), and one
+shape ("good xp for...", "any healers on?", "still lf...") is heard at most four times an hour per realm, ten minutes apart
+at least. A line that asks for an answer usually gets one, from a regular or a bot near the asker's level; about one thread
+in five runs on for a few lines, with a follow-up question, its answer, a thanks, and sometimes a third bot. A ding to 50, a
+death now and then, and a bot group's wipe become short stories the realm riffs on. A guild hears at most one life line
+(weather, school, work, pets) an evening.
+
 ### Filler rules
 
 - **Musings:** lines that narrate the game instead of playing it appear only now and then as /faction openers. They

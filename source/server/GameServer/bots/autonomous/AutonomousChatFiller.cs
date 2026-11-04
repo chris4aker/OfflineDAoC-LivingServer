@@ -51,6 +51,53 @@ public static class AutonomousChatFiller
         return crafted || !IsCrafted(line);
     }
 
+    private static readonly string[] LifeMarkers =
+    [
+        // weather
+        "freezing", "cold outside", "snow", "snowing", "raining", "rain outside", "thunder", "storm", "hot outside", "heat wave", "weather",
+        // school and work
+        "school", "test", "exam", "homework", "library", "teacher", "class tomorrow", "college", "boss", "shift", "payday", "office", "commute",
+        // home, pets, media, food, family
+        "dog", "cat", "puppy", "kitten", "movie", "tv", "show tonight", "pizza", "dinner", "cooking", "coffee", "tea", "wife", "husband", "kids",
+        "baby", "mom", "dad", "roommate", "neighbor", "blanket", "couch", "my hands", "checking in", "just saying hi", "say hi", "rough day",
+        "long day", "week off", "vacation", "birthday",
+    ];
+
+    /// <summary>
+    /// A life line: weather, school, work, pets, films, food, family, a check-in ("freezing outside", "aced my test", "just
+    /// checking in to say hi"). A guild hears at most one an evening (round 7). Pure.
+    /// </summary>
+    public static bool IsLife(VC.Line line) =>
+        line != null && (line.Kind == "guild" && line.Topic == "social" || (line.Invites ?? string.Empty).StartsWith("player_rl", StringComparison.Ordinal) ||
+                         line.Topic == "reallife" || IsLife(line.Text));
+
+    /// <inheritdoc cref="IsLife(VC.Line)"/>
+    public static bool IsLife(string text)
+    {
+        string padded = " " + string.Join(' ', AutonomousChatIntentModel.Words(text ?? string.Empty)) + " ";
+        return LifeMarkers.Any(marker => padded.Contains(" " + marker + " ", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    /// Whether a written guild line may be said in this guild now (round 7: life filler came back through the written guild
+    /// lines): short and plain, not generic, its idea rested, a life line only when the guild heard none this evening, and a
+    /// written line at most once in 20 minutes. Pure but for the memory read.
+    /// </summary>
+    public static bool GuildCorpusFits(VC.Line line, AutonomousChatFieldTalk.Memory memory, long now) =>
+        line != null && !IsCrafted(line) && !IsGeneric(line.Text) && memory.WrittenAllowed(now) &&
+        !memory.Rested(null, IdeaOf(line), now) && (!IsLife(line) || memory.LifeAllowed(now));
+
+    /// <summary>A written guild line was said: its idea rests, the guild's written gap starts, and a life line uses up the evening's one.</summary>
+    public static void NoteGuildCorpus(VC.Line line, AutonomousChatFieldTalk.Memory memory, long now)
+    {
+        if (line == null)
+            return;
+        memory.Use(null, IdeaOf(line), now);
+        memory.NoteWritten(now);
+        if (IsLife(line))
+            memory.NoteLife(now);
+    }
+
     private static readonly (string Concept, string[] Words)[] Concepts =
     [
         ("loot", ["drop", "drops", "dropped", "loot", "looted", "looting", "roll", "rolled", "ninja"]),

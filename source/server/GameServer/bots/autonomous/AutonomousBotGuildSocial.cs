@@ -471,12 +471,15 @@ public static class AutonomousBotGuildSocial
         string own = charter.ToString().ToLowerInvariant();
         string[] topics = Random.Shared.NextDouble() < 0.65 ? [own, "general"] : ["general", own];
         // Beta 1.1.3, round 4: a written guild line only when it is short and plain (no check-ins, life filler, jokes or "...").
+        // Round 7: and a life line ("freezing outside", "aced my test") at most once a guild evening (AutonomousChatFiller.GuildCorpusFits).
+        AutonomousChatFieldTalk.Memory memory = AutonomousChatFieldTalk.MemoryOfGuild(bot.Guild?.GuildID);
+        long now = GameLoop.GameLoopTime;
         foreach (string topic in topics)
             if (AutonomousBotVoices.TryLine(bot, "guild", out VC.Picked picked, topic: topic, requireVoices: false,
-                    filter: AutonomousBotVoices.Enabled ? line => !AutonomousChatFiller.IsCrafted(line) && !AutonomousChatFiller.IsGeneric(line.Text) &&
-                        !AutonomousChatFieldTalk.MemoryOfGuild(bot.Guild?.GuildID).Rested(null, AutonomousChatFiller.IdeaOf(line), GameLoop.GameLoopTime) : null))
+                    filter: AutonomousBotVoices.Enabled ? line => AutonomousChatFiller.GuildCorpusFits(line, memory, now) : null))
             {
-                AutonomousChatFieldTalk.MemoryOfGuild(bot.Guild?.GuildID).Use(null, AutonomousChatFiller.IdeaOf(picked.Line), GameLoop.GameLoopTime);
+                if (AutonomousBotVoices.Enabled)
+                    AutonomousChatFiller.NoteGuildCorpus(picked.Line, memory, now);
                 return picked;
             }
         return null;
@@ -618,9 +621,18 @@ public static class AutonomousBotGuildSocial
             else
             {
                 SendGuildLine(guild, bot.Name, field.Text);
-                GameBot mate = Speakers(guild).FirstOrDefault(candidate => candidate != bot);
-                if (mate != null && Random.Shared.NextDouble() < AutonomousChatFieldTalk.AnswerChance(field.Kind) && FieldAnswer(mate, guild, field) is { } answer)
-                    ScheduleGuildLine(mate, guild, AutonomousBotChatCoordinator.ReplyDelayMs(answer, 0, Random.Shared) + 1_000, () => answer, styled: true);
+                // Round 7: the line's thread, from guildmates (an answer, and now and then a few more lines).
+                GameBot[] mates = Speakers(guild).Where(candidate => candidate != bot).Take(2).ToArray();
+                GameBot mate = mates.FirstOrDefault(), third = mates.Skip(1).FirstOrDefault();
+                var speakers = new[] { bot, mate, third };
+                foreach (AutonomousChatFieldTalk.Step step in AutonomousChatFieldTalk.Thread(field, GuildFacts(bot, guild),
+                             mate == null ? null : AutonomousChatFieldTalk.Of(mate, Random.Shared), third == null ? null : AutonomousChatFieldTalk.Of(third, Random.Shared),
+                             AutonomousChatFieldTalk.MemoryOfGuild(guild.GuildID), Random.Shared, GameLoop.GameLoopTime))
+                    if (speakers[step.Who] is { } speaker)
+                    {
+                        string text = AutonomousChatIdiolect.Apply(step.Text, speaker.DatabaseID, false, Random.Shared, terse: true);
+                        ScheduleGuildLine(speaker, guild, Math.Max(800, step.AtMs), () => text, styled: true);
+                    }
             }
             return true;
         }
