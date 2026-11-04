@@ -40,6 +40,20 @@ gates fell, and the Renegade Lord never dropped below 100%).
   and new lines say when a rally goes up (`BG_RALLY_STORM`), when late arrivals join it (`BG_RALLY_REINFORCE`) and
   why an attempt ended (`BG_RALLY_REGROUP`).
 
+**Who has a gamebot's time, in one place** (groundwork for gamebots that lead groups and invite you).
+- Raids, sieges and keep defenses, battleground rallies, gamebot groups and your own group now each put a claim on a
+  gamebot's time, with a priority. Your group is the strongest claim: no raid, siege, RvR march or rally ever takes a
+  gamebot from your group, exactly as before. What gamebots do has not changed, with one exception: an RvR march and
+  a battleground rally now rank the same, so neither pulls a gamebot away from the other (before, a march could take a
+  gamebot out of its battleground rally).
+- **`/lswhy duty`** on a targeted gamebot (or `/lswhy duty <name>`) says what has its time now ("realm raid
+  (Gjalpinulva), since 4m", "in a player's group", "free") and its last claims: who asked for it, and whether it went
+  or why not. Plain `/lswhy` on a gamebot shows the same under its chat decisions.
+- **One fix:** a gamebot recruited for a raid that logged off before its party formed stayed reserved when it came
+  back, and sat out every raid, siege party and gamebot group until that raid ended. It now comes back free.
+- **For testers:** `DUTY_LEASE` lines in the server log record each claim granted, taken, refused (with its reason)
+  and ended, once per change.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids

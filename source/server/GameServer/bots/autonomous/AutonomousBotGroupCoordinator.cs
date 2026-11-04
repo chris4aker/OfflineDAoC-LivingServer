@@ -1504,6 +1504,7 @@ public static partial class AutonomousBotGroupCoordinator
             ClearMetadata(bot, true);
             if (group != null && Sessions.TryGetValue(group, out Session session))
             {
+                BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, session.Id, DutyLeaseReason.LeftGroup);
                 if (!session.ProcessingAttendanceRemovals && !session.Ending &&
                     session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
                 {
@@ -1574,6 +1575,22 @@ public static partial class AutonomousBotGroupCoordinator
     }
 
 
+    /// <summary>
+    /// A bot-only party's members hold a bot-group lease for it (docs/DUTY-LEASE.md), bound to the group, so it ends when
+    /// a member leaves or the party disbands. A raid's or a siege's own party already holds its members with that
+    /// activity's higher lease, so it claims nothing over them (no refusal to record: it is the same party).
+    /// </summary>
+    private static void ClaimSessionLeases(Session session, GameBot[] members)
+    {
+        foreach (GameBot member in members)
+        {
+            if (member.Group != session.Group || !BotDutyLeases.WouldGrant(member, eDutyLeaseKind.BotGroupSession, session.Id))
+                continue;
+            BotDutyLeases.Claim(member, eDutyLeaseKind.BotGroupSession, session.Id, DutyLeaseReason.GroupSession,
+                $"{session.ObjectiveKind} party", session.Group);
+        }
+    }
+
     public static void OnDisbanding(Group group)
     {
         if (group == null)
@@ -1587,7 +1604,10 @@ public static partial class AutonomousBotGroupCoordinator
             if (ending?.DungeonBoss is { } boss)
                 LogDungeonBossResult(ending, boss, "party disbanded");
             foreach (GameBot bot in AllBotMembers(group))
+            {
                 ClearMetadata(bot, true);
+                if (ending != null) BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, ending.Id);
+            }
             Sessions.Remove(group);
         }
     }
@@ -1636,7 +1656,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (objectiveKind == eAutonomousObjectiveKind.GroupPve)
             AutonomousGroupSupply.Update(activeRoster.Where(bot => bot.Group == null && !AutonomousRealmRaid.IsReserved(bot)));
         GameBot[] available = activeRoster
-            .Where(bot => bot.IsAlive && !bot.IsTemporaryGroupHelper && !bot.IsPlayerLedGroup && bot.Group == null && bot.CurrentRegion != null &&
+            .Where(bot => bot.IsAlive && !bot.IsTemporaryGroupHelper && !BotDutyLeases.IsSpokenForByPlayer(bot) && bot.Group == null && bot.CurrentRegion != null &&
                           !AutonomousRealmRaid.IsReserved(bot) &&
                           // siege recruits are merged into full parties by FormSiegeParties, not random warbands
                           !(objectiveKind == eAutonomousObjectiveKind.RvR &&
@@ -3140,6 +3160,7 @@ public static partial class AutonomousBotGroupCoordinator
         session.PublishedAttendanceRevision = session.Attendance.Revision;
         session.PublishedDeadlineTick = session.TaskClock.DeadlineTick;
         session.PublishedRemaining = session.TaskClock.PausedRemainingMilliseconds;
+        ClaimSessionLeases(session, members);
         foreach (GameBot member in members)
         {
             if (member.PersistentRecord == null) continue;

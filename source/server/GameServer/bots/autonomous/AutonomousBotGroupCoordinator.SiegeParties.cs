@@ -30,7 +30,7 @@ public static partial class AutonomousBotGroupCoordinator
                 .Select(id => byId.GetValueOrDefault(id))
                 .Where(bot => bot != null && bot.IsAlive && bot.Group == null && bot.Realm == roster.Realm &&
                               bot.CurrentRegion != null && !bot.InCombat && !bot.IsTemporaryGroupHelper &&
-                              !bot.IsPlayerLedGroup && !bot.IsOnStableMasterRoute && !AutonomousRealmRaid.IsReserved(bot) &&
+                              !BotDutyLeases.IsSpokenForByPlayer(bot) && !bot.IsOnStableMasterRoute && !AutonomousRealmRaid.IsReserved(bot) &&
                               !GameRelic.IsPlayerCarryingRelic(bot))
                 .ToList();
             int minimum = roster.Marching ? SiegePartyMinimumWhileMarching : SiegePartySize;
@@ -82,7 +82,10 @@ public static partial class AutonomousBotGroupCoordinator
             }
             Sessions[group] = session;
             foreach (GameBot member in joined)
+            {
                 member.TempProperties.SetProperty("RvrEventForce", session.Id);
+                BotDutyLeases.Claim(member, eDutyLeaseKind.RvrEvent, session.Id, DutyLeaseReason.SiegeParty, roster.EventId, group);
+            }
             WriteSessionMetadata(session, joined);
             Log.Info($"RVR_SIEGE_PARTY_FORMED event={roster.EventId} group={session.Id} realm={GlobalConstants.RealmToName(roster.Realm)} " +
                      $"size={joined.Length} marching={roster.Marching} members=\"{string.Join(",", joined.Select(b => b.Name))}\"");
