@@ -44,6 +44,7 @@ namespace DOL.UnitTests.QuestHarness
         private readonly Dictionary<(string Name, ushort Region), HarnessNpc> _npcs = new();
         private readonly List<(DOLEvent Event, DOLEventHandler Handler)> _classicHandlers = new();
         private long _clock;
+        private int _players;
 
         private static readonly PropertyInfo Clock = typeof(GameLoop).GetProperty(nameof(GameLoop.GameLoopTime));
 
@@ -120,7 +121,8 @@ namespace DOL.UnitTests.QuestHarness
                 Name = name, Level = level, Class = classId, Realm = (byte)realm, Race = race, AccountName = "harness",
                 GainXP = true, GainRP = true,
             };
-            typeof(DataObject).GetProperty(nameof(DataObject.ObjectId)).SetValue(character, CharacterId + "-" + name);
+            // Every player is a new character, so a quest walked twice starts from nothing each time.
+            typeof(DataObject).GetProperty(nameof(DataObject.ObjectId)).SetValue(character, $"{CharacterId}-{name}-{++_players}");
             var player = new HarnessPlayer(client, character, realm);
             player.SetCharacterClass(classId);
             player.InternalID = character.ObjectId;
