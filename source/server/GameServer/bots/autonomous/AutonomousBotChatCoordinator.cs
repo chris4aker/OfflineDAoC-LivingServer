@@ -1148,6 +1148,19 @@ public static class AutonomousBotChatCoordinator
         bool voices = AutonomousBotVoices.Enabled;
         long now = GameLoop.GameLoopTime;
         string channel = AutonomousChatThreads.Tell(player.Name, bot.Name);
+        // Bot-led groups: the answer to a leader's invite tell. "no thanks" is a no to that leader (as No in the box).
+        if (AutonomousChatThreads.Log.OpenQuestion(channel, now, AutonomousChatThreads.TellMemoryMs) is { } invite &&
+            invite.Invites == BotLedGroups.InviteThread && !message.Contains('?') && AutonomousChatThreads.SaysYes(message) is bool joining)
+        {
+            AutonomousChatThreads.Log.Close(invite);
+            BotLedGroups.OnInviteTellAnswered(bot, player, joining);
+            return new ReplyChoice(AutonomousBotVoices.StyleFor(bot, joining
+                ? Random.Shared.Next(2) == 0 ? "cool, accept the inv" : "great, inv is up"
+                : Random.Shared.Next(2) == 0 ? "np, maybe next time" : "no worries"), "lead invite answer");
+        }
+        // Asking a bot leader with room ("room for a cleric?", "lfg?") gets the group invite box, not "invite me".
+        if (AsksToJoinGroup(message) && BotLedGroups.OnPlayerAsked(player, bot))
+            return new ReplyChoice(null, "lead invite asked");
         if (voices)
         {
             string word = AutonomousChatThreads.FollowUpWord(message);

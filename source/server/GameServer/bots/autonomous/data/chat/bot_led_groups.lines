@@ -1,0 +1,68 @@
+# Bot-led groups (docs/BOT-LED-GROUPS.md, change 9): what the gamebot leader of a party that invited the player says.
+# Short and lowercase, the way 2003 leaders typed. Only BotLedGroups asks for these (flag lead_call, which no bot has on
+# its own), so ambient group talk never says them. {destination} is where the group is or meets, {camp} what it hunts.
+# A line never promises what the server will not do: nobody is summoned, ported or given money. New writing.
+
+# ---- lead_invite: the tell before the group invite box (unasked) ----
+@kind tell
+@topic lead_invite
+@who *
+@needs lead_call
+@invites ask
+lf 1 more for {monsters} in {destination}, want in?
+[need|lf] one more for {monsters}, [want in|interested]?
+got a spot open, {monsters} in {destination}. [want in|you up for it]?
+hey, we have room for one more. {monsters} in {destination}, [want to come|you in]?
+forming up for {monsters}, could use you. want an inv?
+
+# ---- lead_invite_asked: the player asked (/lfg, a tell) ----
+@topic lead_invite_asked
+@invites none
+[got|have] room, sending [you an|an] inv
+sure, inv coming
+yep, [sending|incoming] inv
+we have a spot, inv sent
+
+# ---- lead_afk_let_go: the group moved on after 30 minutes away (tell) ----
+@topic lead_afk_let_go
+@invites none
+had to move on, send me a tell when you are back
+we went on without you, [send me a tell|tell me] when you are back and we can [regroup|sort it out]
+
+# ---- In the group (/group) ----
+@kind group
+@who *
+@needs in_player_group,bot_leads,lead_call
+@invites none
+@topic lead_welcome
+welcome! meet up at {destination}
+[welcome|hey], we meet at {destination}
+welcome aboard, meeting at {destination}, see you there
+@topic lead_welcome_out
+welcome! we are at {destination}, come find us
+[welcome|hey], we are out at {destination}, [follow me if you are close|come find us]
+@topic lead_wait
+still at {destination}, waiting on you
+we are at {destination} [whenever you are ready|still]
+waiting at {destination}, no rush
+@topic lead_going_on
+heading on to {camp}, catch up when you can
+going on to {camp}, meet us there, spot is saved
+moving on to {camp}, [your spot is saved|we saved your spot]
+@topic lead_where
+where u at?
+[where are you|where u at], need directions?
+you still with us?
+@topic lead_afk_hold
+everyone med, waiting on our last one
+[holding|hold up] a sec, everyone med
+@topic lead_move
+moving to {camp}
+[ok|alright], heading to {camp}
+on to {camp}, [stay close|follow me]
+@topic lead_break
+thats it for me, good group all
+gotta call it, [ty all|thanks all], good group
+@topic lead_player_left
+lost one, we carry on
+[ok|alright], carrying on without them

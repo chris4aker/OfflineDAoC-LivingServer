@@ -176,6 +176,9 @@ public static partial class AutonomousLivingServer
     public static void OnPlayerLfg(GamePlayer player, string message)
     {
         AutonomousBeggars.OnPlayerAsked(player, message, "lfg");
+        // Bot-led groups: a gamebot leader with room may invite the player within a minute; then no duo offers.
+        if (BotLedGroups.OnPlayerAsked(player))
+            return;
         if (!TellsOn || player?.Client == null || player.Group != null)
             return;
         long now = GameLoop.GameLoopTime;

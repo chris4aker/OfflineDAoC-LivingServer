@@ -131,6 +131,25 @@ public class SocialExpansionSettingsTests
         Assert.That(rows.ContainsKey("bot_guilds_enabled"), Is.False);
     }
 
+    [Test] public void BotLeadersInvitesAndTheLootShareAreSavedReadAndChecked()
+    {
+        // Living Server 1.2, bot-led groups: invites on and a loot share of 2 by default (owner 2026-11-04).
+        Assert.That((SocialExpansionSettings.Defaults.BotGroupInvites, SocialExpansionSettings.Defaults.PlayerLootWeight), Is.EqualTo((true, 2)));
+        (SocialExpansionSettings.Defaults with { BotGroupInvites = false, PlayerLootWeight = 3 }).Save(_database, null, () => _stopped);
+        var rows = Rows();
+        Assert.That((rows["bot_group_invite_player"], rows["bot_group_player_loot_weight"]), Is.EqualTo(("False", "3")));
+        var problems = new List<string>();
+        var loaded = SocialExpansionSettings.Load(_database, problems);
+        Assert.That((loaded.BotGroupInvites, loaded.PlayerLootWeight), Is.EqualTo((false, 3)));
+        Assert.That(problems, Is.Empty);
+        Assert.That((SocialExpansionSettings.Defaults with { PlayerLootWeight = 9 }).Validate(), Does.Contain("loot share"));
+        Assert.That(SocialExpansionSettings.Defaults.AllOff().BotGroupInvites, Is.False);
+        Exec("UPDATE ServerProperty SET Value = 'x' WHERE `Key` = 'bot_group_player_loot_weight'");
+        problems.Clear();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).PlayerLootWeight, Is.EqualTo(1));
+        Assert.That(problems, Has.Count.EqualTo(1));
+    }
+
     [Test] public void TheChatRateIsSavedReadAndChecked()
     {
         // Beta 1.1.2: bot_voices_chat_rate in the tab; 2 by default (owner 2026-11-04, after the playtest).

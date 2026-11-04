@@ -737,9 +737,11 @@ public static partial class BotLedGroups
     {
         string zone = AutonomousBotGroupCoordinator.HuntingPlace(leader) ?? leader.CurrentZone?.Description ?? "town";
         string target = AutonomousBotGroupCoordinator.HuntingTarget(leader);
-        var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["zone"] = zone, ["monsters"] = target ?? "stuff" };
-        if (AutonomousBotVoices.TryLine(leader, "tell", out AutonomousBotVoiceCorpus.Picked picked, topic: asked ? "lead_invite_asked" : "lead_invite",
-                slots: slots))
+        var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["destination"] = zone, ["monsters"] = target ?? "stuff" };
+        // An unasked line names the hunt, so it needs one; lead_call keeps these lines out of every other tell.
+        if ((asked || target != null) &&
+            AutonomousBotVoices.TryLine(leader, "tell", out AutonomousBotVoiceCorpus.Picked picked, topic: asked ? "lead_invite_asked" : "lead_invite",
+                slots: slots, flags: LeadCall))
             return picked.Text;
         return asked
             ? "got room, sending you an inv"
@@ -807,7 +809,7 @@ public static partial class BotLedGroups
     /// <summary>What the leader says to the group it hosts the player in (topic lead_* in the voice corpus, with a plain fallback).</summary>
     public enum Lead { Welcome, WelcomeOnTheWay, MeetupReminder, MeetupGoingOn, WhereAreYou, GoingOn, AfkHold, AfkLetGo, Move, Farewell, PlayerLeft }
 
-    internal static string Topic(Lead what) => what switch
+    public static string Topic(Lead what) => what switch
     {
         Lead.Welcome => "lead_welcome",
         Lead.WelcomeOnTheWay => "lead_welcome_out",
@@ -822,6 +824,9 @@ public static partial class BotLedGroups
         Lead.PlayerLeft => "lead_player_left",
         _ => "lead",
     };
+
+    /// <summary>The flag only these calls carry (data/chat/bot_led_groups.lines), so ambient talk never says them.</summary>
+    private static readonly string[] LeadCall = ["lead_call"];
 
     /// <summary>The plain line when no voice line fits (voices off). {place}, {camp}, {player} are filled in.</summary>
     public static string Fallback(Lead what) => what switch
@@ -862,11 +867,12 @@ public static partial class BotLedGroups
         var slots = new Dictionary<string, string>(StringComparer.Ordinal)
         {
             ["place"] = string.IsNullOrWhiteSpace(place) ? "the camp" : place,
+            ["destination"] = string.IsNullOrWhiteSpace(place) ? "the camp" : place,
             ["camp"] = string.IsNullOrWhiteSpace(camp) ? "the camp" : camp,
             ["player"] = player.Name,
         };
         string text = AutonomousBotVoices.TryLine(leader, what == Lead.AfkLetGo ? "tell" : "group", out AutonomousBotVoiceCorpus.Picked picked,
-            topic: Topic(what), slots: slots)
+            topic: Topic(what), slots: slots, flags: LeadCall)
             ? picked.Text
             : Fill(Fallback(what), slots);
         AutonomousLivingServer.Later(leader, 800 + Random.Shared.Next(1_500), null, () =>
