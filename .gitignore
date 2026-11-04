@@ -36,3 +36,6 @@
 # separate optional asset; they are not part of the editable source checkout.
 /tools/sluaghbinder/payload-v0.31b/
 /tools/sluaghbinder/patcher/
+
+# Automated playtester reports (docs/PLAYTESTER.md): server logs and chat of test runs
+playtest-reports/

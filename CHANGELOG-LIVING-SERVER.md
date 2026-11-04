@@ -8,6 +8,24 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+**An automated playtester** (for testing, not in the game; [docs/PLAYTESTER.md](docs/PLAYTESTER.md)). Until now every
+release was checked by hand in the game client. A scripted player can now run the same checks with no person at the
+keyboard, overnight or in CI:
+- **`make_test_world.py`** makes a test world from a clean release world: a new file, every save emptied as a release
+  is, three test accounts and a small roster of level-1 gamebots. It only reads the world you give it and never writes
+  over a file. A `minimal` world needs no game files at all.
+- **`OfflineDaoc.Playtester`** connects to the server as the original 1.127 client does, logs in, makes characters
+  and plays scenarios: log in, save and restart the server (the character comes back where it quit); say and tells
+  between two players; a group invite with group chat; a tell to a gamebot (it answers); /faction lines a minute; a
+  delivery quest taken, carried and handed in; a group with a gamebot and a kill quest taken (killing the target is
+  not scripted yet). Each run writes a report in Markdown and JSON with timings and every chat line it saw.
+- It refuses any database that `make_test_world.py` did not make, and runs the server from a copy of its folder, so a
+  test run leaves nothing in your install.
+- Its protocol code comes from the new client's network client (`source/new-client`); lometur's HearthDAoC headless
+  client was the model for the idea (it runs inside the server, so it was not ported).
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
