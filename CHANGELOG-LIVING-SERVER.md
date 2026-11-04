@@ -58,7 +58,9 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
 - **Less filler.**
   - **Chat about the game in front of them:** most unprompted lines are now short and real: "lfg 38 zerk", "wts 97%
     chain hauberk /send", "anyone up for vendo?", "inc beno", "who has rena?", from the bot's real level, class, zone and
-    bags and the realm's real keeps and relics.
+    bags and the realm's real keeps and relics. Guild chat too: group calls, raid and keep plans, "gz" to a guildmate
+    who really dinged, a crafter wanted, an old item offered, "brb" and "night all". The same item isn't advertised all
+    evening, and short answers vary.
   - **Musings and quips:** lore musings, polished jokes, tips and life stories appear only rarely in /faction, never as
     replies.
   - **Generic agreement:** "good question", "very true" and the like are gone.
@@ -72,8 +74,8 @@ server at its busiest. How it works and how to tune it: [docs/bot-voices/CHAT-BU
   busy each channel around you is.
 - **Checked:**
   - **Automated:** new tests for every part; the full server suite passes.
-  - **Simulated evening at 1,000 bots a realm:** about 11.4 lines a minute across the channels a player hears, up from
-    about 2.0. At 300 bots it's about 4.7, up from 1.3.
+  - **Simulated evening at 1,000 bots a realm:** about 11.3 lines a minute across the channels a player hears, up from
+    about 2.0. At 300 bots it's about 4.9, up from 1.2.
   - **Re-running the first blind evaluation's 400 lines:** the read rate rises from 53% to about 70%, and about a quarter
     of those lines now get no reply. Those lines are known, so this is a regression check; a fresh blind round judges
     the result.

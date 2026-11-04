@@ -82,7 +82,7 @@ public class UT_ChatThirdPass
         Assert.That(calls, Is.Not.Empty);
         Assert.That(calls.All(said => said.Text.Contains("beno")), Is.True, "a call names the keep really under attack");
         Assert.That(busy.Where(said => said.Kind == "ask_keep").All(said => said.Text.Contains("rena") && !said.Text.Contains("beno")), Is.True);
-        Assert.That(busy.Where(said => said.Kind == "ask_keep").All(said => said.Answer.Contains("mid")), Is.True, "the true owner");
+        Assert.That(busy.Where(said => said.Kind == "ask_keep").All(said => said.Answers.All(answer => answer.Contains("mid"))), Is.True, "the true owner");
     }
 
     [Test]

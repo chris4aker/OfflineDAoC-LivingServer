@@ -427,6 +427,13 @@ public static class AutonomousBotGuildSocial
         invites = null;
         if (!AutonomousBotVoices.Enabled || bot == null)
             return null;
+        // Beta 1.1.3, round 4: mostly a field line from the bot's and the guild's state.
+        if (FieldLine(bot, bot.Guild) is { } field)
+        {
+            invites = FieldInvites + field.Kind;
+            Remember(field);
+            return field.Text;
+        }
         VC.Picked picked = CorpusIdle(bot, BotGuildCharter.Social);
         if (picked == null)
             return null;
@@ -439,6 +446,8 @@ public static class AutonomousBotGuildSocial
     {
         if (!AutonomousBotVoices.Enabled || bot == null || string.IsNullOrEmpty(invites))
             return null;
+        if (invites.StartsWith(FieldInvites, StringComparison.Ordinal))
+            return Recalled(opener) is { } said ? FieldAnswer(bot, bot.Guild, said) : null;
         foreach (string answers in VC.AnswerChain(invites))
             if (AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked reply, answers: answers,
                     filter: line => AutonomousChatShortTalk.ReplyFits(opener, line.Text)))
@@ -461,10 +470,73 @@ public static class AutonomousBotGuildSocial
     {
         string own = charter.ToString().ToLowerInvariant();
         string[] topics = Random.Shared.NextDouble() < 0.65 ? [own, "general"] : ["general", own];
+        // Beta 1.1.3, round 4: a written guild line only when it is short and plain (no check-ins, life filler, jokes or "...").
         foreach (string topic in topics)
-            if (AutonomousBotVoices.TryLine(bot, "guild", out VC.Picked picked, topic: topic, requireVoices: false))
+            if (AutonomousBotVoices.TryLine(bot, "guild", out VC.Picked picked, topic: topic, requireVoices: false,
+                    filter: AutonomousBotVoices.Enabled ? line => !AutonomousChatFiller.IsCrafted(line) && !AutonomousChatFiller.IsGeneric(line.Text) : null))
                 return picked;
         return null;
+    }
+
+    private const string FieldInvites = "field:";
+
+    /// <summary>A guild field line for this bot (AutonomousChatFieldTalk), at the field's share of guild lines; null otherwise.</summary>
+    private static AutonomousChatFieldTalk.Said FieldLine(GameBot bot, Guild guild, bool always = false)
+    {
+        if (!AutonomousBotVoices.Enabled || bot == null || guild == null ||
+            !always && Random.Shared.NextDouble() >= AutonomousChatFieldTalk.Share("guild"))
+            return null;
+        AutonomousChatFieldTalk.Facts facts = GuildFacts(bot, guild);
+        AutonomousChatFieldTalk.Said said = AutonomousChatFieldTalk.Line("guild", facts, AutonomousChatFieldTalk.MemoryOfGuild(guild.GuildID), Random.Shared,
+            GameLoop.GameLoopTime);
+        return said == null ? null : said with { Text = AutonomousChatIdiolect.Apply(said.Text, bot.DatabaseID, false, Random.Shared, terse: true) };
+    }
+
+    /// <summary>The bot's facts with the guild's: its claimed keep, and a guildmate online who just levelled.</summary>
+    private static AutonomousChatFieldTalk.Facts GuildFacts(GameBot bot, Guild guild)
+    {
+        AutonomousChatFieldTalk.Facts facts = AutonomousChatFieldTalk.Of(bot, Random.Shared);
+        string keep = null, dinged = null;
+        try
+        {
+            keep = guild.ClaimedKeeps?.FirstOrDefault()?.Name;
+            foreach (GameBot mate in guild.GetOnlineBotMembers())
+                if (mate != bot && AutonomousBotVoices.JustLeveled(mate))
+                {
+                    dinged = mate.Name;
+                    break;
+                }
+        }
+        catch (InvalidOperationException)
+        {
+        }
+        return facts with { GuildKeep = keep, GuildmateDinged = dinged };
+    }
+
+    /// <summary>A guildmate's short answer to a guild field line, in its own words, or null.</summary>
+    private static string FieldAnswer(GameBot bot, Guild guild, AutonomousChatFieldTalk.Said said)
+    {
+        string answer = AutonomousChatFieldTalk.Answer(said, AutonomousChatFieldTalk.Of(bot, Random.Shared),
+            AutonomousChatFieldTalk.MemoryOfGuild(guild?.GuildID), Random.Shared);
+        return answer == null ? null : AutonomousChatIdiolect.Apply(answer, bot.DatabaseID, false, Random.Shared, terse: true);
+    }
+
+    private static readonly Dictionary<string, AutonomousChatFieldTalk.Said> RecentField = new(StringComparer.Ordinal);
+
+    private static void Remember(AutonomousChatFieldTalk.Said said)
+    {
+        lock (RecentField)
+        {
+            if (RecentField.Count > 128)
+                RecentField.Clear();
+            RecentField[said.Text] = said;
+        }
+    }
+
+    private static AutonomousChatFieldTalk.Said Recalled(string text)
+    {
+        lock (RecentField)
+            return text != null && RecentField.TryGetValue(text, out AutonomousChatFieldTalk.Said said) ? said : null;
     }
 
     /// <summary>
@@ -517,7 +589,25 @@ public static class AutonomousBotGuildSocial
                     return false;
                 LastIdleByGuild[guild.GuildID] = GameLoop.GameLoopTime;
             }
-        VC.Picked voiced = CorpusIdle(bot, charter);
+        // Beta 1.1.3, round 4: most guild lines come from the field (the bot's and the guild's state); a written one only now
+        // and then, and only a short, plain one; the field again when none fits.
+        AutonomousChatFieldTalk.Said field = FieldLine(bot, guild);
+        VC.Picked voiced = field == null ? CorpusIdle(bot, charter) : null;
+        if (field == null && voiced == null)
+            field = FieldLine(bot, guild, always: true);
+        if (field != null)
+        {
+            if (allianceLine)
+                AutonomousBotGuildAlliances.SendLine(alliance, bot.Name, field.Text);
+            else
+            {
+                SendGuildLine(guild, bot.Name, field.Text);
+                GameBot mate = Speakers(guild).FirstOrDefault(candidate => candidate != bot);
+                if (mate != null && Random.Shared.NextDouble() < AutonomousChatFieldTalk.AnswerChance(field.Kind) && FieldAnswer(mate, guild, field) is { } answer)
+                    ScheduleGuildLine(mate, guild, AutonomousBotChatCoordinator.ReplyDelayMs(answer, 0, Random.Shared) + 1_000, () => answer, styled: true);
+            }
+            return true;
+        }
         string idle = voiced?.Text ?? AutonomousBotVoices.StyleFor(bot, Lines.Idle(charter, bot.ClassName, bot.Level, bot.CurrentZone?.Description, Random.Shared));
         if (allianceLine)
         {

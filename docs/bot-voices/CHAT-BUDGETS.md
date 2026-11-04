@@ -115,6 +115,12 @@ Now and then another bot answers one with the truth: the keep's owner, "omw", "g
 twice in an evening. The rest come from the written lines, kept to the short and plain ones; jokes, tips, life stories and
 long remarks are rare and only in /faction.
 
+Guild chat works the same way: "anyone want to group, 31 in camelot hills", "who's on for df tonight", "gz bran" when a
+guildmate really dinged, "need a smith, anyone 500+?", "selling my old ring if anyone wants", plans for the guild's own
+keep, "brb", "lag?", "night all". Written guild lines are kept to short, plain ones, about one in ten. Short answers vary
+and speak for whoever answers ("me, thane 27"), one item is advertised at most once an hour per realm, and nobody trails
+off with "...".
+
 ### Filler rules
 
 - **Musings:** lines that narrate the game instead of playing it appear only now and then as /faction openers. They

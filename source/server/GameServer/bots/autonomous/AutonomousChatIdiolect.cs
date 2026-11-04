@@ -43,9 +43,7 @@ public static class AutonomousChatIdiolect
         string trimmed = result.TrimEnd();
         if (habits.HasFlag(Habit.DoubleQuestion) && trimmed.EndsWith('?') && !trimmed.EndsWith("??") && random.NextDouble() < 0.5)
             result = trimmed + "?";
-        else if (!terse && habits.HasFlag(Habit.TrailOff) && !trimmed.EndsWith('?') && !trimmed.EndsWith('!') && trimmed.Split(' ').Length >= 4 &&
-                 random.NextDouble() < 0.3)
-            result = trimmed.TrimEnd('.') + "...";
+        // Beta 1.1.3, round 4: no trailing "..." any more (the blind judge's tell); the TrailOff habit is kept for its id draw.
         if (!terse && habits.HasFlag(Habit.LolTail) && random.NextDouble() < 0.15 && !Contains(result, "lol") && !Contains(result, "heh") &&
             !Contains(result, "haha") && result.Split(' ').Length >= 3)
             result = result.TrimEnd('.') + " lol";

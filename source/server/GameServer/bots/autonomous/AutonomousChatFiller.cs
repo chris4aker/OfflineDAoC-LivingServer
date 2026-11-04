@@ -70,6 +70,11 @@ public static class AutonomousChatFiller
         // life filler
         " work", " job", "my boss", " kids", "my wife", "my husband", "girlfriend", "boyfriend", "school", "homework", "coffee", "my cat", "my dog",
         "weekend", "monday", "the wife", "my mom", "my dad",
+        // sentimental check-ins and life filler in guild chat (round 4)
+        "best part of my", "here for you", "rough week", "rough day", "missed the", "regret nothing", "just saying", "reminder:", "reminder ",
+        "love this guild", "love you guys", "you guys are", "family", "proud of", "grateful", "means a lot", "soda", "snack", "pizza", " beer",
+        " tea ", "finals", "exams", "my brain", "how is everyone", "hows everyone", "how's everyone", "everyones night", "everyone's night",
+        "hope everyone", "hope you all", "hope yall", "took a week off", "a week off", "my week", "long week", "hugs", "<3", "not a dare", "pro move", "life hack", "fun fact",
         // narration
         "feels like", "nothing like", "best kind of", "smells like", "i miss", "makes the time", "is louder than", "like a ", "like geese",
     ];
@@ -87,6 +92,9 @@ public static class AutonomousChatFiller
         if (line.Kind is "ambient" or "rvr" or "camp" or "group" && line.Topic != null && CraftedTopics.Contains(line.Topic))
             return true;
         string text = line.Text ?? string.Empty;
+        // A written guild line counts as plain only when it is short and has no trailing "..." (round 4).
+        if (line.Kind == "guild" && (text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 8 || text.Contains("...") || text.Contains('…')))
+            return true;
         if (text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 9)
             return true;
         string padded = " " + text.ToLowerInvariant() + " ";

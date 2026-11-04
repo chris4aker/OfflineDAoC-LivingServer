@@ -229,7 +229,7 @@ public static class AutonomousBotChatCoordinator
         if (!AutonomousBotVoices.Enabled || random.NextDouble() >= AutonomousChatFieldTalk.Share(channel))
             return false;
         AutonomousChatFieldTalk.Said said = AutonomousChatFieldTalk.Line(channel, AutonomousChatFieldTalk.Of(starter, random),
-            AutonomousChatFieldTalk.MemoryOf(starter.Realm), random);
+            AutonomousChatFieldTalk.MemoryOf(starter.Realm), random, GameLoop.GameLoopTime);
         if (said == null)
             return false;
         string text = AutonomousChatIdiolect.Apply(said.Text, starter.DatabaseID, false, random, terse: true);
@@ -271,7 +271,7 @@ public static class AutonomousBotChatCoordinator
     private static void ScheduleFieldAnswer(GameBot starter, AutonomousChatFieldTalk.Said said, bool faction)
     {
         var random = Random.Shared;
-        if (said.Answer == null || random.NextDouble() >= AutonomousChatFieldTalk.AnswerChance(said.Kind))
+        if (said.Answers == null || random.NextDouble() >= AutonomousChatFieldTalk.AnswerChance(said.Kind))
             return;
         GameBot[] roster = AutonomousBotRegistry.Snapshot();
         if (roster.Length < 2)
@@ -289,7 +289,11 @@ public static class AutonomousBotChatCoordinator
         }
         if (responder == null)
             return;
-        string answer = AutonomousChatIdiolect.Apply(said.Answer, responder.DatabaseID, false, random, terse: true);
+        // In the answerer's own words ("me, thane 31"), and not one the realm just heard.
+        string answer = AutonomousChatFieldTalk.Answer(said, AutonomousChatFieldTalk.Of(responder, random), AutonomousChatFieldTalk.MemoryOf(starter.Realm), random);
+        if (answer == null)
+            return;
+        answer = AutonomousChatIdiolect.Apply(answer, responder.DatabaseID, false, random, terse: true);
         Schedule(responder, ReplyDelayMs(answer, 0, random), () =>
         {
             if (faction && HasFactionAudience(responder.Realm))
