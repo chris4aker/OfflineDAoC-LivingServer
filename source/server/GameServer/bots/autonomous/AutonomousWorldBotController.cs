@@ -485,7 +485,7 @@ namespace DOL.GS
                     if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) && StepInOnSentinel(brain, bot, bot.TargetObject as GameLiving))
                         return true;
                     if (bot.TargetObject is GameLiving target)
-                        SetStatus(bot, $"Fighting {target.Name}", GoalText(), $"Engaged level {target.EffectiveLevel} {target.Name}", target.Name);
+                        SetStatus(bot, $"Fighting {target.Name}", CombatGoalText(bot), $"Engaged level {target.EffectiveLevel} {target.Name}", target.Name);
                     return false;
                 }
 
@@ -2113,6 +2113,10 @@ namespace DOL.GS
                 .Where(guard => guard.Component?.Keep != null && $"rvr-keep-{guard.Component.Keep.KeepID}" == _rvrDestination?.Id)
                 .Where(guard => !guard.IsPortalKeepGuard && AutonomousRvrKeepPolicy.IsSiegeObjective(guard.Component?.Keep))
                 .Where(guard => !closedDoor || guard is not GuardLord)
+                // Holding at a battleground rally: what comes at the rally, never the lord (the rally goes up together).
+                .Where(guard => _battlegroundRallyHold is not { } rally || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
+                    guard is not GuardLord &&
+                    Vector3.DistanceSquared(rally, new(guard.X, guard.Y, guard.Z)) <= BattlegroundRallyEngageRadius * (float)BattlegroundRallyEngageRadius)
                 .Where(guard => GameServer.ServerRules.IsAllowedToAttack(bot, guard, true))
                 .Where(guard => PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
                     new(guard.X, guard.Y, guard.Z), PathfindingProvider.Instance.BlockingDoorAvoidanceFilters))

@@ -143,7 +143,9 @@ public static class AutonomousRvrDashboard
             // 1,300-1,500 from the keep centre, the lord 577 above it).
             $"lordAt={(lord == null ? "none" : $"{lord.X},{lord.Y},{lord.Z}")} " +
             $"doorsUp=\"{string.Join(";", doors.Where(door => door.IsAlive).Select(door => $"{door.DoorId}@{door.X},{door.Y},{door.Z}"))}\" " +
-            $"stormNearest={(lord == null ? -1 : inside.Where(bot => bot.PersistentRecord?.Activity?.StartsWith("Storming") == true).Select(bot => (int)bot.GetDistanceTo(lord)).DefaultIfEmpty(-1).Min())}");
+            $"stormNearest={(lord == null ? -1 : inside.Where(bot => bot.PersistentRecord?.Activity?.StartsWith("Storming") == true).Select(bot => (int)bot.GetDistanceTo(lord)).DefaultIfEmpty(-1).Min())} " +
+            // Each realm's rally inside the breach (AutonomousBattlegroundKeepRally): rallying n/needed or storming.
+            $"rally=\"{AutonomousBattlegroundKeepRally.Describe(bracket.RegionId)}\"");
     }
 
     private static void Publish(object state)
