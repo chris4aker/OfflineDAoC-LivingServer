@@ -38,8 +38,11 @@ function Find-GameFolder([string]$Given, [string]$BuildDir) {
         if (Test-GameFolder $full) { return $full }
         Stop-WithMessage "No Offline DAoC game in '$full' (runtime\server\GameServer.dll is missing)."
     }
-    $starts = @()
     $parent = Split-Path -Parent $BuildDir
+    # The documented place is inside the game folder: when the build sits there, that folder wins, even if other
+    # playable* folders sit next to it (playtest 2026-11-04: three side-by-side installs refused to install).
+    if ($parent -and (Test-GameFolder $parent)) { return [IO.Path]::GetFullPath($parent) }
+    $starts = @()
     if ($parent) { $starts += $parent; $grand = Split-Path -Parent $parent; if ($grand) { $starts += $grand } }
     $starts += $BuildDir
     $found = @()

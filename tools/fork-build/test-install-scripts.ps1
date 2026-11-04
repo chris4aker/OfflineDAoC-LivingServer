@@ -149,6 +149,16 @@ $noDbInstall = Run 'install-server-build.ps1' @('-GameFolder', $noDb)
 Check ($noDbInstall.Code -eq 0 -and (Sha (Join-Path $noDb 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll'] -and
        $noDbInstall.Output -match 'No world database') "database: a game with no database yet still installs`n$($noDbInstall.Output)"
 
+# The build placed inside one game folder that has other game folders beside it (playtest 2026-11-04: three
+# side-by-side installs): the folder it sits in wins, without -GameFolder.
+$siblings = Join-Path $work 'siblings'
+New-FakeGame (Join-Path $siblings 'playable-a') $base
+New-FakeGame (Join-Path $siblings 'playable-b') $base
+$placed = Join-Path $siblings 'playable-a\LivingServer-placed'
+Copy-Item -LiteralPath $BuildDir -Destination $placed -Recurse
+$sibDry = RunIn $placed 'install-server-build.ps1' @('-DryRun')
+Check ($sibDry.Code -eq 0 -and $sibDry.Output -match [regex]::Escape((Join-Path $siblings 'playable-a'))) "folder search: the game folder the build sits in wins over its siblings`n$($sibDry.Output)"
+
 # Wrong release: refused, nothing changed.
 $other = Join-Path $work 'other'
 New-FakeGame $other '9.99'
