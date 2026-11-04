@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VC = DOL.GS.AutonomousBotVoiceCorpus;
 
@@ -11,8 +12,141 @@ namespace DOL.GS;
 /// </summary>
 public static class AutonomousChatFiller
 {
-    /// <summary>Whether an ambient corpus line may be said in this channel now.</summary>
-    public static bool AmbientAllowed(VC.Line line, bool realmWide, Random random) => line != null;
+    /// <summary>The share of lore musings a /faction opener may still use (the rest of the time they are passed over).</summary>
+    public const double MusingShare = 0.15;
+
+    /// <summary>
+    /// Whether an ambient corpus line may be said in this channel now: a lore musing (the blind spot-the-bot judge's top tell,
+    /// "the bind stone and i are on first name terms") only now and then as a /faction opener, never in /say or /broadcast;
+    /// the Realm Exchange only in a seller's own listing (the owner's feature stays; bots don't plug it unasked). Pure but for
+    /// the random draw.
+    /// </summary>
+    public static bool AmbientAllowed(VC.Line line, bool faction, Random random)
+    {
+        if (line == null)
+            return false;
+        if (MentionsExchange(line.Text) && !line.Needs.Contains("has_listing", StringComparer.Ordinal))
+            return false;
+        if (IsMusing(line))
+            return faction && random.NextDouble() < MusingShare;
+        return true;
+    }
+
+    private static readonly string[] MusingMarkers =
+    [
+        "makes everyone", "on first name terms", "is where most", "haunts", "nothing says", "there is something about", "they say the",
+        "legend says", "the old stories", "an old skald", "an old guildmate swore", "heard lady", "is older than", "built over the bones",
+        "people forget that", "every realm has", "you know youre", "you know you are",
+    ];
+
+    /// <summary>A line that narrates the game instead of playing it: a lore line, or an observation in the voice of a guidebook. Pure.</summary>
+    public static bool IsMusing(VC.Line line)
+    {
+        if (line == null)
+            return false;
+        if (line.Kind is "ambient" or "reply" && line.Topic == "lore")
+            return true;
+        string text = line.Text.ToLowerInvariant();
+        return MusingMarkers.Any(marker => text.Contains(marker, StringComparison.Ordinal));
+    }
+
+    /// <summary>The Realm Exchange named in a line. Pure.</summary>
+    public static bool MentionsExchange(string text) =>
+        !string.IsNullOrEmpty(text) && System.Text.RegularExpressions.Regex.IsMatch(text, @"\bexchange\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>"where can i sell this", "where do i buy armor", "anyone buying?": a question about where to buy or sell. Pure.</summary>
+    public static bool AsksWhereToBuyOrSell(string incoming)
+    {
+        if (string.IsNullOrWhiteSpace(incoming))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(incoming) + " ";
+        return System.Text.RegularExpressions.Regex.IsMatch(t,
+            @" (where|how) (can|do|should|would) (i|you|u|we) (buy|sell|get rid of|offload|find|trade) | where to (buy|sell) | (best|good) (place|way) to (buy|sell) | (exchange|auction|consignment) | whos buying | who is buying | anyone buying | where (is|are) (the )?(merchant|vendor|shop)s? ");
+    }
+
+    private static readonly HashSet<string> GenericLines = new(StringComparer.Ordinal)
+    {
+        "good question", "happy to help", "sounds familiar", "good observation", "you and me both", "just thinking out loud", "mhm anyway back to it",
+        "this exactly", "cant argue with that", "fair enough", "interesting", "true story", "so true", "same here honestly", "i hear that",
+        "i hear you", "glad to help", "tell me more", "could be", "if you say so", "uh huh", "mhm", "well said", "makes sense", "fair point",
+        "i was wondering that too", "good to know", "noted", "right", "indeed",
+    };
+
+    /// <summary>
+    /// Filler that fits any line ("good question", "happy to help", "sounds familiar", "this exactly"): allowed at most once per
+    /// channel per hour (the blind round 1 judge's generic-ack tell). Pure.
+    /// </summary>
+    public static bool IsGeneric(string text)
+    {
+        string skeleton = Skeleton(text);
+        return skeleton.Length > 0 && GenericLines.Contains(skeleton);
+    }
+
+    public const long GenericRestMs = 60 * 60_000;
+
+    private static readonly Dictionary<string, long> GenericUsed = new(StringComparer.Ordinal);
+
+    /// <summary>Whether a generic line may be said in this channel now (none in the last hour).</summary>
+    public static bool GenericAllowed(string channelKey, long now)
+    {
+        if (string.IsNullOrEmpty(channelKey))
+            return true;
+        lock (GenericUsed)
+            return !GenericUsed.TryGetValue(channelKey, out long at) || now - at >= GenericRestMs || at > now;
+    }
+
+    /// <summary>A generic line was said in this channel.</summary>
+    public static void NoteGeneric(string channelKey, long now)
+    {
+        if (string.IsNullOrEmpty(channelKey))
+            return;
+        lock (GenericUsed)
+        {
+            if (GenericUsed.Count > 4096)
+                GenericUsed.Clear();
+            GenericUsed[channelKey] = now;
+        }
+    }
+
+    /// <summary>What a reply is answering, while it is picked (set by the reply path, read by the line filter).</summary>
+    public sealed class ReplyScope : IDisposable
+    {
+        public string Incoming { get; }
+        public string ChannelKey { get; }
+        public long Now { get; }
+        private readonly ReplyScope _outer;
+
+        internal ReplyScope(string incoming, string channelKey, long now, ReplyScope outer) =>
+            (Incoming, ChannelKey, Now, _outer) = (incoming, channelKey, now, outer);
+
+        public void Dispose() => _current = _outer;
+    }
+
+    [ThreadStatic]
+    private static ReplyScope _current;
+
+    /// <summary>The reply being picked on this thread, or null.</summary>
+    public static ReplyScope Current => _current;
+
+    /// <summary>Marks the reply being picked on this thread: what it answers and in which channel (dispose to end).</summary>
+    public static ReplyScope Replying(string incoming, string channelKey, long now) => _current = new ReplyScope(incoming, channelKey, now, _current);
+
+    /// <summary>
+    /// Whether a reply or closing line may answer now: no lore musing, the Realm Exchange only to someone asking where to buy or
+    /// sell, a generic line at most once per channel per hour. Pure but for the generic memory.
+    /// </summary>
+    public static bool ReplyAllowed(VC.Line line, ReplyScope scope)
+    {
+        if (line == null)
+            return false;
+        if (IsMusing(line))
+            return false;
+        if (MentionsExchange(line.Text) && !AsksWhereToBuyOrSell(scope?.Incoming))
+            return false;
+        if (scope != null && IsGeneric(line.Text) && !GenericAllowed(scope.ChannelKey, scope.Now))
+            return false;
+        return true;
+    }
 
     #region Near-duplicates
 

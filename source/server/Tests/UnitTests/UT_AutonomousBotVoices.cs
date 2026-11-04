@@ -194,7 +194,9 @@ namespace DOL.GS.Tests
             VC.Voice proper = Corpus.Voices.Single(voice => voice.Name == "proper");
             Assert.That(VC.Style("i cant go, im afk", proper, new Random(1)), Is.EqualTo("I can't go, I'm afk."));
             Assert.That(VC.Style("anyone for tomb?", proper, new Random(1)), Is.EqualTo("Anyone for tomb?"));
-            Assert.That(VC.Style("nice :)", proper, new Random(1)), Is.EqualTo("Nice :)"));
+            // Beta 1.1.3: a short ack stays as players typed it, even from a tidy writer; a short line takes no full stop.
+            Assert.That(VC.Style("nice :)", proper, new Random(1)), Is.EqualTo("nice :)"));
+            Assert.That(VC.Style("np, have fun", proper, new Random(1)), Is.EqualTo("Np, have fun"));
         }
 
         [Test]

@@ -181,7 +181,13 @@ def split_list(value):
     return [] if value in ('', '*') else [v.strip() for v in value.split(',') if v.strip()]
 
 
+# Beta 1.1.3: a "[a kobold|kobolds] ... [is|are]" family makes "a kobold ... are" (the blind round 1 judge caught it).
+AGREEMENT_RE = re.compile(r"^(a|an|one) [a-z']+( (with|holding|of|in|on|a|an|the|[a-z']+ing))*( [a-z']+)? (are|were) (worse|so|always|just|scarier|better) than\b")
+
+
 def check_text(text, tags, where, problems):
+    if AGREEMENT_RE.search(text.lower()):
+        problems.append(f'{where}: a singular subject with "are" (write the choices as whole phrases): {text}')
     if len(text) > MAX_RAW:
         problems.append(f'{where}: {len(text)} characters (max {MAX_RAW}): {text}')
     for slot in SLOT_RE.findall(text):

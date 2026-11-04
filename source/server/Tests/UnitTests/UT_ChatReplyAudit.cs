@@ -49,10 +49,16 @@ namespace DOL.GS.Tests
             {
                 ["player"] = "Wynn", ["me"] = "Brannoc", ["class"] = "thane", ["level"] = "30", ["realm"] = "Midgard", ["zone"] = "Myrkwood Forest",
             };
-            return Corpus.TryPick(new VC.Request("reply", Speaker(i), slots, Recent, Now, Rng)
+            // Beta 1.1.3: the server's reply filter (no musings, no unasked Exchange plugs, generic filler once an hour a channel).
+            AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
+            bool picked = Corpus.TryPick(new VC.Request("reply", Speaker(i), slots, Recent, Now, Rng)
             {
-                Intent = intent, Answers = answers, Filter = filter, RelaxTo = TimeSpan.FromMinutes(40), LocalHour = 20,
-            }, out VC.Picked picked) ? picked.Text : null;
+                Intent = intent, Answers = answers, Filter = line => AutonomousChatFiller.ReplyAllowed(line, scope) && (filter == null || filter(line)),
+                RelaxTo = TimeSpan.FromMinutes(40), LocalHour = 20,
+            }, out VC.Picked chosen);
+            if (picked && scope != null && AutonomousChatFiller.IsGeneric(chosen.Text))
+                AutonomousChatFiller.NoteGeneric(scope.ChannelKey, scope.Now);
+            return picked ? chosen.Text : null;
         }
 
         /// <summary>What VoicedReply would draw for the line, as (path, reply).</summary>
@@ -177,6 +183,8 @@ namespace DOL.GS.Tests
                 string text = item.text;
                 if (!string.IsNullOrEmpty(item.to) && AutonomousChatThreads.WithoutName(text, item.to) is { Length: > 0 } unnamed)
                     text = unnamed;
+                using AutonomousChatFiller.ReplyScope fillerScope = AutonomousChatFiller.Replying(text, "audit:" + item.channel,
+                    (long)(Now - new DateTime(2026, 10, 26, 20, 0, 0, DateTimeKind.Utc)).TotalMilliseconds);
                 string path;
                 var replies = new List<string>();
                 eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(text);

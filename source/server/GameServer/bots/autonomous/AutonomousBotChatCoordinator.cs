@@ -208,7 +208,7 @@ public static class AutonomousBotChatCoordinator
     /// Ambient lines a channel may carry (Beta 1.1.3 filler rules): lore musings only as a rare /faction opener, the Realm
     /// Exchange only when someone asks where to buy or sell.
     /// </summary>
-    internal static Func<VC.Line, bool> AmbientLineFits(bool realmWide) => line => AutonomousChatFiller.AmbientAllowed(line, realmWide, Random.Shared);
+    internal static Func<VC.Line, bool> AmbientLineFits(bool faction) => line => AutonomousChatFiller.AmbientAllowed(line, faction, Random.Shared);
 
     /// <summary>A line that is not a near-copy of one the channel carried in the last half hour (Beta 1.1.3).</summary>
     private static bool Fresh(AmbientChoice choice, string text)
@@ -427,6 +427,7 @@ public static class AutonomousBotChatCoordinator
     {
         if (!AutonomousBotVoices.Enabled || player == null || string.IsNullOrEmpty(channel))
             return false;
+        using AutonomousChatFiller.ReplyScope fillerScope = AutonomousChatFiller.Replying(message, channel, GameLoop.GameLoopTime);
         long now = GameLoop.GameLoopTime;
         GameBot Speaker(long id) => BotById(id, player.Realm) is { } bot && Hears(bot, player, scope) ? bot : null;
         var named = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player.Name };
@@ -1691,6 +1692,8 @@ public static class AutonomousBotChatCoordinator
         string lastReply = null;
         int due = 0;
         // A few tries past the wanted count, not the whole realm, when no reply fits (review 2026-10-18).
+        using AutonomousChatFiller.ReplyScope fillerScope = AutonomousChatFiller.Replying(opening, ChannelKey(faction ? "faction" : "say", starter),
+            GameLoop.GameLoopTime);
         for (int index = 0; index < eligible.Length && index < count + 3 && scheduled.Count < count; index++)
         {
             GameBot responder = eligible[index];
@@ -1797,6 +1800,17 @@ public static class AutonomousBotChatCoordinator
     /// </summary>
     internal static ReplyChoice VoicedChoice(GameBot responder, string incoming, Func<string> fallback, GamePlayer player = null,
         eAutonomousChatIntent? knownIntent = null, bool addressed = false, string channel = null)
+    {
+        using (AutonomousChatFiller.Replying(incoming, ChannelKey(channel ?? "faction", responder), GameLoop.GameLoopTime))
+            return VoicedChoiceCore(responder, incoming, fallback, player, knownIntent, addressed, channel);
+    }
+
+    /// <summary>The key a channel moment's filler memory goes by: "faction:Albion", "say:1:Albion".</summary>
+    internal static string ChannelKey(string channel, GameBot bot) =>
+        channel == "say" ? $"say:{bot?.CurrentRegionID}:{bot?.Realm}" : $"{channel}:{bot?.Realm}";
+
+    private static ReplyChoice VoicedChoiceCore(GameBot responder, string incoming, Func<string> fallback, GamePlayer player,
+        eAutonomousChatIntent? knownIntent, bool addressed, string channel)
     {
         if (!AutonomousBotVoices.Enabled && !AutonomousLivingServer.MemoryOn)
             return new ReplyChoice(fallback(), "legacy");
@@ -1999,7 +2013,9 @@ public static class AutonomousBotChatCoordinator
     public static bool TryAddDistinctResponse(HashSet<string> scheduled, string response, out string normalized)
     {
         normalized = response?.Trim() ?? string.Empty;
-        return scheduled != null && normalized.Length > 0 && scheduled.Add(normalized);
+        // Beta 1.1.3: near-copies count as the same ("Ha yes, this exactly." and "Heh yep, this exactly").
+        string skeleton = AutonomousChatFiller.Skeleton(normalized);
+        return scheduled != null && normalized.Length > 0 && scheduled.Add(skeleton.Length > 0 ? skeleton : normalized);
     }
 
     private static bool Eligible(GameBot bot) => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
@@ -2033,8 +2049,10 @@ public static class AutonomousBotChatCoordinator
         if (AutonomousBotVoices.Enabled)
             return AutonomousHolidays.On && Random.Shared.NextDouble() < AutonomousHolidays.AmbientShare(AutonomousHolidays.Now) &&
                    AutonomousBotVoices.TryLine(starter, "ambient", out picked, topic: "holiday") ||
-                   AutonomousBotVoices.TryLine(starter, AutonomousBotVoices.AmbientKind(starter, faction, Random.Shared), out picked) ||
-                   AutonomousBotVoices.TryLine(starter, "ambient", out picked)
+                   // Beta 1.1.3: lore musings only now and then as a /faction opener, no unasked Exchange plugs.
+                   AutonomousBotVoices.TryLine(starter, AutonomousBotVoices.AmbientKind(starter, faction, Random.Shared), out picked,
+                       filter: AmbientLineFits(faction)) ||
+                   AutonomousBotVoices.TryLine(starter, "ambient", out picked, filter: AmbientLineFits(faction))
                 ? picked.Text
                 : null;
 

@@ -456,19 +456,27 @@ public static class AutonomousBotVoices
             if (slots != null)
                 foreach (var pair in slots)
                     all[pair.Key] = pair.Value;
-            return Corpus.TryPick(new VC.Request(kind, speaker, all, Recent, DateTime.UtcNow, random)
+            // Beta 1.1.3: a reply or closing is kept free of musings, unasked Exchange plugs and repeated generic filler.
+            AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
+            Func<VC.Line, bool> allowed = kind is "reply" or "closing"
+                ? filter == null ? line => AutonomousChatFiller.ReplyAllowed(line, scope) : line => AutonomousChatFiller.ReplyAllowed(line, scope) && filter(line)
+                : filter;
+            bool picked = Corpus.TryPick(new VC.Request(kind, speaker, all, Recent, DateTime.UtcNow, random)
             {
                 Intent = intent,
                 Answers = answers,
                 Topic = topic,
                 RequireNeed = requireNeed,
-                Filter = filter,
+                Filter = allowed,
                 // Answering a player: a short reply may come back after 40 minutes. Anything else: after six hours,
                 // once the three-day pool for its kind is used up.
                 RelaxTo = relax ? ShortReplyRest : VC.RecentLines.Relaxed,
                 LocalHour = DateTime.Now.Hour,
                 NeedSlots = NeedSlotsFor(bot),
             }, out result);
+            if (picked && scope != null && kind is "reply" or "closing" && AutonomousChatFiller.IsGeneric(result.Text))
+                AutonomousChatFiller.NoteGeneric(scope.ChannelKey, scope.Now);
+            return picked;
         }
         catch (Exception exception)
         {

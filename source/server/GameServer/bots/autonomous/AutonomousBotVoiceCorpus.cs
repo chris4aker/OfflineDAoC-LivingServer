@@ -549,7 +549,8 @@ public sealed class AutonomousBotVoiceCorpus
             result = char.ToUpperInvariant(result[0]) + result[1..];
         if (voice.CapitalizeSentences)
             result = Regex.Replace(result, @"([.!?] )([a-z])", m => m.Groups[1].Value + m.Groups[2].Value.ToUpperInvariant());
-        if (voice.EndPeriod && result.Length > 0 && !chatToken)
+        // Beta 1.1.3: even a tidy writer leaves a short reply unstopped ("Np, have fun", not "Np, have fun.").
+        if (voice.EndPeriod && result.Length > 0 && !chatToken && result.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 3)
         {
             string[] after = voice.NoPeriodAfter.Length > 0 ? voice.NoPeriodAfter : new[] { ".", "!", "?" };
             if (!after.Any(end => result.EndsWith(end, StringComparison.Ordinal)))
@@ -586,6 +587,9 @@ public sealed class AutonomousBotVoiceCorpus
         "lol", "heh", "hehe", "haha", "ha", "rofl", "lmao", "gz", "grats", "gratz", "ty", "thx", "np", "k", "kk", "ok", "brb",
         "afk", "wb", "gn", "gl", "omw", "inc", "re", "hm", "hmm", "huh", "yw", "sry", "nm", "nvm", "pst", "ding", "lfg", "lfm",
         "oom", "med", "rez", "r", "y", "n", "yep", "nope", "ikr", "bah", "ugh", "doh", "w00t", "woot",
+        // Beta 1.1.3: "Lol yes." read as a bot (the blind spot-the-bot judge); short acks stay lowercase for every writer.
+        "yes", "ya", "yeah", "yea", "no", "nah", "sure", "same", "true", "nice", "cool", "hey", "hi", "yo", "sup", "cya", "later", "night",
+        "rip", "oof", "phew", "gg", "x", "this", "agreed", "hehe", "lmao",
     };
 
     /// <summary>A line made only of chat words ("lol", "ty ty", "gz!"), which no writer capitalizes or ends with a period.</summary>

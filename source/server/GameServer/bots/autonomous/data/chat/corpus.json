@@ -103779,7 +103779,7 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
    "text": "a kobold with a grudge is scarier than any troll",
    "id": "a7ceaf966053"
@@ -103797,7 +103797,7 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
    "text": "a kobold with a grudge is scarier than a troll with a hammer",
    "id": "a776302198d5"
@@ -103815,7 +103815,7 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
    "text": "a kobold with a grudge is worse than any troll",
    "id": "c9dd40498692"
@@ -103833,7 +103833,7 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
    "text": "a kobold with a grudge is worse than a troll with a hammer",
    "id": "7017280ca03c"
@@ -103851,295 +103851,7 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold with a grudge are scarier than any troll",
-   "id": "542e54699231"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold with a grudge are scarier than a troll with a hammer",
-   "id": "c2037c71019c"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold with a grudge are worse than any troll",
-   "id": "1cee1f7735a5"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold with a grudge are worse than a troll with a hammer",
-   "id": "6c75417847bf"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold holding a grudge is scarier than any troll",
-   "id": "cacadf6d1f65"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold holding a grudge is scarier than a troll with a hammer",
-   "id": "a439e17456d7"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold holding a grudge is worse than any troll",
-   "id": "99bc3c3924e9"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold holding a grudge is worse than a troll with a hammer",
-   "id": "b1889f1987e8"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold holding a grudge are scarier than any troll",
-   "id": "139d0f39e927"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold holding a grudge are scarier than a troll with a hammer",
-   "id": "5323908481e0"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold holding a grudge are worse than any troll",
-   "id": "ed0ffa370622"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "a kobold holding a grudge are worse than a troll with a hammer",
-   "id": "add019328366"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "kobolds with a grudge is scarier than any troll",
-   "id": "836b950a1843"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "kobolds with a grudge is scarier than a troll with a hammer",
-   "id": "e47aabc9a221"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "kobolds with a grudge is worse than any troll",
-   "id": "3345e4933fe6"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "kobolds with a grudge is worse than a troll with a hammer",
-   "id": "85f2cbaf5728"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
    "text": "kobolds with a grudge are scarier than any troll",
    "id": "ca5c5593b941"
@@ -104157,7 +103869,7 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
    "text": "kobolds with a grudge are scarier than a troll with a hammer",
    "id": "e80e127cc65c"
@@ -104175,7 +103887,7 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
    "text": "kobolds with a grudge are worse than any troll",
    "id": "b9e66a1e9047"
@@ -104193,7 +103905,7 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
    "text": "kobolds with a grudge are worse than a troll with a hammer",
    "id": "aa87e1b78710"
@@ -104211,10 +103923,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
-   "text": "kobolds holding a grudge is scarier than any troll",
-   "id": "2b1fba283294"
+   "text": "a kobold holding a grudge is scarier than any troll",
+   "id": "cacadf6d1f65"
   },
   {
    "kind": "ambient",
@@ -104229,10 +103941,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
-   "text": "kobolds holding a grudge is scarier than a troll with a hammer",
-   "id": "8cfd85b46986"
+   "text": "a kobold holding a grudge is scarier than a troll with a hammer",
+   "id": "a439e17456d7"
   },
   {
    "kind": "ambient",
@@ -104247,10 +103959,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
-   "text": "kobolds holding a grudge is worse than any troll",
-   "id": "e526b48b6033"
+   "text": "a kobold holding a grudge is worse than any troll",
+   "id": "99bc3c3924e9"
   },
   {
    "kind": "ambient",
@@ -104265,82 +103977,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.2887,
    "invites": "chat",
-   "text": "kobolds holding a grudge is worse than a troll with a hammer",
-   "id": "b5a2105bf1c1"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "kobolds holding a grudge are scarier than any troll",
-   "id": "ac2390f2f59a"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "kobolds holding a grudge are scarier than a troll with a hammer",
-   "id": "112232181351"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "kobolds holding a grudge are worse than any troll",
-   "id": "0edbd1bc268b"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "chat",
-   "text": "kobolds holding a grudge are worse than a troll with a hammer",
-   "id": "fdd347bd4788"
+   "text": "a kobold holding a grudge is worse than a troll with a hammer",
+   "id": "b1889f1987e8"
   },
   {
    "kind": "ambient",
@@ -161476,10 +161116,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan standing so still is exactly like a stump, any alb who found out",
-   "id": "5ca32d50719b"
+   "text": "a sylvan standing still looks just like a tree, ask any mid who found out",
+   "id": "3322ecff15ac"
   },
   {
    "kind": "ambient",
@@ -161494,10 +161134,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan standing so still is just the same as a stump, any alb who learned the hard way",
-   "id": "f650c06dd669"
+   "text": "a sylvan standing still looks just like a tree, ask any mid who learned the hard way",
+   "id": "45828e8dd41a"
   },
   {
    "kind": "ambient",
@@ -161512,10 +161152,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan standing so still looks exactly like a tree, any mid who found out",
-   "id": "fca75c5374e8"
+   "text": "a sylvan standing still looks just like a tree, ask any alb who found out",
+   "id": "3a5deccd2cad"
   },
   {
    "kind": "ambient",
@@ -161530,10 +161170,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan standing so still looks exactly the same as a tree, ask mid who found out",
-   "id": "277e108c6626"
+   "text": "a sylvan standing still looks just like a tree, ask any alb who learned the hard way",
+   "id": "6d798fbfcb00"
   },
   {
    "kind": "ambient",
@@ -161548,10 +161188,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan standing so still looks just the same as a tree, any alb who found out",
-   "id": "0a3e08f3c441"
+   "text": "a sylvan standing still looks just like a stump, ask any mid who found out",
+   "id": "de43b2962a8f"
   },
   {
    "kind": "ambient",
@@ -161566,10 +161206,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan standing still looks exactly like a stump, any mid who found out",
-   "id": "df50b2fefe0c"
+   "text": "a sylvan standing still looks just like a stump, ask any mid who learned the hard way",
+   "id": "8d03907a4145"
   },
   {
    "kind": "ambient",
@@ -161584,10 +161224,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan standing still looks exactly the same as a stump, ask mid who found out",
-   "id": "1c88e4bac642"
+   "text": "a sylvan standing still looks just like a stump, ask any alb who found out",
+   "id": "e9bce83f10c8"
   },
   {
    "kind": "ambient",
@@ -161602,10 +161242,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood so still is exactly like a tree, any alb who learned the hard way",
-   "id": "f3b6542be269"
+   "text": "a sylvan standing still looks just like a stump, ask any alb who learned the hard way",
+   "id": "bbb44d04b808"
   },
   {
    "kind": "ambient",
@@ -161620,10 +161260,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood so still is just like a tree, ask alb who learned the hard way",
-   "id": "787a15cb1dac"
+   "text": "a sylvan standing still looks exactly like a tree, ask any mid who found out",
+   "id": "ea7530ba883e"
   },
   {
    "kind": "ambient",
@@ -161638,10 +161278,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood so still is just the same as a stump, ask alb who learned the hard way",
-   "id": "9873c947f624"
+   "text": "a sylvan standing still looks exactly like a tree, ask any mid who learned the hard way",
+   "id": "f7bde086d3ac"
   },
   {
    "kind": "ambient",
@@ -161656,10 +161296,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood so still looks exactly the same as a stump, any alb who found out",
-   "id": "caf0ad956415"
+   "text": "a sylvan standing still looks exactly like a tree, ask any alb who found out",
+   "id": "09c0c27d2eac"
   },
   {
    "kind": "ambient",
@@ -161674,10 +161314,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood so still looks exactly the same as a tree, ask mid who learned the hard way",
-   "id": "471c9e528dc1"
+   "text": "a sylvan standing still looks exactly like a tree, ask any alb who learned the hard way",
+   "id": "432d32fabd4d"
   },
   {
    "kind": "ambient",
@@ -161692,10 +161332,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still is exactly like a stump, any mid who found out",
-   "id": "0d4a98c3b66e"
+   "text": "a sylvan standing still looks exactly like a stump, ask any mid who found out",
+   "id": "a260d7f3ed20"
   },
   {
    "kind": "ambient",
@@ -161710,10 +161350,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still is exactly like a stump, ask mid who learned the hard way",
-   "id": "779d79c02662"
+   "text": "a sylvan standing still looks exactly like a stump, ask any mid who learned the hard way",
+   "id": "09f389434f94"
   },
   {
    "kind": "ambient",
@@ -161728,10 +161368,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still is just like a tree, ask alb who learned the hard way",
-   "id": "6f80edb7974b"
+   "text": "a sylvan standing still looks exactly like a stump, ask any alb who found out",
+   "id": "08cfc05b3b96"
   },
   {
    "kind": "ambient",
@@ -161746,10 +161386,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still is just like a tree, ask mid who found out",
-   "id": "fed4d94dde8b"
+   "text": "a sylvan standing still looks exactly like a stump, ask any alb who learned the hard way",
+   "id": "c0eb9d510290"
   },
   {
    "kind": "ambient",
@@ -161764,10 +161404,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still is just the same as a stump, any alb who learned the hard way",
-   "id": "3a1306bb13dd"
+   "text": "a sylvan standing so still looks just like a tree, ask any mid who found out",
+   "id": "9936cccf537c"
   },
   {
    "kind": "ambient",
@@ -161782,10 +161422,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still looks exactly like a stump, any mid who found out",
-   "id": "22f673cc48f5"
+   "text": "a sylvan standing so still looks just like a tree, ask any mid who learned the hard way",
+   "id": "5a6f94f60dbe"
   },
   {
    "kind": "ambient",
@@ -161800,10 +161440,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still looks just like a tree, ask mid who learned the hard way",
-   "id": "fc3bff90e7fd"
+   "text": "a sylvan standing so still looks just like a tree, ask any alb who found out",
+   "id": "80cc6e11996b"
   },
   {
    "kind": "ambient",
@@ -161818,10 +161458,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still looks just the same as a stump, ask alb who learned the hard way",
-   "id": "503bd7f7587c"
+   "text": "a sylvan standing so still looks just like a tree, ask any alb who learned the hard way",
+   "id": "2b364602d35e"
   },
   {
    "kind": "ambient",
@@ -161836,10 +161476,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "a sylvan stood still looks just the same as a tree, ask alb who found out",
-   "id": "9c000ed89778"
+   "text": "a sylvan standing so still looks just like a stump, ask any mid who found out",
+   "id": "65966d6e7dc9"
   },
   {
    "kind": "ambient",
@@ -161854,10 +161494,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing so still is just like a stump, any alb who found out",
-   "id": "786f88b86bd4"
+   "text": "a sylvan standing so still looks just like a stump, ask any mid who learned the hard way",
+   "id": "353030a79c65"
   },
   {
    "kind": "ambient",
@@ -161872,10 +161512,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing so still is just like a stump, any mid who found out",
-   "id": "d07a09190cce"
+   "text": "a sylvan standing so still looks just like a stump, ask any alb who found out",
+   "id": "1bfabd674da7"
   },
   {
    "kind": "ambient",
@@ -161890,10 +161530,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing so still looks exactly the same as a tree, any alb who learned the hard way",
-   "id": "03a0a0dc6e3b"
+   "text": "a sylvan standing so still looks just like a stump, ask any alb who learned the hard way",
+   "id": "147131dbd129"
   },
   {
    "kind": "ambient",
@@ -161908,10 +161548,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing so still looks exactly the same as a tree, any mid who found out",
-   "id": "899602dfcdcf"
+   "text": "a sylvan standing so still looks exactly like a tree, ask any mid who found out",
+   "id": "614dbe8861ca"
   },
   {
    "kind": "ambient",
@@ -161926,10 +161566,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing so still looks just the same as a tree, ask mid who found out",
-   "id": "48642d07251e"
+   "text": "a sylvan standing so still looks exactly like a tree, ask any mid who learned the hard way",
+   "id": "574e41fe95fb"
   },
   {
    "kind": "ambient",
@@ -161944,10 +161584,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing still is exactly like a stump, any alb who learned the hard way",
-   "id": "836878dc719e"
+   "text": "a sylvan standing so still looks exactly like a tree, ask any alb who found out",
+   "id": "bf53b953e04b"
   },
   {
    "kind": "ambient",
@@ -161962,10 +161602,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing still is exactly like a tree, ask mid who found out",
-   "id": "08f4ba01ca86"
+   "text": "a sylvan standing so still looks exactly like a tree, ask any alb who learned the hard way",
+   "id": "1460679f9831"
   },
   {
    "kind": "ambient",
@@ -161980,10 +161620,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing still is just like a tree, any alb who found out",
-   "id": "edf55b0ca027"
+   "text": "a sylvan standing so still looks exactly like a stump, ask any mid who found out",
+   "id": "93ac57707498"
   },
   {
    "kind": "ambient",
@@ -161998,10 +161638,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing still is just the same as a tree, any alb who found out",
-   "id": "91752ae781b6"
+   "text": "a sylvan standing so still looks exactly like a stump, ask any mid who learned the hard way",
+   "id": "734821c11606"
   },
   {
    "kind": "ambient",
@@ -162016,10 +161656,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing still is just the same as a tree, any alb who learned the hard way",
-   "id": "e7298aa66749"
+   "text": "a sylvan standing so still looks exactly like a stump, ask any alb who found out",
+   "id": "4b21db01a58c"
   },
   {
    "kind": "ambient",
@@ -162034,298 +161674,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1443,
+   "weight": 0.1768,
    "invites": "chat",
-   "text": "sylvans standing still is just the same as a tree, ask alb who learned the hard way",
-   "id": "d23d5efe01ba"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans standing still looks exactly like a tree, any mid who found out",
-   "id": "d8eecaa341b2"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans standing still looks exactly the same as a stump, any mid who learned the hard way",
-   "id": "a4e6652f1bd0"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans standing still looks just the same as a stump, any mid who found out",
-   "id": "82476c62b375"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood so still is exactly like a stump, ask alb who found out",
-   "id": "32b5d7dcde0d"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood so still is exactly the same as a tree, ask mid who learned the hard way",
-   "id": "c806e8b4932a"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood so still is just the same as a stump, any mid who found out",
-   "id": "d866df95bec5"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood so still looks exactly like a stump, any alb who found out",
-   "id": "d25e958eade3"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood so still looks exactly like a stump, ask mid who learned the hard way",
-   "id": "cedc55d58392"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood so still looks just like a stump, any alb who learned the hard way",
-   "id": "8c8298cf3159"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood so still looks just like a tree, any mid who found out",
-   "id": "657c77c32a3a"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood so still looks just the same as a tree, ask mid who learned the hard way",
-   "id": "e9c4466dddef"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood still is exactly the same as a tree, any mid who learned the hard way",
-   "id": "9e80e71b8e87"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood still is exactly the same as a tree, ask alb who learned the hard way",
-   "id": "2fb51c152714"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood still is just like a tree, any alb who found out",
-   "id": "d01e330c87a9"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood still looks just like a tree, any alb who found out",
-   "id": "09159837b5b9"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "sylvans stood still looks just the same as a stump, ask mid who learned the hard way",
-   "id": "415f94b51e80"
+   "text": "a sylvan standing so still looks exactly like a stump, ask any alb who learned the hard way",
+   "id": "8612efbd2163"
   },
   {
    "kind": "ambient",
