@@ -284,11 +284,17 @@ namespace DOL.GS
 
         private static void WriteSafely(AiProfileMinute minute, string path)
         {
+            // A thread-pool work item that throws ends the process, so nothing may leave here (review of PR #67): any
+            // failure is logged once and the next minute tries again.
             try { Write(minute, path); }
-            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+            catch (Exception exception)
             {
-                if (Interlocked.Exchange(ref _warned, 1) == 0)
-                    Log.Warn($"AI_PROFILE could not write {path}; the log line still has the top ten", exception);
+                try
+                {
+                    if (Interlocked.Exchange(ref _warned, 1) == 0)
+                        Log.Warn($"AI_PROFILE could not write {path}; the log line still has the top ten", exception);
+                }
+                catch (Exception) { /* the logger itself failed: still never throw from the pool */ }
             }
         }
 

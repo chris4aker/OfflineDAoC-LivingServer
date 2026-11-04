@@ -196,13 +196,32 @@ namespace DOL.GS
 
         // ---- Measured locks (stefanrows's MeasuredLock) ----------------------------------------------------------------
 
-        /// <summary>A lock taken by <see cref="Lock"/>; disposing it releases the lock.</summary>
-        public readonly struct HeldLock : IDisposable
+        /// <summary>
+        /// A lock taken by <see cref="Lock(object, AiSystem)"/>; disposing it releases the lock. A ref struct (review of
+        /// PR #67), so like <c>lock</c> it cannot be held across an <c>await</c> (the compiler refuses, as it does with
+        /// CS1996 for <c>lock</c>), and it cannot be boxed, stored in a field or captured by a lambda. A default value
+        /// releases nothing.
+        /// </summary>
+        public readonly ref struct HeldLock
         {
             private readonly object _gate;
             internal HeldLock(object gate) => _gate = gate;
-            public void Dispose() => Monitor.Exit(_gate);
+
+            public void Dispose()
+            {
+                if (_gate != null)
+                    Monitor.Exit(_gate);
+            }
         }
+
+        /// <summary>
+        /// Refused at build time: a <see cref="System.Threading.Lock"/> is not a monitor, and passing one here as an
+        /// object would lock its object header instead of the lock itself (what <c>lock (gate)</c> on that type does is
+        /// <c>gate.EnterScope()</c>). Use <c>lock (gate)</c> for that type.
+        /// </summary>
+        [Obsolete("A System.Threading.Lock is not a monitor: use lock (gate) for it, not AiProfile.Lock.", error: true)]
+        public static HeldLock Lock(System.Threading.Lock gate, AiSystem waitSystem) =>
+            throw new NotSupportedException("AiProfile.Lock takes a monitor object, not a System.Threading.Lock.");
 
         /// <summary>
         /// Takes the same monitor as <c>lock (gate)</c>, with the same reentrancy, and adds any time spent waiting for it

@@ -25,8 +25,8 @@ Older entries below keep the names they were written with.
     description now says it is not enforced yet; the deferral queue is decided after the L300/L600 baselines.
   - **Credit:** built on lometur's HearthDAoC bot CPU meter (per-thread counters, brain time by bot kind) and
     stefanrows's `BotThinkProfiler` (the timed scope, the measured lock, the minute line), both GPL-3.0.
-  - **Checked:** 25 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
-    report tool; the full server suite passes (4,115). Not yet run on a live server: the first L300 run is the owner's.
+  - **Checked:** 33 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
+    report tool; the full server suite passes (4,123). Not yet run on a live server: the first L300 run is the owner's.
 
 ## Beta 1.1.1 — 2026-10-31
 
