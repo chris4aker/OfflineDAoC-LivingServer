@@ -31,13 +31,15 @@ namespace DOL.GS.Quests
         /// or a leader who is dead or no longer in the world). Owner 2026-10-31: the leader must be alive and active,
         /// as every other reader of PlayerGroupLeader requires (CompanionFollowPolicy, TemporaryGroupStableTravel,
         /// AutonomousStuckWatchdog); a dead leader lying in range while the bots fight on is not credited.
+        /// Bot-led groups (docs/BOT-LED-GROUPS.md, change 7): in a gamebot party that hosts the player, the bots lead and
+        /// have no PlayerGroupLeader; the hosted player is credited by the same rule (alive, in the group, in range).
         /// </summary>
         public static GamePlayer GroupLeaderFor(GameBot bot, GameObject killed)
         {
             if (bot == null || killed == null)
                 return null;
 
-            GamePlayer leader = bot.PlayerGroupLeader;
+            GamePlayer leader = bot.PlayerGroupLeader ?? BotLedGroups.HostedPlayerOf(bot.Group);
             if (leader is not { IsAlive: true, ObjectState: GameObject.eObjectState.Active })
                 return null;
 

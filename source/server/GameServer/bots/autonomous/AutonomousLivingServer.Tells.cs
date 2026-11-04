@@ -26,6 +26,32 @@ public static partial class AutonomousLivingServer
 
     private static readonly Dictionary<string, long> NextTellTo = new(StringComparer.OrdinalIgnoreCase);
     private static readonly Dictionary<(long BotId, string Player), long> LastTellPair = new();
+    // When a bot last started a tell with the player, or a bot leader sent an unasked invite (bot-led groups share the budget).
+    private static readonly Dictionary<string, long> LastStartedTell = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>How long since a bot last started a tell with the player (or a leader's unasked invite); MaxValue when none yet.</summary>
+    public static long SinceLastBotTell(GamePlayer player, long now)
+    {
+        lock (NextTellTo)
+            return player != null && LastStartedTell.TryGetValue(player.Name, out long at) ? now - at : long.MaxValue;
+    }
+
+    /// <summary>
+    /// A bot leader's invite counts as that period's bot tell (docs/BOT-LED-GROUPS.md): the next bot-started tell waits its
+    /// full gap from now, so tells and invites never stack.
+    /// </summary>
+    public static void CountInviteAsTell(GamePlayer player, long now)
+    {
+        if (player == null)
+            return;
+        lock (NextTellTo)
+        {
+            LastStartedTell[player.Name] = now;
+            long next = now + NextTellGap(false, Random.Shared);
+            if (!NextTellTo.TryGetValue(player.Name, out long planned) || planned < next)
+                NextTellTo[player.Name] = next;
+        }
+    }
 
     public static bool TellsOn => AutonomousBotVoices.Enabled && Properties.BOT_VOICES_TELLS;
 
@@ -126,6 +152,8 @@ public static partial class AutonomousLivingServer
                 continue;
             lock (LastTellPair)
                 LastTellPair[(bot.DatabaseID, player.Name)] = now;
+            lock (NextTellTo)
+                LastStartedTell[player.Name] = now;
             // Only a duo offer is answered with how to group; "need directions?" is a real question (review 2026-10-26).
             string invites = topic == "group_offer" && picked.Line?.Invites == "ask" ? AskGroupInvite : picked.Line?.Invites;
             Later(bot, 0, () => CanTalk(bot) && player.ObjectState == GameObject.eObjectState.Active, () => Tell(bot, player, picked.Text, invites));
@@ -148,6 +176,9 @@ public static partial class AutonomousLivingServer
     public static void OnPlayerLfg(GamePlayer player, string message)
     {
         AutonomousBeggars.OnPlayerAsked(player, message, "lfg");
+        // Bot-led groups: a gamebot leader with room answers and invites the player within 15 seconds; then no duo offers.
+        if (BotLedGroups.OnPlayerAsked(player))
+            return;
         if (!TellsOn || player?.Client == null || player.Group != null)
             return;
         long now = GameLoop.GameLoopTime;

@@ -18,8 +18,8 @@ public enum eDutyLeaseKind : byte
     /// <summary>A realm raid (dragon, epic or neutral dungeon): reserved as a recruit, or in one of its parties.</summary>
     RealmRaid = 4,
     /// <summary>
-    /// Reserved for bot-led groups (docs/BOT-LED-GROUPS.md, phase B): a bot-led group that a real player has joined.
-    /// Defined here so the rules and /lswhy know it; nothing claims it yet.
+    /// A bot-led group that a real player has joined (docs/BOT-LED-GROUPS.md, B1): every gamebot of the party holds it,
+    /// bound to the group (AutonomousBotGroupCoordinator.TryHostPlayer), until the player or the bot leaves.
     /// </summary>
     BotLedGroupWithPlayer = 5,
     /// <summary>The bot is in a real player's group and the player leads (/invite, a handover).</summary>
@@ -126,7 +126,7 @@ public static class BotDutyLeaseRules
     /// RvR march, raid reservation, stable route) run before it, in BotGroupInvite, and a handover moves the bot to
     /// the player who stays.</item>
     /// <item>A bot a player has (either player kind) is never taken by anything else.</item>
-    /// <item>A bot-led group taking in a player (reserved for phase B) takes only its own kind of hold, an ordinary
+    /// <item>A bot-led group taking in a player (bot-led groups, B1) takes only its own kind of hold, an ordinary
     /// bot group; a raid, an RvR event or a rally keeps the bot.</item>
     /// <item>Otherwise the higher priority takes the lower. Among equals of the same kind the newer claim moves the bot
     /// (one raid reservation, one RvR force, one rally, one group at a time, as before the lease); among equals of

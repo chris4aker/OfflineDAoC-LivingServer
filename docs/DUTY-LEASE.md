@@ -17,7 +17,7 @@ not either (their owner rules stay as they are).
 | Kind | Priority | Claimed by | Ends |
 |---|---|---|---|
 | `PlayerGroup` | 100 | `GameBot.EnterPlayerLedGroup` (invite, handover) | `LeavePlayerLedGroup`, logout |
-| `BotLedGroupWithPlayer` | 90 | reserved for phase B: defined, claimed by nothing yet | |
+| `BotLedGroupWithPlayer` | 90 | a gamebot party that took in the player (`hosting_player`, bound to the group; BOT-LED-GROUPS.md, B1) | the player leaves, the bot leaves the party, the party disbands, logout |
 | `RealmRaid` | 40 | raid reservation (`raid_reserved`), formed/joined party or replacement (`raid_party`, bound to the group) | released member, party leaves the raid, raid ends, logout |
 | `RvrEvent` | 30 | defense response (`rvr_force`), siege party (`siege_party`, bound to the group) | `RemoveForce`, the event or relic escort ends, a superseded siege's defenders |
 | `BattlegroundWave` | 30 | a gamebot going up with its realm's keep rally (`bg_rally`) | regroup, new keep holder, lapsed rally, death, released |
