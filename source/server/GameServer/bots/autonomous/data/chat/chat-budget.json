@@ -18,7 +18,8 @@
 //
 // To tune: copy this file next to the server (runtime/server/chat-budget.json) and edit it; the server reads that copy
 // at start instead. bot_voices_chat_rate (the launcher's "How much they talk", 0-3) multiplies every ambient target:
-// 1 is a busy peak server, 2-3 very busy, 0 only answers.
+// 2 (the default from 1.1.2) sounds like a busy server, 1 is calmer, 3 very busy, 0 only answers. Measured in the
+// 2026-11-04 playtest at 900 bots a realm, about 10 am, in Albion: 1 gave 6.4 lines a minute, 2.5 about 15.
 {
   "version": 1,
   "design_bots_per_realm": 1000,

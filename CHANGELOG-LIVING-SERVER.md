@@ -248,6 +248,17 @@ realm that feels like a full server at its busiest. How it works and how to tune
   invitations (`offline_world_bot_guild`) and counts each gamebot once; retired gamebots still don't count. Our own
   launcher bug. Checked: a new `HeraldPageTests` case on a small SQLite world (run on Linux here; CI runs it on
   Windows).
+- **Bots talk twice as much by default: "How much they talk" is 2** (owner 2026-11-04, after the playtest measured it at
+  your roster: 900 bots a realm, about 10 am, Albion heard 6.4 lines a minute across /faction, /lfg and /trade with 1,
+  and about 15 with 2.5). An install that never changed the setting moves from 1 to 2 once, at its first start; one where
+  it was set in the launcher keeps its value. Each channel's ceiling still holds, so it can't become spam. Checked: unit
+  tests for the default, the one-time move and a value set in the launcher; the levels themselves were measured in game.
+- **Creating a character of a race this server doesn't offer is refused cleanly** (found in the 2026-11-04 playtest; also
+  offered to the base game). The game client shows every race up to Labyrinth, but the server's world is Classic and
+  Shrouded Isles: Half Ogre, Frostalf, Shar and the Minotaurs have no starting stats. Creating one (a Half Ogre wizard)
+  threw an exception in the stat check; it is now an invalid character with a log line that says why. The player still
+  only sees the character not appear: the character screen has no message for it. Checked: a new
+  `UT_CharacterStatValidator` case.
 - **A GM's level or rank set by command is no server first** (found in the 2026-11-04 playtest: `/player level 50` on a
   GM test character announced "the first on the server to reach level 50" to every realm, put it in the Herald and set
   off a wave of grats). Server firsts now skip GM and admin accounts, the launcher's "Make Me a GM" included. Not

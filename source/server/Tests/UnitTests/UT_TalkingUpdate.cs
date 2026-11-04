@@ -491,6 +491,20 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void BusierChatReachesAnUntouchedWorldOnce()
+        {
+            // Owner 2026-11-04, after the playtest: bot_voices_chat_rate 1 -> 2 where the server wrote 1 itself.
+            var untouched = new Dictionary<string, (string Value, string DefaultValue)> { ["bot_voices_chat_rate"] = ("1", "1") };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", untouched), Is.EqualTo(new[] { "bot_voices_chat_rate" }));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1", untouched).Single().NewDefault, Is.EqualTo("2"));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1.2", untouched), Is.Empty, "once only");
+            var chosen = new Dictionary<string, (string Value, string DefaultValue)> { ["bot_voices_chat_rate"] = ("1", "") };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", chosen), Is.Empty, "set in the launcher: the player's choice");
+            var other = new Dictionary<string, (string Value, string DefaultValue)> { ["bot_voices_chat_rate"] = ("2.5", "1") };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1", other), Is.Empty);
+        }
+
+        [Test]
         public void LowHealthAndOomAreCalledOnTheWayDownOnly()
         {
             var state = new AutonomousBotCombatCalls.BotState();

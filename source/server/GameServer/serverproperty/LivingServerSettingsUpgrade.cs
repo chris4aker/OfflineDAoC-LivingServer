@@ -35,6 +35,8 @@ namespace DOL.GS.ServerProperties
 			new("1.1", "bot_living_grats", "False", "True"),
 			new("1.1.2", "mana_regen_amount_modifier", "1", "1.5"),
 			new("1.1.2", "mana_regen_amount_halved_below_50_percent", "True", "False"),
+			// Owner 2026-11-04, after the playtest: at 900 bots a realm, 1 gave 6.4 lines a minute in Albion mid-morning.
+			new("1.1.2", "bot_voices_chat_rate", "1", "2"),
 		];
 
 		/// <summary>The 1.1 keys (switched on), kept for callers of the first version.</summary>

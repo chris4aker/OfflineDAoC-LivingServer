@@ -554,7 +554,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     {
         var number = new NumericUpDown
         {
-            Minimum = 0, Maximum = 3, DecimalPlaces = 1, Increment = 0.1m, Value = 1, Width = 62, AccessibleName = name,
+            Minimum = 0, Maximum = 3, DecimalPlaces = 1, Increment = 0.1m, Value = 2, Width = 62, AccessibleName = name,
             TextAlign = HorizontalAlignment.Right,
         };
         StyleInput(number);

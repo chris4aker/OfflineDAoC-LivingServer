@@ -87,8 +87,10 @@ the chat to be quiet, even if something in our research says the old servers wer
 
 - **Nights:** calmer than prime time, never dead. The lowest hour factor is 0.45, or 0.7 with the clock schedule.
 - **Small rosters:** `population_exponent` is 0.65, so a 300-bot realm still talks at 46% of a full server.
-- **Turning it up:** in the launcher's Living Server tab, *Personalities and voices*, set **How much they talk**
-  (`bot_voices_chat_rate`, 0–3) to 2–3 for very busy. 1 is a busy peak server.
+- **How much they talk:** in the launcher's Living Server tab, *Personalities and voices*, **How much they talk**
+  (`bot_voices_chat_rate`, 0–3). **2 is the default** from 1.1.2 (owner 2026-11-04, after the playtest): at 900 bots a
+  realm, about 10 am, Albion heard 6.4 lines a minute with 1 and about 15 with 2.5. 1 is calmer, 3 very busy. An install
+  that never changed it moves from 1 to 2 once; one where it was set in the launcher keeps its value.
 
 The research also found that `/advice` was probably not a public channel in 2002–2003. Bots never use it.
 

@@ -28,8 +28,9 @@ public sealed record SocialExpansionSettings
     public bool Personalities { get; init; }
     public bool Voices { get; init; } = true;
     public bool Debates { get; init; } = true;
-    /// <summary>How much bots talk unprompted, 0 to 3 (bot_voices_chat_rate): 1 is a busy peak server, 2 to 3 very busy (Beta 1.1.2).</summary>
-    public double ChatRate { get; init; } = 1.0;
+    /// <summary>How much bots talk unprompted, 0 to 3 (bot_voices_chat_rate). 2 by default from Living Server 1.1.2 (owner
+    /// 2026-11-04, after the playtest measured 6.4 lines a minute in Albion at 900 bots a realm with 1).</summary>
+    public double ChatRate { get; init; } = 2.0;
     public bool LivingMemory { get; init; } = true;
     public bool LivingGrats { get; init; } = true;
     public bool LivingFirsts { get; init; }
@@ -121,7 +122,7 @@ public sealed record SocialExpansionSettings
 
     /// <summary>The server's description of bot_voices_chat_rate (ServerProperties.BOT_VOICES_CHAT_RATE).</summary>
     public const string ChatRateDescription =
-        "When bot voices are on: how much bots talk on their own, from 0 (they only answer) to 3. 1 is a busy peak server, 2 to 3 very busy. Chat already rises and falls with the hour and with how many bots are on (chat-budget.json).";
+        "When bot voices are on: how much bots talk on their own, from 0 (they only answer) to 3. 2 (the default) sounds like a busy server; 1 is calmer, 3 very busy. Chat already rises and falls with the hour and with how many bots are on (chat-budget.json).";
 
     /// <summary>The value the server would read for each key.</summary>
     public IReadOnlyDictionary<string, string> ToStoredValues() => new Dictionary<string, string>
