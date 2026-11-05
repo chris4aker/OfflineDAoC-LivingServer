@@ -91,22 +91,55 @@ welcome, we wait at {destination} until the raid leaves
 [welcome|hey], we muster at {destination}, see you there
 glad you came, meet us at {destination} before we head out
 
-# ---- Written for the leader's later calls (not spoken yet: their triggers are not built, see B2 as built) ----
+# ---- B4: the leader's pull call (it replaces the generic "inc" for that pull: one line per pull) ----
 @topic lead_pull
 pulling
 [pulling|incoming], get ready
 inc, on me
+inc, [stay on me|watch for adds]
+pulling, [healers|everyone] ready?
+[here it comes|here we go]
+incoming, [assist me|on my target]
+one coming, [get set|be ready]
+[ok|k] pulling, [hold aggro|tank it]
+inc inc
+
+# ---- B4: the natural break (bags nearly full, or the task's last minutes) ----
+# lead_sell: the call before the last pull. lead_town: the goodbye once that pull is over and the party ends to sell.
 @topic lead_sell
 last pull then town
 [bags full|bags are full], last pull then we sell
 one more pull, then town to sell
+[ok|alright], last one then [town|we go sell]
+@topic lead_town
+ok town to sell, good group all
+[thats it|done], heading to town to sell, [ty all|thanks all]
+selling up, [good group|nice run] everyone
+bags full, calling it, [ty for the group|thanks for the group]
+
+# ---- B4: the leader's search for a replacement (the ask itself goes to /lfg, lead_lf_more below) ----
+@topic lead_recruited
+got someone coming, hang tight
+[found|got] one, they are on the way
+replacement on the way, [hold here|med up while we wait]
+@topic lead_recruit_none
+no luck finding anyone, we carry on as we are
+[nobody|no one] bit, we keep going short
+cant find one, we manage without
+@topic lead_recruit_end
+couldnt find anyone, gonna call it here
+[no luck|nobody around], calling it, [ty all|thanks all]
+cant run without one, done for now
+# ---- B4: lead_lf_more, the leader's /lfg ask for a replacement ({need}: "a healer", "a tank", "dps"; {camp}: what it hunts) ----
 @kind lfg
 @needs in_group,lead_call
 @invites none
 @topic lead_lf_more
-lf 1 more, any healer?
-[lf|looking for] 1 more for {camp}, any class
-lf 1 more, need a healer for {camp}
+lf 1 more, need {need} for {camp}
+[lf1m|lf 1m] {need}, {camp}
+lf 1 more at {camp}, need {need}, pst
+need {need} at {camp}, [send a tell|pst]
+{camp} group lf {need}, [quick xp|steady pulls]
 
 # lead_raid_invite: the raid leader's one tell to a level-50 player before the box. {raid} is the encounter's name.
 @kind tell

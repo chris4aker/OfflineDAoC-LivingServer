@@ -183,6 +183,13 @@ public static partial class AutonomousBotGroupCoordinator
         public ushort PlayerLastRegion { get; set; }
         /// <summary>Started from the player's own group by /lead bot (B2): its gamebots' own goals may differ.</summary>
         public bool FromPlayersGroup { get; init; }
+        // B4 (AutonomousBotGroupCoordinator.Replacement.cs): the party hosted the player at some point; the leader's search
+        // for a replacement; the natural break ("last pull then town"); the leader's goodbye when the party ends.
+        public bool HadHostedPlayer { get; set; }
+        public AutonomousPartyReplacement.Search Replacement { get; set; }
+        public BotLedGroups.BreakState Break { get; set; }
+        public long NextBreakCheck { get; set; }
+        public BotLedGroups.Lead? FarewellLine { get; set; }
     }
 
     /// <summary>Population-wide work belongs to one service phase, not every
@@ -1553,9 +1560,12 @@ public static partial class AutonomousBotGroupCoordinator
                     // A member who leaves (most often to answer a real player's /invite) no longer ends the party for
                     // everyone: in game 2026-10-27 one friar joining Claudecheck ended a five-bot party 57 minutes before
                     // its time. The rest carry on, as after a no-show, while they still have a tank, a healer and a hitter.
-                    session.PveRoles.Remove(MemberKey(bot));
+                    bool hadRole = session.PveRoles.Remove(MemberKey(bot), out BotPveGroupRole leftRole);
                     GameBot[] stayed = BotMembers(group);
-                    if (!HasViablePveComposition(session, stayed))
+                    bool viable = HasViablePveComposition(session, stayed);
+                    // B4: a party that hosts the player looks for a replacement, and waits for one if it lost its core.
+                    bool recruiting = hadRole && TryStartReplacement(session, leftRole, stayed, viable, bot.Name);
+                    if (!viable && !recruiting)
                     {
                         FinishGroupTask(session, $"{bot.Name} left the locked PvE party and no viable core roster remained");
                         return;
@@ -1958,7 +1968,8 @@ public static partial class AutonomousBotGroupCoordinator
             return false;
         }
         if (raidView == null && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve &&
-            !HasViablePveComposition(session, members))
+            !HasViablePveComposition(session, members) &&
+            !AutonomousPartyReplacement.HoldsParty(session.Replacement, GameLoop.GameLoopTime))
         {
             FinishGroupTask(session, "The PvE party no longer has a viable tank, healer, and attacker roster");
             return false;
@@ -1978,6 +1989,12 @@ public static partial class AutonomousBotGroupCoordinator
         // Bot-led groups: the hosted player is observed once per pass (meetup, pace, pull gate, AFK, linkdead).
         if (session.HostedPlayer != null && raidView == null && leader != null)
             StepHostedPlayer(session, members, leader);
+        // B4: the natural break ("last pull then town") and the search for a replacement.
+        if (raidView == null && leader != null && StepNaturalBreak(session, members, leader))
+            return false;
+        if (raidView == null && leader != null && StepReplacement(session, BotMembers(session.Group), leader))
+            return false;
+        members = BotMembers(session.Group);
 
         // Only enrolled dragon/epic parties use simultaneous hub assembly.
         // Automatic and forced enrollment share this path. Never wait for a
@@ -2658,7 +2675,8 @@ public static partial class AutonomousBotGroupCoordinator
                 session.Camp?.ZoneName ?? session.RendezvousName);
         // Bot-led groups: the leader says goodbye to the player it hosted before the party breaks up.
         if (HostedPlayerPresent(session) && ChooseLeader(session, members.Where(member => member.IsAlive).ToArray()) is { } farewell)
-            BotLedGroups.Announce(farewell, BotLedGroups.Lead.Farewell, session.HostedPlayer, null, null);
+            BotLedGroups.Announce(farewell, session.FarewellLine ?? BotLedGroups.Lead.Farewell, session.HostedPlayer,
+                farewell.CurrentZone?.Description, session.Camp?.MonsterName);
         session.Group.DisbandGroup();
         foreach (GameBot member in members)
         {
@@ -3362,7 +3380,8 @@ public static partial class AutonomousBotGroupCoordinator
         }
         GameBot[] members = BotMembers(group);
         bool requiredSize = AutonomousRealmRaid.GetView(group) != null || session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve ||
-                            HasViablePveComposition(session, members);
+                            HasViablePveComposition(session, members) ||
+                            AutonomousPartyReplacement.HoldsParty(session.Replacement, GameLoop.GameLoopTime);
         if (members.Length >= 2 && requiredSize && members.All(member => member.Group == group) &&
             (!group.GetMembersInTheGroup().Any(member => member is GamePlayer) || OnlyHostedPlayer(group, session)))
             return;

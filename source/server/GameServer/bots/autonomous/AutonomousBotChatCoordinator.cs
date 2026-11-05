@@ -644,6 +644,9 @@ public static class AutonomousBotChatCoordinator
         return count;
     }
 
+    /// <summary>A gamebot leader's /lfg ask for a replacement (bot-led groups, B4), sent and counted like any bot /lfg line.</summary>
+    internal static void SendLfgLine(GameBot bot, string text) => SendRealmChannel(bot, "lfg", text);
+
     /// <summary>A bot's line in its realm's /lfg or /trade channel, formatted as the server's /lfg and /trade commands do.</summary>
     private static void SendRealmChannel(GameBot bot, string channel, string text)
     {

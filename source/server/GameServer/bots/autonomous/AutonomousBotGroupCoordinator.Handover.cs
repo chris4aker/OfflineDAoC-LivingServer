@@ -138,6 +138,7 @@ public static partial class AutonomousBotGroupCoordinator
                 LeaderReadyForAssembly = true,
                 MeetupPlanned = true,
                 FromPlayersGroup = true,
+                HadHostedPlayer = true,
                 HostedPlayer = player,
                 PlayerRole = player.CharacterClass == null ? BotPveGroupRole.Attacker
                     : BotLedGroups.PlayerRole((eCharacterClass)player.CharacterClass.ID),

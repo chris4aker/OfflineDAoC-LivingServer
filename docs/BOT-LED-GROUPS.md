@@ -6,7 +6,8 @@ invite the player; bot-led groups the player can follow without leading, with a 
 bot who invites the player. Approved by the owner on 2026-11-04. **B1 (invites and following) is built**, with
 automated tests only; nothing has been played in game yet. **B2 (`/lead`, the handover) is built** the same way,
 automated tests only, and **B3 (the raid leader) too**. See [B1 as built](#b1-as-built-2026-11-04),
-[B2 as built](#b2-as-built-2026-11-05) and [B3 as built](#b3-as-built-2026-11-05) at the end.
+[B2 as built](#b2-as-built-2026-11-05), [B3 as built](#b3-as-built-2026-11-05) and
+[B4 as built](#b4-as-built-2026-11-05) (replacements, the natural break, the leader's pull call) at the end.
 
 ## The page for players
 
@@ -274,7 +275,8 @@ history do not survive `/lead`; `/lead bot` starts a fresh task.
 - **(confirm)** A party started by `/lead bot` keeps going after the player leaves even when its gamebots' own goals
   differ (a bot-only party with mixed goals is broken up today); its task clock still ends it.
 
-**Not in B2:** the leader's "pulling", "last pull then town" and "lf 1 more" calls (lines written, not spoken). Wiring them is not
+**Not in B2:** the leader's "pulling", "last pull then town" and "lf 1 more" calls (lines written, not spoken; built in
+B4, see [B4 as built](#b4-as-built-2026-11-05)). Wiring them was not
 a small change: the pull is already called by the existing combat calls ("inc", `AutonomousBotCombatCalls`), so a
 second pull line would double it; "last pull then town" needs a bags-full break for a party hosting the player, which
 doesn't exist (a party only sells at its task's end); "lf 1 more" needs the replacement search after a member leaves
@@ -319,3 +321,38 @@ way (a party of Special Forces only).
 **Not in B3:** the player in a raid party is not counted at the hub or the staging ring (the raid departs and starts
 on its gamebots' numbers, as the design says); raid chat and battlegroup windows (not in 1.2). Darkness Falls raid AI,
 Legion and the hardest level 70+ encounters are not implemented and nothing here changes that.
+
+## B4 as built (2026-11-05)
+
+Branch `feature/bot-led-groups-b4`, stacked on B3. Asked for by the owner after B2's review: the leader lines that were
+written but not spoken, with the parts behind them. Automated tests only (`UT_BotLedReplacementAndBreaks`);
+**nothing has been played in game**.
+
+| Piece | Where | Notes |
+|---|---|---|
+| Replacement rules | `bots/autonomous/AutonomousPartyReplacement.cs` | `Wanted` (a party that hosts or hosted the player, PvE, not a raid party, choosing a camp / travelling / grinding, a seat free), `Search` and `Next` (a try every 15 s, give up after 5 minutes: carry on when still viable, end otherwise), `HoldsParty`, `Pick` (free, waiting for a group, the lease allows it, the role, within 5 levels or both 50, at most 8 minutes away; the nearest, then the closest level), `NeedWord`, `LfgFits`. |
+| Replacement glue | `AutonomousBotGroupCoordinator.Replacement.cs`; hooks in `OnMemberRemoved`, `OnHostedPlayerRemoved`, `UpdateSession`, `RemoveBrokenSession` | A member leaving starts a search for its role (the player leaving: the player's role); a party that lost its core is held (no pulls: `HasActivePveComposition` stays false) instead of ending. Each try: the `/lfg` ask once (`lead_lf_more`, else the corpus's `lfm` lines, through `AutonomousBotChatCoordinator.SendLfgLine` and the channel meter), then up to 16 candidates get a travel estimate. The recruit joins the group, claims the party's lease (`BotLedGroupWithPlayer` while the player is hosted, else `BotGroupSession`; a refused claim lets it go), gets the role and `LockedSize`, and travels to the party through the normal directive. |
+| Natural break | `BotLedGroups.Breaks.cs` (`BreakDue`, `BreakState.EndsNow`); `StepNaturalBreak` | Half or more of the gamebots' bags nearly full (`AutonomousBotEconomy.IsBackpackNearlyFull`, the between-task unload mark), or 5 minutes or less of the task left. `lead_sell` at the call, the last pull fought (or 3 minutes with none), then `FinishGroupTask` with `lead_town` as the goodbye; each gamebot then sells between tasks as at any task's end. Checked every 10 s, never while meeting up, never in a raid party. |
+| Pull call | `AutonomousBotCombatCalls` (`PullCallChance`, `LeaderCallsPull`, `SayLeaderPull`) | In a party a gamebot leads (not a raid party) a pull is called 60% of the time (35% elsewhere, unchanged) by the leader with `lead_pull` lines, under the same group gap and meter; only when the leader has no line does a member's "inc" stand in. |
+| Chat | `data/chat/bot_led_groups.lines` | `lead_pull` (11 forms), `lead_sell`, `lead_town`, `lead_recruited`, `lead_recruit_none`, `lead_recruit_end` (group), `lead_lf_more` (lfg, `{need}` and `{camp}`); realm-neutral. Fallbacks for each in `BotLedGroups.Fallback`. |
+
+**Decided while building, for the owner to confirm:**
+- **(confirm)** The replacement search is for parties that host the player (or did until the player left). Bot-only
+  parties keep today's rules (carry on short or end), so the change can't alter the whole population's grouping.
+- **(confirm)** Recruits come only from gamebots whose own goal is a group (as formation takes them), never from a
+  solo task, a raid, the frontier or a battleground.
+- **(confirm)** The search gives up after 5 minutes; the `/lfg` ask is said once per search.
+- **(confirm)** When the player leaves a party they followed, it always looks for someone of the player's role (the
+  design: "looks for a replacement"); it waits for one, without pulling, when the player was its only healer, tank or
+  damage dealer.
+- **(confirm)** The natural break ends the party (as every gamebot party's task end does) instead of walking it to town
+  and back with the player: a gamebot sells only between tasks, out of a group, so a grouped trip to the merchant would
+  need the selling itself rebuilt for groups. The design's wording "last pull then town to sell" is kept as the call.
+- **(confirm)** The break comes when half the gamebots' bags are nearly full (6 free slots or fewer, the between-task
+  mark), or with 5 minutes of the task left; no pull within 3 minutes of the call, and the party goes anyway.
+- **(confirm)** A bot-led party calls 60% of its pulls (35% in a group the player leads).
+
+**Not in B4:** a walk to town and back as a party; potion and repair breaks (gamebots carry no potions and their gear
+doesn't wear); recruiting into bot-only parties; the "release, we'll wait" line and the far-side zone-line hold (B1's
+list). The recruit's journey, the ask in `/lfg` and the break need the owner's played check: one party losing its
+healer, one bag-full break, and listening for one pull call per pull.

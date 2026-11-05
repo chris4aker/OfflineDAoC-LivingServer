@@ -165,6 +165,32 @@ gates fell, and the Renegade Lord never dropped below 100%).
   with the reason and who stepped out); the startup `FORK_BUILD` line shows the setting.
 - Nothing here has been played in game yet.
 
+**Bot-led parties look for a replacement, take their breaks, and call their pulls** (bot-led groups, fourth part).
+- **"lf 1 more":** when a member leaves a gamebot party that hosts you, or you leave it, its leader asks in `/lfg` for
+  the missing role ("lf 1 more, need a healer for skeletons") and takes a free gamebot of that role and a fitting level
+  (within 5 levels, or both 50) that is waiting for a group and at most 8 minutes away. The recruit travels to the
+  party by the usual roads and stablemasters; the leader says "got someone coming, hang tight". A gamebot that a raid,
+  an RvR march, a battleground rally, another party or your own group holds is never taken. The ask is said once per
+  search and only while the realm's `/lfg` is under its chat budget.
+  - **Lost its healer, tank or damage dealer?** The party waits for the recruit instead of breaking up, and pulls
+    nothing meanwhile. After 5 minutes without one it gives up: it carries on short-handed when it still has a tank, a
+    healer and a damage dealer, and ends otherwise ("couldnt find anyone, gonna call it here").
+  - **When you leave** a party you followed, it carries on and looks for someone of your class's role (it used to
+    break up when you were its only healer). A group you lead is unchanged: gamebots you lead leave with you.
+  - Gamebot-only parties keep their old rules (they carry on short or end); raid parties refill as before.
+- **"last pull then town":** a party hosting you now takes the same natural break every gamebot party has: when half
+  or more of its gamebots have nearly full bags, or its task has 5 minutes or less to run, the leader says "last pull
+  then town", the party finishes that pull (the fight going on, or the next one; if no pull comes within 3 minutes it
+  goes anyway), and then the party ends there, as at any task's end: each gamebot goes to sell, and the leader says
+  "ok town to sell, good group all". Selling still happens only at that break, never in the middle of a camp.
+- **"pulling":** in a party a gamebot leads, the leader calls its own party's pulls ("pulling", "inc, on me", "here it
+  comes", and more), and that call is the pull's only line: the other gamebots' "inc" isn't added beside it. In a group
+  you lead, pulls are called as before.
+- **For testers:** `BOT_LED_RECRUIT` (searching, recruited, gave up) and `BOT_LED_BREAK` (called, ended) lines in the
+  server log.
+- **Not yet:** the party doesn't walk to town and back together with you: the break ends the party. Gamebots have no
+  potions or wearing gear, so there are no breaks for those. Nothing here has been played in game yet.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
