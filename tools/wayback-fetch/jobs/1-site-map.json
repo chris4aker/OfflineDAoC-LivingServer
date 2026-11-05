@@ -1,0 +1,248 @@
+{
+    "name": "1-site-map",
+    "note": "INDEX ONLY, downloads no pages, runs first because it is cheap: lists the distinct URLs archived 2002-2005 on the Camelot Herald (one prefix range per first letter a-z), Mythic's official site and Classes of Camelot. Its out\\1-site-map\\index.csv shows the real URL forms of class, realm ability, lore, news and patch pages, to fill and correct jobs 2-5 on the next pass.",
+    "indexOnly": true,
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "targets": [
+        {
+            "url": "www.camelotherald.com/",
+            "matchType": "exact",
+            "guess": false,
+            "note": "The Herald front page itself.",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1
+        },
+        {
+            "url": "camelotherald.com/a",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'a'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/b",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'b'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/c",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'c', without the 8,600+ chardisplay.php character pages and ~1,070 /calendar/ pages that filled the first map. Character pages are not wanted.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 4,
+            "cdxFilters": [
+                "!urlkey:.*/chardisplay.php.*",
+                "!urlkey:.*/calendar/.*"
+            ]
+        },
+        {
+            "url": "camelotherald.com/d",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'd'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/e",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'e'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/f",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'f'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/g",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'g'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/h",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'h'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/i",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'i'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/j",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'j'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/k",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'k'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/l",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'l'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/m",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'm'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/n",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'n'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/o",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'o'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/p",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'p'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/q",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'q'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/r",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'r'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/s",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 's'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/t",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 't'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/u",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'u'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/v",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'v'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/w",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'w'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/x",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'x'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/y",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'y'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "camelotherald.com/z",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Herald paths starting with 'z'.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "darkageofcamelot.com/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Mythic's official game site: its realm, class and story pages of the time.",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 3
+        },
+        {
+            "url": "classesofcamelot.com/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Classes of Camelot, a class-guide fansite at this address from May 2002 (GameBanshee news, 28 May 2002).",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 2
+        }
+    ]
+}
