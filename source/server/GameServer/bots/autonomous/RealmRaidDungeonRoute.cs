@@ -60,6 +60,7 @@ namespace DOL.GS
         // Nobody stood at the muster since this tick (0 = someone is there).
         private long _musterEmptySince;
         private bool _musterUnreachable;
+        private readonly PullContact _pulls = new();
         /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): he charges the first final encounter early, once.</summary>
         public bool LeeroyRolled { get; set; }
         private bool _leeroyDone;
@@ -75,6 +76,39 @@ namespace DOL.GS
         public const long MusterUnreachableMilliseconds = 20 * 60_000;
         public static bool MusterUnreachable(long emptySince, long now) =>
             emptySince > 0 && now - emptySince >= MusterUnreachableMilliseconds;
+
+        /// <summary>
+        /// Marfach Caverns, 2026-11-05: the raid mustered 36-76 for the Ancient Black Oak and was sent in 91 times in 3.5
+        /// hours; the Oak never entered combat and no raider came within 1,000 units of it (228 one-minute samples), so
+        /// every pull ended "left combat" without a wipe, the muster refilled at once and the next pull went out. Nothing
+        /// set it aside (the muster was never empty, waiting is not a stall) and the raid timed out with one named kill.
+        /// A pull after which the encounter never entered combat reached nobody; after this many in a row the
+        /// encounter is set aside like an unreachable muster and tried again later.
+        /// </summary>
+        public const int MaximumPullsWithoutContact = 3;
+        public static bool PullsNeverReached(int pullsWithoutContact) => pullsWithoutContact >= MaximumPullsWithoutContact;
+
+        /// <summary>Whether the raid's pulls on one encounter reach it (<see cref="MaximumPullsWithoutContact"/>).</summary>
+        public sealed class PullContact
+        {
+            /// <summary>The current pull brought the encounter into combat.</summary>
+            public bool Contact { get; private set; }
+            /// <summary>Pulls in a row that ended without the encounter ever entering combat.</summary>
+            public int PullsWithoutContact { get; private set; }
+            /// <summary>A new encounter: nothing counted yet.</summary>
+            public void Reset() { Contact = false; PullsWithoutContact = 0; }
+            /// <summary>A pull goes in.</summary>
+            public void Begin() => Contact = false;
+            /// <summary>The encounter is in combat with the raid.</summary>
+            public void SawCombat() { Contact = true; PullsWithoutContact = 0; }
+            /// <summary>The pull ended (the encounter is out of combat); true when the encounter is to be set aside. A wipe is
+            /// a failed attempt, never a pull that reached nobody.</summary>
+            public bool Ended(bool wiped)
+            {
+                if (wiped || Contact) return false;
+                return PullsNeverReached(++PullsWithoutContact);
+            }
+        }
 
         /// <summary>
         /// Owner 2026-10-19: epic encounters stay at full strength ("high stakes and wow factor") but a wipe is not
@@ -147,6 +181,7 @@ namespace DOL.GS
             _engaged.Clear();
             _engaged.UnionWith(raiders);
             _attemptLowestPercent = _target.HealthPercent;
+            _pulls.Begin();
             // A reset encounter is back at full health: damage from there is progress again (the lowest health seen
             // was the last attempt's).
             _targetLowestHealth = _target.Health;
@@ -462,6 +497,7 @@ namespace DOL.GS
                 _engaged.Clear();
                 _musterEmptySince = 0;
                 _musterUnreachable = false;
+                _pulls.Reset();
                 _musterPoint = MusterPoint(participants);
             }
             // While the raid regroups, the survivors may still be fighting: arrivals wait at the muster point rather than
@@ -476,6 +512,7 @@ namespace DOL.GS
                     BeginAttempt(fighting, now);
                 else
                     _engaged.UnionWith(fighting);
+                _pulls.SawCombat();
                 _attemptLowestPercent = Math.Min(_attemptLowestPercent, _target.HealthPercent);
                 return false;
             }
@@ -487,8 +524,15 @@ namespace DOL.GS
             {
                 // Out of combat after the pull: wiped or broke off. Muster again from scratch.
                 _musterSince = now;
-                if (EndAttempt(now, "left combat") && Defeated)
+                bool wiped = EndAttempt(now, _pulls.Contact ? "left combat" : "never entered combat");
+                if (wiped && Defeated)
                     return true;
+                // Not even a fight: the pull never reached the encounter (Marfach's Ancient Black Oak, 91 pulls).
+                if (_pulls.Ended(wiped))
+                {
+                    _musterUnreachable = true;
+                    return true;
+                }
             }
             int living = participants.Count(p => p.IsAlive);
             long regroupMilliseconds = now - _regroupSince;
@@ -784,6 +828,31 @@ namespace DOL.GS
             return $"deadPrimals={DOL.AI.Brain.OIBrain.DeadPrimalsCount} [{string.Join("; ", parts)}]";
         }
 
+        /// <summary>
+        /// Where the raid fights an encounter it turns on (REALM_EXPEDITION_TARGET_SWITCH): a walkable approach within 220
+        /// units of it, proven from the front or a party leader, as for every other target. The switch used the encounter's
+        /// own position: Marfach's Ancient Black Oak stands at 30091,37620,15049 and no party ever got a formation post
+        /// there (all 535 camps the raid handed out lay 1,600-2,200 units away, at the muster), so the raid never walked
+        /// in (2026-11-05). False, with the raw position, when no approach resolves.
+        /// </summary>
+        private bool TryEncounterApproach(GameNPC npc, GameLiving[] participants, out Vector3 approach)
+        {
+            Vector3 raw = new(npc.X, npc.Y, npc.Z);
+            approach = raw;
+            var nav = PathfindingProvider.Instance;
+            if (!nav.IsAvailable) return false;
+            Vector3[] anchors = DistinctAnchors(Front, participants
+                .Where(p => p.IsAlive && p.CurrentRegionID == _region && (p.Group == null || p.Group.LivingLeader == p))
+                .Select(p => new Vector3(p.X, p.Y, p.Z)), 6);
+            foreach (Vector3 anchor in anchors)
+            {
+                Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)anchor.X, (int)anchor.Y);
+                if (zone != null && nav.HasNavmesh(zone) && AutonomousZonePointApproach.TryResolve(nav, zone, anchor, raw, 220, out Vector3 found))
+                { approach = found; return true; }
+            }
+            return false;
+        }
+
         private void AdvanceCore(GameLiving[] participants, long now)
         {
             if (Complete || Defeated) return;
@@ -830,10 +899,12 @@ namespace DOL.GS
                 // An epic encounter fighting our raiders comes before one we are still gathering for.
                 if (!_target.InCombat && HostileEncounter(live, participants) is { } attacker)
                 {
+                    bool resolved = TryEncounterApproach(attacker, participants, out Vector3 approach);
                     log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{_target.Name}\" to=\"{attacker.Name}\" level={attacker.Level} " +
+                             $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
                              $"reason=\"it is fighting the raid\"");
                     _target = attacker; TargetName = attacker.Name; TargetLevel = attacker.Level;
-                    Front = Destination = new(attacker.X, attacker.Y, attacker.Z);
+                    Front = Destination = approach;
                     _targetProgressTick = _targetStartTick = now; _targetLowestHealth = attacker.Health;
                     _targetClosest = float.MaxValue; _targetApproachTick = now;
                     Hold = false; Status = "Clearing " + attacker.Name; return;
@@ -841,9 +912,16 @@ namespace DOL.GS
                 if (IsMusteredEncounter(_target) && MusterForFinal(participants, now))
                 {
                     if (!_musterUnreachable) return;
-                    log.Warn($"REALM_EXPEDITION_MUSTER_UNREACHABLE region={_region} target=\"{_target.Name}\" " +
-                             $"at={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} minutes={MusterUnreachableMilliseconds / 60_000} " +
-                             $"reason=\"nobody reached the muster; the encounter is set aside and tried again later\"");
+                    if (PullsNeverReached(_pulls.PullsWithoutContact))
+                        log.Warn($"REALM_EXPEDITION_PULL_UNREACHED region={_region} target=\"{_target.Name}\" pulls={_pulls.PullsWithoutContact} " +
+                                 $"at={_target.X},{_target.Y},{_target.Z} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                                 $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                                 $"closest={(int)participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).Select(p => (float)p.GetDistanceTo(_target)).DefaultIfEmpty(-1).Min()} " +
+                                 $"reason=\"the encounter never entered combat after {_pulls.PullsWithoutContact} pulls; set aside and tried again later\"");
+                    else
+                        log.Warn($"REALM_EXPEDITION_MUSTER_UNREACHABLE region={_region} target=\"{_target.Name}\" " +
+                                 $"at={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} minutes={MusterUnreachableMilliseconds / 60_000} " +
+                                 $"reason=\"nobody reached the muster; the encounter is set aside and tried again later\"");
                     _routeRetry[_target] = now + BlockedTargetRetryMilliseconds;
                     _musterTarget = null;
                     _target = null;

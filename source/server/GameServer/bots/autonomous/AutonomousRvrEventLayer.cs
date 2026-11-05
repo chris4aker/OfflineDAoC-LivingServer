@@ -774,8 +774,39 @@ public static partial class AutonomousRvrEventLayer
         RealmEventNotices.Queue(active.TargetId, active.AttackerRealm, $"The army marches on {Place(active.Target.Name)}! Form up at the siege camp.",
             "siege_attack", RealmEventNotices.KeepSlots(active.Target.Name, active.DefenderRealm));
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
-        if (log.IsInfoEnabled) log.Info($"RVR_SIEGE_MARCH target={active.TargetId} mustered={MusterAttendance(active, nowTick)} reason=\"{reason}\"");
+        if (log.IsInfoEnabled)
+        {
+            var pool = SiegePool(AutonomousBotRegistry.Snapshot().Select(bot => (bot.Realm, (int)bot.Level,
+                AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR))), active.AttackerRealm);
+            int elsewhere = Events.Values.Where(other => other != active && other.AttackerRealm == active.AttackerRealm)
+                .Sum(other => other.Attackers.Values.Sum());
+            log.Info($"RVR_SIEGE_MARCH target={active.TargetId} mustered={MusterAttendance(active, nowTick)} " +
+                     SiegeArmyFields(active.Attackers.Values.Sum(), pool.Level50, pool.Rvr, elsewhere, RealmEventPolicy.EffectiveDefenseRatio) +
+                     $" reason=\"{reason}\"");
+        }
     }
+
+    /// <summary>
+    /// The attacking realm's level-50 gamebots online and how many of them are on RvR duty: what a siege muster can draw
+    /// on. Overnight 2026-11-04/05 nine of eleven sieges marched with 9-45 attackers (two captured) while the realms kept
+    /// 581-597 level 50s online all night, and nothing logged how many were in the frontier (docs/NIGHT-SIEGES-AND-MARFACH.md).
+    /// </summary>
+    public static (int Level50, int Rvr) SiegePool(IEnumerable<(eRealm Realm, int Level, bool Rvr)> bots, eRealm realm)
+    {
+        int level50 = 0, rvr = 0;
+        foreach (var (botRealm, level, onRvr) in bots ?? [])
+        {
+            if (botRealm != realm || level < 50) continue;
+            level50++;
+            if (onRvr) rvr++;
+        }
+        return (level50, rvr);
+    }
+
+    /// <summary>The army fields of RVR_SIEGE_MARCH: the forces assigned, the realm's pool, its other sieges, the defense share.</summary>
+    public static string SiegeArmyFields(int assigned, int realmLevel50, int realmRvr, int inOtherSieges, double defenseShare) =>
+        $"assigned={assigned} realmLevel50={realmLevel50} realmRvr={realmRvr} inOtherSieges={inOtherSieges} " +
+        $"defenseShare={defenseShare.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)}";
 
     /// <summary>
     /// The live leader of a marching army (the mustered attacker with the lowest id; the next one takes over if it
@@ -1441,7 +1472,9 @@ public static partial class AutonomousRvrEventLayer
         Events.Remove(active.TargetId);
         Cooldowns[active.TargetId] = nowTick + TargetCooldownMilliseconds;
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
-        if (log.IsInfoEnabled) log.Info($"RVR_EVENT_ENDED target={active.TargetId} reason=\"{reason}\"");
+        if (log.IsInfoEnabled) log.Info($"RVR_EVENT_ENDED target={active.TargetId} marched={active.MarchedAttackers} " +
+            $"attackers={active.Attackers.Values.Sum()} defenders={active.Defenders.Values.Sum()} thirdRealm={active.ThirdRealm.Values.Sum()} " +
+            $"reason=\"{reason}\"");
     }
 
     /// <summary>

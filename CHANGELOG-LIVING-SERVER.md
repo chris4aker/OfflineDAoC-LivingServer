@@ -150,6 +150,26 @@ realm that feels like a full server at its busiest. How it works and how to tune
   encounter that needs 140% of its period size; only one that needs nearly twice it wins about 6 in 10. The models are guesses, not measurements;
   the first night on the period sizes (before the 125% start) won 1 raid in 7. The new sizes are not played in game yet.
 
+**A raid no longer pulls an encounter it can't reach for hours; sieges log their army** (2026-11-05)
+- **Marfach Caverns:** Hibernia's raid killed Avartack, drove Black Lady to 44% and then turned on her Ancient Black
+  Oak. It stood at its muster for three and a half hours: it went in 91 times, never got within 1,000 units of the Oak,
+  and timed out with one named kill. Two causes:
+  - **No formation posts:** a raid that turns on a monster attacking it took that monster's own spot as its front, and
+    no formation post fitted around the Oak's spot. It now fights from a walkable approach checked from the raid's
+    positions, as it does every other target.
+  - **No give-up rule:** an encounter that is still out of combat after three pulls in a row is now set aside for 15
+    minutes, and the raid goes on to its other encounters (`REALM_EXPEDITION_PULL_UNREACHED`).
+  - **Unchanged:** a wipe is still a failed attempt, and a time-out still counts as a loss for the raid's size and the
+    Special Forces.
+- **Night sieges:** 2 of 11 overnight sieges were captured, against 4 of 5 by day. This was not fewer bots online:
+  580-600 level 50s per realm were online all night, and the login schedule was off. What lost were small armies: keep
+  sieges that marched with 49 or more won all 4, those with 9-45 won 2 of 11. Nothing in the logs shows why the night
+  musters were thinner, so the siege rules are unchanged. `RVR_SIEGE_MARCH` now logs the army assigned, the realm's
+  level 50s online and on RvR duty, its other sieges and the defense share, and `RVR_EVENT_ENDED` logs the armies on
+  each side. The next night run will show the cause ([docs/NIGHT-SIEGES-AND-MARFACH.md](docs/NIGHT-SIEGES-AND-MARFACH.md)).
+- Checked: unit tests (`UT_MarfachAndNightSieges`); the Marfach approach probe needs the installed navmeshes and has not
+  run. Not played in game.
+
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
   back by twos and threes to a dragon at full health, until it died or the four hours ran out, and the Special Forces
