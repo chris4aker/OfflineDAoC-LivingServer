@@ -50,7 +50,20 @@ public static class AutonomousCampCompetition
                 counts[camp] = counts.GetValueOrDefault(camp) + 1;
         }
         lock (Sync)
-            _occupancy = counts;
+            _occupancy = counts;   // a new dictionary: NoteAssigned writes to the current one under the same lock
+    }
+
+    /// <summary>
+    /// A camp just chosen counts at once (owner 2026-11-05, reset-day S36: 47 bots on a 9-highwayman camp - the counts
+    /// were 30 s old, so a wave of bots planning together all saw the camp empty).
+    /// </summary>
+    public static void NoteAssigned(string campId, int bots = 1)
+    {
+        if (string.IsNullOrEmpty(campId) || bots <= 0)
+            return;
+        Refresh();
+        lock (Sync)
+            _occupancy[campId] = _occupancy.GetValueOrDefault(campId) + bots;
     }
 
     /// <summary>

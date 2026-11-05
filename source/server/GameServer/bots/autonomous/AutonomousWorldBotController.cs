@@ -2959,7 +2959,10 @@ namespace DOL.GS
             }
 
             _emptyCampSinceTick = _emptyCampSinceTick == 0 ? GameLoop.GameLoopTime : _emptyCampSinceTick;
-            if (GameLoop.GameLoopTime - _emptyCampSinceTick >= EmptyCampReplanMilliseconds)
+            // A crowded camp that others keep empty is left after 15 s, not 75 s (owner 2026-11-05, reset-day S36): the
+            // extra bots spread to other camps instead of queueing for each respawn.
+            bool crowdedCamp = (bot.Group?.MemberCount ?? 1) <= 1 && AutonomousCampCompetition.Occupancy(_camp.Id) > 4;
+            if (GameLoop.GameLoopTime - _emptyCampSinceTick >= (crowdedCamp ? 15_000 : EmptyCampReplanMilliseconds))
             {
                 if (AutonomousBotGroupCoordinator.ShouldHoldCampThroughRespawn(_groupDirective))
                 {
@@ -3729,6 +3732,7 @@ namespace DOL.GS
             _patrolDestination = null;
             _pendingStableChoice = null;
             bot.PersistentRecord.CurrentCampId = selected.Id;
+            AutonomousCampCompetition.NoteAssigned(selected.Id, sharedGroup ? groupSize : 1);
             AutonomousBotPersonality.RememberZone(bot, selected.ZoneName);
             SetStatus(bot, $"Planning route to {selected.MonsterName}", GoalText(), decision.Reason,
                 selected.MonsterName, selected.ZoneName, true);
