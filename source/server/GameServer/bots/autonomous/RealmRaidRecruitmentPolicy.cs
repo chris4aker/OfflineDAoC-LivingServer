@@ -20,7 +20,7 @@ public static class RealmRaidRecruitmentPolicy
     // Automatic raids sized to the roster (2026-10-19 audit): with 150 level-50 bots per realm, about 110 online and
     // 30 of them on group PvE, the fixed 200 meant no dragon, epic or neutral raid ever started on the owner's server.
     [ServerProperty("autonomous", "realm_raid_minimum_bots",
-        "Automatic realm raids (dragons, epic dungeons, Summoner's Hall, Darkness Falls): level-50 bots that must be staged before the raid goes in. 0 (default) = half the realm's online level-50 bots, at least 40 and at most the encounter's suggested 200. Forced raids are unchanged.", 0)]
+        "Automatic realm raids (dragons, epic dungeons, Summoner's Hall, Darkness Falls): level-50 bots that must be staged before the raid goes in. 0 (default) = half the realm's online level-50 bots, at least 40 and at most the encounter's period size (40-120, docs/RAID-SIZES.md), then sized by its wins and losses. Forced raids are unchanged.", 0)]
     public static int MinimumBotsSetting = 0;
 
     [ServerProperty("autonomous", "realm_raid_schedule_minutes",
@@ -28,6 +28,12 @@ public static class RealmRaidRecruitmentPolicy
     public static int ScheduleMinutes = 150;
 
     public const int MinimumScaledBots = 40;
+    /// <summary>
+    /// The fewest an automatic raid is sized to or goes in short with: three full parties. With the period sizes
+    /// (2026-11-04: 40-120 instead of 120-200) the old minimum of 40 left a 60-bot dragon raid at 67% for a short start
+    /// and a raid trimmed to 42 at 95%, so "half the raid" no longer meant half.
+    /// </summary>
+    public const int MinimumRaidBots = 24;
     /// <summary>Planned parties an automatic raid holds at once while it recruits.</summary>
     public const int AutomaticPlannedParties = 3;
     /// <summary>The smallest whole PvE party that may join an automatic raid.</summary>
@@ -47,6 +53,9 @@ public static class RealmRaidRecruitmentPolicy
         : Math.Min(MaximumBots, (required * 5 / 4 + 7) / 8 * 8);
 
     // ---- Win-rate sizing (owner 2026-10-19: "mostly successful... high stakes but not a guarantee", about 2 in 3) ----
+    // 2026-11-04: the full size is the period's comfortable raid (docs/RAID-SIZES.md), and the size moves from 70% of it
+    // (about the period's "possible, but tough": Apocalypse at 80 of a comfortable 100-105) up to 150% (room for bots that
+    // play worse than 2003 players: Caer Sidi at 150 is near the 130-140 that went at the time), never past 300.
     // "If it keeps winning easily, it needs fewer bots next time, so the stakes stay up." The bosses are never touched:
     // the lever is the raid's own size. Each automatic raid (dragons too) is sized from its own encounter's record:
     // a win trims WinTrim points of today's size, a loss adds WinTrim * target / (100 - target) back (10 at 67%), so
@@ -60,27 +69,28 @@ public static class RealmRaidRecruitmentPolicy
     public static int TargetWinPercentSetting = 67;
 
     [ServerProperty("autonomous", "realm_raid_smallest_size_percent",
-        "The smallest an automatic realm raid that keeps winning gets, as a percentage of its full size (the size realm_raid_minimum_bots and the roster give it).", 60)]
-    public static int SmallestSizePercentSetting = 60;
+        "The smallest an automatic realm raid that keeps winning gets, as a percentage of its full size (its period size, or what realm_raid_minimum_bots and the roster give it).", 70)]
+    public static int SmallestSizePercentSetting = 70;
 
     [ServerProperty("autonomous", "realm_raid_largest_size_percent",
-        "The largest an automatic realm raid that keeps losing gets, as a percentage of its full size (100 = never above it; beyond that the Epic Special Forces help).", 100)]
-    public static int LargestSizePercentSetting = 100;
+        "The largest an automatic realm raid that keeps losing gets, as a percentage of its full size (its period size), never above 300 bots. Every raid starts at 100%.", 150)]
+    public static int LargestSizePercentSetting = 150;
 
     [ServerProperty("autonomous", "realm_raid_win_trim_percent",
         "Points of its full size an automatic realm raid loses for each win at its encounter (a loss adds more back, so the size settles at the target win rate).", 5)]
     public static int WinTrimPercentSetting = 5;
 
-    /// <summary>The sizing rules, made safe: target 50-90% (0 = off), smallest 25-100%, largest smallest-150%, trim 1-25 points.</summary>
+    /// <summary>The sizing rules, made safe: target 50-90% (0 = off), smallest 25-100%, largest 100-300% and never under
+    /// the smallest, trim 1-25 points.</summary>
     public readonly record struct SizingRules(int TargetWinPercent, int SmallestPercent, int LargestPercent, int WinTrimPercent)
     {
-        public static readonly SizingRules Default = new(67, 60, 100, 5);
+        public static readonly SizingRules Default = new(67, 70, 150, 5);
         public bool On => TargetWinPercent > 0;
         public SizingRules Normalized()
         {
             int smallest = Math.Clamp(SmallestPercent, 25, 100);
             return new(TargetWinPercent <= 0 ? 0 : Math.Clamp(TargetWinPercent, 50, 90), smallest,
-                Math.Clamp(LargestPercent, smallest, 150), Math.Clamp(WinTrimPercent, 1, 25));
+                Math.Clamp(LargestPercent, Math.Max(100, smallest), 300), Math.Clamp(WinTrimPercent, 1, 25));
         }
         /// <summary>Points a loss adds back: the trim times target / (100 - target), so wins and losses balance at the target.</summary>
         public double LossAddPercent => On ? WinTrimPercent * (double)TargetWinPercent / (100 - TargetWinPercent) : 0;
@@ -91,14 +101,13 @@ public static class RealmRaidRecruitmentPolicy
 
     /// <summary>
     /// The raid's size as a percentage of its full size, from its encounter's results (oldest first; only wins and
-    /// losses count): it starts at the largest size (100% = today's) and each win trims, each loss adds, never past
-    /// the limits.
+    /// losses count): it starts at 100% (the period size) and each win trims, each loss adds, never past the limits.
     /// </summary>
     public static double SizePercent(IEnumerable<string> outcomesOldestFirst, SizingRules rules)
     {
         rules = rules.Normalized();
         if (!rules.On) return 100;
-        double percent = rules.LargestPercent;
+        double percent = 100;
         foreach (string outcome in outcomesOldestFirst ?? [])
         {
             if (AutonomousEpicSpecialForces.IsWin(outcome)) percent -= rules.WinTrimPercent;
@@ -109,12 +118,13 @@ public static class RealmRaidRecruitmentPolicy
         return percent;
     }
 
-    /// <summary>Bots a sized raid must stage: its share of the full size, never under 40 or over 300.</summary>
+    /// <summary>Bots a sized raid must stage: its share of the full size, never under three parties or over 300.</summary>
     public static int SizedRequired(int fullRequired, double percent) =>
-        Math.Clamp((int)Math.Round(fullRequired * percent / 100), Math.Min(MinimumScaledBots, fullRequired), MaximumBots);
+        Math.Clamp((int)Math.Round(fullRequired * percent / 100), Math.Min(MinimumRaidBots, fullRequired), MaximumBots);
 
     /// <summary>The bots a sized raid recruits: the same share of the full raid's cap, in whole parties, never under
-    /// what it must stage. Scaling the cap itself keeps it smooth: a 200 raid at 95% recruits 288, not RecruitCap(190) = 240.</summary>
+    /// what it must stage (a quarter above, as RecruitCap; a 200 raid set by realm_raid_minimum_bots at 95% recruits 288,
+    /// not RecruitCap(190) = 240).</summary>
     public static int SizedRecruitCap(int fullRequired, double percent, int required) =>
         Math.Clamp((int)Math.Ceiling(RecruitCap(fullRequired) * percent / 100 / 8) * 8, Math.Min(required, MaximumBots), MaximumBots);
 
@@ -140,7 +150,6 @@ public static class RealmRaidRecruitmentPolicy
             if (streak != 0 && win != streak > 0) break;
             streak += win ? 1 : -1;
         }
-        int callUp = AutonomousEpicSpecialForces.CallUpParties(counted);
         bool fromStart = AutonomousEpicSpecialForces.ComesFromStart(counted);
         string why;
         double percent;
@@ -158,6 +167,8 @@ public static class RealmRaidRecruitmentPolicy
         }
         int required = percent == 100 ? fullRequired : SizedRequired(fullRequired, percent);
         int cap = percent == 100 ? RecruitCap(fullRequired) : SizedRecruitCap(fullRequired, percent, required);
+        // The Special Forces scale with the raid they join (one party per 64 raiders, up to three).
+        int callUp = AutonomousEpicSpecialForces.CallUpParties(counted, AutonomousEpicSpecialForces.PartiesFor(required));
         return new(fullRequired, percent, required, cap, wins, losses, streak, callUp, fromStart, why);
     }
 
@@ -215,7 +226,7 @@ public static class RealmRaidRecruitmentPolicy
 
     /// <summary>
     /// A raid scaled to the roster whose staging time has run out goes in short with half of what it needs (at least
-    /// 40) instead of failing; the stragglers follow it in as late members. 2026-10-19/20 at 600 bots per realm: three
+    /// three parties, <see cref="MinimumRaidBots"/>; 40 before the period sizes) instead of failing; the stragglers follow it in as late members. 2026-10-19/20 at 600 bots per realm: three
     /// Albion rallies failed with 90/132, 101/149 and 103/150 staged, and in each about 90 more recruits were still on
     /// the road ("following the validated exterior corridor"), not lost. A full 200 raid goes in short the same way at
     /// its deadline (2026-10-21 at 900 per realm, where every raid is a full 200: the Hibernian Darkness Falls rally
@@ -223,7 +234,7 @@ public static class RealmRaidRecruitmentPolicy
     /// </summary>
     public const int DeadlineStartPercent = 50;
     public static bool GoesInShortAtDeadline(bool forced, int present, int required) =>
-        !forced && present >= Math.Max(MinimumScaledBots, (required * DeadlineStartPercent + 99) / 100);
+        !forced && present >= Math.Max(MinimumRaidBots, (required * DeadlineStartPercent + 99) / 100);
     public static int LateStartMinimum(int required) => required >= AutonomousMinimumPresent
         ? required * AutonomousLateStartMinimumPresent / AutonomousMinimumPresent
         : (required * ScaledLateStartPercent + 99) / 100;
@@ -242,7 +253,7 @@ public static class RealmRaidRecruitmentPolicy
     public static bool DepartHub(bool alreadyDeparted, int presentBots, long elapsed = 0, int required = AutonomousMinimumPresent) =>
         alreadyDeparted || presentBots >= required ||
         elapsed >= HubPatienceMilliseconds && presentBots >= Math.Min(required * HubEarlyDepartureMinimum / AutonomousMinimumPresent,
-            Math.Max(MinimumScaledBots, (required * DeadlineStartPercent + 99) / 100));
+            Math.Max(MinimumRaidBots, (required * DeadlineStartPercent + 99) / 100));
 
     public static bool StagingExpired(bool forced, long elapsed, int present = 0, bool landed = true) =>
         !forced && elapsed >= AutonomousStagingLimitMilliseconds &&

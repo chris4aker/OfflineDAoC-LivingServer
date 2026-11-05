@@ -275,8 +275,10 @@ usually a Daredevil or No-lifer. Never on a retry after a wipe. Logs `RAID_LEERO
 ### Raid wipes and the Epic Special Forces (always on)
 A raid that wipes at a named encounter is not over: it regroups, rests and rebuffs for at least five minutes, and goes
 in once more together when 70% of its roster is back (40% after 20 minutes). On the first wipe the realm's **Epic
-Special Forces** answer: up to 24 geared level 50s, one party fewer for every win and one more for every loss over that
-raid's last six results in the Herald, nobody after three wins in a row. They arrive at the raid's muster hub, walk in
+Special Forces** answer: up to 24 geared level 50s (one party of 8 per 64 raiders), one party fewer for every win and one
+more for every loss over that raid's last six results in the Herald, nobody after three wins in a row. Each raid's own
+size follows the same record: it starts at the period's raid size there and shrinks after wins and grows after losses,
+70-150% of it, aiming at two wins in three ([RAID-SIZES.md](RAID-SIZES.md)). They arrive at the raid's muster hub, walk in
 like a late party, take no loot and leave when the raid ends. Two failed attempts and the raid is **Defeated** and goes
 home. Dungeon raids have done this since 0.37-se.2; dragon raids do it since 2026-10-30 (Beta 1.1.1): an attempt at the
 dragon ends when it is out of combat after the approach or has taken no damage for five minutes while a trickle keeps
@@ -355,7 +357,7 @@ through the part's own code, lines and logging, in your realm and around you.
 | `/lstest holiday <name, off>` | Bots treat today as that holiday until `off` or a restart |
 | `/lstest leeroy` | The next realm raid has a Leeroy (start one with `/lstest raid dragon`) |
 | `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once |
-| `/lstest raid [dragon] [alb, mid, hib]` | A realm's automatic raid (yours unless named) opens now, sized to its free level 50s (at least 40; raids from the launcher need 300) |
+| `/lstest raid [dragon] [alb, mid, hib]` | A realm's automatic raid (yours unless named) opens now, sized to its free level 50s and its record (at least 40 before sizing; raids from the launcher need 300) |
 
 ## Why a bot said that: /lswhy (every player)
 

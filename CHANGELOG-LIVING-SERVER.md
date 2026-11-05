@@ -95,18 +95,29 @@ realm that feels like a full server at its busiest. How it works and how to tune
     the result.
   - **In game:** not yet played.
 
-**Raids that keep winning bring fewer bots** (2026-11-04)
-- The goal for raids is "mostly successful, high stakes, never a guarantee": about two wins in three. Losing raids
-  already got help (the Epic Special Forces). Now the other half: a raid that keeps winning recruits fewer of the
-  realm's level 50s next time, so the stakes stay real. **The bosses are never weakened**; only the raid's own size
-  changes.
-- **How it works:** every automatic raid (dragons, epic dungeons, Summoner's Hall, Darkness Falls and the other raid
-  dungeons) is sized from that encounter's own record in the Herald. Each win trims the next raid there by 5% of its full
-  size; each defeat or time-out adds 10% back. Two wins and a defeat leave it where it was, so the size settles where
-  the encounter is won about two times in three. It never goes under 60% of the full size (a 200 raid needs 120, a 120
-  raid 72) or above the full size; past that the Special Forces are the help. Both levers read the same record, and
-  raids cut short by a restart, beaten to the boss by another realm, failed rallies and stopped raids don't count.
-  Example: Summoner's Hall won three times in a row gathers 170 and recruits up to 256, not 200 and 300.
+**Raids the size they were in the era, and raids that keep winning bring fewer bots** (2026-11-04)
+- The goal for raids is "mostly successful, high stakes, never a guarantee": about two wins in three. **The bosses are
+  never weakened**; only the raid's own size and its help change.
+- **Period sizes.** Every dragon, epic dungeon, Summoner's Hall and Darkness Falls raid needed 200 level 50s and
+  recruited up to 300. Each raid now starts from the size a comfortable raid had there in 2002-2004, from forum raid
+  threads of the time ([docs/RAID-SIZES.md](docs/RAID-SIZES.md) has the table and its sources):
+  - **Dragons:** 60.
+  - **Caer Sidi, Galladoria and Tuscaran Glacier:** 100.
+  - **Summoner's Hall, Darkness Falls, and Krondon, Avalon City, Trollheim, Iarnvidiur's Lair and Marfach:** 64.
+  - **Others:** Crystal Cave 120, Hall of the Corrupt 48, Dodens Gruva and Tur Suil 40.
+  - **Recruiting:** a raid gathers about a quarter more than it needs.
+- **Sizing by results.** Every automatic raid, dragons too, is sized from that encounter's own record in the Herald.
+  - **How it moves:** each win trims the next raid there by 5% of its period size; each defeat or time-out adds 10%
+    back. Two wins and a defeat leave it about where it was, so the size settles where the encounter is won about two
+    times in three.
+  - **The limits:** it goes from 70% of the period size (Caer Sidi 70, a dragon 42) up to 150% (Caer Sidi 150, a
+    dragon 90) for raids that keep losing, and never past 300.
+  - **What counts:** raids cut short by a restart, beaten to the boss by another realm, failed rallies and stopped
+    raids don't count.
+- **Short starts.** A raid out of time still goes in with half of what it needs, now at least 24 (three parties)
+  instead of 40, so a small raid isn't held to nearly its full size.
+- **The Epic Special Forces** send one party per 64 raiders (up to three, as before): one to a dragon raid, two to
+  Caer Sidi. Their 24 would have been 40% of a dragon raid.
 - **Parties that answer on their own** now stop at the raid's recruit limit too. Before, they could fill any automatic
   raid to 300, so a trimmed raid would have grown back to full size by itself.
 - **The Special Forces** count the last six wins and losses, as intended; before, a server restart or a failed rally
@@ -114,17 +125,17 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - Raids you start from the launcher keep their 200 and 300, and their wins and losses count for neither the raid's size
   nor the Special Forces: the Herald now marks them ("Forced raid: ..."), and older unmarked records count as
   automatic. `realm_raid_minimum_bots`, when set, is used as it stands.
-- **Settings:** `realm_raid_target_win_percent` (67; 0 turns the sizing off), `realm_raid_smallest_size_percent` (60),
-  `realm_raid_largest_size_percent` (100) and `realm_raid_win_trim_percent` (5).
+- **Settings:** `realm_raid_target_win_percent` (67; 0 turns the sizing off), `realm_raid_smallest_size_percent` (70),
+  `realm_raid_largest_size_percent` (150) and `realm_raid_win_trim_percent` (5).
 - **Seeing it:** `/lstest raid` names the size and why, and the server log has a `REALM_RAID_SIZED` line for every
-  automatic raid (full size, size, required, recruit limit, wins and losses, the Special Forces it would get, and why);
+  automatic raid (period size, size, required, recruit limit, wins and losses, the Special Forces it would get, and why);
   `REALM_RAID_SCHEDULED` now shows the size too.
 - **Keep sieges:** the siege balance that moves the defenders' share by up to 0.25 forgot everything at every restart,
   and needed three sieges in one session before it moved at all. It is now rebuilt from the Herald's last bot sieges at
   start (sieges answering a player's attack are left out), and every change is logged (`SIEGE_DEFENSE_BALANCE`).
-- Checked: unit tests (`UT_RealmRaidWinBalance`), including a simulation of 2,000 raids against a simple model of the
-  chance to win by raid size, which settles at 66-68% wins. The model is a guess, not a measurement; not played in game
-  yet.
+- Checked: unit tests (`UT_RealmRaidWinBalance`), including a simulation of 2,000 raids against simple models of the
+  chance to win by raid size (bots as good as 2003 players, and worse), which settles at 66-69% wins in every case. The
+  models are guesses, not measurements, and the period sizes are for 2003 players; not played in game yet.
 
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked

@@ -55,15 +55,16 @@ namespace DOL.GS
 
         public static readonly RaidDungeon[] RaidDungeons =
         [
-            new("dungeon-albion-krondon", "Krondon", eRealm.Albion, 61, "Orylle", 160, new(31413, 70773, 15765), ["Orylle"]),
-            new("dungeon-albion-avalon", "Avalon City", eRealm.Albion, 50, "DuraekEmpowered", 120, new(32425, 28962, 8756), ["DuraekEmpowered"]),
+            // Sizes: the period's comfortable raid (docs/RAID-SIZES.md, 2026-11-04); win-rate sizing moves them 70-150%.
+            new("dungeon-albion-krondon", "Krondon", eRealm.Albion, 61, "Orylle", 64, new(31413, 70773, 15765), ["Orylle"]),
+            new("dungeon-albion-avalon", "Avalon City", eRealm.Albion, 50, "DuraekEmpowered", 64, new(32425, 28962, 8756), ["DuraekEmpowered"]),
             new("dungeon-albion-crystal", "Crystal Cave", eRealm.Albion, 62, "Xanxicar", 120, new(31577, 35305, 14551), ["Xanxicar"], Through: 50),
-            new("dungeon-albion-corrupt", "Hall of the Corrupt", eRealm.Albion, 277, "AidonTheArchwizard", 120, new(31353, 37634, 14873),
+            new("dungeon-albion-corrupt", "Hall of the Corrupt", eRealm.Albion, 277, "AidonTheArchwizard", 48, new(31353, 37634, 14873),
                 ["AidonTheArchwizard", "LordGildas"]),
-            new("dungeon-midgard-trollheim", "Trollheim", eRealm.Midgard, 150, "Nosdoden", 160, new(37538, 12262, 13377), ["Nosdoden"]),
-            new("dungeon-midgard-iarnvidiur", "Iarnvidiur's Lair", eRealm.Midgard, 161, "Iarnvidiur", 120, new(13848, 11523, 18263), ["Iarnvidiur"]),
-            new("dungeon-midgard-dodens", "Dodens Gruva", eRealm.Midgard, 246, "SpiritmasterAros", 96, new(39061, 36970, 15495), ["SpiritmasterAros"]),
-            new("dungeon-hibernia-tursuil", "Tur Suil", eRealm.Hibernia, 190, "Balor", 160, new(32032, 31048, 15984), ["Balor"]),
+            new("dungeon-midgard-trollheim", "Trollheim", eRealm.Midgard, 150, "Nosdoden", 64, new(37538, 12262, 13377), ["Nosdoden"]),
+            new("dungeon-midgard-iarnvidiur", "Iarnvidiur's Lair", eRealm.Midgard, 161, "Iarnvidiur", 64, new(13848, 11523, 18263), ["Iarnvidiur"]),
+            new("dungeon-midgard-dodens", "Dodens Gruva", eRealm.Midgard, 246, "SpiritmasterAros", 40, new(39061, 36970, 15495), ["SpiritmasterAros"]),
+            new("dungeon-hibernia-tursuil", "Tur Suil", eRealm.Hibernia, 190, "Balor", 40, new(32032, 31048, 15984), ["Balor"]),
             new("dungeon-hibernia-marfach", "Marfach Caverns", eRealm.Hibernia, 276, "BlackLady", 64, new(30086, 37378, 15001),
                 ["BlackLady", "ChieftainCaimheul", "Avartack"]),
         ];
@@ -296,20 +297,26 @@ namespace DOL.GS
 
         private static string SizeField(Raid raid) => raid.Sizing is { } sizing ? $"size={sizing.Percent:0.#}% full={sizing.FullRequired}" : "size=100%";
 
+        /// <summary>
+        /// Every raid encounter. The last number is the raid's full size (an automatic raid's Required before win-rate
+        /// sizing moves it 70-150%): the comfortable size of a 2002-2004 raid there, from period forum threads
+        /// (docs/RAID-SIZES.md, owner 2026-11-04). It was 200 for every dragon, epic and neutral raid. Forced raids
+        /// from the launcher still need 200.
+        /// </summary>
         public static readonly Definition[] Definitions =
         [
-            new("dragon-albion", "Golestandt", eRealm.Albion, 1, "AlbGolestandt", 200),
-            new("dragon-midgard", "Gjalpinulva", eRealm.Midgard, 100, "MidGjalpinulva", 200),
-            new("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, 200, "HibCuuldurach", 200),
-            new("epic-albion", "Caer Sidi", eRealm.Albion, 60, "ApocInitializator", 200),
-            new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 200),
-            new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 200),
-            new("summoners-albion", "Summoner's Hall", eRealm.Albion, 248, "GrandSummonerGovannon", 200),
-            new("summoners-midgard", "Summoner's Hall", eRealm.Midgard, 248, "GrandSummonerGovannon", 200),
-            new("summoners-hibernia", "Summoner's Hall", eRealm.Hibernia, 248, "GrandSummonerGovannon", 200),
-            new("darkness-albion", "Darkness Falls", eRealm.Albion, 249, "Legion", 200),
-            new("darkness-midgard", "Darkness Falls", eRealm.Midgard, 249, "Legion", 200),
-            new("darkness-hibernia", "Darkness Falls", eRealm.Hibernia, 249, "Legion", 200),
+            new("dragon-albion", "Golestandt", eRealm.Albion, 1, "AlbGolestandt", 60),
+            new("dragon-midgard", "Gjalpinulva", eRealm.Midgard, 100, "MidGjalpinulva", 60),
+            new("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, 200, "HibCuuldurach", 60),
+            new("epic-albion", "Caer Sidi", eRealm.Albion, 60, "ApocInitializator", 100),
+            new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 100),
+            new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 100),
+            new("summoners-albion", "Summoner's Hall", eRealm.Albion, 248, "GrandSummonerGovannon", 64),
+            new("summoners-midgard", "Summoner's Hall", eRealm.Midgard, 248, "GrandSummonerGovannon", 64),
+            new("summoners-hibernia", "Summoner's Hall", eRealm.Hibernia, 248, "GrandSummonerGovannon", 64),
+            new("darkness-albion", "Darkness Falls", eRealm.Albion, 249, "Legion", 64),
+            new("darkness-midgard", "Darkness Falls", eRealm.Midgard, 249, "Legion", 64),
+            new("darkness-hibernia", "Darkness Falls", eRealm.Hibernia, 249, "Legion", 64),
             ..RaidDungeons.Select(d => new Definition(d.Id, d.Name, d.Realm, d.Region, d.BossType, d.SuggestedBots))
         ];
 
@@ -414,7 +421,7 @@ namespace DOL.GS
                             // (dragon raids too since 2026-10-30; their record is the dragon's own ledger).
                             if (AutonomousEpicSpecialForces.ComesFromStart(raid.Definition.Id))
                                 AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm,
-                                    "the last two expeditions here were defeated");
+                                    "the last two expeditions here were defeated", raid.Required);
                             // A dragon raid's first attempt: everyone at the staging ring is in it.
                             raid.DragonFight?.Engage(StagedBots(raid).OfType<GameBot>().Select(b => b.DatabaseID), DragonState(raid), now);
                             if (leeroy != null && AutonomousRaidLeeroy.Charge(leeroy, raid.Boss, staged, raid.Definition.Name))
@@ -1495,7 +1502,7 @@ namespace DOL.GS
             AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, boss, false);
             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidWipe(raid.Definition.Name, boss),
                 "raid_wiped", RaidSlots(raid.Definition.Name, boss));
-            AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm, $"a wipe at {boss}");
+            AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm, $"a wipe at {boss}", raid.Required);
         }
 
         // Runs 12 and 13 (2026-10-15/16): an automatic Darkness Falls or Summoner's Hall rally opened a minute before the

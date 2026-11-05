@@ -22,7 +22,8 @@ public static class RealmRaidRecord
     /// Counted results kept per encounter: in practice its whole history (each encounter is raided about once a day of
     /// play, so 400 is more than a year). The size is a running total replayed from today's size, so a record cut too
     /// short would forget where it had got to: in the simulation (UT_RealmRaidWinBalance) a 100-result record let the
-    /// size jump 13 points between raids as old results dropped out; at 400 it never moves more than one step.
+    /// size jump 13 points between raids as old results dropped out. Once 400 are kept, a raid moves by at most one step
+    /// plus the oldest result dropping out (15 points: a new loss and an old win gone).
     /// </summary>
     public const int Depth = 400;
     /// <summary>Ledger rows read per encounter at load: restarts leave Interrupted rows between the results.</summary>

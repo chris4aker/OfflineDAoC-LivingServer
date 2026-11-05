@@ -11,7 +11,7 @@ namespace DOL.GS;
 /// The Epic Special Forces: each realm's elite guild of level-50 gamebots in endgame gear, who answer when an epic
 /// expedition is in trouble. Owner 2026-10-19: scaling the encounters down "removes the wow factor"; keep the epic
 /// bosses at full strength and the stakes high, but give the realm "better than not" odds. So after a wipe the
-/// raid regroups and up to <see cref="MaximumMembers"/> of them join it for the retry, and an expedition beaten
+/// raid regroups and up to <see cref="MaximumMembers"/> of them (one party per 64 raiders, <see cref="PartiesFor"/>) join it for the retry, and an expedition beaten
 /// here the last two times brings them from the start.
 ///
 /// They are the owner's one exception to gamebots earning their armor ("they are a special exception"), and "as
@@ -68,20 +68,31 @@ public static class AutonomousEpicSpecialForces
     /// <summary>Beaten by the fight: defeated at an encounter, or still fighting when the four hours ran out.</summary>
     public static bool IsLoss(string outcome) => outcome is "Defeated" or "Timed out";
 
-    /// <summary>Parties the realm sends (0-3): three with no record, one fewer per win, one more per loss, over the last
-    /// <see cref="HistoryDepth"/> counted results (an interrupted or failed raid no longer pushes a result out).</summary>
-    public static int CallUpParties(IEnumerable<string> outcomesOldestFirst)
+    /// <summary>
+    /// The most parties a raid of this size may get: one per 64 raiders, rounded, one to three. Since the raids took
+    /// their period sizes (2026-11-04: 40-120 instead of 120-200), the full 24 would have been 40% of a 60-bot dragon
+    /// raid; one party per 64 keeps the guild about the share of the raid it was against 200 (12%). 0 or less = three.
+    /// </summary>
+    public static int PartiesFor(int raidSize) =>
+        raidSize <= 0 ? MaximumParties : Math.Clamp((raidSize + 32) / 64, 1, MaximumParties);
+
+    /// <summary>Parties the realm sends (0 to <paramref name="maximumParties"/>): all of them with no record, one fewer
+    /// per win, one more per loss, over the last <see cref="HistoryDepth"/> counted results (an interrupted or failed raid
+    /// no longer pushes a result out).</summary>
+    public static int CallUpParties(IEnumerable<string> outcomesOldestFirst, int maximumParties = MaximumParties)
     {
-        int parties = MaximumParties;
+        maximumParties = Math.Clamp(maximumParties, 0, MaximumParties);
+        int parties = maximumParties;
         foreach (string outcome in (outcomesOldestFirst ?? []).Where(o => IsWin(o) || IsLoss(o)).TakeLast(HistoryDepth))
         {
             if (IsWin(outcome)) parties = Math.Max(0, parties - 1);
-            else if (IsLoss(outcome)) parties = Math.Min(MaximumParties, parties + 1);
+            else if (IsLoss(outcome)) parties = Math.Min(maximumParties, parties + 1);
         }
         return parties;
     }
 
-    public static int CallUpSize(IEnumerable<string> outcomesOldestFirst) => CallUpParties(outcomesOldestFirst) * PartySize;
+    public static int CallUpSize(IEnumerable<string> outcomesOldestFirst, int maximumParties = MaximumParties) =>
+        CallUpParties(outcomesOldestFirst, maximumParties) * PartySize;
 
     /// <summary>The last two counted results (wins and losses) at this dungeon were both losses.</summary>
     public static bool ComesFromStart(IEnumerable<string> outcomesOldestFirst)
@@ -94,11 +105,12 @@ public static class AutonomousEpicSpecialForces
 
     private static List<string> History(string raidId) => RealmRaidRecord.Get(raidId);
 
-    /// <summary>Asks for the raid's call-up; the members arrive on the next coordinator tick. Safe inside the raid lock.</summary>
-    public static void Request(string raidId, string raidName, eRealm realm, string reason)
+    /// <summary>Asks for the raid's call-up, sized by its record and by <paramref name="raidSize"/> (its Required;
+    /// <see cref="PartiesFor"/>); the members arrive on the next coordinator tick. Safe inside the raid lock.</summary>
+    public static void Request(string raidId, string raidName, eRealm realm, string reason, int raidSize = 0)
     {
         List<string> history = History(raidId);
-        int members = CallUpSize(history);
+        int members = CallUpSize(history, PartiesFor(raidSize));
         lock (Sync)
         {
             if (!Answered.Add(raidId)) return;
