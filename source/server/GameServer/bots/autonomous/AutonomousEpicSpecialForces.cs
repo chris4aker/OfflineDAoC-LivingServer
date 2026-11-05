@@ -73,6 +73,17 @@ public static class AutonomousEpicSpecialForces
     public static bool IsLoss(string outcome) => outcome is "Defeated" or "Timed out";
 
     /// <summary>
+    /// The record's name for a time-out with no wipe (owner, 2026-11-05): neither a win nor a loss, for the raid's size and
+    /// the Special Forces alike. Marfach Caverns timed out after 91 pulls on an encounter it never reached: a routing fault,
+    /// not a lost fight. The ledger and the Herald still say "Timed out".
+    /// </summary>
+    public const string TimedOutWithoutWipe = "Timed out without a wipe";
+
+    /// <summary>The outcome a raid's record keeps: a time-out after one or more wipes is a loss; without one it is no result.</summary>
+    public static string RecordOutcome(string outcome, int wipes) =>
+        outcome == "Timed out" && wipes <= 0 ? TimedOutWithoutWipe : outcome;
+
+    /// <summary>
     /// Parties the realm sends after a wipe (1-3), over the encounter's whole record (oldest first): three to start; a win
     /// the Special Forces took part in, one fewer, never under one; a win without them, no change; a defeat or time-out,
     /// one more, never over three. Uncounted results (interrupted, failed rallies...) change nothing.

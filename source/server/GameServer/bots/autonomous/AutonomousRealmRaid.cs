@@ -115,6 +115,8 @@ namespace DOL.GS
             /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): a dragon raid's charge at staging, once.</summary>
             public bool LeeroyRolled, LeeroyDone;
             public string LeeroyName;
+            /// <summary>Wipes this raid took (dungeon encounters and dragons): a time-out with none is no result.</summary>
+            public int Wipes;
         }
         private sealed class Party
         {
@@ -1447,13 +1449,16 @@ namespace DOL.GS
             int specialForcesJoined = AutonomousEpicSpecialForces.Joined(raid.Definition.Id);
             // And the size it ran at, so the next raid here carries on from it (2026-11-05).
             double? sizePercent = raid.Sizing?.RecordedPercent;
+            // And how many wipes it took: a time-out without one stays out of the record (owner, 2026-11-05).
             RealmEventRecords.Finish(raid.Definition.Id, outcome, RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
-                raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, specialForcesJoined), sizePercent), raid.Support.Length);
+                RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes),
+                specialForcesJoined), sizePercent), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
-            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, outcome, raid.Forced, sizePercent);
+            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes),
+                raid.Forced, sizePercent);
             Log.Info($"REALM_RAID_ENDED event={raid.Definition.Id} outcome=\"{outcome}\" support={raid.Support.Length} required={raid.Required} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
-                     $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} reason=\"{reason}\"");
+                     $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} wipes={raid.Wipes} reason=\"{reason}\"");
             if (outcome == "Defeated")
                 GameWideAnnouncements.Queue(AnnouncementKind.PveRealmEvent, GameWideAnnouncements.RaidDefeated(raid.Definition.Realm,
                     raid.DungeonRoute?.DefeatedAt ?? raid.DragonFight?.DefeatedAt ?? raid.Definition.BossType, raid.Definition.Name));
@@ -1509,6 +1514,7 @@ namespace DOL.GS
         /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
         private static void OnWipe(Raid raid, string boss, int failures, long now)
         {
+            raid.Wipes++;
             Log.Info($"REALM_RAID_WIPE event={raid.Definition.Id} boss=\"{boss}\" failures={failures} support={raid.Support.Length} " +
                      $"living={raid.Support.Count(b => b.IsAlive)} minutes={(now - raid.Created) / 60_000}");
             if (failures >= RealmRaidDungeonRoute.MaximumFailedAttempts) return;

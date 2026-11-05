@@ -50,8 +50,12 @@ uploaded), so the ledger could not be checked.
 includes "Timed out". So the next Marfach raid starts one loss step larger, the Special Forces call-up grows a party,
 and two losses in a row bring the Special Forces from the start. Dragons and dungeons follow the same rule. The Special
 Forces are called on a wipe, and this raid never wiped. Calling them on this timeout would not have helped: 24 more
-raiders would have stood at the same muster. Open question for the owner: should a timeout with no wipe count as a
-loss for sizing? This one was a routing fault, not a lost fight.
+raiders would have stood at the same muster. Owner's decision (2026-11-05): **a timeout with no wipe is neither a win nor a loss**, for the raid's size and for
+the Special Forces record alike. A timeout after one or more wipes still counts as a loss. The Herald still records
+"Timed out"; every raid's details now end with its wipes ("Wipes: N."), and only the sizing record reads them
+(`AutonomousEpicSpecialForces.RecordOutcome`, `RealmEventRecordStore.WipesIn`). Rows written before this change have no
+wipe count and keep counting a timeout as a loss, so this overnight Marfach row on the owner's world still counts as
+one loss.
 
 **Fix (`RealmRaidDungeonRoute`):**
 1. **The switch fights from an approach.** When the raid turns on an encounter that is attacking it, the front is a
@@ -106,19 +110,42 @@ period feature.
 
 **Change in this PR: logging only.** The evidence doesn't support a gameplay change yet:
 - **`RVR_SIEGE_MARCH`** adds:
+  - `kind` (`keep-siege`, `relic-siege`, `retake`, `player-attack-defense`);
+  - `needed` (what the muster waited for: 64 for a keep, 120 for a relic keep) and `thin` (`true` when a keep or relic
+    siege marched short of it);
   - `assigned` (the forces committed to this siege);
   - `realmLevel50` and `realmRvr` (the attacking realm's online level 50s, and how many of them are on RvR duty);
   - `inOtherSieges`;
   - `defenseShare`.
-- **`RVR_EVENT_ENDED`** adds `marched`, `attackers`, `defenders` and `thirdRealm`.
+- **`RVR_EVENT_ENDED`** adds `kind`, `thin`, `marched`, `attackers`, `defenders` and `thirdRealm`.
 
 The next overnight run should show whether thin musters come from few RvR level 50s, from forces assigned but not
 arriving (night `RVR_KEEP_ROUTE_FAILED` 505 against 52 by day, 234 of them Albion to Caer Erasleigh), or from too few
 forces choosing to join.
 
-**Options if the next run confirms thin musters** (not implemented):
-- (a) Size the muster threshold and the march to the realm's RvR level 50s.
+## 3. Design direction for the siege follow-up (owner, 2026-11-05)
+
+Not implemented. The next run's logging decides the cause first; this is what the follow-up should build towards.
+
+- **The owner's words:** "small raiding parties or attacks are still realistic from time to time, not every raid or
+  dungeon was a huge coordinated event", but it must stay balanced.
+- **Most sieges muster to the realm's level 50s on RvR duty.** A full siege waits for an army sized to what the realm
+  actually has in the frontier (`realmRvr`), not a fixed 64 it may never reach. This is the fix for the accidental thin
+  keep siege.
+- **A deliberate minority are small strikes.** A small force goes out on purpose, picks a target a small force can
+  take (towers, lightly held keeps), and is planned and logged as a strike. Today a small army is just a keep siege
+  that marched short of its muster.
+- **Small strikes don't swing the siege balance.** Their results are weighted so a run of strike wins or losses
+  doesn't move the defenders' share the way full sieges do. Full sieges stay the balance's measure, so neither side
+  gets free wins.
+- **Telling the two apart in the logs.** `kind` names the attack. A deliberate strike would get its own kind (for
+  example `tower-strike`), and `thin` is only ever `true` for a `keep-siege` or `relic-siege` that marched below
+  `needed`. So the next run's `thin=true` lines are all accidental thin musters; after the follow-up, a strike is
+  never counted as one (`AutonomousRvrEventLayer.MarchedThin`).
+
+**Options considered before the owner's direction** (kept for the record):
+- (a) Size the muster threshold and the march to the realm's RvR level 50s. This is now the direction above.
 - (b) Call off a muster that is still under the deadline-start threshold (32) at its last deadline, as a failed rally.
   A failed rally doesn't move the balance. In this run that would also have cancelled the 26-strong army that captured
   keep 101 by day.
-- (c) Leave thin-army results out of the balance.
+- (c) Leave thin-army results out of the balance. The direction above weights strikes instead.

@@ -780,8 +780,9 @@ public static partial class AutonomousRvrEventLayer
                 AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR))), active.AttackerRealm);
             int elsewhere = Events.Values.Where(other => other != active && other.AttackerRealm == active.AttackerRealm)
                 .Sum(other => other.Attackers.Values.Sum());
-            log.Info($"RVR_SIEGE_MARCH target={active.TargetId} mustered={MusterAttendance(active, nowTick)} " +
-                     SiegeArmyFields(active.Attackers.Values.Sum(), pool.Level50, pool.Rvr, elsewhere, RealmEventPolicy.EffectiveDefenseRatio) +
+            log.Info($"RVR_SIEGE_MARCH target={active.TargetId} mustered={active.MarchedAttackers} " +
+                     SiegeArmyFields(SiegeKind(active), active.MarchedAttackers, MusterNeeded(active.RelicKeep),
+                         active.Attackers.Values.Sum(), pool.Level50, pool.Rvr, elsewhere, RealmEventPolicy.EffectiveDefenseRatio) +
                      $" reason=\"{reason}\"");
         }
     }
@@ -803,8 +804,29 @@ public static partial class AutonomousRvrEventLayer
         return (level50, rvr);
     }
 
-    /// <summary>The army fields of RVR_SIEGE_MARCH: the forces assigned, the realm's pool, its other sieges, the defense share.</summary>
-    public static string SiegeArmyFields(int assigned, int realmLevel50, int realmRvr, int inOtherSieges, double defenseShare) =>
+    /// <summary>
+    /// What kind of attack this is, for the logs. Today every bot attack is a full siege that musters for
+    /// <see cref="MusterNeeded"/>; a deliberate small strike (owner, 2026-11-05: "small raiding parties or attacks are still
+    /// realistic from time to time", towers and lightly held keeps, docs/NIGHT-SIEGES-AND-MARFACH.md) would log its own
+    /// kind, so its results can be told from a siege that marched thin by accident.
+    /// </summary>
+    public static string SiegeKind(bool relic, bool retake = false, bool defenseReaction = false) =>
+        defenseReaction ? "player-attack-defense" : retake ? "retake" : relic ? "relic-siege" : "keep-siege";
+
+    private static string SiegeKind(ActiveEvent active) => SiegeKind(active.RelicKeep, active.Retake, active.DefenseReaction);
+
+    /// <summary>The army a siege muster waits for (64 for a keep, 120 for a relic keep).</summary>
+    public static int MusterNeeded(bool relic) => RealmEventPolicy.DynamicStartThreshold(relic, true);
+
+    /// <summary>A siege that marched short of the army its muster waited for: thin by accident, not a planned small strike.</summary>
+    public static bool MarchedThin(string kind, int marched, int needed) =>
+        kind is "keep-siege" or "relic-siege" && marched > 0 && marched < needed;
+
+    /// <summary>The army fields of RVR_SIEGE_MARCH: the kind of attack, what the muster waited for and whether the march
+    /// fell short of it, the forces assigned, the realm's pool, its other sieges, the defense share.</summary>
+    public static string SiegeArmyFields(string kind, int marched, int needed, int assigned, int realmLevel50, int realmRvr,
+        int inOtherSieges, double defenseShare) =>
+        $"kind={kind} needed={needed} thin={(MarchedThin(kind, marched, needed) ? "true" : "false")} " +
         $"assigned={assigned} realmLevel50={realmLevel50} realmRvr={realmRvr} inOtherSieges={inOtherSieges} " +
         $"defenseShare={defenseShare.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)}";
 
@@ -1472,7 +1494,9 @@ public static partial class AutonomousRvrEventLayer
         Events.Remove(active.TargetId);
         Cooldowns[active.TargetId] = nowTick + TargetCooldownMilliseconds;
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
-        if (log.IsInfoEnabled) log.Info($"RVR_EVENT_ENDED target={active.TargetId} marched={active.MarchedAttackers} " +
+        if (log.IsInfoEnabled) log.Info($"RVR_EVENT_ENDED target={active.TargetId} kind={SiegeKind(active)} " +
+            $"thin={(MarchedThin(SiegeKind(active), active.MarchedAttackers, MusterNeeded(active.RelicKeep)) ? "true" : "false")} " +
+            $"marched={active.MarchedAttackers} " +
             $"attackers={active.Attackers.Values.Sum()} defenders={active.Defenders.Values.Sum()} thirdRealm={active.ThirdRealm.Values.Sum()} " +
             $"reason=\"{reason}\"");
     }

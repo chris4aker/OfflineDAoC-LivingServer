@@ -159,14 +159,19 @@ realm that feels like a full server at its busiest. How it works and how to tune
     positions, as it does every other target.
   - **No give-up rule:** an encounter that is still out of combat after three pulls in a row is now set aside for 15
     minutes, and the raid goes on to its other encounters (`REALM_EXPEDITION_PULL_UNREACHED`).
-  - **Unchanged:** a wipe is still a failed attempt, and a time-out still counts as a loss for the raid's size and the
-    Special Forces.
+  - **Unchanged:** a wipe is still a failed attempt.
+- **A time-out without a wipe is no longer a loss** (owner, 2026-11-05). A raid that runs out its four hours without
+  ever wiping now counts as neither a win nor a loss: the next raid there is the same size, and the Special Forces
+  call-up doesn't change. A time-out after one or more wipes is still a loss. The Herald still says "Timed out" and
+  now ends each raid's record with its wipes ("Wipes: 0."). Older records don't have that note, so their time-outs
+  still count as losses, including the overnight Marfach raid's.
 - **Night sieges:** 2 of 11 overnight sieges were captured, against 4 of 5 by day. This was not fewer bots online:
   580-600 level 50s per realm were online all night, and the login schedule was off. What lost were small armies: keep
   sieges that marched with 49 or more won all 4, those with 9-45 won 2 of 11. Nothing in the logs shows why the night
   musters were thinner, so the siege rules are unchanged. `RVR_SIEGE_MARCH` now logs the army assigned, the realm's
   level 50s online and on RvR duty, its other sieges and the defense share, and `RVR_EVENT_ENDED` logs the armies on
-  each side. The next night run will show the cause ([docs/NIGHT-SIEGES-AND-MARFACH.md](docs/NIGHT-SIEGES-AND-MARFACH.md)).
+  each side. Both now name the kind of attack and say whether a siege marched short of its muster (`thin=true`), so
+  the planned follow-up's deliberate small strikes on towers and lightly held keeps will never be mistaken for one. The next night run will show the cause ([docs/NIGHT-SIEGES-AND-MARFACH.md](docs/NIGHT-SIEGES-AND-MARFACH.md)).
 - Checked: unit tests (`UT_MarfachAndNightSieges`); the Marfach approach probe needs the installed navmeshes and has not
   run. Not played in game.
 

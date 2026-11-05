@@ -136,7 +136,23 @@ public static class RealmEventRecordStore
         while(end<details.Length&&(char.IsDigit(details[end])||details[end]=='.'))end++;
         return end>start&&end<details.Length&&details[end]=='%'&&double.TryParse(details.AsSpan(start,end-start),System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out double p)?p:null;
     }
-    /// <summary>An event's last <paramref name="limit"/> finished runs, oldest first: each outcome, how many Epic Special
+    /// <summary>The end of a raid's details: how many wipes it took (2026-11-05). A row without it (every row before) reads
+    /// as before: its time-out counts as a loss.</summary>
+    public const string WipesMarker=" Wipes: ";
+    public static string WithWipes(string details,int wipes)=>$"{details}{WipesMarker}{Math.Max(0,wipes)}.";
+    /// <summary>The wipes these details say the raid took, or null when they don't say.</summary>
+    public static int? WipesIn(string details)
+    {
+        int at=details?.LastIndexOf(WipesMarker,StringComparison.Ordinal)??-1;
+        if(at<0)return null;
+        int start=at+WipesMarker.Length,end=start;
+        while(end<details.Length&&char.IsDigit(details[end]))end++;
+        return end>start&&int.TryParse(details.AsSpan(start,end-start),out int wipes)?wipes:null;
+    }
+    /// <summary>The outcome a row gives the raid record: a time-out its details say took no wipe is
+    /// <see cref="AutonomousEpicSpecialForces.TimedOutWithoutWipe"/> (no result); anything else as written.</summary>
+    public static string RecordOutcome(string outcome,string details)=>WipesIn(details) is int wipes?AutonomousEpicSpecialForces.RecordOutcome(outcome,wipes):outcome;
+    /// <summary>An event's last <paramref name="limit"/> finished runs, oldest first: each outcome as the raid record reads it (<see cref="RecordOutcome"/>), how many Epic Special
     /// Forces joined it (<see cref="SpecialForcesIn"/>) and the size it ran at (<see cref="RaidSizeIn"/>);
     /// <paramref name="automaticOnly"/> leaves out forced raids.</summary>
     public static List<(string Outcome,int SpecialForces,double? SizePercent)> Results(string path,string eventId,int limit,bool automaticOnly=false)
@@ -149,7 +165,7 @@ public static class RealmEventRecordStore
         command.CommandText="SELECT Outcome,Details FROM Events WHERE EventId=@event AND EndedUtc<>''"+(automaticOnly?" AND substr(Details,1,length(@forced))<>@forced":"")+" ORDER BY StartedUtc DESC,Id DESC LIMIT @limit";
         command.Parameters.AddWithValue("@event",eventId);command.Parameters.AddWithValue("@limit",limit);command.Parameters.AddWithValue("@forced",ForcedRaidPrefix);
         using var reader=command.ExecuteReader();
-        while(reader.Read())results.Add((reader.GetString(0),SpecialForcesIn(reader.GetString(1)),RaidSizeIn(reader.GetString(1))));
+        while(reader.Read())results.Add((RecordOutcome(reader.GetString(0),reader.GetString(1)),SpecialForcesIn(reader.GetString(1)),RaidSizeIn(reader.GetString(1))));
         results.Reverse();
         return results;
     }
