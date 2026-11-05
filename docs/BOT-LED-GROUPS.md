@@ -262,19 +262,23 @@ the player's hold on their time, and quest credit (after `/lead` a gamebot's kil
 after `/lead bot` the hosted player, `QuestKillCredit.GroupLeaderFor`). The session's task clock, camp and wipe
 history do not survive `/lead`; `/lead bot` starts a fresh task.
 
-**Decided while building, for the owner to confirm:**
-- **(confirm)** `/lead` is refused in a realm raid's party: the raid leader runs a raid.
+**Decided while building** (the owner confirmed three of them on 2026-11-05; the rest are still open):
+- **Confirmed by the owner (2026-11-05):** `/lead` is refused in a realm raid's party: the raid leader runs a raid.
 - **(confirm)** `/lead bot` needs at least two gamebots, a tank, a healer and a damage dealer (the player counting),
   no `/spawn` companions, no fight going on, and a place a player can walk or ride to; without a name or target the
   highest-level gamebot leads.
-- **(confirm)** When the player who took the lead leaves (`/disband`), the gamebots leave too, as with gamebots the
-  player invited (issue #33). They don't carry on as a party of their own.
+- **Confirmed by the owner (2026-11-05):** when the player who took the lead leaves (`/disband`), the gamebots leave
+  too, as with gamebots the player invited (issue #33). They don't carry on as a party of their own.
 - **(confirm)** The last gamebot's box waits one minute; no answer counts as no.
-- **(confirm)** `/invites off` is per character and also stops the raid leader's invites (B3).
+- **Confirmed by the owner (2026-11-05):** `/invites off` is per character and also stops the raid leader's invites (B3).
 - **(confirm)** A party started by `/lead bot` keeps going after the player leaves even when its gamebots' own goals
   differ (a bot-only party with mixed goals is broken up today); its task clock still ends it.
 
-**Not in B2:** the leader's "pulling", "last pull then town" and "lf 1 more" calls (lines written, triggers not built);
+**Not in B2:** the leader's "pulling", "last pull then town" and "lf 1 more" calls (lines written, not spoken). Wiring them is not
+a small change: the pull is already called by the existing combat calls ("inc", `AutonomousBotCombatCalls`), so a
+second pull line would double it; "last pull then town" needs a bags-full break for a party hosting the player, which
+doesn't exist (a party only sells at its task's end); "lf 1 more" needs the replacement search after a member leaves
+(B1's "not built"), or the line would promise a recruit that never comes;
 the B1 list above (horse and boat rides, the far-side zone-line hold, "release, we'll wait", levels drifting, a
 replacement after the player leaves) is unchanged. The handover's packets, chat timing and the box are not covered by
 automated tests (they need a client); they need the owner's played check: one `/lead` and `/lead bot` per realm, and
