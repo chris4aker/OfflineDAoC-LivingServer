@@ -64,6 +64,10 @@ public sealed record SocialExpansionSettings
     public bool BotGroupInvites { get; init; } = true;
     /// <summary>How many members you count as in the loot of a group with gamebots, whoever leads (bot_group_player_loot_weight, 1 to 8).</summary>
     public int PlayerLootWeight { get; init; } = DefaultPlayerLootWeight;
+    /// <summary>When you say yes to a bot leader's invite: "follow" (the default) or "lead" (bot_led_group_join_mode, Living Server 1.2).</summary>
+    public string JoinMode { get; init; } = "follow";
+
+    public static readonly string[] JoinModes = ["follow", "lead"];
 
     public const int DefaultPlayerLootWeight = 2, MinPlayerLootWeight = 1, MaxPlayerLootWeight = 8;
 
@@ -86,7 +90,7 @@ public sealed record SocialExpansionSettings
         ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingDeeds = true,
         LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, LivingLeeroy = true,
         PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
-        BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight,
+        BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow",
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -123,6 +127,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn companions out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
+        ("bot_led_group_join_mode", "bots", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back)."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
         ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab."),
@@ -171,6 +176,7 @@ public sealed record SocialExpansionSettings
         ["mana_regen_amount_halved_below_50_percent"] = Bool(ManaHalvedBelowHalf),
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
+        ["bot_led_group_join_mode"] = JoinMode,
     };
 
     private static string Bool(bool value) => value ? "True" : "False";
@@ -277,6 +283,16 @@ public sealed record SocialExpansionSettings
             else
                 lootWeight = weight;
         }
+        string joinMode = d.JoinMode;
+        if (stored.TryGetValue("bot_led_group_join_mode", out string? joinText) && !string.IsNullOrWhiteSpace(joinText))
+        {
+            joinMode = joinText.Trim().ToLowerInvariant();
+            if (!JoinModes.Contains(joinMode))
+            {
+                Problem("bot_led_group_join_mode", $"bot_led_group_join_mode = \"{joinText}\" is not follow or lead, so the server reads it as follow.");
+                joinMode = "follow";
+            }
+        }
         string schedule = d.ScheduleMode;
         if (stored.TryGetValue("bot_schedule_mode", out string? scheduleText) && !string.IsNullOrWhiteSpace(scheduleText))
         {
@@ -325,6 +341,7 @@ public sealed record SocialExpansionSettings
             ManaHalvedBelowHalf = ReadBool("mana_regen_amount_halved_below_50_percent", d.ManaHalvedBelowHalf),
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
             PlayerLootWeight = lootWeight,
+            JoinMode = joinMode,
         };
     }
 
@@ -359,6 +376,7 @@ public sealed record SocialExpansionSettings
         if (GuildSharePercent is < 0 or > 100) return "The share of bots in guilds must be 0 to 100%.";
         if (GuildMinLevel is < 0 or > 50) return "The lowest guild level must be 0 to 50.";
         if (!ScheduleModes.Contains(ScheduleMode)) return "The bot schedule must be off, session or clock.";
+        if (!JoinModes.Contains(JoinMode)) return "Joining a bot's group must be follow or lead.";
         if (PlayerLootWeight is < MinPlayerLootWeight or > MaxPlayerLootWeight)
             return $"Your loot share must be {MinPlayerLootWeight} to {MaxPlayerLootWeight} members.";
         if (double.IsNaN(ManaRegenModifier) || ManaRegenModifier < MinManaRegenModifier || ManaRegenModifier > MaxManaRegenModifier)

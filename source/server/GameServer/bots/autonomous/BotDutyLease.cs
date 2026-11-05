@@ -182,6 +182,15 @@ public static class BotDutyLeaseRules
     /// </summary>
     public static bool ExemptsFromWatchdog(eDutyLeaseKind kind) => IsPlayerKind(kind);
 
+    /// <summary>
+    /// A handover between the player's two kinds (bot-led groups, B2): /lead moves the party's gamebots from "a bot-led
+    /// group with a player" to "the player's group", /lead bot (or /makeleader) moves them back. The bot never stops being
+    /// spoken for by the player on the way, so nothing automatic can take it in between. Any other change goes through
+    /// <see cref="Decide"/>.
+    /// </summary>
+    public static bool MayHandOver(eDutyLeaseKind held, eDutyLeaseKind next) =>
+        held != next && IsPlayerKind(held) && IsPlayerKind(next);
+
     /// <summary>A short label for players (/lswhy).</summary>
     public static string Label(eDutyLeaseKind kind) => kind switch
     {

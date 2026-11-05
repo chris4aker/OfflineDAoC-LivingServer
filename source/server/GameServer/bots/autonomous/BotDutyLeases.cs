@@ -156,6 +156,30 @@ public static class BotDutyLeases
         }
     }
 
+    /// <summary>
+    /// Moves the bot's lease from one of the player's kinds to the other in one step (bot-led groups, B2: /lead and
+    /// /lead bot; <see cref="BotDutyLeaseRules.MayHandOver"/>). It applies only while the bot holds
+    /// <paramref name="from"/> for <paramref name="fromOwner"/> (any owner when null); otherwise nothing changes. Logged
+    /// as "handed over".
+    /// </summary>
+    public static bool HandOver(GameBot bot, eDutyLeaseKind from, string fromOwner, eDutyLeaseKind to, string owner, string reason,
+        string ownerName = null, Group group = null)
+    {
+        if (!CanHold(bot) || !BotDutyLeaseRules.MayHandOver(from, to))
+            return false;
+        lock (Sync)
+        {
+            BotDutyLease previous = Current(bot);
+            if (previous == null || previous.Kind != from || fromOwner != null && !string.Equals(previous.Owner, fromOwner, StringComparison.Ordinal))
+                return false;
+            Held[bot] = new BotDutyLease(to, owner, ownerName ?? owner, BotDutyLeaseRules.Priority(to), Now(), reason, 0, group);
+            LastRefusal.TryRemove(bot, out _);
+            Record(bot, previous.Kind, previous.Owner, "ended", $"handed_over:{to}", null, log: false);
+            Record(bot, to, owner, "handed over", reason, previous, log: true);
+            return true;
+        }
+    }
+
     /// <summary>Ends the bot's lease if it is of this kind (and owner, when given). Returns whether one ended.</summary>
     public static bool Release(GameBot bot, eDutyLeaseKind kind, string owner = null, string why = DutyLeaseReason.ActivityEnded)
     {

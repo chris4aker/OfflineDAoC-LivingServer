@@ -74,7 +74,7 @@ public static class BotGroupInvite
 
         if (player.Group != null && player.Group.Leader != player)
         {
-            ChatUtil.SendSystemMessage(player, "You are not the leader of your group.");
+            ChatUtil.SendSystemMessage(player, BotLedGroups.BotLeadsMessageFor(player) ?? "You are not the leader of your group.");
             return false;
         }
 

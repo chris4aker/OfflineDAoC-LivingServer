@@ -495,7 +495,8 @@ namespace DOL.GS
 
             UpdateMembers([oldLeader, living], true, true);
             UpdateGroupWindow();
-            SendMessageToGroupMembers($"{Leader.Name} is the new group leader.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+            // living, not Leader: Leader is the GamePlayer leader only, and a gamebot can be made leader (bot-led groups, B2).
+            SendMessageToGroupMembers($"{living.Name} is the new group leader.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
             return true;
         }
 
