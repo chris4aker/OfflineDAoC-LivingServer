@@ -163,12 +163,15 @@ public sealed partial class AutonomousWorldBotController
                 bot.IsWithinRadius(friendly, 1000) && BotSiegeRuntime.HoldingPosition(friendly) ? 0 : 1)
             .ThenBy(bot.GetDistanceTo).ToArray();
         AutonomousLivingServer.ObserveEnemies(bot, nearby);
+        RvrAwarenessProfile rvrProfile = RvrProfile();
         bool Visible(GameLiving target) => FiringOnRealm(bot, target) || nav.HasLineOfSight(bot.CurrentZone,
             new(bot.X, bot.Y, bot.Z + 48), new(target.X, target.Y, target.Z + 48), nav.BlockingDoorAvoidanceFilters);
         var visible = siegeFighter
             ? _frontierThreat.VisiblePriority(nearby.Where(AutonomousRvrDefense.IsCombatant).ToArray(),
                 nearby.OfType<GameSiegeWeapon>().Cast<GameLiving>().ToArray(), Visible)
-            : _frontierThreat.Visible(nearby, target => FiringOnRealm(bot, target) || nav.HasLineOfSight(bot.CurrentZone,
+            : _frontierThreat.Visible(nearby, target => FiringOnRealm(bot, target) ||
+                // RvR perception: no ray for a player this bot couldn't notice on this scan anyway (observer cap, range).
+                !RvrSkipsLineOfSight(bot, target, defending, rvrProfile, GameLoop.GameLoopTime) && nav.HasLineOfSight(bot.CurrentZone,
                 new(bot.X, bot.Y, bot.Z), new(target.X, target.Y, target.Z), nav.DefaultFilters));
         var visibleTargets=visible.ToArray();
         // RvR perception (owner 2026-11-01): enemy players, companions and pets only once noticed and after a reaction delay.

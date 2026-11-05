@@ -2434,20 +2434,26 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// RvR perception (owner 2026-11-01): autonomous gamebots notice enemy players in RvR by chance, react after a moment and call it to their group.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_perception", "In the frontier, battlegrounds and Darkness Falls, an autonomous gamebot notices an enemy player (or a player's companion or pet) by chance on each scan: always within 1,000 units, rarely near 3,500, never beyond; more often when the enemy is fighting, casting, in a group of 3 or more or in front of the bot, less often when it stands still. It engages 0.5-2 s later (faster at higher level and for bold personalities). Enemy gamebots, siege, guards, doors and monsters are unchanged, and a bot or group under attack fights back at once. False keeps the old instant sighting up to 5,000 units.", true)]
+		[ServerProperty("bots", "rvr_bot_perception", "In the frontier, battlegrounds and Darkness Falls, an autonomous gamebot notices an enemy player (or a player's companion or pet) by chance: always within 1,000 units, never beyond 3,500; one bot looking on its own takes about 1.5 s at 1,500 units, 6 s at 2,500 and 20 s at 3,400 (the median), less when the enemy is fighting, casting, in a group of 3 or more or in front of the bot, more when it stands still. At most 3 bots of a realm look for the same enemy each second; the others learn of it from their call. It engages 0.5-2 s later (faster at higher level and for bold personalities). Enemy gamebots, siege, guards, doors and monsters are unchanged, and a bot or group under attack fights back at once. False keeps the old instant sighting up to 5,000 units.", true)]
 		public static bool RVR_BOT_PERCEPTION;
 
 		/// <summary>
 		/// How sharp autonomous gamebots are at spotting enemy players in RvR: easy, normal or veteran.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_awareness", "When rvr_bot_perception is on: easy (sure sighting within 700, never beyond 2,500, slower reactions), normal (like players in 2003: 1,000 / 3,500, 0.5-2 s) or veteran (1,300 / 4,500, faster reactions, a wider call radius).", "normal")]
+		[ServerProperty("bots", "rvr_bot_awareness", "When rvr_bot_perception is on: easy (sure sighting within 700, never beyond 2,500, twice the normal time to notice, slower reactions, 2 lookers per enemy each second), normal (like players in 2003: 1,000 / 3,500, 0.5-2 s, 3 lookers) or veteran (1,300 / 4,500, half the normal time to notice, faster reactions, a wider call radius, 5 lookers).", "normal")]
 		public static string RVR_BOT_AWARENESS;
 
 		/// <summary>
 		/// A gamebot that notices an enemy player tells its group and warband, who react after their own moment.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_spotters", "When rvr_bot_perception is on: the gamebot that notices an enemy player tells its group and warband mates within 2,500 units, who engage after their own reaction delay; with bot voices on it calls it in /group (\"inc 3 north\") when you are in that group. False: every bot has to notice for itself.", true)]
+		[ServerProperty("bots", "rvr_bot_spotters", "When rvr_bot_perception is on: the gamebot that notices an enemy player tells its group mates within 2,500 units, who engage after their own reaction delay; each other group of its warband hears it relayed half the time, 4 s later. A bot on a realm raid, in a battleground assault or in a player's group doesn't leave it to answer. With bot voices on it calls it in /group (\"inc 3 north\") when you are in that group. False: every bot has to notice for itself.", true)]
 		public static bool RVR_BOT_SPOTTERS;
+
+		/// <summary>
+		/// Pet caps (North Star audit 2026-11-03): how many pet classes may join one RvR group that gamebots form.
+		/// </summary>
+		[ServerProperty("bots", "rvr_group_pet_cap", "When gamebots form an RvR group (a roaming warband or a siege party), at most this many pet classes (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist, Sluaghbinder) join a group of five or more, and half as many (at least 1) a group of four or fewer. The others wait for the next group. Groups you lead or join are never changed. 0 turns the cap off.", 2)]
+		public static int RVR_GROUP_PET_CAP;
 
 		/// <summary>
 		/// Autonomous gamebots speak lines from the bot-voices corpus in their own writing style.
