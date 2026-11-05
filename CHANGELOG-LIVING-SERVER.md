@@ -101,7 +101,7 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - **Period sizes.** Every dragon, epic dungeon, Summoner's Hall and Darkness Falls raid needed 200 level 50s and
   recruited up to 300. Each raid now starts from the size a comfortable raid had there in 2002-2004, from forum raid
   threads of the time ([docs/RAID-SIZES.md](docs/RAID-SIZES.md) has the table and its sources):
-  - **Dragons:** 60.
+  - **Dragons:** 70.
   - **Caer Sidi, Galladoria and Tuscaran Glacier:** 100.
   - **Summoner's Hall, Darkness Falls, and Krondon, Avalon City, Trollheim, Iarnvidiur's Lair and Marfach:** 64.
   - **Others:** Crystal Cave 120, Hall of the Corrupt 48, Dodens Gruva and Tur Suil 40.
@@ -110,18 +110,21 @@ realm that feels like a full server at its busiest. How it works and how to tune
   - **How it moves:** each win trims the next raid there by 5% of its period size; each defeat or time-out adds 10%
     back. Two wins and a defeat leave it about where it was, so the size settles where the encounter is won about two
     times in three.
-  - **The limits:** it goes from 70% of the period size (Caer Sidi 70, a dragon 42) up to 150% (Caer Sidi 150, a
-    dragon 90) for raids that keep losing, and never past 300.
+  - **The limits:** it goes from 70% of the period size (Caer Sidi 70, a dragon 49) up to 150% (Caer Sidi 150, a
+    dragon 105) for raids that keep losing, and never past 300.
   - **What counts:** raids cut short by a restart, beaten to the boss by another realm, failed rallies and stopped
     raids don't count.
 - **Short starts.** A raid out of time still goes in with half of what it needs, now at least 24 (three parties)
   instead of 40, so a small raid isn't held to nearly its full size.
-- **The Epic Special Forces** send one party per 64 raiders (up to three, as before): one to a dragon raid, two to
-  Caer Sidi. Their 24 would have been 40% of a dragon raid.
+- **The Epic Special Forces come with 24.** If they helped win at an encounter, they come with 16 the next time a raid
+  there calls them, then 8; they always answer a wipe with at least 8. A win without them changes nothing, and each
+  defeat or time-out there adds 8 back, up to 24. Two defeats in a row still bring them from the start. Before, every
+  win cut them by 8, whether they had been there or not, and three wins in a row meant nobody came. The Herald now
+  notes "Epic Special Forces joined: N." on a raid they joined; older records count as raids without them.
 - **Parties that answer on their own** now stop at the raid's recruit limit too. Before, they could fill any automatic
   raid to 300, so a trimmed raid would have grown back to full size by itself.
-- **The Special Forces** count the last six wins and losses, as intended; before, a server restart or a failed rally
-  could push a real result out of their count.
+- **The Special Forces** follow the encounter's whole record of wins and losses; before, their last six rows could be
+  restarts or failed rallies that pushed real results out.
 - Raids you start from the launcher keep their 200 and 300, and their wins and losses count for neither the raid's size
   nor the Special Forces: the Herald now marks them ("Forced raid: ..."), and older unmarked records count as
   automatic. `realm_raid_minimum_bots`, when set, is used as it stands.

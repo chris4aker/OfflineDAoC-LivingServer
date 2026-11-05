@@ -275,8 +275,9 @@ usually a Daredevil or No-lifer. Never on a retry after a wipe. Logs `RAID_LEERO
 ### Raid wipes and the Epic Special Forces (always on)
 A raid that wipes at a named encounter is not over: it regroups, rests and rebuffs for at least five minutes, and goes
 in once more together when 70% of its roster is back (40% after 20 minutes). On the first wipe the realm's **Epic
-Special Forces** answer: up to 24 geared level 50s (one party of 8 per 64 raiders), one party fewer for every win and one
-more for every loss over that raid's last six results in the Herald, nobody after three wins in a row. Each raid's own
+Special Forces** answer: 24 geared level 50s at first; a win they took part in sends one party (8) fewer next time at
+that encounter, down to 8 (they always answer a wipe), a win without them changes nothing, and every defeat or
+time-out sends a party more, up to 24. Each raid's own
 size follows the same record: it starts at the period's raid size there and shrinks after wins and grows after losses,
 70-150% of it, aiming at two wins in three ([RAID-SIZES.md](RAID-SIZES.md)). They arrive at the raid's muster hub, walk in
 like a late party, take no loot and leave when the raid ends. Two failed attempts and the raid is **Defeated** and goes

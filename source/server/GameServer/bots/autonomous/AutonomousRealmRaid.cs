@@ -305,9 +305,9 @@ namespace DOL.GS
         /// </summary>
         public static readonly Definition[] Definitions =
         [
-            new("dragon-albion", "Golestandt", eRealm.Albion, 1, "AlbGolestandt", 60),
-            new("dragon-midgard", "Gjalpinulva", eRealm.Midgard, 100, "MidGjalpinulva", 60),
-            new("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, 200, "HibCuuldurach", 60),
+            new("dragon-albion", "Golestandt", eRealm.Albion, 1, "AlbGolestandt", 70),
+            new("dragon-midgard", "Gjalpinulva", eRealm.Midgard, 100, "MidGjalpinulva", 70),
+            new("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, 200, "HibCuuldurach", 70),
             new("epic-albion", "Caer Sidi", eRealm.Albion, 60, "ApocInitializator", 100),
             new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 100),
             new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 100),
@@ -421,7 +421,7 @@ namespace DOL.GS
                             // (dragon raids too since 2026-10-30; their record is the dragon's own ledger).
                             if (AutonomousEpicSpecialForces.ComesFromStart(raid.Definition.Id))
                                 AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm,
-                                    "the last two expeditions here were defeated", raid.Required);
+                                    "the last two expeditions here were defeated");
                             // A dragon raid's first attempt: everyone at the staging ring is in it.
                             raid.DragonFight?.Engage(StagedBots(raid).OfType<GameBot>().Select(b => b.DatabaseID), DragonState(raid), now);
                             if (leeroy != null && AutonomousRaidLeeroy.Charge(leeroy, raid.Boss, staged, raid.Definition.Name))
@@ -557,7 +557,7 @@ namespace DOL.GS
                 // raid keeps its 200 to stage and 300 to recruit.
                 RealmRaidRecruitmentPolicy.RaidSizing sizing = forced ? null : RealmRaidRecruitmentPolicy.Size(
                     RealmRaidRecruitmentPolicy.RequiredBots(OnlineLevelFifty(realm), definition.SuggestedBots, RealmRaidRecruitmentPolicy.MinimumBotsSetting),
-                    RealmRaidRecord.Get(id), RealmRaidRecruitmentPolicy.RulesFromSettings(), RealmRaidRecord.Loaded,
+                    RealmRaidRecord.GetResults(id), RealmRaidRecruitmentPolicy.RulesFromSettings(), RealmRaidRecord.Loaded,
                     RealmRaidRecruitmentPolicy.MinimumBotsSetting > 0);
                 // An event may list several muster hubs; the first with a complete, connected
                 // hub-to-encounter route is used (far frontier entrances, e.g. Summoner's Hall).
@@ -1433,14 +1433,16 @@ namespace DOL.GS
             if (outcome != "Boss defeated" && named.Length > 0)
                 reason += $" Named encounters defeated: {string.Join(", ", named)}.";
             // A raid started from the launcher is marked in the ledger: its result is not part of the encounter's record
-            // for raid sizing or the Special Forces (owner, 2026-11-04).
-            RealmEventRecords.Finish(raid.Definition.Id, outcome, raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason,
-                raid.Support.Length);
+            // for raid sizing or the Special Forces (owner, 2026-11-04). So is a raid the Special Forces joined: a win they
+            // took part in makes their next call-up here a party smaller.
+            int specialForcesJoined = AutonomousEpicSpecialForces.Joined(raid.Definition.Id);
+            RealmEventRecords.Finish(raid.Definition.Id, outcome, RealmEventRecordStore.WithSpecialForces(
+                raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, specialForcesJoined), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
             AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, outcome, raid.Forced);
             Log.Info($"REALM_RAID_ENDED event={raid.Definition.Id} outcome=\"{outcome}\" support={raid.Support.Length} required={raid.Required} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
-                     $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} reason=\"{reason}\"");
+                     $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} reason=\"{reason}\"");
             if (outcome == "Defeated")
                 GameWideAnnouncements.Queue(AnnouncementKind.PveRealmEvent, GameWideAnnouncements.RaidDefeated(raid.Definition.Realm,
                     raid.DungeonRoute?.DefeatedAt ?? raid.DragonFight?.DefeatedAt ?? raid.Definition.BossType, raid.Definition.Name));
@@ -1502,7 +1504,7 @@ namespace DOL.GS
             AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, boss, false);
             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidWipe(raid.Definition.Name, boss),
                 "raid_wiped", RaidSlots(raid.Definition.Name, boss));
-            AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm, $"a wipe at {boss}", raid.Required);
+            AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm, $"a wipe at {boss}");
         }
 
         // Runs 12 and 13 (2026-10-15/16): an automatic Darkness Falls or Summoner's Hall rally opened a minute before the

@@ -64,19 +64,28 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDungeonRoute.MaximumFailedAttempts, Is.EqualTo(2));
 
         [Test]
-        public void TheCallUpShrinksWithEveryWinAndGrowsWithEveryLoss()
+        public void TheCallUpShrinksWithEveryWinTheyHelpedAndGrowsWithEveryLoss()
         {
+            // Owner 2026-11-04: "keep 24 and if they are called in on the same raid type where 24 made the second run win,
+            // it's 16 now".
+            RaidResult helped = new("Boss defeated", WithSpecialForces: true);
             Assert.Multiple(() =>
             {
                 Assert.That(AutonomousEpicSpecialForces.CallUpSize([]), Is.EqualTo(24), "no record: the full guild");
-                Assert.That(AutonomousEpicSpecialForces.CallUpSize(["Boss defeated"]), Is.EqualTo(16));
-                Assert.That(AutonomousEpicSpecialForces.CallUpSize(["Boss defeated", "Boss defeated"]), Is.EqualTo(8));
-                Assert.That(AutonomousEpicSpecialForces.CallUpSize(["Boss defeated", "Boss defeated", "Boss defeated"]), Is.EqualTo(0),
-                    "a realm that keeps winning stops calling them");
-                Assert.That(AutonomousEpicSpecialForces.CallUpSize(["Boss defeated", "Boss defeated", "Boss defeated", "Defeated"]), Is.EqualTo(8));
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize([helped]), Is.EqualTo(16));
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize([helped, helped]), Is.EqualTo(8));
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize([helped, helped, helped, helped]), Is.EqualTo(8), "they always answer a wipe");
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize(["Boss defeated", "Boss defeated", "Boss defeated"]), Is.EqualTo(24),
+                    "wins without them change nothing");
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize([helped, helped, "Boss defeated", "Boss defeated"]), Is.EqualTo(8));
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize([helped, helped, "Defeated"]), Is.EqualTo(16), "a defeat adds a party back");
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize([helped, helped, "Timed out"]), Is.EqualTo(16), "a time-out too");
                 Assert.That(AutonomousEpicSpecialForces.CallUpSize(["Defeated", "Timed out", "Defeated"]), Is.EqualTo(24), "never more than 24");
+                // A defeat they took part in counts as a defeat.
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize([helped, new RaidResult("Defeated", true)]), Is.EqualTo(24));
                 // Rallies that never fought, blocked routes and player stops say nothing about the fight.
-                Assert.That(AutonomousEpicSpecialForces.CallUpSize(["Boss defeated", "Failed rally", "Route blocked", "Stopped by player"]), Is.EqualTo(16));
+                Assert.That(AutonomousEpicSpecialForces.CallUpSize([helped, "Failed rally", "Route blocked", "Stopped by player",
+                    new RaidResult("Interrupted", true)]), Is.EqualTo(16));
             });
         }
 
@@ -94,16 +103,17 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void ARaidIsAnsweredOnceAndNotAtAllWhenTheRealmNoLongerNeedsThem()
+        public void ARaidIsAnsweredOnceAndAlwaysByAtLeastOneParty()
         {
             AutonomousEpicSpecialForces.SetHistoryForTests("epic-hibernia");
             AutonomousEpicSpecialForces.Request("epic-hibernia", "Galladoria", eRealm.Hibernia, "a wipe at Conservator");
             AutonomousEpicSpecialForces.Request("epic-hibernia", "Galladoria", eRealm.Hibernia, "a wipe at Conservator");
             Assert.That(AutonomousEpicSpecialForces.PendingCalls, Is.EqualTo(1));
 
-            AutonomousEpicSpecialForces.SetHistoryForTests("epic-albion", "Boss defeated", "Boss defeated", "Boss defeated");
+            RaidResult helped = new("Boss defeated", WithSpecialForces: true);
+            RealmRaidRecord.SetResultsForTests("epic-albion", helped, helped, helped);
             AutonomousEpicSpecialForces.Request("epic-albion", "Caer Sidi", eRealm.Albion, "a wipe at Apocalypse");
-            Assert.That(AutonomousEpicSpecialForces.PendingCalls, Is.EqualTo(1), "three wins in a row: nobody is sent");
+            Assert.That(AutonomousEpicSpecialForces.PendingCalls, Is.EqualTo(2), "three wins they helped: one party still comes");
         }
 
         [Test]

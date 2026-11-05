@@ -19,9 +19,13 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
 - **Recruit cap:** a quarter above what the raid must stage, in whole parties (RecruitCap of the full size, scaled by
   the same percentage).
 - **Short start and hub departure:** half of what the sized raid needs, at least three parties (24). The old minimum
-  of 40 was 67% of a 60-bot dragon raid and 95% of one trimmed to 42.
-- **Epic Special Forces:** one party per 64 raiders, rounded, one to three. That is about the 12% that their 24 were of
-  a 200 raid. A dragon raid of 60 gets one party, Caer Sidi at 100 two, a raid of 160 or more all three.
+  of 40 was 57% of a 70-bot dragon raid and 82% of one trimmed to 49.
+- **Epic Special Forces** (owner, 2026-11-04): "keep 24 and if they are called in on the same raid type where 24 made
+  the second run win, it's 16 now". They don't scale with the raid's size. Per encounter: 24 to start; a win they took
+  part in makes the next call-up there a party (8) smaller, down to 8 (they always answer a wipe); a win without them
+  changes nothing; a defeat or time-out adds a party back, up to 24. Two losses in a row still bring them from the
+  start. The Herald's record of a raid they joined ends "Epic Special Forces joined: N."; older records count as
+  raids without them.
 - **Forced raids** (launcher) are unchanged: 200 to go in, 300 reserved. Their results are not part of the record.
 
 ## Sizes and sources
@@ -31,9 +35,9 @@ Most of the evidence is from Freddyshouse, the European DAoC community forum, in
 
 | Raid | Was | Now | Period evidence | Source |
 |---|---|---|---|---|
-| Golestandt (Albion dragon) | 200 | 60 | Feb 2003: "a number of players ranging between 125 and 160" in the guide author's four kills. Aug 2003: done with 17-24, "The ideal amount is 24 people", "It does take 2-3 hours to kill him with 23". | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/), [How many ppl to kill the dragon, Aug 2003](https://forums.freddyshouse.com/threads/how-many-ppl-to-kill-the-dragon.139907/) |
-| Cuuldurach (Hibernian dragon) | 200 | 60 | May 2003: "120 brave Hibernians", but "about 30 people attack at any one time" and "5fg attacking the dragon"; the rest held the four entrances against adds. | [How to kill Cuuldurach, May 2003](https://forums.freddyshouse.com/threads/how-to-kill-cuuldurach.124821/) |
-| Gjalpinulva (Midgard dragon) | 200 | 60 | Unverified. A Nov 2003 raid killed an unnamed female dragon ("She went down quick and in first try"), likely Gjalpinulva, with 3 groups and an exit-guard group (about 32). | [Lubricador's 3 FG Dragon Raid, Nov 2003](https://forums.freddyshouse.com/threads/lubricador%C2%B4s-3-fg-dragon-raid.159276/page-2) |
+| Golestandt (Albion dragon) | 200 | 70 | Feb 2003: "a number of players ranging between 125 and 160" in the guide author's four kills. Aug 2003: done with 17-24, "The ideal amount is 24 people", "It does take 2-3 hours to kill him with 23". | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/), [How many ppl to kill the dragon, Aug 2003](https://forums.freddyshouse.com/threads/how-many-ppl-to-kill-the-dragon.139907/) |
+| Cuuldurach (Hibernian dragon) | 200 | 70 | May 2003: "120 brave Hibernians", but "about 30 people attack at any one time" and "5fg attacking the dragon"; the rest held the four entrances against adds. | [How to kill Cuuldurach, May 2003](https://forums.freddyshouse.com/threads/how-to-kill-cuuldurach.124821/) |
+| Gjalpinulva (Midgard dragon) | 200 | 70 | Unverified. A Nov 2003 raid killed an unnamed female dragon ("She went down quick and in first try"), likely Gjalpinulva, with 3 groups and an exit-guard group (about 32). | [Lubricador's 3 FG Dragon Raid, Nov 2003](https://forums.freddyshouse.com/threads/lubricador%C2%B4s-3-fg-dragon-raid.159276/page-2) |
 | Caer Sidi (Apocalypse) | 200 | 100 | Feb 2003: "a minimum of about 100 people is required", "The lowest number I have killed Apocalypse with on a live server is 105". Jul 2003: "With 80-90 I believe Apocalypse is possible with good groups, but tough. 90-100, Apocalypse should be straight-forward", "Almost everytime 90+ ppl show up", one raid of 130. | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/), [Caer Sidi Raid, Jul 2003](https://forums.freddyshouse.com/threads/caer-sidi-raid-sunday-20th-july.135873/) |
 | Galladoria (Olcasgean) | 200 | 100 | May 2003: killed by 140 after a 340-strong attempt failed; "I think it can be done with 100 ppl quite nicely". | [Olcasgean has been defeated!, May 2003](https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/) |
 | Tuscaran Glacier (King Tuscar, Queen Kula) | 200 | 100 | May 2003: "we zerged King Tuscar and Queen Kula about a week ago with ~100 ppl", "with 100+ people". Jul 2003 sign-up: "4FGs would be nice, 6 awesome". | [Olcasgean has been defeated!, May 2003](https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/), [Tuscaren Glacier Raid, Jul 2003](https://forums.freddyshouse.com/threads/tuscaren-glacier-raid-tuesday-15-07-03.135818/) |
@@ -53,7 +57,8 @@ Most of the evidence is from Freddyshouse, the European DAoC community forum, in
 
 The period sizes are for 2003 players. Two things pull the other way, and win-rate sizing is there to absorb both:
 - **Easier over time:** dragons came down from 125-160 in early 2003 to 17-24 by August 2003 as gear and tactics
-  improved, and to one group or less by 2008. The 60 sits between: a dragon won with 50 present on 2026-11-04.
+  improved, and to one group or less by 2008. The owner chose 70 (2026-11-04), between the two; a dragon won with 50
+  present on 2026-11-04.
 - **Bots may play worse:** the raid grows up to 150% when it keeps losing.
 
 None of this has been played in game yet. `REALM_RAID_SIZED` in the server log shows each raid's size and why.

@@ -11,13 +11,14 @@ namespace DOL.GS;
 /// The Epic Special Forces: each realm's elite guild of level-50 gamebots in endgame gear, who answer when an epic
 /// expedition is in trouble. Owner 2026-10-19: scaling the encounters down "removes the wow factor"; keep the epic
 /// bosses at full strength and the stakes high, but give the realm "better than not" odds. So after a wipe the
-/// raid regroups and up to <see cref="MaximumMembers"/> of them (one party per 64 raiders, <see cref="PartiesFor"/>) join it for the retry, and an expedition beaten
+/// raid regroups and up to <see cref="MaximumMembers"/> of them join it for the retry, and an expedition beaten
 /// here the last two times brings them from the start.
 ///
-/// They are the owner's one exception to gamebots earning their armor ("they are a special exception"), and "as
-/// the rest of the realm progresses, they are needed less": every win at that dungeon sends one party (8) fewer
-/// next time, every defeat one more, from the dungeon's last <see cref="HistoryDepth"/> results in the event
-/// ledger (the launcher's Herald). A realm that keeps winning stops calling them.
+/// They are the owner's one exception to gamebots earning their armor ("they are a special exception"). How many come
+/// (owner, 2026-11-04): "keep 24 and if they are called in on the same raid type where 24 made the second run win, it's
+/// 16 now". Per encounter, from its record in the event ledger (the launcher's Herald): 24 to start; a win they took
+/// part in sends one party (8) fewer next time, down to 8, and they always answer a wipe; a win without them changes
+/// nothing; a defeat or time-out sends one party more, up to 24 (<see cref="CallUpParties"/>).
 ///
 /// The other half of the same balance (2026-11-04): a raid that keeps winning also recruits fewer of the realm's own
 /// bots next time (RealmRaidRecruitmentPolicy.Size). Both read one record per encounter (RealmRaidRecord) and count the
@@ -37,7 +38,8 @@ public static class AutonomousEpicSpecialForces
     public const int PartySize = 8;
     public const int MaximumMembers = 24;
     public const int MaximumParties = MaximumMembers / PartySize;
-    public const int HistoryDepth = 6;
+    /// <summary>They always answer a wipe with at least one party.</summary>
+    public const int MinimumParties = 1;
     /// <summary>Far above any roster id (offline_world_bots counts up from 1), so the two never meet.</summary>
     public const long FirstBotId = 1_900_000_000;
     private static long _lastBotId = FirstBotId;
@@ -51,6 +53,8 @@ public static class AutonomousEpicSpecialForces
     private static readonly HashSet<string> Answered = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, List<GameBot>> Members = new(StringComparer.Ordinal);
     private static readonly HashSet<GameBot> SeenOutOfWorld = new();
+    // How many joined each running raid (kept when members leave), for its ledger row and its record.
+    private static readonly Dictionary<string, int> JoinedCount = new(StringComparer.Ordinal);
     private static long _nextCleanup;
 
     /// <summary>One party per realm, in the shape every expedition party takes: tank, healers, support, damage.</summary>
@@ -69,30 +73,22 @@ public static class AutonomousEpicSpecialForces
     public static bool IsLoss(string outcome) => outcome is "Defeated" or "Timed out";
 
     /// <summary>
-    /// The most parties a raid of this size may get: one per 64 raiders, rounded, one to three. Since the raids took
-    /// their period sizes (2026-11-04: 40-120 instead of 120-200), the full 24 would have been 40% of a 60-bot dragon
-    /// raid; one party per 64 keeps the guild about the share of the raid it was against 200 (12%). 0 or less = three.
+    /// Parties the realm sends after a wipe (1-3), over the encounter's whole record (oldest first): three to start; a win
+    /// the Special Forces took part in, one fewer, never under one; a win without them, no change; a defeat or time-out,
+    /// one more, never over three. Uncounted results (interrupted, failed rallies...) change nothing.
     /// </summary>
-    public static int PartiesFor(int raidSize) =>
-        raidSize <= 0 ? MaximumParties : Math.Clamp((raidSize + 32) / 64, 1, MaximumParties);
-
-    /// <summary>Parties the realm sends (0 to <paramref name="maximumParties"/>): all of them with no record, one fewer
-    /// per win, one more per loss, over the last <see cref="HistoryDepth"/> counted results (an interrupted or failed raid
-    /// no longer pushes a result out).</summary>
-    public static int CallUpParties(IEnumerable<string> outcomesOldestFirst, int maximumParties = MaximumParties)
+    public static int CallUpParties(IEnumerable<RaidResult> resultsOldestFirst)
     {
-        maximumParties = Math.Clamp(maximumParties, 0, MaximumParties);
-        int parties = maximumParties;
-        foreach (string outcome in (outcomesOldestFirst ?? []).Where(o => IsWin(o) || IsLoss(o)).TakeLast(HistoryDepth))
+        int parties = MaximumParties;
+        foreach (RaidResult result in resultsOldestFirst ?? [])
         {
-            if (IsWin(outcome)) parties = Math.Max(0, parties - 1);
-            else if (IsLoss(outcome)) parties = Math.Min(maximumParties, parties + 1);
+            if (result.AssistedWin) parties = Math.Max(MinimumParties, parties - 1);
+            else if (IsLoss(result.Outcome)) parties = Math.Min(MaximumParties, parties + 1);
         }
         return parties;
     }
 
-    public static int CallUpSize(IEnumerable<string> outcomesOldestFirst, int maximumParties = MaximumParties) =>
-        CallUpParties(outcomesOldestFirst, maximumParties) * PartySize;
+    public static int CallUpSize(IEnumerable<RaidResult> resultsOldestFirst) => CallUpParties(resultsOldestFirst) * PartySize;
 
     /// <summary>The last two counted results (wins and losses) at this dungeon were both losses.</summary>
     public static bool ComesFromStart(IEnumerable<string> outcomesOldestFirst)
@@ -101,16 +97,16 @@ public static class AutonomousEpicSpecialForces
         return last.Length == 2 && last.All(IsLoss);
     }
 
-    public static bool ComesFromStart(string raidId) => ComesFromStart(History(raidId));
+    public static bool ComesFromStart(string raidId) => ComesFromStart(RealmRaidRecord.Get(raidId));
 
-    private static List<string> History(string raidId) => RealmRaidRecord.Get(raidId);
+    private static List<RaidResult> History(string raidId) => RealmRaidRecord.GetResults(raidId);
 
-    /// <summary>Asks for the raid's call-up, sized by its record and by <paramref name="raidSize"/> (its Required;
-    /// <see cref="PartiesFor"/>); the members arrive on the next coordinator tick. Safe inside the raid lock.</summary>
-    public static void Request(string raidId, string raidName, eRealm realm, string reason, int raidSize = 0)
+    /// <summary>Asks for the raid's call-up, sized by its encounter's record (<see cref="CallUpParties"/>); the members
+    /// arrive on the next coordinator tick. Safe inside the raid lock.</summary>
+    public static void Request(string raidId, string raidName, eRealm realm, string reason)
     {
-        List<string> history = History(raidId);
-        int members = CallUpSize(history, PartiesFor(raidSize));
+        List<RaidResult> history = History(raidId);
+        int members = CallUpSize(history);
         lock (Sync)
         {
             if (!Answered.Add(raidId)) return;
@@ -125,15 +121,23 @@ public static class AutonomousEpicSpecialForces
     }
 
     /// <summary>The raid ended: its Special Forces go home, and an automatic raid's result joins the dungeon's record
-    /// (a raid started from the launcher is not part of it, owner 2026-11-04).</summary>
+    /// (a raid started from the launcher is not part of it, owner 2026-11-04), with whether they took part in it.</summary>
     public static void RaidEnded(string raidId, string outcome, bool forced = false)
     {
+        bool joined;
         lock (Sync)
         {
             Answered.Remove(raidId);
             Dismissals.Enqueue(raidId);
+            joined = JoinedCount.Remove(raidId, out int count) && count > 0;
         }
-        RealmRaidRecord.Add(raidId, outcome, forced);
+        RealmRaidRecord.Add(raidId, outcome, forced, joined);
+    }
+
+    /// <summary>How many Special Forces joined this raid so far (including any who have since left it).</summary>
+    public static int Joined(string raidId)
+    {
+        lock (Sync) return JoinedCount.GetValueOrDefault(raidId);
     }
 
     /// <summary>Game loop, coordinator phase, outside the raid and coordinator locks: arrivals and departures.</summary>
@@ -213,10 +217,11 @@ public static class AutonomousEpicSpecialForces
             {
                 if (!Members.TryGetValue(call.RaidId, out var list)) Members[call.RaidId] = list = new();
                 list.AddRange(members);
+                JoinedCount[call.RaidId] = JoinedCount.GetValueOrDefault(call.RaidId) + members.Length;
             }
             joined += members.Length;
         }
-        Log.Info(ArrivedLine(call.RaidId, call.Realm, joined, call.Members, call.Reason, History(call.RaidId)));
+        Log.Info(ArrivedLine(call.RaidId, call.Realm, joined, call.Members, call.Reason, History(call.RaidId).Select(r => r.ToString())));
         if (joined == 0) return;
         GameWideAnnouncements.Queue(AnnouncementKind.PveRealmEvent,
             $"The {GuildName} answer {GlobalConstants.RealmToName(call.Realm)}'s call at {call.RaidName}!");
@@ -296,13 +301,25 @@ public static class AutonomousEpicSpecialForces
     {
         lock (Sync)
         {
-            Calls.Clear(); Dismissals.Clear(); Answered.Clear(); Members.Clear(); SeenOutOfWorld.Clear();
+            Calls.Clear(); Dismissals.Clear(); Answered.Clear(); Members.Clear(); SeenOutOfWorld.Clear(); JoinedCount.Clear();
         }
         RealmRaidRecord.ResetForTests();
     }
 
     /// <summary>Tests only: the dungeon's record, oldest first.</summary>
     public static void SetHistoryForTests(string raidId, params string[] outcomes) => RealmRaidRecord.SetForTests(raidId, outcomes);
+
+    /// <summary>Tests only: Special Forces that joined a raid (as Arrive counts them).</summary>
+    public static void JoinedForTests(string raidId, int members)
+    {
+        lock (Sync) JoinedCount[raidId] = JoinedCount.GetValueOrDefault(raidId) + members;
+    }
+
+    /// <summary>Tests only: the size of the next call waiting to arrive (0 when none).</summary>
+    public static int NextCallMembersForTests
+    {
+        get { lock (Sync) return Calls.TryPeek(out var call) ? call.Members : 0; }
+    }
 
     /// <summary>Tests only: calls waiting to arrive.</summary>
     public static int PendingCalls

@@ -107,6 +107,38 @@ public static class RealmEventRecordStore
     /// have none and count as automatic.
     /// </summary>
     public const string ForcedRaidPrefix="Forced raid: ";
+    /// <summary>
+    /// The end of a raid's details when the Epic Special Forces joined it (owner, 2026-11-04: a win they helped makes their
+    /// next call-up at that encounter a party smaller). A row without it (every row before this marker) counts as a raid
+    /// they did not join.
+    /// </summary>
+    public const string SpecialForcesMarker=" Epic Special Forces joined: ";
+    public static string WithSpecialForces(string details,int joined)=>joined>0?$"{details}{SpecialForcesMarker}{joined}.":details;
+    /// <summary>How many Epic Special Forces joined the raid these details describe (0 when the details don't say).</summary>
+    public static int SpecialForcesIn(string details)
+    {
+        int at=details?.LastIndexOf(SpecialForcesMarker,StringComparison.Ordinal)??-1;
+        if(at<0)return 0;
+        int start=at+SpecialForcesMarker.Length,end=start;
+        while(end<details.Length&&char.IsDigit(details[end]))end++;
+        return end>start&&int.TryParse(details.AsSpan(start,end-start),out int joined)?joined:0;
+    }
+    /// <summary>An event's last <paramref name="limit"/> finished runs, oldest first: each outcome and how many Epic Special
+    /// Forces joined it (<see cref="SpecialForcesIn"/>); <paramref name="automaticOnly"/> leaves out forced raids.</summary>
+    public static List<(string Outcome,int SpecialForces)> Results(string path,string eventId,int limit,bool automaticOnly=false)
+    {
+        var results=new List<(string,int)>();
+        if(!File.Exists(path))return results;
+        using var connection=Open(path,true);using var command=connection.CreateCommand();
+        command.CommandText="SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Events'";
+        if((long)command.ExecuteScalar()==0)return results;
+        command.CommandText="SELECT Outcome,Details FROM Events WHERE EventId=@event AND EndedUtc<>''"+(automaticOnly?" AND substr(Details,1,length(@forced))<>@forced":"")+" ORDER BY StartedUtc DESC,Id DESC LIMIT @limit";
+        command.Parameters.AddWithValue("@event",eventId);command.Parameters.AddWithValue("@limit",limit);command.Parameters.AddWithValue("@forced",ForcedRaidPrefix);
+        using var reader=command.ExecuteReader();
+        while(reader.Read())results.Add((reader.GetString(0),SpecialForcesIn(reader.GetString(1))));
+        results.Reverse();
+        return results;
+    }
     /// <summary>The outcomes of an event's last <paramref name="limit"/> finished runs, oldest first;
     /// <paramref name="automaticOnly"/> leaves out forced raids (<see cref="ForcedRaidPrefix"/>).</summary>
     public static List<string> Outcomes(string path,string eventId,int limit,bool automaticOnly=false)

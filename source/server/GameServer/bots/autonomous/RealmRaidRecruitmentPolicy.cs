@@ -30,8 +30,8 @@ public static class RealmRaidRecruitmentPolicy
     public const int MinimumScaledBots = 40;
     /// <summary>
     /// The fewest an automatic raid is sized to or goes in short with: three full parties. With the period sizes
-    /// (2026-11-04: 40-120 instead of 120-200) the old minimum of 40 left a 60-bot dragon raid at 67% for a short start
-    /// and a raid trimmed to 42 at 95%, so "half the raid" no longer meant half.
+    /// (2026-11-04: 40-120 instead of 120-200) the old minimum of 40 left a 70-bot dragon raid at 57% for a short start
+    /// and one trimmed to 49 at 82%, so "half the raid" no longer meant half.
     /// </summary>
     public const int MinimumRaidBots = 24;
     /// <summary>Planned parties an automatic raid holds at once while it recruits.</summary>
@@ -137,11 +137,12 @@ public static class RealmRaidRecruitmentPolicy
     /// (its last six results). <paramref name="fixedSize"/> = the owner set realm_raid_minimum_bots, which is honoured
     /// as it stands; <paramref name="recordLoaded"/> false = the ledger is still loading, so today's size.
     /// </summary>
-    public static RaidSizing Size(int fullRequired, IReadOnlyCollection<string> outcomesOldestFirst, SizingRules rules,
+    public static RaidSizing Size(int fullRequired, IReadOnlyCollection<RaidResult> resultsOldestFirst, SizingRules rules,
         bool recordLoaded = true, bool fixedSize = false)
     {
         rules = rules.Normalized();
-        string[] counted = (outcomesOldestFirst ?? []).Where(o => AutonomousEpicSpecialForces.IsWin(o) || AutonomousEpicSpecialForces.IsLoss(o)).ToArray();
+        RaidResult[] results = RealmRaidRecord.CountedResults(resultsOldestFirst).ToArray();
+        string[] counted = results.Select(r => r.Outcome).ToArray();
         int wins = counted.Count(AutonomousEpicSpecialForces.IsWin), losses = counted.Length - wins;
         int streak = 0;
         for (int i = counted.Length - 1; i >= 0; i--)
@@ -167,8 +168,7 @@ public static class RealmRaidRecruitmentPolicy
         }
         int required = percent == 100 ? fullRequired : SizedRequired(fullRequired, percent);
         int cap = percent == 100 ? RecruitCap(fullRequired) : SizedRecruitCap(fullRequired, percent, required);
-        // The Special Forces scale with the raid they join (one party per 64 raiders, up to three).
-        int callUp = AutonomousEpicSpecialForces.CallUpParties(counted, AutonomousEpicSpecialForces.PartiesFor(required));
+        int callUp = AutonomousEpicSpecialForces.CallUpParties(results);
         return new(fullRequired, percent, required, cap, wins, losses, streak, callUp, fromStart, why);
     }
 

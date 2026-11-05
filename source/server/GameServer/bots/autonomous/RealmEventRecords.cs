@@ -49,6 +49,12 @@ public static class RealmEventRecords
         try{return RealmEventRecordStore.Outcomes(PathName,eventId,limit,automaticOnly);}
         catch(Exception){return new();}
     }
+    /// <summary>As <see cref="FinishedOutcomes"/>, with how many Epic Special Forces joined each run. File I/O: off the game loop.</summary>
+    public static List<(string Outcome,int SpecialForces)> FinishedResults(string eventId,int limit,bool automaticOnly=false)
+    {
+        try{return RealmEventRecordStore.Results(PathName,eventId,limit,automaticOnly);}
+        catch(Exception){return new();}
+    }
     [GameServerStartedEvent]
     public static void Start(DOLEvent e,object sender,EventArgs args)
     {
