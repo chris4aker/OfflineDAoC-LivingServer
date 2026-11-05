@@ -299,14 +299,16 @@ launcher's `RaidLeadersInvitesAreSavedReadAndTurnedOffWithAllOff` on Windows CI)
 | Lease | unchanged rules | The raid party's gamebots keep `RealmRaid` (`raid_party`), so the raid's own checks (`IsEligible`) keep them and nothing below 40 takes them; a gamebot in the player's group or a hosting party is never recruited (`IsSpokenForByPlayer`). |
 | Settings, chat | `bot_raid_invite_player` (on) in `ServerProperties`, the launcher, `ForkBuildInfo`; `lead_raid_invite` (tell) and `lead_raid_welcome` (group) | Realm-neutral lines. Log: `RAID_PLAYER_INVITE`. |
 
-**Decided while building, for the owner to confirm:**
-- **(confirm)** Invites come until the raid begins its battle (also after the parties left the hub: the player then
-  catches up on their own), for automatic and launcher-forced raids alike, never for neutral raids.
-- **(confirm)** The gamebot that steps out goes back to its own play and may be recruited again by the raid's refills
-  ("the raid's reserve" in the plan); it is not kept reserved.
+**Decided while building** (the owner confirmed three of them on 2026-11-05; the rest are still open):
+- **Confirmed by the owner (2026-11-05):** invites come until the raid begins its battle (also after the parties left
+  the hub: the player then catches up on their own), for automatic and launcher-forced raids alike, never for neutral
+  raids.
+- **Confirmed by the owner (2026-11-05):** the gamebot that steps out goes back to its own play and may be recruited
+  again by the raid's refills ("the raid's reserve" in the plan); it is not kept reserved.
 - **(confirm)** A party with room takes the player without anyone stepping out, before any full party.
-- **(confirm)** Raid invites keep the 10-minute start, the box-waiting flag and `/invites off`, but not the 45-minute
-  gap or the tell budget's wait (a raid forms rarely and only for a while); the invite still counts as a bot tell.
+- **Confirmed by the owner (2026-11-05):** raid invites keep the 10-minute start, the box-waiting flag and `/invites
+  off`, but not the 45-minute gap or the tell budget's wait (a raid forms rarely and only for a while); the invite
+  still counts as a bot tell.
 - **(confirm)** In a raid party the player's linkdead and AFK timers of B1 don't apply (the raid runs the party).
 
 **Merge note:** `feature/raid-win-balance` (#75) changes `AutonomousRealmRaid.cs` in many places; B3 changes only its
