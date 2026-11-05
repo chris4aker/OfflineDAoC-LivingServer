@@ -140,6 +140,7 @@ public static partial class AutonomousBotGroupCoordinator
             }
             long now = GameLoop.GameLoopTime;
             session.HostedPlayer = player;
+            session.HadHostedPlayer = true;
             session.PlayerRole = player.CharacterClass == null ? BotPveGroupRole.Attacker
                 : BotLedGroups.PlayerRole((eCharacterClass)player.CharacterClass.ID);
             session.Follow = new BotLedGroups.FollowState(now);
@@ -292,7 +293,16 @@ public static partial class AutonomousBotGroupCoordinator
         lock (Sync)
         {
             if (group != null && Sessions.TryGetValue(group, out Session session) && ReferenceEquals(session.HostedPlayer, player))
+            {
+                bool raidGuest = BotLedGroups.ViewOf(group)?.RaidGuest == true;
+                BotPveGroupRole role = session.PlayerRole;
                 EndHosting(session, player, "left_group");
+                // B4: the party carries on without the player and looks for a replacement of the player's role (it waits
+                // for one, no pulls, when the player was its only healer, tank or damage dealer).
+                GameBot[] stayed = BotMembers(group);
+                if (!raidGuest && stayed.Length >= 2 && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
+                    TryStartReplacement(session, role, stayed, HasViablePveComposition(session, stayed), player.Name);
+            }
         }
     }
 

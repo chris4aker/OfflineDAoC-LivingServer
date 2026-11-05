@@ -900,6 +900,8 @@ public static partial class BotLedGroups
         Handover, TakeBack, LastBot,
         // B3: the raid party's leader welcomes the player the raid leader invited.
         RaidWelcome,
+        // B4: the natural break ("last pull then town", then the goodbye) and the search for a replacement.
+        LastPull, TownBreak, Recruited, RecruitGaveUp, RecruitEnd,
     }
 
     public static string Topic(Lead what) => what switch
@@ -919,6 +921,11 @@ public static partial class BotLedGroups
         Lead.TakeBack => "lead_take",
         Lead.LastBot => "lead_last_bot",
         Lead.RaidWelcome => "lead_raid_welcome",
+        Lead.LastPull => "lead_sell",
+        Lead.TownBreak => "lead_town",
+        Lead.Recruited => "lead_recruited",
+        Lead.RecruitGaveUp => "lead_recruit_none",
+        Lead.RecruitEnd => "lead_recruit_end",
         _ => "lead",
     };
 
@@ -943,6 +950,11 @@ public static partial class BotLedGroups
         Lead.TakeBack => "ok i'll lead, finding us a camp near here",
         Lead.LastBot => "just us two left, want to lead?",
         Lead.RaidWelcome => "welcome, we wait at {place} until the raid leaves",
+        Lead.LastPull => "last pull then town",
+        Lead.TownBreak => "ok town to sell, good group all",
+        Lead.Recruited => "got someone coming, hang tight",
+        Lead.RecruitGaveUp => "no luck finding anyone, we carry on as we are",
+        Lead.RecruitEnd => "couldnt find anyone, gonna call it here",
         _ => string.Empty,
     };
 
