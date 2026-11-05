@@ -68,6 +68,47 @@ one loss.
    count, and a wipe stays a failed attempt. On this run the Oak would have been set aside at about 01:47 instead of
    being pulled until 05:19.
 
+## 1b. Krondon, build 8d7baa3 (2026-11-05 12:35-15:40): a second case
+
+The Albion Krondon raid (region 61) held "Mustering for Beran the Supply Master (2/50)" from 14:28 to the end of the log.
+That build doesn't have the fix above, but the fix wouldn't have helped: no pull was ever made, so the no-contact rule
+never counted.
+
+**What happened:**
+- **The Beran muster never filled.** 30 `FINAL_MUSTER` lines at 48906,25589, 1,400 units short of Beran, counted 0-5
+  of 50. All 57 Beran status lines read 100%, out of combat, 0 raiders within 1,000.
+- **The raid was fighting somebody else.** At the same time, 59-77 of the raid's 101 stood about 4,200 units south,
+  fighting **Scurceol Hyrde** at 49000,21379. He was 3,219 units from his spawn, inside his 3,800 tether, and stayed at
+  100%: he is immune while his four Lyft Miht orbs live. All 42 raider deaths in 14:27-15:40 were to him, and 3 of
+  them had Beran as their goal.
+- **A 20-minute cycle.** Scurceol was skipped ("no damage for five minutes") at 14:27, 14:47, 15:08 and 15:28. His
+  15-minute retry then ran out, and the raid switched back to him ("it is fighting the raid") at 14:42, 15:02 and
+  15:23. Each return to Beran started a fresh muster clock.
+- **No existing rule fired.** The muster was never empty, so `MUSTER_UNREACHABLE` didn't fire. The one-third patience
+  (20 minutes) was never reached, because each muster window lasted only about 14 minutes.
+- **The muster point itself was reachable.** It lies on the walked path from the raid's main body, and 2-5 raiders
+  got there. The rest were held in combat.
+- **The orbs were never a target.** "Lyft" appears in no log line of the run, so the logs can't say whether the orbs
+  were alive, or why they weren't picked.
+- **The 2.82 s NpcService stall at 14:27:57.** That tick ran 85 AI turns of about 70 ms each, plus a 483 ms GC pause,
+  two seconds after the raid's destination moved to the Beran muster. One of the five slowest bots named is a Krondon
+  raider. It is likely that the whole raid re-pathed to a point 4,000 units away in one tick, but that is not proven,
+  and it is not changed here.
+
+**Fix (`RealmRaidDungeonRoute`):**
+- **A stalled muster is set aside.** A muster that hasn't gained a raider for 20 minutes
+  (`MusterStalledMilliseconds`), and still has fewer than it needs, sets its encounter aside for 15 minutes. The log
+  line is `REALM_EXPEDITION_MUSTER_STALLED`. It gives the best count and how long ago it was reached, the muster point,
+  the raid's main body, and `pinnedBy`: the epic encounters the raiders are fighting instead, with counts.
+- **The clock follows the encounter.** It keeps running while the raid turns away and back, so Krondon's Beran
+  muster would have been set aside at 15:02. A pull resets it.
+- **More on the hold line.** `REALM_EXPEDITION_HOLD` now lists every live epic encounter with why the route passes it
+  by (it was Galladoria only), and `pinnedBy`. The next run will show whether the Lyft Miht orbs are alive and why
+  they aren't picked.
+- **What it doesn't fix.** It stops the hour-long hold, but it doesn't free raiders from a fight with an immune
+  encounter. The real Krondon fix is to kill the orbs, or to break off and draw Scurceol past his tether. That needs
+  the next run's encounter list and is a follow-up.
+
 ## 2. Night sieges
 
 Overnight (20:46-07:54): 2 captured, 7 defended, 2 failed rallies, 1 still open at the restart. Day (07:54-12:36): 4

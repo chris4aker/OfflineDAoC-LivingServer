@@ -77,6 +77,50 @@ namespace DOL.UnitTests
             Assert.That(pulls.PullsWithoutContact, Is.EqualTo(1));
         }
 
+        private static long At(string hhmmss) => (long)TimeSpan.Parse(hhmmss).TotalMilliseconds;
+
+        [Test]
+        public void KrondonsBeranMusterIsSetAsideWhenItStopsGaining()
+        {
+            // Build 8d7baa3, 2026-11-05: REALM_EXPEDITION_FINAL_MUSTER for Beran the Supply Master (needed 50), with the raid
+            // turning on Scurceol Hyrde from 14:42:32 to 14:48:07 in between (the muster clock restarted at each return).
+            var muster = new RealmRaidDungeonRoute.MusterProgress();
+            (string At, int Mustered)[] samples =
+            [
+                ("14:27:55", 0), ("14:29:56", 2), ("14:31:57", 2), ("14:33:58", 2), ("14:35:59", 2), ("14:38:00", 2),
+                ("14:40:01", 3), ("14:42:02", 5),
+                ("14:48:07", 2), ("14:50:08", 2), ("14:52:09", 2), ("14:54:10", 2), ("14:56:12", 2), ("14:58:14", 2),
+                ("15:00:15", 2), ("15:02:16", 2),
+            ];
+            string stalledAt = null;
+            foreach (var (time, mustered) in samples)
+                if (muster.Observe(mustered, 50, At(time))) { stalledAt = time; break; }
+            Assert.Multiple(() =>
+            {
+                Assert.That(stalledAt, Is.EqualTo("15:02:16"), "20 minutes after its best (5 at 14:42), not never");
+                Assert.That(muster.Best, Is.EqualTo(5));
+            });
+        }
+
+        [Test]
+        public void AMusterThatKeepsGainingOrIsFullIsNeverStalled() => Assert.Multiple(() =>
+        {
+            var slow = new RealmRaidDungeonRoute.MusterProgress();
+            // A long walk in: one more raider every five minutes for an hour.
+            bool stalled = false;
+            for (int minute = 0, count = 1; minute <= 60; minute += 5, count++)
+                stalled |= slow.Observe(count, 50, minute * 60_000L);
+            Assert.That(stalled, Is.False, "still gaining");
+            var full = new RealmRaidDungeonRoute.MusterProgress();
+            full.Observe(60, 50, 0);
+            Assert.That(full.Observe(55, 50, 30 * 60_000L), Is.False, "enough there: the raid goes in, it is not stalled");
+            var empty = new RealmRaidDungeonRoute.MusterProgress();
+            Assert.That(empty.Observe(0, 50, 0), Is.False);
+            Assert.That(empty.Observe(0, 50, RealmRaidDungeonRoute.MusterStalledMilliseconds - 1), Is.False);
+            Assert.That(empty.Observe(0, 50, RealmRaidDungeonRoute.MusterStalledMilliseconds), Is.True,
+                "an empty muster stalls too (MUSTER_UNREACHABLE usually takes it first)");
+        });
+
         // Owner, 2026-11-05: a time-out with no wipe is neither a win nor a loss; after a wipe it is still a loss.
         [TestCase("Timed out", 0, false)]
         [TestCase("Timed out", 1, true)]

@@ -160,6 +160,14 @@ realm that feels like a full server at its busiest. How it works and how to tune
   - **No give-up rule:** an encounter that is still out of combat after three pulls in a row is now set aside for 15
     minutes, and the raid goes on to its other encounters (`REALM_EXPEDITION_PULL_UNREACHED`).
   - **Unchanged:** a wipe is still a failed attempt.
+- **Krondon:** the Albion raid mustered for Beran the Supply Master for over an hour with 2-5 of the 50 it needed.
+  The rest of the raid was fighting Scurceol Hyrde, who can't be hurt while his four orbs live and killed 42 of them.
+  The raid kept turning back to him every 15 minutes, and each time it came back to Beran the muster clock started
+  again. Now a muster that hasn't gained a raider in 20 minutes, and still needs more, is set aside for 15 minutes and
+  the raid goes on to another encounter; the clock carries over when the raid turns away and back
+  (`REALM_EXPEDITION_MUSTER_STALLED`). The raid's hold line now lists every encounter still alive in the dungeon and
+  what is holding the raid, so the next run can show why the orbs were never attacked. Raiders stuck fighting an
+  encounter they can't hurt aren't fixed yet.
 - **A time-out without a wipe is no longer a loss** (owner, 2026-11-05). A raid that runs out its four hours without
   ever wiping now counts as neither a win nor a loss: the next raid there is the same size, and the Special Forces
   call-up doesn't change. A time-out after one or more wipes is still a loss. The Herald still says "Timed out" and

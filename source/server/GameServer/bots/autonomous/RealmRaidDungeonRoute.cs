@@ -61,6 +61,10 @@ namespace DOL.GS
         private long _musterEmptySince;
         private bool _musterUnreachable;
         private readonly PullContact _pulls = new();
+        // Per encounter, kept while the raid turns to another one and back (Krondon's Beran and Scurceol, 2026-11-05).
+        private readonly Dictionary<GameNPC, MusterProgress> _musterProgress = new();
+        // The log line of the reason a muster set its encounter aside (pull unreached, stalled); null for an empty muster.
+        private string _setAsideLine;
         /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): he charges the first final encounter early, once.</summary>
         public bool LeeroyRolled { get; set; }
         private bool _leeroyDone;
@@ -89,6 +93,30 @@ namespace DOL.GS
         public static bool PullsNeverReached(int pullsWithoutContact) => pullsWithoutContact >= MaximumPullsWithoutContact;
 
         /// <summary>Whether the raid's pulls on one encounter reach it (<see cref="MaximumPullsWithoutContact"/>).</summary>
+        /// <summary>
+        /// Krondon, 2026-11-05 (build 8d7baa3): the raid mustered for Beran the Supply Master for over an hour with 2-5 of
+        /// the 50 it needed while 70-77 of its 101 stood 4,000 units away in a fight with Scurceol Hyrde (immune while his
+        /// Lyft Miht orbs live; 42 raiders killed by him). The muster was never empty, so it was never set aside, and every
+        /// 15 minutes the raid turned on Scurceol again for five minutes and came back to a fresh muster clock. A muster
+        /// that has not gained a raider for this long, and still has fewer than it needs, is set aside; the clock follows
+        /// the encounter across those interruptions.
+        /// </summary>
+        public const long MusterStalledMilliseconds = 20 * 60_000;
+
+        /// <summary>How far one encounter's muster has got: its best count and since when.</summary>
+        public sealed class MusterProgress
+        {
+            public int Best { get; private set; } = -1;
+            public long BestSince { get; private set; }
+            /// <summary>The muster now has <paramref name="mustered"/> of <paramref name="needed"/>; true when it has stalled
+            /// (short of what it needs, and no better than its best for <see cref="MusterStalledMilliseconds"/>).</summary>
+            public bool Observe(int mustered, int needed, long now)
+            {
+                if (mustered > Best) { Best = mustered; BestSince = now; }
+                return mustered < needed && now - BestSince >= MusterStalledMilliseconds;
+            }
+        }
+
         public sealed class PullContact
         {
             /// <summary>The current pull brought the encounter into combat.</summary>
@@ -182,6 +210,8 @@ namespace DOL.GS
             _engaged.UnionWith(raiders);
             _attemptLowestPercent = _target.HealthPercent;
             _pulls.Begin();
+            // A pull is progress: the next muster for this encounter starts its own count.
+            _musterProgress.Remove(_target);
             // A reset encounter is back at full health: damage from there is progress again (the lowest health seen
             // was the last attempt's).
             _targetLowestHealth = _target.Health;
@@ -497,6 +527,7 @@ namespace DOL.GS
                 _engaged.Clear();
                 _musterEmptySince = 0;
                 _musterUnreachable = false;
+                _setAsideLine = null;
                 _pulls.Reset();
                 _musterPoint = MusterPoint(participants);
             }
@@ -530,6 +561,11 @@ namespace DOL.GS
                 // Not even a fight: the pull never reached the encounter (Marfach's Ancient Black Oak, 91 pulls).
                 if (_pulls.Ended(wiped))
                 {
+                    _setAsideLine = $"REALM_EXPEDITION_PULL_UNREACHED region={_region} target=\"{_target.Name}\" pulls={_pulls.PullsWithoutContact} " +
+                        $"at={_target.X},{_target.Y},{_target.Z} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                        $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                        $"closest={(int)participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).Select(p => (float)p.GetDistanceTo(_target)).DefaultIfEmpty(-1).Min()} " +
+                        $"reason=\"the encounter never entered combat after {_pulls.PullsWithoutContact} pulls; set aside and tried again later\"";
                     _musterUnreachable = true;
                     return true;
                 }
@@ -545,6 +581,18 @@ namespace DOL.GS
             else if (_musterEmptySince == 0) _musterEmptySince = now;
             else if (MusterUnreachable(_musterEmptySince, now))
             {
+                _musterUnreachable = true;
+                return true;
+            }
+            if (!_musterProgress.TryGetValue(_target, out MusterProgress progress))
+                _musterProgress[_target] = progress = new();
+            if (progress.Observe(mustered, needed, now))
+            {
+                _setAsideLine = $"REALM_EXPEDITION_MUSTER_STALLED region={_region} target=\"{_target.Name}\" mustered={mustered} needed={needed} " +
+                    $"best={progress.Best} minutes={(now - progress.BestSince) / 60_000} living={living} " +
+                    $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} body={MainBody(participants)} " +
+                    $"pinnedBy=\"{PinnedBy(participants)}\" " +
+                    $"reason=\"the muster gained nobody for {MusterStalledMilliseconds / 60_000} minutes; set aside and tried again later\"";
                 _musterUnreachable = true;
                 return true;
             }
@@ -805,8 +853,20 @@ namespace DOL.GS
             log.Warn($"REALM_EXPEDITION_HOLD region={_region} minutes={(now - _holdSince) / 60_000} status=\"{Status}\" " +
                      $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} target=\"{TargetName}\" inside={inside}" +
                      (_region == 60 ? $" apoc={ApocInitializator.DescribeState()}" : "") +
-                     (_region == 191 ? $" galladoria={DescribeLiveEncounters()}" : ""));
+                     // Every raid dungeon (Krondon 2026-11-05: were Scurceol Hyrde's orbs alive, and why weren't they targets?).
+                     (_region == 191 ? $" galladoria={DescribeLiveEncounters()}" : $" encounters={DescribeLiveEncounters()}") +
+                     $" pinnedBy=\"{PinnedBy(participants)}\"");
         }
+
+        /// <summary>The raid's main body (the leader with most raiders within 1,000), or "-" when it has none.</summary>
+        private string MainBody(GameLiving[] participants) =>
+            TryRegroupFront(participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray(), out Vector3 body)
+                ? $"{(int)body.X},{(int)body.Y},{(int)body.Z}" : "-";
+
+        /// <summary>Epic encounters other than the target that raiders are fighting, with how many: what holds the raid.</summary>
+        private string PinnedBy(GameLiving[] participants) => string.Join(",", participants
+            .Where(p => p.IsAlive && p.CurrentRegionID == _region && p.TargetObject is GameNPC { IsAlive: true } npc && npc is IGameEpicNpc && npc != _target)
+            .GroupBy(p => p.TargetObject.Name).OrderByDescending(g => g.Count()).Take(3).Select(g => $"{g.Key}:{g.Count()}"));
 
         // Run 28 (2026-10-20): Galladoria's raid waited 30 minutes at the Olcasgean staging with three primals dead and the
         // Water primal never a target. Every living encounter NPC of the region, and why the raid passes it by.
@@ -867,6 +927,7 @@ namespace DOL.GS
                 log.Info($"REALM_EXPEDITION_TARGET_DEFEATED region={_region} target=\"{_target.Name}\" level={_target.Level} " +
                          $"minutes={(now - _targetStartTick) / 60_000.0:0.0}");
                 _cleared.Add(_target);
+                _musterProgress.Remove(_target);
                 if (_target is IGameEpicNpc) _clearedNames.Add(_target.Name);
                 _target = null;
             }
@@ -912,17 +973,14 @@ namespace DOL.GS
                 if (IsMusteredEncounter(_target) && MusterForFinal(participants, now))
                 {
                     if (!_musterUnreachable) return;
-                    if (PullsNeverReached(_pulls.PullsWithoutContact))
-                        log.Warn($"REALM_EXPEDITION_PULL_UNREACHED region={_region} target=\"{_target.Name}\" pulls={_pulls.PullsWithoutContact} " +
-                                 $"at={_target.X},{_target.Y},{_target.Z} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
-                                 $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
-                                 $"closest={(int)participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).Select(p => (float)p.GetDistanceTo(_target)).DefaultIfEmpty(-1).Min()} " +
-                                 $"reason=\"the encounter never entered combat after {_pulls.PullsWithoutContact} pulls; set aside and tried again later\"");
+                    if (_setAsideLine != null)
+                        log.Warn(_setAsideLine);
                     else
                         log.Warn($"REALM_EXPEDITION_MUSTER_UNREACHABLE region={_region} target=\"{_target.Name}\" " +
                                  $"at={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} minutes={MusterUnreachableMilliseconds / 60_000} " +
                                  $"reason=\"nobody reached the muster; the encounter is set aside and tried again later\"");
                     _routeRetry[_target] = now + BlockedTargetRetryMilliseconds;
+                    _musterProgress.Remove(_target);
                     _musterTarget = null;
                     _target = null;
                 }
@@ -946,6 +1004,7 @@ namespace DOL.GS
                 log.Warn($"REALM_EXPEDITION_TARGET_SKIPPED region={_region} target=\"{_target.Name}\" at={_target.X},{_target.Y},{_target.Z} " +
                          $"health={_target.HealthPercent} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} near={near} reason=\"no damage for five minutes\"");
                 _routeRetry[_target] = now + BlockedTargetRetryMilliseconds;
+                _musterProgress.Remove(_target);
                 }
             }
             _target = null;
