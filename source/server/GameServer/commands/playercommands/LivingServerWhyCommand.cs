@@ -16,6 +16,8 @@ namespace DOL.GS.Commands
 		"/lswhy - your target, or the last gamebot that spoke near you or to you",
 		"/lswhy <name> - that gamebot's last chat decisions",
 		"/lswhy last [count] - the last chat decisions in your realm, the quiet ones too",
+		"/lswhy me - why bots answered your own lines, or didn't",
+		"/lswhy held [count] - the last replies the reply budget held back in your realm",
 		"/lswhy budget - the chat budget around you: each channel's floor, target, ceiling and lines a minute now")]
 	public class LivingServerWhyCommandHandler : AbstractCommandHandler, ICommandHandler
 	{
@@ -36,6 +38,20 @@ namespace DOL.GS.Commands
 			if (sub == "budget")
 			{
 				Budget(client, player, now);
+				return;
+			}
+			// 1.2: your own lines, with each answer's or silence's reason code.
+			if (sub == "me")
+			{
+				Show(client, "Why bots answered your lines, or didn't (newest first):", AutonomousChatWhy.ForPlayer(player.Name, 8), now);
+				return;
+			}
+			if (sub == "held")
+			{
+				int count = args.Length > 2 && int.TryParse(args[2], out int asked) ? Math.Clamp(asked, 1, 20) : 8;
+				Show(client, $"The last {count} replies held back by the reply budget in your realm:",
+					AutonomousChatWhy.Recent(count, decision => decision.Outcome == "held" &&
+						(decision.Realm == player.Realm || client.Account.PrivLevel > 1)), now);
 				return;
 			}
 			GameBot bot = null;
@@ -73,10 +89,18 @@ namespace DOL.GS.Commands
 			void Line(string label, AutonomousChatBudget.Channel channel, long key, int count)
 			{
 				var band = AutonomousChatBudget.LiveBand(channel, count);
-				double measured = AutonomousChatBudget.Meter.PerMinute(channel, key, now);
-				client.Out.SendMessage($"  {label}: {measured:0.0} now; floor {band.Floor:0.0}, target {band.Target:0.0}, ceiling {band.Ceiling:0.0}" +
-					$" (held back: {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.Gap)} gap, {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.Ceiling)} ceiling)",
-					eChatType.CT_System, eChatLoc.CL_SystemWindow);
+				var replies = AutonomousChatBudget.LiveReplyBand(channel, count);
+				// 1.2: the ambient lines and the replies are counted apart where a channel budgets its replies.
+				double measured = replies.Ceiling > 0
+					? AutonomousChatBudget.Meter.AmbientPerMinute(channel, key, now, band.Target)
+					: AutonomousChatBudget.Meter.PerMinute(channel, key, now, AutonomousChatBudget.LineKind.Ambient, AutonomousChatBudget.WindowMs(band.Target));
+				string text = $"  {label}: {measured:0.00} now; floor {band.Floor:0.00}, target {band.Target:0.00}, ceiling {band.Ceiling:0.00}" +
+					$" (held back: {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.Gap)} gap, {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.Ceiling)} ceiling)";
+				if (replies.Ceiling > 0)
+					text += $"; replies {AutonomousChatBudget.Meter.RepliesPerMinute(channel, key, now, replies.Target):0.00} now, target {replies.Target:0.00}, " +
+						$"ceiling {replies.Ceiling:0.00} (held back: {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.ReplyTarget)} target, " +
+						$"{AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.ReplyCeiling)} ceiling; let through {AutonomousChatWhy.RepliesAllowed(channel)})";
+				client.Out.SendMessage(text, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 			}
 			Line("/faction", AutonomousChatBudget.Channel.Faction, (long)player.Realm, bots);
 			Line("/lfg", AutonomousChatBudget.Channel.Lfg, (long)player.Realm, bots);
@@ -89,8 +113,8 @@ namespace DOL.GS.Commands
 				Line("your guild", AutonomousChatBudget.Channel.Guild, AutonomousBotGuildSocial.KeyOf(player.Guild), player.Guild.GetOnlineBotMembers().Length + 1);
 			if (player.Group != null)
 				Line("your group", AutonomousChatBudget.Channel.Group, AutonomousBotGroupChatter.KeyOf(player.Group), 0);
-			client.Out.SendMessage($"  A reply to you needs a fit of {AutonomousChatBudget.MinReplyFit} (4 known, 3 specific, 2 fits, 1 weak).",
-				eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			client.Out.SendMessage($"  A reply to you needs a fit of {AutonomousChatBudget.MinReplyFit} (4 known, 3 specific, 2 fits, 1 weak). " +
+				"A tell, or a line that names a bot, is always answered.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 
 		private static void Show(GameClient client, string title, List<AutonomousChatWhy.Decision> decisions, long now)

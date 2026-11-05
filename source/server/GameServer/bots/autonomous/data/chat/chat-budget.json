@@ -4,10 +4,14 @@
 // - "ambient": how much the world talks on its own. Each channel has a floor, a target and a ceiling in lines per
 //   minute, as one player hears that channel, at the design point: "design_bots_per_realm" gamebots online in the
 //   realm at prime time (a full server). They are scaled by the hour and by how many bots are online, with no cap.
-//   The floor keeps a channel from going dead, the target is the pace bots start lines at, the ceiling counts every
-//   bot line in the channel (answers, news and bursts too) and nothing new starts above it.
+//   The floor keeps a channel from going dead, the target is the pace bots start lines at, and nothing new starts above
+//   the ceiling. Rates are read over a window holding about four lines at the target (2-20 minutes; 1.2).
 // - "reply": how sure a bot must be before it answers a player. Below "min_fit" it says nothing, unless it was sent a
-//   tell or named, when it gives a short acknowledgement.
+//   tell or named, when it gives a short acknowledgement. And (1.2) how many replies a channel carries: "reply_target"
+//   and "reply_ceiling" per channel, scaled like the ambient band, counted apart from the ambient lines. Without them
+//   (as in a 1.1.2 copy of this file) a channel counts its replies with its ambient lines. Tells and lines that name a
+//   bot are always answered; the first answer to a player comes below the reply ceiling; bots answering bots and
+//   pile-ons below the reply target.
 //
 // The levels are set for a busy peak server, deliberately busier than the 2003 estimates (owner decision, 2026-11-03:
 // "I don't want the chat to be quiet, even if something in our research says the old servers were quiet"). The 2003
@@ -28,19 +32,23 @@
   // realm talk at 46% of a full server, 3,000 at 204%.
   "population_exponent": 0.65,
   "channels": {
-    // Realm-wide talk [O]: heard everywhere, so it is the player's main sense of a busy realm.
-    "faction":   { "floor": 2.0, "target": 4.0, "ceiling": 10.0, "scale": "realm" },
+    // Realm-wide talk [O]: heard everywhere, so it is the player's main sense of a busy realm. 1.2: its answers have a band of
+    // their own, so the openers keep 4 a minute and the realm hears up to about 8 at a full server at prime time (rate 1).
+    "faction":   { "floor": 2.0, "target": 4.0, "ceiling": 10.0, "scale": "realm", "reply_target": 4.0, "reply_ceiling": 8.0 },
     // The realm's lfg and trade channels [O] (2003 shape: public chat groups, mostly groups forming and items for sale).
-    "lfg":       { "floor": 0.6, "target": 1.6, "ceiling": 4.0, "scale": "realm" },
-    "trade":     { "floor": 0.5, "target": 1.3, "ceiling": 3.5, "scale": "realm" },
-    // /say near the player (2003 shape: busiest at camps, dungeon entrances and in towns).
-    "say":       { "floor": 0.5, "target": 2.0, "ceiling": 5.0, "scale": "realm" },
+    // 1.2: targets raised from 1.6 and 1.3 to what 1.1.2 delivered, when a full /faction pushed bots' turns here.
+    "lfg":       { "floor": 0.6, "target": 1.8, "ceiling": 4.0, "scale": "realm" },
+    "trade":     { "floor": 0.5, "target": 1.6, "ceiling": 3.5, "scale": "realm" },
+    // /say near the player (2003 shape: busiest at camps, dungeon entrances and in towns). 1.2: floor 1.0 (was 0.5), so a
+    // few bots near the player keep it alive on purpose (1.1.2's two-minute window did it by accident).
+    "say":       { "floor": 1.0, "target": 2.0, "ceiling": 5.0, "scale": "realm", "reply_target": 2.0, "reply_ceiling": 4.0 },
     // /broadcast in a capital (2003 shape: mostly selling, looking for a group and recruiting, a little chatter).
     "capital":   { "floor": 1.5, "target": 4.0, "ceiling": 7.0, "scale": "realm" },
     // /broadcast in another town with a broadcast area (a bind town).
     "town":      { "floor": 0.4, "target": 1.5, "ceiling": 3.5, "scale": "realm" },
-    // One guild's chat, at "members" online; it grows as (online / members) ^ 0.8, so a big guild is busier still.
-    "guild":     { "floor": 0.5, "target": 4.0, "ceiling": 8.0, "scale": "members", "members": 50, "members_exponent": 0.8 },
+    // One guild's chat, at "members" online; it grows as (online / members) ^ 0.8, so a big guild is busier still. 1.2: floor
+    // 1.5 (was 0.5), for the same reason as /say.
+    "guild":     { "floor": 1.5, "target": 4.0, "ceiling": 8.0, "scale": "members", "members": 50, "members_exponent": 0.8 },
     // Gamebots' banter in the player's group out of combat; fight calls come on top. Beta 1.1.1 said a line every 4-8 minutes.
     "group":     { "floor": 0.3, "target": 1.0, "ceiling": 3.0, "scale": "none" }
   },
