@@ -306,8 +306,8 @@ launcher's `RaidLeadersInvitesAreSavedReadAndTurnedOffWithAllOff` on Windows CI)
 - **Confirmed by the owner (2026-11-05):** the gamebot that steps out goes back to its own play and may be recruited
   again by the raid's refills ("the raid's reserve" in the plan); it is not kept reserved.
 - **(confirm)** A party with room takes the player without anyone stepping out, before any full party.
-- **Confirmed by the owner (2026-11-05):** raid invites keep the 10-minute start, the box-waiting flag and `/invites
-  off`, but not the 45-minute gap or the tell budget's wait (a raid forms rarely and only for a while); the invite
+- **Confirmed by the owner (2026-11-05):** raid invites keep the 10-minute start, the box-waiting flag and
+  `/invites off`, but not the 45-minute gap or the tell budget's wait (a raid forms rarely and only for a while); the invite
   still counts as a bot tell.
 - **(confirm)** In a raid party the player's linkdead and AFK timers of B1 don't apply (the raid runs the party).
 
