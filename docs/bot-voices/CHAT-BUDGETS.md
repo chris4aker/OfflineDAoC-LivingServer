@@ -104,9 +104,12 @@ what 1.1.2 actually delivered. 1.1.2's two-minute window had kept a slow guild o
 | 300 | 2.46, 6.02 | 2.63 (1.18), 6.26 |
 | 1,000 | 4.86, 12.56 | 5.07 (2.20), 13.22 |
 
-A small realm is where the change shows (rate 2, the default): with 10 bots a realm /faction goes from 0.72 to 0.59 a
-minute in the model and, on the real server, from about 1.2 to the numbers in the changelog. That is the budget doing
-what it says, near its target plus its reply target, instead of four times over.
+A small realm is where the change shows (rate 2, the default). With 10 bots a realm /faction goes from 0.72 to 0.59 a
+minute in the model. On the real server, the playtester's faction-rate scenario measured 1.20 and 1.33 lines a minute
+before and 0.87 and 0.97 after (two half-hour runs each, against an opener target of about 0.3 and a reply target of the
+same). The model has no gold spammer and no debates; on the server they make most of what is left over the budget,
+because they come at the same pace on any server. They count against the openers' budget (bots start fewer lines while
+one runs) but are not paced by it.
 
 - **Nights:** calmer than prime time, never dead. The lowest hour factor is 0.45, or 0.7 with the clock schedule.
 - **Small rosters:** `population_exponent` is 0.65, so a 300-bot realm still talks at 46% of a full server.
