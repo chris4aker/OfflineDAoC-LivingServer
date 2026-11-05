@@ -1,0 +1,40 @@
+{
+    "name": "c-herald-guilds-chars",
+    "note": "Herald guild rosters and character pages, kept SMALL for a first run: real era guild sizes, class mixes and level spreads for our bot rosters and guilds. The guild database at camelotherald.com/guilds/ is confirmed (Mythic opened it in February 2002); how a server or character appears in the URL is a GUESS, so the last target takes a tiny unfiltered sample to show the real shape.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": ["text/html"],
+    "maxCaptures": 90,
+    "targets": [
+        {
+            "url": "camelotherald.com/guilds/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: guild pages whose URL names the Merlin or Percival server.",
+            "cdxFilters": ["urlkey:.*(merlin|percival).*"],
+            "cdxPageSize": 200, "cdxMaxPages": 2, "maxCaptures": 30
+        },
+        {
+            "url": "camelotherald.com/chars/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: the /chars/ path, and character pages whose URL names Merlin or Percival.",
+            "cdxFilters": ["urlkey:.*(merlin|percival).*"],
+            "cdxPageSize": 200, "cdxMaxPages": 2, "maxCaptures": 30
+        },
+        {
+            "url": "camelotherald.com/guilds/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "A small unfiltered sample of the guild database, to learn its URL shape.",
+            "cdxPageSize": 50, "cdxMaxPages": 1, "maxCaptures": 15
+        },
+        {
+            "url": "camelotherald.com/chars/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "A small unfiltered sample of character pages (the /chars/ path itself is a guess).",
+            "cdxPageSize": 50, "cdxMaxPages": 1, "maxCaptures": 15
+        }
+    ]
+}

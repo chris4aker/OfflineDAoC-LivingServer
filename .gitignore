@@ -36,3 +36,5 @@
 # separate optional asset; they are not part of the editable source checkout.
 /tools/sluaghbinder/payload-v0.31b/
 /tools/sluaghbinder/patcher/
+# Wayback fetcher output: third-party archived pages, never committed.
+/tools/wayback-fetch/out/

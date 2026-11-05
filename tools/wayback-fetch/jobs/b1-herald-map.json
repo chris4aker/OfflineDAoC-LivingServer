@@ -1,0 +1,18 @@
+{
+    "name": "b1-herald-map",
+    "note": "INDEX ONLY, downloads no pages: lists every distinct camelotherald.com URL archived 2002-2005 outside the huge /chars/ and /guilds/ databases, so we learn the Herald's real URL structure (server pages, realm war, patch notes, class and population statistics) and can correct the guesses in b2 and c. Read out\\b1-herald-map\\index.csv.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": ["text/html"],
+    "indexOnly": true,
+    "targets": [
+        {
+            "url": "camelotherald.com",
+            "matchType": "domain",
+            "guess": false,
+            "note": "Whole domain, one row per distinct URL (collapse=urlkey).",
+            "cdxFilters": ["!urlkey:.*/(chars|guilds)/.*"],
+            "cdxPageSize": 1000, "cdxMaxPages": 10
+        }
+    ]
+}

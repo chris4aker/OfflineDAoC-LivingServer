@@ -1,0 +1,46 @@
+{
+    "name": "a-raid-sizes",
+    "note": "Raid sizes 2002-2005: how many players era raids used (dragons, Darkness Falls, ToA encounters, keep takes), from forum threads and guides on Freddyshouse, VN Boards and Allakhazam. Forum URLs carry thread IDs, not titles, so this first pass mostly saves board and guide LISTINGS (which show thread titles); add the raid threads they name as matchType exact targets in a follow-up job.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": ["text/html"],
+    "maxCaptures": 240,
+    "targets": [
+        {
+            "url": "forums.freddyshouse.com/forumdisplay.php",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: Freddyshouse ran vBulletin then (forumdisplay.php?f=N lists threads with titles). Today's XenForo /threads/<slug>.<id> URLs are later.",
+            "cdxPageSize": 200, "cdxMaxPages": 2, "maxCaptures": 40
+        },
+        {
+            "url": "forums.freddyshouse.com/showthread.php",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: vBulletin thread pages (showthread.php?t=N or ?threadid=N). No keyword in the URL, so this is a small sample only.",
+            "cdxPageSize": 200, "cdxMaxPages": 1, "maxCaptures": 20
+        },
+        {
+            "url": "vnboards.ign.com",
+            "matchType": "domain",
+            "guess": true,
+            "note": "GUESS: only VN Boards URLs whose address names Camelot (board names such as Dark_Age_of_Camelot...). Old board.asp?brd=N / message.asp?topic=N URLs carry no name and are not caught here.",
+            "cdxFilters": ["urlkey:.*camelot.*"],
+            "cdxPageSize": 200, "cdxMaxPages": 3, "maxCaptures": 60
+        },
+        {
+            "url": "camelot.allakhazam.com/db/guides.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Pattern seen on today's site (db/guides.html?guide=N); GUESS that the 2002-2005 site used it too.",
+            "cdxPageSize": 200, "cdxMaxPages": 2, "maxCaptures": 60
+        },
+        {
+            "url": "camelot.allakhazam.com/forum.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Pattern seen on today's site (forum.html?forum=N, threads add &mid=N); GUESS for 2002-2005.",
+            "cdxPageSize": 200, "cdxMaxPages": 2, "maxCaptures": 60
+        }
+    ]
+}
