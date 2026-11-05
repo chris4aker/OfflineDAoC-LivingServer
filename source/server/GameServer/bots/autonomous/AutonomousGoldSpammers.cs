@@ -173,9 +173,15 @@ public static class AutonomousGoldSpammers
             GameBot speaker = bot;
             AutonomousLivingServer.Later(speaker, due, () => AutonomousLivingServer.CanTalk(speaker), () =>
             {
-                if (AutonomousBotVoices.TryEventLine(speaker, "spam_react", out string line, topic,
+                // 1.2: reactions to the spammer are replies, within the realm's reply budget; its ads are the realm's own talk.
+                if (AutonomousBotChatCoordinator.ReplyAllowed(speaker, true, AutonomousChatBudget.ReplyKind.BotThread, "spammer " + spammer, null, out string code) &&
+                    AutonomousBotVoices.TryEventLine(speaker, "spam_react", out string line, topic,
                         new Dictionary<string, string> { ["target"] = spammer }))
-                    AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
+                {
+                    AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line, AutonomousChatBudget.LineKind.Reply);
+                    AutonomousChatWhy.Record(speaker, "faction", "spammer " + spammer, "said", "spam_react " + topic, 2, "reacts to the gold spammer", line,
+                        code: code);
+                }
             });
         }
     }

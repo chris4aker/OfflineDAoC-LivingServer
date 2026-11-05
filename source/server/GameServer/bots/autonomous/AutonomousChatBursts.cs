@@ -94,20 +94,19 @@ public static class AutonomousChatBursts
             int order = i;
             AutonomousLivingServer.Later(bot, delays[i], () => AutonomousLivingServer.CanTalk(bot) && !AutonomousBotDebates.IsRunning(realm), () =>
             {
-                long now = GameLoop.GameLoopTime;
-                var band = AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Faction, realmBots);
-                if (AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)realm, now) >= band.Ceiling)
-                {
-                    AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, AutonomousChatWhy.Held.Ceiling);
+                // 1.2: a burst's reactions are replies to the news, said below the realm's reply ceiling (not its target: a big
+                // moment is allowed to be loud).
+                var verdict = AutonomousChatBudget.LiveReply(AutonomousChatBudget.Channel.Faction, (long)realm, realmBots, AutonomousChatBudget.ReplyKind.Burst);
+                if (!AutonomousChatBudget.Says(verdict))
                     return;
-                }
                 lock (spoken)
                     if (!spoken.Add(bot))
                         return;
-                AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line);
+                AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line, AutonomousChatBudget.LineKind.Reply);
                 AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), bot, line, "");
                 AutonomousChatWhy.Record(bot, "faction", "burst " + trigger, "said", "burst " + string.Join(',', answerSets), order,
-                    $"reaction {order + 1} of {delays.Length} to {trigger}", line);
+                    $"reaction {order + 1} of {delays.Length} to {trigger}", line,
+                    code: AutonomousChatWhy.Codes.Of(verdict, AutonomousChatBudget.ReplyKind.Burst));
             });
         }
         if (towns)
