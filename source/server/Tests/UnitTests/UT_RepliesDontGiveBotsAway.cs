@@ -152,6 +152,35 @@ public class UT_RepliesDontGiveBotsAway
         Assert.That(settings.Band(Budget.Channel.Say).ReplyCeiling, Is.EqualTo(3), "a reply ceiling under its target is raised to it");
     }
 
+    [Test]
+    public void ScenesComeAtAFullServersPaceFrom300BotsAndLessOftenBelow()
+    {
+        foreach (int bots in new[] { 300, 900, 1_000, 3_000 })
+            Assert.That(Budget.SceneScale(bots), Is.EqualTo(1.0), $"{bots} bots a realm keep today's pace");
+        Assert.That(Budget.SceneScale(10), Is.EqualTo(Math.Sqrt(10 / 300.0)).Within(1e-9), "about a fifth as often at 10");
+        Assert.That(Budget.SceneScale(0), Is.EqualTo(Budget.MinSceneScale), "never stopped");
+        Assert.That(Budget.SceneScale(30), Is.GreaterThan(Budget.SceneScale(10)));
+        Assert.That(Budget.SceneScale(150), Is.LessThan(1.0));
+        // A debate planned 30 minutes out: due at 30 minutes on a full server, about 2.7 hours at 10 bots a realm.
+        long planned = 1_000, due = planned + 30 * 60_000;
+        Assert.That(Budget.SceneDue(planned, due, due, 900), Is.True);
+        Assert.That(Budget.SceneDue(planned, due, due - 1, 900), Is.False);
+        Assert.That(Budget.SceneDue(planned, due, due, 10), Is.False);
+        Assert.That(Budget.SceneDue(planned, due, planned + 165 * 60_000, 10), Is.True);
+        Assert.That(Budget.SceneDue(planned, due, planned + 160 * 60_000, 10), Is.False);
+        // Scaled by the bots online when it comes due, not when it was planned (a server start has few bots on).
+        Assert.That(Budget.SceneDue(planned, due, due, 0), Is.False);
+        Assert.That(Budget.SceneDue(planned, due, due, 1_000), Is.True);
+        // A GM's "start soon" (due at 0) is due at once on any roster.
+        Assert.That(Budget.SceneDue(0, 0, 5, 1), Is.True);
+        // A spammer's wave: 5-10 ads on a full server, two on a tiny one.
+        Assert.That(Budget.SceneLines(10, 900), Is.EqualTo(10));
+        Assert.That(Budget.SceneLines(5, 300), Is.EqualTo(5));
+        Assert.That(Budget.SceneLines(10, 10), Is.EqualTo(2));
+        Assert.That(Budget.SceneLines(10, 100), Is.EqualTo(6));
+        Assert.That(Budget.SceneLines(1, 10), Is.EqualTo(1));
+    }
+
     #endregion
 
     #region Reason codes

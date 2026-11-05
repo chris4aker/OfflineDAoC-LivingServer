@@ -221,6 +221,34 @@ public static class AutonomousChatBudget
         return roll < room ? ReplyVerdict.SpeakOverTarget : ReplyVerdict.HoldTarget;
     }
 
+    /// <summary>
+    /// How often the realm's population-independent /faction scenes come (1.2: debates, gold spammer waves), from 0.1 to 1: 1
+    /// from <see cref="SceneFullRoster"/> bots a realm up (300, 900 and 1,000 keep today's pace), and as the square root of the
+    /// share below it, so 10 bots a realm hear them about a fifth as often. A scene is many lines in a few minutes; on a small
+    /// roster it used to be most of what /faction said (the playtester's faction-rate runs, 2026-11-05). Pure.
+    /// </summary>
+    public static double SceneScale(int realmBots) =>
+        Math.Clamp(Math.Sqrt(Math.Max(0, realmBots) / (double)SceneFullRoster), MinSceneScale, 1.0);
+
+    public const int SceneFullRoster = 300;
+    public const double MinSceneScale = 0.1;
+
+    /// <summary>
+    /// Whether a scene planned at <paramref name="scheduledAt"/> for <paramref name="dueAt"/> is due now: its wait stretched by
+    /// <see cref="SceneScale"/> for the bots online now, not when it was planned (at a server start few bots are on yet). A due
+    /// time at or before the planning (a GM's "start soon") is due at once. Pure.
+    /// </summary>
+    public static bool SceneDue(long scheduledAt, long dueAt, long now, int realmBots)
+    {
+        if (dueAt <= scheduledAt)
+            return now >= dueAt;
+        return now - scheduledAt >= (dueAt - scheduledAt) / SceneScale(realmBots);
+    }
+
+    /// <summary>A gold spammer's ads in one wave for the bots online: fewer on a small roster, never under 2. Pure.</summary>
+    public static int SceneLines(int lines, int realmBots) =>
+        Math.Max(Math.Min(2, lines), (int)Math.Round(lines * SceneScale(realmBots)));
+
     /// <summary>Whether a reply verdict lets the line be said.</summary>
     public static bool Says(ReplyVerdict verdict) => verdict is ReplyVerdict.Exempt or ReplyVerdict.Speak or ReplyVerdict.SpeakOverTarget;
 

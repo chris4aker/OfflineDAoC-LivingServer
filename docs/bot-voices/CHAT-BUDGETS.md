@@ -108,8 +108,13 @@ A small realm is where the change shows (rate 2, the default). With 10 bots a re
 minute in the model. On the real server, the playtester's faction-rate scenario measured 1.20 and 1.33 lines a minute
 before and 0.87 and 0.97 after (two half-hour runs each, against an opener target of about 0.3 and a reply target of the
 same). The model has no gold spammer and no debates; on the server they make most of what is left over the budget,
-because they come at the same pace on any server. They count against the openers' budget (bots start fewer lines while
-one runs) but are not paced by it.
+because they came at the same pace on any server. They count against the openers' budget (bots start fewer lines while
+one runs).
+
+**Scenes on a small roster (1.2, owner 2026-11-05).** Debates and the gold spammer's waves wait longer below 300 bots a
+realm: their gap is divided by `SceneScale` = the square root of (bots online / 300), between 0.1 and 1, read when a
+scene comes due (a server start has few bots on yet), and a wave's ads are scaled the same way (two at least). 10 bots a
+realm hear them about a fifth as often; 300, 900 and 1,000 exactly as before.
 
 - **Nights:** calmer than prime time, never dead. The lowest hour factor is 0.45, or 0.7 with the clock schedule.
 - **Small rosters:** `population_exponent` is 0.65, so a 300-bot realm still talks at 46% of a full server.

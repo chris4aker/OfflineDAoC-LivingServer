@@ -262,7 +262,8 @@ public class UT_ChatBudgetSimulation
     }
 
     /// <summary>One realm's evening hour (after a ten-minute warm-up) with <paramref name="bots"/> online.</summary>
-    public static Result Evening(int bots, bool budget, int seed, int minutes = 60, bool repliesBudgeted = true, double rate = 1.0)
+    public static Result Evening(int bots, bool budget, int seed, int minutes = 60, bool repliesBudgeted = true, double rate = 1.0,
+        bool scaledScenes = true)
     {
         var random = new Random(seed);
         var recent = new VC.RecentLines();
@@ -404,9 +405,71 @@ public class UT_ChatBudgetSimulation
                     }
             }
         }
+        // The realm's /faction scenes (AutonomousBotDebates, AutonomousGoldSpammers), modelled by their timing: a debate is six
+        // beats 5-8 s apart, the first 5-10 minutes into the session and the next 30-45 minutes after one ends; a gold spammer's
+        // wave is 5-10 ads 18-48 s apart, 12-30 minutes in and then every 60-150 minutes, with a reaction or two to its first
+        // three ads and one to three at its ban (replies). 1.2: both wait longer and a wave is shorter on a small roster
+        // (AutonomousChatBudget.SceneScale) when scaledScenes is set.
+        int sceneBots = scaledScenes ? bots : Budget.SceneFullRoster;
+        long debatePlanned = 0, debateDue = 5 * 60_000 + random.Next(5 * 60_000), wavePlanned = 0,
+            waveDue = AutonomousGoldSpammers.FirstWaveMinMs + random.Next((int)AutonomousGoldSpammers.FirstWaveSpreadMs);
+        int debates = 0, beat = -1, adsLeft = -1, adsSaid = 0;
+        long nextBeat = 0, nextAd = 0;
+        // A made-up word, so modelled scene lines never read as near-copies of each other (digits don't count).
+        string Word() => new(Enumerable.Range(0, 7).Select(_ => (char)('a' + random.Next(26))).ToArray());
+        void React(long now, int count, long firstDelay)
+        {
+            long due = now + firstDelay;
+            for (int r = 0; r < count; r++)
+            {
+                due += 2_500 + random.Next(8_000);
+                if (!ReplyGate("faction", now))
+                    continue;
+                dueReplies.Add((due, "faction", $"lol look at {Word()} {Word()} again", all[random.Next(all.Count)].Id, true));
+            }
+        }
         for (long now = 0; now < end; now += 1_000)
         {
             DateTime clock = new DateTime(2026, 11, 3, 20, 0, 0, DateTimeKind.Utc).AddMilliseconds(now);
+            if (beat < 0 && adsLeft < 0 && Budget.SceneDue(debatePlanned, debateDue, now, sceneBots))
+            {
+                beat = 0;
+                nextBeat = now;
+                debates++;
+            }
+            if (beat >= 0 && now >= nextBeat)
+            {
+                Say(now, "faction", $"{Word()} {Word()} {Word()} {Word()}", all[random.Next(all.Count)].Id);
+                nextBeat = now + 5_000 + random.Next(3_000);
+                if (++beat == 6)
+                {
+                    beat = -1;
+                    (debatePlanned, debateDue) = (now, now + AutonomousBotDebates.NextGapMs(random));
+                }
+            }
+            if (adsLeft < 0 && beat < 0 && Budget.SceneDue(wavePlanned, waveDue, now, sceneBots))
+            {
+                adsLeft = Budget.SceneLines(AutonomousGoldSpammers.AdsMin + random.Next(AutonomousGoldSpammers.AdsSpread), sceneBots);
+                adsSaid = 0;
+                nextAd = now;
+            }
+            if (adsLeft >= 0 && now >= nextAd)
+            {
+                if (adsLeft > 0)
+                {
+                    adsLeft--;
+                    Say(now, "faction", $"CHEAP GOLD {Word()} {Word()} AT G0LDSHOP", -1);
+                    if (++adsSaid <= 3 && random.NextDouble() < 0.8)
+                        React(now, 1 + random.Next(2), 4_000);
+                    nextAd = now + 18_000 + random.Next(30_000);
+                }
+                else
+                {
+                    React(now, 1 + random.Next(3), 30_000 + random.Next(60_000));
+                    adsLeft = -1;
+                    (wavePlanned, waveDue) = (now, now + AutonomousGoldSpammers.WaveMinMs + random.Next((int)AutonomousGoldSpammers.WaveSpreadMs));
+                }
+            }
             for (int i = macros.Count - 1; i >= 0; i--)
                 if (macros[i].At <= now)
                 {
@@ -703,23 +766,23 @@ public class UT_ChatBudgetSimulation
     public static readonly Dictionary<(int, int), double> nearRepeats = new();
 
     /// <summary>The sides a report compares: Beta 1.1.1's gaps, the 1.1.2 ambient budget, and 1.2's two budgets.</summary>
-    public const int Beta111 = 0, Beta112 = 1, Replies12 = 2;
+    public const int Beta111 = 0, Beta112 = 1, Pr82 = 2, Replies12 = 3;
 
-    private static readonly string[] SideNames = ["1.1.1", "1.1.2", "1.2"];
+    private static readonly string[] SideNames = ["1.1.1", "1.1.2", "1.2 first cut (scenes at a full pace)", "1.2"];
 
     public static string Report(int[] populations, out Dictionary<(int, int), Result> results, double rate = 1.0)
     {
         results = new Dictionary<(int, int), Result>();
         var text = new StringBuilder();
         text.AppendLine($"An evening hour (20:00, three evenings averaged) of one realm's ambient chat at bot_voices_chat_rate {rate}, lines a minute as the player hears each channel (UT_ChatBudgetSimulation).");
-        text.AppendLine("1.1.1 = Beta 1.1.1 gaps (population factor capped at 1.8); 1.1.2 = the ambient budget counting every line over two minutes; 1.2 = ambient lines and replies counted apart, each over the window its target needs, replies under their own budget (chat-budget.json).");
+        text.AppendLine("1.1.1 = Beta 1.1.1 gaps (population factor capped at 1.8); 1.1.2 = the ambient budget counting every line over two minutes; 1.2 = ambient lines and replies counted apart, each over the window its target needs, replies under their own budget (chat-budget.json), and debates and gold spammer waves scaled to the roster (the first cut of PR #82 kept them at a full server's pace). Every side has the scenes.");
         text.AppendLine();
         text.AppendLine("Broadcast includes sellers' macros (the same WTS line every 3-8 min, by design); repeats are counted without them.");
         text.AppendLine();
         text.AppendLine("| bots/realm | side | " + string.Join(" | ", Channels) + " | total | faction replies (budget: target / ceiling) | exchanges held by the reply budget (faction / say) | macro repeats | exact repeats | near repeats | busiest bot (faction / lfg / trade / say / broadcast) | distinct, 3+ words (faction / lfg / trade / broadcast / guild, worst hour) | speakers per 30 lines (faction / guild) | top 10% of speakers' share (faction / guild) | threads: answered / mean lines / 4+ lines (faction) | /faction gaps of 2 s or less |");
         text.AppendLine("|---|---|" + string.Concat(Channels.Select(_ => "---|")) + "---|---|---|---|---|---|---|---|---|---|---|---|");
         foreach (int bots in populations)
-            foreach (int budget in new[] { Beta111, Beta112, Replies12 })
+            foreach (int budget in new[] { Beta111, Beta112, Pr82, Replies12 })
             {
                 // Three evenings, so the averages don't hang on one draw.
                 Result result = new() { Minutes = 0 };
@@ -730,7 +793,8 @@ public class UT_ChatBudgetSimulation
                 int[] seeds = [1103, 2207, 3301, 4409, 5501];
                 foreach (int seed in seeds)
                 {
-                    Result evening = Evening(bots, budget > Beta111, seed + bots, repliesBudgeted: budget == Replies12, rate: rate);
+                    Result evening = Evening(bots, budget > Beta111, seed + bots, repliesBudgeted: budget >= Pr82, rate: rate,
+                        scaledScenes: budget == Replies12);
                     result.Minutes += evening.Minutes;
                     foreach (var pair in evening.RepliesSaid)
                         result.RepliesSaid[pair.Key] = result.RepliesSaid.GetValueOrDefault(pair.Key) + pair.Value;
@@ -761,8 +825,8 @@ public class UT_ChatBudgetSimulation
                 results[(bots, budget)] = result;
                 var replyBand = Budget.ReplyBand(Budget.Current, Budget.Channel.Faction, bots, 20, false, rate);
                 text.AppendLine($"| {bots} | {SideNames[budget]} | " + string.Join(" | ", Channels.Select(c => result.PerMinute(c).ToString("0.00"))) +
-                                $" | {result.Total:0.00} | " + (budget == Replies12 ? $"{result.RepliesPerMinute("faction"):0.00} ({replyBand.Target:0.00} / {replyBand.Ceiling:0.00})" : "-") +
-                                $" | {(budget == Replies12 ? $"{result.RepliesHeld.GetValueOrDefault("faction") / (double)result.Minutes:0.00} / {result.RepliesHeld.GetValueOrDefault("say") / (double)result.Minutes:0.00} a minute" : "-")}" +
+                                $" | {result.Total:0.00} | " + (budget >= Pr82 ? $"{result.RepliesPerMinute("faction"):0.00} ({replyBand.Target:0.00} / {replyBand.Ceiling:0.00})" : "-") +
+                                $" | {(budget >= Pr82 ? $"{result.RepliesHeld.GetValueOrDefault("faction") / (double)result.Minutes:0.00} / {result.RepliesHeld.GetValueOrDefault("say") / (double)result.Minutes:0.00} a minute" : "-")}" +
                                 $" | {(result.Lines.TryGetValue("macro", out var m) ? m.Count / (double)result.Minutes : 0):0.00}/min | {exact:P1} | {near:P1} | " +
                                 string.Join(" / ", new[] { "faction", "lfg", "trade", "say", "broadcast" }.Select(c => result.TopSpeakerShare(c).ToString("P0"))) + " | " +
                                 string.Join(" / ", DistinctChannels.Select(c => distinct[c].ToString("P0"))) +
@@ -843,6 +907,9 @@ public class UT_ChatBudgetSimulation
                 Assert.That(now.PerMinute(channel), Is.GreaterThanOrEqualTo(was.PerMinute(channel) * (channel is "lfg" or "trade" or "broadcast" ? 0.9 : 0.75)),
                     $"{channel} at {bots}, against 1.1.2");
         }
+        // 1.2, scenes: from 300 bots a realm up debates and spammer waves keep their pace, so the evening is the same draw for draw.
+        foreach (int bots in new[] { 300, 1_000 })
+            Assert.That(results[(bots, Replies12)].Total, Is.EqualTo(results[(bots, Pr82)].Total), $"scenes at their full pace at {bots}");
         Budget.Settings settings = Budget.Current;
         // The replies stay within their own budget over the hour.
         foreach (int bots in new[] { 300, 1_000 })
@@ -915,6 +982,8 @@ public class UT_ChatBudgetSimulation
                 $"/faction at {bots} bots: near its ambient target {band.Target:0.00} plus its reply target {replies.Target:0.00}");
             Assert.That(now.PerMinute("faction"), Is.GreaterThanOrEqualTo(band.Target * 0.7), $"and not quiet at {bots}");
             Assert.That(now.RepliesPerMinute("faction"), Is.LessThanOrEqualTo(replies.Ceiling), $"replies under their ceiling at {bots}");
+            // 1.2, scenes scaled to the roster: a small realm's /faction is no longer mostly debates and gold spam.
+            Assert.That(now.PerMinute("faction"), Is.LessThan(results[(bots, Pr82)].PerMinute("faction")), $"scenes scaled at {bots}");
         }
     }
 

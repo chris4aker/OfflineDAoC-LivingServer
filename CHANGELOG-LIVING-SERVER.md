@@ -26,6 +26,11 @@ Older entries below keep the names they were written with.
   budget is the gold spammer's waves (6 to 11 ads in half an hour) and the debate scenes: they come at the same pace on
   any server, however few bots it has. They now count against the openers' budget, so bots start fewer lines of their
   own while one runs.
+- **Debates and gold spammers fit the crowd** (owner 2026-11-05). On a realm with fewer than 300 gamebots online, the
+  /faction debates and the gold spammer's waves come less often, and a wave has fewer ads: with 10 bots a realm they come
+  about a fifth as often and a wave is two ads. From 300 bots a realm up, nothing changes, so at 900 they come exactly
+  as before. In the evening model at "How much they talk" 2, /faction with 10 bots a realm goes from 0.86 to 0.74 lines a
+  minute, and with 300, 900 and 1,000 it stays at 3.96, 6.78 and 6.77. SCENES_PLAYTEST_PLACEHOLDER
 - **No quieter on a full server.** The world was re-balanced, not cut: /faction's openers keep 4 a minute at a full server
   and its answers come on top of them; /lfg and /trade aim at what 1.1.2 actually delivered (1.8 and 1.6 a minute, were
   1.6 and 1.3); a guild's chat and /say near you have higher floors, so a few bots keep them going. In the evening model
