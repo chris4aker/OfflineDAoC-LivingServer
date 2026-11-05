@@ -360,6 +360,10 @@ did in 2003. The observer cap, the calibration, duty and the pet caps follow the
   none at a player a bot couldn't notice on that scan (beyond 3,500 units, or over the observer cap). In a test with
   900 gamebots of one realm around a player, rays at the player fell from 99 to 11 a second; with 2,700 bots of three
   realms in one zone the scan casts about 18,700 rays a second, as before (`UT_RvrPerceptionCalibration`).
+- **Owner's decisions (confirmed by the owner, 2026-11-05):** easy is twice the normal times and veteran half; bots
+  within 1,000 units are outside the observer cap; gamebot-group members answer calls; other groups of a warband hear
+  a call half the time, 4 seconds later; the pet-class list above (Druids and Hunters out, the Sluaghbinder in) with a
+  cap of 2; a median of 0.75 s just outside 1,000 units (normal).
 - **Checked:** automated tests only (`UT_RvrPerception`, `UT_RvrPerceptionCalibration`, `UT_RvrPerceptionDuty`,
   `UT_RvrPetCap`). It has not been played yet.
 
