@@ -418,7 +418,7 @@ try {
     $entries = @($za.Entries | Where-Object { $_.Length -gt 0 -or -not $_.FullName.EndsWith('/') } | ForEach-Object { $_.FullName.Replace('\', '/') } | Sort-Object)
 } finally { $za.Dispose() }
 Assert-Equal 'index.csv,manifest.jsonl,www.camelotherald.com/aaaa_2003.html' (@($entries | Where-Object { -not $_.EndsWith('/') }) -join ',') 'pack: pages, index.csv and manifest; no index state, .part files or logs'
-Write-Host ('  pack: a raw zip entry name on PowerShell ' + $PSVersionTable.PSVersion + ': ' + ($raw -join ','))
+Assert-Equal 'www.camelotherald.com/aaaa_2003.html' ($raw -join ',') "pack: entry names use '/' (also on Windows PowerShell 5.1)"
 $pk2 = & $exe -NoProfile -ExecutionPolicy Bypass -File $packer -Folder $tmp 2>&1 | Out-String
 Assert-True ($pk2 -match '2-patch-notes: unchanged since its last pack, skipped' -and $pk2 -match '0 packed, 1 unchanged') "pack: unchanged job skipped`n$pk2"
 Start-Sleep -Milliseconds 50
@@ -595,7 +595,8 @@ if (-not $py) {
         $gaps = @()
         for ($i = 1; $i -lt $requests.Count; $i++) { $gaps += ($requests[$i].t - $requests[$i - 1].t) }
         $minGap = ($gaps | Measure-Object -Minimum).Minimum
-        Assert-True ($minGap -ge 0.38) "e2e: requests at least 0.4 s apart (smallest gap $minGap)"
+        # Arrival gaps at the mock jitter by tens of ms around the 0.4 s start-to-start pacing (unit-tested exactly above).
+        Assert-True ($minGap -ge 0.3) "e2e: requests paced about 0.4 s apart (smallest arrival gap $minGap)"
         $afterRetryAfter = $requests[1].t - $requests[0].t
         Assert-True ($afterRetryAfter -ge 1.9) "e2e: Retry-After 2 honoured on the CDX 429 ($afterRetryAfter s)"
         Assert-True (@($requests | Where-Object { $_.ua -match '@|mailto|http' }).Count -eq 0) 'e2e: User-Agent carries no email or URL'

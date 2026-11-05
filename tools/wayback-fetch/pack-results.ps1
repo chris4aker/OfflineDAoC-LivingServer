@@ -1,6 +1,8 @@
 # pack-results.ps1 - zips each job's results for moving off the PC: out\_packs\<job>-<yyyymmdd>.zip
 #
-# Runs on Windows PowerShell 5.1 with Compress-Archive (no installs). PACK-RESULTS.cmd starts it. Offline: no requests.
+# Runs on Windows PowerShell 5.1 with .NET's built-in System.IO.Compression (no installs). PACK-RESULTS.cmd starts it.
+# Offline: no requests. Not Compress-Archive: on Windows PowerShell 5.1 it writes entry names with backslashes
+# (www.camelotherald.com\x.html), which Python and Linux tools unpack as one flat file name. These zips use '/'.
 #
 # A pack holds the job's saved pages, index.csv and manifest.jsonl, with the same folders as out\<job>\. It leaves
 # out the CDX index state (out\<job>\index\), unfinished downloads (*.part) and everything in out\_logs, out\_state
@@ -41,6 +43,25 @@ function Get-PackFingerprint($files) {
     return ([BitConverter]::ToString($h) -replace '-', '').ToLowerInvariant()
 }
 
+# Writes the files into a new zip, entry names relative to the job folder with '/' separators.
+function Write-PackZip([string]$path, $files) {
+    Add-Type -AssemblyName System.IO.Compression
+    if (Test-Path -LiteralPath $path) { Remove-Item -LiteralPath $path -Force }
+    $fs = [IO.File]::Open($path, [IO.FileMode]::CreateNew)
+    try {
+        $za = New-Object System.IO.Compression.ZipArchive($fs, [System.IO.Compression.ZipArchiveMode]::Create)
+        try {
+            foreach ($f in $files) {
+                $e = $za.CreateEntry($f.Rel.Replace('\', '/'), [System.IO.Compression.CompressionLevel]::Optimal)
+                $e.LastWriteTime = [DateTimeOffset](New-Object DateTime ($f.Ticks, [DateTimeKind]::Utc))
+                $in = [IO.File]::OpenRead($f.Full)
+                $out = $e.Open()
+                try { $in.CopyTo($out) } finally { $out.Dispose(); $in.Dispose() }
+            }
+        } finally { $za.Dispose() }
+    } finally { $fs.Dispose() }
+}
+
 function Invoke-Pack {
     $outRoot = Join-Path $Folder 'out'
     if (-not (Test-Path -LiteralPath $outRoot)) { Write-Host 'pack-results: no out\ folder yet; run the fetcher first.'; return 1 }
@@ -59,26 +80,11 @@ function Invoke-Pack {
         if (Test-Path -LiteralPath $statePath) { $last = ([IO.File]::ReadAllText($statePath)).Trim().Split(' ')[0] }
         if (-not $Again -and $last -eq $fp) { Write-Host ("  {0}: unchanged since its last pack, skipped" -f $d.Name); $same++; continue }
 
-        # Compress-Archive keeps folders only for whole folders, so copy the chosen files to a staging folder first.
-        $stage = Join-Path ([IO.Path]::GetTempPath()) ('wbf-pack-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
-        New-Item -ItemType Directory -Path $stage | Out-Null
-        try {
-            foreach ($f in $files) {
-                $to = Join-Path $stage $f.Rel
-                $toDir = Split-Path -Parent $to
-                if (-not (Test-Path -LiteralPath $toDir)) { New-Item -ItemType Directory -Path $toDir -Force | Out-Null }
-                [IO.File]::Copy($f.Full, $to, $true)
-            }
-            $zip = Join-Path $packDir ($d.Name + '-' + $day + '.zip')
-            $tmpZip = $zip + '.tmp.zip'
-            if (Test-Path -LiteralPath $tmpZip) { Remove-Item -LiteralPath $tmpZip -Force }
-            $items = @(Get-ChildItem -LiteralPath $stage | ForEach-Object { $_.FullName })
-            Compress-Archive -LiteralPath $items -DestinationPath $tmpZip -CompressionLevel Optimal
-            if (Test-Path -LiteralPath $zip) { Remove-Item -LiteralPath $zip -Force }
-            [IO.File]::Move($tmpZip, $zip)
-        } finally {
-            Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
-        }
+        $zip = Join-Path $packDir ($d.Name + '-' + $day + '.zip')
+        $tmpZip = $zip + '.tmp'
+        Write-PackZip $tmpZip $files
+        if (Test-Path -LiteralPath $zip) { Remove-Item -LiteralPath $zip -Force }
+        [IO.File]::Move($tmpZip, $zip)
         [IO.File]::WriteAllText($statePath, $fp + ' ' + (Split-Path -Leaf $zip), (New-Object System.Text.UTF8Encoding($false)))
         $mb = (Get-Item -LiteralPath $zip).Length / 1MB
         Write-Host ("  {0}: {1} files -> {2} ({3:0.0} MB)" -f $d.Name, $files.Count, $zip, $mb)
