@@ -61,7 +61,8 @@ Assert-True ($q -match '&filter=mimetype%3A(\(|%28)text%2Fhtml(\)|%29)&') "cdx q
 Assert-True ($q -match '&filter=urlkey%3A\.(\*|%2A)(\(|%28)merlin%7Cpercival(\)|%29)\.(\*|%2A)&') 'cdx query: extra filter escaped'
 Assert-True ($q -match '&collapse=urlkey&limit=200&showResumeKey=true$') 'cdx query: collapse, limit, resume'
 $q2 = Get-CdxQueryUrl 'https://web.archive.org' $jb $t 200 'com,x)/ 2003'
-Assert-True ($q2.EndsWith('&resumeKey=com%2Cx%29%2F%202003')) 'cdx query: resumeKey escaped'
+# Windows PowerShell 5.1 leaves ) unescaped, PowerShell 7 writes %29; the archive decodes both the same.
+Assert-True ($q2 -match '&resumeKey=com%2Cx(\)|%29)%2F%202003$') "cdx query: resumeKey escaped ($q2)"
 $te = [pscustomobject]@{ url = 'www.camelotherald.com/'; matchType = 'exact'; collapse = 'timestamp:6' }
 $q3 = Get-CdxQueryUrl 'https://web.archive.org' $jb $te 100 ''
 Assert-True (($q3 -notmatch 'matchType') -and ($q3 -match 'collapse=timestamp%3A6')) 'cdx query: exact and monthly collapse'
