@@ -139,9 +139,16 @@ namespace DOL.GS
                 // Mechanic change (owner 2026-10-14/15): while a soul lives he takes a quarter of the damage instead of none.
                 // His souls return every minute during the fight, so a 200-bot raid that cleared them was still held at
                 // full immunity and he climbed from 87% to 95% (run 9, 2026-10-15).
+                // The original (no damage at all while a soul lives) is behind EpicEncounterMechanics.AllowSoulReckonerFullShield.
                 if (SoulsAlive() && SoulReckonerBrain.InRoom)
                 {
                     GamePlayer shielded = source as GamePlayer ?? (source as GameSummonedPet)?.Owner as GamePlayer;
+                    if (EpicEncounterMechanics.AllowSoulReckonerFullShield)
+                    {
+                        shielded?.Out.SendMessage(Name + " brushes off your attack!", eChatType.CT_System, eChatLoc.CL_ChatWindow);
+                        base.TakeDamage(source, damageType, 0, 0);
+                        return;
+                    }
                     shielded?.Out.SendMessage(Name + "'s souls absorb most of your attack!", eChatType.CT_System, eChatLoc.CL_ChatWindow);
                     base.TakeDamage(source, damageType, damageAmount / 4, criticalAmount / 4);
                     return;
@@ -203,6 +210,7 @@ namespace DOL.AI.Brain
 
         public static bool InRoom = false;
         public const int RoomRadius = 1500;
+        public const int OriginalRoomRadius = 900;
 
         public void AwayFromRoom()
         {
@@ -214,8 +222,9 @@ namespace DOL.AI.Brain
             if (Body.CurrentRegionID == 60)
             {
                 // Mechanic change (run 15, 2026-10-16): the raid pulled him 1,129 from the room's middle, where he took no
-                // damage for five minutes with 206 raiders on him and was skipped. The room now counts out to RoomRadius.
-                if (Body.IsWithinRadius(room_radius, RoomRadius)) //if is in room
+                // damage for five minutes with 206 raiders on him and was skipped. The room now counts out to RoomRadius; the
+                // original 900 is behind EpicEncounterMechanics.AllowSoulReckonerSmallRoom.
+                if (Body.IsWithinRadius(room_radius, EpicEncounterMechanics.AllowSoulReckonerSmallRoom ? OriginalRoomRadius : RoomRadius)) //if is in room
                 {
                     InRoom = true;
                 }

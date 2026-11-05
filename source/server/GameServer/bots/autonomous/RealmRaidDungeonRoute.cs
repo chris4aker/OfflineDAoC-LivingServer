@@ -194,13 +194,21 @@ namespace DOL.GS
             // An encounter just set aside for taking no damage is not switched back to because it attacks: Krondon,
             // 2026-10-21, Scurceol Hyrde (immune while his four Lyft Miht orbs live) was skipped and re-picked every
             // minute for over an hour, so the raid never turned to the orbs.
+            // An encounter whose tactic sends the raid to the current target is no switch (Scurceol Hyrde attacks the raid
+            // while it shoots his orbs; EpicEncounterTactics).
             return live.FirstOrDefault(n => n != _target && n is IGameEpicNpc && n.IsAlive && n.InCombat &&
+                                            !EpicEncounterTactics.Covers(n, _target, live) &&
                                             _routeRetry.GetValueOrDefault(n) <= now &&
                                             n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
                                             n.TargetObject is GameLiving victim && raiders.Contains(victim));
         }
 
-        private bool IsMusteredEncounter(GameNPC npc) => npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name);
+        private bool IsMusteredEncounter(GameNPC npc) =>
+            (npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name)) &&
+            // A boss's required adds are fought as part of its fight, without a muster of their own (EpicEncounterTactics).
+            !EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, _live);
+        // The region's NPCs as of this turn (AdvanceCore), for the tactic checks.
+        private IReadOnlyList<GameNPC> _live = [];
 
         private void BeginAttempt(GameLiving[] raiders, long now)
         {
@@ -799,6 +807,9 @@ namespace DOL.GS
                     !bot.IsWithinRadius(_target, 1500) || bot.TargetObject == _target ||
                     bot.Brain is not DOL.AI.Brain.BotBrain brain || !GameServer.ServerRules.IsAllowedToAttack(bot, _target, true))
                     continue;
+                // A flying required add (Scurceol Hyrde's orbs) is called for the raiders who can shoot it only.
+                if (AutonomousPveTargetPolicy.IsUnreachableFlyer(_target.Flags, _target.Z, bot.Z) && !EpicEncounterTactics.CanShootFlyers(bot))
+                    continue;
                 if (bot.InCombat || bot.IsAttacking)
                 {
                     if (busyLeft <= 0) continue;
@@ -913,11 +924,36 @@ namespace DOL.GS
             return false;
         }
 
+        /// <summary>The current target's tactic sends the raid to another encounter (EpicEncounterTactics): a required add
+        /// of the boss, or the boss an encounter dies with. Logged as REALM_EXPEDITION_TACTIC for the run reports.</summary>
+        private void SwitchByTactic(GameNPC to, string reason, GameLiving[] participants, long now)
+        {
+            bool resolved = TryEncounterApproach(to, participants, out Vector3 approach);
+            // A flying add is fought from the floor under it (the approach search only looks 256 up or down).
+            if (!resolved && (to.Flags & GameNPC.eFlags.FLYING) != 0)
+            {
+                var nav = PathfindingProvider.Instance;
+                Zone zone = WorldMgr.GetRegion(_region)?.GetZone(to.X, to.Y);
+                if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone) &&
+                    nav.GetClosestPoint(zone, new Vector3(to.X, to.Y, to.Z), 128, 128, RangedFlyerReach, nav.DefaultFilters) is Vector3 below)
+                { approach = below; resolved = true; }
+            }
+            log.Info($"REALM_EXPEDITION_TACTIC region={_region} from=\"{_target?.Name}\" to=\"{to.Name}\" health={to.HealthPercent} " +
+                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
+                     $"reason=\"{reason}\" tactic={EpicEncounterTactics.For(_target)?.Encounter}");
+            _target = to; TargetName = to.Name; TargetLevel = to.Level;
+            Front = Destination = approach;
+            _targetProgressTick = _targetStartTick = now; _targetLowestHealth = to.Health;
+            _targetClosest = float.MaxValue; _targetApproachTick = now;
+            Hold = false; Status = "Clearing " + to.Name;
+        }
+
         private void AdvanceCore(GameLiving[] participants, long now)
         {
             if (Complete || Defeated) return;
             if (_routeStartTick == 0) _routeStartTick = now;
             GameNPC[] live = WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>().ToArray() ?? [];
+            _live = live;
             foreach (GameNPC stale in _routeRetry.Keys.Where(n => !n.IsAlive || n.ObjectState != GameObject.eObjectState.Active).ToArray())
                 _routeRetry.Remove(stale);
             foreach (GameNPC npc in live.Where(n => _finalTypes.Contains(n.GetType().Name)))
@@ -933,6 +969,9 @@ namespace DOL.GS
             }
             bool finalDeaths = _finalTypes.All(type => _finals.TryGetValue(type, out var boss) && !boss.IsAlive);
             if (finalDeaths) { Complete = true; Status = "Final encounter defeated"; return; }
+            if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active &&
+                EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target)
+                SwitchByTactic(tacticTarget, tacticReason, participants, now);
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
                 if (_target.Health < _targetLowestHealth) { _targetLowestHealth = _target.Health; _targetProgressTick = now; }
@@ -950,7 +989,7 @@ namespace DOL.GS
                 if (near < MinimumRaidersAtTarget && (now - _targetStartTick < TargetAbsencePauseLimitMilliseconds || approaching))
                     _targetProgressTick = Math.Max(_targetProgressTick, now - 1_000);
                 // A tethered boss outside its tether is immune while the raid leads it home: not a stall.
-                if (_target is GameNPC tethered && AutonomousTetherReset.IsOutOfTether(tethered))
+                if (_target is GameNPC tethered && (AutonomousTetherReset.IsOutOfTether(tethered) || EpicEncounterTactics.OutsideHome(tethered)))
                 {
                     _targetProgressTick = Math.Max(_targetProgressTick, now - 1_000);
                     Hold = false; Status = $"Drawing {_target.Name} back to its lair ({_target.HealthPercent}%)"; return;
@@ -958,8 +997,12 @@ namespace DOL.GS
                 // Never switch a live grind objective because another party has not
                 // arrived, but never hold the whole expedition on a target nobody damages.
                 // An epic encounter fighting our raiders comes before one we are still gathering for.
-                if (!_target.InCombat && HostileEncounter(live, participants) is { } attacker)
+                if (!_target.InCombat && HostileEncounter(live, participants) is { } hostile)
                 {
+                    GameNPC attacker = EpicEncounterTactics.RouteTarget(hostile, live, Front, out string hostileTactic);
+                    if (attacker != hostile)
+                        log.Info($"REALM_EXPEDITION_TACTIC region={_region} encounter=\"{hostile.Name}\" fights=\"{attacker.Name}\" " +
+                                 $"reason=\"{hostileTactic}\" tactic={EpicEncounterTactics.For(hostile)?.Encounter}");
                     bool resolved = TryEncounterApproach(attacker, participants, out Vector3 approach);
                     log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{_target.Name}\" to=\"{attacker.Name}\" level={attacker.Level} " +
                              $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
@@ -1078,6 +1121,14 @@ namespace DOL.GS
                 GameNPC npc = candidates[_probeCursor % candidates.Length];
                 _probeCursor = (_probeCursor + 1) % candidates.Length;
                 if (_routeRetry.GetValueOrDefault(npc) > now) continue;
+                // A boss shielded by its adds, or one that dies with another, is fought through its tactic (EpicEncounterTactics).
+                if (EpicEncounterTactics.RouteTarget(npc, live, Front, out string candidateTactic) is { } tactical && tactical != npc)
+                {
+                    log.Info($"REALM_EXPEDITION_TACTIC region={_region} encounter=\"{npc.Name}\" fights=\"{tactical.Name}\" " +
+                             $"reason=\"{candidateTactic}\" tactic={EpicEncounterTactics.For(npc)?.Encounter}");
+                    npc = tactical;
+                    if (_routeRetry.GetValueOrDefault(npc) > now) continue;
+                }
                 probes++;
                 Vector3 raw = AutonomousDungeonGoalCatalog.TryGet(npc, out var point) ? point.Position : new(npc.X, npc.Y, npc.Z);
                 // A flyer is approached on the floor under it (the approach search only looks 256 up or down).

@@ -96,12 +96,148 @@
    "plan": "Add party on the feeders; melee respect the Mechanism's shield; fight Conservator at his spawn."
   }
  ],
+ "upstream": {
+  "source": "OpenDAoC/OpenDAoC-Core 3513bad49912 (2026-11-04) and OpenDAoC/OpenDAoC-Database 7068aef09830, cloned 2026-11-05. Upstream has been refactored since this fork's base (instance fields instead of statics, ProcessDeath), so the behaviour was read, not copied.",
+  "changes": [
+   {
+    "encounters": [
+     "caer-sidi/fames",
+     "caer-sidi/morbus",
+     "caer-sidi/funus"
+    ],
+    "places": 3,
+    "original": "Out of its tether a horseman heals to full and drops its aggro.",
+    "ours": "It drops its aggro and keeps its health (heals only when the fight is over).",
+    "switch": "AllowHorsemenTetherHeal"
+   },
+   {
+    "encounters": [
+     "caer-sidi/funus"
+    ],
+    "places": 1,
+    "original": "Only clerics, and mercenaries with a short bow, armsmen and infiltrators with a crossbow, scouts with a longbow damage Funus; any other attacker (pets too) heals him to full.",
+    "ours": "Everyone damages him.",
+    "switch": "AllowFunusWeaponPuzzle"
+   },
+   {
+    "encounters": [
+     "caer-sidi/skeletalsacristan"
+    ],
+    "places": 2,
+    "original": "He walks his loop without stopping (195-250 in this fork's base; upstream now a 220 path) with 70% magic resists.",
+    "ours": "He walks at 130-160, stands still while hit, 55% magic resists.",
+    "switch": "AllowSacristanPatrol"
+   },
+   {
+    "encounters": [
+     "caer-sidi/soulreckoner"
+    ],
+    "places": 2,
+    "original": "No damage at all while a reckoned soul lives, or outside a 900 room.",
+    "ours": "A quarter of the damage while a soul lives; the room is 1,500.",
+    "switch": "AllowSoulReckonerFullShield, AllowSoulReckonerSmallRoom"
+   },
+   {
+    "encounters": [
+     "galladoria/aroon"
+    ],
+    "places": 9,
+    "original": "The nine Scaiths die in order (slash, thrust, crush, body, cold, energy, heat, matter, spirit): each is immune until the one before is dead, and Aroon takes only the damage types whose Scaith has died (nothing at first).",
+    "ours": "Any damage type hurts Aroon and every Scaith.",
+    "switch": "AllowAroonDamageOrder"
+   },
+   {
+    "encounters": [
+     "galladoria/olcasgeaninitializator"
+    ],
+    "places": 1,
+    "original": "The primals come when a real player (not a bot) stands within 350 of the bridge spot.",
+    "ours": "A raid bot within 1,500 of the spot starts it (players still 350).",
+    "switch": "AllowGalladoriaBridgeSpot (bots within 350; a bot-only rule would be unwinnable)"
+   },
+   {
+    "encounters": [
+     "galladoria/olcasgean"
+    ],
+    "places": 1,
+    "original": "Split-position and throw puzzle.",
+    "ours": "Off.",
+    "switch": "AllowPositionPuzzle (already a switch; nothing new)"
+   },
+   {
+    "encounters": [
+     "galladoria/fireprimal"
+    ],
+    "places": 1,
+    "original": "Trail of fire: 220 damage in a 450 radius.",
+    "ours": "120 in 300.",
+    "switch": "AllowFullFirePatches"
+   },
+   {
+    "encounters": [
+     "galladoria/earthprimal"
+    ],
+    "places": 4,
+    "original": "Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal.",
+    "ours": "Everyone hurts them; they fight back; no quick reset while raiders are in the room; they heal the primal only.",
+    "switch": "AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal"
+   },
+   {
+    "encounters": [
+     "galladoria/beatha"
+    ],
+    "places": 1,
+    "original": "Beatha's damage heals Xaga by twice the amount.",
+    "ours": "No heal.",
+    "switch": "AllowBeathaHealsXaga"
+   },
+   {
+    "encounters": [
+     "galladoria/beatha",
+     "galladoria/tine"
+    ],
+    "places": 2,
+    "original": "The fairies circle the room (250, flying) even while fought.",
+    "ours": "They hold still while fought.",
+    "switch": "AllowFairyFlight"
+   },
+   {
+    "encounters": [
+     "summoner-s-hall/grandsummonergovannon"
+    ],
+    "places": 1,
+    "original": "300,000 health.",
+    "ours": "200,000.",
+    "switch": "AllowGovannonFullHealth"
+   },
+   {
+    "encounters": [
+     "tuscaran-glacier/kvasir"
+    ],
+    "places": 1,
+    "original": "Cold damage heals him a fifth of his health and does nothing else (upstream has no out-of-tether immunity for him).",
+    "ours": "Cold hurts him.",
+    "switch": "AllowKvasirColdHeal"
+   },
+   {
+    "encounters": [
+     "tuscaran-glacier/queenkula",
+     "tuscaran-glacier/kingtuscar"
+    ],
+    "places": 2,
+    "original": "Damage to one twin heals the other by the same amount while it is below full health.",
+    "ours": "No heal.",
+    "switch": "AllowTuscarTwinHeal"
+   }
+  ],
+  "scurceolOrbs": "Upstream's Lyft Miht orbs are the same: level 90, 15,000 health, 40/50% resists, AF 250, flying at the same four corners. Upstream only replaced the static orb counters with a per-boss list (a bug fix: our static counters are shared by every Scurceol and can drift).",
+  "helperPacks": "OpenDAoC-Database mob.sql compared with the 0.37b release world: of the 47 packages empty in our world, 42 are empty upstream too (the script looks for helpers that never existed: DebenBaf, FamesBaf, MorbusBaf, HatiBaf, SkollBaf, ApocBaf ...). Five have upstream spawns our world lacks: AncientOakBaf (14 \"Ancient Oak\" in Black Lady's room, none in ours), CaimheulBaf (6 reanimated guardians; 1 in ours, under PackageID offline-classic-frontier-dungeon-restored), CailleachUragaigBaf (3 cailleach guards), RevenantBaf (11 wraiths and wights by the Raumarik Revenant), RunilBaf (4 clan deserters). Not changed here: adding world spawns is a world update for the owner to decide."
+ },
  "openQuestions": [
-  "Several mechanics were edited out for bots in the code itself, with no switch to bring them back: Aroon's and the Earthmenders' damage-type puzzle, Beatha's heal-on-hit, Skeletal Sacristan's loop, Funus/Kvasir/King Tuscar/Queen Kula damage checks, the dragons' messengers, the fire-patch damage. The originals are not in this repository's history (the upstream OpenDAoC scripts would have them). Restore them behind EpicEncounterMechanics switches before the raid AI learns them?",
-  "Most player-targeted mechanics (throws, glares, random DDs, Nosdoden's spirits, Xanxicar's throw) use GetPlayersInRadius or 'is GamePlayer', so bots are never picked: they are off for bots without any switch. Should the next step make them pick bots too (wow factor), or keep them player-only and teach bots only the ones that already hit them?",
-  "Scurceol's orbs are level 90: level-50 bots will miss and be resisted a lot. Is that intended, or should the orbs' level come down when bots must kill them?",
-  "Ancient Oak BAF: no NPC in the release world has PackageID AncientOakBaf, and several other BAF packages (DebenBaf, FamesBaf, MorbusBaf, HatiBaf ...) are empty too. Missing world data or intended?",
-  "Difficulty target 2 in 3: should each mechanic the raid learns come with a re-check of the raid size (win-rate sizing already moves sizes 70-200%), or is sizing left to adapt on its own?"
+  "Upstream helper packs: add the 38 spawns our world lacks (AncientOakBaf 14, CaimheulBaf 5, CailleachUragaigBaf 3, RevenantBaf 11, RunilBaf 4) as a world update, or leave those packs empty?",
+  "Scurceol's orbs are level 90 upstream too. Keep them, or lower them only when bots must kill them?",
+  "Which restored mechanic should the raid AI learn first? Each is off until its tactic exists; the catalog lists them under 'Restored behind switches'.",
+  "Player-only mechanics stay player-only for now; the catalog lists every one as a candidate to target bots later. Which matter most for the 'wow' factor (throws, glares, Nosdoden's spirits)?"
  ],
  "handEntries": [
   {
@@ -313,7 +449,7 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "301c6fd7d28af7dc344e8eabbfdad672d5bd1bbac16a333d72086e6cda66f56b"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
    }
   },
   "caer-sidi/baneofhope": {
@@ -325,7 +461,7 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "301c6fd7d28af7dc344e8eabbfdad672d5bd1bbac16a333d72086e6cda66f56b"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
    }
   },
   "caer-sidi/cryptlord": {
@@ -337,7 +473,7 @@
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "301c6fd7d28af7dc344e8eabbfdad672d5bd1bbac16a333d72086e6cda66f56b"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
    }
   },
   "caer-sidi/fatechosen": {
@@ -349,7 +485,7 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "301c6fd7d28af7dc344e8eabbfdad672d5bd1bbac16a333d72086e6cda66f56b"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
    }
   },
   "caer-sidi/host": {
@@ -379,7 +515,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "301c6fd7d28af7dc344e8eabbfdad672d5bd1bbac16a333d72086e6cda66f56b"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
    }
   },
   "caer-sidi/silencer": {
@@ -391,14 +527,14 @@
   "caer-sidi/skeletalsacristan": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs": "75bcd062de65544946a3ffbdcc36b266472f67d8ce61e4d683393cd50eedaa48"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs": "1952d864db5b1b094cb8ad3ab8552d16d49034b7a37c8805f74684699889a2de"
    }
   },
   "caer-sidi/soulreckoner": {
    "notes": "Mechanic change (owner 2026-10-14/15): while a reckoned soul lives he takes a quarter of the damage instead of none. Out of his room (SoulReckonerBrain.InRoom false) he takes none.",
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "c9e854096d97742bfa00c6a51ed446758b0a56b4e45081d6d32fa14f6bc25ec8"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "b0b4cc8c6d55ffd5cf29023f221008eeea0e69a0fc007c6f39f49397dae4ce9c"
    }
   },
   "caer-sidi/spectralprovisioner": {
@@ -651,7 +787,7 @@
    "notes": "900 health (by design: one strong nuke kills it), flies (FLYING), never melees (StartAttack empty), never walks home (ReturnToSpawnPoint does nothing while alive). Pets and turrets deal a fixed 5 per hit.",
    "currentRaidAi": "2026-10-16: it circled 690 above the floor and was skipped; route now shoots flyers within 1,200 from below (RealmRaidDungeonRoute.IsOutOfRangedReach).",
    "rules": {
-    "damage_reduced@1110": {
+    "damage_reduced@1112": {
      "summary": "Pets and turrets (GameSummonedPet, TurretPet) deal a fixed 5 per hit; everyone else deals normal damage.",
      "tactic": "Casters and archers kill it from below with direct damage; pets attack the other primals.",
      "difficulty": "easy for the current raid AI"
@@ -659,13 +795,13 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "7e9c96caf2a34274a6f95fbbfc01fe8f1d5b8cf66c61aceccc4643c3de95814a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
    }
   },
   "galladoria/aroon": {
    "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history.",
    "rules": {
-    "aggro_wipe@1345": {
+    "aggro_wipe@1372": {
      "summary": "Each Scaith now and then drops its aggro and picks one random real player from its PlayersToAttack list (List<GamePlayer>).",
      "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: tanks pick the Scaith back up.",
      "difficulty": "off today"
@@ -673,14 +809,14 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "0d88265afb250988b6401659ae5d8b7c0d09002080403608e02e09611cf66a27"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "ccb632a3d55ab9e622df2cb1874ef95aaf46c73e9dd428f4078aab09e191dcff"
    }
   },
   "galladoria/beatha": {
    "notes": "See Xaga. Holds low over the floor while engaged so melee can reach her (offline change).",
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "580687f32107f73069247a17b10a5c16e3620e067b8c88f9cfe65cadb2568089"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
    }
   },
   "galladoria/conservator": {
@@ -693,7 +829,7 @@
    "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot.",
    "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000).",
    "rules": {
-    "heal@2531": {
+    "heal@2545": {
      "summary": "Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender).",
      "tactic": "Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can.",
      "difficulty": "needs new raid AI"
@@ -701,7 +837,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "7e9c96caf2a34274a6f95fbbfc01fe8f1d5b8cf66c61aceccc4643c3de95814a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
    }
   },
   "galladoria/easmarach": {
@@ -713,7 +849,7 @@
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "7e9c96caf2a34274a6f95fbbfc01fe8f1d5b8cf66c61aceccc4643c3de95814a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
    }
   },
   "galladoria/giantsporitecluster": {
@@ -745,12 +881,12 @@
   "galladoria/olcasgean": {
    "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second 250,000-health body) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are switched off for bots.",
    "rules": {
-    "position_puzzle@656": {
+    "position_puzzle@658": {
      "summary": "AllowPositionPuzzle (false today) gates his whole fight script: Root Effects, the throw, the DD spam at whoever is not at the two safe points (40170,62600 and 39237,62644), and the Waterfall Antipass.",
      "tactic": "Off today. To play it: two parties stand on the two safe points the whole fight, the rest fight him.",
      "difficulty": "off today"
     },
-    "adds@748": {
+    "adds@750": {
      "summary": "Spawns Olcasgean2, a second body with its own 250,000 health, when he is placed.",
      "tactic": "Both bodies are final encounters for the route; split the raid or kill them one at a time.",
      "difficulty": "needs new raid AI"
@@ -758,25 +894,25 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "7e9c96caf2a34274a6f95fbbfc01fe8f1d5b8cf66c61aceccc4643c3de95814a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
    }
   },
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "7e9c96caf2a34274a6f95fbbfc01fe8f1d5b8cf66c61aceccc4643c3de95814a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
    }
   },
   "galladoria/olcasgeaninitializator": {
    "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4).",
    "rules": {
-    "immune_while@3154": {
+    "immune_while@3201": {
      "kind": "hazard",
      "summary": "Watery Vortex: an invulnerable hazard when AllowInvulnerableHazards is on (no damage from anyone). Today the switch is false and a vortex takes normal damage.",
      "tactic": "Off today. With the switch on: stay out of the vortices and never target them.",
      "difficulty": "off today"
     },
-    "adds@221": {
+    "adds@223": {
      "summary": "Spawns eleven Watery Vortices at fixed spots around the waterfall room with the primals.",
      "tactic": "Today they are ordinary targets; with the hazard switch on, route parties around them.",
      "difficulty": "needs new raid AI"
@@ -784,7 +920,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "7e9c96caf2a34274a6f95fbbfc01fe8f1d5b8cf66c61aceccc4643c3de95814a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
    }
   },
   "galladoria/organicenergymechanism": {
@@ -812,7 +948,7 @@
    "notes": "See Xaga. Holds low over the floor while engaged so melee can reach her (offline change).",
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "580687f32107f73069247a17b10a5c16e3620e067b8c88f9cfe65cadb2568089"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
    }
   },
   "galladoria/uaimhlairmaster": {
@@ -823,12 +959,12 @@
   },
   "galladoria/waterprimal": {
    "rules": {
-    "phase@1647": {
+    "phase@1649": {
      "summary": "Below 30% (once) it walks to its pool, stops fighting (dontattack: immune), heals a sixth of its health and comes back.",
      "tactic": "Stop attacking while it is in the pool; be ready when it comes back.",
      "difficulty": "needs new raid AI"
     },
-    "immune_while@1540": {
+    "immune_while@1542": {
      "summary": "Takes no damage while it is retreating to its pool (WaterPrimalBrain.dontattack).",
      "tactic": "Stop attacking while it is immune; the raid's no-damage clock should not set it aside.",
      "difficulty": "needs new raid AI"
@@ -836,7 +972,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "7e9c96caf2a34274a6f95fbbfc01fe8f1d5b8cf66c61aceccc4643c3de95814a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
    }
   },
   "galladoria/xaga": {
@@ -844,7 +980,7 @@
    "currentRaidAi": "2026-11-05 (build 8d7baa3): the Hibernian epic raid wiped at Tine.",
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "580687f32107f73069247a17b10a5c16e3620e067b8c88f9cfe65cadb2568089"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
    }
   },
   "gjalpinulva-s-lair-myrkwood/midgjalpinulva": {
@@ -1243,8 +1379,9 @@
    "rules": {
     "immune_while@33": {
      "summary": "Takes no damage of any type while any of the four Lyft Miht orbs (LyftMihtOne-Four, static counters Orb1Count-Orb4Count) is alive.",
-     "tactic": "Hold him at his spawn with a tank party while four ranged parties (casters and archers) kill one orb each from the floor below it; stop attacking him until the orbs are dead, then the whole raid turns on him.",
-     "difficulty": "needs new raid AI"
+     "tactic": "In the raid AI (EpicEncounterTactics, required adds): while an orb lives the raid's target is an orb, each party takes the orb its index points at, casters and archers shoot it from the floor, melee stands off under it, and nobody hits him. Then the whole raid turns on him.",
+     "difficulty": "needs new raid AI",
+     "note": "Tactic built in step 2 (unit and harness tests only; not yet seen in a run)."
     },
     "adds@132": {
      "summary": "Spawns his four Lyft Miht orbs when he spawns, one per room corner, only if that orb's counter is 0; they never respawn by themselves.",
@@ -1261,6 +1398,16 @@
      "tactic": "Another reason to kill the orbs first; the tank party needs extra healing until then.",
      "difficulty": "needs new raid AI"
     }
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "LyftMihtOne",
+     "LyftMihtTwo",
+     "LyftMihtThree",
+     "LyftMihtFour"
+    ],
+    "fightAtHomeRadius": 1500,
+    "summary": "Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; melee that can't reach a flying orb stands off under it); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back."
    },
    "verified": true,
    "scriptHashes": {
@@ -1283,6 +1430,10 @@
      "difficulty": "easy for the current raid AI"
     }
    },
+   "aiTactics": {
+    "diesWith": "BlackLady",
+    "summary": "Dies with Black Lady: while she lives the raid fights her instead of the Oak."
+   },
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs": "b55ebdb4163258f61661656bd550e975173411aacc683b9fe25646a0136d7491"
@@ -1300,7 +1451,7 @@
    "rules": {
     "adds@122": {
      "summary": "Spawns the Ancient Black Oak (a separate epic encounter, RespawnInterval -1) when she spawns; her death kills it.",
-     "tactic": "Skip the Oak: kill Black Lady and the Oak dies with her. Fight her at her spawn so she never leashes.",
+     "tactic": "In the raid AI (EpicEncounterTactics, dies with): the raid fights Black Lady instead of the Oak; the Oak dies with her. She is fought within 1,100 of her spawn (fight at home).",
      "difficulty": "needs new raid AI"
     },
     "adds@207": {
@@ -1308,6 +1459,10 @@
      "tactic": "One party kills Ogresses as they appear; they are script-spawned adds, so the route already puts them first.",
      "difficulty": "easy for the current raid AI"
     }
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 1100,
+    "summary": "Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed."
    },
    "verified": true,
    "scriptHashes": {
@@ -1557,7 +1712,7 @@
   "summoner-s-hall/grandsummonergovannon": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "0bd726be3bf7d9db9bda0478a7dd54b0b96e0d5e505511f1dcf4083dbb541a27"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "c132394348b47059a3c7427a8b46a6282c7c6b2633f0d14d4d459219a93a141d"
    }
   },
   "summoner-s-hall/summonercunovinda": {
@@ -1746,13 +1901,13 @@
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "6a7b76285601f9bdfb1a8253272790af24dbdb38de9e1f4f7a19dd7cad715006"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8e304d98cda194e4bd00a9c2437f85b7bd57e68d168e88e58837a10f72021e84"
    }
   },
   "tuscaran-glacier/kvasir": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "1b062b870f4f4a4389918bd402827ff070453102398692af2a76ff4dacaaa853"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "e5c585f338292eb70d61bc290c846548563de0fdf0969d8230e367e61839e881"
    }
   },
   "tuscaran-glacier/nokkvi": {
@@ -1776,7 +1931,7 @@
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "6a7b76285601f9bdfb1a8253272790af24dbdb38de9e1f4f7a19dd7cad715006"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8e304d98cda194e4bd00a9c2437f85b7bd57e68d168e88e58837a10f72021e84"
    }
   },
   "tuscaran-glacier/skuf": {

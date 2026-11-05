@@ -98,12 +98,35 @@ class CatalogFileTests(unittest.TestCase):
         self.assertTrue(any("AllowPositionPuzzle" in (r.get("switch") or []) for r in conservator["rules"]))
 
 
+class TacticsAndRestores(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.data = json.loads(CATALOG.read_text(encoding="utf-8"))
+
+    def test_tactic_table_names_the_first_encounters(self):
+        cs = cat.read_text(REPO / cat.TACTICS_CS)
+        self.assertIn('new("ScurceolHyrde", "krondon/scurceolhyrde", ["LyftMihtOne", "LyftMihtTwo", "LyftMihtThree", "LyftMihtFour"], 1500, null)', cs)
+        self.assertIn('new("AncientBlackOak", "marfach-caverns/ancientblackoak", [], 0, "BlackLady")', cs)
+        self.assertIn('new("BlackLady", "marfach-caverns/blacklady", [], 1100, null)', cs)
+
+    def test_every_offline_change_but_the_old_puzzle_switch_names_its_restore_switch(self):
+        restore = {s["name"] for s in self.data["switches"] if s.get("restores")}
+        self.assertEqual(len(restore), 17)
+        changes = [(e["id"], r) for e in self.data["encounters"] for r in e["rules"] if r["kind"] == "offline_change"]
+        self.assertGreaterEqual(len(changes), 23)
+        for eid, r in changes:
+            with self.subTest(encounter=eid, line=r["line"]):
+                self.assertTrue(r.get("switch"), "an offline change without a switch")
+                self.assertTrue(set(r["switch"]) & (restore | {"AllowPositionPuzzle"}))
+
+
 class CatalogIsUpToDate(unittest.TestCase):
     def test_regenerating_gives_the_committed_files(self):
         data, problems = cat.catalog(cat.World())
         self.assertEqual(problems, [])
         self.assertEqual(cat.dumps(data), cat.read_text(REPO / cat.OUT_JSON), "run epic_encounter_catalog.py")
         self.assertEqual(cat.render_md(data), cat.read_text(REPO / cat.OUT_MD), "run epic_encounter_catalog.py")
+        self.assertEqual(cat.render_tactics_cs(data), cat.read_text(REPO / cat.TACTICS_CS), "run epic_encounter_catalog.py")
         self.assertEqual([e["id"] for e in data["encounters"] if e.get("verificationStale")], [])
 
 

@@ -37,6 +37,7 @@ OUT_JSON = Path("docs/encounters/epic-encounters.json")
 OUT_MD = Path("docs/encounters/EPIC-ENCOUNTERS.md")
 HAND_NOTES = Path("docs/encounters/hand-notes.json")
 WORLD_SNAPSHOT = Path("docs/encounters/world-spawns.json")
+TACTICS_CS = Path("source/server/GameServer/bots/autonomous/EpicEncounterTactics.Catalog.cs")
 
 SCHEMA = 1
 
@@ -1192,7 +1193,10 @@ def detect_offline_changes(world: World, cls: CsClass, ctx) -> list[Rule]:
             seen_lines.add(j)
             j += 1
         member = next((m for m in cls.members if m.first_line <= i <= m.last_line), None)
-        rules.append(make_rule("offline_change", src, i, j - 1, " ".join(text)[:400], "read", cls, member))
+        near = "\n".join(src.line(k) for k in range(max(1, i - 8), min(len(src.lines), j + 8) + 1))
+        sw = sorted(set(re.findall(r"EpicEncounterMechanics\.(Allow\w+)", near)))
+        rules.append(make_rule("offline_change", src, i, j - 1, " ".join(text)[:400], "read", cls, member,
+                               switch=sw or None, restored=bool(sw) or None))
     return rules
 
 
@@ -1236,6 +1240,12 @@ def read_switches() -> list[dict]:
         mm = re.search(r"public static bool (Allow\w+)\s*=>\s*(\w+);", line)
         if mm:
             out.append({"name": mm.group(1), "value": mm.group(2), "file": rel(src), "line": i})
+        mm = re.search(r"public static bool (Allow\w+)\s*\{\s*get;\s*set;\s*\}", line)
+        if mm:
+            doc = src.line(i - 1).strip()
+            doc = re.sub(r"^///\s*<summary>|</summary>$", "", doc).strip()
+            out.append({"name": mm.group(1), "value": "false", "file": rel(src), "line": i, "restores": True,
+                        "about": doc if not doc.startswith("//") or doc.startswith("///") else ""})
         mm = re.search(r"public const int (\w+)\s*=\s*([\d_]+);", line)
         if mm:
             out.append({"name": mm.group(1), "value": mm.group(2).replace("_", ""), "file": rel(src), "line": i})
@@ -1604,6 +1614,32 @@ def short_key(enc: dict, rule: dict) -> str:
     return f"{rule['kind']}@{Path(rule['file']).name}:{rule['line']}"
 
 
+def match_moved_keys(enc: dict, rule_notes: dict) -> dict:
+    """Current rule key -> the hand note's key, for notes whose rule moved (lines added above it): same kind and file,
+    nearest line within 200. The note then still applies; the script hash makes its check stale until it is stamped."""
+    current = {short_key(enc, r): r for r in enc["rules"]}
+    out = {}
+    for key in rule_notes:
+        if key in current or rule_notes[key].get("extra"):
+            continue
+        kind, _, where = key.partition("@")
+        fname, _, line = where.rpartition(":")
+        if not line.isdigit():
+            continue
+        best = None
+        for ck, r in current.items():
+            if r["kind"] != kind or ck in out or ck in rule_notes:
+                continue
+            if (Path(r["file"]).name if fname else enc["file"]) != (fname or enc["file"]):
+                continue
+            d = abs(r["line"] - int(line))
+            if d <= 200 and (best is None or d < best[0]):
+                best = (d, ck)
+        if best:
+            out[best[1]] = key
+    return out
+
+
 def rule_key(rule: dict) -> str:
     add = rule.get("add")
     extra = ("+".join(add) if isinstance(add, list) else add) or rule.get("threshold") or rule.get("subtype") or ""
@@ -1673,9 +1709,12 @@ def default_tactic(enc: dict, rule: dict) -> tuple[str, str]:
         return "Kill or interrupt whatever heals it first.", "needs new raid AI"
     if kind == "hazard":
         return "Stay out of the hazard; don't target it.", "needs new raid AI"
+    if kind == "offline_change" and rule.get("switch"):
+        return ("The original is restored behind " + ", ".join(rule["switch"]) + " (off). Turn it on once the raid AI has "
+                "its tactic.", "off today")
     if kind == "offline_change":
-        return ("Decide with the owner whether to restore the original rule behind a switch (the original code is not in "
-                "this repository's history), then teach the raid its tactic.", "off today")
+        return ("Decide with the owner whether to restore the original rule behind a switch, then teach the raid its "
+                "tactic.", "off today")
     if kind == "attacker_filter":
         return "Only the listed attackers can damage it: check bots are among them.", "unsafe for bots today"
     return "", "needs new raid AI"
@@ -1731,14 +1770,16 @@ def apply_hand_notes(encounters: list[dict], notes: dict, world: World) -> list[
         if note.get("verified") and stale:
             enc["verificationStale"] = True
         verified = bool(note.get("verified")) and not stale
-        for field in ("boss", "level", "maxHealth", "notes", "priority", "currentRaidAi", "raidAi", "levelNote"):
+        for field in ("boss", "level", "maxHealth", "notes", "priority", "currentRaidAi", "raidAi", "levelNote", "aiTactics"):
             if field in note:
                 enc[field] = note[field]
         rule_notes = note.get("rules", {})
+        moved = match_moved_keys(enc, rule_notes)
         kept = []
         used = set()
         for r in enc["rules"]:
             key = short_key(enc, r)
+            key = moved.get(key, key)
             rn = rule_notes.get(key)
             if rn:
                 used.add(key)
@@ -1761,6 +1802,8 @@ def apply_hand_notes(encounters: list[dict], notes: dict, world: World) -> list[
         enc["rules"] = kept
         enc["verified"] = verified
     for enc in encounters:
+        if enc.get("aiTactics") and enc.get("raidAi") == "generic dungeon route":
+            enc["raidAi"] = "generic dungeon route + tactics (EpicEncounterTactics)"
         enc.setdefault("verified", False)
         for r in enc["rules"]:
             r.setdefault("verified", False)
@@ -1810,6 +1853,7 @@ def catalog(world: World) -> tuple[dict, list[str]]:
         "raids": raids,
         "neutralObjectives": {str(k): v for k, v in objectives.items()},
         "priority": notes.get("priority", []),
+        "upstream": notes.get("upstream"),
         "openQuestions": notes.get("openQuestions", []),
         "counts": {
             "scripts": len(files),
@@ -1826,6 +1870,38 @@ def catalog(world: World) -> tuple[dict, list[str]]:
         "encounters": encounters,
     }
     return data, problems
+
+
+def render_tactics_cs(data: dict) -> str:
+    """The raid AI's tactic table (EpicEncounterTactics.Catalog), from the hand notes' aiTactics."""
+    rows = []
+    for e in data["encounters"]:
+        t = e.get("aiTactics")
+        if not t:
+            continue
+        adds = ", ".join(f'"{a}"' for a in t.get("requiredAdds", []))
+        dies = f'"{t["diesWith"]}"' if t.get("diesWith") else "null"
+        rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}),')
+    lines = [
+        "// <auto-generated>",
+        "// Written by source/tools/epic_encounter_catalog.py from docs/encounters/hand-notes.json (\"aiTactics\").",
+        "// Don't edit: change the hand notes and run the generator; its --check fails while this file is out of date.",
+        "// </auto-generated>",
+        "",
+        "namespace DOL.GS",
+        "{",
+        "    public static partial class EpicEncounterTactics",
+        "    {",
+        "        /// <summary>One row per encounter with a raid tactic (boss class, catalog id, required adds, fight-at-home",
+        "        /// radius, dies with).</summary>",
+        "        public static readonly Tactic[] Catalog =",
+        "        [",
+        *rows,
+        "        ];",
+        "    }",
+        "}",
+    ]
+    return "\n".join(lines) + "\n"
 
 
 def dumps(data) -> str:
@@ -1870,6 +1946,33 @@ def render_md(data: dict) -> str:
     ]
     for s in data["switches"]:
         lines.append(f"| `{s['name']}` | {s['value']} | `{s['file']}:{s['line']}` |")
+    tact = [e for e in data["encounters"] if e.get("aiTactics")]
+    if tact:
+        lines += ["", "## Encounters with raid tactics", "",
+                  "The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tactics, read from the hand "
+                  "notes' `aiTactics` into `EpicEncounterTactics.Catalog.cs`. Tested by unit and harness tests only; not "
+                  "yet seen in an overnight run (its log lines: `REALM_EXPEDITION_TACTIC`, `EPIC_TACTIC_BOT`).", "",
+                  "| Encounter | Tactic |", "|---|---|"]
+        for e in tact:
+            lines.append(f"| {e['boss']} ({e['dungeon']}) | {md_escape(e['aiTactics'].get('summary', ''))} |")
+    up = data.get("upstream")
+    if up:
+        lines += ["", "## Restored behind switches", "", "Where the fork had changed a mechanic for bots with no switch, the "
+                  "original is back behind an `EpicEncounterMechanics` switch, off by default (the game plays as before). "
+                  "Originals read from " + up["source"], "",
+                  "| Encounter | Places | Original | Fork today | Switch |", "|---|---|---|---|---|"]
+        for c in up["changes"]:
+            lines.append(f"| {', '.join(c['encounters'])} | {c['places']} | {md_escape(c['original'])} | "
+                         f"{md_escape(c['ours'])} | `{c['switch']}` |")
+        lines += ["", "**Scurceol's orbs upstream:** " + up["scurceolOrbs"], "",
+                  "**Helper packs upstream:** " + up["helperPacks"]]
+    po = [(e, r) for e in data["encounters"] for r in e["rules"] if r.get("affects") and r["kind"] != "offline_change"]
+    if po:
+        lines += ["", "## Player-only mechanics (candidates to target bots later)", "",
+                  "These pick real players only (`GetPlayersInRadius`, `is GamePlayer`), so bots are never chosen. They stay "
+                  "player-only for now.", ""]
+        for e, r in po:
+            lines.append(f"- {e['boss']} ({e['dungeon']}): {r['kind']} `{Path(r['file']).name}:{r['line']}`: {md_escape(r['summary'][:160])}")
     lines += ["", "## Priority: encounters that block raids today", ""]
     by_id = {e["id"]: e for e in data["encounters"]}
     for i, p in enumerate(data["priority"], 1):
@@ -1974,6 +2077,9 @@ def stamp(world: World, ids: list[str]) -> None:
                        {r["file"] for r in note.get("extraRules", [])})
         note["verified"] = True
         note["scriptHashes"] = {f: script_hash(REPO / f) for f in files}
+        moved = match_moved_keys(enc, note.get("rules", {}))
+        for new_key, old_key in moved.items():
+            note["rules"][new_key] = note["rules"].pop(old_key)
     notes["encounters"] = dict(sorted(notes.get("encounters", {}).items()))
     (REPO / HAND_NOTES).write_text(json.dumps(notes, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
 
@@ -1997,12 +2103,12 @@ def main(argv=None) -> int:
             if args.dump in (e["id"], e["class"]):
                 print(dumps(e))
         return 0
-    js, md = dumps(data), render_md(data)
+    js, md, cs = dumps(data), render_md(data), render_tactics_cs(data)
     for p in problems:
         print("hand-notes:", p, file=sys.stderr)
     if args.check:
         ok = True
-        for path, text in ((OUT_JSON, js), (OUT_MD, md)):
+        for path, text in ((OUT_JSON, js), (OUT_MD, md), (TACTICS_CS, cs)):
             target = REPO / path
             if not target.exists() or read_text(target) != text:
                 print(f"{path} is out of date: run python3 source/tools/epic_encounter_catalog.py", file=sys.stderr)
@@ -2017,6 +2123,7 @@ def main(argv=None) -> int:
     (REPO / OUT_JSON).parent.mkdir(parents=True, exist_ok=True)
     (REPO / OUT_JSON).write_text(js, encoding="utf-8", newline="\n")
     (REPO / OUT_MD).write_text(md, encoding="utf-8", newline="\n")
+    (REPO / TACTICS_CS).write_text(cs, encoding="utf-8", newline="\n")
     print(f"{OUT_JSON}: {data['counts']['encounters']} encounters, {data['counts']['rules']} rules "
           f"({data['counts']['rulesVerified']} verified)")
     return 0

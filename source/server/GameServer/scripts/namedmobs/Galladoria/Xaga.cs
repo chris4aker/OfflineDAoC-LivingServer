@@ -269,6 +269,22 @@ namespace DOL.GS
         }
         // Offline DAoC: Beatha's damage no longer heals Xaga (it healed her twice the damage
         // of every Void, thousands per pulse against a raid, and bots could never finish her).
+        // The original is behind EpicEncounterMechanics.AllowBeathaHealsXaga.
+        public override void DealDamage(AttackData ad)
+        {
+            if (EpicEncounterMechanics.AllowBeathaHealsXaga && ad != null)
+            {
+                foreach (GameNPC npc in GetNPCsInRadius(5000))
+                {
+                    if (npc is Xaga xaga && xaga.IsAlive)
+                    {
+                        xaga.Health += ad.Damage * 2;
+                        break;
+                    }
+                }
+            }
+            base.DealDamage(ad);
+        }
         public override int MaxHealth
         {
             get { return 50000; }
@@ -361,8 +377,9 @@ namespace DOL.AI.Brain
         public override void Think()
         {
             // Offline DAoC: while fighting, Beatha holds her position low over the floor so
-            // melee can reach her; she only circles the room when nothing is engaging her.
-            if (Body.IsAlive && HasAggro)
+            // melee can reach her; she only circles the room when nothing is engaging her. The original (she circles
+            // even while fought) is behind EpicEncounterMechanics.AllowFairyFlight.
+            if (Body.IsAlive && HasAggro && !EpicEncounterMechanics.AllowFairyFlight)
             {
                 if (Body.IsMoving)
                     Body.StopMoving();
@@ -569,8 +586,9 @@ namespace DOL.AI.Brain
         public override void Think()
         {
             // Offline DAoC: while fighting, Tine holds her position low over the floor so
-            // melee can reach her; she only circles the room when nothing is engaging her.
-            if (Body.IsAlive && HasAggro)
+            // melee can reach her; she only circles the room when nothing is engaging her. The original (she circles
+            // even while fought) is behind EpicEncounterMechanics.AllowFairyFlight.
+            if (Body.IsAlive && HasAggro && !EpicEncounterMechanics.AllowFairyFlight)
             {
                 if (Body.IsMoving)
                     Body.StopMoving();

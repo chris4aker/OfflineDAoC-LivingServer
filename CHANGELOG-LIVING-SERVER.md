@@ -8,6 +8,34 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+**Epic raids learn their first encounter rules.** Raids of gamebots now know two bosses that beat them by their rules, not
+by their damage. Everything below is built and covered by automated tests; none of it has been seen in a real raid yet.
+- **Scurceol Hyrde (Krondon).**
+  - **Before:** he takes no damage while his four floating Lyft Miht orbs live, but the raid hit only him, for an hour, and
+    all 42 raider deaths were his.
+  - **Now:** while an orb lives the raid's target is an orb. Each party takes one; casters and archers shoot it from the
+    floor, and melee wait under it, away from him. Nobody hits Scurceol until the last orb is down, then the whole raid
+    turns on him. Orbs stay dead if he resets.
+  - The raid also fights him in his own room: past 1,500 from his spawn it stops hitting him, and the raider he chases
+    leads him back.
+- **Black Lady and the Ancient Black Oak (Marfach Caverns).**
+  - **Before:** the raid dragged Black Lady out of her room until she went home at full health, then pulled her Oak 91
+    times without ever reaching it.
+  - **Now:** the Oak dies when Black Lady dies, so the raid fights her instead. Past 1,100 from her spawn (her leash is
+    1,500) the raid stops hitting her and leads her back, so she never resets mid-fight.
+- **Original boss mechanics are back, switched off.** In 23 places the fork had changed a boss for bot raids. Examples:
+  Aroon's damage-type order, Funus healing from the wrong weapons, the Earthmenders' class puzzle, Beatha healing Xaga,
+  King Tuscar and Queen Kula healing each other, Kvasir healed by cold, Govannon's full 300,000 health. The originals,
+  read from OpenDAoC's own code, are now behind 17 new switches in `EpicEncounterMechanics`, all off, so bosses play
+  exactly as before. Each one gets turned on once the raid knows how to beat it.
+- **Where to look.** The encounter catalog
+  ([docs/encounters/EPIC-ENCOUNTERS.md](docs/encounters/EPIC-ENCOUNTERS.md)) has three new lists: encounters the raid
+  has tactics for, the restored mechanics and their switches, and the mechanics that still only pick real players. The
+  server log shows each decision as `REALM_EXPEDITION_TACTIC` (the raid's target) and `EPIC_TACTIC_BOT` (a raider's).
+- Not changed: Darkness Falls raid AI, Legion and the hardest level 70+ encounters still have no raid AI.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
