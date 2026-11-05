@@ -111,9 +111,11 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - **Sizing by results.** Every automatic raid, dragons too, is sized from that encounter's own record in the Herald.
   - **How it moves:** each win trims the next raid there by 10% of its period size; each defeat or time-out adds 20%
     back. Two wins and a defeat leave it about where it was, so the size settles where the encounter is won about two
-    times in three. Two defeats take a raid from its start to its largest size.
-  - **The limits:** it goes from 70% of the period size (Caer Sidi 70, a dragon 49) up to 150% (Caer Sidi 150, a
-    dragon 105) for raids that keep losing, and never past 300.
+    times in three. Four defeats take a raid from its start to its largest size. The Herald notes each raid's size
+    ("Raid size: 145.3%."), and the next raid there carries on from it.
+  - **The limits:** it goes from 70% of the period size (Caer Sidi 70, a dragon 49) up to twice the period size for
+    raids that keep losing: Caer Sidi, Galladoria and Tuscaran Glacier 200, dragons 140, Summoner's Hall and Darkness
+    Falls 128 (recruiting up to 256, 176 and 160). Never past 300.
   - **What counts:** raids cut short by a restart, beaten to the boss by another realm, failed rallies and stopped
     raids don't count.
 - **After a restart** no automatic raid opens until the realm's bots have finished logging in. Before, a raid could
@@ -133,7 +135,7 @@ realm that feels like a full server at its busiest. How it works and how to tune
   nor the Special Forces: the Herald now marks them ("Forced raid: ..."), and older unmarked records count as
   automatic. `realm_raid_minimum_bots`, when set, is used as it stands.
 - **Settings:** `realm_raid_target_win_percent` (67; 0 turns the sizing off), `realm_raid_smallest_size_percent` (70),
-  `realm_raid_largest_size_percent` (150), `realm_raid_start_size_percent` (125) and `realm_raid_win_trim_percent` (10).
+  `realm_raid_largest_size_percent` (200), `realm_raid_start_size_percent` (125) and `realm_raid_win_trim_percent` (10).
 - **Seeing it:** `/lstest raid` names the size and why, and the server log has a `REALM_RAID_SIZED` line for every
   automatic raid (period size, size, required, recruit limit, wins and losses, the Special Forces it would get, and why);
   `REALM_RAID_SCHEDULED` now shows the size too.
@@ -141,8 +143,8 @@ realm that feels like a full server at its busiest. How it works and how to tune
   and needed three sieges in one session before it moved at all. It is now rebuilt from the Herald's last bot sieges at
   start (sieges answering a player's attack are left out), and every change is logged (`SIEGE_DEFENSE_BALANCE`).
 - Checked: unit tests (`UT_RealmRaidWinBalance`), including a simulation of 2,000 raids against simple models of the
-  chance to win by raid size (bots as good as 2003 players, and worse), which settles at 64-70% wins, except for an
-  encounter that needs nearly the largest size, which wins about 6 in 10. The models are guesses, not measurements;
+  chance to win by raid size (bots as good as 2003 players, and worse), which settles at 67-70% wins, including an
+  encounter that needs 140% of its period size; only one that needs nearly twice it wins about 6 in 10. The models are guesses, not measurements;
   the first night on the period sizes (before the 125% start) won 1 raid in 7. The new sizes are not played in game yet.
 
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)

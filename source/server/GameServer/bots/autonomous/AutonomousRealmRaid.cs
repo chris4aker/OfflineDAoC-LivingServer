@@ -1445,10 +1445,12 @@ namespace DOL.GS
             // for raid sizing or the Special Forces (owner, 2026-11-04). So is a raid the Special Forces joined: a win they
             // took part in makes their next call-up here a party smaller.
             int specialForcesJoined = AutonomousEpicSpecialForces.Joined(raid.Definition.Id);
-            RealmEventRecords.Finish(raid.Definition.Id, outcome, RealmEventRecordStore.WithSpecialForces(
-                raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, specialForcesJoined), raid.Support.Length);
+            // And the size it ran at, so the next raid here carries on from it (2026-11-05).
+            double? sizePercent = raid.Sizing?.RecordedPercent;
+            RealmEventRecords.Finish(raid.Definition.Id, outcome, RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
+                raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, specialForcesJoined), sizePercent), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
-            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, outcome, raid.Forced);
+            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, outcome, raid.Forced, sizePercent);
             Log.Info($"REALM_RAID_ENDED event={raid.Definition.Id} outcome=\"{outcome}\" support={raid.Support.Length} required={raid.Required} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
                      $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} reason=\"{reason}\"");

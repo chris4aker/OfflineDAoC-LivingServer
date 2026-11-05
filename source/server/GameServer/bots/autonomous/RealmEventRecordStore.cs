@@ -123,11 +123,25 @@ public static class RealmEventRecordStore
         while(end<details.Length&&char.IsDigit(details[end]))end++;
         return end>start&&int.TryParse(details.AsSpan(start,end-start),out int joined)?joined:0;
     }
-    /// <summary>An event's last <paramref name="limit"/> finished runs, oldest first: each outcome and how many Epic Special
-    /// Forces joined it (<see cref="SpecialForcesIn"/>); <paramref name="automaticOnly"/> leaves out forced raids.</summary>
-    public static List<(string Outcome,int SpecialForces)> Results(string path,string eventId,int limit,bool automaticOnly=false)
+    /// <summary>The end of a sized raid's details: the size it ran at, as a percentage of its period size (2026-11-05). The
+    /// next raid at that encounter carries on from it; a row without it (every row before) is replayed as before.</summary>
+    public const string RaidSizeMarker=" Raid size: ";
+    public static string WithRaidSize(string details,double? percent)=>percent is double p?$"{details}{RaidSizeMarker}{p.ToString("0.###",System.Globalization.CultureInfo.InvariantCulture)}%.":details;
+    /// <summary>The size these details say the raid ran at, or null.</summary>
+    public static double? RaidSizeIn(string details)
     {
-        var results=new List<(string,int)>();
+        int at=details?.LastIndexOf(RaidSizeMarker,StringComparison.Ordinal)??-1;
+        if(at<0)return null;
+        int start=at+RaidSizeMarker.Length,end=start;
+        while(end<details.Length&&(char.IsDigit(details[end])||details[end]=='.'))end++;
+        return end>start&&end<details.Length&&details[end]=='%'&&double.TryParse(details.AsSpan(start,end-start),System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out double p)?p:null;
+    }
+    /// <summary>An event's last <paramref name="limit"/> finished runs, oldest first: each outcome, how many Epic Special
+    /// Forces joined it (<see cref="SpecialForcesIn"/>) and the size it ran at (<see cref="RaidSizeIn"/>);
+    /// <paramref name="automaticOnly"/> leaves out forced raids.</summary>
+    public static List<(string Outcome,int SpecialForces,double? SizePercent)> Results(string path,string eventId,int limit,bool automaticOnly=false)
+    {
+        var results=new List<(string,int,double?)>();
         if(!File.Exists(path))return results;
         using var connection=Open(path,true);using var command=connection.CreateCommand();
         command.CommandText="SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Events'";
@@ -135,7 +149,7 @@ public static class RealmEventRecordStore
         command.CommandText="SELECT Outcome,Details FROM Events WHERE EventId=@event AND EndedUtc<>''"+(automaticOnly?" AND substr(Details,1,length(@forced))<>@forced":"")+" ORDER BY StartedUtc DESC,Id DESC LIMIT @limit";
         command.Parameters.AddWithValue("@event",eventId);command.Parameters.AddWithValue("@limit",limit);command.Parameters.AddWithValue("@forced",ForcedRaidPrefix);
         using var reader=command.ExecuteReader();
-        while(reader.Read())results.Add((reader.GetString(0),SpecialForcesIn(reader.GetString(1))));
+        while(reader.Read())results.Add((reader.GetString(0),SpecialForcesIn(reader.GetString(1)),RaidSizeIn(reader.GetString(1))));
         results.Reverse();
         return results;
     }

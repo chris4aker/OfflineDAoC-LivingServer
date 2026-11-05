@@ -50,7 +50,7 @@ public static class RealmEventRecords
         catch(Exception){return new();}
     }
     /// <summary>As <see cref="FinishedOutcomes"/>, with how many Epic Special Forces joined each run. File I/O: off the game loop.</summary>
-    public static List<(string Outcome,int SpecialForces)> FinishedResults(string eventId,int limit,bool automaticOnly=false)
+    public static List<(string Outcome,int SpecialForces,double? SizePercent)> FinishedResults(string eventId,int limit,bool automaticOnly=false)
     {
         try{return RealmEventRecordStore.Results(PathName,eventId,limit,automaticOnly);}
         catch(Exception){return new();}

@@ -13,12 +13,14 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
   the period sizes won 1 raid in 7 on the owner's test copy (five defeats after two wipes each, with the Special Forces,
   and one time-out): bots play well below 2003 players. The period size stays the measure; the start sits mid-range.
 - **Win-rate sizing** (`RealmRaidRecruitmentPolicy.Size`): each win at that encounter trims 10 points of the period
-  size; each defeat or time-out adds 20.3 (doubled on 2026-11-05 so a raid finds its size in a few attempts: two losses
-  take it from the start to the ceiling). The size settles where the encounter is won about two times in three.
+  size; each defeat or time-out adds 20.3 (doubled on 2026-11-05 so a raid finds its size in a few attempts: four losses
+  take it from the start to the ceiling). The size settles where the encounter is won about two times in three. Each
+  raid's Herald record notes the size it ran at ("Raid size: 145.3%."), and the next raid there carries on from it.
   - **Floor 70%:** about the period's "possible, but tough". Apocalypse was "possible with good groups, but tough"
     at 80-90 against a comfortable 90-100.
-  - **Ceiling 150%:** room for bots that play worse than 2003 players. Caer Sidi at 150 is about the 130-140 that
-    turned up at the time. Never past the realm's 300.
+  - **Ceiling 200%** (owner, 2026-11-05; it was 150%): room for bots that play worse than 2003 players. The raids
+    defeated on the first night already had up to 180% of their period size with the Special Forces. Never past the
+    realm's 300.
 - **Recruit cap:** a quarter above what the raid must stage, in whole parties (RecruitCap of the full size, scaled by
   the same percentage).
 - **Short start and hub departure:** half of what the sized raid needs, at least three parties (24). The old minimum
@@ -36,14 +38,14 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
 
 ### Starting sizes
 
-| Raid | Period size | Starts at (125%) | Recruits up to | Smallest (70%) | Largest (150%) |
+| Raid | Period size | Starts at (125%) | Recruits up to | Can range (70-200%) | Recruits up to at 200% |
 |---|---|---|---|---|---|
-| Caer Sidi, Galladoria, Tuscaran Glacier | 100 | 125 | 160 | 70 | 150 |
-| Crystal Cave | 120 | 150 | 192 | 84 | 180 |
-| Golestandt, Gjalpinulva, Cuuldurach | 70 | 88 | 112 | 49 | 105 |
-| Summoner's Hall, Darkness Falls, Krondon, Avalon City, Trollheim, Iarnvidiur's Lair, Marfach Caverns | 64 | 80 | 104 | 45 | 96 |
-| Hall of the Corrupt | 48 | 60 | 80 | 34 | 72 |
-| Dodens Gruva, Tur Suil | 40 | 50 | 72 | 28 | 60 |
+| Caer Sidi, Galladoria, Tuscaran Glacier | 100 | 125 | 160 | 70-200 | 256 |
+| Crystal Cave | 120 | 150 | 192 | 84-240 | 300 |
+| Golestandt, Gjalpinulva, Cuuldurach | 70 | 88 | 112 | 49-140 | 176 |
+| Summoner's Hall, Darkness Falls, Krondon, Avalon City, Trollheim, Iarnvidiur's Lair, Marfach Caverns | 64 | 80 | 104 | 45-128 | 160 |
+| Hall of the Corrupt | 48 | 60 | 80 | 34-96 | 128 |
+| Dodens Gruva, Tur Suil | 40 | 50 | 72 | 28-80 | 112 |
 
 ## Sizes and sources
 
@@ -76,9 +78,8 @@ The period sizes are for 2003 players. Two things pull the other way, and win-ra
 - **Easier over time:** dragons came down from 125-160 in early 2003 to 17-24 by August 2003 as gear and tactics
   improved, and to one group or less by 2008. The owner chose 70 (2026-11-04), between the two; a dragon won with 50
   present on 2026-11-04.
-- **Bots play worse:** confirmed on the first night (1 win in 7). Raids start at 125% and grow up to 150% when they
+- **Bots play worse:** confirmed on the first night (1 win in 7). Raids start at 125% and grow up to 200% when they
   keep losing. Overnight the defeated raids already had 86-104 bots with the Special Forces against period sizes of
-  48-64 (Tuscaran Glacier 94, sized 58 by the restart), so 150% may not be enough for every encounter; the ceiling is a
-  setting.
+  48-64 (Tuscaran Glacier 94, sized 58 by the restart), so the owner raised the ceiling from 150% to 200%.
 
 None of this has been played in game yet. `REALM_RAID_SIZED` in the server log shows each raid's size and why.

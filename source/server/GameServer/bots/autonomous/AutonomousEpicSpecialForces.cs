@@ -122,7 +122,7 @@ public static class AutonomousEpicSpecialForces
 
     /// <summary>The raid ended: its Special Forces go home, and an automatic raid's result joins the dungeon's record
     /// (a raid started from the launcher is not part of it, owner 2026-11-04), with whether they took part in it.</summary>
-    public static void RaidEnded(string raidId, string outcome, bool forced = false)
+    public static void RaidEnded(string raidId, string outcome, bool forced = false, double? sizePercent = null)
     {
         bool joined;
         lock (Sync)
@@ -131,7 +131,7 @@ public static class AutonomousEpicSpecialForces
             Dismissals.Enqueue(raidId);
             joined = JoinedCount.Remove(raidId, out int count) && count > 0;
         }
-        RealmRaidRecord.Add(raidId, outcome, forced, joined);
+        RealmRaidRecord.Add(raidId, outcome, forced, joined, sizePercent);
     }
 
     /// <summary>How many Special Forces joined this raid so far (including any who have since left it).</summary>

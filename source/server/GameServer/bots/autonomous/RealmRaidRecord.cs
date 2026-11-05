@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace DOL.GS;
 
-/// <summary>One counted result at an encounter: its outcome, and whether the Epic Special Forces took part in it.</summary>
-public readonly record struct RaidResult(string Outcome, bool WithSpecialForces = false)
+/// <summary>One counted result at an encounter: its outcome, whether the Epic Special Forces took part in it, and the size
+/// the raid ran at (a percentage of its period size; null on rows from before 2026-11-05 and unsized raids).</summary>
+public readonly record struct RaidResult(string Outcome, bool WithSpecialForces = false, double? SizePercent = null)
 {
     /// <summary>An outcome alone: a raid the Special Forces did not join (and every ledger row from before 2026-11-04).</summary>
     public static implicit operator RaidResult(string outcome) => new(outcome);
@@ -75,10 +76,10 @@ public static class RealmRaidRecord
 
     /// <summary>A raid ended: a win or a loss of an automatic raid joins its record (anything else is ignored), with
     /// whether the Special Forces joined it.</summary>
-    public static void Add(string raidId, string outcome, bool forced = false, bool withSpecialForces = false)
+    public static void Add(string raidId, string outcome, bool forced = false, bool withSpecialForces = false, double? sizePercent = null)
     {
         if (forced || !Counted(outcome)) return;
-        var result = new RaidResult(outcome, withSpecialForces);
+        var result = new RaidResult(outcome, withSpecialForces, sizePercent);
         lock (Sync)
         {
             if (_record == null) EndedBeforeLoad.Add((raidId, result));
@@ -96,6 +97,10 @@ public static class RealmRaidRecord
     /// <summary>A ledger's rows as results: the Special Forces took part when its details name any who joined.</summary>
     public static List<RaidResult> FromLedger(IEnumerable<(string Outcome, int SpecialForces)> rowsOldestFirst) =>
         CountedResults((rowsOldestFirst ?? []).Select(row => new RaidResult(row.Outcome, row.SpecialForces > 0)));
+
+    /// <summary>A ledger's rows as results, with the size each raid ran at when its details say.</summary>
+    public static List<RaidResult> FromLedger(IEnumerable<(string Outcome, int SpecialForces, double? SizePercent)> rowsOldestFirst) =>
+        CountedResults((rowsOldestFirst ?? []).Select(row => new RaidResult(row.Outcome, row.SpecialForces > 0, row.SizePercent)));
 
     /// <summary>Starts loading the record from the ledger, once, off the game loop.</summary>
     public static void EnsureLoading()

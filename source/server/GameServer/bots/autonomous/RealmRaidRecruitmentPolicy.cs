@@ -54,8 +54,9 @@ public static class RealmRaidRecruitmentPolicy
 
     // ---- Win-rate sizing (owner 2026-10-19: "mostly successful... high stakes but not a guarantee", about 2 in 3) ----
     // 2026-11-04: the full size is the period's comfortable raid (docs/RAID-SIZES.md), and the size moves from 70% of it
-    // (about the period's "possible, but tough": Apocalypse at 80 of a comfortable 100-105) up to 150% (room for bots that
-    // play worse than 2003 players: Caer Sidi at 150 is near the 130-140 that went at the time), never past 300.
+    // (about the period's "possible, but tough": Apocalypse at 80 of a comfortable 100-105) up to 200% (room for bots that
+    // play worse than 2003 players; 150% until 2026-11-05, when the overnight losses had already had up to 180% with the
+    // Special Forces), never past 300.
     // "If it keeps winning easily, it needs fewer bots next time, so the stakes stay up." The bosses are never touched:
     // the lever is the raid's own size. Each automatic raid (dragons too) is sized from its own encounter's record:
     // a win trims WinTrim points of the period size, a loss adds WinTrim * target / (100 - target) back (20.3 at 67%), so
@@ -76,8 +77,8 @@ public static class RealmRaidRecruitmentPolicy
     public static int SmallestSizePercentSetting = 70;
 
     [ServerProperty("autonomous", "realm_raid_largest_size_percent",
-        "The largest an automatic realm raid that keeps losing gets, as a percentage of its full size (its period size), never above 300 bots.", 150)]
-    public static int LargestSizePercentSetting = 150;
+        "The largest an automatic realm raid that keeps losing gets, as a percentage of its full size (its period size), never above 300 bots. Bosses are never weakened: a raid that keeps losing gets bigger instead.", 200)]
+    public static int LargestSizePercentSetting = 200;
 
     [ServerProperty("autonomous", "realm_raid_start_size_percent",
         "The size an automatic realm raid starts at before it has any wins or losses, as a percentage of its full size (its period size, docs/RAID-SIZES.md); kept between the smallest and largest size.", 125)]
@@ -92,7 +93,7 @@ public static class RealmRaidRecruitmentPolicy
     public readonly record struct SizingRules(int TargetWinPercent, int SmallestPercent, int LargestPercent, int WinTrimPercent,
         int StartPercent = 100)
     {
-        public static readonly SizingRules Default = new(67, 70, 150, 10, 125);
+        public static readonly SizingRules Default = new(67, 70, 200, 10, 125);
         public bool On => TargetWinPercent > 0;
         public SizingRules Normalized()
         {
@@ -114,15 +115,24 @@ public static class RealmRaidRecruitmentPolicy
     /// losses count): it starts at the starting size (125% of the period size by default) and each win trims, each loss
     /// adds, never past the limits.
     /// </summary>
-    public static double SizePercent(IEnumerable<string> outcomesOldestFirst, SizingRules rules)
+    public static double SizePercent(IEnumerable<string> outcomesOldestFirst, SizingRules rules) =>
+        SizePercentOf((outcomesOldestFirst ?? []).Select(o => (RaidResult)o), rules);
+
+    /// <summary>
+    /// As <see cref="SizePercent"/>, but a result that says what size the raid ran at (<see cref="RaidResult.SizePercent"/>,
+    /// from its ledger row) carries on from that size. So the size never depends on which results are still in the
+    /// record: with the 200% ceiling (2026-11-05) a size replayed only from the last 400 results moved by more than one
+    /// step on a quarter of all raids once the record was full, as old results dropped out.
+    /// </summary>
+    public static double SizePercentOf(IEnumerable<RaidResult> resultsOldestFirst, SizingRules rules)
     {
         rules = rules.Normalized();
         double percent = rules.StartPercent;
         if (!rules.On) return percent;
-        foreach (string outcome in outcomesOldestFirst ?? [])
+        foreach (RaidResult result in resultsOldestFirst ?? [])
         {
-            if (AutonomousEpicSpecialForces.IsWin(outcome)) percent -= rules.WinTrimPercent;
-            else if (AutonomousEpicSpecialForces.IsLoss(outcome)) percent += rules.LossAddPercent;
+            if (AutonomousEpicSpecialForces.IsWin(result.Outcome)) percent = (result.SizePercent ?? percent) - rules.WinTrimPercent;
+            else if (AutonomousEpicSpecialForces.IsLoss(result.Outcome)) percent = (result.SizePercent ?? percent) + rules.LossAddPercent;
             else continue;
             percent = Math.Clamp(percent, rules.SmallestPercent, rules.LargestPercent);
         }
@@ -141,7 +151,12 @@ public static class RealmRaidRecruitmentPolicy
 
     /// <summary>An automatic raid's size and help, and why (REALM_RAID_SIZED).</summary>
     public sealed record RaidSizing(int FullRequired, double Percent, int Required, int RecruitCap, int Wins, int Losses,
-        int Streak, int SpecialForcesOnWipe, bool SpecialForcesFromStart, string Why);
+        int Streak, int SpecialForcesOnWipe, bool SpecialForcesFromStart, string Why, bool ByResults = false)
+    {
+        /// <summary>The size to write on the raid's ledger row, or null when it was not sized by results (a size set by
+        /// realm_raid_minimum_bots, or sizing off): the next raid carries on from it.</summary>
+        public double? RecordedPercent => ByResults ? Percent : null;
+    }
 
     /// <summary>
     /// One policy for both levers: the raid's size (this record's running total) and the Epic Special Forces call-up
@@ -170,7 +185,7 @@ public static class RealmRaidRecruitmentPolicy
         else if (!recordLoaded) { percent = rules.StartPercent; why = "the record is still loading: the starting size"; }
         else
         {
-            percent = SizePercent(counted, rules);
+            percent = SizePercentOf(results, rules);
             string run = streak > 1 ? $", the last {streak} won" : streak < -1 ? $", the last {-streak} lost" : "";
             why = counted.Length == 0 ? "no wins or losses here yet: the starting size"
                 : $"{wins} won and {losses} lost here{run}: each win trims {rules.WinTrimPercent} points, each loss adds " +
@@ -180,7 +195,7 @@ public static class RealmRaidRecruitmentPolicy
         int required = percent == 100 ? fullRequired : SizedRequired(fullRequired, percent);
         int cap = percent == 100 ? RecruitCap(fullRequired) : SizedRecruitCap(fullRequired, percent, required);
         int callUp = AutonomousEpicSpecialForces.CallUpParties(results);
-        return new(fullRequired, percent, required, cap, wins, losses, streak, callUp, fromStart, why);
+        return new(fullRequired, percent, required, cap, wins, losses, streak, callUp, fromStart, why, !fixedSize && rules.On);
     }
 
     /// <summary>The log line of an automatic raid's size (REALM_RAID_SIZED), written when its rally opens.</summary>
