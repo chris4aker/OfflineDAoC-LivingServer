@@ -109,6 +109,37 @@ gates fell, and the Renegade Lord never dropped below 100%).
   come in the next parts. Gamebots don't yet ride the same horse or boat as you: the leader takes its own and waits
   for you at the other end. Nothing here has been played in game yet.
 
+**Take the lead, or hand it back** (bot-led groups, second part; docs/BOT-LED-GROUPS.md).
+- **`/lead`** in a party a gamebot leads: the leader says "all yours", you become the group leader, and the gamebots
+  follow you exactly as gamebots you `/invite` do (`/pull`, your camps, your pace). The group, its loot share and your
+  quest credit carry on unchanged.
+- **`/lead bot`** (or `/lead bot <name>`, or `/makeleader <gamebot>`, or `/makeleader` with a gamebot targeted) in a
+  group you lead: a gamebot takes the lead (the one you name or target, else the highest level one), says it is looking
+  for a camp, and picks one near where you stand; you follow as in a party that invited you. It needs at least two
+  gamebots, a tank, a healer and a damage dealer (you count for your class), no `/spawn` companions and no fight going
+  on, and only works where you can walk or ride (not in the frontier, a battleground or Darkness Falls). If something
+  is missing you are told what.
+- **`/pull`, `/invite` and `/makeleader`** in a party a gamebot leads now say "Brannoc is leading this group. /lead to
+  take over." instead of "You are not the leader of your group".
+- **When a party you follow is down to one gamebot**, you get a yes/no box: "Only Brannoc is left in your group. Do you
+  want to lead the group?" Yes: you lead and Brannoc follows you. No, or no answer within a minute: Brannoc says
+  goodbye and goes its own way. Before, the party just broke up. You never become the leader any other way unless you
+  type `/lead`.
+- **`/invites off`** stops unasked invites from gamebot leaders for this character (saved with it); `/invites on` turns
+  them back on, `/invites` says which. `/lfg`, or a tell to a leader, still gets you one.
+- **The setting `bot_led_group_join_mode`** (the launcher's Living Server tab, **When you join a bot's group**): with
+  *follow* (the default) you follow the leader; with *lead*, saying yes makes you the leader at once.
+- **A fix from B1:** a party following a bot leader whose only healer was you counted you for its roster but would not
+  start a pull. It now counts you there too.
+- **No gamebot is free for a moment during a handover:** it goes straight from your group to the bot-led group (or
+  back), so no raid, siege or RvR march can take it in between. `/lswhy duty` on one shows "handed over".
+- **For testers:** server log lines `BOT_LED_HANDOVER` (to_player, to_bot, offered, accepted, declined, refused, with the
+  reason) and `AUTONOMOUS_GROUP_TASK_ENDED ... disbanded=false` for a party that was handed over; the startup
+  `FORK_BUILD` line shows `bot_led_group_join_mode`.
+- **Not yet:** the leader's "pulling", "last pull then town" and "lf 1 more" calls are written but not said yet. If you
+  leave a group after `/lead`, its gamebots leave too (as with gamebots you invite) instead of carrying on as a party.
+  Nothing here has been played in game yet.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids

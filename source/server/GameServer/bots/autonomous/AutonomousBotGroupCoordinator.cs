@@ -181,6 +181,8 @@ public static partial class AutonomousBotGroupCoordinator
         public BotLedGroups.FollowState Follow { get; set; }
         public Vector3 PlayerLastPosition { get; set; }
         public ushort PlayerLastRegion { get; set; }
+        /// <summary>Started from the player's own group by /lead bot (B2): its gamebots' own goals may differ.</summary>
+        public bool FromPlayersGroup { get; init; }
     }
 
     /// <summary>Population-wide work belongs to one service phase, not every
@@ -259,7 +261,10 @@ public static partial class AutonomousBotGroupCoordinator
 
             // Objective membership is authoritative.  A rebalance can never
             // leave a mixed PvE/RvR party running under the leader's old task.
-            if (!group.GetMembersInTheGroup().Any(member => member is GamePlayer))
+            // A party started from the player's own group (/lead bot) keeps going after the player leaves, whatever its
+            // gamebots' own goals were.
+            if (!group.GetMembersInTheGroup().Any(member => member is GamePlayer) &&
+                !(TryGetSession(group, out Session fromPlayers) && fromPlayers.FromPlayersGroup))
             {
                 eAutonomousObjectiveKind purpose = AutonomousObjectiveAssignments.KindFor(members[0]);
                 if (members.Any(member => AutonomousObjectiveAssignments.KindFor(member) != purpose))
@@ -2610,6 +2615,9 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (session == null || session.Ending)
             return;
+        // Bot-led groups (B2): a party hosting the player with one gamebot left asks the player to lead instead.
+        if (TryOfferLeadToLastBot(session, reason))
+            return;
         session.Ending = true;
         GameBot[] members = AllBotMembers(session.Group);
         if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
@@ -3126,13 +3134,20 @@ public static partial class AutonomousBotGroupCoordinator
         TryMatchPveRoster(leader, candidates, MinimumPveFormationSize, 8, out template, out _, offTanks: true)
             ? template.Length : 0;
 
-    private static bool HasActivePveComposition(Session session, GameBot[] members) =>
-        session != null && members != null &&
-        CanUsePveCombatRoster(session.LockedSize, members.Length,
-            members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == BotPveGroupRole.Tank),
-            members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == BotPveGroupRole.Healer),
-            members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == BotPveGroupRole.Attacker)) &&
-        members.All(member => session.PveRoles.ContainsKey(MemberKey(member)));
+    private static bool HasActivePveComposition(Session session, GameBot[] members)
+    {
+        if (session == null || members == null)
+            return false;
+        // Bot-led groups: a hosted player counts for their own role here too, as in HasViablePveComposition, or a party
+        // whose only healer is the player would never pull (found while building B2).
+        int player = HostedPlayerPresent(session) ? 1 : 0;
+        int Count(BotPveGroupRole wanted) =>
+            members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == wanted) +
+            (player == 1 && session.PlayerRole == wanted ? 1 : 0);
+        return CanUsePveCombatRoster(session.LockedSize + player, members.Length + player,
+                   Count(BotPveGroupRole.Tank), Count(BotPveGroupRole.Healer), Count(BotPveGroupRole.Attacker)) &&
+               members.All(member => session.PveRoles.ContainsKey(MemberKey(member)));
+    }
 
     public static bool CanUsePveCombatRoster(int lockedSize, int activeSize,
         int tanks, int healers, int attackers) =>

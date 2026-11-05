@@ -52,6 +52,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly NumericUpDown _manaRate = Rate("Power regeneration rate");
     private readonly CheckBox _manaHalved = Switch("Half below 50% power");
     private readonly CheckBox _botGroupInvites = Switch("Bot leaders invite you");
+    private readonly ComboBox _joinMode = Choice("When you join a bot's group", "Follow", "Lead");
     private readonly NumericUpDown _lootWeight = Number(SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight, "Your loot share");
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
     private readonly XpRow _botXp = new("AUTONOMOUS BOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
@@ -143,10 +144,12 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         power.Grid.Controls.Add(powerNote, 0, power.Grid.RowCount - 1);
         power.Grid.SetColumnSpan(powerNote, 3);
 
-        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 2);
+        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 3);
         Add(groups, _botGroupInvites, null, "A bot party leader of your level may send you a tell and the group invite box (at most every 45 minutes; /lfg asks for one). Say yes and just follow.");
         Captioned(Caption("YOUR LOOT SHARE", part: false), Add(groups, null, WithUnit(_lootWeight, "members"),
             "In any group with gamebots you count as this many members for coin and items, and upgrades for your class come to you first."));
+        Captioned(Caption("WHEN YOU JOIN A BOT'S GROUP", part: false), Add(groups, null, _joinMode,
+            "Follow: the bot leads and you follow (/lead takes over). Lead: saying yes makes you the leader at once (/lead bot hands it back)."));
 
         var xp = Card("XP BY LEVEL RANGE", DaocTheme.Gold, 5);
         xp = xp with { Height = TitleRow + 2 * (XpRow.Height + XpRow.ErrorHeight) + Row + CardPadding };
@@ -206,6 +209,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
                      _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy })
             box.CheckedChanged += (_, _) => Edited();
         _schedule.SelectedIndexChanged += (_, _) => Edited();
+        _joinMode.SelectedIndexChanged += (_, _) => Edited();
         _share.ValueChanged += (_, _) => Edited();
         _chatRate.ValueChanged += (_, _) => Edited();
         _minLevel.ValueChanged += (_, _) => Edited();
@@ -283,6 +287,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         ManaHalvedBelowHalf = _manaHalved.Checked,
         BotGroupInvites = _botGroupInvites.Checked,
         PlayerLootWeight = (int)_lootWeight.Value,
+        JoinMode = SocialExpansionSettings.JoinModes[Math.Max(0, _joinMode.SelectedIndex)],
     };
 
     private void SetValues(SocialExpansionSettings settings)
@@ -313,6 +318,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _alarms.Checked = settings.LivingAlarms;
         _nemesis.Checked = settings.LivingNemesis;
         _schedule.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.ScheduleModes, settings.ScheduleMode));
+        _joinMode.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.JoinModes, settings.JoinMode));
         _breaks.Checked = settings.LivingBreaks;
         _body.Checked = settings.LivingBodyLanguage;
         _beggars.Checked = settings.LivingBeggars;

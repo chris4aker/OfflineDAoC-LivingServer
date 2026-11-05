@@ -150,6 +150,25 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Has.Count.EqualTo(1));
     }
 
+    [Test] public void TheJoinModeIsSavedReadAndChecked()
+    {
+        // Living Server 1.2, bot-led groups B2: follow by default (owner 2026-11-04, decision 1).
+        Assert.That(SocialExpansionSettings.Defaults.JoinMode, Is.EqualTo("follow"));
+        (SocialExpansionSettings.Defaults with { JoinMode = "lead" }).Save(_database, null, () => _stopped);
+        Assert.That(Rows()["bot_led_group_join_mode"], Is.EqualTo("lead"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).JoinMode, Is.EqualTo("lead"));
+        Assert.That(problems, Is.Empty);
+        Assert.That((SocialExpansionSettings.Defaults with { JoinMode = "lurk" }).Validate(), Does.Contain("follow or lead"));
+        Assert.That(SocialExpansionSettings.Defaults.AllOff().JoinMode, Is.EqualTo("follow"), "a choice, not a feature: all off keeps it");
+        Exec("UPDATE ServerProperty SET Value = 'LEAD ' WHERE `Key` = 'bot_led_group_join_mode'");
+        Assert.That(SocialExpansionSettings.Load(_database, problems).JoinMode, Is.EqualTo("lead"));
+        Exec("UPDATE ServerProperty SET Value = 'x' WHERE `Key` = 'bot_led_group_join_mode'");
+        problems.Clear();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).JoinMode, Is.EqualTo("follow"));
+        Assert.That(problems, Has.Count.EqualTo(1));
+    }
+
     [Test] public void TheChatRateIsSavedReadAndChecked()
     {
         // Beta 1.1.2: bot_voices_chat_rate in the tab; 2 by default (owner 2026-11-04, after the playtest).

@@ -66,3 +66,37 @@ gotta call it, [ty all|thanks all], good group
 @topic lead_player_left
 lost one, we carry on
 [ok|alright], carrying on without them
+
+# ---- B2: the handover (docs/BOT-LED-GROUPS.md, "Taking the lead") ----
+# lead_handover: the leader, as the player types /lead. lead_take: the gamebot the player handed the lead to (/lead bot,
+# /makeleader). lead_last_bot: the last gamebot of the party, just before the "do you want to lead?" box.
+@topic lead_handover
+all yours, we follow you
+[ok|sure], your lead
+[all yours|your group now], lead on
+k new lead, everyone follow
+@topic lead_take
+ok i'll lead, finding us a camp near here
+[sure|ok], i got it. looking for a camp around here
+i'll take it, give me a sec to find a spot nearby
+@topic lead_last_bot
+just us two left, want to lead?
+[well|hm], it's just us now. you want to lead?
+everyone bailed, your call
+
+# ---- Written for the leader's later calls (not spoken yet: their triggers are not built, see B2 as built) ----
+@topic lead_pull
+pulling
+[pulling|incoming], get ready
+inc, on me
+@topic lead_sell
+last pull then town
+[bags full|bags are full], last pull then we sell
+one more pull, then town to sell
+@kind lfg
+@needs in_group,lead_call
+@invites none
+@topic lead_lf_more
+lf 1 more, any healer?
+[lf|looking for] 1 more for {camp}, any class
+lf 1 more, need a healer for {camp}

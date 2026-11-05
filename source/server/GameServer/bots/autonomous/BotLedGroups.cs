@@ -171,6 +171,8 @@ public static partial class BotLedGroups
         public int SessionDeclines { get; set; }
         public long AskedAt { get; set; } = long.MinValue / 2;
         public bool Pending { get; set; }
+        /// <summary>The player typed /invites off (B2): no unasked invite, from a party or a raid. Asking still works.</summary>
+        public bool PlayerInvitesOff { get; set; }
         public Dictionary<long, long> DeclinedByLeader { get; } = new();
 
         public InviteMemory(long onlineSince) => OnlineSince = onlineSince;
@@ -209,6 +211,8 @@ public static partial class BotLedGroups
             return null;
         if (!invitesOn)
             return "invites_off";
+        if (memory.PlayerInvitesOff)
+            return "invites_off_by_player";
         if (now - memory.OnlineSince < FirstInviteAfterLoginMs)
             return "just_logged_in";
         if (memory.SessionDeclines >= SessionDeclineLimit)
@@ -693,7 +697,8 @@ public static partial class BotLedGroups
     public const int PulseIntervalMs = 5_000;
     private static long _nextPulse;
 
-    internal static InviteMemory MemoryOf(GamePlayer player, long now) => Memories.GetOrAdd(player.Name, _ => new InviteMemory(now));
+    internal static InviteMemory MemoryOf(GamePlayer player, long now) =>
+        Memories.GetOrAdd(player.Name, _ => new InviteMemory(now) { PlayerInvitesOff = StoredInvitesOff(player) });
 
     /// <summary>The player's state for the invite rules, read from the live player.</summary>
     public static PlayerState StateOf(GamePlayer player) => new(
@@ -837,9 +842,13 @@ public static partial class BotLedGroups
                 return;
             }
             string why = StateBlocks(StateOf(answering) with { DialogOpen = false });
-            if (why == null && AutonomousBotGroupCoordinator.TryHostPlayer(leader, answering, out why))
+            // bot_led_group_join_mode (B2): with "lead", saying yes makes the player the leader at once.
+            bool leadAtOnce = CurrentJoinMode == JoinMode.Lead;
+            if (why == null && AutonomousBotGroupCoordinator.TryHostPlayer(leader, answering, out why, welcome: !leadAtOnce))
             {
                 LogInvite("accepted", leader, answering, asked ? "asked" : "unasked", asked);
+                if (leadAtOnce)
+                    answering.Out.SendMessage(TakeLead(answering, "join_mode_lead"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return;
             }
             LogInvite("not_joined", leader, answering, why, asked);
@@ -870,7 +879,12 @@ public static partial class BotLedGroups
     #region The leader's lines
 
     /// <summary>What the leader says to the group it hosts the player in (topic lead_* in the voice corpus, with a plain fallback).</summary>
-    public enum Lead { Welcome, WelcomeOnTheWay, MeetupReminder, MeetupGoingOn, WhereAreYou, GoingOn, AfkHold, AfkLetGo, Move, Farewell, PlayerLeft }
+    public enum Lead
+    {
+        Welcome, WelcomeOnTheWay, MeetupReminder, MeetupGoingOn, WhereAreYou, GoingOn, AfkHold, AfkLetGo, Move, Farewell, PlayerLeft,
+        // B2: the handover. Handover: /lead ("all yours"); TakeBack: /lead bot or /makeleader; LastBot: before the box.
+        Handover, TakeBack, LastBot,
+    }
 
     public static string Topic(Lead what) => what switch
     {
@@ -885,6 +899,9 @@ public static partial class BotLedGroups
         Lead.Move => "lead_move",
         Lead.Farewell => "lead_break",
         Lead.PlayerLeft => "lead_player_left",
+        Lead.Handover => "lead_handover",
+        Lead.TakeBack => "lead_take",
+        Lead.LastBot => "lead_last_bot",
         _ => "lead",
     };
 
@@ -905,6 +922,9 @@ public static partial class BotLedGroups
         Lead.Move => "moving to {camp}",
         Lead.Farewell => "thats it for me, good group all",
         Lead.PlayerLeft => "{player} went ld, we carry on",
+        Lead.Handover => "all yours {player}, we follow you",
+        Lead.TakeBack => "ok i'll lead, finding us a camp near here",
+        Lead.LastBot => "just us two left, want to lead?",
         _ => string.Empty,
     };
 

@@ -111,7 +111,7 @@ public static partial class AutonomousBotGroupCoordinator
     /// The player said yes: the player joins the leader's group as a member (never its leader), the session hosts them,
     /// and every gamebot of the party holds the "bot-led group with a player" lease, which nothing automatic takes.
     /// </summary>
-    internal static bool TryHostPlayer(GameBot leader, GamePlayer player, out string why)
+    internal static bool TryHostPlayer(GameBot leader, GamePlayer player, out string why, bool welcome = true)
     {
         why = null;
         if (leader?.Group == null || player == null)
@@ -150,8 +150,10 @@ public static partial class AutonomousBotGroupCoordinator
                 BotDutyLeases.Claim(member, eDutyLeaseKind.BotLedGroupWithPlayer, session.Id, DutyLeaseReason.HostingPlayer, player.Name,
                     session.Group);
             bool assembling = IsAssemblyPhase(session.Phase);
-            BotLedGroups.Announce(leader, assembling ? BotLedGroups.Lead.Welcome : BotLedGroups.Lead.WelcomeOnTheWay, player,
-                assembling ? session.RendezvousName : PlaceOf(leader), session.Camp?.MonsterName);
+            // With bot_led_group_join_mode = lead the player takes over at once; the handover says "all yours" instead.
+            if (welcome)
+                BotLedGroups.Announce(leader, assembling ? BotLedGroups.Lead.Welcome : BotLedGroups.Lead.WelcomeOnTheWay, player,
+                    assembling ? session.RendezvousName : PlaceOf(leader), session.Camp?.MonsterName);
             if (Log.IsInfoEnabled)
                 Log.Info($"BOT_LED_GROUP_HOSTING group={session.Id} player=\"{player.Name}\" level={player.Level} role={session.PlayerRole} " +
                      $"leader=\"{leader.Name}\" phase=\"{session.Phase}\" bots={members.Length}");

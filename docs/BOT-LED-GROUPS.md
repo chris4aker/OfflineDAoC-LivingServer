@@ -4,8 +4,9 @@ Owner: Chris. Asked for on r/daoc (2026-11-03): *"I like the idea of eventually 
 can be more passive from a leading perspective."* Roadmap line ([RELEASE-TRAIN.md](RELEASE-TRAIN.md), phase B): bots
 invite the player; bot-led groups the player can follow without leading, with a toggle back to leading; a raid leader
 bot who invites the player. Approved by the owner on 2026-11-04. **B1 (invites and following) is built**, with
-automated tests only; nothing has been played in game yet. B2 (`/lead`) and B3 (the raid leader) are not built. See
-[B1 as built](#b1-as-built-2026-11-04) at the end.
+automated tests only; nothing has been played in game yet. **B2 (`/lead`, the handover) is built** the same way,
+automated tests only. B3 (the raid leader) is not built. See [B1 as built](#b1-as-built-2026-11-04) and
+[B2 as built](#b2-as-built-2026-11-05) at the end.
 
 ## The page for players
 
@@ -237,3 +238,44 @@ Branch `feature/bot-led-groups-b1`, stacked on the duty lease (`feature/duty-lea
 player's horse or boat ride (the leader rides its own and waits at the far end); the region-crossing hold waits on the
 near side of a zone line, not the far side; the "no rezzer: release, we'll wait" line, levels drifting at a break
 ("you outgrew us") and looking for a replacement after the player leaves are not built.
+
+## B2 as built (2026-11-05)
+
+Branch `feature/bot-led-groups-b2`, stacked on B1. Change 4 and the B2 items of "Not in B1". Automated tests only
+(`UT_BotLedLeadership`, the launcher's `TheJoinModeIsSavedReadAndChecked` on Windows CI); **nothing has been played in
+game**.
+
+| Piece | Where | Notes |
+|---|---|---|
+| Pure rules | `bots/autonomous/BotLedGroups.Leadership.cs` | `ParseJoinMode`, `TakeLeadBlocks`, `HandBackBlocks` (and their messages), `PickNewLeader`, `OffersLeadOnEnd`, `NaturalRole`, `ParseToggle`, `BotLeadsMessage`; `InviteMemory.PlayerInvitesOff` read by `CadenceBlocks`. |
+| `/lead` | `commands/playercommands/lead.cs` → `BotLedGroups.TakeLead` → `AutonomousBotGroupCoordinator.TryHandOverToPlayer` (`AutonomousBotGroupCoordinator.Handover.cs`) | The leader says `lead_handover` while the bots still lead (so its flags fit), each gamebot `EnterPlayerLedGroup` (the PlayerGroup lease takes the bot-led one in one step), the session ends without disbanding (`DetachSession`: a new ending mode, `disbanded=false`), `MakeLeader(player)`. |
+| `/lead bot [name]`, `/makeleader <gamebot>` | `lead.cs`, `makeleader.cs` → `BotLedGroups.HandBack` → `TryHandBackToBot` | A session for the existing group, phase "Choosing group target", rendezvous where the leader stands (no meetup), the player hosted with the meetup done. Roles: the bots' own roster when it fits (`TryAssignExactPveRoles`), else each by class, the player counting. Leases move with `BotDutyLeases.HandOver` (PlayerGroup → BotLedGroupWithPlayer, never free in between). The new leader says `lead_take`. |
+| The join mode | `ServerProperties.BOT_LED_GROUP_JOIN_MODE` (`follow`), the launcher's **When you join a bot's group**, `ForkBuildInfo` | With `lead`, accepting the invite hosts the player without the welcome line and hands over at once. |
+| The last gamebot's box | `FinishGroupTask` → `TryOfferLeadToLastBot`; `BotLedGroups.AskToLeadLastBot` | Instead of disbanding a hosting party with one gamebot left (not a raid party): `lead_last_bot`, the session detaches, the box. Yes: `MakeLastBotFollow`. No or 60 s: farewell, the bot leaves, back to its own goals. Never over another box (retried every 5 s within the minute). |
+| `/invites on|off` | `commands/playercommands/invites.cs`, `BotLedGroups.SetPlayerInvites` | Saved per character in `DOLCharactersXCustomParam` (`LivingServer.BotLedInvites`), a saved-progress table (emptied by the release builder, carried by the progress transfer). |
+| Bot leads, so | `PlayerLedPullCoordinator`, `invite.cs`, `BotGroupInvite.TryInvite`, `makeleader.cs` | "Brannoc is leading this group. /lead to take over." |
+| Fixes found on the way | `Group.MakeLeader`, `HasActivePveComposition` | `MakeLeader` named `Leader.Name` (null when a gamebot is made leader: a crash); a hosted player now counts in the pull gate's roster as in `HasViablePveComposition` (a party whose only healer was the player never pulled). |
+| Chat | `data/chat/bot_led_groups.lines` | `lead_handover`, `lead_take`, `lead_last_bot` (spoken); `lead_pull`, `lead_sell`, `lead_lf_more` (written, not spoken: see below). Realm-neutral. |
+
+What a handover keeps: the group object (the loot ledger is keyed by it, so the rotation carries on), its gamebots,
+the player's hold on their time, and quest credit (after `/lead` a gamebot's kill credits its `PlayerGroupLeader`;
+after `/lead bot` the hosted player, `QuestKillCredit.GroupLeaderFor`). The session's task clock, camp and wipe
+history do not survive `/lead`; `/lead bot` starts a fresh task.
+
+**Decided while building, for the owner to confirm:**
+- **(confirm)** `/lead` is refused in a realm raid's party: the raid leader runs a raid.
+- **(confirm)** `/lead bot` needs at least two gamebots, a tank, a healer and a damage dealer (the player counting),
+  no `/spawn` companions, no fight going on, and a place a player can walk or ride to; without a name or target the
+  highest-level gamebot leads.
+- **(confirm)** When the player who took the lead leaves (`/disband`), the gamebots leave too, as with gamebots the
+  player invited (issue #33). They don't carry on as a party of their own.
+- **(confirm)** The last gamebot's box waits one minute; no answer counts as no.
+- **(confirm)** `/invites off` is per character and also stops the raid leader's invites (B3).
+- **(confirm)** A party started by `/lead bot` keeps going after the player leaves even when its gamebots' own goals
+  differ (a bot-only party with mixed goals is broken up today); its task clock still ends it.
+
+**Not in B2:** the leader's "pulling", "last pull then town" and "lf 1 more" calls (lines written, triggers not built);
+the B1 list above (horse and boat rides, the far-side zone-line hold, "release, we'll wait", levels drifting, a
+replacement after the player leaves) is unchanged. The handover's packets, chat timing and the box are not covered by
+automated tests (they need a client); they need the owner's played check: one `/lead` and `/lead bot` per realm, and
+one party left with one gamebot.
