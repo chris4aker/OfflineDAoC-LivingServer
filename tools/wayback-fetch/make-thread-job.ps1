@@ -1,10 +1,12 @@
-# make-thread-job.ps1 - builds jobs\a2-raid-threads.json from forum listings that wayback-fetch already saved.
+# make-thread-job.ps1 - builds a thread job (jobs\a2-raid-threads.json, a3-build-threads.json or a4-talk-threads.json)
+# from forum listings that wayback-fetch already saved.
 #
-# Runs on Windows PowerShell 5.1, offline: it reads only out\<job>\ (default: out\a-raid-sizes\) and makes no
-# requests. MAKE-RAID-THREAD-JOB.cmd starts it; then RUN-WAYBACK-FETCH.cmd fetches the threads.
+# Runs on Windows PowerShell 5.1, offline: it reads only out\<job>\ (default: out\a-raid-sizes\ and out\4-vocab\)
+# and makes no requests. MAKE-THREAD-JOBS.cmd runs all three presets; then RUN-WAYBACK-FETCH.cmd fetches the threads.
 #
 # For each saved listing page it reads the thread links (vBulletin showthread.php?t= / threadid=, Allakhazam
-# forum.html?mid=, VN Boards message.asp?topic=), keeps the threads whose TITLE names a raid word, and writes one
+# forum.html?mid=, VN Boards message.asp?topic=), keeps the threads whose TITLE matches the preset (raid: raid
+# talk; builds: specs, templates, realm abilities; talk: LFG, trade, guild recruitment, RvR calls), and writes one
 # exact target per thread (the link as the listing had it). Run it again after a fetch run: threads whose exact
 # lookup found nothing (their archived URLs carry another session id, for example) move into a few id-filter
 # targets per forum instead.
@@ -12,8 +14,11 @@
 # Parameter names differ from wayback-fetch.ps1's on purpose: dot-sourcing it binds its own parameters here.
 param(
     [string]$Folder = '',
-    [string[]]$FromJobs = @('a-raid-sizes'),
-    [string]$JobName = 'a2-raid-threads',
+    [ValidateSet('raid', 'builds', 'talk')]
+    [string]$Preset = 'raid',
+    [string[]]$FromJobs = @('a-raid-sizes', '4-vocab'),
+    # Empty: the preset's job (a2-raid-threads, a3-build-threads, a4-talk-threads).
+    [string]$JobName = '',
     [int]$MaxThreads = 150,
     [int]$BatchSize = 25,
     [string]$From = '2002',
@@ -21,7 +26,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$opts = @{ Folder = $Folder; FromJobs = $FromJobs; JobName = $JobName; MaxThreads = $MaxThreads; BatchSize = $BatchSize; From = $From; To = $To }
+$opts = @{ Folder = $Folder; Preset = $Preset; FromJobs = $FromJobs; JobName = $JobName; MaxThreads = $MaxThreads; BatchSize = $BatchSize; From = $From; To = $To }
 . (Join-Path $here 'wayback-fetch.ps1')
 if (-not $opts.Folder) { $opts.Folder = $here }
 
@@ -32,11 +37,31 @@ $script:ThreadSites = @(
     [pscustomobject]@{ Name = 'VN Boards'; PathRx = '/message\.asp$'; IdParams = @('topic') }
 )
 
-# Words in a thread title that make it a raid thread. DF only in capitals ("DF raid"), the rest in any case.
-$script:RaidRx = '(?i)\b(dragons?|gjalp\w*|golestandt|cuuldurach|legion|govannon|apoc(alypse)?|olcasgean|tuscar|caer\s*sidi|galladoria|epics?|raid(s|ing|ers?)?|darkness\s+falls)\b'
-function Test-RaidTitle([string]$title) {
-    if ([regex]::IsMatch($title, $script:RaidRx)) { return $true }
-    return [regex]::IsMatch($title, '\bDF\b')
+# Which thread titles each preset keeps: Rx in any case, CapsRx only in capitals (DF, RA, LFG...).
+$script:Presets = @{
+    raid = [pscustomobject]@{
+        Job = 'a2-raid-threads'
+        Purpose = 'raid talk and raid sizes: dragons, Darkness Falls, ToA encounters, epic raids'
+        Rx = '(?i)\b(dragons?|gjalp\w*|golestandt|cuuldurach|legion|govannon|apoc(alypse)?|olcasgean|tuscar|caer\s*sidi|galladoria|epics?|raid(s|ing|ers?)?|darkness\s+falls)\b'
+        CapsRx = '\bDF\b'
+    }
+    builds = [pscustomobject]@{
+        Job = 'a3-build-threads'
+        Purpose = 'real era builds: specs, templates, respecs, realm ability picks, spellcrafting'
+        Rx = '(?i)\b(specs?|spec(c?ed|ing)|respecs?|templates?|builds?|realm\s*abilit\w*|spellcraft\w*|point\s+spread)\b'
+        CapsRx = '\b(RAs?|RR\s?\d+|SC''?d?|SC)\b'
+    }
+    talk = [pscustomobject]@{
+        Job = 'a4-talk-threads'
+        Purpose = 'how players talked: LFG, trade, guild recruitment, RvR calls and server community'
+        Rx = '(?i)\b(lfg|lf\s*(grp|group|guild)|looking\s+for|wts|wtb|wtt|pst|recruit\w*|guilds?|rvr|zerg\w*|stealth\w*|buff\s*bots?|gank\w*|emain|odin''?s|hadrian''?s|relics?|keep\s+takes?|realm\s+war|server\s+(event|community))\b'
+        CapsRx = '\b(INC|LFM|LFG|WTS|WTB)\b'
+    }
+}
+function Test-ThreadTitle([string]$title, [string]$preset) {
+    $p = $script:Presets[$preset]
+    if ([regex]::IsMatch($title, $p.Rx)) { return $true }
+    return [regex]::IsMatch($title, $p.CapsRx)
 }
 
 function Get-QueryParam([string]$query, [string]$name) {
@@ -155,6 +180,8 @@ function Test-ExactFoundNothing([string]$jobDir, $jd, $target) {
 }
 
 function Invoke-MakeThreadJob {
+    $preset = $script:Presets[$opts.Preset]
+    if (-not $opts.JobName) { $opts.JobName = $preset.Job }
     $outRoot = Join-Path $opts.Folder 'out'
     $latin1 = [System.Text.Encoding]::GetEncoding(28591)
     $found = [ordered]@{}
@@ -172,13 +199,13 @@ function Invoke-MakeThreadJob {
         }
     }
     $all = @($found.Values | Where-Object { $_.Url -and $_.Title })
-    $raid = @($all | Where-Object { Test-RaidTitle $_.Title } | Sort-Object @{ e = { $_.Host } }, @{ e = { [long]$_.Id } })
+    $raid = @($all | Where-Object { Test-ThreadTitle $_.Title $opts.Preset } | Sort-Object @{ e = { $_.Host } }, @{ e = { [long]$_.Id } })
     $dropped = 0
     if ($raid.Count -gt $opts.MaxThreads) { $dropped = $raid.Count - $opts.MaxThreads; $raid = @($raid[0..($opts.MaxThreads - 1)]) }
 
     $jd = [ordered]@{
         name = $opts.JobName
-        note = ('Raid threads 2002-2005: the threads whose titles name a raid word (dragon, Darkness Falls, ToA encounters, epic, raid...), found in the saved listings of {0} by make-thread-job.ps1. For era raid sizes. Generated on this PC; never committed (third-party titles).' -f ($opts.FromJobs -join ', '))
+        note = ('Forum threads 2002-2005 for {0}: the threads whose titles match the "{1}" preset, found in the saved listings of {2} by make-thread-job.ps1. Generated on this PC; never committed (third-party titles).' -f $preset.Purpose, $opts.Preset, ($opts.FromJobs -join ', '))
         from = $opts.From; to = $opts.To; mimetypes = @('text/html')
         dedupeKey = '[?&](?:t|threadid|mid|topic)=(\d+)(?:&|$)'
         generated = (Get-Date).ToString('s')
@@ -205,12 +232,12 @@ function Invoke-MakeThreadJob {
     $jobPath = Join-Path $jobsDir ($opts.JobName + '.json')
     if ($raid.Count -eq 0) {
         if (Test-Path -LiteralPath $jobPath) { Remove-Item -LiteralPath $jobPath -Force }
-        Write-Host ("make-thread-job: {0} listing pages, {1} threads, none with a raid word in its title; no job written." -f $pages, $all.Count)
+        Write-Host ("make-thread-job {0}: {1} listing pages, {2} threads, none with a matching title; no job written." -f $opts.Preset, $pages, $all.Count)
         return 1
     }
     $json = ConvertTo-Json -InputObject $jd -Depth 8
     [IO.File]::WriteAllText($jobPath, $json, (New-Object System.Text.UTF8Encoding($false)))
-    Write-Host ("make-thread-job: {0} listing pages, {1} threads, {2} raid threads ({3} exact lookups, {4} by id filter in {5} targets{6}). Wrote {7}" -f `
+    Write-Host ("make-thread-job " + $opts.Preset + ": {0} listing pages, {1} threads, {2} matching threads ({3} exact lookups, {4} by id filter in {5} targets{6}). Wrote {7}" -f `
         $pages, $all.Count, $raid.Count, ($raid.Count - $fallback.Count), $fallback.Count, ($targets.Count - ($raid.Count - $fallback.Count)), $(if ($dropped) { ", $dropped over -MaxThreads left out" } else { '' }), $jobPath)
     return 0
 }

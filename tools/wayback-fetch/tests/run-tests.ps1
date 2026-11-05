@@ -269,41 +269,68 @@ $script:Transport = {
 }
 $djob = Join-Path $tmp 'd.json'
 [IO.File]::WriteAllText($djob, '{"name":"dedupe","from":"2002","to":"2005","dedupeKey":"[?&](?:t|threadid)=(\\d+)(?:&|$)","targets":[{"url":"forums.freddyshouse.com/showthread.php","matchType":"prefix"}]}')
-$st = [pscustomobject]@{ jobs = 0; indexRequests = 0; indexed = 0; fetched = 0; skipped = 0; failed = 0; bytes = 0 }
+$st = [pscustomobject]@{ jobs = 0; indexRequests = 0; indexed = 0; fetched = 0; skipped = 0; failed = 0; copied = 0; bytes = 0 }
 Invoke-Job (Read-Job $djob) $tmp $st
 Assert-Equal 2 $st.fetched 'dedupe job: one capture per thread is fetched'
 Assert-Equal 0 @($script:Seen | Where-Object { $_ -like '*s=bbb*' }).Count 'dedupe job: the second URL of thread 12 is never requested'
 Remove-Item -LiteralPath $tmp -Recurse -Force
 
-# --- Starter jobs match what the first real run found -----------------------------------------------------------
+# --- Patch versions named in a page ----------------------------------------------------------------------------
+Assert-Equal '1.65;1.66b;1.62' (Get-PatchMentions 'Version 1.65 is live. Patch 1.66B on Pendragon. Since v1.62 ...') 'patch: versions in order, lower case'
+Assert-Equal '1.70' (Get-PatchMentions '<b>1.70 Release Notes</b> and 1.70 patch') 'patch: number before "release", once'
+Assert-Equal '' (Get-PatchMentions 'costs 1.65 gold, version 2.1, 11.65 patch, v1.650') 'patch: prices and other numbers ignored'
+Assert-Equal '1.41;1.42;1.43' (Get-PatchMentions 'patch 1.41 patch 1.42 patch 1.43 patch 1.44') 'patch: at most three'
+
+# --- Starter jobs: the re-planned set (lore, vocab, builds, specs; no character or roster harvesting) -----------
 $jobsDir = Join-Path (Split-Path -Parent $here) 'jobs'
-$b1 = Read-Job (Join-Path $jobsDir 'b1-herald-map.json')
-Assert-True ([bool]$b1.Def.indexOnly) 'b1: index only'
-Assert-Equal 0 @($b1.Targets | Where-Object { $_.matchType -eq 'domain' }).Count 'b1: no domain-wide query (it stopped inside chardisplay)'
-$letters = @($b1.Targets | Where-Object { $_.matchType -eq 'prefix' } | ForEach-Object { $_.url.Substring($_.url.Length - 1) }) -join ''
-Assert-Equal 'abcdefghijklmnopqrstuvwxyz' $letters 'b1: one prefix range per letter a-z'
-$tc = $b1.Targets | Where-Object { $_.url -eq 'camelotherald.com/c' }
-$tg = $b1.Targets | Where-Object { $_.url -eq 'camelotherald.com/g' }
+$names = @(Get-ChildItem -LiteralPath $jobsDir -Filter '*.json' | Sort-Object Name | ForEach-Object { $_.BaseName }) -join ','
+Assert-Equal '1-site-map,2-patch-notes,3-builds-specs,4-vocab,5-lore,a-raid-sizes' $names 'jobs: run order map, patch notes, builds, vocab, lore'
+$allTargets = @()
+foreach ($jf in Get-ChildItem -LiteralPath $jobsDir -Filter '*.json') { $allTargets += @((Read-Job $jf.FullName).Targets) }
+Assert-Equal 0 @($allTargets | Where-Object { $_.url -match 'chardisplay|/chars/' -and -not (@(Get-Prop $_ 'cdxFilters' @()) -match '^!') }).Count 'jobs: no character pages fetched'
+Assert-Equal 0 @($allTargets | Where-Object { $_.matchType -eq 'domain' -and $_.url -like '*camelotherald*' }).Count 'jobs: no Herald domain-wide scans (503/504)'
+$map = Read-Job (Join-Path $jobsDir '1-site-map.json')
+Assert-True ([bool]$map.Def.indexOnly) 'map: index only'
+$letters = @($map.Targets | Where-Object { $_.url -match '^camelotherald\.com/[a-z]$' } | ForEach-Object { $_.url.Substring($_.url.Length - 1) }) -join ''
+Assert-Equal 'abcdefghijklmnopqrstuvwxyz' $letters 'map: one Herald prefix range per letter a-z'
+$tc = $map.Targets | Where-Object { $_.url -eq 'camelotherald.com/c' }
+$tg = $map.Targets | Where-Object { $_.url -eq 'camelotherald.com/g' }
 $hr = 'http://www.camelotherald.com/'
-Assert-True (-not (Test-InScope (Row ($hr + 'chardisplay.php?s=Merlin&c=5') '2003' 'com,camelotherald)/chardisplay.php?c=5&s=merlin') $b1.Def $tc)) 'b1: chardisplay.php left out'
-Assert-True (-not (Test-InScope (Row ($hr + 'calendar/2003/05.php') '2003' 'com,camelotherald)/calendar/2003/05.php') $b1.Def $tc)) 'b1: /calendar/ left out'
-Assert-True (Test-InScope (Row ($hr + 'catacombs_beta.php') '2003' 'com,camelotherald)/catacombs_beta.php') $b1.Def $tc) 'b1: other c pages kept'
-Assert-True (Test-InScope (Row ($hr + 'guilds/Merlin/x.php') '2003' 'com,camelotherald)/guilds/merlin/x.php') $b1.Def $tg) 'b1: guilds reached by the g range'
-Assert-True (-not (Test-InScope (Row ($hr + 'guilds/x.php') '2003' 'com,camelotherald)/guilds/x.php') $b1.Def $tc)) 'b1: ranges do not overlap'
-$c = Read-Job (Join-Path $jobsDir 'c-herald-guilds-chars.json')
-$merlin = $c.Targets[0]; $percival = $c.Targets[1]
-Assert-Equal 'camelotherald.com/chardisplay.php prefix 150' ($merlin.url + ' ' + $merlin.matchType + ' ' + $merlin.maxCaptures) 'c: Merlin chardisplay target, 150 pages'
-Assert-Equal 150 $percival.maxCaptures 'c: Percival 150 pages'
-$mRow = Row ($hr + 'chardisplay.php?s=Merlin&c=123') '2003' 'com,camelotherald)/chardisplay.php?c=123&s=merlin'
-Assert-True (Test-InScope $mRow $c.Def $merlin) 'c: a Merlin character (urlkey has sorted params)'
-Assert-True (-not (Test-InScope $mRow $c.Def $percival)) 'c: not in the Percival target'
-Assert-True (-not (Test-InScope (Row ($hr + 'chardisplay.php?s=Lancelot&c=9') '2003' 'com,camelotherald)/chardisplay.php?c=9&s=lancelot') $c.Def $merlin)) 'c: Lancelot left out'
-Assert-True (-not (Test-InScope (Row ($hr + 'chardisplay.php?s=Merlinx&c=9') '2003' 'com,camelotherald)/chardisplay.php?c=9&s=merlinx') $c.Def $merlin)) 'c: server name matched whole'
-Assert-True ((Get-CdxQueryUrl 'https://web.archive.org' $c.Def $merlin 200 '') -match '&collapse=urlkey&') 'c: one capture per character (collapse=urlkey)'
-Assert-True ([bool]($c.Targets | Where-Object { $_.url -like '*/guilds/*' }).guess) 'c: guilds still marked a guess'
-$b2 = Read-Job (Join-Path $jobsDir 'b2-herald-pages.json')
-Assert-Equal 0 @($b2.Targets | Where-Object { $_.matchType -eq 'domain' }).Count 'b2: no domain-wide keyword scans (they got 503/504)'
-Assert-True ($b2.Targets.Count -le 6) 'b2: few targets'
+Assert-True (-not (Test-InScope (Row ($hr + 'chardisplay.php?s=Merlin&c=5') '2003' 'com,camelotherald)/chardisplay.php?c=5&s=merlin') $map.Def $tc)) 'map: chardisplay.php left out'
+Assert-True (-not (Test-InScope (Row ($hr + 'calendar/2003/05.php') '2003' 'com,camelotherald)/calendar/2003/05.php') $map.Def $tc)) 'map: /calendar/ left out'
+Assert-True (Test-InScope (Row ($hr + 'catacombs_beta.php') '2003' 'com,camelotherald)/catacombs_beta.php') $map.Def $tc) 'map: other c pages kept'
+Assert-True (Test-InScope (Row ($hr + 'guilds/x.php') '2003' 'com,camelotherald)/guilds/x.php') $map.Def $tg) 'map: g range reaches /guilds/'
+Assert-True (-not (Test-InScope (Row ($hr + 'guilds/x.php') '2003' 'com,camelotherald)/guilds/x.php') $map.Def $tc)) 'map: ranges do not overlap'
+Assert-True ($null -ne ($map.Targets | Where-Object { $_.url -eq 'darkageofcamelot.com/' })) 'map: the official site is mapped too'
+$pn = Read-Job (Join-Path $jobsDir '2-patch-notes.json')
+$arch = $pn.Targets | Where-Object { $_.url -eq 'camelotherald.com/archives.php' }
+Assert-True (Test-InScope (Row ($hr + 'archives.php?t=game&sortby=date') '2003' 'com,camelotherald)/archives.php?sortby=date&t=game') $pn.Def $arch) 'patch-notes: game archive'
+Assert-True (-not (Test-InScope (Row ($hr + 'archives.php?t=community') '2003' 'com,camelotherald)/archives.php?t=community') $pn.Def $arch)) 'patch-notes: not the community archive'
+Assert-True ($null -ne ($pn.Targets | Where-Object { $_.url -eq 'camelotherald.com/article.php' })) 'patch-notes: article.php'
+$bs = Read-Job (Join-Path $jobsDir '3-builds-specs.json')
+Assert-True ($null -ne ($bs.Targets | Where-Object { $_.url -eq 'camelotherald.com/newfrontiers/' -and -not $_.guess })) 'builds: confirmed newfrontiers (realm abilities)'
+$guides = @($bs.Targets | Where-Object { $_.url -like '*_Guide.html' })
+Assert-Equal 39 $guides.Count 'builds: one guide lookup per classic and SI class'
+Assert-Equal 0 @($guides | Where-Object { -not $_.guess }).Count 'builds: guide URLs marked as guesses'
+Assert-True ((Get-CdxQueryUrl 'https://web.archive.org' $bs.Def $guides[0] 50 '') -match 'collapse=timestamp%3A4') 'builds: guides once per year'
+$sum = 0; foreach ($t in $bs.Targets) { $sum += [int]$t.maxCaptures }
+Assert-True ([int]$bs.Def.maxCaptures -ge $sum) "builds: the job cap ($($bs.Def.maxCaptures)) leaves room for every target ($sum)"
+$vb = $bs.Targets | Where-Object { $_.url -eq 'vnboards.ign.com/dark_age_of_camelot' }
+Assert-True (Test-InScope (Row 'http://vnboards.ign.com/Dark_Age_of_Camelot_Paladin/b20057/' '2003' 'com,ign,vnboards)/dark_age_of_camelot_paladin/b20057') $bs.Def $vb) 'builds: a VN Boards class board'
+Assert-True (-not (Test-InScope (Row 'http://vnboards.ign.com/Dark_Age_of_Camelot_Trading/b20001/' '2003' 'com,ign,vnboards)/dark_age_of_camelot_trading/b20001') $bs.Def $vb)) 'builds: not the trade board'
+$vo = Read-Job (Join-Path $jobsDir '4-vocab.json')
+$vvb = $vo.Targets | Where-Object { $_.url -eq 'vnboards.ign.com/dark_age_of_camelot' }
+Assert-True (Test-InScope (Row 'http://vnboards.ign.com/Dark_Age_of_Camelot_Trading/b20001/' '2003' 'com,ign,vnboards)/dark_age_of_camelot_trading/b20001') $vo.Def $vvb) 'vocab: the trade board'
+$vg = $vo.Targets | Where-Object { $_.url -like '*/guilds/*' }
+Assert-True ([bool]$vg.guess -and [int]$vg.maxCaptures -le 10) 'vocab: guild pages only a tiny guessed wording sample'
+$lo = Read-Job (Join-Path $jobsDir '5-lore.json')
+$q = $lo.Targets | Where-Object { $_.url -eq 'camelot.allakhazam.com/db/quests.html' }
+Assert-True (Test-InScope (Row 'http://camelot.allakhazam.com/db/quests.html?cquest=459' '2004') $lo.Def $q) 'lore: an Allakhazam quest page'
+foreach ($jn in @('2-patch-notes', '3-builds-specs', '4-vocab', '5-lore')) {
+    $j = Read-Job (Join-Path $jobsDir ($jn + '.json'))
+    $sum = 0; foreach ($t in $j.Targets) { $sum += [int]$t.maxCaptures }
+    Assert-True ([int]$j.Def.maxCaptures -ge $sum) "$($jn): the job cap ($($j.Def.maxCaptures)) leaves room for every target ($sum)"
+}
 
 # --- make-thread-job.ps1 ----------------------------------------------------------------------------------------
 $exe = (Get-Process -Id $PID).Path
@@ -378,6 +405,30 @@ Assert-True (-not (Test-InScope (Row ($fr + 'goto=lastpost&threadid=1003') '2003
 $mk3 = & $exe -NoProfile -ExecutionPolicy Bypass -File $maker -Folder $tmp 2>&1 | Out-String
 Assert-Equal 1 $LASTEXITCODE "make-thread-job: nothing found exits 1`n$mk3"
 Assert-True (-not (Test-Path -LiteralPath $genPath)) 'make-thread-job: no empty job left behind'
+
+# The builds and talk presets, reading listings from 4-vocab as well.
+$vsrc = Join-Path (Join-Path $tmp 'out') '4-vocab'
+New-Item -ItemType Directory -Path $vsrc -Force | Out-Null
+$talk = @"
+<a href="showthread.php?t=3001">50 Paladin spec for 1.65?</a>
+<a href="showthread.php?t=3002">RAs for a RR5 Infil</a>
+<a href="showthread.php?t=3003">WTS SC'd Stalwart armor</a>
+<a href="showthread.php?t=3004">&lt;Avalon&gt; recruiting casters</a>
+<a href="showthread.php?t=3005">INC Emain, mile gate</a>
+<a href="showthread.php?t=3006">Funny story from last night</a>
+<a href="showthread.php?t=3007">The ra of the sun</a>
+"@
+[IO.File]::WriteAllText((Join-Path $vsrc 'f.html'), $talk)
+[IO.File]::WriteAllText((Join-Path $vsrc 'manifest.jsonl'), '{"url":"http://forums.freddyshouse.com/forumdisplay.php?f=9","timestamp":"20040101000000","status":"saved","bytes":0,"path":"f.html"}')
+$mk4 = & $exe -NoProfile -ExecutionPolicy Bypass -File $maker -Folder $tmp -Preset builds 2>&1 | Out-String
+Assert-Equal 0 $LASTEXITCODE "make-thread-job builds: exit code`n$mk4"
+$bj = Read-Job (Join-Path (Join-Path $tmp 'jobs') 'a3-build-threads.json')
+Assert-Equal '3001,3002,3003' (@($bj.Def.threads | ForEach-Object { $_.id }) -join ',') 'make-thread-job builds: spec, RA/RR and SC titles (lower-case "ra" ignored)'
+$mk5 = & $exe -NoProfile -ExecutionPolicy Bypass -File $maker -Folder $tmp -Preset talk 2>&1 | Out-String
+Assert-Equal 0 $LASTEXITCODE "make-thread-job talk: exit code`n$mk5"
+$tj = Read-Job (Join-Path (Join-Path $tmp 'jobs') 'a4-talk-threads.json')
+Assert-Equal '3003,3004,3005' (@($tj.Def.threads | ForEach-Object { $_.id }) -join ',') 'make-thread-job talk: WTS, recruiting and INC/Emain titles'
+Assert-Equal '&lt;Avalon&gt; recruiting casters' ([System.Net.WebUtility]::HtmlEncode(($tj.Def.threads | Where-Object { $_.id -eq '3004' }).title)) 'make-thread-job: titles HTML-decoded'
 Remove-Item -LiteralPath $tmp -Recurse -Force
 
 # --- End to end against tests\mock_archive.py -------------------------------------------------------------------
@@ -499,6 +550,22 @@ if (-not $py) {
         $mapCsv = @(Import-Csv -LiteralPath (Join-Path (Join-Path (Join-Path $work 'out') 'e2e-map') 'index.csv'))
         Assert-Equal 7 $mapCsv.Count 'e2e: index-only lists the in-scope captures'
         Assert-True ($mapCsv[0].wayback_url -like 'https://web.archive.org/web/*id_/http://www.camelotherald.com/guilds/*') 'e2e: index-only rows carry the real id_ URL'
+        Assert-True ($csv[0].PSObject.Properties.Name -contains 'patch') 'e2e: index.csv has a patch column'
+
+        # Run 6: a second job wanting the same pages copies them from the first job instead of fetching them.
+        $twinJob = Join-Path $work 'twin.json'
+        [IO.File]::WriteAllText($twinJob, $e2eJob.Replace('"e2e"', '"e2e-twin", "exclude": ["gone|jump|broken"]'))
+        $before6 = Get-RequestCount
+        $run6 = & $exe -NoProfile -ExecutionPolicy Bypass -File $script -Root $work -DelaySeconds 0.4 -ArchiveBase $base -Job $twinJob 2>&1 | Out-String
+        Assert-Equal 0 $LASTEXITCODE "e2e: twin run exits 0`n$run6"
+        Assert-Equal 0 @(Get-NewRequests $before6 | Where-Object { $_.path -like '/web/*' }).Count 'e2e: pages another job saved are not fetched again'
+        Assert-True ($run6 -match 'fetched=0 skipped=0 failed=0 copied=4') "e2e: twin summary`n$run6"
+        $twinDir = Join-Path (Join-Path $work 'out') 'e2e-twin'
+        $tm = Read-Manifest (Join-Path $twinDir 'manifest.jsonl')
+        foreach ($e in $tm.Values) {
+            Assert-Equal 'e2e' $e.copiedFrom ('e2e: copy recorded ' + $e.url)
+            Assert-Equal $e.sha256 (Get-Sha256Hex ([IO.File]::ReadAllBytes((Join-Path $twinDir $e.path)))) ('e2e: copy intact ' + $e.url)
+        }
     } finally {
         if ($proc -and -not $proc.HasExited) { Stop-Process -Id $proc.Id -Force }
         Remove-Item -LiteralPath $work -Recurse -Force -ErrorAction SilentlyContinue

@@ -316,6 +316,20 @@ function Get-RetryDecision([int]$status, [string]$errorKind, [int]$attempt, $ret
     return [pscustomobject]@{ Kind = 'retry'; Wait = $wait; Reason = $reason }
 }
 
+# Patch versions a page names ("Version 1.65", "patch 1.66b", "v1.62", "1.70 release notes"), in order of first
+# mention, at most $max. The 2002-2005 era runs from about 1.4x (classic) to 1.7x (Trials of Atlantis).
+function Get-PatchMentions([string]$text, [int]$max = 3) {
+    $found = New-Object System.Collections.Generic.List[object]
+    $rxs = @('(?i)\b(?:version|patch|v\.?)\s*(1\.[3-8]\d[a-z]?)(?![\d.])', '(?i)(?<![\d.])(1\.[3-8]\d[a-z]?)\s+(?:patch|release)')
+    foreach ($rx in $rxs) { foreach ($m in [regex]::Matches($text, $rx)) { $found.Add([pscustomobject]@{ At = $m.Index; V = $m.Groups[1].Value.ToLowerInvariant() }) } }
+    $out = New-Object System.Collections.Generic.List[string]
+    foreach ($f in ($found | Sort-Object At)) {
+        if (-not $out.Contains($f.V)) { $out.Add($f.V) }
+        if ($out.Count -ge $max) { break }
+    }
+    return ($out -join ';')
+}
+
 # Reads a manifest (JSON lines). The last line for a url+timestamp wins; a torn last line is ignored.
 function Read-Manifest([string]$path) {
     $map = @{}
@@ -341,6 +355,25 @@ function Test-ManifestDone($entry, [string]$jobDir) {
         return ((Get-Item -LiteralPath $full).Length -eq [long](Get-Prop $entry 'bytes' -1))
     }
     return @('missing', 'blocked', 'too-large', 'out-of-scope', 'failed') -contains $status
+}
+
+# Captures other jobs in out\ already saved (url + timestamp -> that job's folder and manifest entry), so a page two
+# jobs both want is downloaded once and copied.
+function Get-SavedElsewhere([string]$outRoot, [string]$jobName) {
+    $map = @{}
+    if (-not (Test-Path -LiteralPath $outRoot)) { return $map }
+    foreach ($d in @(Get-ChildItem -LiteralPath $outRoot -Directory)) {
+        if ($d.Name -eq $jobName -or $d.Name.StartsWith('_')) { continue }
+        $mf = Join-Path $d.FullName 'manifest.jsonl'
+        if (-not (Test-Path -LiteralPath $mf)) { continue }
+        $m = Read-Manifest $mf
+        foreach ($k in $m.Keys) {
+            if ([string](Get-Prop $m[$k] 'status' '') -eq 'saved' -and -not $map.ContainsKey($k)) {
+                $map[$k] = [pscustomobject]@{ Dir = $d.FullName; Job = $d.Name; Entry = $m[$k] }
+            }
+        }
+    }
+    return $map
 }
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -591,10 +624,14 @@ function Write-JobIndexCsv([string]$jobDir, $manifest, $indexRows, [bool]$indexM
             })
         }
     } else {
+        $latin1 = [System.Text.Encoding]::GetEncoding(28591)
         foreach ($e in ($manifest.Values | Sort-Object { [string]$_.path })) {
             if ([string](Get-Prop $e 'status' '') -ne 'saved') { continue }
+            $patch = ''
+            $file = Join-Path $jobDir ([string]$e.path)
+            if (Test-Path -LiteralPath $file) { $patch = Get-PatchMentions ($latin1.GetString([IO.File]::ReadAllBytes($file))) }
             $out.Add([pscustomobject][ordered]@{
-                saved_path = $e.path; timestamp = $e.timestamp; original_url = $e.url; bytes = $e.bytes
+                saved_path = $e.path; timestamp = $e.timestamp; patch = $patch; original_url = $e.url; bytes = $e.bytes
                 sha256 = $e.sha256; mimetype = $e.mimetype; wayback_url = (Get-IdUrl 'https://web.archive.org' $e.timestamp $e.url)
             })
         }
@@ -680,6 +717,7 @@ function Invoke-Job($jobInfo, [string]$outRoot, $stats) {
     # 2. Fetch
     $manifestPath = Join-Path $jobDir 'manifest.jsonl'
     $manifest = Read-Manifest $manifestPath
+    $elsewhere = Get-SavedElsewhere $outRoot $jobInfo.Name
     $todo = @($candidates | Where-Object { -not (Test-ManifestDone $manifest[([string]$_.row.original + ' ' + [string]$_.row.timestamp)] $jobDir) })
     $already = $candidates.Count - $todo.Count
     $stats.skipped += $already
@@ -691,6 +729,21 @@ function Invoke-Job($jobInfo, [string]$outRoot, $stats) {
             $row = $c.row
             $key = [string]$row.original + ' ' + [string]$row.timestamp
             $prevErrors = [int](Get-Prop $manifest[$key] 'errors' 0)
+            $other = $elsewhere[$key]
+            if ($null -ne $other -and (Test-ManifestDone $other.Entry $other.Dir)) {
+                $bytes = [IO.File]::ReadAllBytes((Join-Path $other.Dir ([string]$other.Entry.path)))
+                $sha = Get-Sha256Hex $bytes
+                if ($sha -eq [string](Get-Prop $other.Entry 'sha256' '')) {
+                    $rel = Get-SaveRelativePath $row.original $row.timestamp $row.mimetype
+                    Save-BytesAtomically (Join-Path $jobDir $rel) $bytes
+                    $entry = [ordered]@{ url = [string]$row.original; timestamp = [string]$row.timestamp; status = 'saved'; http = 200; bytes = $bytes.Length; sha256 = $sha; path = $rel; mimetype = [string]$row.mimetype; capture = [string](Get-Prop $other.Entry 'capture' $row.timestamp); at = (Get-Date).ToString('s'); copiedFrom = $other.Job }
+                    Add-TextLine $manifestPath ([pscustomobject]$entry | ConvertTo-Json -Compress)
+                    $manifest[$key] = [pscustomobject]$entry
+                    $stats.copied++
+                    Write-RunLog ("  [{0}/{1}] copied from {2} {3} {4}" -f $n, $todo.Count, $other.Job, $row.timestamp, $row.original)
+                    continue
+                }
+            }
             $gaveUp = ''
             try { $got = Get-Capture $row $jd $c.target }
             catch {
@@ -751,7 +804,7 @@ function Invoke-Main {
     try { $lock = [IO.File]::Open($lockPath, 'OpenOrCreate', 'ReadWrite', 'None') }
     catch { Write-RunLog 'Another wayback-fetch run is already going in this folder. Close it first, or wait for it to finish.'; return 3 }
 
-    $stats = [pscustomobject]@{ jobs = 0; indexRequests = 0; indexed = 0; fetched = 0; skipped = 0; failed = 0; bytes = 0 }
+    $stats = [pscustomobject]@{ jobs = 0; indexRequests = 0; indexed = 0; fetched = 0; skipped = 0; failed = 0; copied = 0; bytes = 0 }
     $started = Get-Date
     $exit = 0
     $stopReason = ''
@@ -778,8 +831,8 @@ function Invoke-Main {
         $mins = ((Get-Date) - $started).TotalMinutes
         $state = 'finished'
         if ($stopReason) { $state = 'stopped early' } elseif ($exit -ne 0) { $state = 'finished with errors' }
-        Write-RunLog ("SUMMARY {0}: jobs={1} indexed={2} fetched={3} skipped={4} failed={5} MB={6:0.0} requests={7} today={8}/{9} minutes={10:0.0} log={11}" -f `
-            $state, $stats.jobs, $stats.indexed, $stats.fetched, $stats.skipped, $stats.failed, ($stats.bytes / 1MB), $script:RequestsThisRun, (Get-DailyCount), $script:Config.dailyRequestCap, $mins, $script:LogPath)
+        Write-RunLog ("SUMMARY {0}: jobs={1} indexed={2} fetched={3} skipped={4} failed={5} copied={12} MB={6:0.0} requests={7} today={8}/{9} minutes={10:0.0} log={11}" -f `
+            $state, $stats.jobs, $stats.indexed, $stats.fetched, $stats.skipped, $stats.failed, ($stats.bytes / 1MB), $script:RequestsThisRun, (Get-DailyCount), $script:Config.dailyRequestCap, $mins, $script:LogPath, $stats.copied)
     }
     return $exit
 }
