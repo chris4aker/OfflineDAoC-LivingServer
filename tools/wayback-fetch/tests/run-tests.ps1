@@ -284,7 +284,7 @@ Assert-Equal '1.41;1.42;1.43' (Get-PatchMentions 'patch 1.41 patch 1.42 patch 1.
 # --- Starter jobs: the re-planned set (lore, vocab, builds, specs; no character or roster harvesting) -----------
 $jobsDir = Join-Path (Split-Path -Parent $here) 'jobs'
 $names = @(Get-ChildItem -LiteralPath $jobsDir -Filter '*.json' | Sort-Object Name | ForEach-Object { $_.BaseName }) -join ','
-Assert-Equal '1-site-map,2-patch-notes,3-builds-specs,4-vocab,5-lore,a-raid-sizes' $names 'jobs: run order map, patch notes, builds, vocab, lore'
+Assert-Equal '1-site-map,2-patch-notes,3-builds-specs,4-vocab,5-lore,6-mechanics,7-realms-classes,8-spells,9-herald-articles,a-raid-sizes' $names 'jobs: run order map, patch notes, builds, vocab, lore, mechanics, realms probe, spells, articles'
 $allTargets = @()
 foreach ($jf in Get-ChildItem -LiteralPath $jobsDir -Filter '*.json') { $allTargets += @((Read-Job $jf.FullName).Targets) }
 Assert-Equal 0 @($allTargets | Where-Object { $_.url -match 'chardisplay|/chars/' -and -not (@(Get-Prop $_ 'cdxFilters' @()) -match '^!') }).Count 'jobs: no character pages fetched'
@@ -331,6 +331,108 @@ foreach ($jn in @('2-patch-notes', '3-builds-specs', '4-vocab', '5-lore')) {
     $sum = 0; foreach ($t in $j.Targets) { $sum += [int]$t.maxCaptures }
     Assert-True ([int]$j.Def.maxCaptures -ge $sum) "$($jn): the job cap ($($j.Def.maxCaptures)) leaves room for every target ($sum)"
 }
+
+# --- pick: first, latest, latest-per-year -----------------------------------------------------------------------
+$pr = @(
+    (Row 'http://www.camelotherald.com/realmabilities/paladin.html' '20020601000000'),
+    (Row 'http://camelotherald.com/realmabilities/paladin.html' '20021101000000'),
+    (Row 'http://www.camelotherald.com/realmabilities/paladin.html' '20030301000000'),
+    (Row 'http://www.camelotherald.com/realmabilities/cleric.html' '20020701000000')
+)
+$pt = [pscustomobject]@{ url = 'camelotherald.com/realmabilities/'; matchType = 'prefix' }
+Assert-Equal 4 (Select-Captures $pr $jb $pt).Count 'pick: first keeps every row'
+$pt | Add-Member pick 'latest'
+$sel = Select-Captures $pr $jb $pt
+Assert-Equal '20030301000000,20020701000000' (@($sel | ForEach-Object { $_.timestamp }) -join ',') 'pick latest: the latest of each page, page order kept'
+$pt.pick = 'latest-per-year'
+$sel = Select-Captures $pr $jb $pt
+Assert-Equal '20021101000000,20030301000000,20020701000000' (@($sel | ForEach-Object { $_.timestamp }) -join ',') 'pick latest-per-year: one per page per year'
+$pt.pick = 'latest'
+$pt | Add-Member dedupeKey '/more/(\d+)\.(?:php|shtml)$'
+$mr = @((Row 'http://www.camelotherald.com/more/10.php' '20020616000000'), (Row 'http://www.camelotherald.com/more/10.shtml' '20040305000000'), (Row 'http://www.camelotherald.com/more/100.php' '20020201000000'))
+Assert-Equal 'http://www.camelotherald.com/more/10.shtml,http://www.camelotherald.com/more/100.php' (@(Select-Captures $mr $jb $pt | ForEach-Object { $_.original }) -join ',') 'pick latest + dedupeKey: one article per id'
+$tmp = New-TempDir
+$badJob = Join-Path $tmp 'bad.json'
+[IO.File]::WriteAllText($badJob, '{"name":"x","targets":[{"url":"a.com","pick":"newest"}]}')
+$err = ''; try { [void](Read-Job $badJob) } catch { $err = $_.Exception.Message }
+Assert-True ($err -match "pick 'newest'") 'job: unknown pick refused'
+Remove-Item -LiteralPath $tmp -Recurse -Force
+
+# --- Jobs 6-9 from the site map ---------------------------------------------------------------------------------
+function Get-Target($job, [string]$url) { return @($job.Targets | Where-Object { $_.url -eq $url })[0] }
+function Test-Takes($job, [string]$url, [string]$orig) { return (Test-InScope (Row $orig '20040101000000') $job.Def (Get-Target $job $url)) }
+$m6 = Read-Job (Join-Path $jobsDir '6-mechanics.json')
+$gb = Get-Target $m6 'www.camelotherald.com/grabbag.php'
+Assert-Equal 'exact first' ($gb.matchType + ' ' + (Get-Prop $gb 'pick' 'first')) 'mechanics: the Grab Bag page, every version'
+$gq = Get-CdxQueryUrl 'https://web.archive.org' $m6.Def $gb 500 ''
+Assert-True ($gq -match '&collapse=digest&') "mechanics: Grab Bag collapses identical versions only ($gq)"
+$gbRows = @((Row 'http://www.camelotherald.com/grabbag.php' '20040803030132'), (Row 'http://www.camelotherald.com/grabbag.php' '20040810030132'))
+Assert-Equal 2 (Select-Captures $gbRows $m6.Def $gb).Count 'mechanics: two Grab Bag versions both kept'
+Assert-True (Test-Takes $m6 'camelotherald.com/documentation/' 'http://www.camelotherald.com:80/documentation/respec-costs.php') 'mechanics: respec costs'
+Assert-True (Test-Takes $m6 'camelotherald.com/teamleads/' 'http://www.camelotherald.com:80/teamleads/tl_reports.php?mode=&amp;id=&amp;tlid=') 'mechanics: team lead reports'
+Assert-True (Test-Takes $m6 'camelotherald.com/masterlevels/' 'http://www.camelotherald.com/masterlevels/ma.php?ml=Banelord') 'mechanics: master levels'
+$ra = Get-Target $m6 'camelotherald.com/realmabilities/'
+Assert-Equal 'latest-per-year' $ra.pick 'mechanics: realm abilities once per patch year'
+Assert-True (Test-Takes $m6 'camelotherald.com/newfrontiers/' 'http://www.camelotherald.com/newfrontiers/realmabilities/paladin.php') 'mechanics: New Frontiers realm abilities'
+Assert-True (-not (Test-Takes $m6 'camelotherald.com/newfrontiers/' 'http://www.camelotherald.com/newfrontiers/media/screenshots/12.html')) 'mechanics: no screenshots'
+Assert-True (-not (Test-Takes $m6 'camelotherald.com/newfrontiers/' 'http://www.camelotherald.com/newfrontiers/allserverstats.php')) 'mechanics: no server statistics'
+Assert-True (Test-Takes $m6 'classesofcamelot.com/Classes.asp' 'http://www.classesofcamelot.com/Classes.asp?class=Armsman') 'mechanics: Classes of Camelot class page'
+Assert-True (Test-Takes $m6 'classesofcamelot.com/faq.asp' 'http://www.classesofcamelot.com/faq.asp?mode=view&cat=10') 'mechanics: Classes of Camelot FAQ'
+Assert-True (-not (Test-Takes $m6 'darkageofcamelot.com/roundtable/' 'http://www.darkageofcamelot.com/roundtable/gallery/1_2.html')) 'mechanics: no Round Table photo gallery'
+Assert-Equal 0 @($allTargets + $m6.Targets | Where-Object { $_.url -match '/(hdirectory|japan)' }).Count 'jobs: /hdirectory and /japan skipped'
+$r7 = Read-Job (Join-Path $jobsDir '7-realms-classes.json')
+Assert-True ($r7.Targets.Count -le 8 -and [int]$r7.Def.maxCaptures -le 8) 'realms: a probe of at most 8 pages'
+Assert-Equal 0 @($r7.Targets | Where-Object { $_.matchType -ne 'exact' }).Count 'realms: exact pages only'
+Assert-Equal 0 @($r7.Targets | Where-Object { $_.url -match '/realms/(?!Merlin/|$)' }).Count 'realms: one server only'
+$s8 = Read-Job (Join-Path $jobsDir '8-spells.json')
+Assert-Equal 'camelotherald.com/spells/line.php' $s8.Targets[0].url 'spells: spell lines first'
+$sp = Get-Target $s8 'camelotherald.com/spells/spell.php'
+$spRows = @((Row 'http://www.camelotherald.com/spells/spell.php?s=1462&amp' '20040812205002'), (Row 'http://www.camelotherald.com/spells/spell.php?s=1462&level=20' '20040901000000'), (Row 'http://www.camelotherald.com/spells/spell.php?s=520&level=5' '20040801000000'))
+$spSel = Select-Captures $spRows $s8.Def $sp
+Assert-Equal '20040901000000,20040801000000' (@($spSel | ForEach-Object { $_.timestamp }) -join ',') 'spells: one page per spell id (the latest), &amp; variants merged'
+Assert-True ([int]$s8.Def.maxCaptures -ge 2950) 'spells: room for every spell and line page'
+$a9 = Read-Job (Join-Path $jobsDir '9-herald-articles.json')
+Assert-True ([bool]$a9.Targets[0].guess) 'articles: content marked a guess'
+
+# --- pack-results.ps1 -------------------------------------------------------------------------------------------
+$exe = (Get-Process -Id $PID).Path
+$packer = Join-Path (Split-Path -Parent $here) 'pack-results.ps1'
+$tmp = New-TempDir
+$pj = Join-Path (Join-Path $tmp 'out') '2-patch-notes'
+foreach ($d in @('www.camelotherald.com', 'index')) { New-Item -ItemType Directory -Path (Join-Path $pj $d) -Force | Out-Null }
+foreach ($d in @('_logs', '_state', '3-empty')) { New-Item -ItemType Directory -Path (Join-Path (Join-Path $tmp 'out') $d) -Force | Out-Null }
+[IO.File]::WriteAllText((Join-Path $pj 'index.csv'), 'saved_path,timestamp')
+[IO.File]::WriteAllText((Join-Path $pj 'manifest.jsonl'), '{}')
+[IO.File]::WriteAllText((Join-Path (Join-Path $pj 'www.camelotherald.com') 'aaaa_2003.html'), '<html>1.65</html>')
+[IO.File]::WriteAllText((Join-Path (Join-Path $pj 'www.camelotherald.com') 'bbbb_2004.html.part'), 'half')
+[IO.File]::WriteAllText((Join-Path (Join-Path $pj 'index') 'target1-x.jsonl'), '{}')
+[IO.File]::WriteAllText((Join-Path (Join-Path (Join-Path $tmp 'out') '_logs') 'run.log'), 'log')
+$pk1 = & $exe -NoProfile -ExecutionPolicy Bypass -File $packer -Folder $tmp 2>&1 | Out-String
+Assert-Equal 0 $LASTEXITCODE "pack: exit code`n$pk1"
+$zips = @(Get-ChildItem -LiteralPath (Join-Path (Join-Path $tmp 'out') '_packs') -Filter '*.zip')
+Assert-Equal ('2-patch-notes-' + (Get-Date).ToString('yyyyMMdd') + '.zip') (@($zips | ForEach-Object { $_.Name }) -join ',') "pack: one zip per job with results, named <job>-<yyyymmdd>.zip`n$pk1"
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$za = [System.IO.Compression.ZipFile]::OpenRead($zips[0].FullName)
+try {
+    $raw = @($za.Entries | Where-Object { $_.FullName -like '*aaaa_2003.html' } | ForEach-Object { $_.FullName })
+    $entries = @($za.Entries | Where-Object { $_.Length -gt 0 -or -not $_.FullName.EndsWith('/') } | ForEach-Object { $_.FullName.Replace('\', '/') } | Sort-Object)
+} finally { $za.Dispose() }
+Assert-Equal 'index.csv,manifest.jsonl,www.camelotherald.com/aaaa_2003.html' (@($entries | Where-Object { -not $_.EndsWith('/') }) -join ',') 'pack: pages, index.csv and manifest; no index state, .part files or logs'
+Write-Host ('  pack: a raw zip entry name on PowerShell ' + $PSVersionTable.PSVersion + ': ' + ($raw -join ','))
+$pk2 = & $exe -NoProfile -ExecutionPolicy Bypass -File $packer -Folder $tmp 2>&1 | Out-String
+Assert-True ($pk2 -match '2-patch-notes: unchanged since its last pack, skipped' -and $pk2 -match '0 packed, 1 unchanged') "pack: unchanged job skipped`n$pk2"
+Start-Sleep -Milliseconds 50
+[IO.File]::WriteAllText((Join-Path (Join-Path $pj 'www.camelotherald.com') 'cccc_2005.html'), '<html>new</html>')
+[IO.File]::WriteAllText((Join-Path (Join-Path $pj 'index') 'target1-x.jsonl'), '{"changed":1}')
+$pk3 = & $exe -NoProfile -ExecutionPolicy Bypass -File $packer -Folder $tmp 2>&1 | Out-String
+Assert-True ($pk3 -match '1 packed') "pack: changed job packed again`n$pk3"
+$za = [System.IO.Compression.ZipFile]::OpenRead($zips[0].FullName)
+try { $n3 = @($za.Entries | Where-Object { $_.FullName.Replace('\', '/') -like '*cccc_2005.html' }).Count } finally { $za.Dispose() }
+Assert-Equal 1 $n3 'pack: the new page is in the repacked zip'
+Remove-Item -LiteralPath (Join-Path (Join-Path $pj 'index') 'target1-x.jsonl')
+$pk4 = & $exe -NoProfile -ExecutionPolicy Bypass -File $packer -Folder $tmp 2>&1 | Out-String
+Assert-True ($pk4 -match '0 packed, 1 unchanged') "pack: index state changes alone don't repack`n$pk4"
+Remove-Item -LiteralPath $tmp -Recurse -Force
 
 # --- make-thread-job.ps1 ----------------------------------------------------------------------------------------
 $exe = (Get-Process -Id $PID).Path

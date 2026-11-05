@@ -316,6 +316,26 @@ function Get-RetryDecision([int]$status, [string]$errorKind, [int]$attempt, $ret
     return [pscustomobject]@{ Kind = 'retry'; Wait = $wait; Reason = $reason }
 }
 
+# pick (job or target): which captures of one page to keep when the index lists several (collapse digest or none).
+#   first            every row as listed (the default; with collapse=urlkey that is the earliest capture)
+#   latest           only the latest capture of each page
+#   latest-per-year  the latest capture of each page in each year (one per patch era)
+# A page is its dedupeKey when the job has one, else its canonical URL. Order of first appearance is kept.
+function Select-Captures($rows, $jd, $target) {
+    $pick = [string](Get-Prop $target 'pick' (Get-Prop $jd 'pick' 'first'))
+    if ($pick -eq 'first') { return ,$rows }
+    $best = [ordered]@{}
+    foreach ($r in $rows) {
+        $k = Get-DedupeKey $r $jd $target
+        if ($null -eq $k) { $k = Get-CanonicalUrl ([string]$r.original) }
+        if ($pick -eq 'latest-per-year') { $k = $k + '|' + ([string]$r.timestamp).Substring(0, 4) }
+        if (-not $best.Contains($k) -or [string]$r.timestamp -gt [string]$best[$k].timestamp) { $best[$k] = $r }
+    }
+    $out = New-Object System.Collections.Generic.List[object]
+    foreach ($v in $best.Values) { $out.Add($v) }
+    return ,$out
+}
+
 # Patch versions a page names ("Version 1.65", "patch 1.66b", "v1.62", "1.70 release notes"), in order of first
 # mention, at most $max. The 2002-2005 era runs from about 1.4x (classic) to 1.7x (Trials of Atlantis).
 function Get-PatchMentions([string]$text, [int]$max = 3) {
@@ -538,6 +558,8 @@ function Read-Job([string]$path) {
         $mt = [string](Get-Prop $t 'matchType' 'prefix')
         if (-not $u) { throw "job '$name': a target has no url" }
         if (@('exact', 'prefix', 'host', 'domain') -notcontains $mt) { throw "job '$name': matchType '$mt' is not exact, prefix, host or domain" }
+        $pk = [string](Get-Prop $t 'pick' (Get-Prop $jd 'pick' 'first'))
+        if (@('first', 'latest', 'latest-per-year') -notcontains $pk) { throw "job '$name': pick '$pk' is not first, latest or latest-per-year" }
         if ($u -match '[*]') { throw "job '$name': use matchType instead of * in '$u'" }
     }
     return [pscustomobject]@{ Name = $name; Def = $jd; Targets = $targets; Path = $path }
@@ -682,7 +704,7 @@ function Invoke-Job($jobInfo, [string]$outRoot, $stats) {
     $i = 0
     foreach ($t in $jobInfo.Targets) {
         $i++
-        $rows = Update-TargetIndex $jobInfo $t $i $jobDir $stats
+        $rows = Select-Captures (Update-TargetIndex $jobInfo $t $i $jobDir $stats) $jd $t
         $cap = [int](Get-Prop $t 'maxCaptures' 100000)
         $taken = 0
         foreach ($row in $rows) {

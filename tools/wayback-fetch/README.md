@@ -28,6 +28,11 @@ container cannot reach web.archive.org, so the tool runs on the owner's PC and l
    To run one job, drag its `.json` file onto `RUN-WAYBACK-FETCH.cmd`.
 3. Close the window any time. Run it again later and it continues where it stopped: saved pages and finished index
    pages are not requested again.
+4. To move results off the PC, double-click `PACK-RESULTS.cmd` (offline: no requests). It writes one zip per job,
+   `out\_packs\<job>-<yyyymmdd>.zip`, holding that job's saved pages, `index.csv` and `manifest.jsonl` in the same
+   folders as `out\<job>\`. It leaves out logs, the CDX index state and unfinished `.part` downloads. Jobs that
+   haven't changed since their last pack are skipped (`out\_packs\<job>.packstate`); packing a job twice in one
+   day replaces that day's zip.
 
 Results go under `out\`:
 
@@ -39,6 +44,7 @@ Results go under `out\`:
 | `out\<job>\index\` | The CDX index pages already read, and where paging stopped (`resumeKey`). |
 | `out\_logs\run-*.log` | One log per run. The last line is `SUMMARY ...`: jobs, indexed (captures in scope), fetched (saved this run), skipped (already done), failed (not saved: missing, blocked, out of scope, errors), copied (taken from another job's folder), MB, requests, today's count. |
 | `out\_state\requests-<date>.txt` | Today's request count, for the daily cap. |
+| `out\_packs\<job>-<yyyymmdd>.zip` | Packs made by `PACK-RESULTS.cmd`. |
 
 ## Politeness rules (built in)
 
@@ -102,6 +108,11 @@ Create `jobs\<name>.json`. Every field except `targets` and `url` is optional.
 - `cdxMaxPages` x `cdxPageSize` caps how much of the index is read; `maxCaptures` caps downloads per target, and the
   job-level `maxCaptures` caps the whole job.
 - `indexOnly: true` lists what exists in `index.csv` without downloading. Use it to learn a site's real URLs first.
+- `pick` (job or target): `first` (default: every index row; with `collapse: urlkey` that is the earliest capture of
+  each page), `latest` (only the latest capture of each page) or `latest-per-year` (the latest capture of each page
+  in each year, one per patch era). Use it with `collapse: digest`, which lists each changed version of a page; with
+  `collapse: urlkey` the index returns only the earliest capture, so there is nothing to pick from. A page is its
+  `dedupeKey` when there is one, else its URL with its query parameters in any order.
 - `dedupeKey` (job or target): a .NET regex on the lower-cased URL; captures whose first group (or whole match) is
   the same on the same host are fetched once, e.g. `[?&](?:t|threadid)=(\d+)(?:&|$)` for one capture per thread
   whatever session id its URLs carry.
@@ -131,8 +142,18 @@ They run in this order (file-name order):
 | `a-raid-sizes` | The first run's forum listings and guides (Freddyshouse, VN Boards, Allakhazam). Already saved on the PC; a run of it makes no new requests. Its listings feed the thread jobs. |
 | `a2-raid-threads`, `a3-build-threads`, `a4-talk-threads` | Not in the folder at first: `MAKE-THREAD-JOBS.cmd` writes them from the saved listings (below). |
 
-A run of jobs 1-5 makes at most about 1,400 requests, a little over an hour at 3 seconds each. With the threads it
-goes past the daily cap of 1,500: the run stops cleanly and continues the next day.
+| `6-mechanics` | Mechanics as Mythic and the class sites explained them: the Grab Bag Q&A (`grabbag.php`, every distinct version, since each carried another column, plus its listings), `/documentation/` (respec costs, spellcraft formula, PvP), `/teamleads/` class reports, `/masterlevels/`, `/realmabilities/` (latest per year), `/newfrontiers/` (without screenshots and server statistics), `section.php`, both Round Tables (without galleries and travel pages), and Classes of Camelot `/attributes/`, `faq.asp`, `Classes.asp`, `archives.asp` and `/albion/`. About 350 pages. |
+| `7-realms-classes` | **A probe of 8 pages.** `/realms/<Server>/` repeats the same ~110 pages for each of 22 servers, which looks like server rankings and population pages rather than class descriptions. It reads the `/realms/` index and 7 Merlin pages first; the next pass widens it to one server only if they describe classes, races or specs. |
+| `8-spells` | The Herald's spell database (captured 2004): 245 spell-line pages first, then 2,707 spell pages, one per spell id. Two or three days under the daily cap. |
+| `9-herald-articles` | The Herald's `/more/<id>.php` and `.shtml` pages, 1,940 article ids, one save per id. Its content is a guess from the URLs. About 1.6 hours of requests, after the spells. |
+
+Each page of jobs 6-9 is saved once, its latest capture in 2002-2005, except where the job says otherwise. Not
+fetched at all: `/hdirectory`, `/guilds`, `/japan`, `/chardisplay.php` and Classes of Camelot's `/dr/` (Darkness
+Rising, late 2005) and `/forums`.
+
+A run of jobs 1-5 makes at most about 1,400 requests, a little over an hour at 3 seconds each. Jobs 6-9 add about
+5,300 pages. Under the daily cap of 1,500 the whole set takes about four days: each day's run stops cleanly at the
+cap and the next run continues.
 
 ### Thread jobs (a2, a3, a4)
 
@@ -164,8 +185,18 @@ Seen in the first real run on the PC (its Herald map, November 2026), in the arc
   There is no `/chars/` path. (Character pages are not fetched: we don't import historical data.)
 - `/calendar/...` (about 1,070), `/article.php?id=` (95), `/archives.php?t=game|community&sortby=...` (news and patch
   archive), `/characters/` (65), `/author-results.php?author=`, and single pages such as `beginnersguide`,
-  `accountsplittingfaq`, `atlantisapp` and `catacombs_beta`. That map stopped inside `c`, so nothing after it is
-  known yet.
+  `accountsplittingfaq`, `atlantisapp` and `catacombs_beta`.
+
+The full site map (`1-site-map`, 20,316 captures) added, by first path segment:
+
+- camelotherald.com: `/spells` about 2,957 (`spell.php?s=<id>&level=<n>`, `line.php?c=<class>&line=<line>`),
+  `/realms` about 1,993 (`/realms/<Server>/<page>.php` for 22 servers), `/hdirectory` about 3,000, `/guilds` about
+  2,986, `/more` about 2,438 (`/more/<id>.php|.shtml`), `/townsquare` 610, `/mapalot` 261, `/newfrontiers` 117,
+  `/realmabilities` 59, `/print.php` 59 (`?t=article&id=N`), `/grabbag.php` 13, `/masterlevels` 11, `/teamleads` 10,
+  `/section.php` 10, `/roundtable` 8, `/documentation` 8, `/japan` about 3,000
+- classesofcamelot.com: `/forums` 1,831, `/Classes.asp` 45, `/archives.asp` 36, `/faq.asp` 24, `/albion` 16, `/dr`
+  15, `/attributes` 9
+- darkageofcamelot.com: `/roundtable` 21, `/about` 12, `/expansions` 8
 
 Checked by web search (the archive itself can't be reached from the build container):
 
@@ -200,8 +231,8 @@ Facts we take from them (raid sizes, guild sizes, class mixes) go into our own w
 
 `tests\run-tests.ps1` runs unit tests (CDX JSON parsing, query building, scope checks, path hashing, pacing,
 back-off, Retry-After, daily cap, manifest resume, job validation, order-insensitive exact matching, `dedupeKey`,
-what the starter jobs accept and refuse, patch versions, copying from another job, and `make-thread-job.ps1` on
-canned listings with all three presets) and an end-to-end run of the real script against
+what the starter jobs accept and refuse, patch versions, copying from another job, `pick`, `make-thread-job.ps1`
+on canned listings with all three presets, and `pack-results.ps1`: contents, skipping unchanged jobs, repacking) and an end-to-end run of the real script against
 `tests\mock_archive.py`, a local stand-in for the archive (needs Python 3; skipped without it unless `-RequireE2E`).
 
 ```
