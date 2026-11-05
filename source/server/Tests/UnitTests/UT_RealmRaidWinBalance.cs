@@ -444,7 +444,12 @@ namespace DOL.UnitTests
             string line = RealmRaidRecruitmentPolicy.SizedLine("summoners-albion", "Albion", sizing);
             Assert.That(line, Is.EqualTo("REALM_RAID_SIZED event=summoners-albion realm=Albion full=64 size=95% required=61 recruitCap=80 " +
                 "won=3 lost=0 specialForcesOnWipe=24 specialForcesFromStart=False " +
-                "why=\"3 won and 0 lost here, the last 3 won: each win trims 10 points, each loss adds 20.3, aiming at 67% wins\""));
+                "why=\"3 won and 0 lost here, the last 3 won: each win trims 10 points, each loss adds 20.3, aiming at 67% wins\" " +
+                "rules=\"start=125% range=70-200% win=-10 loss=+20.3 target=67%\""));
+            // The live values: a world still on the old 5-point step says so.
+            var old = RealmRaidRecruitmentPolicy.Size(64, [Win], Rules with { WinTrimPercent = 5, LargestPercent = 150 });
+            Assert.That(RealmRaidRecruitmentPolicy.SizedLine("x", "Albion", old),
+                Does.Contain("each win trims 5 points, each loss adds 10.2").And.Contain("range=70-150% win=-5 loss=+10.2"));
         }
 
         [Test]

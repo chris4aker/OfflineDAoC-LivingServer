@@ -151,7 +151,8 @@ public static class RealmRaidRecruitmentPolicy
 
     /// <summary>An automatic raid's size and help, and why (REALM_RAID_SIZED).</summary>
     public sealed record RaidSizing(int FullRequired, double Percent, int Required, int RecruitCap, int Wins, int Losses,
-        int Streak, int SpecialForcesOnWipe, bool SpecialForcesFromStart, string Why, bool ByResults = false)
+        int Streak, int SpecialForcesOnWipe, bool SpecialForcesFromStart, string Why, bool ByResults = false,
+        SizingRules? Rules = null)
     {
         /// <summary>The size to write on the raid's ledger row, or null when it was not sized by results (a size set by
         /// realm_raid_minimum_bots, or sizing off): the next raid carries on from it.</summary>
@@ -187,7 +188,7 @@ public static class RealmRaidRecruitmentPolicy
         {
             percent = SizePercentOf(results, rules);
             string run = streak > 1 ? $", the last {streak} won" : streak < -1 ? $", the last {-streak} lost" : "";
-            why = counted.Length == 0 ? "no wins or losses here yet: the starting size"
+            why = counted.Length == 0 ? $"no wins or losses here yet: the starting size, {rules.StartPercent}%"
                 : $"{wins} won and {losses} lost here{run}: each win trims {rules.WinTrimPercent} points, each loss adds " +
                   $"{rules.LossAddPercent:0.#}, aiming at {rules.TargetWinPercent}% wins" +
                   (percent <= rules.SmallestPercent ? " (at the smallest size)" : percent >= rules.LargestPercent ? " (at the largest size)" : "");
@@ -195,7 +196,7 @@ public static class RealmRaidRecruitmentPolicy
         int required = percent == 100 ? fullRequired : SizedRequired(fullRequired, percent);
         int cap = percent == 100 ? RecruitCap(fullRequired) : SizedRecruitCap(fullRequired, percent, required);
         int callUp = AutonomousEpicSpecialForces.CallUpParties(results);
-        return new(fullRequired, percent, required, cap, wins, losses, streak, callUp, fromStart, why, !fixedSize && rules.On);
+        return new(fullRequired, percent, required, cap, wins, losses, streak, callUp, fromStart, why, !fixedSize && rules.On, rules);
     }
 
     /// <summary>The log line of an automatic raid's size (REALM_RAID_SIZED), written when its rally opens.</summary>
@@ -203,7 +204,11 @@ public static class RealmRaidRecruitmentPolicy
         $"REALM_RAID_SIZED event={eventId} realm={realm} full={sizing.FullRequired} size={sizing.Percent:0.#}% " +
         $"required={sizing.Required} recruitCap={sizing.RecruitCap} won={sizing.Wins} lost={sizing.Losses} " +
         $"specialForcesOnWipe={sizing.SpecialForcesOnWipe * AutonomousEpicSpecialForces.PartySize} " +
-        $"specialForcesFromStart={sizing.SpecialForcesFromStart} why=\"{sizing.Why}\"";
+        $"specialForcesFromStart={sizing.SpecialForcesFromStart} why=\"{sizing.Why}\"" +
+        // The rules in force (2026-11-05: a stored setting from an earlier test build kept the old 5-point step, and only
+        // the steps in the why showed it).
+        (sizing.Rules is { } rules ? $" rules=\"start={rules.StartPercent}% range={rules.SmallestPercent}-{rules.LargestPercent}% " +
+            $"win={-rules.WinTrimPercent} loss=+{rules.LossAddPercent:0.#} target={rules.TargetWinPercent}%\"" : "");
 
     /// <summary>A realm's next scheduled raid opens when the slot is due, none of its raids is running and it has enough level 50s online.</summary>
     public static bool ScheduledRaidDue(long now, long due, bool realmHasRaid, int onlineLevelFifty, int scheduleMinutes) =>

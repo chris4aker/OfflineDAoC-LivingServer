@@ -16,13 +16,16 @@ namespace DOL.GS.ServerProperties
 	/// - Beta 1.1 (the talking update): bot voices, bot memory and grats on.
 	/// - Beta 1.1.2 (a r/daoc report, owner 2026-11-03): power regeneration 1.5 times the classic rate, and no halving below
 	///   50% power, for players and bots alike.
+	/// - Beta 1.1.2, raid sizing revision (PR #75, 2026-11-05): the win-rate sizing defaults changed between test builds
+	///   (step 5 -> 10, largest 100 or 150 -> 200, smallest 60 -> 70), and a test copy kept the old step from its first
+	///   build. "1.1.2.1" because worlds that ran any 1.1.2 build have already recorded "1.1.2".
 	/// </summary>
 	public static class LivingServerSettingsUpgrade
 	{
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		/// <summary>The newest build with a changed default (the highest <see cref="Change.Since"/>).</summary>
-		public const string Version = "1.1.2";
+		public const string Version = "1.1.2.1";
 
 		/// <summary>One changed default: since which build, the setting, and its old and new default as the server stores them.</summary>
 		public sealed record Change(string Since, string Key, string OldDefault, string NewDefault);
@@ -37,6 +40,13 @@ namespace DOL.GS.ServerProperties
 			new("1.1.2", "mana_regen_amount_halved_below_50_percent", "True", "False"),
 			// Owner 2026-11-04, after the playtest: at 900 bots a realm, 1 gave 6.4 lines a minute in Albion mid-morning.
 			new("1.1.2", "bot_voices_chat_rate", "1", "2"),
+			// Raid win-rate sizing (RealmRaidRecruitmentPolicy), every default an earlier test build wrote. Unchanged since
+			// they first shipped: realm_raid_target_win_percent (67) and realm_raid_start_size_percent (125); the loss step
+			// is derived from the win step, not a setting.
+			new("1.1.2.1", "realm_raid_win_trim_percent", "5", "10"),
+			new("1.1.2.1", "realm_raid_largest_size_percent", "100", "200"),
+			new("1.1.2.1", "realm_raid_largest_size_percent", "150", "200"),
+			new("1.1.2.1", "realm_raid_smallest_size_percent", "60", "70"),
 		];
 
 		/// <summary>The 1.1 keys (switched on), kept for callers of the first version.</summary>

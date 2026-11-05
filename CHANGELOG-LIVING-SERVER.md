@@ -136,6 +136,9 @@ realm that feels like a full server at its busiest. How it works and how to tune
   automatic. `realm_raid_minimum_bots`, when set, is used as it stands.
 - **Settings:** `realm_raid_target_win_percent` (67; 0 turns the sizing off), `realm_raid_smallest_size_percent` (70),
   `realm_raid_largest_size_percent` (200), `realm_raid_start_size_percent` (125) and `realm_raid_win_trim_percent` (10).
+  A world that ran an earlier test build of this change moves to these defaults once (step 5 to 10, largest 100 or 150
+  to 200, smallest 60 to 70), unless you changed them yourself. The `REALM_RAID_SIZED` log line now ends with the
+  rules in force (`rules="start=125% range=70-200% win=-10 loss=+20.3 target=67%"`).
 - **Seeing it:** `/lstest raid` names the size and why, and the server log has a `REALM_RAID_SIZED` line for every
   automatic raid (period size, size, required, recruit limit, wins and losses, the Special Forces it would get, and why);
   `REALM_RAID_SCHEDULED` now shows the size too.

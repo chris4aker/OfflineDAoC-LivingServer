@@ -471,7 +471,7 @@ namespace DOL.GS.Tests
             Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.2", untouched), Is.Empty, "a newer build already ran");
             Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1", untouched).Select(c => c.NewDefault),
                 Is.EqualTo(new[] { "1.5", "False" }));
-            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Version, Is.EqualTo("1.1.2"));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Version, Is.EqualTo("1.1.2.1"));
 
             var chosen = new Dictionary<string, (string Value, string DefaultValue)>
             {
@@ -488,6 +488,53 @@ namespace DOL.GS.Tests
                 ["mana_regen_amount_halved_below_50_percent"] = ("False", "False"),
             };
             Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("", fresh), Is.Empty);
+        }
+
+        [Test]
+        public void RaidSizingDefaultsFromEarlierTestBuildsReachAnUntouchedWorldOnce()
+        {
+            // 2026-11-05 on the owner's test copy: rows written by an earlier PR #75 build kept the old step (5) and ceiling
+            // (150), so raids moved 125 -> 115 after two wins and 125 -> 135.2 after a loss.
+            var testCopy = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["realm_raid_win_trim_percent"] = ("5", "5"),
+                ["realm_raid_largest_size_percent"] = ("150", "150"),
+                ["realm_raid_smallest_size_percent"] = ("70", "70"),     // already the default
+                ["realm_raid_target_win_percent"] = ("67", "67"),        // never changed
+                ["realm_raid_start_size_percent"] = ("125", "125"),      // never changed
+            };
+            // That copy has already recorded 1.1.2 (every 1.1.2 build wrote it).
+            var planned = DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1.2", testCopy);
+            Assert.That(planned.Select(c => (c.Key, c.NewDefault)), Is.EqualTo(new[]
+                { ("realm_raid_win_trim_percent", "10"), ("realm_raid_largest_size_percent", "200") }));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1.2.1", testCopy), Is.Empty, "once only");
+            // The very first build's defaults (smallest 60, largest 100).
+            var firstBuild = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["realm_raid_smallest_size_percent"] = ("60", "60"),
+                ["realm_raid_largest_size_percent"] = ("100", "100"),
+                ["realm_raid_win_trim_percent"] = ("5", "5"),
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1.2", firstBuild).Select(c => (c.Key, c.NewDefault)),
+                Is.EquivalentTo(new[] { ("realm_raid_win_trim_percent", "10"), ("realm_raid_largest_size_percent", "200"),
+                    ("realm_raid_smallest_size_percent", "70") }));
+            // A player's own choice is kept: set in the launcher, or another value than the old default.
+            var chosen = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["realm_raid_win_trim_percent"] = ("5", ""),
+                ["realm_raid_largest_size_percent"] = ("170", "150"),
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.1.2", chosen), Is.Empty);
+            // A new world starts on the new defaults; the code agrees with the upgrade's new values.
+            var fresh = new Dictionary<string, (string Value, string DefaultValue)>
+            {
+                ["realm_raid_win_trim_percent"] = ("10", "10"),
+                ["realm_raid_largest_size_percent"] = ("200", "200"),
+            };
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("", fresh), Is.Empty);
+            Assert.That(DOL.GS.RealmRaidRecruitmentPolicy.WinTrimPercentSetting, Is.EqualTo(10));
+            Assert.That(DOL.GS.RealmRaidRecruitmentPolicy.LargestSizePercentSetting, Is.EqualTo(200));
+            Assert.That(DOL.GS.RealmRaidRecruitmentPolicy.SmallestSizePercentSetting, Is.EqualTo(70));
         }
 
         [Test]
