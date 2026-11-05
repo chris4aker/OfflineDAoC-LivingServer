@@ -150,8 +150,15 @@ public static class RealmEventRecordStore
         return end>start&&int.TryParse(details.AsSpan(start,end-start),out int wipes)?wipes:null;
     }
     /// <summary>The outcome a row gives the raid record: a time-out its details say took no wipe is
-    /// <see cref="AutonomousEpicSpecialForces.TimedOutWithoutWipe"/> (no result); anything else as written.</summary>
-    public static string RecordOutcome(string outcome,string details)=>WipesIn(details) is int wipes?AutonomousEpicSpecialForces.RecordOutcome(outcome,wipes):outcome;
+    /// <see cref="TimedOutWithoutWipe"/> (no result); anything else as written.</summary>
+    public static string RecordOutcome(string outcome,string details)=>WipesIn(details) is int wipes?RecordOutcome(outcome,wipes):outcome;
+    /// <summary>
+    /// The raid record's name for a time-out with no wipe (owner, 2026-11-05): neither a win nor a loss, for the raid's size
+    /// and the Special Forces alike. Here, not in AutonomousEpicSpecialForces: the launcher links this file alone.
+    /// </summary>
+    public const string TimedOutWithoutWipe="Timed out without a wipe";
+    /// <summary>The outcome a raid's record keeps: a time-out after one or more wipes is a loss; without one it is no result.</summary>
+    public static string RecordOutcome(string outcome,int wipes)=>outcome=="Timed out"&&wipes<=0?TimedOutWithoutWipe:outcome;
     /// <summary>An event's last <paramref name="limit"/> finished runs, oldest first: each outcome as the raid record reads it (<see cref="RecordOutcome"/>), how many Epic Special
     /// Forces joined it (<see cref="SpecialForcesIn"/>) and the size it ran at (<see cref="RaidSizeIn"/>);
     /// <paramref name="automaticOnly"/> leaves out forced raids.</summary>
