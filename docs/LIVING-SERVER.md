@@ -301,6 +301,72 @@ New bots are named the way a 2003 server's players named themselves:
 - **Who gets them:** bots made by the launcher's + buttons and by the server. Bots you already have keep their names.
 - **Details:** the research and the mix are in [research/BOT-NAMES-2003.md](research/BOT-NAMES-2003.md).
 
+### RvR perception (`rvr_bot_perception`, `rvr_bot_awareness`, `rvr_bot_spotters`, `rvr_group_pet_cap`)
+
+Added for 1.2 (owner Chris, 2026-11-01) after a player's report on r/daoc: gamebots in the frontier saw you from
+5,000 units, instantly and all at once, whenever you were in their line of sight. Now they notice you the way players
+did in 2003. The observer cap, the calibration, duty and the pet caps follow the North Star audit of 2026-11-03
+(challenge 2 and priority 7; `docs/audits/2026-11-03/technical.md` §8.2 on the audit branch). The design notes are in
+`docs/BOT-BUILDS-AND-RVR.md` on the `plan/rvr-builds` branch.
+
+- **Who it changes:** autonomous gamebots in the frontier, the battlegrounds and Darkness Falls, when they pick an enemy
+  player, a player's companion or a player's pet. Enemy gamebots, siege engines, keep guards, doors and monsters are
+  acquired as before, and so are targets of bots holding a keep or working a siege. A bot that is hit, or whose
+  realm-mates near it or group are attacked, fights back at once (`bot_incoming_fire_reaction` handles that delay).
+  Your own companions and the gamebots in your group never scan for enemies this way and never hear these calls.
+- **Noticing:** within 1,000 units a bot always notices you; beyond 3,500 it never notices on its own. In between it
+  is a chance on each scan, set so that one bot looking on its own needs this long (the median) for a plain sighting
+  (you alone, moving, not fighting or casting, not in front of it):
+
+  | Distance | easy | normal | veteran |
+  |---|---|---|---|
+  | 1,500 | 3 s | 1.5 s | 0.75 s |
+  | 2,500 | 12 s | 6 s | 3 s |
+  | 3,400 | never | 20 s | 10 s |
+
+  The normal column is the audit's target. Between the rows the time grows evenly on a log scale. The chance per scan
+  is worked out from the real time since the bot's last scan, so the times hold if bots scan more slowly under load.
+  Fighting halves the time, casting and a group of 3 or more divide it by 1.5, being in the bot's 120° view by 1.75,
+  and standing still out of combat doubles it. Line of sight and stealth still apply first.
+- **The observer cap:** at most 3 bots of a realm (easy 2, veteran 5) look for the same enemy in each second. The
+  others don't roll at all: they learn of you only from a call. Bots within 1,000 units don't need a slot. In the
+  audit's spread-out crowd (50 bots in groups of 8 between 1,000 and 3,500 units) about a third have engaged after
+  5 s and two thirds after 10 s, against 90% after 5 s without the cap; someone still notices you within 5 s 94% of
+  the time.
+- **Reacting:** a bot that notices you engages 0.5-2 seconds later. Higher level bots and bold personalities
+  (Daredevils, then high Risk) are faster.
+- **Spotters (`rvr_bot_spotters`):** the bot that notices you tells its group mates within 2,500 units, and each of them
+  engages after its own reaction delay. Each other group of its warband (the groups marching to the same keep or
+  relic) hears it relayed half the time, as a whole group, 4 seconds later. With bot voices on and you in that group,
+  it calls it in /group ("inc 3 north"), at most every 12 seconds. Warbands have no chat channel yet, so relayed calls
+  are only in the log.
+- **Duty:** a gamebot told by a call leaves what it is doing only if its duty allows it (`/lswhy duty`): a free bot, a
+  bot marching with an RvR event and a bot in a gamebot group answer; a bot on a realm raid, in a battleground assault
+  or in a player's group does not. It still notices you itself, and fights what it sees.
+- **Difficulty (`rvr_bot_awareness`):** `easy` (always within 700, never beyond 2,500, the easy column, 30% slower
+  reactions, calls heard within 2,000), `normal` or `veteran` (always within 1,300, never beyond 4,500, the veteran
+  column, 30% faster reactions, calls heard within 3,000).
+- **Pet caps (`rvr_group_pet_cap`, 2):** when gamebots form an RvR group (a roaming warband of 2-8 or a siege party),
+  at most 2 pet classes (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist,
+  Sluaghbinder) join a group of five or more and 1 a group of four or fewer; the others wait for the next group.
+  Druids and Hunters don't count. Groups you lead or join are never changed. 0 turns the cap off. Which classes
+  gamebots play is unchanged; a cap across a whole warband is not done yet.
+- **Settings:** `rvr_bot_perception` on, `rvr_bot_awareness` normal, `rvr_bot_spotters` on and `rvr_group_pet_cap` 2 by
+  default. With `rvr_bot_perception` off bots see as before.
+- **Log:** `RVR_NOTICE` for each sighting (bot, target, distance, the factors, the chance, `time_since_first_los_ms`,
+  the delay) and `RVR_SPOT` for each call (`told` in the group, `relayed` to other groups, `held` by their duty, and
+  where it was said). The medians in the table can be checked against `time_since_first_los_ms`.
+- **Cost:** the frontier scan still casts at most 8 line-of-sight rays per scan (`VisibilityBudget`), and now casts
+  none at a player a bot couldn't notice on that scan (beyond 3,500 units, or over the observer cap). In a test with
+  900 gamebots of one realm around a player, rays at the player fell from 99 to 11 a second; with 2,700 bots of three
+  realms in one zone the scan casts about 18,700 rays a second, as before (`UT_RvrPerceptionCalibration`).
+- **Owner's decisions (confirmed by the owner, 2026-11-05):** easy is twice the normal times and veteran half; bots
+  within 1,000 units are outside the observer cap; gamebot-group members answer calls; other groups of a warband hear
+  a call half the time, 4 seconds later; the pet-class list above (Druids and Hunters out, the Sluaghbinder in) with a
+  cap of 2; a median of 0.75 s just outside 1,000 units (normal).
+- **Checked:** automated tests only (`UT_RvrPerception`, `UT_RvrPerceptionCalibration`, `UT_RvrPerceptionDuty`,
+  `UT_RvrPetCap`). It has not been played yet.
+
 ## New client (0.36c)
 
 Everything here runs in the server and the launcher, so it works the same with the original client and the Godot

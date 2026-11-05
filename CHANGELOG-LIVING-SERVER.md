@@ -54,6 +54,31 @@ gates fell, and the Renegade Lord never dropped below 100%).
 - **For testers:** `DUTY_LEASE` lines in the server log record each claim granted, taken, refused (with its reason)
   and ended, once per change.
 
+**Gamebots in RvR notice you like players, not radar** (a player's report on r/daoc; owner 2026-11-01; North Star
+audit 2026-11-03).
+- **Before:** in the frontier, the battlegrounds and Darkness Falls, every gamebot with line of sight saw you from 5,000
+  units at once, and they all came together.
+- **Now:** a gamebot notices you by chance. Within 1,000 units it always does; beyond 3,500 it never does on its own.
+  A gamebot looking on its own takes about 1.5 s to notice you at 1,500 units, 6 s at 2,500 and 20 s at 3,400 (the
+  median). Fighting, casting, being in a group of 3 or more or standing in front of it makes that quicker; standing
+  still makes it slower. Stealth works as before: a stealthed player is never seen this way.
+  - **Only a few look at once:** at most 3 gamebots of a realm look for you each second. The rest learn of you only
+    when one of them calls it. In a crowd of 50 spread out in groups, about a third have engaged you after 5 seconds and
+    the rest drip in, where before nine in ten came within 5 seconds.
+  - **They react, then call:** a gamebot that notices you engages 0.5-2 seconds later and tells its group. Other groups
+    marching to the same keep hear it half the time, 4 seconds later. With bot voices on and you in that group, it
+    says "inc 3 north" in /group.
+  - **Duty first:** a gamebot on a raid, in a battleground assault or in your group doesn't leave it to answer a call.
+  - **Your bots are not affected:** your companions and the gamebots in your group follow and fight as before.
+- **Fewer pet classes in one group:** when gamebots form an RvR group or a siege party, at most 2 pet classes
+  (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist, Sluaghbinder) join a group of five
+  or more, and 1 a smaller group. Groups you lead or join are never changed.
+- **Settings:** `rvr_bot_perception` (on), `rvr_bot_awareness` (easy, normal or veteran; normal), `rvr_bot_spotters`
+  (on) and `rvr_group_pet_cap` (2; 0 turns it off). See [docs/LIVING-SERVER.md](docs/LIVING-SERVER.md).
+- **For testers:** `RVR_NOTICE` lines now show the chance and `time_since_first_los_ms`; `RVR_SPOT` lines show how many
+  mates were told, relayed and held by their duty.
+- **Checked:** automated tests only, including seeded simulations of the medians and of crowds. Not yet played.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
