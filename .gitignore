@@ -38,3 +38,5 @@
 /tools/sluaghbinder/patcher/
 # Wayback fetcher output: third-party archived pages, never committed.
 /tools/wayback-fetch/out/
+# Generated on the PC from fetched listings (third-party thread titles).
+/tools/wayback-fetch/jobs/a2-raid-threads.json

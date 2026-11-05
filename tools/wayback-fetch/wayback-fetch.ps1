@@ -110,6 +110,31 @@ function Get-NormalizedHost([string]$url) {
     return ((Split-OriginalUrl $url).Host -replace '^www\d*\.', '')
 }
 
+# Like Get-NormalizedUrl, with &amp; decoded, the query parameters sorted and a trailing / dropped. The archive's
+# index (SURT urlkey) sorts query parameters, so "?s=Merlin&c=1" and "?c=1&s=Merlin" are the same capture to it.
+function Get-CanonicalUrl([string]$url) {
+    $n = (Get-NormalizedUrl ($url -replace '&amp;', '&'))
+    $q = $n.IndexOf('?')
+    if ($q -lt 0) { return $n.TrimEnd('/') }
+    $path = $n.Substring(0, $q).TrimEnd('/')
+    $params = @($n.Substring($q + 1).Split('&') | Where-Object { $_ -ne '' } | Sort-Object { $_ } -CaseSensitive)
+    if ($params.Count -eq 0) { return $path }
+    return $path + '?' + ($params -join '&')
+}
+
+# The key that makes two captures "the same page" for a job's dedupeKey (a .NET regex on the normalized URL; its
+# first group, or the whole match, plus the host). $null when there is no dedupeKey or it does not match.
+function Get-DedupeKey($row, $jd, $target) {
+    $rx = [string](Get-Prop $target 'dedupeKey' (Get-Prop $jd 'dedupeKey' ''))
+    if (-not $rx) { return $null }
+    $orig = [string](Get-Prop $row 'original' '')
+    $m = [regex]::Match((Get-NormalizedUrl ($orig -replace '&amp;', '&')), $rx)
+    if (-not $m.Success) { return $null }
+    $v = $m.Value
+    if ($m.Groups.Count -gt 1 -and $m.Groups[1].Success) { $v = $m.Groups[1].Value }
+    return (Get-NormalizedHost $orig) + '|' + $v
+}
+
 # Where a capture is saved, relative to the job's folder: <host>\<path-hash>_<timestamp>.<ext>
 function Get-SaveRelativePath([string]$original, [string]$timestamp, [string]$mimetype) {
     $u = Split-OriginalUrl $original
@@ -218,7 +243,7 @@ function Test-InScope($row, $jd, $target) {
     $pattern = [string](Get-Prop $target 'url' '')
     $n = Get-NormalizedUrl $original
     switch ($mt) {
-        'exact' { if ($n.TrimEnd('/') -ne (Get-NormalizedUrl $pattern).TrimEnd('/')) { return $false } }
+        'exact' { if ((Get-CanonicalUrl $original) -ne (Get-CanonicalUrl $pattern)) { return $false } }
         'prefix' {
             $p = Get-NormalizedUrl $pattern
             # A host-only pattern normalizes to "host/", so it cannot leak to longer host names.
@@ -626,8 +651,12 @@ function Invoke-Job($jobInfo, [string]$outRoot, $stats) {
         foreach ($row in $rows) {
             $k = [string]$row.original + ' ' + [string]$row.timestamp
             if ($seen.ContainsKey($k)) { continue }
+            # dedupeKey: one capture per thread or character, even when its URLs differ (session ids, extra params).
+            $dk = Get-DedupeKey $row $jd $t
+            if ($null -ne $dk -and $seen.ContainsKey('dedupe ' + $dk)) { continue }
             if ($taken -ge $cap) { break }
             $seen[$k] = $true
+            if ($null -ne $dk) { $seen['dedupe ' + $dk] = $true }
             $taken++
             $candidates.Add([pscustomobject]@{ row = $row; target = $t; targetNo = $i })
         }

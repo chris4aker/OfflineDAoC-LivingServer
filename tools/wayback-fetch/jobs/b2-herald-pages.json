@@ -1,11 +1,12 @@
 {
     "name": "b2-herald-pages",
-    "note": "Camelot Herald 2002-2005: front page through time, server and population pages, realm war, patch notes and class/server statistics, if the Herald had them. Keyword targets search the whole domain by URL words because the exact paths are not known yet; b1-herald-map lists the real paths.",
+    "note": "Camelot Herald 2002-2005: the front page through time, the news and patch archive, articles and the New Frontiers pages. Only narrow prefix lookups: the first run's domain-wide keyword searches got HTTP 503/504 from the archive and are gone. Add statistics, realm war and server pages as prefix targets once b1-herald-map shows their real paths.",
     "from": "2002",
     "to": "2005",
-    "mimetypes": ["text/html"],
-    "exclude": ["/(chars|guilds)/"],
-    "maxCaptures": 260,
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 200,
     "targets": [
         {
             "url": "www.camelotherald.com/",
@@ -13,45 +14,45 @@
             "guess": false,
             "note": "The front page, one capture a month (collapse=timestamp:6): news, server status.",
             "collapse": "timestamp:6",
-            "cdxPageSize": 100, "cdxMaxPages": 1, "maxCaptures": 48
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 48
+        },
+        {
+            "url": "camelotherald.com/archives.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the first map: archives.php?t=game|community&sortby=... (the news and patch archive).",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        },
+        {
+            "url": "camelotherald.com/article.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the first map: article.php?id=N, about 95 captures (articles, patch notes).",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 95
         },
         {
             "url": "camelotherald.com/newfrontiers/",
             "matchType": "prefix",
             "guess": false,
-            "note": "Seen in a May 2004 link to /newfrontiers/realmabilities/abilities.php (the New Frontiers RvR and realm ability pages).",
-            "cdxPageSize": 200, "cdxMaxPages": 1, "maxCaptures": 30
+            "note": "Seen in a May 2004 link to /newfrontiers/realmabilities/abilities.php (New Frontiers RvR pages).",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
         },
         {
-            "url": "camelotherald.com",
-            "matchType": "domain",
-            "guess": true,
-            "note": "GUESS by keyword: statistics pages (class, server, population, top lists).",
-            "cdxFilters": ["urlkey:.*(stat|population|census|topxp|top_|toprp|ranking).*", "!urlkey:.*/(chars|guilds)/.*"],
-            "cdxPageSize": 200, "cdxMaxPages": 2, "maxCaptures": 50
-        },
-        {
-            "url": "camelotherald.com",
-            "matchType": "domain",
-            "guess": true,
-            "note": "GUESS by keyword: realm war, keeps, relics and server pages.",
-            "cdxFilters": ["urlkey:.*(realmwar|realm_war|rvr|keep|relic|server).*", "!urlkey:.*/(chars|guilds)/.*"],
-            "cdxPageSize": 200, "cdxMaxPages": 2, "maxCaptures": 50
-        },
-        {
-            "url": "camelotherald.com",
-            "matchType": "domain",
-            "guess": true,
-            "note": "GUESS by keyword: patch and release notes.",
-            "cdxFilters": ["urlkey:.*(release|patch|notes).*", "!urlkey:.*/(chars|guilds)/.*"],
-            "cdxPageSize": 200, "cdxMaxPages": 2, "maxCaptures": 50
-        },
-        {
-            "url": "camelotherald.com/classes",
+            "url": "camelotherald.com/realmwar",
             "matchType": "prefix",
             "guess": true,
-            "note": "GUESS: class description pages.",
-            "cdxPageSize": 200, "cdxMaxPages": 1, "maxCaptures": 30
+            "note": "GUESS: a realm war page. A prefix lookup is cheap (one request) even when nothing is there.",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
         }
     ]
 }

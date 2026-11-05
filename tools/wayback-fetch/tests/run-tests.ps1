@@ -222,7 +222,7 @@ $tmp = New-TempDir
 foreach ($jf in Get-ChildItem -LiteralPath (Join-Path (Split-Path -Parent $here) 'jobs') -Filter '*.json') {
     $info = Read-Job $jf.FullName
     Assert-True ($info.Targets.Count -gt 0) ("starter job loads: " + $jf.Name)
-    Assert-True ([string](Get-Prop $info.Def 'note' '')).Length -gt 20 ("starter job has a note: " + $jf.Name)
+    Assert-True (([string](Get-Prop $info.Def 'note' '')).Length -gt 20) ("starter job has a note: " + $jf.Name)
     foreach ($tg in $info.Targets) { Assert-True ($null -ne (Get-Prop $tg 'guess' $null)) ("target marks guess true/false: " + $jf.Name + ' ' + $tg.url) }
 }
 $badJob = Join-Path $tmp 'bad.json'
@@ -232,6 +232,152 @@ Assert-True ($err -match 'matchType instead') 'job: wildcard refused'
 [IO.File]::WriteAllText($badJob, '{"name":"..\\x","targets":[{"url":"a.com"}]}')
 $err = ''; try { [void](Read-Job $badJob) } catch { $err = $_.Exception.Message }
 Assert-True ($err -match 'may only use') 'job: unsafe name refused'
+Remove-Item -LiteralPath $tmp -Recurse -Force
+
+# --- Canonical exact matching and dedupeKey ---------------------------------------------------------------------
+Assert-Equal 'camelotherald.com/chardisplay.php?c=12&s=merlin' (Get-CanonicalUrl 'http://www.camelotherald.com/chardisplay.php?s=Merlin&amp;c=12') 'canonical: params sorted, &amp; decoded'
+Assert-Equal 'a.com/x' (Get-CanonicalUrl 'http://a.com/x/') 'canonical: trailing slash'
+$ex = [pscustomobject]@{ url = 'forums.freddyshouse.com/showthread.php?s=abc&threadid=12'; matchType = 'exact' }
+Assert-True (Test-InScope (Row 'http://forums.freddyshouse.com/showthread.php?threadid=12&s=abc') $jb $ex) 'scope: exact ignores query order (the index sorts it)'
+Assert-True (-not (Test-InScope (Row 'http://forums.freddyshouse.com/showthread.php?threadid=123&s=abc') $jb $ex)) 'scope: exact still needs the same params'
+$dj = [pscustomobject]@{ dedupeKey = '[?&](?:t|threadid|mid|topic)=(\d+)(?:&|$)' }
+$k1 = Get-DedupeKey (Row 'http://forums.freddyshouse.com/showthread.php?s=aaa&threadid=12') $dj $ex
+$k2 = Get-DedupeKey (Row 'http://www.forums.freddyshouse.com/showthread.php?threadid=12&s=bbb') $dj $ex
+$k3 = Get-DedupeKey (Row 'http://forums.freddyshouse.com/showthread.php?threadid=123') $dj $ex
+Assert-Equal 'forums.freddyshouse.com|12' $k1 'dedupe: host and thread id'
+Assert-Equal $k1 $k2 'dedupe: another session id is the same thread'
+Assert-True ($k1 -ne $k3) 'dedupe: another thread differs'
+Assert-Equal $null (Get-DedupeKey (Row 'http://a.com/x') $jb $ex) 'dedupe: no dedupeKey'
+
+# Invoke-Job with a fake transport: two URLs of one thread (different session ids) are fetched once.
+$tmp = New-TempDir
+$script:StateDir = $tmp; $script:LogPath = $null; $script:ArchiveBase = 'http://mock'
+$script:Config = Get-DefaultConfig; $script:Config.delaySeconds = 0
+$script:Clock = { [DateTime]::UtcNow }; $script:Sleeper = { param([double]$s) }
+$script:GiveUpsInARow = 0
+$cdxBody = '[["urlkey","timestamp","original","mimetype","statuscode","digest","length"],' +
+    '["com,freddyshouse,forums)/showthread.php?s=aaa&threadid=12","20030101000000","http://forums.freddyshouse.com/showthread.php?s=aaa&threadid=12","text/html","200","D","1"],' +
+    '["com,freddyshouse,forums)/showthread.php?s=bbb&threadid=12","20030202000000","http://forums.freddyshouse.com/showthread.php?s=bbb&threadid=12","text/html","200","D","1"],' +
+    '["com,freddyshouse,forums)/showthread.php?s=ccc&threadid=13","20030303000000","http://forums.freddyshouse.com/showthread.php?s=ccc&threadid=13","text/html","200","D","1"]]'
+$script:Seen = New-Object System.Collections.Generic.List[string]
+$script:Transport = {
+    param($url, $cfg)
+    $script:Seen.Add($url)
+    $body = '<html>page</html>'
+    if ($url -like '*/cdx/*') { $body = $cdxBody }
+    return [pscustomobject]@{ Status = 200; Bytes = (Get-Utf8Bytes $body); Headers = @{}; ErrorKind = ''; TooLarge = $false }
+}
+$djob = Join-Path $tmp 'd.json'
+[IO.File]::WriteAllText($djob, '{"name":"dedupe","from":"2002","to":"2005","dedupeKey":"[?&](?:t|threadid)=(\\d+)(?:&|$)","targets":[{"url":"forums.freddyshouse.com/showthread.php","matchType":"prefix"}]}')
+$st = [pscustomobject]@{ jobs = 0; indexRequests = 0; indexed = 0; fetched = 0; skipped = 0; failed = 0; bytes = 0 }
+Invoke-Job (Read-Job $djob) $tmp $st
+Assert-Equal 2 $st.fetched 'dedupe job: one capture per thread is fetched'
+Assert-Equal 0 @($script:Seen | Where-Object { $_ -like '*s=bbb*' }).Count 'dedupe job: the second URL of thread 12 is never requested'
+Remove-Item -LiteralPath $tmp -Recurse -Force
+
+# --- Starter jobs match what the first real run found -----------------------------------------------------------
+$jobsDir = Join-Path (Split-Path -Parent $here) 'jobs'
+$b1 = Read-Job (Join-Path $jobsDir 'b1-herald-map.json')
+Assert-True ([bool]$b1.Def.indexOnly) 'b1: index only'
+Assert-Equal 0 @($b1.Targets | Where-Object { $_.matchType -eq 'domain' }).Count 'b1: no domain-wide query (it stopped inside chardisplay)'
+$letters = @($b1.Targets | Where-Object { $_.matchType -eq 'prefix' } | ForEach-Object { $_.url.Substring($_.url.Length - 1) }) -join ''
+Assert-Equal 'abcdefghijklmnopqrstuvwxyz' $letters 'b1: one prefix range per letter a-z'
+$tc = $b1.Targets | Where-Object { $_.url -eq 'camelotherald.com/c' }
+$tg = $b1.Targets | Where-Object { $_.url -eq 'camelotherald.com/g' }
+$hr = 'http://www.camelotherald.com/'
+Assert-True (-not (Test-InScope (Row ($hr + 'chardisplay.php?s=Merlin&c=5') '2003' 'com,camelotherald)/chardisplay.php?c=5&s=merlin') $b1.Def $tc)) 'b1: chardisplay.php left out'
+Assert-True (-not (Test-InScope (Row ($hr + 'calendar/2003/05.php') '2003' 'com,camelotherald)/calendar/2003/05.php') $b1.Def $tc)) 'b1: /calendar/ left out'
+Assert-True (Test-InScope (Row ($hr + 'catacombs_beta.php') '2003' 'com,camelotherald)/catacombs_beta.php') $b1.Def $tc) 'b1: other c pages kept'
+Assert-True (Test-InScope (Row ($hr + 'guilds/Merlin/x.php') '2003' 'com,camelotherald)/guilds/merlin/x.php') $b1.Def $tg) 'b1: guilds reached by the g range'
+Assert-True (-not (Test-InScope (Row ($hr + 'guilds/x.php') '2003' 'com,camelotherald)/guilds/x.php') $b1.Def $tc)) 'b1: ranges do not overlap'
+$c = Read-Job (Join-Path $jobsDir 'c-herald-guilds-chars.json')
+$merlin = $c.Targets[0]; $percival = $c.Targets[1]
+Assert-Equal 'camelotherald.com/chardisplay.php prefix 150' ($merlin.url + ' ' + $merlin.matchType + ' ' + $merlin.maxCaptures) 'c: Merlin chardisplay target, 150 pages'
+Assert-Equal 150 $percival.maxCaptures 'c: Percival 150 pages'
+$mRow = Row ($hr + 'chardisplay.php?s=Merlin&c=123') '2003' 'com,camelotherald)/chardisplay.php?c=123&s=merlin'
+Assert-True (Test-InScope $mRow $c.Def $merlin) 'c: a Merlin character (urlkey has sorted params)'
+Assert-True (-not (Test-InScope $mRow $c.Def $percival)) 'c: not in the Percival target'
+Assert-True (-not (Test-InScope (Row ($hr + 'chardisplay.php?s=Lancelot&c=9') '2003' 'com,camelotherald)/chardisplay.php?c=9&s=lancelot') $c.Def $merlin)) 'c: Lancelot left out'
+Assert-True (-not (Test-InScope (Row ($hr + 'chardisplay.php?s=Merlinx&c=9') '2003' 'com,camelotherald)/chardisplay.php?c=9&s=merlinx') $c.Def $merlin)) 'c: server name matched whole'
+Assert-True ((Get-CdxQueryUrl 'https://web.archive.org' $c.Def $merlin 200 '') -match '&collapse=urlkey&') 'c: one capture per character (collapse=urlkey)'
+Assert-True ([bool]($c.Targets | Where-Object { $_.url -like '*/guilds/*' }).guess) 'c: guilds still marked a guess'
+$b2 = Read-Job (Join-Path $jobsDir 'b2-herald-pages.json')
+Assert-Equal 0 @($b2.Targets | Where-Object { $_.matchType -eq 'domain' }).Count 'b2: no domain-wide keyword scans (they got 503/504)'
+Assert-True ($b2.Targets.Count -le 6) 'b2: few targets'
+
+# --- make-thread-job.ps1 ----------------------------------------------------------------------------------------
+$exe = (Get-Process -Id $PID).Path
+$maker = Join-Path (Split-Path -Parent $here) 'make-thread-job.ps1'
+$tmp = New-TempDir
+$src = Join-Path (Join-Path $tmp 'out') 'a-raid-sizes'
+New-Item -ItemType Directory -Path $src -Force | Out-Null
+$sid = 's=0123456789abcdef0123456789abcdef'
+$vb = @"
+<html><body><table>
+<tr><td><a href="showthread.php?$sid&amp;threadid=1001">Midgard <b>dragon</b> raid - how many?</a>
+ <a href="showthread.php?$sid&amp;threadid=1001&amp;pagenumber=2">2</a>
+ <a href="showthread.php?$sid&amp;goto=lastpost&amp;threadid=1001">Last Page</a></td></tr>
+<tr><td><a href="showthread.php?$sid&amp;threadid=1002">Best spec for a Thane?</a></td></tr>
+<tr><td><a href="showthread.php?threadid=1003">DF tonight</a></td></tr>
+<tr><td><a href="showthread.php?threadid=1004">pdf of the manual, df</a></td></tr>
+<tr><td><a href="http://www.other.com/showthread.php?t=9">Dragon raid elsewhere</a></td></tr>
+<tr><td><a href='showthread.php?t=1005'>Gjalpinulva &amp; Legion</a></td></tr>
+<tr><td><a href="showthread.php?p=777">Raid post link</a></td></tr>
+</table></body></html>
+"@
+$alla = @"
+<a href="/forum.html?forum=13&mid=2001">Caer Sidi epic raid sizes</a>
+<a href="/forum.html?forum=13&mid=2002">Crafting prices</a>
+<a href="forum.html?forum=13&amp;mid=2001">Caer Sidi epic raid sizes</a>
+"@
+[IO.File]::WriteAllText((Join-Path $src 'vb.html'), $vb)
+[IO.File]::WriteAllText((Join-Path $src 'al.html'), $alla)
+$mlines = @(
+    '{"url":"http://forums.freddyshouse.com/forumdisplay.php?f=5","timestamp":"20030101000000","status":"saved","bytes":0,"path":"vb.html"}',
+    '{"url":"http://camelot.allakhazam.com/forum.html?forum=13","timestamp":"20040101000000","status":"saved","bytes":0,"path":"al.html"}',
+    '{"url":"http://forums.freddyshouse.com/forumdisplay.php?f=6","timestamp":"20030101000000","status":"missing","bytes":0,"path":""}'
+)
+[IO.File]::WriteAllText((Join-Path $src 'manifest.jsonl'), ($mlines -join "`n"))
+$mk1 = & $exe -NoProfile -ExecutionPolicy Bypass -File $maker -Folder $tmp 2>&1 | Out-String
+Assert-Equal 0 $LASTEXITCODE "make-thread-job: exit code`n$mk1"
+$genPath = Join-Path (Join-Path $tmp 'jobs') 'a2-raid-threads.json'
+$gen = Read-Job $genPath
+$ids = @($gen.Def.threads | ForEach-Object { $_.id }) -join ','
+Assert-Equal '2001,1001,1003,1005' $ids 'make-thread-job: raid threads only (DF in capitals, other hosts and post links left out), one per thread'
+Assert-Equal 4 $gen.Targets.Count 'make-thread-job: one exact target per thread'
+Assert-Equal 0 @($gen.Targets | Where-Object { $_.matchType -ne 'exact' }).Count 'make-thread-job: all exact on the first run'
+$t1001 = $gen.Targets | Where-Object { $_.url -like '*threadid=1001' }
+Assert-Equal "forums.freddyshouse.com/showthread.php?$sid&threadid=1001" $t1001.url 'make-thread-job: the thread link as listed (not page 2, not last post)'
+Assert-True ($t1001.note -like '*"Midgard dragon raid - how many?"*') "make-thread-job: title in the note ($($t1001.note))"
+Assert-Equal 'camelot.allakhazam.com/forum.html?forum=13&mid=2001' ($gen.Targets | Where-Object { $_.url -like '*mid=2001' }).url 'make-thread-job: Allakhazam link resolved'
+Assert-True (Test-InScope (Row "http://forums.freddyshouse.com/showthread.php?threadid=1001&$sid") $gen.Def $t1001) 'make-thread-job: exact target accepts its capture'
+
+# Second run after a fetch run found nothing for thread 1003 by its exact link: it moves to an id-filter target.
+$t1003 = $gen.Targets | Where-Object { $_.url -like '*threadid=1003' }
+$idxDir = Join-Path (Join-Path (Join-Path $tmp 'out') 'a2-raid-threads') 'index'
+New-Item -ItemType Directory -Path $idxDir -Force | Out-Null
+[IO.File]::WriteAllText((Join-Path $idxDir ('target3-' + (Get-TargetKey $gen.Def $t1003) + '.state.json')), '{"done":true,"pages":1,"resumeKey":"","rows":0}')
+$t1005 = $gen.Targets | Where-Object { $_.url -like '*t=1005' }
+[IO.File]::WriteAllText((Join-Path $idxDir ('target4-' + (Get-TargetKey $gen.Def $t1005) + '.state.json')), '{"done":true,"pages":1,"resumeKey":"","rows":1}')
+$mk2 = & $exe -NoProfile -ExecutionPolicy Bypass -File $maker -Folder $tmp 2>&1 | Out-String
+Assert-Equal 0 $LASTEXITCODE "make-thread-job: second run exit code`n$mk2"
+$gen2 = Read-Job $genPath
+$filt = @($gen2.Targets | Where-Object { $_.matchType -eq 'prefix' })
+Assert-Equal 1 $filt.Count 'make-thread-job: one id-filter target'
+Assert-Equal 3 @($gen2.Targets | Where-Object { $_.matchType -eq 'exact' }).Count 'make-thread-job: found threads stay exact'
+Assert-Equal 'forums.freddyshouse.com/showthread.php' $filt[0].url 'make-thread-job: filter target on the forum''s showthread.php'
+Assert-Equal 'id-filter' ($gen2.Def.threads | Where-Object { $_.id -eq '1003' }).lookup 'make-thread-job: thread list says how it is looked up'
+$fr = 'http://forums.freddyshouse.com/showthread.php?'
+Assert-True (Test-InScope (Row ($fr + 's=ffff&threadid=1003') '2003' 'com,freddyshouse,forums)/showthread.php?s=ffff&threadid=1003') $gen2.Def $filt[0]) 'make-thread-job: filter finds the thread under another session id'
+Assert-True (-not (Test-InScope (Row ($fr + 'threadid=10030') '2003' 'com,freddyshouse,forums)/showthread.php?threadid=10030') $gen2.Def $filt[0])) 'make-thread-job: filter matches the whole id'
+Assert-True (-not (Test-InScope (Row ($fr + 'pagenumber=2&threadid=1003') '2003' 'com,freddyshouse,forums)/showthread.php?pagenumber=2&threadid=1003') $gen2.Def $filt[0])) 'make-thread-job: filter skips page 2'
+Assert-True (-not (Test-InScope (Row ($fr + 'goto=lastpost&threadid=1003') '2003' 'com,freddyshouse,forums)/showthread.php?goto=lastpost&threadid=1003') $gen2.Def $filt[0])) 'make-thread-job: filter skips last-post links'
+
+# No raid thread: no job is written.
+[IO.File]::WriteAllText((Join-Path $src 'manifest.jsonl'), $mlines[2])
+$mk3 = & $exe -NoProfile -ExecutionPolicy Bypass -File $maker -Folder $tmp 2>&1 | Out-String
+Assert-Equal 1 $LASTEXITCODE "make-thread-job: nothing found exits 1`n$mk3"
+Assert-True (-not (Test-Path -LiteralPath $genPath)) 'make-thread-job: no empty job left behind'
 Remove-Item -LiteralPath $tmp -Recurse -Force
 
 # --- End to end against tests\mock_archive.py -------------------------------------------------------------------
