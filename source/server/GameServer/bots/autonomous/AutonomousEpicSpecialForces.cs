@@ -77,11 +77,10 @@ public static class AutonomousEpicSpecialForces
     /// the Special Forces alike. Marfach Caverns timed out after 91 pulls on an encounter it never reached: a routing fault,
     /// not a lost fight. The ledger and the Herald still say "Timed out".
     /// </summary>
-    public const string TimedOutWithoutWipe = "Timed out without a wipe";
+    public const string TimedOutWithoutWipe = RealmEventRecordStore.TimedOutWithoutWipe;
 
     /// <summary>The outcome a raid's record keeps: a time-out after one or more wipes is a loss; without one it is no result.</summary>
-    public static string RecordOutcome(string outcome, int wipes) =>
-        outcome == "Timed out" && wipes <= 0 ? TimedOutWithoutWipe : outcome;
+    public static string RecordOutcome(string outcome, int wipes) => RealmEventRecordStore.RecordOutcome(outcome, wipes);
 
     /// <summary>
     /// Parties the realm sends after a wipe (1-3), over the encounter's whole record (oldest first): three to start; a win
