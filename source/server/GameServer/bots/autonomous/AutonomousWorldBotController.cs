@@ -3683,6 +3683,14 @@ namespace DOL.GS
             // Less competition first: crowded camps only when every camp is crowded (AutonomousCampCompetition).
             legalCells = AutonomousCampCompetition.PreferQuiet(legalCells, camp => camp.Id, camp => camp.LiveMobCount,
                 bot.PersistentRecord?.CurrentCampId, sharedGroup ? groupSize : 1);
+            // Spread over the zone (owner 2026-11-05: "zones should have bots spread out in them", bots clumped in a few
+            // camps while others stood untouched): an empty camp draws far more often than one already worked, a near
+            // one more often than a far one, still in proportion to its spawns.
+            {
+                string ownCamp = bot.PersistentRecord?.CurrentCampId;
+                int party = sharedGroup ? groupSize : 1;
+                legalCells = legalCells.Select(camp => camp with { SpreadWeight = SpreadWeight(bot, camp, destinations, ownCamp, party) }).ToArray();
+            }
             // This is the deployed selection point. Each distinct verified
             // location has one entry; outdoor draws are weighted by live spawns
             // (capped) with no distance or name preference.
@@ -6002,6 +6010,22 @@ namespace DOL.GS
 
         private static int Distance(int ax, int ay, int bx, int by) =>
             (int)Math.Sqrt(DistanceSquared(ax, ay, bx, by));
+
+        /// <summary>
+        /// A spread weight for the camp draw (True 1.65, owner of that edition 2026-11-05: bots clumped in a few camps
+        /// while others stood untouched): the camp's capped spawns x nearness (4 within 15,000 in the bot's region, 3
+        /// within 25,000, 2 within 40,000, 1 beyond or elsewhere) x 4, divided by one plus the bots already there.
+        /// </summary>
+        private static int SpreadWeight(GameBot bot, AutonomousBotDecisionEngine.Camp camp, Dictionary<string, CampDestination> destinations,
+            string own, int party)
+        {
+            int bots = AutonomousCampCompetition.Occupancy(camp.Id);
+            if (own != null && string.Equals(camp.Id, own, StringComparison.OrdinalIgnoreCase))
+                bots = Math.Max(0, bots - party);
+            int near = !destinations.TryGetValue(camp.Id, out CampDestination d) || d.RegionId != bot.CurrentRegionID ? 1
+                : Distance(bot.X, bot.Y, d.X, d.Y) switch { <= 15_000 => 4, <= 25_000 => 3, <= 40_000 => 2, _ => 1 };
+            return Math.Max(1, AutonomousBotDecisionEngine.OutdoorSpawnWeight(camp) * near * 4 / (1 + bots));
+        }
 
         public static bool IsRouteDestinationReached(Vector3 current, Vector3 destination, bool preciseArrival = false) =>
             preciseArrival ? Vector3.DistanceSquared(current, destination) <=

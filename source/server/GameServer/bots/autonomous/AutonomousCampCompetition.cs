@@ -42,12 +42,18 @@ public static class AutonomousCampCompetition
                 return;
             _nextRefresh = now + RefreshMilliseconds;
         }
+        // A party counts as all its members (owner 2026-11-05: only the leader carries the camp id, so a party of 8
+        // counted as one bot and solos piled in beside it); a bot on a corpse run keeps its place.
         var counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        var groups = new HashSet<Group>();
         foreach (GameBot bot in AutonomousBotRegistry.Snapshot())
         {
             string camp = bot?.PersistentRecord?.CurrentCampId;
-            if (bot is { IsAlive: true } && !string.IsNullOrEmpty(camp))
-                counts[camp] = counts.GetValueOrDefault(camp) + 1;
+            if (bot == null || string.IsNullOrEmpty(camp))
+                continue;
+            int weight = bot.Group is { } group ? (groups.Add(group) ? Math.Max(1, (int)group.MemberCount) : 0) : 1;
+            if (weight > 0)
+                counts[camp] = counts.GetValueOrDefault(camp) + weight;
         }
         lock (Sync)
             _occupancy = counts;   // a new dictionary: NoteAssigned writes to the current one under the same lock
