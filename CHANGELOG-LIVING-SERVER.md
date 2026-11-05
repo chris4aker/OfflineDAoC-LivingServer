@@ -27,6 +27,11 @@ keyboard, overnight or in CI:
   - **Guild dues and merit.** A player's own guild sets dues, earns merit for its levels and takes a gamebot in. The
     dues from the coin they loot together go to the guild bank.
   - Each run writes a report in Markdown and JSON with timings and every chat line it saw.
+- **/faction counts the reply budget** (owner 2026-11-05, with PR #82). The expected /faction rate is now the chat budget's
+  target plus its reply target, as the 1.2 server paces them. A run above the server's ceiling (the ceiling plus the reply
+  ceiling) is flagged in the report and the console; `--fail-over-ceiling` makes it a failure. Against Beta 1.1.2's
+  budget, which has no reply target, the prediction is unchanged, and its 1.2 to 1.4 lines a minute at 10 bots a realm
+  are flagged.
 - It refuses any database that `make_test_world.py` did not make, and runs the server from a copy of its folder, so a
   test run leaves nothing in your install.
 - Its protocol code comes from the new client's network client (`source/new-client`); lometur's HearthDAoC headless

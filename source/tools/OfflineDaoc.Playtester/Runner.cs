@@ -69,6 +69,8 @@ internal static class Runner
                     progress.WriteLine($"     - {step.Outcome,-9} {step.Seconds,6:0.00} s  {step.Name}{(step.Detail.Length > 0 ? " -> " + Short(step.Detail) : "")}");
                 foreach (var (key, value) in ctx.Result.Measured)
                     progress.WriteLine($"     * {key}: {value}");
+                foreach (var flag in ctx.Result.Flags)
+                    progress.WriteLine($"     ! FLAG: {flag}");
             }
         }
         finally

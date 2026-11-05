@@ -175,6 +175,52 @@ public class WorldAndReportTests
     }
 
     [Test]
+    public void TheReplyBudgetIsPartOfThePredictionAndAboveTheCeilingIsFlagged()
+    {
+        // Living Server 1.2: /faction's replies have a budget of their own (AutonomousChatBudget.ReplyBand), scaled like the
+        // ambient band but by bot_voices_chat_rate never below 1.
+        var budget = ChatBudget.Parse("""
+            { "design_bots_per_realm": 1000, "population_exponent": 0.65,
+              "channels": { "faction": { "floor": 2.0, "target": 4.0, "ceiling": 10.0, "reply_target": 4.0, "reply_ceiling": 8.0 },
+                            "say": { "floor": 1.0, "target": 2.0, "ceiling": 5.0, "reply_target": 3.0 } } }
+            """, "test");
+        Assert.That(budget.Channels["say"].ReplyCeiling, Is.EqualTo(6.0), "a reply ceiling left out is twice the reply target, as the server reads it");
+        var p = FactionPrediction.Of(budget, 10, 20, clockSchedule: false, chatRate: 2.0, passShare: 0.5);
+        double scale = Math.Pow(10 / 1000.0, 0.65) * 2.0;
+        Assert.That(p.Replies.Target, Is.EqualTo(4.0 * scale).Within(1e-9));
+        Assert.That(p.Expected, Is.EqualTo(8.0 * scale).Within(1e-9), "the ambient target plus the reply target");
+        Assert.That(p.Expected, Is.EqualTo(0.80).Within(0.01));
+        Assert.That(p.PassMark, Is.EqualTo(p.Expected / 2).Within(1e-9));
+        Assert.That(p.HighMark, Is.EqualTo(18.0 * scale).Within(1e-9), "the ambient ceiling plus the reply ceiling");
+        var none = FactionPrediction.Of(budget, 10, 20, false, 0.0, 0.5);
+        Assert.That(none.Band.Target, Is.EqualTo(0), "bot_voices_chat_rate 0: bots start nothing...");
+        Assert.That(none.Replies.Target, Is.EqualTo(4.0 * scale / 2).Within(1e-9), "... and still answer");
+        // A file without reply values (Beta 1.1.2's) predicts as before.
+        var old = ChatBudget.Parse("""{ "channels": { "faction": { "floor": 2.0, "target": 4.0, "ceiling": 10.0 } } }""", "old");
+        var q = FactionPrediction.Of(old, 10, 20, false, 2.0, 0.5);
+        Assert.That(q.Replies, Is.EqualTo((0.0, 0.0)));
+        Assert.That(q.Expected, Is.EqualTo(q.Band.Target));
+        Assert.That(q.HighMark, Is.EqualTo(q.Band.Ceiling));
+        // The marks.
+        Assert.That(FactionPrediction.Judge(30, 1.0, 0.4, 1.8), Is.EqualTo((true, false)));
+        Assert.That(FactionPrediction.Judge(40, 1.33, 0.14, 0.73), Is.EqualTo((true, true)), "the 1.1.2 runs: a pass, flagged");
+        Assert.That(FactionPrediction.Judge(2, 0.1, 0.3, 1.8), Is.EqualTo((false, false)));
+        Assert.That(FactionPrediction.Judge(0, 0, 0, 1.8), Is.EqualTo((false, false)), "no line at all never passes");
+        Assert.That(FactionPrediction.Judge(5, 9.0, 0.1, 0), Is.EqualTo((true, false)), "no ceiling, no flag");
+    }
+
+    [Test]
+    public void AFlagIsReportedWithoutFailingTheRun()
+    {
+        var report = new RunReport();
+        report.Scenarios.Add(new ScenarioResult { Id = "faction-rate", Outcome = Outcome.Passed, Flags = { "/faction ran at 1.33/min, above 0.73/min" } });
+        Assert.That(report.AnyFailed, Is.False);
+        Assert.That(report.ToMarkdown(), Does.Contain("- FLAG: /faction ran at 1.33/min"));
+        Assert.That(report.ToJson(), Does.Contain("\"flags\""));
+        Assert.That(Cli.ParseOptions(["--fail-over-ceiling", "--world", "w.db"])["fail-over-ceiling"], Is.EqualTo("true"));
+    }
+
+    [Test]
     public void AnInstallsOwnChatBudgetWinsAndTheWorldsSettingsAreRead()
     {
         File.WriteAllText(Path.Combine(_dir, "chat-budget.json"),

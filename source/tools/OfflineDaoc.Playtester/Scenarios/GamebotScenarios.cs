@@ -104,8 +104,9 @@ internal sealed class FactionRate : Scenario
     public override string Checks => "With most of the realm's gamebots online (80% of the roster), a player says one /faction line and " +
         "listens: at least --listen-seconds (default 180) and until 10 lines are expected, at most --max-listen-seconds (default 1800). " +
         "It counts the gamebots' lines (lines a minute, speakers, the first minute) and predicts the rate as the server does: the " +
-        "faction target in chat-budget.json for the bots online, the hour factor and bot_voices_chat_rate. It fails below half of that " +
-        "(or below --min-faction-per-minute when given).";
+        "faction target plus its reply target in chat-budget.json for the bots online, the hour factor and bot_voices_chat_rate. It fails " +
+        "below half of that (or below --min-faction-per-minute when given), and flags a rate above the ambient ceiling plus the reply " +
+        "ceiling (fails it with --fail-over-ceiling).";
 
     public override async Task RunAsync(ScenarioContext ctx)
     {
@@ -143,13 +144,20 @@ internal sealed class FactionRate : Scenario
             int firstMinute = others.Count(l => l.At - start <= 60);
             double expected = Math.Round(samples.Average(p => p.Expected), 3);
             double mark = Math.Round(ctx.Options.MinFactionPerMinute ?? samples.Average(p => p.PassMark), 3);
+            double high = Math.Round(samples.Average(p => p.HighMark), 3);
+            var (passes, tooHigh) = FactionPrediction.Judge(others.Count, rate, mark, high);
             ctx.Measure("faction lines from others", others.Count);
             ctx.Measure("faction lines per minute", rate);
-            ctx.Measure("expected faction lines per minute (chat budget target)", expected);
+            ctx.Measure("expected faction lines per minute (chat budget target + reply target)", expected);
+            ctx.Measure("chat budget target and reply target per minute",
+                $"{samples.Average(p => p.Band.Target):0.###} + {samples.Average(p => p.Replies.Target):0.###}");
             ctx.Measure("faction pass mark per minute", mark + (ctx.Options.MinFactionPerMinute == null
                 ? $" ({ctx.Options.FactionPassShare:0.##} of expected)" : " (--min-faction-per-minute)"));
             ctx.Measure("chat budget floor and ceiling per minute",
                 $"{samples.Average(p => p.Band.Floor):0.###} / {samples.Average(p => p.Band.Ceiling):0.###}");
+            ctx.Measure("reply ceiling per minute", Math.Round(samples.Average(p => p.Replies.Ceiling), 3));
+            ctx.Measure("faction high mark per minute (ceiling + reply ceiling)", high);
+            ctx.Measure("faction over the high mark", tooHigh);
             ctx.Measure("expected faction lines in the listen", Math.Round(expected * minutes, 1));
             ctx.Measure("listen minutes", Math.Round(minutes, 1));
             ctx.Measure("gamebots online in the realm (mean, min-max)",
@@ -162,10 +170,14 @@ internal sealed class FactionRate : Scenario
             ctx.Measure("faction speakers", speakers.Count);
             ctx.Measure("faction lines in the first minute after ours", firstMinute);
             ctx.Measure("our own line shown back to us", echoed);
-            ScenarioContext.Check(others.Count > 0 && rate >= mark,
+            ScenarioContext.Check(passes,
                 $"{others.Count} line(s) in {minutes:0.#} min = {rate}/min, below the pass mark {mark}/min (expected {expected}/min)");
-            return $"{rate}/min measured, {expected}/min expected (pass at {mark}/min): {others.Count} lines from {speakers.Count} " +
-                $"speakers in {minutes:0.#} min; {firstMinute} in the first minute";
+            string over = $"/faction ran at {rate}/min, above the server's ceiling {high}/min (ambient ceiling + reply ceiling; expected {expected}/min)";
+            ScenarioContext.Check(!(tooHigh && ctx.Options.FailOverCeiling), over);
+            if (tooHigh)
+                ctx.Flag(over);
+            return $"{rate}/min measured, {expected}/min expected (pass at {mark}/min, flag above {high}/min{(tooHigh ? ": FLAGGED" : "")}): " +
+                $"{others.Count} lines from {speakers.Count} speakers in {minutes:0.#} min; {firstMinute} in the first minute";
         });
     }
 }

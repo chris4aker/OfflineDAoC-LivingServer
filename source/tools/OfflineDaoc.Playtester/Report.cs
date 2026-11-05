@@ -29,6 +29,8 @@ internal sealed class ScenarioResult
     public List<StepResult> Steps { get; set; } = new();
     public Dictionary<string, object> Measured { get; set; } = new();
     public List<string> Todo { get; set; } = new();
+    /// <summary>What a passing scenario found wrong enough to look at (faction-rate: a channel over its ceiling).</summary>
+    public List<string> Flags { get; set; } = new();
     public List<ChatLine> Chat { get; set; } = new();
 }
 
@@ -101,6 +103,13 @@ internal sealed class RunReport
                 md.AppendLine("Measured:");
                 foreach (var (key, value) in s.Measured)
                     md.AppendLine($"- {key}: {value}");
+                md.AppendLine();
+            }
+            if (s.Flags.Count > 0)
+            {
+                md.AppendLine("Flagged:");
+                foreach (var flag in s.Flags)
+                    md.AppendLine($"- FLAG: {flag}");
                 md.AppendLine();
             }
             if (s.Todo.Count > 0)

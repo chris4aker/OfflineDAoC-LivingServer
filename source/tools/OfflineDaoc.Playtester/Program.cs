@@ -28,7 +28,10 @@ internal static class Cli
                                       expected at the predicted rate
           --max-listen-seconds <n>    ... but at most this long (default 1800)
           --min-faction-per-minute <x> a fixed pass mark for faction-rate (default: half the rate the server's
-                                      chat budget predicts for the bots online, the hour and bot_voices_chat_rate)
+                                      chat budget predicts for the bots online, the hour and bot_voices_chat_rate:
+                                      its ambient target plus its reply target)
+          --fail-over-ceiling         faction-rate fails, instead of flagging, a rate above the server's ceiling
+                                      (the ambient ceiling plus the reply ceiling)
           --bots-online-seconds <n>   how long to wait for gamebots to log in (default 300)
           --keep-server-copy          keep the copy of the server folder the run used (in the report folder)
         The world must be a test world from source/tools/make_test_world.py: the playtester refuses any other database.
@@ -65,6 +68,7 @@ internal static class Cli
             if (opts.TryGetValue("listen-seconds", out var listen)) options.FactionListen = TimeSpan.FromSeconds(double.Parse(listen, System.Globalization.CultureInfo.InvariantCulture));
             if (opts.TryGetValue("max-listen-seconds", out var maxListen)) options.FactionListenMax = TimeSpan.FromSeconds(double.Parse(maxListen, System.Globalization.CultureInfo.InvariantCulture));
             if (opts.TryGetValue("min-faction-per-minute", out var min)) options.MinFactionPerMinute = double.Parse(min, System.Globalization.CultureInfo.InvariantCulture);
+            if (opts.ContainsKey("fail-over-ceiling")) options.FailOverCeiling = true;
             if (opts.TryGetValue("bots-online-seconds", out var bots)) options.BotsOnlineTimeout = TimeSpan.FromSeconds(double.Parse(bots));
         }
         catch (FormatException e) { error.WriteLine($"Bad number: {e.Message}"); return 2; }
@@ -125,7 +129,7 @@ internal static class Cli
             if (!args[i].StartsWith("--"))
                 throw new ArgumentException($"Unexpected argument {args[i]}.");
             string key = args[i][2..];
-            if (key is "attach" or "keep-server-copy")
+            if (key is "attach" or "keep-server-copy" or "fail-over-ceiling")
             {
                 opts[key] = "true";
                 continue;

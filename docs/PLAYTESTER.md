@@ -113,8 +113,11 @@ server start, the quit timer runs up to 60 seconds, so some scenarios wait that 
 The server sets each chat channel's pace from `chat-budget.json` (see [bot-voices/CHAT-BUDGETS.md](bot-voices/CHAT-BUDGETS.md)).
 faction-rate works out the same number:
 
-expected lines a minute = the faction target (4.0) × (gamebots online in the realm ÷ 1000) ^ 0.65 × the hour factor
-× `bot_voices_chat_rate` (0 to 3, default 2)
+expected lines a minute = (the faction target + its reply target) × (gamebots online in the realm ÷ 1000) ^ 0.65 × the
+hour factor × `bot_voices_chat_rate` (0 to 3, default 2; for the reply target never below 1)
+
+The reply target (`reply_target`, from Living Server 1.2, PR #82) is the pace of bots' answers, which the 1.2 server
+counts apart from the lines bots start. A `chat-budget.json` without it (Beta 1.1.2's) predicts the target alone.
 
 - The **budget** is the server folder's own `chat-budget.json` when it has one, or else the one built into the server
   (the playtester carries a copy of it).
@@ -122,10 +125,15 @@ expected lines a minute = the faction target (4.0) × (gamebots online in the re
 - The **hour factor** is the `hours` entry for the PC's hour, or the `hours_clock_schedule` entry when
   `bot_schedule_mode` is `clock`. `bot_voices_chat_rate` and `bot_schedule_mode` are read from the test world.
 - It **passes** at half the expected rate. `--min-faction-per-minute` sets a fixed mark instead.
+- It **flags** a rate above the server's own ceiling, the faction ceiling plus its reply ceiling: the report gets a
+  "FLAG" line and the console a "! FLAG" line, and the scenario still passes. `--fail-over-ceiling` makes it fail.
+  Against Beta 1.1.2's budget (no reply ceiling, ceiling about 0.7-0.9 at 10 bots a realm) the runs below would be
+  flagged; against 1.2's (about 1.5-1.8) they wouldn't.
 - It **listens** until 10 lines are expected: at least `--listen-seconds` (180) and at most `--max-listen-seconds`
   (1800). With 10 gamebots at 5 pm that's about 0.34 lines a minute, so about 29 minutes. A short listen can't tell
   1 line from 0, which is why the 3-minute version failed half the time.
-- The report shows the measured rate next to the expected one, with the floor, the ceiling and each factor.
+- The report shows the measured rate next to the expected one, with the floor, the ceiling, the reply target and
+  ceiling, the high mark and each factor.
 
 ## What ran for real (in the development container, 2026-11-04)
 

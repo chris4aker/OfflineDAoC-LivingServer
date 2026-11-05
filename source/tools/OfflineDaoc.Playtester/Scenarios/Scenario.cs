@@ -16,6 +16,8 @@ internal sealed class PlaytestOptions
     public TimeSpan FactionListen { get; set; } = TimeSpan.FromMinutes(3);
     /// <summary>A fixed /faction pass mark (--min-faction-per-minute); null: half the rate the server's chat budget predicts.</summary>
     public double? MinFactionPerMinute { get; set; }
+    /// <summary>faction-rate above the server's ceiling (ambient plus replies) fails instead of being flagged (--fail-over-ceiling).</summary>
+    public bool FailOverCeiling { get; set; }
     /// <summary>The share of the predicted /faction rate that passes.</summary>
     public double FactionPassShare { get; set; } = 0.5;
     /// <summary>Listen until this many /faction lines are expected at the predicted rate (but at least FactionListen, at most FactionListenMax).</summary>
@@ -176,6 +178,7 @@ internal sealed class ScenarioContext : IAsyncDisposable
 
     public void Measure(string key, object value) => Result.Measured[key] = value;
     public void Todo(string what) => Result.Todo.Add(what);
+    public void Flag(string what) => Result.Flags.Add(what);
 
     public static void Check(bool condition, string failure)
     {
