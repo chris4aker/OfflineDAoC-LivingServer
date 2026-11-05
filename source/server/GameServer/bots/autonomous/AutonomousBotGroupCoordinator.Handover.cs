@@ -56,7 +56,7 @@ public static partial class AutonomousBotGroupCoordinator
                 refusal = "not_bot_led";
                 return false;
             }
-            if (AutonomousRealmRaid.GetView(group) != null || session.RaidMusterEvent != null)
+            if (AutonomousRealmRaid.GetView(group) != null || session.RaidMusterEvent != null || BotLedGroups.ViewOf(group)?.RaidGuest == true)
             {
                 refusal = "raid_party";
                 return false;
@@ -191,6 +191,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         GameBot[] bots = BotMembers(session.Group);
         bool raidParty = AutonomousRealmRaid.GetView(session.Group) != null || session.RaidMusterEvent != null;
+        raidParty |= BotLedGroups.ViewOf(session.Group)?.RaidGuest == true;
         if (!BotLedGroups.OffersLeadOnEnd(HostedPlayerPresent(session), raidParty, bots.Length))
             return false;
         GamePlayer player = session.HostedPlayer;

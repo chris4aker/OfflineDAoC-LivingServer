@@ -140,6 +140,31 @@ gates fell, and the Renegade Lord never dropped below 100%).
   leave a group after `/lead`, its gamebots leave too (as with gamebots you invite) instead of carrying on as a party.
   Nothing here has been played in game yet.
 
+**Raid leaders invite you** (bot-led groups, third part; docs/BOT-LED-GROUPS.md).
+- When a dragon or epic dungeon raid forms in your realm and you are level 50, its **raid leader** may send you a tell
+  ("forming for Gjalpinulva at Svasud Faste. want a spot?") and then a box: "Haldor invites you to join the Gjalpinulva
+  raid. Do you wish to join?" The raid leader is a level-50 officer of a raiding guild in the raid (else the leader of
+  its first party). It works the same in Albion, Midgard and Hibernia.
+- **Once per raid.** A no is final for that raid. Never while you fight, are grouped (a gamebot party hosting you
+  included), ride, trade, have `/spawn` companions out, are `/afk` or have another box open, never in your first 10
+  minutes online, and never for a neutral raid (Darkness Falls and the like) or a raid already in its battle.
+- **Yes** puts you in the raid party that needs your class most, one still at the muster town first. If that party is
+  full, one gamebot of your role (never the party's or the raid's leader) steps out and goes back to its own play,
+  where the raid's refills may take it again. You travel to the muster town yourself (never teleported); your party
+  waits there until the raid leaves, and after that you catch up on your own. The party leader welcomes you in
+  `/group`.
+- **In the raid party** the raid runs the party: `/lead` is refused, its gamebots don't ride porters with you, and no
+  bot-led party invites you. Your kill quests count the party's kills as in a party that hosts you; trash loot is
+  shared as in every group with gamebots, and the raid's own rule for its big drops (a quarter to players) is
+  unchanged. If you leave, the raid fills your seat with a gamebot again.
+- **No gamebot is taken from your group for a raid** (as before): a gamebot in your group or in a party hosting you
+  is never recruited. The gamebots of a raid party you sit in stay the raid's.
+- **Settings:** `bot_raid_invite_player` (on; the launcher's **Raid leaders invite you**). `/invites off` stops these
+  invites too.
+- **For testers:** `RAID_PLAYER_INVITE` lines in the server log (sent, not sent, declined, accepted, seated, not joined,
+  with the reason and who stepped out); the startup `FORK_BUILD` line shows the setting.
+- Nothing here has been played in game yet.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids

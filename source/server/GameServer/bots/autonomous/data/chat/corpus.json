@@ -320169,6 +320169,96 @@
   },
   {
    "kind": "group",
+   "topic": "lead_raid_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "welcome, we wait at {destination} until the raid leaves",
+   "id": "5e8178fa36de"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_raid_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "welcome, we muster at {destination}, see you there",
+   "family": "b43c6bb8ee",
+   "id": "113c13297ae2"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_raid_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "hey, we muster at {destination}, see you there",
+   "family": "b43c6bb8ee",
+   "id": "678fb4f44aa3"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_raid_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "glad you came, meet us at {destination} before we head out",
+   "id": "21c0254e4b86"
+  },
+  {
+   "kind": "group",
    "topic": "lead_pull",
    "who": [],
    "realm": "*",
@@ -320432,6 +320522,130 @@
    "invites": "none",
    "text": "lf 1 more, need a healer for {camp}",
    "id": "6fdf9f870a63"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "forming for {raid} at {destination}. want a spot?",
+   "id": "e87b2b1bac81"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "forming a raid for {raid} at {destination}, want in?",
+   "family": "9943ad0852",
+   "id": "cfe8d26c5aca"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "forming a raid for {raid} at {destination}, you in?",
+   "family": "9943ad0852",
+   "id": "e1d04da4282d"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "putting together a raid for {raid} at {destination}, want in?",
+   "family": "9943ad0852",
+   "id": "394967de60f3"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "putting together a raid for {raid} at {destination}, you in?",
+   "family": "9943ad0852",
+   "id": "f6a2daef4884"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "{raid} raid forming at {destination}, we could use you. want a spot?",
+   "id": "37c14ee514e9"
   },
   {
    "kind": "camp",

@@ -66,6 +66,8 @@ public sealed record SocialExpansionSettings
     public int PlayerLootWeight { get; init; } = DefaultPlayerLootWeight;
     /// <summary>When you say yes to a bot leader's invite: "follow" (the default) or "lead" (bot_led_group_join_mode, Living Server 1.2).</summary>
     public string JoinMode { get; init; } = "follow";
+    /// <summary>A forming raid's leader may invite you at level 50 (bot_raid_invite_player, Living Server 1.2). On by default.</summary>
+    public bool BotRaidInvites { get; init; } = true;
 
     public static readonly string[] JoinModes = ["follow", "lead"];
 
@@ -90,7 +92,7 @@ public sealed record SocialExpansionSettings
         ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingDeeds = true,
         LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, LivingLeeroy = true,
         PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
-        BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow",
+        BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -128,6 +130,7 @@ public sealed record SocialExpansionSettings
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn companions out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
         ("bot_led_group_join_mode", "bots", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back)."),
+        ("bot_raid_invite_player", "bots", "Raid leaders: when a dragon or epic dungeon raid forms in your realm and you are level 50, its raid leader (an officer of a raiding guild) may send you a tell and a box, once per raid. Yes puts you in a party that needs your class (one gamebot of your role steps out); you travel to the muster town yourself. A no is final for that raid. /invites off stops these too."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
         ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab."),
@@ -177,6 +180,7 @@ public sealed record SocialExpansionSettings
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
         ["bot_led_group_join_mode"] = JoinMode,
+        ["bot_raid_invite_player"] = Bool(BotRaidInvites),
     };
 
     private static string Bool(bool value) => value ? "True" : "False";
@@ -342,6 +346,7 @@ public sealed record SocialExpansionSettings
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
             PlayerLootWeight = lootWeight,
             JoinMode = joinMode,
+            BotRaidInvites = ReadBool("bot_raid_invite_player", d.BotRaidInvites),
         };
     }
 
@@ -364,11 +369,11 @@ public sealed record SocialExpansionSettings
         LivingMemory = false, LivingGrats = false, LivingFirsts = false, LivingDeath = false, LivingAlarms = false,
         LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false, LivingBeggars = false,
         LivingDeeds = false, LivingStorylines = false, LivingCharacters = false, LivingRumours = false,
-        LivingHolidays = false, LivingLeeroy = false, BotGroupInvites = false,
+        LivingHolidays = false, LivingLeeroy = false, BotGroupInvites = false, BotRaidInvites = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>
-    public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !BotGroupInvites && PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
+    public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !BotGroupInvites && !BotRaidInvites && PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
 
     /// <summary>Why these settings can't be saved, or null when they can.</summary>
     public string? Validate()

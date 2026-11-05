@@ -84,6 +84,13 @@ just us two left, want to lead?
 [well|hm], it's just us now. you want to lead?
 everyone bailed, your call
 
+# ---- B3: the raid leader (docs/BOT-LED-GROUPS.md, "Raid leaders") ----
+# lead_raid_welcome: the leader of the raid party the player was seated in. {destination} is the raid's muster town.
+@topic lead_raid_welcome
+welcome, we wait at {destination} until the raid leaves
+[welcome|hey], we muster at {destination}, see you there
+glad you came, meet us at {destination} before we head out
+
 # ---- Written for the leader's later calls (not spoken yet: their triggers are not built, see B2 as built) ----
 @topic lead_pull
 pulling
@@ -100,3 +107,13 @@ one more pull, then town to sell
 lf 1 more, any healer?
 [lf|looking for] 1 more for {camp}, any class
 lf 1 more, need a healer for {camp}
+
+# lead_raid_invite: the raid leader's one tell to a level-50 player before the box. {raid} is the encounter's name.
+@kind tell
+@topic lead_raid_invite
+@who *
+@needs lead_call
+@invites none
+forming for {raid} at {destination}. want a spot?
+[forming|putting together] a raid for {raid} at {destination}, [want in|you in]?
+{raid} raid forming at {destination}, we could use you. want a spot?

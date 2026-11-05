@@ -178,7 +178,7 @@ public static partial class BotLedGroups
             return TakeLeadMessage(null);
         Group group = player.Group;
         var state = new TakeLeadState(group != null, group != null && group.LivingLeader == player,
-            group != null && AutonomousRealmRaid.GetView(group) != null, HostedPlayerOf(group) == player);
+            group != null && (AutonomousRealmRaid.GetView(group) != null || ViewOf(group)?.RaidGuest == true), HostedPlayerOf(group) == player);
         string blocked = TakeLeadBlocks(state);
         if (blocked == null && !AutonomousBotGroupCoordinator.TryHandOverToPlayer(player, why, out blocked))
             blocked ??= "party_gone";
