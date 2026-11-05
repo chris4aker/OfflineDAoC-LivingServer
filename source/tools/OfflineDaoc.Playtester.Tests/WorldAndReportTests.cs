@@ -133,6 +133,65 @@ public class WorldAndReportTests
         Assert.That(server.Element("AutoAccountCreation")!.Value, Is.EqualTo("True"));
         var fresh = XDocument.Parse(ServerHost.BuildConfig(null, "/tmp/t.db", 10301)).Root!.Element("Server")!;
         Assert.That(fresh.Element("Port")!.Value, Is.EqualTo("10301"));
+        Assert.That(fresh.Element("RegionPort")!.Value, Is.EqualTo("10401"), "a second test server's UDP and region ports don't collide");
+        Assert.That(fresh.Element("UdpPort")!.Value, Is.EqualTo("10401"));
+    }
+
+    [Test]
+    public void TheBuiltInChatBudgetIsTheServers()
+    {
+        var budget = ChatBudget.Load(null);
+        string server = File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..",
+            "server", "GameServer", "bots", "autonomous", "data", "chat", "chat-budget.json"));
+        var parsed = ChatBudget.Parse(server, "server");
+        Assert.That(budget.DesignBots, Is.EqualTo(parsed.DesignBots));
+        Assert.That(budget.Hours, Is.EqualTo(parsed.Hours));
+        Assert.That(budget.Channels["faction"], Is.EqualTo(parsed.Channels["faction"]));
+    }
+
+    [Test]
+    public void TheFactionRateIsPredictedAsTheServerDoes()
+    {
+        // AutonomousChatBudget.Band: target x (bots / design) ^ exponent x hour factor x clamp(rate, 0, 3).
+        var budget = ChatBudget.Parse("""
+            { // comments and trailing commas, as the server allows
+              "design_bots_per_realm": 1000, "population_exponent": 0.65,
+              "hours": [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.86,1,1,1,1,1,1],
+              "hours_clock_schedule": [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.96,0.5,0.5,0.5,0.5,0.5,0.5],
+              "channels": { "faction": { "floor": 2.0, "target": 4.0, "ceiling": 10.0, }, },
+            }
+            """, "test");
+        var p = FactionPrediction.Of(budget, 10, 17, clockSchedule: false, chatRate: 2.0, passShare: 0.5);
+        double population = Math.Pow(10 / 1000.0, 0.65);
+        Assert.That(p.PopulationFactor, Is.EqualTo(population).Within(1e-9));
+        Assert.That(p.Expected, Is.EqualTo(4.0 * population * 0.86 * 2.0).Within(1e-9));
+        Assert.That(p.Expected, Is.EqualTo(0.345).Within(0.001));
+        Assert.That(p.PassMark, Is.EqualTo(p.Expected / 2).Within(1e-9));
+        Assert.That(p.Band.Floor, Is.EqualTo(p.Expected / 2).Within(1e-9));
+        Assert.That(FactionPrediction.Of(budget, 10, 17, true, 2.0, 0.5).HourFactor, Is.EqualTo(0.96));
+        Assert.That(FactionPrediction.Of(budget, 10, 17, false, 9.0, 0.5).Expected, Is.EqualTo(p.Expected * 1.5).Within(1e-9), "the rate is clamped to 3");
+        Assert.That(FactionPrediction.Of(budget, 0, 17, false, 2.0, 0.5).BotsOnline, Is.EqualTo(0));
+        Assert.That(FactionPrediction.Of(budget, 0, 17, false, 2.0, 0.5).PopulationFactor, Is.EqualTo(Math.Pow(1 / 1000.0, 0.65)).Within(1e-12), "at least one bot");
+    }
+
+    [Test]
+    public void AnInstallsOwnChatBudgetWinsAndTheWorldsSettingsAreRead()
+    {
+        File.WriteAllText(Path.Combine(_dir, "chat-budget.json"),
+            """{"design_bots_per_realm": 100, "channels": {"faction": {"floor": 1, "target": 2, "ceiling": 3}}}""");
+        var budget = ChatBudget.Load(_dir);
+        Assert.That(budget.DesignBots, Is.EqualTo(100));
+        Assert.That(budget.Source, Does.EndWith("chat-budget.json"));
+        string world = MakeDb(marker: true);
+        Assert.That(FactionPrediction.SettingsOf(TestWorld.Open(world)), Is.EqualTo((2.0, false)), "the server's defaults before its first start");
+        using (var con = new SQLiteConnection($"Data Source={world};Version=3;Pooling=False"))
+        {
+            con.Open();
+            using var cmd = new SQLiteCommand("CREATE TABLE ServerProperty (`Key` TEXT, Value TEXT); " +
+                "INSERT INTO ServerProperty VALUES ('bot_voices_chat_rate', '1.5'), ('bot_schedule_mode', 'Clock')", con);
+            cmd.ExecuteNonQuery();
+        }
+        Assert.That(FactionPrediction.SettingsOf(TestWorld.Open(world)), Is.EqualTo((1.5, true)));
     }
 
     [Test]

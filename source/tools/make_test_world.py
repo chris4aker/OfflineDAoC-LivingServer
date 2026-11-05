@@ -3,7 +3,7 @@
 Two kinds of test world, both written to a NEW file; the source is only ever read:
 
     python make_test_world.py from-release --world <clean release world .db> --out <new test world .db>
-                                           [--bots-per-realm 6]
+                                           [--bots-per-realm 10]
     python make_test_world.py minimal --out <new test world .db>
 
 from-release (the real test world, on the owner's PC)
@@ -257,6 +257,15 @@ def add_test_bots(con: sqlite3.Connection, per_realm: int, helper_level: int = 0
     return names
 
 
+def set_startup_ramp(con: sqlite3.Connection, minutes: int) -> bool:
+    """The server's own startup ramp (ServerProperty startup_ramp_minutes, default 15) set short, so the whole test roster
+    is online a minute after a start, not fifteen. offline_population_settings only mirrors it for the launcher.
+    False when the world has no such row (the server then uses its default)."""
+    if not con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='ServerProperty'").fetchone():
+        return False
+    return con.execute("UPDATE ServerProperty SET Value=? WHERE lower(`Key`)='startup_ramp_minutes'", (str(minutes),)).rowcount > 0
+
+
 def build_from_release(world: Path, out: Path, bots_per_realm: int, helper_level: int = 12) -> dict:
     refuse_paths(out, world)
     sys.path.insert(0, str(HERE))
@@ -277,6 +286,7 @@ def build_from_release(world: Path, out: Path, bots_per_realm: int, helper_level
             bots = add_test_bots(con, bots_per_realm, helper_level) if bots_per_realm else []
             con.execute("UPDATE offline_population_settings SET Value=? WHERE Key='ActiveTarget'", (str(len(bots)),))
             con.execute("UPDATE offline_population_settings SET Value='1' WHERE Key='StartupRampMinutes'")
+            set_startup_ramp(con, 1)
             con.commit()
             report = verify_test_world(con)
         finally:
@@ -311,7 +321,8 @@ def main(argv: list[str] | None = None) -> int:
     rel = sub.add_parser("from-release", help="the real test world, from a clean release world (read only)")
     rel.add_argument("--world", required=True, type=Path, help="a clean release world database (never written)")
     rel.add_argument("--out", required=True, type=Path, help="the new test world file (must not exist)")
-    rel.add_argument("--bots-per-realm", type=int, default=6, help="level-1 gamebots per realm (default 6, 0 for none)")
+    rel.add_argument("--bots-per-realm", type=int, default=10,
+                     help="gamebots per realm (default 10, the most; 0 for none). faction-rate's prediction scales with them")
     rel.add_argument("--helper-level", type=int, default=12,
                      help="the level of each realm's first bot, the kill quest's group mate (default 12, 1 for none)")
     mini = sub.add_parser("minimal", help="a minimal world that needs no game files")

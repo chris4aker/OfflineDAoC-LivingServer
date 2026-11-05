@@ -278,6 +278,18 @@ internal sealed class TestWorld
         return (r.GetInt32(0), trained);
     }
 
+    /// <summary>A server property's value (ServerProperty, by key), or null when the world has no row for it.</summary>
+    public string? Property(string key)
+    {
+        using var con = Connect(Path);
+        using var exists = new SQLiteCommand("SELECT 1 FROM sqlite_master WHERE type='table' AND name='ServerProperty'", con);
+        if (exists.ExecuteScalar() == null)
+            return null;   // a world the server hasn't started on yet: every property is at its default
+        using var cmd = new SQLiteCommand("SELECT Value FROM ServerProperty WHERE lower(`Key`)=lower(@k)", con);
+        cmd.Parameters.AddWithValue("@k", key);
+        return cmd.ExecuteScalar() as string;
+    }
+
     public int AccountPrivLevel(string account)
     {
         using var con = Connect(Path);

@@ -24,8 +24,11 @@ internal static class Cli
           --out <folder>              report folder (default playtest-reports/<UTC time>)
           --host <ip> --port <n>      default 127.0.0.1 10300
           --reply-seconds <n>         a gamebot's tell reply time limit (default 45)
-          --listen-seconds <n>        how long faction-rate listens (default 180)
-          --min-faction-per-minute <x> faction-rate's pass mark (default 0.5)
+          --listen-seconds <n>        faction-rate listens at least this long (default 180) and until 10 lines are
+                                      expected at the predicted rate
+          --max-listen-seconds <n>    ... but at most this long (default 1800)
+          --min-faction-per-minute <x> a fixed pass mark for faction-rate (default: half the rate the server's
+                                      chat budget predicts for the bots online, the hour and bot_voices_chat_rate)
           --bots-online-seconds <n>   how long to wait for gamebots to log in (default 300)
           --keep-server-copy          keep the copy of the server folder the run used (in the report folder)
         The world must be a test world from source/tools/make_test_world.py: the playtester refuses any other database.
@@ -59,7 +62,8 @@ internal static class Cli
             if (opts.TryGetValue("host", out var host)) options.Host = host;
             if (opts.TryGetValue("port", out var port)) options.Port = int.Parse(port);
             if (opts.TryGetValue("reply-seconds", out var reply)) options.TellReplyTimeout = TimeSpan.FromSeconds(double.Parse(reply));
-            if (opts.TryGetValue("listen-seconds", out var listen)) options.FactionListen = TimeSpan.FromSeconds(double.Parse(listen));
+            if (opts.TryGetValue("listen-seconds", out var listen)) options.FactionListen = TimeSpan.FromSeconds(double.Parse(listen, System.Globalization.CultureInfo.InvariantCulture));
+            if (opts.TryGetValue("max-listen-seconds", out var maxListen)) options.FactionListenMax = TimeSpan.FromSeconds(double.Parse(maxListen, System.Globalization.CultureInfo.InvariantCulture));
             if (opts.TryGetValue("min-faction-per-minute", out var min)) options.MinFactionPerMinute = double.Parse(min, System.Globalization.CultureInfo.InvariantCulture);
             if (opts.TryGetValue("bots-online-seconds", out var bots)) options.BotsOnlineTimeout = TimeSpan.FromSeconds(double.Parse(bots));
         }

@@ -43,10 +43,12 @@ You need the .NET 10 SDK (as for building the server) and Python 3.
        --out C:\Games\OfflineDAoC\playtest\test-world.db
    ```
    It prints what it found and did. If you have played in that folder, the "saves in source" line shows it; the copy
-   has none of them. `--bots-per-realm 6` is the default: 18 gamebots in total. Each realm's first one (an Armsman,
-   Warrior or Blademaster) is the **helper**: level 12 (`--helper-level`) and already trained for it, with its specs
-   and trained level written in its record, as a gamebot of that level would have them. The kill-quest and guild
-   scenarios group with it. The others are level 1.
+   has none of them. `--bots-per-realm 10` is the default and the most: 30 gamebots in total (faction-rate wants
+   them: the server's /faction rate grows with the bots online). Each realm's first one (an Armsman, Warrior or
+   Blademaster) is the **helper**: level 12 (`--helper-level`) and already trained for it, with its specs and trained
+   level written in its record, as a gamebot of that level would have them. The kill-quest and guild scenarios group
+   with it. The others are level 1. The server's startup ramp (`startup_ramp_minutes`) is set to 1 minute in the
+   copy, so the whole roster is online a minute after the server starts, not over 15.
 4. **Run the scenarios.** Make a fresh test world for each run, or keep a clean copy of `test-world.db` and copy it
    each time. A run adds characters and moves bots.
    ```
@@ -56,8 +58,8 @@ You need the .NET 10 SDK (as for building the server) and Python 3.
        --server-dir C:\Games\OfflineDAoC\playable-v0.37b-fresh\runtime\server ^
        --out C:\Games\OfflineDAoC\playtest\reports\first
    ```
-   The server runs with the folder's bundled .NET (`tools\dotnet`). A full run takes about 20 minutes, mostly waiting:
-   the quit timer, gamebots logging in, and three minutes of /faction.
+   The server runs with the folder's bundled .NET (`tools\dotnet`). A full run takes about 50 minutes, mostly waiting:
+   the quit timer, gamebots logging in, and up to half an hour of /faction (see faction-rate below).
 5. **Read the report**: `report.md` in the `--out` folder. `report.json` holds the same data plus every chat line. The
    server's console logs are in the same folder (`server-console-1.log`, and `-2` after the restart).
 
@@ -65,7 +67,8 @@ Other options:
 - `--scenarios login-save-restart,tell-gamebot` runs only those scenarios (`list` shows them all).
 - `--attach` uses a server you started yourself on the test world. It skips `login-save-restart`, which restarts the
   server.
-- `--reply-seconds`, `--listen-seconds`, `--min-faction-per-minute` and `--bots-online-seconds` change the limits.
+- `--reply-seconds`, `--listen-seconds`, `--max-listen-seconds`, `--min-faction-per-minute` and `--bots-online-seconds`
+  change the limits.
 - The exit code is 0 when nothing failed (skipped scenarios and incomplete hooks are allowed), 1 when a scenario
   failed, and 2 for bad arguments or setup.
 - Set `PLAYTESTER_TRACE=1` to print every packet sent and received, for working out a protocol question.
@@ -97,13 +100,32 @@ the first login:
 | `chat-players` | any world | Two players at the same start see each other. A `/say` from one is heard by the other, and a tell goes each way. |
 | `group-players` | any world | One player invites the other by name and the other accepts the dialog. Both get the group window with two members, a `/g` line is heard, and `/disband` ends the group. |
 | `tell-gamebot` | gamebots | Wait for gamebots of the realm to be online (the world database's `IsOnline`). Tell up to three of them "hey, how's it going?". Each must answer with a tell within `--reply-seconds` (default 45). |
-| `faction-rate` | gamebots | Say one `/faction` line, then listen for `--listen-seconds` (default 180). Count the gamebots' /faction lines: lines a minute, speakers, and lines in the first minute. It fails below `--min-faction-per-minute` (default 0.5). |
+| `faction-rate` | gamebots | Wait until 80% of the realm's gamebots are online, say one `/faction` line, then listen. Count the gamebots' /faction lines: lines a minute, speakers, and lines in the first minute. The pass mark is what the server predicts (see below). |
 | `delivery-quest` | release world | The GM takes the first delivery quest of the region from the world data (DataQuest whose first step is Deliver). It interacts with the giver and whispers the quest's AcceptText. Then for each step it `/jump`s to the target, gives the step's item from the backpack (or interacts), and checks the quest moves on. It must end with "You have completed the ... quest". |
 | `kill-quest-bot-group` | release world, gamebots | A player (not the GM) does a kill quest with a gamebot, set up the way a player would meet it. The quest is the region's kill quest with a hand-in and the weakest target. The GM makes the player an Armsman (`/player class`) and sets its level 4 above the target, inside the quest's range. The player trains at an Armsman trainer (`/train`), and the GM gives it the coin to buy a slashing weapon of its level from a merchant, which it wields. The player takes the quest, meets the helper gamebot (level 12: above the player and 5 above this target), invites it, and the GM brings the group to the target (`/player jump group`). They fight it, with full health first (`/heal`). The kill must count for the quest (the step item, the journal or "completed"), the hand-in steps run, and it must end with "You have completed the ... quest". It reports the experience of the kill and of the hand-in. |
 | `guild-dues` | release world, gamebots | The GM forms a guild with the player as leader (`/gc create`, after `/gc quit` from the starting guild). The leader sets dues (`/gc dues 50`; the server caps them at its maximum). Two levels (`/player levelup`) must earn the guild merit. The leader invites the helper gamebot into the guild (`/gc invite`) and the group. The group kills up to 8 monsters 6,000 to 30,000 units from the start (away from the village guards), green to blue for the player, until a kill drops coin. A lost fight is given up: the GM brings the player back (`/player rez`) and the next monster is tried. `/gc info` before and after must show the dues in the guild bank. It reports the coin picked up, the dues paid and any merit lines naming the bot. |
 
 The scenarios run in this order against one server. Each one quits its players at the end. In the first minute after a
 server start, the quit timer runs up to 60 seconds, so some scenarios wait that long.
+
+## How faction-rate predicts its pass mark
+
+The server sets each chat channel's pace from `chat-budget.json` (see [bot-voices/CHAT-BUDGETS.md](bot-voices/CHAT-BUDGETS.md)).
+faction-rate works out the same number:
+
+expected lines a minute = the faction target (4.0) × (gamebots online in the realm ÷ 1000) ^ 0.65 × the hour factor
+× `bot_voices_chat_rate` (0 to 3, default 2)
+
+- The **budget** is the server folder's own `chat-budget.json` when it has one, or else the one built into the server
+  (the playtester carries a copy of it).
+- **Gamebots online** are read from the test world every 15 s while it listens, and the expected rate is their mean.
+- The **hour factor** is the `hours` entry for the PC's hour, or the `hours_clock_schedule` entry when
+  `bot_schedule_mode` is `clock`. `bot_voices_chat_rate` and `bot_schedule_mode` are read from the test world.
+- It **passes** at half the expected rate. `--min-faction-per-minute` sets a fixed mark instead.
+- It **listens** until 10 lines are expected: at least `--listen-seconds` (180) and at most `--max-listen-seconds`
+  (1800). With 10 gamebots at 5 pm that's about 0.34 lines a minute, so about 29 minutes. A short listen can't tell
+  1 line from 0, which is why the 3-minute version failed half the time.
+- The report shows the measured rate next to the expected one, with the floor, the ceiling and each factor.
 
 ## What ran for real (in the development container, 2026-11-04)
 
@@ -117,7 +139,15 @@ These runs used the server built from this branch on Linux, without navmeshes or
   - `chat-players` and `group-players` passed.
   - `tell-gamebot` passed: the bots answered in 15.5 s and 5.2 s.
   - `faction-rate` **failed** at 1 line in 3 minutes (0.33 a minute) with 3 gamebots online. An earlier run passed
-    with 7 lines from 3 speakers (2.3 a minute). With so few bots the rate is close to the pass mark.
+    with 7 lines from 3 speakers (2.3 a minute). With so few bots and a fixed mark of 0.5, it failed about half the
+    time. It now predicts its mark (see above). On a test world with 10 gamebots a realm it **passed in 3 of 3
+    runs** (5 to 7 pm):
+
+    | Run | Bots online | Hour factor | Expected a minute | Pass mark | Measured a minute | Lines, speakers |
+    |---|---|---|---|---|---|---|
+    | 1 | 9.3 | 0.885 | 0.338 | 0.169 | 1.414 | 41 in 29 min, 8 |
+    | 2 | 9.6 | 0.920 | 0.360 | 0.180 | 1.402 | 38 in 27 min, 7 |
+    | 3 | 9.0 | 0.937 | 0.350 | 0.175 | 1.291 | 35 in 27 min, 9 |
   - `delivery-quest` passed: Simple Request, completed, 2,300 XP.
   - `kill-quest-bot-group` passed. The quest was Hunt for Slith. The Armsman (level 11, Slash 10, an iron bastard
     sword bought from Alburn Hale) and Aldric (level 12) killed Slith. Aldric was seen targeting it and hit it. The
@@ -135,6 +165,10 @@ Found along the way (not fixed here):
   not of the kill.
 - In the first minute after a server start, `/quit` takes up to 60 s. `/jump to <name>` reads a two-word NPC name as
   a name and a realm.
+- /faction ran at about 4 times the chat budget's target, and above its ceiling (0.85 to 0.90 a minute), in all
+  three faction-rate runs. The budget gates the lines that start a talk (`TryStartBudgeted`). The answers to them,
+  the debates and the gold spammer (10 and 8 lines in two runs) seem to come on top; that is read from the chat, not
+  confirmed. The test only checks the lower side.
 - Without navmeshes (this container) gamebots do not walk to the player. The scenarios move the group with
   `/player jump group`.
 

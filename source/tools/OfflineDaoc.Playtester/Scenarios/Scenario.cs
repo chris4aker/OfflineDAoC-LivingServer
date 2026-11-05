@@ -14,7 +14,15 @@ internal sealed class PlaytestOptions
     public TimeSpan TellReplyTimeout { get; set; } = TimeSpan.FromSeconds(45);
     public TimeSpan BotsOnlineTimeout { get; set; } = TimeSpan.FromMinutes(5);
     public TimeSpan FactionListen { get; set; } = TimeSpan.FromMinutes(3);
-    public double MinFactionPerMinute { get; set; } = 0.5;
+    /// <summary>A fixed /faction pass mark (--min-faction-per-minute); null: half the rate the server's chat budget predicts.</summary>
+    public double? MinFactionPerMinute { get; set; }
+    /// <summary>The share of the predicted /faction rate that passes.</summary>
+    public double FactionPassShare { get; set; } = 0.5;
+    /// <summary>Listen until this many /faction lines are expected at the predicted rate (but at least FactionListen, at most FactionListenMax).</summary>
+    public double FactionExpectedLines { get; set; } = 10;
+    public TimeSpan FactionListenMax { get; set; } = TimeSpan.FromMinutes(30);
+    /// <summary>The share of the realm's roster that must be online before the /faction listen starts.</summary>
+    public double FactionRosterOnline { get; set; } = 0.8;
 }
 
 internal abstract class Scenario

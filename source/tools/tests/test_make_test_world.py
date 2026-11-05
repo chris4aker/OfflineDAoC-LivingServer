@@ -94,6 +94,15 @@ class FromReleaseTests(unittest.TestCase):
         self.assertEqual(con.execute("SELECT COUNT(*) FROM StartupLocation").fetchone()[0], 3)
         con.close()
 
+    def test_the_servers_startup_ramp_is_made_short(self):
+        con = sqlite3.connect(":memory:")
+        self.assertFalse(mtw.set_startup_ramp(con, 1), "no ServerProperty table: nothing to set")
+        con.execute("CREATE TABLE ServerProperty (`Key` TEXT, Value TEXT)")
+        self.assertFalse(mtw.set_startup_ramp(con, 1), "no row: the server's default stands")
+        con.execute("INSERT INTO ServerProperty VALUES ('startup_ramp_minutes', '15'), ('other', '15')")
+        self.assertTrue(mtw.set_startup_ramp(con, 1))
+        self.assertEqual(dict(con.execute("SELECT `Key`, Value FROM ServerProperty")), {"startup_ramp_minutes": "1", "other": "15"})
+
     def test_fixtures_and_bots_go_into_the_copy(self):
         out = self.dir / "copy.db"
         mtw.read_only_copy(self.world, out)

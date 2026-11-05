@@ -96,42 +96,76 @@ internal sealed class TellGamebot : Scenario
     }
 }
 
-/// <summary>(b) /faction carries bot lines at a measured rate.</summary>
+/// <summary>(b) /faction carries bot lines at the rate the server's chat budget predicts.</summary>
 internal sealed class FactionRate : Scenario
 {
     public override string Id => "faction-rate";
-    public override string Title => "/faction shows bot lines at a measured rate";
-    public override string Checks => "A player listens to /faction for --listen-seconds (default 180) after one line of its own and counts " +
-        "the gamebots' lines: lines a minute, speakers, answers in the first minute. Fails below --min-faction-per-minute (default 0.5).";
+    public override string Title => "/faction shows bot lines at the predicted rate";
+    public override string Checks => "With most of the realm's gamebots online (80% of the roster), a player says one /faction line and " +
+        "listens: at least --listen-seconds (default 180) and until 10 lines are expected, at most --max-listen-seconds (default 1800). " +
+        "It counts the gamebots' lines (lines a minute, speakers, the first minute) and predicts the rate as the server does: the " +
+        "faction target in chat-budget.json for the bots online, the hour factor and bot_voices_chat_rate. It fails below half of that " +
+        "(or below --min-faction-per-minute when given).";
 
     public override async Task RunAsync(ScenarioContext ctx)
     {
-        _ = ctx.World.Bots(1).Count > 0 ? 0 : throw new SkipScenario("no gamebots in the test world (the minimal world has none)");
+        int roster = ctx.World.Bots(1).Count;
+        _ = roster > 0 ? 0 : throw new SkipScenario("no gamebots in the test world (the minimal world has none)");
         var player = await ctx.LoginAsync("player", "playtester");
         var me = await ctx.PlayAsync(player, "Ptfact");
-        await Gamebots.OnlineAsync(ctx, 1);
-        await ctx.Step($"say one line in /faction, then listen {ctx.Options.FactionListen.TotalSeconds:0} s", async () =>
+        await Gamebots.OnlineAsync(ctx, 1, Math.Max(1, (int)Math.Ceiling(roster * ctx.Options.FactionRosterOnline)));
+        var budget = ChatBudget.Load(ctx.Server?.ServerDir);
+        var (chatRate, clock) = FactionPrediction.SettingsOf(ctx.World);
+        FactionPrediction Predict() => FactionPrediction.Of(budget, ctx.World.Bots(1).Count(b => b.Online), DateTime.Now.Hour, clock,
+            chatRate, ctx.Options.FactionPassShare);
+        var first = Predict();
+        var listen = first.Expected > 0.001 ? TimeSpan.FromMinutes(ctx.Options.FactionExpectedLines / first.Expected) : ctx.Options.FactionListenMax;
+        if (listen < ctx.Options.FactionListen) listen = ctx.Options.FactionListen;
+        if (listen > ctx.Options.FactionListenMax) listen = ctx.Options.FactionListenMax;
+        await ctx.Step($"say one line in /faction, then listen {listen.TotalSeconds:0} s ({first.Expected:0.###}/min predicted)", async () =>
         {
-            int mark = player.Mark();
             double start = player.Now;
             player.Faction("anyone up for a group in camelot hills?");
-            await Task.Delay(ctx.Options.FactionListen);
+            // The prediction is followed through the listen (bots online, the hour), as the server's live band is.
+            var samples = new List<FactionPrediction> { first };
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            while (watch.Elapsed < listen)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(Math.Min(15, Math.Max(0.1, (listen - watch.Elapsed).TotalSeconds))));
+                samples.Add(Predict());
+            }
             var lines = player.ChatSnapshot().Where(l => l.At >= start && ChatTypes.IsFaction(l, out _)).ToList();
             var others = lines.Where(l => ChatTypes.IsFaction(l, out string who) && !who.Equals(me.Name, StringComparison.OrdinalIgnoreCase)).ToList();
             var speakers = others.Select(l => { ChatTypes.IsFaction(l, out string who); return who; }).Distinct().ToList();
             bool echoed = lines.Count > others.Count;
-            double minutes = ctx.Options.FactionListen.TotalMinutes;
-            double rate = Math.Round(others.Count / minutes, 2);
+            double minutes = listen.TotalMinutes;
+            double rate = Math.Round(others.Count / minutes, 3);
             int firstMinute = others.Count(l => l.At - start <= 60);
+            double expected = Math.Round(samples.Average(p => p.Expected), 3);
+            double mark = Math.Round(ctx.Options.MinFactionPerMinute ?? samples.Average(p => p.PassMark), 3);
             ctx.Measure("faction lines from others", others.Count);
             ctx.Measure("faction lines per minute", rate);
+            ctx.Measure("expected faction lines per minute (chat budget target)", expected);
+            ctx.Measure("faction pass mark per minute", mark + (ctx.Options.MinFactionPerMinute == null
+                ? $" ({ctx.Options.FactionPassShare:0.##} of expected)" : " (--min-faction-per-minute)"));
+            ctx.Measure("chat budget floor and ceiling per minute",
+                $"{samples.Average(p => p.Band.Floor):0.###} / {samples.Average(p => p.Band.Ceiling):0.###}");
+            ctx.Measure("expected faction lines in the listen", Math.Round(expected * minutes, 1));
+            ctx.Measure("listen minutes", Math.Round(minutes, 1));
+            ctx.Measure("gamebots online in the realm (mean, min-max)",
+                $"{samples.Average(p => p.BotsOnline):0.#} ({samples.Min(p => p.BotsOnline)}-{samples.Max(p => p.BotsOnline)} of {roster})");
+            ctx.Measure("population factor", Math.Round(samples.Average(p => p.PopulationFactor), 4));
+            ctx.Measure("hour factor", $"{samples.Average(p => p.HourFactor):0.###} (local hour {first.LocalHour}" +
+                (clock ? ", bot_schedule_mode clock)" : ")"));
+            ctx.Measure("bot_voices_chat_rate", chatRate);
+            ctx.Measure("chat budget", budget.Source);
             ctx.Measure("faction speakers", speakers.Count);
             ctx.Measure("faction lines in the first minute after ours", firstMinute);
             ctx.Measure("our own line shown back to us", echoed);
-            ScenarioContext.Check(others.Count > 0 && rate >= ctx.Options.MinFactionPerMinute,
-                $"{others.Count} line(s) in {minutes:0.#} min = {rate}/min, below {ctx.Options.MinFactionPerMinute}/min");
-            _ = mark;
-            return $"{others.Count} lines from {speakers.Count} speakers in {minutes:0.#} min ({rate}/min); {firstMinute} in the first minute";
+            ScenarioContext.Check(others.Count > 0 && rate >= mark,
+                $"{others.Count} line(s) in {minutes:0.#} min = {rate}/min, below the pass mark {mark}/min (expected {expected}/min)");
+            return $"{rate}/min measured, {expected}/min expected (pass at {mark}/min): {others.Count} lines from {speakers.Count} " +
+                $"speakers in {minutes:0.#} min; {firstMinute} in the first minute";
         });
     }
 }

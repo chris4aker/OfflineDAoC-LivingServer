@@ -26,6 +26,8 @@ internal sealed class ServerHost : IAsyncDisposable
     private TaskCompletionSource<bool>? _started;
     private int _starts;
 
+    /// <summary>The server folder given (only read): where an install's own chat-budget.json would be.</summary>
+    public string ServerDir => _serverDir;
     public string ConfigPath => Path.Combine(_workDir, "serverconfig.xml");
     public string? CurrentLog { get; private set; }
     public List<string> Logs { get; } = new();
@@ -120,6 +122,9 @@ internal sealed class ServerHost : IAsyncDisposable
             if (e == null) server.Add(new XElement(name, value)); else e.Value = value;
         }
         Set("Port", port.ToString());
+        // The region and UDP ports follow (10300 -> 10400, the server's defaults), so two test servers on two ports don't collide.
+        Set("RegionPort", (port + 100).ToString());
+        Set("UdpPort", (port + 100).ToString());
         Set("IP", "127.0.0.1");
         Set("RegionIP", "127.0.0.1");
         Set("UdpIP", "127.0.0.1");

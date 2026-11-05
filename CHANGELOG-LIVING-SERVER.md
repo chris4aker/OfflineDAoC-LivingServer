@@ -19,8 +19,9 @@ keyboard, overnight or in CI:
   file. A `minimal` world needs no game files at all.
 - **`OfflineDaoc.Playtester`** connects to the server as the original 1.127 client does, logs in, makes characters
   and plays scenarios: log in, save and restart the server (the character comes back where it quit); say and tells
-  between two players; a group invite with group chat; a tell to a gamebot (it answers); /faction lines a minute; a
-  delivery quest taken, carried and handed in.
+  between two players; a group invite with group chat; a tell to a gamebot (it answers); /faction lines a minute,
+  passing at half the rate the server's own chat budget predicts for the bots online and the hour; a delivery quest
+  taken, carried and handed in.
   - **A kill quest in a group with a gamebot.** A player is made an Armsman a few levels above the quest. It trains
     at its trainer, buys a weapon, invites the level-12 gamebot, kills the target with it and hands the quest in.
   - **Guild dues and merit.** A player's own guild sets dues, earns merit for its levels and takes a gamebot in. The

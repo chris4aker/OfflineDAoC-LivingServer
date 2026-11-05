@@ -14,6 +14,10 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
   </ItemGroup>
   <ItemGroup>
+    <!-- The server's own chat budget, to predict the /faction rate (ChatBudget.cs) -->
+    <EmbeddedResource Include="..\..\server\GameServer\bots\autonomous\data\chat\chat-budget.json" LogicalName="chat-budget.json" />
+  </ItemGroup>
+  <ItemGroup>
     <InternalsVisibleTo Include="OfflineDaoc.Playtester.Tests" />
   </ItemGroup>
 </Project>
