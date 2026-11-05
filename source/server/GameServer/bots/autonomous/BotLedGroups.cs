@@ -656,6 +656,11 @@ public static partial class BotLedGroups
         public volatile bool HoldsPace;
         public volatile bool BlocksPull;
         public volatile bool BlocksNewTravel;
+        /// <summary>
+        /// B3: the player sits in a realm raid's party (the raid leader's invite). The raid runs the party: no follow rules,
+        /// no /lead, and the party's gamebots don't ride porters with the player (they muster at the raid's hub).
+        /// </summary>
+        public bool RaidGuest { get; init; }
     }
 
     private static readonly ConcurrentDictionary<Group, HostedView> Hosted = new(ReferenceEqualityComparer.Instance);
@@ -722,6 +727,15 @@ public static partial class BotLedGroups
         if (now < _nextPulse)
             return;
         _nextPulse = now + PulseIntervalMs;
+        // B3: a forming raid's leader may invite a level-50 player (bot_raid_invite_player).
+        try
+        {
+            AutonomousRealmRaid.PulsePlayerInvites(now);
+        }
+        catch (Exception exception)
+        {
+            Log.Warn("RAID_PLAYER_INVITE pulse failed", exception);
+        }
         foreach (GamePlayer player in ClientService.Instance.GetPlayers())
         {
             if (player?.Client == null || player.ObjectState != GameObject.eObjectState.Active || player.CurrentRegion == null)
@@ -884,6 +898,8 @@ public static partial class BotLedGroups
         Welcome, WelcomeOnTheWay, MeetupReminder, MeetupGoingOn, WhereAreYou, GoingOn, AfkHold, AfkLetGo, Move, Farewell, PlayerLeft,
         // B2: the handover. Handover: /lead ("all yours"); TakeBack: /lead bot or /makeleader; LastBot: before the box.
         Handover, TakeBack, LastBot,
+        // B3: the raid party's leader welcomes the player the raid leader invited.
+        RaidWelcome,
     }
 
     public static string Topic(Lead what) => what switch
@@ -902,6 +918,7 @@ public static partial class BotLedGroups
         Lead.Handover => "lead_handover",
         Lead.TakeBack => "lead_take",
         Lead.LastBot => "lead_last_bot",
+        Lead.RaidWelcome => "lead_raid_welcome",
         _ => "lead",
     };
 
@@ -925,6 +942,7 @@ public static partial class BotLedGroups
         Lead.Handover => "all yours {player}, we follow you",
         Lead.TakeBack => "ok i'll lead, finding us a camp near here",
         Lead.LastBot => "just us two left, want to lead?",
+        Lead.RaidWelcome => "welcome, we wait at {place} until the raid leaves",
         _ => string.Empty,
     };
 

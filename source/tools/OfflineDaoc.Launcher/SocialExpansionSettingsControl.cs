@@ -52,6 +52,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly NumericUpDown _manaRate = Rate("Power regeneration rate");
     private readonly CheckBox _manaHalved = Switch("Half below 50% power");
     private readonly CheckBox _botGroupInvites = Switch("Bot leaders invite you");
+    private readonly CheckBox _botRaidInvites = Switch("Raid leaders invite you");
     private readonly ComboBox _joinMode = Choice("When you join a bot's group", "Follow", "Lead");
     private readonly NumericUpDown _lootWeight = Number(SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight, "Your loot share");
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
@@ -144,10 +145,11 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         power.Grid.Controls.Add(powerNote, 0, power.Grid.RowCount - 1);
         power.Grid.SetColumnSpan(powerNote, 3);
 
-        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 3);
+        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 4);
         Add(groups, _botGroupInvites, null, "A bot party leader of your level may send you a tell and the group invite box (at most every 45 minutes; /lfg asks for one). Say yes and just follow.");
         Captioned(Caption("YOUR LOOT SHARE", part: false), Add(groups, null, WithUnit(_lootWeight, "members"),
             "In any group with gamebots you count as this many members for coin and items, and upgrades for your class come to you first."));
+        Add(groups, _botRaidInvites, null, "At level 50, a forming dragon or epic dungeon raid's leader may invite you once per raid; one gamebot of your role steps out for you.");
         Captioned(Caption("WHEN YOU JOIN A BOT'S GROUP", part: false), Add(groups, null, _joinMode,
             "Follow: the bot leads and you follow (/lead takes over). Lead: saying yes makes you the leader at once (/lead bot hands it back)."));
 
@@ -204,7 +206,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Controls.Add(scroller);
         scroller.BringToFront();   // docked last, so it fills what the footer leaves
 
-        foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved, _botGroupInvites,
+        foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved, _botGroupInvites, _botRaidInvites,
                      _personalities, _voices, _debates,
                      _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy })
             box.CheckedChanged += (_, _) => Edited();
@@ -286,6 +288,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         ManaRegenModifier = (double)_manaRate.Value,
         ManaHalvedBelowHalf = _manaHalved.Checked,
         BotGroupInvites = _botGroupInvites.Checked,
+        BotRaidInvites = _botRaidInvites.Checked,
         PlayerLootWeight = (int)_lootWeight.Value,
         JoinMode = SocialExpansionSettings.JoinModes[Math.Max(0, _joinMode.SelectedIndex)],
     };
@@ -306,6 +309,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             SocialExpansionSettings.MinManaRegenModifier, SocialExpansionSettings.MaxManaRegenModifier);
         _manaHalved.Checked = settings.ManaHalvedBelowHalf;
         _botGroupInvites.Checked = settings.BotGroupInvites;
+        _botRaidInvites.Checked = settings.BotRaidInvites;
         _lootWeight.Value = Math.Clamp(settings.PlayerLootWeight, SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight);
         _personalities.Checked = settings.Personalities;
         _voices.Checked = settings.Voices;
@@ -446,6 +450,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             s.LivingDeeds, s.LivingStorylines, s.LivingCharacters, s.LivingRumours, s.LivingHolidays, s.LivingLeeroy }.Count(x => x);
         if (living > 0) on.Add($"Server life ({living} of 16 parts)");
         if (s.BotGroupInvites) on.Add("bot leaders' invites");
+        if (s.BotRaidInvites) on.Add("raid leaders' invites");
         if (s.PlayerXpByLevel != "" || s.BotXpByLevel != "") on.Add("XP by level");
         return on.Count == 0
             ? "Settings are loaded from the saved server settings. Everything is off: the game plays like the normal release."

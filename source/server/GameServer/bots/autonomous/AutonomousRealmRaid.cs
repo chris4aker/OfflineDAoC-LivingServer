@@ -7,7 +7,7 @@ using DOL.AI.Brain;
 namespace DOL.GS
 {
     /// <summary>A raid owns commitments, never merges the underlying eight-person parties.</summary>
-    public static class AutonomousRealmRaid
+    public static partial class AutonomousRealmRaid
     {
         public sealed record Definition(string Id, string Name, eRealm Realm, ushort Region, string BossType, int SuggestedBots)
         {

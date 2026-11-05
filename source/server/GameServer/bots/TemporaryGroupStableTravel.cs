@@ -155,7 +155,9 @@ public static class TemporaryGroupStableTravel
     /// come with you, as your invited bots do now"). Null for a bot on its own or in a bot-only party.
     /// </summary>
     public static GamePlayer PlayerTheBotTravelsWith(GameBot bot) =>
-        bot == null ? null : bot.PlayerGroupLeader ?? BotLedGroups.HostedPlayerOf(bot.Group);
+        bot == null ? null : bot.PlayerGroupLeader ??
+            // B3: a realm raid's party with the player in it musters at the raid's hub; it doesn't ride with the player.
+            (BotLedGroups.ViewOf(bot.Group) is { RaidGuest: false } view ? view.Player : null);
 
     public static void MarkAcceptedPlayerTransfer(GamePlayer player)
     {

@@ -5,8 +5,8 @@ can be more passive from a leading perspective."* Roadmap line ([RELEASE-TRAIN.m
 invite the player; bot-led groups the player can follow without leading, with a toggle back to leading; a raid leader
 bot who invites the player. Approved by the owner on 2026-11-04. **B1 (invites and following) is built**, with
 automated tests only; nothing has been played in game yet. **B2 (`/lead`, the handover) is built** the same way,
-automated tests only. B3 (the raid leader) is not built. See [B1 as built](#b1-as-built-2026-11-04) and
-[B2 as built](#b2-as-built-2026-11-05) at the end.
+automated tests only, and **B3 (the raid leader) too**. See [B1 as built](#b1-as-built-2026-11-04),
+[B2 as built](#b2-as-built-2026-11-05) and [B3 as built](#b3-as-built-2026-11-05) at the end.
 
 ## The page for players
 
@@ -279,3 +279,37 @@ the B1 list above (horse and boat rides, the far-side zone-line hold, "release, 
 replacement after the player leaves) is unchanged. The handover's packets, chat timing and the box are not covered by
 automated tests (they need a client); they need the owner's played check: one `/lead` and `/lead bot` per realm, and
 one party left with one gamebot.
+
+## B3 as built (2026-11-05)
+
+Branch `feature/bot-led-groups-b3`, stacked on B2. Change 8. Automated tests only (`UT_RaidLeaderInvite`, the
+launcher's `RaidLeadersInvitesAreSavedReadAndTurnedOffWithAllOff` on Windows CI); **nothing has been played in game**.
+
+| Piece | Where | Notes |
+|---|---|---|
+| Pure rules | `bots/autonomous/RealmRaidPlayerInvite.cs` | `InviteBlocks`, `PickRaidLeader`, `PickParty`, `PickStepOut`, `TargetWithPlayer` / `TargetWithoutPlayer`, the tell and box texts. |
+| `RaidLeader` | `AutonomousRealmRaid.Players.cs` (`AutonomousRealmRaid` is now `partial`) | Computed from the raid's parties: a level-50 rank 0-2 member of a `Raiding`-charter bot guild (highest rank, earliest party, lowest id), else the first party's leader. Not stored in `Raid`, so the raid file is untouched apart from `partial`. |
+| The invite | `AutonomousRealmRaid.PulsePlayerInvites` (from `BotLedGroups.Pulse`, every 5 s, only while a raid runs), `TryInvitePlayer`, `SendRaidInvite`, `ShowRaidBox` | Once per raid per player (`InvitedPlayers`, keyed by raid id and start tick, forgotten when the raid ends); only when a seat exists (`HasSeatFor`); shares the group invite's "never" states, the 10-minute start, the box-waiting flag and `/invites off`; counts as that period's bot tell. Timed on the player, so a leader logging off can't leave the box flag set. |
+| The seat | `AutonomousBotGroupCoordinator.RaidGuest.cs` (`TrySeatRaidGuest`) and `AutonomousRealmRaid.SeatPlayer` | `PickParty` over the raid's parties (roles from each party's session); a full party: `PickStepOut`, the bot leaves the party's roster and lease (not marked released, so refills may take it again), then the group (`ProcessingAttendanceRemovals`) and goes back to its own goals; the party's gamebot target drops by the player's seat. The player is hosted as a **raid guest** (`HostedView.RaidGuest`). |
+| Raid guest | `BotLedGroups.HostedView.RaidGuest`, `TemporaryGroupStableTravel.PlayerTheBotTravelsWith`, `TakeLead`, `TryOfferLeadToLastBot`, `EndHosting` | No follow rules (B1's `StepHostedPlayer` already skips raid parties), no porter rides, no `/lead`, no last-bot box; quest credit, a gamebot leader when one leaves and the loot share apply. Leaving gives the seat back (`OnPlayerLeftParty`). |
+| Lease | unchanged rules | The raid party's gamebots keep `RealmRaid` (`raid_party`), so the raid's own checks (`IsEligible`) keep them and nothing below 40 takes them; a gamebot in the player's group or a hosting party is never recruited (`IsSpokenForByPlayer`). |
+| Settings, chat | `bot_raid_invite_player` (on) in `ServerProperties`, the launcher, `ForkBuildInfo`; `lead_raid_invite` (tell) and `lead_raid_welcome` (group) | Realm-neutral lines. Log: `RAID_PLAYER_INVITE`. |
+
+**Decided while building, for the owner to confirm:**
+- **(confirm)** Invites come until the raid begins its battle (also after the parties left the hub: the player then
+  catches up on their own), for automatic and launcher-forced raids alike, never for neutral raids.
+- **(confirm)** The gamebot that steps out goes back to its own play and may be recruited again by the raid's refills
+  ("the raid's reserve" in the plan); it is not kept reserved.
+- **(confirm)** A party with room takes the player without anyone stepping out, before any full party.
+- **(confirm)** Raid invites keep the 10-minute start, the box-waiting flag and `/invites off`, but not the 45-minute
+  gap or the tell budget's wait (a raid forms rarely and only for a while); the invite still counts as a bot tell.
+- **(confirm)** In a raid party the player's linkdead and AFK timers of B1 don't apply (the raid runs the party).
+
+**Merge note:** `feature/raid-win-balance` (#75) changes `AutonomousRealmRaid.cs` in many places; B3 changes only its
+class line (`partial`). The new partial reads `Raid.Parties`, `Party.Members`, `Party.Target`, `EndPartyLease` and
+`Membership`, so a rename there would need a matching change here; #75's Special Forces slots are recognised the same
+way (a party of Special Forces only).
+
+**Not in B3:** the player in a raid party is not counted at the hub or the staging ring (the raid departs and starts
+on its gamebots' numbers, as the design says); raid chat and battlegroup windows (not in 1.2). Darkness Falls raid AI,
+Legion and the hardest level 70+ encounters are not implemented and nothing here changes that.

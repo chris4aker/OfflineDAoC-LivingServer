@@ -275,6 +275,9 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (session?.HostedPlayer == null)
             return;
+        // B3: a raid guest's seat goes back to the raid, which refills it with a gamebot.
+        if (BotLedGroups.ViewOf(session.Group)?.RaidGuest == true || AutonomousRealmRaid.GetView(session.Group) != null)
+            AutonomousRealmRaid.OnPlayerLeftParty(session.Group);
         session.HostedPlayer = null;
         session.Follow = null;
         BotLedGroups.ClearHosted(session.Group);

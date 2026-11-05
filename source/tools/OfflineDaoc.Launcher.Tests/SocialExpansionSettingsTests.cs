@@ -169,6 +169,18 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Has.Count.EqualTo(1));
     }
 
+    [Test] public void RaidLeadersInvitesAreSavedReadAndTurnedOffWithAllOff()
+    {
+        // Living Server 1.2, bot-led groups B3: on by default.
+        Assert.That(SocialExpansionSettings.Defaults.BotRaidInvites, Is.True);
+        (SocialExpansionSettings.Defaults with { BotRaidInvites = false }).Save(_database, null, () => _stopped);
+        Assert.That(Rows()["bot_raid_invite_player"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).BotRaidInvites, Is.False);
+        Assert.That(problems, Is.Empty);
+        Assert.That(SocialExpansionSettings.Defaults.AllOff().BotRaidInvites, Is.False);
+    }
+
     [Test] public void TheChatRateIsSavedReadAndChecked()
     {
         // Beta 1.1.2: bot_voices_chat_rate in the tab; 2 by default (owner 2026-11-04, after the playtest).
