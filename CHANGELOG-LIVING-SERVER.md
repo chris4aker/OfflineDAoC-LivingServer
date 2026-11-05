@@ -30,7 +30,11 @@ Older entries below keep the names they were written with.
   /faction debates and the gold spammer's waves come less often, and a wave has fewer ads: with 10 bots a realm they come
   about a fifth as often and a wave is two ads. From 300 bots a realm up, nothing changes, so at 900 they come exactly
   as before. In the evening model at "How much they talk" 2, /faction with 10 bots a realm goes from 0.86 to 0.74 lines a
-  minute, and with 300, 900 and 1,000 it stays at 3.96, 6.78 and 6.77. SCENES_PLAYTEST_PLACEHOLDER
+  minute, and with 300, 900 and 1,000 it stays at 3.96, 6.78 and 6.77.
+  The playtester's faction-rate scenario with 10 gamebots a realm (two runs, in the development container): 0.62 and
+  1.03 lines a minute against the 0.66 to 0.69 it now expects (the opener target plus the reply target), with no debate
+  or spam wave in the listen, and neither run flagged. The playtester now listens until 10 lines are expected, so these
+  listens were 14.5 minutes, shorter than the half hour of the earlier runs.
 - **No quieter on a full server.** The world was re-balanced, not cut: /faction's openers keep 4 a minute at a full server
   and its answers come on top of them; /lfg and /trade aim at what 1.1.2 actually delivered (1.8 and 1.6 a minute, were
   1.6 and 1.3); a guild's chat and /say near you have higher floors, so a few bots keep them going. In the evening model
