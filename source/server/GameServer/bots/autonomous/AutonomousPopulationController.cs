@@ -47,6 +47,7 @@ public static class AutonomousPopulationController
     public static void OnServerStarted(DOLEvent e, object sender, EventArgs args)
     {
         Interlocked.Increment(ref _loginGeneration);
+        _rampFinished = false;
         _startedUtc = DateTime.UtcNow;
         AutonomousBotSchedule.NoteServerStarted(_startedUtc);
         OfflineWorldBotRecord[] previouslyOnline = DOLDB<OfflineWorldBotRecord>
@@ -125,6 +126,8 @@ public static class AutonomousPopulationController
                 missing = Math.Min(missing, desired + desired / 4 - AutonomousBotRegistry.Count - PendingSpawns.Count);
             }
             _populationSatisfied = missing <= 0;
+            if (!_rampFinished && AutonomousPopulationRamp.Finished(_cachedEnabled, _cachedRampMinutes, nowUtc - _startedUtc, missing <= 0))
+                _rampFinished = true;
             if (missing <= 0)
                 return;
 
@@ -401,6 +404,15 @@ public static class AutonomousPopulationController
     }
 
     private static volatile bool _populationSatisfied;
+    private static volatile bool _rampFinished;
+
+    /// <summary>The startup ramp has finished (AutonomousPopulationRamp.Finished) since this server start; true when the
+    /// population controller has not started (tests, tools).</summary>
+    public static bool StartupRampFinished => _rampFinished || _startedUtc == default;
+
+    /// <summary>Minutes until the ramp counts as finished at the latest (0 once it has).</summary>
+    public static int StartupRampMinutesLeft => StartupRampFinished ? 0
+        : AutonomousPopulationRamp.MinutesLeft(_cachedRampMinutes, DateTime.UtcNow - _startedUtc);
 
     /// <summary>The non-retired roster as last read by the control plane (read-only; empty before the first read).</summary>
     internal static OfflineWorldBotRecord[] CachedRoster => _cachedRoster;

@@ -58,14 +58,17 @@ public static class RealmRaidRecruitmentPolicy
     // play worse than 2003 players: Caer Sidi at 150 is near the 130-140 that went at the time), never past 300.
     // "If it keeps winning easily, it needs fewer bots next time, so the stakes stay up." The bosses are never touched:
     // the lever is the raid's own size. Each automatic raid (dragons too) is sized from its own encounter's record:
-    // a win trims WinTrim points of today's size, a loss adds WinTrim * target / (100 - target) back (10 at 67%), so
+    // a win trims WinTrim points of the period size, a loss adds WinTrim * target / (100 - target) back (20.3 at 67%), so
     // the size stops moving exactly where the encounter is won target% of the time. It is a running total, not an
     // average of the last few: it settles at the size that wins 2 in 3, not at a size that still wins more often.
     // The other lever is the Epic Special Forces (AutonomousEpicSpecialForces): the help a raid gets after a wipe, from
     // the same record. Size sets the stakes; the Special Forces answer a loss.
+    // 2026-11-05 (owner, after a night of 1 win in 7 on the test copy: bots play well below 2003 players): every raid
+    // starts at 125% of its period size, mid-range, and the steps are doubled (10 per win, 20.3 per loss) so it finds
+    // its size in a few raids, still aiming at 2 in 3.
 
     [ServerProperty("autonomous", "realm_raid_target_win_percent",
-        "Automatic realm raids (dragons too) are sized so each encounter is won about this often: a win trims the next raid at that encounter, a loss adds back. 0 = off (every automatic raid recruits its full size). Bosses are never weakened.", 67)]
+        "Automatic realm raids (dragons too) are sized so each encounter is won about this often: a win trims the next raid at that encounter, a loss adds back. 0 = off (every automatic raid recruits its starting size). Bosses are never weakened.", 67)]
     public static int TargetWinPercentSetting = 67;
 
     [ServerProperty("autonomous", "realm_raid_smallest_size_percent",
@@ -73,41 +76,49 @@ public static class RealmRaidRecruitmentPolicy
     public static int SmallestSizePercentSetting = 70;
 
     [ServerProperty("autonomous", "realm_raid_largest_size_percent",
-        "The largest an automatic realm raid that keeps losing gets, as a percentage of its full size (its period size), never above 300 bots. Every raid starts at 100%.", 150)]
+        "The largest an automatic realm raid that keeps losing gets, as a percentage of its full size (its period size), never above 300 bots.", 150)]
     public static int LargestSizePercentSetting = 150;
 
+    [ServerProperty("autonomous", "realm_raid_start_size_percent",
+        "The size an automatic realm raid starts at before it has any wins or losses, as a percentage of its full size (its period size, docs/RAID-SIZES.md); kept between the smallest and largest size.", 125)]
+    public static int StartSizePercentSetting = 125;
+
     [ServerProperty("autonomous", "realm_raid_win_trim_percent",
-        "Points of its full size an automatic realm raid loses for each win at its encounter (a loss adds more back, so the size settles at the target win rate).", 5)]
-    public static int WinTrimPercentSetting = 5;
+        "Points of its full size an automatic realm raid loses for each win at its encounter (a loss adds more back, so the size settles at the target win rate).", 10)]
+    public static int WinTrimPercentSetting = 10;
 
     /// <summary>The sizing rules, made safe: target 50-90% (0 = off), smallest 25-100%, largest 100-300% and never under
-    /// the smallest, trim 1-25 points.</summary>
-    public readonly record struct SizingRules(int TargetWinPercent, int SmallestPercent, int LargestPercent, int WinTrimPercent)
+    /// the smallest, trim 1-25 points, start between the smallest and the largest.</summary>
+    public readonly record struct SizingRules(int TargetWinPercent, int SmallestPercent, int LargestPercent, int WinTrimPercent,
+        int StartPercent = 100)
     {
-        public static readonly SizingRules Default = new(67, 70, 150, 5);
+        public static readonly SizingRules Default = new(67, 70, 150, 10, 125);
         public bool On => TargetWinPercent > 0;
         public SizingRules Normalized()
         {
             int smallest = Math.Clamp(SmallestPercent, 25, 100);
-            return new(TargetWinPercent <= 0 ? 0 : Math.Clamp(TargetWinPercent, 50, 90), smallest,
-                Math.Clamp(LargestPercent, Math.Max(100, smallest), 300), Math.Clamp(WinTrimPercent, 1, 25));
+            int largest = Math.Clamp(LargestPercent, Math.Max(100, smallest), 300);
+            return new(TargetWinPercent <= 0 ? 0 : Math.Clamp(TargetWinPercent, 50, 90), smallest, largest,
+                Math.Clamp(WinTrimPercent, 1, 25), Math.Clamp(StartPercent, smallest, largest));
         }
         /// <summary>Points a loss adds back: the trim times target / (100 - target), so wins and losses balance at the target.</summary>
         public double LossAddPercent => On ? WinTrimPercent * (double)TargetWinPercent / (100 - TargetWinPercent) : 0;
     }
 
     public static SizingRules RulesFromSettings() =>
-        new SizingRules(TargetWinPercentSetting, SmallestSizePercentSetting, LargestSizePercentSetting, WinTrimPercentSetting).Normalized();
+        new SizingRules(TargetWinPercentSetting, SmallestSizePercentSetting, LargestSizePercentSetting, WinTrimPercentSetting,
+            StartSizePercentSetting).Normalized();
 
     /// <summary>
     /// The raid's size as a percentage of its full size, from its encounter's results (oldest first; only wins and
-    /// losses count): it starts at 100% (the period size) and each win trims, each loss adds, never past the limits.
+    /// losses count): it starts at the starting size (125% of the period size by default) and each win trims, each loss
+    /// adds, never past the limits.
     /// </summary>
     public static double SizePercent(IEnumerable<string> outcomesOldestFirst, SizingRules rules)
     {
         rules = rules.Normalized();
-        if (!rules.On) return 100;
-        double percent = 100;
+        double percent = rules.StartPercent;
+        if (!rules.On) return percent;
         foreach (string outcome in outcomesOldestFirst ?? [])
         {
             if (AutonomousEpicSpecialForces.IsWin(outcome)) percent -= rules.WinTrimPercent;
@@ -155,13 +166,13 @@ public static class RealmRaidRecruitmentPolicy
         string why;
         double percent;
         if (fixedSize) { percent = 100; why = "realm_raid_minimum_bots is set: that size, not sized by results"; }
-        else if (!rules.On) { percent = 100; why = "sizing is off (realm_raid_target_win_percent 0)"; }
-        else if (!recordLoaded) { percent = 100; why = "the record is still loading: full size"; }
+        else if (!rules.On) { percent = rules.StartPercent; why = "sizing is off (realm_raid_target_win_percent 0): the starting size"; }
+        else if (!recordLoaded) { percent = rules.StartPercent; why = "the record is still loading: the starting size"; }
         else
         {
             percent = SizePercent(counted, rules);
             string run = streak > 1 ? $", the last {streak} won" : streak < -1 ? $", the last {-streak} lost" : "";
-            why = counted.Length == 0 ? "no wins or losses here yet: full size"
+            why = counted.Length == 0 ? "no wins or losses here yet: the starting size"
                 : $"{wins} won and {losses} lost here{run}: each win trims {rules.WinTrimPercent} points, each loss adds " +
                   $"{rules.LossAddPercent:0.#}, aiming at {rules.TargetWinPercent}% wins" +
                   (percent <= rules.SmallestPercent ? " (at the smallest size)" : percent >= rules.LargestPercent ? " (at the largest size)" : "");

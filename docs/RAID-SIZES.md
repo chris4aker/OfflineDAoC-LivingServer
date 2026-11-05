@@ -9,9 +9,12 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
 - **Full size:** the period's *comfortable* raid at that encounter, not its minimum. It is the encounter's
   `SuggestedBots` in `AutonomousRealmRaid.cs`. A small roster lowers it to half the realm's free level 50s (never
   under 40), and `realm_raid_minimum_bots` replaces it when set.
-- **Win-rate sizing** (`RealmRaidRecruitmentPolicy.Size`): every raid starts at 100% of its full size. Each win at that
-  encounter trims 5 points; each defeat or time-out adds 10.2. The size settles where the encounter is won about two
-  times in three.
+- **Starting size: 125% of the period size** (`realm_raid_start_size_percent`, owner 2026-11-05). The first night on
+  the period sizes won 1 raid in 7 on the owner's test copy (five defeats after two wipes each, with the Special Forces,
+  and one time-out): bots play well below 2003 players. The period size stays the measure; the start sits mid-range.
+- **Win-rate sizing** (`RealmRaidRecruitmentPolicy.Size`): each win at that encounter trims 10 points of the period
+  size; each defeat or time-out adds 20.3 (doubled on 2026-11-05 so a raid finds its size in a few attempts: two losses
+  take it from the start to the ceiling). The size settles where the encounter is won about two times in three.
   - **Floor 70%:** about the period's "possible, but tough". Apocalypse was "possible with good groups, but tough"
     at 80-90 against a comfortable 90-100.
   - **Ceiling 150%:** room for bots that play worse than 2003 players. Caer Sidi at 150 is about the 130-140 that
@@ -27,13 +30,27 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
   start. The Herald's record of a raid they joined ends "Epic Special Forces joined: N."; older records count as
   raids without them.
 - **Forced raids** (launcher) are unchanged: 200 to go in, 300 reserved. Their results are not part of the record.
+- **After a restart** no automatic raid opens until the bots have finished logging in (the startup ramp, at most ten
+  minutes after its end): the full size is half the realm's free level 50s up to the period size, and two minutes
+  after the restart of 2026-11-04 that gave Tuscaran Glacier 58 instead of 100.
+
+### Starting sizes
+
+| Raid | Period size | Starts at (125%) | Recruits up to | Smallest (70%) | Largest (150%) |
+|---|---|---|---|---|---|
+| Caer Sidi, Galladoria, Tuscaran Glacier | 100 | 125 | 160 | 70 | 150 |
+| Crystal Cave | 120 | 150 | 192 | 84 | 180 |
+| Golestandt, Gjalpinulva, Cuuldurach | 70 | 88 | 112 | 49 | 105 |
+| Summoner's Hall, Darkness Falls, Krondon, Avalon City, Trollheim, Iarnvidiur's Lair, Marfach Caverns | 64 | 80 | 104 | 45 | 96 |
+| Hall of the Corrupt | 48 | 60 | 80 | 34 | 72 |
+| Dodens Gruva, Tur Suil | 40 | 50 | 72 | 28 | 60 |
 
 ## Sizes and sources
 
 Most of the evidence is from Freddyshouse, the European DAoC community forum, in 2003-2004. Thread dates are given.
 "Unverified" means no period count was found for that encounter, and the size follows a comparable boss.
 
-| Raid | Was | Now | Period evidence | Source |
+| Raid | Was | Period size | Period evidence | Source |
 |---|---|---|---|---|
 | Golestandt (Albion dragon) | 200 | 70 | Feb 2003: "a number of players ranging between 125 and 160" in the guide author's four kills. Aug 2003: done with 17-24, "The ideal amount is 24 people", "It does take 2-3 hours to kill him with 23". | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/), [How many ppl to kill the dragon, Aug 2003](https://forums.freddyshouse.com/threads/how-many-ppl-to-kill-the-dragon.139907/) |
 | Cuuldurach (Hibernian dragon) | 200 | 70 | May 2003: "120 brave Hibernians", but "about 30 people attack at any one time" and "5fg attacking the dragon"; the rest held the four entrances against adds. | [How to kill Cuuldurach, May 2003](https://forums.freddyshouse.com/threads/how-to-kill-cuuldurach.124821/) |
@@ -59,6 +76,9 @@ The period sizes are for 2003 players. Two things pull the other way, and win-ra
 - **Easier over time:** dragons came down from 125-160 in early 2003 to 17-24 by August 2003 as gear and tactics
   improved, and to one group or less by 2008. The owner chose 70 (2026-11-04), between the two; a dragon won with 50
   present on 2026-11-04.
-- **Bots may play worse:** the raid grows up to 150% when it keeps losing.
+- **Bots play worse:** confirmed on the first night (1 win in 7). Raids start at 125% and grow up to 150% when they
+  keep losing. Overnight the defeated raids already had 86-104 bots with the Special Forces against period sizes of
+  48-64 (Tuscaran Glacier 94, sized 58 by the restart), so 150% may not be enough for every encounter; the ceiling is a
+  setting.
 
 None of this has been played in game yet. `REALM_RAID_SIZED` in the server log shows each raid's size and why.

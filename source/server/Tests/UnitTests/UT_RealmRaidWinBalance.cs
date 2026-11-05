@@ -29,16 +29,18 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheDefaultsAreTwoInThreeBetweenSeventyAndAHundredAndFiftyPercent()
+        public void TheDefaultsStartAtAHundredAndTwentyFiveAimAtTwoInThreeAndMoveSeventyToAHundredAndFifty()
         {
             Assert.Multiple(() =>
             {
                 Assert.That(RealmRaidRecruitmentPolicy.TargetWinPercentSetting, Is.EqualTo(67));
                 Assert.That(RealmRaidRecruitmentPolicy.SmallestSizePercentSetting, Is.EqualTo(70));
                 Assert.That(RealmRaidRecruitmentPolicy.LargestSizePercentSetting, Is.EqualTo(150));
-                Assert.That(RealmRaidRecruitmentPolicy.WinTrimPercentSetting, Is.EqualTo(5));
+                Assert.That(RealmRaidRecruitmentPolicy.WinTrimPercentSetting, Is.EqualTo(10));
+                Assert.That(RealmRaidRecruitmentPolicy.StartSizePercentSetting, Is.EqualTo(125));
                 Assert.That(RealmRaidRecruitmentPolicy.RulesFromSettings(), Is.EqualTo(Rules));
-                Assert.That(Rules.LossAddPercent, Is.EqualTo(5 * 67 / 33.0).Within(1e-9), "a loss adds about twice what a win trims");
+                Assert.That(Rules.StartPercent, Is.EqualTo(125));
+                Assert.That(Rules.LossAddPercent, Is.EqualTo(10 * 67 / 33.0).Within(1e-9), "a loss adds about twice what a win trims");
             });
         }
 
@@ -73,15 +75,19 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void NoRecordIsThePeriodSize()
+        public void NoRecordStartsAtAHundredAndTwentyFivePercentOfThePeriodSize()
         {
+            // Owner 2026-11-05, after a night of 1 win in 7: bots play well below 2003 players.
             var sizing = RealmRaidRecruitmentPolicy.Size(100, [], Rules);
             Assert.Multiple(() =>
             {
-                Assert.That(sizing.Percent, Is.EqualTo(100));
-                Assert.That(sizing.Required, Is.EqualTo(100));
-                Assert.That(sizing.RecruitCap, Is.EqualTo(128), "a quarter above, in whole parties");
-                Assert.That(RealmRaidRecruitmentPolicy.Size(70, [], Rules).RecruitCap, Is.EqualTo(RealmRaidRecruitmentPolicy.RecruitCap(70)));
+                Assert.That(sizing.Percent, Is.EqualTo(125));
+                Assert.That((sizing.Required, sizing.RecruitCap), Is.EqualTo((125, 160)), "Caer Sidi: a quarter above, in whole parties");
+                foreach (var (period, start, cap) in new[] { (70, 88, 112), (64, 80, 104), (120, 150, 192), (48, 60, 80), (40, 50, 72) })
+                {
+                    var first = RealmRaidRecruitmentPolicy.Size(period, [], Rules);
+                    Assert.That((first.Required, first.RecruitCap), Is.EqualTo((start, cap)), $"period size {period}");
+                }
                 Assert.That(sizing.SpecialForcesOnWipe, Is.EqualTo(3), "the full 24 after a wipe");
                 Assert.That(RealmRaidRecruitmentPolicy.Size(70, [], Rules).SpecialForcesOnWipe, Is.EqualTo(3), "for a dragon raid too");
                 Assert.That(sizing.Why, Does.Contain("no wins or losses"));
@@ -95,9 +101,9 @@ namespace DOL.UnitTests
                 .Select(n => RealmRaidRecruitmentPolicy.SizePercent(Enumerable.Repeat(Win, n), Rules)).ToArray();
             Assert.Multiple(() =>
             {
-                Assert.That(sizes.Take(7), Is.EqualTo(new double[] { 100, 95, 90, 85, 80, 75, 70 }));
+                Assert.That(sizes.Take(7), Is.EqualTo(new double[] { 125, 115, 105, 95, 85, 75, 70 }));
                 Assert.That(sizes.Skip(6), Is.All.EqualTo(70), "never under the smallest size");
-                Assert.That(RealmRaidRecruitmentPolicy.Size(100, [Win], Rules).Required, Is.EqualTo(95));
+                Assert.That(RealmRaidRecruitmentPolicy.Size(100, [Win], Rules).Required, Is.EqualTo(115));
                 Assert.That(RealmRaidRecruitmentPolicy.Size(70, R(Enumerable.Repeat(Win, 6)), Rules).Required, Is.EqualTo(49), "a dragon raid at 70%");
                 Assert.That(RealmRaidRecruitmentPolicy.Size(48, R(Enumerable.Repeat(Win, 6)), Rules).Required, Is.EqualTo(34));
                 Assert.That(RealmRaidRecruitmentPolicy.Size(40, R(Enumerable.Repeat(Win, 6)), Rules).Required, Is.EqualTo(28),
@@ -116,14 +122,14 @@ namespace DOL.UnitTests
                 Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Win, Win, Win, Win, TimedOut], Rules),
                     Is.EqualTo(afterFour + Rules.LossAddPercent).Within(1e-9), "a time-out is a loss");
                 // Bots that play worse than 2003 players: a raid that keeps losing grows above its period size.
-                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Loss], Rules), Is.EqualTo(100 + Rules.LossAddPercent).Within(1e-9));
-                Assert.That(RealmRaidRecruitmentPolicy.SizePercent(Enumerable.Repeat(Loss, 5), Rules), Is.EqualTo(150), "never above 150%");
+                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Loss], Rules), Is.EqualTo(125 + Rules.LossAddPercent).Within(1e-9));
+                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Loss, Loss], Rules), Is.EqualTo(150), "never above 150%");
                 Assert.That(RealmRaidRecruitmentPolicy.Size(100, R(Enumerable.Repeat(Loss, 8)), Rules).Required, Is.EqualTo(150));
                 Assert.That(RealmRaidRecruitmentPolicy.Size(70, R(Enumerable.Repeat(Loss, 8)), Rules).Required, Is.EqualTo(105), "a dragon raid at 150%");
                 Assert.That(RealmRaidRecruitmentPolicy.Size(120, R(Enumerable.Repeat(Loss, 8)), Rules).Required, Is.EqualTo(180));
                 // Two wins and a loss, the target's own mix, leave the size about where it was.
-                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Win, Win, Loss], Rules), Is.EqualTo(90 + Rules.LossAddPercent).Within(1e-9));
-                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Win, Win, Loss], Rules), Is.InRange(99.9, 100.2));
+                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Win, Win, Loss], Rules), Is.EqualTo(105 + Rules.LossAddPercent).Within(1e-9));
+                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Win, Win, Loss], Rules), Is.InRange(124.9, 125.4));
             });
         }
 
@@ -138,8 +144,8 @@ namespace DOL.UnitTests
         {
             Assert.Multiple(() =>
             {
-                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Win, notAResult, notAResult, Win], Rules), Is.EqualTo(90));
-                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([notAResult, notAResult], Rules), Is.EqualTo(100));
+                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([Win, notAResult, notAResult, Win], Rules), Is.EqualTo(105));
+                Assert.That(RealmRaidRecruitmentPolicy.SizePercent([notAResult, notAResult], Rules), Is.EqualTo(125));
                 // The record keeps only results, so restarts and failed rallies never push a real result out of it.
                 RealmRaidRecord.SetForTests("epic-albion", Win, notAResult, Loss, notAResult);
                 Assert.That(RealmRaidRecord.Get("epic-albion"), Is.EqualTo(new[] { Win, Loss }));
@@ -159,8 +165,11 @@ namespace DOL.UnitTests
                 Assert.That((smallest.Required, smallest.RecruitCap), Is.EqualTo((70, 96)));
                 var dragon = RealmRaidRecruitmentPolicy.Size(70, R(Enumerable.Repeat(Win, 10)), Rules);
                 Assert.That((dragon.Required, dragon.RecruitCap), Is.EqualTo((49, 64)));
-                // A 200 raid set by realm_raid_minimum_bots still keeps its 300 cap and never goes past 300.
-                Assert.That(RealmRaidRecruitmentPolicy.Size(200, [Win], Rules).RecruitCap, Is.EqualTo(288), "95% of 300, not RecruitCap(190) = 240");
+                // A big raid scales its 300 cap, and never goes past 300.
+                Assert.That(RealmRaidRecruitmentPolicy.Size(200, R(Enumerable.Repeat(Win, 6)), Rules).RecruitCap, Is.EqualTo(216),
+                    "70% of 300, not RecruitCap(140) = 176");
+                Assert.That(RealmRaidRecruitmentPolicy.Size(200, [], Rules).Required, Is.EqualTo(250));
+                Assert.That(RealmRaidRecruitmentPolicy.Size(200, [], Rules).RecruitCap, Is.EqualTo(300));
                 Assert.That(RealmRaidRecruitmentPolicy.Size(200, R(Enumerable.Repeat(Loss, 8)), Rules).Required, Is.EqualTo(300));
                 foreach (int full in new[] { 40, 48, 64, 70, 100, 120, 200 })
                 for (int wins = 0; wins <= 8; wins++)
@@ -222,9 +231,9 @@ namespace DOL.UnitTests
                 Assert.That((fixedSize.Required, fixedSize.Percent), Is.EqualTo((150, 100.0)));
                 Assert.That(fixedSize.Why, Does.Contain("realm_raid_minimum_bots"));
                 var off = RealmRaidRecruitmentPolicy.Size(100, wins, Rules with { TargetWinPercent = 0 });
-                Assert.That((off.Required, off.RecruitCap), Is.EqualTo((100, 128)));
+                Assert.That((off.Required, off.RecruitCap), Is.EqualTo((125, 160)), "sizing off: the starting size");
                 var loading = RealmRaidRecruitmentPolicy.Size(100, wins, Rules, recordLoaded: false);
-                Assert.That(loading.Required, Is.EqualTo(100), "the ledger still loading: full size");
+                Assert.That(loading.Required, Is.EqualTo(125), "the ledger still loading: the starting size");
                 Assert.That(loading.Why, Does.Contain("loading"));
             });
         }
@@ -252,7 +261,7 @@ namespace DOL.UnitTests
             // Caer Sidi won six times, twice after a wipe with the Special Forces: 70 to stage, 8 after a wipe.
             RaidResult[] six = [Win, Helped, Win, Win, Helped, Win];
             var winning = RealmRaidRecruitmentPolicy.Size(100, six, Rules);
-            // Then two losses in a row: bigger again, a party more for each, and from the start.
+            // Then two losses in a row: 40.6 points bigger again, a party more for each, and from the start.
             var losing = RealmRaidRecruitmentPolicy.Size(100, [.. six, Loss, TimedOut], Rules);
             Assert.Multiple(() =>
             {
@@ -260,7 +269,7 @@ namespace DOL.UnitTests
                     Is.EqualTo((70, 1, false, 6)));
                 Assert.That(losing.Percent, Is.EqualTo(70 + 2 * Rules.LossAddPercent).Within(1e-9));
                 Assert.That((losing.Required, losing.SpecialForcesOnWipe, losing.SpecialForcesFromStart, losing.Streak),
-                    Is.EqualTo((90, 3, true, -2)));
+                    Is.EqualTo((111, 3, true, -2)));
                 Assert.That(losing.Why, Does.Contain("6 won and 2 lost here, the last 2 lost"));
             });
         }
@@ -425,9 +434,9 @@ namespace DOL.UnitTests
         {
             var sizing = RealmRaidRecruitmentPolicy.Size(64, [Win, Win, Win], Rules);
             string line = RealmRaidRecruitmentPolicy.SizedLine("summoners-albion", "Albion", sizing);
-            Assert.That(line, Is.EqualTo("REALM_RAID_SIZED event=summoners-albion realm=Albion full=64 size=85% required=54 recruitCap=72 " +
+            Assert.That(line, Is.EqualTo("REALM_RAID_SIZED event=summoners-albion realm=Albion full=64 size=95% required=61 recruitCap=80 " +
                 "won=3 lost=0 specialForcesOnWipe=24 specialForcesFromStart=False " +
-                "why=\"3 won and 0 lost here, the last 3 won: each win trims 5 points, each loss adds 10.2, aiming at 67% wins\""));
+                "why=\"3 won and 0 lost here, the last 3 won: each win trims 10 points, each loss adds 20.3, aiming at 67% wins\""));
         }
 
         [Test]
@@ -476,13 +485,14 @@ namespace DOL.UnitTests
         }
 
         // seed, the model's coin-flip size and steepness, and the size it wins 2 in 3 at (% of the period size)
-        [TestCase(1, 75, 0.0693, 85)]     // bots as good as 2003 players: the raid comes down below its period size
-        [TestCase(2, 75, 0.0693, 85)]
-        [TestCase(3, 75, 0.0693, 85)]
-        [TestCase(4, 90, 0.0693, 100)]    // just right at the period size
-        [TestCase(5, 110, 0.0693, 120)]   // bots that play worse: the raid grows above its period size
-        [TestCase(6, 95, 0.15, 99.6)]     // a steep encounter: a little smaller and it falls apart
-        [TestCase(7, 60, 0.03, 83.1)]     // a forgiving one: size matters less
+        [TestCase(1, 75, 0.0693, 85)]     // bots as good as 2003 players: the raid comes down well below its start
+        [TestCase(2, 90, 0.0693, 100)]    // just right at the period size
+        [TestCase(3, 115, 0.0693, 125)]   // right at the start (125%)
+        [TestCase(4, 115, 0.0693, 125)]
+        [TestCase(5, 115, 0.0693, 125)]
+        [TestCase(6, 120, 0.0693, 130)]   // bots that play much worse
+        [TestCase(7, 110, 0.15, 114.6)]   // a steep encounter: a little smaller and it falls apart
+        [TestCase(8, 70, 0.03, 93.1)]     // a forgiving one: size matters less
         public void ARaidSettlesNearTwoInThree(int seed, double half, double steep, double twoInThreeAt)
         {
             // 2,000 raids, three in ten of them interrupted (not counted): the record fills past its 400 and slides.
@@ -492,14 +502,15 @@ namespace DOL.UnitTests
             {
                 Assert.That(rate, Is.InRange(0.62, 0.72), "about two in three");
                 // A flat curve settles a little above its 2-in-3 point (a loss adds twice what a win trims).
-                Assert.That(mean, Is.InRange(twoInThreeAt - 7, twoInThreeAt + 7), "around the size the model wins 2 in 3 at");
+                Assert.That(mean, Is.InRange(twoInThreeAt - 8, twoInThreeAt + 8), "around the size the model wins 2 in 3 at");
                 Assert.That(sizes, Is.All.InRange(70.0, 150.0));
-                // Smooth: one raid to the next moves by one step, and once the 400-result record is full by at most one
-                // more (the oldest result drops out of the replay: a new loss and a dropped old win is 10.2 + 5).
-                Assert.That(sizes.Zip(sizes.Skip(1), (a, b) => Math.Abs(a - b)).Max(),
-                    Is.LessThanOrEqualTo(Rules.LossAddPercent + Rules.WinTrimPercent + 1e-9));
-                Assert.That(sizes.Take(RealmRaidRecord.Depth).Zip(sizes.Skip(1), (a, b) => Math.Abs(a - b)).Max(),
-                    Is.LessThanOrEqualTo(Rules.LossAddPercent + 1e-9), "one step while the record fills");
+                // Smooth: one raid to the next moves by one step while the record fills (400 results, years of play), and
+                // after that by at most one more (the oldest result drops out of the replay: a loss and an old win, 30.3),
+                // rarely (JumpsOnceTheRecordIsFull).
+                double[] moves = sizes.Zip(sizes.Skip(1), (a, b) => Math.Abs(a - b)).ToArray();
+                Assert.That(moves.Max(), Is.LessThanOrEqualTo(Rules.LossAddPercent + Rules.WinTrimPercent + 1e-9));
+                Assert.That(moves.Take(RealmRaidRecord.Depth).Max(), Is.LessThanOrEqualTo(Rules.LossAddPercent + 1e-9),
+                    "one step while the record fills");
             });
         }
 
@@ -507,8 +518,41 @@ namespace DOL.UnitTests
         public void TheFirstWinsTrimAtOnceAndTheSizeComesDownWithinTwentyRaids()
         {
             var (_, _, sizes) = Simulate(p => WinChance(p, half: 60), 40, 7);
-            Assert.That(sizes[0], Is.EqualTo(100));
-            Assert.That(sizes.Skip(10).Take(30).Average(), Is.LessThan(90), "an encounter that wins nine in ten comes down");
+            Assert.That(sizes[0], Is.EqualTo(125));
+            Assert.That(sizes.Skip(10).Take(30).Average(), Is.LessThan(100), "an encounter that wins nine in ten comes down");
+        }
+
+        [Test]
+        public void NearTheLargestSizeItFallsShortOfTwoInThree()
+        {
+            // A model that wins 2 in 3 only at 140%: the 150% ceiling cuts the size's swing, so it wins about 6 in 10.
+            // The ceiling is a limit; past it the Special Forces are the help (and the owner can raise it).
+            var (rate, mean, _) = Simulate(p => WinChance(p, half: 130), 2000, 6, interruptedShare: 0.3);
+            TestContext.WriteLine($"near the ceiling: won {rate:P1} at {mean:0.#}%");
+            Assert.Multiple(() =>
+            {
+                Assert.That(rate, Is.InRange(0.5, 0.67));
+                Assert.That(mean, Is.GreaterThan(130));
+            });
+        }
+
+        [Test]
+        public void ALosingRaidReachesTheLargestSizeInTwoLosses()
+        {
+            // 2026-11-05: a raid that keeps losing (as five did overnight) gets its full help within two raids.
+            var (_, _, sizes) = Simulate(_ => 0, 3, 1);
+            Assert.That(sizes, Is.EqualTo(new double[] { 125, 125 + Rules.LossAddPercent, 150 }).Within(1e-9));
+        }
+
+        [Test]
+        public void JumpsOnceTheRecordIsFullAreRare()
+        {
+            // Once 400 results are kept, the oldest drops out of the replay; the measured share of moves above one step.
+            var (_, _, sizes) = Simulate(p => WinChance(p, half: 115), 6000, 21);
+            double[] moves = sizes.Skip(RealmRaidRecord.Depth).Zip(sizes.Skip(RealmRaidRecord.Depth + 1), (a, b) => Math.Abs(a - b)).ToArray();
+            double share = moves.Count(m => m > Rules.LossAddPercent + 1e-9) / (double)moves.Length;
+            TestContext.WriteLine($"moves above one step once the record is full: {share:P2}, largest {moves.Max():0.#}");
+            Assert.That(share, Is.LessThan(0.02));
         }
 
         [Test]
@@ -519,7 +563,7 @@ namespace DOL.UnitTests
             var (rate, mean, _) = Simulate(p => WinChance(p, half: 40), 1000, 11);
             Assert.Multiple(() =>
             {
-                Assert.That(mean, Is.LessThan(75));
+                Assert.That(mean, Is.LessThan(80));
                 Assert.That(rate, Is.GreaterThan(0.85), "the floor is a limit, not a promise of 2 in 3");
             });
         }
@@ -533,6 +577,33 @@ namespace DOL.UnitTests
             {
                 Assert.That(mean, Is.GreaterThan(140));
                 Assert.That(rate, Is.InRange(0.4, 0.6));
+            });
+        }
+
+        // ---- After a restart ----
+
+        [Test]
+        public void AutomaticRaidsWaitForTheStartupRamp()
+        {
+            // 2026-11-04 20:48: Tuscaran Glacier opened two minutes after a restart with full=58, sized from the few level
+            // 50s already logged in. Nothing opens until the roster is in (or ten minutes after the ramp's end).
+            TimeSpan Minutes(double m) => TimeSpan.FromMinutes(m);
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousPopulationRamp.Finished(true, 15, Minutes(2), true), Is.False, "two minutes in");
+                Assert.That(AutonomousPopulationRamp.Finished(true, 15, Minutes(14.9), true), Is.False, "the ramp is still on");
+                Assert.That(AutonomousPopulationRamp.Finished(true, 15, Minutes(15), false), Is.False, "the roster is not all in yet");
+                Assert.That(AutonomousPopulationRamp.Finished(true, 15, Minutes(15), true), Is.True);
+                Assert.That(AutonomousPopulationRamp.Finished(true, 15, Minutes(25), false), Is.True, "ten minutes after the ramp, regardless");
+                Assert.That(AutonomousPopulationRamp.Finished(false, 15, Minutes(0), false), Is.True, "no population: nothing to wait for");
+                Assert.That(AutonomousPopulationRamp.Finished(true, 0, Minutes(0), true), Is.True, "no ramp");
+                Assert.That(AutonomousPopulationRamp.MinutesLeft(15, Minutes(2)), Is.EqualTo(23));
+                Assert.That(AutonomousPopulationRamp.MinutesLeft(15, Minutes(40)), Is.Zero);
+                // With the controller not started (tests, tools) nothing waits.
+                Assert.That(AutonomousPopulationController.StartupRampFinished, Is.True);
+                // Once in, the full size is the period size, not half of a part-logged-in realm.
+                Assert.That(RealmRaidRecruitmentPolicy.RequiredBots(116, 100, 0), Is.EqualTo(58), "what 20:48 gave");
+                Assert.That(RealmRaidRecruitmentPolicy.RequiredBots(600, 100, 0), Is.EqualTo(100));
             });
         }
 

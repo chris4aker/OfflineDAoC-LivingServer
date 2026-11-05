@@ -99,21 +99,25 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - The goal for raids is "mostly successful, high stakes, never a guarantee": about two wins in three. **The bosses are
   never weakened**; only the raid's own size and its help change.
 - **Period sizes.** Every dragon, epic dungeon, Summoner's Hall and Darkness Falls raid needed 200 level 50s and
-  recruited up to 300. Each raid now starts from the size a comfortable raid had there in 2002-2004, from forum raid
-  threads of the time ([docs/RAID-SIZES.md](docs/RAID-SIZES.md) has the table and its sources):
-  - **Dragons:** 70.
-  - **Caer Sidi, Galladoria and Tuscaran Glacier:** 100.
-  - **Summoner's Hall, Darkness Falls, and Krondon, Avalon City, Trollheim, Iarnvidiur's Lair and Marfach:** 64.
-  - **Others:** Crystal Cave 120, Hall of the Corrupt 48, Dodens Gruva and Tur Suil 40.
-  - **Recruiting:** a raid gathers about a quarter more than it needs.
+  recruited up to 300. Each raid is now measured against the size a comfortable raid had there in 2002-2004, from forum
+  raid threads of the time ([docs/RAID-SIZES.md](docs/RAID-SIZES.md) has the table and its sources), and starts at a
+  quarter above it, because bots play worse than 2003 players (the first night on the period sizes won 1 raid in 7):
+  - **Caer Sidi, Galladoria and Tuscaran Glacier:** 125 (period size 100).
+  - **Crystal Cave:** 150 (120).
+  - **Dragons:** 88 (70).
+  - **Summoner's Hall, Darkness Falls, Krondon, Avalon City, Trollheim, Iarnvidiur's Lair and Marfach:** 80 (64).
+  - **Hall of the Corrupt** 60 (48), **Dodens Gruva and Tur Suil** 50 (40).
+  - **Recruiting:** a raid gathers about a quarter more than it needs (Caer Sidi up to 160).
 - **Sizing by results.** Every automatic raid, dragons too, is sized from that encounter's own record in the Herald.
-  - **How it moves:** each win trims the next raid there by 5% of its period size; each defeat or time-out adds 10%
+  - **How it moves:** each win trims the next raid there by 10% of its period size; each defeat or time-out adds 20%
     back. Two wins and a defeat leave it about where it was, so the size settles where the encounter is won about two
-    times in three.
+    times in three. Two defeats take a raid from its start to its largest size.
   - **The limits:** it goes from 70% of the period size (Caer Sidi 70, a dragon 49) up to 150% (Caer Sidi 150, a
     dragon 105) for raids that keep losing, and never past 300.
   - **What counts:** raids cut short by a restart, beaten to the boss by another realm, failed rallies and stopped
     raids don't count.
+- **After a restart** no automatic raid opens until the realm's bots have finished logging in. Before, a raid could
+  open two minutes after a restart and be sized from the few already online (Tuscaran Glacier needed 58, not 100).
 - **Short starts.** A raid out of time still goes in with half of what it needs, now at least 24 (three parties)
   instead of 40, so a small raid isn't held to nearly its full size.
 - **The Epic Special Forces come with 24.** If they helped win at an encounter, they come with 16 the next time a raid
@@ -129,7 +133,7 @@ realm that feels like a full server at its busiest. How it works and how to tune
   nor the Special Forces: the Herald now marks them ("Forced raid: ..."), and older unmarked records count as
   automatic. `realm_raid_minimum_bots`, when set, is used as it stands.
 - **Settings:** `realm_raid_target_win_percent` (67; 0 turns the sizing off), `realm_raid_smallest_size_percent` (70),
-  `realm_raid_largest_size_percent` (150) and `realm_raid_win_trim_percent` (5).
+  `realm_raid_largest_size_percent` (150), `realm_raid_start_size_percent` (125) and `realm_raid_win_trim_percent` (10).
 - **Seeing it:** `/lstest raid` names the size and why, and the server log has a `REALM_RAID_SIZED` line for every
   automatic raid (period size, size, required, recruit limit, wins and losses, the Special Forces it would get, and why);
   `REALM_RAID_SCHEDULED` now shows the size too.
@@ -137,8 +141,9 @@ realm that feels like a full server at its busiest. How it works and how to tune
   and needed three sieges in one session before it moved at all. It is now rebuilt from the Herald's last bot sieges at
   start (sieges answering a player's attack are left out), and every change is logged (`SIEGE_DEFENSE_BALANCE`).
 - Checked: unit tests (`UT_RealmRaidWinBalance`), including a simulation of 2,000 raids against simple models of the
-  chance to win by raid size (bots as good as 2003 players, and worse), which settles at 66-69% wins in every case. The
-  models are guesses, not measurements, and the period sizes are for 2003 players; not played in game yet.
+  chance to win by raid size (bots as good as 2003 players, and worse), which settles at 64-70% wins, except for an
+  encounter that needs nearly the largest size, which wins about 6 in 10. The models are guesses, not measurements;
+  the first night on the period sizes (before the 125% start) won 1 raid in 7. The new sizes are not played in game yet.
 
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
@@ -284,6 +289,10 @@ realm that feels like a full server at its busiest. How it works and how to tune
   the whole list from being built, so every gamebot kept "Searching for a valid XP camp". It is now left out.
 
 **Fixes**
+- **An Animist turret no longer breaks when its target vanishes** (found in the 2026-11-04 overnight test). A pet's
+  ordered target could be cleared at the very moment the pet checked it; that threw an error and the server removed the
+  turret. The pet now checks the target it read, and a pet that has left the world has no target. Base game code.
+  Checked: unit tests (`UT_PetOrderTargetGuard`); not yet seen in game.
 - **The Epic Special Forces join a full raid after a wipe** (found in the 2026-11-04 playtest). Albion's automatic
   Summoner's Hall raid was made of small parties: 34 left the hub and four more joined on the road, 38 parties with 277
   bots. It wiped at Grand Summoner Govannon, and all three Special Forces parties were turned away ("the raid did not

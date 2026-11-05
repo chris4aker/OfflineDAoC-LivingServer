@@ -236,6 +236,8 @@ namespace DOL.GS
                 eRealm realm = ScheduledRealms[index];
                 if (!NextScheduled.TryGetValue(realm, out long due))
                     NextScheduled[realm] = due = now + RealmRaidRecruitmentPolicy.FirstScheduledDelayMilliseconds(index);
+                // A slot that comes due during the startup ramp waits for it (Start refuses until then).
+                if (!AutonomousPopulationController.StartupRampFinished) continue;
                 int online = OnlineLevelFifty(realm);
                 if (!RealmRaidRecruitmentPolicy.ScheduledRaidDue(now, due, Raids.Values.Any(r => r.Definition.Realm == realm), online, minutes))
                     continue;
@@ -534,6 +536,13 @@ namespace DOL.GS
             {
                 reason = $"The dungeon entrance/final approach could not be validated ({RealmRaidDungeonRoute.LastFailure}). No party was assigned.";
                 Log.Warn($"REALM_RAID_START_UNAVAILABLE event={id} reason=\"no validated entrance\" detail=\"{RealmRaidDungeonRoute.LastFailure}\"");
+                return false;
+            }
+            // An automatic raid waits for the startup ramp: its size comes from the realm's online level 50s, and two minutes
+            // after a restart few are in (Tuscaran Glacier opened at 20:48 on 2026-11-04 with full=58, not 100).
+            if (!forced && !AutonomousPopulationController.StartupRampFinished)
+            {
+                reason = $"the realm's gamebots are still logging in after the server start (at most {AutonomousPopulationController.StartupRampMinutesLeft} more minutes)";
                 return false;
             }
             if (preview != null) SupersedeAutomatic(realm, id);
