@@ -1,0 +1,73 @@
+{
+  "id": "flame",
+  "name": "Flame",
+  "catalogKey": "hibernia-named-mobs-classic-zones/flame",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 64, 7,000 health, a ghostly fire in the Cursed Forest that casts Flame Strike (300 heat).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Flame.cs"
+    },
+    {
+      "text": "A second Flame rises when Luriquay dies.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Fire burns on nothing in the Cursed Forest, and the oldest of those fires has a mind. Flame is what is left of a hearth that burned at the heart of the court wood the night the bargain broke. Nobody fed it, and it did not go out. It drifts between the trees as a ghost-fire now, and it strikes at anything warm enough to be worth burning. The Sylvan say it is lonely. It has found company in Luriquay, whose fire it shares.",
+  "legend": "A small fight with a sharp bite: its strikes are heat, so heat resists help. It is weak to anything that puts out fire. Watch out when you kill Luriquay nearby, because another Flame rises from him, and two fires at once is how small groups die.",
+  "yells": {
+    "aggro": [
+      "The ghost-fire flares toward you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The flame burns higher, hungry."
+      }
+    ],
+    "death": [
+      "The fire goes out without smoke."
+    ],
+    "slay": [
+      "Ash."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A fire burns on bare earth, feeding on nothing."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Flame flares up among the trees!"
+      }
+    ],
+    "realmFirstKill": "The ghost-fire of the Cursed Forest is out."
+  },
+  "botLines": {
+    "briefing": [
+      "flame is quick but it hits with heat. [resists up|heat resist buffs] and its done"
+    ],
+    "aftermathWin": [
+      "flame out. [easy|nice]"
+    ],
+    "aftermathLoss": [
+      "flame got the cloth casters before anyone noticed. [watch the heat|resists]"
+    ],
+    "rumour": [
+      "[heard|someone said] flame is the last fire of the court wood, burning on nothing"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Flame",
+    "text": "The ghost of a hearth-fire from the night the court wood broke. It burns on nothing and strikes at anything warm."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Flame in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Flame's head after {minutes} minutes."
+  }
+}

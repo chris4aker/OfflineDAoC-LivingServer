@@ -1,0 +1,83 @@
+{
+  "id": "badb",
+  "name": "Badb",
+  "catalogKey": "hibernia-named-mobs-classic-zones/badb",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health, in the Bog of Cullen. She appears only at night; by day she cannot be seen or targeted.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Badb.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She calls three raven wraiths and casts Voices of Pain (400 cold).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Badb.cs"
+    },
+    {
+      "text": "Irish myth (not game canon): Badb is a war goddess who appears as a crow over battlefields.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Badb"
+    },
+    {
+      "text": "Bot chat: a crow of war nesting in the Bog of Cullen, who smells battles coming.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "In the old songs Badb was a war goddess who flew over battles as a hooded crow and screamed until men lost their nerve. Whether the Badb of the Bog of Cullen is that one, worn thin by the ages, or only something that took her name, the Cullen folk do not argue. She wakes at dusk. By day her nest is empty and the crows sit quiet; at night she is there, and her voice is the cold scream of every battle she remembers. Three ravens that are not quite birds come down at her call. The frontier guards say she has been restless every evening since the keeps began to change hands.",
+  "legend": "Night only: do not bother looking for her by day. When she pulls, three raven wraiths come with her; kill them or hold them while the rest burn her. Her scream is cold damage over the group, so spread and keep cold resists. Do not drag her far from her nest.",
+  "yells": {
+    "aggro": [
+      "The crow has smelled a battle. Here it is."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ravens! Feast!"
+      }
+    ],
+    "death": [
+      "The crow... will come again... when there is war..."
+    ],
+    "slay": [
+      "Carrion."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Crows on every post, all facing the same way."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Raven wraiths drop out of the dark!"
+      }
+    ],
+    "realmFirstKill": "Badb, the crow of war, is silent in the bog."
+  },
+  "botLines": {
+    "briefing": [
+      "badb only shows at night. three raven wraiths come with her, [tanks grab them|cc the ravens]"
+    ],
+    "aftermathWin": [
+      "badb down. [the crows all left at once|every crow in cullen flew off]. eerie"
+    ],
+    "aftermathLoss": [
+      "her scream ate the casters. [spread out|cold resists] next time"
+    ],
+    "rumour": [
+      "[heard|word is] badb has been restless every night since the keeps started changing hands"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Badb",
+    "text": "The war-crow of the Bog of Cullen, who wakes at dusk and smells battle coming. Three raven wraiths come at her call."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Bog of Cullen under {raidLeader} and put down Badb in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Bog of Cullen without Badb's head after {minutes} minutes."
+  }
+}

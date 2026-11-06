@@ -1,0 +1,164 @@
+{
+  "id": "hibernia-wilds",
+  "name": "The Wilds of Hibernia",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "summary": "The haunted places of old Hibernia: the Cursed Forest, the Bog of Cullen, Lough Gur and Evern's stones in Breifine.",
+  "facts": [
+    {
+      "text": "Region 200's named epics stand in four zones: twelve in the Cursed Forest, Badb and Queen Cliodna in the Bog of Cullen, the Melancholic Fairy Queen at Lough Gur, and Evern in Breifine.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Badb and the Melancholic Fairy Queen appear only at night; Develin appears at night once enough pookas have been slain; Giant Caithor's ghost appears after five far dorocha die.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Badb.cs, MelancholicFairyQueen.cs, Develin.cs, Caithor.cs"
+    },
+    {
+      "text": "When the Fairy Queen comes, the server says: 'You hear the sound of trumpets in the distance.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/MelancholicFairyQueen.cs"
+    },
+    {
+      "text": "Irish myth (not game canon): Badb is a war goddess who takes the shape of a crow; Clíodhna is a queen of the sídhe whose birds sing the sick to sleep; the púca is a shape-changing spirit; the fear dorcha is the 'dark man'.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Badb"
+    },
+    {
+      "text": "Bot chat: skeaghshee means fairy thorn, uafas capall the horror horse; the court steps around Juggernaut; fairies landing on Evern's stones heal him; Evern is older than the frontier keeps.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "The Cursed Forest as a wood the courts abandoned is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Hibernia is a kind country by day. The old people say that is because it is so careful at night. Every family knows the places the realm does not go after dark, and they are not hidden: they are on every map, with names that nobody bothered to soften.\n\nThe worst is the Cursed Forest. It was a wood of the courts once, the Sylvan say, a place where the Seelie and the Unseelie met to bargain, and something was spilled there that neither court would take back. Now its trees walk and rot. Its fires burn without fuel. A blight climbs out of its earth in four shapes. A horror horse grazes under the moon, the fairy thorn grows in the shape of a man, a dark man's ghost waits for his servants to die, and a thing called Juggernaut walks through all of it as though it were an open field. Even the courts step around him.\n\nThe Bog of Cullen has its own: Badb, the crow of war, who wakes at dusk and smells battle coming, and Queen Cliodna, whose birds once sang the sick to sleep and now sing the healthy to death. At Lough Gur a fairy queen sits by the water at night, weeping, and trumpets sound when she comes. And on the frontier in Breifine, where the keeps went up long after, a ring of stones stands round Evern, whom the fairies keep alive.\n\nNone of them is the realm's enemy, exactly. They were here first. Hibernia has learned to live beside them, and now and then, with a raid at its back, to remind them it is there.",
+  "legend": "Learn the hours: half the old named come only at night, and some only after you have killed their servants. In the Cursed Forest pull one thing at a time, because everything there has friends. Fairies first at Evern's stones. Steel, not spells, for the fairy thorn. And never whistle on the Cullen road after dark.",
+  "atmosphere": {
+    "firstEntry": [
+      "Hibernia is kind by day. Mind the night.",
+      "The old places of the realm are watching."
+    ],
+    "areas": [
+      {
+        "name": "the Cursed Forest",
+        "x": 490000,
+        "y": 515000,
+        "z": 2600,
+        "radius": 24000,
+        "lines": [
+          "The trees here walk, and some of them rot.",
+          "Something was spilled in this wood. It stayed."
+        ]
+      },
+      {
+        "name": "the Bog of Cullen",
+        "x": 386000,
+        "y": 748500,
+        "z": 5600,
+        "radius": 9000,
+        "lines": [
+          "Crows on every post, all facing the same way."
+        ]
+      },
+      {
+        "name": "Lough Gur at night",
+        "x": 309089,
+        "y": 733925,
+        "z": 6599,
+        "radius": 3000,
+        "lines": [
+          "Someone is weeping by the water."
+        ]
+      },
+      {
+        "name": "Evern's stones",
+        "x": 429883,
+        "y": 380409,
+        "z": 2328,
+        "radius": 2500,
+        "lines": [
+          "A ring of stones. Small lights land and rise."
+        ]
+      },
+      {
+        "name": "the blighted hollow",
+        "x": 475928,
+        "y": 503020,
+        "z": 5259,
+        "radius": 2000,
+        "lines": [
+          "The ground is sick here, and it is spreading."
+        ]
+      },
+      {
+        "name": "the dark man's clearing",
+        "x": 470547,
+        "y": 531497,
+        "z": 4984,
+        "radius": 1800,
+        "lines": [
+          "Dark men stand in a circle, waiting for someone."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the cursed forest was a court wood once. [something got spilled there|neither court will go back]",
+      "half the old named in hibernia only come out at night. [badb, the fairy queen, develin|learn the hours]",
+      "even the courts step around juggernaut. [i am not testing it|me too]",
+      "when you hear trumpets at lough gur after dark, the [fairy queen|melancholic queen] is up"
+    ],
+    "rumour": [
+      "[heard|someone said] the blight in the cursed forest is spreading [again|toward the road]",
+      "crows all over the cullen road tonight. [badb must be up|something is coming]"
+    ],
+    "tell": [
+      "the cursed forest is full of old named. juggernaut, the horror horse, the fairy thorn, the blight. one at a time",
+      "bog of cullen has badb and queen cliodna, lough gur has the fairy queen at night, evern is in breifine"
+    ]
+  },
+  "loremaster": {
+    "intro": "The realm has old places it does not go after dark: the [Cursed Forest], the [Bog of Cullen], [Lough Gur] at night, and the [stones] in Breifine. They were here before us.",
+    "topics": {
+      "Cursed Forest": "A wood of the courts once, where Seelie and Unseelie bargained until something was spilled. Its trees walk, its fires burn on nothing, and [Juggernaut] walks through it.",
+      "Juggernaut": "The courts step around him. So should you, unless you have a raid behind you.",
+      "Bog of Cullen": "Badb the war-crow nests there and wakes at dusk. Queen Cliodna holds court among the reeds.",
+      "Lough Gur": "A fairy queen weeps by the water at night. Trumpets sound when she comes. Her guards come with her.",
+      "stones": "Evern's ring, older than the frontier keeps. The fairies that land on his stones keep him alive."
+    }
+  },
+  "book": {
+    "title": "Places the Realm Does Not Go After Dark",
+    "pages": [
+      "My grandmother kept a list, as every grandmother in Hibernia does. The Cursed Forest, at any hour. The Cullen road after dusk, because the crows wake and the queen of the bog does not like company. Lough Gur after dark, if you hear trumpets. The stones in Breifine, always. She did not say these places were evil. She said they were occupied.",
+      "Of the Cursed Forest she said more. It was a court wood, where the bright folk and the dark folk met to bargain, and one night a bargain broke and something was spilled that neither court would take back. The trees went bad from the root. The ground grew blight. Things came to live there that the courts themselves will not name, and one walks through the wood as if it were a meadow. Even the courts give Juggernaut the road.",
+      "I asked her once why we let them stay. She looked at me a long time. Child, she said, we are the ones who came later. The crow was in the bog before the first Hibernian built a fire. The stones stood in Breifine before anyone thought of a keep. We do not let them stay. They let us live beside them, and now and then the realm goes out with its swords to remind them we are good neighbours."
+    ]
+  },
+  "bosses": [
+    "evern",
+    "badb",
+    "queen-cliodna",
+    "melancholic-fairy-queen",
+    "juggernaut",
+    "blight",
+    "cailean",
+    "giant-caithor",
+    "develin",
+    "flame",
+    "luriquay",
+    "green-maw",
+    "orey-eyed-oghamist",
+    "skeaghshee",
+    "uafas-capall",
+    "wyvernic-wraith"
+  ]
+}

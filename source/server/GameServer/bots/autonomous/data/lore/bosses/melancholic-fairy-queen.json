@@ -1,0 +1,78 @@
+{
+  "id": "melancholic-fairy-queen",
+  "name": "Melancholic Fairy Queen",
+  "catalogKey": "hibernia-named-mobs-classic-zones/melancholicfairyqueen",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, a flying queen at Lough Gur. She appears only at night, announced by 'You hear the sound of trumpets in the distance.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/MelancholicFairyQueen.cs"
+    },
+    {
+      "text": "She calls five melancholic fairy guards and casts a 400 heat spell.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/MelancholicFairyQueen.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat: she sits by Lough Gur and looks like someone locked out of her own door.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Lough Gur is ringed with old doors into the hills, and the Melancholic Fairy Queen sits beside one that will not open for her. She comes only after dark, to a fanfare of trumpets from no instrument anyone can find, with her guard of five behind her, and she weeps by the water until morning. The Ardee folk say she was shut out of her own kingdom on the night the courts quarrelled in the Cursed Forest, and has been waiting ever since for someone to let her in. She does not take it kindly when strangers come instead. Her grief is hot, and her guards are loyal.",
+  "legend": "Wait for the trumpets: she only comes at night. Her five fairy guards come with her; kill or hold them first, then her. She flies, so ranged and casters carry it. Her spell is heat: resists up. Be kind, the old hibs say. Then kill her anyway.",
+  "yells": {
+    "aggro": [
+      "Is it you? Have you come to open the door?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "No. You are not the one."
+      }
+    ],
+    "death": [
+      "The door... I can see it opening..."
+    ],
+    "slay": [
+      "Another who could not open it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Someone is weeping by the water."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Trumpets sound. The Fairy Queen's guard arrives!"
+      }
+    ],
+    "realmFirstKill": "The Melancholic Fairy Queen has gone home at last."
+  },
+  "botLines": {
+    "briefing": [
+      "fairy queen only at night, wait for the trumpets. [five guards first|kill the guards then her]"
+    ],
+    "aftermathWin": [
+      "fairy queen down. [maybe she got home|i hope the door opened for her]"
+    ],
+    "aftermathLoss": [
+      "guards got the healers while we shot at the queen. [guards first|told you]"
+    ],
+    "rumour": [
+      "[heard|someone said] the melancholic queen was locked out of her own hill the night the courts fell out"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fairy Queen",
+    "text": "She weeps by a door into the hills at Lough Gur that will not open for her. Trumpets sound when she comes, at night."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into Lough Gur under {raidLeader} and put down Melancholic Fairy Queen in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from Lough Gur without Melancholic Fairy Queen's head after {minutes} minutes."
+  }
+}

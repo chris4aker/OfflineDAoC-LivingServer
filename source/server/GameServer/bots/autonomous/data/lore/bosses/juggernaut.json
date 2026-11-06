@@ -1,0 +1,73 @@
+{
+  "id": "juggernaut",
+  "name": "Juggernaut",
+  "catalogKey": "hibernia-named-mobs-classic-zones/epicjuggernaut",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 75, 40,000 health, in the Cursed Forest, with a long tether of 3,600.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Juggernaut.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat: people swear the con colours lie about him, and even the faerie court steps around him.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Nobody knows what Juggernaut was before he was the thing that walks through the Cursed Forest. He has no court, no servants, no tricks, and he needs none. He walks his long road through the rotten wood, and walking trees and blights and dark men all get out of his way. The Seelie and the Unseelie, who quarrel about everything, agree on one thing: give him the road. Some say he is the bargain that broke the wood, given a body so that neither court would have to hold it. Others say he is only very big and very angry. Both are true enough to get you killed.",
+  "legend": "No tricks, which is the trick: he simply hits harder than his level should allow. Bring more tanks than you think and keep healers rotating. He ranges far before he turns back, so fight where you pull. Do not pull anything else in the forest at the same time.",
+  "yells": {
+    "aggro": [
+      "The ground shakes with every step."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Juggernaut does not slow down."
+      }
+    ],
+    "death": [
+      "The forest is still. The road is open."
+    ],
+    "slay": [
+      "Juggernaut walks on."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Broken trees in a line, as if something walked."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Juggernaut keeps coming."
+      }
+    ],
+    "realmFirstKill": "Juggernaut has stopped. The Cursed Forest is still."
+  },
+  "botLines": {
+    "briefing": [
+      "juggernaut hits way over his level. [extra tanks|two tanks minimum], rotate the heals"
+    ],
+    "aftermathWin": [
+      "juggernaut down. [the con colours do lie|i believe it now]"
+    ],
+    "aftermathLoss": [
+      "he walked through the tank and [then through us|then everyone]. more tanks"
+    ],
+    "rumour": [
+      "[heard|someone said] even the courts step off the road when juggernaut comes by"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Juggernaut",
+    "text": "The thing that walks the Cursed Forest. No court commands him and both courts give him the road. He hits harder than his size."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Juggernaut in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Juggernaut's head after {minutes} minutes."
+  }
+}

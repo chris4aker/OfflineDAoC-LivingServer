@@ -1,0 +1,78 @@
+{
+  "id": "giant-caithor",
+  "name": "Giant Caithor",
+  "catalogKey": "hibernia-named-mobs-classic-zones/ghostofcaithor",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Four far dorocha stand in his clearing; when five have been slain, the Ghost of Caithor (level 62, 7,000 health) appears, and when the ghost dies the real Giant Caithor rises.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Caithor.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The giant goes back into the ground after five minutes without a fight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Caithor.cs"
+    },
+    {
+      "text": "Irish folklore (not game canon): the fear dorcha, 'dark man', is a sinister fairy figure.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Fear_dorcha"
+    }
+  ],
+  "story": "Caithor was a giant of the old days who served the dark men, the far dorocha, and they did not let him go when he died. They keep his ghost bound in their clearing in the Cursed Forest, and they keep it the way a jailer keeps a key: on their own bodies. Kill enough of the dark men and the binding slips, and the ghost of Caithor comes loose, angry and confused. Lay the ghost and the giant himself stands up out of the earth, as solid as he ever was, to finish the quarrel. If nobody does, he goes back down after a while to wait.",
+  "legend": "Kill the far dorocha first until his ghost appears; kill the ghost; then the real giant rises and that is the fight. Do not waste time between: he sinks back into the ground if nobody fights him for a few minutes.",
+  "yells": {
+    "aggro": [
+      "Who has loosed me?"
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The dark men are dead. Caithor walks again!"
+      }
+    ],
+    "death": [
+      "Free... at last..."
+    ],
+    "slay": [
+      "Another for the dark men."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Dark men stand in a circle, waiting for someone."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The ghost of Caithor tears loose!"
+      }
+    ],
+    "realmFirstKill": "Giant Caithor is laid to rest at last."
+  },
+  "botLines": {
+    "briefing": [
+      "caithor is three steps: kill far dorochas till the ghost shows, kill the ghost, then the real giant. [no breaks|keep moving]"
+    ],
+    "aftermathWin": [
+      "caithor down. [all three of him|ghost and giant both]"
+    ],
+    "aftermathLoss": [
+      "we stopped for a drink after the ghost and the giant [sank back down|despawned]"
+    ],
+    "rumour": [
+      "[heard|someone said] the far dorocha keep caithor's ghost bound on their own bodies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Caithor",
+    "text": "A giant of old bound by the dark men in death. Kill the dark men to loose his ghost, lay the ghost, and the giant himself stands up."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Giant Caithor in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Giant Caithor's head after {minutes} minutes."
+  }
+}

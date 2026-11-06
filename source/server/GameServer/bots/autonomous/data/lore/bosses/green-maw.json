@@ -1,0 +1,68 @@
+{
+  "id": "green-maw",
+  "name": "Green Maw",
+  "catalogKey": "hibernia-named-mobs-classic-zones/greenmaw",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 10,000 health, in the Cursed Forest. When it dies it splits into nine Parts of Green Maw in three sizes (levels about 58-60, 53-55 and 50).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/GreenMaw.cs; docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Green Maw is a hunger the Cursed Forest grew in one of its pools, a mouth of green slime as big as a cart. It eats what falls in and what wanders by. The trouble with it is not killing it. The trouble is what happens after. A thing that is only a mouth does not die as other creatures do. It comes apart, into big pieces and small pieces and smaller ones, and every piece is still a mouth. The Ardee children call it the Maw that won't stay dead.",
+  "legend": "Killing it is the first half. When it dies it splits into nine pieces of three sizes: AoE them down, biggest first, and keep the healers clear of the splash. Have mana left for the second half, because that is where most bands lose it.",
+  "yells": {
+    "aggro": [
+      "The pool heaves and opens into a mouth."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The Maw bulges and splits at the edges."
+      }
+    ],
+    "death": [
+      "The Maw bursts into a dozen hungry pieces!"
+    ],
+    "slay": [
+      "Swallowed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A green pool, very still, with teeth in it."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Green Maw splits into hungry pieces!"
+      }
+    ],
+    "realmFirstKill": "Green Maw is dead, every last piece of it."
+  },
+  "botLines": {
+    "briefing": [
+      "green maw splits into nine bits when it dies. [aoe ready|save mana for the pieces]"
+    ],
+    "aftermathWin": [
+      "maw and all its bits down. [messy|good aoe]"
+    ],
+    "aftermathLoss": [
+      "killed the maw and the pieces [ate the healers|swarmed us]. mana for the second half"
+    ],
+    "rumour": [
+      "[heard|someone said] the ardee kids call it the maw that wont stay dead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Green Maw",
+    "text": "A mouth grown in a pool of the Cursed Forest. It does not die so much as come apart into smaller mouths."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Green Maw in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Green Maw's head after {minutes} minutes."
+  }
+}

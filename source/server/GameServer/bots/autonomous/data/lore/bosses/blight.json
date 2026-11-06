@@ -1,0 +1,78 @@
+{
+  "id": "blight",
+  "name": "Blight",
+  "catalogKey": "hibernia-named-mobs-classic-zones/blight",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "A Blight Controller in the Cursed Forest brings out eight Fire Blights, then four Late Blights, then two Flesh Blights, and only then Blight itself.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Blight is level 70, 30,000 health: 'Bloody bones fly from all directions... forming a single giant skeleton', then 'Blight has taken it's true form! It turns its deadful stare upon you!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Blight.cs"
+    },
+    {
+      "text": "The four-stage blight as a sickness of the wood's earth is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "When the court bargain broke in the Cursed Forest, the earth there sickened, and the sickness has a will. It comes up out of the ground in stages, the way a crop disease does. First it burns, as fire blight, a scatter of smouldering things. Then it rots, as late blight. Then it comes as flesh, and that is when the wise go home. And if a band is foolish enough to destroy all three, the blight gathers the bones of everything it has ever killed out of the soil in a whirling cloud and stands up as a single giant skeleton, and turns its stare on them. The Sylvan say that is its true form. Nobody has asked them how they know.",
+  "legend": "It is a gauntlet, not a fight: eight fire blights, four late blights, two flesh blights, then Blight itself. Pace the healers and the mana across all four waves. Its true form has a dreadful stare; stay spread and do not pull other things in the forest meanwhile.",
+  "yells": {
+    "aggro": [
+      "The earth splits and something smoulders out."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Blight has taken its true form!"
+      }
+    ],
+    "death": [
+      "The bones fall apart. The earth is clean, for now."
+    ],
+    "slay": [
+      "Into the soil with you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground is sick here, and it is spreading."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Bones fly together into a giant skeleton!"
+      }
+    ],
+    "realmFirstKill": "Blight is broken. The Cursed Forest earth is clean."
+  },
+  "botLines": {
+    "briefing": [
+      "blight comes in waves: fire, late, flesh, then the big one. [pace your mana|dont blow everything on wave one]"
+    ],
+    "aftermathWin": [
+      "blight down, all four stages. [long night|good stamina everyone]"
+    ],
+    "aftermathLoss": [
+      "we had nothing left for the skeleton. [pace it|save mana]"
+    ],
+    "rumour": [
+      "[heard|someone said] the blight in the cursed forest gathers the bones of everything it ever killed"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Blight",
+    "text": "The sickness of the Cursed Forest's earth. It comes as fire, rot and flesh, and then as a skeleton of every bone it ever took."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Blight in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Blight's head after {minutes} minutes."
+  }
+}

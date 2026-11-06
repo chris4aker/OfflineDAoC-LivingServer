@@ -1,0 +1,68 @@
+{
+  "id": "wyvernic-wraith",
+  "name": "Wyvernic Wraith",
+  "catalogKey": "hibernia-named-mobs-classic-zones/wyvernicwraith",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 74, 30,000 health, in the Cursed Forest. It casts Elements Strike, 400 energy.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/WyvernicWraith.cs"
+    }
+  ],
+  "story": "There were wyverns over the court wood once, the Sylvan say, before the bargain broke, kept by the courts as lords keep hawks. When the wood went bad they died in their roosts, and one of them did not stay dead. The Wyvernic Wraith is the ghost of that wyvern, still circling the place where its masters fed it. It strikes with a crackle of raw elements, the court magic it was fed on, and it does not seem to know that its masters are gone. Perhaps it is waiting for them. Perhaps that is why it is so angry.",
+  "legend": "A straight fight with a sharp energy strike: energy resists help, healers watch whoever it picks. Kill it where it circles; it does not range far. Clear the walking trees around first, or they wander in while everyone is looking up.",
+  "yells": {
+    "aggro": [
+      "A ghostly wyvern shrieks and dives."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The wraith crackles with the court's old magic."
+      }
+    ],
+    "death": [
+      "The wraith scatters on the wind."
+    ],
+    "slay": [
+      "Prey."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A ghostly wing passes overhead without a sound."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Wyvernic Wraith crackles with raw elements!"
+      }
+    ],
+    "realmFirstKill": "The Wyvernic Wraith has flown its last circle."
+  },
+  "botLines": {
+    "briefing": [
+      "wyvernic wraith hits with energy. [resists up|energy resist], heal whoever it targets"
+    ],
+    "aftermathWin": [
+      "wraith down. [it just blew away|gone like smoke]"
+    ],
+    "aftermathLoss": [
+      "it picked the cleric twice and [nobody healed him|he dropped]"
+    ],
+    "rumour": [
+      "[heard|someone said] the wyvernic wraith was a court wyvern that died in its roost"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Wyvernic Wraith",
+    "text": "The ghost of a court wyvern that died when the wood went bad. It still circles the place its masters fed it."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Wyvernic Wraith in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Wyvernic Wraith's head after {minutes} minutes."
+  }
+}

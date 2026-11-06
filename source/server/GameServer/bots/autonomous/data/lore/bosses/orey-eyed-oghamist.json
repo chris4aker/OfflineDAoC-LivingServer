@@ -1,0 +1,73 @@
+{
+  "id": "orey-eyed-oghamist",
+  "name": "Orey-eyed Oghamist",
+  "catalogKey": "hibernia-named-mobs-classic-zones/oreyeyedoghamist",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 73, 30,000 health, in the Cursed Forest. He casts Energy Blast (800 energy over 1,000), Greater Infirmity (strength and constitution debuff over 400) and a ranged swing for 500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Orey-eyedOghamist.cs"
+    },
+    {
+      "text": "Ogham is the old Irish alphabet of strokes cut on stone and wood. 'Orey-eyed' is unglossed (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Before the realm wrote in ink it wrote in ogham, strokes cut into the edges of standing stones, and the Oghamist was a cutter of them. He went into the court wood to read the stones the courts had left there, and read something he should not have, and his eyes have been strange ever since. He still carries his tools and still cuts. Every mark he makes in the air is a word of power, and the words he learned in the Cursed Forest are unkind ones: a word that bursts, a word that withers, a word that reaches out and cuts from far away.",
+  "legend": "A caster, and a nasty one: his energy blast hits everyone over a wide area, so spread far. He weakens strength and constitution around him, so rebuff, and his ranged cut hits hard. Interrupt him if you can and fight fast.",
+  "yells": {
+    "aggro": [
+      "I have read your name in the stones."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The strokes burn in the air before him."
+      }
+    ],
+    "death": [
+      "The last word... unwritten..."
+    ],
+    "slay": [
+      "Cut into the stone with the rest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Fresh strokes cut into an old stone. Still warm."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Oghamist cuts a word of power!"
+      }
+    ],
+    "realmFirstKill": "The Orey-eyed Oghamist has cut his last stroke."
+  },
+  "botLines": {
+    "briefing": [
+      "oghamist has a huge energy blast. [spread way out|everyone spread], interrupt him, rebuff str and con"
+    ],
+    "aftermathWin": [
+      "oghamist down. [nobody got blasted twice|good spread]"
+    ],
+    "aftermathLoss": [
+      "everyone stood together and the energy blast [hit all of us|wiped the group]"
+    ],
+    "rumour": [
+      "[heard|someone said] the oghamist read something on a court stone and his eyes went wrong"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Oghamist",
+    "text": "A cutter of ogham who read a court stone he should not have. Every stroke he cuts in the air is a word of power."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Orey-eyed Oghamist in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Orey-eyed Oghamist's head after {minutes} minutes."
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "develin",
+  "name": "Develin",
+  "catalogKey": "hibernia-named-mobs-classic-zones/develin",
+  "locationId": "hibernia-wilds",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 60. Develin appears only at night, and only after 20 to 40 pookas have been slain in the Cursed Forest; until then he cannot be seen.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Develin.cs"
+    },
+    {
+      "text": "His pookas come to his aid when he is fought.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish folklore (not game canon): the púca is a shape-changing spirit.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/P%C3%BAca"
+    }
+  ],
+  "story": "Develin is the master of the pookas of the Cursed Forest, and like any master he does not show himself until his servants have been badly treated. Kill one pooka and nothing happens. Kill twenty, thirty, forty, and some night there is a new figure among the trees, watching. He has a name like a Hibernian's, which the Ardee folk find worse than if he had none: they say he was a man once who made a bargain with the pookas and got the better of it, and has regretted it ever since. His pookas still come when he calls.",
+  "legend": "You have to earn him: kill pookas at night until he appears, somewhere between twenty and forty. Then his pookas come to his side, so clear them as they come. A small band can do it if they are patient.",
+  "yells": {
+    "aggro": [
+      "You have been killing my little ones."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Pookas! Your master calls!"
+      }
+    ],
+    "death": [
+      "The bargain... is over..."
+    ],
+    "slay": [
+      "My pookas will play with your bones."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Small shapes run between the trees, laughing."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Develin's pookas swarm to his side!"
+      }
+    ],
+    "realmFirstKill": "Develin's bargain is broken. The pookas scatter."
+  },
+  "botLines": {
+    "briefing": [
+      "develin only shows at night after [twenty to forty pookas|a lot of pookas] die. farm pookas, then he comes"
+    ],
+    "aftermathWin": [
+      "develin down. [finally|took forty pookas]. worth it"
+    ],
+    "aftermathLoss": [
+      "killed thirty pookas and the sun came up. [no develin|night only]"
+    ],
+    "rumour": [
+      "[heard|someone said] develin was a man once who bargained with the pookas"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Develin",
+    "text": "Master of the Cursed Forest's pookas, said to be a man who made a bargain with them. He shows himself only at night, after enough of them die."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Develin in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Develin's head after {minutes} minutes."
+  }
+}
