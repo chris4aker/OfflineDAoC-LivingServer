@@ -37,6 +37,9 @@ by their damage. Everything below is built and covered by automated tests; none 
 - **Raids answer a boss that jumps them before the muster.** Before, whoever was nearby fought it, and the rest arrived
   in twos and threes. Now the whole raid answers together:
   - With half the raid already near, or with a boss that would chase them down, everyone goes in at once.
+  - A boss also chases them down when the muster is inside its leash. On 2026-11-06 Fuladl (Krondon) could chase raiders
+    up to 3,800 from his spawn, and his muster was 1,400 from it. Then the raid goes in at once too. Most catalog bosses
+    have a leash longer than the 1,400 a muster stands off, Aidon's 1,500 included, so most early pulls now commit.
   - Otherwise everyone pulls back to the muster, the boss walks home and resets, and the raid comes back together.
   - Each decision is in the log as `REALM_EXPEDITION_EARLY_PULL`.
 - **A lost skirmish no longer counts as a wipe.** A failed fight now uses up one of the raid's two attempts (and calls
@@ -52,6 +55,14 @@ by their damage. Everything below is built and covered by automated tests; none 
   raiders) walked to the spot from his earlier chase and stopped 1,979 from him. He never entered combat and was set
   aside (`REALM_EXPEDITION_PULL_UNREACHED`, which now also logs `frontDistance`). If no new route to the boss is found,
   the old spot is kept (in Darkness Falls the last waypoint of a route is the spot on purpose).
+- **Floating required adds are shot from the floor (Scurceol Hyrde, Krondon).** On 2026-11-06 the raid turned to
+  Scurceol's four Lyft Miht orbs twice, but no route to them was found and each was set aside. They float 230-580 above
+  him, and the route only looks for a path to the spot it fights at. The raid went to Fuladl and never fought him. Now
+  the route never walks to a required add:
+  - The raid fights it from a floor spot it can walk to: under the add, beside its boss, or in between.
+  - The spot must be within 1,400 of the add and see it.
+  - Raiders who can't hit the add in the air wait at that spot.
+  - Only when no add has such a spot is the boss set aside, with the reason for each add (`REALM_EXPEDITION_TACTIC_ASIDE`).
 - **Aidon the Archwizard (Hall of the Corrupt).** The raid kills three of his four illusions and leaves the last one
   alive, because he only summons a new set once all four are dead. Then everyone fights him, near his room. His damage
   shield only hurts melee attackers; it doesn't make him harder to damage, so he can be beaten by design.

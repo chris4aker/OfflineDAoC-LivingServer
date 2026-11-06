@@ -216,13 +216,33 @@ namespace DOL.GS
                               AutonomousPveTargetPolicy.IsUnreachableFlyer(add.Flags, add.Z, raider.Z);
                 if (!flying || canShootFlyers)
                     return new(BotAction.Retarget, add, null, $"required-add {Array.IndexOf(adds, add) + 1}/{adds.Length} of \"{target.Name}\"");
-                return new(BotAction.StandOff, add, new Vector3(add.X, add.Y, raider.Z),
+                return new(BotAction.StandOff, add, StandFor(target) ?? new Vector3(add.X, add.Y, raider.Z),
                     $"required-add {Array.IndexOf(adds, add) + 1}/{adds.Length} of \"{target.Name}\" is out of melee reach");
             }
             if (OutsideHome(target) && !AutonomousTetherReset.IsOutOfTether(target))
                 return new(target.TargetObject == raider ? BotAction.LeadHome : BotAction.StandOff, target, null,
                     $"fight-at-home {(int)target.GetDistanceTo(target.SpawnPoint)}>{For(target).FightAtHomeRadius}");
             return default;
+        }
+
+        // ---- ranged stands (required adds fought from the floor) -----------------------------------------------------
+
+        private static readonly Dictionary<GameNPC, Vector3> Stands = new();
+
+        /// <summary>The floor spot the raid route fights <paramref name="boss"/>'s required adds from
+        /// (RealmRaidDungeonRoute.TryRangedStand): raiders who can't hit an add in the air wait there, not under it.</summary>
+        public static void SetStand(GameNPC boss, Vector3 stand)
+        {
+            lock (Stands)
+            {
+                if (Stands.Count > 256) Stands.Clear();
+                Stands[boss] = stand;
+            }
+        }
+
+        public static Vector3? StandFor(GameNPC boss)
+        {
+            lock (Stands) return boss != null && Stands.TryGetValue(boss, out Vector3 at) ? at : null;
         }
 
         // ---- break-off (an early pull answered by pulling back) -----------------------------------------------------
@@ -262,6 +282,13 @@ namespace DOL.GS
         /// </summary>
         public static EarlyPull ChooseEarlyPull(int near, int living, bool resetsWhenLeft) =>
             near * 2 >= living || !resetsWhenLeft ? EarlyPull.Commit : EarlyPull.Disengage;
+
+        /// <summary>
+        /// A pull-back to the muster leaves the boss behind only when it resets when left and the muster lies past its tether
+        /// from its spawn; inside the tether it follows the raid there and the fight goes on piecemeal, so the raid commits.
+        /// </summary>
+        public static bool BreakOffShakesOff(bool resetsWhenLeft, int tetherRange, double musterFromSpawn) =>
+            resetsWhenLeft && tetherRange > 0 && musterFromSpawn > tetherRange;
 
         /// <summary>The catalog says the encounter walks home and resets (a tether and a reset rule); without a catalog row,
         /// a scripted tether under the open-world 4,500 counts.</summary>

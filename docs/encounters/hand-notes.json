@@ -4,7 +4,7 @@
   {
    "id": "krondon/scurceolhyrde",
    "title": "Scurceol Hyrde (Krondon): immune while his four orbs live",
-   "evidence": "docs/NIGHT-SIEGES-AND-MARFACH.md §1b: build 8d7baa3, 2026-11-05 14:27-15:40. 59-77 of 101 raiders fought him 3,219 units from his spawn; he stayed at 100%; all 42 raider deaths were to him; he was skipped every 20 minutes and switched back to; the Beran muster stalled at 2-5 of 50. 'Lyft' is in no log line.",
+   "evidence": "docs/NIGHT-SIEGES-AND-MARFACH.md §1b: build 8d7baa3, 2026-11-05 14:27-15:40. 59-77 of 101 raiders fought him 3,219 units from his spawn; he stayed at 100%; all 42 raider deaths were to him; he was skipped every 20 minutes and switched back to; the Beran muster stalled at 2-5 of 50. 'Lyft' is in no log line. 2026-11-06 (168f55d): the tactic fired at 01:49 and 02:16, but every orb failed the ground-route gate and was set aside; the raid went to Fuladl.",
    "why": "No damage is possible until the orbs die, and the raid never targets them: the orbs never attack, so the 'fighting the raid' switch never picks them, and melee can't reach them.",
    "plan": "Fight him in his own room, not 3,000 units out where the raid met him: one tank party holds him near his spawn while four ranged parties take one orb each from the floor below it (the route already shoots flyers from below), then everyone on him. Orb kills survive his resets."
   },
@@ -1398,13 +1398,13 @@
   },
   "krondon/scurceolhyrde": {
    "notes": "Immune while any of his four Lyft Miht orbs lives. The orbs (level 90, 15,000 health, 40% melee and 50% magic resists, AF 250) float 450-790 above the room floor at its four corners (51236,20849 / 51316,19228 / 52702,19214 / 52713,20841; floor about 16964), never attack (StartAttack is empty), have a 250 aggro range and RespawnInterval -1. Once dead they stay dead: his reset does not bring them back, only his own respawn (SpawnOrbs runs in AddToWorld). He gains 60 Strength while any orb lives.",
-   "currentRaidAi": "The orbs are IGameEpicNpc, so the route treats them as named encounters, not as his adds (IsEncounterAdd excludes epic NPCs). They never fight, so HostileEncounter never turns to them, while Scurceol attacks the raid and pins it. Melee bots can't reach them (more than 400 up: AutonomousPveTargetPolicy.IsUnreachableFlyer); ranged can (under RangedFlyerReach 1,200). 2026-11-05: he was fought 3,219 units from his spawn, so the raid stood far from the orbs.",
+   "currentRaidAi": "The orbs are IGameEpicNpc, so the route treats them as named encounters, not as his adds (IsEncounterAdd excludes epic NPCs). They never fight, so HostileEncounter never turns to them, while Scurceol attacks the raid and pins it. Melee bots can't reach them (more than 400 up: AutonomousPveTargetPolicy.IsUnreachableFlyer); ranged can (under RangedFlyerReach 1,200). 2026-11-05: he was fought 3,219 units from his spawn, so the raid stood far from the orbs. 2026-11-06 (build 168f55d, night run): the tactic fired twice (REALM_EXPEDITION_TACTIC 01:49:29 and 02:16:58, fights=\"Lyft Miht\" alive=4), but the route then probed each orb through the ground-route gate (an approach within 256 of the target's height), which no orb passes; every orb was set aside a minute at a time and the raid went to Fuladl. No orb was attacked and he was never fought. Now a required add is never walked to: the route fights it from a floor spot the raid can reach within 1,400 of it with sight to the floor under it (RealmRaidDungeonRoute.TryRangedStand: under the orb, by Scurceol, or between), and sets the tactic aside only when no orb has one (REALM_EXPEDITION_TACTIC_ASIDE, with the reason per orb).",
    "rules": {
     "immune_while@33": {
      "summary": "Takes no damage of any type while any of the four Lyft Miht orbs (LyftMihtOne-Four, static counters Orb1Count-Orb4Count) is alive.",
      "tactic": "In the raid AI (EpicEncounterTactics, required adds): while an orb lives the raid's target is an orb, each party takes the orb its index points at, casters and archers shoot it from the floor, melee stands off under it, and nobody hits him. Then the whole raid turns on him.",
      "difficulty": "needs new raid AI",
-     "note": "Tactic built in step 2 (unit and harness tests only; not yet seen in a run)."
+     "note": "Tactic built in step 2. Seen in the 2026-11-06 run: it fired, but the ground-route gate set every orb aside; step 3 fights them from a ranged floor stand (unit tests only; not yet seen in a run)."
     },
     "adds@132": {
      "summary": "Spawns his four Lyft Miht orbs when he spawns, one per room corner, only if that orb's counter is 0; they never respawn by themselves.",
@@ -1430,7 +1430,7 @@
      "LyftMihtFour"
     ],
     "fightAtHomeRadius": 1500,
-    "summary": "Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; melee that can't reach a flying orb stands off under it); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back."
+    "summary": "Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back."
    },
    "verified": true,
    "scriptHashes": {

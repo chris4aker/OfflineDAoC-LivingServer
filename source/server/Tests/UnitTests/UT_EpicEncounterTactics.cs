@@ -180,6 +180,10 @@ namespace DOL.UnitTests
             var m1 = EpicEncounterTactics.Decide(melee, boss, live, 1, canShootFlyers: false);
             Assert.That(m1.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), "never hit the boss while an orb lives");
             Assert.That(m1.StandAt, Is.EqualTo(new Vector3(orbB.X, orbB.Y, melee.Z)));
+            // With a ranged stand from the route, those who can't shoot wait there instead (not under an orb in the air).
+            var standSpot = new Vector3(50500, 19500, 17000);
+            EpicEncounterTactics.SetStand(boss, standSpot);
+            Assert.That(EpicEncounterTactics.Decide(melee, boss, live, 1, canShootFlyers: false).StandAt, Is.EqualTo(standSpot));
             Assert.That(EpicEncounterTactics.Decide(caster, tree, live, 0, true).Target, Is.SameAs(boss), "the tree dies with the boss");
 
             // Orb A dies: everyone left goes to orb B.
@@ -248,13 +252,90 @@ namespace DOL.UnitTests
         public void AnEarlyPullIsAnsweredByTheWholeRaid()
         {
             Assert.That(EpicEncounterTactics.ChooseEarlyPull(31, 87, resetsWhenLeft: true), Is.EqualTo(EpicEncounterTactics.EarlyPull.Disengage),
-                "Aidon, 2026-11-05: a third of the raid on a boss that resets when left: pull back");
+                "a third of the raid on a boss the pull-back shakes off: pull back");
             Assert.That(EpicEncounterTactics.ChooseEarlyPull(31, 87, resetsWhenLeft: false), Is.EqualTo(EpicEncounterTactics.EarlyPull.Commit),
                 "one that never resets would chase: everyone in");
             Assert.That(EpicEncounterTactics.ChooseEarlyPull(45, 83, resetsWhenLeft: true), Is.EqualTo(EpicEncounterTactics.EarlyPull.Commit),
                 "half the raid is already there: everyone in");
             var aidon = EpicEncounterTactics.Leashes.Single(l => l.Boss == "AidonTheArchwizard");
             Assert.That((aidon.TetherRange, aidon.Resets), Is.EqualTo((1500, true)), "from the catalog");
+        }
+
+        [Test]
+        public void APullBackInsideTheTetherIsNoPullBack()
+        {
+            // Fuladl, Krondon 2026-11-06 02:02: the 24 at his muster (1,399 from his spawn) fought him and all fell while 93
+            // were elsewhere. He resets when left, but only past his 3,800 tether: pulled back to the muster he follows.
+            var fuladl = EpicEncounterTactics.Leashes.Single(l => l.Boss == "Fuladl");
+            Assert.That((fuladl.TetherRange, fuladl.Resets), Is.EqualTo((3800, true)), "from the catalog");
+            bool shakes = EpicEncounterTactics.BreakOffShakesOff(fuladl.Resets, fuladl.TetherRange, 1399);
+            Assert.That(shakes, Is.False);
+            Assert.That(EpicEncounterTactics.ChooseEarlyPull(24, 117, shakes), Is.EqualTo(EpicEncounterTactics.EarlyPull.Commit), "everyone in at once");
+            Assert.That(RealmRaidDungeonRoute.IsWipe(24, 24, 100, 94, 117), Is.False, "and the 24 alone are a lost skirmish, not an attempt");
+            Assert.That(EpicEncounterTactics.BreakOffShakesOff(true, 1500, 1400), Is.False, "Aidon's home muster is inside his 1,500 too");
+            Assert.That(EpicEncounterTactics.BreakOffShakesOff(true, 1000, 1400), Is.True, "a short leash is left behind");
+            Assert.That(EpicEncounterTactics.BreakOffShakesOff(false, 1000, 1400), Is.False, "one that never resets chases");
+        }
+
+        // ---- ranged stands for floating required adds ---------------------------------------------------------------
+
+        /// <summary>A floor at one height inside a radius of its centre (none outside: a chasm), with an optional wall.</summary>
+        private sealed class Floor : PathfindingMgrBase
+        {
+            public float Z, Radius = float.MaxValue;
+            public Vector2 Centre;
+            public bool Wall;
+            public override bool IsAvailable => true;
+            public override bool HasNavmesh(Zone zone) => true;
+            public override Vector3? GetClosestPoint(Zone zone, Vector3 p, float x, float y, float z, EDtPolyFlags[] filters) =>
+                Math.Abs(p.Z - Z) <= z && Vector2.Distance(new(p.X, p.Y), Centre) <= Radius ? new Vector3(p.X, p.Y, Z) : null;
+            public override bool HasLineOfSight(Zone zone, Vector3 from, Vector3 to, EDtPolyFlags[] filters) =>
+                !Wall && Vector2.Distance(new(to.X, to.Y), Centre) <= Radius;
+        }
+
+        // Krondon, 2026-11-06: Scurceol Hyrde where he stood and the four Lyft Miht orbs 234-577 above him (the test floor is at his height).
+        private static readonly Vector3 Scurceol = new(51941, 20068, 17174);
+        private static readonly Vector3[] Orbs = [new(51236, 20849, 17669), new(51316, 19228, 17408), new(52702, 19214, 17751), new(52713, 20841, 17511)];
+
+        [Test]
+        public void FloatingOrbsAreShotFromTheFloorNotWalkedTo()
+        {
+            var nav = new Floor { Z = 17174 };
+            Zone zone = UT_RealmRaidFormation.Zone();
+            foreach (Vector3 orb in Orbs)
+            {
+                Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, zone, orb, Scurceol, floor => floor, out Vector3 stand, out string why), Is.True, why);
+                Assert.That(stand, Is.EqualTo(new Vector3(orb.X, orb.Y, 17174)), "the floor under it");
+                Assert.That(Vector3.Distance(stand, orb), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
+            }
+        }
+
+        [Test]
+        public void AnOrbOverAChasmIsShotFromBesideItsBoss()
+        {
+            // No floor under the orb (only within 700 of Scurceol): the boss's floor is 1,163 from orb 1, within reach.
+            var nav = new Floor { Z = 17174, Centre = new(Scurceol.X, Scurceol.Y), Radius = 700 };
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, f => f, out Vector3 stand, out string why),
+                Is.False, "the mesh ray to a spot over the chasm leaves the floor: no sight is proven");
+            Assert.That(why, Does.Contain("line of sight"));
+            nav.Radius = 1100; // the floor reaches under the orb's edge
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), Orbs[0], Scurceol, f => f, out stand, out why), Is.True, why);
+            Assert.That(Vector3.Distance(stand, Orbs[0]), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
+        }
+
+        [TestCase("wall", "line of sight")]
+        [TestCase("unreachable", "reachable from the raid")]
+        [TestCase("too far", "within 1400")]
+        [TestCase("no floor", "no floor")]
+        public void AnOrbNobodyCanShootSetsTheTacticAsideAndSaysWhy(string trouble, string reason)
+        {
+            var nav = new Floor { Z = trouble == "no floor" ? 10_000 : 17174, Wall = trouble == "wall" };
+            Vector3 orb = trouble == "too far" ? Orbs[0] + new Vector3(0, 0, 1_600) : Orbs[0];
+            // The proven approach lands beside the floor point (within the resolver's 220), so sight is checked.
+            Func<Vector3, Vector3?> reach = trouble == "unreachable" ? _ => null : f => f + new Vector3(150, 0, 0);
+            if (trouble == "too far") nav.Centre = new(Scurceol.X, Scurceol.Y);
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(nav, UT_RealmRaidFormation.Zone(), orb, Scurceol, reach, out _, out string why), Is.False);
+            Assert.That(why, Does.Contain(reason));
         }
 
         [Test]

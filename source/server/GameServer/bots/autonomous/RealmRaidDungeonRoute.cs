@@ -339,6 +339,58 @@ namespace DOL.GS
         public static bool CanDeferAirbornePatrol(Type type, GameNPC.eFlags flags) =>
             type == typeof(GameEpicNPC) && (flags & GameNPC.eFlags.FLYING) != 0;
 
+        /// <summary>How far from a required add its ranged raiders stand at most: inside the usual 1,500 spell range, with room to spare.</summary>
+        public const int RequiredAddRangedReach = 1_400;
+
+        /// <summary>
+        /// Krondon, 2026-11-06 (01:49 and 02:16): Scurceol Hyrde's tactic sent the raid to his four Lyft Miht orbs, which float
+        /// 230-580 above him (450-790 above the room floor). The ground-route gate (an approach within 256 of the target's height) failed
+        /// for every orb, they were set aside a minute at a time, and the raid walked off to Fuladl; no orb was attacked
+        /// and Scurceol was never fought. A required add is not walked to: its ranged raiders stand on a floor spot the raid
+        /// can reach, within <see cref="RequiredAddRangedReach"/> of it and with sight to the floor under it. Tried: the
+        /// floor under the add, the boss's floor, and two points between them. False, with why, when none works.
+        /// </summary>
+        /// <param name="reach">The approach the raid can walk to for a floor point, or null when none is proven.</param>
+        public static bool TryRangedStand(IPathfindingMgr nav, Zone zone, Vector3 add, Vector3 boss, Func<Vector3, Vector3?> reach,
+            out Vector3 stand, out string why)
+        {
+            stand = default;
+            if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
+            { why = "no navigation mesh here"; return false; }
+            Vector3? under = nav.GetClosestPoint(zone, add, 128, 128, RangedFlyerReach, nav.DefaultFilters);
+            var floors = new List<Vector3>();
+            void Add(Vector3? p)
+            {
+                if (p is Vector3 v && !floors.Any(f => Vector3.DistanceSquared(f, v) < 48 * 48)) floors.Add(v);
+            }
+            Add(under);
+            Add(nav.GetClosestPoint(zone, boss, 64, 64, 256, nav.DefaultFilters));
+            var level = new Vector3(add.X, add.Y, boss.Z);
+            foreach (float t in new[] { 0.67f, 0.33f })
+                Add(nav.GetClosestPoint(zone, Vector3.Lerp(boss, level, t), 96, 96, 256, nav.DefaultFilters));
+            if (floors.Count == 0)
+            { why = "no floor under it or near its boss"; return false; }
+            int reached = 0, inRange = 0;
+            foreach (Vector3 floor in floors)
+            {
+                if (reach(floor) is not Vector3 approach) continue;
+                reached++;
+                if (Vector3.Distance(approach, add) > RequiredAddRangedReach) continue;
+                inRange++;
+                // The mesh ray runs along the floor: sight to the floor under the add (or to the spot below it at the
+                // stand's height when it hovers over nothing).
+                Vector3 sight = under ?? new Vector3(add.X, add.Y, approach.Z);
+                if (Vector3.DistanceSquared(approach, sight) > 1 && !nav.HasLineOfSight(zone, approach, sight, nav.DefaultFilters)) continue;
+                stand = approach;
+                why = $"ranged from the floor {(int)Vector3.Distance(approach, add)} away";
+                return true;
+            }
+            why = reached == 0 ? $"none of {floors.Count} floor spots under or near it is reachable from the raid"
+                : inRange == 0 ? $"no reachable floor spot within {RequiredAddRangedReach} of it"
+                : $"no reachable floor spot within {RequiredAddRangedReach} has line of sight to it";
+            return false;
+        }
+
         private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
             string[] objectives = null, eRealm realm = eRealm.None)
         {
@@ -620,13 +672,18 @@ namespace DOL.GS
                 if (!_musterEngaged)
                 {
                     bool resets = EpicEncounterTactics.ResetsWhenLeft(_target);
-                    var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, resets);
+                    // Pulling back only shakes it off when the muster lies past its tether (Fuladl, Krondon 2026-11-06: tether
+                    // 3,800, muster 1,400 from his spawn; he would follow the pull-back to the muster).
+                    int tether = EpicEncounterTactics.LeashOf(_target)?.TetherRange is int t && t > 0 ? t : _target.TetherRange;
+                    float musterFromSpawn = Vector3.Distance(_musterPoint, new Vector3(_target.SpawnPoint.X, _target.SpawnPoint.Y, _target.SpawnPoint.Z));
+                    bool shakesOff = EpicEncounterTactics.BreakOffShakesOff(resets, tether, musterFromSpawn);
+                    var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, shakesOff);
                     // Pulled back from it a moment ago and it is still on the raid: it chases, so everyone commits now.
                     if (choice == EpicEncounterTactics.EarlyPull.Disengage && _lastBreakOff.TryGetValue(_target, out long last) &&
                         now - last < BreakOffRepeatMilliseconds)
                         choice = EpicEncounterTactics.EarlyPull.Commit;
                     log.Warn($"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
-                             $"inside={inside.Length} resets={resets} decision={choice} health={_target.HealthPercent} " +
+                             $"inside={inside.Length} resets={resets} tether={tether} musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
                              $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z}");
                     if (choice == EpicEncounterTactics.EarlyPull.Disengage)
                     {
@@ -1082,26 +1139,91 @@ namespace DOL.GS
 
         /// <summary>The current target's tactic sends the raid to another encounter (EpicEncounterTactics): a required add
         /// of the boss, or the boss an encounter dies with. Logged as REALM_EXPEDITION_TACTIC for the run reports.</summary>
-        private void SwitchByTactic(GameNPC to, string reason, GameLiving[] participants, long now)
+        private void SwitchByTactic(GameNPC to, string reason, GameLiving[] participants, long now, Vector3? stand = null)
         {
-            bool resolved = TryEncounterApproach(to, participants, out Vector3 approach);
-            // A flying add is fought from the floor under it (the approach search only looks 256 up or down).
-            if (!resolved && (to.Flags & GameNPC.eFlags.FLYING) != 0)
+            Vector3 approach;
+            bool resolved;
+            if (stand is Vector3 ranged) { approach = ranged; resolved = true; }
+            else
             {
-                var nav = PathfindingProvider.Instance;
-                Zone zone = WorldMgr.GetRegion(_region)?.GetZone(to.X, to.Y);
-                if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone) &&
-                    nav.GetClosestPoint(zone, new Vector3(to.X, to.Y, to.Z), 128, 128, RangedFlyerReach, nav.DefaultFilters) is Vector3 below)
-                { approach = below; resolved = true; }
+                resolved = TryEncounterApproach(to, participants, out approach);
+                // A flying add is fought from the floor under it (the approach search only looks 256 up or down).
+                if (!resolved && (to.Flags & GameNPC.eFlags.FLYING) != 0)
+                {
+                    var nav = PathfindingProvider.Instance;
+                    Zone zone = WorldMgr.GetRegion(_region)?.GetZone(to.X, to.Y);
+                    if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone) &&
+                        nav.GetClosestPoint(zone, new Vector3(to.X, to.Y, to.Z), 128, 128, RangedFlyerReach, nav.DefaultFilters) is Vector3 below)
+                    { approach = below; resolved = true; }
+                }
             }
+            GameNPC owner = EpicEncounterTactics.RequiredAddOwner(to, _live ?? []) ?? _target;
             log.Info($"REALM_EXPEDITION_TACTIC region={_region} from=\"{_target?.Name}\" to=\"{to.Name}\" health={to.HealthPercent} " +
-                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
-                     $"reason=\"{reason}\" tactic={EpicEncounterTactics.For(_target)?.Encounter}");
+                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(stand != null ? "ranged-stand" : resolved ? "resolved" : "raw")} " +
+                     $"reason=\"{reason}\" tactic={EpicEncounterTactics.For(owner)?.Encounter}");
             _target = to; TargetName = to.Name; TargetLevel = to.Level;
             Front = Destination = approach;
             _targetProgressTick = _targetStartTick = now; _targetLowestHealth = to.Health;
             _targetClosest = float.MaxValue; _targetApproachTick = now;
             Hold = false; Status = "Clearing " + to.Name;
+        }
+
+        /// <summary>
+        /// The required add of <paramref name="boss"/> the raid fights next, and the floor spot it fights it from
+        /// (<see cref="TryRangedStand"/>): <paramref name="preferred"/> first, then the others nearest the front. Adds with
+        /// no stand are set aside a minute each. False, with every add's reason, when none has one.
+        /// </summary>
+        private bool TryRequiredAddStand(GameNPC boss, GameNPC preferred, GameLiving[] participants, long now,
+            out GameNPC add, out Vector3 stand, out string why)
+        {
+            add = null; stand = default;
+            static Vector3 At(GameObject o) => new(o.X, o.Y, o.Z);
+            GameNPC[] adds = EpicEncounterTactics.ShieldingAdds(boss, _live ?? [])
+                .Where(a => _routeRetry.GetValueOrDefault(a) <= now)
+                .OrderBy(a => a == preferred ? 0 : 1).ThenBy(a => Vector3.DistanceSquared(Front, At(a))).ToArray();
+            if (adds.Length == 0) { why = "every required add was set aside a moment ago"; return false; }
+            var nav = PathfindingProvider.Instance;
+            Vector3[] anchors = DistinctAnchors(Front, participants
+                .Where(p => p.IsAlive && p.CurrentRegionID == _region && (p.Group == null || p.Group.LivingLeader == p))
+                .Select(At), 6);
+            Vector3? Reach(Vector3 floor)
+            {
+                foreach (Vector3 anchor in anchors)
+                {
+                    Zone anchorZone = WorldMgr.GetRegion(_region)?.GetZone((int)anchor.X, (int)anchor.Y);
+                    if (anchorZone != null && nav.HasNavmesh(anchorZone) &&
+                        AutonomousZonePointApproach.TryResolve(nav, anchorZone, anchor, floor, 220, out Vector3 approach))
+                        return approach;
+                }
+                return null;
+            }
+            var reasons = new List<string>();
+            foreach (GameNPC a in adds)
+            {
+                Zone zone = WorldMgr.GetRegion(_region)?.GetZone(a.X, a.Y);
+                if (TryRangedStand(nav, zone, At(a), At(boss), Reach, out stand, out string found))
+                {
+                    add = a; why = found;
+                    EpicEncounterTactics.SetStand(boss, stand);
+                    return true;
+                }
+                reasons.Add($"{a.Name}@{a.X},{a.Y},{a.Z}: {found}");
+                _routeRetry[a] = now + 60_000;
+            }
+            why = string.Join("; ", reasons);
+            return false;
+        }
+
+        /// <summary>No required add of <paramref name="boss"/> can be fought (no ranged raider sees one from the floor):
+        /// the boss's tactic is set aside like an unreachable target, and tried again later.</summary>
+        private void SetTacticAside(GameNPC boss, string why, long now)
+        {
+            log.Warn($"REALM_EXPEDITION_TACTIC_ASIDE region={_region} encounter=\"{boss.Name}\" at={boss.X},{boss.Y},{boss.Z} " +
+                     $"tactic={EpicEncounterTactics.For(boss)?.Encounter} minutes={BlockedTargetRetryMilliseconds / 60_000} reason=\"{why}\"");
+            _routeRetry[boss] = now + BlockedTargetRetryMilliseconds;
+            _musterProgress.Remove(boss);
+            if (_musterTarget == boss) _musterTarget = null;
+            if (_target == boss || EpicEncounterTactics.RequiredAddOwner(_target, _live ?? []) == boss) _target = null;
         }
 
         private void AdvanceCore(GameLiving[] participants, long now)
@@ -1127,7 +1249,16 @@ namespace DOL.GS
             if (finalDeaths) { Complete = true; Status = "Final encounter defeated"; return; }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active &&
                 EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target)
-                SwitchByTactic(tacticTarget, tacticReason, participants, now);
+            {
+                // A required add is fought from a floor spot its ranged raiders can reach and see it from, never walked to.
+                if (EpicEncounterTactics.RequiredAddOwner(tacticTarget, live) is { } addOwner)
+                {
+                    if (TryRequiredAddStand(addOwner, tacticTarget, participants, now, out GameNPC add, out Vector3 stand, out string why))
+                        SwitchByTactic(add, $"{tacticReason}; {why}", participants, now, stand);
+                    else SetTacticAside(addOwner, why, now);
+                }
+                else SwitchByTactic(tacticTarget, tacticReason, participants, now);
+            }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
                 if (_target.Health < _targetLowestHealth) { _targetLowestHealth = _target.Health; _targetProgressTick = now; }
@@ -1283,7 +1414,27 @@ namespace DOL.GS
                     log.Info($"REALM_EXPEDITION_TACTIC region={_region} encounter=\"{npc.Name}\" fights=\"{tactical.Name}\" " +
                              $"reason=\"{candidateTactic}\" tactic={EpicEncounterTactics.For(npc)?.Encounter}");
                     npc = tactical;
-                    if (_routeRetry.GetValueOrDefault(npc) > now) continue;
+                    // A required add set aside a minute is replaced by another of its boss's adds below.
+                    if (_routeRetry.GetValueOrDefault(npc) > now && EpicEncounterTactics.RequiredAddOwner(npc, live) == null) continue;
+                }
+                // A required add (Scurceol's floating orbs) never goes through the ground-route gate below: before its boss's
+                // fight is on the raid musters for the boss; once it is on, the add is fought from a ranged floor stand.
+                if (EpicEncounterTactics.RequiredAddOwner(npc, live) is { } addOwner)
+                {
+                    if (_routeRetry.GetValueOrDefault(addOwner) > now) continue;
+                    if (!EpicEncounterTactics.FightOn(addOwner, live)) npc = addOwner;
+                    else
+                    {
+                        probes++;
+                        if (TryRequiredAddStand(addOwner, npc, participants, now, out GameNPC add, out Vector3 stand, out string why))
+                        {
+                            SwitchByTactic(add, $"required-add of \"{addOwner.Name}\"; {why}", participants, now, stand);
+                            _probeCursor = 0; _blockedSince = 0;
+                            return;
+                        }
+                        SetTacticAside(addOwner, why, now);
+                        continue;
+                    }
                 }
                 probes++;
                 Vector3 raw = AutonomousDungeonGoalCatalog.TryGet(npc, out var point) ? point.Position : new(npc.X, npc.Y, npc.Z);

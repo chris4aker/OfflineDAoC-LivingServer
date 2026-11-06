@@ -47,7 +47,7 @@ The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tacti
 |---|---|
 | Xanxicar (Crystal Cave) | Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back. |
 | Aidon the Archwizard (Hall of the Corrupt) | Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back. |
-| Scurceol Hyrde (Krondon) | Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; melee that can't reach a flying orb stands off under it); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back. |
+| Scurceol Hyrde (Krondon) | Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back. |
 | Ancient Black Oak (Marfach Caverns) | Dies with Black Lady: while she lives the raid fights her instead of the Oak. |
 | Black Lady (Marfach Caverns) | Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. |
 | Nosdoden (Trollheim) | Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack. |
@@ -132,7 +132,7 @@ These pick real players only (`GetPlayersInRadius`, `is GamePlayer`), so bots ar
 
 ### 1. Scurceol Hyrde (Krondon): immune while his four orbs live
 
-**Run evidence:** docs/NIGHT-SIEGES-AND-MARFACH.md §1b: build 8d7baa3, 2026-11-05 14:27-15:40. 59-77 of 101 raiders fought him 3,219 units from his spawn; he stayed at 100%; all 42 raider deaths were to him; he was skipped every 20 minutes and switched back to; the Beran muster stalled at 2-5 of 50. 'Lyft' is in no log line.
+**Run evidence:** docs/NIGHT-SIEGES-AND-MARFACH.md §1b: build 8d7baa3, 2026-11-05 14:27-15:40. 59-77 of 101 raiders fought him 3,219 units from his spawn; he stayed at 100%; all 42 raider deaths were to him; he was skipped every 20 minutes and switched back to; the Beran muster stalled at 2-5 of 50. 'Lyft' is in no log line. 2026-11-06 (168f55d): the tactic fired at 01:49 and 02:16, but every orb failed the ground-route gate and was set aside; the raid went to Fuladl.
 
 **Why it blocks:** No damage is possible until the orbs die, and the raid never targets them: the orbs never attack, so the 'fighting the raid' switch never picks them, and melee can't reach them.
 
