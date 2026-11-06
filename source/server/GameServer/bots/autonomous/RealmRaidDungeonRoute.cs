@@ -568,6 +568,15 @@ namespace DOL.GS
                          $"from={(int)old.X},{(int)old.Y},{(int)old.Z} to={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
                          $"reason=\"the encounter is back at {(int)home.X},{(int)home.Y},{(int)home.Z}\"");
             }
+            // The front is where every pull walks to. One resolved while the encounter was out chasing raiders stays there
+            // when it walks home (Aidon the Archwizard, 2026-11-05: three full musters went in to 31686,35683,14888, the
+            // approach from the 22:38 switch, while he stood at home 1,979 away; none entered combat and he was set aside).
+            if (_musterTarget == _target && now >= _nextFrontCheck &&
+                FrontIsStale(Front, MusterReference(_target), _target.InCombat))
+            {
+                _nextFrontCheck = now + FrontRefreshMilliseconds;
+                RefreshFront(participants, now);
+            }
             if (_musterTarget != _target)
             {
                 _musterTarget = _target;
@@ -656,6 +665,7 @@ namespace DOL.GS
                     _setAsideLine = $"REALM_EXPEDITION_PULL_UNREACHED region={_region} target=\"{_target.Name}\" pulls={_pulls.PullsWithoutContact} " +
                         $"at={_target.X},{_target.Y},{_target.Z} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
                         $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                        $"frontDistance={(int)Vector3.Distance(Front, new Vector3(_target.X, _target.Y, _target.Z))} " +
                         $"closest={(int)participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).Select(p => (float)p.GetDistanceTo(_target)).DefaultIfEmpty(-1).Min()} " +
                         $"reason=\"the encounter never entered combat after {_pulls.PullsWithoutContact} pulls; set aside and tried again later\"";
                     _musterUnreachable = true;
@@ -732,6 +742,49 @@ namespace DOL.GS
                          $"living={living} at={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} minutes={(now - _musterSince) / 60_000.0:0.0}");
             }
             return true;
+        }
+
+        /// <summary>A front further than this from an encounter out of combat is not where the encounter is: pulls that walk
+        /// there never reach it (about the aggro range of the big epics, and well past any approach the resolver snaps to).</summary>
+        public const float FrontStaleDistance = 1_000f;
+        /// <summary>The front is checked at most this often, and a failed approach search waits five times as long.</summary>
+        public const long FrontRefreshMilliseconds = 60_000;
+        private long _nextFrontCheck;
+
+        /// <summary>True when the front no longer leads to the encounter: it is out of combat (at home, or wherever it
+        /// stopped) and the front is more than <see cref="FrontStaleDistance"/> from it. In a fight the encounter moves
+        /// with the raid and the front is left alone.</summary>
+        public static bool FrontIsStale(Vector3 front, Vector3 encounter, bool encounterInCombat) =>
+            !encounterInCombat && Vector3.Distance(front, encounter) > FrontStaleDistance;
+
+        /// <summary>Resolves the front again from where the encounter stands now (rate-limited by
+        /// <see cref="FrontRefreshMilliseconds"/>). A pull already walking out goes to the new front; a muster still
+        /// waiting is placed again on the new approach. Pulls that went to the old front never
+        /// had a chance to reach the encounter, so they no longer count toward setting it aside.</summary>
+        private void RefreshFront(GameLiving[] participants, long now)
+        {
+            Vector3 old = Front;
+            // Where it stands, or its home when it is out of it and walking back (as for the muster).
+            Vector3 at = MusterReference(_target);
+            // Only an approach proven from the raid replaces the front: the raw point may be off the walked mesh (the end
+            // of a Darkness Falls waypoint chain is the front because no single path reaches the encounter).
+            bool resolved = TryPointApproach(at, participants, out Vector3 approach);
+            if (resolved)
+            {
+                Front = approach;
+                if (_musterEngaged) Destination = Front;
+                else _musterPoint = MusterPoint(participants);
+            }
+            else _nextFrontCheck = now + 5 * FrontRefreshMilliseconds;
+            int unreached = _pulls.PullsWithoutContact;
+            // Only a front that now leads to the encounter wipes the slate; otherwise the set-aside still comes.
+            if (!_pulls.Contact && !FrontIsStale(Front, at, false)) _pulls.Reset();
+            log.Warn($"REALM_EXPEDITION_FRONT_REFRESHED region={_region} target=\"{_target.Name}\" at={(int)at.X},{(int)at.Y},{(int)at.Z} " +
+                     $"from={(int)old.X},{(int)old.Y},{(int)old.Z} to={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                     $"was={(int)Vector3.Distance(old, at)} now={(int)Vector3.Distance(Front, at)} approach={(resolved ? "resolved" : "unresolved, front kept")} " +
+                     $"engaged={_musterEngaged} unreachedPulls={unreached} " +
+                     $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                     $"reason=\"the front was resolved while the encounter was elsewhere; pulls there never reach it\"");
         }
 
         /// <summary>Moved further than this from where the muster was measured, the encounter gets a new muster.</summary>

@@ -298,6 +298,21 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void AFrontLeftWhereTheChaseEndedIsResolvedAgain()
+        {
+            // Aidon, 2026-11-05: three musters went in to the front from the 22:38 switch while he stood at home; the
+            // closest raider ended 1,979 from him and he never entered combat.
+            var home = new Vector3(31353, 37634, 14873);
+            var front = new Vector3(31686, 35683, 14888);
+            Assert.That(RealmRaidDungeonRoute.FrontIsStale(front, home, encounterInCombat: false), Is.True);
+            Assert.That(RealmRaidDungeonRoute.FrontIsStale(front, home, encounterInCombat: true), Is.False, "a fight moves with the raid");
+            Assert.That(RealmRaidDungeonRoute.FrontIsStale(home + new Vector3(220, 0, 0), home, false), Is.False, "an approach beside him");
+            // Walking home after a reset, the front is measured from home, as the muster is.
+            var walkingBack = new Vector3(31488, 36986, 14877);
+            Assert.That(RealmRaidDungeonRoute.FrontIsStale(front, RealmRaidDungeonRoute.MusterReference(walkingBack, home, 1500, true), false), Is.True);
+        }
+
+        [Test]
         public void TheRaidWithdrawsFromABlastButThePartyItFightsHoldsIt()
         {
             Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 83, -1), Is.True, "within 3% above 80");

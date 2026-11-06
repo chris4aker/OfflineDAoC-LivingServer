@@ -46,6 +46,12 @@ by their damage. Everything below is built and covered by automated tests; none 
 - **Musters wait where the boss lives.** A boss that was out chasing raiders is mustered for at its home, and the
   muster moves when the boss walks back (`REALM_EXPEDITION_MUSTER_MOVED`). On 2026-11-05 Aidon's muster sat on the ramp
   his chase had reached, 2,600 from his room.
+- **Pulls go to where the boss stands.** The spot the raid walks to when it goes in (the front) is worked out again when
+  a boss that is not fighting stands more than 1,000 from it (`REALM_EXPEDITION_FRONT_REFRESHED`). Pulls that went to
+  the old spot no longer count toward setting the boss aside. On 2026-11-05 three full pulls on Aidon (75 and then 106
+  raiders) walked to the spot from his earlier chase and stopped 1,979 from him. He never entered combat and was set
+  aside (`REALM_EXPEDITION_PULL_UNREACHED`, which now also logs `frontDistance`). If no new route to the boss is found,
+  the old spot is kept (in Darkness Falls the last waypoint of a route is the spot on purpose).
 - **Aidon the Archwizard (Hall of the Corrupt).** The raid kills three of his four illusions and leaves the last one
   alive, because he only summons a new set once all four are dead. Then everyone fights him, near his room. His damage
   shield only hurts melee attackers; it doesn't make him harder to damage, so he can be beaten by design.

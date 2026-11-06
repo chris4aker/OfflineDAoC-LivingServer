@@ -362,7 +362,7 @@ Rules of Icelord Agmundr (`source/server/GameServer/scripts/namedmobs/TuscarianG
 
 ### 9. Aidon the Archwizard (Hall of the Corrupt)
 
-**Run evidence:** overnight-2026-11-04 check 5: Albion Hall of the Corrupt wiped at Aidon 03:25 (living 13 of 56) and 03:58, Defeated. Again 2026-11-05 (168f55d): 22:38 switch to Aidon without a muster, 31 engaged / 31 fallen at 99%, counted as a wipe with 56 living; the next muster on the ramp gathered 0-2 of 75.
+**Run evidence:** overnight-2026-11-04 check 5: Albion Hall of the Corrupt wiped at Aidon 03:25 (living 13 of 56) and 03:58, Defeated. Again 2026-11-05 (168f55d): 22:38 switch to Aidon without a muster, 31 engaged / 31 fallen at 99%, counted as a wipe with 56 living; the next muster on the ramp gathered 0-2 of 75. Later the same night (server.log 22:50-23:16) the regroup filled (FINAL_ENGAGE 22:58:13 75/75, then 23:00 and 23:02 106/53) but all three pulls walked to the front left from the 22:38 switch (31686,35683,14888) while he stood at home (31353,37634,14873); the closest raider ended 1,979 away and REALM_EXPEDITION_PULL_UNREACHED set him aside at 23:04. The front is now resolved again from his home (REALM_EXPEDITION_FRONT_REFRESHED).
 
 **Why it blocks:** A permanent damage shield, a 500 Heat AoE every 10-15 s, and four illusions (5,000 health, 300 AoE each) that come back every 30-45 s once all are dead; tether 1,500.
 
