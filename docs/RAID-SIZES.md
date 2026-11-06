@@ -16,6 +16,11 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
   size; each defeat or time-out adds 20.3 (doubled on 2026-11-05 so a raid finds its size in a few attempts: four losses
   take it from the start to the ceiling). The size settles where the encounter is won about two times in three. Each
   raid's Herald record notes the size it ran at ("Raid size: 145.3%."), and the next raid there carries on from it.
+  - **A time-out counts only after a wipe** (owner, 2026-11-05). A raid that runs out its four hours after one or more
+    wipes is a loss; one that never wiped is neither a win nor a loss and leaves the size where it was. Marfach
+    Caverns timed out after 91 pulls on an encounter it never reached: a routing fault, not a lost fight
+    ([NIGHT-SIEGES-AND-MARFACH.md](NIGHT-SIEGES-AND-MARFACH.md)). The Herald still says "Timed out" and now ends with
+    the raid's wipes ("Wipes: 0."); an older record without that note counts its time-out as a loss, as before.
   - **Floor 70%:** about the period's "possible, but tough". Apocalypse was "possible with good groups, but tough"
     at 80-90 against a comfortable 90-100.
   - **Ceiling 200%** (owner, 2026-11-05; it was 150%): room for bots that play worse than 2003 players. The raids
@@ -28,7 +33,8 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
 - **Epic Special Forces** (owner, 2026-11-04): "keep 24 and if they are called in on the same raid type where 24 made
   the second run win, it's 16 now". They don't scale with the raid's size. Per encounter: 24 to start; a win they took
   part in makes the next call-up there a party (8) smaller, down to 8 (they always answer a wipe); a win without them
-  changes nothing; a defeat or time-out adds a party back, up to 24. Two losses in a row still bring them from the
+  changes nothing; a defeat or a time-out after a wipe adds a party back, up to 24 (a time-out without a wipe changes
+  nothing). Two losses in a row still bring them from the
   start. The Herald's record of a raid they joined ends "Epic Special Forces joined: N."; older records count as
   raids without them.
 - **Forced raids** (launcher) are unchanged: 200 to go in, 300 reserved. Their results are not part of the record.

@@ -164,6 +164,33 @@ namespace DOL.UnitTests
             Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, gildas, from), Is.True, "and back");
         }
 
+        // Marfach Caverns, 2026-11-05: the raid turned on the Ancient Black Oak (spawned by Black Lady's script at
+        // 30091,37620,15049) and used that point as its front. For 3.5 hours every party's camp stayed at the muster, 1,600-2,200
+        // units away: no formation post resolved around the Oak (RealmRaidFormation needs sight and a corridor from the
+        // centre). The switch now fights from an approach proven from the raid (TryEncounterApproach). This probe shows both
+        // on the installed zone276.nav; it was not run when the fix was written (no navmeshes in the build container).
+        [Test]
+        public void TheBlackOakIsFoughtFromAnApproach()
+        {
+            Zone zone = LoadZone(276);
+            var nav = PathfindingProvider.LocalPathfindingMgr;
+            var oak = new Vector3(30091, 37620, 15049);
+            Vector3 muster = nav.GetClosestPoint(zone, new(31012, 35916, 14994), 64, 64, 64, nav.DefaultFilters).Value;
+            int Posts(Vector3 centre)
+            {
+                var posts = new List<Vector3>();
+                for (int slot = 0; slot < 10; slot++)
+                    if (RealmRaidFormation.TryResolve(nav, zone, centre, slot, posts, out Vector3 post)) posts.Add(post);
+                return posts.Count;
+            }
+            TestContext.Out.WriteLine($"floor at the Oak: {nav.GetClosestPoint(zone, oak, 64, 64, 128, nav.DefaultFilters)?.ToString() ?? "none"}");
+            TestContext.Out.WriteLine($"posts around the Oak's own point: {Posts(oak)} of 10");
+            Assert.That(AutonomousZonePointApproach.TryResolve(nav, zone, muster, oak, 220, out Vector3 approach), Is.True, "an approach from the muster");
+            int around = Posts(approach);
+            TestContext.Out.WriteLine($"approach {approach}: posts {around} of 10");
+            Assert.That(around, Is.GreaterThanOrEqualTo(8), "a 64-80 raid's parties get posts at the Oak");
+        }
+
         /// <summary>A reading aid: what the navmesh offers between two points (closest floor, straight path, where it stops).</summary>
         [TestCase(277, 32395, 31847, 16158, 29015, 41910, 12933)]   // Hall of the Corrupt: entrance to Lord Gildas
         [TestCase(277, 31671, 35027, 15368, 29015, 41910, 12933)]   // the raid's front at the end (2026-10-22) to Lord Gildas
