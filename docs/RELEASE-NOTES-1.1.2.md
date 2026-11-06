@@ -1,8 +1,9 @@
 # Living Server Beta 1.1.2: release notes (draft)
 
 The text below the line is the draft of the GitHub release notes for `v1.1.2-beta`. It is a draft for the owner's
-approval: the "How it was tested" section is finished after the owner's played check, and the SHA-256 lines are
-filled in by the release workflow. Nothing here names the Easter eggs or the project's internal vocabulary.
+approval: the "How it was tested" section is finished after the owner's played check. In the file table the Setup
+row must keep exactly `(filled in when the exe is built)`: the release workflow replaces only that text with the exe's
+SHA-256. The zip's SHA-256 is filled in by hand when publishing. Nothing here names the Easter eggs or the project's internal vocabulary.
 
 ---
 
@@ -44,7 +45,8 @@ gives about 70%. Those lines are known, so that is a regression check, and a fre
 - **Period sizes.** Every big raid used to need 200 level 50s. Each one is now measured against the size a
   comfortable raid had there in 2002-2004, from the forum raid threads of the time, and starts a quarter above it,
   because bots play worse than 2003 players: Caer Sidi, Galladoria and Tuscaran Glacier 125, Crystal Cave 150, the
-  dragons 88, Summoner's Hall, Darkness Falls and the smaller dungeons 80, down to 50 for Dodens Gruva and Tur Suil.
+  dragons 88, Summoner's Hall, Darkness Falls and the smaller dungeons 80, Hall of the Corrupt 60, down to 50 for
+  Dodens Gruva and Tur Suil.
   The table and its sources: [docs/RAID-SIZES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RAID-SIZES.md).
 - **Mostly won, never a sure thing.** Each encounter's raid is sized from its own record in the Herald: a win trims
   the next raid there a little, a defeat adds more back, so it settles where that encounter is won about two times in
@@ -90,9 +92,9 @@ For every raid:
 - **Raids muster where the boss lives**, and walk to where it actually stands, not to where it last chased someone.
 
 *The research:* every scripted boss in the game was read from its script into one catalog: what it does, when, and
-what a raid needs to do about it. That reading also found 22 places where the game's bosses had been softened for
-bot raids. Their original rules, read from the OpenDAoC project's own code, are back in the game behind switches,
-**all off**: those bosses play exactly as in 1.1.1, and each original rule is turned on only once the raid has a
+what a raid needs to do about it. That reading also found 23 places where the game's bosses had been softened for
+bot raids. For 22 of them the original rule, read from the OpenDAoC project's own code, is back in the game behind
+17 switches, **all off**: those bosses play exactly as in 1.1.1, and each original rule is turned on only once the raid has a
 tactic for it.
 
 ### Quests with your bot group
@@ -111,7 +113,8 @@ tactic for it.
   the coin they loot, into the guild bank. Switch: **Bots in your guild** in the launcher.
 - **Power comes back faster by default** (1.5 times the classic rate, between the classic rate and patch 1.87's), and
   the halving below 50% is off. If you turn the halving on, it now applies to bots as well as to you. Switch: **Power
-  regeneration** in the launcher; choose 1 with the halving on for the classic rules.
+  regeneration** in the launcher; choose 1 with the halving on for the classic rules. A world that never changed
+  these two settings moves to the new defaults once, at its first start; values you set yourself are kept.
 
 ### Fixes from other forks of Offline DAoC
 
@@ -133,6 +136,8 @@ Chosen from a survey of every active fork; each is credited to its author.
 - **The installer backs up your world** before it changes anything.
 - **This PC only by default.** A missing server config now comes back listening on this PC only, with router
   port-forwarding off. Your own config isn't changed; if it's open to the network, the log tells you how to close it.
+- **The Herald's raid and siege records move** from `runtime\server` to `runtime\data`, next to your world, so
+  backups and progress transfers carry them. The server moves them at its first start; nothing is lost.
 - **No more "database is locked"** on a busy read.
 
 ### Updates from the launcher
@@ -170,8 +175,9 @@ untouched.
 
 ### How it was tested
 
-- **Automated:** the full server suite (4,798 server tests) and the launcher and installer tests on Windows
-  pass on every build. The raid sizing was checked against a simulation of 2,000 raids; the models of how likely a
+- **Automated:** the full server suite (4,798 server tests) passes, and on Windows CI the server tests, the
+  launcher's Living Server tab, update and Herald tests and the installer script tests passed on this release's
+  build. Setup's own end-to-end tests run when the release is built. The raid sizing was checked against a simulation of 2,000 raids; the models of how likely a
   raid of a given size is to win are estimates, not measurements.
 - **Played:** [owner: one line on the overnight soak and the played check, filled in before publishing]. Already seen on a playtest PC before this release: the chat level at a 900-bot
   roster (which set the new default), the server starting from the package with its own libraries, and the
@@ -210,8 +216,8 @@ untouched.
 
 | File | SHA-256 |
 |---|---|
-| `LivingServer-Setup-1.1.2-beta.exe` | (filled in by the release workflow) |
-| `OfflineDAoC-LivingServer-1.1.2-beta.zip` | (filled in by the release workflow) |
+| `LivingServer-Setup-1.1.2-beta.exe` | (filled in when the exe is built) |
+| `OfflineDAoC-LivingServer-1.1.2-beta.zip` | (owner: the zip's SHA-256, filled in by hand at publish) |
 
 ### Credits
 

@@ -59,7 +59,9 @@ public static class ForkBuildInfo
             ("memory", Properties.BOT_LIVING_MEMORY), ("grats", Properties.BOT_LIVING_GRATS), ("firsts", Properties.BOT_LIVING_FIRSTS),
             ("death", Properties.BOT_LIVING_DEATH), ("alarms", Properties.BOT_LIVING_ALARMS), ("nemesis", Properties.BOT_LIVING_NEMESIS),
             ("breaks", Properties.BOT_LIVING_BREAKS), ("body", Properties.BOT_LIVING_BODY_LANGUAGE),
-            ("holidays", Properties.BOT_LIVING_HOLIDAYS), ("leeroy", Properties.BOT_LIVING_LEEROY),
+            ("holidays", Properties.BOT_LIVING_HOLIDAYS),
+            // Named "extras" in this line: players paste it into bug reports, and the setting's own name would spoil a surprise.
+            ("extras", Properties.BOT_LIVING_LEEROY),
         }.Where(part => part.Item2).Select(part => part.Item1));
         string Range(string spec) => string.IsNullOrWhiteSpace(spec) ? "off" : $"\"{spec.Trim()}\"";
         return $"FORK_BUILD name={BuildName} commit={Commit} " +

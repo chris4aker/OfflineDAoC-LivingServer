@@ -1,3 +1,4 @@
+using DOL.GS.ServerProperties;
 using NUnit.Framework;
 
 namespace DOL.GS.Tests
@@ -20,6 +21,26 @@ namespace DOL.GS.Tests
         {
             Assert.That(ForkBuildInfo.BuildName, Does.Match(@"^\d+\.\d+(\.\d+)?(-beta(\.\d+)?)?$"));
             Assert.That(ForkBuildInfo.BaseRelease, Does.Match(@"^0\.\d+(,0\.\d+)*$"));
+        }
+
+        [Test]
+        public void TheStartupLineNamesTheRaidSurpriseNeutrally()
+        {
+            // Players paste the FORK_BUILD line into public bug reports: it must not give the gag away.
+            bool was = Properties.BOT_LIVING_LEEROY;
+            try
+            {
+                Properties.BOT_LIVING_LEEROY = true;
+                string on = ForkBuildInfo.Describe();
+                Assert.That(on, Does.Not.Contain("leeroy").IgnoreCase);
+                Assert.That(on, Does.Match(@"living=(\S*,)?extras(,|\s|$)"));
+                Properties.BOT_LIVING_LEEROY = false;
+                Assert.That(ForkBuildInfo.Describe(), Does.Not.Contain("extras"));
+            }
+            finally
+            {
+                Properties.BOT_LIVING_LEEROY = was;
+            }
         }
     }
 }

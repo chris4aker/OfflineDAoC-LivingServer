@@ -1,5 +1,5 @@
-OFFLINE DAOC: LIVING SERVER - BETA 1.0   (github.com/chris4aker/OfflineDAoC-SocialExpansion)
-=========================================================================================
+OFFLINE DAOC: LIVING SERVER - BETA 1.1.2   (github.com/chris4aker/OfflineDAoC-LivingServer)
+===========================================================================================
 
 An add-on for Offline DAoC 0.37 / 0.37b (with or without the 0.37c new client) that makes the
 world feel like a live 2003 server. It replaces the server (GameServer.dll and, from 1.1.2, its
@@ -60,7 +60,7 @@ that was changed by something else is left alone and named in the output. ROLLBA
 PREPARE-FOR-UPDATE.cmd put the originals back.
 
 Check: start the game as usual. The server log shows a line like
-  FORK_BUILD name=1.0-beta commit=... bot_guilds=off xp_rate_by_level=off ... bot_voices=off living=off
+  FORK_BUILD name=1.1.2-beta commit=... bot_guilds=off ... bot_voices=off living=off
 
 Had an earlier Social Expansion build (0.36-se.N or 0.37-se.N)? Just run INSTALL.cmd: your
 characters, bots, bot guilds, bot memory and settings stay where they are.

@@ -92,7 +92,9 @@ cap on how many bots notice one target). Era authenticity breaks ties; it doesn'
 ### 1.1.2 — safe and correct, plus the raid fixes (release candidate 2026-11-06)
 
 The release candidate (2026-11-06) is `test/1.1.2-rc`: `test/1.1.2-combined` (PR #66) with #73, #75, #77 and #85
-(which carries #81 and #83) merged in that order. Draft release notes: [RELEASE-NOTES-1.1.2.md](RELEASE-NOTES-1.1.2.md).
+(which carries #81 and #83) merged in that order, then the readiness review's #87 (the flaky launcher preview test,
+test side only) and #89 (the played check, [PLAYED-CHECK-1.1.2.md](PLAYED-CHECK-1.1.2.md)). Draft release notes:
+[RELEASE-NOTES-1.1.2.md](RELEASE-NOTES-1.1.2.md).
 
 - [ ] **In the candidate, waiting for the owner's merges:** save safety and network defaults (#64), release gates
       (#61), ported fork fixes (#62), gamebots in your guild and power regeneration (#63), updates from the launcher
@@ -104,7 +106,15 @@ The release candidate (2026-11-06) is `test/1.1.2-rc`: `test/1.1.2-combined` (PR
       AI, Legion and the hardest level 70+ encounters are not implemented
 - [ ] One overnight soak of the candidate's build on the owner's test copy
 - [ ] The owner's short played check: guild dues and merit, a quest in a bot group, chat feel in Camelot
-- [ ] Publish `v1.1.2-beta` as Latest (the release workflow builds Setup and fills in the SHA-256s); close #61-#65
+      ([PLAYED-CHECK-1.1.2.md](PLAYED-CHECK-1.1.2.md))
+- [ ] One real 1.1.1 -> 1.1.2 package install on Windows (so far checked on paper and in CI's fake game folder only)
+- [ ] Before the tag, in one commit on `main` (the `versions` CI job checks they agree): the changelog heading
+      "Beta 1.1.2 (in development)" becomes "Beta 1.1.2 — <date>", `ForkBuildInfo.BuildName` stays `1.1.2-beta`, and
+      README.md says "**Beta 1.1.2 is out.**" with its release links, file names and `FORK_BUILD name=` on 1.1.2
+- [ ] Publish `v1.1.2-beta` as Latest (not a pre-release), with the zip built by a push run on `main` attached as
+      exactly `OfflineDAoC-LivingServer-1.1.2-beta.zip` (not the pull-request run's, whose BUILD-INFO says
+      `Branch=86/merge`). The release workflow builds Setup and fills in **only Setup's** SHA-256 (from the placeholder
+      `(filled in when the exe is built)`); the zip's SHA-256 is filled in by hand. Then close #61-#65
 
 The checklist as written on 2026-11-03 (its items are now in the candidate above unless noted):
 
