@@ -16,28 +16,38 @@
       "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs"
     }
   ],
-  "story": "Sargan is Balor's other warlord, and he thinks of himself as the civilised one. Norsob destroys; Sargan conquers. Conquered things can be kept, put to work, taxed. It was Sargan who thought of giving Balor's soldiers the names of the heroes they had killed, so that every Balorian on the stair would be a reminder. He fights with a spear, neatly, at reach, and he holds his hall on the tower's west side as he would hold a captured town. Beyond its walls he does not trouble himself. He has never needed to.",
-  "legend": "Like Norsob: hard-skinned, hits hard, cannot be hurt outside his hall. Fight him at home with one tank and steady heals, and never pull him together with Norsob's hall. Kill the named Balorians on the stair first, or they join him at the worst moment.",
+  "story": "Sargan is Balor's other warlord, and he thinks of himself as the civilised one. Norsob destroys; Sargan conquers. Conquered things can be kept, put to work, taxed. It was Sargan who thought of giving Balor's soldiers the names of the heroes they had killed, so that every Balorian on the stair would be a reminder. He fights with a spear, neatly, at reach, and he holds his hall on the tower's west side as he would hold a captured town. Beyond its walls he does not trouble himself. He has never needed to.\n\nSargan is the warlord Balor sends when something is to be kept. Conquered things can be put to work, taxed and displayed, and Sargan's hall is full of display: banners of clans the Fomorians have broken hang in neat rows, and the soldiers on the stair carry, by his order, the names of heroes the Fomorians killed long ago. He thinks it a refinement. Every Balorian is a trophy that walks.\n\nHe fights with a spear, neatly, at reach, and his hide turns a fifth of every blow like the rest of the household. Beyond his hall he does not trouble himself; the tower will not let him bleed there anyway. He and Norsob have hated each other for an age, the destroyer and the conqueror, and only the king's will keeps them from settling it. When one falls the other is said to be delighted, and to fight the next raid with a little more spite, as if to prove which of them the king should have trusted.",
+  "legend": "Like Norsob: hard-skinned, hits hard, cannot be hurt outside his hall. Fight him at home with one tank and steady heals, and never pull him together with Norsob's hall. Kill the named Balorians on the stair first, or they join him at the worst moment. Sargan is the one the Balorians on the stair answer to: clear them first or they come to him. Afterwards, one tank, steady heals, and nothing pulled from Norsob's hall. Superstition: take one banner off his wall for the Sylvan of Domnann every time he falls. They hang them in their own hall and sing the broken clans' names again.",
   "yells": {
     "aggro": [
-      "Kneel, and you may keep your name."
+      "Kneel, and you may keep your name.",
+      "Another clan for my banners.",
+      "Kneel. I am told it is very restful."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "Conquest is patience. I am very patient."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Norsob, gone? Then the west is mine as well."
       }
     ],
     "death": [
-      "Norsob... was right... about one thing..."
+      "Norsob... was right... about one thing...",
+      "Hang my banner... beside the others..."
     ],
     "slay": [
-      "Another name for a Balorian."
+      "Another name for a Balorian.",
+      "Kept.",
+      "Your name will march on the stair."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Banners of conquered clans hang in rows."
+      "Banners of conquered clans hang in rows.",
+      "Sargan keeps his conquests tidy."
     ],
     "phases": [
       {
@@ -49,25 +59,51 @@
   },
   "botLines": {
     "briefing": [
-      "sargan is like norsob with a spear. [fight him home|no dragging], one tank, steady heals"
+      "sargan is like norsob with a spear. [fight him home|no dragging], one tank, steady heals",
+      "clear the balorians on the stair first, [they answer to sargan|or they join him]",
+      "sargan is immune outside his hall. [fight him there|stay home]",
+      "one tank, steady heals, [nothing from norsob's hall|no double pulls]"
     ],
     "aftermathWin": [
-      "sargan down. [the conqueror got conquered|grats]"
+      "sargan down. [the conqueror got conquered|grats]",
+      "sargan down. [the conqueror got conquered|ha]",
+      "took a banner down off his wall on the way out. [souvenir|for the sylvan]",
+      "clean pull, stair cleared first. [good leading|grats]"
     ],
     "aftermathLoss": [
-      "someone dragged sargan into the balorians on the stair. [messy|no]"
+      "someone dragged sargan into the balorians on the stair. [messy|no]",
+      "the stair balorians came to him [mid fight|all at once]",
+      "double pulled norsob's hall. [again|never]",
+      "dragged him and he [reset|was immune]"
     ],
     "rumour": [
-      "[heard|someone said] sargan named the balorians after the heroes they killed. sick"
+      "[heard|someone said] sargan named the balorians after the heroes they killed. sick",
+      "[heard|someone said] sargan's hall has banners of every clan the fomorians ever broke",
+      "[word is|heard] sargan named the balorians after dead heroes on purpose. trophies",
+      "sargan fights with more spite when norsob is dead, they say. [rivals|petty]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Sargan",
     "text": "Balor's second warlord, who conquers rather than destroys. He gave the Balorians the names of dead heroes, so every soldier would be a trophy."
   },
-  "bookPage": "",
+  "bookPage": "From Muirgen's notes: I was shown one of Sargan's banners, taken down from his hall by a raid and carried back to Domnann. It belonged to a Sylvan clan that no longer exists. The Sylvan wept over it, and then they did a strange thing. They hung it in their own hall, beside their own banners, and sang the clan's name, which nobody had sung in a lifetime. Sargan collects the names of the broken, a warden told me, so that they stay broken. We collect them back. When the realm's raids bring down a banner from that tower, he said, bring it to us. We have a great deal of wall.",
   "chronicle": {
     "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Sargan the Conqueror in {minutes} minutes.",
     "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Sargan the Conqueror after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "norsob-the-annihilator",
+      "relation": "his rival warlord"
+    }
+  ]
 }

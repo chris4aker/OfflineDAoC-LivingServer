@@ -16,28 +16,40 @@
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
     }
   ],
-  "story": "Every tower that holds prisoners has someone who makes them talk, and in Tur Suil it is the Master of Pain. He died long ago and did not notice. The spikes in the walls are his, and the rack, and the long patient silence in the lower halls broken only by humming. He has made many things out of many prisoners; Kierac was his best work, and he lives inside it. When the Destroyer falls the Master steps out of him like a man stepping out of a doorway, unhurried, already reaching for the next subject. His touch takes the strength out of a body as a wringer takes water from cloth.",
-  "legend": "He comes out fresh the moment Kierac dies, so the raid must be ready: tank grabs him at once, healers top everyone first. He saps strength and constitution, so buff back and keep the tank healed. Mind the spikes in the walls of his hall.",
+  "story": "Every tower that holds prisoners has someone who makes them talk, and in Tur Suil it is the Master of Pain. He died long ago and did not notice. The spikes in the walls are his, and the rack, and the long patient silence in the lower halls broken only by humming. He has made many things out of many prisoners; Kierac was his best work, and he lives inside it. When the Destroyer falls the Master steps out of him like a man stepping out of a doorway, unhurried, already reaching for the next subject. His touch takes the strength out of a body as a wringer takes water from cloth.\n\nHe died long ago and did not notice, or did not mind. The Master of Pain was the tower's questioner from its first days, the one who made prisoners talk, and the Fomorians found him so useful that when he died they simply let him go on. The spikes in the walls are his. The rack in his hall, which the Allakhazam scholars rated at a level no living warrior has reached, is his favourite thing. He hums while he works.\n\nKierac was his masterpiece, and he lives inside it. When the Destroyer falls the Master steps out unhurried and takes up the fight as though it were a conversation he had been looking forward to. His touch takes the strength out of a body as a wringer takes water from cloth: strength and constitution together, so that warriors feel their armour grow heavy and their wounds deepen. He crushes rather than cuts. He talks to his victims the whole time. The tortured Sylvan spirits in the cells beyond go silent when he speaks, which the Sylvan say is the worst thing anyone has told them about him.",
+  "legend": "He comes out fresh the moment Kierac dies, so the raid must be ready: tank grabs him at once, healers top everyone first. He saps strength and constitution, so buff back and keep the tank healed. Mind the spikes in the walls of his hall. Rebuff the moment his debuff lands; a tank with no strength and no constitution dies fast. Mind the spikes in the walls of his hall when you position, and never fight him with half the raid still drinking after Kierac. Superstition: never hum on the stair of Tur Suil. He likes company, the old hibs say, and he will come looking for the tune.",
   "yells": {
     "aggro": [
-      "Ah. New subjects. Hold still."
+      "Ah. New subjects. Hold still.",
+      "Ah. New subjects. Hold still.",
+      "Kierac was lovely work. Let me show you more."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "Everyone talks in the end."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Kierac is done. Then I will need new work."
       }
     ],
     "death": [
-      "Finally... someone... found the right place..."
+      "Finally... someone... found the right place...",
+      "Finally... someone found the right place...",
+      "The humming... stops..."
     ],
     "slay": [
-      "That one broke too quickly."
+      "That one broke too quickly.",
+      "That one broke too quickly.",
+      "Next, please.",
+      "Everyone talks in the end."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The humming stops. Something has noticed you."
+      "The humming stops. Something has noticed you.",
+      "The rack stands ready. It always is."
     ],
     "phases": [
       {
@@ -49,25 +61,55 @@
   },
   "botLines": {
     "briefing": [
-      "master of pain spawns when kierac dies. tank grab him [instantly|right away]. he debuffs str and con, rebuff"
+      "master of pain spawns when kierac dies. tank grab him [instantly|right away]. he debuffs str and con, rebuff",
+      "master of pain spawns when kierac dies, [tank grab instantly|tank on him at once]",
+      "rebuff str and con the second it lands, [buffers ready|watch the debuff]",
+      "mind the wall spikes when you position him. [not near the walls|middle of the room]"
     ],
     "aftermathWin": [
-      "the torturer is dead. [nobody is sorry|the sylvan spirits went quiet]"
+      "the torturer is dead. [nobody is sorry|the sylvan spirits went quiet]",
+      "the humming stopped. [best sound ever|silence at last]",
+      "the sylvan spirits started talking again after he died. [heard them|eerie]",
+      "rebuffed every time. [great buffers|grats]"
     ],
     "aftermathLoss": [
-      "nobody was ready when he popped. [tank on him next time|be ready]"
+      "nobody was ready when he popped. [tank on him next time|be ready]",
+      "debuff landed and nobody rebuffed. [tank folded|watch it]",
+      "half the raid was still resting from kierac. [be ready|focus]",
+      "fought him by the wall spikes. [middle next time|ouch]"
     ],
     "rumour": [
-      "[heard|someone said] the master of pain built every spike in tur suil himself"
+      "[heard|someone said] the master of pain built every spike in tur suil himself",
+      "[heard|someone said] the master of pain died ages ago and just kept working",
+      "[word is|heard] the tortured sylvan go quiet when he speaks",
+      "the rack of spikes in his hall is his favourite thing, they say. [lovely|ugh]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Master of Pain",
     "text": "The torturer of Tur Suil, dead and unbothered by it. He lives inside Kierac the Destroyer and steps out when Kierac falls."
   },
-  "bookPage": "",
+  "bookPage": "From Muirgen's notes, written with some difficulty: the Sylvan spirits in Tur Suil's cells cry all the time, the raiders say, a faint sound behind the walls like wind. They stop when the Master of Pain speaks. A Sylvan warden told me this as the worst thing she knew about him: that even the dead are afraid. The raiders who killed him say he hummed the whole fight, and talked, and seemed pleased to be busy. When he fell the crying in the walls began again, louder. The warden said: that is not grief. That is them talking to each other, for the first time in a very long while.",
   "chronicle": {
     "win": "{realm} climbed Tur Suil under {raidLeader} and brought down the Master of Pain in {minutes} minutes.",
     "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to the Master of Pain after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "kierac-the-destroyer",
+      "relation": "his masterpiece and his house"
+    },
+    {
+      "id": "abomos-the-soultrapper",
+      "relation": "the keeper of the cells he empties"
+    }
+  ]
 }
