@@ -1,0 +1,110 @@
+{
+  "id": "balor",
+  "name": "Balor",
+  "catalogKey": "tur-suil/balor",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 40,000 health, Tur Suil's final; he takes 30% less from slash, crush and thrust.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "At every tenth of health lost (90% down to 10%) he spawns an Eye of Balor: a flying, untargetable eye that casts Balor's Eye Light, heat damage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs"
+    },
+    {
+      "text": "He cannot be hurt outside his tether and calls nearby kin into the fight.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as a level-81 humanoid in Tur Suil, without description.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "Irish myth: Fomorian king with a destroying eye, killed by Lugh at the second battle of Mag Tuired.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "Dec 2003: 'you only need 2fg's'.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/balor-quest-raid-today-friday.163060/ (via docs/RAID-SIZES.md)"
+    }
+  ],
+  "story": "The Balor of Tur Suil is not the king Lugh killed. He is what the eye remembers of that king, grown back around it in the dark by Fomorians who would not let their master end. He is huge and slow and hard-skinned, so that blades turn on his hide, and he does not need to be quick. He only needs to be looked at.\n\nThe eye in his face is shut now, its lid a slab of flesh. But it is not the only eye in Tur Suil. Every time his strength falls by a tenth, another eye opens somewhere in the room, high up, beyond reach of any sword, and it burns whoever it falls on with the light that once ash-blackened a valley. Nine wounds, nine eyes. The bards say Balor's gaze killed his own army at Mag Tuired. In his tower, it has learned to be selective.",
+  "legend": "Blades bite him less than spells do, so casters carry this fight. Every tenth of his health another eye opens over the room and burns someone; you cannot target them, so spread out and heal through the light. Fight him in his chamber and kill the adds he calls. Never meet his eye, the old hibs say, and they do not mean it as a joke.",
+  "yells": {
+    "aggro": [
+      "You have looked upon Balor. That was enough."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "Another eye opens. It has seen you."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Lugh is not here to save you, little ones."
+      },
+      {
+        "trigger": "health<=10",
+        "text": "The lid is lifting. Look away. Look away!"
+      }
+    ],
+    "death": [
+      "The eye... closes... for now..."
+    ],
+    "slay": [
+      "Ash, like the valley."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An eye the size of a shield turns toward you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "An Eye of Balor opens above the chamber!"
+      },
+      {
+        "trigger": "health<=30",
+        "text": "The eyes of Balor fill the dark."
+      }
+    ],
+    "realmFirstKill": "Balor of the Evil Eye is fallen. The tower is blind."
+  },
+  "botLines": {
+    "briefing": [
+      "balor takes less from melee, casters this is your fight. [nukes up|all in on him]",
+      "every ten percent an eye spawns and burns someone. you cant target them. [spread out|no stacking], heal through it",
+      "two or three groups is enough if [nobody stacks|we spread]"
+    ],
+    "aftermathWin": [
+      "balor down. lugh would be proud. [grats all|nice one]",
+      "nine eyes and nobody stacked. [good raid|best balor run yet]"
+    ],
+    "aftermathLoss": [
+      "everyone clumped and the eyes [burned the lot|cooked the healers]. spread next time",
+      "we lost it at the last eyes. [so close|ten percent]"
+    ],
+    "rumour": [
+      "[heard|someone said] balor's eye never closes [even dead|even when hes down]. it just waits",
+      "a sylvan told me the vale of balor glowed red the night the realm [beat|went up against] him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Balor",
+    "text": "The eye's memory of a king, grown back in Tur Suil. Steel bites him poorly. Each tenth of his strength lost opens another eye in the room, and each eye burns. Spread out and do not meet his gaze."
+  },
+  "bookPage": "A Sylvan who carried water for the raid that killed him told me what she saw. The king did not look at anyone. He did not need to. Each time the warriors cut him deeper, something opened in the dark under the roof: an eye, red at the rim, and wherever it looked a person burned. She counted nine. When he fell they all closed together, she said, like a house putting out its lamps. She does not believe they are gone. She believes they are waiting.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Balor of the Evil Eye in {minutes} minutes. Nine eyes closed together.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Balor and his opening eyes after {minutes} minutes."
+  }
+}

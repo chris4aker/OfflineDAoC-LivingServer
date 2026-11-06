@@ -1,0 +1,78 @@
+{
+  "id": "queen-qunilaria",
+  "name": "Queen Qunilaria",
+  "catalogKey": "tur-suil/queenqunilaria",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 72 in the script (75 on Allakhazam), an animal type. When struck she has a 25% chance to call three minions (up to four alive), and when she dies 15-22 minions pour out.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Tur Suil also holds burrowing monstrosities and tunneling horrors.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "She cannot be hurt outside her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Balor's tower stands on a crag, and the Fomorians never stopped digging under it. The diggers are not Fomorian. They are the brood of Qunilaria, a queen of burrowing things the Fomorians found in the deep rock of Hy Brasil and bound with a promise: dig toward the roots of the isle, and the king will feed you. She has dug faithfully. Her nest lies far below the tower now, a hollow full of clicking, and her young come at every blow struck against her. When she dies the nest empties all at once, every egg and grub still in her body bursting out to avenge her.",
+  "legend": "She calls minions when she is hit, a few at a time, and dumps a crowd of them when she dies. Kill the small waves as they come, then stack AoE on her corpse for the last one. Do not chase her out of the nest.",
+  "yells": {
+    "aggro": [
+      "The nest clicks and stirs all at once."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Her brood claws up out of the floor."
+      }
+    ],
+    "death": [
+      "The queen splits. Her brood boils out!"
+    ],
+    "slay": [
+      "The brood will eat."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is hollow. Something is digging."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Qunilaria's nest empties in a flood!"
+      }
+    ],
+    "realmFirstKill": "Queen Qunilaria is dead. The digging stops."
+  },
+  "botLines": {
+    "briefing": [
+      "qunilaria calls bugs when hit and [dumps twenty|a flood pops] when she dies. aoe on her corpse"
+    ],
+    "aftermathWin": [
+      "queen down, brood down. [nice aoe|cleaned up]"
+    ],
+    "aftermathLoss": [
+      "killed the queen then [the brood killed us|wiped to the bugs]. every time"
+    ],
+    "rumour": [
+      "[heard|someone said] qunilaria's brood is digging toward the roots of hy brasil for balor"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Qunilaria",
+    "text": "A queen of burrowing things, bound by the Fomorians to dig beneath Tur Suil. Her brood answers every blow, and floods out when she dies."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Queen Qunilaria and her brood in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Queen Qunilaria's brood after {minutes} minutes."
+  }
+}

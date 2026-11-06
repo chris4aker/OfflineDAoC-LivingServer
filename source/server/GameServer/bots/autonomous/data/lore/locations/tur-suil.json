@@ -1,0 +1,155 @@
+{
+  "id": "tur-suil",
+  "name": "Tur Suil",
+  "realm": "Hibernia",
+  "regions": [
+    190
+  ],
+  "summary": "Balor's tower on Hy Brasil, raised by the Fomorians around the eye that would not close.",
+  "facts": [
+    {
+      "text": "Tur Suil's bestiary: Balor (81), Queen Qunilaria, Norsob the Annihilator, Sargan the Conqueror, Kierac the Destroyer, the Master of Pain, Abomos the Soultrapper, the Balorians, spectral and tortured Sylvan spirits, burrowing monstrosities, tunneling horrors, wall spikes and a rack of spikes.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "The Balorians bear old Irish hero names: Conall, Ferdiad, Conlaoch, Aonghus, Donogh, Huon, Sluaghan, Meisceoir and others.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "Region 190; the realm raid's final is Balor. The Vale of Balor is a zone of Hy Brasil (region 181).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Shrouded Isles set the Fomorians against the Sylvan of Hy Brasil, who asked Hibernia for help.",
+      "provenance": "mythic",
+      "source": "https://archive.rpgamer.com/news/Q3-2002/080502g.html"
+    },
+    {
+      "text": "Irish myth (not game canon): Balor, Fomorian king, had an eye that destroyed what it looked on; his grandson Lugh killed him at the second battle of Mag Tuired; folklore sets his tower on Tory Island, where he shut away his daughter.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "A Dec 2003 Balor raid: 'you only need 2fg's'; the raid brought three groups.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/balor-quest-raid-today-friday.163060/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "Bot chat: his eye once opened over Hy Brasil and burned the valley now called the Vale of Balor; never meet his eye.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Tur Suil may be Irish túr súl, 'tower of the eye'; to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Every child in Hibernia knows how Balor died. Lugh, his own grandson, put a sling-stone through the terrible eye at Mag Tuired and drove it out through the back of the king's skull, and it fell looking at the Fomorian host and burned them where they stood. The bards end the tale there. The Fomorians did not.\n\nThey gathered what was left, the Sylvan say: the eye, still open, still burning, wrapped in seven hides and carried by men who walked backwards. They took it west, to the isle that nobody could find, and when it opened once on the way a whole valley of Hy Brasil turned to ash. On a crag above that valley they built a tower to hold it, as Balor had once built a tower to hold his daughter, and around the eye, over long years, they grew their king back. Tur Suil, the tower of the eye. The Balor who sits in it now is the eye's own idea of a king.\n\nHis household fills the tower. His soldiers carry the names of heroes the Fomorians once killed, worn like trophies. His soul-trapper keeps the spirits of the Sylvan who tried to burn the tower, and keeps them screaming. His torturer has filled the walls with spikes, and his burrowers dig ever downward, toward the roots of the isle. And in the highest room the king waits, and every wound he takes opens another eye somewhere in the dark, looking for whoever gave it.",
+  "legend": "Two or three groups if they are good. Never stand where the eyes can see you all at once: every tenth of his health another Eye of Balor opens over the room and burns whoever it looks at. Kill fast, spread out, heal through the light. Clear the queen and the warlords first, and mind the spikes in the walls.",
+  "atmosphere": {
+    "firstEntry": [
+      "The tower of the eye. Do not look up.",
+      "The walls are full of spikes, and the spikes are full.",
+      "Somewhere above, a lid is lifting."
+    ],
+    "areas": [
+      {
+        "name": "the gate of Tur Suil",
+        "x": 38038,
+        "y": 27675,
+        "z": 13251,
+        "radius": 1200,
+        "lines": [
+          "The soldiers wear the names of dead heroes."
+        ]
+      },
+      {
+        "name": "Balor's chamber",
+        "x": 32032,
+        "y": 31048,
+        "z": 15984,
+        "radius": 1600,
+        "lines": [
+          "An eye the size of a shield turns toward you.",
+          "Meet his eye and you will not meet anything again."
+        ]
+      },
+      {
+        "name": "the soul-trapper's cells",
+        "x": 31471,
+        "y": 21474,
+        "z": 11612,
+        "radius": 1100,
+        "lines": [
+          "Sylvan voices, very faint, behind the walls."
+        ]
+      },
+      {
+        "name": "the burrowers' nest",
+        "x": 31066,
+        "y": 16596,
+        "z": 11951,
+        "radius": 1300,
+        "lines": [
+          "The floor is hollow. Something is digging."
+        ]
+      },
+      {
+        "name": "the torturer's hall",
+        "x": 28439,
+        "y": 28150,
+        "z": 13246,
+        "radius": 1100,
+        "lines": [
+          "Racks, spikes, and someone humming."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "lugh put a stone through balor's eye at mag tuired. [nobody told the one in tur suil|the fomorians took the eye west]",
+      "tur suil means the tower of the eye, [i think|my guild says]. balor built a tower for his daughter once too",
+      "the balorians wear the names of heroes. conall, ferdiad, aonghus. [trophies|like scalps]",
+      "the sylvan spirits in tur suil are the ones who tried to burn it. [abomos keeps them|still screaming]"
+    ],
+    "rumour": [
+      "[heard|someone swears] the eye in tur suil opened [last night|again] and the vale glowed red for a minute",
+      "[word is|heard] a sylvan scout went into tur suil to free the spirits. [didnt come out|nobody has seen him]"
+    ],
+    "tell": [
+      "tur suil is balor's tower on hy brasil. two or three groups, spread out for the eyes, never meet his gaze",
+      "fomorians, spikes in the walls, a bug queen, two warlords, a torturer, and balor on top. fun place"
+    ]
+  },
+  "loremaster": {
+    "intro": "Tur Suil, the tower of the eye. You know how [Balor] died at Mag Tuired. Ask instead what became of the [eye]. The Fomorians built this tower for it, and filled it with [his household].",
+    "topics": {
+      "Balor": "King of the Fomorians, whose single eye burned whatever it looked on. Lugh, his grandson, put it out with a sling-stone. Or so we sing.",
+      "eye": "It fell open and burned the Fomorian host. They wrapped it in hides and carried it west, walking backwards, and it opened once on Hy Brasil. That valley is the Vale of Balor now.",
+      "his household": "Soldiers wearing the names of our dead heroes; a soul-trapper; a torturer called the [Master of Pain]; two warlords; and a queen of burrowing things.",
+      "Master of Pain": "He lived inside Kierac the Destroyer, the Sylvan say, as a worm lives in an apple. Kill Kierac and he comes out."
+    }
+  },
+  "book": {
+    "title": "The Tower of the Eye",
+    "pages": [
+      "The bards sing that Lugh drove the eye of Balor out through the back of his head, and that it fell facing the Fomorian host, and that their own king's gaze destroyed them. The Sylvan of Hy Brasil have a second verse. They say the Fomorians who lived were the ones who had been walking backwards, and that they wrapped the eye in seven hides of seven beasts and carried it to the sea without once turning round.",
+      "The Sylvan say the boat came to Hy Brasil in a mist, as all boats come there, and that the hides slipped on the shore. The eye looked at one valley for as long as it takes to draw breath. Nothing has grown there since. The Fomorians built a tower on the crag above it, a tower with one window, and they put the eye behind the window, and they began, slowly, to grow a king around it again.",
+      "When Hibernia's raids first climbed to the top of Tur Suil they found him there: Balor, or what the eye remembers of Balor. He bleeds, and he can die. But every tenth part of his strength that falls opens another eye somewhere in the room, and each eye burns. A druid of Tir na Nog wrote beside this page: the eye was never his. He was always the eye's."
+    ]
+  },
+  "bosses": [
+    "balor",
+    "queen-qunilaria",
+    "norsob-the-annihilator",
+    "sargan-the-conqueror",
+    "kierac-the-destroyer",
+    "master-of-pain",
+    "abomos-the-soultrapper"
+  ]
+}

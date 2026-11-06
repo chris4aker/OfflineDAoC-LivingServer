@@ -1,0 +1,73 @@
+{
+  "id": "kierac-the-destroyer",
+  "name": "Kierac the Destroyer",
+  "catalogKey": "tur-suil/kieracdestroyer",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 69, 30,000 health. He shields himself with Shield of Pain (a bladeturn) and takes 20% less from melee; when he dies the Master of Pain appears.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He cannot be hurt beyond his tether of 1,800.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Kierac was a prisoner of Tur Suil once, a Fomorian deserter or a captured champion of some other race; nobody remembers which, least of all Kierac. The Master of Pain made him into a weapon. He gave him a skin of pain that turns the first blow of every fight, and he gave him a rage that has outlasted his memory. And then, the Sylvan say, the Master of Pain climbed inside him to rest, as a worm rests in an apple. Kierac guards the torturer's hall, and he does not know what he is carrying. The raids that kill him find out.",
+  "legend": "His shield turns blows, so open with something cheap. He is only the first half: when he dies the Master of Pain comes out of him, fresh and stronger. Save mana and cooldowns for the second fight and do not rest between.",
+  "yells": {
+    "aggro": [
+      "Destroy. Destroy. I remember that word."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Something inside me is laughing."
+      }
+    ],
+    "death": [
+      "Out... it is coming out..."
+    ],
+    "slay": [
+      "Destroyed. Like me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Racks, spikes, and someone humming."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Something crawls out of Kierac's body!"
+      }
+    ],
+    "realmFirstKill": "Kierac is at peace. Something else is not."
+  },
+  "botLines": {
+    "briefing": [
+      "kierac is phase one. when he dies the master of pain [spawns|comes out]. [save cooldowns|dont blow everything on kierac]"
+    ],
+    "aftermathWin": [
+      "kierac and his passenger both down. [gross|nice]"
+    ],
+    "aftermathLoss": [
+      "blew everything on kierac and then the master of pain [ate us|walked over us]"
+    ],
+    "rumour": [
+      "[heard|someone said] the master of pain lives inside kierac. like a worm in an apple"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kierac",
+    "text": "A prisoner made into a weapon by the Master of Pain, who now rides inside him. Kill Kierac, and the torturer climbs out."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Kierac the Destroyer in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Kierac the Destroyer after {minutes} minutes."
+  }
+}

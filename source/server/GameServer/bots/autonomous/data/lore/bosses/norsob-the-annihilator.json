@@ -1,0 +1,78 @@
+{
+  "id": "norsob-the-annihilator",
+  "name": "Norsob the Annihilator",
+  "catalogKey": "tur-suil/norsobannihilator",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 72, 30,000 health; Allakhazam lists him as a giant. He takes 20% less from melee and cannot be hurt beyond his tether of 1,800.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He shares a script with Sargan the Conqueror; their halls lie on the tower's west side.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat: 'norsob the annihilator lives in tur suil. with a name like that, i am not asking questions'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Balor keeps two warlords, and Norsob is the one he sends when there is nothing to be kept. Annihilator is not a boast; it is a job. When a Sylvan village sheltered the scouts who spied on Tur Suil, it was Norsob who went, and there is a clearing in the Vale where the village was. He is a giant among Fomorians, slow to anger and slower to stop, and he holds the west hall as he would hold a battlefield: he does not chase, he does not give ground, and beyond the edge of his hall nothing reaches him. He and Sargan do not love each other. Each thinks the other's work is untidy.",
+  "legend": "A big straight fight: he shrugs off some melee and he hits hard. Fight him in his hall, because outside his tether he cannot be hurt and walks home. One good tank and steady heals, and do not wake Sargan's hall at the same time.",
+  "yells": {
+    "aggro": [
+      "Nothing will be left. Not even the name."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I have unmade villages. You are fewer."
+      }
+    ],
+    "death": [
+      "Sargan... will say... he told me so..."
+    ],
+    "slay": [
+      "Annihilated."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The west hall smells of old fires."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Norsob the Annihilator will not give ground."
+      }
+    ],
+    "realmFirstKill": "Norsob the Annihilator is himself undone."
+  },
+  "botLines": {
+    "briefing": [
+      "norsob is a tank and spank but he hits like a cart. [fight him in his hall|dont drag him], hes immune outside it"
+    ],
+    "aftermathWin": [
+      "norsob down. [with a name like that|annihilated the annihilator]"
+    ],
+    "aftermathLoss": [
+      "pulled norsob and sargan's hall at once. [never again|one warlord at a time]"
+    ],
+    "rumour": [
+      "[heard|someone said] norsob burned a sylvan village in the vale for hiding scouts"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Norsob",
+    "text": "One of Balor's two warlords, the one sent when nothing is to be left. He holds the west hall and nothing reaches him beyond it."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Norsob the Annihilator in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Norsob the Annihilator after {minutes} minutes."
+  }
+}

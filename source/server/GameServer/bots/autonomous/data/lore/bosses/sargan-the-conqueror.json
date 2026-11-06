@@ -1,0 +1,73 @@
+{
+  "id": "sargan-the-conqueror",
+  "name": "Sargan the Conqueror",
+  "catalogKey": "tur-suil/sarganconqueror",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health, a thrusting fighter. He takes 20% less from melee and cannot be hurt beyond his tether of 1,800.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He shares a script with Norsob the Annihilator.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs"
+    }
+  ],
+  "story": "Sargan is Balor's other warlord, and he thinks of himself as the civilised one. Norsob destroys; Sargan conquers. Conquered things can be kept, put to work, taxed. It was Sargan who thought of giving Balor's soldiers the names of the heroes they had killed, so that every Balorian on the stair would be a reminder. He fights with a spear, neatly, at reach, and he holds his hall on the tower's west side as he would hold a captured town. Beyond its walls he does not trouble himself. He has never needed to.",
+  "legend": "Like Norsob: hard-skinned, hits hard, cannot be hurt outside his hall. Fight him at home with one tank and steady heals, and never pull him together with Norsob's hall. Kill the named Balorians on the stair first, or they join him at the worst moment.",
+  "yells": {
+    "aggro": [
+      "Kneel, and you may keep your name."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Conquest is patience. I am very patient."
+      }
+    ],
+    "death": [
+      "Norsob... was right... about one thing..."
+    ],
+    "slay": [
+      "Another name for a Balorian."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Banners of conquered clans hang in rows."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Sargan the Conqueror levels his spear."
+      }
+    ],
+    "realmFirstKill": "Sargan the Conqueror is conquered."
+  },
+  "botLines": {
+    "briefing": [
+      "sargan is like norsob with a spear. [fight him home|no dragging], one tank, steady heals"
+    ],
+    "aftermathWin": [
+      "sargan down. [the conqueror got conquered|grats]"
+    ],
+    "aftermathLoss": [
+      "someone dragged sargan into the balorians on the stair. [messy|no]"
+    ],
+    "rumour": [
+      "[heard|someone said] sargan named the balorians after the heroes they killed. sick"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Sargan",
+    "text": "Balor's second warlord, who conquers rather than destroys. He gave the Balorians the names of dead heroes, so every soldier would be a trophy."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Sargan the Conqueror in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Sargan the Conqueror after {minutes} minutes."
+  }
+}

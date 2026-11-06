@@ -1,0 +1,73 @@
+{
+  "id": "master-of-pain",
+  "name": "Master of Pain",
+  "catalogKey": "tur-suil/masterofpain",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 74, undead, crushing blows; he appears when Kierac the Destroyer dies. His Vitality Dispersal saps strength and constitution.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as level 74 undead; Tur Suil also holds wall spikes and a rack of spikes.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    }
+  ],
+  "story": "Every tower that holds prisoners has someone who makes them talk, and in Tur Suil it is the Master of Pain. He died long ago and did not notice. The spikes in the walls are his, and the rack, and the long patient silence in the lower halls broken only by humming. He has made many things out of many prisoners; Kierac was his best work, and he lives inside it. When the Destroyer falls the Master steps out of him like a man stepping out of a doorway, unhurried, already reaching for the next subject. His touch takes the strength out of a body as a wringer takes water from cloth.",
+  "legend": "He comes out fresh the moment Kierac dies, so the raid must be ready: tank grabs him at once, healers top everyone first. He saps strength and constitution, so buff back and keep the tank healed. Mind the spikes in the walls of his hall.",
+  "yells": {
+    "aggro": [
+      "Ah. New subjects. Hold still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Everyone talks in the end."
+      }
+    ],
+    "death": [
+      "Finally... someone... found the right place..."
+    ],
+    "slay": [
+      "That one broke too quickly."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The humming stops. Something has noticed you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Master of Pain is enjoying himself."
+      }
+    ],
+    "realmFirstKill": "The Master of Pain is silent. The racks are empty."
+  },
+  "botLines": {
+    "briefing": [
+      "master of pain spawns when kierac dies. tank grab him [instantly|right away]. he debuffs str and con, rebuff"
+    ],
+    "aftermathWin": [
+      "the torturer is dead. [nobody is sorry|the sylvan spirits went quiet]"
+    ],
+    "aftermathLoss": [
+      "nobody was ready when he popped. [tank on him next time|be ready]"
+    ],
+    "rumour": [
+      "[heard|someone said] the master of pain built every spike in tur suil himself"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Master of Pain",
+    "text": "The torturer of Tur Suil, dead and unbothered by it. He lives inside Kierac the Destroyer and steps out when Kierac falls."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down the Master of Pain in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to the Master of Pain after {minutes} minutes."
+  }
+}

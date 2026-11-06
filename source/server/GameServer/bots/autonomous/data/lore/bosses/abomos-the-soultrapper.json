@@ -1,0 +1,73 @@
+{
+  "id": "abomos-the-soultrapper",
+  "name": "Abomos the Soultrapper",
+  "catalogKey": "tur-suil/abomossoultrapper",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health, slashing blows and a Lifedrain. At 50% health he calls two Abomos Servants (up to three alive).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Tur Suil holds spectral Sylvan and tortured Sylvan spirits.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    }
+  ],
+  "story": "When the Sylvan first understood what was being raised on the crag above the burned valley, they went to burn it down. Most of them died on the stair. Abomos caught what was left. He is a trapper of souls, Balor's gaoler for the things that cannot be chained, and the spirits of the Sylvan raiders hang in his cells still, spectral and tortured, crying in voices too faint to make out. He feeds on them, and on whoever comes to free them, drinking life through the air. When he is hard pressed he calls his servants, made from the last of what he has eaten.",
+  "legend": "He drains life, so keep heals rolling on whoever he targets. At half health two servants join: tanks pick them up, AoE or kill them, then finish him. Free the Sylvan spirits, the old hibs say, and the Vale grows a little greener.",
+  "yells": {
+    "aggro": [
+      "Another soul for the cells. A strong one."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Servants! I have fed you. Now feed me."
+      }
+    ],
+    "death": [
+      "The cells... are opening..."
+    ],
+    "slay": [
+      "Your soul will hang beside theirs."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Sylvan voices, very faint, behind the walls."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Abomos calls his servants from the cells!"
+      }
+    ],
+    "realmFirstKill": "Abomos is dead. The Sylvan spirits are free."
+  },
+  "botLines": {
+    "briefing": [
+      "abomos lifedrains, keep heals on his target. at half [two servants|adds] come, tanks grab them"
+    ],
+    "aftermathWin": [
+      "abomos down. [the sylvan spirits went quiet|you could hear them sigh]. good"
+    ],
+    "aftermathLoss": [
+      "the servants got loose on the casters at half. [tanks|grab the adds]"
+    ],
+    "rumour": [
+      "[heard|someone said] the tortured sylvan in tur suil are the raiders who tried to burn it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Abomos",
+    "text": "Balor's soul-trapper. He keeps the spirits of the Sylvan who tried to burn Tur Suil, and feeds on them, and on whoever comes to free them."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Abomos the Soultrapper in {minutes} minutes. The Sylvan spirits went free.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Abomos the Soultrapper after {minutes} minutes."
+  }
+}
