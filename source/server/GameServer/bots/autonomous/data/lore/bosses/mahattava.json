@@ -1,0 +1,77 @@
+{
+  "id": "mahattava",
+  "name": "Mahattava",
+  "catalogKey": "iarnvidiur-s-lair/mahattava",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Mahattava is a level-66 named with 30,000 health; 28 fjarskafinn come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It casts Mahattava's Infection over time and a 300-damage strike.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls it a named fjarskafinn in the room with the single waterfall and lake, hitting for 300-400; players thought it was over level 70 (2003).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4666"
+    },
+    {
+      "text": "Finnish mahtava means mighty (to verify).",
+      "provenance": "original",
+      "source": "Finnish glossary, to verify"
+    }
+  ],
+  "story": "In the lake under the single waterfall live the fjarskafinn, finned and muck-scaled, and Mahattava is the mightiest of them, as its name in an old eastern tongue says. It is the one thing in the lair Iarnvidiur did not breed. It was in the lake before her, and it has made its peace with her the way a pike makes peace with a heron: each stays out of the other's water. Its school is enormous. Pull it and the lake empties at you.",
+  "legend": "Mahattava brings twenty-eight fjarskafinn. That is not a typo. Area damage, a wall of tanks at the lake edge, and patience. Two players took ten percent off it in 2003 and decided against the rest. Its fish-scale shield is a fine drop.",
+  "yells": {
+    "aggro": [
+      "(The lake boils with fins.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(More fins break the surface.)"
+      }
+    ],
+    "death": [
+      "(Mahattava sinks into the lake.)"
+    ],
+    "slay": [
+      "(The school closes over the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A single waterfall feeds a black lake. Fins move."
+    ],
+    "realmFirstKill": "Mahattava, the mighty one of the lake, is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "mahattava pulls 28 fish. yes 28. aoe ready, tanks on the shore"
+    ],
+    "aftermathWin": [
+      "28 fish and a boss. [what a pull|gg]"
+    ],
+    "aftermathLoss": [
+      "the lake emptied at us"
+    ],
+    "rumour": [
+      "mahattava was in that lake before iarnvidiur came, the dwarves say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mahattava",
+    "text": "The mightiest of the fjarskafinn in the lake under the single waterfall, and the one thing in the lair [Iarnvidiur] did not breed."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} emptied Mahattava's lake in {minutes} minutes.",
+    "loss": "Mahattava's school dragged {raidLeader}'s party from {realm} under after {minutes} minutes."
+  }
+}

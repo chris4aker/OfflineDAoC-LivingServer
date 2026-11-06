@@ -1,0 +1,77 @@
+{
+  "id": "dyranapur",
+  "name": "Dyranapur",
+  "catalogKey": "iarnvidiur-s-lair/dyranapur",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Dyranapur is a level-59 named with 10,000 health; seven skuggande come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It drains life and spreads a Black Plague that lasts nearly an hour.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls it a named skuggande that looks like a huge cicada, in the waterfall room; killing it lowers Svartalfar faction and raises Arachite, Svartalfar Outcasts and Varulv.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4665"
+    },
+    {
+      "text": "Swedish skuggande means shadowing (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "The skuggande are the shadowing things, insects of the lair with wings like smoke, and Dyranapur is the queen of the swarm in the waterfall room. She drinks. She drains the life from whatever she touches and leaves a sickness that lasts longer than most fights, and her song under the waterfall is the hum the dwarves hear in their sleep. The Svartalfar hate her; the Varulv and the arachites do not, which tells you something about the Svartalfar. Her eyes are prized by casters.",
+  "legend": "Dyranapur is a small-raid named: a group of seven took it in 2003. Kill the skuggande, cure the plague, and keep the healer out of her life drain range. The plague lasts almost an hour, so don't fight her right before Iarnvidiur without a cure ready.",
+  "yells": {
+    "aggro": [
+      "(The hum under the waterfall rises to a shriek.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Dyranapur drinks deep.)"
+      }
+    ],
+    "death": [
+      "(The humming stops.)"
+    ],
+    "slay": [
+      "(The swarm settles on the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hum rises under the waterfall. Wings like smoke."
+    ],
+    "realmFirstKill": "Dyranapur is slain. The waterfall is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "dyranapur in the waterfall room, 7 skuggande, cure plague"
+    ],
+    "aftermathWin": [
+      "big bug down"
+    ],
+    "aftermathLoss": [
+      "plague lasted longer than we did"
+    ],
+    "rumour": [
+      "theres a bug the size of a horse under the waterfall in the lair"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dyranapur",
+    "text": "Queen of the skuggande, the shadowing insects, in the waterfall room. She drinks life and leaves a long sickness."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Dyranapur under the waterfall in {minutes} minutes.",
+    "loss": "Dyranapur drank {raidLeader}'s party from {realm} dry after {minutes} minutes."
+  }
+}

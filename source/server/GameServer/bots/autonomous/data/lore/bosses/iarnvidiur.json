@@ -1,0 +1,103 @@
+{
+  "id": "iarnvidiur",
+  "name": "Iarnvidiur",
+  "catalogKey": "iarnvidiur-s-lair/iarnvidiur",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Iarnvidiur is the level-75 final of her lair with 40,000 health. She casts Iarnvidiur's Plague, Black Plague (a disease in an 850 radius lasting ten minutes), Plague Bolt and a 400-damage strike.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "From half health she keeps seizing players and sending them to one of four fixed spots away from the fight.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists her as a giant; a 2004 thread calls her 'she', says she regenerated faster than a 30-strong group could hurt her, and that she teleported players into the water under the bridge.",
+      "provenance": "legend",
+      "source": "https://forums.tomshardware.com/threads/iarnvidiur.168029"
+    },
+    {
+      "text": "The Remnants iarn dwarves of Faraheim count the Servants of Iarnvidiur among their foes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Reputation/FactionEmissaryRuntime.cs"
+    },
+    {
+      "text": "In the Voluspa an old giantess sits in the Iron Wood (Jarnvidr) and breeds the wolf-kin of Fenrir; Jarnvidja, 'she of the Iron Wood', is a giantess name in Snorri's lists (to verify).",
+      "provenance": "original",
+      "source": "Voluspa, stanza 40 (Poetic Edda, public domain): the old one in the Iron Wood breeds Fenrir's kin"
+    },
+    {
+      "text": "Bot chat says she breeds two-headed wolves in the Iarnwood and is kin to the Fenris line; one grandmother's tale makes her Gjalpinulva's mother (hearsay).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The old songs say that east of the world, in the Iron Wood, an old woman sits and breeds wolves: Fenrir's kin, the brood that will one day swallow the sun and the moon. The iarn dwarves of Aegir do not sing that song. They do not have to; they live beside her. Iarnvidiur is the woman of the Iarnwood, a giantess older than the island's maps, and the lair under the forest is her kennel, her nursery and her sickroom. Everything in it carries her plague, the black rot of the iron trees, and so does she: it hangs around her like a cloak and it closes her wounds faster than most raids can open them. She does not care to be fought. When you have hurt her badly enough to be a nuisance she simply begins to put you elsewhere, picking one fighter after another and setting them down far from the fight, the way a woman sets a pup back in its basket.",
+  "legend": "Bring cure disease, lots of it, and a raid big enough to outdamage her healing: thirty was not enough in 2004. From half health she sends people away, often into the water under the bridge; climb the pillars and come back, and watch for the red cons down there. Her wolves Hati and Skoll guard her door. My gran said she is the dragon's mother. My gran said a lot.",
+  "yells": {
+    "aggro": [
+      "Who let the pups out? Ah. Not pups. Supper."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You are tiresome. Back in your basket, little one."
+      },
+      {
+        "trigger": "teleport",
+        "text": "There. Stay."
+      }
+    ],
+    "death": [
+      "My brood... will run... when the sun is eaten..."
+    ],
+    "slay": [
+      "The rot takes you. Good. The wood is hungry."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The kennel of the Iron Wood. Something old is nursing here.",
+      "Black rot hangs in the air like smoke."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Iarnvidiur seizes her attackers and casts them away!"
+      }
+    ],
+    "realmFirstKill": "The woman of the Iarnwood is dead. Her brood howls."
+  },
+  "botLines": {
+    "briefing": [
+      "iarnvidiur heals fast, we need dps AND cure disease, [shamans|healers] on cure duty",
+      "from 50% she ports people to the corners. if you land in the water climb the pillars and come back",
+      "kill hati and skoll at the door first"
+    ],
+    "aftermathWin": [
+      "iarnvidiur down! [gg|grats raid] the old wolf mother is dead",
+      "i got ported 4 times and still made it back for the kill"
+    ],
+    "aftermathLoss": [
+      "she healed faster than we hit, same as last time",
+      "half the raid ended up in the water"
+    ],
+    "rumour": [
+      "[my gran says|they say] iarnvidiur is gjalpinulva's mother. [dunno|hearsay but still]",
+      "the old song has a giantess in the iron wood breeding wolves to eat the sun. iarnvidiur fits"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Iarnvidiur",
+    "text": "The woman of the Iarnwood. The old songs put a giantess in the Iron Wood breeding Fenrir's kin; the iarn dwarves live beside her and do not need the song. Her plague closes her wounds, and when you become a nuisance she sets you elsewhere, like a pup back in its basket."
+  },
+  "bookPage": "From the slate of an iarn dwarf of the Remnants, read to me in Faraheim. 'The Servants of the old one took two more of our children this moon. We went to the lair to bring them back. We found the pups first, wolves with two heads that ran to her like dogs to a hearth. She was sitting by the water under the bridge. She looked at us the way a woman looks at weather. Then she reached out, and Torvald was gone, and we heard him in the water far below, and she went back to her pups. We did not bring the children back. We brought Torvald back, which was something.'",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Iarnvidiur, the woman of the Iarnwood, in {minutes} minutes.",
+    "loss": "Iarnvidiur set {raidLeader}'s raid from {realm} back in its basket after {minutes} minutes."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "id": "delegalt",
+  "name": "Delegalt",
+  "catalogKey": "iarnvidiur-s-lair/delegalt",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Delegalt is a 30,000-health named on the path to Iarnvidiur; fifteen come with him (three animus rondjur, five animus syndig, seven grymvarg).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads Black Plague by touch.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam players said the whole room of animus and dogs adds if not cleared first, and that he dropped two groups (2003).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4670"
+    }
+  ],
+  "story": "Delegalt keeps the animus, the soulless giants of the lair, the way a herdsman keeps cattle. They are what is left of the giants who came to court Iarnvidiur long ago and stayed too long in her rot; she took the sense out of them and gave them to Delegalt to mind. Their names are words for sinful and round and worse. His room is full of them, and of her wolves, and if you touch him, all of them notice.",
+  "legend": "Delegalt is a room, not a mob: three rondjur, five syndig and seven grymvarg come with him. Clear the room from the edge before you pull, or the whole hall adds. Two groups died learning that in 2003. After the room is clear he is an ordinary fight.",
+  "yells": {
+    "aggro": [
+      "Up, my herd! Up, my hounds! We have visitors."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "All of you! Trample them!"
+      }
+    ],
+    "death": [
+      "Who will mind... the herd..."
+    ],
+    "slay": [
+      "The herd will graze on you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hulking animus stand in the dark like cattle."
+    ],
+    "realmFirstKill": "Delegalt the herdsman is slain. His herd wanders."
+  },
+  "botLines": {
+    "briefing": [
+      "delegalt room: clear all the animus and grymvarg FIRST or it all comes"
+    ],
+    "aftermathWin": [
+      "room cleared, delegalt down. that's how you do it"
+    ],
+    "aftermathLoss": [
+      "someone pulled delegalt with the room up. [15 adds|whole room]"
+    ],
+    "rumour": [
+      "the animus in the lair were giants once, they say. iarnvidiur took their minds"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Delegalt",
+    "text": "The herdsman of the animus, giants who came to court [Iarnvidiur] and stayed too long in her rot. Touch him and the whole herd notices."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Delegalt's herd on the road to Iarnvidiur in {minutes} minutes.",
+    "loss": "Delegalt's herd trampled {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

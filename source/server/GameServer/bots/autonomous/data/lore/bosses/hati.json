@@ -1,0 +1,83 @@
+{
+  "id": "hati",
+  "name": "Hati",
+  "catalogKey": "iarnvidiur-s-lair/hati",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Hati is a level-69 named with 30,000 health at the door of Iarnvidiur's chamber, beside Skoll.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "He bites (Hati's Bite) and mesmerizes everyone in a 450 radius for 29 seconds.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Hati as humanoid, level 65; he drops a moonstone-studded axe.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4672"
+    },
+    {
+      "text": "In Norse myth Hati chases the moon and Skoll the sun until Ragnarok.",
+      "provenance": "original",
+      "source": "Snorri, Gylfaginning (public-domain myth); inspiration"
+    }
+  ],
+  "story": "Hati is the moon-chaser of the old songs, or he is a wolf of Iarnvidiur's brood who was given the name and grew into it. He walks on two legs now, more often than not, and he carries his mother's patience. Where Skoll runs at things, Hati waits for them to fall asleep: his howl is the long silver one, and anyone who hears it close stands dreaming while he bites. The two of them lie at her door like hounds at a hall. They have never caught the moon, and they do not seem to mind.",
+  "legend": "Hati's mez covers a big circle and lasts half a minute, so keep cure-mez ready and don't stack the casters. Kill him and Skoll before you open Iarnvidiur's door, or they join her. The skalds say if Hati ever catches the moon, the nights will be dark for good.",
+  "yells": {
+    "aggro": [
+      "(A long, silver howl rises.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Hati howls at a moon no one else can see.)"
+      }
+    ],
+    "death": [
+      "(The howl breaks off.)"
+    ],
+    "slay": [
+      "(Hati licks his muzzle and looks up.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two wolves lie at a door like hounds at a hall."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hati's howl lulls everyone near him to sleep!"
+      }
+    ],
+    "realmFirstKill": "Hati the moon-chaser is slain. The moon is safe."
+  },
+  "botLines": {
+    "briefing": [
+      "hati mezzes a big circle for 30 sec. [cure mez ready|minstrels on it]"
+    ],
+    "aftermathWin": [
+      "hati down, the moon is safe lol"
+    ],
+    "aftermathLoss": [
+      "hati mezzed everyone and skoll ate us"
+    ],
+    "rumour": [
+      "hati and skoll chase the sun and moon in the old songs. here they sit at a door"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hati",
+    "text": "The moon-chaser of the old songs, or a wolf of [Iarnvidiur]'s brood who took the name. His long silver howl puts whoever hears it close to sleep."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Hati the moon-chaser at Iarnvidiur's door in {minutes} minutes.",
+    "loss": "Hati's howl put {raidLeader}'s party from {realm} to sleep for good after {minutes} minutes."
+  }
+}

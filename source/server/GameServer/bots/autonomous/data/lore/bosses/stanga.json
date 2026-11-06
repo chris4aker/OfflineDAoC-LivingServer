@@ -1,0 +1,77 @@
+{
+  "id": "stanga",
+  "name": "Stanga",
+  "catalogKey": "iarnvidiur-s-lair/stanga",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Stanga is a level-66 named with 30,000 health; five egilvarg come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads Black Plague and a strength-constitution debuff around him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him an undead wolf that guards the passageways to the Ancient Syver; Hurjavelen is a rare spawn in his place.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4667"
+    },
+    {
+      "text": "Swedish stanga means to butt or gore (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "Stanga was the first wolf Iarnvidiur ever set to guard a door. He died at it, long ago, of the lair's black rot, and she would not let him leave his post, so he did not. Now he is bone and fur and plague, and he still stands in the passage to the Ancient Syver with his pack around him, butting at anything that tries to pass. Sometimes, the dwarves say, a different wolf stands there instead, one with a stolen dagger. Nobody knows where Stanga goes on those nights.",
+  "legend": "Stanga's pack is five egilvarg; pull clean. Cure disease and the str/con debuff, then he is a straight fight. If Hurjavelen is there instead, you're in for a harder night. His staff drop is for spirit casters only, and the bone he gnaws is a trophy.",
+  "yells": {
+    "aggro": [
+      "(The dead wolf rises, stiff-legged, from its post.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Rot pours off Stanga's hide.)"
+      }
+    ],
+    "death": [
+      "(Stanga lies down at his post at last.)"
+    ],
+    "slay": [
+      "(Stanga noses the fallen, and returns to his post.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead wolf stands guard. It has stood here a long time."
+    ],
+    "realmFirstKill": "Stanga has left his post at last."
+  },
+  "botLines": {
+    "briefing": [
+      "stanga + 5 egilvarg, cure the debuff and disease"
+    ],
+    "aftermathWin": [
+      "stanga down, on to the syver"
+    ],
+    "aftermathLoss": [
+      "the egilvarg add was too much"
+    ],
+    "rumour": [
+      "stanga died at his post and she wouldn't let him leave it. thats a dead wolf you're fighting"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Stanga",
+    "text": "The first wolf [Iarnvidiur] set to guard a door. He died at it of the black rot, and she would not let him leave."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} relieved the dead wolf Stanga of his post in {minutes} minutes.",
+    "loss": "Stanga held his post against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

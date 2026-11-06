@@ -1,0 +1,77 @@
+{
+  "id": "ancient-syver",
+  "name": "Ancient Syver",
+  "catalogKey": "iarnvidiur-s-lair/ancientsyver",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Ancient Syver is a level-68 reptile with 30,000 health; five syver come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It strikes the ground around it (Ancient Syver's Strike, 350 in a 350 radius), weakens strength, spreads Black Plague and hastens itself.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists hatchling, young and grown syver in the lair, and says the ancient one procs an area hit of about 300.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6429"
+    },
+    {
+      "text": "Stanga, an undead wolf, guards the passages to it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4667"
+    }
+  ],
+  "story": "The syver are the lair's other brood: scaled, woolly things, hatchlings and young and grown, that Iarnvidiur keeps for her wolves to hunt. The oldest of them was never hunted. It grew too big, and too clever, and too sick, and now it lies at the end of a passage the dead wolf Stanga guards, with its brood around it, and hits the ground hard enough to knock the breath out of anyone standing close. Its scales are what the lair's petrified spears are made from.",
+  "legend": "Ancient Syver comes with five syver, so pull it to a corner and handle the pack first. Its area hit punishes melee in a clump: stagger the tanks. Cure disease, as everywhere in this place. The hatchlings nearby will join if you fight too close to them.",
+  "yells": {
+    "aggro": [
+      "(The old beast heaves up out of the muck.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Ancient Syver pounds the ground!)"
+      }
+    ],
+    "death": [
+      "(The ancient one sinks back into the muck.)"
+    ],
+    "slay": [
+      "(Its brood crowds round the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is churned by something very heavy."
+    ],
+    "realmFirstKill": "The Ancient Syver is slain. Its brood scatters."
+  },
+  "botLines": {
+    "briefing": [
+      "ancient syver has 5 syver with it and a ground pound, stagger melee"
+    ],
+    "aftermathWin": [
+      "syver down. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "pounded flat by the big syver"
+    ],
+    "rumour": [
+      "the wolves in the lair hunt syver. the old one got too big to hunt"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Syver",
+    "text": "The lair's scaled, woolly brood, kept for the wolves to hunt. The ancient one grew too big to be hunted and lies behind the dead wolf Stanga."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew the Ancient Syver in {minutes} minutes.",
+    "loss": "The Ancient Syver pounded {raidLeader}'s party from {realm} into the muck after {minutes} minutes."
+  }
+}

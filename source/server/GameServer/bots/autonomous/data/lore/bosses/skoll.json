@@ -1,0 +1,72 @@
+{
+  "id": "skoll",
+  "name": "Skoll",
+  "catalogKey": "iarnvidiur-s-lair/skoll",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Skoll is a level-69 named with 30,000 health beside Hati at Iarnvidiur's door.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "His bite carries a debuff, and he slows his enemies' attacks and poisons them.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Skoll as an animal, level 60; he drops Skoll's Sunstone Collar and a flaming-sphere greave.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4671"
+    }
+  ],
+  "story": "Skoll is the sun-chaser, the hot-tempered one, who runs at everything as if it were the sun and he were finally catching it. His bite burns and slows, and his poison stays. He wears a collar set with a sunstone that no one knows the origin of, and the iarn dwarves say he took it from the sky himself, once, and that is why the winters on Aegir are long. It is a joke. They do not laugh when they tell it.",
+  "legend": "Skoll slows your attacks and poisons; keep a cleanser on the tanks and burn him. Fight him with Hati, never with the door open. The sunstone collar is a nice drop for anyone who wants a story to wear. Kill him first.",
+  "yells": {
+    "aggro": [
+      "(Skoll snarls and lunges, eyes burning.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Skoll's collar blazes like a small sun.)"
+      }
+    ],
+    "death": [
+      "(Skoll falls, the sunstone guttering.)"
+    ],
+    "slay": [
+      "(Skoll howls at the roof, where the sky should be.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A sunstone gleams on a wolf's collar in the dark."
+    ],
+    "realmFirstKill": "Skoll the sun-chaser is slain. The sun is safe."
+  },
+  "botLines": {
+    "briefing": [
+      "skoll slows attacks and poisons, cleanse tanks"
+    ],
+    "aftermathWin": [
+      "skoll dead! [who got the collar|collar dropped?]"
+    ],
+    "aftermathLoss": [
+      "skoll's poison stacked on the MT"
+    ],
+    "rumour": [
+      "the iarn dwarves joke that skoll stole a piece of the sun. thats his collar"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Skoll",
+    "text": "The sun-chaser, hot-tempered brother to [Hati]. The iarn dwarves joke that the sunstone on his collar was taken from the sky, and that this is why Aegir's winters are long."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Skoll the sun-chaser in {minutes} minutes.",
+    "loss": "Skoll ran {raidLeader}'s party from {realm} down after {minutes} minutes."
+  }
+}

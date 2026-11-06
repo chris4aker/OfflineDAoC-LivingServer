@@ -1,0 +1,77 @@
+{
+  "id": "droom",
+  "name": "Droom",
+  "catalogKey": "iarnvidiur-s-lair/droom",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Droom is a 30,000-health named; ten narfi come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It casts Droom's Poison and Droom's Acid over time, debuffs strength-constitution and attack speed in an area, and spreads Black Plague.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls Droom a named mushroom (plant); a group of 14 with four healers and two shamans struggled with the poison and disease (2003).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4669"
+    },
+    {
+      "text": "Dutch droom means dream (to verify; the name's intended language is unknown).",
+      "provenance": "original",
+      "source": "glossary, to verify"
+    }
+  ],
+  "story": "Droom is a fungus that dreams. It grows in a wet hollow of the lair where the narfi, small grey things of the deep, tend it the way monks tend a shrine. Its spores slow the arm and thin the blood, and the narfi believe that the visions you see as you die under its cap are the dreams of the Iron Wood itself. The healers who have fought it say the visions are only the poison. They do not say it with much conviction.",
+  "legend": "Droom is a cure fight: poison and disease both, all the time. Shamans chain cure poison and disease while healers heal. Kill the narfi first. A six-person kill was claimed in 2003; most groups need more. The cap drops for every armour type.",
+  "yells": {
+    "aggro": [
+      "(The narfi chant. The great cap breathes out.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Spores thicken. The edges of the world go soft.)"
+      }
+    ],
+    "death": [
+      "(Droom collapses. The narfi wail.)"
+    ],
+    "slay": [
+      "(The fallen dream under the cap.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great cap breathes. The air tastes of dreams."
+    ],
+    "realmFirstKill": "Droom is cut down. The dreaming ends."
+  },
+  "botLines": {
+    "briefing": [
+      "droom = poison + disease nonstop. shamans chain cure, kill the 10 narfi first"
+    ],
+    "aftermathWin": [
+      "got the mushroom cap! [lol|grats]"
+    ],
+    "aftermathLoss": [
+      "we couldnt cure fast enough on droom"
+    ],
+    "rumour": [
+      "the narfi think you see the forest's dreams when droom kills you. [i saw a wall|i saw my bind point]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Droom",
+    "text": "A fungus that dreams, tended by the narfi like a shrine. Its spores slow the arm and thin the blood."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down the dreaming fungus Droom in {minutes} minutes.",
+    "loss": "Droom's spores put {raidLeader}'s party from {realm} to sleep after {minutes} minutes."
+  }
+}

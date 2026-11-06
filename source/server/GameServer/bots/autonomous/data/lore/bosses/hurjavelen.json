@@ -1,0 +1,72 @@
+{
+  "id": "hurjavelen",
+  "name": "Hurjavelen",
+  "catalogKey": "iarnvidiur-s-lair/hurjavelen",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Hurjavelen is a level-68 named with 30,000 health; seven grymvarg come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His bite damages and snares in a 350 radius for 30 seconds, and he spreads Black Plague.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a rare spawn in Stanga's place who spams area disease and hit a spiritmaster for 600+; he drops Iarnvidiur's Pilfered Dagger and demonwolf shields.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4668"
+    }
+  ],
+  "story": "Hurjavelen is the wolf who stole from his mother. Long ago he took a dagger from Iarnvidiur's own hand and ran with it, and she did not punish him, which frightened the rest of the brood more than any punishment could. He comes and goes. Some nights he stands in Stanga's place with a pack of grymvarg, the cruel wolves, and the passage fills with sickness; on those nights the dwarves keep their children indoors. The demonwolf shields he carries are older than the lair.",
+  "legend": "Hurjavelen is rare: if he's there instead of Stanga, plan for seven grymvarg and an area snare that keeps your melee in his disease. Purge or speed help. He hits casters hard. Some raid leaders skip him; the dagger is worth it.",
+  "yells": {
+    "aggro": [
+      "(A wolf with a dagger in its jaws grins at you.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Hurjavelen's bite drags you down.)"
+      }
+    ],
+    "death": [
+      "(The stolen dagger falls ringing to the floor.)"
+    ],
+    "slay": [
+      "(Hurjavelen trots off with something shiny.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tonight a different wolf stands in Stanga's place."
+    ],
+    "realmFirstKill": "Hurjavelen the thief is slain. The dagger is found."
+  },
+  "botLines": {
+    "briefing": [
+      "hurjavelen is up instead of stanga. 7 grymvarg, aoe snare, cure everything"
+    ],
+    "aftermathWin": [
+      "got the pilfered dagger!!"
+    ],
+    "aftermathLoss": [
+      "snared in the disease, [wiped|gg]"
+    ],
+    "rumour": [
+      "heard there's a wolf in the lair that stole a dagger from iarnvidiur and she let him keep it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hurjavelen",
+    "text": "The wolf who stole a dagger from [Iarnvidiur]'s own hand and was not punished, which frightened the brood more than any punishment. Some nights he stands where [Stanga] should."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took back Iarnvidiur's pilfered dagger from Hurjavelen in {minutes} minutes.",
+    "loss": "Hurjavelen ran down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}
