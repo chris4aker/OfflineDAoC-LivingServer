@@ -55,6 +55,8 @@ gives about 70%. Those lines are known, so that is a regression check, and a fre
   neither, so it doesn't make the next raid bigger.
 - **After a restart** no automatic raid opens until the realm's bots have finished logging in.
 - **Keep sieges remember their balance across restarts**, rebuilt from the Herald's recent sieges.
+- **Attackers no longer roll over keeps.** When attackers keep taking keep after keep, fewer of them come to the
+  next sieges, until defenders win their share again.
 
 ### Dragons, the Epic Special Forces, and raids that don't get stuck
 
@@ -175,7 +177,7 @@ untouched.
 
 ### How it was tested
 
-- **Automated:** the full server suite (4,798 server tests) passes, and on Windows CI the server tests, the
+- **Automated:** the full server suite (4,819 server tests) passes, and on Windows CI the server tests, the
   launcher's Living Server tab, update and Herald tests and the installer script tests passed on this release's
   build. Setup's own end-to-end tests run when the release is built. The raid sizing was checked against a simulation of 2,000 raids; the models of how likely a
   raid of a given size is to win are estimates, not measurements.
@@ -194,8 +196,8 @@ untouched.
   with a boss, its adds and a raid; real raids may still find a case they miss.
 - **The 22 restored boss rules stay off.** Turning one on before the raid has a tactic for it would make that boss
   much harder for bots.
-- **Night sieges win less often than daytime ones** in long test runs, with the same bots online. The cause isn't
-  found yet; 1.1.2 logs each siege's army so the next runs can show why.
+- **Siege results still swing from night to night** in long test runs (one night attackers took few keeps, the next
+  most). 1.1.2 evens them out and logs who is actually at each keep, so the next runs can show why.
 - **New raid sizes need a few raids to settle.** Each encounter's size moves with its own wins and losses, so the
   first nights may swing either way.
 - **Updates from the launcher start after 1.1.2.** 1.1.1 has no update check, so 1.1.2 itself comes by Setup or the

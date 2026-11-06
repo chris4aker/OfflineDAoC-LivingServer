@@ -93,7 +93,9 @@ cap on how many bots notice one target). Era authenticity breaks ties; it doesn'
 
 The release candidate (2026-11-06) is `test/1.1.2-rc`: `test/1.1.2-combined` (PR #66) with #73, #75, #77 and #85
 (which carries #81 and #83) merged in that order, then the readiness review's #87 (the flaky launcher preview test,
-test side only) and #89 (the played check, [PLAYED-CHECK-1.1.2.md](PLAYED-CHECK-1.1.2.md)). Draft release notes:
+test side only), #89 (the played check, [PLAYED-CHECK-1.1.2.md](PLAYED-CHECK-1.1.2.md)) and #88 (the siege balance
+trims the attackers' cap once the defenders' share is at its limit; owner approved 2026-11-06 with its defaults: the
+next run may start at 96 attackers per keep, same-night retakes keep counting). Draft release notes:
 [RELEASE-NOTES-1.1.2.md](RELEASE-NOTES-1.1.2.md).
 
 - [ ] **In the candidate, waiting for the owner's merges:** save safety and network defaults (#64), release gates
@@ -339,7 +341,7 @@ On 2026-11-06:
 | Stop | State |
 |---|---|
 | 1.1.1 | Released 2026-11-03 (`v1.1.1-beta`, the latest release; Setup built and tested on Windows by CI) |
-| 1.1.2 | Release candidate `test/1.1.2-rc` (PR #86: #66 plus #73, #75, #77, #85 with #81 and #83), 4,798 server tests passing; waits for the owner's merges, an overnight soak, his played check and publishing. #51 not in it (owner and legal decision) |
+| 1.1.2 | Release candidate `test/1.1.2-rc` (PR #86: #66 plus #73, #75, #77, #85 with #81 and #83, #87, #88, #89), 4,819 server tests passing; waits for the owner's merges, an overnight soak, his played check and publishing. #51 not in it (owner and legal decision) |
 | 1.2 | Bots that play with you: built on branches (#67, #69-#72, #74, #78-#80, #82, #84), automated tests only; merges into the 1.2 line after 1.1.2 |
 | 1.2.x | Planned (play with friends) |
 | 1.3 | Planned (live events, guild tiers, a crowded prime time, a server with a past, era builds) |
