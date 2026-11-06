@@ -98,13 +98,17 @@ installer; whether to ship a compiled DLL is the owner's call.
 
 ## Side effects of the shipped set (check in game)
 
-- **APPRAISE** appears in the merchant window. On the server (every 0.37c game) it calls `AppraiseItem`, which the
-  released DLL doesn't have. The click does nothing, apart from a script error in the client's log. SELL uses the
-  released `SellItem` and should work.
-- The account vault window will be titled "HOUSE VAULT". The 1.2 server.gd looks for the last NPC you spoke to in
-  zone_viewer.gd, and only the held-back 1.2 version keeps it.
+- **APPRAISE** is hidden on a 0.37c game (Living Server issue #34, follow-up to this list). The server's appraise
+  needs `AppraiseItem`, which the released DLL doesn't have, so a click only logged a script error. The merchant window
+  now shows the button only when the network client has `AppraiseItem` (`MerchantWindow.appraise_available()`): a
+  1.2 `MMOEngine.dll` brings it back without another script change. SELL uses the released `SellItem`.
+- The account vault keeps its title. The 1.2 server.gd looks for the last NPC you spoke to in zone_viewer.gd, and
+  only the held-back 1.2 version keeps it; on the 0.37c zone viewer the window is titled "ACCOUNT VAULT", as in 0.37c.
 - Stealth: the Abilities row, `/stealth` and the quickbar slot should hide you. You won't see yourself as a green ghost,
   and the buff bar may show the wrong picture for Stealth (both need the DLL or the held-back scripts).
+
+Checked in Godot (not in game): `tools/newclient-compat/installed_check.py` applies these patches to the released
+scripts, compiles all 95 with the released class cache and runs `tests/issue34_probe.gd` (CI job `new-client`).
 
 In-game checks still to do: drag Sprint and Stealth to the quickbar, use them, run `/stealth`, sell through the
 merchant's SELL button, cast at a target behind a wall, enter the world with a double-click on PLAY, and open the

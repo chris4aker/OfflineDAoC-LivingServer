@@ -8,6 +8,32 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+**New client (0.37c): skills on the quickbar, Stealth and the merchant's SELL button** (GitHub issue #34). These are
+shadowofze's own 1.2 fixes, installed as patches to the new client's scripts (only where the script is the released
+0.37c one; ROLLBACK.cmd puts it back).
+- **Skills onto the quickbar.**
+  - **Before:** an ability dragged from the skills window (Sprint, Stealth, Safe Fall, a realm ability ...) showed a
+    no-entry sign over the quickbar and wouldn't go on it. Spells and styles already did.
+  - **Now:** abilities go on the quickbar too, and one click on the slot uses them. Shift + right-click empties a slot.
+- **Stealth.**
+  - **Before:** Stealth was only a line in the specialization list (the server treats it as a specialization you
+    use, not an ability), so the Abilities list had no Stealth to click or drag, and /stealth was "not a command".
+  - **Now:** the Abilities list has a Stealth row: double-click it, drag it onto the quickbar, or type /stealth (or
+    /hide) to hide and to come out again. You don't see yourself as a see-through ghost yet, and the effect bar may
+    show another picture for Stealth: both need the 1.2 network client.
+- **SELL at merchants.**
+  - **Before:** the merchant window had BUY only. Selling worked by dragging an item onto the window, which nothing
+    told you.
+  - **Now:** right-click an item in your backpack, then click SELL (dragging an item onto the window still sells it).
+    The window also gets a quantity for BUY (arrows, KEEP), a scroll bar for long pages and the pack size of arrows,
+    bolts and poisons.
+  - **APPRAISE** stays hidden in this version of the new client: the server's appraise needs the 1.2 network client
+    (its MMOEngine.dll), which this update doesn't install. In shadowofze's 1.2 scripts the button was there but a
+    click did nothing.
+- The account vault window keeps its title (with the 1.2 scripts alone it would have said HOUSE VAULT).
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
