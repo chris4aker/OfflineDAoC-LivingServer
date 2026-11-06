@@ -21,11 +21,13 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "The Blue Lady keened for the weapons. In the old hills a warrior's sword was half his name, and when it broke in a lord's service someone sang for it. She sang for every blade broken in Caimheul's wars, and when her song changed they came back whole, without the hands that held them. Swords and axes rise around her and fight on their own. She is the most dangerous of the three in a careless raid, for her blades do not go home when their enemy dies. They wander the caves looking for the next hand to cut, and the miners' children of Breifine are told that the clinking in the hills at night is the Blue Lady's swords, walking.",
-  "legend": "Her swords and axes keep coming every half minute or so: mezz or root them, or kill them, then her. Spread against the cold bomb, it hits hard and wide. And do not wipe on her: in the old days the swords roamed the whole dungeon afterwards and killed anything living.",
+  "story": "The Blue Lady keened for the weapons. In the old hills a warrior's sword was half his name, and when it broke in a lord's service someone sang for it. She sang for every blade broken in Caimheul's wars, and when her song changed they came back whole, without the hands that held them. Swords and axes rise around her and fight on their own. She is the most dangerous of the three in a careless raid, for her blades do not go home when their enemy dies. They wander the caves looking for the next hand to cut, and the miners' children of Breifine are told that the clinking in the hills at night is the Blue Lady's swords, walking.\n\nThe youngest sister sang for the weapons. In the old hill country a warrior's sword was half his name, and when it broke in his lord's service someone sang for it as for a man. The Blue Lady sang for every blade broken in Caimheul's wars, axe and sword and spear, and when her song changed they came back whole, without the hands that held them.\n\nEvery half-minute or so swords and axes rise from the floor of her room and fight on their own. Every half-minute she gathers the cold of the caves and lets it fall in a great burst over a wide ring. She is the most dangerous of the three in a careless raid, as the players of 2002 learned, for her blades do not go home when their enemy dies. They wander the caves looking for the next hand to cut, and they cut anything living, Hibernian or not. The children of the Breifine hill farms are told that the clinking they hear in the hills at night is the Blue Lady's swords, walking. The Blue Lady is said to love the chieftain's own three weapons most of all, and to sing to them through the wall.",
+  "legend": "Her swords and axes keep coming every half minute or so: mezz or root them, or kill them, then her. Spread against the cold bomb, it hits hard and wide. And do not wipe on her: in the old days the swords roamed the whole dungeon afterwards and killed anything living. Mezz or root the blades as they rise, or burn them; then her. If the raid is going to fail, retreat before it wipes, so her blades are not left loose to roam the halls. Superstition: a sword found lying loose in Marfach belongs to her. Leave it, or she comes looking for it.",
   "yells": {
     "aggro": [
-      "Rise, blades. Your masters are gone, but the fight is not."
+      "Rise, blades. Your masters are gone, but the fight is not.",
+      "Rise, blades. Your masters are gone, but the fight is not.",
+      "I sang for your swords. Now they sing for me."
     ],
     "phases": [
       {
@@ -34,14 +36,20 @@
       }
     ],
     "death": [
-      "Lie down, blades... lie down..."
+      "Lie down, blades... lie down...",
+      "Lie down, blades... lie down...",
+      "The steel... is cold... at last..."
     ],
     "slay": [
-      "Your sword will keep fighting for me."
+      "Your sword will keep fighting for me.",
+      "Your sword will keep fighting for me.",
+      "A blade for the walls.",
+      "Another name for the steel."
     ]
   },
   "atmosphere": {
     "lairEntry": [
+      "Blades lie on the floor. They are not still.",
       "Blades lie on the floor. They are not still."
     ],
     "phases": [
@@ -54,25 +62,64 @@
   },
   "botLines": {
     "briefing": [
-      "blue lady summons swords and axes every half minute. [mezz the swords|cc the blades], spread for the cold bomb"
+      "blue lady summons swords and axes every half minute. [mezz the swords|cc the blades], spread for the cold bomb",
+      "mezz the swords as they rise, [cc first|roots work too]",
+      "her cold bomb hits wide, [spread out|dont clump]",
+      "if its going bad we [back out before the wipe|retreat], or her swords roam the halls"
     ],
     "aftermathWin": [
-      "blue lady down and every blade [dropped|clattered to the floor] at once"
+      "blue lady down and every blade [dropped|clattered to the floor] at once",
+      "every blade clattered to the floor at once. [what a sound|lovely]",
+      "blue lady down, the halls are safe. [no loose swords|good]",
+      "cc team was perfect, not one sword got loose. [proud|grats]"
     ],
     "aftermathLoss": [
-      "we wiped on the blue lady. [mind the halls|watch out], her swords are loose now"
+      "we wiped on the blue lady. [mind the halls|watch out], her swords are loose now",
+      "we wiped and now her swords are loose. [watch the halls|careful upstairs]",
+      "the cold bomb caught everyone stacked. [spread|again]",
+      "nobody cc'd the axes. [axes count too|cc everything]"
     ],
     "rumour": [
-      "[heard|someone swore] they met a sword with no hand in the marfach upper halls"
+      "[heard|someone swore] they met a sword with no hand in the marfach upper halls",
+      "[heard|someone said] the farm kids in breifine think the clinking at night is the blue lady's swords walking",
+      "[word is|heard] her loose swords killed a whole group farming living dead upstairs",
+      "the blue lady sings to caimheul's own weapons through the wall, they say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Blue Lady",
     "text": "She keened for the weapons broken in the chieftain's wars, and they rise around her without hands. After a wipe, her blades roam the caves."
   },
-  "bookPage": "",
+  "bookPage": "From Nóra's book: in my grandmother's day a sword was half a warrior's name, and when it broke, someone sang for it. The Blue Lady was the youngest of the three and sang only for weapons, and my mother said she had the sweetest voice in the hills. When her song changed, the broken blades came back without hands. If you hear clinking on the Breifine road at night, my mother said, do not go out. Wait for the morning. In the morning a blade with no hand is only a blade lying in the road, and you may pick it up and give it a burial.",
   "chronicle": {
     "win": "{realm} went down into Marfach under {raidLeader} and silenced the Blue Lady in {minutes} minutes. Her blades fell to the floor together.",
     "loss": "{realm} lost {raidLeader}'s raid to the Blue Lady's blades in the Marfach Caverns after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "restless-dead",
+    "summoners"
+  ],
+  "related": [
+    {
+      "id": "black-lady",
+      "relation": "her eldest sister keener"
+    },
+    {
+      "id": "red-lady",
+      "relation": "her sister keener"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the chieftain they sang back"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the power below that changed their song"
+    },
+    {
+      "id": "avartack-the-champion",
+      "relation": "the champion whose broken blades she sang for"
+    }
+  ]
 }

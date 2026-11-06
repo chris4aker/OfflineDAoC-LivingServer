@@ -21,11 +21,13 @@
       "source": "Living Server"
     }
   ],
-  "story": "Every chieftain had a champion, the man who stood in the ford so his lord need not, and Avartack was Caimheul's. He swore the champion's oath: to stand before his lord until his lord no longer needed him. Caimheul died. The oath did not say what to do then, so Avartack was buried at his lord's feet, and when the keeners sang them both back he simply took up his post again. He fights like a man defending a ford, heavy and unmoving, and when he lays a hand on his enemy the force of it goes straight through armour into the body. He does not leave his floor. He never left the ford either.",
-  "legend": "A straight fight, but a hard one: his force spell goes through armour, so the healers watch the cloth classes. He will not be pulled off his floor; fight him there. Clear the living dead around him before you start.",
+  "story": "Every chieftain had a champion, the man who stood in the ford so his lord need not, and Avartack was Caimheul's. He swore the champion's oath: to stand before his lord until his lord no longer needed him. Caimheul died. The oath did not say what to do then, so Avartack was buried at his lord's feet, and when the keeners sang them both back he simply took up his post again. He fights like a man defending a ford, heavy and unmoving, and when he lays a hand on his enemy the force of it goes straight through armour into the body. He does not leave his floor. He never left the ford either.\n\nIn the old hill wars two war-bands would meet at a ford, and before the slaughter each chieftain would send his champion into the water to fight the other's. If your champion won, sometimes there was no slaughter at all. Avartack was Caimheul's champion for twenty years and never lost at the ford, and the keeners' daughters say Caimheul's people were spared more battles by that one man than by all the chieftain's hardness together.\n\nHis oath was the champion's oath: to stand before his lord until his lord no longer needed him. Nobody told him when that was. He was buried at his lord's feet, and when the keeners sang them both back he took his post again before the chieftain's hall, on a floor he still thinks of as a ford. He fights heavy and unmoving, with crushing blows, and when he lays his hand on an enemy a force goes out of him that passes through armour into the body. He cannot be drawn from his floor: beyond it no blow lands on him. The Blue Lady sang for the blades he broke at the ford, and some of them rise in her room still.",
+  "legend": "A straight fight, but a hard one: his force spell goes through armour, so the healers watch the cloth classes. He will not be pulled off his floor; fight him there. Clear the living dead around him before you start. Clear the floor around him first and fight him on it. His force spell is the danger: cloth and leather classes stay out of his reach and the healers watch them. Superstition in the hill country: salute him before the pull, champion to champion. The tanks who do it swear he fights them cleaner. Nobody can prove otherwise, and nobody wants to be the one who stopped saluting.",
   "yells": {
     "aggro": [
-      "No one passes. My lord is resting."
+      "No one passes. My lord is resting.",
+      "The ford is mine. Turn back.",
+      "Twenty years, and no one crossed."
     ],
     "phases": [
       {
@@ -34,15 +36,19 @@
       }
     ],
     "death": [
-      "My lord... I am relieved... at last..."
+      "My lord... I am relieved... at last...",
+      "Tell him... I held..."
     ],
     "slay": [
-      "The ford is held."
+      "The ford is held.",
+      "The ford is held.",
+      "Back across the water with you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A champion stands guard for a dead lord."
+      "A champion stands guard for a dead lord.",
+      "He stands where a ford once was, in his mind."
     ],
     "phases": [
       {
@@ -54,25 +60,52 @@
   },
   "botLines": {
     "briefing": [
-      "avartack is a straight fight but his force spell [ignores armour|goes through plate]. healers watch the casters"
+      "avartack is a straight fight but his force spell [ignores armour|goes through plate]. healers watch the casters",
+      "fight avartack on his floor, he is immune off it. [dont pull him|we go to him]",
+      "his force spell goes through armour, [casters back|cloth stay away]",
+      "clear the dead around his floor first. [then him|clean room]"
     ],
     "aftermathWin": [
-      "avartack down. [oath kept, oath broken|he finally got to rest]"
+      "avartack down. [oath kept, oath broken|he finally got to rest]",
+      "avartack finally gets to rest. [oath done|good]",
+      "nobody in cloth died to the force. [smart|grats]",
+      "the champion is down, caimheul next. [go|on we go]"
     ],
     "aftermathLoss": [
-      "avartack's force [one-shot the casters|went through the cloth like paper]"
+      "avartack's force [one-shot the casters|went through the cloth like paper]",
+      "tried to pull him off the floor and he [took no damage|was immune]",
+      "his force killed two healers in a row. [stay back|range]",
+      "left the dead up around him. [clear first|messy]"
     ],
     "rumour": [
-      "[heard|someone said] avartack was the chieftain's champion. still guarding him, all these years"
+      "[heard|someone said] avartack was the chieftain's champion. still guarding him, all these years",
+      "[heard|someone said] avartack never lost at the ford in twenty years",
+      "[word is|heard] the hill folk say avartack spared more battles than caimheul ever won",
+      "the blue lady's swords include the ones avartack broke at the ford, they say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Avartack",
     "text": "Caimheul's champion, who swore to stand before his lord until he was no longer needed. Nobody told him when that was."
   },
-  "bookPage": "",
+  "bookPage": "From Nóra's book: my grandmother's grandmother saw Avartack fight at the ford of the Erne, or said she did. She said he was not tall, but that when he stepped into the water the other war-band's champion stepped back out of it, and the two chieftains went home without a battle. That was the best of the old hill wars, she said: the champion took the death so the rest did not. He is still taking it, under Breifine, on a floor he thinks is the river. When the realm's raid ends his watch, someone should tell him the ford is held. He would like to know.",
   "chronicle": {
     "win": "{realm} went down into Marfach under {raidLeader} and silenced Avartack the Champion in {minutes} minutes. His oath is discharged.",
     "loss": "{realm} lost {raidLeader}'s raid to Avartack the Champion in the Marfach Caverns after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "restless-dead",
+    "summoners"
+  ],
+  "related": [
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the lord he swore to stand before"
+    },
+    {
+      "id": "blue-lady",
+      "relation": "the keener who sang for his broken blades"
+    }
+  ]
 }

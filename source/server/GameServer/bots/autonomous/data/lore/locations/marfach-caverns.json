@@ -46,15 +46,43 @@
       "text": "'Caimheul' may echo Gaelic Caimbeul, 'crooked mouth'; to verify. The keening-women story is Living Server lore.",
       "provenance": "original",
       "source": "to verify"
+    },
+    {
+      "text": "Region 276 has two entrances in the navigation data, an upper mouth (32915, 29238) and a lower road (32125, 43898).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Living Server raid notes: on 2026-11-04/05 the Hibernian Marfach raid timed out; on 2026-11-05 the 'dies with' tactic sent the raid to the Black Lady and Hibernia won with no wipe.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json; docs/NIGHT-SIEGES-AND-MARFACH.md"
+    },
+    {
+      "text": "Patch 1.76 let each realm's sages shield their people from the Summoner's wards at their own frontier entrance to Passage of Conflict, the dungeon that replaced Marfach's road; wards in Summoner's Hall stayed dangerous.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+    },
+    {
+      "text": "An Oct 2002 group reported a Brilliant Lightbound focus staff from Marfach, thought a rare drop.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=70"
+    },
+    {
+      "text": "Bot chat ties Marfach to Evern: 'maybe evern and his stones are a seal on top of it'. Kept as hearsay.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
     }
   ],
-  "story": "Long before Breifine had keeps, it had a chieftain. Caimheul ruled the hills where the frontier now runs, a hard man with a crooked mouth and three kinds of weapon, and when he died his people did for him what the old families always did. They carried him under the hill with his hounds, his champion Avartack and his household, and they hired three women to keen him into the dark: a woman in black, a woman in red and a woman in blue. The keen is a debt. It is sung so the dead will go on and not come back.\n\nThe three were still singing when something answered from further down. Under Breifine the caves go deeper than any grave, and at the bottom of them a hall of summoners was digging its way toward all three realms at once. The voice offered the Ladies what every keener secretly wants: a grief that never has to end. They took it. They stopped singing the dead on and began singing them back. The chieftain got up. His hounds got up, bloodless. His people got up and stood guard on a road that was no longer theirs, because the road under Breifine now led to the Summoners, and the Ladies kept it for them.\n\nThe Black Lady, the eldest, planted an oak on the chieftain's grave, and it went black as bog oak and grew through the ceiling of the world. The Red Lady keens for the innocent, and they come. The Blue Lady keens for the weapons of the fallen, and they rise and fight without hands. The Hibernians named the caves Marfach, the deadly place. It is not a figure of speech. It is a description.",
-  "legend": "Three Ladies and a dead chieftain, and every one of them can end a raid. Kill the Black Lady, not her oak: the oak dies with her and never fights you unless you hit it. Her ogresses go for the healers, so the tanks peel them. The Blue Lady's swords roam the halls if you wipe, so do not wipe. Keep the fights at home; drag a Lady out of her room and nothing touches her.",
+  "story": "Long before Breifine had keeps, it had a chieftain. Caimheul ruled the hills where the frontier now runs, a hard man with a crooked mouth and three kinds of weapon, and when he died his people did for him what the old families always did. They carried him under the hill with his hounds, his champion Avartack and his household, and they hired three women to keen him into the dark: a woman in black, a woman in red and a woman in blue. The keen is a debt. It is sung so the dead will go on and not come back.\n\nThe three were still singing when something answered from further down. Under Breifine the caves go deeper than any grave, and at the bottom of them a hall of summoners was digging its way toward all three realms at once. The voice offered the Ladies what every keener secretly wants: a grief that never has to end. They took it. They stopped singing the dead on and began singing them back. The chieftain got up. His hounds got up, bloodless. His people got up and stood guard on a road that was no longer theirs, because the road under Breifine now led to the Summoners, and the Ladies kept it for them.\n\nThe Black Lady, the eldest, planted an oak on the chieftain's grave, and it went black as bog oak and grew through the ceiling of the world. The Red Lady keens for the innocent, and they come. The Blue Lady keens for the weapons of the fallen, and they rise and fight without hands. The Hibernians named the caves Marfach, the deadly place. It is not a figure of speech. It is a description.\n\nWhat lives there now is the chieftain's household, sung back and standing guard. In the upper caves the living dead walk the passages they were carried down, and the bloodless wolfhounds lie by the doors as they lay by the chieftain's hearth, waiting for a whistle that does not come. Reanimated guardians hold the turns of the road. The enthralled dead, the ones who were not Caimheul's but came down the road later and stayed, stand where they stopped. Withered oaks grow in the upper halls, seedlings of the black tree below, and since the druids looked at them closely the realm has known them for what they are: plants, and hungry. In the deep halls each of the three Ladies keeps her own room and her own keen. The chieftain keeps his hall with his three weapons, and his champion keeps the floor before it.\n\nAnd under it all runs the road. Raiders who have walked it to the end say it goes on down past the graves, smooth and old, built by hands that were not Caimheul's people's, toward a hall where summoners wait. Two other roads like it were dug, the scholars say, one under the Pennines of Albion and one under the Jamtland mountains of Midgard, so that the Summoners might have a door into every realm at once. The Ladies keep Hibernia's door. That is what bot-chat means when it says the caverns serve a power that wants all three realms on their knees. Some frontier veterans say Evern's ring of stones above, in Breifine, is a seal on the lid. The druids will neither confirm nor deny it, which is answer enough for most.\n\nWhy does it matter to Hibernia? Because it is ours, and it is wrong. Every other realm can point to its frontier dungeon and say: that was done to us. Hibernia cannot. Caimheul was a Hibernian chieftain, the keeners were Hibernian women, and the song they sang was ours before it was turned. When the realm's raid goes down into Marfach and silences a Lady, the old families of Breifine light a candle in the window, and the keeners' daughters, who still sing for the dead in the hill country, sing the old keen that night, the right way, so that the dead go on.",
+  "legend": "Three Ladies and a dead chieftain, and every one of them can end a raid. Kill the Black Lady, not her oak: the oak dies with her and never fights you unless you hit it. Her ogresses go for the healers, so the tanks peel them. The Blue Lady's swords roam the halls if you wipe, so do not wipe. Keep the fights at home; drag a Lady out of her room and nothing touches her. Nicknames: the Ladies are 'the three sisters' or 'the choir', the chieftain is 'Crooked Mouth', and the Oak is 'the tree you don't hit'. Old frontier hands swear the keening is louder when a realm's keeps are falling. Superstitions: never sing in Marfach; never take a sword you find lying loose in the halls, because the Blue Lady will want it back; and if you hear the keen from the Breifine road, say a dead friend's name aloud so the song has something true in it.",
   "atmosphere": {
     "firstEntry": [
       "Somewhere below, three women are keening.",
       "The dead here were sung back, not on.",
-      "Marfach. The deadly place. The name is honest."
+      "Marfach. The deadly place. The name is honest.",
+      "Bloodless hounds lift their heads and watch you pass.",
+      "The road goes down past the graves. It was not theirs.",
+      "Withered oaks lean in the dark, waiting to be fed."
     ],
     "areas": [
       {
@@ -64,7 +92,8 @@
         "z": 16268,
         "radius": 1200,
         "lines": [
-          "Bloodless hounds lie by the door, waiting."
+          "Bloodless hounds lie by the door, waiting.",
+          "The living dead walk the way they were carried."
         ]
       },
       {
@@ -74,7 +103,9 @@
         "z": 14725,
         "radius": 1200,
         "lines": [
-          "The road goes down further than any grave."
+          "The road goes down further than any grave.",
+          "Smooth old stone, cut by no Hibernian hand.",
+          "Far below, someone is summoning."
         ]
       },
       {
@@ -85,7 +116,8 @@
         "radius": 1400,
         "lines": [
           "A black oak grows through the roof of the world.",
-          "Its roots are wrapped around a chieftain's bones."
+          "Its roots are wrapped around a chieftain's bones.",
+          "A woman in black sings, and the tree listens."
         ]
       },
       {
@@ -95,7 +127,9 @@
         "z": 15061,
         "radius": 1200,
         "lines": [
-          "Three weapons hang ready. Their owner stands."
+          "Three weapons hang ready. Their owner stands.",
+          "A shield, a sword, a long spear, all ready.",
+          "Stand where he wants you, and you die."
         ]
       },
       {
@@ -105,7 +139,9 @@
         "z": 15065,
         "radius": 1100,
         "lines": [
-          "A champion stands guard for a dead lord."
+          "A champion stands guard for a dead lord.",
+          "He stands where a ford once was, in his mind.",
+          "No one passes. His lord is resting."
         ]
       }
     ]
@@ -115,19 +151,37 @@
       "marfach means deadly in the old tongue. [whoever named it knew|fair enough]",
       "the three ladies in marfach were keeners once. [they sang the chieftain back up|now they sing the dead back]",
       "marfach was hibernia's road down to the summoners. [the ladies keep it for them|thats who they work for]",
-      "the black lady's oak is bog oak, black as peat. [it grew from the chieftain's grave|its roots are in his bones]"
+      "the black lady's oak is bog oak, black as peat. [it grew from the chieftain's grave|its roots are in his bones]",
+      "the red lady sings for the innocent dead and they [come back sick|come back]. thats why the little ones in marfach have disease",
+      "the blue lady sings for broken weapons. [the swords rise with no hands|thats where the swords come from]",
+      "caimheul reads where you stand. [front is shield, side is spear|stand behind him]",
+      "avartack was caimheul's champion. [he still holds the ford|still guarding his lord]",
+      "there were three roads to the summoners. [marfach is ours|one per realm]. the ladies keep it",
+      "the bloodless wolfhounds in marfach were the chieftain's hounds. [still waiting for a whistle|sad really]",
+      "the withered oaks upstairs are the black oak's seedlings. [plants, and hungry|dont stand under them]",
+      "the old families of breifine light a candle when a lady falls. [nice tradition|i saw one once]"
     ],
     "rumour": [
       "[heard|someone said] a group wiped on the blue lady and now her swords are [loose in the halls|roaming everywhere]",
-      "[my guild says|word is] you can hear the keening from the breifine road at night"
+      "[my guild says|word is] you can hear the keening from the breifine road at night",
+      "[heard|someone said] the keening in marfach gets louder when our keeps are falling",
+      "[word is|heard] somebody took a loose sword from the marfach halls and [the blue lady came for it|it walked off]",
+      "someone swears evern's stones are a seal on top of marfach. [the druids wont say|nobody knows]",
+      "[heard|someone said] the marfach raid timed out last night. [the black lady again|she leashed home]",
+      "[word is|heard] the keeners' daughters in the hills still sing the right keen for the dead",
+      "[heard|someone swore] they walked the lower road to the end and [heard summoning|saw a hall of light]"
     ],
     "tell": [
       "marfach caverns, under breifine. three ladies, a dead chieftain, his champion. bring a full raid",
-      "undead, bloodless hounds and the three ladies. kill the black lady not the oak, and peel her ogresses off the healers"
+      "undead, bloodless hounds and the three ladies. kill the black lady not the oak, and peel her ogresses off the healers",
+      "is marfach hard? hard if you hit the wrong things. kill the black lady not the oak, peel ogresses, dont wipe on the blue lady",
+      "where is marfach? under breifine on the frontier. two ways in, the upper mouth and the lower road",
+      "who is in marfach? three ladies, the black, red and blue, chieftain caimheul and his champion avartack",
+      "what is marfach for? it was hibernia's road down to the summoners hall. the ladies guard it"
     ]
   },
   "loremaster": {
-    "intro": "Marfach, the deadly place under Breifine. A chieftain called [Caimheul] was laid there with his household, and [three women] were paid to keen him on. They kept singing, but the song changed. And below them all runs the [road] the caves were dug for.",
+    "intro": "Marfach, the deadly place under Breifine. A chieftain called [Caimheul] was laid there with his household, and [three women] were paid to keen him on. They kept singing, but the song changed. Below them runs the [road] to the [Summoners], and above them stands [Evern].",
     "topics": {
       "Caimheul": "A hard chieftain of the old hills, master of sword and shield and the long spear. He was sung back up, and he stands in his hall with his champion [Avartack] beside him.",
       "Avartack": "Caimheul's champion, who swore to stand before his lord in life and keeps the oath in death. He strikes with a force that bypasses armour.",
@@ -135,15 +189,19 @@
       "Black Lady": "The eldest, who planted the black oak on the grave. The oak lives as long as she does. Kill her and leave the tree.",
       "Red Lady": "She keens for the innocent, and the innocent come, carrying sickness. Her song drains the soul of whoever stands close.",
       "Blue Lady": "She keens for the weapons of the fallen, and swords and axes rise without hands. If a group dies to her, they roam the caves.",
-      "road": "Under Breifine the caves go down to the hall of the Summoners, who wanted a door into every realm. Marfach was Hibernia's. The Ladies keep it for them."
+      "road": "Under Breifine the caves go down to the hall of the Summoners, who wanted a door into every realm. Marfach was Hibernia's. The Ladies keep it for them.",
+      "Evern": "His ring of stones stands in Breifine above the caves. Some say he is a seal on the lid. The druids say nothing.",
+      "Summoners": "The power at the end of the [road]. They dug a door into every realm. Marfach is Hibernia's, and the Ladies keep it for them."
     }
   },
   "book": {
     "title": "The Keen of Caimheul",
     "pages": [
-      "I am a keener's daughter and I know the rule. You are paid to cry the dead on, past the door, so they do not turn round. My mother sang for forty years and never once looked back over her shoulder at the grave. She said the three who sang for Caimheul under Breifine did look back, and that is the whole story of Marfach, if you want it short. They looked back, and something in the dark looked back at them.",
-      "The long way: the chieftain was laid under the hill with his hounds and his champion, and the black one planted an oak on him, as was done for great men. The red one sang for the innocent who had died in his wars. The blue one sang for the weapons broken in his service. They sang for three nights. On the fourth, a voice from below the grave asked them why they should ever stop. They could not think of a reason.",
-      "The oak went black that winter, black as the bog oak the turf-cutters find, and its roots went down through the bones and further. The chieftain stood up. The hounds stood up without a drop of blood in them. The innocent came back sick, and the swords came back without hands. And the road under it all, the road the voice was digging, reached Breifine. My mother would not sing within sight of those hills. Neither will I."
+      "Set down by Nóra, a keener's daughter of the Breifine hills. I know the rule as my mother knew it and hers before her. You are paid to cry the dead on, past the door, so that they do not turn round. My mother sang for forty years and never once looked back over her shoulder at a grave. She said the three who sang for Caimheul under Breifine did look back, and that is the whole story of Marfach, if you want it short. They looked back, and something in the dark looked back at them, and was glad of the company.",
+      "The long way. Caimheul was a hard chieftain of the hills before there were keeps, a crooked-mouthed man who never stood in the wrong place in a fight. When he died his people carried him under the hill with his hounds and his champion Avartack and all his household, as the old families did, and they hired three keeners. The black one planted an oak on him, as was done for great men. The red one sang for the innocent who had died in his wars. The blue one sang for the weapons broken in his service. They sang three nights.",
+      "On the fourth night a voice from below the grave asked them why they should ever stop. My mother said it was a kind voice. That was the worst of it. It said the dead need not go on; it said grief need not end; it said there was a road below, and those who kept the road would keep their dead forever. The three could not think of a reason to say no. A keener's whole life is spent letting go, my mother said, and nobody had ever offered them the other thing.",
+      "The oak went black that winter, black as the bog oak the turf-cutters dig from the peat, and its roots went down through the bones and further. The chieftain stood up. The hounds stood up without a drop of blood in them. The innocent came back sick, and the swords came back without hands. The champion took his post again before his lord. And the road under it all, the road the voice was digging toward every realm at once, reached Breifine. The Ladies keep it still for the ones at the bottom.",
+      "When the realm's raids began to go down, my mother would not ask them to kill the Ladies. She asked them to end the song. It is the same thing, but she said it mattered which words you used. Now when word comes over the hills that a Lady has fallen, the old families light a candle in the window, and the keeners' daughters sing the old keen in the night, the right way, facing forward. I have sung it twice. I did not look back. I would like to tell the Ladies that it can be done."
     ]
   },
   "bosses": [
@@ -153,5 +211,24 @@
     "blue-lady",
     "chieftain-caimheul",
     "avartack-the-champion"
+  ],
+  "era": "hib-the-old-families",
+  "factions": [
+    "restless-dead",
+    "summoners"
+  ],
+  "related": [
+    {
+      "id": "summoners-hall",
+      "relation": "the hall the road leads down to"
+    },
+    {
+      "id": "hibernia-wilds",
+      "relation": "Evern's stones in Breifine sit above it"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the voice from below, as the keeners' daughters tell it"
+    }
   ]
 }
