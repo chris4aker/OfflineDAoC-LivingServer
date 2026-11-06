@@ -1,0 +1,71 @@
+{
+  "id": "krevo-ricik",
+  "name": "Krevo Ricik",
+  "catalogKey": "krondon/krevoricik",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 73, 30,000 health. When attacked he may (15%) raise a 'forgoten ghost'; he throws his attacker 400 units into the air; casts Dark Explosion.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs"
+    }
+  ],
+  "story": "Krevo Ricik is an ogre who discovered that the dead of Krondon are afraid of him, and he has made a trade of it. He walks the passages where the hall's ghosts drift and drags them out to fight for him, forgotten things with no names left, and when a challenger comes too close he seizes him and flings him at the roof. The ogres find him funny. The ghosts do not. They come when he calls because they cannot remember how to refuse, and when he dies they drift back to the walls of Krondon as if nothing had happened, which for them is nearly true.",
+  "legend": "He throws you straight up and the floor does the rest; land it, heal it, get back in. Every time you hit him there is a chance a forgotten ghost rises to help him. Kill the ghosts as they come, keep the heals going, and keep the casters out of his reach.",
+  "yells": {
+    "aggro": [
+      "Up you go!"
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Get up, dead thing! Fight for Krevo!"
+      }
+    ],
+    "death": [
+      "The dead... laugh at me now..."
+    ],
+    "slay": [
+      "Down you come."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ghosts here keep to the walls. Something scares them."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Krevo Ricik drags a forgotten ghost into the fight!"
+      }
+    ],
+    "realmFirstKill": "Krevo Ricik is dead. Krondon's ghosts are left in peace."
+  },
+  "botLines": {
+    "briefing": [
+      "krevo throws you in the air, expect falling dmg. ghosts spawn when hes hit, kill them"
+    ],
+    "aftermathWin": [
+      "krevo down, the ghosts can rest",
+      "landed every throw. gg"
+    ],
+    "aftermathLoss": [
+      "too many ghosts up at once",
+      "the throws plus the dark explosion. healers couldnt keep up"
+    ],
+    "rumour": [
+      "heard krevo ricik in krondon bullies the ghosts into fighting for him",
+      "[someone said|heard] krevo throws you at the roof"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "krevo",
+    "text": "An ogre who found the dead of Krondon fear him, and made a trade of it. He drags the forgotten ghosts into his fights and throws challengers at the roof."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} put down Krevo Ricik and his borrowed ghosts in {minutes} minutes.",
+    "loss": "Krevo Ricik flung {realm}'s raid at the roof until {raidLeader} called it."
+  }
+}

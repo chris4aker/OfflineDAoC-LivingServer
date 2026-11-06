@@ -1,0 +1,77 @@
+{
+  "id": "drihten-elreden",
+  "name": "Drihten Elreden",
+  "catalogKey": "krondon/drihtenelreden",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 80, 30,000 health. Pulling him brings every 'DrihtenBaf' NPC: 25 thrawn ogre bocere in the world database. Casts Alacrity of the Heavenly Host (faster attacks).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/DrihtenElreden.cs"
+    },
+    {
+      "text": "Drihten means 'lord'; bocere 'scribe' (to verify). Elreden is unglossed here (to verify).",
+      "provenance": "original",
+      "source": "Bosworth-Toller (to verify)"
+    }
+  ],
+  "story": "Drihten Elreden holds the scriptorium of Krondon, where the old keepers wrote their histories at long desks under the lamps. He is lord of the bocere, the scribes, and there are two dozen of them now, ogres bent over books they cannot read, copying the shapes of letters because their lord says that is what scribes do. He is proud of them. Touch him and every desk empties at once, and the old blessing he learned from the walls, a prayer for swiftness the hall's priests once said for their champions, makes his blows fall faster.",
+  "legend": "Count the scribes. Pull Drihten and all twenty-five come with him, so clear the room's edges first or bring enough to tank a scriptorium. When he starts swinging faster, rotate tanks. The scribes hit soft and die easy, but there are so many that the casters at the back are always the first to learn it.",
+  "yells": {
+    "aggro": [
+      "Scribes! Put down your pens!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Swift as the heavenly host! Swifter!"
+      }
+    ],
+    "death": [
+      "Write it down... someone... write it..."
+    ],
+    "slay": [
+      "Struck from the book."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Scribes at every desk. None of them can write."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Drihten Elreden's blows fall faster!"
+      }
+    ],
+    "realmFirstKill": "The lord of Krondon's scribes is dead. The ink is dry."
+  },
+  "botLines": {
+    "briefing": [
+      "drihten brings all 25 scribes. we clear edges first or we tank a library",
+      "when drihten speeds up, swap tanks"
+    ],
+    "aftermathWin": [
+      "25 scribes and their lord. thats a lot of homework done",
+      "drihten down. nobody has to read those books now"
+    ],
+    "aftermathLoss": [
+      "somebody pulled drihten with the scribes up. thats the whole room",
+      "his haste chewed through the main tank"
+    ],
+    "rumour": [
+      "heard there are ogre scribes in krondon that cant read. they copy the letters anyway",
+      "drihten means lord, [my guildie says|apparently]. lord of a library full of ogres"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "scribes",
+    "text": "Drihten Elreden keeps the scriptorium, a lord over two dozen ogre scribes. Strike him and every desk empties. Count them before you start."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} emptied Krondon's scriptorium and struck Drihten Elreden from the book in {minutes} minutes.",
+    "loss": "Drihten Elreden's scribes rose from every desk; {realm}'s raid under {raidLeader} was written off."
+  }
+}

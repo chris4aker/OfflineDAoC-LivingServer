@@ -1,0 +1,77 @@
+{
+  "id": "deben-se-gecynde",
+  "name": "Deben se Gecynde",
+  "catalogKey": "krondon/debensegecynde",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 80, 30,000 health. Every 45-70 seconds he calls thrawn ogre sceotan (archers) and thrawn abrecan mages; casts Major Conflagration and Major Ice Blast.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/DebenSeGecynde.cs"
+    },
+    {
+      "text": "Se gecynde reads as 'the natural, the rightful, the kindred'; to verify.",
+      "provenance": "original",
+      "source": "Bosworth-Toller (to verify)"
+    }
+  ],
+  "story": "Deben calls himself the Rightful, and he means it: of all the ogres in Krondon he is the one who believes the hall was always meant to be theirs. He keeps the muster. Where Orylle rules and Beran counts, Deben summons, and when the hall is threatened his horn brings archers from the galleries and stormers from the mage-rooms, wave after wave, while he scorches and freezes the front rank himself. He is the reason a raid in Krondon never feels small for long.",
+  "legend": "Deben keeps calling. Archers and mages come in waves every minute or so, and if you leave them up the next wave lands on top. Kill each wave as it comes, keep a party on him, and watch for both fire and ice from the old brute.",
+  "yells": {
+    "aggro": [
+      "This hall is ours by right! To arms, Krondon!"
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Sceotan! Abrecan! The hall calls you!"
+      }
+    ],
+    "death": [
+      "Ours... by right..."
+    ],
+    "slay": [
+      "The hall keeps what is its own."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A war-horn hangs on the wall. It is not dusty."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Deben sounds the muster. More ogres come!"
+      }
+    ],
+    "realmFirstKill": "Deben se Gecynde has fallen. The muster is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "deben calls archers and mages every minute. kill each wave, dont let them stack",
+      "one party holds deben, the rest clear his adds"
+    ],
+    "aftermathWin": [
+      "kept the waves down, deben never had a chance",
+      "deben the rightful. rightfully dead"
+    ],
+    "aftermathLoss": [
+      "three waves stacked up. you cant ignore his muster",
+      "the abrecan mages got the healers. pick them first"
+    ],
+    "rumour": [
+      "heard deben in krondon thinks the hall was always theirs",
+      "[someone said|heard] deben's muster never runs out. keep killing"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "deben",
+    "text": "Deben se Gecynde, the Rightful. He believes Krondon was always the ogres' hall. He keeps the muster, and his horn calls archers and stormers in waves. Kill each wave as it comes."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cut down Deben's muster wave by wave and felled the Rightful in {minutes} minutes.",
+    "loss": "Deben se Gecynde's muster buried {realm}'s raid; {raidLeader} let the waves stack."
+  }
+}

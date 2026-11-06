@@ -1,0 +1,60 @@
+{
+  "id": "lurfos-the-herald",
+  "name": "Lurfos the Herald",
+  "catalogKey": "krondon/lurfosherald",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 76, 30,000 health, slashing weapon. No scripted mechanic beyond his tether; he stands on the road to Orylle's hall (61: 31414, 65541).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs"
+    }
+  ],
+  "story": "Every queen needs a herald, and Lurfos stands on the long road to Orylle's hall to announce whoever comes. He has a voice like a rockfall and a blade to match, and he takes the duty seriously: no one reaches the queen unannounced, and most who meet him are announced as dead. He is the last door before the deepest hall. The old heralds of Krondon carried a staff and a list of names; Lurfos carries a blade and no list, because he has never needed to remember anyone for long.",
+  "legend": "A straight fight: a big ogre with a big blade and nothing clever about him. Kill him clean, with no deaths and no wasted power, because the queen's hall is right behind him and you want your mana and your endurance for her.",
+  "yells": {
+    "aggro": [
+      "Who comes before the queen? Name yourselves!"
+    ],
+    "phases": [],
+    "death": [
+      "The queen... is told..."
+    ],
+    "slay": [
+      "Announced: one more dead."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A herald waits on the road to the queen."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lurfos the Herald is silent. The queen is unwarned."
+  },
+  "botLines": {
+    "briefing": [
+      "lurfos is straight tank and spank. save mana, orylle is right after"
+    ],
+    "aftermathWin": [
+      "herald down, the queen is next",
+      "lurfos didnt get to announce us"
+    ],
+    "aftermathLoss": [
+      "we wiped on the herald? the herald?"
+    ],
+    "rumour": [
+      "heard the herald in krondon announces everyone. mostly as dead",
+      "lurfos stands right before the queen's hall, [they say|heard]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lurfos",
+    "text": "Orylle's herald. He stands on the road to the deepest hall and lets no one reach the queen unannounced. Fight him clean; she is behind him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} silenced Lurfos the Herald on the road to Krondon's queen in {minutes} minutes.",
+    "loss": "Lurfos the Herald announced {realm}'s raid as dead; {raidLeader} never reached the queen."
+  }
+}

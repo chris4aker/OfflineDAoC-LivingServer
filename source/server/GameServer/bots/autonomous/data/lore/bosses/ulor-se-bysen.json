@@ -1,0 +1,71 @@
+{
+  "id": "ulor-se-bysen",
+  "name": "Ulor se Bysen",
+  "catalogKey": "krondon/ulorbysen",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 73, 30,000 health; fights linked with his brother Jehrog se Bysen. Casts Essence Devourer.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs"
+    },
+    {
+      "text": "Bysen means 'example, pattern, model', and also 'command, precept' (Bosworth-Toller).",
+      "provenance": "original",
+      "source": "https://oldenglishdictionary.net/word/bysen"
+    }
+  ],
+  "story": "In the old hall the word bysen meant an example, the pattern a young man was told to follow, and also a command. The ogres gave the title to two brothers, Ulor and Jehrog, and every young ogre in Krondon is told to be like them. Ulor is the younger and the hungrier. He feeds on the strength of whoever stands before him, as if to prove he can take whatever the hall's enemies have, and he never fights without his brother at his back.",
+  "legend": "The brothers come together and fall together. Ulor drains the life out of whoever he faces; Jehrog strips your body resist and covers you in sores. Kill one at a time with the whole raid and keep the healers on whoever is sored.",
+  "yells": {
+    "aggro": [
+      "Brother! They come to learn by our example!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Jehrog! Show them how we stand!"
+      }
+    ],
+    "death": [
+      "Be the example... brother..."
+    ],
+    "slay": [
+      "Learn from me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two ogres stand side by side, like a lesson."
+    ],
+    "phases": [],
+    "realmFirstKill": "Ulor se Bysen has fallen. The example is broken."
+  },
+  "botLines": {
+    "briefing": [
+      "ulor and jehrog are linked. kill ulor first, everyone on the same target",
+      "ulor drains, jehrog debuffs body resist. cure the sores"
+    ],
+    "aftermathWin": [
+      "both brothers down. bad example",
+      "ulor first, jehrog after. clean"
+    ],
+    "aftermathLoss": [
+      "we split dps between the brothers. never again"
+    ],
+    "rumour": [
+      "bysen means example in the old tongue, [heard|someone said]. the ogres hold those two up as the model ogre",
+      "heard the bysen brothers never fight alone"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bysen",
+    "text": "An example, in the old tongue, and a command too. The ogres gave it as a title to two brothers, Ulor and Jehrog, whom every young ogre is told to follow. They never fight apart."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke the Example of Krondon, Ulor se Bysen, in {minutes} minutes.",
+    "loss": "Ulor se Bysen and his brother made an example of {realm}'s raid under {raidLeader}."
+  }
+}

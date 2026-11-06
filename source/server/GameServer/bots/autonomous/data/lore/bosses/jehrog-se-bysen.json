@@ -1,0 +1,70 @@
+{
+  "id": "jehrog-se-bysen",
+  "name": "Jehrog se Bysen",
+  "catalogKey": "krondon/jehrogbysen",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 76, 30,000 health; fights linked with Ulor se Bysen. Casts Banish Immunities (halves the target's Body resist) and Lance Spirit (83 damage every 4 s for 24 s).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs"
+    },
+    {
+      "text": "Bysen means 'example, pattern, model', and also 'command, precept' (Bosworth-Toller).",
+      "provenance": "original",
+      "source": "https://oldenglishdictionary.net/word/bysen"
+    }
+  ],
+  "story": "Jehrog is the elder of the two brothers called the Example, and the one who learned the hall's old curses. He opens a man's body to harm and then covers it in sores, and he does it slowly, because an example should be watched. Where Ulor takes, Jehrog teaches: every young ogre in Krondon has seen what Jehrog does to the hall's enemies. The two stand side by side in their room because that is the lesson they were made to teach: an ogre of Krondon does not fight alone, and does not fall alone.",
+  "legend": "He halves your body resist and then covers you in sores that tick for half a minute. Cure and heal the sored, put the whole raid on one brother, and only then turn to the other. Split damage and you will be standing in their lesson far too long.",
+  "yells": {
+    "aggro": [
+      "Watch closely. This is the lesson."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ulor! Stand with me!"
+      }
+    ],
+    "death": [
+      "Remember... how we stood..."
+    ],
+    "slay": [
+      "An example, for the young ones."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two ogres stand side by side, like a lesson."
+    ],
+    "phases": [],
+    "realmFirstKill": "Jehrog se Bysen is dead. No one follows the example now."
+  },
+  "botLines": {
+    "briefing": [
+      "jehrog halves body resist and dots. healers cure, dps stay on one brother"
+    ],
+    "aftermathWin": [
+      "the example has been set. by us",
+      "jehrog down, the sores are gone"
+    ],
+    "aftermathLoss": [
+      "the dots killed more than the melee did"
+    ],
+    "rumour": [
+      "[heard|someone said] jehrog's sores eat you slow. on purpose",
+      "jehrog se bysen is the older brother. meaner too"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "jehrog",
+    "text": "The elder of the brothers called the Example. He opens a man's body to harm, then covers it in sores, slowly, so the young ogres can watch."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} ended Jehrog se Bysen's lesson in {minutes} minutes.",
+    "loss": "Jehrog se Bysen taught {realm}'s raid under {raidLeader} the slow way."
+  }
+}

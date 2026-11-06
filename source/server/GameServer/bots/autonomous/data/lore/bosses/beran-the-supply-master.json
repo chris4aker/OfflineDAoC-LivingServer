@@ -1,0 +1,77 @@
+{
+  "id": "beran-the-supply-master",
+  "name": "Beran the Supply Master",
+  "catalogKey": "krondon/beransupplymaster",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 78, 30,000 health. Every 15-35 seconds he ignites a barrel that explodes (an 'Explosion' add, level 80).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs"
+    },
+    {
+      "text": "He yells for help to ogres called 'onstal hyrde'. On-stael means 'arrangement, disposition' (Bosworth-Toller); 'keepers of the stores' is our reading.",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/24758"
+    }
+  ],
+  "story": "Every hall needs someone to count the casks, and Krondon's ogres gave the job to Beran. He took the hall's old title of keeper of the stores and kept the stores the way an ogre would: he found the pitch and the lamp-oil the old keepers had laid by for siege and winter, and he learned what happens when a torch meets a cask. Now his storerooms are stacked to the roof with barrels he can set alight whenever he likes, and his under-keepers come running when he bellows. He is not the strongest lord of Krondon, but he is the one most likely to bring the ceiling down on you.",
+  "legend": "Watch the barrels. Every half minute or so he lights one, and you do not want to be next to it when it goes. Kill his store-keepers when he shouts for them, then finish him. Raids that stood in one heap around him went home in one heap.",
+  "yells": {
+    "aggro": [
+      "Thieves in the stores! Keepers, to me!"
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Light it! Light another!"
+      }
+    ],
+    "death": [
+      "Who... counts the casks now..."
+    ],
+    "slay": [
+      "That one is off the tally."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Pitch-casks stacked to the roof. Mind the torches."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Beran sets a torch to a cask!"
+      }
+    ],
+    "realmFirstKill": "Beran the Supply Master is dead. The casks stay dark."
+  },
+  "botLines": {
+    "briefing": [
+      "beran lights barrels every half minute. spread out, dont stack on him",
+      "kill the keepers he calls, then beran"
+    ],
+    "aftermathWin": [
+      "nobody stood in a barrel. i'm proud of you all",
+      "beran down, the stores are ours"
+    ],
+    "aftermathLoss": [
+      "half the raid was standing on a barrel when it went",
+      "his keepers came and nobody picked them up"
+    ],
+    "rumour": [
+      "heard the supply master in krondon blows up his own stores to kill you",
+      "[someone said|heard] beran's casks are older than the ogres. old siege pitch"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "beran",
+    "text": "The ogres' keeper of the stores. He found the old siege pitch of Krondon and learned what a torch does to a cask. Spread out when you fight him, and kill his keepers when he calls."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} kept clear of the pitch-casks and ended Beran the Supply Master in {minutes} minutes.",
+    "loss": "Beran the Supply Master lit one cask too many under {realm}'s raid; {raidLeader} was carried out."
+  }
+}

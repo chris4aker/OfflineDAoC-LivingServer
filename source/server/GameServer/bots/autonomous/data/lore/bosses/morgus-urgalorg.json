@@ -1,0 +1,71 @@
+{
+  "id": "morgus-urgalorg",
+  "name": "Morgus Urgalorg",
+  "catalogKey": "krondon/morgusurgalorg",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 73, 30,000 health. Pulling him brings every 'MorgusBaf' NPC: 14 'Morgus's leornere' in the world database. Casts Ebullient Blast.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/MorgusUrgalorg .cs"
+    },
+    {
+      "text": "Krondon also holds thrawn ogre lareon; leornere 'learner' and lareow 'teacher' are standard glosses, to verify.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Morgus Urgalorg found the old hall's school, the long room where its teachers sat with their learners, and decided to be a teacher. He has fourteen students now, young ogres who follow him from room to room and copy everything he does, which mostly means hitting things with magic. He teaches by example. When strangers come he shows his learners how to boil a man where he stands, and all fourteen try it at once. The old school of Krondon taught letters and law. Morgus teaches only the one lesson, and his learners are very good at it.",
+  "legend": "Fourteen learners come with him the moment he is struck. Clear them or mez them, then burn Morgus down. Do not stand in a heap around him; his blast boils everything near its target, and his students copy it as best they can.",
+  "yells": {
+    "aggro": [
+      "Watch, my learners. This is how it is done!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Learners! Show them what I taught you!"
+      }
+    ],
+    "death": [
+      "Class... is dismissed..."
+    ],
+    "slay": [
+      "Learn from that."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Young ogres sit in rows, watching their master."
+    ],
+    "phases": [],
+    "realmFirstKill": "Morgus Urgalorg has taught his last lesson."
+  },
+  "botLines": {
+    "briefing": [
+      "morgus has 14 students linked. mez them or clear them first",
+      "spread out, his blast is aoe"
+    ],
+    "aftermathWin": [
+      "class dismissed. gg",
+      "the students went down faster than the teacher"
+    ],
+    "aftermathLoss": [
+      "fourteen students all nuking at once. who knew"
+    ],
+    "rumour": [
+      "heard morgus in krondon runs a school. fourteen little ogres copying him",
+      "[someone said|heard] morgus's learners are linked to him. pull one, get the class"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "morgus",
+    "text": "He found the old hall's school and made himself its teacher. Fourteen young ogres follow him and copy him; strike him and the whole class answers."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} dismissed Morgus Urgalorg's class for good in {minutes} minutes.",
+    "loss": "Morgus Urgalorg's learners boiled {realm}'s raid where it stood; {raidLeader} learned the lesson."
+  }
+}

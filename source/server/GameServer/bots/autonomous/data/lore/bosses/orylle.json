@@ -1,0 +1,93 @@
+{
+  "id": "orylle",
+  "name": "Orylle",
+  "catalogKey": "krondon/orylle",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 40,000 health. Fights linked with Orshom Brong; drawn past 3,800 she walks home.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs"
+    },
+    {
+      "text": "She throws a random raider to a fixed spot about 1,200 units back up her hall (61: 31406, 69599).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Krondon's final encounter in the raid list; a February 2003 guide put her and Orshom at fifty or more players.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "That she is the 'warrior queen' of the existing bot line is Living Server writing.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "Orylle came up out of the deep seams at the head of the thrawn ogres and took Krondon without burning it, which is the most dangerous thing anyone did in Morgana's war. She kept the hall's order and put ogres in every chair. She has no use for the old learning, but she understands a hall: a queen at the end of it, a champion at her side, a herald on the road and lords in every room below. Those who reach her are not killed at once. She seizes the boldest and hurls them back down her hall toward the door, a queen's answer to a guest who came in without leave. If they walk back, she will fight them. She has never been afraid of a crowd; she simply makes the crowd come to her one thrown man at a time, while Orshom Brong burns at her shoulder.",
+  "legend": "Fifty or more, and kill her with Orshom in mind: they come together, so the cold-damage casters are on him and everyone else is on her. When she throws you, do not release and do not panic. Walk back up the hall and get in. The raids that lost to her lost because the thrown men wandered off.",
+  "yells": {
+    "aggro": [
+      "Who walks into my hall without leave?",
+      "Krondon has a queen. Kneel, or be swept out."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Back to the door with you. Come again, properly."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Orshom! Burn them!"
+      }
+    ],
+    "death": [
+      "The hall... was kept... it was kept..."
+    ],
+    "slay": [
+      "Another guest who forgot his manners."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A queen's chair, and a cold fire beside it."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Orylle hurls a challenger back down her hall!"
+      }
+    ],
+    "realmFirstKill": "The queen of Krondon has fallen. The hall is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "orylle and orshom come together. cold dmg on orshom, everyone else on the queen",
+      "she throws people back up the hall. if its you, walk back in, dont release",
+      "fifty of us minimum. nobody pulls until the cold casters are set"
+    ],
+    "aftermathWin": [
+      "[gg|gg all], the queen is down. krondon has no queen tonight",
+      "the thrown guys walked back every time. thats the kill right there"
+    ],
+    "aftermathLoss": [
+      "too many people lost after she threw them. walk back next time",
+      "orshom wiped the casters. need more cold on him"
+    ],
+    "rumour": [
+      "heard orylle never kills you first, she throws you out the door",
+      "[someone said|heard] orylle took krondon without burning a thing. smart queen"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "orylle",
+    "text": "The warrior queen of Krondon. She took the hall without burning it and put an ogre in every chair. She hurls the bold back down her hall. Walk back to her; the raids that wandered off are the ones we sing about as lost."
+  },
+  "bookPage": "Orylle does not slay a challenger who reaches her chair. She hurls him back down her hall toward the door, as a queen might sweep an unbidden guest from her hearth, and waits to see if he returns. The ogres say she has done this to a hundred men and that only the ones who walked back are worth killing. Orshom Brong stands at her shoulder through all of it, burning. They fall together or not at all.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} walked back up Orylle's hall as often as she threw them and ended Krondon's queen in {minutes} minutes.",
+    "loss": "Orylle swept {realm}'s raid out of her hall; {raidLeader} lost too many to the long walk back."
+  }
+}

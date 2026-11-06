@@ -1,0 +1,69 @@
+{
+  "id": "fuladl",
+  "name": "Fuladl",
+  "catalogKey": "krondon/fuladl",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 77, 30,000 health. Spawns four or five smaller 'Part of Fuladl' when fought.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs"
+    },
+    {
+      "text": "Ful 'foul' and adl 'disease, sickness' are standard glosses; the reading 'foul sickness' is to verify.",
+      "provenance": "original",
+      "source": "Bosworth-Toller (to verify)"
+    }
+  ],
+  "story": "Not everything in Krondon came up with the ogres. Some of it was always there, waiting in the low places where the old hall's drains ran. Fuladl is one of those: a rot that learned to move. The hall's last keepers named it as they named everything, with a plain word for a plain horror, the foul sickness. Cut it and it comes apart into smaller pieces of itself that crawl back toward you. The ogres will not go near it. They feed it what they do not want, and that is how they keep their hall clean, and that is why it has grown so large.",
+  "legend": "Cut Fuladl and pieces of him split off. Kill the pieces fast or you are fighting five of him, and the healers will be the first thing they find. Fulafeallan in the next passage does the same; do not pull both, and do not chase a piece into the dark.",
+  "yells": {
+    "aggro": [],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "The foulness splits and crawls."
+      }
+    ],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The drains of the old hall. Something here is alive."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Fuladl splits apart. Its pieces crawl!"
+      }
+    ],
+    "realmFirstKill": "Fuladl is scoured from Krondon's drains."
+  },
+  "botLines": {
+    "briefing": [
+      "fuladl splits when you hit it. aoe the pieces, keep one party on the big one"
+    ],
+    "aftermathWin": [
+      "fuladl gone. somebody wash that off",
+      "pieces down first, then the big rot. good"
+    ],
+    "aftermathLoss": [
+      "the pieces swarmed the healers. need aoe on them"
+    ],
+    "rumour": [
+      "the old hall had a name for the rot in its drains. fuladl, [foul sickness|the foul sickness]",
+      "[heard|someone said] fuladl comes apart when you hit it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fuladl",
+    "text": "A rot that learned to move, down in the hall's old drains. The keepers called it the foul sickness. Cut it and it comes apart; kill the pieces before they come back together around you."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} scoured Fuladl from Krondon's drains in {minutes} minutes.",
+    "loss": "Fuladl split and swallowed {realm}'s raid; {raidLeader} lost them in the drains."
+  }
+}
