@@ -1,0 +1,97 @@
+{
+  "id": "xanxicar",
+  "name": "Xanxicar",
+  "catalogKey": "crystal-cave/xanxicar",
+  "locationId": "crystal-cave",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 80, 100,000 health. At 80, 60, 40 and 20% he announces and brings down Xanxicar's Stomp on everything around him; from 50% Xanxicarian Champions (level 65) come one after another, 15-25 s apart, while he fights.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs"
+    },
+    {
+      "text": "He hurls a random real player within 2,500 into the air every 20-40 s and glares at another; when he dies 'a glowing light begins to form on the mound'.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Two-headed, white or silver, in an archived newsgroup thread; 'well over a hundred players' (Feb 2003); five full groups wiped (Jul 2005).",
+      "provenance": "legend",
+      "source": "https://forums.tomshardware.com/threads/xanxicar-and-the-crystal-caves.166958/"
+    },
+    {
+      "text": "Existing bot chat says the cave fills with lightning if you dawdle; nothing in the script does that. It is kept as hearsay.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "Xanxicar is the dragon under Avalon, and the dragon the drakoran follow. He has two heads and a hide like frost on silver, and he sleeps on a mound of crystal at the bottom of the cave, where every light is thrown back a hundred times. Whether the scholars of Avalon built their colleges over him to keep him asleep, or whether he let them, no one alive can say. When he wakes he does not breathe fire like the dragons of the realms. He uses his weight. He rears up with both heads high and brings the whole of himself down on everything near him, and he does it again each time another fifth of his strength is gone. From half his strength his champions come to him, Xanxicarian warriors who are to the drakoran what a king's household knights are to a king, one after another until he dies. He flings men into the air for the pleasure of watching them fall. When he dies a light forms on his mound.",
+  "legend": "Over a hundred, the old guides said; five groups wiped in one go, said another. He stomps at 80, 60, 40 and 20 percent: everyone but the tanking party gets out of range on the warning. From half, champions keep coming; one party kills each away from the tank. Some swear the cave fills with lightning if you take too long.",
+  "yells": {
+    "aggro": [
+      "Two heads wake. Two hungers."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "Xanxicar bellows in rage and rears to stomp!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Champions! Your lord calls you!"
+      }
+    ],
+    "death": [
+      "The mound... remembers... me..."
+    ],
+    "slay": [
+      "Up, and down. They always come down."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two heads rest on a mound of light. Both are watching."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "Xanxicar rears! Get clear of his stomp!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The Xanxicarian champions answer their lord!"
+      }
+    ],
+    "realmFirstKill": "Xanxicar has fallen. A light forms on his mound.",
+    "wake": "Under Avalon the ground lurches. Xanxicar wakes."
+  },
+  "botLines": {
+    "briefing": [
+      "stomps at 80 60 40 20. on the warning everyone but the tank group runs out",
+      "from 50% champions keep spawning. one party per champion, away from the tank",
+      "this is a hundred man fight. the guards on the way in are the hard part"
+    ],
+    "aftermathWin": [
+      "XANXICAR DOWN. both heads",
+      "there's a light on the mound. nobody touch it"
+    ],
+    "aftermathLoss": [
+      "half the raid stood in the 40% stomp",
+      "the champions never stopped and we ran out of healers"
+    ],
+    "rumour": [
+      "a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. [wait too long|dawdle] and the cave fills with lightning",
+      "heard a light forms on xanxicar's mound when he dies. nobody knows what it is"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "xanxicar",
+    "text": "A dragon with two heads and a hide like frost on silver. When he wakes he rears and crushes all around him, again and again as he weakens. From half his strength his champions come to him, one after another. Keep away from his feet."
+  },
+  "bookPage": "He sleeps on a mound of stone that gives back light. When he wakes he rears up, both heads high, and brings his weight down on everything near him; the ground lurches, and those beneath him do not rise. He does this not once but as often as he is hurt, at every fifth part of his strength. At the half his champions begin to come, and they do not stop. When he dies, a light forms on the mound. No one has yet dared to touch it.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} went down under Avalon and brought Xanxicar off his mound in {minutes} minutes.",
+    "loss": "Xanxicar's stomp broke {realm}'s raid in the Crystal Cave; {raidLeader} left the dragon on his mound of light."
+  }
+}

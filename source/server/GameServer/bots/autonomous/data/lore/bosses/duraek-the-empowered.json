@@ -1,0 +1,81 @@
+{
+  "id": "duraek-the-empowered",
+  "name": "Dura'ek the Empowered",
+  "catalogKey": "avalon-city/duraekempowered",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health; Avalon City's raid final. Heat and Cold damage heal him instead of hurting him. Casts Flames of Dura'ek. Pulling him brings six dry'ak avowry.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "An avowry is a patron or protector (Middle English); to verify.",
+      "provenance": "original",
+      "source": "Middle English dictionaries (to verify)"
+    }
+  ],
+  "story": "Dura'ek was a war-lord of the dry'ak clan, the halberdiers and doorkeepers of the drakoran host, and no greater than the other four lords until the night Avalon burned. Then he came up from the way under the city changed. Fire and frost, the two breaths of a dragon, no longer harm him; they feed him, and he burns with a flame that is not his own. The other clans call him the Empowered and bow to him, and they whisper that he went down to the Crystal Cave and was given something there. His six avowries, the protectors of his household, never leave his side. He rules the occupied city from the chancellors' court as if he had been born to it.",
+  "legend": "Heat and cold heal him. Leave the fire and ice wizards on his avowries, and bring every other damage type to him: steel, matter, body, spirit, energy. Kill the six protectors first. Empowered by whom? Ask the dragon under the city.",
+  "yells": {
+    "aggro": [
+      "Avowries! The scholars' children have come home!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Burn me, freeze me. I drink it all!"
+      }
+    ],
+    "death": [
+      "The power... was never... mine..."
+    ],
+    "slay": [
+      "Ash, like the libraries."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The heart of the burned city. Its lord is empowered."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fire and frost only feed Dura'ek!"
+      }
+    ],
+    "realmFirstKill": "Dura'ek the Empowered has fallen. Avalon remembers."
+  },
+  "botLines": {
+    "briefing": [
+      "heat and cold HEAL duraek. wizards on the adds, everyone else on him",
+      "six avowries linked, kill them first"
+    ],
+    "aftermathWin": [
+      "empowered, sure. dead now",
+      "no fire on him the whole fight, well done"
+    ],
+    "aftermathLoss": [
+      "somebody kept fireballing him. it heals him"
+    ],
+    "rumour": [
+      "dura'ek the empowered leads the drakoran in avalon city, they say. empowered by whom is the question",
+      "[heard|word is] fire and frost heal dura'ek. bring something else"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "dura'ek",
+    "text": "The Empowered. He rules the city from its heart, and fire and frost only feed him. The clans whisper that his power is not his own. I think they are right, and I think I know whose it is."
+  },
+  "bookPage": "My fishermen say the greatest of the dragon-men's lords sits in the court of our chancellors and is called the Empowered, and that his own people do not believe the power is his. One of them saw a wizard of the Inconnu throw fire at him in the street and watched the drakoran lord stand in the flame and grow stronger. Frost the same. Steel, the fisherman said, steel he did not like at all.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} starved Dura'ek the Empowered of fire and frost and took back Avalon's heart in {minutes} minutes.",
+    "loss": "Dura'ek drank the fire {realm}'s raid threw at him; {raidLeader} fell back from the chancellors' court."
+  }
+}

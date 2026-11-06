@@ -1,0 +1,159 @@
+{
+  "id": "avalon-city",
+  "name": "Avalon City",
+  "realm": "Albion",
+  "regions": [
+    50
+  ],
+  "summary": "The burned seat of Albion's learning on the Shrouded Isles, occupied by five drakoran clans who have taken up the trades of the city they destroyed.",
+  "facts": [
+    {
+      "text": "Morgana, seeking all of Arthur's former lands, allied with the drakoran, dragon-men said to be led by a huge dragon. They devastated Avalon Isle and its capital, Albion's centre of learning, and drove out its people.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "Avalon City is a largely destroyed dungeon for levels 35-50; Arawn leads the Inconnu to reclaim it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=66"
+    },
+    {
+      "text": "In Mythic's Catacombs lore Morgana trapped Merlin in a crystal in a cave of converging ley lines and attacked Avalon with the drakoran horde; Arawn's forces are stretched by his war against the drakoran in Avalon.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/464"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Their ranks carry old English trade names: reeve, sutler, joyner, lorimer, tranter, catchpole, stallman, acater, halberdier, alblaster.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Players in January 2003 described a named near the Crystal Cave entrance, by the flamethrowers, who could not be struck until a great flaming orb upstairs was destroyed; an October 2004 reply named him Dra'argus the Mighty.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=66"
+    },
+    {
+      "text": "No period raid count was found for Dura'ek; the raid is sized like Krondon.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Existing bot chat says the drakoran have mystics, medics and sawbones, and asks who empowered Dura'ek.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "Avalon was the city where Albion kept its learning. Its colleges stood on the isle across the water from the marsh, and the old guides said the marsh ran right up to its edges, because the scholars of Avalon had made the water forget it was there. Merlin was taught there. So was Morgana.\n\nWhen she came back it was at the head of the drakoran, the dragon-men, who are said to follow a dragon of their own, and the city burned. The libraries burned first. The colleges came down, the people fled to Caer Gothwaite and the Isle of Glass, and the drakoran did not leave. That is the strangest thing about Avalon City: it is not a ruin. It is occupied. Five clans of drakoran hold its quarters, each under its own lord, and they have taken up the trades of the city they destroyed. There are drakoran reeves and sutlers, joiners and lorimers, catchpoles to keep order and acaters to buy in the stores, physicians and stall-keepers, as if a city were a coat they could put on.\n\nDura'ek the Empowered rules them all from the heart of the city, and the clans whisper that his power is not his own. Under the city, past the sentries who bear the dragon's name, a way leads down to the Crystal Cave, where something with two heads sleeps on a mound of light. The Inconnu fight in these streets for Arawn. Albion fights in them for its memory. The drakoran fight in them because they live here now.",
+  "legend": "Every lord in Avalon City has a trick, and every trick has killed a raid: Dra'argus cannot be hurt until you break his flaming orb upstairs, Dura'ek drinks fire and frost, Vera'erius drinks spirit and body, Sys'sro throws you into his pit, and Weno'iak rides with his cavalry. The marsh ran right to the city's edges once, the old guides said. Nobody has ever found those edges.",
+  "atmosphere": {
+    "firstEntry": [
+      "Avalon burned. The drakoran live in the ashes now.",
+      "The libraries are gone. Dragon-men keep the streets."
+    ],
+    "areas": [
+      {
+        "name": "Dura'ek's court",
+        "x": 32425,
+        "y": 28962,
+        "z": 8756,
+        "radius": 900,
+        "lines": [
+          "The heart of the burned city. Its lord is empowered."
+        ]
+      },
+      {
+        "name": "the flamethrowers' house",
+        "x": 26899,
+        "y": 37223,
+        "z": 8644,
+        "radius": 800,
+        "lines": [
+          "A great orb burns upstairs. Its lord cannot be touched."
+        ]
+      },
+      {
+        "name": "the pit",
+        "x": 41505,
+        "y": 39496,
+        "z": 8040,
+        "radius": 800,
+        "lines": [
+          "The ground falls away into a pit. Something moves in it."
+        ]
+      },
+      {
+        "name": "the cavalry yards",
+        "x": 35817,
+        "y": 33952,
+        "z": 8625,
+        "radius": 900,
+        "lines": [
+          "Warsteeds stamp in the yards of the colleges."
+        ]
+      },
+      {
+        "name": "the way down",
+        "x": 23787,
+        "y": 40092,
+        "z": 8676,
+        "radius": 1500,
+        "lines": [
+          "The sentries here bear a dragon's name."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the drakoran burned avalon city to rubble, and someone held their leash",
+      "the drakoran aren't stupid beasts. they have mystics, medics and sawbones. that's an army",
+      "[five|5] drakoran clans in avalon city, one lord each. [and they took up the trades|reeves and sutlers and joiners], like it was their city all along",
+      "avalon city was where albion kept its learning. merlin studied there. [so did morgana|so did the witch]",
+      "the guards on the way down to the crystal cave are called xanxicarian. [named after the dragon|think about that]"
+    ],
+    "rumour": [
+      "dura'ek the empowered leads the drakoran in avalon city, they say. empowered by whom is the question",
+      "[heard|someone said] you cant hurt dra'argus until you break the big orb upstairs",
+      "[heard|word is] fire and frost heal dura'ek. bring something else"
+    ],
+    "tell": [
+      "avalon city? the burned city on the isles. five drakoran lords, dura'ek the empowered at the heart, and the way down to the crystal cave",
+      "drakoran occupied city. every lord has a trick, ask before you pull. raid for dura'ek",
+      "burned ruins full of dragon-men. the crystal cave entrance is in the middle"
+    ]
+  },
+  "loremaster": {
+    "intro": "Avalon was Albion's seat of learning, and [Morgana] burned it. The [drakoran] did not leave. Five clans hold it now under five lords, and the greatest of them is [Dura'ek].",
+    "topics": {
+      "morgana": "Merlin's own pupil, taught in Avalon's colleges. She came back at the head of the dragon-men, and the libraries burned first. Arawn sent his Inconnu to fight her here, for she steals his dead.",
+      "drakoran": "Dragon-men, and no beasts. They have reeves and sutlers, joiners and physicians, catchpoles and stall-keepers. Five clans, each under a lord: [Dra'argus], Dura'ek, [Sys'sro], [Vera'erius] and [Weno'iak]. They are said to follow a dragon of their own. Ask about the [Crystal Cave].",
+      "dura'ek": "The Empowered. He rules the city from its heart, and fire and frost only feed him. The clans whisper that his power is not his own. I think they are right, and I think I know whose it is.",
+      "dra'argus": "The Mighty, lord of the drau'gyn and their flamethrowers. He cannot be wounded while the great orb in his house burns. Break the orb.",
+      "sys'sro": "The Ruthless. Fifteen beasts live in his pit, and he throws men into it. Keep your back to the wall.",
+      "vera'erius": "The Brave. Spirit and body magic heal him, and when he is hurt he heals himself. Bring steel.",
+      "weno'iak": "The Enlightened. His clan rides warsteeds, and he burns men with a light that is not fire.",
+      "crystal cave": "Under the heart of the city a way goes down, guarded by sentries who carry the name Xanxicarian. At the bottom sleeps a dragon with two heads. I do not think the drakoran found him. I think he called them."
+    }
+  },
+  "book": {
+    "title": "What the Scholars Left",
+    "pages": [
+      "This is set down at Caer Gothwaite by the last of the readers of the college of Avalon, so that something of us is written somewhere. Our city stood across the water from the marsh, and the marsh ran right to its edges, for our masters had made the water forget it was there. Merlin read with us as a boy. So did the girl who came back. We taught her well. That is the whole of our shame, and it is enough.",
+      "She did not come alone. She came with the dragon-men, and they burned the libraries first, because she knew where they were. We fled by boat. From the water we watched the colleges come down one by one, and on the third night we saw something we have not been able to explain: a light rising out of the ground at the heart of the city, cold and many-coloured, as if the earth itself were made of glass.",
+      "Our fishermen go close sometimes. They say the dragon-men did not leave. They live in our houses. They have reeves and sutlers and joiners, catchpoles who keep order in our streets, physicians who tend their wounded in our hospital. There are five clans of them, each with a lord, and the greatest lord sits in the court of our chancellors and is called the Empowered. My fishermen say his own people do not believe the power is his.",
+      "One fisherman went closer than the rest and came back with a word he had heard the guards say over and over, as soldiers say the name of their king: Xanxicar. We have looked for it in what books we saved. It is in none of them. But the oldest map of Avalon in our possession, drawn before the colleges were built, marks the heart of the isle with a small drawing of a beast with two heads, and no name at all."
+    ]
+  },
+  "bosses": [
+    "duraek-the-empowered",
+    "draargus-the-mighty",
+    "syssro-the-ruthless",
+    "veraerius-the-brave",
+    "wenoiak-the-enlightened"
+  ]
+}

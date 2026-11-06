@@ -1,0 +1,76 @@
+{
+  "id": "wenoiak-the-enlightened",
+  "name": "Weno'iak the Enlightened",
+  "catalogKey": "avalon-city/wenoiakenlightened",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Pulling him brings eight wi'voron cuirassiers and eight warsteeds. Casts Weno'iak's Lights (350 Spirit) and Weno'iak's Annihilate (450 Spirit, radius 500).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Weno'iak leads the wi'voron, the clan of reeves and advisors and of the drakoran cavalry, and he is the one the other lords call when they need to think. He took the scholars' observatory for his own and is said to read in the books the others burned. The Enlightened, they call him, and his light is no fire: it strikes at the spirit and breaks men from the inside. His cuirassiers and their warsteeds keep the yards of the colleges, and they ride when he rides.",
+  "legend": "Eight cuirassiers and eight warsteeds come with him, so that is seventeen pulls in one. Spread out against his Annihilate, which hits everyone near its target, and bring spirit resist. Off-tanks on the cavalry, and kill the warsteeds before their riders tire of walking.",
+  "yells": {
+    "aggro": [
+      "Riders! Let them see the light!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Behold enlightenment!"
+      }
+    ],
+    "death": [
+      "I read... your books... they were... right..."
+    ],
+    "slay": [
+      "Enlightened at last."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Warsteeds stamp in the yards of the colleges."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Weno'iak's light breaks men from within!"
+      }
+    ],
+    "realmFirstKill": "Weno'iak the Enlightened is dead. His light is out."
+  },
+  "botLines": {
+    "briefing": [
+      "wenoiak brings 8 cuirassiers and 8 warsteeds. off tanks on cavalry",
+      "spread for his annihilate, spirit resist up"
+    ],
+    "aftermathWin": [
+      "seventeen mobs in one pull. gg",
+      "the enlightened one wasnt that bright"
+    ],
+    "aftermathLoss": [
+      "we stacked for annihilate. 450 to everyone"
+    ],
+    "rumour": [
+      "heard weno'iak reads the books the other drakoran burned",
+      "[someone said|heard] weno'iak rides with a whole cavalry"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "weno'iak",
+    "text": "The Enlightened. His clan rides warsteeds, and he burns men with a light that is not fire."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} unhorsed Weno'iak's cavalry and put out his light in {minutes} minutes.",
+    "loss": "Weno'iak the Enlightened rode down {realm}'s raid in the colleges' yards; {raidLeader} lost them to the light."
+  }
+}

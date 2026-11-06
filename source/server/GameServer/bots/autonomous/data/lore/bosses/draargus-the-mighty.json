@@ -1,0 +1,81 @@
+{
+  "id": "draargus-the-mighty",
+  "name": "Dra'argus the Mighty",
+  "catalogKey": "avalon-city/draargusmighty",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. While his Drau'gyn Sphere lives he cannot be damaged; he carries a damage shield (120) and casts Sphere Explosion.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs"
+    },
+    {
+      "text": "January 2003: a named in a house near the Crystal Cave entrance, by the flamethrowers, could not be struck until a large flaming orb on the upper floor was destroyed, which summoned guards; in October 2004 a reply named him Dra'argus.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=66"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Dra'argus leads the drau'gyn, the clan of the flamethrowers and flesh-eaters, and he took for his house the tallest of the burned colleges near the way down to the Crystal Cave. On its upper floor he set a great orb of fire, a drau'gyn working that drinks every blow aimed at him, so that nothing reaches the Mighty while it burns. He is proud of it the way a lord is proud of a strong door. Adventurers who meet him in his hall swing and swing and never mark him, and most of them never think to look up the stairs.",
+  "legend": "He cannot be hurt while the flaming orb upstairs burns. Send a group up to break it, expect guards when it goes, and only then put the raid on him. Melee eat his damage shield. Players were puzzling this out in January 2003.",
+  "yells": {
+    "aggro": [
+      "Strike, then. Strike all you like."
+    ],
+    "phases": [
+      {
+        "trigger": "orbDeath",
+        "text": "My sphere! Who climbed my stairs?"
+      }
+    ],
+    "death": [
+      "Mighty... only while it burned..."
+    ],
+    "slay": [
+      "Burned to the bone."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great orb burns upstairs. Its lord cannot be touched."
+    ],
+    "phases": [
+      {
+        "trigger": "orbDeath",
+        "text": "The drau'gyn sphere shatters. Dra'argus can bleed!"
+      }
+    ],
+    "realmFirstKill": "Dra'argus the Mighty has fallen. His fire is out."
+  },
+  "botLines": {
+    "briefing": [
+      "break the orb upstairs first or dra'argus is immune. guards spawn when it dies",
+      "melee watch his damage shield"
+    ],
+    "aftermathWin": [
+      "someone finally looked up the stairs",
+      "orb first, then the mighty. not so mighty"
+    ],
+    "aftermathLoss": [
+      "we hit him for five minutes with the orb still up"
+    ],
+    "rumour": [
+      "[heard|someone said] you cant hurt dra'argus until you break the big orb upstairs",
+      "heard dra'argus's house is by the flamethrowers near the crystal cave"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "dra'argus",
+    "text": "The Mighty, lord of the drau'gyn and their flamethrowers. He cannot be wounded while the great orb in his house burns. Break the orb."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} climbed the stairs, broke the sphere and ended Dra'argus the Mighty in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} struck Dra'argus the Mighty for nothing; nobody looked up the stairs."
+  }
+}

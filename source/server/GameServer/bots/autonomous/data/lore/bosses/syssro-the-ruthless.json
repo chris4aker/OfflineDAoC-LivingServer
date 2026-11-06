@@ -1,0 +1,76 @@
+{
+  "id": "syssro-the-ruthless",
+  "name": "Sys'sro the Ruthless",
+  "catalogKey": "avalon-city/syssroruthless",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Fifteen Sys'sro's Pit Monsters spawn with him; he throws a random raider into the pit (50: 41489, 40699, 8145). Pulling him brings six syhr'phint alblasters and two dragoons.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Sys'sro leads the syhr'phint, the clan of taskers and catchpoles, the drakoran who keep order in the occupied city and set the conquered to work. His quarter was the scholars' cloister, and in its garden he dug a pit, and in the pit he keeps fifteen beasts that he feeds on whoever displeases him. He is called the Ruthless by his own people, which among the drakoran is a compliment. When he fights he does not need to win. He only needs to throw you in.",
+  "legend": "Fifteen pit monsters live under him. He throws people into the pit at random; if it is you, fight your way out with help, do not just die. Kill his alblasters and dragoons first, and keep the healers well back from the edge.",
+  "yells": {
+    "aggro": [
+      "Another for the pit!"
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Feed them! Feed my beasts!"
+      }
+    ],
+    "death": [
+      "The pit... is hungry still..."
+    ],
+    "slay": [
+      "Down you go."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground falls away into a pit. Something moves in it."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Sys'sro hurls someone into the pit!"
+      }
+    ],
+    "realmFirstKill": "Sys'sro the Ruthless is dead. The pit goes hungry."
+  },
+  "botLines": {
+    "briefing": [
+      "syssro throws people in the pit with 15 monsters. if its you, shout, we come get you",
+      "his archers and dragoons are linked, kill them first"
+    ],
+    "aftermathWin": [
+      "nobody stayed in the pit. good rescue",
+      "ruthless is dead. pit's closed"
+    ],
+    "aftermathLoss": [
+      "three people in the pit and nobody went down to help"
+    ],
+    "rumour": [
+      "heard sys'sro feeds people to the things in his pit",
+      "[someone said|heard] sys'sro's own people call him ruthless like its a compliment"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sys'sro",
+    "text": "The Ruthless. Fifteen beasts live in his pit, and he throws men into it. Keep your back to the wall."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} climbed out of the pit and ended Sys'sro the Ruthless in {minutes} minutes.",
+    "loss": "Sys'sro fed {realm}'s raid to his pit one by one; {raidLeader} could not pull them out."
+  }
+}
