@@ -173,6 +173,16 @@ namespace DOL.GS
         public static bool IsWipe(int engaged, int fallen, int healthPercent, int lowestPercent) =>
             engaged >= MinimumRaidersAtTarget && (fallen * 2 >= engaged || healthPercent >= 95 && lowestPercent <= 85);
 
+        /// <summary>
+        /// A failed attempt counts against the raid (a wipe: one of its two tries, Special Forces called) only when it was the
+        /// raid's: at least half the raid was in it, or half the raid fell. Aidon the Archwizard, 2026-11-05: 31 raiders were
+        /// drawn into a fight before the muster and all fell, while 56 others were elsewhere; that was counted as the raid's
+        /// first wipe. Now it is a lost skirmish: the raid regroups and rests, but no attempt is used.
+        /// </summary>
+        public static bool IsWipe(int engaged, int fallen, int healthPercent, int lowestPercent, int raidAtStart) =>
+            IsWipe(engaged, fallen, healthPercent, lowestPercent) &&
+            (raidAtStart <= 0 || engaged * 2 >= raidAtStart || fallen * 2 >= raidAtStart);
+
         /// <summary>Raiders a regroup waits for: 70% of the raid's roster (40% after 20 minutes), 8 to 150.</summary>
         public static int RegroupNeeded(int roster, long regroupMilliseconds) =>
             Math.Max(MinimumRaidersAtTarget, Math.Min(FinalMusterMaximum, (int)Math.Ceiling(roster *
@@ -210,12 +220,17 @@ namespace DOL.GS
         // The region's NPCs as of this turn (AdvanceCore), for the tactic checks.
         private IReadOnlyList<GameNPC> _live = [];
 
+        // The raid's living members inside when the attempt began (IsWipe's raid share), and the participants of this turn.
+        private int _attemptRaidSize;
+        private GameLiving[] _attemptParticipants;
+
         private void BeginAttempt(GameLiving[] raiders, long now)
         {
             _musterEngaged = true;
             _musterEngagedTick = now;
             _engaged.Clear();
             _engaged.UnionWith(raiders);
+            _attemptRaidSize = _attemptParticipants?.Count(p => p.IsAlive && p.CurrentRegionID == _region) ?? 0;
             _attemptLowestPercent = _target.HealthPercent;
             _pulls.Begin();
             // A pull is progress: the next muster for this encounter starts its own count.
@@ -236,6 +251,17 @@ namespace DOL.GS
             _engaged.Clear();
             if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent))
                 return false;
+            if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent, _attemptRaidSize))
+            {
+                // Lost skirmish: rest and muster again, but it was not the raid's attempt.
+                log.Warn($"REALM_EXPEDITION_SKIRMISH_LOST region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
+                         $"raid={_attemptRaidSize} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" " +
+                         $"reason=\"less than half the raid was in it and less than half fell; no attempt used\"");
+                _regrouping = true;
+                _regroupSince = _musterSince = now;
+                _targetProgressTick = now;
+                return false;
+            }
             int failures = _failedAttempts[_target.Name] = FailedAttempts(_target.Name) + 1;
             _wipes.Enqueue((_target.Name, failures));
             log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{_target.Name}\" level={_target.Level} failures={failures} " +
@@ -513,6 +539,10 @@ namespace DOL.GS
         public const int FinalMusterMaximum = 150;
         public const long FinalMusterPatienceMilliseconds = 20 * 60_000;
         public const int FinalMusterRadius = 1_500;
+        /// <summary>How long a pull-back from an early-engaging encounter lasts at most (it has leashed home well before).</summary>
+        public const long BreakOffMilliseconds = 90_000;
+        public const long BreakOffRepeatMilliseconds = 5 * 60_000;
+        private readonly Dictionary<GameNPC, long> _lastBreakOff = new();
         public const float FinalMusterStandOff = 1_400f;
         public const long FinalEngageGraceMilliseconds = 2 * 60_000;
 
@@ -526,6 +556,18 @@ namespace DOL.GS
         /// </summary>
         private bool MusterForFinal(GameLiving[] participants, long now)
         {
+            // The muster was placed while the encounter was out chasing raiders; it is home again, so the muster follows it
+            // (Aidon the Archwizard, 2026-11-05: the muster went 2,600 from his home, on the ramp the chase had reached).
+            if (_musterTarget == _target && !_target.InCombat && MusterReference(_target) is var home &&
+                Vector3.Distance(home, _musterReference) > MusterFollowDistance)
+            {
+                Vector3 old = _musterPoint;
+                if (TryPointApproach(home, participants, out Vector3 approach)) Front = approach;
+                _musterPoint = MusterPoint(participants);
+                log.Info($"REALM_EXPEDITION_MUSTER_MOVED region={_region} target=\"{_target.Name}\" " +
+                         $"from={(int)old.X},{(int)old.Y},{(int)old.Z} to={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                         $"reason=\"the encounter is back at {(int)home.X},{(int)home.Y},{(int)home.Z}\"");
+            }
             if (_musterTarget != _target)
             {
                 _musterTarget = _target;
@@ -537,18 +579,60 @@ namespace DOL.GS
                 _musterUnreachable = false;
                 _setAsideLine = null;
                 _pulls.Reset();
+                // Away from its home (out chasing raiders), the raid musters for it at home: the front is the approach there.
+                Vector3 reference = MusterReference(_target);
+                if (Vector3.Distance(reference, new Vector3(_target.X, _target.Y, _target.Z)) > 1 &&
+                    TryPointApproach(reference, participants, out Vector3 homeApproach))
+                    Front = homeApproach;
                 _musterPoint = MusterPoint(participants);
             }
             // While the raid regroups, the survivors may still be fighting: arrivals wait at the muster point rather than
             // going in by twos and threes, and the whole regroup goes in together.
+            _attemptParticipants = participants;
+            // A break-off in progress: the raid holds at the muster while the encounter leashes home.
+            if (EpicEncounterTactics.BrokenOff(_target, now) != null)
+            {
+                if (!_target.InCombat) EpicEncounterTactics.EndBreakOff(_target);
+                else
+                {
+                    Destination = _musterPoint; Hold = true;
+                    Status = $"Pulling back from {_target.Name} to the muster";
+                    _targetProgressTick = now;
+                    return true;
+                }
+            }
             if (_target.InCombat && !_regrouping)
             {
                 // A fight in progress is never interrupted. One the raid walked into without a muster (the encounter
-                // aggroed on the approach) is an attempt too, from the raiders around it.
-                GameLiving[] fighting = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region &&
-                                                               p.IsWithinRadius(_target, TargetPresenceRadius)).ToArray();
+                // aggroed on the approach) is answered as a whole (EpicEncounterTactics.ChooseEarlyPull): everyone in at once,
+                // or everyone back to the muster, never piecemeal (Aidon the Archwizard, 2026-11-05).
+                GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
+                GameLiving[] fighting = inside.Where(p => p.IsWithinRadius(_target, TargetPresenceRadius)).ToArray();
                 if (!_musterEngaged)
-                    BeginAttempt(fighting, now);
+                {
+                    bool resets = EpicEncounterTactics.ResetsWhenLeft(_target);
+                    var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, resets);
+                    // Pulled back from it a moment ago and it is still on the raid: it chases, so everyone commits now.
+                    if (choice == EpicEncounterTactics.EarlyPull.Disengage && _lastBreakOff.TryGetValue(_target, out long last) &&
+                        now - last < BreakOffRepeatMilliseconds)
+                        choice = EpicEncounterTactics.EarlyPull.Commit;
+                    log.Warn($"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
+                             $"inside={inside.Length} resets={resets} decision={choice} health={_target.HealthPercent} " +
+                             $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z}");
+                    if (choice == EpicEncounterTactics.EarlyPull.Disengage)
+                    {
+                        EpicEncounterTactics.BreakOff(_target, _musterPoint, now + BreakOffMilliseconds);
+                        _lastBreakOff[_target] = now;
+                        Destination = _musterPoint; Hold = true;
+                        Status = $"Pulling back from {_target.Name} to the muster";
+                        _targetProgressTick = now;
+                        return true;
+                    }
+                    // Commit: the whole raid is in this attempt, and goes to the fight now.
+                    BeginAttempt(inside, now);
+                    Destination = Front; Hold = false;
+                    _nextTargetCall = 0;
+                }
                 else
                     _engaged.UnionWith(fighting);
                 _pulls.SawCombat();
@@ -650,6 +734,22 @@ namespace DOL.GS
             return true;
         }
 
+        /// <summary>Moved further than this from where the muster was measured, the encounter gets a new muster.</summary>
+        public const float MusterFollowDistance = 600f;
+        private Vector3 _musterReference;
+
+        /// <summary>
+        /// Where a muster is measured from: the encounter, or its spawn when it is out of its home (a leashed boss chasing
+        /// raiders walks home and resets, so the raid musters for it there).
+        /// </summary>
+        public static Vector3 MusterReference(Vector3 position, Vector3 spawn, int tetherRange, bool resets) =>
+            resets && tetherRange > 0 && Vector3.Distance(position, spawn) > Math.Min(tetherRange / 2f, MusterFollowDistance)
+                ? spawn : position;
+
+        private static Vector3 MusterReference(GameNPC npc) => MusterReference(new(npc.X, npc.Y, npc.Z),
+            new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z),
+            EpicEncounterTactics.LeashOf(npc)?.TetherRange is int t && t > 0 ? t : npc.TetherRange, EpicEncounterTactics.ResetsWhenLeft(npc));
+
         /// <summary>
         /// The point on the walked path from the raid's main body to the encounter's approach that lies
         /// <see cref="FinalMusterStandOff"/> from the encounter (or the main body itself when it is closer).
@@ -657,7 +757,8 @@ namespace DOL.GS
         private Vector3 MusterPoint(GameLiving[] participants)
         {
             var nav = PathfindingProvider.Instance;
-            Vector3 boss = new(_target.X, _target.Y, _target.Z);
+            Vector3 boss = MusterReference(_target);
+            _musterReference = boss;
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
             if (!TryRegroupFront(inside, out Vector3 body) || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
@@ -906,9 +1007,11 @@ namespace DOL.GS
         /// there (all 535 camps the raid handed out lay 1,600-2,200 units away, at the muster), so the raid never walked
         /// in (2026-11-05). False, with the raw position, when no approach resolves.
         /// </summary>
-        private bool TryEncounterApproach(GameNPC npc, GameLiving[] participants, out Vector3 approach)
+        private bool TryEncounterApproach(GameNPC npc, GameLiving[] participants, out Vector3 approach) =>
+            TryPointApproach(new(npc.X, npc.Y, npc.Z), participants, out approach);
+
+        private bool TryPointApproach(Vector3 raw, GameLiving[] participants, out Vector3 approach)
         {
-            Vector3 raw = new(npc.X, npc.Y, npc.Z);
             approach = raw;
             var nav = PathfindingProvider.Instance;
             if (!nav.IsAvailable) return false;

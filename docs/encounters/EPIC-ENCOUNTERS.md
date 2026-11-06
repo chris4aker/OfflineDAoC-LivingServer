@@ -45,9 +45,12 @@ The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tacti
 
 | Encounter | Tactic |
 |---|---|
+| Xanxicar (Crystal Cave) | Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back. |
+| Aidon the Archwizard (Hall of the Corrupt) | Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back. |
 | Scurceol Hyrde (Krondon) | Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; melee that can't reach a flying orb stands off under it); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back. |
 | Ancient Black Oak (Marfach Caverns) | Dies with Black Lady: while she lives the raid fights her instead of the Oak. |
 | Black Lady (Marfach Caverns) | Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. |
+| Nosdoden (Trollheim) | Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack. |
 
 ## Restored behind switches
 
@@ -146,7 +149,7 @@ Rules of Scurceol Hyrde (`source/server/GameServer/scripts/namedmobs/Krondon/Scu
 
 ### 2. Black Lady and her Ancient Black Oak (Marfach Caverns)
 
-**Run evidence:** docs/NIGHT-SIEGES-AND-MARFACH.md §1: 2026-11-05 01:28-05:19, 91 pulls on the Oak, never in combat, 0 raiders within 1,000; Black Lady leashed home from 44% after being drawn 1,618 from her spawn. Timed out.
+**Run evidence:** docs/NIGHT-SIEGES-AND-MARFACH.md §1: 2026-11-05 01:28-05:19, 91 pulls on the Oak, never in combat, 0 raiders within 1,000; Black Lady leashed home from 44% after being drawn 1,618 from her spawn. Timed out. 2026-11-05 (168f55d): won with the dies-with tactic; Black Lady died in 1.2 minutes.
 
 **Why it blocks:** The Oak never pulls itself (AggroLevel 0) and stands inside its tree; the raid fought Black Lady away from her spawn so she leashed and healed.
 
@@ -359,11 +362,11 @@ Rules of Icelord Agmundr (`source/server/GameServer/scripts/namedmobs/TuscarianG
 
 ### 9. Aidon the Archwizard (Hall of the Corrupt)
 
-**Run evidence:** overnight-2026-11-04 check 5: Albion Hall of the Corrupt wiped at Aidon 03:25 (living 13 of 56) and 03:58, Defeated.
+**Run evidence:** overnight-2026-11-04 check 5: Albion Hall of the Corrupt wiped at Aidon 03:25 (living 13 of 56) and 03:58, Defeated. Again 2026-11-05 (168f55d): 22:38 switch to Aidon without a muster, 31 engaged / 31 fallen at 99%, counted as a wipe with 56 living; the next muster on the ramp gathered 0-2 of 75.
 
 **Why it blocks:** A permanent damage shield, a 500 Heat AoE every 10-15 s, and four illusions (5,000 health, 300 AoE each) that come back every 30-45 s once all are dead; tether 1,500.
 
-**Proposed tactic:** Spread to dodge stacked 350-radius AoEs; a party per illusion; melee rotate under the damage shield.
+**Proposed tactic:** Built in step 3: the early pull is answered by the whole raid (pull back to the muster, he leashes and resets), the muster is measured from his home, and the raid kills three illusions and leaves the last alive, then fights him at home.
 
 Rules of Aidon the Archwizard (`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs`):
 
@@ -907,7 +910,7 @@ Mechanic change (owner 2026-10-14/15): while a reckoned soul lives he takes a qu
 
 #### Xanxicar (`Xanxicar`)
 
-`source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs` lines 11-154. level 80; 100,000 health; npc template 102; raids: dungeon-albion-crystal (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs` lines 11-154. level 80; 100,000 health; npc template 102; raids: dungeon-albion-crystal (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random real player within 2,500 every 20-40 s and glares at another (players only).
 
@@ -1575,7 +1578,9 @@ No scripted rule found (normal fight: stats, resists, spells).
 
 #### Aidon the Archwizard (`AidonTheArchwizard`)
 
-`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs` lines 10-143. level 75; 40,000 health; npc template 7721; raids: dungeon-albion-corrupt (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs` lines 10-143. level 75; 40,000 health; npc template 7721; raids: dungeon-albion-corrupt (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+Level 75, 40,000 health, 30/40% resists, tether 1,500 (immune past it). What stops damage: only the tether; his permanent Damage Shield (Heat, 100 per hit back on melee attackers, recast whenever it is not on him) does not reduce damage taken, so he is killable by design; no damage type bypasses anything and no dispel is needed (he recasts it at once). What kills raids: his four illusions (5,000 health each, spawned at fixed spots the first time he is attacked) each cast a 300 area hit in 350 around their target every brain turn, and he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set of illusions comes 30-45 s after all four are dead, never while one lives. No player-only mechanic is needed to beat him, so no switch has to flip.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2813,7 +2818,7 @@ No scripted rule found (normal fight: stats, resists, spells).
 
 #### Nosdoden (`Nosdoden`)
 
-`source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs` lines 14-356. level 80; 100,000 health; npc template 60164545; raids: dungeon-midgard-trollheim (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs` lines 14-356. level 80; 100,000 health; npc template 60164545; raids: dungeon-midgard-trollheim (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on random real players within 2,000 only (GetPlayersInRadius), so bots never draw them. Spirits of the fallen are made only from dead real players.
 

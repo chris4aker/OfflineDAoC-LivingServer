@@ -14,7 +14,7 @@
     "marfach-caverns/blacklady"
    ],
    "title": "Black Lady and her Ancient Black Oak (Marfach Caverns)",
-   "evidence": "docs/NIGHT-SIEGES-AND-MARFACH.md §1: 2026-11-05 01:28-05:19, 91 pulls on the Oak, never in combat, 0 raiders within 1,000; Black Lady leashed home from 44% after being drawn 1,618 from her spawn. Timed out.",
+   "evidence": "docs/NIGHT-SIEGES-AND-MARFACH.md §1: 2026-11-05 01:28-05:19, 91 pulls on the Oak, never in combat, 0 raiders within 1,000; Black Lady leashed home from 44% after being drawn 1,618 from her spawn. Timed out. 2026-11-05 (168f55d): won with the dies-with tactic; Black Lady died in 1.2 minutes.",
    "why": "The Oak never pulls itself (AggroLevel 0) and stands inside its tree; the raid fought Black Lady away from her spawn so she leashed and healed.",
    "plan": "Skip the Oak: it dies when Black Lady dies. Fight Black Lady where she stands (don't drag her), one party on Ogresses. PR #77 already fights the Oak from a walkable approach and sets it aside after three empty pulls."
   },
@@ -81,9 +81,9 @@
   {
    "id": "hall-of-the-corrupt/aidonthearchwizard",
    "title": "Aidon the Archwizard (Hall of the Corrupt)",
-   "evidence": "overnight-2026-11-04 check 5: Albion Hall of the Corrupt wiped at Aidon 03:25 (living 13 of 56) and 03:58, Defeated.",
+   "evidence": "overnight-2026-11-04 check 5: Albion Hall of the Corrupt wiped at Aidon 03:25 (living 13 of 56) and 03:58, Defeated. Again 2026-11-05 (168f55d): 22:38 switch to Aidon without a muster, 31 engaged / 31 fallen at 99%, counted as a wipe with 56 living; the next muster on the ramp gathered 0-2 of 75.",
    "why": "A permanent damage shield, a 500 Heat AoE every 10-15 s, and four illusions (5,000 health, 300 AoE each) that come back every 30-45 s once all are dead; tether 1,500.",
-   "plan": "Spread to dodge stacked 350-radius AoEs; a party per illusion; melee rotate under the damage shield."
+   "plan": "Built in step 3: the early pull is answered by the whole raid (pull back to the muster, he leashes and resets), the muster is measured from his home, and the raid kills three illusions and leaves the last alive, then fights him at home."
   },
   {
    "id": "galladoria/conservator",
@@ -578,6 +578,16 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "6533b8df4ed97433e4fe887c95cae1fb66ec6741b7f3ecf0494e8033a52b3415"
+   },
+   "aiTactics": {
+    "blastThresholds": [
+     80,
+     60,
+     40,
+     20
+    ],
+    "blastRadius": 2500,
+    "summary": "Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back."
    }
   },
   "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach": {
@@ -1023,7 +1033,20 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "c683203d719045871e96965b960220e2abc41ea07a64d0ea5297211d8a3e543a"
-   }
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "AidonCopyFire",
+     "AidonCopyIce",
+     "AidonCopyAir",
+     "AidonCopyEarth"
+    ],
+    "keepAlive": 1,
+    "fightAtHomeRadius": 1100,
+    "summary": "Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back."
+   },
+   "notes": "Level 75, 40,000 health, 30/40% resists, tether 1,500 (immune past it). What stops damage: only the tether; his permanent Damage Shield (Heat, 100 per hit back on melee attackers, recast whenever it is not on him) does not reduce damage taken, so he is killable by design; no damage type bypasses anything and no dispel is needed (he recasts it at once). What kills raids: his four illusions (5,000 health each, spawned at fixed spots the first time he is attacked) each cast a 300 area hit in 350 around their target every brain turn, and he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set of illusions comes 30-45 s after all four are dead, never while one lives. No player-only mechanic is needed to beat him, so no switch has to flip.",
+   "currentRaidAi": "2026-11-05 (build 168f55d): at 22:21 about 40 raiders fell in ten seconds to the illusions' stacked area hits while clearing trash near him; at 22:38 the raid switched to him (\"it is fighting the raid\") without a muster; 31 raiders fought him, all fell, he never went below 99%, and that counted as the raid's first wipe with 56 living. The next muster was placed on the ramp his chase had reached (30927,35039,15365, 2,600 from his home) and gathered 0-2 of 75 in six minutes while the fallen walked back from Camelot Hills."
   },
   "hall-of-the-corrupt/captainatwell": {
    "verified": true,
@@ -1422,7 +1445,7 @@
   },
   "marfach-caverns/ancientblackoak": {
    "notes": "Spawned by Black Lady's AddToWorld at 30091,37620,15049 (48 units above her spawn floor, probably inside the tree). Level 68 (npc template 8823), 40,000 health. AggroLevel 0 with AggroRange 400: it never pulls itself; it fights whoever attacks it. Its Ancient Root (Body, 700 damage, radius 800, 60% snare 30 s) goes off on half of its melee hits.",
-   "currentRaidAi": "2026-11-05: 91 pulls in 3.5 hours never brought it into combat; no raider came within 1,000 units (the switch used its raw position as the front; fixed in PR #77 to resolve a walkable approach).",
+   "currentRaidAi": "2026-11-05 (build 168f55d): the dies-with tactic sent the raid to Black Lady (REALM_EXPEDITION_TACTIC 20:46:33); she died in 1.2 minutes and the Hibernian Marfach raid won with no wipe.",
    "rules": {
     "linked_pack@176": {
      "summary": "When pulled it puts every living NPC with PackageID \"AncientOakBaf\" in the region on its aggro list. The release world database has no such NPC, so today it brings nobody.",
@@ -1762,6 +1785,12 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "051a7b31283af19fee23593bd9ea76682a27309dc03a94681559bce109f14aa3"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "NosdodenSummonedAdds"
+    ],
+    "summary": "Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack."
    }
   },
   "trollheim/rift": {

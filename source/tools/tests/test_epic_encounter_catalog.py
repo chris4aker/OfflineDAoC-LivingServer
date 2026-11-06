@@ -108,6 +108,11 @@ class TacticsAndRestores(unittest.TestCase):
         self.assertIn('new("ScurceolHyrde", "krondon/scurceolhyrde", ["LyftMihtOne", "LyftMihtTwo", "LyftMihtThree", "LyftMihtFour"], 1500, null)', cs)
         self.assertIn('new("AncientBlackOak", "marfach-caverns/ancientblackoak", [], 0, "BlackLady")', cs)
         self.assertIn('new("BlackLady", "marfach-caverns/blacklady", [], 1100, null)', cs)
+        self.assertIn('new("AidonTheArchwizard", "hall-of-the-corrupt/aidonthearchwizard", ["AidonCopyFire", "AidonCopyIce", '
+                      '"AidonCopyAir", "AidonCopyEarth"], 1100, null, 1, null, 0)', cs)
+        self.assertIn('new("Xanxicar", "crystal-cave/xanxicar", [], 0, null, 0, [80, 60, 40, 20], 2500)', cs)
+        self.assertIn('new("Nosdoden", "trollheim/nosdoden", ["NosdodenSummonedAdds"], 0, null)', cs)
+        self.assertIn('new("AidonTheArchwizard", 1500, true)', cs)
 
     def test_every_offline_change_but_the_old_puzzle_switch_names_its_restore_switch(self):
         restore = {s["name"] for s in self.data["switches"] if s.get("restores")}

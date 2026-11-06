@@ -34,6 +34,26 @@ by their damage. Everything below is built and covered by automated tests; none 
   ([docs/encounters/EPIC-ENCOUNTERS.md](docs/encounters/EPIC-ENCOUNTERS.md)) has three new lists: encounters the raid
   has tactics for, the restored mechanics and their switches, and the mechanics that still only pick real players. The
   server log shows each decision as `REALM_EXPEDITION_TACTIC` (the raid's target) and `EPIC_TACTIC_BOT` (a raider's).
+- **Raids answer a boss that jumps them before the muster.** Before, whoever was nearby fought it, and the rest arrived
+  in twos and threes. Now the whole raid answers together:
+  - With half the raid already near, or with a boss that would chase them down, everyone goes in at once.
+  - Otherwise everyone pulls back to the muster, the boss walks home and resets, and the raid comes back together.
+  - Each decision is in the log as `REALM_EXPEDITION_EARLY_PULL`.
+- **A lost skirmish no longer counts as a wipe.** A failed fight now uses up one of the raid's two attempts (and calls
+  the Special Forces) only if at least half the raid was in it, or half the raid fell. Example: on 2026-11-05 Aidon
+  killed 31 raiders while 56 were elsewhere, and that counted as the raid's first wipe. It would now be a lost skirmish
+  (`REALM_EXPEDITION_SKIRMISH_LOST`): the raid rests and musters again without losing an attempt.
+- **Musters wait where the boss lives.** A boss that was out chasing raiders is mustered for at its home, and the
+  muster moves when the boss walks back (`REALM_EXPEDITION_MUSTER_MOVED`). On 2026-11-05 Aidon's muster sat on the ramp
+  his chase had reached, 2,600 from his room.
+- **Aidon the Archwizard (Hall of the Corrupt).** The raid kills three of his four illusions and leaves the last one
+  alive, because he only summons a new set once all four are dead. Then everyone fights him, near his room. His damage
+  shield only hurts melee attackers; it doesn't make him harder to damage, so he can be beaten by design.
+- **Nosdoden (Trollheim).** When a wave of essences comes (every 10% of his health), the raid stops hitting him and
+  kills the wave first. His health then drops one step at a time and waves don't pile up.
+- **Xanxicar (Crystal Cave).** Before 80/60/40/20% and until his stomp has landed, everyone except the party he is
+  fighting moves 2,700 away. That party pushes him over and takes the 2,500-radius stomp, which is meant to kill whoever
+  is in it; the rest of the raid survives and comes back.
 - Not changed: Darkness Falls raid AI, Legion and the hardest level 70+ encounters still have no raid AI.
 
 ## Beta 1.1.2 (in development)

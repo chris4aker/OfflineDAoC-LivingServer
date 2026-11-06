@@ -26,6 +26,26 @@ namespace DOL.UnitTests
         // Test doubles named apart from the real scripts; their tactics are registered like catalog rows.
         public sealed class TacticBoss : GameEpicBoss
         {
+            public bool Dead, Fighting;
+            public byte Hp = 100;
+            public override bool IsAlive => !Dead;
+            public override bool InCombat => Fighting;
+            public override byte HealthPercent => Hp;
+        }
+        public sealed class TacticWizard : GameEpicBoss
+        {
+            public bool Fighting;
+            public override bool IsAlive => true;
+            public override bool InCombat => Fighting;
+        }
+        public sealed class TacticGiant : GameEpicBoss
+        {
+            public byte Hp = 100;
+            public override bool IsAlive => true;
+            public override byte HealthPercent => Hp;
+        }
+        public sealed class TacticIllusion : GameNPC
+        {
             public bool Dead;
             public override bool IsAlive => !Dead;
         }
@@ -56,6 +76,8 @@ namespace DOL.UnitTests
             _region = new Region(new RegionData { Id = 61, Name = "Tactic test", Description = "Tactic test", Mobs = [] });
             EpicEncounterTactics.Register(new("TacticBoss", "test/boss", ["TacticOrbA", "TacticOrbB"], 1500, null));
             EpicEncounterTactics.Register(new("TacticTree", "test/tree", [], 0, "TacticBoss"));
+            EpicEncounterTactics.Register(new("TacticWizard", "test/wizard", ["TacticIllusion"], 0, null, KeepAlive: 1));
+            EpicEncounterTactics.Register(new("TacticGiant", "test/giant", [], 0, null, 0, [80, 40], 2500));
         }
 
         [TearDown]
@@ -63,6 +85,8 @@ namespace DOL.UnitTests
         {
             EpicEncounterTactics.Unregister("TacticBoss");
             EpicEncounterTactics.Unregister("TacticTree");
+            EpicEncounterTactics.Unregister("TacticWizard");
+            EpicEncounterTactics.Unregister("TacticGiant");
             _server.Dispose();
         }
 
@@ -137,8 +161,11 @@ namespace DOL.UnitTests
             var melee = Npc<Raider>(50050, 20050, 17000);
             Vector3 front = new(49900, 20100, 17000);
 
+            // Before the fight is on the raid musters for the boss itself.
+            Assert.That(EpicEncounterTactics.RouteTarget(boss, live, front, out string why), Is.SameAs(boss));
+            boss.Fighting = true;
             // The route: the boss and the tree both send the raid to the add nearest its front.
-            Assert.That(EpicEncounterTactics.RouteTarget(boss, live, front, out string why), Is.SameAs(orbA));
+            Assert.That(EpicEncounterTactics.RouteTarget(boss, live, front, out why), Is.SameAs(orbA));
             Assert.That(why, Does.Contain("required-adds").And.Contain("alive=2"));
             Assert.That(EpicEncounterTactics.RouteTarget(tree, live, front, out why), Is.SameAs(orbA));
             Assert.That(why, Does.StartWith("dies-with"));
@@ -192,6 +219,124 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.RouteTarget(orb, [orb], default, out string why), Is.SameAs(orb));
             Assert.That(why, Is.Null);
             Assert.That(EpicEncounterTactics.Decide(Npc<Raider>(0, 0, 0), orb, [orb], 0, true).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+        }
+
+        [Test]
+        public void TheLastIllusionIsLeftAliveAndTheWizardFought()
+        {
+            var wizard = Npc<TacticWizard>(31353, 37634, 14873);
+            var i1 = Npc<TacticIllusion>(31649, 37316, 14866);
+            var i2 = Npc<TacticIllusion>(31080, 37974, 14866);
+            var i3 = Npc<TacticIllusion>(31000, 37300, 14866);
+            var live = new List<GameNPC> { wizard, i1, i2, i3 };
+            var raider = Npc<Raider>(31400, 37000, 14866);
+            wizard.Fighting = true;
+            Assert.That(EpicEncounterTactics.RouteTarget(wizard, live, new(31400, 37000, 14866), out _), Is.Not.SameAs(wizard));
+            Assert.That(EpicEncounterTactics.Decide(raider, wizard, live, 2, true).Target, Is.SameAs(i3), "party 2 takes the third");
+            i1.Dead = true;
+            i2.Dead = true;
+            Assert.That(EpicEncounterTactics.ShieldingAdds(wizard, live), Is.Empty, "one left: kept alive");
+            Assert.That(EpicEncounterTactics.RouteTarget(wizard, live, default, out _), Is.SameAs(wizard));
+            Assert.That(EpicEncounterTactics.RouteTarget(i3, live, default, out string why), Is.SameAs(wizard));
+            Assert.That(why, Does.StartWith("keep-alive"));
+            var onKept = EpicEncounterTactics.Decide(raider, i3, live, 0, true);
+            Assert.That((onKept.Action, onKept.Target), Is.EqualTo((EpicEncounterTactics.BotAction.Retarget, (GameNPC)wizard)),
+                "nobody kills the last illusion (a new set comes only when all four are dead)");
+        }
+
+        [Test]
+        public void AnEarlyPullIsAnsweredByTheWholeRaid()
+        {
+            Assert.That(EpicEncounterTactics.ChooseEarlyPull(31, 87, resetsWhenLeft: true), Is.EqualTo(EpicEncounterTactics.EarlyPull.Disengage),
+                "Aidon, 2026-11-05: a third of the raid on a boss that resets when left: pull back");
+            Assert.That(EpicEncounterTactics.ChooseEarlyPull(31, 87, resetsWhenLeft: false), Is.EqualTo(EpicEncounterTactics.EarlyPull.Commit),
+                "one that never resets would chase: everyone in");
+            Assert.That(EpicEncounterTactics.ChooseEarlyPull(45, 83, resetsWhenLeft: true), Is.EqualTo(EpicEncounterTactics.EarlyPull.Commit),
+                "half the raid is already there: everyone in");
+            var aidon = EpicEncounterTactics.Leashes.Single(l => l.Boss == "AidonTheArchwizard");
+            Assert.That((aidon.TetherRange, aidon.Resets), Is.EqualTo((1500, true)), "from the catalog");
+        }
+
+        [Test]
+        public void ABreakOffSendsRaidersToTheMusterFromTheBossAndItsAdds()
+        {
+            var wizard = Npc<TacticWizard>(31353, 37634, 14873);
+            var illusion = Npc<TacticIllusion>(31649, 37316, 14866);
+            var other = Npc<TacticIllusion>(31080, 37974, 14866);
+            var live = new List<GameNPC> { wizard, illusion, other };
+            var raider = Npc<Raider>(31400, 37000, 14866);
+            var rally = new Vector3(30927, 35039, 15365);
+            EpicEncounterTactics.BreakOff(wizard, rally, 10_000);
+            try
+            {
+                var onBoss = EpicEncounterTactics.Decide(raider, wizard, live, 0, true, 5_000);
+                Assert.That((onBoss.Action, onBoss.StandAt), Is.EqualTo((EpicEncounterTactics.BotAction.StandOff, (Vector3?)rally)));
+                Assert.That(EpicEncounterTactics.Decide(raider, illusion, live, 0, true, 5_000).StandAt, Is.EqualTo(rally));
+                Assert.That(EpicEncounterTactics.BrokenOff(wizard, 10_001), Is.Null, "it ends");
+            }
+            finally { EpicEncounterTactics.EndBreakOff(wizard); }
+        }
+
+        [Test]
+        public void AWipeIsTheRaidsOnlyWhenHalfOfItWasThereOrFell()
+        {
+            Assert.That(RealmRaidDungeonRoute.IsWipe(31, 31, 100, 99, 87), Is.False, "Aidon 2026-11-05: a lost skirmish");
+            Assert.That(RealmRaidDungeonRoute.IsWipe(31, 31, 100, 99), Is.True, "the old rule called it a wipe");
+            Assert.That(RealmRaidDungeonRoute.IsWipe(60, 31, 100, 99, 87), Is.True, "most of the raid in it, half fell");
+            Assert.That(RealmRaidDungeonRoute.IsWipe(40, 40, 100, 99, 70), Is.True, "half the raid fell");
+            Assert.That(RealmRaidDungeonRoute.IsWipe(60, 10, 60, 50, 87), Is.False, "most standing, boss hurt");
+        }
+
+        [Test]
+        public void ALeashedBossIsMusteredForAtHome()
+        {
+            var home = new Vector3(31353, 37634, 14873);
+            var chasing = new Vector3(31568, 35248, 15369); // where Aidon was at 22:41, 2,446 from home
+            Assert.That(RealmRaidDungeonRoute.MusterReference(chasing, home, 1500, resets: true), Is.EqualTo(home));
+            Assert.That(RealmRaidDungeonRoute.MusterReference(chasing, home, 1500, resets: false), Is.EqualTo(chasing));
+            Assert.That(RealmRaidDungeonRoute.MusterReference(home + new Vector3(100, 0, 0), home, 1500, true), Is.EqualTo(home + new Vector3(100, 0, 0)));
+        }
+
+        [Test]
+        public void TheRaidWithdrawsFromABlastButThePartyItFightsHoldsIt()
+        {
+            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 83, -1), Is.True, "within 3% above 80");
+            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 84, -1), Is.False);
+            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 78, 2_000), Is.True, "just crossed");
+            Assert.That(EpicEncounterTactics.InBlastWindow([80, 40], 78, 10_000), Is.False, "over");
+            Assert.That(EpicEncounterTactics.NextBlastBelow([80, 40], 78), Is.EqualTo(40));
+
+            var giant = Npc<TacticGiant>(31577, 35305, 14551);
+            var tank = Npc<Raider>(31600, 35305, 14551);
+            var caster = Npc<Raider>(32577, 35305, 14551);
+            var far = Npc<Raider>(35000, 35305, 14551);
+            giant.TargetObject = tank;
+            var live = new List<GameNPC> { giant };
+            giant.Hp = 90;
+            Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+            giant.Hp = 82;
+            var w = EpicEncounterTactics.Decide(caster, giant, live, 0, true, 2_000);
+            Assert.That(w.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff));
+            Assert.That(Vector2.Distance(new(w.StandAt.Value.X, w.StandAt.Value.Y), new(giant.X, giant.Y)), Is.EqualTo(2700).Within(1));
+            Assert.That(EpicEncounterTactics.Decide(tank, giant, live, 0, false, 2_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                "the party it fights pushes it over");
+            Assert.That(EpicEncounterTactics.Decide(far, giant, live, 0, true, 2_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                "already out of reach");
+            giant.Hp = 79; // crossed at 3,000
+            Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 3_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff));
+            Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 13_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                "the stomp is over: back in");
+        }
+
+        [Test]
+        public void NosdodensWavesAreFoughtBeforeHim()
+        {
+            var nosdoden = EpicEncounterTactics.All.Single(t => t.Boss == "Nosdoden");
+            Assert.That(nosdoden.RequiredAdds, Is.EqualTo(new[] { "NosdodenSummonedAdds" }));
+            var xanxicar = EpicEncounterTactics.All.Single(t => t.Boss == "Xanxicar");
+            Assert.That((xanxicar.BlastThresholds, xanxicar.BlastRadius), Is.EqualTo((new[] { 80, 60, 40, 20 }, 2500)));
+            var aidon = EpicEncounterTactics.All.Single(t => t.Boss == "AidonTheArchwizard");
+            Assert.That((aidon.KeepAlive, aidon.RequiredAdds.Length), Is.EqualTo((1, 4)));
         }
 
         // ---- restored mechanics ------------------------------------------------------------------------------------
