@@ -32,10 +32,19 @@ namespace DOL.GS.LoreChannels
             if (query.Length == 0 || query.Equals("index", StringComparison.OrdinalIgnoreCase))
                 return Paginate("Lore of " + LoreRealm.Name(realm), "index", Index(source, realm, bestiary));
             string key = LoreSourceExtensions.Key(query);
+            if (key == "history" && HistoriesFor(source, realm).Any())
+                return Paginate("History", "history", History(source, realm));
+            foreach (LoreHistoryText history in HistoriesFor(source, realm))
+            {
+                if (history.Eras.FirstOrDefault(e => LoreSourceExtensions.Key(e.Name) == key || LoreSourceExtensions.Key(e.Id) == key) is { } era)
+                    return Paginate(era.Name, era.Name, Era(source, era));
+                if (history.Factions.FirstOrDefault(f => LoreSourceExtensions.Key(f.Name) == key || LoreSourceExtensions.Key(f.Id) == key) is { } faction)
+                    return Paginate(faction.Name, faction.Name, Faction(source, faction));
+            }
             LoreLocation place = source.AllLocations.FirstOrDefault(l => LoreRealm.Sees(realm, l.RealmId) &&
                 (LoreSourceExtensions.Key(l.Name) == key || LoreSourceExtensions.Key(l.Id) == key));
             if (place != null)
-                return Paginate(place.Name, place.Name, Location(place, bestiary));
+                return Paginate(place.Name, place.Name, Location(source, place, bestiary));
             LoreBestiaryEntry entry = bestiary.FirstOrDefault(b => LoreSourceExtensions.Key(b.Boss.Name) == key || LoreSourceExtensions.Key(b.Boss.Id) == key);
             if (entry != null)
                 return Paginate(entry.Boss.Name, entry.Boss.Name, BossLines(entry, realm));
@@ -71,16 +80,88 @@ namespace DOL.GS.LoreChannels
                 lines.Add(" ");
             }
             if (lines.Count == 0) lines.Add("No lore has been written down yet.");
-            else lines.Add("Choose a place, or type /lore and its name.");
+            else
+            {
+                if (HistoriesFor(source, realm).Any()) lines.Add("[history] of the realms");
+                lines.Add("Choose a place, or type /lore and its name.");
+            }
             return lines;
         }
 
-        private static List<string> Location(LoreLocation place, List<LoreBestiaryEntry> bestiary)
+        /// <summary>The reader's realm's history and the neutral one.</summary>
+        private static IEnumerable<LoreHistoryText> HistoriesFor(ILoreSource source, int realm) =>
+            source.Histories().Where(h => h.RealmId == realm || h.RealmId == LoreRealm.Neutral);
+
+        private static List<string> History(ILoreSource source, int realm)
+        {
+            var lines = new List<string>();
+            foreach (LoreHistoryText history in HistoriesFor(source, realm))
+            {
+                lines.Add(history.Title);
+                if (!string.IsNullOrWhiteSpace(history.Intro)) lines.AddRange(LoreBooks.Wrap(history.Intro, 200));
+                lines.Add("The ages, oldest first:");
+                foreach (LoreEraText era in history.Eras) lines.Add($"[{era.Name}]" + (string.IsNullOrWhiteSpace(era.Summary) ? "" : " - " + era.Summary));
+                if (history.Factions.Length > 0)
+                {
+                    lines.Add("The powers:");
+                    foreach (LoreFactionText faction in history.Factions) lines.Add($"[{faction.Name}]" + (string.IsNullOrWhiteSpace(faction.Summary) ? "" : " - " + faction.Summary));
+                }
+                lines.Add(" ");
+            }
+            lines.Add("[index]");
+            return lines;
+        }
+
+        private static List<string> Era(ILoreSource source, LoreEraText era)
+        {
+            var lines = new List<string>();
+            if (!string.IsNullOrWhiteSpace(era.Text ?? era.Summary)) { lines.AddRange(LoreBooks.Wrap(era.Text ?? era.Summary, 200)); lines.Add(" "); }
+            if (!string.IsNullOrWhiteSpace(era.When)) lines.Insert(0, era.When);
+            string own = string.Join(", ", era.Places.Concat(era.Bosses).Select(source.NameOf).Where(n => n != null).Select(n => $"[{n}]"));
+            if (own.Length > 0) { lines.Add("Of that age:"); lines.Add(own); lines.Add(" "); }
+            foreach (LoreEventText e in era.Events)
+            {
+                if (!string.IsNullOrWhiteSpace(e.Name)) lines.Add(e.Name);
+                if (!string.IsNullOrWhiteSpace(e.Text)) lines.AddRange(LoreBooks.Wrap(e.Text, 200));
+                string links = string.Join(", ", e.Places.Concat(e.Bosses).Select(source.NameOf).Where(n => n != null).Select(n => $"[{n}]"));
+                if (links.Length > 0) lines.Add(links);
+                lines.Add(" ");
+            }
+            lines.Add("[history]");
+            return lines;
+        }
+
+        private static List<string> Faction(ILoreSource source, LoreFactionText faction)
+        {
+            var lines = new List<string>();
+            if (!string.IsNullOrWhiteSpace(faction.Text ?? faction.Summary)) { lines.AddRange(LoreBooks.Wrap(faction.Text ?? faction.Summary, 200)); lines.Add(" "); }
+            string links = string.Join(", ", faction.Places.Concat(faction.Bosses).Select(source.NameOf).Where(n => n != null).Select(n => $"[{n}]"));
+            if (links.Length > 0) { lines.Add("Its places and its own:"); lines.Add(links); lines.Add(" "); }
+            lines.Add("[history]");
+            return lines;
+        }
+
+        /// <summary>A place's era, powers and the places or bosses it knows, as links.</summary>
+        private static List<string> Ties(ILoreSource source, string era, string[] factions, LoreRelated[] related)
+        {
+            var lines = new List<string>();
+            if (source.FindEra(era) is { } e) lines.Add($"Its age: [{e.Name}]");
+            var powers = (factions ?? []).Select(source.FindFaction).Where(f => f != null).Select(f => $"[{f.Name}]").ToList();
+            if (powers.Count > 0) lines.Add("Behind it: " + string.Join(", ", powers));
+            var known = (related ?? []).Select(r => source.NameOf(r.Id) is { } n ? $"[{n}]" + (string.IsNullOrWhiteSpace(r.Relation) ? "" : $" ({r.Relation})") : null)
+                .Where(x => x != null).ToList();
+            if (known.Count > 0) lines.Add("Bound up with: " + string.Join(", ", known));
+            if (lines.Count > 0) lines.Add(" ");
+            return lines;
+        }
+
+        private static List<string> Location(ILoreSource source, LoreLocation place, List<LoreBestiaryEntry> bestiary)
         {
             var lines = new List<string>();
             if (!string.IsNullOrWhiteSpace(place.Summary)) { lines.AddRange(LoreBooks.Wrap(place.Summary, 200)); lines.Add(" "); }
             if (!string.IsNullOrWhiteSpace(place.Story)) { lines.Add("The story"); lines.AddRange(LoreBooks.Wrap(place.Story, 200)); lines.Add(" "); }
             if (!string.IsNullOrWhiteSpace(place.Legend)) { lines.Add("What players say"); lines.AddRange(LoreBooks.Wrap(place.Legend, 200)); lines.Add(" "); }
+            lines.AddRange(Ties(source, place.Era, place.Factions, place.Related));
             var bosses = bestiary.Where(b => b.Location.Id == place.Id).ToList();
             if (bosses.Count > 0)
             {

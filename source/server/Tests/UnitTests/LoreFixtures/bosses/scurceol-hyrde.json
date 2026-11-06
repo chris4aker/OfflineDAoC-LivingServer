@@ -34,5 +34,8 @@
   },
   "loremasterTopic": {"keyword": "storm-keeper", "text": "The Scurceol Hyrde, the shepherd of the storm-ship. He bound four airs as lights in his chamber. While they burn, no blade bites him. Tell your raid leader that before you go, not after."},
   "bookPage": "",
-  "chronicle": {"win": "{realm} put out the four lights of Krondon and broke the storm-keeper in {minutes} minutes, led by {raidLeader}.", "loss": "The storm-keeper of Krondon threw {realm} from his chamber; {raidLeader} called the retreat."}
+  "chronicle": {"win": "{realm} put out the four lights of Krondon and broke the storm-keeper in {minutes} minutes, led by {raidLeader}.", "loss": "The storm-keeper of Krondon threw {realm} from his chamber; {raidLeader} called the retreat."},
+  "era": "albion-old-halls",
+  "factions": ["krondon-keepers"],
+  "related": [{"id": "krondon", "relation": "keeps its weather"}]
 }

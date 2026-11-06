@@ -17,7 +17,7 @@ namespace DOL.GS.LoreChannels
     /// </summary>
     public sealed class LoremasterDialogue
     {
-        public const string PlacesKeyword = "places", BooksKeyword = "books", BookPrefix = "book of ";
+        public const string PlacesKeyword = "places", BooksKeyword = "books", BookPrefix = "book of ", HistoryKeyword = "history";
 
         private readonly ILoreSource _source;
         private readonly int _realm;
@@ -43,10 +43,79 @@ namespace DOL.GS.LoreChannels
                 {
                     string text = boss.LoremasterTopic?.Text ?? boss.Legend;
                     if (string.IsNullOrWhiteSpace(text)) continue;
+                    text += RelatedSentence(boss.Related);
                     if (boss.LoremasterTopic != null) AddTopic(boss.LoremasterTopic.Keyword, location.Id, text);
                     AddTopic(boss.Name, location.Id, text);
                 }
             }
+
+            // The realm's history, and the neutral one: each era and each power is a topic, and "history" lists them.
+            _histories = new[] { _source.HistoryOf(realm), realm == LoreRealm.Neutral ? null : _source.HistoryOf(LoreRealm.Neutral) }
+                .Where(h => h != null).ToList();
+            foreach (LoreHistoryText history in _histories)
+            {
+                foreach (LoreEraText era in history.Eras)
+                {
+                    string text = EraText(era);
+                    AddTopic(era.Name, null, text);
+                    AddTopic(era.Id, null, text);
+                }
+                foreach (LoreFactionText faction in history.Factions)
+                {
+                    string text = FactionText(faction);
+                    AddTopic(faction.Name, null, text);
+                    AddTopic(faction.Id, null, text);
+                }
+            }
+        }
+
+        private readonly List<LoreHistoryText> _histories;
+
+        private string LinkTo(string id) => _source.NameOf(id) is { } name ? $"[{name}]" : null;
+
+        private string LinksTo(IEnumerable<string> ids) => Join(ids.Select(LinkTo).Where(l => l != null).Distinct().ToList());
+
+        private string EraText(LoreEraText era)
+        {
+            string text = !string.IsNullOrWhiteSpace(era.Text) ? era.Text : era.Summary ?? "";
+            if (!string.IsNullOrWhiteSpace(era.When)) text = $"{era.When}. {text}";
+            foreach (LoreEventText e in era.Events)
+            {
+                text += string.IsNullOrWhiteSpace(e.Name) ? $" {e.Text}" : $" {e.Name}: {e.Text}";
+                string places = LinksTo(e.Places.Concat(e.Bosses));
+                if (places.Length > 0) text += $" (Ask of {places}.)";
+            }
+            string own = LinksTo(era.Places.Concat(era.Bosses));
+            if (own.Length > 0) text += $" Of that age: {own}.";
+            return text;
+        }
+
+        private string FactionText(LoreFactionText faction)
+        {
+            string text = !string.IsNullOrWhiteSpace(faction.Text) ? faction.Text : faction.Summary ?? "";
+            string places = LinksTo(faction.Places);
+            string bosses = LinksTo(faction.Bosses);
+            if (places.Length > 0) text += $" Its places: {places}.";
+            if (bosses.Length > 0) text += $" Its own: {bosses}.";
+            return text;
+        }
+
+        /// <summary>" It is bound up with [Behemoth] (its keeper)." for the places and bosses a lore file says it knows.</summary>
+        private string RelatedSentence(IEnumerable<LoreRelated> related)
+        {
+            var parts = (related ?? []).Select(r => LinkTo(r.Id) is { } link ? (string.IsNullOrWhiteSpace(r.Relation) ? link : $"{link} ({r.Relation})") : null)
+                .Where(p => p != null).ToList();
+            return parts.Count == 0 ? "" : $" Ask me too of {Join(parts)}.";
+        }
+
+        /// <summary>" Its age is [the War of the Isles]; behind it stand [Morgana's host]." from a place's era and factions.</summary>
+        private string HistorySentence(string eraId, IEnumerable<string> factionIds)
+        {
+            string text = "";
+            if (_source.FindEra(eraId) is { } era && !string.IsNullOrWhiteSpace(era.Name)) text += $" Its tale belongs to [{era.Name}].";
+            var factions = (factionIds ?? []).Select(id => _source.FindFaction(id)?.Name).Where(n => !string.IsNullOrWhiteSpace(n)).Select(n => $"[{n}]").ToList();
+            if (factions.Count > 0) text += $" Behind it stand {Join(factions)}.";
+            return text;
         }
 
         public string Speaker { get; }
@@ -81,6 +150,7 @@ namespace DOL.GS.LoreChannels
             if (key == PlacesKeyword || key == LoreSourceExtensions.Key("places of " + LoreRealm.Name(_realm)))
                 return PlacesReply();
             if (key == BooksKeyword) return BooksReply();
+            if (key == HistoryKeyword && _histories.Count > 0) return HistoryReply();
             string bookPrefix = LoreSourceExtensions.Key(BookPrefix);
             if (key.StartsWith(bookPrefix, StringComparison.Ordinal) && _places.TryGetValue(key[bookPrefix.Length..], out LoreLocation forBook) &&
                 HasBook(forBook))
@@ -103,7 +173,7 @@ namespace DOL.GS.LoreChannels
         {
             string key = LoreSourceExtensions.Key(keyword);
             string bookPrefix = LoreSourceExtensions.Key(BookPrefix);
-            return key == PlacesKeyword || key == BooksKeyword || _places.ContainsKey(key) || _topics.ContainsKey(key) ||
+            return key == PlacesKeyword || key == BooksKeyword || key == HistoryKeyword && _histories.Count > 0 || _places.ContainsKey(key) || _topics.ContainsKey(key) ||
                    key.StartsWith(bookPrefix, StringComparison.Ordinal) && _places.TryGetValue(key[bookPrefix.Length..], out var l) && HasBook(l);
         }
 
@@ -119,6 +189,21 @@ namespace DOL.GS.LoreChannels
             if (neutral.Count > 0)
                 text += (text.Length > 0 ? " " : "") + $"And the places no realm holds, where all three go to bleed: {string.Join(", ", neutral)}.";
             return new(Clean(text));
+        }
+
+        private LoremasterReply HistoryReply()
+        {
+            var parts = new List<string>();
+            foreach (LoreHistoryText history in _histories)
+            {
+                string eras = Join(history.Eras.Where(e => !string.IsNullOrWhiteSpace(e.Name)).Select(e => $"[{e.Name}]").ToList());
+                string powers = Join(history.Factions.Where(f => !string.IsNullOrWhiteSpace(f.Name)).Select(f => $"[{f.Name}]").ToList());
+                string text = !string.IsNullOrWhiteSpace(history.Intro) ? history.Intro : history.Title;
+                if (eras.Length > 0) text += $" The ages, oldest first: {eras}.";
+                if (powers.Length > 0) text += $" The powers behind the dark places: {powers}.";
+                parts.Add(text);
+            }
+            return new(Clean(string.Join(" ", parts)));
         }
 
         private LoremasterReply BooksReply()
@@ -139,14 +224,14 @@ namespace DOL.GS.LoreChannels
                             !(b.LoremasterTopic != null && linked.Contains(LoreSourceExtensions.Key(b.LoremasterTopic.Keyword))) &&
                             !string.IsNullOrWhiteSpace(b.LoremasterTopic?.Text ?? b.Legend))
                 .Select(b => $"[{b.Name}]").ToList();
-            string text = intro;
+            string text = intro + HistorySentence(place.Era, place.Factions) + RelatedSentence(place.Related);
             if (others.Count > 0) text += $" Ask me too of {Join(others)}.";
             if (HasBook(place)) text += $" I have it written down, if you want the [{BookPrefix}{place.Name}].";
             return new(Clean(text), place.Id);
         }
 
         private static string Join(List<string> items) =>
-            items.Count == 1 ? items[0] : string.Join(", ", items.Take(items.Count - 1)) + " and " + items[^1];
+            items.Count == 0 ? "" : items.Count == 1 ? items[0] : string.Join(", ", items.Take(items.Count - 1)) + " and " + items[^1];
 
         private static readonly Regex Link = new(@"\[([^\[\]]+)\]", RegexOptions.Compiled);
 

@@ -78,16 +78,20 @@ namespace DOL.GS.Tests
         {
             string root = RepoRoot();
             string dir = FixtureDir(root);
-            return LoreBible.Parse(new[] { "locations/krondon.json", "bosses/scurceol-hyrde.json" }
+            return LoreBible.Parse(new[] { "locations/krondon.json", "bosses/scurceol-hyrde.json", "history/albion.json" }
                 .Select(p => (p, File.ReadAllText(Path.Combine(dir, p)))));
         }
 
         /// <summary>Krondon and Scurceol Hyrde as committed, changed by <paramref name="edit"/> (a JSON tweak), for the failure cases.</summary>
         private static List<string> ProblemsWith(Func<string, string> editLocation = null, Func<string, string> editBoss = null,
-            params (string Path, string Json)[] extra)
+            params (string Path, string Json)[] extra) => ProblemsWith(editLocation, editBoss, null, null, extra);
+
+        private static List<string> ProblemsWith(Func<string, string> editLocation, Func<string, string> editBoss, Func<string, string> editHistory,
+            List<string> warnings, params (string Path, string Json)[] extra)
         {
             string root = RepoRoot();
             string dir = FixtureDir(root);
+            string history = File.ReadAllText(Path.Combine(dir, "history/albion.json"));
             string location = File.ReadAllText(Path.Combine(dir, "locations/krondon.json"));
             string boss = File.ReadAllText(Path.Combine(dir, "bosses/scurceol-hyrde.json"));
             var files = new List<(string, string)>
@@ -95,8 +99,9 @@ namespace DOL.GS.Tests
                 ("locations/krondon.json", editLocation?.Invoke(location) ?? location),
                 ("bosses/scurceol-hyrde.json", editBoss?.Invoke(boss) ?? boss),
             };
+            files.Add(("history/albion.json", editHistory?.Invoke(history) ?? history));
             files.AddRange(extra);
-            return LoreBible.Parse(files).Validate(CatalogFrom(root));
+            return LoreBible.Parse(files).Validate(CatalogFrom(root), warnings);
         }
 
         #region The writers' check
@@ -107,7 +112,15 @@ namespace DOL.GS.Tests
             string root = RepoRoot();
             LoreBible bible = LoreBible.Parse(DiskFiles(root));
             Assert.That(bible.Locations.Length, Is.GreaterThan(0), "no lore locations found");
-            List<string> problems = bible.Validate(CatalogFrom(root));
+            var warnings = new List<string>();
+            List<string> problems = bible.Validate(CatalogFrom(root), warnings);
+            // The depth floor (LORE-1.2-DEPTH.md) and short texts are advisory: printed so the depth can be tracked.
+            TestContext.Out.WriteLine($"LORE_DEPTH {bible.Locations.Length} locations, {bible.Bosses.Length} bosses, {bible.Histories.Length} history files, " +
+                                      $"{warnings.Count} length warnings");
+            foreach (string line in bible.DepthReport())
+                TestContext.Out.WriteLine("LORE_DEPTH " + line);
+            foreach (string warning in warnings.Take(40))
+                TestContext.Out.WriteLine("LORE_WARNING " + warning);
             Assert.That(problems, Is.Empty, "docs/LORE.md lists the rules:\n" + string.Join("\n", problems));
         }
 
@@ -299,6 +312,112 @@ namespace DOL.GS.Tests
         public void PartnerDeadNeedsPartners() =>
             Assert.That(ProblemsWith(editBoss: b => b.Replace("\"trigger\": \"orbDeath\"", "\"trigger\": \"partnerDead\"")),
                 Has.Some.Contains("needs partners"));
+
+        #endregion
+
+        #region Depth: lengths, books, history, links (owner 2026-11-06, LORE-1.2-DEPTH.md)
+
+        [Test]
+        public void LengthsAreAdvisory()
+        {
+            string longStory = string.Join(" ", Enumerable.Repeat("word", 2_000));
+            var warnings = new List<string>();
+            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"story\": \"[^\"]*\"", $"\"story\": \"{longStory}\""), null, null, warnings), Is.Empty,
+                "no upper limit");
+            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"story\": \"[^\"]*\"", "\"story\": \"Too short.\""), null, null, warnings), Is.Empty,
+                "a short story is a warning");
+            Assert.That(warnings, Has.Some.Contains("story is 2 words"));
+        }
+
+        [Test]
+        public void ABookHasAtMostEightPages()
+        {
+            string page = "\"" + string.Join(" ", Enumerable.Repeat("page", 110)) + "\"";
+            string nine = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 9)) + "]";
+            string eight = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 8)) + "]";
+            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", nine)), Has.Some.Contains("9 book pages"));
+            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", eight)), Is.Empty);
+        }
+
+        [Test]
+        public void HistoryFilesAndLinksResolve()
+        {
+            LoreBible bible = Fixture();
+            Assert.That(bible.Histories.Single().Eras.Select(e => e.Id), Is.EqualTo(new[] { "albion-old-halls", "albion-war-of-the-isles" }), "in order");
+            Assert.That(bible.EraById("albion-old-halls")?.Events.Single().Places, Is.EqualTo(new[] { "krondon" }));
+            Assert.That(bible.FactionById("krondon-keepers")?.Bosses, Is.EqualTo(new[] { "scurceol-hyrde" }));
+            Assert.That(bible.LocationById("krondon").Era, Is.EqualTo("albion-old-halls"));
+            Assert.That(bible.BossById("scurceol-hyrde").RelatedTo.Single().Relation, Is.EqualTo("keeps its weather"));
+            Assert.That(ProblemsWith(l => l.Replace("\"era\": \"albion-old-halls\"", "\"era\": \"albion-old-hall\"")), Has.Some.Contains("era \"albion-old-hall\" is in no history file"));
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"factions\": [\"krondon-keepers\"]", "\"factions\": [\"keepers\"]")), Has.Some.Contains("faction \"keepers\""));
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("{\"id\": \"krondon\", \"relation\"", "{\"id\": \"krondun\", \"relation\"")), Has.Some.Contains("related \"krondun\" is no location or boss"));
+            Assert.That(ProblemsWith(null, null, h => h.Replace("\"places\": [\"krondon\"], \"bosses\": [\"scurceol-hyrde\"]}]}", "\"places\": [\"caer-sidi\"], \"bosses\": []}]}"), null),
+                Has.Some.Contains("place \"caer-sidi\" has no location file"));
+            Assert.That(ProblemsWith(null, null, h => h.Replace("\"id\": \"krondon-keepers\"", "\"id\": \"albion-old-halls\""), null), Has.Some.Contains("both an era and a faction"));
+        }
+
+        /// <summary>The Midgard writer's shape (pass 2): no id (the realm's), "summary", eras with "order", facts as events, places.</summary>
+        private const string MidgardHistory = "{\"realm\": \"Midgard\", \"summary\": \"The north remembers the giants.\", \"eras\": [" +
+            "{\"id\": \"midgard-now\", \"order\": 2, \"name\": \"the Present\", \"summary\": \"The war of the realms.\", \"events\": [], \"places\": [], \"bosses\": []}, " +
+            "{\"id\": \"midgard-ymir\", \"order\": 1, \"name\": \"Ymir's Age\", \"summary\": \"Before the gods.\", " +
+            "\"events\": [{\"text\": \"The rime-giants descend from Bergelmir.\", \"provenance\": \"myth\", \"source\": \"Snorri, Gylfaginning\"}], \"places\": [\"krondon\"], \"bosses\": []}], " +
+            "\"factions\": [{\"id\": \"krondon-keepers\", \"name\": \"the Keepers, as the skalds tell it\", \"summary\": \"x\", \"places\": [\"krondon\"], \"bosses\": []}]}";
+
+        [Test]
+        public void TheWritersHistoryShapeParsesAndFactionsMayBeShared()
+        {
+            var warnings = new List<string>();
+            Assert.That(ProblemsWith(null, null, null, warnings, ("history/midgard.json", MidgardHistory)), Is.Empty, "a faction id shared by two realms");
+            string dir = FixtureDir(RepoRoot());
+            LoreBible bible = LoreBible.Parse(new[] { "locations/krondon.json", "bosses/scurceol-hyrde.json", "history/albion.json" }
+                .Select(p => (p, File.ReadAllText(Path.Combine(dir, p)))).Append(("history/midgard.json", MidgardHistory)));
+            LoreBible.History midgard = bible.HistoryFor("Midgard");
+            Assert.That((midgard.Id, midgard.Intro), Is.EqualTo(("midgard", "The north remembers the giants.")));
+            Assert.That(midgard.Eras.Select(e => e.Id), Is.EqualTo(new[] { "midgard-ymir", "midgard-now" }), "by order");
+            Assert.That(midgard.Eras[0].Facts.Single().Provenance, Is.EqualTo("myth"));
+            Assert.That(midgard.Eras[0].Places, Is.EqualTo(new[] { "krondon" }));
+            Assert.That(ProblemsWith(null, null, null, null, ("history/midgard.json", MidgardHistory.Replace("midgard-now", "albion-old-halls"))),
+                Has.Some.Contains("era id \"albion-old-halls\" is also used in"));
+            Assert.That(ProblemsWith(null, null, null, null, ("history/midgard.json", MidgardHistory.Replace("\"places\": [\"krondon\"], \"bosses\": []}],", "\"places\": [\"jordheim\"], \"bosses\": []}],"))),
+                Has.Some.Contains("era \"midgard-ymir\" place \"jordheim\""));
+            var lenient = LoreChannels.LoreJson.ParseHistory(MidgardHistory);
+            Assert.That(lenient.Eras.Select(e => e.Id), Is.EqualTo(new[] { "midgard-ymir", "midgard-now" }));
+            Assert.That(lenient.Eras[0].Places, Is.EqualTo(new[] { "krondon" }));
+        }
+
+        [Test]
+        public void TheDepthReportCountsEntriesBelowTheFloor()
+        {
+            List<string> report = Fixture().DepthReport();
+            Assert.That(report, Has.Some.EqualTo("locations: story 500+ words: 1 of 1 below"));
+            Assert.That(report, Has.Some.EqualTo("locations: an era and a faction: 0 of 1 below"));
+            Assert.That(report, Has.Some.EqualTo("history: Albion: 2 eras, 1 factions"));
+            Assert.That(report, Has.Some.EqualTo("history: Midgard: no file yet"));
+        }
+
+        [Test]
+        public void TheLoremasterAndCodexTellHistoryAndFollowLinks()
+        {
+            var source = new LoreBibleSource(Fixture());
+            var dialogue = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Albion, "Loremaster Aldwin");
+            string history = dialogue.Resolve("history").Text;
+            Assert.That(history, Does.Contain("[the Old Halls]").And.Contain("[the War of the Isles]").And.Contain("[the Keepers of Krondon]"));
+            Assert.That(history.IndexOf("Old Halls", StringComparison.Ordinal), Is.LessThan(history.IndexOf("War of the Isles", StringComparison.Ordinal)), "oldest first");
+            Assert.That(dialogue.Resolve("the Old Halls").Text, Does.Contain("[Krondon]").And.Contain("[Scurceol Hyrde]"));
+            Assert.That(dialogue.Resolve("the Keepers of Krondon").Text, Does.Contain("Its places: [Krondon]"));
+            Assert.That(dialogue.Resolve("krondon").Text, Does.Contain("Its tale belongs to [the Old Halls]").And.Contain("[the Keepers of Krondon]"));
+            Assert.That(dialogue.Resolve("storm-keeper").Text, Does.Contain("[Krondon] (keeps its weather)"));
+            var midgard = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Midgard, "Loremaster Sigrun");
+            Assert.That(midgard.Resolve("the Old Halls"), Is.Null, "a realm's history is its own loremaster's");
+            var page = LoreChannels.LoreCodex.Find(source, LoreChannels.LoreRealm.Albion, [], "history");
+            Assert.That(page.Lines, Has.Some.Contains("[the Old Halls]"));
+            Assert.That(LoreChannels.LoreCodex.Find(source, LoreChannels.LoreRealm.Albion, [], "the old halls").Lines, Has.Some.Contains("[Krondon]"));
+            Assert.That(LoreChannels.LoreCodex.Pages(source, LoreChannels.LoreRealm.Albion, [], "krondon").SelectMany(p => p.Lines), Has.Some.Contains("Its age: [the Old Halls]"));
+            var lenient = LoreChannels.LoreLibrary.Parse(new[] { "locations/krondon.json", "bosses/scurceol-hyrde.json", "history/albion.json" }
+                .Select(p => (p, File.ReadAllText(Path.Combine(FixtureDir(RepoRoot()), p)))));
+            Assert.That(lenient.Histories.Single().Factions.Single().Name, Is.EqualTo("the Keepers of Krondon"), "the launcher's reader skips history files as places");
+            Assert.That(lenient.AllLocations.Select(l => l.Id), Is.EqualTo(new[] { "krondon" }));
+        }
 
         #endregion
 

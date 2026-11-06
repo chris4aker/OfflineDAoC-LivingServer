@@ -38,5 +38,7 @@
       "When the ogres came, they did not take Krondon by siege. The doors were open, as they had always been, for the keepers feared no one. The queen walked in at the head of her people and sat in the hall of law, and no keeper rose to stop her. Some say they had already made their bargains. Some say they simply did not think an ogre worth the trouble, until it was too late to think anything else."
     ]
   },
-  "bosses": ["scurceol-hyrde"]
+  "bosses": ["scurceol-hyrde"],
+  "era": "albion-old-halls",
+  "factions": ["krondon-keepers"]
 }

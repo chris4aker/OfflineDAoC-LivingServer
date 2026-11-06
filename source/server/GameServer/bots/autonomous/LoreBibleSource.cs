@@ -10,15 +10,27 @@ namespace DOL.GS;
 /// Herald and first kills; LoreChannelHub.UseSource at start-up). One loader and one validator for every channel: what
 /// UT_LoreBible passes is what the loremasters tell. Pure.
 /// </summary>
-public sealed class LoreBibleSource : ILoreSource
+public sealed class LoreBibleSource : ILoreSource, ILoreHistorySource
 {
     private readonly LoreLibrary _library;
 
     public LoreBibleSource(LoreBible bible)
     {
         bible ??= LoreBible.Empty;
-        _library = new LoreLibrary(bible.Locations.Select(ToChannel), bible.Bosses.Select(ToChannel));
+        _library = new LoreLibrary(bible.Locations.Select(ToChannel), bible.Bosses.Select(ToChannel), bible.Histories.Select(ToChannel));
     }
+
+    public IReadOnlyList<LoreHistoryText> Histories => _library.Histories;
+
+    public static LoreHistoryText ToChannel(LoreBible.History h) =>
+        new(h.Id, h.Realm, h.Title, h.Intro,
+            h.Eras.Select(e => new LoreEraText(e.Id, e.Name, e.Summary, e.Text,
+                    e.Events.Select(v => new LoreEventText(v.Name, v.Text, v.Places, v.Bosses))
+                        .Concat(e.Facts.Select(x => new LoreEventText("", x.Text, [], []))).ToArray())
+                { When = e.When ?? "", Places = e.Places, Bosses = e.Bosses }).ToArray(),
+            h.Factions.Select(f => new LoreFactionText(f.Id, f.Name, f.Summary, f.Text, f.Places, f.Bosses) { Related = ToChannel(f.RelatedTo) }).ToArray());
+
+    private static LoreRelated[] ToChannel(LoreBible.Related[] related) => related.Select(r => new LoreRelated(r.Id, r.Relation)).ToArray();
 
     public IReadOnlyList<LoreLocation> AllLocations => _library.AllLocations;
     public IReadOnlyList<LoreBoss> AllBosses => _library.AllBosses;
@@ -41,6 +53,9 @@ public sealed class LoreBibleSource : ILoreSource
             l.Areas.Select(a => new LoreArea(a.Name, a.X, a.Y, a.Z, a.Radius)).ToArray())
         {
             RealmTakes = Takes(l.RealmTakes),
+            Era = l.Era ?? "",
+            Factions = l.Factions,
+            Related = ToChannel(l.RelatedTo),
         };
 
     public static LoreBoss ToChannel(LoreBible.Boss b) =>
@@ -49,5 +64,8 @@ public sealed class LoreBibleSource : ILoreSource
             string.IsNullOrWhiteSpace(b.ChronicleWin) && string.IsNullOrWhiteSpace(b.ChronicleLoss) ? null : new LoreChronicleText(b.ChronicleWin, b.ChronicleLoss))
         {
             RealmTakes = Takes(b.RealmTakes),
+            Era = b.Era ?? "",
+            Factions = b.Factions,
+            Related = ToChannel(b.RelatedTo),
         };
 }

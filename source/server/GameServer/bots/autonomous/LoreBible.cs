@@ -32,6 +32,38 @@ public sealed class LoreBible
 
     public sealed record Loremaster(string Intro, IReadOnlyDictionary<string, string> Topics);
 
+    /// <summary>Another place or boss this one knows ("related": rival, servant, kin, master...).</summary>
+    public sealed record Related(string Id, string Relation);
+
+    /// <summary>An event in a realm's history.</summary>
+    public sealed record HistoryEvent(string Name, string Text, string[] Places, string[] Bosses);
+
+    /// <summary>An era of a realm's history, in order (data/lore/history/&lt;realm&gt;.json "eras", sorted by "order").</summary>
+    public sealed record Era(string Id, string Name, string Summary, string Text, HistoryEvent[] Events)
+    {
+        public int Order { get; init; }
+        public string When { get; init; } = string.Empty;
+        public Fact[] Facts { get; init; } = [];
+        public string[] Places { get; init; } = [];
+        public string[] Bosses { get; init; } = [];
+    }
+
+    /// <summary>
+    /// A power behind the dungeons (Morgana, the Fomorians, the Summoners) and the places and bosses that are its. One id
+    /// may appear in several realms' files (summoners, sidhe-of-the-hall): each realm tells it its own way.
+    /// </summary>
+    public sealed record Faction(string Id, string Name, string Summary, string Text, string[] Places, string[] Bosses)
+    {
+        public string Realm { get; init; } = string.Empty;
+        public Related[] RelatedTo { get; init; } = [];
+    }
+
+    /// <summary>A realm's history (data/lore/history/&lt;realm&gt;.json): its eras in order, and its factions.</summary>
+    public sealed record History(string Id, string Realm, string Title, string Intro, Era[] Eras, Faction[] Factions)
+    {
+        public string File { get; init; } = string.Empty;
+    }
+
     public sealed record Book(string Title, string[] Pages);
 
     /// <summary>
@@ -66,6 +98,10 @@ public sealed class LoreBible
         public string[] RaidForming { get; init; } = [];
         /// <summary>Other names players use ("krondon", "the glacier"); the name and id always count. Optional ("aliases").</summary>
         public string[] Aliases { get; init; } = [];
+        /// <summary>The era it belongs to, the powers behind it and the places or bosses it knows (history files). Optional.</summary>
+        public string Era { get; init; } = string.Empty;
+        public string[] Factions { get; init; } = [];
+        public Related[] RelatedTo { get; init; } = [];
         /// <summary>Each realm's own take (a neutral place), by "albion", "midgard", "hibernia". Optional ("realmTakes").</summary>
         public IReadOnlyDictionary<string, RealmTake> RealmTakes { get; init; } = new Dictionary<string, RealmTake>();
         public string File { get; init; } = string.Empty;
@@ -85,6 +121,9 @@ public sealed class LoreBible
     {
         /// <summary>Other names players use ("cuuldurach", "the glimmer king"). Optional ("aliases").</summary>
         public string[] Aliases { get; init; } = [];
+        public string Era { get; init; } = string.Empty;
+        public string[] Factions { get; init; } = [];
+        public Related[] RelatedTo { get; init; } = [];
         /// <summary>Each realm's own take (a neutral boss: Govannon). Optional ("realmTakes").</summary>
         public IReadOnlyDictionary<string, RealmTake> RealmTakes { get; init; } = new Dictionary<string, RealmTake>();
         public string File { get; init; } = string.Empty;
@@ -109,6 +148,7 @@ public sealed class LoreBible
 
     public Location[] Locations { get; }
     public Boss[] Bosses { get; }
+    public History[] Histories { get; }
     /// <summary>What went wrong reading the files (a file that is not JSON, a missing id). Validation adds the rest.</summary>
     public IReadOnlyList<string> ParseProblems { get; }
 
@@ -118,11 +158,29 @@ public sealed class LoreBible
     private readonly Dictionary<ushort, (Location, Area)[]> _areasByRegion;
     private readonly Dictionary<string, Boss[]> _bossesByClass;
     private readonly Dictionary<string, Boss[]> _bossesByLocation;
+    private readonly Dictionary<string, (History, Era)> _eras;
+    private readonly Dictionary<string, (History, Faction)> _factions;
 
-    private LoreBible(Location[] locations, Boss[] bosses, List<string> problems)
+    public Era EraById(string id) => id != null && _eras.TryGetValue(id, out var e) ? e.Item2 : null;
+    public Faction FactionById(string id) => id != null && _factions.TryGetValue(id, out var f) ? f.Item2 : null;
+    public History HistoryFor(string realm) => Histories.FirstOrDefault(h => string.Equals(h.Realm, realm, StringComparison.OrdinalIgnoreCase));
+
+    private LoreBible(Location[] locations, Boss[] bosses, List<string> problems, History[] histories = null)
     {
         Locations = locations;
         Bosses = bosses;
+        Histories = histories ?? [];
+        _eras = new Dictionary<string, (History, Era)>(StringComparer.OrdinalIgnoreCase);
+        _factions = new Dictionary<string, (History, Faction)>(StringComparer.OrdinalIgnoreCase);
+        foreach (History history in Histories)
+        {
+            foreach (Era era in history.Eras)
+                if (!string.IsNullOrEmpty(era.Id))
+                    _eras.TryAdd(era.Id, (history, era));
+            foreach (Faction faction in history.Factions)
+                if (!string.IsNullOrEmpty(faction.Id))
+                    _factions.TryAdd(faction.Id, (history, faction));
+        }
         ParseProblems = problems;
         _locationById = new Dictionary<string, Location>(StringComparer.OrdinalIgnoreCase);
         foreach (Location location in locations)
@@ -140,7 +198,7 @@ public sealed class LoreBible
             .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.OrdinalIgnoreCase);
     }
 
-    public static LoreBible Empty { get; } = new([], [], []);
+    public static LoreBible Empty { get; } = new([], [], [], []);
 
     public Location LocationById(string id) => id != null && _locationById.TryGetValue(id, out Location l) ? l : null;
     public Boss BossById(string id) => id != null && _bossById.TryGetValue(id, out Boss b) ? b : null;
@@ -212,6 +270,7 @@ public sealed class LoreBible
         var problems = new List<string>();
         var locations = new List<Location>();
         var bosses = new List<Boss>();
+        var histories = new List<History>();
         foreach ((string path, string json) in files)
         {
             string normalized = (path ?? string.Empty).Replace('\\', '/');
@@ -228,24 +287,104 @@ public sealed class LoreBible
                     locations.Add(ParseLocation(root, normalized, problems));
                 else if (normalized.StartsWith("bosses/", StringComparison.Ordinal))
                     bosses.Add(ParseBoss(root, normalized, problems));
+                else if (normalized.StartsWith("history/", StringComparison.Ordinal))
+                    histories.Add(ParseHistory(root, normalized, problems));
                 else
-                    problems.Add($"{normalized}: lore files go in locations/ or bosses/");
+                    problems.Add($"{normalized}: lore files go in locations/, bosses/ or history/");
             }
             catch (JsonException exception)
             {
                 problems.Add($"{normalized}: not valid JSON ({exception.Message})");
             }
         }
-        return new LoreBible(locations.ToArray(), bosses.ToArray(), problems);
+        return new LoreBible(locations.ToArray(), bosses.ToArray(), problems, histories.ToArray());
     }
 
+    private static readonly string[] HistoryKeys = ["id", "realm", "title", "intro", "summary", "eras", "factions"];
+
+    private static History ParseHistory(JsonElement root, string file, List<string> problems)
+    {
+        Unknown(root, HistoryKeys, file, problems);
+        var eras = new List<Era>();
+        foreach (JsonElement e in Objects(root, "eras", file, problems))
+        {
+            string where = $"{file} era \"{Str(e, "id")}\"";
+            Unknown(e, ["id", "order", "name", "when", "summary", "text", "events", "facts", "places", "bosses"], where, problems);
+            var events = new List<HistoryEvent>();
+            var facts = new List<Fact>();
+            // "events" holds named events ({name, text, places, bosses}) or facts ({text, provenance, source}).
+            foreach (JsonElement v in Objects(e, "events", where, problems).Concat(Objects(e, "facts", where, problems)))
+            {
+                if (v.TryGetProperty("provenance", out _))
+                {
+                    Unknown(v, ["text", "provenance", "source"], where + " fact", problems);
+                    facts.Add(new Fact(Str(v, "text"), Str(v, "provenance"), Str(v, "source")));
+                    continue;
+                }
+                Unknown(v, ["name", "text", "places", "bosses"], where + " event", problems);
+                events.Add(new HistoryEvent(Str(v, "name"), Str(v, "text"), Strs(v, "places", where, problems), Strs(v, "bosses", where, problems)));
+            }
+            eras.Add(new Era(Str(e, "id"), Str(e, "name"), Str(e, "summary"), Str(e, "text"), events.ToArray())
+            {
+                Order = Int(e, "order", where, problems, 1000 + eras.Count),
+                When = Str(e, "when"),
+                Facts = facts.ToArray(),
+                Places = Strs(e, "places", where, problems),
+                Bosses = Strs(e, "bosses", where, problems),
+            });
+        }
+        eras = eras.OrderBy(era => era.Order).ToList();
+        var factions = new List<Faction>();
+        foreach (JsonElement e in Objects(root, "factions", file, problems))
+        {
+            string where = $"{file} faction \"{Str(e, "id")}\"";
+            Unknown(e, ["id", "name", "realm", "summary", "text", "places", "bosses", "related"], where, problems);
+            factions.Add(new Faction(Str(e, "id"), Str(e, "name"), Str(e, "summary"), Str(e, "text"), Strs(e, "places", where, problems), Strs(e, "bosses", where, problems))
+            {
+                Realm = Str(e, "realm"),
+                RelatedTo = ParseRelated(e, where, problems),
+            });
+        }
+        string realmName = Str(root, "realm");
+        string id = Str(root, "id");
+        return new History(id.Length > 0 ? id : realmName.ToLowerInvariant(), realmName,
+            Str(root, "title").Length > 0 ? Str(root, "title") : $"A History of {realmName}",
+            Str(root, "intro").Length > 0 ? Str(root, "intro") : Str(root, "summary"), eras.ToArray(), factions.ToArray()) { File = file };
+    }
+
+    private static IEnumerable<JsonElement> Objects(JsonElement e, string name, string where, List<string> problems)
+    {
+        if (e.ValueKind != JsonValueKind.Object || !e.TryGetProperty(name, out JsonElement v) || v.ValueKind == JsonValueKind.Null)
+            return [];
+        if (v.ValueKind != JsonValueKind.Array)
+        {
+            problems.Add($"{where}: \"{name}\" must be a list");
+            return [];
+        }
+        return v.EnumerateArray().Where(x =>
+        {
+            if (x.ValueKind != JsonValueKind.Object)
+                problems.Add($"{where}: \"{name}\" holds a {x.ValueKind}, not an object");
+            return x.ValueKind == JsonValueKind.Object;
+        }).ToArray();
+    }
+
+    private static Related[] ParseRelated(JsonElement root, string file, List<string> problems) =>
+        Objects(root, "related", file, problems).Select(r =>
+        {
+            Unknown(r, ["id", "relation"], file + " related", problems);
+            return new Related(Str(r, "id"), Str(r, "relation"));
+        }).ToArray();
+
     private static readonly string[] LocationKeys =
-        ["id", "name", "realm", "regions", "zones", "aliases", "summary", "facts", "story", "legend", "atmosphere", "botLines", "loremaster", "book", "bosses", "realmTakes"];
+        ["id", "name", "realm", "regions", "zones", "aliases", "summary", "facts", "story", "legend", "atmosphere", "botLines", "loremaster", "book", "bosses", "realmTakes",
+         "era", "factions", "related"];
     private static readonly string[] LocationAtmosphereKeys = ["firstEntry", "areas", "raidForming"];
     private static readonly string[] AreaKeys = ["name", "region", "x", "y", "z", "radius", "lines"];
     private static readonly string[] LocationBotKeys = ["lore", "rumour", "tell"];
     private static readonly string[] BossKeys =
-        ["id", "name", "catalogKey", "locationId", "realm", "aliases", "facts", "story", "legend", "yells", "atmosphere", "botLines", "loremasterTopic", "bookPage", "chronicle", "realmTakes"];
+        ["id", "name", "catalogKey", "locationId", "realm", "aliases", "facts", "story", "legend", "yells", "atmosphere", "botLines", "loremasterTopic", "bookPage", "chronicle", "realmTakes",
+         "era", "factions", "related"];
     private static readonly string[] TakeKeys = ["story", "legend", "botLines", "loremaster", "loremasterTopic"];
     private static readonly string[] YellKeys = ["aggro", "phases", "death", "slay"];
     private static readonly string[] BossAtmosphereKeys = ["lairEntry", "phases", "realmFirstKill", "wake"];
@@ -455,6 +594,9 @@ public sealed class LoreBible
             RaidForming = Strs(atmosphere, "raidForming", file, problems),
             Aliases = Strs(root, "aliases", file, problems),
             RealmTakes = ParseTakes(root, file, LocationBotKeys, problems),
+            Era = Str(root, "era"),
+            Factions = Strs(root, "factions", file, problems),
+            RelatedTo = ParseRelated(root, file, problems),
             File = file,
         };
     }
@@ -482,6 +624,9 @@ public sealed class LoreBible
         {
             Aliases = Strs(root, "aliases", file, problems),
             RealmTakes = ParseTakes(root, file, BossBotKeys, problems),
+            Era = Str(root, "era"),
+            Factions = Strs(root, "factions", file, problems),
+            RelatedTo = ParseRelated(root, file, problems),
             File = file,
         };
     }
@@ -493,6 +638,8 @@ public sealed class LoreBible
     public const int MaxAtmosphereLength = 60;
     public const int MaxBotLineLength = AutonomousBotVoiceCorpus.MaxLength;
     public const int MaxYellLength = 200;
+    public const int MaxBookPages = 8;
+    public const int MaxAdvisedWords = 1_500;
     public static readonly string[] Realms = ["Albion", "Midgard", "Hibernia", "Neutral"];
     /// <summary>"myth": the real-world myth a name comes from, not game canon (Balor, Hati and Skoll). Needs its source too.</summary>
     public static readonly string[] Provenances = ["mythic", "game", "legend", "myth", "original"];
@@ -526,9 +673,10 @@ public sealed class LoreBible
     /// Everything a writer's files must satisfy (docs/LORE.md, "What the files must pass"). Empty when the bible is good.
     /// <paramref name="catalog"/> null skips the catalog checks (the server has no catalog at run time).
     /// </summary>
-    public List<string> Validate(Catalog catalog)
+    public List<string> Validate(Catalog catalog, List<string> warnings = null)
     {
         var problems = new List<string>(ParseProblems);
+        warnings ??= [];
         void Need(bool ok, string message)
         {
             if (!ok)
@@ -550,8 +698,15 @@ public sealed class LoreBible
                     $"{file}: a {fact.Provenance} fact needs its source (URL, document or file): {Short(fact.Text)}");
             }
         }
-        void CheckWords(string text, int low, int high, string what, string file) =>
-            Need(Words(text) >= low && Words(text) <= high, $"{file}: {what} is {Words(text)} words (want {low}-{high})");
+        // Lengths are advisory (owner 2026-11-06: exhaustive lore; no upper limit, a short text is a warning, not a failure).
+        // The depth floor is DepthReport's.
+        void CheckWords(string text, int low, int high, string what, string file)
+        {
+            if (Words(text) < low)
+                warnings.Add($"{file}: {what} is {Words(text)} words (at least {low} reads as a story)");
+            else if (Words(text) > MaxAdvisedWords)
+                warnings.Add($"{file}: {what} is {Words(text)} words (over {MaxAdvisedWords} is long for one sitting)");
+        }
         void CheckAtmosphere(IEnumerable<string> lines, string what, string file)
         {
             foreach (string line in lines)
@@ -683,6 +838,7 @@ public sealed class LoreBible
             {
                 Need(!string.IsNullOrWhiteSpace(l.Book.Title), $"{f}: book.title");
                 Need(l.Book.Pages.Length > 0, $"{f}: at least one book page");
+                Need(l.Book.Pages.Length <= MaxBookPages, $"{f}: {l.Book.Pages.Length} book pages (at most {MaxBookPages})");
                 foreach (string page in l.Book.Pages)
                     CheckWords(page, 50, 160, "a book page", f);
             }
@@ -749,7 +905,125 @@ public sealed class LoreBible
                 foreach (Match m in SlotRe.Matches(text ?? string.Empty))
                     Need(ChronicleSlots.Contains(m.Groups[1].Value), $"{f}: {what} slot {{{m.Groups[1].Value}}} (only {{realm}}, {{raidLeader}}, {{minutes}})");
         }
+
+        // History (data/lore/history/<realm>.json) and the links into it: era, factions, related.
+        foreach (var group in Histories.GroupBy(h => h.Id ?? string.Empty, StringComparer.OrdinalIgnoreCase).Where(g => g.Count() > 1))
+            problems.Add($"history id \"{group.Key}\" is used by {string.Join(", ", group.Select(h => h.File))}");
+        var historyIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (History h in Histories)
+        {
+            string f = h.File;
+            CheckId(h.Id, f, "history");
+            Need(Realms.Contains(h.Realm), $"{f}: realm \"{h.Realm}\" must be one of {string.Join(", ", Realms)}");
+            Need(h.Eras.Length > 0, $"{f}: at least one era");
+            // Era ids are unique everywhere; a faction id may be shared by several realms' files (summoners), not twice in one.
+            foreach ((string id, string name, string what) in h.Eras.Select(e => (e.Id, e.Name, "era")).Concat(h.Factions.Select(x => (x.Id, x.Name, "faction"))))
+            {
+                Need(IdRe.IsMatch(id ?? string.Empty), $"{f}: {what} id \"{id}\" must be lower-case kebab");
+                Need(!string.IsNullOrWhiteSpace(name), $"{f}: {what} \"{id}\" needs a name");
+                string key = what == "era" ? "era:" + id : $"faction:{id}@{f}";
+                if (!string.IsNullOrEmpty(id) && !historyIds.TryAdd(key, f))
+                    problems.Add($"{f}: {what} id \"{id}\" is also used in {historyIds[key]}");
+                if (what == "era" && !string.IsNullOrEmpty(id) && historyIds.TryGetValue("faction-any:" + id, out string other))
+                    problems.Add($"{f}: era id \"{id}\" is also a faction in {other}");
+                if (what == "faction")
+                    historyIds.TryAdd("faction-any:" + id, f);
+            }
+            foreach (Era era in h.Eras)
+                foreach (string id in h.Factions.Select(x => x.Id))
+                    Need(!string.Equals(era.Id, id, StringComparison.OrdinalIgnoreCase), $"{f}: \"{id}\" is both an era and a faction");
+            foreach (Era era in h.Eras)
+            {
+                Need(!string.IsNullOrWhiteSpace(era.Text) || !string.IsNullOrWhiteSpace(era.Summary), $"{f}: era \"{era.Id}\" has no text");
+                foreach (string place in era.Places)
+                    Need(LocationById(place) != null, $"{f}: era \"{era.Id}\" place \"{place}\" has no location file");
+                foreach (string boss in era.Bosses)
+                    Need(BossById(boss) != null, $"{f}: era \"{era.Id}\" boss \"{boss}\" has no boss file");
+                foreach (Fact fact in era.Facts)
+                {
+                    Need(Provenances.Contains(fact.Provenance), $"{f}: provenance \"{fact.Provenance}\" must be one of {string.Join(", ", Provenances)}");
+                    Need(fact.Provenance == "original" || !string.IsNullOrWhiteSpace(fact.Source), $"{f}: a {fact.Provenance} fact needs its source: {Short(fact.Text)}");
+                }
+                foreach (HistoryEvent v in era.Events)
+                {
+                    Need(!string.IsNullOrWhiteSpace(v.Name) && !string.IsNullOrWhiteSpace(v.Text), $"{f}: an event of era \"{era.Id}\" needs a name and text");
+                    foreach (string place in v.Places)
+                        Need(LocationById(place) != null, $"{f}: event \"{v.Name}\" place \"{place}\" has no location file");
+                    foreach (string boss in v.Bosses)
+                        Need(BossById(boss) != null, $"{f}: event \"{v.Name}\" boss \"{boss}\" has no boss file");
+                }
+            }
+            foreach (Faction faction in h.Factions)
+            {
+                Need(!string.IsNullOrWhiteSpace(faction.Text) || !string.IsNullOrWhiteSpace(faction.Summary), $"{f}: faction \"{faction.Id}\" has no text");
+                foreach (string place in faction.Places)
+                    Need(LocationById(place) != null, $"{f}: faction \"{faction.Id}\" place \"{place}\" has no location file");
+                foreach (string boss in faction.Bosses)
+                    Need(BossById(boss) != null, $"{f}: faction \"{faction.Id}\" boss \"{boss}\" has no boss file");
+                foreach (Related r in faction.RelatedTo)
+                    Need(LocationById(r.Id) != null || BossById(r.Id) != null || FactionById(r.Id) != null,
+                        $"{f}: faction \"{faction.Id}\" related \"{r.Id}\" is no location, boss or faction");
+            }
+        }
+        void CheckLinks(string file, string era, string[] factions, Related[] related, string self)
+        {
+            if (!string.IsNullOrWhiteSpace(era))
+                Need(EraById(era) != null, $"{file}: era \"{era}\" is in no history file");
+            foreach (string faction in factions)
+                Need(FactionById(faction) != null, $"{file}: faction \"{faction}\" is in no history file");
+            foreach (Related r in related)
+            {
+                Need(!string.IsNullOrWhiteSpace(r.Relation), $"{file}: related \"{r.Id}\" needs a relation (rival, servant, kin...)");
+                Need(LocationById(r.Id) != null || BossById(r.Id) != null, $"{file}: related \"{r.Id}\" is no location or boss");
+                Need(!string.Equals(r.Id, self, StringComparison.OrdinalIgnoreCase), $"{file}: related to itself");
+            }
+        }
+        foreach (Location l in Locations)
+            CheckLinks(l.File, l.Era, l.Factions, l.RelatedTo, l.Id);
+        foreach (Boss b in Bosses)
+            CheckLinks(b.File, b.Era, b.Factions, b.RelatedTo, b.Id);
         return problems;
+    }
+
+    /// <summary>
+    /// How many entries sit below the depth floor (owner 2026-11-06, LORE-1.2-DEPTH.md), one line per floor: "locations:
+    /// story 500+ words: 12 of 46 below". Advisory: the schema test prints it so the depth can be tracked. Pure.
+    /// </summary>
+    public List<string> DepthReport()
+    {
+        static int W(string t) => Words(t);
+        var floors = new (string What, Func<Location, bool> Short)[]
+        {
+            ("story 500+ words", l => W(l.Story) < 500),
+            ("legend 120+ words", l => W(l.Legend) < 120),
+            ("6+ facts", l => l.Facts.Length < 6),
+            ("4-8 firstEntry lines", l => l.FirstEntry.Length < 4),
+            ("an area per room (2+ areas)", l => l.Areas.Length < 2),
+            ("lore 12+, rumour 8+, tell 6+", l => l.Lore.Length < 12 || l.Rumour.Length < 8 || l.Tell.Length < 6),
+            ("loremaster 8+ topics", l => (l.Loremaster?.Topics.Count ?? 0) < 8),
+            ("book 4-8 pages of 100+ words", l => l.Book == null || l.Book.Pages.Length < 4 || l.Book.Pages.Any(p => W(p) < 100)),
+            ("an era and a faction", l => string.IsNullOrWhiteSpace(l.Era) || l.Factions.Length == 0),
+        };
+        var bossFloors = new (string What, Func<Boss, bool> Short)[]
+        {
+            ("story 250+ words", b => W(b.Story) < 250),
+            ("legend 100+ words", b => W(b.Legend) < 100),
+            ("aggro 3+, death 2+, slay 3+ yells", b => b.AggroYells.Length < 3 || b.DeathYells.Length < 2 || b.SlayYells.Length < 3),
+            ("lairEntry 2+ and realmFirstKill", b => b.LairEntry.Length < 2 || string.IsNullOrWhiteSpace(b.RealmFirstKill)),
+            ("briefing, aftermathWin, aftermathLoss, rumour 4+ each",
+                b => b.Briefing.Length < 4 || b.AftermathWin.Length < 4 || b.AftermathLoss.Length < 4 || b.Rumour.Length < 4),
+            ("loremasterTopic and bookPage 100+ words", b => string.IsNullOrWhiteSpace(b.LoremasterKeyword) || W(b.BookPage) < 100),
+            ("chronicle win and loss", b => string.IsNullOrWhiteSpace(b.ChronicleWin) || string.IsNullOrWhiteSpace(b.ChronicleLoss)),
+            ("an era, a faction or related", b => string.IsNullOrWhiteSpace(b.Era) && b.Factions.Length == 0 && b.RelatedTo.Length == 0),
+        };
+        var report = new List<string>();
+        foreach (var (what, isShort) in floors)
+            report.Add($"locations: {what}: {Locations.Count(isShort)} of {Locations.Length} below");
+        foreach (var (what, isShort) in bossFloors)
+            report.Add($"bosses: {what}: {Bosses.Count(isShort)} of {Bosses.Length} below");
+        foreach (string realm in Realms.Take(3))
+            report.Add($"history: {realm}: {(HistoryFor(realm) is { } h ? $"{h.Eras.Length} eras, {h.Factions.Length} factions" : "no file yet")}");
+        return report;
     }
 
     private static string Short(string text) => text == null ? string.Empty : text.Length <= 50 ? text : text[..50] + "...";

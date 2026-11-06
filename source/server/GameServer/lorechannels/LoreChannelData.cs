@@ -16,6 +16,10 @@ public sealed record LoreLocation(string Id, string Name, string Realm, int[] Re
     string Legend, LoreLoremasterText Loremaster, LoreBookText Book, string[] Bosses, LoreArea[] Areas)
 {
     public int RealmId => LoreRealm.Id(Realm);
+    /// <summary>The era, the powers behind it and the places or bosses it knows (the history files). Empty when none.</summary>
+    public string Era { get; init; } = "";
+    public string[] Factions { get; init; } = [];
+    public LoreRelated[] Related { get; init; } = [];
     /// <summary>Each realm's own take on a neutral place, by realm id ("realmTakes", Summoner's Hall). Empty when none.</summary>
     public IReadOnlyDictionary<int, LoreRealmTake> RealmTakes { get; init; } = new Dictionary<int, LoreRealmTake>();
 
@@ -60,6 +64,9 @@ public sealed record LoreBoss(string Id, string Name, string CatalogKey, string 
     /// The script class this boss is (the catalog key's last part is the class name in lower case,
     /// "krondon/scurceolhyrde"; a key may also be the class itself, "ScurceolHyrde").
     /// </summary>
+    public string Era { get; init; } = "";
+    public string[] Factions { get; init; } = [];
+    public LoreRelated[] Related { get; init; } = [];
     /// <summary>Each realm's own take on a neutral boss, by realm id ("realmTakes", Govannon). Empty when none.</summary>
     public IReadOnlyDictionary<int, LoreRealmTake> RealmTakes { get; init; } = new Dictionary<int, LoreRealmTake>();
 
@@ -83,6 +90,37 @@ public sealed record LoreBoss(string Id, string Name, string CatalogKey, string 
 }
 
 public sealed record LoreTopic(string Keyword, string Text);
+
+/// <summary>Another place or boss this one knows: rival, servant, kin, master.</summary>
+public sealed record LoreRelated(string Id, string Relation);
+
+public sealed record LoreEventText(string Name, string Text, string[] Places, string[] Bosses);
+
+/// <summary>An era of a realm's history, in order.</summary>
+public sealed record LoreEraText(string Id, string Name, string Summary, string Text, LoreEventText[] Events)
+{
+    public string When { get; init; } = "";
+    public string[] Places { get; init; } = [];
+    public string[] Bosses { get; init; } = [];
+}
+
+/// <summary>A power behind the dungeons and the places and bosses that are its.</summary>
+public sealed record LoreFactionText(string Id, string Name, string Summary, string Text, string[] Places, string[] Bosses)
+{
+    public LoreRelated[] Related { get; init; } = [];
+}
+
+/// <summary>A realm's history (data/lore/history/&lt;realm&gt;.json): eras in order, and factions.</summary>
+public sealed record LoreHistoryText(string Id, string Realm, string Title, string Intro, LoreEraText[] Eras, LoreFactionText[] Factions)
+{
+    public int RealmId => LoreRealm.Id(Realm);
+}
+
+/// <summary>A lore source that also has the realms' histories.</summary>
+public interface ILoreHistorySource
+{
+    IReadOnlyList<LoreHistoryText> Histories { get; }
+}
 
 /// <summary>The Herald's sentence for a raid record, with {realm}, {raidLeader} and {minutes}.</summary>
 public sealed record LoreChronicleText(string Win, string Loss);
@@ -114,8 +152,9 @@ public static class LoreRealm
 }
 
 /// <summary>A lore source as one realm's readers meet it: every place and boss with that realm's take (LoreRealmTake).</summary>
-public sealed class LoreRealmView : ILoreSource
+public sealed class LoreRealmView : ILoreSource, ILoreHistorySource
 {
+    public IReadOnlyList<LoreHistoryText> Histories => _inner.Histories();
     private readonly ILoreSource _inner;
     private readonly int _realm;
 
@@ -138,13 +177,16 @@ public sealed class LoreRealmView : ILoreSource
 }
 
 /// <summary>An in-memory lore source, from parsed files.</summary>
-public sealed class LoreLibrary : ILoreSource
+public sealed class LoreLibrary : ILoreSource, ILoreHistorySource
 {
     private readonly Dictionary<string, LoreLocation> _locations;
     private readonly Dictionary<string, LoreBoss> _bosses;
 
-    public LoreLibrary(IEnumerable<LoreLocation> locations, IEnumerable<LoreBoss> bosses)
+    public IReadOnlyList<LoreHistoryText> Histories { get; }
+
+    public LoreLibrary(IEnumerable<LoreLocation> locations, IEnumerable<LoreBoss> bosses, IEnumerable<LoreHistoryText> histories = null)
     {
+        Histories = (histories ?? []).Where(h => h != null).ToArray();
         _locations = new(StringComparer.OrdinalIgnoreCase);
         foreach (LoreLocation location in locations ?? []) if (!string.IsNullOrEmpty(location?.Id)) _locations[location.Id] = location;
         _bosses = new(StringComparer.OrdinalIgnoreCase);
@@ -168,13 +210,18 @@ public sealed class LoreLibrary : ILoreSource
     {
         var locations = new List<LoreLocation>();
         var bosses = new List<LoreBoss>();
+        var histories = new List<LoreHistoryText>();
         foreach (var (name, json) in files ?? [])
         {
             try
             {
                 string n = (name ?? "").Replace('\\', '/');
-                if (n.Contains("/bosses/", StringComparison.OrdinalIgnoreCase) || n.Contains(".bosses.", StringComparison.OrdinalIgnoreCase))
+                if (n.Contains("/bosses/", StringComparison.OrdinalIgnoreCase) || n.Contains(".bosses.", StringComparison.OrdinalIgnoreCase) ||
+                    n.StartsWith("bosses/", StringComparison.OrdinalIgnoreCase))
                     bosses.Add(LoreJson.ParseBoss(json));
+                else if (n.Contains("/history/", StringComparison.OrdinalIgnoreCase) || n.Contains(".history.", StringComparison.OrdinalIgnoreCase) ||
+                         n.StartsWith("history/", StringComparison.OrdinalIgnoreCase))
+                    histories.Add(LoreJson.ParseHistory(json));
                 else
                     locations.Add(LoreJson.ParseLocation(json));
             }
@@ -183,12 +230,29 @@ public sealed class LoreLibrary : ILoreSource
                 errors?.Add($"{name}: {ex.Message}");
             }
         }
-        return new LoreLibrary(locations, bosses);
+        return new LoreLibrary(locations, bosses, histories);
     }
 }
 
 public static class LoreSourceExtensions
 {
+    /// <summary>The realms' histories, when the source has them.</summary>
+    public static IReadOnlyList<LoreHistoryText> Histories(this ILoreSource source) =>
+        source is ILoreHistorySource h ? h.Histories : [];
+
+    /// <summary>A realm's history (the neutral one too, when <paramref name="realm"/> is 0).</summary>
+    public static LoreHistoryText HistoryOf(this ILoreSource source, int realm) =>
+        source.Histories().FirstOrDefault(h => h.RealmId == realm);
+
+    public static LoreEraText FindEra(this ILoreSource source, string id) =>
+        source.Histories().SelectMany(h => h.Eras).FirstOrDefault(e => string.Equals(e.Id, id, StringComparison.OrdinalIgnoreCase));
+
+    public static LoreFactionText FindFaction(this ILoreSource source, string id) =>
+        source.Histories().SelectMany(h => h.Factions).FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>The name of a place or boss by id (for links), or null.</summary>
+    public static string NameOf(this ILoreSource source, string id) => source.GetLocation(id)?.Name ?? source.GetBoss(id)?.Name;
+
     public static LoreBoss FindBossByClass(this ILoreSource source, string className) =>
         source?.AllBosses.FirstOrDefault(b => b.IsClass(className));
 
@@ -237,7 +301,8 @@ public static class LoreJson
             ? r.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.Number).Select(x => x.GetInt32()).ToArray()
             : [];
         return new LoreLocation(id, Str(e, "name") ?? id, Str(e, "realm") ?? "Neutral", regions, Str(e, "summary"), Str(e, "story"),
-            Str(e, "legend"), loremaster, book, Strings(e, "bosses"), areas.ToArray()) { RealmTakes = Takes(e) };
+            Str(e, "legend"), loremaster, book, Strings(e, "bosses"), areas.ToArray())
+        { RealmTakes = Takes(e), Era = Str(e, "era") ?? "", Factions = Strings(e, "factions"), Related = RelatedOf(e) };
     }
 
     public static LoreBoss ParseBoss(string json)
@@ -253,7 +318,36 @@ public static class LoreJson
         if (e.TryGetProperty("chronicle", out JsonElement c) && c.ValueKind == JsonValueKind.Object)
             chronicle = new LoreChronicleText(Str(c, "win"), Str(c, "loss"));
         return new LoreBoss(id, Str(e, "name") ?? id, Str(e, "catalogKey"), Str(e, "locationId"), Str(e, "realm") ?? "Neutral",
-            Str(e, "story"), Str(e, "legend"), topic, Str(e, "bookPage"), chronicle) { RealmTakes = Takes(e) };
+            Str(e, "story"), Str(e, "legend"), topic, Str(e, "bookPage"), chronicle)
+        { RealmTakes = Takes(e), Era = Str(e, "era") ?? "", Factions = Strings(e, "factions"), Related = RelatedOf(e) };
+    }
+
+    private static LoreRelated[] RelatedOf(JsonElement e) =>
+        e.TryGetProperty("related", out JsonElement r) && r.ValueKind == JsonValueKind.Array
+            ? r.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.Object && Str(x, "id") is { Length: > 0 })
+                .Select(x => new LoreRelated(Str(x, "id"), Str(x, "relation") ?? "")).ToArray()
+            : [];
+
+    private static IEnumerable<JsonElement> Objects(JsonElement e, string name) =>
+        e.TryGetProperty(name, out JsonElement v) && v.ValueKind == JsonValueKind.Array
+            ? v.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.Object).ToArray()
+            : [];
+
+    /// <summary>A history file (data/lore/history/&lt;realm&gt;.json).</summary>
+    public static LoreHistoryText ParseHistory(string json)
+    {
+        using JsonDocument document = JsonDocument.Parse(json, new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true });
+        JsonElement e = document.RootElement;
+        string realm = Str(e, "realm") ?? "Neutral";
+        string id = Str(e, "id") ?? realm.ToLowerInvariant();
+        // An era's "events" are named events or plain facts ({text, provenance, source}); "facts" are facts.
+        var eras = Objects(e, "eras").Select((x, i) => (Era: new LoreEraText(Str(x, "id") ?? "", Str(x, "name") ?? "", Str(x, "summary"), Str(x, "text"),
+                Objects(x, "events").Concat(Objects(x, "facts")).Select(v => new LoreEventText(Str(v, "name") ?? "", Str(v, "text"), Strings(v, "places"), Strings(v, "bosses"))).ToArray())
+            { When = Str(x, "when") ?? "", Places = Strings(x, "places"), Bosses = Strings(x, "bosses") }, Order: Int(x, "order") is var o && o != 0 ? o : 1000 + i))
+            .OrderBy(p => p.Order).Select(p => p.Era).ToArray();
+        var factions = Objects(e, "factions").Select(x => new LoreFactionText(Str(x, "id") ?? "", Str(x, "name") ?? "", Str(x, "summary"), Str(x, "text"),
+            Strings(x, "places"), Strings(x, "bosses")) { Related = RelatedOf(x) }).ToArray();
+        return new LoreHistoryText(id, realm, Str(e, "title") ?? $"A History of {realm}", Str(e, "intro") ?? Str(e, "summary"), eras, factions);
     }
 
     /// <summary>"realmTakes": {"albion": {"story", "legend", "loremaster", "loremasterTopic", ...}}; bot lines are the engine's.</summary>
