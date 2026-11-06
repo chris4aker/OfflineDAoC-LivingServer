@@ -1,0 +1,77 @@
+{
+  "id": "cronk",
+  "name": "Cronk",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/cronk",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Cronk is a level-63 named with 30,000 health in western Faraheim; eight come with him (tradklan darters, medicine men and a tribesman, Trude and Unne).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Fire Blast (400) and Vitality Dispersal, a dexterity-quickness debuff.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A 2003 Allakhazam comment: an instant 78 dex/quick debuff for a minute and an instant direct damage about every 20 seconds; loc 9730, 8360.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/5764"
+    },
+    {
+      "text": "Swedish trad (trad) means tree and klan clan: 'tree clan' (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "The tradklan are a tree-clan, small wild folk who live in the old trunks of Faraheim, and Cronk is their chief and their loudest voice. He has Trude and Unne at his side, his two wives or two sisters depending on who tells it, and darters and medicine men around him. He throws fire, which in a tree-clan is a serious thing, and drains the quickness out of anyone who would run. The tradklan think he is magnificent. So does Cronk.",
+  "legend": "Cronk brings eight: kill the medicine men first or they heal everyone. His debuff is instant and big, so cure it on the tanks. He's at about 9.7k, 8.3k in Faraheim. Trude and Unne fight like chiefs themselves, so don't leave them for last.",
+  "yells": {
+    "aggro": [
+      "Cronk sees you! Trude! Unne! Darts!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cronk burns you! Cronk burns everything!"
+      }
+    ],
+    "death": [
+      "Cronk... was magnificent..."
+    ],
+    "slay": [
+      "Cronk wins again!"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hollow trunks, darts and bone charms. A chief shouts."
+    ],
+    "realmFirstKill": "Cronk of the tree-clan is slain. It is very quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "cronk + 8 tradklan. medicine men first, cure the dex/qui debuff"
+    ],
+    "aftermathWin": [
+      "cronk down. so quiet now"
+    ],
+    "aftermathLoss": [
+      "the medicine men kept healing everybody"
+    ],
+    "rumour": [
+      "cronk talks about himself in third person. [so do i now|its catching]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cronk",
+    "text": "Chief of the tradklan, the tree-clan of Faraheim, with Trude and Unne at his side. He throws fire, which in a tree-clan is a serious thing."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Cronk of the tree-clan in {minutes} minutes.",
+    "loss": "Cronk was magnificent against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

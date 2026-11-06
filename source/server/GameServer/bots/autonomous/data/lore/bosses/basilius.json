@@ -1,0 +1,77 @@
+{
+  "id": "basilius",
+  "name": "Basilius",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/basilius",
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Basilius is a level-66 named with 30,000 health on Modernagrav; six come with him (Hoden, a morvalt befara, three morvalt dodlig and a morvalt gravmaniska).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He stuns and causes bleeding.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Basilius at 60-62 in Modernagrav; the island's bestiary lists morvalt andakuva, avliden, befara, dodlig, framkalla, gravmaniska and utforska.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=116"
+    },
+    {
+      "text": "Basilius is a Latin form of the Greek for 'kingly' (to verify); the morvalt titles look Swedish: dodlig deadly, framkalla summon, gravmaniska grave-person (to verify).",
+      "provenance": "original",
+      "source": "glossaries, to verify"
+    }
+  ],
+  "story": "Basilius is not a morvalt name. He took it, or was given it, by someone who had read old books: it means kingly, and he is the nearest thing the dig on Modernagrav has to a king. He runs the camp that broke through Faraheim's rockwall, he decides who digs and who keeps watch, and he keeps the deadly ones and the grave-workers close. The summoners of his camp are trying to speak with the spirit in the bones. Basilius is not sure he wants it to answer.",
+  "legend": "Basilius comes with six: Hoden and five morvalt. Mez the casters, kill the gravmaniska, and keep a cure for his bleed. Stun breaks help. Pull him away from the dig or Mortufoghus may wander through. Hoden hits hardest of his crew.",
+  "yells": {
+    "aggro": [
+      "Guard the dig! Nobody touches the Mother!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Dodlig! Gravmaniska! To me!"
+      }
+    ],
+    "death": [
+      "Let her... sleep... a little longer..."
+    ],
+    "slay": [
+      "Bury that one with the others."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A morvalt camp around a dig. Spades and bones."
+    ],
+    "realmFirstKill": "Basilius of the dig is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "basilius has 6 adds, mez the casters"
+    ],
+    "aftermathWin": [
+      "basilius down. the dig's leaderless"
+    ],
+    "aftermathLoss": [
+      "six adds was too many for one group"
+    ],
+    "rumour": [
+      "the morvalt boss on modernagrav has a name from old books. basilius, kingly. [who named him|weird]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Basilius",
+    "text": "The kingly one, who runs the morvalt dig on Modernagrav. His summoners try to speak with the spirit in the bones. He is not sure he wants it to answer."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Basilius's camp on Modernagrav in {minutes} minutes.",
+    "loss": "Basilius's dig crew buried {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

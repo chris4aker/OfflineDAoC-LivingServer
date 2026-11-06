@@ -1,0 +1,67 @@
+{
+  "id": "valmak",
+  "name": "Valmak",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/valmak",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Valmak is a level-64 named with 30,000 health in Faraheim who mesmerizes everyone near for 72 seconds.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a named terror bird with a ridiculous aggro range and a 72-second area mez that can wipe whole groups (2005); killing him lowers faction with the Waiting Terror.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/5781"
+    }
+  ],
+  "story": "The terror birds of Faraheim stand taller than a troll and do not fly; they never needed to. Valmak is the one the others wait for, the Waiting Terror's own, and he sees you long before you see him. When he cries, everything near him stops and stares, the way a rabbit stops for a hawk's shadow, for a long minute. He uses that minute well. The dwarves of the Remnants hunt the lesser terror birds from griffon-back, and never Valmak.",
+  "legend": "Valmak sees you from very far away. Pull him on your terms, have a minstrel or purge for the 72-second mez, and spread out so one cry doesn't catch everyone. Whole groups die here because they walked too close to look.",
+  "yells": {
+    "aggro": [
+      "(A shrieking cry splits the air.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Valmak screams, and the world holds still.)"
+      }
+    ],
+    "death": [
+      "(The great bird topples.)"
+    ],
+    "slay": [
+      "(Valmak stalks the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Huge three-toed tracks. Something is watching from far off."
+    ],
+    "realmFirstKill": "Valmak the terror bird is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "valmak: huge aggro range, 72 sec aoe mez. spread out, purge ready"
+    ],
+    "aftermathWin": [
+      "killed the big bird. [finally|gg]"
+    ],
+    "aftermathLoss": [
+      "mezzed for a minute and woke up dead"
+    ],
+    "rumour": [
+      "dont walk close to look at the big bird in faraheim. [it sees you first|trust me]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Valmak",
+    "text": "The terror bird the others wait for. When he cries, everything near him stops and stares for a long minute, and he uses that minute well."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Valmak the terror bird in {minutes} minutes.",
+    "loss": "Valmak's cry held {raidLeader}'s party from {realm} still for {minutes} minutes, and that was enough."
+  }
+}

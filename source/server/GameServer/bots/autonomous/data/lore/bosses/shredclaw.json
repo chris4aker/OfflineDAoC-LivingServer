@@ -1,0 +1,72 @@
+{
+  "id": "shredclaw",
+  "name": "Shredclaw",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/shredclaw",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Shredclaw is a level-66 named with 30,000 health in Faraheim; three blood renders come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He poisons and causes bleeding.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Shredclaw as an animal of level 66 in Faraheim that gives master-level experience.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5777"
+    }
+  ],
+  "story": "Shredclaw is Goretooth's rival, a younger render who hunts the north-east with three of his own. Where the old jaw bites, Shredclaw tears: his claws leave wounds that will not close, and a poison in them. The two packs never meet, and the dwarves of Faraheim are grateful for that, because the day they do, one of them will win, and it will hunt the whole island. Shredclaw is young and does not know how to wait, which is the only reason the dwarves sleep at all.",
+  "legend": "Shredclaw and three renders. Bleeds and poison: bring cures and bandages. Easier than Goretooth, still a full-group pull. His bleed stacks on the tank, so rotate if you have two. Gives master-level experience, and the north-east camp is usually quiet.",
+  "yells": {
+    "aggro": [
+      "(Claws rake bark, close by.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Shredclaw's claws open wounds that will not close.)"
+      }
+    ],
+    "death": [
+      "(Shredclaw shudders and lies still.)"
+    ],
+    "slay": [
+      "(Shredclaw tears at the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Claw-marks gouge every trunk. Fresh ones."
+    ],
+    "realmFirstKill": "Shredclaw is slain. Goretooth has no rival now."
+  },
+  "botLines": {
+    "briefing": [
+      "shredclaw + 3 renders, bleeds and poison. cures and bandages"
+    ],
+    "aftermathWin": [
+      "shredclaw down"
+    ],
+    "aftermathLoss": [
+      "bled out"
+    ],
+    "rumour": [
+      "goretooth and shredclaw never meet. [good|the day they do, run]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Shredclaw",
+    "text": "[Goretooth]'s rival among the blood renders. Where the old jaw bites, Shredclaw tears, and the wounds will not close."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Shredclaw in {minutes} minutes.",
+    "loss": "Shredclaw tore through {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

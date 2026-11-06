@@ -1,0 +1,72 @@
+{
+  "id": "chief-tarek",
+  "name": "Chief Tarek",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/chieftarek",
+  "locationId": "iarnwood",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Chief Tarek is a level-68 named with 30,000 health at the iarn dwarf encampment in the Iarnwood; four of the Iarn Dwarf Council come with her.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "At half health she heals herself (Chief Tarek's Heal, 400).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam places her at the Iarn Dwarf Encampment and says she calls for help and once added half the town (2004); killing the Iarn Dwarf Council lowers faction with the Remnants.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/5919"
+    }
+  ],
+  "story": "Tarek is chief of the iarn dwarves who still live in the Iarnwood itself, under the iron trees, closer to the old one than any sane people would choose. Her council of four sits with her and fights with her. She trusts no one from outside Aegir: the Remnants in Faraheim are her kin and her friends, and everyone else is a stranger who might be a Servant of Iarnvidiur in a good cloak. Hunters come for her because she is worth the effort. The Remnants remember who they were.",
+  "legend": "Chief Tarek calls her council and maybe the town: clear around her and pull carefully. She heals at half, so burst through it. Know the cost: killing the iarn dwarf council makes the Remnants like you less, and they own the griffons.",
+  "yells": {
+    "aggro": [
+      "Council! Strangers in the camp! Every one of them could be hers!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Iron holds. I hold."
+      }
+    ],
+    "death": [
+      "Tell the Remnants... who did this..."
+    ],
+    "slay": [
+      "One fewer of her Servants. Or one fewer fool."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An iarn dwarf camp under the iron trees. Eyes on you."
+    ],
+    "realmFirstKill": "Chief Tarek of the iarn dwarves has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "tarek + 4 council, she heals at half, and you lose remnants faction for killing them"
+    ],
+    "aftermathWin": [
+      "tarek down, ml xp. remnants wont like us"
+    ],
+    "aftermathLoss": [
+      "she called half the camp"
+    ],
+    "rumour": [
+      "chief tarek lives right next to iarnvidiur's lair. [brave|crazy] dwarf"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tarek",
+    "text": "Chief of the iarn dwarves who still live under the iron trees. She trusts no outsider; any stranger might be a Servant of Iarnvidiur. The Remnants are her kin and remember who harms her."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Chief Tarek in the Iarnwood in {minutes} minutes; the Remnants will remember.",
+    "loss": "Chief Tarek's council drove {raidLeader}'s party from {realm} out of the Iarnwood after {minutes} minutes."
+  }
+}

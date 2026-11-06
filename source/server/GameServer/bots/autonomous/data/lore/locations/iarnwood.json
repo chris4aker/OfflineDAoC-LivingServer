@@ -1,0 +1,94 @@
+{
+  "id": "iarnwood",
+  "name": "Iarnwood",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "summary": "Aegir's forest of black iron trees, home of the iarn dwarves and of the lair of the old one, Iarnvidiur.",
+  "facts": [
+    {
+      "text": "The Iarnwood (Iarnwood Forest) is a zone of Aegir; the entrance to Iarnvidiur's Lair is at 28k, 39k.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=90"
+    },
+    {
+      "text": "Its bestiary lists Chief Tarek and the Iarn Dwarf Council, iarn dwarf hunters, etvarg wolves, fengundar, griffolich and spinolich, redcaps, Vasrem and others.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=90"
+    },
+    {
+      "text": "The Remnants iarn dwarves name the Servants of Iarnvidiur among their foes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Reputation/FactionEmissaryRuntime.cs"
+    },
+    {
+      "text": "In the Voluspa an old giantess in the Iron Wood (Jarnvidr) breeds Fenrir's wolf-kin.",
+      "provenance": "myth",
+      "source": "Voluspa, stanza 40 (Poetic Edda, public domain)"
+    }
+  ],
+  "story": "The Iarnwood is the Iron Wood of the old songs, or near enough. Its trees are black and hard as forged iron, and sick at the root with a rot that gets into everything. Wolves run there, the etvarg, and liches sit up out of the leaf-mould, and redcaps eat whoever they can catch. Under it all, in a lair past a waterfall and a bridge, the old one breeds her brood.\n\nThe iarn dwarves live here anyway. Some of them live in Faraheim now, the Remnants, with their griffons; but Chief Tarek's people stayed in their encampment under the iron trees, closest of all to the old one, because it is their wood and they will not be driven out of it. They trust no one. Any stranger might be one of Iarnvidiur's Servants, and some are.\n\nIn the south-east of the wood, where the trees lean away, the lich Vasrem drinks the life of whatever comes near. He was the first of the wood's dead to sit up. He will not be the last.",
+  "legend": "The Iarnwood is where Aegir gets dark. Cure disease, watch for the liches, and be polite at the dwarf camp: killing their council costs you the Remnants, and the Remnants own the griffons. The lair is at 28k, 39k. The old one's Servants walk the woods, and they look like anyone.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Iron Wood. The trees are black, and sick at the root.",
+      "Wolves and rot. The old one is near."
+    ],
+    "areas": [
+      {
+        "name": "the iarn dwarf encampment",
+        "x": 445544,
+        "y": 404441,
+        "z": 5280,
+        "radius": 2000,
+        "lines": [
+          "Dwarves under the iron trees. They do not trust you."
+        ]
+      },
+      {
+        "name": "the leaning trees",
+        "x": 451231,
+        "y": 449754,
+        "z": 9121,
+        "radius": 1600,
+        "lines": [
+          "The iron trees lean away from something here."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the iarnwood is the iron wood of the old song. the giantess breeds her wolves under it",
+      "the iarn dwarves stayed in the iarnwood. chief tarek won't leave",
+      "the rot in the iron trees makes the dead sit up. thats where the liches come from"
+    ],
+    "rumour": [
+      "iarnvidiur's servants walk the iarnwood looking like anyone. [the dwarves trust nobody|cant blame them]",
+      "vasrem was the first dead thing in the iarnwood to sit up"
+    ],
+    "tell": [
+      "the iarnwood is southeast aegir. iron trees, wolves, liches, iarn dwarves, and iarnvidiur's lair at 28 39",
+      "iarnwood? dark woods, cure disease, dont upset the dwarves",
+      "thats where iarnvidiur's lair is. the woods themselves are rough too"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"The Iarnwood is the Iron Wood of the [old song], near enough. The [iarn dwarves] live in it anyway.\"",
+    "topics": {
+      "old song": "East in the Iron Wood the old one breeds Fenrir's kin. On Aegir her lair is under the black trees, at 28k, 39k.",
+      "iarn dwarves": "The Remnants moved to Faraheim with their griffons. Chief Tarek's people stayed under the iron trees, closest to the old one, and trust no one."
+    }
+  },
+  "book": {
+    "title": "Under the Iron Trees",
+    "pages": [
+      "Chief Tarek's people let me sleep one night inside their stockade, and no more. They told me why: a stranger came to them once in a good cloak, with a good story, and in the night he opened the gate, and the old one's wolves came in. Since then nobody stays two nights. I asked how they knew I was not a Servant. They said they did not know, which was why I was sleeping by the gate with an axe on either side of me. In the morning they gave me bread and pointed me out of the wood, and they did not wave."
+    ]
+  },
+  "bosses": [
+    "chief-tarek",
+    "vasrem"
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "id": "faraheim",
+  "name": "Faraheim",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "summary": "Aegir's eastern woods of skogsra, tree-clans, blood renders and terror birds, bordered by the broken rockwall to Modernagrav.",
+  "facts": [
+    {
+      "text": "Faraheim includes the town of Hagall.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=91"
+    },
+    {
+      "text": "Its bestiary of 86 lists Boligar, Cronk, Dalgo, Goretooth, Shredclaw and Valmak, with blood renders, gastornis, gulons, giant cicadas, crazed morvalt schamen, iarn dwarves and griffins.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=91"
+    },
+    {
+      "text": "The Remnants, last of the free iarn dwarf clans, keep the gryphon roads to their camp in Faraheim and fly only friends; their foes include the morvalt raiders, the Servants of Iarnvidiur and the Skogsra shade seekers.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Reputation/FactionEmissaryRuntime.cs"
+    },
+    {
+      "text": "Faraheim's eastern rockwall was broken by the morvalt, opening the way to Modernagrav.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=116"
+    },
+    {
+      "text": "In Scandinavian folklore the skogsra is a forest spirit, fair from the front and hollow behind, who leads travellers astray.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (public domain), to verify details"
+    }
+  ],
+  "story": "Faraheim is the far home: the eastern woods of Aegir, between the iron trees of the Iarnwood and the rockwall that was the end of the island until the morvalt broke it. Hagall stands there, and the last free iarn dwarf clans, the Remnants, keep a camp with griffons that fly only friends. Everything else in Faraheim is wild, and most of it is older than the dwarves.\n\nThe skogsra live in the deep woods, forest folk like the ones in the grandmothers' tales who lead travellers off the path. Boligar is the best of them at it, and Dalgo the warden keeps the paths closing behind you. The tradklan, a tree-clan of small loud folk, follow their chief Cronk, who throws fire. The blood renders hunt in packs, the old jaw Goretooth in the east and his rival Shredclaw in the north-east, and they never meet. The terror birds stand taller than trolls, and Valmak is the one they wait for.\n\nAnd along the eastern edge, the crazed morvalt schamen dance where the rockwall used to be, and look across at Modernagrav, and wait for their Mother.",
+  "legend": "Make friends with the Remnants and the griffons will fly you. Don't walk close to look at the big bird. The skogsra will get you lost on purpose, and the paths do close behind you, whatever your map says. The two render packs never meet; the day they do, run.",
+  "atmosphere": {
+    "firstEntry": [
+      "Faraheim. The far home. The paths do not stay put.",
+      "Old woods, wild folk. The dwarves fly over it for a reason."
+    ],
+    "areas": [
+      {
+        "name": "the skogsra woods",
+        "x": 409984,
+        "y": 378046,
+        "z": 7512,
+        "radius": 2000,
+        "lines": [
+          "The path bends where no path should."
+        ]
+      },
+      {
+        "name": "the tree-clan",
+        "x": 370164,
+        "y": 335964,
+        "z": 7728,
+        "radius": 1500,
+        "lines": [
+          "Hollow trunks and bone charms. A chief shouts."
+        ]
+      },
+      {
+        "name": "the terror bird's ground",
+        "x": 380811,
+        "y": 347640,
+        "z": 6004,
+        "radius": 2000,
+        "lines": [
+          "Huge three-toed tracks in the mud."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the remnants iarn dwarves fly griffons out of faraheim. only for friends",
+      "the skogsra in faraheim lead travellers off the path, like in gran's stories",
+      "faraheim's rockwall used to be the end of aegir. the morvalt broke it to reach modernagrav"
+    ],
+    "rumour": [
+      "goretooth and shredclaw never meet. the day they do, run",
+      "dont walk close to look at the big bird in faraheim. it sees you first",
+      "the paths in dalgo's woods close behind you. [i swear|not joking]"
+    ],
+    "tell": [
+      "faraheim is eastern aegir. skogsra, tradklan, blood renders, terror birds. hagall is the town",
+      "faraheim? wild woods, lots of nameds, iarn dwarves with griffons",
+      "go there for master level xp off the nameds. bring a full group"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Faraheim, the far home of Aegir: the [skogsra]'s woods, the [tree-clan], the render packs, and the [Remnants] who fly over all of it.\"",
+    "topics": {
+      "skogsra": "Forest folk like the grandmothers' tales: fair from the front, and they lead you astray. Boligar leads; Dalgo keeps the paths closing behind you.",
+      "tree-clan": "The tradklan, small and loud, who follow Cronk. He throws fire, which in a tree-clan is a serious thing.",
+      "Remnants": "The last free iarn dwarf clans. Their griffons fly only friends. Kill their foes and they will learn your name."
+    }
+  },
+  "book": {
+    "title": "A Map That Lies",
+    "pages": [
+      "I drew a map of the skogsra woods north of Hagall, every path, every stream. The next morning half the paths were somewhere else. An iarn dwarf laughed at me and said the greenhands move them at night, the warden's people, so that strangers stay lost. I asked how the dwarves find their way. She said they do not walk; they fly. Then she said the trick with the skogsra is never to follow anyone who is beautiful from the front, and to walk round them first and look at their backs. I asked what you see. She said: nothing. That is the point."
+    ]
+  },
+  "bosses": [
+    "boligar",
+    "dalgo",
+    "cronk",
+    "goretooth",
+    "shredclaw",
+    "valmak"
+  ]
+}

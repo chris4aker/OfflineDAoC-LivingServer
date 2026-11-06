@@ -1,0 +1,72 @@
+{
+  "id": "boligar",
+  "name": "Boligar",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/boligar",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Boligar is a level-64 named with 30,000 health in Faraheim. He mesmerizes everyone near him for 72 seconds and teleports his attacker to one of four spots around his camp.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a named skogsra whose camp is north near the Iarnwood border; a 2003 party watched helplessly under his long area mez while he ran down the one who resisted. Killing him lowers faction with the Skogsra Shade Seekers.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/5762"
+    },
+    {
+      "text": "In Scandinavian folklore the skogsra is a forest spirit, fair from the front and hollow behind, who leads travellers astray.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (public domain), to verify details"
+    }
+  ],
+  "story": "The skogsra of the old tales are forest women, fair from the front and hollow behind, who lead travellers off the path. The skogsra of Aegir are a people, and Boligar is the best of them at the old trick. He does not fight you so much as rearrange you: a song and everyone near him stands dreaming for a long minute, a gesture and the one who resisted is somewhere else in the woods. He hunts shades for his people, the Shade Seekers, and he does not like to be interrupted.",
+  "legend": "Boligar's mez is long and wide: stagger in, have purge or a minstrel ready, and don't all stand in front of him. He moves people around his camp, so walk back in rather than panic. His camp is up by the Iarnwood border.",
+  "yells": {
+    "aggro": [
+      "Hush. Sleep. The path goes the other way."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "You. Over there. Lose your way."
+      }
+    ],
+    "death": [
+      "The woods... are hollow... behind..."
+    ],
+    "slay": [
+      "Lost in the woods."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The path here bends where no path should."
+    ],
+    "realmFirstKill": "Boligar of the skogsra will lead no one astray again."
+  },
+  "botLines": {
+    "briefing": [
+      "boligar: 72 sec aoe mez, dont stack in front of him. he ports you around his camp too"
+    ],
+    "aftermathWin": [
+      "boligar down without a full mez wipe. [miracle|gg]"
+    ],
+    "aftermathLoss": [
+      "we all stood there mezzed watching him kill the healer"
+    ],
+    "rumour": [
+      "the skogsra lead travellers off the path. boligar's the best at it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Boligar",
+    "text": "The best of the skogsra at the old trick of leading travellers astray. A song and you dream; a gesture and you are elsewhere in the woods."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} found the path past Boligar in {minutes} minutes.",
+    "loss": "Boligar led {raidLeader}'s party from {realm} astray for {minutes} minutes."
+  }
+}
