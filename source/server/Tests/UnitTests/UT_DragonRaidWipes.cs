@@ -424,11 +424,11 @@ namespace DOL.UnitTests
 
             AutonomousEpicSpecialForces.SetHistoryForTests("dragon-hibernia", "Boss defeated", "Boss defeated", "Boss defeated");
             AutonomousEpicSpecialForces.Request("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, "a wipe at Cuuldurach");
-            Assert.That(AutonomousEpicSpecialForces.PendingCalls, Is.EqualTo(1), "a realm that keeps killing its dragon gets nobody");
+            Assert.That(AutonomousEpicSpecialForces.PendingCalls, Is.EqualTo(2), "they always answer a wipe (2026-11-04)");
 
             AutonomousEpicSpecialForces.SetHistoryForTests("dragon-midgard", "Boss defeated", "Defeated", "Timed out");
             Assert.That(AutonomousEpicSpecialForces.ComesFromStart("dragon-midgard"), Is.True, "two losses in a row at the dragon: from the start");
-            Assert.That(AutonomousEpicSpecialForces.CallUpSize(new[] { "Boss defeated", "Defeated", "Timed out" }), Is.EqualTo(24));
+            Assert.That(AutonomousEpicSpecialForces.CallUpSize(["Boss defeated", "Defeated", "Timed out"]), Is.EqualTo(24));
         }
 
         [Test]
