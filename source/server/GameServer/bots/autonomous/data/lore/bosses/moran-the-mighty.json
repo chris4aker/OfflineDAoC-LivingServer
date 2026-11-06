@@ -1,0 +1,81 @@
+{
+  "id": "moran-the-mighty",
+  "name": "Moran the Mighty",
+  "catalogKey": "open-world/moranthemighty",
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 73, 40,000 health, a giant (size 230) in Dartmoor east of Golestandt's lair; tether 4,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs"
+    },
+    {
+      "text": "From 50% health he picks raiders up 'on gusts of wind' and tosses them to one of three spots on the moor.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Albion bot chat already says he keeps watch in Dartmoor.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "The granite giants of Dartmoor lie down in the heather and sleep. Moran never lies down. He is taller than any of them and older than most, and he stands on the high ground east of the stone dragon's lair as though he were keeping watch over her, which the Albion minstrels say he is. The wind on that hill belongs to him. When he is hurt he calls it, and it picks men up like chaff and throws them off his hill onto the moor below, where the rest of Dartmoor is waiting. He does not hate anyone. He simply does not let anyone stand on his hill for long.",
+  "legend": "Above half he is a big giant who hits hard. Below half he throws people off the hill on gusts of wind; if it is you, walk back up the slope and watch for granite giants on the way. Do not drag him off his hill, he walks home.",
+  "yells": {
+    "aggro": [
+      "Off my hill, small ones."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Wind! Take them away!"
+      }
+    ],
+    "death": [
+      "Who... watches the mother now..."
+    ],
+    "slay": [
+      "Blown off the hill."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The wind here blows one way: away from the giant."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Moran calls the wind! Men are thrown from the hill!"
+      }
+    ],
+    "realmFirstKill": "Moran the Mighty has fallen. The wind on the hill is still."
+  },
+  "botLines": {
+    "briefing": [
+      "moran throws people off the hill below 50%. walk back up, watch for giants",
+      "dont pull him off his hill, big tether but he resets"
+    ],
+    "aftermathWin": [
+      "moran down. the hill is ours",
+      "nobody got lost on the way back up. nice"
+    ],
+    "aftermathLoss": [
+      "the thrown people pulled granite giants on the way back"
+    ],
+    "rumour": [
+      "they say moran the mighty keeps watch in dartmoor too. never got close enough to check",
+      "[heard|someone said] moran throws you off his hill with the wind"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "moran",
+    "text": "Moran the Mighty, a giant taller than the tors, who keeps the high ground east of the lair. When he is hurt he calls the wind and throws men off his hill like chaff."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} held Moran's hill against the wind and felled the giant in {minutes} minutes.",
+    "loss": "Moran the Mighty blew {realm}'s raid off his hill; {raidLeader} never got them back up the slope."
+  }
+}

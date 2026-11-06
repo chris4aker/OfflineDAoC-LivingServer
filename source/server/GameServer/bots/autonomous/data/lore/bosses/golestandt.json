@@ -1,0 +1,104 @@
+{
+  "id": "golestandt",
+  "name": "Golestandt",
+  "catalogKey": "golestandt-s-lair-dartmoor/albgolestandt",
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 80, 300,000 health. Takes no damage outside her lair; breathes fire at every tenth of her health (90% down to 10%); her Dragon's Breath halves Heat resist; she glares, stuns and roars across the land.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs"
+    },
+    {
+      "text": "Granite giant stonelords, pounders and outlookers come to her: at most six in a fight, at 85/70/55/40/25/10% health.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Her waking roar: 'I will grind your bones and shred your flesh!'. Her taunts single out the class of the raider she kills.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs"
+    },
+    {
+      "text": "Gender: the script's emotes say 'his', but they are a template shared word for word with Cuuldurach's script. Albion bot chat, period player talk calling Cuuldurach 'the only male dragon', and the lore bible's other dragons make her female; this entry says she.",
+      "provenance": "original",
+      "source": "LORE-INVENTORY.md section 8"
+    },
+    {
+      "text": "Period sizes: 125-160 (Feb 2003), down to 17-24 over two to three hours by August 2003.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    }
+  ],
+  "story": "Golestandt is the stone dragon, and she is older than Albion. The granite of Dartmoor is the colour of her hide, and the minstrels say the moor is her bed and the tors are only the bones of her sleep. The granite giants are her get, or her servants, or something between: when she calls they stand up out of the heather and come, a few at a time, as she is wounded. She does not raid as dragons in songs raid. She waits. Things that come onto her moor end up in her lair, a Roman lord and his household, thirty of Uther's knights, a hundred raids, and she knows each by its trade, and mocks it as it dies. Outside her lair she is as untouchable as the moor itself. Inside it she answers every tenth part of her strength that falls with a breath of fire, and that fire strips the ward from a man's armour before it burns him, so that the second breath is always worse than the first.",
+  "legend": "Fight her in her lair or not at all; outside it she takes nothing. She breathes at every ten percent, and the breath halves your heat resist, so the second one hurts more than the first: stack heat resist and heal up before each tenth. Granite giants come in as she drops; a party on adds. In the early days it took the whole realm. Two dozen who know her can do it, slowly.",
+  "yells": {
+    "aggro": [
+      "I will grind your bones and shred your flesh!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "You feel that? That is my breath. Here is another."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Children of the moor! Stand up! Come to me!"
+      }
+    ],
+    "death": [
+      "The moor... will remember... my name..."
+    ],
+    "slay": [
+      "Foolish {class}! Your flesh will make a splendid meal.",
+      "Meddle not in the affairs of dragons, {class}! Yes, you are indeed crunchy.",
+      "Perhaps your dark ages would end if {class}s like you continue to be weeded out!"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground is warm. Something under it is breathing."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "Golestandt draws breath. The moor burns!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The granite giants rise to their mother's call!"
+      }
+    ],
+    "realmFirstKill": "The stone dragon has fallen. Dartmoor is quiet.",
+    "wake": "Golestandt wakes. The ground of Dartmoor lurches."
+  },
+  "botLines": {
+    "briefing": [
+      "fight her in the lair only, outside it she takes zero",
+      "breath every 10%, and it halves heat resist. heal up before each tenth, stack resist",
+      "one party on the granite giants as they come. everyone else on her"
+    ],
+    "aftermathWin": [
+      "GOLESTANDT DOWN. [gg|gg all], the stone mother is dead",
+      "she called us crunchy. who's crunchy now"
+    ],
+    "aftermathLoss": [
+      "the second breath always gets you. heat resist, people",
+      "someone pulled her out of the lair and we hit an immune dragon for a minute"
+    ],
+    "rumour": [
+      "golestandt's breath [eats|burns off] your heat resist [before the second one lands|first], [which is mean|which is just rude]",
+      "the journal [fell out of the sky|came down out of a clear sky] at prydwen keep, [they say|so the scribes write]. one word [left on it|still legible]: golestandt"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "golestandt",
+    "text": "The stone dragon of Dartmoor, as old as the moor. Outside her lair nothing harms her; inside it she answers every tenth part of her strength with fire, and her breath eats the heat-ward off your armour. Fight her in her lair."
+  },
+  "bookPage": "Fifth day. The ground lurched under us at noon and every horse screamed. A voice came out of the south that was not a voice so much as weather, and it said that it would grind our bones. Sir Arward laughed and drew his sword. I am writing this on my knee. The giants are standing up all around us now, dozens of them, and they are not looking at us. They are looking south, as dogs look at a door when their mistress comes home.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} went south on Dartmoor and brought down Golestandt, the stone mother, in {minutes} minutes.",
+    "loss": "Golestandt ground the bones of {realm}'s raid in her lair; {raidLeader} did not come back walking."
+  }
+}

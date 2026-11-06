@@ -1,0 +1,113 @@
+{
+  "id": "dartmoor",
+  "name": "Dartmoor",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "summary": "Albion's raid moor of granite giants and burnt grass, where the stone dragon Golestandt keeps her lair at the southern end.",
+  "facts": [
+    {
+      "text": "Dartmoor is a level 35-50 Albion zone meant for large groups, bordering Cornwall and the Labyrinth; it holds granite giants and the dragon's lair, whose fire hits hard and wide.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=59"
+    },
+    {
+      "text": "Players gathered about 350 strong for a dragon hunt in June 2002 and crashed the zone; later that month 150-200 were wiped in about twenty minutes by fire of roughly 5,000 a breath.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=59"
+    },
+    {
+      "text": "A February 2003 Albion guide counted 125-160 players at its author's four kills; by August 2003 groups of 17-24 were killing her in two to three hours.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Golestandt's lair is in region 1 at 391326, 755351; Moran the Mighty stands in Dartmoor too, at 408341, 756300.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "The bounty quest says the dragon has cast a shadow over Dartmoor and villages burn.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Bounty/BountyQuest.cs"
+    },
+    {
+      "text": "Albion bot chat already tells of Sir Arward's thirty knights and a scorched journal bearing one word, a Roman lord who vanished on the moor in Uther's day, and a minstrel verse of the 'stone mother of Dartmoor'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines"
+    }
+  ],
+  "story": "The old Britons said Dartmoor was a giant's floor: the tors were the stones the giants left lying when they went away. They were half right. The granite giants never went away. They lie on the moor with the heather grown over them, and they get up when you are not looking.\n\nWhat the old Britons did not know, or would not say, is what the giants lie down around. At the southern end of the moor, past the last ruined farm and the corner where the grass is always burnt, there is a lair, and in it sleeps the stone dragon. Albion's minstrels call her the stone mother of Dartmoor, because the granite giants come to her when she calls, as children come to a mother, and because she is as old as the moor itself. Her name came to Camelot only once, in Uther's day, when a Roman lord and all his household vanished from their house on the moor and Sir Arward rode south with thirty knights and a scribe to learn why. What came back was the scribe's journal, scorched, falling out of a clear sky over Prydwen Keep, with one word still legible on its last page: Golestandt.\n\nShe is not the only power on the moor. Moran the Mighty, a giant taller than the tors, keeps the high ground to the east of her lair, and the wind obeys him. But it is her moor. Every raid that has ever gone south on Dartmoor has felt the ground lurch when she wakes, and heard her voice explode across the land, promising to grind their bones.",
+  "legend": "When the dragons first woke, the whole realm stood on Dartmoor just to look at her, and the zone fell over under them. Never say her name inside the moor; old raid leaders swear she listens. Fight her in her lair, never out of it, because outside it nothing harms her. Bring heat resist, and bring it twice: her breath eats it.",
+  "atmosphere": {
+    "firstEntry": [
+      "The tors are watching. Some of them breathe.",
+      "Dartmoor. The grass to the south is burnt black."
+    ],
+    "areas": [
+      {
+        "name": "Golestandt's lair",
+        "x": 391326,
+        "y": 755351,
+        "z": 391,
+        "radius": 3000,
+        "lines": [
+          "The ground is warm. Something under it is breathing."
+        ]
+      },
+      {
+        "name": "Moran's high ground",
+        "x": 408341,
+        "y": 756300,
+        "z": 538,
+        "radius": 1500,
+        "lines": [
+          "The wind here blows one way: away from the giant."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "sir arward took thirty knights into dartmoor. [all that came back|the only thing that came home] was a [scorched|singed] journal",
+      "[those|the] boulders in dartmoor are not boulders. granite giants, and [they get up|some of them stand] when you [aren't looking|least expect it]",
+      "the minstrels call golestandt the stone mother of dartmoor. the granite giants come when she calls",
+      "there's a corner of dartmoor south of the ruins where the grass is all burnt. [i turned back|thats her front door]",
+      "moran the mighty keeps the high ground in dartmoor. [the wind does what he says|he throws people on the wind]"
+    ],
+    "rumour": [
+      "never say the dragon's name inside dartmoor. old raid leaders swear she listens",
+      "[heard|someone said] the first time the dragon woke, the whole realm went to dartmoor to look and the zone crashed",
+      "[heard|word is] two dozen good people can kill golestandt now. takes hours though"
+    ],
+    "tell": [
+      "dartmoor? raid zone south of cornwall. granite giants everywhere, moran the mighty on the high ground, golestandt in her lair at the south end",
+      "albion's dragon lives at the bottom of dartmoor. bring heat resist and a raid",
+      "big moor full of giants that look like rocks. dont go south alone"
+    ]
+  },
+  "loremaster": {
+    "intro": "Dartmoor is a giant's floor, the old Britons said, and the [granite giants] are still on it. At its southern end sleeps the stone dragon, [Golestandt]. Her name came to Camelot only once, in [Sir Arward]'s journal.",
+    "topics": {
+      "granite giants": "They lie on the moor with the heather over them and stand up when you are not looking. They come to the dragon when she calls, as children to a mother. That is why the minstrels call her the [stone mother].",
+      "golestandt": "The stone dragon of Dartmoor, as old as the moor. Outside her lair nothing harms her; inside it she answers every tenth part of her strength with fire, and her breath eats the heat-ward off your armour. Fight her in her lair.",
+      "sir arward": "In Uther's day a Roman lord and his household vanished on the moor. Uther sent Sir Arward with thirty knights and a scribe. The scribe's journal fell scorched out of a clear sky over Prydwen Keep. One word was legible on its last page.",
+      "stone mother": "The minstrels' name for Golestandt. Some of the old raid tales call the dragon he; the minstrels never have, and the minstrels have sung her longest. In this hall we say she.",
+      "moran": "Moran the Mighty, a giant taller than the tors, who keeps the high ground east of the lair. When he is hurt he calls the wind and throws men off his hill like chaff."
+    }
+  },
+  "book": {
+    "title": "The Scorched Journal of Sir Arward's Scribe",
+    "pages": [
+      "First day on the moor. Sir Arward has thirty knights and me, and I am to write everything, by the king's order. The house of the Roman, Lucius, stands empty two days south of the Cornish road. The table was laid for a meal. The meal was eaten. The doors were shut from the inside. Sir Arward says the Roman fled. The knights do not believe him, and nor, I think, does he. We ride south tomorrow.",
+      "Third day. The boulders on this moor move. I do not say this as a poet would. I watched one stand up in the evening and walk away from the fire, and Sir Pellam rode after it and did not come back until dawn, and would not say where he had been. The grass to the south is black in a long smear, as though something had dragged a burning coal across the moor. Sir Arward says we follow the black.",
+      "Fifth day. The ground lurched under us at noon and every horse screamed. A voice came out of the south that was not a voice so much as weather, and it said that it would grind our bones. Sir Arward laughed and drew his sword. I am writing this on my knee. The giants are standing up all around us now, dozens of them, and they are not looking at us. They are looking south, as dogs look at a door when their mistress comes home.",
+      "The rest of the pages are burnt through. On the last, in a hand that is not the scribe's and may not be any man's, one word is pressed into the vellum as if with a hot iron: Golestandt. The journal fell out of a clear sky onto the walk of Prydwen Keep in the autumn of that year. No knight of Sir Arward's company was ever seen again. The house of Lucius is still standing. Its table is still laid."
+    ]
+  },
+  "bosses": [
+    "golestandt",
+    "moran-the-mighty"
+  ]
+}
