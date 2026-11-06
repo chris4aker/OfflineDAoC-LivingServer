@@ -1,0 +1,72 @@
+{
+  "id": "fostra-orm",
+  "name": "Fostra Orm",
+  "catalogKey": "trollheim/fostraorm",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Fostra Orm is a level-61 serpent with 8,000 health that poisons (Orm Poison) and diseases.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists it as an animal in Trollheim; its drops include Morvalt jewellery. The bestiary also has 'Hus'djur Blood Orm', house-beast serpents.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5980"
+    },
+    {
+      "text": "Swedish fostra means to foster or raise, and orm serpent (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "The morvalt keep serpents the way Jordheim keeps hounds: blood orms, house beasts, raised from eggs in the warm runoff under the halls. Fostra Orm is the first of them, the foster-serpent, raised by hand by the morvalt who first broke the gates, and grown fat on Trollheim. It sleeps near Dagar's hall. Its bite carries a poison and a rot together, so that the poison works and the healing does not. The morvalt children feed it by hand, and it has never bitten one of them.",
+  "legend": "Fostra Orm is an easy kill for a level 50 group, but cure the disease or the poison outheals you. Shamans earn their keep here. It sits near Dagar; don't pull both at once unless you mean to. Bring an antidote or two for the tank.",
+  "yells": {
+    "aggro": [
+      "(The serpent hisses and uncoils.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Fostra Orm thrashes, venom spraying.)"
+      }
+    ],
+    "death": [
+      "(The great serpent goes limp.)"
+    ],
+    "slay": [
+      "(It coils around the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Warm water steams here. Something long sleeps in it."
+    ],
+    "realmFirstKill": "The foster-serpent of Trollheim is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "fostra orm poisons and diseases. cure both or heals dont land"
+    ],
+    "aftermathWin": [
+      "snake down, easy"
+    ],
+    "aftermathLoss": [
+      "pulled dagar with the snake by accident [oops|my bad]"
+    ],
+    "rumour": [
+      "the morvalt keep snakes as pets in trollheim. house snakes. [nope|no thanks]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fostra Orm",
+    "text": "The first of the morvalt's house serpents, the foster-serpent, raised by hand from an egg in Trollheim's warm runoff. Its bite brings poison and rot together."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew the foster-serpent of Trollheim in {minutes} minutes.",
+    "loss": "Fostra Orm's venom turned back {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "id": "dagar",
+  "name": "Dagar",
+  "catalogKey": "trollheim/dagar",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Dagar is a level-60 morvalt named with 8,000 health; a gruppchef and two morvalt larlings come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a plain melee mob with a lot of health; the Stoneheart quest sends players to kill him wearing the runed cloak of the trolls.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/698"
+    },
+    {
+      "text": "Swedish dagar means days; gruppchef means group leader and larling apprentice.",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify the morvalt usage"
+    }
+  ],
+  "story": "The morvalt keep no calendars, except Dagar. His name means days, and he is the one who counts them: a scratch on the wall of his hall for every dawn since the morvalt took Trollheim, and a longer scratch for every dawn the crazed ones say brings the Mother closer. He keeps his apprentices close and his group chief closer, and when strangers come wearing the runed cloak of the trolls, he takes it as an insult to his count.",
+  "legend": "Dagar is straight melee with a lot of health and a small pack. Pull him to a quiet spot, debuff, and grind. The Stoneheart quest makes people kill him wearing the troll cloak; don't forget it, or the quest won't count. Two groups is safe.",
+  "yells": {
+    "aggro": [
+      "Another day. Another mark on the wall. You."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Larlings! Gruppchef! Count them out!"
+      }
+    ],
+    "death": [
+      "Who... will count... the days..."
+    ],
+    "slay": [
+      "One more mark."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Thousands of scratches cover the wall. Someone counts."
+    ],
+    "realmFirstKill": "Dagar's count has ended in Trollheim."
+  },
+  "botLines": {
+    "briefing": [
+      "dagar is a tank and spank with 3 adds. [wear the cloak|cloak on] if you're on stoneheart"
+    ],
+    "aftermathWin": [
+      "dagar down, [stoneheart done|got my step]"
+    ],
+    "aftermathLoss": [
+      "forgot the cloak. [again|ugh]"
+    ],
+    "rumour": [
+      "dagar keeps scratching marks on his wall. counting days till something, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dagar",
+    "text": "The morvalt who counts the days: a scratch on his wall for every dawn since Trollheim fell, and a longer one for every dawn the crazed ones say brings the Mother closer."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended Dagar's count in Trollheim in {minutes} minutes.",
+    "loss": "Dagar scratched another mark: {raidLeader}'s raid from {realm} fell after {minutes} minutes."
+  }
+}

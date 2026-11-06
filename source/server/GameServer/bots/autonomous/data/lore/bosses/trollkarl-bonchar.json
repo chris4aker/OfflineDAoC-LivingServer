@@ -1,0 +1,88 @@
+{
+  "id": "trollkarl-bonchar",
+  "name": "Trollkarl Bonchar",
+  "catalogKey": "trollheim/rift",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Trollkarl Bonchar is a level-65 named with 30,000 health. Calm, he looks like a Valkyn sorcerer; when attacked he becomes 'The Rift' and stays so while he has aggro.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs"
+    },
+    {
+      "text": "As the Rift he calls a morkenhet out every 10-20 seconds and casts Rift Strike (300).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Trollkarl Bonchar, The Rift, Rift and Bonchar's Shade in Trollheim. A May 2003 raid said the morkenhet were the real fight and that killing the Rift gave nothing; a 2003 visitor asked if killing it brings back the morvalt at the desk.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6008"
+    },
+    {
+      "text": "Swedish and Old Norse trollkarl means sorcerer, wizard.",
+      "provenance": "original",
+      "source": "Swedish and Old Norse glossaries (to verify the period sense)"
+    }
+  ],
+  "story": "Bonchar was a trollkarl, a sorcerer, of the people the Troll Fathers tamed. When the morvalt broke into Trollheim he did not flee with the others. He went looking for the way the Fathers had gone, down into the dark, and he found the place where the dark is thin. He opened it. He meant to follow them through. Instead the rift came through him. Now he stands in his chamber with a sorcerer's face and a sorcerer's patience until someone touches him, and then he is not Bonchar any more but the Rift itself, and the morkenhet come out of it, things of the deep dark, one after another, for as long as anyone fights him. When the fight ends he is Bonchar again, and he does not remember.",
+  "legend": "The Rift isn't hard, the morkenhet are. One or two groups on add patrol, stuns and area damage, everyone else on the Rift. Target him with nearest-enemy. The old raiders say killing him gave them nothing at all, and they killed him anyway.",
+  "yells": {
+    "aggro": [
+      "Wait. Do not touch me. It is coming through. It is coming thr-"
+    ],
+    "phases": [
+      {
+        "trigger": "morph",
+        "text": "(Bonchar's face splits, and the dark behind it opens.)"
+      },
+      {
+        "trigger": "addsSpawned",
+        "text": "(Something crawls out of the Rift.)"
+      }
+    ],
+    "death": [
+      "Closed... it is closed... where did they go..."
+    ],
+    "slay": [
+      "(The Rift swallows the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A sorcerer stands very still. The air behind him is thin."
+    ],
+    "phases": [
+      {
+        "trigger": "morph",
+        "text": "Trollkarl Bonchar tears open. The Rift is here!"
+      }
+    ],
+    "realmFirstKill": "The Rift in Trollheim is closed. Bonchar is free."
+  },
+  "botLines": {
+    "briefing": [
+      "bonchar turns into the rift when pulled. [add team|2 groups] on the morkenhet, rest on the rift",
+      "use target nearest for the rift"
+    ],
+    "aftermathWin": [
+      "rift closed. no loot. [classic|typical]"
+    ],
+    "aftermathLoss": [
+      "morkenhet just kept coming"
+    ],
+    "rumour": [
+      "heard the sorcerer in trollheim opened a hole to wherever the troll fathers went. [it opened him instead|didnt end well]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Bonchar",
+    "text": "A trollkarl, a sorcerer, who stayed in Trollheim when the morvalt came and went looking for the way the Fathers had gone. He found where the dark is thin and opened it. It opened him instead."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} closed the Rift in Trollheim in {minutes} minutes.",
+    "loss": "The Rift in Trollheim stayed open; {raidLeader}'s raid from {realm} fell to the morkenhet after {minutes} minutes."
+  }
+}

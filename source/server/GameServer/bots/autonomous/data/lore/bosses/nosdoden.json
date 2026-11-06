@@ -1,0 +1,133 @@
+{
+  "id": "nosdoden",
+  "name": "Nosdoden",
+  "catalogKey": "trollheim/nosdoden",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Nosdoden is the level-80 final of Trollheim with 100,000 health, lying in the deepest hall.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a 'Mutated Dragon'. When an attacker dies near him he makes a ghost of them that fights the living; the ghost goes when the dead one is resurrected.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4687"
+    },
+    {
+      "text": "In this build a real player who dies to him becomes a 'Spirit of <name>' with that player's race, armour and class behaviour; a ghost spiritmaster raises a spirit champion, a ghost bonedancer a bone commander and bonemender.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs"
+    },
+    {
+      "text": "At every tenth of his health (90% down to 10%) about 12-18 'essence of fallen' spill out around him: nine waves in all.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Call of Void (1,100 damage in a 550 radius) at a chosen target, and Nosdoden's Venom over a wide area.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "When he dies the earth lurches, and a glowing light forms on the mound that served as his lair.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs"
+    },
+    {
+      "text": "His loot includes Ring of the Vaettir and a Tentacle Ring; he is one of the scale-bearers in the Dragon Myths & Legends quest. Players called him 'the worm'.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4687"
+    },
+    {
+      "text": "A Midgard raid of 42 killed him in October 2003; a May 2003 raid did under 10% before its dead outnumbered its living.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4687"
+    },
+    {
+      "text": "The Living Server raid beat him twice on 2026-11-04 with support 80 and 104.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Swedish doden means 'the death' and nos a muzzle or snout (the compound is to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "The Troll Fathers did not bury their dead. They gave them back to the land, and the land kept them: at the root of Trollheim, below the deepest hall, they raised a mound where the vaettir gathered, the spirits of everyone who had ever lived and died under Aegir. It was the holiest place they had. Then something came down into the dark. It may have been a dragon once; the trolls say it still had a dragon's shape when it found the mound. It lay down on the spirits as a dragon lies on gold, and it fed, and the feeding changed it. That is Nosdoden. He is full of the swallowed dead.\n\nThat is why the fight goes as it does. Every time you wound him a tenth part, the dead spill out of him, a dozen and more at a time, and they hate whatever is alive. Every one of you who dies near him is swallowed too, and comes back as a spirit with your own face and your own craft, fighting for him; raise your fallen quickly and he must give them back. When he dies at last, the earth lurches, and a pale light rises from the mound: the vaettir, going home.",
+  "legend": "Rez fast or fight your friends: every death makes a ghost with that player's class until they are rezzed. Nine waves of essences come at 90, 80, 70 and on down, so the add groups clear each wave before the tanks push him to the next tenth. Keep casters spread, because his void blast lands on a crowd. The old trolls say the light on the mound after he dies is the Troll Fathers' dead going home.",
+  "yells": {
+    "aggro": [
+      "Mmmmore. Bring them closer. I am so empty."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "They pour out of me. Catch them, if you can."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Half of everything I ever ate is loose. Feed me again."
+      },
+      {
+        "trigger": "playerDeath",
+        "text": "Yours now? No. Mine."
+      }
+    ],
+    "death": [
+      "The mound... they are leaving... all of them..."
+    ],
+    "slay": [
+      "Swallowed.",
+      "Another for the mound."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The mound of the dead. Something lies coiled on it.",
+      "Cold faces drift in the dark. They are watching."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "The essence of the fallen spills out of Nosdoden!"
+      },
+      {
+        "trigger": "playerDeath",
+        "text": "A spirit rises in a fallen fighter's shape!"
+      }
+    ],
+    "realmFirstKill": "Nosdoden is dead. Light rises from the mound.",
+    "wake": "Something vast stirs on the mound below Trollheim."
+  },
+  "botLines": {
+    "briefing": [
+      "nosdoden: nine add waves, every 10%. add groups clear the wave before tanks push",
+      "if you die you come back as a ghost on HIS side. [rezzers|healers] rez fast, thats the whole fight",
+      "casters spread out, his void blast hits everyone near the target"
+    ],
+    "aftermathWin": [
+      "the worm is dead!! [did you see the light on the mound|that light after he died tho]",
+      "nosdoden down. nine waves. [gg raid|best rez work ive seen]"
+    ],
+    "aftermathLoss": [
+      "my own ghost killed me. [never again|i hate this boss]",
+      "wave six got the healers and it all fell apart"
+    ],
+    "rumour": [
+      "[they say|heard] nosdoden was a dragon before trollheim changed him",
+      "the troll fathers' dead are inside nosdoden, my troll friend says. [creepy|thats why the waves]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nosdoden",
+    "text": "Under the deepest hall of Trollheim the Troll Fathers raised a mound for the spirits of their dead. Something with a dragon's shape lay down on it and fed. Wound him and the swallowed dead spill out; fall near him and he swallows you too, until a friend raises you."
+  },
+  "bookPage": "A troll of Bjarkan told me this, and would not drink while he told it. When his grandfather's grandfather died, he was carried down past the bridge and the spiral stair to the mound under the last hall, and laid there, and the vaettir took him in. Every troll went that way. Then the morvalt came, and the Fathers went deeper, and something else went down to the mound and did not come up. He said his grandfathers are in it. He said when the raids come back from Trollheim and talk about ghosts, he goes out and stands in the snow until he can stop listening.",
+  "chronicle": {
+    "win": "{raidLeader} led {realm} down to the mound of Trollheim and slew Nosdoden in {minutes} minutes; light rose behind them.",
+    "loss": "Nosdoden swallowed {raidLeader}'s raid from {realm} after {minutes} minutes on the mound."
+  }
+}

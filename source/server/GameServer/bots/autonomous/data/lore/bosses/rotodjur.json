@@ -1,0 +1,78 @@
+{
+  "id": "rotodjur",
+  "name": "Rotodjur",
+  "catalogKey": "trollheim/rotoddjur",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Rotodjur (script Rotoddjur) is a level-71 named with 10,000 health that raises four or five Rotoddjur's Servants and poisons.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A June 2003 Allakhazam comment describes it as a big mushroom whose 4-5 smaller mushrooms killed a level 50 warrior in about eight seconds.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/6010"
+    },
+    {
+      "text": "Swedish rot means root or rot, and djur animal or beast (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "In the far east halls of Trollheim, where no troll has lived since the Fathers left, the floor grows. Rotodjur is the oldest thing growing there, a mushroom the size of a house with a beast's appetite, rooted in whatever the Fathers left behind when they went down. When something warm comes close it buds, and the buds walk, and they are hungry too. The morvalt will not go into the east halls at all. They say the Fathers left something there on purpose, to keep the halls empty, and that it has done its work too well.",
+  "legend": "Clear the back of the room first so you don't add Rotodjur by accident. When it spawns its servants, kill them fast or kite them; they hit far harder than they look. One high-level group is not enough, the old comments say.",
+  "yells": {
+    "aggro": [
+      "(The great cap shudders and splits.)"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "(Spores burst. Small caps stand up and walk.)"
+      }
+    ],
+    "death": [
+      "(Rotodjur slumps into rot.)"
+    ],
+    "slay": [
+      "(Rootlets close over the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor here is soft, and it is growing."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Rotodjur buds, and its buds stand up!"
+      }
+    ],
+    "realmFirstKill": "Rotodjur has rotted away in the east halls."
+  },
+  "botLines": {
+    "briefing": [
+      "rotodjur spawns 4-5 little mushrooms that hit like trucks. [kill them|cc them] first"
+    ],
+    "aftermathWin": [
+      "killed the giant mushroom. [lol|what a sentence]"
+    ],
+    "aftermathLoss": [
+      "the little mushrooms killed our warrior in like 8 seconds"
+    ],
+    "rumour": [
+      "theres a mushroom the size of a house in trollheim. [im serious|not joking]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Rotodjur",
+    "text": "The oldest thing growing in Trollheim's empty east halls: a mushroom with a beast's appetite, rooted in what the Fathers left. Its buds walk, and they are hungry."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down Rotodjur in Trollheim's east halls in {minutes} minutes.",
+    "loss": "Rotodjur's buds overran {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}
