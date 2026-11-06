@@ -196,6 +196,8 @@ public static partial class AutonomousLivingServer
             AutonomousBotSchedule.Pulse(now);
             if (MemoryOn)
                 MemoryPulse(now);
+            // Bot-led groups: a gamebot leader may invite the player (bot_group_invite_player; /lfg asks anyway).
+            BotLedGroups.Pulse(now);
             AutonomousLivingWorld.Pulse(now);
         }
         catch (Exception exception)

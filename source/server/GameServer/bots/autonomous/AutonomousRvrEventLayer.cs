@@ -1454,6 +1454,7 @@ public static partial class AutonomousRvrEventLayer
             foreach (var active in CarrierEvents.Values)
                 foreach (var realm in active.Participants.Values) realm.Remove(forceId);
         }
+        BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, forceId);
     }
 
     /// <summary>
@@ -1674,7 +1675,10 @@ public static partial class AutonomousRvrEventLayer
                 RealmEventNotices.Queue(entry.Key, realm, $"Our time in the struggle for {CarrierTargets.GetValueOrDefault(entry.Key)?.Name ?? "the relic"} has run out. The escort and interception forces are standing down.");
             RealmEventRecords.Finish(entry.Key, "Timed out", "Relic escort/interception: four-hour battle timer expired.");
             foreach (string force in entry.Value.Participants.Values.SelectMany(realm => realm.Keys))
+            {
                 ReleasedForces[force] = "Relic event ended: four-hour battle timer expired";
+                BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, force);
+            }
             CarrierEvents.Remove(entry.Key);
             CarrierTargets.Remove(entry.Key);
             CarrierOrigins.Remove(entry.Key);
@@ -1709,7 +1713,10 @@ public static partial class AutonomousRvrEventLayer
             active.DefenseReaction ? RealmEventRecordStore.PlayerAttackPrefix + reason : reason,
             active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum());
         foreach (string force in active.Attackers.Keys.Concat(active.Defenders.Keys).Concat(active.ThirdRealm.Keys))
+        {
             ReleasedForces[force] = reason;
+            BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, force);
+        }
         Events.Remove(active.TargetId);
         Cooldowns[active.TargetId] = nowTick + TargetCooldownMilliseconds;
         Campaigns.Remove(active.TargetId);   // the relic siege itself has ended
@@ -1789,6 +1796,8 @@ public static partial class AutonomousRvrEventLayer
             RealmEventRecords.Finish(active.TargetId, "Superseded", $"A forced siege of {forced.Target.Name} took this rally's army",
                 active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum());
             // Its defenders and third realm go back to their own choices (not released: nothing ended for them).
+            foreach (string force in active.Defenders.Keys.Concat(active.ThirdRealm.Keys))
+                BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, force);
             Events.Remove(active.TargetId);
             Cooldowns[active.TargetId] = nowTick + TargetCooldownMilliseconds;
             var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
@@ -1898,7 +1907,10 @@ public static partial class AutonomousRvrEventLayer
         {
             RealmEventRecords.Finish(id, "Timed out", "Relic event expired during objective cleanup.");
             foreach (string force in CarrierEvents[id].Participants.Values.SelectMany(realm => realm.Keys))
+            {
                 ReleasedForces[force] = "Relic captured or event no longer available";
+                BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, force);
+            }
             CarrierEvents.Remove(id);
             CarrierTargets.Remove(id);
             CarrierOrigins.Remove(id);
@@ -1990,7 +2002,10 @@ public static partial class AutonomousRvrEventLayer
             CarrierOrigins.Remove(targetId);
             if (removed)
                 foreach (string force in carrier.Participants.Values.SelectMany(realm => realm.Keys))
+                {
                     ReleasedForces[force] = carrierOutcome == "returned" ? "Relic returned to its pad: event ended" : "Relic captured: event ended";
+                    BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, force);
+                }
             if (removed)
             {
                 Cooldowns[targetId] = nowTick + TargetCooldownMilliseconds;

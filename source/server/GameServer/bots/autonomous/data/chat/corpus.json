@@ -318582,6 +318582,3120 @@
    "id": "a5afdecb289e"
   },
   {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask",
+   "text": "lf 1 more for {monsters} in {destination}, want in?",
+   "id": "e35688c998a9"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "ask",
+   "text": "need one more for {monsters}, want in?",
+   "family": "3d4bb3bed4",
+   "id": "a1ca24847883"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "ask",
+   "text": "need one more for {monsters}, interested?",
+   "family": "3d4bb3bed4",
+   "id": "4d12732690dc"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "ask",
+   "text": "lf one more for {monsters}, want in?",
+   "family": "3d4bb3bed4",
+   "id": "42c4c177840c"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "ask",
+   "text": "lf one more for {monsters}, interested?",
+   "family": "3d4bb3bed4",
+   "id": "ef33822ad75d"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "ask",
+   "text": "got a spot open, {monsters} in {destination}. want in?",
+   "family": "9e689982eb",
+   "id": "79dd3f531a16"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "ask",
+   "text": "got a spot open, {monsters} in {destination}. you up for it?",
+   "family": "9e689982eb",
+   "id": "be0815c16b1e"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "ask",
+   "text": "hey, we have room for one more. {monsters} in {destination}, want to come?",
+   "family": "31d6096398",
+   "id": "5062eab77b3f"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "ask",
+   "text": "hey, we have room for one more. {monsters} in {destination}, you in?",
+   "family": "31d6096398",
+   "id": "7d20f1680099"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask",
+   "text": "forming up for {monsters}, could use you. want an inv?",
+   "id": "794228b2af61"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite_asked",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "got room, sending you an inv",
+   "family": "cb08c299a6",
+   "id": "609b329d3dc1"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite_asked",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "got room, sending an inv",
+   "family": "cb08c299a6",
+   "id": "1643a8d9f660"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite_asked",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "have room, sending you an inv",
+   "family": "cb08c299a6",
+   "id": "76ec8bb621b5"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite_asked",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "have room, sending an inv",
+   "family": "cb08c299a6",
+   "id": "369fad90dc8b"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite_asked",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "sure, inv coming",
+   "id": "bad230ee235a"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite_asked",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "yep, sending inv",
+   "family": "6c3409ea03",
+   "id": "16275b8c190c"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite_asked",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "yep, incoming inv",
+   "family": "6c3409ea03",
+   "id": "a1abf69b1a66"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_invite_asked",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "we have a spot, inv sent",
+   "id": "096112fd6aa1"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_afk_let_go",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "had to move on, send me a tell when you are back",
+   "id": "b29ce5de4645"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_afk_let_go",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "we went on without you, send me a tell when you are back and we can regroup",
+   "family": "7e01e56321",
+   "id": "c23f0fba6717"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_afk_let_go",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "we went on without you, send me a tell when you are back and we can sort it out",
+   "family": "7e01e56321",
+   "id": "f633e8a3fdc3"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_afk_let_go",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "we went on without you, tell me when you are back and we can regroup",
+   "family": "7e01e56321",
+   "id": "f94010e9bd24"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_afk_let_go",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "we went on without you, tell me when you are back and we can sort it out",
+   "family": "7e01e56321",
+   "id": "2f972e507ee7"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "welcome! meet up at {destination}",
+   "id": "bb6afaf3cf5f"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "welcome, we meet at {destination}",
+   "family": "65d0e32253",
+   "id": "5cb7e0767320"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "hey, we meet at {destination}",
+   "family": "65d0e32253",
+   "id": "69be30f9f0e3"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "welcome aboard, meeting at {destination}, see you there",
+   "id": "295cd86a873d"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_out",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "welcome! we are at {destination}, come find us",
+   "id": "90801d368cea"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_out",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "welcome, we are out at {destination}, follow me if you are close",
+   "family": "5fc669a52c",
+   "id": "1614c8c9da8c"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_out",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "welcome, we are out at {destination}, come find us",
+   "family": "5fc669a52c",
+   "id": "d57643146180"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_out",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "hey, we are out at {destination}, follow me if you are close",
+   "family": "5fc669a52c",
+   "id": "26672194ebae"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_welcome_out",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "hey, we are out at {destination}, come find us",
+   "family": "5fc669a52c",
+   "id": "06445ce9c9be"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "still at {destination}, waiting on you",
+   "id": "be8c09c80e2e"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "we are at {destination} whenever you are ready",
+   "family": "bf18b7c85e",
+   "id": "208fc5b13e75"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "we are at {destination} still",
+   "family": "bf18b7c85e",
+   "id": "19c0cd7ce34b"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "waiting at {destination}, no rush",
+   "id": "3f6efade9534"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_going_on",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "heading on to {camp}, catch up when you can",
+   "id": "6ee24f4383c7"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_going_on",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "going on to {camp}, meet us there, spot is saved",
+   "id": "018b1da80117"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_going_on",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "moving on to {camp}, your spot is saved",
+   "family": "df2f17e86d",
+   "id": "5e0d550de8e8"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_going_on",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "moving on to {camp}, we saved your spot",
+   "family": "df2f17e86d",
+   "id": "8a1b30556c31"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_where",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "where u at?",
+   "id": "35d545176230"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_where",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "where are you, need directions?",
+   "family": "84f7724992",
+   "id": "62447ae67029"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_where",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "where u at, need directions?",
+   "family": "84f7724992",
+   "id": "768e11aca918"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_where",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "you still with us?",
+   "id": "1854dae3bdbb"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_afk_hold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "everyone med, waiting on our last one",
+   "id": "cd6eec269a08"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_afk_hold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "holding a sec, everyone med",
+   "family": "a2ca528195",
+   "id": "a8c73aa0db18"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_afk_hold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "hold up a sec, everyone med",
+   "family": "a2ca528195",
+   "id": "2d646f6564dc"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_move",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "moving to {camp}",
+   "id": "c2927dd9e975"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_move",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "ok, heading to {camp}",
+   "family": "ddf1caf774",
+   "id": "99009afa6406"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_move",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "alright, heading to {camp}",
+   "family": "ddf1caf774",
+   "id": "8f2b5b300ce6"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_move",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "on to {camp}, stay close",
+   "family": "35af42c8be",
+   "id": "394f12d96be7"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_move",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "on to {camp}, follow me",
+   "family": "35af42c8be",
+   "id": "76c34960db41"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_break",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "thats it for me, good group all",
+   "id": "5a6f74801de5"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_break",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "gotta call it, ty all, good group",
+   "family": "bbd1d73e7b",
+   "id": "71870c3ebca1"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_break",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "gotta call it, thanks all, good group",
+   "family": "bbd1d73e7b",
+   "id": "9d2f488105db"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_player_left",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "lost one, we carry on",
+   "id": "fc3d059022d6"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_player_left",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "ok, carrying on without them",
+   "family": "072b632433",
+   "id": "e39a580a18a1"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_player_left",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "alright, carrying on without them",
+   "family": "072b632433",
+   "id": "33b14c945f1f"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_handover",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "all yours, we follow you",
+   "id": "462980e929a6"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_handover",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "ok, your lead",
+   "family": "913093691b",
+   "id": "73555f4802bc"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_handover",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "sure, your lead",
+   "family": "913093691b",
+   "id": "7c73e3c4a81b"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_handover",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "all yours, lead on",
+   "family": "c57873c2b8",
+   "id": "0c1c1684b74b"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_handover",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "your group now, lead on",
+   "family": "c57873c2b8",
+   "id": "a676df64a3a2"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_handover",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "k new lead, everyone follow",
+   "id": "eec40253d95a"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_take",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "ok i'll lead, finding us a camp near here",
+   "id": "5ac55778024d"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_take",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "sure, i got it. looking for a camp around here",
+   "family": "c60a659cac",
+   "id": "a4ba7a4b57c1"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_take",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "ok, i got it. looking for a camp around here",
+   "family": "c60a659cac",
+   "id": "c976b277c0a4"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_take",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "i'll take it, give me a sec to find a spot nearby",
+   "id": "d81c4a34d5e6"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_last_bot",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "just us two left, want to lead?",
+   "id": "45734bd4b841"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_last_bot",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "well, it's just us now. you want to lead?",
+   "family": "53a4b34464",
+   "id": "c8dbaf08e7dc"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_last_bot",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "hm, it's just us now. you want to lead?",
+   "family": "53a4b34464",
+   "id": "c63a2877eb83"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_last_bot",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "everyone bailed, your call",
+   "id": "c5bf5b83a028"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_raid_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "welcome, we wait at {destination} until the raid leaves",
+   "id": "5e8178fa36de"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_raid_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "welcome, we muster at {destination}, see you there",
+   "family": "b43c6bb8ee",
+   "id": "113c13297ae2"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_raid_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "hey, we muster at {destination}, see you there",
+   "family": "b43c6bb8ee",
+   "id": "678fb4f44aa3"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_raid_welcome",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "glad you came, meet us at {destination} before we head out",
+   "id": "21c0254e4b86"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "pulling",
+   "id": "4e7e60bf7b02"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "pulling, get ready",
+   "family": "f9fca966f0",
+   "id": "5e8c4621f36a"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "incoming, get ready",
+   "family": "f9fca966f0",
+   "id": "49baa835973a"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "inc, on me",
+   "id": "964f5b8ef3cc"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "inc, stay on me",
+   "family": "4ebd31e7df",
+   "id": "0344ffc8e7f3"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "inc, watch for adds",
+   "family": "4ebd31e7df",
+   "id": "8cde432a601b"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "pulling, healers ready?",
+   "family": "cfcfa56d5f",
+   "id": "56ae57c81f9a"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "pulling, everyone ready?",
+   "family": "cfcfa56d5f",
+   "id": "840da2ebcb1d"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "here it comes",
+   "family": "af71be96c8",
+   "id": "19b43d8068dc"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "here we go",
+   "family": "af71be96c8",
+   "id": "c16fbc18dd5b"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "incoming, assist me",
+   "family": "e4b24d63e0",
+   "id": "7efe3c5f3f65"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "incoming, on my target",
+   "family": "e4b24d63e0",
+   "id": "b63749e149f3"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "one coming, get set",
+   "family": "903935fb84",
+   "id": "1e440d909cd0"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "one coming, be ready",
+   "family": "903935fb84",
+   "id": "700cdfe48211"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "ok pulling, hold aggro",
+   "family": "088a564362",
+   "id": "435c45fd159d"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "ok pulling, tank it",
+   "family": "088a564362",
+   "id": "3c74dedd116f"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "k pulling, hold aggro",
+   "family": "088a564362",
+   "id": "0cd105ef1b16"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "k pulling, tank it",
+   "family": "088a564362",
+   "id": "034820627cf6"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "inc inc",
+   "id": "a8d581808bce"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_sell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "last pull then town",
+   "id": "5092f894efd6"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_sell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "bags full, last pull then we sell",
+   "family": "2133f18176",
+   "id": "adf4f5f2a732"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_sell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "bags are full, last pull then we sell",
+   "family": "2133f18176",
+   "id": "f5f328b13cd0"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_sell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "one more pull, then town to sell",
+   "id": "b50497eae70d"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_sell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "ok, last one then town",
+   "family": "d541b2fbb8",
+   "id": "16cbb9764fb1"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_sell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "ok, last one then we go sell",
+   "family": "d541b2fbb8",
+   "id": "17e0f03308d7"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_sell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "alright, last one then town",
+   "family": "d541b2fbb8",
+   "id": "4664430a6eb0"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_sell",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "alright, last one then we go sell",
+   "family": "d541b2fbb8",
+   "id": "5efcc39b7f2a"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "ok town to sell, good group all",
+   "id": "0a0efbcad449"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "thats it, heading to town to sell, ty all",
+   "family": "3408df8b33",
+   "id": "10abd6d32cf6"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "thats it, heading to town to sell, thanks all",
+   "family": "3408df8b33",
+   "id": "9e65f26bd151"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "done, heading to town to sell, ty all",
+   "family": "3408df8b33",
+   "id": "be1679c6f4d1"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "done, heading to town to sell, thanks all",
+   "family": "3408df8b33",
+   "id": "004086b40633"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "selling up, good group everyone",
+   "family": "85f9cfc38b",
+   "id": "2de2e56f5ca1"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "selling up, nice run everyone",
+   "family": "85f9cfc38b",
+   "id": "5f59de149622"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "bags full, calling it, ty for the group",
+   "family": "9972db2b59",
+   "id": "7075f9b2e49d"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_town",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "bags full, calling it, thanks for the group",
+   "family": "9972db2b59",
+   "id": "00f8147473ac"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruited",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "got someone coming, hang tight",
+   "id": "43a77943a78d"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruited",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "found one, they are on the way",
+   "family": "2f675ba015",
+   "id": "15dd243c8854"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruited",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "got one, they are on the way",
+   "family": "2f675ba015",
+   "id": "cabaf50a1e3d"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruited",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "replacement on the way, hold here",
+   "family": "d9a4fa65ff",
+   "id": "f58a64bfb42a"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruited",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "replacement on the way, med up while we wait",
+   "family": "d9a4fa65ff",
+   "id": "318e8ce30040"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_none",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "no luck finding anyone, we carry on as we are",
+   "id": "237b9fc8ba33"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_none",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "nobody bit, we keep going short",
+   "family": "1fa9ba9677",
+   "id": "b6fafabbd346"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_none",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "no one bit, we keep going short",
+   "family": "1fa9ba9677",
+   "id": "dd4e281653ce"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_none",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "cant find one, we manage without",
+   "id": "442d91960931"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_end",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "couldnt find anyone, gonna call it here",
+   "id": "1bd3675d2886"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_end",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "no luck, calling it, ty all",
+   "family": "1d8b113b1d",
+   "id": "48e94281d712"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_end",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "no luck, calling it, thanks all",
+   "family": "1d8b113b1d",
+   "id": "2669bb60a035"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_end",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "nobody around, calling it, ty all",
+   "family": "1d8b113b1d",
+   "id": "f639355702dc"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_end",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "nobody around, calling it, thanks all",
+   "family": "1d8b113b1d",
+   "id": "34c14e10be05"
+  },
+  {
+   "kind": "group",
+   "topic": "lead_recruit_end",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "bot_leads",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "cant run without one, done for now",
+   "id": "a6626ca4034c"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lead_lf_more",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "lf 1 more, need {need} for {camp}",
+   "id": "60090c28629c"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lead_lf_more",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "lf1m {need}, {camp}",
+   "family": "c23663cc76",
+   "id": "986db55d5b8f"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lead_lf_more",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "lf 1m {need}, {camp}",
+   "family": "c23663cc76",
+   "id": "11597f13a4a2"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lead_lf_more",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "lf 1 more at {camp}, need {need}, pst",
+   "id": "9d1135e88bd9"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lead_lf_more",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "need {need} at {camp}, pst",
+   "family": "27a406284b",
+   "id": "b0b469faaa5d"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lead_lf_more",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "{camp} group lf {need}, quick xp",
+   "family": "9b3e4daf50",
+   "id": "e70da1f67cae"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lead_lf_more",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
+   "text": "{camp} group lf {need}, steady pulls",
+   "family": "9b3e4daf50",
+   "id": "d5edb3efa180"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "forming for {raid} at {destination}. want a spot?",
+   "id": "e87b2b1bac81"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "forming a raid for {raid} at {destination}, want in?",
+   "family": "9943ad0852",
+   "id": "cfe8d26c5aca"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "forming a raid for {raid} at {destination}, you in?",
+   "family": "9943ad0852",
+   "id": "e1d04da4282d"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "putting together a raid for {raid} at {destination}, want in?",
+   "family": "9943ad0852",
+   "id": "394967de60f3"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "none",
+   "text": "putting together a raid for {raid} at {destination}, you in?",
+   "family": "9943ad0852",
+   "id": "f6a2daef4884"
+  },
+  {
+   "kind": "tell",
+   "topic": "lead_raid_invite",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "none",
+   "text": "{raid} raid forming at {destination}, we could use you. want a spot?",
+   "id": "37c14ee514e9"
+  },
+  {
    "kind": "camp",
    "topic": "spawn",
    "who": [],
@@ -370962,27 +374076,6 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "xp is flying, good call on this camp",
-   "id": "3f35a50faa49"
-  },
-  {
-   "kind": "group",
-   "topic": "group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group",
-    "!in_capital"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
    "text": "need a quick med before the next one",
    "id": "2fe235fbf404"
   },
@@ -371048,48 +374141,6 @@
    "invites": "chat",
    "text": "if anything drops for your class, take it",
    "id": "1e844009f11d"
-  },
-  {
-   "kind": "group",
-   "topic": "group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group",
-    "!in_capital"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "you pull great, makes this easy",
-   "id": "dc53c4981ae9"
-  },
-  {
-   "kind": "group",
-   "topic": "group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group",
-    "!in_capital"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "good group and a good leader, cant ask for more",
-   "id": "c243e38fa948"
   },
   {
    "kind": "group",
@@ -371214,27 +374265,6 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "you have the patience of a saint with these pulls",
-   "id": "508377a07c3b"
-  },
-  {
-   "kind": "group",
-   "topic": "group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group",
-    "!in_capital"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
    "text": "this is the most fun i have had all week",
    "id": "db947e4394cc"
   },
@@ -371298,6 +374328,116 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
+   "text": "the drop rate on {monsters} is awful, but the xp makes up for it",
+   "id": "4caa39ed5c53"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital",
+    "!bot_leads"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "xp is flying, good call on this camp",
+   "id": "3f35a50faa49"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital",
+    "!bot_leads"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "you pull great, makes this easy",
+   "id": "dc53c4981ae9"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital",
+    "!bot_leads"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "good group and a good leader, cant ask for more",
+   "id": "c243e38fa948"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital",
+    "!bot_leads"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "you have the patience of a saint with these pulls",
+   "id": "508377a07c3b"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital",
+    "!bot_leads"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
    "text": "ty for the invite by the way, this is great",
    "id": "48799db700cf"
   },
@@ -371313,27 +374453,7 @@
    ],
    "needs": [
     "in_player_group",
-    "!in_capital"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "the drop rate on {monsters} is awful, but the xp makes up for it",
-   "id": "4caa39ed5c53"
-  },
-  {
-   "kind": "group",
-   "topic": "group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
+    "!bot_leads"
    ],
    "intent": "",
    "mood": "",
@@ -371353,7 +374473,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!bot_leads"
    ],
    "intent": "",
    "mood": "",
@@ -371394,7 +374515,8 @@
    ],
    "needs": [
     "in_player_group",
-    "!in_capital"
+    "!in_capital",
+    "!bot_leads"
    ],
    "intent": "",
    "mood": "",
@@ -371435,7 +374557,8 @@
     50
    ],
    "needs": [
-    "in_player_group"
+    "in_player_group",
+    "!bot_leads"
    ],
    "intent": "",
    "mood": "",

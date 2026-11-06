@@ -647,6 +647,9 @@ public static class AutonomousBotChatCoordinator
         return count;
     }
 
+    /// <summary>A gamebot leader's /lfg ask for a replacement (bot-led groups, B4), sent and counted like any bot /lfg line.</summary>
+    internal static void SendLfgLine(GameBot bot, string text) => SendRealmChannel(bot, "lfg", text);
+
     /// <summary>A bot's line in its realm's /lfg or /trade channel, formatted as the server's /lfg and /trade commands do.</summary>
     private static void SendRealmChannel(GameBot bot, string channel, string text)
     {
@@ -1154,6 +1157,19 @@ public static class AutonomousBotChatCoordinator
         bool voices = AutonomousBotVoices.Enabled;
         long now = GameLoop.GameLoopTime;
         string channel = AutonomousChatThreads.Tell(player.Name, bot.Name);
+        // Bot-led groups: the answer to a leader's invite tell. "no thanks" is a no to that leader (as No in the box).
+        if (AutonomousChatThreads.Log.OpenQuestion(channel, now, AutonomousChatThreads.TellMemoryMs) is { } invite &&
+            invite.Invites == BotLedGroups.InviteThread && !message.Contains('?') && AutonomousChatThreads.SaysYes(message) is bool joining)
+        {
+            AutonomousChatThreads.Log.Close(invite);
+            BotLedGroups.OnInviteTellAnswered(bot, player, joining);
+            return new ReplyChoice(AutonomousBotVoices.StyleFor(bot, joining
+                ? Random.Shared.Next(2) == 0 ? "cool, accept the inv" : "great, inv is up"
+                : Random.Shared.Next(2) == 0 ? "np, maybe next time" : "no worries"), "lead invite answer");
+        }
+        // Asking a bot leader with room ("room for a cleric?", "lfg?") gets the group invite box, not "invite me".
+        if (AsksToJoinGroup(message) && BotLedGroups.OnPlayerAsked(player, bot))
+            return new ReplyChoice(null, "lead invite asked");
         if (voices)
         {
             string word = AutonomousChatThreads.FollowUpWord(message);

@@ -14,38 +14,43 @@ nice pull, smooth as anything
 good spot, this camp suits us
 these {monsters} are good xp for us
 almost half a bubble a kill, not bad at all
-xp is flying, good call on this camp
 need a quick med before the next one
 endurance is low, give me a moment
 ty for the drop, really appreciate it
 if anything drops for your class, take it
-you pull great, makes this easy
-good group and a good leader, cant ask for more
 sorry about that last one, my bad
 i nearly pulled the whole room there, oops
 no deaths yet, lets keep it that way
 good timing on the pulls, i barely have to sit
 this camp has my vote, lets stay a while
-you have the patience of a saint with these pulls
 this is the most fun i have had all week
 glad i grouped with you, honestly
 i can stay about an hour more
-ty for the invite by the way, this is great
 the drop rate on {monsters} is awful, but the xp makes up for it
-@needs in_player_group
+# The player leads (they invited the bot): not in a gamebot party that hosts the player (bot_leads, docs/BOT-LED-GROUPS.md).
+@needs in_player_group,!in_capital,!bot_leads
+xp is flying, good call on this camp
+you pull great, makes this easy
+good group and a good leader, cant ask for more
+you have the patience of a saint with these pulls
+ty for the invite by the way, this is great
+@needs in_player_group,!bot_leads
 @invites joke
 you lead, i follow, we level. simple plan
 @invites ask_next
 where to next?
+@needs in_player_group
 @invites ask
 how close are you to a level?
-@needs in_player_group,!in_capital
+@needs in_player_group,!in_capital,!bot_leads
 @invites ask_opinion
 your call, stay here or move on?
+@needs in_player_group,!in_capital
 should we push on or stay here a bit?
-@needs in_player_group
+@needs in_player_group,!bot_leads
 @invites chat
 lead the way, i will follow
+@needs in_player_group
 {me} needs to log in 20, just a heads up
 @invites none
 brb sec

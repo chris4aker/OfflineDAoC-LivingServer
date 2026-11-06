@@ -7,7 +7,8 @@ namespace DOL.GS.Commands
 {
 	/// <summary>
 	/// /lswhy: why a gamebot said what it said, or why nobody answered (the chat framework's C0,
-	/// docs/bot-voices/CHAT-BUDGETS.md). Reads the decisions AutonomousChatWhy keeps; changes nothing.
+	/// docs/bot-voices/CHAT-BUDGETS.md), and what has the gamebot's time (its duty lease and the last claims on it,
+	/// docs/DUTY-LEASE.md). Reads the decisions AutonomousChatWhy and BotDutyLeases keep; changes nothing.
 	/// </summary>
 	[CmdAttribute(
 		"&lswhy",
@@ -16,10 +17,13 @@ namespace DOL.GS.Commands
 		"/lswhy - your target, or the last gamebot that spoke near you or to you",
 		"/lswhy <name> - that gamebot's last chat decisions",
 		"/lswhy last [count] - the last chat decisions in your realm, the quiet ones too",
-		"/lswhy budget - the chat budget around you: each channel's floor, target, ceiling and lines a minute now")]
+		"/lswhy budget - the chat budget around you: each channel's floor, target, ceiling and lines a minute now",
+		"/lswhy duty [name] - what has that gamebot's time (your target without a name): its duty lease and the last claims on it")]
 	public class LivingServerWhyCommandHandler : AbstractCommandHandler, ICommandHandler
 	{
 		public const int Shown = 6;
+		/// <summary>Claim decisions shown under a bot's chat decisions (all of /lswhy duty shows <see cref="Shown"/>).</summary>
+		public const int DutyShown = 3;
 
 		public void OnCommand(GameClient client, string[] args)
 		{
@@ -36,6 +40,11 @@ namespace DOL.GS.Commands
 			if (sub == "budget")
 			{
 				Budget(client, player, now);
+				return;
+			}
+			if (sub == "duty")
+			{
+				Duty(client, player, args.Length > 2 ? string.Join(" ", args.Skip(2)) : null, now);
 				return;
 			}
 			GameBot bot = null;
@@ -63,6 +72,43 @@ namespace DOL.GS.Commands
 			if (client.Account.PrivLevel <= 1)
 				decisions = decisions.Where(decision => decision.Realm == player.Realm).ToList();
 			Show(client, $"Why {bot?.Name ?? name} said what it said (newest first):", decisions, now);
+			if (bot == null && name != null)
+				AutonomousBotRegistry.TryGetByName(name, out bot);
+			if (bot == null || bot.Realm == player.Realm || client.Account.PrivLevel > 1)
+				ShowDuty(client, player, bot, bot?.Name ?? name, now, DutyShown);
+		}
+
+		private void Duty(GameClient client, GamePlayer player, string name, long now)
+		{
+			GameBot bot = null;
+			if (name == null)
+				bot = player.TargetObject as GameBot;
+			else
+				AutonomousBotRegistry.TryGetByName(name, out bot);
+			if (bot is { IsAutonomousWorldBot: false })
+			{
+				DisplayMessage(client, $"{bot.Name} is a companion: its time is its owner's, it holds no duty lease.");
+				return;
+			}
+			if (bot == null && name == null)
+			{
+				DisplayMessage(client, "Target a gamebot, or use /lswhy duty <name>.");
+				return;
+			}
+			if (bot != null && bot.Realm != player.Realm && client.Account.PrivLevel <= 1)
+			{
+				DisplayMessage(client, "You can only read the duties of your own realm's gamebots.");
+				return;
+			}
+			ShowDuty(client, player, bot, bot?.Name ?? name, now, Shown);
+		}
+
+		private static void ShowDuty(GameClient client, GamePlayer player, GameBot bot, string name, long now, int count)
+		{
+			List<string> lines = BotDutyLeases.WhyLines(bot, name, now, count, client.Account.PrivLevel > 1 ? eRealm.None : player.Realm);
+			client.Out.SendMessage($"What has {name}'s time: {lines[0]}", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			foreach (string line in lines.Skip(1))
+				client.Out.SendMessage(line, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 
 		private static void Budget(GameClient client, GamePlayer player, long now)

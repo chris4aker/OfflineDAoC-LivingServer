@@ -1016,6 +1016,7 @@ namespace DOL.GS
             IsReturningAfterRelease = false;
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
+            BotDutyLeases.OnDied(this); // a battleground rally drops its dead (BotDutyLeaseRules.EndsOnDeath)
 
             if (IsAutonomousWorldBot && PersistentRecord != null)
             {
@@ -2742,6 +2743,8 @@ namespace DOL.GS
                 return false;
 
             PlayerGroupLeader = leader;
+            // The player now has this gamebot's time: no raid, siege, RvR event or rally takes it (docs/DUTY-LEASE.md).
+            BotDutyLeases.Claim(this, eDutyLeaseKind.PlayerGroup, leader.Name, DutyLeaseReason.PlayerGroup, leader.Name);
             if (Brain is BotBrain brain)
             {
                 brain.RebindAssistedPlayer();
@@ -2755,6 +2758,7 @@ namespace DOL.GS
             if (IsTemporaryGroupHelper)
                 CompleteStableMasterRoute();
             PlayerGroupLeader = null;
+            BotDutyLeases.Release(this, eDutyLeaseKind.PlayerGroup);
             if (Brain is BotBrain brain)
                 brain.RebindAssistedPlayer();
         }

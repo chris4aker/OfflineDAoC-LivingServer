@@ -36,6 +36,10 @@ namespace DOL.GS
                 player.ControlledBrain?.Attack(target);
                 return player.ControlledBrain == null ? "No party companions or pet to pull with." : "Pet pull ordered.";
             }
+            // Bot-led groups: a gamebot leads a party that hosts the player. /pull would quietly make every bot follow the
+            // player instead; taking over is /lead (docs/BOT-LED-GROUPS.md, B2).
+            if (BotLedGroups.HostedPlayerOf(group) == player)
+                return BotLedGroups.BotLeadsMessage(group.LivingLeader?.Name);
             GroupState state = States.GetOrCreateValue(group);
             Cancel(state.Pending, false);
             GameBot[] helpers = group.GetMembersInTheGroup().OfType<GameBot>()

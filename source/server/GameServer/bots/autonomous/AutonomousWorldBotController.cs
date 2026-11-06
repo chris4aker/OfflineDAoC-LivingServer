@@ -486,7 +486,7 @@ namespace DOL.GS
                     if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) && StepInOnSentinel(brain, bot, bot.TargetObject as GameLiving))
                         return true;
                     if (bot.TargetObject is GameLiving target)
-                        SetStatus(bot, $"Fighting {target.Name}", GoalText(), $"Engaged level {target.EffectiveLevel} {target.Name}", target.Name);
+                        SetStatus(bot, $"Fighting {target.Name}", CombatGoalText(bot), $"Engaged level {target.EffectiveLevel} {target.Name}", target.Name);
                     return false;
                 }
 
@@ -2121,6 +2121,10 @@ namespace DOL.GS
                 .Where(guard => guard.Component?.Keep != null && $"rvr-keep-{guard.Component.Keep.KeepID}" == _rvrDestination?.Id)
                 .Where(guard => !guard.IsPortalKeepGuard && AutonomousRvrKeepPolicy.IsSiegeObjective(guard.Component?.Keep))
                 .Where(guard => !closedDoor || guard is not GuardLord)
+                // Holding at a battleground rally: what comes at the rally, never the lord (the rally goes up together).
+                .Where(guard => _battlegroundRallyHold is not { } rally || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
+                    guard is not GuardLord &&
+                    Vector3.DistanceSquared(rally, new(guard.X, guard.Y, guard.Z)) <= BattlegroundRallyEngageRadius * (float)BattlegroundRallyEngageRadius)
                 .Where(guard => GameServer.ServerRules.IsAllowedToAttack(bot, guard, true))
                 .Where(guard => PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
                     new(guard.X, guard.Y, guard.Z), PathfindingProvider.Instance.BlockingDoorAvoidanceFilters))
@@ -3408,7 +3412,11 @@ namespace DOL.GS
                                         IsZoneAccessible(bot.Realm, cell.Zone, bot.CurrentRegionID) &&
                                         AutonomousOrdinaryPveRealmPolicy.CanAssignCamp(bot.Realm, cell.RegionId,
                                             cell.Zone?.ID ?? 0, planningLevel) &&
-                                        AutonomousAuditedCampPolicy.CanAssignToParty(cell.Id, groupSize)))
+                                        AutonomousAuditedCampPolicy.CanAssignToParty(cell.Id, groupSize) &&
+                                        // Bot-led groups: a party hosting the player hunts where the player can walk or ride.
+                                        (_groupDirective?.HostedPlayer == null || !cell.IsFrontier &&
+                                         cell.RegionId != AutonomousDarknessFallsPolicy.RegionId &&
+                                         !BattlegroundBrackets.IsBattlegroundRegion(cell.RegionId))))
             {
                 // Filled into a reused buffer; only a camp that qualifies gets its own array (this per-cell
                 // filter was the largest single allocation in a 30 s trace, 2026-10-17).

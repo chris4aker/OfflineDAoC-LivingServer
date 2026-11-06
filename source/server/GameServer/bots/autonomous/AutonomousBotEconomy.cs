@@ -422,7 +422,7 @@ namespace DOL.GS;
         {
             removed = 0;
             if (!arrivedAtMerchant || bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper ||
-                bot.IsPlayerLedGroup || bot.Inventory == null || bot.DatabaseID <= 0 ||
+                BotDutyLeases.IsSpokenForByPlayer(bot) || bot.Inventory == null || bot.DatabaseID <= 0 ||
                 !IsBackpackFull(bot) || FindVendorTrashCandidate(bot) != null ||
                 HasListingSpace(bot) && FindValuableListingCandidate(bot) != null)
                 return false;

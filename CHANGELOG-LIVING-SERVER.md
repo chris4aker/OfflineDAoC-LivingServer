@@ -10,6 +10,188 @@ Older entries below keep the names they were written with.
 
 ## 1.2 (in development)
 
+**Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the
+gates fell, and the Renegade Lord never dropped below 100%).
+- **Before:** once the gates were down, every gamebot walked up to the lord on its own, from wherever its last fight or
+  its release had left it. They reached him one at a time and died to him one at a time.
+- **Now:** each realm rallies just inside the broken gate, under the lord's room. Its gamebots fight whatever comes at
+  them there, and go up to the lord together once there are enough of them.
+  - **"Enough"** is worked out from the lord's real level and health, the guards standing with him, and the levels and
+    health of the bots at the rally, with no extra safety margin: the realm tries often and accepts that some attempts
+    fail. In Thidranki that is about 12 level-22s against the lord alone, and about 24 with three guards beside him. A
+    lord already down to half health needs fewer.
+  - **You count double.** A real player standing at the rally counts as two gamebots, so you and ten bots go up where
+    twelve bots would. The server log's `BG_RALLY_STORM` line shows how many players went up (`players=`).
+  - **No endless waiting:** after 3 minutes the rally goes up with half of what it needs. After 6 minutes it goes up
+    with whoever is there, never fewer than 8.
+  - **A failed attempt** ends like a raid attempt: half the stormers fell, the lord healed back to 95%, or he lost
+    nothing for 3 minutes. The survivors then rally again.
+  - **The dead rejoin the rally.** A bot that died comes back to the rally instead of running up to the lord alone.
+    Bots that arrive while an attempt is running go up in groups of at least 4.
+  - **Only the bots changed.** The lord, his guards, their respawns and the gates are exactly as the base game has them.
+- **Smaller fixes:**
+  - A gamebot that has left the lord (it died, or was chased out) comes back in through a gate again. Before, once it
+    had passed a gate it walked straight at the lord for the rest of the tour.
+  - Gamebots roaming the field around an enemy-held keep stay outside its walls. Before, they were sent to points in
+    its courtyard and on its walls with the gates shut, and gave up their route ("route recovery" in the log).
+  - A battleground fight is logged under the battleground goal. Before, the server log showed "Find a reachable
+    level-appropriate XP camp" for almost every battleground death.
+- **For testers:** the server log's `BG_KEEP_STATUS` line now shows each realm's rally (`rally="Albion:rallying 9/14"`),
+  and new lines say when a rally goes up (`BG_RALLY_STORM`), when late arrivals join it (`BG_RALLY_REINFORCE`) and
+  why an attempt ended (`BG_RALLY_REGROUP`).
+
+**Who has a gamebot's time, in one place** (groundwork for gamebots that lead groups and invite you).
+- Raids, sieges and keep defenses, battleground rallies, gamebot groups and your own group now each put a claim on a
+  gamebot's time, with a priority. Your group is the strongest claim: no raid, siege, RvR march or rally ever takes a
+  gamebot from your group, exactly as before. What gamebots do has not changed, with one exception: an RvR march and
+  a battleground rally now rank the same, so neither pulls a gamebot away from the other (before, a march could take a
+  gamebot out of its battleground rally).
+- **`/lswhy duty`** on a targeted gamebot (or `/lswhy duty <name>`) says what has its time now ("realm raid
+  (Gjalpinulva), since 4m", "in a player's group", "free") and its last claims: who asked for it, and whether it went
+  or why not. Plain `/lswhy` on a gamebot shows the same under its chat decisions.
+- **One fix:** a gamebot recruited for a raid that logged off before its party formed stayed reserved when it came
+  back, and sat out every raid, siege party and gamebot group until that raid ended. It now comes back free.
+- **For testers:** `DUTY_LEASE` lines in the server log record each claim granted, taken, refused (with its reason)
+  and ended, once per change.
+
+**Gamebot leaders invite you, and you can just follow** (bot-led groups, first part; docs/BOT-LED-GROUPS.md).
+- **The invite:** the leader of a gamebot party of your realm, within 3 levels of you on average, with room and
+  hunting where you can walk or ride, may send you a tell ("lf 1 more for skeletons in Cursed Forest, want in?") and
+  then the usual group invite box. Yes puts you in its group; the gamebot stays the leader.
+  - **Never** while you fight, are dead, ride, are on a boat, have another yes/no box open, trade, are in a group, have
+    `/spawn` companions out, are `/afk`, or are in a frontier, battleground or raid.
+  - **How often:** unasked, at most once every 45 minutes and not in your first 10 minutes online. It counts as that
+    period's bot tell, so a tell and an invite never stack.
+  - **Asking:** `/lfg`, or a tell to a bot leader with room ("lfg?", "room for a cleric?"): when a party fits, its
+    leader answers by tell and the invite box follows within 15 seconds (and then no duo offers come). An asked invite
+    skips the 10-minute start, the 45-minute gap and the quiet after a no.
+  - **Saying no:** No in the box, or "no thanks" to the tell. Then no unasked invite for 30 minutes, nothing from that
+    leader for 6 hours, and no unasked invites for the rest of the session after three noes.
+  - The server setting `bot_group_invite_player` (the launcher's Living Server tab, **Bot leaders invite you**) turns
+    unasked invites off; `/lfg` still gets you one.
+- **Following:** the leader runs the party as a gamebot party does: the camp, the pulls, the breaks.
+  - The camp is for the group's level counting you, and never more than 6 levels above you.
+  - The leader tells you where to meet and waits there up to 20 minutes (it says where it is at 5 and 10), then goes
+    on and keeps your spot. You travel yourself: you are never teleported, summoned or given money. Gamebots beside
+    you when you take a porter come with you, as invited gamebots do.
+  - On the way the leader stops when you fall 1,500 units behind, asks "where u at?" after 2 minutes, and after 10
+    minutes with you not getting closer goes on to the camp and says so in `/group`. Inside a dungeon entrance the
+    party waits for you the same way.
+  - The party pulls only when you are near, alive, not sitting and up on health and power like the rest.
+  - **Away:** `/afk`, or 10 minutes without doing anything: the party pulls where it stands but goes nowhere new; at 15
+    minutes it holds; at 30 it lets you go at the next break, with a tell. Linkdead for 5 minutes counts as leaving.
+  - **Leaving:** `/disband` at any time. The party carries on without you.
+  - A gamebot party hosting you counts your class: when you are its only healer, it still has a healer.
+  - `/pull` in a party a gamebot leads says the gamebot is leading instead of taking over. Taking the lead
+    (`/lead`) comes in the next part.
+  - Quest kills: a kill by the party counts for your kill quests when you are alive and in range, as in a group you
+    lead.
+  - No raid, siege, RvR march, battleground rally or other gamebot group takes a gamebot from a party that hosts you
+    (`/lswhy duty` on one says "leading a group with a player").
+- **Loot changes for every group with you and gamebots, whoever leads** (owner's decision): you get the primary
+  spoils, and the gamebots still gear up and fund their own improvements. Each item, in this order:
+  - an item your class can use that beats what you wear goes to you;
+  - otherwise, an item that is an upgrade for a gamebot nearby goes to the gamebot it improves most (gamebots start
+    without armour and earn it, so they need drops);
+  - everything else (most of the sell value) goes round the members in range with two turns for you: with seven
+    gamebots nearby you get 2 of every 9 of these items.
+  - Coin is split evenly among the members in range with you counted twice (2/9 with seven gamebots nearby).
+  - Before, in a group you led you got everything, and in a gamebot's group you would have got nothing. Your share is
+    the setting `bot_group_player_loot_weight` (1 to 8; the launcher's **Your loot share**). Groups of only gamebots,
+    and your `/spawn` companions (who take no loot), are unchanged.
+- **Gamebot chat:** the leader says what comes next in `/group`, short and lowercase ("moving to skeletons", "where u
+  at?", "everyone med"). Lines like "you pull great" or "lead the way" are no longer said in a party a gamebot leads.
+- **For testers:** server log lines `BOT_LED_INVITE` (sent, not sent, declined, accepted, with the reason),
+  `BOT_LED_GROUP_HOSTING`, `BOT_LED_GROUP_GOING_ON`, `BOT_LED_PLAYER_LEFT` and `BOT_LED_LOOT` (who got each item and
+  why: `upgrade-player`, `upgrade-bot` or `rotation`); the startup
+  `FORK_BUILD` line shows both settings.
+- **Not yet:** `/lead` and handing the lead back, the join setting (follow or lead) and raid leaders who invite you
+  come in the next parts. Gamebots don't yet ride the same horse or boat as you: the leader takes its own and waits
+  for you at the other end. Nothing here has been played in game yet.
+
+**Take the lead, or hand it back** (bot-led groups, second part; docs/BOT-LED-GROUPS.md).
+- **`/lead`** in a party a gamebot leads: the leader says "all yours", you become the group leader, and the gamebots
+  follow you exactly as gamebots you `/invite` do (`/pull`, your camps, your pace). The group, its loot share and your
+  quest credit carry on unchanged.
+- **`/lead bot`** (or `/lead bot <name>`, or `/makeleader <gamebot>`, or `/makeleader` with a gamebot targeted) in a
+  group you lead: a gamebot takes the lead (the one you name or target, else the highest level one), says it is looking
+  for a camp, and picks one near where you stand; you follow as in a party that invited you. It needs at least two
+  gamebots, a tank, a healer and a damage dealer (you count for your class), no `/spawn` companions and no fight going
+  on, and only works where you can walk or ride (not in the frontier, a battleground or Darkness Falls). If something
+  is missing you are told what.
+- **`/pull`, `/invite` and `/makeleader`** in a party a gamebot leads now say "Brannoc is leading this group. /lead to
+  take over." instead of "You are not the leader of your group".
+- **When a party you follow is down to one gamebot**, you get a yes/no box: "Only Brannoc is left in your group. Do you
+  want to lead the group?" Yes: you lead and Brannoc follows you. No, or no answer within a minute: Brannoc says
+  goodbye and goes its own way. Before, the party just broke up. You never become the leader any other way unless you
+  type `/lead`.
+- **`/invites off`** stops unasked invites from gamebot leaders for this character (saved with it); `/invites on` turns
+  them back on, `/invites` says which. `/lfg`, or a tell to a leader, still gets you one.
+- **The setting `bot_led_group_join_mode`** (the launcher's Living Server tab, **When you join a bot's group**): with
+  *follow* (the default) you follow the leader; with *lead*, saying yes makes you the leader at once.
+- **A fix from B1:** a party following a bot leader whose only healer was you counted you for its roster but would not
+  start a pull. It now counts you there too.
+- **No gamebot is free for a moment during a handover:** it goes straight from your group to the bot-led group (or
+  back), so no raid, siege or RvR march can take it in between. `/lswhy duty` on one shows "handed over".
+- **For testers:** server log lines `BOT_LED_HANDOVER` (to_player, to_bot, offered, accepted, declined, refused, with the
+  reason) and `AUTONOMOUS_GROUP_TASK_ENDED ... disbanded=false` for a party that was handed over; the startup
+  `FORK_BUILD` line shows `bot_led_group_join_mode`.
+- **Not yet:** the leader's "pulling", "last pull then town" and "lf 1 more" calls are written but not said yet. If you
+  leave a group after `/lead`, its gamebots leave too (as with gamebots you invite) instead of carrying on as a party.
+  Nothing here has been played in game yet.
+
+**Raid leaders invite you** (bot-led groups, third part; docs/BOT-LED-GROUPS.md).
+- When a dragon or epic dungeon raid forms in your realm and you are level 50, its **raid leader** may send you a tell
+  ("forming for Gjalpinulva at Svasud Faste. want a spot?") and then a box: "Haldor invites you to join the Gjalpinulva
+  raid. Do you wish to join?" The raid leader is a level-50 officer of a raiding guild in the raid (else the leader of
+  its first party). It works the same in Albion, Midgard and Hibernia.
+- **Once per raid.** A no is final for that raid. Never while you fight, are grouped (a gamebot party hosting you
+  included), ride, trade, have `/spawn` companions out, are `/afk` or have another box open, never in your first 10
+  minutes online, and never for a neutral raid (Darkness Falls and the like) or a raid already in its battle.
+- **Yes** puts you in the raid party that needs your class most, one still at the muster town first. If that party is
+  full, one gamebot of your role (never the party's or the raid's leader) steps out and goes back to its own play,
+  where the raid's refills may take it again. You travel to the muster town yourself (never teleported); your party
+  waits there until the raid leaves, and after that you catch up on your own. The party leader welcomes you in
+  `/group`.
+- **In the raid party** the raid runs the party: `/lead` is refused, its gamebots don't ride porters with you, and no
+  bot-led party invites you. Your kill quests count the party's kills as in a party that hosts you; trash loot is
+  shared as in every group with gamebots, and the raid's own rule for its big drops (a quarter to players) is
+  unchanged. If you leave, the raid fills your seat with a gamebot again.
+- **No gamebot is taken from your group for a raid** (as before): a gamebot in your group or in a party hosting you
+  is never recruited. The gamebots of a raid party you sit in stay the raid's.
+- **Settings:** `bot_raid_invite_player` (on; the launcher's **Raid leaders invite you**). `/invites off` stops these
+  invites too.
+- **For testers:** `RAID_PLAYER_INVITE` lines in the server log (sent, not sent, declined, accepted, seated, not joined,
+  with the reason and who stepped out); the startup `FORK_BUILD` line shows the setting.
+- Nothing here has been played in game yet.
+
+**Bot-led parties look for a replacement, take their breaks, and call their pulls** (bot-led groups, fourth part).
+- **"lf 1 more":** when a member leaves a gamebot party that hosts you, or you leave it, its leader asks in `/lfg` for
+  the missing role ("lf 1 more, need a healer for skeletons") and takes a free gamebot of that role and a fitting level
+  (within 5 levels, or both 50) that is waiting for a group and at most 8 minutes away. The recruit travels to the
+  party by the usual roads and stablemasters; the leader says "got someone coming, hang tight". A gamebot that a raid,
+  an RvR march, a battleground rally, another party or your own group holds is never taken. The ask is said once per
+  search and only while the realm's `/lfg` is under its chat budget.
+  - **Lost its healer, tank or damage dealer?** The party waits for the recruit instead of breaking up, and pulls
+    nothing meanwhile. After 5 minutes without one it gives up: it carries on short-handed when it still has a tank, a
+    healer and a damage dealer, and ends otherwise ("couldnt find anyone, gonna call it here").
+  - **When you leave** a party you followed, it carries on and looks for someone of your class's role (it used to
+    break up when you were its only healer). A group you lead is unchanged: gamebots you lead leave with you.
+  - Gamebot-only parties keep their old rules (they carry on short or end); raid parties refill as before.
+- **"last pull then town":** a party hosting you now takes the same natural break every gamebot party has: when half
+  or more of its gamebots have nearly full bags, or its task has 5 minutes or less to run, the leader says "last pull
+  then town", the party finishes that pull (the fight going on, or the next one; if no pull comes within 3 minutes it
+  goes anyway), and then the party ends there, as at any task's end: each gamebot goes to sell, and the leader says
+  "ok town to sell, good group all". Selling still happens only at that break, never in the middle of a camp.
+- **"pulling":** in a party a gamebot leads, the leader calls its own party's pulls ("pulling", "inc, on me", "here it
+  comes", and more), and that call is the pull's only line: the other gamebots' "inc" isn't added beside it. In a group
+  you lead, pulls are called as before.
+- **For testers:** `BOT_LED_RECRUIT` (searching, recruited, gave up) and `BOT_LED_BREAK` (called, ended) lines in the
+  server log.
+- **Not yet:** the party doesn't walk to town and back together with you: the break ends the party. Gamebots have no
+  potions or wearing gear, so there are no breaks for those. Nothing here has been played in game yet.
+
+**Also in 1.2: measuring the AI, and the new client**
 - **AI_PROFILE: what the bots' AI costs, measured every minute** (technical audit 2026-11-03, "measure before
   adding"). Nothing in the game changes: it only measures.
   - **What:** once a minute the server log gets one `AI_PROFILE` line: the game-loop tick's p50, p95, p99 and

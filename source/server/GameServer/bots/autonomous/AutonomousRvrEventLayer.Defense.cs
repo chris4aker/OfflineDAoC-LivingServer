@@ -257,7 +257,7 @@ namespace DOL.GS
             // Resolve coordinator IDs BEFORE taking the event lock (the group
             // coordinator consults event state while holding its own lock).
             var forces = AutonomousBotRegistry.Snapshot()
-                .Where(b => b.IsAutonomousWorldBot && !b.IsTemporaryGroupHelper && !b.IsPlayerLedGroup &&
+                .Where(b => b.IsAutonomousWorldBot && !b.IsTemporaryGroupHelper && !BotDutyLeases.IsSpokenForByPlayer(b) &&
                     b.Level == 50 && b.IsAlive && b.ObjectState == GameObject.eObjectState.Active &&
                     AutonomousObjectiveAssignments.Is(b, eAutonomousObjectiveKind.RvR))
                 .GroupBy(AutonomousBotGroupCoordinator.RvrForceId)
@@ -298,7 +298,7 @@ namespace DOL.GS
                         // Missing/dead members may catch up. Only mixed-level,
                         // non-RvR or player-led parties are ineligible.
                         if (candidate.Members.Any(b => b.Group != null && b.Group.GetMembersInTheGroup().Any(m =>
-                            m is not GameBot member || member.Level != 50 || member.IsPlayerLedGroup ||
+                            m is not GameBot member || member.Level != 50 || BotDutyLeases.IsSpokenForByPlayer(member) ||
                             !member.IsAutonomousWorldBot || !AutonomousObjectiveAssignments.Is(member, eAutonomousObjectiveKind.RvR)))) continue;
                         var previous = Events.Values.FirstOrDefault(e => Participants(e, force.Realm).ContainsKey(force.GroupId));
                         if (previous != null && (!previous.DefenseReaction || !active.DefenseReaction ||
@@ -313,7 +313,10 @@ namespace DOL.GS
                             foreach (long id in force.MemberIds) previous.Present.Remove(id);
                         }
                         foreach (GameBot bot in candidate.Members)
+                        {
                             bot.TempProperties.SetProperty("RvrEventForce", force.GroupId);
+                            BotDutyLeases.Claim(bot, eDutyLeaseKind.RvrEvent, force.GroupId, DutyLeaseReason.RvrForce, active.Target.Name);
+                        }
                         // The keep's own realm gathers first and marches in as one wave (allies and third realm do not).
                         if (active.DefenseReaction && force.Realm == active.DefenderRealm && !active.DefenseMustering && !active.DefenseMarching)
                             BeginDefenseMuster(active, now, PlayerDefenseMusterMilliseconds);

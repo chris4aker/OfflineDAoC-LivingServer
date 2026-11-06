@@ -2512,6 +2512,22 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_group_bonds", "Server life: gamebots remember the bots they grouped with. Good runs make friends who look for each other when forming a party; bots who never showed up or wiped the group too often are kept apart until a long wait makes them take anyone.", true)]
 		public static bool BOT_GROUP_BONDS;
 
+		/// <summary>Bot-led groups (docs/BOT-LED-GROUPS.md): the leader of a gamebot party may invite you, and you can just follow.</summary>
+		[ServerProperty("bots", "bot_group_invite_player", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn companions out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one.", true)]
+		public static bool BOT_GROUP_INVITE_PLAYER;
+
+		/// <summary>How many members the real player counts as in the loot of a group with gamebots (owner 2026-11-04).</summary>
+		[ServerProperty("bots", "bot_group_player_loot_weight", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8.", 2)]
+		public static int BOT_GROUP_PLAYER_LOOT_WEIGHT;
+
+		/// <summary>Bot-led groups, B2: what saying yes to a gamebot leader's invite does (follow or lead).</summary>
+		[ServerProperty("bots", "bot_led_group_join_mode", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back).", "follow")]
+		public static string BOT_LED_GROUP_JOIN_MODE;
+
+		/// <summary>Bot-led groups, B3: a realm raid's leader may invite a level-50 player.</summary>
+		[ServerProperty("bots", "bot_raid_invite_player", "Raid leaders: when a dragon or epic dungeon raid forms in your realm and you are level 50, its raid leader (an officer of a raiding guild) may send you a tell and a box, once per raid. Yes puts you in a party that needs your class (one gamebot of your role steps out); you travel to the muster town yourself. A no is final for that raid. /invites off stops these too.", true)]
+		public static bool BOT_RAID_INVITE_PLAYER;
+
 		/// <summary>Multi-day dramas between pairs of bots, played as /faction episodes (AutonomousBotStorylines).</summary>
 		[ServerProperty("bots", "bot_living_storylines", "Server life: pairs of bots live out dramas in /faction over days: a kill steal, a guild split, a romance, a ninja-loot trial. The same two bots play every episode; take a side in faction and the ending follows you.", true)]
 		public static bool BOT_LIVING_STORYLINES;
