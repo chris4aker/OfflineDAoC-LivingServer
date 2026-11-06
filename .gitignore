@@ -39,3 +39,8 @@
 
 # Automated playtester reports (docs/PLAYTESTER.md): server logs and chat of test runs
 playtest-reports/
+
+# Wayback fetcher output: third-party archived pages, never committed.
+/tools/wayback-fetch/out/
+# Thread jobs generated on the PC from fetched listings (third-party thread titles).
+/tools/wayback-fetch/jobs/a*-threads.json
