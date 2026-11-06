@@ -762,6 +762,13 @@ namespace DOL.GS.ServerProperties
 		public static bool QUEST_XP_BY_LEVEL;
 
 		/// <summary>
+		/// The epic chains, linked by quest ID as the server reads the quest rows (Living Server 1.2, EpicChainLinks):
+		/// epic_chains.py's changes, made in memory, never written to the world.
+		/// </summary>
+		[ServerProperty("quest", "epic_chains_linked", "The epic chains are linked by quest ID as the server reads the quest rows (Living Server 1.2): the Guild of Shadows steps 7 to 48 in order with their period dialogue, and every other guild's epic steps pinned in order (tools/claude-version/epic_chains.py's changes). They are made in memory each time the rows are read and never written to the world database, so removing Living Server leaves the released quests as they were. False is a kill switch: the rows are read as they are.", true)]
+		public static bool EPIC_CHAINS_LINKED = true;
+
+		/// <summary>
 		/// The CL Experience Rate
 		/// </summary>
 		[ServerProperty("rates", "cl_xp_rate", "The Champion Level Experience Points Rate Modifier - Edit this to change the rate at which you gain CL experience points e.g 1.5 is 50% more 2.0 is twice the amount (100%) 0.5 is half the amount (50%)", 1.0)]

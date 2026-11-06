@@ -62,5 +62,68 @@ namespace DOL.GS.Quests
         /// </summary>
         public static bool IsRepeat(GameLiving killed, GameLiving lastCounted, long lastCountedAt, long now) =>
             killed != null && lastCounted != null && ReferenceEquals(killed, lastCounted) && now - lastCountedAt < RepeatWindowMs;
+
+        /// <summary>
+        /// The players a kill credits, from the monster's attackers, as GameLiving.ProcessDeath has always worked it
+        /// out (moved here in 1.2 so the quest harness walks the same code): a player attacker; a pet's or companion's
+        /// player owner (added only when the owner is not an attacker itself); the leader of an ownerless gamebot's
+        /// player-led group (GroupLeaderFor); and, for each of those, the players of their group within
+        /// <see cref="Range"/> of the monster. <paramref name="notified"/> receives the non-player attackers to be told
+        /// of the kill, in attacker order, as ProcessDeath told them.
+        /// </summary>
+        public static System.Collections.Generic.List<GamePlayer> PlayersCredited(GameLiving killed,
+            System.Collections.Generic.IEnumerable<GameLiving> attackers, System.Func<GameLiving, bool> isAttacker,
+            System.Collections.Generic.List<GameLiving> notified)
+        {
+            var playerAttackers = new System.Collections.Generic.List<GamePlayer>();
+
+            foreach (GameLiving livingAttacker in attackers)
+            {
+                if (livingAttacker == null)
+                    continue;
+
+                GamePlayer player = livingAttacker as GamePlayer;
+
+                if (livingAttacker is GameNPC npcAttacker && npcAttacker.Brain is DOL.AI.Brain.IControlledBrain npcAttackerBrain)
+                {
+                    // A pet: its player owner is a 'virtual' attacker when not in the attacker list itself.
+                    player = npcAttackerBrain.GetPlayerOwner();
+
+                    if (player != null)
+                    {
+                        if (!isAttacker(player) && !playerAttackers.Contains(player))
+                            playerAttackers.Add(player);
+
+                        // The pet is told of the kill as well.
+                        notified.Add(livingAttacker);
+                    }
+                }
+
+                if (player == null && livingAttacker is GameBot gamebot && GroupLeaderFor(gamebot, killed) is GamePlayer leader)
+                {
+                    player = leader;
+                    notified.Add(livingAttacker);
+                }
+
+                if (player != null)
+                {
+                    if (!playerAttackers.Contains(player))
+                        playerAttackers.Add(player);
+
+                    if (player.Group != null)
+                    {
+                        foreach (GamePlayer groupPlayer in player.Group.GetPlayersInTheGroup())
+                        {
+                            if (groupPlayer.IsWithinRadius(killed, Range) && !playerAttackers.Contains(groupPlayer))
+                                playerAttackers.Add(groupPlayer);
+                        }
+                    }
+                }
+                else
+                    notified.Add(livingAttacker);
+            }
+
+            return playerAttackers;
+        }
     }
 }
