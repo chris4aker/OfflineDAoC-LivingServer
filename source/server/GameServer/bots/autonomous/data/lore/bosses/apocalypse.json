@@ -1,0 +1,100 @@
+{
+  "id": "apocalypse",
+  "name": "Apocalypse",
+  "catalogKey": "caer-sidi/apocalypse",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 87, 300,000 health; Caer Sidi's final encounter, called by Funus.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "At 99% and 50% he clears his aggro and takes to the air; at 50% two Harbingers of Fate join; he calls a Rain of Fire.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His lines muse on what drives the raid (power, fame, fortune), praise it for besting his harbingers and remark that good harbingers are hard to come by.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "About a hundred players minimum; the guide author's lowest kill was 105 (Feb 2003). In July 2003, 80-90 was 'possible with good groups, but tough'.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    }
+  ],
+  "story": "Apocalypse is the end of the world, and he is not in a hurry. Arawn built the first cell of Caer Sidi for him, because the end of all things is the one prisoner a lord of the dead cannot execute, and he locked it last, and set four riders before its door to turn back anyone foolish enough to climb so high. He has had a very long time to think. He is curious about the mortals who reach him, as a scholar is curious about beetles: is it power that drove them, or fame, or gold, or all three? He is courteous. He calls his riders harbingers and his fire rain, and when the fight turns against him he rises into the air out of reach, forgets every grudge he was holding, and comes down fresh with two more harbingers at his side. He does not take defeat personally. He only notes, with some regret, that good harbingers are hard to come by.",
+  "legend": "Bring a hundred. When he lifts off at the start and again at half, he drops everyone from his hate list, so tanks pick him up fresh when he lands. At half, two Harbingers of Fate come; a group each, kill them, then back on him. Move out of the fire. If you lose heart when he flies, you lose.",
+  "yells": {
+    "aggro": [
+      "Your end is at hand!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=99",
+        "text": "Is it power? Fame? Fortune? Perhaps it is all three."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "One wonders what drives such an audacious move."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "Well done. You have bested my harbingers."
+      }
+    ],
+    "death": [
+      "Even an ending ends. How very curious."
+    ],
+    "slay": [
+      "Your end was at hand. I did say so."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The last cell. Its door has been open a long time."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=99",
+        "text": "Apocalypse rises into the air!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The Harbingers of Fate descend!"
+      }
+    ],
+    "realmFirstKill": "The end of all things has ended. Caer Sidi is still."
+  },
+  "botLines": {
+    "briefing": [
+      "apocalypse lifts off at the start and at half. he wipes his hate list each time, tanks pick him up when he lands",
+      "at half two harbingers come, one group each, kill them fast then back on apoc",
+      "rain of fire, move out of it. we need a hundred and we have [what we have|enough]"
+    ],
+    "aftermathWin": [
+      "APOCALYPSE DOWN. [gg all|gg], the end of the world is over",
+      "he said good harbingers are hard to come by. good raids too"
+    ],
+    "aftermathLoss": [
+      "we lost it when he flew. nobody picked him up on the landing",
+      "the harbingers ate the healers. need two full groups on them"
+    ],
+    "rumour": [
+      "heard apocalypse asks you why you came. power, fame or fortune",
+      "[someone said|heard] apocalypse isnt even angry. just curious"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "apocalypse",
+    "text": "The end of the world, locked in the first cell Arawn ever built. He is not angry. He is curious. He will ask you why you came. Bring a hundred, and clerics, and do not lose heart when he takes to the air."
+  },
+  "bookPage": "He asked us, while we bled, whether it was power that drove us, or fame, or fortune. Nobody answered him. He seemed disappointed. When we broke his harbingers he praised us, plainly and without irony, and then remarked that good harbingers are hard to come by and that we had cost him two. I have fought dragons that hated me. I would sooner fight a dragon. Apocalypse did not hate anyone. He was simply the end, and the end is patient.",
+  "chronicle": {
+    "win": "{realm} answered the question at the top of Caer Sidi: {raidLeader}'s raid ended Apocalypse in {minutes} minutes.",
+    "loss": "Apocalypse asked {realm}'s raid why it came; {raidLeader} had no answer that would hold."
+  }
+}

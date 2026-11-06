@@ -1,0 +1,76 @@
+{
+  "id": "lord-sanguis",
+  "name": "Lord Sanguis",
+  "catalogKey": "caer-sidi/lordsanguis",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Blood mages join him (10% chance each turn) and two to four rise when he dies; six seconds after death he returns as Lich Lord Sanguis.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs"
+    },
+    {
+      "text": "Sanguis is Latin for 'blood'. Caer Sidi also holds sanguineous mages and blood mages.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Lord Sanguis was a Roman of the old province, a magistrate who bought his long life with other men's blood and was sent to Caer Sidi when Arawn finally collected the debt. He kept a chapel there, and the floor of it has been red ever since. When the gaol rose, his blood mages gathered to him again. He is not the danger. The danger is that he has died before, many times, and has never once stayed dead: kill Lord Sanguis and, a few breaths later, Lich Lord Sanguis stands up out of the same red floor.",
+  "legend": "He is only the first half. Kill Lord Sanguis, kill the blood mages that rise with his body, and be ready: six seconds later he gets up again as Lich Lord Sanguis. Do not rest, do not loot, do not celebrate.",
+  "yells": {
+    "aggro": [
+      "Your blood will do very well."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Mages! Feed the floor!"
+      }
+    ],
+    "death": [
+      "You think this is the end of me? How Roman of you."
+    ],
+    "slay": [
+      "Into the floor with the rest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is red. It has been red a long time."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Lord Sanguis falls. The red floor stirs."
+      }
+    ],
+    "realmFirstKill": "Lord Sanguis has fallen. For a moment."
+  },
+  "botLines": {
+    "briefing": [
+      "lord sanguis comes back as a lich 6 seconds after he dies. dont relax",
+      "blood mages spawn on his death too, kill them"
+    ],
+    "aftermathWin": [
+      "round one done. here comes the lich",
+      "blood mages down, sanguis down. now the real fight"
+    ],
+    "aftermathLoss": [
+      "the mages got the healers before the lich even stood up"
+    ],
+    "rumour": [
+      "heard lord sanguis in caer sidi never stays dead",
+      "[someone said|heard] sanguis means blood. the floor of his room is red"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sanguis",
+    "text": "A Roman magistrate who bought long life with other men's blood. Kill him and, a few breaths later, he rises again from his own red floor as Lich Lord Sanguis. Do not celebrate the first death."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cut down Lord Sanguis in {minutes} minutes; the red floor stirred.",
+    "loss": "Lord Sanguis fed {realm}'s raid to his chapel floor; {raidLeader} never saw the lich."
+  }
+}

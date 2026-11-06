@@ -1,0 +1,71 @@
+{
+  "id": "warlord-dorinakka",
+  "name": "Warlord Dorinakka",
+  "catalogKey": "caer-sidi/warlorddorinakka",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health, tether 2,000. Pulling him brings twelve crypt knights.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/WarlordDorinakka.cs"
+    },
+    {
+      "text": "The bounty quest's hunt reason says he rallies Caer Sidi's war-dead.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Bounty/BountyQuest.cs"
+    }
+  ],
+  "story": "Dorinakka was sent to Caer Sidi because he would not lay down his sword, and he has not laid it down yet. He commanded a warband in a war nobody remembers and died at its head, and when Arawn's keepers came for him he fought them too. When the gaol rose he took the yard and found Arawn's own crypt knights there, and he did what he had always done: he drilled them. Twelve of them march at his back now, and they come when he calls.",
+  "legend": "Twelve crypt knights come with him. Pull him away from the yard's edges, keep him inside his short tether, and pick the knights off with the off-tanks while the main tank holds him. A straight brawl, but a big one.",
+  "yells": {
+    "aggro": [
+      "Form ranks! The living are at the gate!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hold the line! Hold, you dead dogs!"
+      }
+    ],
+    "death": [
+      "Still... standing... still..."
+    ],
+    "slay": [
+      "Next rank."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Dead knights at drill. Their warlord is watching."
+    ],
+    "phases": [],
+    "realmFirstKill": "Warlord Dorinakka has laid down his sword at last."
+  },
+  "botLines": {
+    "briefing": [
+      "dorinakka plus 12 crypt knights. off tanks grab knights, main on him",
+      "short tether, dont drag him"
+    ],
+    "aftermathWin": [
+      "the warlord's muster is over",
+      "twelve knights and a warlord. gg"
+    ],
+    "aftermathLoss": [
+      "the knights overran the casters"
+    ],
+    "rumour": [
+      "heard dorinakka drills arawn's own crypt knights now",
+      "[someone said|heard] dorinakka never laid down his sword, even dead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "dorinakka",
+    "text": "A warlord who would not lay down his sword, alive or dead. He took the yard of Caer Sidi and drills Arawn's own crypt knights. Twelve of them march at his back."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} ended Warlord Dorinakka's bloody muster in {minutes} minutes.",
+    "loss": "Dorinakka's crypt knights held the line against {realm}'s raid; {raidLeader} fell back."
+  }
+}

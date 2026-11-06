@@ -1,0 +1,81 @@
+{
+  "id": "morbus",
+  "name": "Morbus",
+  "catalogKey": "caer-sidi/morbus",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 100,000 health; the third Horseman. Warns that the smallest things are the most deadly and grants one minute.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "Every 25-40 seconds he looses a swarm of six to ten 'swarm of morbus'; while any swarm lives he takes no damage. His Touch of Death diseases.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Morbus is plague, and he knows the oldest truth of war: that more soldiers have died of the camp than of the field. He grants a minute, as his brothers do, and warns the raid that it is the smallest things that are the most deadly. Then he opens his robes and the swarm comes out of him, clouds of things too small to strike cleanly, and while one of them is on the wing he cannot be touched. He is pale, and quiet, and in no hurry at all.",
+  "legend": "His swarm makes him immune. Every half minute or so six to ten bugs come out, and while any one lives you are hitting a wall. Area damage on the swarm, cure disease, then everyone on him until the next swarm.",
+  "yells": {
+    "aggro": [
+      "Sometimes it is the smallest things that are the most deadly. Be prepared."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Go, little ones. Go and find them."
+      }
+    ],
+    "death": [
+      "...and misery..."
+    ],
+    "slay": [
+      "Fate cannot be changed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air hums. Something small is waiting."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Morbus looses his swarm! He cannot be touched!"
+      }
+    ],
+    "realmFirstKill": "Morbus has fallen. Plague rides no more in Caer Sidi."
+  },
+  "botLines": {
+    "briefing": [
+      "morbus: kill the swarm or he is immune. aoe them, cure disease",
+      "everyone on him between swarms, stop when they come"
+    ],
+    "aftermathWin": [
+      "three riders down, one to go",
+      "aoe on the swarm, perfect"
+    ],
+    "aftermathLoss": [
+      "half the raid was hitting him with bugs up. no damage, people"
+    ],
+    "rumour": [
+      "heard morbus cant be hurt while his bugs are flying",
+      "[someone said|heard] morbus says the smallest things are the most deadly. he means the bugs"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "morbus",
+    "text": "Plague, the third rider. More soldiers die of the camp than the field, and he knows it. While his swarm is on the wing, nothing touches him. Kill the small things first."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} burned the swarm out of the air and unhorsed Morbus in {minutes} minutes.",
+    "loss": "Morbus' swarm shielded him from {realm}'s raid; {raidLeader} could not clear the air."
+  }
+}

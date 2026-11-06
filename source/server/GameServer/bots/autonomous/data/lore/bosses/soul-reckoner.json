@@ -1,0 +1,76 @@
+{
+  "id": "soul-reckoner",
+  "name": "Soul Reckoner",
+  "catalogKey": "caer-sidi/soulreckoner",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. He starts with four to six reckoned souls and raises one or two more every 10-15 seconds; casts Drain Life Essence.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs"
+    },
+    {
+      "text": "While a soul lives and he is in his room he takes a quarter of the damage (the original made him fully immune; that is behind EpicEncounterMechanics.AllowSoulReckonerFullShield). Outside his room he takes none.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The Soul Reckoner was the first of Arawn's keepers and the only one who never turned, because he never stopped doing his work. He counts. Every soul that came into Caer Sidi passed his table, and he wrote it down; every soul that tries to leave passes it again. When the prisoners rose he went on counting, and the souls he had counted gathered round him like a ledger made flesh, and they take the blows meant for him. Draw him out of his hall and he is out of reach entirely, for a reckoner away from his table is not a reckoner. The bards who say something at the bottom of Caer Sidi keeps the count are speaking of him.",
+  "legend": "Fight him in his own hall and kill the souls first: while one lives he takes only a quarter of what you hit him for, and new ones keep coming every few seconds. Drag him out of the room and he takes nothing at all. Area damage on the souls, everyone else on him.",
+  "yells": {
+    "aggro": [
+      "Name. Deeds. Debts. Step forward to be counted."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Rise, reckoned ones. Stand between me and the uncounted."
+      }
+    ],
+    "death": [
+      "The ledger... is closed..."
+    ],
+    "slay": [
+      "Counted."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Someone down here is counting. Out loud."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Reckoned souls rise to shield the Reckoner!"
+      }
+    ],
+    "realmFirstKill": "The Soul Reckoner's count is done. Caer Sidi forgets."
+  },
+  "botLines": {
+    "briefing": [
+      "fight him in his room, never pull him out. outside he takes zero",
+      "souls cut his damage taken to a quarter. aoe them as they come"
+    ],
+    "aftermathWin": [
+      "reckoner down. nobody's counting us now",
+      "kept the souls down the whole time. nice"
+    ],
+    "aftermathLoss": [
+      "someone pulled him into the corridor. immune out there"
+    ],
+    "rumour": [
+      "something at the bottom of caer sidi keeps the count. [i think its the reckoner|the soul reckoner]",
+      "[heard|someone said] the reckoner's souls take the hits for him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "reckoner",
+    "text": "The first of Arawn's keepers and the only one who never turned, because he never stopped counting. The souls he counted shield him. Fight him at his table, in his own hall, and clear the souls."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} closed the Soul Reckoner's ledger in {minutes} minutes.",
+    "loss": "The Soul Reckoner counted {realm}'s raid among his own; {raidLeader} could not clear the souls."
+  }
+}

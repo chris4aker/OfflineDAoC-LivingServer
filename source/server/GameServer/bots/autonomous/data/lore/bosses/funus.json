@@ -1,0 +1,86 @@
+{
+  "id": "funus",
+  "name": "Funus",
+  "catalogKey": "caer-sidi/funus",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 50,000 health; the fourth Horseman, granting sixty seconds. Five seconds after he falls, Apocalypse comes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "In the original encounter only clerics, and bows and crossbows in certain hands, could hurt him; any other attacker healed him to full. In Offline DAoC that puzzle is off for bot raids (EpicEncounterMechanics.AllowFunusWeaponPuzzle).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The encounter's own text says clerics glow as he appears, and a whisper warns that mundane attacks will do little while the clerics hold an advantage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Funus is the last rider and the gentlest: not death, which belongs to Arawn, but the funeral, the candle that goes out and the rites that follow. It is the fate of man to die, he hisses, and he gives the raid sixty seconds to arrange for the event. The old keepers of Caer Sidi wrote that no hand-held weapon could reach him, because a funeral is not a thing you can cut; only the prayers of priests, and arrows loosed from far away like the last volley over a grave, could touch him, and anything else only fed him. When he falls, the door at the end of the hall opens.",
+  "legend": "In the old days Funus was the puzzle: only clerics and a few bows and crossbows hurt him, and anything else healed him to full. Our raids fight him straight now, but the clerics still swear they glow when he appears. Five seconds after he dies, Apocalypse arrives. Be ready.",
+  "yells": {
+    "aggro": [
+      "It is the fate of man to die, to expire like the flame of a candle."
+    ],
+    "phases": [
+      {
+        "trigger": "spawn",
+        "text": "Prepare to die. Sixty seconds you are given."
+      }
+    ],
+    "death": [
+      "The candle... is lit... for you..."
+    ],
+    "slay": [
+      "Another candle out."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Candles burn in rows. One for each of you."
+    ],
+    "phases": [
+      {
+        "trigger": "spawn",
+        "text": "The clerics glow. Funus has come."
+      }
+    ],
+    "realmFirstKill": "Funus has fallen. The last rider is unhorsed."
+  },
+  "botLines": {
+    "briefing": [
+      "funus is the last rider. 60 seconds to get set. apoc comes 5 sec after he dies",
+      "clerics up front for funus, old habit"
+    ],
+    "aftermathWin": [
+      "four riders down. here comes the big one",
+      "funus dead. everyone rebuff NOW"
+    ],
+    "aftermathLoss": [
+      "we spent everything on the riders and had nothing left for funus"
+    ],
+    "rumour": [
+      "heard back in the day only clerics and bows could hurt funus. the rest healed him",
+      "[someone said|heard] the clerics glow when funus shows up"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "funus",
+    "text": "The funeral, last of the four riders. Not death, which is Arawn's, but the candle and the rites. The old keepers wrote that no hand-held weapon could reach him, only prayer and the far-flown arrow."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} laid Funus in his own grave in {minutes} minutes, and opened Apocalypse's door.",
+    "loss": "Funus lit a candle for each of {realm}'s raiders; {raidLeader} never saw the last door."
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "id": "bane-of-hope",
+  "name": "Bane of Hope",
+  "catalogKey": "caer-sidi/baneofhope",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Sends a target to one of three fixed spots in the region and casts Essense of Souls, heavy magic damage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs"
+    }
+  ],
+  "story": "Every prison needs a keeper whose work is to make the prisoners stop believing in the door. In Caer Sidi that was the Bane of Hope. It moves those who come near it, suddenly, to the far ends of the fortress, so that friends who were shoulder to shoulder a moment ago are halls apart, and it burns their souls while they look for each other. It is still doing its work, on anyone who will hold still for it.",
+  "legend": "It throws people across Caer Sidi to one of three spots. If it happens to you, do not panic and do not run blind; walk back with care, because the halls between are not empty. Healers watch for its soul burn.",
+  "yells": {
+    "aggro": [
+      "There is no door. There was never a door."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Look for your friends. They are far away now."
+      }
+    ],
+    "death": [
+      "There... is... a door..."
+    ],
+    "slay": [
+      "Hope ends here."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Every way out looks like a way in."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "The Bane of Hope casts someone far away!"
+      }
+    ],
+    "realmFirstKill": "The Bane of Hope has fallen. There is a door after all."
+  },
+  "botLines": {
+    "briefing": [
+      "bane of hope ports people across the dungeon. walk back careful, dont pull stuff on the way",
+      "healers watch the soul burn"
+    ],
+    "aftermathWin": [
+      "bane of hope down. we have hope now. lol",
+      "everyone made it back from the ports"
+    ],
+    "aftermathLoss": [
+      "three people ported and pulled half of caer sidi back with them"
+    ],
+    "rumour": [
+      "heard the bane of hope in caer sidi throws you to the other end of the place",
+      "[someone said|heard] its job was to make prisoners stop believing in the door"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bane of hope",
+    "text": "The keeper whose work was to make prisoners stop believing in the door. It casts those near it to the far ends of the fortress and burns their souls while they search. Walk back with care."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} found each other again and ended the Bane of Hope in {minutes} minutes.",
+    "loss": "The Bane of Hope scattered {realm}'s raid through Caer Sidi; {raidLeader} could not gather it."
+  }
+}

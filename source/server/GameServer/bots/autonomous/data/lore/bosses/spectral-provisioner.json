@@ -1,0 +1,66 @@
+{
+  "id": "spectral-provisioner",
+  "name": "Spectral Provisioner",
+  "catalogKey": "caer-sidi/spectralprovisioner",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. Immune to Heat, Spirit and Cold damage; strikes back at attackers with Spectral Strike, slowing them by 70%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs"
+    },
+    {
+      "text": "Source myth (inspiration only): the cauldron of Annwn in Preiddeu Annwfn will not boil a coward's food.",
+      "provenance": "original",
+      "source": "https://en.wikipedia.org/wiki/Caer_Sidi"
+    }
+  ],
+  "story": "Even the dead must be fed, in their fashion, and Arawn set a provisioner over the stores of Caer Sidi. He fed the prisoners from the great cauldron, and the old song is right about one thing: it would not boil a coward's portion, and he made sure every prisoner knew it. Fire, frost and prayer were his tools, so they do not touch him now. He is all that is left of the gaol's kitchens, and he is still guarding the stores against hungry hands, slowing anyone who reaches for them.",
+  "legend": "Heat, cold and spirit do nothing to him; use steel and the other spell types. He slows whoever hits him, hard, so rotate melee and keep the slowed ones healed. Do not bring an all-fire caster group; matter, body and energy casters are the ones he hates.",
+  "yells": {
+    "aggro": [
+      "No portion for thieves."
+    ],
+    "phases": [],
+    "death": [
+      "The stores... are open..."
+    ],
+    "slay": [
+      "One fewer mouth."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Empty larders. Something still guards them."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Spectral Provisioner is gone. The larders are bare."
+  },
+  "botLines": {
+    "briefing": [
+      "provisioner is immune to heat, cold and spirit. other damage types only",
+      "he slows melee 70%, rotate"
+    ],
+    "aftermathWin": [
+      "provisioner down, nobody's going hungry now",
+      "matter and body casters carried that one"
+    ],
+    "aftermathLoss": [
+      "we brought fire wizards to the one mob that ignores fire"
+    ],
+    "rumour": [
+      "heard the provisioner in caer sidi ignores fire and frost",
+      "[someone said|heard] the old cauldron wont cook a coward's food. the provisioner made sure of it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "provisioner",
+    "text": "The keeper of Caer Sidi's stores, who fed the dead from a cauldron that will not boil a coward's portion. Fire, frost and prayer were his tools, so they do not touch him. Bring steel."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} emptied the larders of Caer Sidi and ended the Spectral Provisioner in {minutes} minutes.",
+    "loss": "The Spectral Provisioner turned {realm}'s raid away from the stores; {raidLeader} brought the wrong fire."
+  }
+}

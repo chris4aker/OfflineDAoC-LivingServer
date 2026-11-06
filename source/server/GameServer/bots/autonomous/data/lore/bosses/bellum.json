@@ -1,0 +1,81 @@
+{
+  "id": "bellum",
+  "name": "Bellum",
+  "catalogKey": "caer-sidi/bellum",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 100,000 health; the second Horseman, a minute after Fames. Grants one minute to prepare for war.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "Raises three 'war incarnate' weapons that strike with crush, slash and thrust; takes 40% less from melee.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Bellum is war, and he is honest about it. When Fames falls he gives the raid a soldier's courtesy, a single minute to prepare, and then he draws every weapon there has ever been. Three of them rise around him on their own, the hammer, the blade and the spear, war incarnate in its oldest shapes, and they fight as soldiers fight, without hatred and without stopping. He shrugs off steel the way a veteran shrugs off a bruise. Of the four riders he is the one the dead of Caer Sidi love best, for most of them died in his service.",
+  "legend": "One minute after Fames. Bellum calls three floating weapons, crush, slash and thrust; groups split to kill them while the tanks hold him. He takes less from melee than from spells, so the casters do the heavy work here and the melee keep the weapons busy.",
+  "yells": {
+    "aggro": [
+      "Prepare yourselves for war. One minute, you are granted."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Hammer, blade and spear. War has no other shapes."
+      }
+    ],
+    "death": [
+      "War... ends... only for the dead..."
+    ],
+    "slay": [
+      "It is the fate of man to know pain and loss."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Weapons hang in the air, waiting for a hand."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Bellum raises the weapons of war!"
+      }
+    ],
+    "realmFirstKill": "Bellum has fallen. War rides no more in Caer Sidi."
+  },
+  "botLines": {
+    "briefing": [
+      "bellum: three weapons spawn, one group each, casters do the work on him",
+      "one minute after fames. be ready"
+    ],
+    "aftermathWin": [
+      "two riders down",
+      "war is over. for now"
+    ],
+    "aftermathLoss": [
+      "the weapons got loose in the healers"
+    ],
+    "rumour": [
+      "heard bellum's weapons fight on their own. hammer, sword and spear",
+      "[someone said|heard] melee barely scratches bellum"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bellum",
+    "text": "War, the second rider. He grants you a single minute, then raises the hammer, the blade and the spear to fight beside him. Steel troubles him less than spellcraft."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke the weapons of Bellum and unhorsed War in {minutes} minutes.",
+    "loss": "Bellum's war incarnate cut through {realm}'s raid; {raidLeader} lost the second rider."
+  }
+}

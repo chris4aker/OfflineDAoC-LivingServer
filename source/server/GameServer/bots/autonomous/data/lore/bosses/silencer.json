@@ -1,0 +1,71 @@
+{
+  "id": "silencer",
+  "name": "Silencer",
+  "catalogKey": "caer-sidi/silencer",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. For every ten attackers he gains a 1% chance, on each hit, to become almost immune to damage for a short time; he changes form during the fight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/Silencer.cs"
+    }
+  ],
+  "story": "In a gaol of the dead, noise is a kind of hope, and the keepers of Caer Sidi set one of their number to end it. The Silencer walks the inner halls where the prisoners used to call to each other through the stone. He grows harder to harm the more voices are raised against him, as if a crowd only feeds the hush he carries. When the gaol rose, the Silencer did not choose a side. Silence has no side. It simply grew.",
+  "legend": "The more people hitting him, the more often he goes nearly immune for a few seconds. A huge zerg on him is wasted; a solid core of damage dealers works better, with the rest clearing around him. Wait out his still spells.",
+  "yells": {
+    "aggro": [
+      "Hush."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "So many voices. So little to say."
+      }
+    ],
+    "death": [
+      "..."
+    ],
+    "slay": [
+      "Quiet now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Your footsteps make no sound here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Silencer goes still. Blows find nothing."
+      }
+    ],
+    "realmFirstKill": "The Silencer is dead. Caer Sidi can scream again."
+  },
+  "botLines": {
+    "briefing": [
+      "silencer gets immunity windows the more people hit him. core dps only, the rest guard",
+      "wait out his immune bursts, dont waste cds"
+    ],
+    "aftermathWin": [
+      "silencer down. it's loud again",
+      "fewer people on him worked. told you"
+    ],
+    "aftermathLoss": [
+      "the whole raid piled on him and he just kept going immune"
+    ],
+    "rumour": [
+      "heard the silencer gets harder to hurt the more people swing at him",
+      "[someone said|heard] its dead quiet near the silencer"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "silencer",
+    "text": "The keeper who ended the prisoners' calling through the stone. The more voices raised against him, the deeper his hush. Send your best, not your most."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke the Silencer's hush in {minutes} minutes.",
+    "loss": "The Silencer stilled {realm}'s raid; {raidLeader} sent too many voices against him."
+  }
+}

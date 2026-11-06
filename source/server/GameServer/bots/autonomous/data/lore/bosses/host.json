@@ -1,0 +1,66 @@
+{
+  "id": "host",
+  "name": "Host",
+  "catalogKey": "caer-sidi/host",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 79, 30,000 health each. Eight copies of Host appear; one is chosen as the real one, and killing it kills the rest.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs"
+    },
+    {
+      "text": "Linked dead come with him: archliches, black revenants, cursed laculae, forerunners and heralds of trucidation (slaughter).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The keepers of Caer Sidi called him the Host because there was no other word for what he was: a multitude in one prisoner, a man who had died so many deaths in so many bodies that he came to Arawn's gaol as eight. Only one of the eight is him; the rest are the bodies he wore and could not quite take off. He keeps archliches and revenants around him like a household. Strike the true Host and the other seven drop where they stand, like coats falling off their pegs.",
+  "legend": "Eight of him, one real. Kill the real Host and the rest die with him; kill a fake and you only lose time. Spread out, find the one that matters, and watch for the heralds and archliches that come with him.",
+  "yells": {
+    "aggro": [
+      "We are many. We are one. Guess."
+    ],
+    "phases": [],
+    "death": [
+      "All of us... at once..."
+    ],
+    "slay": [
+      "Another body. We have room."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Eight of the same man. Seven of them are empty."
+    ],
+    "phases": [],
+    "realmFirstKill": "The true Host is dead. Seven bodies fall with him."
+  },
+  "botLines": {
+    "briefing": [
+      "8 hosts, one is real. kill the real one and the others die",
+      "heralds and archliches linked, off tanks on them"
+    ],
+    "aftermathWin": [
+      "found the real one. all eight down",
+      "host down. that was a guessing game"
+    ],
+    "aftermathLoss": [
+      "we killed four fakes and ran out of mana"
+    ],
+    "rumour": [
+      "[heard|word is] the host in caer sidi is eight of him and only one is real",
+      "guests dont get breathed on by the host. [old joke|bad joke], i know"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "host",
+    "text": "A multitude in one prisoner. Eight bodies, one man. Strike the true Host and the others fall like coats from their pegs."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} found the true Host among eight and ended all of him in {minutes} minutes.",
+    "loss": "The Host wore {realm}'s raid down body by body; {raidLeader} never found the real one."
+  }
+}

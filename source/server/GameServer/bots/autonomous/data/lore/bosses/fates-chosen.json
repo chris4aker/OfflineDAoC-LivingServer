@@ -1,0 +1,60 @@
+{
+  "id": "fates-chosen",
+  "name": "Fate's Chosen",
+  "catalogKey": "caer-sidi/fatechosen",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 40,000 health. No scripted mechanic beyond its reset. Caer Sidi also holds 'fate's bearers' and the Horsemen's Harbingers of Fate.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs"
+    }
+  ],
+  "story": "The four riders at the top of Caer Sidi serve fate, and fate keeps servants of its own lower down. Fate's Chosen is the one the riders sent below to keep the fate's bearers in order and to see who climbs. It is not cunning and it is not cruel. It simply stands where it was told to stand, as it has since before the gaol rose, and the riders know the name of everyone who passes it. Some say it was a prisoner once, chosen by the riders to serve; it has never said.",
+  "legend": "A straight fight with no tricks: tank it, heal through it and burn it down. Its value is as a test: if your raid cannot kill Fate's Chosen clean, it is not ready to climb to the riders. Save your big cooldowns for later.",
+  "yells": {
+    "aggro": [
+      "The riders will know your names."
+    ],
+    "phases": [],
+    "death": [
+      "It was... foretold..."
+    ],
+    "slay": [
+      "As it was written."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A watcher stands where fate told it to."
+    ],
+    "phases": [],
+    "realmFirstKill": "Fate's Chosen has fallen. The riders take note."
+  },
+  "botLines": {
+    "briefing": [
+      "fates chosen is a tank and spank. clean kill, save cooldowns"
+    ],
+    "aftermathWin": [
+      "fate's chosen down. on to the riders",
+      "the riders know we're coming now"
+    ],
+    "aftermathLoss": [
+      "if we cant beat fates chosen we're not ready for the top"
+    ],
+    "rumour": [
+      "heard fate's chosen tells the riders who's coming",
+      "[someone said|heard] fate's chosen is the warmup for the horsemen"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fate's chosen",
+    "text": "The riders' servant below, set to keep the fate's bearers in order and see who climbs. If your raid cannot pass it cleanly, do not climb further."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} passed Fate's Chosen in {minutes} minutes; the riders took note.",
+    "loss": "Fate's Chosen turned {realm}'s raid back before the riders; {raidLeader} was not ready."
+  }
+}

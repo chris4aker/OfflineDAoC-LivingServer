@@ -1,0 +1,65 @@
+{
+  "id": "skeletal-sacristan",
+  "name": "Skeletal Sacristan",
+  "catalogKey": "caer-sidi/skeletalsacristan",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. He walks a fixed round of the high walk; Offline DAoC makes him stand while he is fought, because a raid could not keep up with his round.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs"
+    },
+    {
+      "text": "A sacristan keeps a church's sacred vessels and vestments.",
+      "provenance": "original",
+      "source": "common usage"
+    }
+  ],
+  "story": "Arawn's gaol had a chapel of its own, and the chapel had a sacristan to keep its vessels: the cups, the lamps, and, the Inconnu say, the rim of a cauldron that nine maidens once kept warm with their breath. The vessels are long gone, stolen or broken when the gaol rose, but the Sacristan does not know it. He walks his round of the high walk as he always has, from the sacristy to the chapel and back, checking for things that are no longer there. He will not stop for you. You must stop him.",
+  "legend": "He walks a loop and used to outrun whole raids. Here he stands and fights once you engage, so catch him on his walk, hold him there and burn him. Do not chase him round his circuit; let him come to you.",
+  "yells": {
+    "aggro": [
+      "The vessels. Where are the vessels?"
+    ],
+    "phases": [],
+    "death": [
+      "The round... is not... finished..."
+    ],
+    "slay": [
+      "Stand aside from the walk."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Footsteps on the walk above. Always the same round."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Sacristan's round is ended. The walk is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "catch the sacristan on his walk and hold him. dont chase his loop"
+    ],
+    "aftermathWin": [
+      "sacristan down. his round is over",
+      "he stood still for once"
+    ],
+    "aftermathLoss": [
+      "we chased him round the loop again"
+    ],
+    "rumour": [
+      "heard the sacristan still checks for vessels that are long gone",
+      "[someone said|heard] the sacristan used to outrun whole raids"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sacristan",
+    "text": "The keeper of the sacred vessels. He still walks his round on the high walk, though the vessels are long gone. Stand in his way."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} stood in the Sacristan's way and ended his round in {minutes} minutes.",
+    "loss": "The Skeletal Sacristan walked on past {realm}'s raid; {raidLeader} could not stop him."
+  }
+}

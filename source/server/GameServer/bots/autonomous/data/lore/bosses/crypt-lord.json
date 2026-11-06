@@ -1,0 +1,71 @@
+{
+  "id": "crypt-lord",
+  "name": "Crypt Lord",
+  "catalogKey": "caer-sidi/cryptlord",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 86, 100,000 health, the highest-levelled named in Caer Sidi besides Apocalypse. Pulling him brings 43 linked dead: dark lights, fate's bearers, forerunners and reckoned souls.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs"
+    },
+    {
+      "text": "The bounty quest's hunt reason says he commands Caer Sidi's restless dead.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Bounty/BountyQuest.cs"
+    }
+  ],
+  "story": "The Crypt Lord was Arawn's warden over the crypts of Caer Sidi, the deep rows where the prisoners slept between their reckonings. When the gaol rose he did not join the rising. He did something colder: he let the prisoners believe they had won, and then took command of them. Every forerunner, every dark light, every fate's bearer in his court answers to him now, and they come all at once. He is the gaol's real master under the riders, and he knows it.",
+  "legend": "Forty-odd dead come when he is pulled: dark lights, fate's bearers, forerunners and reckoned souls. Clear the court in sections before you touch him, or bring enough to fight a small army. He is the highest level in the fortress below the riders.",
+  "yells": {
+    "aggro": [
+      "Rise, all of you. The warden calls the count."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "To me, every one of you! Hold the crypts!"
+      }
+    ],
+    "death": [
+      "The crypts... are unwatched..."
+    ],
+    "slay": [
+      "Another for the rows."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The dead stand in ranks. Their lord is awake."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Crypt Lord has fallen. Caer Sidi's dead are leaderless."
+  },
+  "botLines": {
+    "briefing": [
+      "crypt lord pulls 40+ adds. we clear the court in sections first",
+      "highest level in the place below the riders. tanks rotate"
+    ],
+    "aftermathWin": [
+      "crypt lord down. the warden's off duty",
+      "cleared the court first, then him. clean"
+    ],
+    "aftermathLoss": [
+      "someone body pulled the crypt lord with the court up"
+    ],
+    "rumour": [
+      "the crypt lord commands caer sidi's restless dead, [they say|heard]",
+      "[heard|someone said] forty dead come with the crypt lord"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "crypt lord",
+    "text": "Arawn's warden over the deep crypts. When the gaol rose he let the prisoners think they had won, and then took command of them. Clear his court before you strike him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cleared the crypts and broke the Crypt Lord's command in {minutes} minutes.",
+    "loss": "The Crypt Lord's court rose as one against {realm}'s raid; {raidLeader} was buried in the rows."
+  }
+}
