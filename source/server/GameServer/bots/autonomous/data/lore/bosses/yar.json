@@ -1,0 +1,90 @@
+{
+  "id": "yar",
+  "name": "Yar",
+  "catalogKey": "open-world/yar",
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Yar is a level-73 named with 40,000 health in the southwest of Malmohus (region 100 at 695353, 1022775).",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "At 30% health he calls drakulv executioners, soultrappers and disciples to his aid.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The quest 'Yar the Firstborn' (from Kiaja at Svarhamr) calls him the oldest and strongest of the drakulv, the most powerful of the werewolves, and says to bring an adequate force.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/3236"
+    },
+    {
+      "text": "A Dec 2002 Allakhazam comment says killing Yar reduces the chance of Gjalpinulva's exhale (unverified hearsay); a 2003 comment says one good crowd-control group can do him.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3223"
+    },
+    {
+      "text": "Swedish drake means dragon and ulv wolf (the compound 'drakulv' to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "Yar was the first. Before the drakulv were a people, before there were armguards and axehands and soultrappers and priests, there was one pup in the ruins with scales on its back and a wolf's grin, and Gjalpinulva licked the frost off it and named it. He is the oldest of her brood and the strongest, and he hunts the southwest of Malmohus with his kin. When he is hurt badly he howls, and the drakulv come running: executioners, soultrappers and disciples, because the firstborn has never once called and not been answered. The svartalfar of Svarhamr pay well for his head. They say his mother feels it when he dies.",
+  "legend": "Yar's a group fight with good crowd control. At 30% he shouts and his kin come, so have mez ready and save power. Raid leaders used to kill Yar on the way to the dragon because they swore it made her breathe less. Nobody ever proved it. His head makes a fine wall trophy.",
+  "yells": {
+    "aggro": [
+      "Firstborn of the Wolf's Daughter! You are in my mother's ruins!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "KIN! The firstborn calls! COME!"
+      }
+    ],
+    "death": [
+      "Mother... I am... coming home..."
+    ],
+    "slay": [
+      "For the brood."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Old claw-marks scar the stones. The firstborn hunts here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Yar howls, and the drakulv come running!"
+      }
+    ],
+    "realmFirstKill": "Yar the Firstborn is slain. Somewhere, his mother stirs."
+  },
+  "botLines": {
+    "briefing": [
+      "yar calls 3 drakulv at 30%. mez ready, save power",
+      "killing yar before the dragon, [old habit|cant hurt]"
+    ],
+    "aftermathWin": [
+      "yar down. [head on the wall|trophy time]",
+      "the firstborn is dead. hope mom didnt notice"
+    ],
+    "aftermathLoss": [
+      "the adds at 30% got us"
+    ],
+    "rumour": [
+      "[heard|they say] yar is gjalpinulva's firstborn. [kill him first and she breathes less|thats what the old raiders say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Yar",
+    "text": "The firstborn of [Gjalpinulva]'s brood, the oldest and strongest of the drakulv. When he howls, his kin come. The svartalfar say his mother feels it when he dies."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Yar the Firstborn in Malmohus in {minutes} minutes.",
+    "loss": "Yar's kin answered his call and drove off {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "id": "gjalpinulva",
+  "name": "Gjalpinulva",
+  "catalogKey": "gjalpinulva-s-lair-myrkwood/midgjalpinulva",
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Gjalpinulva is Midgard's level-80 dragon with 300,000 health. Her lair is in Malmohus (region 100 at 708811, 1021459, which lies in the Malmohus zone); the encounter catalog's label 'Myrkwood' is wrong.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Allakhazam lists Gjalpinulva in Malmohus at level 80; one player wrote that she looks like a dragon with a wolf's head, others that she calls her 'babies' to help her and still talks to those she kills (2006).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/3223"
+    },
+    {
+      "text": "She cannot be hurt outside her lair. At every tenth of her health she breathes (Gjalpinulva's Breath) and lowers cold resistance; she glares at one target before a massive attack, stuns everyone near for 30 seconds and throws players.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Waking, her voice booms through the canyons that she is restless and will freeze the flesh and grind the bones of whoever entered her domain.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+    },
+    {
+      "text": "Her taunts: Odin will do without your aid at Ragnarok; no valkyries will bear you; may your corpse rot on Nastrand; her aunt has a place for you in Niflheim. Over the dead she says their soul now belongs to her.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+    },
+    {
+      "text": "The script calls her 'she' throughout; bounty text and the 2010s Camelot Herald do too. Allakhazam's patch summary says 'him'. Living Server follows the scripts: she.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+    },
+    {
+      "text": "Post-period Camelot Herald text says her frozen gaze was sung of in mead halls and that Midgard condemned her; a later chapter says the Varulv were once her allies.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/bonds-ice"
+    },
+    {
+      "text": "A Dec 2002 Allakhazam comment says fight her inside the lair, and that killing Yar lowers the chance of her exhale (unverified).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3223"
+    },
+    {
+      "text": "Period comments put kills at anywhere from 27 to over 100 players, and a Nov 2003 thread had about 32; Living Server sizes the raid at 70.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/lubricador%C2%B4s-3-fg-dragon-raid.159276/page-2"
+    },
+    {
+      "text": "Bot chat calls her a daughter of the Fenris wolf (Mythic source not found). In Norse myth Gjalp is a giantess, Geirrod's daughter, whom Thor drove off with a stone; Swedish ulv means wolf (the -ulva ending to verify).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Every child in Midgard knows the start of her song: the gods bound the Fenris wolf with a chain made of things that do not exist, and before the chain was finished he had a daughter. Who her mother was, the skalds argue. Some say a giantess of the Iron Wood, which is why the two-headed wolves of Aegir have her look. Some say she was named for Gjalp, the giantess who raised a river against Thor, and that she raises winter instead. Everyone agrees she has wings, a wolf's head and a frozen gaze, and that she makes her home in the ruins of Malmohus at the southern edge of the world.\n\nShe speaks like a goddess's niece, and she is one: her aunt keeps Niflheim, she says, and has a place reserved for you. She promises you no valkyries and no Valhalla, and tells your corpse your soul is hers. She breeds the drakulv, the dragon-wolves, and calls her brood to her when she is hurt. Out of her lair she is a storm you cannot wound. Inside it she fights as a queen fights at her own hearth: at every tenth of her strength she breathes winter over the whole court, she fixes one of you with the gaze the mead halls sing about and then strikes, and her roar holds you where you stand. When she dies at last, a howl runs through the whole land, and then all is quiet.",
+  "legend": "Fight her in the lair, never outside: out there she can't be hurt and she knows it. Cold resists up and keep them up, because every breath strips them. When she stares at someone, that someone runs. Stun breaks for the long roar. Kill her babies before they reach the healers. Old raiders swore that killing Yar first made her breathe less; the heralds never said so, but people still do it. And never say her name inside the ruins.",
+  "yells": {
+    "aggro": [
+      "You walk into my hall with your little gods' names in your mouths. Spit them out.",
+      "Odin will have to do without you at the end of the world."
+    ],
+    "phases": [
+      {
+        "trigger": "breath",
+        "text": "Breathe in, little ones. It is the last cold air you will taste."
+      },
+      {
+        "trigger": "addsSpawned",
+        "text": "My children! Come and feed!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "My father broke a god's hand. What do you think I will break?"
+      }
+    ],
+    "death": [
+      "Father... the chain... still holds..."
+    ],
+    "slay": [
+      "No valkyries for you. Your soul is mine.",
+      "My aunt in Niflheim will keep you warm. She keeps nothing warm."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ruins of Malmohus. A wolf's head lies on its paws.",
+      "Frost forms on your lashes. She is looking at you."
+    ],
+    "phases": [
+      {
+        "trigger": "breath",
+        "text": "Gjalpinulva breathes, and winter fills the ruins!"
+      },
+      {
+        "trigger": "addsSpawned",
+        "text": "Gjalpinulva calls her brood to her side!"
+      },
+      {
+        "trigger": "glare",
+        "text": "Gjalpinulva fixes someone with her frozen gaze!"
+      }
+    ],
+    "realmFirstKill": "A howl crosses Midgard, then silence. She is dead.",
+    "wake": "Gjalpinulva wakes. Frost runs down the canyons."
+  },
+  "botLines": {
+    "briefing": [
+      "gjalpinulva: fight IN the lair, out of it she cant be hurt",
+      "cold resist up, she debuffs it every breath, every 10%",
+      "when she stares at you, run. stun break ready for the roar",
+      "kill her babies before they get to the healers"
+    ],
+    "aftermathWin": [
+      "THE WOLF IS DEAD!! [gg midgard|gratz everyone]",
+      "did you hear that howl when she died? [chills|whole zone heard it]"
+    ],
+    "aftermathLoss": [
+      "she breathed twice in a row and we were done",
+      "somebody pulled her out of the lair. [never again|stop doing that]"
+    ],
+    "rumour": [
+      "[heard|they say] gjalpinulva talks to your corpse after she kills you. [never stuck around to listen|i always release too fast to hear]",
+      "kill yar first and she breathes less. [old raid leaders swear by it|probably a myth]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Gjalpinulva",
+    "text": "Fenris's daughter, the skalds say, with a wolf's head, wings and a frozen gaze. She calls Niflheim's keeper her aunt and promises the dead no valkyries. Out of her lair she cannot be wounded. In it she breathes winter at every tenth of her strength and calls her brood, the drakulv, to her side."
+  },
+  "bookPage": "Sung at the hall of Svarhamr, as the dragonbane svartalfar sing it, which is not how Jordheim sings it. The wolf was bound with a chain of things that are not. Before the last link closed he had a daughter, and she flew south while the gods were busy congratulating themselves. She came down in Malmohus among the ruins of a people nobody remembers, and she lay down there, and the frost went out from her like water from a spring. The svartalfar have watched her ever since. They say she is waiting for the chain to break. They say when it does, she will be the first to know.",
+  "chronicle": {
+    "win": "A howl crossed Midgard and then silence: {raidLeader} led {realm} against Gjalpinulva in Malmohus and slew her in {minutes} minutes.",
+    "loss": "Gjalpinulva's winter broke {raidLeader}'s raid from {realm} in the ruins of Malmohus after {minutes} minutes."
+  }
+}
