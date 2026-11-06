@@ -97,5 +97,46 @@
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} stood close, did not die, and broke Legion in {minutes} minutes.",
     "loss": "Legion took {realm}'s fallen and grew strong on them; {raidLeader}'s raid became more voices in the choir."
+  },
+  "realmTakes": {
+    "albion": {
+      "botLines": {
+        "briefing": [
+          "the priests say pray for the souls inside it. pray later, stand close now"
+        ],
+        "aftermathWin": [
+          "for albion! legion is down. the church will ring every bell in camelot"
+        ],
+        "rumour": [
+          "camelot's priests say legion is the thing in the gospel that named itself for its number"
+        ]
+      }
+    },
+    "midgard": {
+      "botLines": {
+        "briefing": [
+          "die to legion and you get no seat in any hall. so dont die"
+        ],
+        "aftermathWin": [
+          "thats a whole saga right there. legion is dead, skald"
+        ],
+        "rumour": [
+          "the skalds call legion the glutton-hall. it eats its guests"
+        ]
+      }
+    },
+    "hibernia": {
+      "botLines": {
+        "briefing": [
+          "the bards wont sing legion. lets give them something to sing"
+        ],
+        "aftermathWin": [
+          "legion is dead. now the bards have to sing it"
+        ],
+        "rumour": [
+          "the druids say legion is what the otherworld becomes with no law. a lord made of its own subjects"
+        ]
+      }
+    }
   }
 }

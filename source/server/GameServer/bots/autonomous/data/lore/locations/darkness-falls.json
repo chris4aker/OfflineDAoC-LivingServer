@@ -212,5 +212,76 @@
     "high-lord-baln",
     "high-lord-oro",
     "high-lord-saeor"
-  ]
+  ],
+  "realmTakes": {
+    "albion": {
+      "story": "Albion's door is in the ruins of the old castle in Camelot Hills, an hour's ride from the king's own seat, and the Church has never forgiven the realm for living so close to it. The priests of Camelot call Darkness Falls the Mouth, and teach that it is the pit the old enemies of the faith were cast into, and that every demon slain in it is a soul spared. Albion's knights go down as crusaders. Its wizards go down for the seals. Its mercenaries go down for the coin, and lie to the priests about it afterwards. Every squire in Camelot Hills has stood at the castle ruins at night and heard something laughing underneath.",
+      "legend": "The Church calls it the Mouth, and the knights say a prayer at the castle ruins before going down. When Albion holds the keeps, every guild in Camelot runs to the Hills at once. Never release inside; the walk back from Camelot is the longest walk in the realm.",
+      "botLines": {
+        "lore": [
+          "the priests in camelot call darkness falls the mouth. [the pit the old enemies got thrown into|a hell under the hills]",
+          "albion's door to df is in the castle ruins in camelot hills. [an hour from the king|right on the king's doorstep]"
+        ],
+        "rumour": [
+          "[heard|someone said] albion has the keeps again. everyone to the hills before the door shuts",
+          "squires dare each other to sleep at the castle ruins in camelot hills. [nobody lasts|nobody does it twice]"
+        ],
+        "tell": [
+          "darkness falls? the demon dungeon, door in the castle ruins in camelot hills. only opens when albion holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "The Church calls it the Mouth. Its door lies in the castle ruins in Camelot Hills, an hour from the king's seat, and it opens only when Albion holds the frontier. Go down as a crusader if you must. Come back as one. Ask about [the mouth].",
+        "topics": {
+          "the mouth": "The Church's name for Darkness Falls: the pit the old enemies of the faith were cast into. Every demon slain there is a soul spared, the priests teach."
+        }
+      }
+    },
+    "midgard": {
+      "story": "Midgard's door is in the snow above the Vale of Mularn, near the Huldu camps, and the skalds of Jordheim do not call it a hell. Hel has her own hall and keeps it in good order; this is something else, a hall of the dead that belongs to no god, where the dead are eaten instead of feasted. The Norse go down for glory, because a demon prince slain is a saga verse, and for the seals, because a warrior must eat. They go down laughing and they come up quieter. The old men of Mularn say the Huldu were first to find the door, and that they have been very careful ever since never to open it.",
+      "legend": "The skalds say it is no hall of Hel's, because Hel keeps her dead and Legion eats them. A demon prince is a verse in your saga; Legion is the whole saga. When Midgard holds the keeps, go, and go in force. The Huldu by the door know more than they say.",
+      "botLines": {
+        "lore": [
+          "the skalds say df isnt hel's hall. [hel keeps her dead|hel feasts hers], legion eats them",
+          "midgard's df door is up in the snow over mularn, by the huldu camps. [the huldu never go in|huldu wont go near it]"
+        ],
+        "rumour": [
+          "[heard|someone said] we have the keeps. df is open, get to mularn",
+          "a demon prince is a verse in your saga, [my gran said|the skalds say]. legion is the whole saga"
+        ],
+        "tell": [
+          "darkness falls? demon kingdom under the world. our door is in the snow above mularn. opens when midgard holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "It is no hall of Hel's. Hel keeps her dead and feasts them; down there they are eaten. Our door lies in the snow above Mularn, by the Huldu, and it opens when Midgard holds the frontier. A prince of that court is worth a verse. Legion is worth a saga, if anyone lives to sing it. Ask about [glutton-hall].",
+        "topics": {
+          "glutton-hall": "The skalds' name for Legion's kingdom: a hall of the dead that eats its guests instead of feasting them. Hel keeps her dead in good order. This is not her hall."
+        }
+      }
+    },
+    "hibernia": {
+      "story": "Hibernia's door is in Connacht, and the druids of Tir na Nog say plainly what it is: a place where the otherworld was torn the wrong way. The Sidhe hills open onto the lands of the Good Folk, who are dangerous but have their own laws; Darkness Falls opens onto a kingdom with no law but rank, and no courtesy but fear. Hibernians go down because the realm must not be the one that never goes, and because the demons' seals buy what nothing above ground can. The bards make songs of it, and every song ends with the singer coming home, because the ones who did not come home are not in a position to complain.",
+      "legend": "The druids say the otherworld was torn the wrong way under Connacht. The Good Folk have laws; the demon court has only rank. When Hibernia holds the keeps, the door in Connacht opens, and the whole realm hears it. Pet classes, mind the princes: some of them eat pets.",
+      "botLines": {
+        "lore": [
+          "the druids say df is the otherworld torn the wrong way. [the sidhe have laws|the good folk have rules], the demons only have rank",
+          "our door to darkness falls is in connacht. [opens when we hold the keeps|only when hibernia holds the frontier]"
+        ],
+        "rumour": [
+          "[heard|someone said] hibernia took the keeps. connacht door is open",
+          "the bards sing df songs where everyone comes home. [funny that|the others dont sing]"
+        ],
+        "tell": [
+          "darkness falls? demon court under the realms. our door is in connacht, it opens when hibernia holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "The druids say it is a place where the otherworld was torn the wrong way. The Good Folk have their laws; the demon court has only rank. Our door lies in Connacht and opens when Hibernia holds the frontier. Go, because a realm that never goes is a realm that is afraid. Ask about [torn otherworld].",
+        "topics": {
+          "torn otherworld": "The druids' reading of Darkness Falls: the otherworld torn the wrong way. The Good Folk have laws; the court below has only rank and fear."
+        }
+      }
+    }
+  }
 }
