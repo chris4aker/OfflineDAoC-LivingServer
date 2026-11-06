@@ -157,6 +157,7 @@ func open_for(merchant: String, items_list: String) -> void:
 		pages[p].append(String(e[2]))
 	pages = pages.filter(func(p): return not (p as Array).is_empty())
 	selected = ""
+	_appraise.visible = true
 	show_page(0)
 	show_window()
 
@@ -188,8 +189,16 @@ func open_server(merchant: String, server_pages: Dictionary, window_type: int) -
 		selected = ""
 		page = 0
 		_place_top_center()
+	_appraise.visible = appraise_available()
 	show_page(page)
 	show_window()
+
+
+## APPRAISE on the server needs the network client's AppraiseItem (0xE0), which is new in the 1.2 MMOEngine.dll: the
+## 0.37c one has no such call, so a click only logged a script error (Living Server issue #34). Without it the button
+## isn't shown; SELL and dropping an item on the window still sell.
+static func appraise_available() -> bool:
+	return not Server.active or (Server.client != null and Server.client.has_method("AppraiseItem"))
 
 
 func show_page(p: int) -> void:

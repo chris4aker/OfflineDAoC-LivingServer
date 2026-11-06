@@ -36,6 +36,24 @@ jobs:
           python3 source/tools/epic_encounter_catalog.py --check
           python3 -m unittest discover -s source/tools/tests -v
 
+  # The new client as a 0.37c player gets it: the released scripts with tools/fork-build/content-patches.json applied
+  # must all compile in Godot against the released class cache, and issue #34's probe (skills onto the quickbar,
+  # Stealth, the merchant's SELL) must pass. tools/newclient-compat/installed_check.py; no game content needed.
+  new-client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the 0.37 release commit (the released scripts)
+        run: git fetch --depth=1 origin ab4df02a1ad26192357477dbc912756c6703fb66
+      - name: Godot 4.7.2 (SHA-512 from its release page)
+        run: |
+          curl -sSfL --retry 3 -o "$RUNNER_TEMP/godot.zip" https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          echo "9aa00f7a605200940bce3027a567b782f49bd8e940dd06ae9e987bd65aee1b1467edd56ed84fcdcbdd44354bf613bdbb4e5d2913e925850368e150c59ed54c65  $RUNNER_TEMP/godot.zip" | sha512sum -c -
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+      - name: Installed scripts compile, issue #34 probe
+        run: python3 tools/newclient-compat/installed_check.py "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" "$RUNNER_TEMP/installed"
+
   server:
     runs-on: windows-latest
     timeout-minutes: 45

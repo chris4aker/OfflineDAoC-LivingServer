@@ -21,7 +21,7 @@ ALWAYS ON (the bots' own game, nothing to switch):
     progress elsewhere) (see INSTALL)
   - on 0.37c, 14 more new-client scripts from shadowofze's final code: abilities (Sprint,
     Stealth ...) drag onto the quickbar; a Stealth row in the Abilities window, /stealth and
-    /hide; SELL in the merchant window (APPRAISE shows but does nothing yet: it needs a newer
+    /hide; SELL in the merchant window (APPRAISE stays hidden: it needs the 1.2
     MMOEngine.dll); one PLAY click enters the world once; names hide behind walls; fog per
     region; flickering casting hands; arrow / bolt / poison info. Untested in game so far.
     What is held back and why: docs\CLIENT-SCRIPTS-1.2.md

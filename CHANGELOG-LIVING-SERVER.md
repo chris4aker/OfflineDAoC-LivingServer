@@ -328,7 +328,31 @@ keyboard, overnight or in CI:
 - Its protocol code comes from the new client's network client (`source/new-client`); lometur's HearthDAoC headless
   client was the model for the idea (it runs inside the server, so it was not ported).
 
-**Also in 1.2: measuring the AI, and the new client**
+**New client (0.37c): skills on the quickbar, Stealth and the merchant's SELL button** (GitHub issue #34). These are
+shadowofze's own 1.2 fixes, installed as patches to the new client's scripts (only where the script is the released
+0.37c one; ROLLBACK.cmd puts it back).
+- **Skills onto the quickbar.**
+  - **Before:** an ability dragged from the skills window (Sprint, Stealth, Safe Fall, a realm ability ...) showed a
+    no-entry sign over the quickbar and wouldn't go on it. Spells and styles already did.
+  - **Now:** abilities go on the quickbar too, and one click on the slot uses them. Shift + right-click empties a slot.
+- **Stealth.**
+  - **Before:** Stealth was only a line in the specialization list (the server treats it as a specialization you
+    use, not an ability), so the Abilities list had no Stealth to click or drag, and /stealth was "not a command".
+  - **Now:** the Abilities list has a Stealth row: double-click it, drag it onto the quickbar, or type /stealth (or
+    /hide) to hide and to come out again. You don't see yourself as a see-through ghost yet, and the effect bar may
+    show another picture for Stealth: both need the 1.2 network client.
+- **SELL at merchants.**
+  - **Before:** the merchant window had BUY only. Selling worked by dragging an item onto the window, which nothing
+    told you.
+  - **Now:** right-click an item in your backpack, then click SELL (dragging an item onto the window still sells it).
+    The window also gets a quantity for BUY (arrows, KEEP), a scroll bar for long pages and the pack size of arrows,
+    bolts and poisons.
+  - **APPRAISE** stays hidden in this version of the new client: the server's appraise needs the 1.2 network client
+    (its MMOEngine.dll), which this update doesn't install. In shadowofze's 1.2 scripts the button was there but a
+    click did nothing.
+- The account vault window keeps its title (with the 1.2 scripts alone it would have said HOUSE VAULT).
+
+**Also in 1.2: measuring the AI**
 - **AI_PROFILE: what the bots' AI costs, measured every minute** (technical audit 2026-11-03, "measure before
   adding"). Nothing in the game changes: it only measures.
   - **What:** once a minute the server log gets one `AI_PROFILE` line: the game-loop tick's p50, p95, p99 and
@@ -346,12 +370,6 @@ keyboard, overnight or in CI:
     stefanrows's `BotThinkProfiler` (the timed scope, the measured lock, the minute line), both GPL-3.0.
   - **Checked:** 33 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
     report tool; the full server suite passes (4,123). Not yet run on a live server: the first L300 run is the owner's.
-- **New client (0.37c): 14 more of shadowofze's final scripts** (PR #54, issue #34). Installed as content patches
-  over the released files: abilities (Sprint, Stealth ...) drag onto the quickbar; a Stealth row in the Abilities
-  window, `/stealth` and `/hide`; SELL in the merchant window (APPRAISE shows but does nothing yet: it needs a newer
-  `MMOEngine.dll`); one PLAY click enters the world once; names hide behind walls; fog per region; flickering casting
-  hands; arrow, bolt and poison info. What is held back and why: [docs/CLIENT-SCRIPTS-1.2.md](docs/CLIENT-SCRIPTS-1.2.md).
-  Not yet played in game.
 
 ## Beta 1.1.2 (in development)
 

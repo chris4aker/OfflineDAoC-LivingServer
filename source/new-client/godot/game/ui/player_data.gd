@@ -344,6 +344,9 @@ func appraise(slot: int, merchant: String) -> int:
 	var v: Node = Server.viewer()
 	if v == null:
 		return 0
+	if not MerchantWindow.appraise_available():           # (the 0.37c MMOEngine.dll has no AppraiseItem)
+		message.emit("Appraising isn't available in this version of the new client: sell the item to see its price.", "merchant")
+		return 0
 	var r: Vector3 = Server.to_region(Server.current_zone_id(), v.player.global_position)
 	Server.client.call("AppraiseItem", int(r.x), int(r.y), slot)   # (the server answers in chat)
 	return 0
