@@ -17,7 +17,7 @@ namespace DOL.GS
         public static bool AllowGlacierGriffonPatrol => false;
 
         // Original OpenDAoC mechanics the fork had edited out for bot raids (docs/encounters/EPIC-ENCOUNTERS.md, "Restored
-        // behind switches"). Each is off, so the game plays as before, until the raid AI can play it. The values were read
+        // behind switches"). Each is off, so the game plays as before, until the raid AI can play it; the ones it plays are on. The values were read
         // from OpenDAoC-Core 3513bad (2026-11-04). Settable so the tests and the next raid AI step can turn one on.
 
         /// <summary>Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over).</summary>
@@ -39,8 +39,9 @@ namespace DOL.GS
         public static bool AllowGalladoriaBridgeSpot { get; set; }
         /// <summary>The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300).</summary>
         public static bool AllowFullFirePatches { get; set; }
-        /// <summary>Each Earthmender takes damage only from its own class group (pets always); others do nothing.</summary>
-        public static bool AllowEarthmenderClassPuzzle { get; set; }
+        /// <summary>Each Earthmender takes damage only from its own class group (pets always); others do nothing. On since 1.2:
+        /// the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules).</summary>
+        public static bool AllowEarthmenderClassPuzzle { get; set; } = true;
         /// <summary>Earthmenders never attack (they only heal).</summary>
         public static bool AllowEarthmendersPassive { get; set; }
         /// <summary>An Earthmender heals to full 30 s after its last fight even with raiders in the room.</summary>

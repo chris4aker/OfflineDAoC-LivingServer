@@ -1248,11 +1248,11 @@ def read_switches() -> list[dict]:
         mm = re.search(r"public static bool (Allow\w+)\s*=>\s*(\w+);", line)
         if mm:
             out.append({"name": mm.group(1), "value": mm.group(2), "file": rel(src), "line": i})
-        mm = re.search(r"public static bool (Allow\w+)\s*\{\s*get;\s*set;\s*\}", line)
+        mm = re.search(r"public static bool (Allow\w+)\s*\{\s*get;\s*set;\s*\}(?:\s*=\s*(true|false)\s*;)?", line)
         if mm:
             doc = src.line(i - 1).strip()
             doc = re.sub(r"^///\s*<summary>|</summary>$", "", doc).strip()
-            out.append({"name": mm.group(1), "value": "false", "file": rel(src), "line": i, "restores": True,
+            out.append({"name": mm.group(1), "value": mm.group(2) or "false", "file": rel(src), "line": i, "restores": True,
                         "about": doc if not doc.startswith("//") or doc.startswith("///") else ""})
         mm = re.search(r"public const int (\w+)\s*=\s*([\d_]+);", line)
         if mm:
@@ -1654,10 +1654,25 @@ def rule_key(rule: dict) -> str:
     return f"{rule['kind']}|{rule['sourceClass']}|{rule.get('method')}|{extra}|{' '.join(rule['anchor'].split())[:80]}"
 
 
+_SWITCHES_ON = None
+
+
+def switches_on() -> set[str]:
+    """The EpicEncounterMechanics switches that are on today (a restored mechanic the raid AI now plays)."""
+    global _SWITCHES_ON
+    if _SWITCHES_ON is None:
+        _SWITCHES_ON = {s["name"] for s in read_switches() if s["value"] == "true"}
+    return _SWITCHES_ON
+
+
 def default_tactic(enc: dict, rule: dict) -> tuple[str, str]:
     kind, sub = rule["kind"], rule.get("subtype")
     sw = rule.get("switch") or []
-    allow = [s for s in sw if s.startswith("Allow")]
+    if kind == "offline_change" and sw and all(s in switches_on() for s in sw if s.startswith("Allow")) and \
+            any(s.startswith("Allow") for s in sw):
+        return ("On: the original is back (" + ", ".join(s for s in sw if s.startswith("Allow")) + " is true) and the raid "
+                "AI plays it (see Encounters with raid tactics).", "easy for the current raid AI")
+    allow = [s for s in sw if s.startswith("Allow") and s not in switches_on()]
     if allow and kind != "immune_while" or allow and sub in ("attacker_position", "add_shield"):
         return ("Off today (" + ", ".join(allow) + " is false). To play it: " + switched_tactic(kind, sub),
                 "off today")
@@ -1894,7 +1909,31 @@ def render_tactics_cs(data: dict) -> str:
             blast = ", ".join(str(int(x)) for x in t.get("blastThresholds", []))
             extra = (f", {int(t.get('keepAlive', 0))}, " + (f"[{blast}]" if blast else "null") +
                      f", {int(t.get('blastRadius', 0))}")
-        rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}),')
+        init = []
+
+        def names(key):
+            return "[" + ", ".join(f'"{a}"' for a in t[key]) + "]"
+        if t.get("spreadRadius"):
+            init.append(f"SpreadRadius = {int(t['spreadRadius'])}")
+            if t.get("spreadWhileModel"):
+                init.append(f"SpreadWhileModel = {int(t['spreadWhileModel'])}")
+        if t.get("rangedAdds"):
+            init.append(f"RangedAdds = {names('rangedAdds')}")
+        if t.get("hazards"):
+            init.append(f"Hazards = {names('hazards')}")
+            init.append(f"HazardRadius = {int(t['hazardRadius'])}")
+        if t.get("after"):
+            init.append(f'After = "{t["after"]}"')
+        if t.get("classRules"):
+            rules = ", ".join(f'new("{add}", [' + ", ".join(f"eCharacterClass.{c}" for c in classes) + "])"
+                              for add, classes in t["classRules"].items())
+            init.append(f"ClassRules = [{rules}]")
+            if t.get("classRuleSwitch"):
+                init.append(f'ClassRuleSwitch = "{t["classRuleSwitch"]}"')
+        if t.get("deathAdds"):
+            init.append(f"DeathAdds = {names('deathAdds')}")
+        body = (" { " + ", ".join(init) + " }") if init else ""
+        rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}){body},')
     leashes = []
     for e in data["encounters"]:
         if not e.get("raids") or e.get("hand"):
@@ -1916,7 +1955,7 @@ def render_tactics_cs(data: dict) -> str:
         "    public static partial class EpicEncounterTactics",
         "    {",
         "        /// <summary>One row per encounter with a raid tactic (boss class, catalog id, required adds, fight-at-home",
-        "        /// radius, dies with).</summary>",
+        "        /// radius, dies with; then keep-alive and blasts, and the named rules after them).</summary>",
         "        public static readonly Tactic[] Catalog =",
         "        [",
         *rows,
@@ -1980,11 +2019,13 @@ def render_md(data: dict) -> str:
     if tact:
         lines += ["", "## Encounters with raid tactics", "",
                   "The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tactics, read from the hand "
-                  "notes' `aiTactics` into `EpicEncounterTactics.Catalog.cs`. Tested by unit and harness tests only; not "
-                  "yet seen in an overnight run (its log lines: `REALM_EXPEDITION_TACTIC`, `EPIC_TACTIC_BOT`).", "",
-                  "| Encounter | Tactic |", "|---|---|"]
-        for e in tact:
-            lines.append(f"| {e['boss']} ({e['dungeon']}) | {md_escape(e['aiTactics'].get('summary', ''))} |")
+                  "notes' `aiTactics` into `EpicEncounterTactics.Catalog.cs`. The ones new in 1.2 are tested by unit and "
+                  "harness tests only and have not been seen in a run yet (log lines: `REALM_EXPEDITION_TACTIC`, `EPIC_TACTIC_BOT`).", "",
+                  "| Encounter | Since | Tactic |", "|---|---|---|"]
+        for e in sorted(tact, key=lambda e: (e["aiTactics"].get("since", "1.1.2") != "1.2", 0)):
+            since = e["aiTactics"].get("since", "1.1.2")
+            mark = f"**{since} (new)**" if since == "1.2" else since
+            lines.append(f"| {e['boss']} ({e['dungeon']}) | {mark} | {md_escape(e['aiTactics'].get('summary', ''))} |")
     up = data.get("upstream")
     if up:
         lines += ["", "## Restored behind switches", "", "Where the fork had changed a mechanic for bots with no switch, the "

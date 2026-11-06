@@ -179,7 +179,7 @@
     ],
     "places": 4,
     "original": "Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal.",
-    "ours": "Everyone hurts them; they fight back; no quick reset while raiders are in the room; they heal the primal only.",
+    "ours": "Since 1.2 the class rule is back on (AllowEarthmenderClassPuzzle) and the raid assigns classes to it. Still changed: they fight back; no quick reset while raiders are in the room; they heal the primal only.",
     "switch": "AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal"
    },
    {
@@ -837,7 +837,7 @@
   },
   "galladoria/earthprimal": {
    "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot.",
-   "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000).",
+   "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000). 2026-11-06 (build 86eddd8): the raid never reached the primals (deadPrimals=0 all day: the bridge room was not started), so this tactic has not been seen in a run.",
    "rules": {
     "heal@2545": {
      "summary": "Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender).",
@@ -848,6 +848,46 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "GuardianEarthmender",
+     "MagicalEarthmender",
+     "NaturalEarthmender",
+     "ShadowyEarthmender"
+    ],
+    "classRules": {
+     "GuardianEarthmender": [
+      "Blademaster",
+      "Hero",
+      "Champion",
+      "Animist",
+      "Valewalker"
+     ],
+     "MagicalEarthmender": [
+      "Eldritch",
+      "Enchanter",
+      "Mentalist",
+      "Animist",
+      "Valewalker"
+     ],
+     "NaturalEarthmender": [
+      "Bard",
+      "Druid",
+      "Warden",
+      "Animist",
+      "Valewalker"
+     ],
+     "ShadowyEarthmender": [
+      "Nightshade",
+      "Ranger",
+      "Animist",
+      "Valewalker"
+     ]
+    },
+    "classRuleSwitch": "AllowEarthmenderClassPuzzle",
+    "since": "1.2",
+    "summary": "Required adds by class: once the fight is on the raid kills the four Earthmenders (they heal the primal 2,000 each) before the primal. With the original class rule on (AllowEarthmenderClassPuzzle, on since 1.2) each raider takes an Earthmender its class hurts: Guardian: blademasters, heroes, champions; Magical: eldritchs, enchanters, mentalists; Natural: bards, druids, wardens; Shadowy: nightshades, rangers; animists and valewalkers any (spread by party); pets hurt all four. A class none of them takes damage from (bainshee, vampiir, mauler) fights the primal and keeps it busy."
    }
   },
   "galladoria/easmarach": {
@@ -941,17 +981,31 @@
   },
   "galladoria/spindlerbroodmother": {
    "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mezz on a random target every 20-30 s. Her teleport is off for bots.",
-   "currentRaidAi": "2026-11-05 (build 8d7baa3): the Hibernian epic raid wiped at her once (Special Forces arrived).",
+   "currentRaidAi": "2026-11-05 07:19 (owner's notes): the Hibernian epic raid wiped at her (46 fell, 146 living), Special Forces arrived; that log is on the owner's PC. 2026-11-06 (build 86eddd8): killed in 11.0 minutes with 96 mustered, no raider death credited to her; a newborn and an underdeveloped spindler were route targets after her death.",
    "rules": {
     "adds@90": {
-     "summary": "When she dies: about 20-25 underdeveloped spindlers at her body.",
-     "tactic": "Healers ready at her death; AoE classes stack on her corpse; the route treats them as adds.",
+     "summary": "When she dies: about 20-25 underdeveloped spindlers (800 health, level 50) at her body.",
+     "tactic": "In the raid AI (EpicEncounterTactics): death adds: the route clears them at her body, though she is dead, before moving on.",
      "difficulty": "easy for the current raid AI"
+    },
+    "adds@230": {
+     "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers take each newborn as it comes; melee, tanks and healers stay on her.",
+     "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "149668060824c2e550b27e9244d813e2c7f5b1de4c575e692093e9dd9c9feb30"
+   },
+   "aiTactics": {
+    "rangedAdds": [
+     "SBAdds"
+    ],
+    "deathAdds": [
+     "SBDeadAdds"
+    ],
+    "since": "1.2",
+    "summary": "Ranged adds: casters and archers kill each newly-born spindler (8,000 health, 1-2 every 25-45 s) as it comes, while melee, tanks and healers stay on her, so newborns never pile on the healers. Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on."
    }
   },
   "galladoria/tine": {
@@ -1388,12 +1442,48 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "8d2e120d34b915ce2e459612498985039185d7361df433a9a9de0cc99f838d02"
+   },
+   "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When he gets a target he lights Orshom's Fire at 31406,69599 (907 from his spawn): an epic NPC with 10,000 health that takes only Cold damage, never moves or attacks, and casts Fire Burn (500 Heat, radius 300) on its own spot every 3 s. At 50% he pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. Orylle throws real players (never bots) into the fire spot while the fire burns.",
+   "currentRaidAi": "2026-11-05/06 overnight (owner's notes; that run's log is on the owner's PC): the Albion Krondon raid lost at Orshom twice, lowest 59% then 28%, Special Forces joined. Not seen in a log here. Read from the script, the likely killer is the fire: a raider it burns fights back (it is an epic NPC with a target), so bots stood in 500 every 3 s hitting a target only cold hurts, and the route's 'it is fighting the raid' switch could send the whole raid there.",
+   "aiTactics": {
+    "hazards": [
+     "OrshomFire"
+    ],
+    "hazardRadius": 300,
+    "since": "1.2",
+    "summary": "Hazard: Orshom's Fire is never a target (the route skips it and never switches to it; a raider aiming at it fights Orshom or Orylle instead), and a raider within 450 of it steps out to 600 before fighting on."
+   },
+   "rules": {
+    "immune_while@365": {
+     "summary": "Orshom's Fire (not Orshom) takes no damage except from Cold damage.",
+     "tactic": "In the raid AI (EpicEncounterTactics): a hazard: nobody attacks it, and raiders keep out of its 300 radius.",
+     "difficulty": "needs new raid AI"
+    },
+    "adds@328": {
+     "tactic": "In the raid AI (EpicEncounterTactics): the fire is a hazard, not an add: never a route target, never 'fighting the raid'.",
+     "difficulty": "needs new raid AI"
+    },
+    "phase@302": {
+     "summary": "At 50% health Orylle joins the fight (he adds his aggro list to her).",
+     "tactic": "In the raid AI (EpicEncounterTactics): Orylle's tactic: the party she fights holds her, everyone else finishes Orshom.",
+     "difficulty": "needs new raid AI"
+    }
    }
   },
   "krondon/orylle": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "8d2e120d34b915ce2e459612498985039185d7361df433a9a9de0cc99f838d02"
+   },
+   "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him).",
+   "aiTactics": {
+    "after": "Orshom",
+    "hazards": [
+     "OrshomFire"
+    ],
+    "hazardRadius": 300,
+    "since": "1.2",
+    "summary": "After Orshom Brong: while Orshom lives the party Orylle fights holds her and everyone else kills Orshom (30,000 health, lower resists) first; the route goes for Orshom before her. Hazard: stay out of Orshom's Fire, as for him."
    }
   },
   "krondon/scurceolhyrde": {
@@ -1736,6 +1826,37 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "c132394348b47059a3c7427a8b46a6282c7c6b2633f0d14d4d459219a93a141d"
+   },
+   "notes": "Level 80, 200,000 health (300,000 behind AllowGovannonFullHealth, off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, throws real players only). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
+   "aiTactics": {
+    "spreadRadius": 300,
+    "spreadWhileModel": 636,
+    "rangedAdds": [
+     "SummonedSacrifice",
+     "SummonedDemon"
+    ],
+    "since": "1.2",
+    "summary": "Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him."
+   },
+   "rules": {
+    "adds@311": {
+     "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers kill the sacrifice and the demon on their walk to the altar; the rest stay on him.",
+     "difficulty": "needs new raid AI"
+    },
+    "adds@337": {
+     "summary": "Spawns the Shade of Aelfgar (one at a time) once both the sacrifice and the demon have reached his altar (32063,40896) and died there; killed on the way, they never count.",
+     "tactic": "Kill the sacrifice and the demon before they reach the altar (ranged adds); a Shade that comes anyway attacks the raid and the route turns on it.",
+     "difficulty": "needs new raid AI"
+    },
+    "phase@285": {
+     "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon at full health and starts his Shroud of Agony (radius 300 around his target): the raid spreads (see his tactic).",
+     "difficulty": "needs new raid AI"
+    },
+    "phase@304": {
+     "tactic": "In the raid AI (EpicEncounterTactics): spread while he has the demon model (636).",
+     "difficulty": "needs new raid AI"
+    }
    }
   },
   "summoner-s-hall/summonercunovinda": {
