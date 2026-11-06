@@ -92,6 +92,8 @@ namespace DOL.GS
         private static readonly object CacheLock = new();
         private static readonly Dictionary<eRealm, IReadOnlyList<BountyTargetCandidate>> CachedSpawns = new();
 
+        public static bool IsNamedMonster(string name) => !string.IsNullOrEmpty(name) && char.IsUpper(name[0]);
+
         public static IReadOnlyList<BountyTargetCandidate> GetEligible(eRealm realm, byte level,
             string excludedMonsterName = null, BountyDifficulty difficulty = BountyDifficulty.Normal)
         {
@@ -105,8 +107,10 @@ namespace DOL.GS
             // density tier or currently alive camps. Filtering only the final
             // live pool can incorrectly offer the same monster again while a
             // different eligible species is merely awaiting respawn.
+            // Named monsters (a capitalised name: Crimson Initiate) are never ordinary bounties (owner 2026-10-29);
+            // level-50 great-foe bounties keep their own named list.
             var candidates = ExcludeMonsterName(
-                GetCachedSpawns(realm).Concat(GetCertifiedDarknessFallsSpawns(realm)),
+                GetCachedSpawns(realm).Concat(GetCertifiedDarknessFallsSpawns(realm)).Where(target => !IsNamedMonster(target.Name)),
                 excludedMonsterName);
             if (candidates.Length == 0)
                 return candidates;

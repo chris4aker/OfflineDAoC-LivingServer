@@ -338,6 +338,17 @@ func sell(slot: int, merchant: String) -> bool:
 	return true
 
 
+func appraise(slot: int, merchant: String) -> int:
+	if not Server.active:
+		return super.appraise(slot, merchant)
+	var v: Node = Server.viewer()
+	if v == null:
+		return 0
+	var r: Vector3 = Server.to_region(Server.current_zone_id(), v.player.global_position)
+	Server.client.call("AppraiseItem", int(r.x), int(r.y), slot)   # (the server answers in chat)
+	return 0
+
+
 func set_active_weapon(which: String) -> void:
 	if not Server.active:
 		super.set_active_weapon(which)

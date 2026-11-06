@@ -54,10 +54,9 @@ internal static class BotCharacterGenerator
             new(50, "Ranger", (9, "Celt"), (11, "Elf"), (12, "Lurikeen")),
             new(55, "Animist", (9, "Celt"), (10, "Firbolg"), (15, "Sylvan")),
             new(56, "Valewalker", (9, "Celt"), (10, "Firbolg"), (15, "Sylvan")),
-            // Isolated Sluaghbinder test class. Keep this as one peer choice
-            // in the Hibernian pool so launcher batches roll it at the same
-            // rate as every other Hibernian class; only its legal player
-            // races are offered.
+            // The Sluaghbinder (0.38b). One peer choice in the Hibernian pool, so batches roll it
+            // at the same rate as every other Hibernian class; only its legal player races are offered.
+            // Generate(allowSluaghbinder: false) leaves it out when classes/enable_sluaghbinder is off (0.38).
             new(63, "Sluaghbinder", (9, "Celt"), (10, "Firbolg")),
         ],
     };

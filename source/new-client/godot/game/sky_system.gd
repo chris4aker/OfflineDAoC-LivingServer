@@ -105,13 +105,47 @@ func set_zone(z: ZoneLoader) -> void:
 	_update(0.0)
 
 
-## The zone's fog (the client's clip distance per zone) times Options > VIDEO view distance; dungeons keep theirs.
+## The region's fog (the client's clip distance) times Options > VIDEO view distance; dungeons keep theirs.
+## The original client reads sector.dat's [fog] once per region, from the region's lowest-numbered zone (zone-table
+## slot 0: game.dll 1.64 0x466c0f, the table filled in zone order at 0x454f9d) and never another zone's (owner
+## 2026-10-29: Avalon Isle's own clip=1000, 25 m, made its fog "too thick" - the client used Isle of Glass's 400 m).
 func apply_view() -> void:
 	if dungeon or zone == null or environment == null:
 		return
-	var clip := float(zone.info.fog.clip_m) * ZoneLoader.view_mult
+	var clip := region_fog_clip(zone) * ZoneLoader.view_mult
 	environment.fog_depth_begin = clip * 0.3
 	environment.fog_depth_end = clip * 1.6
+
+
+static var _region_clip := {}                # region -> the fog clip (m) of its lowest-numbered built zone
+static var _zone_region := {}                # zone id -> its region
+static var _fog_read := false
+static var _fog_mutex := Mutex.new()          # (zone workers ask too: ZoneLoader's world-object draw range)
+
+
+## A zone's fog distance as the original drew it: its region's first zone's (its own when that one isn't built).
+static func region_fog_clip(z: ZoneLoader) -> float:
+	_fog_mutex.lock()
+	if not _fog_read:
+		_fog_read = true
+		var index = JSON.parse_string(FileAccess.get_file_as_string("res://content/zones/zones_index.json")) 				if FileAccess.file_exists("res://content/zones/zones_index.json") else null
+		var first := {}
+		if index is Dictionary:
+			for k in index:
+				var r := int((index[k] as Dictionary).get("region", -1))
+				_zone_region[int(k)] = r
+				if not first.has(r) or int(k) < int(first[r]):
+					first[r] = int(k)
+		for r in first:
+			var path := "res://content/zones/zone%03d/zone.json" % int(first[r])
+			if FileAccess.file_exists(path):
+				var zj = JSON.parse_string(FileAccess.get_file_as_string(path))
+				if zj is Dictionary and zj.get("fog") is Dictionary:
+					_region_clip[r] = float((zj.fog as Dictionary).get("clip_m", 400.0))
+	var own := float(z.info.fog.get("clip_m", 400.0))
+	var clip := float(_region_clip.get(int(_zone_region.get(int(z.info.id), -1)), own))
+	_fog_mutex.unlock()
+	return clip
 
 
 func _zones() -> Array:

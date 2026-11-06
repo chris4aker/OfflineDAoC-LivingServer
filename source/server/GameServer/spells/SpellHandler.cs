@@ -1032,11 +1032,14 @@ namespace DOL.GS.Spells
 		private void NotifyCompanionsOfHarmfulCast()
 		{
 			if (!Spell.IsHarmful) return;
+			// A mesmerize, stun or root does not send the companions at its target (owner 2026-10-29); they join the
+			// fight on another monster (PlayerLedPullCoordinator.FindLeaderControlFight).
+			if (PlayerLedPullCoordinator.IsCrowdControl(Spell)) return;
 			if (Caster is GamePlayer player)
 				PlayerLedPullCoordinator.LeaderEngaged(player, Target);
 			else if (Caster is GameNPC { Brain: ControlledMobBrain { Owner: GamePlayer owner } } &&
 				owner.ControlledBrain?.Body == Caster)
-				PlayerLedPullCoordinator.LeaderEngaged(owner, Target);
+				PlayerLedPullCoordinator.LeaderEngaged(owner, Target, fromPet: true);
 		}
 
 		public void Tick()

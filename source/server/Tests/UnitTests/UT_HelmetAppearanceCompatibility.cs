@@ -7,6 +7,13 @@ namespace DOL.UnitTests
     [TestFixture]
     public class UT_HelmetAppearanceCompatibility
     {
+        [TestCase(63, 2, 0)]
+        [TestCase(63, 3, 0)]
+        [TestCase(63, 0, 0)]
+        [TestCase(62, 2, 0)]
+        [TestCase(62, 1, 1)]
+        [TestCase(823, 2, 0)]
+        [TestCase(1236, 3, 3)]
         [TestCase(840, 0, 0)]
         [TestCase(840, 1, 1)]
         [TestCase(840, 2, 0)]

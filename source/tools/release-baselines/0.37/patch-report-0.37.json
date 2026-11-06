@@ -1,0 +1,91 @@
+{
+  "version": "0.37",
+  "base": "0.36",
+  "world_b": {
+    "DataQuest": {
+      "added": 0,
+      "changed": 3,
+      "removed": 0
+    },
+    "ItemTemplate": {
+      "added": 0,
+      "changed": 22,
+      "removed": 0
+    },
+    "Mob": {
+      "added": 4,
+      "changed": 238,
+      "removed": 0
+    },
+    "Path": {
+      "added": 1,
+      "changed": 0,
+      "removed": 0
+    },
+    "PathPoints": {
+      "added": 11,
+      "changed": 0,
+      "removed": 0
+    }
+  },
+  "world_plain": {
+    "DataQuest": {
+      "added": 0,
+      "changed": 3,
+      "removed": 0
+    },
+    "ItemTemplate": {
+      "added": 0,
+      "changed": 22,
+      "removed": 0
+    },
+    "Mob": {
+      "added": 4,
+      "changed": 238,
+      "removed": 0
+    },
+    "Path": {
+      "added": 1,
+      "changed": 0,
+      "removed": 0
+    },
+    "PathPoints": {
+      "added": 11,
+      "changed": 0,
+      "removed": 0
+    }
+  },
+  "game_patch": {
+    "files": 203,
+    "removed": 3,
+    "parts": [
+      {
+        "Name": "OfflineDAoC-v0.37-game-patch.zip",
+        "Bytes": 38084367,
+        "SHA256": "48FD6482433C4E66748BEE4842CB811DF87A16E8B82B65FD017B91DD46D769C1",
+        "UnpackedBytes": 179043029,
+        "Files": 216
+      }
+    ]
+  },
+  "client_patch": {
+    "files": 1932,
+    "removed": 0,
+    "parts": [
+      {
+        "Name": "OfflineDAoC-v0.37c-client-patch-part01.zip",
+        "Bytes": 904068156,
+        "SHA256": "1D9B5796B1594D0C798CABB7D443DCE7B7E25FC609BB4AC852805B94293CC49A",
+        "UnpackedBytes": 1846785882,
+        "Files": 967
+      },
+      {
+        "Name": "OfflineDAoC-v0.37c-client-patch-part02.zip",
+        "Bytes": 762980382,
+        "SHA256": "E5DCE62ABEA6BCA8516FD353BE588C0004E53FEC476416B13BE2EFCAEF1705D9",
+        "UnpackedBytes": 1730545573,
+        "Files": 976
+      }
+    ]
+  }
+}

@@ -64,6 +64,17 @@ CAST_SLOTS = ['Cast Start', 'Cast Mid', 'Cast End', '1H Circ Start', '1H Circ Mi
               'Z Start', 'Z Mid', 'Z End']                  # (no instrument poses: pets never play songs)
 
 
+_ANIMS = None
+
+
+def anim_files():
+    """The client's animation files (lower-case names)."""
+    global _ANIMS
+    if _ANIMS is None:
+        _ANIMS = {p.name.lower() for p in (CLIENT / 'anims').iterdir()}
+    return _ANIMS
+
+
 def cast_clips(anim_set, clips):
     """The anim set's casting clips added to `clips` (deduplicated by kfa file); returns {style clip name: clip}."""
     from build_races import cast_clip
@@ -320,6 +331,12 @@ def add_look_maps(gltf_path, looks, texture_uri):
             continue
         if lk['glow']:
             mat['emissiveTexture'] = {'index': texture(lk['glow'])}
+            # on the shape's second UV set when it has one (nif_character.build: TEXCOORD_1) - the client lays the glow
+            # map out there (the Glowing Demon Knight's eye slits); NpcManager turns this into emission_on_uv2
+            mi = g['materials'].index(mat)
+            if any(pr.get('material') == mi and 'TEXCOORD_1' in pr.get('attributes', {})
+                   for me in g.get('meshes', []) for pr in me.get('primitives', [])):
+                mat['emissiveTexture']['texCoord'] = 1
             mat['emissiveFactor'] = [1.0, 1.0, 1.0]
             changed = True
         if lk['gloss']:
@@ -473,6 +490,14 @@ def main():
         (OUT / 'monsters.json').write_text(json.dumps(out_meta, indent=1), encoding='utf-8')
         print(sum(1 for e in out_meta.values() if e.get('effects')), 'models with effects,', len(new_effects), 'effects')
         return
+    # model folder -> the anim set it holds: that of the lowest model number listed in it (see the key below)
+    owners = {}
+    for m in sorted(out_meta, key=lambda x: (int(x) & 0x7FFF, int(x))):
+        mr = mon.get(str(int(m) & 0x7FFF))
+        nr = nifs.get(mr[2].strip()) if mr else None
+        folder = str(out_meta[m].get('gltf', '')).rsplit('/', 2)[-2] if out_meta[m].get('gltf') else ''
+        if folder and nr is not None:
+            owners.setdefault(folder, nr[3].strip())
     listed = next((a.split('=')[1].split(',') for a in sys.argv if a.startswith('--models=')), None)   # e.g. route mounts
     for model in (listed if listed else pet_models() if '--pets' in sys.argv else zone_models(zone)):
         mr = mon.get(str(int(model) & 0x7FFF))           # the server sets a high flag bit on some (32891 = 0x8000 | 123)
@@ -517,6 +542,14 @@ def main():
                     lk['base'], lk['dark'] = lk['dark'], None
         tex = body_tex(looks, body)
         key = look_key(fig, tex, looks)
+        # the clips are the model's own anim set (monnifs column 3): two models drawn alike but animated by different
+        # sets get a folder each (owner 2026-10-19: Snow Wolves died standing - the "puppy" pets, the same wolf figure
+        # and snow skin on anim set 221 whose Death is the idle, were built into wolf__wolf_snow after the Snow Wolf's
+        # set 7 with its wlf_deth; also the living Undead Minotaur in the dead one's set, Fomorians / Red Caps with and
+        # without weapons). The folder's owner is its lowest model number; another set gets "__a<set>".
+        anim_set = nr[3].strip()
+        if owners.setdefault(key, anim_set) != anim_set:
+            key += f'__a{anim_set}'
         entry['gltf'] = f'res://content/monsters/{key}/model.gltf'
         entry['skin'] = tex
         if key not in built:
@@ -548,10 +581,17 @@ def main():
                     if v[0].lower() not in kfas:
                         clips[WEAPON_CLIPS[k]] = v
                         kfas.add(v[0].lower())
+            # a clip whose .kfa the client doesn't ship is left out (owner 2026-10-29, grindylows invisible: model 923
+            # "On Stomach Legless Zombie 1", anim set 136 names ZomW_run1.kfa - only ZomW_run.kfa exists - and the
+            # missing file failed the whole model; the client draws it without the clip, NPCs walk instead of run)
+            for c, v in list(clips.items()):
+                if str(v[0]).lower() not in anim_files():
+                    print(model, mr[1], 'clip', c, v[0], 'not in the client: left out')
+                    clips.pop(c)
             built_cast[key] = cast_clips(nr[3], clips) if nr[3].strip().isdigit() else {}
             try:
                 try:
-                    report = nc.build(nif_name, parts, clips, str(d / 'model.gltf'), 'textures/original')
+                    report = nc.build(nif_name, parts, clips, str(d / 'model.gltf'), 'textures/original', file_bind=True)
                 except Exception:
                     extra = [c for c in clips if c in WEAPON_CLIPS.values()]
                     if not built_cast.get(key) and not extra:
@@ -564,10 +604,10 @@ def main():
                     for c in extra:
                         clips.pop(c, None)
                     built_cast[key] = {}
-                    report = nc.build(nif_name, parts, clips, str(d / 'model.gltf'), 'textures/original')
+                    report = nc.build(nif_name, parts, clips, str(d / 'model.gltf'), 'textures/original', file_bind=True)
             except Exception as e:
-                print(model, mr[1], 'BUILD FAILED', type(e).__name__, e)
-                entry['missing'] = f'build failed: {e}'
+                print(model, mr[1], 'BUILD FAILED', type(e).__name__, repr(e))
+                entry['missing'] = f'build failed: {type(e).__name__} {e}'
                 out_meta[model] = entry
                 continue
             write_look_textures(model, looks, idx, d)

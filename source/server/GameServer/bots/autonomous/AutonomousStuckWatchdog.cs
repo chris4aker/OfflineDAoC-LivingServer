@@ -461,7 +461,7 @@ public static class AutonomousStuckWatchdog
             // operation, with an explicit cause, rather than silently removing
             // one actor and leaving seven stale group assignments behind.
             if (expedition == null) AutonomousBotGroupCoordinator.EndPvePartyBeforeIndividualRecovery(bot, reason);
-            bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(bot);
+            bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(bot, "stuck-watchdog:" + reason);
             if (expedition == null) bot.Group?.RemoveMember(bot);
             bot.CompleteStableMasterRoute();
             bot.StopAttack();
