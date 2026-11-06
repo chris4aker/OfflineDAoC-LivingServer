@@ -47,7 +47,7 @@
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "ea20ed907819ebba2dba2dde9703fee62d88d8ea945cf8b5a4edb084cdc2d7b9",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "0f44370d05d55a397fbcd0c5b2bbdb0ac7c65c96fb347a1cfbe1b5bf5957a19e",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "8d6fd48ba5adddf2a722a9a766b3f5edb522a25d5d60923155d72a10e90cc3f7",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "ed786219f6c2df5a16b38e5369ff20707444d17685919e1a3e6250245112e096",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "2f464529d3943e2dac47145c3310ec786d1b172f1303582acd0c567bdd5f59b0",
@@ -541,7 +541,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 312
+   "line": 336
   },
   {
    "id": "dragon-midgard",
@@ -553,7 +553,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 313
+   "line": 337
   },
   {
    "id": "dragon-hibernia",
@@ -565,7 +565,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 314
+   "line": 338
   },
   {
    "id": "epic-albion",
@@ -577,7 +577,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 315
+   "line": 339
   },
   {
    "id": "epic-midgard",
@@ -590,7 +590,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 316
+   "line": 340
   },
   {
    "id": "epic-hibernia",
@@ -602,7 +602,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 317
+   "line": 341
   },
   {
    "id": "summoners-albion",
@@ -614,7 +614,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 318
+   "line": 342
   },
   {
    "id": "summoners-midgard",
@@ -626,7 +626,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 319
+   "line": 343
   },
   {
    "id": "summoners-hibernia",
@@ -638,7 +638,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 320
+   "line": 344
   },
   {
    "id": "darkness-albion",
@@ -650,7 +650,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 321
+   "line": 345
   },
   {
    "id": "darkness-midgard",
@@ -662,7 +662,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 322
+   "line": 346
   },
   {
    "id": "darkness-hibernia",
@@ -674,7 +674,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 323
+   "line": 347
   }
  ],
  "neutralObjectives": {
@@ -7712,7 +7712,7 @@
      "maxHealth": 1200,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 720
+     "line": 723
     }
    ],
    "rules": [
@@ -7814,9 +7814,9 @@
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 673,
-     "lineEnd": 673,
-     "anchor": "player.MoveTo(249, 48200, 49566, 20833, 1028);",
+     "line": 676,
+     "lineEnd": 676,
+     "anchor": "DragonCombatGeometry.ThrowPlayer(player, 249, 48200, 49566, 20833, 1028);",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
      "method": "ThrowPlayer",
@@ -7826,7 +7826,7 @@
      "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "teleport@673"
+     "key": "teleport@676"
     }
    ],
    "spells": [
@@ -7841,7 +7841,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 694,
+     "line": 697,
      "sourceClass": "LegionBrain"
     }
    ],
@@ -7882,8 +7882,8 @@
    "brain": "BehemothBrain",
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
    "lines": [
-    804,
-    865
+    807,
+    868
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -7902,8 +7902,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 882,
-     "lineEnd": 886,
+     "line": 885,
+     "lineEnd": 889,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "BehemothBrain",
@@ -7913,7 +7913,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@882"
+     "key": "reset@885"
     }
    ],
    "spells": [],

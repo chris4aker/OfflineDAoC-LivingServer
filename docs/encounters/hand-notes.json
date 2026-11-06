@@ -611,7 +611,7 @@
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "8d6fd48ba5adddf2a722a9a766b3f5edb522a25d5d60923155d72a10e90cc3f7"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07"
    }
   },
   "darkness-falls/beliathan": {
@@ -669,7 +669,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "8d6fd48ba5adddf2a722a9a766b3f5edb522a25d5d60923155d72a10e90cc3f7"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "e216d9a7c3a607b9e800d01aa00d029348bf159bca18db0ea787be0449e59b07"
    }
   },
   "darkness-falls/princeabdin": {

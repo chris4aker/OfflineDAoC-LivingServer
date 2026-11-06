@@ -912,13 +912,21 @@ def detect_teleports(world: World, cls: CsClass, ctx) -> list[Rule]:
     rules = []
     src = cls.src
     for mb in cls.members:
-        for mm in re.finditer(r"([\w\.\[\]]+)\s*\.\s*MoveTo\s*\(([^;]*)\)\s*;", mb.mbody):
-            receiver = mm.group(1)
-            args = " ".join(src.text[mb.open_pos + mm.start(2):mb.open_pos + mm.end(2)].split())
-            pos = mb.open_pos + mm.start()
+        # receiver.MoveTo(region, x, y, z, heading), or DragonCombatGeometry.ThrowPlayer(receiver, region, x, y, z,
+        # heading): the same move to a fixed spot that leaves the player's companions where they are (Legion's throw to
+        # his platform, 1.2 base: shadowofze's final code).
+        moves = [(mm.group(1), mm.start(2), mm.end(2), mm.start(), False)
+                 for mm in re.finditer(r"([\w\.\[\]]+)\s*\.\s*MoveTo\s*\(([^;]*)\)\s*;", mb.mbody)]
+        moves += [(mm.group(1), mm.start(2), mm.end(2), mm.start(), True)
+                  for mm in re.finditer(r"DragonCombatGeometry\s*\.\s*ThrowPlayer\s*\(\s*([\w\.\[\]]+)\s*,([^;]*)\)\s*;", mb.mbody)]
+        for receiver, args_start, args_end, start, fixed_throw in sorted(moves, key=lambda m: m[3]):
+            args = " ".join(src.text[mb.open_pos + args_start:mb.open_pos + args_end].split())
+            pos = mb.open_pos + start
             line = src.line_of(pos)
             near = src.text[max(mb.open_pos, pos - 500):pos + 300].lower()
-            if receiver in ("Body", "this") or receiver.startswith("Body.") and receiver.count(".") == 0:
+            if fixed_throw:
+                sub, what = "fixed_spot", f"Teleports {receiver} to a fixed spot"
+            elif receiver in ("Body", "this") or receiver.startswith("Body.") and receiver.count(".") == 0:
                 sub, what = "self", "Teleports itself"
             elif receiver.lower().startswith(("add", "npc", "boss", "mob")) and not re.search(r"player|target", receiver.lower()):
                 sub, what = "moves_npc", f"Moves the NPC {receiver}"

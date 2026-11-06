@@ -87,7 +87,7 @@ These pick real players only (`GetPlayersInRadius`, `is GamePlayer`), so bots ar
 - Xanxicar (Crystal Cave): teleport `Xanxicar.cs:224`: ThrowPlayer: every 20-40 s a random real player within 2,500 (not his target) is moved to 32338,32387,16539 ('hurled into the air').
 - Beliathan (Darkness Falls): adds `Beliathan.cs:241`: Spawns BeliathanMinion: from PlayerKilledByBeliathan; count 1 spawn call in PlayerKilledByBeliathan
 - High Lord Saeor (Darkness Falls): heal `HighLordSaeor.cs:94`: Heals: mob.Health += player.MaxHealth;
-- Legion (Darkness Falls): teleport `Legion.cs:673`: Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)
+- Legion (Darkness Falls): teleport `Legion.cs:676`: Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)
 - Anurigunda (Fomor City): teleport `Anurigunda.cs:106`: Teleports player to a fixed spot (MoveTo 180, 30652, 33089, 16124, 3169)
 - Krackenschtein (Fomor City): teleport `Krackenschtein.cs:186`: Teleports TeleportTarget to a fixed spot: one of 4 spots (MoveTo 180, 32956, 37669, 16465, 1028; 180, 31879, 38149, 16465, 2109; 180, 31727, 37401, 16465, 3225;
 - Aroon the Urlamhai (Galladoria): aggro_wipe `Aroon.cs:1372`: Each Scaith now and then drops its aggro and picks one random real player from its PlayersToAttack list (List<GamePlayer>).
@@ -1027,17 +1027,17 @@ Level 83, 300,000 health. No raid AI: listed for completeness.
 | adds | Spawns graspering soul (LegionAdd): from Think when if (Body.HealthPercent <= 95 && Body.HealthPercent > 90 && !adds1); count 1 spawn call in SpawnAdds | `Legion.cs:619` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
 | phase | At 95/90/85/80/75/70/65/60/55/50/45/40/35/30/25/20/15/10/5% health (Think): calls SpawnAdds | `Legion.cs:405` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
 | reset / out_of_combat | Resets after 60 s out of combat: aggro cleared, full health | `Legion.cs:382` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| teleport / fixed_spot | Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028) *(real players only (bots are never picked))* | `Legion.cs:673` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them. |
+| teleport / fixed_spot | Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028) *(real players only (bots are never picked))* | `Legion.cs:676` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them. |
 
 Area spells: Lifetap (DirectDamageNoVariance, damage 1000, radius 1000).
 
 #### Behemoth (`Behemoth`)
 
-`source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs` lines 804-865. level 99; 600,000 health; npc template 60158340; raids: darkness-albion (fought if met), darkness-midgard (fought if met), darkness-hibernia (fought if met); raid AI: no raid AI.
+`source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs` lines 807-868. level 99; 600,000 health; npc template 60158340; raids: darkness-albion (fought if met), darkness-midgard (fought if met), darkness-hibernia (fought if met); raid AI: no raid AI.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Legion.cs:882` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Legion.cs:885` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Prince Abdin (`PrinceAbdin`)
 
