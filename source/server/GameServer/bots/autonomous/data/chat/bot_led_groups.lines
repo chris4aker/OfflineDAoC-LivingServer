@@ -1,0 +1,152 @@
+# Bot-led groups (docs/BOT-LED-GROUPS.md, change 9): what the gamebot leader of a party that invited the player says.
+# Short and lowercase, the way 2003 leaders typed. Only BotLedGroups asks for these (flag lead_call, which no bot has on
+# its own), so ambient group talk never says them. {destination} is where the group is or meets, {camp} what it hunts.
+# A line never promises what the server will not do: nobody is summoned, ported or given money. New writing.
+
+# ---- lead_invite: the tell before the group invite box (unasked) ----
+@kind tell
+@topic lead_invite
+@who *
+@needs lead_call
+@invites ask
+lf 1 more for {monsters} in {destination}, want in?
+[need|lf] one more for {monsters}, [want in|interested]?
+got a spot open, {monsters} in {destination}. [want in|you up for it]?
+hey, we have room for one more. {monsters} in {destination}, [want to come|you in]?
+forming up for {monsters}, could use you. want an inv?
+
+# ---- lead_invite_asked: the player asked (/lfg, a tell) ----
+@topic lead_invite_asked
+@invites none
+[got|have] room, sending [you an|an] inv
+sure, inv coming
+yep, [sending|incoming] inv
+we have a spot, inv sent
+
+# ---- lead_afk_let_go: the group moved on after 30 minutes away (tell) ----
+@topic lead_afk_let_go
+@invites none
+had to move on, send me a tell when you are back
+we went on without you, [send me a tell|tell me] when you are back and we can [regroup|sort it out]
+
+# ---- In the group (/group) ----
+@kind group
+@who *
+@needs in_player_group,bot_leads,lead_call
+@invites none
+@topic lead_welcome
+welcome! meet up at {destination}
+[welcome|hey], we meet at {destination}
+welcome aboard, meeting at {destination}, see you there
+@topic lead_welcome_out
+welcome! we are at {destination}, come find us
+[welcome|hey], we are out at {destination}, [follow me if you are close|come find us]
+@topic lead_wait
+still at {destination}, waiting on you
+we are at {destination} [whenever you are ready|still]
+waiting at {destination}, no rush
+@topic lead_going_on
+heading on to {camp}, catch up when you can
+going on to {camp}, meet us there, spot is saved
+moving on to {camp}, [your spot is saved|we saved your spot]
+@topic lead_where
+where u at?
+[where are you|where u at], need directions?
+you still with us?
+@topic lead_afk_hold
+everyone med, waiting on our last one
+[holding|hold up] a sec, everyone med
+@topic lead_move
+moving to {camp}
+[ok|alright], heading to {camp}
+on to {camp}, [stay close|follow me]
+@topic lead_break
+thats it for me, good group all
+gotta call it, [ty all|thanks all], good group
+@topic lead_player_left
+lost one, we carry on
+[ok|alright], carrying on without them
+
+# ---- B2: the handover (docs/BOT-LED-GROUPS.md, "Taking the lead") ----
+# lead_handover: the leader, as the player types /lead. lead_take: the gamebot the player handed the lead to (/lead bot,
+# /makeleader). lead_last_bot: the last gamebot of the party, just before the "do you want to lead?" box.
+@topic lead_handover
+all yours, we follow you
+[ok|sure], your lead
+[all yours|your group now], lead on
+k new lead, everyone follow
+@topic lead_take
+ok i'll lead, finding us a camp near here
+[sure|ok], i got it. looking for a camp around here
+i'll take it, give me a sec to find a spot nearby
+@topic lead_last_bot
+just us two left, want to lead?
+[well|hm], it's just us now. you want to lead?
+everyone bailed, your call
+
+# ---- B3: the raid leader (docs/BOT-LED-GROUPS.md, "Raid leaders") ----
+# lead_raid_welcome: the leader of the raid party the player was seated in. {destination} is the raid's muster town.
+@topic lead_raid_welcome
+welcome, we wait at {destination} until the raid leaves
+[welcome|hey], we muster at {destination}, see you there
+glad you came, meet us at {destination} before we head out
+
+# ---- B4: the leader's pull call (it replaces the generic "inc" for that pull: one line per pull) ----
+@topic lead_pull
+pulling
+[pulling|incoming], get ready
+inc, on me
+inc, [stay on me|watch for adds]
+pulling, [healers|everyone] ready?
+[here it comes|here we go]
+incoming, [assist me|on my target]
+one coming, [get set|be ready]
+[ok|k] pulling, [hold aggro|tank it]
+inc inc
+
+# ---- B4: the natural break (bags nearly full, or the task's last minutes) ----
+# lead_sell: the call before the last pull. lead_town: the goodbye once that pull is over and the party ends to sell.
+@topic lead_sell
+last pull then town
+[bags full|bags are full], last pull then we sell
+one more pull, then town to sell
+[ok|alright], last one then [town|we go sell]
+@topic lead_town
+ok town to sell, good group all
+[thats it|done], heading to town to sell, [ty all|thanks all]
+selling up, [good group|nice run] everyone
+bags full, calling it, [ty for the group|thanks for the group]
+
+# ---- B4: the leader's search for a replacement (the ask itself goes to /lfg, lead_lf_more below) ----
+@topic lead_recruited
+got someone coming, hang tight
+[found|got] one, they are on the way
+replacement on the way, [hold here|med up while we wait]
+@topic lead_recruit_none
+no luck finding anyone, we carry on as we are
+[nobody|no one] bit, we keep going short
+cant find one, we manage without
+@topic lead_recruit_end
+couldnt find anyone, gonna call it here
+[no luck|nobody around], calling it, [ty all|thanks all]
+cant run without one, done for now
+# ---- B4: lead_lf_more, the leader's /lfg ask for a replacement ({need}: "a healer", "a tank", "dps"; {camp}: what it hunts) ----
+@kind lfg
+@needs in_group,lead_call
+@invites none
+@topic lead_lf_more
+lf 1 more, need {need} for {camp}
+[lf1m|lf 1m] {need}, {camp}
+lf 1 more at {camp}, need {need}, pst
+need {need} at {camp}, [send a tell|pst]
+{camp} group lf {need}, [quick xp|steady pulls]
+
+# lead_raid_invite: the raid leader's one tell to a level-50 player before the box. {raid} is the encounter's name.
+@kind tell
+@topic lead_raid_invite
+@who *
+@needs lead_call
+@invites none
+forming for {raid} at {destination}. want a spot?
+[forming|putting together] a raid for {raid} at {destination}, [want in|you in]?
+{raid} raid forming at {destination}, we could use you. want a spot?

@@ -30,18 +30,19 @@ public static partial class AutonomousBotGroupCoordinator
                 .Select(id => byId.GetValueOrDefault(id))
                 .Where(bot => bot != null && bot.IsAlive && bot.Group == null && bot.Realm == roster.Realm &&
                               bot.CurrentRegion != null && !bot.InCombat && !bot.IsTemporaryGroupHelper &&
-                              !bot.IsPlayerLedGroup && !bot.IsOnStableMasterRoute && !AutonomousRealmRaid.IsReserved(bot) &&
+                              !BotDutyLeases.IsSpokenForByPlayer(bot) && !bot.IsOnStableMasterRoute && !AutonomousRealmRaid.IsReserved(bot) &&
                               !GameRelic.IsPlayerCarryingRelic(bot))
                 .ToList();
             int minimum = roster.Marching ? SiegePartyMinimumWhileMarching : SiegePartySize;
             while (free.Count >= minimum && formed < 12)
             {
                 GameBot leader = free[0];
-                GameBot[] mates = free.Skip(1)
+                // Pet caps (audit 2026-11-03): at most rvr_group_pet_cap pet classes in one party; the rest wait for the next.
+                GameBot[] mates = AutonomousRvrPetCap.Pick(free.Skip(1)
                     .Where(bot => bot.CurrentRegionID == leader.CurrentRegionID && bot.IsWithinRadius(leader, SiegePartyGatherRadius))
-                    .OrderBy(bot => bot.GetDistanceTo(leader))
-                    .Take(SiegePartySize - 1)
-                    .ToArray();
+                    .OrderBy(bot => bot.GetDistanceTo(leader)),
+                    SiegePartySize - 1, AutonomousRvrPetCap.IsPetClass(leader) ? 1 : 0,
+                    AutonomousRvrPetCap.CapFor(SiegePartySize, ServerProperties.Properties.RVR_GROUP_PET_CAP), AutonomousRvrPetCap.IsPetClass);
                 free.Remove(leader);
                 if (mates.Length + 1 < minimum) continue;
                 GameBot[] members = new[] { leader }.Concat(mates).ToArray();
@@ -54,7 +55,7 @@ public static partial class AutonomousBotGroupCoordinator
     private static bool TryFormSiegeParty(AutonomousRvrEventLayer.SoloSiegeRoster roster, GameBot[] members)
     {
         GameBot leader = members[0];
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             var group = new Group(leader);
             GroupMgr.AddGroup(group);
@@ -82,7 +83,10 @@ public static partial class AutonomousBotGroupCoordinator
             }
             Sessions[group] = session;
             foreach (GameBot member in joined)
+            {
                 member.TempProperties.SetProperty("RvrEventForce", session.Id);
+                BotDutyLeases.Claim(member, eDutyLeaseKind.RvrEvent, session.Id, DutyLeaseReason.SiegeParty, roster.EventId, group);
+            }
             WriteSessionMetadata(session, joined);
             Log.Info($"RVR_SIEGE_PARTY_FORMED event={roster.EventId} group={session.Id} realm={GlobalConstants.RealmToName(roster.Realm)} " +
                      $"size={joined.Length} marching={roster.Marching} members=\"{string.Join(",", joined.Select(b => b.Name))}\"");

@@ -45,7 +45,7 @@ public sealed class EpicCommandHandler : AbstractCommandHandler, ICommandHandler
     private static List<EpicQuest> LoadQuests()
     {
         var quests = new List<EpicQuest>();
-        foreach (DbDataQuest row in GameServer.Database.SelectAllObjects<DbDataQuest>())
+        foreach (DbDataQuest row in EpicChainLinks.Link(GameServer.Database.SelectAllObjects<DbDataQuest>()))
         {
             if (row.ClassType == null || !row.ClassType.Contains("ClassicQuestStep", StringComparison.Ordinal))
                 continue;
@@ -88,7 +88,7 @@ public sealed class EpicCommandHandler : AbstractCommandHandler, ICommandHandler
         IReadOnlyList<int> ids = EpicChain.FinishBelow(chain, level, ProgressOf(target));
         foreach (int id in ids)
         {
-            DbDataQuest row = GameServer.Database.FindObjectByKey<DbDataQuest>(id);
+            DbDataQuest row = EpicChainLinks.Link(GameServer.Database.FindObjectByKey<DbDataQuest>(id));
             if (row == null)
                 continue;
             DataQuest active = target.QuestList.Keys.OfType<DataQuest>().FirstOrDefault(q => q.ID == id);
@@ -130,7 +130,7 @@ public sealed class EpicCommandHandler : AbstractCommandHandler, ICommandHandler
             DisplayMessage(client, $"{target.Name} has no step left to take; see /epic.");
             return;
         }
-        DbDataQuest row = GameServer.Database.FindObjectByKey<DbDataQuest>(next.Id);
+        DbDataQuest row = EpicChainLinks.Link(GameServer.Database.FindObjectByKey<DbDataQuest>(next.Id));
         // The giver's name compares without case, as quests now match names (QuestNames.Same).
         GameNPC giver = row == null ? null : WorldMgr.GetRegion(row.StartRegionID)?.Objects?.OfType<GameNPC>()
             .FirstOrDefault(n => n.Realm == target.Realm && QuestNames.Same(row.StartName, n.Name));

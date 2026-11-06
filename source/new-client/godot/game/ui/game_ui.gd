@@ -51,6 +51,10 @@ var options: OptionsWindow
 var clear_target := Callable()               # set by the zone viewer: drops the current target (Esc)
 var merchant: MerchantWindow
 var vault: VaultWindow
+var craft: CraftWindow                       # the tradeskill window and the server's timer bar (owner 2026-10-30)
+var timer_bar: TimerBarWindow
+var _info_slot := -1                         # the backpack slot the information window shows (SALVAGE / REPAIR)
+var _info_buttons: Array = []
 var exchange: ExchangeWindow
 var journal: JournalWindow
 var guide: ClassicWindow
@@ -64,7 +68,8 @@ var _cast_name: Label
 var _effects_bar: HBoxContainer
 var npc_dialog: NpcDialog
 var trainer: TrainerWindow
-const TRANSIENT := ["npc_dialog", "trainer", "merchant", "vault", "exchange", "guide", "info", "release", "siege", "emblem"]
+const TRANSIENT := ["npc_dialog", "trainer", "merchant", "vault", "exchange", "guide", "info", "release", "siege", "emblem",
+		"craft", "timer"]
 const INFO_W := 160.0                                     # the information window's width (interact.bmp is 300)
 const INFO_WIDE := 320.0                                  # ... for a server text with long lines (/stables routes)
 var _compass_letters: Control
@@ -311,6 +316,27 @@ func _build() -> void:
 	body.add_theme_color_override("default_color", UiArt.CREAM)
 	UiArt.themed(body)
 	info.add_child(body)
+	# SALVAGE and REPAIR on the stone foot (the original's item window, ui/isles/miniinfo_window.xml, had SALVAGE and
+	# REPAIR under its text): a backpack item on the server - DetailDisplayHandler 102 / 100 (owner 2026-10-30: "the
+	# crafter self repair salvage stuff")
+	for k in 2:
+		var b := UiArt.button(["SALVAGE", "REPAIR"][k], Vector2(62, 15), 8)
+		b.anchor_top = 1.0
+		b.anchor_bottom = 1.0
+		b.offset_left = 10 + k * 68
+		b.offset_right = b.offset_left + 62
+		b.offset_top = -26
+		b.offset_bottom = -11
+		b.visible = false
+		b.pressed.connect(func():
+			if _info_slot < 0:
+				return
+			if k == 0:
+				Server.salvage(_info_slot)
+			else:
+				Server.self_repair(_info_slot))
+		info.add_child(b)
+		_info_buttons.append(b)
 	info.resized_by_user.connect(func():
 		if not body.fit_content:
 			body.size = Vector2(info.size.x - 27, maxf(info.size.y - body.position.y - 8 - 33, 20))
@@ -358,6 +384,12 @@ func _build() -> void:
 	_build_warmap()
 	_build_guild()
 	PlayerData.window_toggle.connect(func(id: String):
+		if id.begins_with("craft") and craft:              # "craft" / "craft:<trade id>" (the skills sheet's rows)
+			if id == "craft" and craft.visible:
+				craft.hide_window()
+			else:
+				craft.open_trade(int(id.get_slice(":", 1)) if id.contains(":") else 0)
+			return
 		if windows.has(id):
 			if windows[id].visible:
 				windows[id].hide_window()
@@ -429,6 +461,30 @@ func _build() -> void:
 	windows["vault"] = vault
 	if Server.active:                                       # the server's vault keepers (Server.vault_open)
 		PlayerData.hook(self, Server.vault_open, func(title: String, first: int, count: int): vault.open_range(title, first, count))
+	# --- crafting (owner 2026-10-30): the tradeskill window (/craft, the skills sheet's TRADESKILLS) and the timer bar
+	if Server.active:
+		craft = CraftWindow.new()
+		craft.resizable = true
+		craft.patch = [6, 19, 13, 33]
+		craft.size = Vector2(CraftWindow.W, CraftWindow.H)
+		craft.min_size = craft.size
+		craft.max_size = craft.size
+		craft.setup("craft", "interact", Rect2(), client_pos(450, 0))
+		root.add_child(craft)
+		craft.visible = false
+		craft.build()
+		windows["craft"] = craft
+		timer_bar = TimerBarWindow.new()
+		timer_bar.resizable = true
+		timer_bar.patch = [6, 19, 13, 33]
+		timer_bar.size = Vector2(256, 96)
+		timer_bar.min_size = timer_bar.size
+		timer_bar.max_size = timer_bar.size
+		timer_bar.setup("timer", "interact", Rect2(), client_pos(272, 330))
+		root.add_child(timer_bar)
+		timer_bar.visible = false
+		timer_bar.build()
+		windows["timer"] = timer_bar
 	# --- the Realm Exchange (the server's broker: its [Browse the exchange] / [Manage my listings]) - black granite
 	exchange = ExchangeWindow.new()
 	exchange.resizable = true                                # (only to lay the granite out as a nine-patch)
@@ -645,6 +701,40 @@ func _build_minigroup() -> void:
 	_mini_rows.position = Vector2(7, 7)
 	_mini_rows.add_theme_constant_override("separation", 2)
 	w.add_child(_mini_rows)
+	# the group's companion stance, one click swaps it (owner 2026-10-30, new client only): /aggressive or /defensive,
+	# as typed; the server's op 30 says which it is (Server.companion_defensive). Small and dim in the top-right corner
+	_stance = Button.new()
+	_stance.flat = true
+	_stance.focus_mode = Control.FOCUS_NONE
+	_stance.add_theme_font_override("font", UiArt.font(true))
+	_stance.add_theme_font_size_override("font_size", 6)
+	_stance.anchor_left = 1.0
+	_stance.anchor_right = 1.0
+	_stance.offset_left = -52
+	_stance.offset_right = -4
+	_stance.offset_top = -1
+	_stance.offset_bottom = 8
+	_stance.tooltip_text = "Your companions' stance (the whole group): click to switch AGGRESSIVE / DEFENSIVE"
+	_stance.visible = false
+	_stance.pressed.connect(func():
+		Server.command("/aggressive" if Server.companion_defensive else "/defensive"))
+	w.add_child(_stance)
+	PlayerData.hook(self, Server.stance_changed, _show_stance)
+	_show_stance()
+
+
+var _stance: Button
+
+
+func _show_stance() -> void:
+	if _stance == null:
+		return
+	_stance.text = "DEFENSIVE" if Server.companion_defensive else "AGGRESSIVE"
+	var c := Color(0.55, 0.75, 1.0, 0.75) if Server.companion_defensive else Color(1.0, 0.62, 0.45, 0.75)
+	for k in ["font_color", "font_hover_color", "font_pressed_color"]:
+		_stance.add_theme_color_override(k, c if k == "font_color" else c.lightened(0.3))
+
+
 
 
 func _tick_minigroup() -> void:
@@ -653,6 +743,8 @@ func _tick_minigroup() -> void:
 		return
 	var rows: Array = PlayerData.group_rows()
 	_mini_empty.visible = rows.is_empty()
+	if _stance:
+		_stance.visible = Server.active and not rows.is_empty()
 	while _mini_rows.get_child_count() < rows.size():
 		var r := Control.new()
 		r.custom_minimum_size = Vector2(136, 10)
@@ -1175,7 +1267,8 @@ func _refresh_effects() -> void:
 		_effect_box(50, 0, "CONSTITUTION LOST: %d (A HEALER CAN RESTORE IT)" % PlayerData.con_lost, -1)
 	var effs := _player_effects()
 	for i in effs.size():
-		_effect_box(int(effs[i].icon), int(effs[i].border), String(effs[i].name).to_upper(), i, int(effs[i].get("fx", -1)))
+		_effect_box(int(effs[i].icon), int(effs[i].border), String(effs[i].name).to_upper(), i, int(effs[i].get("fx", -1)),
+				bool(effs[i].get("disabled", false)))
 	_tick_effects()
 
 
@@ -1206,7 +1299,12 @@ class EffectBox extends Control:
 		return null if d.is_empty() else ItemTooltip.text_box(String(d.caption), d.lines)
 
 
-func _effect_box(icon: int, border: int, tip: String, index: int, fx := -1) -> void:
+## An overridden buff / an immunity (UpdateIcons' third byte, bit 1): game.dll 0x4b88a5 draws its icon in this colour,
+## every other one in white (owner 2026-10-19: two of the same buff both looked active).
+const EFFECT_DISABLED := Color(255 / 255.0, 35 / 255.0, 97 / 255.0)
+
+
+func _effect_box(icon: int, border: int, tip: String, index: int, fx := -1, disabled := false) -> void:
 	var box := EffectBox.new()
 	box.fx = fx
 	box.title = tip
@@ -1218,6 +1316,8 @@ func _effect_box(icon: int, border: int, tip: String, index: int, fx := -1) -> v
 	ic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	ic.size = Vector2(EFFECT_ICON, EFFECT_ICON)
 	ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if disabled:
+		ic.self_modulate = EFFECT_DISABLED                   # (self_modulate: the blink keeps using modulate.a)
 	box.add_child(ic)
 	if border >= 0:
 		var b := TextureRect.new()
@@ -1446,6 +1546,12 @@ func center_message(text: String, small := false) -> void:
 
 func show_info(it: Dictionary, full := true) -> void:
 	var w: ClassicWindow = windows.info
+	var sid := String(it.get("id", ""))
+	_info_slot = int(sid.substr(4)) if Server.active and sid.begins_with("srv:") and sid.substr(4).is_valid_int() else -1
+	if _info_slot < 40 or _info_slot > 79:
+		_info_slot = -1
+	for b in _info_buttons:
+		b.visible = _info_slot >= 0
 	(w.get_node("Title") as Label).text = String(it.get("name", "")).to_upper()
 	var body := w.get_node("Body") as RichTextLabel
 	body.text = "\n".join(ItemDb.delve(it) if full else ItemDb.summary(it))
@@ -1455,6 +1561,7 @@ func show_info(it: Dictionary, full := true) -> void:
 ## Lines of text in the information window under a title (the /task snapshot).
 func show_lines(title: String, lines: Array) -> void:
 	var w: ClassicWindow = windows.info
+	_hide_info_buttons()
 	(w.get_node("Title") as Label).text = title.to_upper()
 	var body := w.get_node("Body") as RichTextLabel
 	body.text = "
@@ -1500,6 +1607,19 @@ func show_skill_info(entry: Dictionary) -> void:
 	body.text = "
 ".join(SkillInfo.lines(entry))
 	_fit_info(w, body)
+
+
+## SALVAGE / REPAIR under the information window when it shows a backpack item (the server's text for it).
+func show_item_buttons(slot: int) -> void:
+	_info_slot = slot if slot >= 40 and slot <= 79 else -1
+	for b in _info_buttons:
+		b.visible = _info_slot >= 0
+
+
+func _hide_info_buttons() -> void:
+	_info_slot = -1
+	for b in _info_buttons:
+		b.visible = false
 
 
 ## Options > WINDOWS: put a closed window back where it was.
@@ -1739,9 +1859,11 @@ func handle_input(event: InputEvent) -> bool:
 		# the item held up with the left button (owner 2026-10-11: pick it up, Shift+S - it sold in the old client)
 		var held := int(get_viewport().gui_get_drag_data().slot)
 		get_viewport().gui_cancel_drag()
+		merchant.target_merchant()
 		PlayerData.sell(held, merchant.npc_name)
 		return true
 	if Keybinds.pressed(event, "sell") and merchant and merchant.visible and PlayerData.selected_slot >= 0:
+		merchant.target_merchant()
 		PlayerData.sell(PlayerData.selected_slot, merchant.npc_name)
 		return true
 	if Keybinds.pressed(event, "use_item") and PlayerData.selected_slot >= 0:

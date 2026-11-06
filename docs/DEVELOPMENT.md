@@ -18,6 +18,7 @@ This guide is for people (and AI assistants) who change the code. Players only n
 | `source/tools/make_downloaders_036.py` | Makes the small downloader zips of the three release pages |
 | `source/tools/release-world-defaults.json` | Default owner and level of every keep and the state of every keep door, applied to every release world |
 | `source/new-client` | The new client (Godot 4, C#) and its content pipeline. See its [README](../source/new-client/README.md). |
+| `source/tools/OfflineDaoc.Playtester`, `make_test_world.py` | The automated playtester: a scripted player on the 1.127 protocol and the test world it plays in. See [PLAYTESTER.md](PLAYTESTER.md). |
 | `source/development-tools` | Navigation mesh builder and pathing source |
 | `tools/pet-art`, `tools/asset-tool` | Client art pipeline and the MPK and texture helpers |
 | `tools/claude-version` | Small database and client helpers used since 0.33 |

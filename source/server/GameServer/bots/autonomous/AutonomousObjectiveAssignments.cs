@@ -231,7 +231,7 @@ public static class AutonomousObjectiveAssignments
 
             DateTime utcNow = DateTime.UtcNow;
             GameBot[] roster = AutonomousBotRegistry.Snapshot()
-                .Where(bot => bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper && !bot.IsPlayerLedGroup &&
+                .Where(bot => bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper && !BotDutyLeases.IsSpokenForByPlayer(bot) &&
                               bot.PersistentRecord != null && !AutonomousBeggars.Is(bot))
                 .ToArray();
             // The existing one-minute pass is also a backstop for a service bot
@@ -242,7 +242,7 @@ public static class AutonomousObjectiveAssignments
             // Group/warband deadlines belong to the coordinator, not individual
             // members' old allocation timestamps. Snapshot once per allocation pass.
             var groupOwned = roster.Where(bot => bot.Group != null &&
-                !bot.Group.GetMembersInTheGroup().Any(member => member is GamePlayer)).ToHashSet();
+                (!bot.Group.GetMembersInTheGroup().Any(member => member is GamePlayer) || BotLedGroups.IsHostedGroup(bot.Group))).ToHashSet();
             foreach (GameBot bot in roster.Where(bot => !groupOwned.Contains(bot)))
                 if (NormalizeLegacyTimedAssignment(bot.PersistentRecord, utcNow))
                 {

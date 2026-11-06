@@ -116,6 +116,8 @@ public static class AutonomousBotVoices
         if (!flags.Contains("in_dungeon") && !flags.Contains("in_capital")) flags.Add("outdoors");
         flags.Add(VC.TimeFlag(DateTime.Now.Hour));
         if (bot.IsPlayerLedGroup || AutonomousLivingServer.GroupHasPlayer(bot.Group)) flags.Add("in_player_group");
+        // Bot-led groups: the gamebots lead the party the player is in, so "you pull great" and "lead the way" don't fit.
+        if (BotLedGroups.IsHostedGroup(bot.Group)) flags.Add("bot_leads");
         if (bot.ResurrectionSpell != null && bot.ResurrectionSpell.Level <= bot.Level) flags.Add("can_rez");
         // Holiday chatter (bot_living_holidays): the PC's calendar, so the lines in holidays.lines can be said.
         if (AutonomousHolidays.On) flags.UnionWith(AutonomousHolidays.Flags(AutonomousHolidays.Now));

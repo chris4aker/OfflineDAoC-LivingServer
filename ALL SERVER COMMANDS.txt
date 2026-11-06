@@ -7,6 +7,7 @@ Descriptions containing a localization key have no matching shipped English text
 
 COMMON COMPANION COMMANDS
 /spawn opens the companion class picker; /spawn <class> creates that class.
+/spawn specs opens the class and build picker; /spawn <class> <spec> creates that build (for macros).
 /raid 40 or /raid 80 enables a level-50 companion raid (total includes you).
 There is no /spawn 40 or /spawn 80 raid-size command.
 /aggressive and /defensive control companion engagement.
@@ -863,7 +864,8 @@ NORMAL PLAYER COMMANDS
 
 /spawn
   Opens the companion class menu or creates a temporary helper
-  /spawn [class name]
+  /spawn [class name] [spec]
+  /spawn specs
   Handler: DOL.GS.Commands.SpawnTemporaryGroupBotCommandHandler
 
 /sprint
@@ -992,7 +994,7 @@ NORMAL PLAYER COMMANDS
   e.g. /train Dual Wield 50
   Handler: DOL.GS.Commands.TrainCommandHandler
 
-/transfercorpse (aliases: /tc)
+/transfercorpse
   /transfercorpse <Keep name> ie: /transfercorpse dun crauchon
   Handler: DOL.GS.Commands.transfercorpseCommandHandler
 

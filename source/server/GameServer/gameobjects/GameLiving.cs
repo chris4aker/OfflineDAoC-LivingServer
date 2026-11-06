@@ -2033,61 +2033,15 @@ namespace DOL.GS
 		public virtual void ProcessDeath(GameObject killer)
 		{
 			attackComponent.StopAttack();
-			List<GamePlayer> playerAttackers = new();
+			// Who the kill credits: QuestKillCredit.PlayersCredited (moved there in 1.2 so the quest harness walks the same
+			// code): player attackers, pet and companion owners, the leader of an autonomous gamebot's player-led group
+			// (owner 2026-10-30), and their groups in range. XP and loot keep their own rules.
+			List<GameLiving> toldOfKill = new();
+			AttackerTracker attackerTracker = attackComponent.AttackerTracker;
+			List<GamePlayer> playerAttackers = Quests.QuestKillCredit.PlayersCredited(this, attackerTracker.Attackers, attackerTracker.ContainsAttacker, toldOfKill);
 
-			foreach (GameObject attacker in attackComponent.AttackerTracker.Attackers)
-			{
-				if (attacker is not GameLiving livingAttacker)
-					continue;
-
-				GamePlayer player = attacker as GamePlayer;
-
-				if (attacker is GameNPC npcAttacker && npcAttacker.Brain is IControlledBrain npcAttackerBrain)
-				{
-					// Ok, we're a pet - if our Player owner isn't in the attacker list, let's make them a 'virtual' attacker
-					player = npcAttackerBrain.GetPlayerOwner();
-
-					if (player != null)
-					{
-						if (!attackComponent.AttackerTracker.ContainsAttacker(player))
-						{
-							if (!playerAttackers.Contains(player))
-								playerAttackers.Add(player);
-						}
-
-						// Pet gets the killed message as well
-						livingAttacker.EnemyKilled(this);
-					}
-				}
-
-				// Owner 2026-10-30: an autonomous gamebot fighting in a real player's group (/invite) has no Owner, only
-				// a PlayerGroupLeader, so a kill its group made without the player's own damage credited nobody's
-				// quests. The leader is credited like a companion's owner when in the kill's region and within the
-				// group's credit range, and the leader's group in range follows below. XP and loot keep their own
-				// rules (QuestKillCredit).
-				if (player == null && attacker is GameBot gamebot && Quests.QuestKillCredit.GroupLeaderFor(gamebot, this) is GamePlayer leader)
-				{
-					player = leader;
-					livingAttacker.EnemyKilled(this);
-				}
-
-				if (player != null)
-				{
-					if (!playerAttackers.Contains(player))
-						playerAttackers.Add(player);
-
-					if (player.Group != null)
-					{
-						foreach (GamePlayer groupPlayer in player.Group.GetPlayersInTheGroup())
-						{
-							if (groupPlayer.IsWithinRadius(this, WorldMgr.MAX_EXPFORKILL_DISTANCE) && playerAttackers.Contains(groupPlayer) == false)
-								playerAttackers.Add(groupPlayer);
-						}
-					}
-				}
-				else
-					livingAttacker.EnemyKilled(this);
-			}
+			foreach (GameLiving livingAttacker in toldOfKill)
+				livingAttacker.EnemyKilled(this);
 
 			foreach (GamePlayer player in playerAttackers)
 				player.EnemyKilled(this);

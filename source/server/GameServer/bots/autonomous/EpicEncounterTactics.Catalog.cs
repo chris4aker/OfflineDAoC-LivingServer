@@ -8,14 +8,19 @@ namespace DOL.GS
     public static partial class EpicEncounterTactics
     {
         /// <summary>One row per encounter with a raid tactic (boss class, catalog id, required adds, fight-at-home
-        /// radius, dies with).</summary>
+        /// radius, dies with; then keep-alive and blasts, and the named rules after them).</summary>
         public static readonly Tactic[] Catalog =
         [
             new("Xanxicar", "crystal-cave/xanxicar", [], 0, null, 0, [80, 60, 40, 20], 2500),
+            new("EarthPrimal", "galladoria/earthprimal", ["GuardianEarthmender", "MagicalEarthmender", "NaturalEarthmender", "ShadowyEarthmender"], 0, null) { ClassRules = [new("GuardianEarthmender", [eCharacterClass.Blademaster, eCharacterClass.Hero, eCharacterClass.Champion, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("MagicalEarthmender", [eCharacterClass.Eldritch, eCharacterClass.Enchanter, eCharacterClass.Mentalist, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("NaturalEarthmender", [eCharacterClass.Bard, eCharacterClass.Druid, eCharacterClass.Warden, eCharacterClass.Animist, eCharacterClass.Valewalker]), new("ShadowyEarthmender", [eCharacterClass.Nightshade, eCharacterClass.Ranger, eCharacterClass.Animist, eCharacterClass.Valewalker])], ClassRuleSwitch = "AllowEarthmenderClassPuzzle" },
+            new("SpindlerBroodmother", "galladoria/spindlerbroodmother", [], 0, null) { RangedAdds = ["SBAdds"], DeathAdds = ["SBDeadAdds"] },
             new("AidonTheArchwizard", "hall-of-the-corrupt/aidonthearchwizard", ["AidonCopyFire", "AidonCopyIce", "AidonCopyAir", "AidonCopyEarth"], 1100, null, 1, null, 0),
+            new("Orylle", "krondon/orylle", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300, After = "Orshom" },
+            new("Orshom", "krondon/orshom", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300 },
             new("ScurceolHyrde", "krondon/scurceolhyrde", ["LyftMihtOne", "LyftMihtTwo", "LyftMihtThree", "LyftMihtFour"], 1500, null),
             new("AncientBlackOak", "marfach-caverns/ancientblackoak", [], 0, "BlackLady"),
             new("BlackLady", "marfach-caverns/blacklady", [], 1100, null),
+            new("GrandSummonerGovannon", "summoner-s-hall/grandsummonergovannon", [], 0, null) { SpreadRadius = 300, SpreadWhileModel = 636, RangedAdds = ["SummonedSacrifice", "SummonedDemon"] },
             new("Nosdoden", "trollheim/nosdoden", ["NosdodenSummonedAdds"], 0, null),
         ];
 

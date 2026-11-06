@@ -75,8 +75,47 @@ namespace DOL.AI.Brain
         /// <summary>
         /// Brain main loop.
         /// </summary>
+        /// <summary>
+        /// A servant command that has been pending this long is dropped (owner 2026-10-29: a Necromancer companion in
+        /// Keltoi Fogou stood facing its servant after the fight, for good). A self-buff the servant cannot finish (no
+        /// power, a target check it keeps failing) stayed queued, and both the shade and the servant waited on it.
+        /// </summary>
+        public const long PendingCommandLimitMilliseconds = 10_000;
+        private long _pendingCommandSince;
+
+        /// <summary>True when a pending command was stuck past the limit and has just been dropped.</summary>
+        public bool DropStuckCommand()
+        {
+            long now = GameLoop.GameLoopTime;
+            // Only out of combat: in a fight the servant's commands follow each other all the time.
+            if (!HasPendingBotCommand || Body?.InCombat == true || Owner is GameLiving { InCombat: true } ||
+                Owner is GameBot { Brain: BotBrain { HasAggro: true } })
+            {
+                _pendingCommandSince = 0;
+                return false;
+            }
+            if (_pendingCommandSince == 0)
+            {
+                _pendingCommandSince = now;
+                return false;
+            }
+            if (now - _pendingCommandSince < PendingCommandLimitMilliseconds)
+                return false;
+            _pendingCommandSince = 0;
+            ClearSpellQueue();
+            ClearAttackSpellQueue();
+            if (Body?.IsCasting == true)
+                Body.StopCurrentSpellcast();
+            if (Owner is GameBot bot)
+                DOL.Logging.LoggerManager.Create(typeof(NecromancerPetBrain)).Info(
+                    $"NECRO_SERVANT_COMMAND_DROPPED bot=\"{bot.Name}\" servant=\"{Body?.Name}\" region={Body?.CurrentRegionID} " +
+                    $"after={PendingCommandLimitMilliseconds / 1000}s");
+            return true;
+        }
+
         public override void Think()
         {
+            DropStuckCommand();
             // The shade issues a servant self-buff while its own route may still
             // be running. Follow movement then restarts the three-second servant
             // cast on every pet pulse. Freeze only this verified helpful

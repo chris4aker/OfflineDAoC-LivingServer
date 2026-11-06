@@ -994,9 +994,12 @@ namespace DOL.GS
         {
             public long LastUpdateTime { get; set; }
             public byte HealthPercent { get; set; }
+            /// <summary>When the NPC was first sent to this player (its create packet).</summary>
+            public long CreatedTime { get; }
 
             public CachedNpcValues(long time, byte healthPercent)
             {
+                CreatedTime = time;
                 LastUpdateTime = time;
                 HealthPercent = healthPercent;
             }

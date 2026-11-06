@@ -8,6 +8,410 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+<!-- Integration (integration/1.2): the dungeon and boss lore (feature/lore-1.2, PRs #90-#93 and Albion) is merged
+     last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
+     entries below and the Beta 1.1.2 section as they are. -->
+
+**Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the
+gates fell, and the Renegade Lord never dropped below 100%).
+- **Before:** once the gates were down, every gamebot walked up to the lord on its own, from wherever its last fight or
+  its release had left it. They reached him one at a time and died to him one at a time.
+- **Now:** each realm rallies just inside the broken gate, under the lord's room. Its gamebots fight whatever comes at
+  them there, and go up to the lord together once there are enough of them.
+  - **"Enough"** is worked out from the lord's real level and health, the guards standing with him, and the levels and
+    health of the bots at the rally, with no extra safety margin: the realm tries often and accepts that some attempts
+    fail. In Thidranki that is about 12 level-22s against the lord alone, and about 24 with three guards beside him. A
+    lord already down to half health needs fewer.
+  - **You count double.** A real player standing at the rally counts as two gamebots, so you and ten bots go up where
+    twelve bots would. The server log's `BG_RALLY_STORM` line shows how many players went up (`players=`).
+  - **No endless waiting:** after 3 minutes the rally goes up with half of what it needs. After 6 minutes it goes up
+    with whoever is there, never fewer than 8.
+  - **A failed attempt** ends like a raid attempt: half the stormers fell, the lord healed back to 95%, or he lost
+    nothing for 3 minutes. The survivors then rally again.
+  - **The dead rejoin the rally.** A bot that died comes back to the rally instead of running up to the lord alone.
+    Bots that arrive while an attempt is running go up in groups of at least 4.
+  - **Only the bots changed.** The lord, his guards, their respawns and the gates are exactly as the base game has them.
+- **Smaller fixes:**
+  - A gamebot that has left the lord (it died, or was chased out) comes back in through a gate again. Before, once it
+    had passed a gate it walked straight at the lord for the rest of the tour.
+  - Gamebots roaming the field around an enemy-held keep stay outside its walls. Before, they were sent to points in
+    its courtyard and on its walls with the gates shut, and gave up their route ("route recovery" in the log).
+  - A battleground fight is logged under the battleground goal. Before, the server log showed "Find a reachable
+    level-appropriate XP camp" for almost every battleground death.
+- **For testers:** the server log's `BG_KEEP_STATUS` line now shows each realm's rally (`rally="Albion:rallying 9/14"`),
+  and new lines say when a rally goes up (`BG_RALLY_STORM`), when late arrivals join it (`BG_RALLY_REINFORCE`) and
+  why an attempt ended (`BG_RALLY_REGROUP`).
+
+**Who has a gamebot's time, in one place** (groundwork for gamebots that lead groups and invite you).
+- Raids, sieges and keep defenses, battleground rallies, gamebot groups and your own group now each put a claim on a
+  gamebot's time, with a priority. Your group is the strongest claim: no raid, siege, RvR march or rally ever takes a
+  gamebot from your group, exactly as before. What gamebots do has not changed, with one exception: an RvR march and
+  a battleground rally now rank the same, so neither pulls a gamebot away from the other (before, a march could take a
+  gamebot out of its battleground rally).
+- **`/lswhy duty`** on a targeted gamebot (or `/lswhy duty <name>`) says what has its time now ("realm raid
+  (Gjalpinulva), since 4m", "in a player's group", "free") and its last claims: who asked for it, and whether it went
+  or why not. Plain `/lswhy` on a gamebot shows the same under its chat decisions.
+- **One fix:** a gamebot recruited for a raid that logged off before its party formed stayed reserved when it came
+  back, and sat out every raid, siege party and gamebot group until that raid ended. It now comes back free.
+- **For testers:** `DUTY_LEASE` lines in the server log record each claim granted, taken, refused (with its reason)
+  and ended, once per change.
+
+**Gamebots in RvR notice you like players, not radar** (a player's report on r/daoc; owner 2026-11-01; North Star
+audit 2026-11-03).
+- **Before:** in the frontier, the battlegrounds and Darkness Falls, every gamebot with line of sight saw you from 5,000
+  units at once, and they all came together.
+- **Now:** a gamebot notices you by chance. Within 1,000 units it always does; beyond 3,500 it never does on its own.
+  A gamebot looking on its own takes about 1.5 s to notice you at 1,500 units, 6 s at 2,500 and 20 s at 3,400 (the
+  median). Fighting, casting, being in a group of 3 or more or standing in front of it makes that quicker; standing
+  still makes it slower. Stealth works as before: a stealthed player is never seen this way.
+  - **Only a few look at once:** at most 3 gamebots of a realm look for you each second. The rest learn of you only
+    when one of them calls it. In a crowd of 50 spread out in groups, about a third have engaged you after 5 seconds and
+    the rest drip in, where before nine in ten came within 5 seconds.
+  - **They react, then call:** a gamebot that notices you engages 0.5-2 seconds later and tells its group. Other groups
+    marching to the same keep hear it half the time, 4 seconds later. With bot voices on and you in that group, it
+    says "inc 3 north" in /group.
+  - **Duty first:** a gamebot on a raid, in a battleground assault or in your group doesn't leave it to answer a call.
+  - **Your bots are not affected:** your companions and the gamebots in your group follow and fight as before.
+- **Fewer pet classes in one group:** when gamebots form an RvR group or a siege party, at most 2 pet classes
+  (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist, Sluaghbinder) join a group of five
+  or more, and 1 a smaller group. Groups you lead or join are never changed.
+- **Settings:** `rvr_bot_perception` (on), `rvr_bot_awareness` (easy, normal or veteran; normal), `rvr_bot_spotters`
+  (on) and `rvr_group_pet_cap` (2; 0 turns it off). See [docs/LIVING-SERVER.md](docs/LIVING-SERVER.md).
+- **For testers:** `RVR_NOTICE` lines now show the chance and `time_since_first_los_ms`; `RVR_SPOT` lines show how many
+  mates were told, relayed and held by their duty.
+- **Checked:** automated tests only, including seeded simulations of the medians and of crowds. Not yet played.
+
+**Gamebot leaders invite you, and you can just follow** (bot-led groups, first part; docs/BOT-LED-GROUPS.md).
+- **The invite:** the leader of a gamebot party of your realm, within 3 levels of you on average, with room and
+  hunting where you can walk or ride, may send you a tell ("lf 1 more for skeletons in Cursed Forest, want in?") and
+  then the usual group invite box. Yes puts you in its group; the gamebot stays the leader.
+  - **Never** while you fight, are dead, ride, are on a boat, have another yes/no box open, trade, are in a group, have
+    `/spawn` companions out, are `/afk`, or are in a frontier, battleground or raid.
+  - **How often:** unasked, at most once every 45 minutes and not in your first 10 minutes online. It counts as that
+    period's bot tell, so a tell and an invite never stack.
+  - **Asking:** `/lfg`, or a tell to a bot leader with room ("lfg?", "room for a cleric?"): when a party fits, its
+    leader answers by tell and the invite box follows within 15 seconds (and then no duo offers come). An asked invite
+    skips the 10-minute start, the 45-minute gap and the quiet after a no.
+  - **Saying no:** No in the box, or "no thanks" to the tell. Then no unasked invite for 30 minutes, nothing from that
+    leader for 6 hours, and no unasked invites for the rest of the session after three noes.
+  - The server setting `bot_group_invite_player` (the launcher's Living Server tab, **Bot leaders invite you**) turns
+    unasked invites off; `/lfg` still gets you one.
+- **Following:** the leader runs the party as a gamebot party does: the camp, the pulls, the breaks.
+  - The camp is for the group's level counting you, and never more than 6 levels above you.
+  - The leader tells you where to meet and waits there up to 20 minutes (it says where it is at 5 and 10), then goes
+    on and keeps your spot. You travel yourself: you are never teleported, summoned or given money. Gamebots beside
+    you when you take a porter come with you, as invited gamebots do.
+  - On the way the leader stops when you fall 1,500 units behind, asks "where u at?" after 2 minutes, and after 10
+    minutes with you not getting closer goes on to the camp and says so in `/group`. Inside a dungeon entrance the
+    party waits for you the same way.
+  - The party pulls only when you are near, alive, not sitting and up on health and power like the rest.
+  - **Away:** `/afk`, or 10 minutes without doing anything: the party pulls where it stands but goes nowhere new; at 15
+    minutes it holds; at 30 it lets you go at the next break, with a tell. Linkdead for 5 minutes counts as leaving.
+  - **Leaving:** `/disband` at any time. The party carries on without you.
+  - A gamebot party hosting you counts your class: when you are its only healer, it still has a healer.
+  - `/pull` in a party a gamebot leads says the gamebot is leading instead of taking over. Taking the lead
+    (`/lead`) comes in the next part.
+  - Quest kills: a kill by the party counts for your kill quests when you are alive and in range, as in a group you
+    lead.
+  - No raid, siege, RvR march, battleground rally or other gamebot group takes a gamebot from a party that hosts you
+    (`/lswhy duty` on one says "leading a group with a player").
+- **Loot changes for every group with you and gamebots, whoever leads** (owner's decision): you get the primary
+  spoils, and the gamebots still gear up and fund their own improvements. Each item, in this order:
+  - an item your class can use that beats what you wear goes to you;
+  - otherwise, an item that is an upgrade for a gamebot nearby goes to the gamebot it improves most (gamebots start
+    without armour and earn it, so they need drops);
+  - everything else (most of the sell value) goes round the members in range with two turns for you: with seven
+    gamebots nearby you get 2 of every 9 of these items.
+  - Coin is split evenly among the members in range with you counted twice (2/9 with seven gamebots nearby).
+  - Before, in a group you led you got everything, and in a gamebot's group you would have got nothing. Your share is
+    the setting `bot_group_player_loot_weight` (1 to 8; the launcher's **Your loot share**). Groups of only gamebots,
+    and your `/spawn` companions (who take no loot), are unchanged.
+- **Gamebot chat:** the leader says what comes next in `/group`, short and lowercase ("moving to skeletons", "where u
+  at?", "everyone med"). Lines like "you pull great" or "lead the way" are no longer said in a party a gamebot leads.
+- **For testers:** server log lines `BOT_LED_INVITE` (sent, not sent, declined, accepted, with the reason),
+  `BOT_LED_GROUP_HOSTING`, `BOT_LED_GROUP_GOING_ON`, `BOT_LED_PLAYER_LEFT` and `BOT_LED_LOOT` (who got each item and
+  why: `upgrade-player`, `upgrade-bot` or `rotation`); the startup
+  `FORK_BUILD` line shows both settings.
+- **Not yet:** `/lead` and handing the lead back, the join setting (follow or lead) and raid leaders who invite you
+  come in the next parts. Gamebots don't yet ride the same horse or boat as you: the leader takes its own and waits
+  for you at the other end. Nothing here has been played in game yet.
+
+**Take the lead, or hand it back** (bot-led groups, second part; docs/BOT-LED-GROUPS.md).
+- **`/lead`** in a party a gamebot leads: the leader says "all yours", you become the group leader, and the gamebots
+  follow you exactly as gamebots you `/invite` do (`/pull`, your camps, your pace). The group, its loot share and your
+  quest credit carry on unchanged.
+- **`/lead bot`** (or `/lead bot <name>`, or `/makeleader <gamebot>`, or `/makeleader` with a gamebot targeted) in a
+  group you lead: a gamebot takes the lead (the one you name or target, else the highest level one), says it is looking
+  for a camp, and picks one near where you stand; you follow as in a party that invited you. It needs at least two
+  gamebots, a tank, a healer and a damage dealer (you count for your class), no `/spawn` companions and no fight going
+  on, and only works where you can walk or ride (not in the frontier, a battleground or Darkness Falls). If something
+  is missing you are told what.
+- **`/pull`, `/invite` and `/makeleader`** in a party a gamebot leads now say "Brannoc is leading this group. /lead to
+  take over." instead of "You are not the leader of your group".
+- **When a party you follow is down to one gamebot**, you get a yes/no box: "Only Brannoc is left in your group. Do you
+  want to lead the group?" Yes: you lead and Brannoc follows you. No, or no answer within a minute: Brannoc says
+  goodbye and goes its own way. Before, the party just broke up. You never become the leader any other way unless you
+  type `/lead`.
+- **`/invites off`** stops unasked invites from gamebot leaders for this character (saved with it); `/invites on` turns
+  them back on, `/invites` says which. `/lfg`, or a tell to a leader, still gets you one.
+- **The setting `bot_led_group_join_mode`** (the launcher's Living Server tab, **When you join a bot's group**): with
+  *follow* (the default) you follow the leader; with *lead*, saying yes makes you the leader at once.
+- **A fix from B1:** a party following a bot leader whose only healer was you counted you for its roster but would not
+  start a pull. It now counts you there too.
+- **No gamebot is free for a moment during a handover:** it goes straight from your group to the bot-led group (or
+  back), so no raid, siege or RvR march can take it in between. `/lswhy duty` on one shows "handed over".
+- **For testers:** server log lines `BOT_LED_HANDOVER` (to_player, to_bot, offered, accepted, declined, refused, with the
+  reason) and `AUTONOMOUS_GROUP_TASK_ENDED ... disbanded=false` for a party that was handed over; the startup
+  `FORK_BUILD` line shows `bot_led_group_join_mode`.
+- **Not yet:** the leader's "pulling", "last pull then town" and "lf 1 more" calls are written but not said yet. If you
+  leave a group after `/lead`, its gamebots leave too (as with gamebots you invite) instead of carrying on as a party.
+  Nothing here has been played in game yet.
+
+**Raid leaders invite you** (bot-led groups, third part; docs/BOT-LED-GROUPS.md).
+- When a dragon or epic dungeon raid forms in your realm and you are level 50, its **raid leader** may send you a tell
+  ("forming for Gjalpinulva at Svasud Faste. want a spot?") and then a box: "Haldor invites you to join the Gjalpinulva
+  raid. Do you wish to join?" The raid leader is a level-50 officer of a raiding guild in the raid (else the leader of
+  its first party). It works the same in Albion, Midgard and Hibernia.
+- **Once per raid.** A no is final for that raid. Never while you fight, are grouped (a gamebot party hosting you
+  included), ride, trade, have `/spawn` companions out, are `/afk` or have another box open, never in your first 10
+  minutes online, and never for a neutral raid (Darkness Falls and the like) or a raid already in its battle.
+- **Yes** puts you in the raid party that needs your class most, one still at the muster town first. If that party is
+  full, one gamebot of your role (never the party's or the raid's leader) steps out and goes back to its own play,
+  where the raid's refills may take it again. You travel to the muster town yourself (never teleported); your party
+  waits there until the raid leaves, and after that you catch up on your own. The party leader welcomes you in
+  `/group`.
+- **In the raid party** the raid runs the party: `/lead` is refused, its gamebots don't ride porters with you, and no
+  bot-led party invites you. Your kill quests count the party's kills as in a party that hosts you; trash loot is
+  shared as in every group with gamebots, and the raid's own rule for its big drops (a quarter to players) is
+  unchanged. If you leave, the raid fills your seat with a gamebot again.
+- **No gamebot is taken from your group for a raid** (as before): a gamebot in your group or in a party hosting you
+  is never recruited. The gamebots of a raid party you sit in stay the raid's.
+- **Settings:** `bot_raid_invite_player` (on; the launcher's **Raid leaders invite you**). `/invites off` stops these
+  invites too.
+- **For testers:** `RAID_PLAYER_INVITE` lines in the server log (sent, not sent, declined, accepted, seated, not joined,
+  with the reason and who stepped out); the startup `FORK_BUILD` line shows the setting.
+- Nothing here has been played in game yet.
+
+**Bot-led parties look for a replacement, take their breaks, and call their pulls** (bot-led groups, fourth part).
+- **"lf 1 more":** when a member leaves a gamebot party that hosts you, or you leave it, its leader asks in `/lfg` for
+  the missing role ("lf 1 more, need a healer for skeletons") and takes a free gamebot of that role and a fitting level
+  (within 5 levels, or both 50) that is waiting for a group and at most 8 minutes away. The recruit travels to the
+  party by the usual roads and stablemasters; the leader says "got someone coming, hang tight". A gamebot that a raid,
+  an RvR march, a battleground rally, another party or your own group holds is never taken. The ask is said once per
+  search and only while the realm's `/lfg` is under its chat budget.
+  - **Lost its healer, tank or damage dealer?** The party waits for the recruit instead of breaking up, and pulls
+    nothing meanwhile. After 5 minutes without one it gives up: it carries on short-handed when it still has a tank, a
+    healer and a damage dealer, and ends otherwise ("couldnt find anyone, gonna call it here").
+  - **When you leave** a party you followed, it carries on and looks for someone of your class's role (it used to
+    break up when you were its only healer). A group you lead is unchanged: gamebots you lead leave with you.
+  - Gamebot-only parties keep their old rules (they carry on short or end); raid parties refill as before.
+- **"last pull then town":** a party hosting you now takes the same natural break every gamebot party has: when half
+  or more of its gamebots have nearly full bags, or its task has 5 minutes or less to run, the leader says "last pull
+  then town", the party finishes that pull (the fight going on, or the next one; if no pull comes within 3 minutes it
+  goes anyway), and then the party ends there, as at any task's end: each gamebot goes to sell, and the leader says
+  "ok town to sell, good group all". Selling still happens only at that break, never in the middle of a camp.
+- **"pulling":** in a party a gamebot leads, the leader calls its own party's pulls ("pulling", "inc, on me", "here it
+  comes", and more), and that call is the pull's only line: the other gamebots' "inc" isn't added beside it. In a group
+  you lead, pulls are called as before.
+- **For testers:** `BOT_LED_RECRUIT` (searching, recruited, gave up) and `BOT_LED_BREAK` (called, ended) lines in the
+  server log.
+- **Not yet:** the party doesn't walk to town and back together with you: the break ends the party. Gamebots have no
+  potions or wearing gear, so there are no breaks for those. Nothing here has been played in game yet.
+
+**Replies that don't give bots away** (roadmap item 6; how it works: [docs/bot-voices/CHAT-BUDGETS.md](docs/bot-voices/CHAT-BUDGETS.md))
+- **Bots answer you first.** A tell to a bot, and a line in /faction or /say that names a bot, are always answered, however
+  busy the channel is. So is a /say to the bot right in front of you, and a "why?" or "where?" about a bot's own line.
+- **Replies have a budget of their own.** In /faction and /say, bots' answers are now counted apart from the lines bots
+  start on their own, with their own target and ceiling. When a channel is busy, bots stop answering each other first; the
+  room that's left goes to answering you.
+- **/faction on a small server keeps to its budget.** With 10 gamebots a realm, /faction ran at about four times the pace
+  the server's own budget asked for (the automated playtester measured 1.2 to 1.4 lines a minute against 0.27 to 0.36).
+  The server measured each channel over the last two minutes, which can't tell a slow channel's floor from silence, so
+  every quiet two minutes a bot spoke at once, and the answers came on top. It now measures over a window long enough for
+  the channel's pace (2 to 20 minutes). The automated re-run (the playtester's faction-rate scenario, 10 gamebots a
+  realm, two half-hour listens each, in the development container): **before 1.20 and 1.33 lines a minute, after 0.87
+  and 0.97**, against an opener target of 0.27 to 0.31 and a reply target of the same. Most of what is still over the
+  budget is the gold spammer's waves (6 to 11 ads in half an hour) and the debate scenes: they come at the same pace on
+  any server, however few bots it has. They now count against the openers' budget, so bots start fewer lines of their
+  own while one runs.
+- **Debates and gold spammers fit the crowd** (owner 2026-11-05). On a realm with fewer than 300 gamebots online, the
+  /faction debates and the gold spammer's waves come less often, and a wave has fewer ads: with 10 bots a realm they come
+  about a fifth as often and a wave is two ads. From 300 bots a realm up, nothing changes, so at 900 they come exactly
+  as before. In the evening model at "How much they talk" 2, /faction with 10 bots a realm goes from 0.86 to 0.74 lines a
+  minute, and with 300, 900 and 1,000 it stays at 3.96, 6.78 and 6.77.
+  The playtester's faction-rate scenario with 10 gamebots a realm (two runs, in the development container): 0.62 and
+  1.03 lines a minute against the 0.66 to 0.69 it now expects (the opener target plus the reply target), with no debate
+  or spam wave in the listen, and neither run flagged. The playtester now listens until 10 lines are expected, so these
+  listens were 14.5 minutes, shorter than the half hour of the earlier runs.
+- **No quieter on a full server.** The world was re-balanced, not cut: /faction's openers keep 4 a minute at a full server
+  and its answers come on top of them; /lfg and /trade aim at what 1.1.2 actually delivered (1.8 and 1.6 a minute, were
+  1.6 and 1.3); a guild's chat and /say near you have higher floors, so a few bots keep them going. In the evening model
+  (`UT_ChatBudgetSimulation`) at the default "How much they talk" (2), all the channels you hear together go from 7.9 to
+  8.4 lines a minute with 300 bots a realm, and from 16.4 to 18.0 with 1,000. A 10-bot realm is quieter than in 1.1.2,
+  because it was running far over its budget.
+- **Nothing untrue about themselves.** A reply that would say the bot is another class, role or level ("im a cleric" from
+  a thane, "38 zerk here" from a 41) is dropped for something short that fits, or nothing. So is a group or trade ad said
+  to a line about neither ("need a healer still?" to "gn all"). Bots also say where they are: "what zone r u in?", "are
+  you in camelot hills?".
+- **`/lswhy` shows a reason code** for every decision ("said [exempt-named]", "held [hold-reply-target]", "silent
+  [below-minimum]"). New: `/lswhy me` shows why bots answered your own lines or didn't, and `/lswhy held` the replies the
+  budget held back. `/lswhy budget` shows /faction's and /say's replies apart from the lines bots start.
+- **Tuning:** `reply_target` and `reply_ceiling` per channel in `chat-budget.json`. A copy of the file from 1.1.2, without
+  them, works as before.
+- **Checked:** automated only. New tests (`UT_RepliesDontGiveBotsAway`) and the evening model compared against 1.1.1 and
+  1.1.2; the full server suite passes. The playtester's faction-rate scenario, before and after, is above. Not played in
+  game.
+
+**Quests: the epic chains linked on every install, repeatable quests, deliveries, and a machine that plays them**
+([docs/QUESTING.md](docs/QUESTING.md))
+- **The epic chains are linked on a normal install.**
+  - **Before:** Beta 1.1 put the Guild of Shadows chain (levels 7 to 48, the Camelot and Shrouded Isles routes) in order,
+    with its period dialogue, and pinned every other guild's epic steps in order, but only if you ran
+    `epic_chains.py --apply` by hand with Python, which the game doesn't ship. On a normal install `/epic` said "no epic
+    chain linked by quest IDs", and a world it was applied to broke the released game's Guild of Shadows after a
+    rollback.
+  - **Now:** the server makes the same changes itself each time it reads the quests, in memory. Nothing is written to
+    your world, so ROLLBACK.cmd and PREPARE-FOR-UPDATE.cmd have nothing to undo for them and the released game's quests
+    are as they were. Quest rows you changed yourself are left alone, as the tool did. Setting `epic_chains_linked` (on)
+    switches it off.
+  - **A world you ran `epic_chains.py --apply` on** still holds the links in its rows. ROLLBACK.cmd and
+    PREPARE-FOR-UPDATE.cmd now refuse on such a world until you put them back with
+    `python tools\claude-version\epic_chains.py rollback --apply` (or run them with `-Force`), because the released
+    server would never offer the Guild of Shadows. The server notices such a world when it starts and says so in its
+    log and in `runtime\server\epic-chains-in-world.txt`.
+- **Repeatable quests are offered again.** A quest written to be done several times (MaxCount 2 or more) was never
+  offered after you finished it once. Quests with no limit (MaxCount 0) and one-time quests are still offered once, as
+  before, until the world report shows how the classic quests use 0.
+- **Deliveries in quests without a collect column can be handed in.** A quest whose row had no CollectItemTemplate at
+  all ignored every item you gave, so its delivery steps could never be done.
+- **Collection quests take their item whatever the case of its name.** Dera's Human Leg XP Item never took a human leg:
+  the quest asks for `Human_Leg` and the item is `Human_leg`, and the turn-in compared the names letter case and all.
+- **Classic quest steps run on the game loop.** The classic quests' 5-second check (map markers, the monsters that appear
+  for your step, items handed to you, places reached, items held) ran beside the game loop and could race with it ("it
+  just didn't count"). The timer now only asks the game loop to run it.
+- **The quest harness.** A test plays a quest from offer to finish on the server's own quest code with a fake player:
+  talking, kills by you, by a groupmate and by a gamebot in your group, deliveries, collections, whispers, searches and
+  every classic custom step, checking the rewards, the XP at your XP-by-level rate and the quest markers. A world report
+  walks every quest of a game's world database the same way (read from a copy, never written) and lists which quests
+  can't be completed and why. How to run it on your PC: docs/QUESTING.md section 6.
+- **Checked:** automated only. New tests `UT_QuestHarness`, `UT_QuestHarnessWorld`, `UT_EpicChainLinks`; the full server
+  suite passes (4,796 tests); the chain links match `epic_chains.py`'s output exactly on its own test world; the installer
+  tests pass with the new rollback checks. The world report on a copy of the owner's test world: all 1,540 quest rows finish
+  every walk. Not played in game.
+
+**An automated playtester** (for testing, not in the game; [docs/PLAYTESTER.md](docs/PLAYTESTER.md)). Until now every
+release was checked by hand in the game client. A scripted player can now run the same checks with no person at the
+keyboard, overnight or in CI:
+- **`make_test_world.py`** makes a test world from a clean release world: a new file, every save emptied as a release
+  is, three test accounts and a small roster of gamebots. Each realm's first gamebot is level 12 and trained for it,
+  so the group scenarios have someone to group with. It only reads the world you give it and never writes over a
+  file. A `minimal` world needs no game files at all.
+- **`OfflineDaoc.Playtester`** connects to the server as the original 1.127 client does, logs in, makes characters
+  and plays scenarios: log in, save and restart the server (the character comes back where it quit); say and tells
+  between two players; a group invite with group chat; a tell to a gamebot (it answers); /faction lines a minute,
+  passing at half the rate the server's own chat budget predicts for the bots online and the hour; a delivery quest
+  taken, carried and handed in.
+  - **A kill quest in a group with a gamebot.** A player is made an Armsman a few levels above the quest. It trains
+    at its trainer, buys a weapon, invites the level-12 gamebot, kills the target with it and hands the quest in.
+  - **Guild dues and merit.** A player's own guild sets dues, earns merit for its levels and takes a gamebot in. The
+    dues from the coin they loot together go to the guild bank.
+  - Each run writes a report in Markdown and JSON with timings and every chat line it saw.
+- **/faction counts the reply budget** (owner 2026-11-05, with PR #82). The expected /faction rate is now the chat budget's
+  target plus its reply target, as the 1.2 server paces them. A run above the server's ceiling (the ceiling plus the reply
+  ceiling) is flagged in the report and the console; `--fail-over-ceiling` makes it a failure. Against Beta 1.1.2's
+  budget, which has no reply target, the prediction is unchanged, and its 1.2 to 1.4 lines a minute at 10 bots a realm
+  are flagged.
+- It refuses any database that `make_test_world.py` did not make, and runs the server from a copy of its folder, so a
+  test run leaves nothing in your install.
+- Its protocol code comes from the new client's network client (`source/new-client`); lometur's HearthDAoC headless
+  client was the model for the idea (it runs inside the server, so it was not ported).
+
+**New client (0.37c): skills on the quickbar, Stealth and the merchant's SELL button** (GitHub issue #34). These are
+shadowofze's own 1.2 fixes, installed as patches to the new client's scripts (only where the script is the released
+0.37c one; ROLLBACK.cmd puts it back).
+- **Skills onto the quickbar.**
+  - **Before:** an ability dragged from the skills window (Sprint, Stealth, Safe Fall, a realm ability ...) showed a
+    no-entry sign over the quickbar and wouldn't go on it. Spells and styles already did.
+  - **Now:** abilities go on the quickbar too, and one click on the slot uses them. Shift + right-click empties a slot.
+- **Stealth.**
+  - **Before:** Stealth was only a line in the specialization list (the server treats it as a specialization you
+    use, not an ability), so the Abilities list had no Stealth to click or drag, and /stealth was "not a command".
+  - **Now:** the Abilities list has a Stealth row: double-click it, drag it onto the quickbar, or type /stealth (or
+    /hide) to hide and to come out again. You don't see yourself as a see-through ghost yet, and the effect bar may
+    show another picture for Stealth: both need the 1.2 network client.
+- **SELL at merchants.**
+  - **Before:** the merchant window had BUY only. Selling worked by dragging an item onto the window, which nothing
+    told you.
+  - **Now:** right-click an item in your backpack, then click SELL (dragging an item onto the window still sells it).
+    The window also gets a quantity for BUY (arrows, KEEP), a scroll bar for long pages and the pack size of arrows,
+    bolts and poisons.
+  - **APPRAISE** stays hidden in this version of the new client: the server's appraise needs the 1.2 network client
+    (its MMOEngine.dll), which this update doesn't install. In shadowofze's 1.2 scripts the button was there but a
+    click did nothing.
+- The account vault window keeps its title (with the 1.2 scripts alone it would have said HOUSE VAULT).
+
+**Epic raids learn four more bosses (raid tactics, round 3).** Everything below is built and covered by automated
+tests; none of it has been seen in a real raid yet. Govannon and Orshom are level 80: this teaches the raid their rules,
+it does not make them easy, and the hardest level 70+ encounters, Darkness Falls raid AI and Legion still have no raid
+tactics.
+- **Grand Summoner Govannon (Summoner's Hall, all three realms).**
+  - **Before:** on 2026-11-06 the Midgard raid took him to 53% and then 51%, twice. Each time, at 50%, he turned into a
+    demon at full health and the raid fell in about a minute: 88 and then 101 raider deaths, most with nobody hitting
+    them. His Shroud of Agony hurts everyone within 300 of his target, and the raid stood in one pile on that target.
+  - **Now:** in his demon form, casters, archers and healers stand clear of his target (550 from it) and fight and heal
+    from there. Melee can't get clear and fight on, but the healers are no longer dying beside them. The party he is
+    fighting holds him.
+  - At 80% (in each form) he summons a sacrifice and a demon that walk slowly to his altar. Only if both reach it does the
+    Shade of Aelfgar come. The raid's casters and archers now kill them on the way while everyone else stays on him.
+  - His full 300,000 health stays switched off.
+- **Orshom Brong and Orylle (Krondon).**
+  - **Before:** the Albion raid lost at Orshom twice overnight (lowest 59%, then 28%). His fire pit, Orshom's Fire, burns
+    500 every 3 seconds within 300 of it and only cold hurts it. Bots it burned fought back, standing in it.
+  - **Now:** the fire is never a target, and the raid never turns on it because "it is fighting the raid". A raider within
+    450 of it steps out to 600 first and fights on.
+  - When Orylle joins at 50%, the party she attacks holds her and everyone else finishes Orshom first. The raid also goes
+    for Orshom before her.
+- **Galladoria.**
+  - **The Earthmenders' class rule is back on.** Each of the four Earthmenders that heal the Corrupt Primal of Earth
+    again takes damage only from its own classes, as in the original:
+    - Guardian: blademasters, heroes and champions.
+    - Magical: eldritchs, enchanters and mentalists.
+    - Natural: bards, druids and wardens.
+    - Shadowy: nightshades and rangers.
+    - Animists, valewalkers and pets hurt all four.
+  - The raid now kills the Earthmenders before the primal, and each raider takes one its class can hurt. A class none of
+    them takes damage from (bainshee, vampiir) fights the primal and keeps it busy. A player fighting them yourself plays
+    by the same rule.
+  - **Spindler Broodmother.** Casters and archers kill each newborn spindler as it comes, while melee and healers stay on
+    her. The 20-25 small spindlers that burst from her body when she dies are cleared there before the raid moves on.
+- **A quieter log.** `REALM_EXPEDITION_EARLY_PULL` had one line for every Darkness Falls named the raid walked into (53
+  in four hours). It is now logged for a raid's final boss and for catalogued scripted bosses (once per boss every ten
+  minutes), and always for a pull-back. The rest go to the debug log, and the next logged line counts them
+  (`quietSinceLast=`).
+- **The encounter catalog** (`docs/encounters/EPIC-ENCOUNTERS.md`) marks the new tactics "1.2 (new)". It also shows
+  which restored mechanic is now on, and records what the 2026-11-06 logs showed for each of these bosses.
+
+**Also in 1.2: measuring the AI**
+- **AI_PROFILE: what the bots' AI costs, measured every minute** (technical audit 2026-11-03, "measure before
+  adding"). Nothing in the game changes: it only measures.
+  - **What:** once a minute the server log gets one `AI_PROFILE` line: the game-loop tick's p50, p95, p99 and
+    maximum, split into the serial planning before the brains and the brains' parallel pass, the time spent waiting
+    for the coordinator, raid, RvR and database locks, and the ten costliest AI systems. About 70 systems are timed:
+    brain turns by kind, each serial coordinator pulse, the world controller and its branches, route planning and
+    navmesh queries, the frontier threat scan, combat AI, pets, persistence, chat, economy and town visits.
+  - **Where:** `logs/ai-profile.csv` (one row per system a minute), `/lsprofile` in game (GM), and
+    `tools/perf/ai_profile_report.py`, which turns a log into a top-ten table, a tick timeline and the L300/L600/L900
+    load-test verdict. How to read it and how to run the load tests: [docs/PERFORMANCE.md](docs/PERFORMANCE.md).
+  - **Setting:** `ai_profile` (on). One timed call costs about 65 ns (a CI test fails it above about 100 ns).
+  - **Honest settings:** `ai_budget_ms` was described as a budget that defers work, but nothing reads it. Its
+    description now says it is not enforced yet; the deferral queue is decided after the L300/L600 baselines.
+  - **Credit:** built on lometur's HearthDAoC bot CPU meter (per-thread counters, brain time by bot kind) and
+    stefanrows's `BotThinkProfiler` (the timed scope, the measured lock, the minute line), both GPL-3.0.
+  - **Checked:** 33 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
+    report tool; the full server suite passes (4,123). Not yet run on a live server: the first L300 run is the owner's.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

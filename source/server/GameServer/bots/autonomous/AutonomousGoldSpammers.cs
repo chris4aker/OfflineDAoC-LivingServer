@@ -40,6 +40,14 @@ public static class AutonomousGoldSpammers
 
     private static readonly ConcurrentDictionary<eRealm, Wave> Waves = new();
     private static readonly ConcurrentDictionary<eRealm, long> NextWaveAt = new();
+    /// <summary>When each realm's next wave was planned (1.2: its wait is stretched on a small roster, AutonomousChatBudget.SceneDue).</summary>
+    private static readonly ConcurrentDictionary<eRealm, long> WavePlannedAt = new();
+
+    private static void PlanWave(eRealm realm, long now, long waitMs)
+    {
+        NextWaveAt[realm] = now + waitMs;
+        WavePlannedAt[realm] = now;
+    }
 
     #region Pure parts (unit tested)
 
@@ -98,6 +106,7 @@ public static class AutonomousGoldSpammers
         if (Waves.ContainsKey(realm))
             return false;
         NextWaveAt[realm] = 0;
+        WavePlannedAt[realm] = 0;
         return true;
     }
 
@@ -105,7 +114,7 @@ public static class AutonomousGoldSpammers
     public static void OnSessionStart(eRealm realm, long now)
     {
         if (!Waves.ContainsKey(realm))
-            NextWaveAt[realm] = now + FirstWaveMinMs + Random.Shared.Next((int)FirstWaveSpreadMs);
+            PlanWave(realm, now, FirstWaveMinMs + Random.Shared.Next((int)FirstWaveSpreadMs));
     }
 
     /// <summary>Starts, runs and bans the spam waves (AutonomousLivingWorld.Pulse, once a second).</summary>
@@ -123,13 +132,17 @@ public static class AutonomousGoldSpammers
                     Advance(realm, wave, now);
                 continue;
             }
-            long next = NextWaveAt.GetOrAdd(realm, _ => now + FirstWaveMinMs + Random.Shared.Next((int)FirstWaveSpreadMs));
-            if (now < next || AutonomousBotDebates.IsRunning(realm))
+            if (!NextWaveAt.ContainsKey(realm))
+                PlanWave(realm, now, FirstWaveMinMs + Random.Shared.Next((int)FirstWaveSpreadMs));
+            long next = NextWaveAt[realm];
+            // 1.2: a small roster sees waves less often, and shorter (AutonomousChatBudget.SceneScale); 300 bots a realm and up as before.
+            int realmBots = AutonomousBotChatCoordinator.RealmBots(realm);
+            if (!AutonomousChatBudget.SceneDue(WavePlannedAt.GetValueOrDefault(realm, next), next, now, realmBots) || AutonomousBotDebates.IsRunning(realm))
                 continue;
             string name;
             do name = SpammerName(Random.Shared);
             while (AutonomousBotRegistry.TryGetByName(name, out _) || ClientService.Instance.GetPlayerByExactName(name) != null);
-            Waves[realm] = new Wave { Name = name, Site = FakeSite(Random.Shared), AdsLeft = AdsMin + Random.Shared.Next(AdsSpread), NextAt = now };
+            Waves[realm] = new Wave { Name = name, Site = FakeSite(Random.Shared), AdsLeft = AutonomousChatBudget.SceneLines(AdsMin + Random.Shared.Next(AdsSpread), realmBots), NextAt = now };
             Log.Info($"GOLD_SPAMMER_START realm={GlobalConstants.RealmToName(realm)} name=\"{name}\"");
         }
     }
@@ -139,7 +152,7 @@ public static class AutonomousGoldSpammers
         if (wave.Banned)
         {
             Waves.TryRemove(realm, out _);
-            NextWaveAt[realm] = now + WaveMinMs + Random.Shared.Next((int)WaveSpreadMs);
+            PlanWave(realm, now, WaveMinMs + Random.Shared.Next((int)WaveSpreadMs));
             return;
         }
         if (wave.AdsLeft > 0)
@@ -173,9 +186,15 @@ public static class AutonomousGoldSpammers
             GameBot speaker = bot;
             AutonomousLivingServer.Later(speaker, due, () => AutonomousLivingServer.CanTalk(speaker), () =>
             {
-                if (AutonomousBotVoices.TryEventLine(speaker, "spam_react", out string line, topic,
+                // 1.2: reactions to the spammer are replies, within the realm's reply budget; its ads are the realm's own talk.
+                if (AutonomousBotChatCoordinator.ReplyAllowed(speaker, true, AutonomousChatBudget.ReplyKind.BotThread, "spammer " + spammer, null, out string code) &&
+                    AutonomousBotVoices.TryEventLine(speaker, "spam_react", out string line, topic,
                         new Dictionary<string, string> { ["target"] = spammer }))
-                    AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
+                {
+                    AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line, AutonomousChatBudget.LineKind.Reply);
+                    AutonomousChatWhy.Record(speaker, "faction", "spammer " + spammer, "said", "spam_react " + topic, 2, "reacts to the gold spammer", line,
+                        code: code);
+                }
             });
         }
     }

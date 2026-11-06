@@ -1,0 +1,46 @@
+{
+    "name": "8-spells",
+    "note": "The Herald's spell database, captured in 2004 (late SI / ToA): spell lines per class (line.php?c=..&line=.., which spell at which level) first, then each spell's page (spell.php?s=N&level=L). One save per distinct line and per spell id (its latest capture). About 2,950 pages, roughly 2.5 hours of requests: under the daily cap with the other jobs it takes two or three days and continues by itself each run.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 2990,
+    "targets": [
+        {
+            "url": "camelotherald.com/spells/line.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: 245 spell-line pages (line.php?c=<class>&line=<line>, also ?line=<line> alone).",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 1,
+            "maxCaptures": 260
+        },
+        {
+            "url": "camelotherald.com/spells/index.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: the spell database index (index.php, index.php?line=N).",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "camelotherald.com/spells/spell.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: 2,707 spell pages (spell.php?s=<id>&level=<level>); one per spell id.",
+            "collapse": "digest",
+            "pick": "latest",
+            "dedupeKey": "[?&]s=(\\d+)",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 8,
+            "maxCaptures": 2720
+        }
+    ]
+}

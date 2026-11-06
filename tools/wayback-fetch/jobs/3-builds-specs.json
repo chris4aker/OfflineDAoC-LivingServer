@@ -1,0 +1,468 @@
+{
+    "name": "3-builds-specs",
+    "note": "Real era templates, 2002-2005 (classic, SI, early ToA): class pages, spec and template guides, realm ability lists, and class boards, to replace guessed build weights with spec points by level, common realm ability picks and the lines people actually trained. Class guides are taken once per year (collapse=timestamp:4, up to 4 captures 2002-2005) so they show each patch era; index.csv's patch column lists the versions each page names.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 560,
+    "targets": [
+        {
+            "url": "camelotherald.com/newfrontiers/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Confirmed: /newfrontiers/realmabilities/abilities.php (May 2004 link), the New Frontiers realm ability pages.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 60
+        },
+        {
+            "url": "camelotherald.com/class",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: Herald class pages (classes/..., class.php...). One cheap lookup; the map's 'c' range shows the truth.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 50
+        },
+        {
+            "url": "camelot.allakhazam.com/db/class.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Allakhazam class pages (db/class.html?cclass=N on today's site); GUESS for the era.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 45
+        },
+        {
+            "url": "camelot.allakhazam.com/db/skills.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Allakhazam skill lines and spells by level (db/skills.html on today's site); GUESS for the era.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 60
+        },
+        {
+            "url": "camelot.allakhazam.com/db/guides.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Allakhazam player guides (db/guides.html?guide=N, already sampled by a-raid-sizes; shared pages are copied, not fetched again).",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 2,
+            "maxCaptures": 80
+        },
+        {
+            "url": "classesofcamelot.com/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Classes of Camelot (class guides fansite, this address from May 2002). Its page names are not known yet; see 1-site-map.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 60
+        },
+        {
+            "url": "vnboards.ign.com/dark_age_of_camelot",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: VN Boards board pages named Dark_Age_of_Camelot_<...>; only those naming a class, spec or template.",
+            "cdxFilters": [
+                "urlkey:.*(class|spec|template|armsman|paladin|cleric|friar|infiltrator|mercenary|minstrel|scout|sorcerer|theurgist|wizard|cabalist|necromancer|reaver|bard|blademaster|champion|druid|eldritch|enchanter|hero|mentalist|nightshade|ranger|warden|valewalker|animist|berserker|healer|hunter|runemaster|shadowblade|shaman|skald|spiritmaster|thane|warrior|savage|bonedancer).*"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        },
+        {
+            "url": "camelot.allakhazam.com/Armsman_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Armsman guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Cabalist_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Cabalist guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Cleric_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Cleric guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Friar_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Friar guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Infiltrator_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Infiltrator guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Mercenary_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Mercenary guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Minstrel_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Minstrel guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Necromancer_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Necromancer guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Paladin_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Paladin guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Reaver_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Reaver guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Scout_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Scout guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Sorcerer_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Sorcerer guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Theurgist_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Theurgist guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Wizard_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Wizard guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Animist_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Animist guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Bard_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Bard guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Blademaster_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Blademaster guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Champion_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Champion guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Druid_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Druid guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Eldritch_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Eldritch guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Enchanter_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Enchanter guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Hero_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Hero guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Mentalist_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Mentalist guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Nightshade_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Nightshade guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Ranger_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Ranger guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Valewalker_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Valewalker guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Warden_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Warden guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Berserker_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Berserker guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Bonedancer_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Bonedancer guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Healer_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Healer guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Hunter_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Hunter guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Runemaster_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Runemaster guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Savage_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Savage guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Shadowblade_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Shadowblade guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Shaman_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Shaman guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Skald_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Skald guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Spiritmaster_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Spiritmaster guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Thane_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Thane guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        },
+        {
+            "url": "camelot.allakhazam.com/Warrior_Guide.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Allakhazam Warrior guide. The <Class>_Guide.html form is seen on today's site (Eldritch, Ranger); GUESS for 2002-2005.",
+            "collapse": "timestamp:4",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 4
+        }
+    ]
+}

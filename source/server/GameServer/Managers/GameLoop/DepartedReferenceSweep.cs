@@ -36,6 +36,7 @@ namespace DOL.GS
 
         private static void Sweep()
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.SweepDepartedReferences); // AI_PROFILE: measures only
             long started = Stopwatch.GetTimestamp();
             foreach (Region region in WorldMgr.GetAllRegions())
             {

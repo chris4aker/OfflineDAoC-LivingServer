@@ -296,6 +296,7 @@ namespace DOL.GS
 
         public bool Tick(BotBrain brain)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerTick); // AI_PROFILE: measures only
             GameBot bot = brain?.BotBody;
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup)
                 return false;
@@ -440,6 +441,11 @@ namespace DOL.GS
                 if (HandleStableTravel(bot))
                     return true;
 
+                // Relic audit 2026-10-31 (L4): a relic carrier runs home. It used to stand and fight (the combat block below
+                // ran first) and, in True 1.65, walk to loot bags. Only a crowd-controlled or cornered carrier fights back.
+                if (RelicCarrierRuns(brain, bot, nowTick))
+                    return ExecuteRvr(brain, bot);
+
                 // Shared dungeons are RvR areas even when the bot's durable
                 // assignment is PvE. Only opponents actually present inside
                 // the local awareness radius are considered; no human player
@@ -475,9 +481,12 @@ namespace DOL.GS
                         bot.StopMoving();
                         bot.ForcePathReplot();
                     }
-                    if (bot.TargetObject is GameLiving target)
-                        SetStatus(bot, $"Fighting {target.Name}", GoalText(), $"Engaged level {target.EffectiveLevel} {target.Name}", target.Name);
                     ReportSiegeCombatAttendance(bot, nowTick);
+                    // Relic sentinels take no damage from beyond 800 (owner 2026-10-31: ranged bots step in to range).
+                    if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) && StepInOnSentinel(brain, bot, bot.TargetObject as GameLiving))
+                        return true;
+                    if (bot.TargetObject is GameLiving target)
+                        SetStatus(bot, $"Fighting {target.Name}", CombatGoalText(bot), $"Engaged level {target.EffectiveLevel} {target.Name}", target.Name);
                     return false;
                 }
 
@@ -884,6 +893,7 @@ namespace DOL.GS
 
         private bool TravelAcrossRegions(GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerTravelRegions); // AI_PROFILE: measures only
             CampDestination camp = _camp;
             if (camp == null)
                 return true;
@@ -1043,8 +1053,9 @@ namespace DOL.GS
 
         private bool TryRouteToNeededService(GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.TownService); // AI_PROFILE: measures only
             eWorldServiceKind? needed = AutonomousBotEconomy.GetNeededService(bot);
-            if (needed is not eWorldServiceKind.RealmExchange and not eWorldServiceKind.Vendor)
+            if (needed is not eWorldServiceKind.RealmExchange and not eWorldServiceKind.Vendor and not eWorldServiceKind.SealMerchant)
             {
                 _serviceNpc = null;
                 _serviceKind = null;
@@ -1065,6 +1076,12 @@ namespace DOL.GS
                 {
                     _serviceNpc = null;
                 }
+            }
+            if (_serviceNpc == null && needed == eWorldServiceKind.SealMerchant)
+            {
+                // Seal gear is optional: with no reachable seal merchant the bot simply carries on.
+                _serviceKind = null;
+                return false;
             }
             if (_serviceNpc == null)
             {
@@ -1138,7 +1155,7 @@ namespace DOL.GS
                         _nextServiceSearchTick = 0;
                         bot.StopMovingOnPath();
                         bot.StopMoving();
-                        SetStatus(bot, "Choosing another merchant", needed == eWorldServiceKind.RealmExchange ? "Use the Realm Exchange" : "Sell ordinary backpack loot",
+                        SetStatus(bot, "Choosing another merchant", ServiceGoal(needed.Value),
                             "The chosen service has no reachable spot to stand beside it", string.Empty, destination.ZoneName);
                         return true;
                     }
@@ -1146,7 +1163,7 @@ namespace DOL.GS
                 if (TryBeginFasterStableRoute(bot, point, _serviceNpc.Name))
                     return true;
                 IssuePath(bot, point, preciseArrival: true);
-                SetStatus(bot, $"Traveling to {_serviceNpc.Name}", needed == eWorldServiceKind.RealmExchange ? "Use the Realm Exchange" : "Sell ordinary backpack loot",
+                SetStatus(bot, $"Traveling to {_serviceNpc.Name}", ServiceGoal(needed.Value),
                     "Routing to a real world service before resuming progression", _serviceNpc.Name, destination.ZoneName);
                 return true;
             }
@@ -1161,7 +1178,7 @@ namespace DOL.GS
             }
             bot.StopMovingOnPath();
             bot.StopMoving();
-            SetStatus(bot, $"Ready to use {_serviceNpc.Name}", needed == eWorldServiceKind.RealmExchange ? "Use the Realm Exchange" : "Sell ordinary backpack loot",
+            SetStatus(bot, $"Ready to use {_serviceNpc.Name}", ServiceGoal(needed.Value),
                 "Reached the real service; BotBrain will transact only within range", _serviceNpc.Name, destination.ZoneName);
             bot.StopFollowing();
             // Hand the exact reached broker to the transaction layer after
@@ -1185,6 +1202,15 @@ namespace DOL.GS
             bool exchange = kind == eWorldServiceKind.RealmExchange;
             GameNPC best = null;
             double bestMinutes = double.MaxValue;
+            if (kind == eWorldServiceKind.SealMerchant)
+            {
+                // Only the bot's own realm's seal merchants in Darkness Falls that have something it can pay for.
+                foreach (GameMerchant merchant in bot.CurrentRegion?.Merchants ?? [])
+                    if (merchant is GameDarknessFallsSealsMerchant seals && IsServiceCandidate(bot, seals) &&
+                        AutonomousBotEconomy.FindSealPurchase(bot, seals) != null)
+                        ConsiderService(seals);
+                return best;
+            }
             // Same candidates and ordering as before (first candidate wins a tie,
             // like OrderBy + FirstOrDefault), but merchants come from each
             // region's live merchant index instead of scanning every monster,
@@ -1231,11 +1257,19 @@ namespace DOL.GS
             }
         }
 
+        private static string ServiceGoal(eWorldServiceKind kind) => kind switch
+        {
+            eWorldServiceKind.RealmExchange => "Use the Realm Exchange",
+            eWorldServiceKind.SealMerchant => "Trade Darkness Falls seals for seal gear",
+            _ => "Sell ordinary backpack loot",
+        };
+
         private static bool IsServiceCandidate(GameBot bot, GameNPC npc) =>
             npc.ObjectState is GameObject.eObjectState.Active && npc.CurrentZone != null && IsZoneAccessible(bot.Realm, npc.CurrentZone);
 
         private bool HandlePendingTraining(GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.TownService); // AI_PROFILE: measures only
             if (!AutonomousObjectiveAssignments.WantsBetweenTaskTraining(bot) || !bot.HasSpendableAutonomousTrainingPoints)
             {
                 _trainingTrainer = null;
@@ -1404,6 +1438,7 @@ namespace DOL.GS
 
         private bool HandleGroupRendezvous(GameBot bot, AutonomousBotGroupCoordinator.Directive directive)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerRendezvous); // AI_PROFILE: measures only
             GameBot leader = directive.Leader;
             bool leaderStaging = directive.Phase == "Leader staging";
             if ((leaderStaging || directive.Phase == "Regrouping" && !directive.LeaderReadyForAssembly) && bot != leader)
@@ -1499,6 +1534,7 @@ namespace DOL.GS
         private bool HandleGroupCombatAndRecovery(BotBrain brain, GameBot bot,
             AutonomousBotGroupCoordinator.Directive directive)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerGroupCombat); // AI_PROFILE: measures only
             if (directive.GroupCombatActive)
             {
                 // A member fighting beyond assist range used to leave everyone else
@@ -1687,6 +1723,7 @@ namespace DOL.GS
 
         private bool FollowDynamicGroupLeader(GameBot bot, AutonomousBotGroupCoordinator.Directive directive)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerFollowLeader); // AI_PROFILE: measures only
             GameBot leader = directive.Leader;
             if (leader == null || !leader.IsAlive)
                 return true;
@@ -1804,10 +1841,15 @@ namespace DOL.GS
 
         private bool ExecuteRvr(BotBrain brain, GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerRvr); // AI_PROFILE: measures only
             bool dynamicWarband = _groupDirective?.IsDynamic == true &&
                                   _groupDirective.ObjectiveKind == eAutonomousObjectiveKind.RvR;
             string forceId = dynamicWarband ? _groupDirective.GroupId : $"rvr-{bot.DatabaseID}";
             bot.TempProperties.SetProperty("RvrEventForce", forceId);
+            // The carrier's own turn comes before any rally, muster, siege job or target (relic audit 2026-10-31, B3/L4).
+            GameRelic carriedRelic = bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK);
+            if (carriedRelic?.CurrentCarrier == bot)
+                return RelicCarrierTurn(bot, carriedRelic);
             // Home defense first: a warband committed to an attack (mustering, marching or at the siege) re-plans when
             // its own realm's keep calls it home. The rally, march and siege paths below return before any re-plan, so
             // the check runs here (2026-10-20: Hlidskialf Faste fell with no Albion defense while Albion's army
@@ -1846,7 +1888,8 @@ namespace DOL.GS
             if (committedPlan == null && dynamicWarband && _groupDirective.Leader != bot && _groupDirective.Leader != null)
                 _rvrIntent = (AutonomousRvrEventLayer.Intent)_groupDirective.Leader.TempProperties
                     .GetProperty<int>("RvrWarbandIntent", (int)AutonomousRvrEventLayer.Intent.Roam);
-            if (!battleActive && !(dynamicWarband && _groupDirective.GroupCombatActive) && HoldBeforeNewGroupPull(brain, bot))
+            bool carrying = GameRelic.IsPlayerCarryingRelic(bot);
+            if (!battleActive && !carrying && !(dynamicWarband && _groupDirective.GroupCombatActive) && HoldBeforeNewGroupPull(brain, bot))
                 return true;
             if (!battleActive && !dynamicWarband && !GameRelic.IsPlayerCarryingRelic(bot) && !StageSoloRvrAtBorderKeep(bot))
                 return true;
@@ -1865,12 +1908,23 @@ namespace DOL.GS
 
             // RvR has no PvE puller. Every cohesive member can acquire a local
             // target, with pressure spread over the closest visible enemies.
-            if (TryRunSiegeJob(bot)) return true;
-            GameLiving enemy = FindRvrTarget(bot);
+            // L4: the carrier works no siege engine and takes no target; it goes on to its own turn below.
+            if (!carrying && TryRunSiegeJob(bot)) return true;
+            // Relic audit 2026-10-31 (L3): guards came before the relic every turn, so raiders beside a relic they could
+            // lift went for the next guard instead. Those within reach of it take (or hold) the relic first.
+            if (!carrying && FindInteractableRelic(bot) is { } besideRelic &&
+                bot.IsWithinRadius(besideRelic, RelicFirstRadius))
+                return RelicPickupTurn(bot, besideRelic);
+            GameLiving enemy = carrying ? null : FindRvrTarget(bot);
             if (enemy != null && battleActive && HoldSiegeBackLine(bot, enemy))
                 return true;
             if (enemy != null && battleActive && KeepsSiegeBackLine(bot, enemy))
                 enemy = null;
+            // Owner 2026-10-31: with no other target, sieging bots batter the keep's gate by hand, as players did.
+            if (enemy == null && battleActive && !carrying)
+                enemy = FindDoorToBatter(bot);
+            if (enemy != null && StepInOnSentinel(brain, bot, enemy))
+                return true;
             if (enemy != null)
             {
                 bot.StopMovingOnPath();
@@ -1899,27 +1953,6 @@ namespace DOL.GS
                     return HoldDefensiveKeepPost(bot, wallKeep);
                 }
                 return FollowDynamicGroupLeader(bot, _groupDirective);
-            }
-
-            GameRelic carriedRelic = bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK);
-            if (carriedRelic?.CurrentCarrier == bot)
-            {
-                GameRelicPad home = RelicMgr.GetPadsSnapshot().FirstOrDefault(pad =>
-                    pad.Realm == bot.Realm && pad.PadType == carriedRelic.RelicType && pad.MountedRelics.Count < 3);
-                if (home == null)
-                {
-                    SetRvrStatus(bot, "Relic return blocked", "Protect the carried relic", "No matching home shrine is available");
-                    return true;
-                }
-                if (bot.IsWithinRadius(home, 250) && carriedRelic.RelicPadTakesOver(home, false))
-                {
-                    _rvrDestination = null;
-                    SetRvrStatus(bot, "Relic captured", "Relic delivered to the home shrine", carriedRelic.Name);
-                    return true;
-                }
-                SetRvrStatus(bot, "Returning relic", "Escort the real relic to its home shrine", home.Name);
-                return TravelRvrObjective(bot, new("relic-home", home.Name, home.CurrentZone?.Description ?? "home shrine",
-                    home.CurrentRegionID, home.X, home.Y, home.Z, 50, false, true));
             }
 
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
@@ -1991,20 +2024,7 @@ namespace DOL.GS
 
             GameRelic relic = FindInteractableRelic(bot);
             if (relic != null)
-            {
-                if (!bot.IsWithinRadius(relic, WorldMgr.INTERACT_DISTANCE))
-                    IssuePath(bot, new(relic.X, relic.Y, relic.Z));
-                else
-                {
-                    bot.StopMovingOnPath();
-                    bot.StopMoving();
-                    bool pickedUp = relic.TryPickup(bot);
-                    SetRvrStatus(bot, pickedUp ? "Returning relic" : "Rallying at relic",
-                        relic.Name, pickedUp ? "Real relic secured; escorts follow the carrier home" :
-                        "Waiting for the required raiders and a free inventory slot");
-                }
-                return true;
-            }
+                return RelicPickupTurn(bot, relic);
 
             if (bot.CurrentRegionID != _rvrDestination.RegionId)
             {
@@ -2049,6 +2069,11 @@ namespace DOL.GS
                 if(Vector3.DistanceSquared(new(bot.X,bot.Y,bot.Z),destination)>120*120)
                     IssuePath(bot,destination);
                 else { bot.StopMovingOnPath();bot.StopMoving(); }
+                if (TargetRelicKeep(bot) is { } shrineKeep && AutonomousRelicShrine.PadOf(shrineKeep) is { } shrinePad &&
+                    Vector2.DistanceSquared(new(destination.X,destination.Y),new(shrinePad.X,shrinePad.Y)) <= 150*150)
+                    SetRvrStatus(bot,"At the relic shrine",_rvrDestination.MonsterName,
+                        $"{shrinePad.GetEnemiesOnPad()}/{DOL.GS.ServerProperties.Properties.RELIC_PLAYERS_REQUIRED_ON_PAD} raiders on the pad");
+                else
                 SetRvrStatus(bot,"At keep assault approach",_rvrDestination.MonsterName,
                     "Engaging reachable enemies; advancing through gates only after a real breach");
                 return true;
@@ -2096,10 +2121,14 @@ namespace DOL.GS
                 .Where(guard => guard.Component?.Keep != null && $"rvr-keep-{guard.Component.Keep.KeepID}" == _rvrDestination?.Id)
                 .Where(guard => !guard.IsPortalKeepGuard && AutonomousRvrKeepPolicy.IsSiegeObjective(guard.Component?.Keep))
                 .Where(guard => !closedDoor || guard is not GuardLord)
+                // Holding at a battleground rally: what comes at the rally, never the lord (the rally goes up together).
+                .Where(guard => _battlegroundRallyHold is not { } rally || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
+                    guard is not GuardLord &&
+                    Vector3.DistanceSquared(rally, new(guard.X, guard.Y, guard.Z)) <= BattlegroundRallyEngageRadius * (float)BattlegroundRallyEngageRadius)
                 .Where(guard => GameServer.ServerRules.IsAllowedToAttack(bot, guard, true))
                 .Where(guard => PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
                     new(guard.X, guard.Y, guard.Z), PathfindingProvider.Instance.BlockingDoorAvoidanceFilters))
-                .Where(guard => AutonomousRvrDefense.IsRangedDefender(bot) ||
+                .Where(guard => AutonomousRvrDefense.IsRangedDefender(bot) && guard is not GuardFighterRK ||
                     AutonomousZoneItinerary.HasCompleteCorridor(keepNavigation, bot.CurrentZone,
                         new(bot.X, bot.Y, bot.Z), new(guard.X, guard.Y, guard.Z)))
                 .OrderBy(guard => guard is GuardLord ? 1 : 0)
@@ -2198,17 +2227,6 @@ namespace DOL.GS
             return true;
         }
 
-        private static GameKeepDoor FindClosedEnemyDoor(GameBot bot, string objectiveId = null) =>
-            GameServer.KeepManager.GetKeepsOfRegion(bot.CurrentRegionID)
-                .Where(AutonomousRvrKeepPolicy.IsSiegeObjective)
-                .Where(keep => keep.Realm != eRealm.None && keep.Realm != bot.Realm)
-                .Where(keep => objectiveId == null || objectiveId == $"rvr-keep-{keep.KeepID}")
-                .SelectMany(keep => keep.Doors.Values)
-                .Where(door => door.IsAlive && door.IsAttackableDoor && door.State == eDoorState.Closed)
-                .Where(door => bot.GetDistanceTo(door) <= TargetSearchRadius)
-                .OrderBy(door => bot.GetDistanceTo(door))
-                .FirstOrDefault();
-
 
         private static GameMerchant FindReachableSiegeMerchant(GameBot bot)
         {
@@ -2237,16 +2255,6 @@ namespace DOL.GS
                 ram.ReleaseControl();
         }
 
-
-        private GameRelic FindInteractableRelic(GameBot bot) =>
-            RelicMgr.GetRelics()
-                .Where(relic => relic.ObjectState is GameObject.eObjectState.Active && relic.CurrentRegionID == bot.CurrentRegionID)
-                .Where(relic => Distance(bot.X, bot.Y, relic.X, relic.Y) <= 600)
-                .Where(relic => !relic.IsMounted || relic.Realm != bot.Realm && RelicMgr.CanPickupRelicFromShrine(bot, relic))
-                // A nearby shrine is not reachable through an intact gate.
-                // Once breached this is checked again on the next AI turn.
-                .Where(relic => !relic.IsMounted || FindClosedEnemyDoor(bot, _rvrDestination?.Id) == null)
-                .FirstOrDefault();
 
         private bool TravelRvrObjective(GameBot bot, CampDestination destination)
         {
@@ -2284,6 +2292,9 @@ namespace DOL.GS
             var keep=GameServer.KeepManager.GetKeepsOfRegion(bot.CurrentRegionID).FirstOrDefault(k=>$"rvr-keep-{k.KeepID}"==destination.Id);
             if(keep!=null && keep.Realm!=bot.Realm)
             {
+                // A relic keep has no lord: its objective is the relic shrine. The whole army goes onto the shrine floor as
+                // soon as a walk to it exists, whatever side doors and posterns still stand (relic audit 2026-10-31, B1/B2).
+                if(keep.IsRelic && TryRelicShrineApproach(bot,keep,nav,actor,out approach)) return true;
                 var gates=keep.Doors.Values.Where(d=>d.IsAlive && d.IsAttackableDoor && d.State==eDoorState.Closed)
                     .Select(d=>new Vector3(d.X,d.Y,d.Z)).ToArray();
                 int lateral = ((int)(bot.DatabaseID % 17) - 8) * 60;
@@ -2303,6 +2314,21 @@ namespace DOL.GS
                 }
             }
             return AutonomousRvrApproach.TryResolveAcrossZones(nav,bot.CurrentRegion,bot.Realm,actor,center,out approach);
+        }
+
+        /// <summary>The enemy relic shrine's floor, when a walk from here reaches it (the planner's nav blocks shut enemy doors,
+        /// the unregistered relic gates included).</summary>
+        private static bool TryRelicShrineApproach(GameBot bot, AbstractGameKeep keep, IPathfindingMgr nav, Vector3 actor, out Vector3 approach)
+        {
+            approach = default;
+            // While every main gate stands the shrine is sealed (UT_RelicShrineReach): skip the long failing search.
+            if (!keep.Doors.Values.Any(door => !door.IsPostern && (!door.IsAlive || door.State == eDoorState.Open))) return false;
+            GameRelicPad pad = AutonomousRelicShrine.PadOf(keep);
+            if (pad == null || pad.CurrentRegionID != bot.CurrentRegionID) return false;
+            Vector3? floor = AutonomousRelicShrine.ShrineFloor(PathfindingProvider.Instance, pad);
+            if (!floor.HasValue || !RvrKeepRoute.TryBuild(bot.CurrentRegion, nav, bot.Realm, actor, floor.Value, out _)) return false;
+            approach = floor.Value;
+            return true;
         }
 
         private Vector3? _rvrTravelWaypoint;
@@ -2819,6 +2845,7 @@ namespace DOL.GS
 
         private bool WorkCamp(BotBrain brain, GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerWorkCamp); // AI_PROFILE: measures only
             if (HoldBeforeNewGroupPull(brain, bot)) return true;
             if (bot.GoalDiagnosticAttempt is { ArrivedUtc: null } attempt)
                 attempt.Arrive(DateTime.UtcNow);
@@ -3310,6 +3337,7 @@ namespace DOL.GS
 
         private void SelectCamp(GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerSelectCamp); // AI_PROFILE: measures only
             if (_groupDirective?.IsDynamic == true && _groupDirective.Leader == bot &&
                 AutonomousRealmRaid.TryJoin(bot, out var raid))
             {
@@ -3384,7 +3412,11 @@ namespace DOL.GS
                                         IsZoneAccessible(bot.Realm, cell.Zone, bot.CurrentRegionID) &&
                                         AutonomousOrdinaryPveRealmPolicy.CanAssignCamp(bot.Realm, cell.RegionId,
                                             cell.Zone?.ID ?? 0, planningLevel) &&
-                                        AutonomousAuditedCampPolicy.CanAssignToParty(cell.Id, groupSize)))
+                                        AutonomousAuditedCampPolicy.CanAssignToParty(cell.Id, groupSize) &&
+                                        // Bot-led groups: a party hosting the player hunts where the player can walk or ride.
+                                        (_groupDirective?.HostedPlayer == null || !cell.IsFrontier &&
+                                         cell.RegionId != AutonomousDarknessFallsPolicy.RegionId &&
+                                         !BattlegroundBrackets.IsBattlegroundRegion(cell.RegionId))))
             {
                 // Filled into a reused buffer; only a camp that qualifies gets its own array (this per-cell
                 // filter was the largest single allocation in a 30 s trace, 2026-10-17).
@@ -3561,6 +3593,9 @@ namespace DOL.GS
                 legalCells = legalCells.Where(camp => camp.RegionId != AutonomousDarknessFallsPolicy.RegionId)
                     .Concat(df).ToArray();
             }
+            // Less competition first: crowded camps only when every camp is crowded (AutonomousCampCompetition).
+            legalCells = AutonomousCampCompetition.PreferQuiet(legalCells, camp => camp.Id, camp => camp.LiveMobCount,
+                bot.PersistentRecord?.CurrentCampId, sharedGroup ? groupSize : 1);
             // This is the deployed selection point. Each distinct verified
             // location has one entry; outdoor draws are weighted by live spawns
             // (capped) with no distance or name preference.
@@ -4010,6 +4045,7 @@ namespace DOL.GS
 
         private bool HandleStableTravel(GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerStableTravel); // AI_PROFILE: measures only
             if (!bot.IsOnStableMasterRoute)
                 return false;
             bot.MaintainStableMasterRoute();
@@ -4129,6 +4165,7 @@ namespace DOL.GS
 
         private bool HandleRealmRaidStableTravel(GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerRaidTravel); // AI_PROFILE: measures only
             if (!RealmRaidStableTravel.TryOrder(bot, GameLoop.GameLoopTime, out var order, out string failure))
             {
                 if (failure != null)
@@ -4383,6 +4420,7 @@ namespace DOL.GS
             bool preciseArrival = false, bool retargetWhileMoving = false,
             [System.Runtime.CompilerServices.CallerMemberName] string caller = "")
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerIssuePath); // AI_PROFILE: measures only
             // A route order replaces the party formation follow (it resumes on the next follow turn).
             AutonomousGroupFormationFollow.Release(bot);
             _issuedPreciseArrival = preciseArrival;

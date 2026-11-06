@@ -176,6 +176,33 @@ $noDbInstall = Run 'install-server-build.ps1' @('-GameFolder', $noDb)
 Check ($noDbInstall.Code -eq 0 -and (Sha (Join-Path $noDb 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll'] -and
        $noDbInstall.Output -match 'No world database') "database: a game with no database yet still installs`n$($noDbInstall.Output)"
 
+# Living Server 1.2, the epic chains: the server links them in memory and nothing is written to the world for them, so
+# an install and a rollback leave the world database as it was. A world epic_chains.py --apply wrote the links into
+# (its note beside the server) is refused by ROLLBACK.cmd and PREPARE-FOR-UPDATE.cmd until they are put back, since the
+# released server would never offer the Guild of Shadows; -Force rolls back anyway.
+$epic = Join-Path $work 'epic'
+New-FakeGame $epic $base
+$epicDb = Join-Path $epic 'runtime\data\opendaoc.sqlite3.db'
+$epicHash = Sha $epicDb
+$r = Run 'install-server-build.ps1' @('-GameFolder', $epic)
+Check ($r.Code -eq 0 -and (Sha $epicDb) -eq $epicHash -and $r.Output -match 'epic chains are linked by the server') "epic chains: the install writes nothing to the world for them`n$($r.Output)"
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic)
+Check ($r.Code -eq 0 -and (Sha $epicDb) -eq $epicHash -and (Sha (Join-Path $epic 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll']) "epic chains: the rollback has nothing to undo in the world`n$($r.Output)"
+$null = Run 'install-server-build.ps1' @('-GameFolder', $epic)
+$epicNote = Join-Path $epic 'runtime\server\epic-chains-in-world.txt'
+[IO.File]::WriteAllText($epicNote, 'The epic chain links are written into this world''s quest rows (epic_chains.py --apply).')
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic)
+Check ($r.Code -ne 0 -and $r.Output -match 'epic_chains.py rollback --apply' -and (Sha (Join-Path $epic 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll']) "epic chains: a world with the links written into it is refused by ROLLBACK, nothing changed`n$($r.Output)"
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic, '-ToRelease')
+Check ($r.Code -ne 0 -and (Sha (Join-Path $epic 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll']) "epic chains: and by PREPARE-FOR-UPDATE (-ToRelease)`n$($r.Output)"
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic, '-Force')
+Check ($r.Code -eq 0 -and $r.Output -match 'stay written' -and (Sha (Join-Path $epic 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll'] -and
+       (Sha $epicDb) -eq $epicHash) "epic chains: -Force rolls back anyway and says so`n$($r.Output)"
+Remove-Item -LiteralPath $epicNote
+$null = Run 'install-server-build.ps1' @('-GameFolder', $epic)
+$r = Run 'rollback-server-build.ps1' @('-GameFolder', $epic, '-ToRelease')
+Check ($r.Code -eq 0 -and (Sha $epicDb) -eq $epicHash) "epic chains: with the links put back (no note) PREPARE-FOR-UPDATE goes ahead`n$($r.Output)"
+
 # The build placed inside one game folder that has other game folders beside it (playtest 2026-11-04: three
 # side-by-side installs): the folder it sits in wins, without -GameFolder.
 $siblings = Join-Path $work 'siblings'

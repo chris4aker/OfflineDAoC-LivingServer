@@ -144,10 +144,15 @@ def world_update(base_db: Path, target_db: Path, policy: dict, version: str) -> 
         deletes = [old[k] for k in old if k not in new]
         if not (inserts or updates or deletes) and table in base_tables:
             continue
+        # A table with a primary key gets field updates: only the fields this version changes, applied where the
+        # player's row still has the released value of those fields. The running server rewrites some fields itself
+        # (monster size, level and stats are re-rolled), so a whole-row match would skip real fixes on played worlds.
+        changed_fields = lambda o, n: [cols[i] for i in compare if o[i] != n[i]]
         entry = {"Table": table, "Columns": cols, "Key": keys or [cols[i] for i in compare],
-                 "IgnoreCompare": ignore_compare,
+                 "IgnoreCompare": ignore_compare, "ByKey": bool(keys),
                  "Insert": [[json_value(v) for v in r] for r in inserts],
-                 "Update": [{"Old": [json_value(v) for v in o], "New": [json_value(v) for v in n]} for o, n in updates],
+                 "Update": [{"Old": [json_value(v) for v in o], "New": [json_value(v) for v in n],
+                             **({"Set": changed_fields(o, n)} if keys else {})} for o, n in updates],
                  "Delete": [[json_value(v) for v in r] for r in deletes]}
         update["Tables"].append(entry)
         update["Summary"][table] = {"added": len(inserts), "changed": len(updates), "removed": len(deletes)}
@@ -178,8 +183,15 @@ def check_world_update(update: dict, base_db: Path, target_db: Path, policy: dic
                                   f'VALUES ({",".join("?" * len(cols))})', [decode(v) for v in row])
                 kept += cur.rowcount == 0
             for row in t["Update"]:
-                cur = con.execute(f'UPDATE "{table}" SET {",".join(chr(34) + c + chr(34) + "=?" for c in cols)} WHERE {where}',
-                                  [decode(v) for v in row["New"]] + [decode(row["Old"][i]) for i in cmp])
+                if "Set" in row:                       # field update, as the patcher does it
+                    s = [cols.index(c) for c in row["Set"]]
+                    k = [cols.index(c) for c in t["Key"]]
+                    cur = con.execute(f'UPDATE "{table}" SET {",".join(chr(34) + cols[i] + chr(34) + "=?" for i in s)} '
+                                      f'WHERE {" AND ".join(chr(34) + cols[i] + chr(34) + " IS ?" for i in k + s)}',
+                                      [decode(row["New"][i]) for i in s] + [decode(row["Old"][i]) for i in k + s])
+                else:
+                    cur = con.execute(f'UPDATE "{table}" SET {",".join(chr(34) + c + chr(34) + "=?" for c in cols)} WHERE {where}',
+                                      [decode(v) for v in row["New"]] + [decode(row["Old"][i]) for i in cmp])
                 kept += cur.rowcount == 0
             for row in t["Delete"]:
                 cur = con.execute(f'DELETE FROM "{table}" WHERE {where}', [decode(row[i]) for i in cmp])
@@ -193,17 +205,18 @@ def check_world_update(update: dict, base_db: Path, target_db: Path, policy: dic
 
 
 # ------------------------------------------------------------------------------------------------- files
-def file_diff(base: dict[str, str], target: dict[str, Path], removed_extra: dict[str, str]) -> tuple[list, list]:
+def file_diff(bases: list[dict[str, str]], target: dict[str, Path], removed_extra: dict[str, str]) -> tuple[list, list]:
+    """The files to add or replace and to remove. Each base is a version the update starts from (the released base, and
+    an earlier build of this same version when it is reissued); a file's From lists what it may be in any of them."""
     files, remove = [], []
     for rel, path in sorted(target.items()):
         digest = sha(path)
-        if base.get(rel) == digest:
+        if all(b.get(rel) == digest for b in bases):
             continue
-        files.append({"Path": rel, "Sha256": digest, "Bytes": path.stat().st_size,
-                      "From": [base[rel]] if rel in base else ["absent"]})
-    for rel, digest in sorted(base.items()):
-        if rel not in target:
-            remove.append({"Path": rel, "From": [digest]})
+        start = sorted({b[rel] for b in bases if rel in b} | ({"absent"} if any(rel not in b for b in bases) else set()))
+        files.append({"Path": rel, "Sha256": digest, "Bytes": path.stat().st_size, "From": start})
+    for rel in sorted({r for b in bases for r in b} - set(target)):
+        remove.append({"Path": rel, "From": sorted({b[rel] for b in bases if rel in b})})
     for rel, digest in sorted(removed_extra.items()):
         remove.append({"Path": rel, "From": [digest]})
     return files, remove
@@ -290,8 +303,19 @@ def main():
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--allow-remove", action="append", default=[],
                         help="a game file under runtime/ the patch may remove (anything else there stops the build)")
+    parser.add_argument("--revision", type=int, default=1,
+                        help="2 and up: a corrected reissue of this version; it runs again on installs of the earlier build")
+    parser.add_argument("--also-from", type=Path,
+                        help="a published version's manifests (release-baselines/<v>: <v>b-package.sha256, <v>c-new-client.sha256): "
+                             "installs of it are updated too")
     args = parser.parse_args()
     v, base_v = args.version, args.base
+    # the version the patcher records (backups, world log): a reissue gets its own, so it runs on the earlier build too
+    patch_v = v if args.revision <= 1 else f"{v}.{args.revision}"
+    earlier_game_file = next(args.also_from.glob("*b-package.sha256")) if args.also_from else None
+    earlier_client_file = next(args.also_from.glob("*c-new-client.sha256")) if args.also_from else None
+    earlier_game = read_manifest(earlier_game_file) if earlier_game_file else None
+    earlier_client = read_manifest(earlier_client_file) if earlier_client_file else None
     repo, game, client, out = args.repo.resolve(), args.game.resolve(), args.client.resolve(), args.out.resolve()
     for folder in (f"v{v}b", f"v{v}", f"v{v}c"):
         if (out / folder).exists():
@@ -312,7 +336,12 @@ def main():
     manifest = write_manifest(game, target, "PACKAGE MANIFEST.sha256")      # the new version's manifest ships too
     target["PACKAGE MANIFEST.sha256"] = manifest
     base_files["PACKAGE MANIFEST.sha256"] = base_manifest_hash
-    files, remove = file_diff(base_files, target, editions)
+    game_bases = [base_files]
+    if earlier_game is not None:
+        earlier = dict(earlier_game)
+        earlier["PACKAGE MANIFEST.sha256"] = sha(earlier_game_file)
+        game_bases.append(earlier)
+    files, remove = file_diff(game_bases, target, editions)
     # A runtime file missing from the new version is far more often a packaging mistake than a real removal.
     unexpected = [r["Path"] for r in remove if r["Path"].startswith("runtime/") and r["Path"] not in args.allow_remove]
     if unexpected:
@@ -328,12 +357,12 @@ def main():
                                         ("plain", args.baseline_dbs / f"world-{base_v}.sqlite3.db",
                                          game / f"editions/{v}-no-custom-class/runtime/data/opendaoc.sqlite3.db")):
         update = world_update(base_db, target_db, policy, f"{v}{'b' if edition == 'b' else ''}")
-        update["Version"] = v                    # one version per install, whatever the edition
+        update["Version"] = patch_v              # one version per install, whatever the edition
         check_world_update(update, base_db, target_db, policy)
         name = f"db-{v}{'b' if edition == 'b' else ''}.json"
         dbs[edition] = (name, json.dumps(update, separators=(",", ":")).encode("utf-8"))
         report[f"world_{edition}"] = update["Summary"]
-    game_patch = {"Version": v, "Kind": "game", "Title": f"Offline DAoC {v} update",
+    game_patch = {"Version": patch_v, "Kind": "game", "Title": f"Offline DAoC {v} update",
                   "Identity": {"Path": identity, "To": ident["Sha256"], "From": ident["From"]},
                   "Files": files, "Remove": remove, "Database": {e: n for e, (n, _) in dbs.items()},
                   "EditionText": {"plain": f"Offline DAoC {v} - no custom class (Classic + Shrouded Isles classes only)."}}
@@ -350,10 +379,15 @@ def main():
     cmanifest = write_manifest(client, target_client, "new-client/PACKAGE MANIFEST.sha256")   # same layout as 0.36c
     target_client["new-client/PACKAGE MANIFEST.sha256"] = cmanifest
     base_client_files["new-client/PACKAGE MANIFEST.sha256"] = sha(baseline / info["new_client_package_manifest"])
-    cfiles, cremove = file_diff(base_client_files, target_client, {})
+    client_bases = [base_client_files]
+    if earlier_client is not None:
+        earlier = {k: h for k, h in earlier_client.items() if k not in CLIENT_SKIP_FILES and not k.startswith(CLIENT_SKIP_PREFIXES)}
+        earlier["new-client/PACKAGE MANIFEST.sha256"] = sha(earlier_client_file)
+        client_bases.append(earlier)
+    cfiles, cremove = file_diff(client_bases, target_client, {})
     cident = next(f for f in cfiles if f["Path"] == "new-client/VERSION.txt")
     client_root = f"OfflineDAoC-v{v}c-client-patch"
-    client_patch = {"Version": v, "Kind": "new-client", "Title": f"Offline DAoC {v}c new client update",
+    client_patch = {"Version": patch_v, "Kind": "new-client", "Title": f"Offline DAoC {v}c new client update",
                     "Identity": {"Path": "new-client/VERSION.txt", "To": cident["Sha256"], "From": cident["From"]},
                     "Files": cfiles, "Remove": cremove, "Database": None, "EditionText": None}
     cstage = stage_patch(out, client_root, client_patch, {f["Path"]: target_client[f["Path"]] for f in cfiles}, {}, patcher)

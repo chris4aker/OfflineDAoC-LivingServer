@@ -23,6 +23,9 @@ database, and `rollback` puts each value back where it still holds what this wro
   python tools\\claude-version\\epic_chains.py             (show what would change)
   python tools\\claude-version\\epic_chains.py --apply     (server, launcher and game closed; backs up first)
   python tools\\claude-version\\epic_chains.py rollback --apply
+
+Living Server 1.2 and later link the chains themselves as the server reads the quest rows, without writing them, so this
+tool is no longer needed there; its rollback is how a world it was applied to is put back before removing Living Server.
 """
 import argparse
 import contextlib
@@ -39,6 +42,10 @@ ROOT = Path(__file__).resolve().parents[2]  # <playable>/tools/claude-version/
 DB = ROOT / 'runtime' / 'data' / 'opendaoc.sqlite3.db'
 DATA_FILE = Path(__file__).resolve().with_name('epic_chains_data.json')
 LEDGER = 'offline_epic_chains_ledger'
+# Living Server 1.2: the server links the chains in memory (EpicChainLinks) and never writes them. A world this tool
+# wrote them into is noted beside the server; ROLLBACK.cmd and PREPARE-FOR-UPDATE.cmd refuse while the note is there,
+# since the released server reads the links as quest names and never offers the Guild of Shadows.
+NOTE = 'epic-chains-in-world.txt'
 CLASSIC = 'DOL.GS.Quests.ClassicQuestStep'
 TEXT_COLUMNS = ('StepText', 'SourceText', 'TargetText', 'Description', 'FinishText')
 DIALOGUE_COLUMNS = ('AcceptText', 'Description', 'SourceText', 'StepType', 'StepText', 'TargetText', 'AdvanceText',
@@ -279,6 +286,25 @@ def backup(db, db_path, action):
     return folder
 
 
+def note_path(db_path):
+    return db_path.parent.parent / 'server' / NOTE
+
+
+def write_note(db_path, now):
+    path = note_path(db_path)
+    if path.parent.is_dir():
+        path.write_text('The epic chain links are written into this world\'s quest rows (epic_chains.py --apply).\n'
+                        'Before ROLLBACK.cmd or PREPARE-FOR-UPDATE.cmd, put them back: '
+                        'python tools\\claude-version\\epic_chains.py rollback --apply\n'
+                        f'Written by epic_chains.py at {now} UTC.\n', encoding='utf-8')
+
+
+def remove_note(db_path):
+    path = note_path(db_path)
+    if path.exists():
+        path.unlink()
+
+
 def summary(ch, kept):
     names = ('links', 'pins', 'closed', 'rewards', 'texts', 'dialogue')
     line = ', '.join(f'{name} {len(ch.counts.get(name, ()))}' for name in names)
@@ -332,6 +358,10 @@ def main(argv=None):
         except BaseException:
             db.rollback()
             raise
+    if args.action == 'rollback':
+        remove_note(args.db)
+    else:
+        write_note(args.db, now)
     print(message)
     print('Backup:', folder)
     return 0

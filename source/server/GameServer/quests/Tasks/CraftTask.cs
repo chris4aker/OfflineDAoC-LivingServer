@@ -141,7 +141,9 @@ namespace DOL.GS.Quests
 
             var craftitem = DOLDB<DbCraftedItem>.SelectObjects(DB.Column("CraftingSkillType").IsEqualTo((int)player.CraftingPrimarySkill)
                 .And(DB.Column("CraftingLevel").IsGreaterThan(lowLevel).And(DB.Column("CraftingLevel").IsLessThan(highLevel))));
-            int craftrnd = Util.Random(craftitem.Count);
+            if (craftitem.Count == 0)
+                return null;
+            int craftrnd = Util.Random(craftitem.Count - 1);
 
             DbItemTemplate template = GameServer.Database.FindObjectByKey<DbItemTemplate>(craftitem[craftrnd].Id_nb);
             return template;
@@ -157,7 +159,7 @@ namespace DOL.GS.Quests
             if (source == null)
                 return false;
 
-            GameNPC NPC = GetRandomNPC(player);
+            GameNPC NPC = MoneyTask.GetRandomNPC(player, source);
             if (NPC == null)
             {
                 player.Out.SendMessage("I have no task for you, come back some time later.", eChatType.CT_System, eChatLoc.CL_PopupWindow);
@@ -186,6 +188,7 @@ namespace DOL.GS.Quests
             player.GameTask = craftTask;
 
             player.Out.SendMessage("Craft " + taskItem.GetName(0, false) + " for " + NPC.Name + " in " + NPC.CurrentZone.Description, eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+            player.Out.SendQuestListUpdate();
             return true;
 
         }

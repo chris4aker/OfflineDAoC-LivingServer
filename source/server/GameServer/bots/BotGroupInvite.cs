@@ -45,12 +45,17 @@ public static class BotGroupInvite
     {
         if (bot?.IsAutonomousWorldBot != true)
             return Duty.None;
-        // The force tag is never cleared when an event ends, so it counts only while its event is still running.
+        // An RvR event's lease (a defense response, a siege party) counts while its force is in a running event. A solo
+        // RvR bot's own force joins events through the planner without a lease yet, so its force tag is read too; the
+        // tag is never cleared when an event ends, so it counts only while its event is still running.
+        long now = GameLoop.GameLoopTime;
         string force = bot.TempProperties.GetProperty<string>("RvrEventForce");
+        string leased = BotDutyLeases.Current(bot) is { Kind: eDutyLeaseKind.RvrEvent } lease ? lease.Owner : null;
         Duty duty = DutyOf(bot.IsAlive,
             BotSiegeRuntime.Assigned(bot) || BotSiegeRuntime.HoldingPosition(bot),
             bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) != null,
-            !string.IsNullOrEmpty(force) && AutonomousRvrEventLayer.IsEventForce(force, GameLoop.GameLoopTime),
+            leased != null && AutonomousRvrEventLayer.IsEventForce(leased, now) ||
+            !string.IsNullOrEmpty(force) && force != leased && AutonomousRvrEventLayer.IsEventForce(force, now),
             AutonomousRealmRaid.IsReserved(bot),
             bot.IsOnStableMasterRoute,
             bot.IsTemporaryGroupHelper);
@@ -69,7 +74,7 @@ public static class BotGroupInvite
 
         if (player.Group != null && player.Group.Leader != player)
         {
-            ChatUtil.SendSystemMessage(player, "You are not the leader of your group.");
+            ChatUtil.SendSystemMessage(player, BotLedGroups.BotLeadsMessageFor(player) ?? "You are not the leader of your group.");
             return false;
         }
 

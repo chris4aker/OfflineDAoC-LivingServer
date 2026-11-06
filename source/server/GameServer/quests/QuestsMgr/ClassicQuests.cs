@@ -180,7 +180,7 @@ namespace DOL.GS.Quests
         {
             Reload();
             _timer?.Dispose();
-            _timer = new Timer(Refresh, null, RefreshMilliseconds, RefreshMilliseconds);
+            _timer = new Timer(OnRefreshTimer, null, RefreshMilliseconds, RefreshMilliseconds);
             GameEventMgr.AddHandler(GamePlayerEvent.InteractWith, new DOLEventHandler(OnInteract));
             GameEventMgr.AddHandler(GamePlayerEvent.Whisper, new DOLEventHandler(OnWhisper));
             GameEventMgr.AddHandler(GameLivingEvent.Say, new DOLEventHandler(OnSay));
@@ -688,11 +688,8 @@ namespace DOL.GS.Quests
                 if (!File.Exists(path)) return;
                 DateTime write = File.GetLastWriteTimeUtc(path);
                 if (write == _loadedWrite) return;
-                Config config = JsonSerializer.Deserialize<Config>(File.ReadAllText(path),
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                Config config = Read(path);
                 if (config == null) return;
-                config.QuestMonsterIds = new HashSet<string>(config.QuestMonsterIds ?? new(), StringComparer.Ordinal);
-                config.Fellows = new Dictionary<string, string>(config.Fellows ?? new(), StringComparer.Ordinal);
                 _config = config;
                 _loadedWrite = write;
                 if (Log.IsInfoEnabled)
@@ -704,40 +701,54 @@ namespace DOL.GS.Quests
             }
         }
 
+        /// <summary>A classic-quests.json file, read (null when it holds nothing). The quest harness's world report reads
+        /// the one beside a game's server by path.</summary>
+        public static Config Read(string path)
+        {
+            Config config = JsonSerializer.Deserialize<Config>(File.ReadAllText(path),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (config == null) return null;
+            config.Quests ??= new();
+            config.QuestMonsterIds = new HashSet<string>(config.QuestMonsterIds ?? new(), StringComparer.Ordinal);
+            config.Fellows = new Dictionary<string, string>(config.Fellows ?? new(), StringComparer.Ordinal);
+            config.Chat ??= new(StringComparer.OrdinalIgnoreCase);
+            config.ClassRewards ??= new(StringComparer.OrdinalIgnoreCase);
+            return config;
+        }
+
+        /// <summary>Uses this configuration until the next change of the file beside the server (the quest harness).</summary>
+        public static void Use(Config config)
+        {
+            _config = config ?? new Config();
+            _loadedWrite = default;
+        }
+
+        // 0 or 1: a refresh is waiting for the game loop.
+        private static int _refreshQueued;
+        private static readonly Action<object> s_refresh = Refresh;
+
+        /// <summary>
+        /// The 5-second timer (QUESTING.md defect 13, fixed in 1.2). It ran the whole refresh on a thread-pool thread:
+        /// event monsters were added to the world, items handed and quests advanced beside the game loop, which showed
+        /// as "it just didn't count" now and then. The timer now only reads the file and asks the game loop to run the
+        /// refresh at the start of its next tick, once however many timer ticks pass before that.
+        /// </summary>
+        public static void OnRefreshTimer(object state)
+        {
+            Reload();
+            if (Interlocked.Exchange(ref _refreshQueued, 1) == 0)
+                GameLoopService.Instance.Post(s_refresh, state);
+        }
+
         private static void Refresh(object state)
         {
+            Volatile.Write(ref _refreshQueued, 0);
             try
             {
-                Reload();
                 foreach (GamePlayer player in ClientService.Instance.GetPlayers())
                 {
                     if (player?.ObjectState != GameObject.eObjectState.Active) continue;
-                    DataQuest[] active = player.QuestList.Keys.OfType<DataQuest>()
-                        .Where(dq => _config.Quests.ContainsKey(dq.ID)).ToArray();
-                    // A quest given up (or finished) takes its monsters with it and forgets the wait, so taking it
-                    // again spawns them fresh (owner 2026-10-07).
-                    foreach (var key in EventSpawns.Keys.Where(k => k.Item1 == player && active.All(q => q.ID != k.Item2)).ToArray())
-                        if (EventSpawns.TryRemove(key, out var gone))
-                            foreach (GameNPC npc in gone) if (npc?.ObjectState == GameObject.eObjectState.Active) npc.Delete();
-                    foreach (var key in EventCooldown.Keys.Where(k => k.Item1 == player && active.All(q => q.ID != k.Item2)).ToArray())
-                        EventCooldown.TryRemove(key, out _);
-                    // Every active classic quest shows its current step on the map, each with its own marker
-                    // (owner 2026-10-07: one shared marker hid every quest behind the first one), and every active
-                    // quest's step can spawn its monster.
-                    foreach (int gone in (Shown.TryGetValue(player, out var onMap) ? onMap.Keys : Enumerable.Empty<int>())
-                                 .Where(id => active.All(q => q.ID != id)).ToArray())
-                        ShowMarker(player, gone, 0, null);
-                    foreach (DataQuest quest in active)
-                    {
-                        QuestInfo info = _config.Quests[quest.ID];
-                        StepInfo step = quest.Step > 0 && quest.Step < info.Steps.Count ? info.Steps[quest.Step] : null;
-                        ShowMarker(player, quest.ID, quest.Step, step?.Marker);
-                        if (step?.Spawn != null) TrySpawnEvent(player, quest.ID, quest.Step, step.Spawn);
-                        if (step?.Grant != null) GrantItems(player, quest, step);
-                        if (!string.IsNullOrEmpty(step?.NeedsItem)) ReissueWithoutIssuer(player, quest, step);
-                        GiveDeliveryItem(player, quest);
-                        if (step?.Custom != null) CheckCustomStep(player, quest, step.Custom);
-                    }
+                    RefreshPlayer(player);
                 }
                 foreach (var entry in EventSpawns.ToArray())
                 {
@@ -752,6 +763,40 @@ namespace DOL.GS.Quests
             catch (Exception ex)
             {
                 Log.Error("Classic quest refresh failed", ex);
+            }
+        }
+
+        /// <summary>
+        /// One player's part of the refresh, on the game loop: markers, event monsters, items handed and the passive
+        /// custom steps. The quest harness calls it as the timer would.
+        /// </summary>
+        public static void RefreshPlayer(GamePlayer player)
+        {
+            DataQuest[] active = player.QuestList.Keys.OfType<DataQuest>()
+                .Where(dq => _config.Quests.ContainsKey(dq.ID)).ToArray();
+            // A quest given up (or finished) takes its monsters with it and forgets the wait, so taking it
+            // again spawns them fresh (owner 2026-10-07).
+            foreach (var key in EventSpawns.Keys.Where(k => k.Item1 == player && active.All(q => q.ID != k.Item2)).ToArray())
+                if (EventSpawns.TryRemove(key, out var gone))
+                    foreach (GameNPC npc in gone) if (npc?.ObjectState == GameObject.eObjectState.Active) npc.Delete();
+            foreach (var key in EventCooldown.Keys.Where(k => k.Item1 == player && active.All(q => q.ID != k.Item2)).ToArray())
+                EventCooldown.TryRemove(key, out _);
+            // Every active classic quest shows its current step on the map, each with its own marker
+            // (owner 2026-10-07: one shared marker hid every quest behind the first one), and every active
+            // quest's step can spawn its monster.
+            foreach (int gone in (Shown.TryGetValue(player, out var onMap) ? onMap.Keys : Enumerable.Empty<int>())
+                         .Where(id => active.All(q => q.ID != id)).ToArray())
+                ShowMarker(player, gone, 0, null);
+            foreach (DataQuest quest in active)
+            {
+                QuestInfo info = _config.Quests[quest.ID];
+                StepInfo step = quest.Step > 0 && quest.Step < info.Steps.Count ? info.Steps[quest.Step] : null;
+                ShowMarker(player, quest.ID, quest.Step, step?.Marker);
+                if (step?.Spawn != null) TrySpawnEvent(player, quest.ID, quest.Step, step.Spawn);
+                if (step?.Grant != null) GrantItems(player, quest, step);
+                if (!string.IsNullOrEmpty(step?.NeedsItem)) ReissueWithoutIssuer(player, quest, step);
+                GiveDeliveryItem(player, quest);
+                if (step?.Custom != null) CheckCustomStep(player, quest, step.Custom);
             }
         }
 

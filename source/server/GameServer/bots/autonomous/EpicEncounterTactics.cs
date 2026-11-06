@@ -18,6 +18,11 @@ namespace DOL.GS
     /// <item><b>Dies with</b>: an encounter that dies when another does (the Ancient Black Oak with Black Lady). The raid
     /// turns on the other one instead.</item>
     /// </list>
+    /// Since then (each from a catalog field; the round-3 ones in 1.2): keep-alive adds (Aidon), blasts at health
+    /// thresholds (Xanxicar), a spread off the boss's target in a form (Govannon's demon), ranged adds that casters and archers
+    /// take while the rest stay on the boss (Govannon's walkers, Spindler's newborns), hazards nobody fights or stands in
+    /// (Orshom's Fire), a boss fought after another (Orylle after Orshom), required adds by class (Galladoria's Earthmenders,
+    /// while the original class rule is on) and a death burst cleared at the body (Spindler's brood).
     /// Autonomous gamebots only: companion bots and player-led groups are not steered.
     /// </summary>
     public static partial class EpicEncounterTactics
@@ -38,7 +43,35 @@ namespace DOL.GS
         {
             public bool HasRequiredAdds => RequiredAdds is { Length: > 0 };
             public bool HasBlast => BlastThresholds is { Length: > 0 } && BlastRadius > 0;
+
+            /// <summary>The boss casts an area hit of this radius around its target (Govannon's Shroud of Agony, 300): casters,
+            /// archers and healers outside its target's party stand clear of that target (melee can't, see SpreadSpot).</summary>
+            public int SpreadRadius { get; init; }
+            /// <summary>Only while the boss has this model (Govannon's demon form, 636; 0: always).</summary>
+            public int SpreadWhileModel { get; init; }
+            /// <summary>Adds the raid's casters and archers kill while everyone else stays on the boss (Govannon's sacrifice and
+            /// demon, who summon a Shade if they reach his altar; Spindler Broodmother's newborns).</summary>
+            public string[] RangedAdds { get; init; } = [];
+            /// <summary>Hazards beside the boss (Orshom's Fire): nobody attacks one, and a raider inside its
+            /// <see cref="HazardRadius"/> steps out before fighting on.</summary>
+            public string[] Hazards { get; init; } = [];
+            public int HazardRadius { get; init; }
+            /// <summary>Fight this one only once that one is dead (Orylle after Orshom Brong): the party it fights holds it,
+            /// everyone else kills the other first.</summary>
+            public string After { get; init; }
+            /// <summary>Which classes can hurt each required add (Galladoria's Earthmenders): raiders take an add their class
+            /// hurts; one whose class hurts none fights the boss. Applies while <see cref="ClassRuleSwitch"/> is on (none: always).</summary>
+            public AddClasses[] ClassRules { get; init; } = [];
+            public string ClassRuleSwitch { get; init; }
+            /// <summary>Adds that burst from the boss's body when it dies (Spindler Broodmother's underdeveloped spindlers): the
+            /// route clears them at the body before it moves on.</summary>
+            public string[] DeathAdds { get; init; } = [];
+
+            public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
         }
+
+        /// <summary>The classes that can hurt one add (pets always can).</summary>
+        public sealed record AddClasses(string Add, eCharacterClass[] Classes);
 
         /// <summary>An encounter's leash from the catalog: its tether, and whether it resets (walks home at full health) when
         /// nobody is left on its aggro list. Used to decide how to answer a boss that engages the raid before its muster.</summary>
@@ -46,6 +79,7 @@ namespace DOL.GS
 
         private static readonly Dictionary<string, Tactic> Extra = new(StringComparer.Ordinal);
         private static Dictionary<string, Tactic> _byType;
+        private static HashSet<string> _partTypes, _hazardTypes, _deathAddTypes;
 
         private static Dictionary<string, Tactic> ByType
         {
@@ -55,9 +89,28 @@ namespace DOL.GS
                 var map = new Dictionary<string, Tactic>(StringComparer.Ordinal);
                 foreach (Tactic t in Catalog) map[t.Boss] = t;
                 foreach (var kv in Extra) map[kv.Key] = kv.Value;
+                _hazardTypes = map.Values.SelectMany(t => t.Hazards ?? []).ToHashSet(StringComparer.Ordinal);
+                _deathAddTypes = map.Values.SelectMany(t => t.DeathAdds ?? []).ToHashSet(StringComparer.Ordinal);
+                _partTypes = map.Values.SelectMany(t => (t.RequiredAdds ?? []).Concat(t.RangedAdds ?? []).Concat(t.Hazards ?? []))
+                    .ToHashSet(StringComparer.Ordinal);
                 return _byType = map;
             }
         }
+
+        private static HashSet<string> PartTypes { get { _ = ByType; return _partTypes; } }
+        private static HashSet<string> HazardTypes { get { _ = ByType; return _hazardTypes; } }
+        private static HashSet<string> DeathAddTypes { get { _ = ByType; return _deathAddTypes; } }
+
+        /// <summary>The NPC is part of a tactic's fight (a required or ranged add, or a hazard), so a raider aiming at it
+        /// asks the tactic too.</summary>
+        public static bool IsTacticPart(GameNPC npc) => npc != null && PartTypes.Contains(npc.GetType().Name);
+
+        /// <summary>The NPC is a hazard of some tactic (Orshom's Fire): the route never takes it as a target.</summary>
+        public static bool IsHazard(GameNPC npc) => npc != null && HazardTypes.Contains(npc.GetType().Name);
+
+        /// <summary>The NPC is a death burst of some tactic's boss (Spindler Broodmother's brood): the route clears it at the
+        /// body like an add of a living encounter.</summary>
+        public static bool IsDeathAdd(GameNPC npc) => npc != null && DeathAddTypes.Contains(npc.GetType().Name);
 
         /// <summary>The catalog's tactics (generated) plus any added by <see cref="Register"/>.</summary>
         public static IReadOnlyCollection<Tactic> All => ByType.Values;
@@ -129,6 +182,115 @@ namespace DOL.GS
             return live.FirstOrDefault(n => Present(n) && n.CurrentRegionID == npc.CurrentRegionID && n.GetType().Name == t.DiesWith);
         }
 
+        /// <summary>The living encounter <paramref name="npc"/>'s tactic says to kill first (Orshom Brong for Orylle), or null.</summary>
+        public static GameNPC AfterOwner(GameNPC npc, IEnumerable<GameNPC> live)
+        {
+            Tactic t = For(npc);
+            if (t?.After == null || !Present(npc)) return null;
+            return live.FirstOrDefault(n => Present(n) && n != npc && n.CurrentRegionID == npc.CurrentRegionID &&
+                                            n.GetType().Name == t.After && npc.IsWithinRadius(n, AddSearchRadius));
+        }
+
+        /// <summary>The living boss whose tactic lists <paramref name="hazard"/> as its hazard, nearest first.</summary>
+        public static GameNPC HazardOwner(GameNPC hazard, IEnumerable<GameNPC> live)
+        {
+            if (!Present(hazard)) return null;
+            string type = hazard.GetType().Name;
+            return live.Where(b => Present(b) && b != hazard && b.CurrentRegionID == hazard.CurrentRegionID &&
+                                   For(b) is { HasHazards: true } t && Array.IndexOf(t.Hazards, type) >= 0 &&
+                                   b.IsWithinRadius(hazard, AddSearchRadius))
+                .OrderBy(b => b.GetDistanceTo(hazard)).FirstOrDefault();
+        }
+
+        /// <summary>The largest radius any tactic gives this hazard.</summary>
+        public static int HazardRadiusOf(GameNPC hazard) => hazard == null ? 0 :
+            All.Where(t => t.HasHazards && Array.IndexOf(t.Hazards, hazard.GetType().Name) >= 0).Select(t => t.HazardRadius)
+                .DefaultIfEmpty(0).Max();
+
+        /// <summary>The raider is the one <paramref name="boss"/> fights, or in its party.</summary>
+        public static bool Holds(GameLiving raider, GameNPC boss) => boss?.TargetObject is GameLiving anchor &&
+            (anchor == raider || anchor.Group != null && anchor.Group == raider.Group);
+
+        /// <summary>The living hazards of <paramref name="boss"/>'s tactic near it.</summary>
+        public static GameNPC[] LiveHazards(GameNPC boss, IEnumerable<GameNPC> live)
+        {
+            Tactic t = For(boss);
+            if (t is not { HasHazards: true } || !Present(boss)) return [];
+            return live.Where(n => Present(n) && n != boss && n.CurrentRegionID == boss.CurrentRegionID &&
+                                   Array.IndexOf(t.Hazards, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius)).ToArray();
+        }
+
+        /// <summary>The living ranged adds of <paramref name="boss"/>'s tactic near it, in the catalog's order.</summary>
+        public static GameNPC[] LiveRangedAdds(GameNPC boss, IEnumerable<GameNPC> live)
+        {
+            Tactic t = For(boss);
+            if (t?.RangedAdds is not { Length: > 0 } || !Present(boss)) return [];
+            return live.Where(n => Present(n) && n != boss && n.CurrentRegionID == boss.CurrentRegionID &&
+                                   Array.IndexOf(t.RangedAdds, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius))
+                .OrderBy(n => Array.IndexOf(t.RangedAdds, n.GetType().Name)).ThenBy(n => n.ObjectID).ToArray();
+        }
+
+        /// <summary>Within this far past a hazard's radius a raider steps out of it, to this far past it.</summary>
+        public const int HazardMargin = 150, HazardStepOut = 300;
+
+        /// <summary>Where a raider at <paramref name="raider"/> steps out of a hazard at <paramref name="hazard"/> of
+        /// <paramref name="radius"/>, or null when it is already clear.</summary>
+        public static Vector3? HazardEscape(Vector3 raider, Vector3 hazard, int radius)
+        {
+            float d = Vector2.Distance(new(raider.X, raider.Y), new(hazard.X, hazard.Y));
+            if (d > radius + HazardMargin) return null;
+            Vector2 dir = d < 1 ? new Vector2(1, 0) : Vector2.Normalize(new Vector2(raider.X - hazard.X, raider.Y - hazard.Y));
+            Vector2 at = new Vector2(hazard.X, hazard.Y) + dir * (radius + HazardStepOut);
+            return new Vector3(at.X, at.Y, raider.Z);
+        }
+
+        /// <summary>A caster or healer this far inside the spread radius of the boss's target moves this far past it.</summary>
+        public const int SpreadMargin = 60, SpreadStepOut = 250;
+
+        /// <summary>
+        /// Where a raider stands clear of an area hit of <paramref name="radius"/> around the boss's target
+        /// (<paramref name="anchor"/>), or null when it is already clear or fights in melee. Casters, archers and healers step
+        /// out, away from the target. Melee can't: they hit from within 200 of the boss and follow it to 75, and his target
+        /// stands as close, so every melee spot is inside a 300 radius (Govannon); they fight on and the healers, now out of
+        /// it, keep them up.
+        /// </summary>
+        public static Vector3? SpreadSpot(Vector3 raider, Vector3 boss, Vector3 anchor, int radius, bool atRange)
+        {
+            static Vector2 Flat(Vector3 v) => new(v.X, v.Y);
+            float d = Vector2.Distance(Flat(raider), Flat(anchor));
+            if (!atRange || d > radius + SpreadMargin) return null;
+            Vector2 away = d >= 1 ? Vector2.Normalize(Flat(raider) - Flat(anchor))
+                : Vector2.Distance(Flat(boss), Flat(anchor)) >= 1 ? Vector2.Normalize(Flat(anchor) - Flat(boss)) : new Vector2(1, 0);
+            Vector2 at = Flat(anchor) + away * (radius + SpreadStepOut);
+            return new Vector3(at.X, at.Y, raider.Z);
+        }
+
+        private static readonly Dictionary<string, System.Reflection.PropertyInfo> Switches = new(StringComparer.Ordinal);
+
+        /// <summary>The <see cref="EpicEncounterMechanics"/> switch of this name is on (no name: on).</summary>
+        public static bool SwitchOn(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return true;
+            System.Reflection.PropertyInfo p;
+            lock (Switches)
+                if (!Switches.TryGetValue(name, out p))
+                    Switches[name] = p = typeof(EpicEncounterMechanics).GetProperty(name,
+                        System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            return p?.GetValue(null) is true;
+        }
+
+        /// <summary>The class rules of <paramref name="t"/> are in force (its switch is on).</summary>
+        public static bool ClassRulesApply(Tactic t) => t?.ClassRules is { Length: > 0 } && SwitchOn(t.ClassRuleSwitch);
+
+        /// <summary>A raider of <paramref name="classId"/> can hurt <paramref name="add"/> under <paramref name="t"/>'s class
+        /// rules (an add with no rule, or an unknown class, can be hurt).</summary>
+        public static bool ClassCanHurt(Tactic t, GameNPC add, int classId)
+        {
+            if (!ClassRulesApply(t) || classId <= 0) return true;
+            AddClasses rule = t.ClassRules.FirstOrDefault(r => r.Add == add.GetType().Name);
+            return rule == null || Array.IndexOf(rule.Classes, (eCharacterClass)classId) >= 0;
+        }
+
         /// <summary>Which add a party takes: its index modulo the adds alive.</summary>
         public static int AssignedIndex(int partyIndex, int liveAdds) => liveAdds <= 0 ? -1 : (int)((uint)partyIndex % (uint)liveAdds);
 
@@ -145,10 +307,22 @@ namespace DOL.GS
         {
             reason = null;
             if (!Present(chosen)) return chosen;
+            // A hazard is never the raid's target: the boss it sits beside is.
+            if (IsHazard(chosen))
+            {
+                if (HazardOwner(chosen, live) is not { } hazardOwner) return chosen;
+                reason = $"hazard of \"{hazardOwner.Name}\"";
+                chosen = hazardOwner;
+            }
             if (DiesWithOwner(chosen, live) is { } owner)
             {
-                reason = $"dies-with \"{owner.Name}\"";
+                reason = (reason == null ? "" : reason + "; ") + $"dies-with \"{owner.Name}\"";
                 chosen = owner;
+            }
+            if (AfterOwner(chosen, live) is { } first)
+            {
+                reason = (reason == null ? "" : reason + "; ") + $"after \"{first.Name}\"";
+                chosen = first;
             }
             // A kept add (the last illusion) is not fought: its boss is.
             if (RequiredAddOwner(chosen, live) is { } boss && For(boss).KeepAlive > 0 && ShieldingAdds(boss, live).Length == 0)
@@ -184,7 +358,10 @@ namespace DOL.GS
             /// <summary>Don't hit this target; stand at <see cref="Advice.StandAt"/> (under its assigned add) if given.</summary>
             StandOff,
             /// <summary>Don't hit it; it is chasing this raider, who leads it back to its spawn.</summary>
-            LeadHome
+            LeadHome,
+            /// <summary>Step to <see cref="Advice.StandAt"/> first (out of an area hit or a hazard), keeping the target and its
+            /// aggro, and fight on from there.</summary>
+            Reposition
         }
 
         public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason);
@@ -196,19 +373,70 @@ namespace DOL.GS
         public static Advice Decide(GameLiving raider, GameNPC target, IReadOnlyList<GameNPC> live, int partyIndex, bool canShootFlyers) =>
             Decide(raider, target, live, partyIndex, canShootFlyers, GameLoop.GameLoopTime);
 
-        public static Advice Decide(GameLiving raider, GameNPC target, IReadOnlyList<GameNPC> live, int partyIndex, bool canShootFlyers, long now)
+        /// <param name="classId">The raider's class (for class rules and who fights at range); -1: read it from the raider.</param>
+        public static Advice Decide(GameLiving raider, GameNPC target, IReadOnlyList<GameNPC> live, int partyIndex, bool canShootFlyers, long now,
+            int classId = -1)
         {
             if (raider == null || !Present(target)) return default;
+            if (classId < 0) classId = EpicEncounterRestores.ClassId(raider);
+            Vector3 at = new(raider.X, raider.Y, raider.Z);
+            // A hazard (Orshom's Fire) is never fought: the boss it sits beside is, from outside its radius.
+            if (IsHazard(target))
+            {
+                GameNPC hazardOwner = HazardOwner(target, live);
+                Vector3? clear = HazardEscape(at, new(target.X, target.Y, target.Z), HazardRadiusOf(target));
+                if (clear != null || hazardOwner == null)
+                    return new(BotAction.StandOff, target, clear, $"hazard \"{target.Name}\": out of it, never hit it");
+                return new(BotAction.Retarget, hazardOwner, null, $"hazard of \"{hazardOwner.Name}\": fight it instead");
+            }
             GameNPC fightOwner = RequiredAddOwner(target, live) ?? target;
             if (BrokenOff(fightOwner, now) is Vector3 rally)
                 return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
+            if (For(target) is { HasHazards: true } ht)
+                foreach (GameNPC hazard in LiveHazards(target, live))
+                    if (HazardEscape(at, new(hazard.X, hazard.Y, hazard.Z), ht.HazardRadius) is Vector3 outOfIt)
+                        return new(BotAction.Reposition, target, outOfIt, $"out of \"{hazard.Name}\" ({ht.HazardRadius})");
             if (DiesWithOwner(target, live) is { } owner)
                 return new(BotAction.Retarget, owner, null, $"dies-with \"{owner.Name}\"");
+            // Two bosses fought together: the party this one fights holds it, everyone else kills the other first.
+            if (AfterOwner(target, live) is { } first && !Holds(raider, target))
+                return new(BotAction.Retarget, first, null, $"after \"{first.Name}\": the party \"{target.Name}\" fights holds it");
             if (RequiredAddOwner(target, live) is { } boss && For(boss).KeepAlive > 0 && ShieldingAdds(boss, live).Length == 0)
                 return new(BotAction.Retarget, boss, null, $"keep-alive add of \"{boss.Name}\": fight the boss");
             if (BlastWithdraw(raider, target, now) is Vector3 safe)
                 return new(BotAction.StandOff, target, safe, $"blast at {NextBlast(target)}%: out of {For(target).BlastRadius}");
+            // Area hit around the boss's target (Govannon's demon form): everyone outside that target's party stands clear of it.
+            if (For(target) is { SpreadRadius: > 0 } st && (st.SpreadWhileModel == 0 || target.Model == st.SpreadWhileModel) &&
+                target.TargetObject is GameLiving anchor && !Holds(raider, target))
+            {
+                bool atRange = canShootFlyers || classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
+                if (SpreadSpot(at, new(target.X, target.Y, target.Z), new(anchor.X, anchor.Y, anchor.Z), st.SpreadRadius, atRange) is Vector3 spread)
+                    return new(BotAction.Reposition, target, spread,
+                        $"spread: casters and healers clear of {st.SpreadRadius} around \"{anchor.Name}\"");
+            }
+            // An add only some classes can hurt (an Earthmender): a raider on one it can't hurt takes one it can, or the boss.
+            if (RequiredAddOwner(target, live) is { } classBoss && For(classBoss) is { } ct && ClassRulesApply(ct) &&
+                !ClassCanHurt(ct, target, classId))
+            {
+                GameNPC[] mine = ShieldingAdds(classBoss, live).Where(a => ClassCanHurt(ct, a, classId)).ToArray();
+                GameNPC to = mine.Length > 0 ? mine[AssignedIndex(partyIndex, mine.Length)] : classBoss;
+                return new(BotAction.Retarget, to, null, $"class rule: \"{target.Name}\" takes no damage from this class; " +
+                    (mine.Length > 0 ? $"one it can hurt ({mine.Length})" : "none it can hurt: the boss"));
+            }
+            // Casters and archers kill these adds while the rest stay on the boss.
+            if (canShootFlyers && LiveRangedAdds(target, live) is { Length: > 0 } rangedAdds)
+            {
+                GameNPC add = rangedAdds[AssignedIndex(partyIndex, rangedAdds.Length)];
+                return new(BotAction.Retarget, add, null, $"ranged-add {Array.IndexOf(rangedAdds, add) + 1}/{rangedAdds.Length} of \"{target.Name}\"");
+            }
             GameNPC[] adds = ShieldingAdds(target, live);
+            if (adds.Length > 0 && For(target) is { } at2 && ClassRulesApply(at2))
+            {
+                GameNPC[] mine = adds.Where(a => ClassCanHurt(at2, a, classId)).ToArray();
+                // A class none of the adds take damage from fights the boss (keeps it busy) instead.
+                if (mine.Length == 0) adds = [];
+                else adds = mine;
+            }
             if (adds.Length > 0)
             {
                 GameNPC add = adds[AssignedIndex(partyIndex, adds.Length)];
@@ -282,6 +510,18 @@ namespace DOL.GS
         /// </summary>
         public static EarlyPull ChooseEarlyPull(int near, int living, bool resetsWhenLeft) =>
             near * 2 >= living || !resetsWhenLeft ? EarlyPull.Commit : EarlyPull.Disengage;
+
+        /// <summary>An early pull of the same encounter is logged again only after this long.</summary>
+        public const long EarlyPullLogRepeatMilliseconds = 10 * 60_000;
+
+        /// <summary>
+        /// Whether an early pull is worth a warning line: every pull-back (Disengage) is; a commit only for a raid's final or a
+        /// catalogued boss, once per <see cref="EarlyPullLogRepeatMilliseconds"/> (<paramref name="sinceLastMilliseconds"/>
+        /// -1: never logged). Darkness Falls named and epic trash that are simply fought go to the debug log.
+        /// </summary>
+        public static bool EarlyPullWorthLogging(EarlyPull choice, bool isFinal, bool inCatalog, long sinceLastMilliseconds) =>
+            choice == EarlyPull.Disengage ||
+            (isFinal || inCatalog) && (sinceLastMilliseconds < 0 || sinceLastMilliseconds >= EarlyPullLogRepeatMilliseconds);
 
         /// <summary>
         /// A pull-back to the muster leaves the boss behind only when it resets when left and the muster lies past its tether
@@ -395,7 +635,7 @@ namespace DOL.GS
         /// </summary>
         public static bool TryHandle(GameBot bot, GameNPC target)
         {
-            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || For(target) == null) return false;
+            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || For(target) == null && !IsTacticPart(target)) return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
             switch (advice.Action)
@@ -416,6 +656,13 @@ namespace DOL.GS
                         bot.PathTo(new Point3D(target.SpawnPoint.X, target.SpawnPoint.Y, target.SpawnPoint.Z), bot.MaxSpeed);
                     else if (advice.StandAt is Vector3 at && !bot.IsWithinRadius(new Point3D((int)at.X, (int)at.Y, (int)at.Z), 300))
                         bot.PathTo(new Point3D((int)at.X, (int)at.Y, (int)at.Z), bot.MaxSpeed);
+                    LogDecision(bot, target, advice);
+                    return true;
+                case BotAction.Reposition:
+                    if (advice.StandAt is not Vector3 spot) return false;
+                    if (bot.IsCasting) bot.StopCurrentSpellcast();
+                    bot.StopAttack();
+                    bot.PathTo(new Point3D((int)spot.X, (int)spot.Y, (int)spot.Z), bot.MaxSpeed);
                     LogDecision(bot, target, advice);
                     return true;
                 default:
