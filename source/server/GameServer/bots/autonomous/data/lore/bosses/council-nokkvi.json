@@ -1,0 +1,73 @@
+{
+  "id": "council-nokkvi",
+  "name": "Council Nokkvi",
+  "catalogKey": "tuscaran-glacier/nokkvi",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Nokkvi is a level-78 Council member with 100,000 health, linked to Council Vagn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam players said he seemed to have a million hit points and resisted every spell (2005).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4690"
+    }
+  ],
+  "story": "Nokkvi is the boat to Vagn's wagon, and like a good boat he does not sink. He sits beside Vagn and says nothing, and when the Council fought among itself he was the one nobody could move. He resists the casting of every school he has met; old tanks swear their blows bounce from him. Vagn talks, Nokkvi endures, and between them they have outlasted every argument the glacier has had. When the elders voted, the old giants say, Nokkvi only ever raised his hand after Vagn did.",
+  "legend": "Nokkvi is the wall of the pair: lots of health and big resists. Fast one-handers and every tank you have. Don't waste nukes; debuff him first. A 2005 thane wrote that his styles were hitting for one, and that someone had to kite Vagn the whole time. Plan the pair before you pull.",
+  "yells": {
+    "aggro": [
+      "..."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Vagn. Then I will carry it alone."
+      }
+    ],
+    "death": [
+      "...sinking..."
+    ],
+    "slay": [
+      "..."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The silent one sits beside the talker."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Nokkvi rises, silent, to avenge Vagn."
+      }
+    ],
+    "realmFirstKill": "Council Nokkvi has sunk at last."
+  },
+  "botLines": {
+    "briefing": [
+      "nokkvi resists everything, debuff first then melee"
+    ],
+    "aftermathWin": [
+      "nokkvi finally down. that took forever"
+    ],
+    "aftermathLoss": [
+      "we did like 10% to nokkvi in five minutes. [not happening|need more tanks]"
+    ],
+    "rumour": [
+      "nokkvi never says a word, they say. just stands there and doesnt die"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nokkvi",
+    "text": "The boat to [Vagn]'s wagon, and like a good boat he does not sink. He resists nearly every spell and says nothing at all."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "Silent Nokkvi sank before {raidLeader} of {realm} after {minutes} minutes.",
+    "loss": "Council Nokkvi did not sink; {raidLeader}'s raid from {realm} did, after {minutes} minutes."
+  }
+}

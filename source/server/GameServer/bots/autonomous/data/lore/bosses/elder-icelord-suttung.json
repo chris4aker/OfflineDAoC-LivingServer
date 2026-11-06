@@ -1,0 +1,93 @@
+{
+  "id": "elder-icelord-suttung",
+  "name": "Elder Icelord Suttung",
+  "catalogKey": "tuscaran-glacier/suttung",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Suttung is a level-81 elder icelord with 100,000 health and the alternate of Hjalmar: the same controller spawns one or the other.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "He bellows that he is amazed intruders came this far, says he warned the Council to destroy its enemies first, and says he will not mourn 'her' death beyond the grave.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "Every 20-35 seconds he goes into a berserker stance for 10-20 seconds and hits far harder (Strength 850).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads a disease named for Valnir Mordeth's Plague and an ice blast around himself.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "In Norse myth Suttungr is the giant who held the mead of poetry, which was brewed from the blood of the wise Kvasir.",
+      "provenance": "original",
+      "source": "Snorri, Skaldskaparmal (public-domain myth); used as inspiration"
+    }
+  ],
+  "story": "Suttung took his name from the giant of the old tale who kept the mead of poetry in a mountain and lost it to Odin. The icelords think that is a fine joke; Suttung does not. He has warned the Council for years that the glacier would be robbed the same way if it did not strike first, and he says so to the people robbing it. He fights in fits. For a time he is merely dangerous; then the berserker stance takes him and he swells with it, and anything in front of him is broken. He carries a sickness the giants traded for, long ago, with the dead of another land, and he breathes it on whoever is close. When the stance fades he is merely dangerous again, and he hates you a little more for having lived.",
+  "legend": "Suttung's berserk comes on a timer. When he says he is going into berserker stance, the tank pops everything and the healers pile on, then it fades. Cure the disease or your heals do half. Some raid leaders swear the howl gives you Suttung more often when you are short on healers.",
+  "yells": {
+    "aggro": [
+      "I am amazed you came so far. Your journey ends at my feet."
+    ],
+    "phases": [
+      {
+        "trigger": "berserk",
+        "text": "I warned them! Destroy the threat before it destroys us!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "I will not mourn her past the grave. Nor you."
+      }
+    ],
+    "death": [
+      "Robbed... like the mountain... of old..."
+    ],
+    "slay": [
+      "Broken. As I promised the Council."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A howl runs through the ice. An icelord has woken."
+    ],
+    "phases": [
+      {
+        "trigger": "berserk",
+        "text": "Suttung swells with berserker fury!"
+      }
+    ],
+    "realmFirstKill": "Elder Icelord Suttung falls. His warning was in vain."
+  },
+  "botLines": {
+    "briefing": [
+      "if we get suttung, watch for berserker stance, [tank pops cds|healers burst the tank] till it fades",
+      "cure disease on suttung or heals do half"
+    ],
+    "aftermathWin": [
+      "suttung dead. that berserk is no joke"
+    ],
+    "aftermathLoss": [
+      "suttung berserked twice in a row and our MT just [evaporated|vanished]"
+    ],
+    "rumour": [
+      "the giant in the old song who kept the mead was called suttung. same name as the icelord up there. [coincidence|sure]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Suttung",
+    "text": "The other elder icelord, named for the giant who kept the mead of poetry and lost it. He warned the Council to strike first and was not heeded. He fights in fits of berserker fury and carries a sickness the giants traded for long ago."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "Suttung's warning came true for him, not for {realm}: {raidLeader}'s raid slew him in {minutes} minutes.",
+    "loss": "Elder Icelord Suttung's fury broke {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

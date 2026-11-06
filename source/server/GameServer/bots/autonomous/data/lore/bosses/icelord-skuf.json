@@ -1,0 +1,73 @@
+{
+  "id": "icelord-skuf",
+  "name": "Icelord Skuf",
+  "catalogKey": "tuscaran-glacier/skuf",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Skuf is a level-80 icelord with 100,000 health, linked to Icelord Steinvor; pull one and both come.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him at level 80; he drops Skuf's Cave Crusher.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6065"
+    }
+  ],
+  "story": "Skuf is the anvil to Steinvor's hammer. He says little and needs to say less. Where Steinvor pins one man with a pillar of frost, Skuf stands in front of the rest and takes the blows meant for his brother icelord, and gives them back with a crusher the size of a door. The other hrimthursa say he has never once been moved from where he chose to stand. They also say he was the only icelord who sat with the Council at its feasts, and that he never spoke there either.",
+  "legend": "Skuf has no tricks, just a lot of health and a big crusher. Tank him away from Steinvor's pillar target and keep the melee on one icelord at a time. Kill whichever your raid can burn faster. Raid leaders who forget him because he is quiet learn about the crusher the hard way.",
+  "yells": {
+    "aggro": [
+      "Stand. I will not move."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Steinvor! Then I am hammer and anvil both."
+      }
+    ],
+    "death": [
+      "Moved... at last..."
+    ],
+    "slay": [
+      "Flattened."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A giant stands here as if he grew from the floor."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Skuf bellows for his brother icelord!"
+      }
+    ],
+    "realmFirstKill": "Icelord Skuf has been moved, at last. He is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "skuf is just a big hitter, tank him off the steinvor pillar"
+    ],
+    "aftermathWin": [
+      "skuf didnt move till he died lol"
+    ],
+    "aftermathLoss": [
+      "skuf flattened our tanks while we chased the pillar guy"
+    ],
+    "rumour": [
+      "they say skuf never moves from his spot. [believe it|can confirm]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Skuf",
+    "text": "The anvil to [Steinvor]'s hammer. He stands where he chooses and is never moved, and he takes the blows meant for his brother icelord."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "Icelord Skuf, who never moved, was laid down by {raidLeader} of {realm} in {minutes} minutes.",
+    "loss": "Icelord Skuf did not move, and {raidLeader}'s raid from {realm} did not get past him in {minutes} minutes."
+  }
+}

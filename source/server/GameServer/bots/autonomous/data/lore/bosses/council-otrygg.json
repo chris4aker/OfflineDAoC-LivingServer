@@ -1,0 +1,78 @@
+{
+  "id": "council-otrygg",
+  "name": "Council Otrygg",
+  "catalogKey": "tuscaran-glacier/otrygg",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Otrygg is a level-77 member of the hrimthursa Council with 100,000 health who summons eight pets when the fight begins and more as it goes on.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Old Norse otryggr means untrustworthy, unfaithful (to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify (Cleasby-Vigfusson)"
+    },
+    {
+      "text": "Killing Council members lowers faction with the Hrimthursa and Glacier Harskaren and raises it with Klippa Vaktaren and Vind Ryttaren.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6030"
+    }
+  ],
+  "story": "Otrygg's name means faithless, and the Council gave it to him as a joke he never forgave. He is the one who never trusted peace to keep the door, so he kept something else: a pack of summoned beasts, eight at a call, bred in the side tunnels on scraps from the citadel's table. When he votes, they sit at his feet. When he fights, they do not sit. The other councillors pretend not to notice the smell, and vote as he does more often than they admit.",
+  "legend": "Otrygg is an add fight. Eight pets at once, then more. Bring area damage and a group just for the pets, and do not chase him while they are up. If the pets reach the healers the fight is over, so the add group stands between them. Kill him in place and let the pets come to you.",
+  "yells": {
+    "aggro": [
+      "Faithless, they called me. Faithful hounds, I answer. Go!"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "More! There are always more of you, and more of mine."
+      }
+    ],
+    "death": [
+      "Never... trusted... peace..."
+    ],
+    "slay": [
+      "Feed it to the pack."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gnawed bones are heaped by a council seat."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Otrygg's beasts pour out of the side tunnels!"
+      }
+    ],
+    "realmFirstKill": "Council Otrygg has fallen. His pack scatters."
+  },
+  "botLines": {
+    "briefing": [
+      "otrygg spawns 8 pets right away. [pbae team|aoe] on the pets, tanks hold otrygg"
+    ],
+    "aftermathWin": [
+      "otrygg's pets got [melted|aoed] nice job"
+    ],
+    "aftermathLoss": [
+      "the pets ran over the healers"
+    ],
+    "rumour": [
+      "heard otrygg means faithless in the old tongue. [fits|figures]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Otrygg",
+    "text": "His name means faithless, a Council joke he never forgave. He kept a pack of summoned beasts because he never trusted peace to keep the door."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "Council Otrygg and his pack fell to {raidLeader} of {realm} in {minutes} minutes.",
+    "loss": "Council Otrygg's pack ran down {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

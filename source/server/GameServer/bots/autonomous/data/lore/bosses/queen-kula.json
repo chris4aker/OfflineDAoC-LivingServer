@@ -1,0 +1,119 @@
+{
+  "id": "queen-kula",
+  "name": "Queen Kula",
+  "catalogKey": "tuscaran-glacier/queenkula",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Queen Kula is a level-85 hrimthursa giant with 300,000 health, fought together with King Tuscar as the glacier's final.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "When she first takes aggro she mocks her own Hrimthursa guardians as useless and arrogant and calls herself merciless and unafraid of death.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs"
+    },
+    {
+      "text": "At half health she hits harder and casts Thor's Might, a long-range cold blast; she also mesmerizes and roots, and teleports a random attacker to a spot beside her throne.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "If Tuscar dies first she fights at full strength from then on (Strength 500 instead of 350).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists her at level 85 in Tuscaren Glacier; her drops are Ice Queen crowns.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6074"
+    },
+    {
+      "text": "Players in May 2003 said they killed the King and Queen with about 100 people.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/"
+    },
+    {
+      "text": "The Offline DAoC build turns off the original twin heal (damage to one healing the other) for bot raids.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat already tells that Kula was the coldest of Bergelmir's line and built her citadel on a dead dragon's bones.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Every skald in Jordheim sings Kula the same way: the youngest and coldest of Bergelmir's line, who stayed in the north when her brothers marched south for green land. She found a dragon dead in the ice, ribs wide as a fjord, and raised her citadel on it so that no summer could ever reach her. Tuscar came later, a smith of the rime giants, and he forged her an axe so fine he still boasts of it. He took her hand. She kept the throne. The council sits on the dragon's ribs because she allows it, and the icelords guard the tunnels because she has never needed to ask twice. Kula despises the guardians who failed to stop you and says so to your face: she believes only the merciless live through a winter. That is the whole of her law, and she fights by it. She will freeze one of you where you stand, pull another to her feet, and when she is cut to half she stops playing and breaks the air with cold. Kill her husband first and she does not grieve. She fights harder.",
+  "legend": "Never split the twins across the room: they stand together and they die together, or not at all. Most raid leaders kill Tuscar first because he hits like his own hammer, and accept that Kula goes cold and furious after. Keep cure-mez ready, because she sleeps whoever she dislikes most. The old raiders say she has never once looked at the King while fighting.",
+  "yells": {
+    "aggro": [
+      "You walked past my guardians. They will answer for that. You will answer to me.",
+      "Winter keeps only the merciless. Let us see what it keeps of you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Enough. Feel the cold that was here before your gods."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Tuscar? Then the throne is mine alone. It always was."
+      }
+    ],
+    "death": [
+      "The ice... remembers... my name..."
+    ],
+    "slay": [
+      "Another summer creature. They never last.",
+      "Lay there. The glacier will keep you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The throne of the rime giants. The air itself is still.",
+      "Two thrones. Only one of them is warm with use."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Queen Kula's breath turns the throne room white!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Kula does not mourn. She grows colder."
+      }
+    ],
+    "realmFirstKill": "The Ice Queen has fallen. Tuscaran Glacier is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "kula and tuscar together, dont split them. tanks on tuscar first, [healers|clerics] watch for mez on kula",
+      "when kula hits half she starts throwing cold around. [spread out|dont stack] near the throne",
+      "she pulls people to her throne. if it's you, dont panic, just run back to the group"
+    ],
+    "aftermathWin": [
+      "kula down!! [first time|finally] i saw that throne empty",
+      "gg. the ice queen is dead. somebody grab a screenshot of that crown"
+    ],
+    "aftermathLoss": [
+      "kula froze half the raid at 50%. we need more cure",
+      "[wiped|we wiped] at the thrones. tuscar went down and she just went nuts"
+    ],
+    "rumour": [
+      "[they say|heard] kula built that whole citadel on a dragon's ribs. [nice seat|cold seat]",
+      "kula calls her own giants useless to your face. [imagine working for her|harsh boss]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kula",
+    "text": "The coldest of Bergelmir's line, the skalds say. She built on a dead dragon so no summer could reach her, took Tuscar for husband and kept the throne. She believes only the merciless survive. Do not expect her to mourn him if he falls first; expect her to fight harder."
+  },
+  "bookPage": "The skald who sang for me at Dellinstad would not finish the song of Kula until I paid him twice. Her brothers, he said, wanted green land and went south to die in it. She wanted a winter that would never end, and she found one lying dead in the ice with ribs like the beams of a mead hall. She built there. When the smith Tuscar came courting with an axe that rang like a bell, she took the axe and then the smith. The skald laughed at that part. I did not, after I saw the throne room.",
+  "chronicle": {
+    "win": "{realm} broke the thrones of Tuscaran Glacier: {raidLeader}'s raid slew Queen Kula and King Tuscar in {minutes} minutes.",
+    "loss": "Queen Kula still sits her throne. {raidLeader}'s raid from {realm} froze at her feet after {minutes} minutes."
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "id": "elder-icelord-hjalmar",
+  "name": "Elder Icelord Hjalmar",
+  "catalogKey": "tuscaran-glacier/hjalmar",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Hjalmar is a level-81 elder icelord with 100,000 health. A controller spawns either Hjalmar or Suttung, never both: one of the two holds the hall each time.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "On aggro he says the price of invading the frozen fortress is death, that intruders mock the Council's pacifism, and that he weeps for no council member who has perished.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "An otherworldly howling is heard when someone first comes within reach of his hall.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
+    },
+    {
+      "text": "He calls Morkimma to his side by chance as he fights, and Morkimma heals him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Hjalmar is an Old Norse name, Hjálmarr, from hjálmr, helmet (to verify).",
+      "provenance": "original",
+      "source": "Old Norse name, to verify (Cleasby-Vigfusson)"
+    }
+  ],
+  "story": "Hjalmar and Suttung are the two elder icelords, and they have never once agreed on anything except that the Council was wrong. The glacier will not keep them both awake. When the howl runs through the tunnels, one of them has risen and the other sleeps in the ice, and no hrimthursa can say beforehand which it will be. Hjalmar is the one who keeps accounts. He knows how many council members have died in his lifetime and he grieved for none of them. He calls their peace a mockery and you its proof. He fights with the morkimma at his heels, dark mist-things of the deep ice that close his wounds while he works, and every one that reaches him buys him time.",
+  "legend": "You never know if it is Hjalmar or Suttung until the howl. If it's Hjalmar, kill the morkimma when they show up or he heals through the raid. Some groups bring a dedicated add team just for him. If the add team is slow, he outlasts the healers.",
+  "yells": {
+    "aggro": [
+      "You walk the halls of the Ice Lords. The price is the one we always ask."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Morkimma, come out of the deep ice. Mend me."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "I weep for no council member. I will not weep for you."
+      }
+    ],
+    "death": [
+      "Suttung... wake... finish this..."
+    ],
+    "slay": [
+      "One fewer. I keep count."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A howl runs through the ice. An icelord has woken."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Dark mist seeps from the walls around Hjalmar."
+      }
+    ],
+    "realmFirstKill": "Elder Icelord Hjalmar is dead. The howling stops."
+  },
+  "botLines": {
+    "briefing": [
+      "if the howl gives us hjalmar, add team on the morkimma, they heal him",
+      "hjalmar or suttung, we only get one. listen for the howl"
+    ],
+    "aftermathWin": [
+      "got hjalmar this time. nice add work everyone"
+    ],
+    "aftermathLoss": [
+      "morkimma kept healing him, we never got him under half"
+    ],
+    "rumour": [
+      "there are two elder icelords and only one ever shows up. nobody knows why [hjalmar|it] gets picked"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hjalmar",
+    "text": "One of the two elder icelords. The glacier never keeps both awake; a howl in the tunnels says one has risen. Hjalmar keeps count of the dead and grieves for none. The [morkimma] of the deep ice heal him while he fights."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "The howl rose and Hjalmar answered; {raidLeader} of {realm} put him back in the ice in {minutes} minutes.",
+    "loss": "Elder Icelord Hjalmar added {realm}'s raid under {raidLeader} to his count after {minutes} minutes."
+  }
+}

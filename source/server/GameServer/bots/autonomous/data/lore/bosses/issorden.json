@@ -1,0 +1,83 @@
+{
+  "id": "issorden",
+  "name": "Issorden",
+  "catalogKey": "tuscaran-glacier/issorden",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Issorden is a level-78 undead with 100,000 health; seven icebound skeletons come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He turns a frosty stare on one attacker as blue mist crawls from the ice, then roots everyone around (Issorden Root, 1,500 radius) and casts Frost Sphere bolts.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs"
+    },
+    {
+      "text": "Allakhazam lists him as undead, level 78; he drops dragon crystals.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6070"
+    },
+    {
+      "text": "Swedish is means ice and orden order: perhaps 'the order of the ice' (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "Before Kula, a war-band came up out of the south to take the glacier and the dragon-bones under it. Their leader was a dead king even then, and his men were bone. Kula met them at the eastern ice and did not fight them. She froze them, standing, with their weapons up, and then she gave them her orders. They are still standing there, and they still keep the order of the ice: Issorden and his icebound skeletons guard the eastern approach. When he turns his stare on you, blue mist rises from the cracks, and nobody near him can move.",
+  "legend": "Issorden roots the whole area. Have purge or root-break ready, spread the healers, and clear his seven skeletons before you commit. Dragon crystals drop here, so every guild wants him. The mist comes before the root, so the first person to see it calls it.",
+  "yells": {
+    "aggro": [
+      "The order of the ice. None pass."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Stand still. As we stood, when she froze us."
+      }
+    ],
+    "death": [
+      "Released... at last... from her order..."
+    ],
+    "slay": [
+      "Stand with us now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Skeletons stand frozen mid-stride, weapons raised."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Blue mist rises. No one can move!"
+      }
+    ],
+    "realmFirstKill": "Issorden is released from the queen's order."
+  },
+  "botLines": {
+    "briefing": [
+      "issorden roots everyone, purge ready. kill the 7 skellies first"
+    ],
+    "aftermathWin": [
+      "issorden dropped a dragon crystal!! [grats|gz]"
+    ],
+    "aftermathLoss": [
+      "got rooted in the mist and the skellies did the rest"
+    ],
+    "rumour": [
+      "heard issorden was a dead king who came to take the glacier. kula froze him and kept him as a guard"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Issorden",
+    "text": "A dead king who came with an army of bone to take the glacier before Kula held it. She froze them standing and gave them orders. They keep the eastern ice still."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} released Issorden from the order of the ice in {minutes} minutes.",
+    "loss": "Issorden froze {raidLeader}'s raid from {realm} in place for {minutes} minutes."
+  }
+}

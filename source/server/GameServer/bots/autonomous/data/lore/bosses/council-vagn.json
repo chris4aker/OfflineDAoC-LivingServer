@@ -1,0 +1,83 @@
+{
+  "id": "council-vagn",
+  "name": "Council Vagn",
+  "catalogKey": "tuscaran-glacier/vagn",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Vagn is a level-78 Council member with 100,000 health, linked to Council Nokkvi: pull one and both come.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Frost Shock for 600.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A 2005 Allakhazam comment says the pair resisted every spell and the tanks hit Nokkvi for almost nothing; someone had to kite Vagn.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4690"
+    },
+    {
+      "text": "Old Norse vagn means wagon, and nokkvi a kind of boat (both to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify"
+    }
+  ],
+  "story": "Vagn and Nokkvi are named for a wagon and a boat, because in the Council's early days they carried everything between them: the votes, the gossip, the grudges. They still go everywhere together. Vagn is the talker, with a frost shock to end an argument; Nokkvi is the one who listens and does not fall down. The Council says you cannot move one without the other, and the Council has rarely been more right. They argued for peace together and they will die together, and neither would have it any other way.",
+  "legend": "Vagn and Nokkvi come as a pair and have huge resists. One group kites or holds Vagn while the raid works Nokkvi, or the reverse. Don't stand casters in Vagn's frost shock range. When one dies the other grieves loudly and hits harder for it, so have the second kill planned before the first one drops.",
+  "yells": {
+    "aggro": [
+      "Nokkvi, they have come to the Council uninvited."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Nokkvi! Who will carry the vote now?"
+      }
+    ],
+    "death": [
+      "The wagon... stops here..."
+    ],
+    "slay": [
+      "Motion carried."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two council seats stand side by side, worn alike."
+    ],
+    "phases": [
+      {
+        "trigger": "partnerDead",
+        "text": "Vagn wails for Nokkvi!"
+      }
+    ],
+    "realmFirstKill": "Councils Vagn and Nokkvi have fallen together."
+  },
+  "botLines": {
+    "briefing": [
+      "vagn and nokkvi, pair pull. one group holds vagn away, [rest|everyone else] on nokkvi"
+    ],
+    "aftermathWin": [
+      "wagon and boat both sunk lol"
+    ],
+    "aftermathLoss": [
+      "vagn's frost shock kept killing casters while we were on nokkvi"
+    ],
+    "rumour": [
+      "[heard|someone said] vagn means wagon and nokkvi means boat. [weird names for giants|giants are weird]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Vagn",
+    "text": "A wagon and a boat, the Council named him and [Nokkvi], because they carried everything between them. They still go everywhere together. Vagn talks; Nokkvi does not fall down."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} unseated Councils Vagn and Nokkvi in {minutes} minutes.",
+    "loss": "Councils Vagn and Nokkvi turned back {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

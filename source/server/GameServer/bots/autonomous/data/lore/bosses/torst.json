@@ -1,0 +1,84 @@
+{
+  "id": "torst",
+  "name": "Torst",
+  "catalogKey": "tuscaran-glacier/torst",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Torst is a level-80 creature with 100,000 health, paired with Hurika on a high ledge of the glacier; the original patrol flight is switched off.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His powerful wings stir swirling eddies of freezing air (five 'eddie' adds), and he roots and casts Cold Snap around him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs"
+    },
+    {
+      "text": "Allakhazam lists Torst at level 85 and his drops as griffon mantles; the glacier also holds griffon icewings and chicks.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6076"
+    },
+    {
+      "text": "Swedish torst and Old Norse thorsti mean thirst (to verify).",
+      "provenance": "original",
+      "source": "Swedish and Old Norse glossaries, to verify"
+    }
+  ],
+  "story": "High on the eastern ledge, where the glacier meets the sky, the great griffons of the ice keep their roost. Torst is the cock, a beast of cold feathers whose wings stir the air into freezing eddies that hunt on their own. The Vind Ryttaren, the wind-riders of the island, have tried for a generation to take a chick from his roost and failed. The hrimthursa leave him be. He is no one's servant, only a neighbour with a temper, and his name means thirst.",
+  "legend": "Torst and Hurika come together. Torst's eddies are adds, kill or avoid them; Hurika throws people off the ledge. Pull them down where it is flat if you can. A 2003 raid of about 60 did it by pulling the bird down.",
+  "yells": {
+    "aggro": [
+      "SKRAAAAAH!"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "(Torst beats his wings, and the air itself freezes!)"
+      }
+    ],
+    "death": [
+      "(a long, falling cry)"
+    ],
+    "slay": [
+      "(Torst screams in triumph)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Wind and feathers. Something huge roosts up here."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Torst's wings stir freezing eddies!"
+      }
+    ],
+    "realmFirstKill": "Torst has fallen from the roost of the ice."
+  },
+  "botLines": {
+    "briefing": [
+      "torst and hurika, griffons on the ledge. eddies are adds, kill them",
+      "pull the birds down to the flat if you can"
+    ],
+    "aftermathWin": [
+      "griffons down! [anyone get the mantle?|mantle?]"
+    ],
+    "aftermathLoss": [
+      "hurika threw half of us off the ledge, torst ate the rest"
+    ],
+    "rumour": [
+      "there are giant griffons nesting at the top of the glacier. [no joke|seriously]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Torst",
+    "text": "The cock of the griffon roost on the eastern ledge. His wings freeze the air into eddies that hunt on their own. The wind-riders of the island have tried for a generation to steal a chick from him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "The griffon Torst fell from his roost before {raidLeader} of {realm} after {minutes} minutes.",
+    "loss": "Torst and Hurika swept {raidLeader}'s raid from {realm} off the ledge after {minutes} minutes."
+  }
+}

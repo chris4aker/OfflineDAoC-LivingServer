@@ -1,0 +1,84 @@
+{
+  "id": "icelord-agmundr",
+  "name": "Icelord Agmundr",
+  "catalogKey": "tuscaran-glacier/agmundr",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Agmundr is a level-81 icelord with 100,000 health who fights with a pack of six hrimthursa (a depredator, two icespines, two icetouch and a seer).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He tells his target that his seers foretold their coming, and that he sent for no reinforcements because they posed no threat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs"
+    },
+    {
+      "text": "He casts a 650-damage blast in a 500 radius.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Raid records of 2026-11-04 show the Midgard epic raid wiped twice at Agmundr after Fornfrusenen.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "Agmundr believes in seers. His hrimthursa seer told him who would come up the tunnel and when, and he took it so much to heart that he did not bother sending for help. That is the only mercy in him. He holds the western cold with the band of giants he trusts: a depredator, two icespines, two of the icetouch, and the seer herself, who has been right about everything except the ending. When you reach him he tells you so, and then the six come with him.",
+  "legend": "Agmundr is a pack pull: six hrimthursa come with him, so the raid needs a plan for the seer and the icetouch before anyone touches the icelord. Spread for his blast. More raids die here than at the throne, the old hands say, because they think the hard part is over.",
+  "yells": {
+    "aggro": [
+      "My seer told me you would come. She said you were no threat."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Seer! You said nothing of this!"
+      }
+    ],
+    "death": [
+      "She... did not foresee... this..."
+    ],
+    "slay": [
+      "Just as she foretold."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A seer's bones and runes are laid out on the ice."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Agmundr roars for the seer who failed him!"
+      }
+    ],
+    "realmFirstKill": "Icelord Agmundr is slain. His seer saw nothing."
+  },
+  "botLines": {
+    "briefing": [
+      "agmundr comes with six giants. [cc|mez] the seer, kill the icetouch first",
+      "spread for agmundr's blast, its a big circle"
+    ],
+    "aftermathWin": [
+      "agmundr down, and the seer with him"
+    ],
+    "aftermathLoss": [
+      "wiped at agmundr again. the adds were too much"
+    ],
+    "rumour": [
+      "heard agmundr didnt even call for backup because his seer said we're harmless. [rude|fair enough]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Agmundr",
+    "text": "An icelord who trusts his seer above his own eyes. She told him you were no threat, so he sent for no help; six of his giants come with him anyway. Deal with the seer before you deal with him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} proved Agmundr's seer wrong in {minutes} minutes.",
+    "loss": "Agmundr's seer was right about {realm} today: {raidLeader}'s raid fell after {minutes} minutes."
+  }
+}

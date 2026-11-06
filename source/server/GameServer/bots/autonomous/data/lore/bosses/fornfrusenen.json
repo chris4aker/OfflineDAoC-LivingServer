@@ -1,0 +1,101 @@
+{
+  "id": "fornfrusenen",
+  "name": "Fornfrusenen",
+  "catalogKey": "tuscaran-glacier/fornfrusenen",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Fornfrusenen is a level-75 being with 100,000 health that wakes from the ice walls; he takes no damage from attackers further than 200 from him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He hisses that he knows the name of the one who woke him, and that they will be entombed in the ice for eternity.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs"
+    },
+    {
+      "text": "He raises two or three Fornfrusenen Shards, which only take damage from close range too; when he dies the shards evaporate.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs"
+    },
+    {
+      "text": "The Midgard epic raid wiped at Fornfrusenen in the 2026-11-04 overnight runs: casters and archers do nothing to him.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Swedish forn means ancient and frusen frozen: roughly 'the long-frozen one' (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Bot chat guesses something has been frozen in that glacier since before the queen came.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Fornfrusenen is older than the citadel. When Kula's giants cut their first tunnels they found him already in the wall, a long shape asleep in clear ice, and they cut around him and left him there, because even hrimthursa have sense. His name only means the long-frozen one. He does not mind; he has forgotten his own. He has not forgotten anyone else's. Wake him and he knows your name, and tells you so, and promises you a place beside him in the wall. He cannot be hurt from a distance: the cold around him swallows arrows and spells alike, and only a blade close enough to feel his breath will bite. His shards are the same. When he dies they melt, and so, the hrimthursa hope, does the promise.",
+  "legend": "Fornfrusenen is a melee fight, full stop. Casters and archers do nothing past 200. Bring every tank and every melee you have, heal them hard, and kill the shards up close too. More Midgard raids die here than anywhere else in the glacier.",
+  "yells": {
+    "aggro": [
+      "I know your name. Look around you. This is where you will lie, forever."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Shards of me, hold them close."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Closer. Only the close ones matter."
+      }
+    ],
+    "death": [
+      "Back... into the dark... of the ice..."
+    ],
+    "slay": [
+      "Into the wall with you. I will keep your name."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A long shape sleeps in the clear ice of this wall.",
+      "Something in the ice knows your name."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Shards of living ice break from the walls!"
+      }
+    ],
+    "realmFirstKill": "Fornfrusenen fades into the ice. The wall is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "fornfrusenen only takes melee from up close. casters on heals and buffs, [archers|hunters] go melee or sit",
+      "kill the shards up close too, they're the same"
+    ],
+    "aftermathWin": [
+      "fornfrusenen down, that's the one that keeps wiping us. [huge|gg]"
+    ],
+    "aftermathLoss": [
+      "wiped at fornfrusenen again, not enough melee",
+      "the frozen thing in the wall said my name. creepy"
+    ],
+    "rumour": [
+      "fornfrusenen was in the ice before kula came, they say",
+      "fornfrusenen knows your name when you wake him. [i'm not waking him|no thanks]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fornfrusenen",
+    "text": "The long-frozen one. He was in the wall before the citadel was cut. He knows the name of whoever wakes him, and only a blade close enough to feel his breath will bite him."
+  },
+  "bookPage": "The tunnel-cutters would not work the north wall. They told the overseer something in it watched them, and he laughed, and the next morning he did not laugh. They cut around it instead, a great hollow in the ice, and left it sleeping. Hrimthursa children are told that if they shout in that hall it will learn their names. Hrimthursa children do not shout there. I asked one of the old icesplitters what it was. He said it was older than the dragon. Then he said he had said too much.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put Fornfrusenen back into the ice for good in {minutes} minutes.",
+    "loss": "Fornfrusenen learned the names of {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

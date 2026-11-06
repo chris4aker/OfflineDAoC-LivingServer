@@ -1,0 +1,88 @@
+{
+  "id": "elder-council-guthlac",
+  "name": "Elder Council Guthlac",
+  "catalogKey": "tuscaran-glacier/guthlac",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Guthlac is a level-80 Council elder with 100,000 health, linked to Birghir.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He raises Ice Spikes on a timer, on a player or nearby; their unstable form erupts in an Ice Bomb (2,500 damage across a 3,000 radius).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs"
+    },
+    {
+      "text": "He roots, curses dexterity and quickness, and casts Rune of Mazing, a damage-and-snare bolt.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Guthlac is an Old English name (the hermit saint Guthlac of Crowland); in Old English guth means battle and lac play or sacrifice (to verify).",
+      "provenance": "original",
+      "source": "Old English glossary, to verify (Bosworth-Toller)"
+    }
+  ],
+  "story": "Guthlac is the Council's craftsman of cold. While Birghir talked, Guthlac listened to the ice, and he learned how it breaks. The spikes he raises are not weapons in the hrimthursa way of thinking; they are lessons, frozen too fast, holding more cold than ice should hold. Left alone they crack, and when they crack the whole chamber learns at once. He never wanted to teach that lesson to anyone. He agreed with Birghir that the glacier should be left in peace, though for a quieter reason: he knew exactly what the glacier could do to the island if anyone asked it to. Now someone has. He roots the brave, blinds the quick and sets his spikes among you, and he does not stop until Birghir does.",
+  "legend": "When Guthlac's spike appears, everyone near it moves, or someone kills it, now. It goes off across the whole room. The old guides say the elders were the real test of the glacier, not the throne: a raid that cannot handle the spikes will never see Kula.",
+  "yells": {
+    "aggro": [
+      "You should not have made me remember how ice breaks."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Listen. The spike is learning to sing."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Birghir! Then let the whole chamber break!"
+      }
+    ],
+    "death": [
+      "The spikes will melt... in a thousand years..."
+    ],
+    "slay": [
+      "Frozen through. It is quick, at least."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Spikes of blue ice stand in the chamber like stelae."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "An ice spike hums. It will not hold for long!"
+      }
+    ],
+    "realmFirstKill": "Guthlac's spikes stand silent. The council has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "guthlac drops ice spikes. when one spawns [kill it|get away from it] NOW, it hits the whole room",
+      "dont group up under guthlac, his root and the spike combo is how raids die there"
+    ],
+    "aftermathWin": [
+      "nobody stood on a spike this time. [proud of you all|miracle]"
+    ],
+    "aftermathLoss": [
+      "spike went off and took 30 people. [ouch|gg]"
+    ],
+    "rumour": [
+      "heard guthlac's spikes go off for like 2500. [no thanks|i'll stand at the back]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Guthlac",
+    "text": "The elder who listened to the ice and learned how it breaks. His spikes hold more cold than ice should; left alone, they crack, and the whole chamber learns at once. He sat beside [Birghir] for a century and dies beside him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "Guthlac's spikes fell silent before {raidLeader} and {realm}, after {minutes} minutes on the ribs.",
+    "loss": "An ice spike broke {raidLeader}'s raid from {realm} in the council chamber after {minutes} minutes."
+  }
+}

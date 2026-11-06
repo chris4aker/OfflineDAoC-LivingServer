@@ -1,0 +1,78 @@
+{
+  "id": "hurika",
+  "name": "Hurika",
+  "catalogKey": "tuscaran-glacier/hurika",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Hurika is a level-85 creature with 100,000 health, Torst's mate on the high ledge; the original patrol flight is switched off.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A gust from her wings sends a random attacker flying into the air.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs"
+    },
+    {
+      "text": "A June 2003 Allakhazam comment asks if anyone has ever killed 'this bird'; a European raid of about 60 answered that they did, by bolt-pulling her down.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/6059"
+    }
+  ],
+  "story": "Hurika is the hen of the griffon roost and the larger of the two. Where Torst freezes the air, she simply moves it: one beat of her wings and a man is in the sky with nothing under him. She is guarding a nest, and she has no other thought. The hrimthursa say she once threw an icelord off the ledge for coming too close to her chicks, and the icelords say nothing at all. The wind-riders of the island count it a great deed just to see her fly and live.",
+  "legend": "Hurika throws people up. Healers stay back from the edge. Kill her with Torst or she keeps throwing while you work on him. Old raiders say bolt-pull her down to the flat ground, and that a fall from her ledge is the longest corpse run in Midgard. Somebody always tries to catch the person she throws.",
+  "yells": {
+    "aggro": [
+      "KRRAAAAAAH!"
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "(Hurika's wings send someone tumbling into the sky!)"
+      }
+    ],
+    "death": [
+      "(Hurika falls, wings spread wide)"
+    ],
+    "slay": [
+      "(Hurika shrieks over her nest)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Great feathers, white as frost, lie in a nest of ice."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "A gust from Hurika's wings hurls someone aloft!"
+      }
+    ],
+    "realmFirstKill": "Hurika is slain. The griffon nest is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "hurika throws people up, healers away from the edge"
+    ],
+    "aftermathWin": [
+      "killed the big bird. [gz|grats] on the quill"
+    ],
+    "aftermathLoss": [
+      "flew three times and died once [lol|ugh]"
+    ],
+    "rumour": [
+      "heard the hurika griffon once threw an icelord off the ledge"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hurika",
+    "text": "The hen of the griffon roost, larger than her mate [Torst]. One beat of her wings puts a man in the sky. She is guarding a nest and has no other thought."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down the griffon Hurika in {minutes} minutes.",
+    "loss": "Hurika threw {raidLeader}'s raid from {realm} into the sky, one by one, for {minutes} minutes."
+  }
+}

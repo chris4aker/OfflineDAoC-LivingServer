@@ -1,0 +1,84 @@
+{
+  "id": "icelord-hakr",
+  "name": "Icelord Hakr",
+  "catalogKey": "tuscaran-glacier/hakr",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Hakr is a level-82 icelord with 100,000 health, guarded by two Royal Iceweavers that spawn with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He hurls a player straight up into the air, and a magic barrier sometimes fades from around him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs"
+    },
+    {
+      "text": "Allakhazam lists a 'Hakr's Barrier' object and the Royal Iceweaver in the glacier.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=76"
+    },
+    {
+      "text": "Bot chat says the queen's iceweavers mend the walls each night so they never crack.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Hakr keeps the queen's iceweavers. They are long cold serpents of the deep, and every night they weave the walls of the citadel new, so that no crack lasts until morning. Two of them never leave his side. Hakr has a giant's sense of humour, which is to say he likes to throw things, and the thing he likes to throw best is a person: up, high, and down again on the ice. He fights behind a barrier the iceweavers spin for him, and when it fades he is only a giant with a temper.",
+  "legend": "Kill the iceweavers or keep them off the healers, their poison stacks. Expect to fly when Hakr picks you; land, get healed, run back. A raid that laughs at the throwing does better than one that panics. Kill the serpents first if you can spare the damage.",
+  "yells": {
+    "aggro": [
+      "Iceweavers! We have guests who need lifting."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Up you go! Let us see how you come down!"
+      }
+    ],
+    "death": [
+      "The walls... will crack... by morning..."
+    ],
+    "slay": [
+      "Landed badly. They always do."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Woven ice glistens on every wall. Something mends it."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Hakr hurls someone into the air!"
+      }
+    ],
+    "realmFirstKill": "Icelord Hakr is dead. The iceweavers fall still."
+  },
+  "botLines": {
+    "briefing": [
+      "hakr has 2 royal iceweavers, kill them or keep them off healers, poison stacks",
+      "he throws people up. if you fly, just run back in"
+    ],
+    "aftermathWin": [
+      "hakr dead. i flew three times and lived [lol|somehow]"
+    ],
+    "aftermathLoss": [
+      "iceweavers ate the cleric group while we were flying around"
+    ],
+    "rumour": [
+      "the iceweavers [fix|mend] the glacier walls every night, they say. thats why it never cracks"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hakr",
+    "text": "Keeper of the queen's iceweavers, the cold serpents that weave the walls new each night. He likes to throw things, and people most of all. His barrier is their weaving; when it fades he is only a giant with a temper."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "Icelord Hakr fell to {raidLeader}'s raid from {realm} in {minutes} minutes, and nobody flew twice.",
+    "loss": "Icelord Hakr threw {raidLeader}'s raid from {realm} about the ice for {minutes} minutes and won."
+  }
+}

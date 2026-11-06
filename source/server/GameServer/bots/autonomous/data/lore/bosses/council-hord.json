@@ -1,0 +1,73 @@
+{
+  "id": "council-hord",
+  "name": "Council Hord",
+  "catalogKey": "tuscaran-glacier/hord",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Hord is a level-77 Council member with 100,000 health who heals himself with Minor Emendation.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as social, level 77, in Tuscaren Glacier.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4688"
+    }
+  ],
+  "story": "Hord was the Council's healer when the Council still believed it would never need one. He mended the cracked hands of the sculptors and the frostbitten feet of the icesplitters, and he keeps doing it now, on himself, in the middle of the fight. The heal is small. It is enough to undo a careless raid, which he thinks is the point. The sculptors still leave him gifts of carved bone on the seat beside his own, and he has never once refused one.",
+  "legend": "Hord heals himself. Interrupt him, keep the damage steady, and don't let the melee wander off to other pulls while he is up. A raid that stops hitting him for half a minute gives back everything it took. The old guides put him early in the climb for exactly that reason: he teaches a raid to keep its focus.",
+  "yells": {
+    "aggro": [
+      "I mended your kind once. I remember the way bones knit."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A small mending. Again. And again."
+      }
+    ],
+    "death": [
+      "No more... mending..."
+    ],
+    "slay": [
+      "Beyond mending."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Old poultices and bone-needles lie by a seat of ice."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Council Hord knits his own wounds closed!"
+      }
+    ],
+    "realmFirstKill": "Council Hord is beyond mending."
+  },
+  "botLines": {
+    "briefing": [
+      "hord self heals. [interrupt|stun] him and keep dps on"
+    ],
+    "aftermathWin": [
+      "hord down, good interrupts"
+    ],
+    "aftermathLoss": [
+      "hord kept healing up, we ran out of power"
+    ],
+    "rumour": [
+      "heard the council has its own healer. [figures|of course it does]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hord",
+    "text": "The Council's healer, from the years when it thought it needed none. He mends himself in the middle of a fight, a little at a time."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "Council Hord's mending ran out under {raidLeader} of {realm} after {minutes} minutes.",
+    "loss": "Council Hord mended faster than {raidLeader}'s raid from {realm} could hurt him, for {minutes} minutes."
+  }
+}

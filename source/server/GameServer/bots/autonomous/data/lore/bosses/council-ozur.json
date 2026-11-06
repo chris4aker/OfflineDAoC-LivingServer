@@ -1,0 +1,73 @@
+{
+  "id": "council-ozur",
+  "name": "Council Ozur",
+  "catalogKey": "tuscaran-glacier/ozur",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Ozur is a level-77 Council member with 100,000 health; he hits harder the more players are near him (Strength 200, then 350, at two crowd thresholds).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads Ozur's Disease in a 400 radius.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Ozur was the Council's measurer. Whenever the icelords demanded war, he asked how many enemies there were, and he answered each threat in exact proportion. He fights the same way still. Come at him with a few, and he is an old giant with a cough. Come at him with a crowd, and he finds a strength the Council never knew he had. He thinks this is fair. So do the skalds. Every scratch on the wall behind his seat is a threat he measured, and every one was answered.",
+  "legend": "Don't zerg Ozur. Send only as many as you need into melee range; the more stand near him, the harder he hits. Cure his disease. Raid leaders call it the polite pull: two tanks, a few melee, healers at range and everyone else waiting their turn. The impatient raid feeds him.",
+  "yells": {
+    "aggro": [
+      "How many of you? Let me count before I answer."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "So many. Then I answer in kind."
+      }
+    ],
+    "death": [
+      "The measure... was wrong..."
+    ],
+    "slay": [
+      "In proportion."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tally-marks cover the wall behind a council seat."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ozur weighs the crowd and grows stronger!"
+      }
+    ],
+    "realmFirstKill": "Council Ozur has taken his last measure."
+  },
+  "botLines": {
+    "briefing": [
+      "ozur gets stronger the more people are on him. [one group|just the tanks] in melee, rest at range"
+    ],
+    "aftermathWin": [
+      "kept it small on ozur, worked"
+    ],
+    "aftermathLoss": [
+      "everyone piled on ozur and he started hitting for twice as much"
+    ],
+    "rumour": [
+      "ozur counts you, they say. bring a crowd and he gets mean"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ozur",
+    "text": "The Council's measurer, who answered every threat in exact proportion. Bring a crowd to his seat and he finds the strength for a crowd."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Council Ozur's measure in {minutes} minutes.",
+    "loss": "Council Ozur weighed {raidLeader}'s raid from {realm} and found it wanting after {minutes} minutes."
+  }
+}

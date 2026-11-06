@@ -1,0 +1,79 @@
+{
+  "id": "icelord-steinvor",
+  "name": "Icelord Steinvor",
+  "catalogKey": "tuscaran-glacier/steinvor",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Steinvor is a level-80 icelord with 100,000 health, linked to Icelord Skuf.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He picks a player and raises a Pillar of Ice under them (Pillar of Frost, 750 damage), telling them they are not going anywhere.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs"
+    },
+    {
+      "text": "When he dies two hrimthursa seers appear.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Steinvor and Skuf hold the middle tunnels as a pair, the hammer and the anvil of the icelords. Steinvor is the one who chooses. He looks over the raid, settles on one face, and the ice rises under it as a pillar of frost. He tells that one they are going nowhere, and he is usually right. His seers love him for it. When he falls they come out of hiding to avenge him, two of them, who have been watching the whole fight from the walls.",
+  "legend": "Steinvor's pillar is targeted: whoever he names, move off the spot and heal through it. Kill Skuf and Steinvor together and save some power for the two seers that come when Steinvor dies. Seers heal and nuke; mez one, kill the other.",
+  "yells": {
+    "aggro": [
+      "Skuf, the anvil. I will be the hammer."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "You are not going anywhere."
+      }
+    ],
+    "death": [
+      "Seers... come out... avenge me..."
+    ],
+    "slay": [
+      "Pinned and finished."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Pillars of frost rise here and there like old graves."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Two seers step out of the walls!"
+      }
+    ],
+    "realmFirstKill": "Icelord Steinvor is felled. His seers wail."
+  },
+  "botLines": {
+    "briefing": [
+      "steinvor and skuf together. if steinvor names you, move, pillar comes up under you",
+      "save mana, two seers pop when steinvor dies"
+    ],
+    "aftermathWin": [
+      "steinvor and skuf done. seers too"
+    ],
+    "aftermathLoss": [
+      "seers popped and we had nothing left"
+    ],
+    "rumour": [
+      "heard steinvor's pillar hits for 750. [stand somewhere else|move your feet]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Steinvor",
+    "text": "The hammer of the middle tunnels, paired with [Skuf]. He chooses one face and raises frost beneath it. When he falls, the seers who watched from the walls come to avenge him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke the hammer and the anvil, Steinvor and Skuf, in {minutes} minutes.",
+    "loss": "Icelord Steinvor's pillars held {raidLeader}'s raid from {realm} in place for {minutes} minutes, and then for good."
+  }
+}
