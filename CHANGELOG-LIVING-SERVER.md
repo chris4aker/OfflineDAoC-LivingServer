@@ -27,6 +27,12 @@ Older entries below keep the names they were written with.
     stefanrows's `BotThinkProfiler` (the timed scope, the measured lock, the minute line), both GPL-3.0.
   - **Checked:** 33 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
     report tool; the full server suite passes (4,123). Not yet run on a live server: the first L300 run is the owner's.
+- **New client (0.37c): 14 more of shadowofze's final scripts** (PR #54, issue #34). Installed as content patches
+  over the released files: abilities (Sprint, Stealth ...) drag onto the quickbar; a Stealth row in the Abilities
+  window, `/stealth` and `/hide`; SELL in the merchant window (APPRAISE shows but does nothing yet: it needs a newer
+  `MMOEngine.dll`); one PLAY click enters the world once; names hide behind walls; fog per region; flickering casting
+  hands; arrow, bolt and poison info. What is held back and why: [docs/CLIENT-SCRIPTS-1.2.md](docs/CLIENT-SCRIPTS-1.2.md).
+  Not yet played in game.
 
 ## Beta 1.1.2 (in development)
 
