@@ -1,0 +1,78 @@
+{
+  "id": "loken",
+  "name": "Loken",
+  "catalogKey": "midgard-named-mobs-classic-zones/loken",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Loken is a level-65 named with 10,000 health in eastern Raumarik, with two wolf companions that return when killed.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Searing Blast and Flame Spear, and takes no damage from attackers who stand too far from his spawn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He is the target of the Healer and Shaman epic 'The Desire of a God', which begins with word that Loki seeks to cause trouble; killing him yields a ball of flame.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/652"
+    },
+    {
+      "text": "Loke is the Swedish form of Loki (the -n form to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "Loki is bound under the earth with a serpent dripping venom on his face, the old tale says, and his wife catches the venom in a bowl. When she empties the bowl the venom falls and he writhes, and the earth shakes. Some of what he is gets out on those days. In Raumarik it walks as Loken, a slim fire-handed thing with two wolves at its heels, Fenrir's cousins, and it is up to no good. The seers and healers of Midgard are sent to put it out, and what they bring home is a ball of fire that does not cool. Loken will not fight you at a distance, only up close, where he can see your face.",
+  "legend": "Loken's two wolves come with him; they're weaker, kill or ignore them. Fight him close to his spot, he can't be hurt from afar. Healers and shamans do him for their epic. A cave shaman kited him solo once, they say.",
+  "yells": {
+    "aggro": [
+      "Oh, a seer. Have you come to put out a little fire?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Burn, then. My father's chains are long, but not that long."
+      }
+    ],
+    "death": [
+      "The bowl... is full again..."
+    ],
+    "slay": [
+      "Ashes. Pretty."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The snow is scorched here, in the shape of footprints."
+    ],
+    "realmFirstKill": "Loken's fire is put out. For now."
+  },
+  "botLines": {
+    "briefing": [
+      "loken: 2 wolves, fight him close to his spot",
+      "healers and shamans, this is your epic step"
+    ],
+    "aftermathWin": [
+      "got the ball of flame! [epic done|finally]"
+    ],
+    "aftermathLoss": [
+      "searing blast hurts more than i thought"
+    ],
+    "rumour": [
+      "loken is a bit of loki that gets loose when the venom bowl spills. [the seers say|thats what inaksha says]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Loken",
+    "text": "When the bowl over bound Loki is emptied and he writhes, some of what he is gets out. In Raumarik it walks as Loken, fire-handed, with two wolves at its heels."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out Loken's fire in {minutes} minutes.",
+    "loss": "Loken burned {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

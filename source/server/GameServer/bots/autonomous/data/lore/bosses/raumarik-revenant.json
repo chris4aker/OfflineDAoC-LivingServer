@@ -1,0 +1,77 @@
+{
+  "id": "raumarik-revenant",
+  "name": "Raumarik Revenant",
+  "catalogKey": "midgard-named-mobs-classic-zones/raumarikrevenant",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "The Raumarik Revenant is a level-77 named with 40,000 health in the northwest of Raumarik; he casts Frost Shock (400).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "In the quest 'The Legend of Fenrir's Folly' (the winner of the Herald's 2002 quest contest) players must kill the Revenant in the undead fortress of Raumarik, with its frore liches, to win back a sun fragment in a cold iron casket; players called him very spell resistant.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/1770"
+    },
+    {
+      "text": "Its rewards include the Heart of the Sun and Fenris Fang weapons.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/1770"
+    },
+    {
+      "text": "Bot chat warns that the Revenant walks Raumarik.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "They call it Fenrir's folly: the wolf, the old tale says in Raumarik, once snapped at the sun in his youth and took a splinter of it in his teeth, and spat it out in the snow because it burned. A splinter of the sun does not go out. The dead of Raumarik gathered around it for its warmth, and the greatest of them, the Revenant, built a fortress round it and set frore liches on the walls. He is a cold thing guarding a hot one, and he does not understand it any better than the wolf did. His frost shock answers anyone who comes near, and spells slide off him like rain off a shield. Those who win the splinter back carry it away in a casket of cold iron, and still it glows.",
+  "legend": "The Revenant is very spell resistant: bring melee, and kill the frore liches first. He's the end of Fenrir's Folly, so groups come for him with a casket in their bags. One good group with a healer can do it; it takes a while. They tell new groups about him to scare them, and it works.",
+  "yells": {
+    "aggro": [
+      "The warmth is mine. The dead keep what the wolf dropped."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cold. So cold. Give it back. Give it back!"
+      }
+    ],
+    "death": [
+      "The sun... is going out... again..."
+    ],
+    "slay": [
+      "Lie down by the fire with us."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An undead fortress. Something warm glows within."
+    ],
+    "realmFirstKill": "The Raumarik Revenant falls. The sun-splinter is free."
+  },
+  "botLines": {
+    "briefing": [
+      "revenant resists spells, melee him. liches first"
+    ],
+    "aftermathWin": [
+      "revenant down, casket's glowing. [fenris fang time|heart of the sun!]"
+    ],
+    "aftermathLoss": [
+      "liches added and it fell apart"
+    ],
+    "rumour": [
+      "raumarik revenant guards a piece of the sun fenrir spat out. [true story|its in the quest]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Revenant",
+    "text": "Fenrir once snapped at the sun, the tale goes, and spat out a burning splinter in Raumarik's snow. The dead gathered round it, and the greatest of them, the Revenant, walled it in. Win it back and carry it in cold iron."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took the sun-splinter from the Raumarik Revenant in {minutes} minutes.",
+    "loss": "The Raumarik Revenant kept the sun-splinter from {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

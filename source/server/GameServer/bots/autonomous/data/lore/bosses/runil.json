@@ -1,0 +1,67 @@
+{
+  "id": "runil",
+  "name": "Runil",
+  "catalogKey": "midgard-named-mobs-classic-zones/runil",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Runil is an undead named with 6,000 health in eastern Raumarik who brings his pack with him; the catalog treats him as a monster on the way, not an epic.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam places him near 54k, 19k with three clan deserters, and ties him to the mystic quest 'Saving the Clan' (level 43).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/3547"
+    }
+  ],
+  "story": "Runil was one of the deserters who carried Kelic into Raumarik, or so the clan tells it, and he did not get far on the way home. The cold took him, or Kelic's curse did, and now he stands with three of his fellow deserters in the east of Raumarik, dead and undecided, guarding nothing. The young mystics of Midgard meet him first on the road to the clan's salvation, and learn from him what a curse can do to those who only carried it.",
+  "legend": "Runil's a level 50 undead with three deserters beside him. They help each other, so pull them one at a time if you can. He is an early step of the mystic epic. Not many people hunt there, so you'll have him to yourself.",
+  "yells": {
+    "aggro": [
+      "We only carried him. We only carried him!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Deserters, stand! There is nowhere left to run!"
+      }
+    ],
+    "death": [
+      "Home... we were... going home..."
+    ],
+    "slay": [
+      "Now you are a deserter too."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four dead men stand together, facing the way home."
+    ],
+    "realmFirstKill": "Runil the deserter has stopped running."
+  },
+  "botLines": {
+    "briefing": [
+      "runil and 3 deserters, pull singles"
+    ],
+    "aftermathWin": [
+      "runil done, mystic step finished"
+    ],
+    "aftermathLoss": [
+      "pulled all four, [oops|ouch]"
+    ],
+    "rumour": [
+      "runil was one of the deserters who dumped kelic in raumarik. curse got him too"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Runil",
+    "text": "One of the deserters who carried [Kelic] into Raumarik. He did not get far on the way home."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put the deserter Runil to rest in {minutes} minutes.",
+    "loss": "Runil's deserters stood their ground against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

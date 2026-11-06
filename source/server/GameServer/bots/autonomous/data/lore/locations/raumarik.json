@@ -1,0 +1,112 @@
+{
+  "id": "raumarik",
+  "name": "Raumarik",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "summary": "Midgard's high wild north-west, home of foul beasts, the undead fortress of the Revenant and the Wretch of Winter.",
+  "facts": [
+    {
+      "text": "Allakhazam: Raumarik is home to foul beasts, an extremely high-level zone with a handful of slow-respawning monsters, some needing more than one group.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=16"
+    },
+    {
+      "text": "Its named include Hugi, Kelic and his servants, Loken, Oona, the Raumarik Revenant, Runil and the Wretch of Winter.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=16"
+    },
+    {
+      "text": "Three Midgard epic quests end here: Loken (Healer, Shaman), Oona (Hunter, Shadowblade) and Kelic (the mystics).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Midgard/epic/"
+    },
+    {
+      "text": "Bot chat lists fenrir soldiers, mystics and prophets, a wolf of Loki, winter wolves and sleipneirssons in the cold north.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Raumarik is where Midgard keeps the things it does not want to think about. It lies high in the north-west, past the swamp and the forest, a country of snow and black water and wide rivers that divide and meet again, and nothing there respawns quickly because nothing there is in a hurry. The Fenris wolf's people run in it: soldiers, mystics, prophets of the end. A wolf of Loki hunts with the winter wolves. Sleipnir's sons graze in the white.\n\nEvery realm's war reaches here too. A Hibernian champion named Oona holds the place where the rivers divide with a guard of the Norse dead. A bit of bound Loki walks the east as Loken when the venom bowl spills. A clansman named Kelic, who cursed his own people, stands dead at the snowline where deserters left him, and one of those deserters stands not far off, still facing home. In the north-west an undead fortress walls in a splinter of the sun that Fenrir once spat into the snow, and the Revenant keeps it. And over all of it the Wretch of Winter walks in nine borrowed shapes.\n\nMidgard sends its best here when they are ready to finish their training: healers, shamans, hunters, mystics. Most of them come back. It is a high-level zone.",
+  "legend": "Nobody goes to Raumarik for quick experience. They go for their epic, or for the Wretches, or to be able to say they did. The old hands tell new groups about the Wretch of Winter to scare them. Follow the river south to find Oona. Don't fight the Revenant with casters.",
+  "atmosphere": {
+    "firstEntry": [
+      "Raumarik. The snow here is in no hurry.",
+      "Foul beasts and old cold. Midgard's north is awake."
+    ],
+    "areas": [
+      {
+        "name": "the undead fortress",
+        "x": 601367,
+        "y": 748425,
+        "z": 8296,
+        "radius": 1800,
+        "lines": [
+          "Frost-walls of the dead. Something warm within."
+        ]
+      },
+      {
+        "name": "the river fork",
+        "x": 607233,
+        "y": 786850,
+        "z": 4384,
+        "radius": 1400,
+        "lines": [
+          "The rivers divide. A green light flickers."
+        ]
+      },
+      {
+        "name": "Loken's scorched snow",
+        "x": 638000,
+        "y": 763500,
+        "z": 4600,
+        "radius": 1500,
+        "lines": [
+          "The snow is scorched in footprints."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "raumarik is where three of our epics end. loken, oona and kelic",
+      "the revenant in raumarik guards a piece of the sun fenrir spat out",
+      "theres a hib champion called oona at the river fork in raumarik. [she raises our dead|turns norsemen into her soldiers]"
+    ],
+    "rumour": [
+      "they tell new groups about the wretch of winter to scare them. [it worked on me|works every time]",
+      "raumarik is good xp but the revenant walks there. watch your back",
+      "loken is a piece of loki that gets out when the venom bowl spills"
+    ],
+    "tell": [
+      "raumarik is the far northwest. big nameds, slow spawns, three epics end there",
+      "raumarik? wretches of winter, the revenant, oona, loken, kelic. bring a group",
+      "its a high level zone, not a camping zone. you go for an epic or a named"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Raumarik. Where Midgard keeps what it would rather not think about: the [Revenant]'s fortress, the [Wretch], and three [epics] that end there.\"",
+    "topics": {
+      "Revenant": "He walls in a splinter of the sun that Fenrir spat out in the snow. Win it back in cold iron, and bring blades, not spells.",
+      "Wretch": "The Wretch of Winter has no shape of its own and borrows nine. The arachite is the hardest.",
+      "epics": "Healers and shamans hunt Loken, a bit of Loki loose in the snow. Hunters and shadowblades hunt Oona of Hibernia at the river fork. The mystics hunt Kelic, who cursed his own clan."
+    }
+  },
+  "book": {
+    "title": "Fenrir's Folly, as told in Galplen",
+    "pages": [
+      "When the wolf was young, before the gods bound him, he was hungry all the time and afraid of nothing. One morning he saw the sun come up over Raumarik and thought it was a fat red bird, and he leapt for it and snapped, and got a splinter of it in his teeth before the chariot pulled away. It burned. He spat it into the snow and ran yelping to his father, who laughed until the mountains shook. That is why the wolf hates the sun, they say in Galplen, and why one day he will swallow it whole.",
+      "The splinter did not go out. Snow will not put out the sun. It lay in Raumarik and was warm, and the dead of that cold land came to it as the living come to a hearth, and the greatest of them built a fortress round it so the others would have to ask. He is still there. The old smith Gris of Jordheim can make a casket of cold iron to carry it in, if you bring him the makings, and the healers say a heart that has held a splinter of the sun never quite goes cold again."
+    ]
+  },
+  "bosses": [
+    "raumarik-revenant",
+    "wretch-of-winter",
+    "loken",
+    "oona",
+    "kelic",
+    "runil",
+    "hugi"
+  ]
+}
