@@ -1,0 +1,84 @@
+{
+  "id": "maldahar-the-glimmer-prince",
+  "name": "Maldahar the Glimmer Prince",
+  "catalogKey": "open-world/maldahartheglimmerprince",
+  "locationId": "sheeroe-hills",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "A level-73 named with 40,000 health who roams the Sheeroe Hills (388276, 696824).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He cannot be crowd-controlled (CCImmunity) and resets to full after 60 seconds out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MaldaharTheGlimmerPrince.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat calls him the Glimmer King's son and warns that counting glimmers aloud brings him.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "The father-son tie is Living Server lore: no Mythic source names his parentage.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Every court needs someone to ride its borders, and Maldahar is the Glimmer King's. The Hibernians call him the prince, and the Glimmer part for him as he passes. He rides a horse of the same cold light as the rest of the court, and like the rest of the court he is in no hurry. Charms slide off him; no bard has ever sung him to sleep and no druid has ever rooted him to the grass, for he is not wholly here to be held. What he is, is patient. Leave him alone for the space of a long breath and he is whole again, as if the wounds had been a rumour. The shepherds' children say he is looking for something his father lost when the sky tore. The Azure say he is looking for them.",
+  "legend": "Mezz and root are wasted on him, so bring damage, not tricks. Commit to the fight: if your group drifts off for a minute he heals to full and you start again. Pull him away from the glimmer camps so the court does not join. And never count the glimmers aloud on the ridge, or so every Sheeroe veteran swears.",
+  "yells": {
+    "aggro": [
+      "My father's hills do not want you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You cannot hold light in your hands."
+      }
+    ],
+    "death": [
+      "Tell my father... the doors are open."
+    ],
+    "slay": [
+      "Another for the court."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hoofbeats of light on the grey grass."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Glimmer Prince does not falter."
+      }
+    ],
+    "realmFirstKill": "The Glimmer Prince is unhorsed. Sheeroe mourns."
+  },
+  "botLines": {
+    "briefing": [
+      "no cc on maldahar, dont waste the mezz. [burn him|all in]",
+      "if we break off he resets in a minute. [commit or dont pull|all or nothing]"
+    ],
+    "aftermathWin": [
+      "maldahar down. the glimmers went [quiet|dim] for a moment, swear it"
+    ],
+    "aftermathLoss": [
+      "we stopped to rest and he was full again. [told you|knew it]"
+    ],
+    "rumour": [
+      "someone counted glimmers on the ridge [again|last night]. maldahar came down [within a minute|right after]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Maldahar",
+    "text": "The Glimmer Prince, who rides the borders of his father's court. No charm holds him, and if he is let be for a minute he is whole again. Fight him all at once or not at all."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} unhorsed Maldahar the Glimmer Prince on the Sheeroe ridges; {raidLeader} called it in {minutes} minutes.",
+    "loss": "{realm} chased the Glimmer Prince for {minutes} minutes under {raidLeader}, and he rode on whole."
+  }
+}

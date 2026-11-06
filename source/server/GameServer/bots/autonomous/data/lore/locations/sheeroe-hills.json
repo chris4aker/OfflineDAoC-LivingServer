@@ -1,0 +1,121 @@
+{
+  "id": "sheeroe-hills",
+  "name": "Sheeroe Hills",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "summary": "The grey hills above the Bog of Cullen, where Cuuldurach the Glimmer King keeps his court of light.",
+  "facts": [
+    {
+      "text": "Cuuldurach is a level-80 dragon whose home is the Sheeroe Hills.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmob=3606"
+    },
+    {
+      "text": "Official dragon-campaign text (2010s, after the period) says Sheeroe was green and lush before the Glimmer King darkened its skies, and that the Glimmer were his.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/dark-destiny"
+    },
+    {
+      "text": "Later campaign text places a rift in the Veil in Sheeroe (post-period).",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/dragons-curse-campaign-chapter-5"
+    },
+    {
+      "text": "Sheeroe Hills is a zone of region 200; Cuuldurach's lair is at 408646, 706432 and Maldahar the Glimmer Prince roams at 388276, 696824.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "When Cuuldurach dies the server says: 'The hills seem to weep for the loss of their king.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs"
+    },
+    {
+      "text": "Bot chat already tells that the Sheeroe pass came out of the Cullen mist one day, that Sheeroe is an otherworld kingdom, and that the Azure (firbolg kin) crusade against the Glimmer.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "In May 2003, 120 Hibernians killed him by holding the four entrances of the lair against his adds.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/how-to-kill-cuuldurach.124821/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "'Sheeroe' may render Irish sí rua, 'red fairy mound'; to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "The shepherds of Connacht used to drive their flocks up out of the Bog of Cullen every summer, onto hills that had no name because nobody needed one. Then a ranger came back down through the mist and said the pass beyond the last sheepfold had not been there the week before. Within a season the grass on the far side had gone grey, the clouds over it had stopped moving, and small cold lights were walking the ridges at night.\n\nThe sages of Tir na Nog say Sheeroe is not wholly in this world. Where the Veil wears thin, a kingdom of the otherworld leaned through, and its king came with it: Cuuldurach, whom the realm calls the Glimmer King. He keeps no gold. He keeps light. The Glimmer gather round him as a court gathers round a throne, and his son Maldahar rides the hills in his name. The Azure, firbolg kin who pray to the open sky, came up the pass to burn that light out and have been preaching at it ever since. Neither side has given an inch.\n\nThe land is sworn to its king. Outside his lair nothing can wound him, and inside it the hills themselves send help: the Glimmer pour in through four doors whenever he is pressed, and he answers every tenth part of his strength lost with fire. So every song about Sheeroe begins with the four doors, and every raid that came home held all four. When the king falls, the hills weep for him. Hibernians who have heard it do not call it a figure of speech.",
+  "legend": "Hold the four doors and he is only a dragon; lose one and you are fighting Sheeroe. Never chase him out of the lair, because out there no blade bites him and he is only drawing you away. Fight close, keep the healers spread against the breath, and count his wounds in tenths. Old hands say never count the glimmers aloud on the ridge: it brings the prince down on you.",
+  "atmosphere": {
+    "firstEntry": [
+      "The grass of Sheeroe is grey. Something is watching.",
+      "The clouds over Sheeroe do not move.",
+      "Cold lights walk the ridges, in no hurry at all."
+    ],
+    "areas": [
+      {
+        "name": "the Glimmer King's lair",
+        "x": 408646,
+        "y": 706432,
+        "z": 2965,
+        "radius": 2200,
+        "lines": [
+          "Four ways lead in. The court will use all four.",
+          "The ground here is warm, and the air hums."
+        ]
+      },
+      {
+        "name": "the prince's road",
+        "x": 388276,
+        "y": 696824,
+        "z": 2557,
+        "radius": 1500,
+        "lines": [
+          "Hoofprints of light, fading as you watch."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "cuuldurach warns you once, from the clouds. [thats all the warning|thats the only warning] you get",
+      "the [bards|old hibs] say hes the only male of the three dragons. [explains the temper|explains a lot]",
+      "[they say|word is] the trick at sheeroe is the four doors. hold those and the glimmer king is only a dragon",
+      "the shepherds used to summer their flocks up there before the pass opened. [now look at it|grey as ash now]"
+    ],
+    "rumour": [
+      "[heard|someone said] the glimmer king is [restless|awake] again. the clouds over sheeroe [stopped|went still]",
+      "a [ranger|scout] swore he saw maldahar riding the ridge [last night|at dusk]. [nobody believes him|i do]"
+    ],
+    "tell": [
+      "sheeroe? the glimmer king and his court. take a raid, hold the four doors, never chase him outside",
+      "grey grass, glimmers, azure preaching, and cuuldurach at the top. bring [fire|heat] and a lot of friends"
+    ]
+  },
+  "loremaster": {
+    "intro": "You ask after Sheeroe? Then you ask after its king. Cuuldurach came through a [tear in the sky] and the hills have not been green since. He keeps the [Glimmer] as a lord keeps a court, and his son [Maldahar] rides the hills in his name. If you go up there with the realm behind you, remember the [four doors].",
+    "topics": {
+      "tear in the sky": "The rangers say the pass was simply there one morning. The sages say the Veil wore thin over the Bog of Cullen and a corner of the otherworld leaned through. Both may be right.",
+      "Glimmer": "Cold bright things, courtiers of light. The [Azure] say they are death given a glow. The Glimmer say nothing at all, and keep glowing.",
+      "Azure": "Firbolg kin who pray to the open sky. They came up the pass to put out the Glimmer and have been at it ever since. Kin are kin, but I would not lend them a torch.",
+      "Maldahar": "The Glimmer Prince. No charm holds him and no sleep takes him, and he does not tire of a chase. If he has not been fought for a minute, he is whole again. Fight him all at once or not at all.",
+      "four doors": "His courtiers come to him by four ways. Every raid that held all four came home with a story. The others came home as stories."
+    }
+  },
+  "book": {
+    "title": "A Shepherd's Account of Sheeroe",
+    "pages": [
+      "My grandmother drove sheep on Sheeroe when it was green, and I did after her, until the summer the sky came apart. It did not thunder. It tore, quietly, the way old linen tears, and through the tear came wings wider than the valley. The flock ran into the bog and I did not stop them. That night lights walked the ridges, small and cold and in no hurry, and in the morning the grass where they had walked was grey. My father said they were the Good Folk. He was wrong. They were the King's.",
+      "We went back once, my brother and I, for the sheepfold stones. A rider came down the ridge toward us on a horse made of the same cold light, and he did not hurry either. My brother threw a stone at him. It passed through the horse's shoulder and the rider turned his head, only that, and looked at us. We left the stones. My brother has never thrown anything since, not even dice. They call the rider the prince now. I did not know he had a name. I knew he had a father.",
+      "The blue folk came up the pass the next spring, the Azure, singing to the sky, and they burned what they could. The lights did not burn. The king spoke once from the clouds, a voice like weather, and told all who trespassed that he would find them. The Azure sang louder. I have heard that a raid of the realm went up at last and held four doors, and that when he fell the hills wept. I believe it. I heard them weep when he came."
+    ]
+  },
+  "bosses": [
+    "cuuldurach-the-glimmer-king",
+    "maldahar-the-glimmer-prince"
+  ]
+}
