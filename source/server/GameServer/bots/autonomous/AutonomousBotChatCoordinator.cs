@@ -54,6 +54,7 @@ public static class AutonomousBotChatCoordinator
 
     public static bool TryStartAmbient(GameBot starter, AutonomousBotChat.Context context)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatAmbient); // AI_PROFILE: measures only
         if (!Eligible(starter))
             return false;
         if (!AutonomousBotVoices.Enabled)
@@ -554,6 +555,7 @@ public static class AutonomousBotChatCoordinator
     /// </summary>
     public static bool TrySayEventNews(GameBot preferred, bool witness, string topic, IReadOnlyDictionary<string, string> slots)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatNews); // AI_PROFILE: measures only
         if (!AutonomousBotVoices.Enabled || string.IsNullOrEmpty(topic) || preferred == null || !HasFactionAudience(preferred.Realm))
             return false;
         GameBot speaker = Eligible(preferred) ? preferred : null;
@@ -569,6 +571,7 @@ public static class AutonomousBotChatCoordinator
     /// <summary>World news no realm notice told (AutonomousChatNews): said by a bot that was near it if there is one.</summary>
     public static bool TellNews(ChatNewsItem item)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatNews); // AI_PROFILE: measures only
         if (item == null || !AutonomousBotVoices.Enabled || !HasFactionAudience(item.Realm))
             return false;
         GameBot[] bots = AutonomousBotRegistry.Snapshot().Where(bot => bot.Realm == item.Realm && Eligible(bot)).ToArray();
@@ -904,6 +907,7 @@ public static class AutonomousBotChatCoordinator
 
     public static void OnPlayerFactionChat(GamePlayer player, string message)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatPlayerReply); // AI_PROFILE: measures only
         if (player == null || string.IsNullOrWhiteSpace(message))
             return;
         BotChatTranscript.Player("faction", player, message);
@@ -940,6 +944,7 @@ public static class AutonomousBotChatCoordinator
 
     public static void OnPlayerLocalChat(GamePlayer player, string message)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatPlayerReply); // AI_PROFILE: measures only
         if (player == null || string.IsNullOrWhiteSpace(message) || player.CurrentRegion == null)
             return;
         BotChatTranscript.Player("say", player, message);
@@ -1086,6 +1091,7 @@ public static class AutonomousBotChatCoordinator
     /// </summary>
     public static void OnPlayerTell(GamePlayer player, GameBot bot, string message)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ChatPlayerReply); // AI_PROFILE: measures only
         if (player == null || bot == null || string.IsNullOrWhiteSpace(message))
             return;
         BotChatTranscript.Player("tell", player, message, bot.Name);

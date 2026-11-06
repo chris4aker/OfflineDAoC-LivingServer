@@ -230,6 +230,7 @@ public static class AutonomousStableRoutePlanner
     public static Choice FindBest(GameBot bot, Vector3 goal, IReadOnlySet<GameStableMaster> excludedBoardingMasters = null,
         bool boundedMeetupApproach = false)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.RouteStableFindBest); // AI_PROFILE: measures only
         if (bot?.CurrentRegion == null)
             return null;
 
@@ -316,6 +317,7 @@ public static class AutonomousStableRoutePlanner
     public static Choice FindDirectRideToConnectedPortal(GameBot bot, Vector3 portal, int arrivalRadius,
         IReadOnlySet<GameStableMaster> excludedBoardingMasters = null)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.RouteStablePortal); // AI_PROFILE: measures only
         if (bot?.CurrentRegion == null || arrivalRadius <= 0)
             return null;
 

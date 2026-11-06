@@ -62,7 +62,7 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>Whether a relic campaign for this relic keep is open (tests, dashboard).</summary>
     public static bool HasRelicCampaign(string relicKeepId)
     {
-        lock (Sync) return Campaigns.ContainsKey(relicKeepId);
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents)) return Campaigns.ContainsKey(relicKeepId);
     }
 
     /// <summary>One relic raid in progress, as saved across a restart.</summary>
@@ -73,7 +73,7 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>The relic raids in progress: open campaigns, running relic sieges and relic carrier events.</summary>
     public static RelicState[] RelicStateSnapshot(long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             var result = new List<RelicState>();
             var seen = new HashSet<(string, eRealm)>();
@@ -117,7 +117,7 @@ public static partial class AutonomousRvrEventLayer
     {
         if (relic?.IsRelicKeep != true || relic.OwningRealm == attacker ||
             attacker is not (eRealm.Albion or eRealm.Midgard or eRealm.Hibernia)) return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (Campaigns.ContainsKey(relic.Id)) return false;
             int held = HeldSentinelKeeps(relic).Length;

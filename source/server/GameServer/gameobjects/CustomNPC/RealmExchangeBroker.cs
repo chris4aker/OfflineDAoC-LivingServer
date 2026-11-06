@@ -307,7 +307,7 @@ public sealed partial class RealmExchangeBroker : GameNPC, IGameInventoryObject
     {
         lock (TransactionLock)
         lock (typeof(AutonomousBotEconomy))
-        lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+        using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
         {
             if (!CanUseExchange(buyer) || !IsAvailableListing(item, Realm))
             {
@@ -431,7 +431,7 @@ public sealed partial class RealmExchangeBroker : GameNPC, IGameInventoryObject
 
         lock (TransactionLock)
         lock (typeof(AutonomousBotEconomy))
-        lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+        using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
         {
             DbCoreCharacter character = DOLDB<DbCoreCharacter>.SelectObject(DB.Column("DOLCharacters_ID").IsEqualTo(player.InternalID));
             if (character == null || (eRealm)character.Realm != brokerRealm)

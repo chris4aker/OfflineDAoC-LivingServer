@@ -62,6 +62,7 @@ namespace DOL.GS
 
         private bool HandleTownIdle(BotBrain brain, GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.TownIdle); // AI_PROFILE: measures only
             if (_townIdleFinished) return false;
             DateTime now = DateTime.UtcNow;
             if (!DateTime.TryParse(bot.PersistentRecord.ObjectiveExpiresUtc, null,

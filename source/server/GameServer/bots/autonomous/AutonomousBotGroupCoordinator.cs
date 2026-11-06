@@ -183,16 +183,26 @@ public static partial class AutonomousBotGroupCoordinator
         if (Interlocked.Read(ref _lastMaintenanceTick) == now || now < Interlocked.Read(ref _maintenanceRetryTick)) return;
         try
         {
-            RealmEventNotices.Pulse(now);
-            AutonomousLivingServer.Pulse(now);
-            RealmEventControls.Pulse();
-            AutonomousRealmRaid.Pulse(now);
-            AutonomousRealmRaid.RecruitForcedParty(now);
-            AutonomousEpicSpecialForces.Pulse(now);
-            AutonomousRvrEventLayer.PulseDefense(now);
-            RealmWarbandSupport.Pulse(now);
-            AutonomousObjectiveAssignments.ReconcileIfDue();
-            lock (Sync)
+            // AI_PROFILE: each serial pulse is timed on its own (audit 2026-11-03 §1.3, §9: at most 2 ms each).
+            using (AiProfile.Scope(AiSystem.PulseRealmEventNotices))
+                RealmEventNotices.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseLivingServer))
+                AutonomousLivingServer.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseRealmEventControls))
+                RealmEventControls.Pulse();
+            using (AiProfile.Scope(AiSystem.PulseRealmRaid))
+                AutonomousRealmRaid.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseRaidForcedParty))
+                AutonomousRealmRaid.RecruitForcedParty(now);
+            using (AiProfile.Scope(AiSystem.PulseEpicSpecialForces))
+                AutonomousEpicSpecialForces.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseRvrDefense))
+                AutonomousRvrEventLayer.PulseDefense(now);
+            using (AiProfile.Scope(AiSystem.PulseWarbandSupport))
+                RealmWarbandSupport.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseObjectiveAssignments))
+                AutonomousObjectiveAssignments.ReconcileIfDue();
+            using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             {
                 if (_lastMaintenanceTick == now) return;
                 Interlocked.Exchange(ref _lastMaintenanceTick, now);
@@ -202,10 +212,13 @@ public static partial class AutonomousBotGroupCoordinator
                 if (now >= _nextBrokenSessionSweep)
                 {
                     _nextBrokenSessionSweep = now + BrokenSessionSweepMilliseconds;
-                    RemoveBrokenSessions();
+                    using (AiProfile.Scope(AiSystem.PulseBrokenSessions))
+                        RemoveBrokenSessions();
                 }
-                FormSiegeParties();
-                TryFormGroups();
+                using (AiProfile.Scope(AiSystem.PulseFormSiegeParties))
+                    FormSiegeParties();
+                using (AiProfile.Scope(AiSystem.PulseTryFormGroups))
+                    TryFormGroups();
             }
         }
         catch (Exception exception)
@@ -219,7 +232,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static string RvrForceId(GameBot bot)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             return bot.Group != null && TryGetSession(bot.Group, out Session session) &&
                 session.ObjectiveKind == eAutonomousObjectiveKind.RvR ? session.Id : $"rvr-{bot.DatabaseID}";
@@ -231,8 +244,9 @@ public static partial class AutonomousBotGroupCoordinator
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper)
             return null;
 
+        using var aiProfile = AiProfile.Scope(AiSystem.CoordinatorPulse);
         PrepareCoordinatorTick();
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (bot.Group != null && TryGetSession(bot.Group, out Session currentSession))
                 RemoveBrokenSession(currentSession.Group, currentSession);
@@ -322,7 +336,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null || camp == null)
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) ||
                 IsAssemblyPhase(session.Phase) || session.Recovery.IsRegrouping)
@@ -360,7 +374,7 @@ public static partial class AutonomousBotGroupCoordinator
     public static bool PlanMeetupNearCamp(GameBot leader, SharedCamp camp)
     {
         if (leader?.Group == null) return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(leader.Group, out Session session) || session.MeetupPlanned ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve || session.Phase != "Leader staging" ||
@@ -443,7 +457,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static void ReportNoAvailableCamp(GameBot bot)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (bot?.Group == null || !TryGetSession(bot.Group, out Session session) ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve || session.Camp != null ||
@@ -470,7 +484,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null)
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Camp == null ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve)
@@ -508,7 +522,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Camp?.Id != campId ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve)
@@ -542,7 +556,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static HashSet<string> RejectedDungeonCamps(GameBot bot)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (bot?.Group == null || !TryGetSession(bot.Group, out Session session))
                 return new(StringComparer.Ordinal);
@@ -560,7 +574,7 @@ public static partial class AutonomousBotGroupCoordinator
     public static void RejectUnreachableCamp(GameBot bot, string campId, string reason = "")
     {
         if (AutonomousRealmRaid.GetView(bot?.Group) != null) return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (bot?.Group == null || !TryGetSession(bot.Group, out Session session) || session.Camp?.Id != campId)
                 return;
@@ -600,7 +614,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null)
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Camp == null || session.Recovery.IsRegrouping)
                 return;
@@ -709,7 +723,7 @@ public static partial class AutonomousBotGroupCoordinator
     public static GameBot PartyPuller(GameBot member)
     {
         if (member?.Group == null) return null;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(member.Group, out Session session) ? ChoosePuller(session, BotMembers(member.Group)) : null;
     }
 
@@ -748,7 +762,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(bot.Group, out Session session) && session.Recovery.IsRegrouping;
     }
 
@@ -756,7 +770,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(bot.Group, out Session session) && IsAssemblyPhase(session.Phase);
     }
 
@@ -774,7 +788,7 @@ public static partial class AutonomousBotGroupCoordinator
         // coordinator lock, which every grouped actor's Pulse also contends for.
         if (bot.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             // Membership can change between the brain thread and coordinator.
             // Capture once: a second property read could become null mid-check.
@@ -847,7 +861,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || bot.Group == null) return;
         if (AutonomousRealmRaid.GetView(bot.Group) != null) return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (TryGetSession(bot.Group, out Session session) && !session.Ending &&
                 session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
@@ -865,7 +879,7 @@ public static partial class AutonomousBotGroupCoordinator
             crossing.SourceRegion == crossing.TargetRegion)
             return true;
 
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Id != directive.GroupId)
                 return false;
@@ -906,7 +920,7 @@ public static partial class AutonomousBotGroupCoordinator
             crossing == null || crossing.SourceRegion == crossing.TargetRegion ||
             crossing.TargetRegion != directive.Camp.RegionId || bot == directive.Leader)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Id != directive.GroupId)
                 return false;
@@ -951,7 +965,7 @@ public static partial class AutonomousBotGroupCoordinator
             bot.CurrentRegionID != directive.Camp.RegionId || directive.GroupCombatActive)
             return false;
 
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Id != directive.GroupId)
                 return false;
@@ -1012,7 +1026,7 @@ public static partial class AutonomousBotGroupCoordinator
         staging = default;
         if (bot?.Group == null || directive?.IsDynamic != true || directive.Camp?.IsDungeon != true)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             return TryGetSession(bot.Group, out Session session) &&
                    session.Id == directive.GroupId &&
@@ -1026,7 +1040,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (bot?.Group == null || directive?.IsDynamic != true || directive.Camp?.IsDungeon != true ||
             bot.CurrentRegionID == directive.Camp.RegionId)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(bot.Group, out Session session) && session.Id == directive.GroupId &&
                 session.DungeonArrivalRegion == directive.Camp.RegionId &&
                 BotMembers(bot.Group).Any(member => member.CurrentRegionID == directive.Camp.RegionId);
@@ -1035,7 +1049,7 @@ public static partial class AutonomousBotGroupCoordinator
     public static void MarkCombatObserved(Group group)
     {
         if (group == null) return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!Sessions.TryGetValue(group, out Session session)) return;
             session.CombatObserved = true;
@@ -1057,7 +1071,7 @@ public static partial class AutonomousBotGroupCoordinator
             reporter.IsAutonomousWorldBot != true || reporter.IsTemporaryGroupHelper)
             return false;
 
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(reporter.Group, out Session session))
                 return false;
@@ -1169,7 +1183,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return true;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             Group group = bot.Group;
             if (group == null || !Sessions.TryGetValue(group, out Session session))
@@ -1278,7 +1292,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group != null)
         {
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             {
                 if (TryGetSession(bot.Group, out Session session) && session.Id == groupId &&
                     session.RendezvousSlots.TryGetValue(MemberKey(bot), out Vector3 slot))
@@ -1292,7 +1306,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Id != groupId) return false;
             long key = MemberKey(bot);
@@ -1355,7 +1369,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null || string.IsNullOrWhiteSpace(groupId))
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             Group group = bot.Group;
             if (!Sessions.TryGetValue(group, out Session session) || session.Id != groupId ||
@@ -1499,7 +1513,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (living is not GameBot bot || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper)
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             ClearMetadata(bot, true);
             if (group != null && Sessions.TryGetValue(group, out Session session))
@@ -1579,7 +1593,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (group == null)
             return;
         AutonomousDefensivePull.Cancel(group);
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             AutonomousRealmRaid.RemoveParty(group);
             if (Sessions.TryGetValue(group, out Session ending) && ending.ObjectiveKind == eAutonomousObjectiveKind.RvR)
@@ -2695,7 +2709,7 @@ public static partial class AutonomousBotGroupCoordinator
             return PveCorpseDisposition.NotManaged;
         if (AutonomousRealmRaid.GetView(corpseGroup) != null)
             return AutonomousRealmRaid.CorpseRecovery(deadBot);
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (deadBot.Group != corpseGroup || !Sessions.TryGetValue(corpseGroup, out Session session) ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve ||
@@ -3087,7 +3101,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static bool UsesDefensivePullGroup(Group group)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(group, out Session session) &&
                 AutonomousDefensivePull.UsesDefensivePull(session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve,
                     group.MemberCount, BotMembers(group).All(member => member.Level == 50));

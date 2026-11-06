@@ -167,7 +167,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static bool ForceStart(LiveObjective target, eRealm attacker, long now, out string reason)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (target?.IsRelicKeep == true && target.OwningRealm != attacker &&
                 attacker is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia)
@@ -294,7 +294,7 @@ public static partial class AutonomousRvrEventLayer
 
     private static bool ForceStartCore(LiveObjective target, eRealm attacker, long now, out string reason)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (target == null || target.IsPortalKeep || target.IsRelicCarrier ||
                 attacker is not (eRealm.Albion or eRealm.Midgard or eRealm.Hibernia) ||
@@ -331,7 +331,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static bool ResetCooldown(string id)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (Events.ContainsKey(id) || CarrierEvents.ContainsKey(id)) return false;
             Cooldowns.Remove(id);
@@ -341,12 +341,12 @@ public static partial class AutonomousRvrEventLayer
 
     public static long CooldownRemaining(string id, long now)
     {
-        lock (Sync) return Math.Max(0, Cooldowns.GetValueOrDefault(id) - now);
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents)) return Math.Max(0, Cooldowns.GetValueOrDefault(id) - now);
     }
 
     public static Dictionary<string, string> ForceTargets()
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             var result = new Dictionary<string, string>(StringComparer.Ordinal);
             foreach (var e in Events.Values)
@@ -461,7 +461,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static Plan ChooseOrJoin(Force force, IReadOnlyCollection<LiveObjective> objectives, long nowTick, double roll)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             // Defensive boundary: protected hubs cannot become new events,
             // reinforcements or reserve patrols, even if a caller supplies one.
@@ -492,7 +492,7 @@ public static partial class AutonomousRvrEventLayer
         if (force == null || string.IsNullOrWhiteSpace(force.GroupId) || force.Realm == eRealm.None || objectives == null)
             return null;
 
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             Cleanup(nowTick, objectives);
             if (force.AverageLevel < 50 || force.MinimumMemberLevel < 50)
@@ -767,7 +767,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static BattleNotice[] Snapshot()
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             Expire(GameLoop.GameLoopTime);
             return Events.Values.Where(entry => entry.ExpiresTick > GameLoop.GameLoopTime)
@@ -811,7 +811,7 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>The march leader reached the keep: the marched army attacks at once.</summary>
     public static void ReportArmyArrived(string targetId, long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             if (Events.TryGetValue(targetId, out var active) && !active.BattleStarted && MarchedArmy(active))
                 StartBattle(active, nowTick, "the marching army reached the keep and attacks at once; defenders and third-realm reinforcements may respond");
     }
@@ -915,7 +915,7 @@ public static partial class AutonomousRvrEventLayer
     /// </summary>
     public static bool HomeDefenseCalls(string groupId, eRealm realm, int memberCount)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (string.IsNullOrEmpty(groupId)) return false;
             ActiveEvent attack = Events.Values.FirstOrDefault(active => active.Attackers.ContainsKey(groupId));
@@ -1082,7 +1082,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static GameBot MarchLeader(string targetId)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (!Events.TryGetValue(targetId, out var active) || active.BattleStarted || !active.Marching || active.Mustered.Count == 0)
                 return null;
@@ -1152,7 +1152,7 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>A marcher took a march turn; for the leader that is a leading turn (walking, regrouping or holding).</summary>
     public static void ReportMarchLeading(string targetId, GameBot bot)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             if (Events.TryGetValue(targetId, out var active) && bot != null)
             {
                 active.MarchTurns[bot.DatabaseID] = GameLoop.GameLoopTime;
@@ -1163,7 +1163,7 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>The mustered attackers still alive and in the world (the marching column).</summary>
     public static GameBot[] ArmyMembers(string targetId)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.TryGetValue(targetId, out var active) && !active.BattleStarted
                 ? active.Mustered.Values.Select(entry => entry.Bot).Where(bot => IsLiveArmyMember(active, bot)).Distinct().ToArray()
                 : [];
@@ -1177,7 +1177,7 @@ public static partial class AutonomousRvrEventLayer
     public static void ReportMusterAttendance(string targetId, string forceId, long botId, bool inPosition, long nowTick,
         GameBot bot, Vector3 position)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (!Events.TryGetValue(targetId, out var active)) return;
             if (active.DefenseMustering && !active.DefenseMarching && active.Defenders.ContainsKey(forceId))
@@ -1216,7 +1216,7 @@ public static partial class AutonomousRvrEventLayer
     {
         region = 0; point = null;
         LiveObjective target;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             Expire(nowTick);
             var active = Events.Values.FirstOrDefault(entry => realm == entry.AttackerRealm && entry.Attackers.ContainsKey(forceId));
@@ -1232,7 +1232,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static RallyOrder GetRallyOrder(string forceId, eRealm realm, long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             Expire(nowTick);
             // Owner 2026-10-07: a player-triggered defense must answer as one organised wave, not a trickle (run 24:
@@ -1261,7 +1261,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static bool IsRallying(string forceId, long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.Values.Any(entry => !entry.BattleStarted && entry.ExpiresTick > nowTick &&
                 (entry.Attackers.ContainsKey(forceId) || entry.Defenders.ContainsKey(forceId) || entry.ThirdRealm.ContainsKey(forceId)));
     }
@@ -1273,7 +1273,7 @@ public static partial class AutonomousRvrEventLayer
     /// </summary>
     public static bool IsEventForce(string forceId, long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.Values.Any(entry => entry.ExpiresTick > nowTick &&
                 (entry.Attackers.ContainsKey(forceId) || entry.Defenders.ContainsKey(forceId) || entry.ThirdRealm.ContainsKey(forceId))) ||
                 CarrierEvents.Values.Any(entry => entry.ExpiresTick > nowTick && entry.Participants.Values.Any(realm => realm.ContainsKey(forceId)));
@@ -1281,7 +1281,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static bool IsBattleForce(string forceId, long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.Values.Any(entry => entry.BattleStarted && entry.ExpiresTick > nowTick &&
                 (entry.Attackers.ContainsKey(forceId) || entry.Defenders.ContainsKey(forceId) || entry.ThirdRealm.ContainsKey(forceId))) ||
                 CarrierEvents.Values.Any(entry => entry.ExpiresTick > nowTick && entry.Participants.Values.Any(realm => realm.ContainsKey(forceId)));
@@ -1289,7 +1289,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static Plan KeepPlan(string forceId, eRealm realm, long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             var active = Events.Values.FirstOrDefault(entry => entry.ExpiresTick > nowTick && Participants(entry, realm).ContainsKey(forceId));
             return active == null ? null : ToPlan(realm == active.DefenderRealm ? Intent.DefendEvent :
@@ -1325,7 +1325,7 @@ public static partial class AutonomousRvrEventLayer
             bot.ObjectState != GameObject.eObjectState.Active ||
             !AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR)) return false;
         string force = bot.TempProperties.GetProperty<string>("RvrEventForce") ?? $"rvr-{bot.DatabaseID}";
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             foreach (var active in Events.Values)
             {
@@ -1374,7 +1374,7 @@ public static partial class AutonomousRvrEventLayer
     public static void ReportAttendance(string targetId, string forceId, eRealm realm, long botId, bool inPosition, long nowTick,
         GameBot bot = null, Vector3 position = default)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             Expire(nowTick);
             if (!Events.TryGetValue(targetId, out var active) ||
@@ -1409,7 +1409,7 @@ public static partial class AutonomousRvrEventLayer
             reason = null;
             return false;
         }
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             Expire(nowTick);
             return ReleasedForces.Remove(forceId, out reason);
@@ -1418,7 +1418,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static void ReportTravel(string targetId, string forceId, long memberId, double distance, bool arrived, long nowTick, GameBot bot = null)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (!Events.TryGetValue(targetId, out var active) || active.BattleStarted ||
                 !(active.Attackers.ContainsKey(forceId) || active.Defenders.ContainsKey(forceId) || active.ThirdRealm.ContainsKey(forceId))) return;
@@ -1438,7 +1438,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static void RemoveForce(string forceId)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             foreach (var active in Events.Values)
             {
@@ -1466,7 +1466,7 @@ public static partial class AutonomousRvrEventLayer
     public static List<SoloSiegeRoster> SoloSiegeRosters(long nowTick)
     {
         var result = new List<SoloSiegeRoster>();
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             foreach (ActiveEvent active in Events.Values.Where(entry => entry.ExpiresTick > nowTick))
             {
@@ -1496,7 +1496,7 @@ public static partial class AutonomousRvrEventLayer
     /// </summary>
     public static bool MergeSoloForces(string eventId, eRealm realm, long[] memberIds, string partyForceId)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             string[] solos = memberIds.Select(id => $"rvr-{id}").ToArray();
             Dictionary<string, int> side = null;
@@ -1527,7 +1527,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static long CarrierRemainingMilliseconds(string targetId, long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return CarrierEvents.TryGetValue(targetId, out var active) ? Math.Max(0, active.ExpiresTick - nowTick) : 0;
     }
 
@@ -1911,7 +1911,7 @@ public static partial class AutonomousRvrEventLayer
     {
         if (string.IsNullOrWhiteSpace(forceId))
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.Values.Any(active => active.ExpiresTick > nowTick &&
                        (active.Attackers.ContainsKey(forceId) || active.Defenders.ContainsKey(forceId) ||
                         active.ThirdRealm.ContainsKey(forceId))) ||
@@ -1922,7 +1922,7 @@ public static partial class AutonomousRvrEventLayer
     public static bool IsPlayerDefenseResponse(string targetId, long nowTick)
     {
         if (string.IsNullOrWhiteSpace(targetId)) return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.TryGetValue(targetId, out var active) && active.ExpiresTick > nowTick &&
                 (active.DefenseReaction || !string.IsNullOrEmpty(active.PlayerAccount));
     }
@@ -1935,7 +1935,7 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>The sieges going on now, for chat (AutonomousChatNews): only keep sieges that have not expired.</summary>
     public static SiegeView[] ActiveSieges(long nowTick)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.Values.Where(e => e.ExpiresTick > nowTick && e.Target != null && !e.Target.IsRelicCarrier)
                 .Select(e => new SiegeView(e.TargetId, e.Target.Name, e.AttackerRealm, e.DefenderRealm, e.Target.RegionId, e.Target.X,
                     e.Target.Y, e.BattleStarted, e.Marching, e.RelicKeep, e.AttackObserved || e.DefenseReaction))
@@ -1946,7 +1946,7 @@ public static partial class AutonomousRvrEventLayer
     {
         if (string.IsNullOrWhiteSpace(targetId))
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return (Events.TryGetValue(targetId, out ActiveEvent active) && active.ExpiresTick > nowTick) ||
                    (CarrierEvents.TryGetValue(targetId, out var carrier) && carrier.ExpiresTick > nowTick);
     }
@@ -1960,7 +1960,7 @@ public static partial class AutonomousRvrEventLayer
     {
         if (string.IsNullOrWhiteSpace(targetId))
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (Events.TryGetValue(targetId, out var active))
             {
@@ -2001,7 +2001,7 @@ public static partial class AutonomousRvrEventLayer
 
     public static void TransferToRelicCarrier(string keepId, string carrierId, long nowTick, LiveObjective carrierAnchor = null)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             if (!Events.TryGetValue(keepId, out var active) || active.ExpiresTick <= nowTick) return;
             // Even if the relic left before the battle formally began, every side follows the relic now (owner

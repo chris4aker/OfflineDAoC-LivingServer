@@ -61,7 +61,7 @@ public static class AutonomousPopulationController
         }
         if (previouslyOnline.Length > 0)
         {
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 GameServer.Database.SaveObject(previouslyOnline.Cast<DataObject>());
         }
         RefreshControlPlane(force: true);

@@ -8,6 +8,26 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+- **AI_PROFILE: what the bots' AI costs, measured every minute** (technical audit 2026-11-03, "measure before
+  adding"). Nothing in the game changes: it only measures.
+  - **What:** once a minute the server log gets one `AI_PROFILE` line: the game-loop tick's p50, p95, p99 and
+    maximum, split into the serial planning before the brains and the brains' parallel pass, the time spent waiting
+    for the coordinator, raid, RvR and database locks, and the ten costliest AI systems. About 70 systems are timed:
+    brain turns by kind, each serial coordinator pulse, the world controller and its branches, route planning and
+    navmesh queries, the frontier threat scan, combat AI, pets, persistence, chat, economy and town visits.
+  - **Where:** `logs/ai-profile.csv` (one row per system a minute), `/lsprofile` in game (GM), and
+    `tools/perf/ai_profile_report.py`, which turns a log into a top-ten table, a tick timeline and the L300/L600/L900
+    load-test verdict. How to read it and how to run the load tests: [docs/PERFORMANCE.md](docs/PERFORMANCE.md).
+  - **Setting:** `ai_profile` (on). One timed call costs about 65 ns (a CI test fails it above about 100 ns).
+  - **Honest settings:** `ai_budget_ms` was described as a budget that defers work, but nothing reads it. Its
+    description now says it is not enforced yet; the deferral queue is decided after the L300/L600 baselines.
+  - **Credit:** built on lometur's HearthDAoC bot CPU meter (per-thread counters, brain time by bot kind) and
+    stefanrows's `BotThinkProfiler` (the timed scope, the measured lock, the minute line), both GPL-3.0.
+  - **Checked:** 33 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
+    report tool; the full server suite passes (4,123). Not yet run on a live server: the first L300 run is the owner's.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

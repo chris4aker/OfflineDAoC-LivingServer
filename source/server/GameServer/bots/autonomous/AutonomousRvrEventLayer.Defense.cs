@@ -157,7 +157,7 @@ namespace DOL.GS
         {
             if (target == null || target.IsPortalKeep || target.IsRelicCarrier || target.OwningRealm == eRealm.None ||
                 attacker is not (eRealm.Albion or eRealm.Midgard or eRealm.Hibernia) || attacker == target.OwningRealm) return false;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             {
                 // A siege the bots planned (owner 2026-10-07): the player is helping it, not starting one. The fight
                 // counts as an observed attack, but no player defense, warning or horn.
@@ -190,7 +190,7 @@ namespace DOL.GS
         {
             if (now < _nextDefensePulse) return;
             _nextDefensePulse = now + 5000;
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             {
                 Expire(now);
                 foreach (var pair in DefenseAlarms.ToArray())
@@ -263,7 +263,7 @@ namespace DOL.GS
                 .GroupBy(AutonomousBotGroupCoordinator.RvrForceId)
                 .Select(g => new ResponseForce(new Force(g.Key, g.First().Realm, g.First().Group?.MemberCount ?? g.Count(), 50, 0,
                     MemberIds: g.Select(b => b.DatabaseID).ToArray()), g.ToArray())).ToArray();
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             {
                 foreach (var candidate in forces)
                 foreach (var active in Events.Values.Where(e => e.BattleStarted && Participants(e, candidate.Force.Realm).ContainsKey(candidate.Force.GroupId)))
