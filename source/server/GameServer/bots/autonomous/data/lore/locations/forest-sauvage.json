@@ -1,0 +1,82 @@
+{
+  "id": "forest-sauvage",
+  "name": "Forest Sauvage",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    11
+  ],
+  "summary": "Albion's wild frontier forest beyond Castle Sauvage, kept by the Green Knight, who warns before he wakes.",
+  "facts": [
+    {
+      "text": "Castle Sauvage, north-east of Camelot Hills, is an entrance to the Albion frontier.",
+      "provenance": "mythic",
+      "source": "https://camelotherald.fandom.com/wiki/Camelot_Hills"
+    },
+    {
+      "text": "The Green Knight (level 79, 100,000 health) stands in Forest Sauvage (region 1, zone 11). His words: his forest is 'a delicate beast' that can turn on you, and if you wake the beast within he must rise to defend it; 'Tread lightly! I am ever watchful of my home!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs"
+    },
+    {
+      "text": "Middle English romance, not game canon: in Sir Gawain and the Green Knight, the Green Knight offers a beheading game, one blow for one blow a year apart.",
+      "provenance": "myth",
+      "source": "Sir Gawain and the Green Knight (14th century)"
+    },
+    {
+      "text": "Existing bot chat: he waits near Castle Sauvage like he is expecting someone; he nodded at a passer-by once.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "Forest Sauvage is the wild wood at the edge of Albion, where the realm's frontier begins and Castle Sauvage stands guard over the road out of it. The forest is old, older than the castle, and it is not entirely a forest. The woodsmen say it is a beast lying down, and that the trees are its fur, and that it is best not woken.\n\nIt has a keeper. The Green Knight stands among the trees near the road, green from helm to heel, and he speaks courteously to those who stop to speak to him. He warns them. His forest is a delicate thing, he says, that turns easily on those who mistreat it, and if the beast within it wakes he must rise to defend it. Then he lets them pass. Most pass. The ones who do not, who draw on him to see what he is, learn that the forest fights with him: rotting felwood tears itself out of the ground at his call, and when he is hurt he steps into the trees and steps out somewhere else, whole again.\n\nThe bards of Camelot know a Green Knight from the old romance, who offered a game of one blow for one blow, a year apart. Whether this is the same knight, no one has asked him. He seems to be waiting for someone. It is probably not you.",
+  "legend": "Speak to him first; he warns you, and the warning is the fight: his forest wakes with him, felwood rising every half minute, and at every tenth of his health he steps into the trees and comes out healed. He goes for the healers. Three full groups tried him once, the story goes, and all anyone saw after was the release timer.",
+  "atmosphere": {
+    "firstEntry": [
+      "Forest Sauvage. Tread lightly. Something is watching."
+    ],
+    "areas": [
+      {
+        "name": "the Green Knight's road",
+        "x": 592359,
+        "y": 418245,
+        "z": 4988,
+        "radius": 1500,
+        "lines": [
+          "A knight in green waits among the trees."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the green knight waits near castle sauvage like he's expecting someone. i bet it's not us",
+      "[heard|an old bard says] the green knight [offers|plays] a game: [you strike once, he strikes back next year|one blow for one blow, a year apart]. [nobody takes it|i wouldn't]"
+    ],
+    "rumour": [
+      "rode right past the green knight once. he nodded. i swear he nodded",
+      "three full groups took on the green knight once, [so i heard|in the story i heard]. all anyone saw after was [death spam|the release timer]"
+    ],
+    "tell": [
+      "forest sauvage? albions frontier wood past castle sauvage. the green knight lives there. talk to him, dont fight him unless you bring a raid"
+    ]
+  },
+  "loremaster": {
+    "intro": "Forest Sauvage is the wild wood at Albion's edge, and it has a keeper: the [Green Knight]. The woodsmen say the forest is a [beast] lying down.",
+    "topics": {
+      "green knight": "He stands by the road and warns those who stop. His forest wakes with him: felwood tears out of the ground at his call, and when he is hurt he steps into the trees and comes out whole. He picks out your healers.",
+      "beast": "The trees are its fur, the woodsmen say. The Green Knight tells you himself: wake the beast within and he must rise to defend it."
+    }
+  },
+  "book": {
+    "title": "What the Woodsman Said",
+    "pages": [
+      "Go past him on the road and he will speak to you. He always does. He told me the forest was a delicate beast and that I was wise to stop and speak with him, and I thanked him and walked on with my axe over my shoulder and did not cut a single branch until I was out of sight of him. I have cut wood in Sauvage forty years. I have never once cut it within sight of him. That is the whole of my secret, and I give it freely."
+    ]
+  },
+  "bosses": [
+    "green-knight"
+  ]
+}

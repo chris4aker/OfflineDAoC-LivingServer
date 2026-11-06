@@ -1,0 +1,68 @@
+{
+  "id": "legendary-afanc",
+  "name": "Legendary Afanc",
+  "catalogKey": "albion-named-mobs-classic-zones/legendaryafanc",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "aliases": [
+    "the afanc"
+  ],
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health in Llyn Barfog's water. It hurls its target to a fixed spot on the shore (451486, 393503) for falling damage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs"
+    },
+    {
+      "text": "Welsh folklore, not game canon: Arthur chained the afanc of Llyn Barfog and his horse dragged it from the lake.",
+      "provenance": "myth",
+      "source": "https://folklorethursday.com/legends/folklore-legends-welsh-lakes-llyn-barfog/"
+    }
+  ],
+  "story": "The afanc Arthur dragged out of Llyn Barfog was not the last. Its mate, or its mother, or its elder, stayed in the deep water, and has never left it since; the hatchlings that swim the shallows are hers. The Legendary Afanc remembers the chain. When anyone comes into her water to fight her she does to them what was done to her kin: she seizes them and hauls them out, and flings them up onto the shore, and the fall does the rest. She does not want to leave the lake. She wants you to.",
+  "legend": "She grabs her target and throws it onto the shore, and the fall hurts. Heal the thrown, walk back in, and keep the healers on dry land well away from her reach. Kill her hatchlings later; she is the one that matters.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something under the water is as long as a ship."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Afanc heaves its foes out of the lake!"
+      }
+    ],
+    "realmFirstKill": "The Legendary Afanc is dead. Llyn Barfog is still."
+  },
+  "botLines": {
+    "briefing": [
+      "afanc throws its target onto the shore. heal the fall, walk back in",
+      "healers stay on dry land"
+    ],
+    "aftermathWin": [
+      "the afanc is dead. arthur would be proud",
+      "someone skin it, i want afanc hide"
+    ],
+    "aftermathLoss": [
+      "the throws plus the falling damage killed the tanks"
+    ],
+    "rumour": [
+      "the legendary afanc hasn't left the lake since arthur's day. can you blame it",
+      "[the|those] afanc hatchlings mean [there's a mother|the big one is still breeding]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "afanc",
+    "text": "The Legendary Afanc has not left the lake since Arthur's day, and its hatchlings swim the shallows. It drags those who fight it off their feet and drops them where it pleases. Stand well back from the water."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} dragged ashore the Legendary Afanc in Llyn Barfog in {minutes} minutes.",
+    "loss": "the Legendary Afanc drove {realm}'s raid out of Llyn Barfog; {raidLeader} fell back."
+  }
+}

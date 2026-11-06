@@ -1,0 +1,147 @@
+{
+  "id": "llyn-barfog",
+  "name": "Llyn Barfog",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    7
+  ],
+  "aliases": [
+    "barfog",
+    "the bearded lake"
+  ],
+  "summary": "The Bearded Lake in Albion's hills, a door to the otherworld where the afanc still swims and its hills are thick with named things.",
+  "facts": [
+    {
+      "text": "Welsh folklore, not game canon: Llyn Barfog, the Bearded Lake, was a door to Annwn. Arthur chained the lake's afanc and his horse Llamrei dragged it out, leaving a hoofprint in the rock (Carn March Arthur). Ladies of the lake kept milk-white cattle there, and took them back from a greedy farmer.",
+      "provenance": "myth",
+      "source": "https://folklorethursday.com/legends/folklore-legends-welsh-lakes-llyn-barfog/"
+    },
+    {
+      "text": "Albion's Llyn Barfog zone (region 1, zone 7) holds the Legendary Afanc, the King of the Barfog Hills, Teazanodwc, Mouth, Fester and the Wrath of Mordred.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Existing bot chat says the lake's beasts gained epic status, that afanc hatchlings swim the shallows, and that barfog means bearded.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "No period raid account of these six was found.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    }
+  ],
+  "story": "The Welsh say Llyn Barfog is a door, and the people of Albion who live near it say the same with fewer words. The lake lies high in its hills, ringed with reeds that give it its beard, and on still evenings its water does not reflect the sky it ought to. In Arthur's day an afanc lived in it, a beast part beaver and part dragon depending on who tells it, that drowned cattle and children and broke the banks in flood. Arthur chained it as it slept and his horse dragged it ashore, and the hoofprint is still pressed into the stone above the water.\n\nThe bards end the tale there. The lake did not. Arthur dragged out one afanc, not the last, and the Legendary Afanc has not left the water since; its hatchlings swim the shallows still. And whatever door the lake is, it has been open too long. The hills around it have filled with named things that came through or grew up beside it: a king who rules the hills as if they were a kingdom, Teazanodwc and her servants, the thing called only Mouth, the sickness called Fester, and a burning wrath that wears a traitor's name. The ladies of the lake took their white cattle home long ago. Something else came to graze in their place.",
+  "legend": "The lake had its monster before Arthur was born; he only got the credit for pulling one out. Do not swim Llyn Barfog at dusk. The afanc drags you somewhere you did not mean to go, and the fall hurts. The hills around it are a nest of named things, so pull one at a time.",
+  "atmosphere": {
+    "firstEntry": [
+      "Llyn Barfog. The lake does not reflect this sky."
+    ],
+    "areas": [
+      {
+        "name": "the afanc's water",
+        "x": 455704,
+        "y": 389644,
+        "z": 2192,
+        "radius": 1200,
+        "lines": [
+          "Something under the water is as long as a ship."
+        ]
+      },
+      {
+        "name": "the King's hill",
+        "x": 445069,
+        "y": 378519,
+        "z": 6897,
+        "radius": 1000,
+        "lines": [
+          "A king's hill. The grass is flattened by his tread."
+        ]
+      },
+      {
+        "name": "Teazanodwc's hollow",
+        "x": 456333,
+        "y": 423806,
+        "z": 5337,
+        "radius": 1000,
+        "lines": [
+          "Small things stir in the hollow, all one way."
+        ]
+      },
+      {
+        "name": "the Mouth's den",
+        "x": 471208,
+        "y": 384596,
+        "z": 6216,
+        "radius": 1000,
+        "lines": [
+          "The ground here is chewed."
+        ]
+      },
+      {
+        "name": "Fester's mire",
+        "x": 438366,
+        "y": 384511,
+        "z": 5176,
+        "radius": 1000,
+        "lines": [
+          "The air is sour. The reeds are black."
+        ]
+      },
+      {
+        "name": "the burnt ground",
+        "x": 462575,
+        "y": 413391,
+        "z": 3182,
+        "radius": 1000,
+        "lines": [
+          "Scorched earth. A traitor's anger still burns."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "llyn barfog has an afanc in it. arthur [dragged|pulled] one out of that very lake, [so they say|the old tale goes]",
+      "barfog is old welsh for bearded, [you know|they say]. the bearded lake",
+      "there's a hoof print stone up by llyn barfog. [arthurs horse|llamrei], dragging the afanc out",
+      "the lake ladies took their white cattle back into llyn barfog. [something else grazes there now|now look at it]"
+    ],
+    "rumour": [
+      "the monsters at llyn barfog gained epic status, they say. my xp did not notice",
+      "[swam|went] across llyn barfog [once|at dusk] and [something|a ripple] [followed me|went under me]. [never swam there again|i ran]"
+    ],
+    "tell": [
+      "llyn barfog? lake with the legendary afanc in it. the barfog king, teazanodwc, mouth, fester and the wrath of mordred around it",
+      "six named things round one lake. pull them one at a time"
+    ]
+  },
+  "loremaster": {
+    "intro": "Llyn Barfog is the [Bearded Lake], and the Welsh say it is a door. [Arthur] pulled an afanc out of it once. He did not pull out the last, and the [hills] around it have filled since.",
+    "topics": {
+      "bearded lake": "The reeds round its edge give it its beard. On still evenings the water shows a sky that is not ours. The ladies of the lake kept white cattle there once, and took them home from a greedy man.",
+      "arthur": "He chained the afanc as it slept, and his horse Llamrei dragged it ashore. The hoofprint is still in the stone. Ask about the [afanc] that stayed.",
+      "afanc": "The Legendary Afanc has not left the lake since Arthur's day, and its hatchlings swim the shallows. It drags those who fight it off their feet and drops them where it pleases. Stand well back from the water.",
+      "hills": "A king who rules them as a kingdom, Teazanodwc and her servants, the thing called Mouth, the sickness called Fester, and the Wrath of Mordred. Take them one at a time."
+    }
+  },
+  "book": {
+    "title": "Of the Bearded Lake",
+    "pages": [
+      "The old men above Llyn Barfog tell two stories of their lake. In the first, Arthur came with a chain and a horse called Llamrei, and bound the afanc while it slept, and dragged it ashore, and the stone where his horse dug in its hoof is there for anyone to see. In the second, a lady rose out of the water and called her white cattle home, every one, because a farmer who had grown rich on them meant to kill the oldest for meat.",
+      "Both stories end with the lake quiet. Neither is true any more. The afanc in the water now is older and larger than the one Arthur took, and it has young. The hills have kings and servants and nameless hungers in them. The old men say that when the lady took her cattle home she left the door open behind her, and that the things on the hill are what came through to graze."
+    ]
+  },
+  "bosses": [
+    "legendary-afanc",
+    "king-of-the-barfog-hills",
+    "teazanodwc",
+    "mouth",
+    "fester",
+    "wrath-of-mordred"
+  ]
+}

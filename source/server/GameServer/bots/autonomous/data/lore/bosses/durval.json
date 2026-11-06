@@ -1,0 +1,65 @@
+{
+  "id": "durval",
+  "name": "Durval",
+  "catalogKey": "albion-named-mobs-shrouded-isles/durval",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health. Pulling him brings five corpse delvers and four white lights; casts a mesmerize, Durval's Plague and Shield of Bones.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs"
+    }
+  ],
+  "story": "Durval was a priest of the dead on Caldey before Morgana came, and he took her coming as the answer to his prayers. He keeps a barrow on the isle where his corpse-delvers dig and his white lights hover, and he goes nowhere without them: strike him and the delvers and the lights all turn at once. He spreads a plague of his own brewing, wraps himself in a shield of bones, and lulls the careless to sleep in the middle of the fight so that they wake up surrounded.",
+  "legend": "Nine of his household come with him: five corpse delvers and four white lights. He mesmerizes, so keep a cure for it handy, and his plague wants curing too. Clear his household, break the bone shield, then him. Never fight him on fresh-dug ground.",
+  "yells": {
+    "aggro": [
+      "Dig, my delvers. We have guests."
+    ],
+    "phases": [],
+    "death": [
+      "Bury me... properly..."
+    ],
+    "slay": [
+      "Another for the barrow."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "White lights hover over fresh-dug earth."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Durval raises his shield of bones!"
+      }
+    ],
+    "realmFirstKill": "Durval's barrow is quiet. The delvers stop digging."
+  },
+  "botLines": {
+    "briefing": [
+      "durval comes with 5 delvers and 4 white lights",
+      "he mezzes, cure it fast"
+    ],
+    "aftermathWin": [
+      "durval down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "heard durval on caldey keeps a whole household of corpse delvers",
+      "[someone said|heard] durval puts you to sleep mid fight"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "durval",
+    "text": "A priest of the dead on Caldey who took Morgana's coming as the answer to his prayers. His delvers and white lights come with him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Durval in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Durval drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

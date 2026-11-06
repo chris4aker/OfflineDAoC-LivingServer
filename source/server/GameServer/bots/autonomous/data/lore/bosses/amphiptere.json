@@ -1,0 +1,64 @@
+{
+  "id": "amphiptere",
+  "name": "Amphiptere",
+  "catalogKey": "albion-named-mobs-shrouded-isles/amphiptere",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health. Every 5 s an ancient zombie (level 61-63) rises; 'A blow knocks one of Amphiptere's tooths to the ground'. Casts venom, Infection and Shield of Feathers.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Amphiptere.cs"
+    },
+    {
+      "text": "An amphiptere is a winged serpent of heraldry.",
+      "provenance": "original",
+      "source": "heraldry (common usage)"
+    }
+  ],
+  "story": "An amphiptere is a winged serpent in the old heraldry, and the one on Caldey is the oldest thing on the isle: a great feathered snake with a mouth full of teeth as long as daggers. It sheds them in a fight. A hard blow knocks a tooth to the ground, and where its teeth fall, the ancient dead of Caldey climb out of the soil, one after another, every few seconds, to fight beside it. It spits venom that clings like an acid cloud, spreads a sickness, and folds its feathers into a shield. The garrison on the Isle of Glass says Morgana did not have to raise the dead on Caldey. The serpent had been doing it for her for years.",
+  "legend": "Ancient zombies keep rising around it every few seconds; off-tanks or area damage keep them down while the raid burns the serpent. Cure its disease, heal through its venom, and hit hard while its feather shield is down. Do not fight it near the barrows.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Teeth lie in the grass, long as daggers."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The ancient dead climb out where its teeth fall!"
+      }
+    ],
+    "realmFirstKill": "The Amphiptere of Caldey has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "amphiptere raises zombies every few seconds. aoe them",
+      "cure disease, heal the venom"
+    ],
+    "aftermathWin": [
+      "amphiptere down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "heard the amphiptere on caldey knocks out teeth and zombies come up where they land",
+      "[someone said|heard] its a winged snake. with feathers"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "amphiptere",
+    "text": "The winged serpent of Caldey. Where its knocked-out teeth fall, the ancient dead climb from the soil to fight for it."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Amphiptere in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Amphiptere drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

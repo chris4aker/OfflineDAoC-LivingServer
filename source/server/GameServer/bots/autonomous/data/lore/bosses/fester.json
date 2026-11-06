@@ -1,0 +1,59 @@
+{
+  "id": "fester",
+  "name": "Fester",
+  "catalogKey": "albion-named-mobs-classic-zones/fester",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 64, 30,000 health, immune to crowd control. Casts Disease and Fester's Venom (80 every 4 s for 20 s: 'An acidic cloud surrounds you!').",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Fester.cs"
+    }
+  ],
+  "story": "Where the lake drains into the mire west of the hills, the reeds are black and the air is sour, and Fester lives in it. The hill-folk say it was a sickness before it was a creature: the rot that set into the lake's banks when the white cattle went home and nothing clean grazed there any more. Somewhere it learned to walk. It breathes an acid cloud that clings and burns, and it carries a disease that slows healing, and it cannot be charmed or held.",
+  "legend": "It diseases you, which slows your healing, and then covers you in an acid cloud that burns for twenty seconds. Cure disease first, then heal through the venom. It cannot be crowd controlled, so do not bother trying, and keep out of the black reeds.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air is sour. The reeds are black."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fester's sour cloud thickens!"
+      }
+    ],
+    "realmFirstKill": "Fester is cleansed from the mire."
+  },
+  "botLines": {
+    "briefing": [
+      "fester: cure disease first, then heal the acid dot. no cc on it"
+    ],
+    "aftermathWin": [
+      "fester down. someone burn the mire",
+      "cure disease saved that"
+    ],
+    "aftermathLoss": [
+      "nobody had cure disease. the heals did nothing"
+    ],
+    "rumour": [
+      "heard fester was a sickness in the lake before it was a monster",
+      "[someone said|heard] fester's cloud eats through you"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fester",
+    "text": "The rot that set into the lake's banks when the white cattle went home, and learned to walk. Its sickness slows your healing and its cloud burns. Cure first."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cleansed Fester in Llyn Barfog in {minutes} minutes.",
+    "loss": "Fester drove {realm}'s raid out of Llyn Barfog; {raidLeader} fell back."
+  }
+}

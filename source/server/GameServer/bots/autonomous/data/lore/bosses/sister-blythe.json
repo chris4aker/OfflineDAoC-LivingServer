@@ -1,0 +1,81 @@
+{
+  "id": "sister-blythe",
+  "name": "Sister Blythe",
+  "catalogKey": "albion-named-mobs-classic-zones/sisterblythe",
+  "locationId": "lyonesse",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 69, 10,000 health; immune when drawn past her tether. Four fallen executioners rise with her and more come, at most four alive. Her lines: 'Come my pets! Let us show these fools what comes of failure!' and 'Witness the power of Lord Arawn!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/SisterBlythe.cs"
+    },
+    {
+      "text": "Albion's Church level 50 epic: she leads a cult of the 'dark lord Arawn' in a broken cathedral in Lyonesse that strives to break the light of Camelot; her body carries a statue of Arawn.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/epic/Church50.cs"
+    },
+    {
+      "text": "Arawn sends his Inconnu to help Albion against Morgana in the Shrouded Isles.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    }
+  ],
+  "story": "Sister Blythe was a nun of the Church of Albion before she was anything else, and she knows the Church's weakness better than its bishops do: the realm calls Arawn its friend in the isles, takes his Inconnu's help against Morgana, and still teaches that his worshippers are damned. She chose the side that was honest about the dead. She holds the broken cathedral of Lyonesse for the lord of Annwn, with a congregation of hooded executioners, men the Church condemned and Arawn took back. She means to break the light of Camelot and put another in its place. When she is attacked her executioners come four at a time, and when they fall, more come.",
+  "legend": "Her fallen executioners come four at a time, and she keeps calling them, never more than four up. Kill them as they come, keep a party on Blythe, and fight her inside the cathedral: drag her out and she cannot be harmed. The Church sends its champions here; bring a strong group.",
+  "yells": {
+    "aggro": [
+      "Come my pets! Let us show these fools what comes of failure!"
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Witness the power of Lord Arawn!"
+      }
+    ],
+    "death": [
+      "The dead... have always had a lord..."
+    ],
+    "slay": [
+      "Go to him. He is waiting."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A broken cathedral. The prayers here are not Albion's."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Sister Blythe's executioners answer her!"
+      }
+    ],
+    "realmFirstKill": "Sister Blythe has fallen. The cathedral's altar is bare."
+  },
+  "botLines": {
+    "briefing": [
+      "blythe calls executioners 4 at a time, kill them as they come",
+      "fight her in the cathedral, outside her tether shes immune"
+    ],
+    "aftermathWin": [
+      "blythe down. the church can stop worrying",
+      "got the statue of arawn off her"
+    ],
+    "aftermathLoss": [
+      "the executioners kept coming and we ran dry"
+    ],
+    "rumour": [
+      "theres a cult of arawn in the broken cathedral in lyonesse. [the church hates it|the priests go white when you mention it]",
+      "[heard|someone said] sister blythe used to be a real nun"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sister blythe",
+    "text": "She holds the broken cathedral for Arawn. The realm counts Arawn its friend in the isles; the Church never has. Her executioners come four at a time."
+  },
+  "bookPage": "I asked her why. She said the dead have always had a lord and that Camelot has only just noticed. She said the light of Camelot is a candle and that candles go out. Then her executioners took me to the door and set me outside it, gently, as one might set out a cat. I am writing this from the farm of a Danaoian family who have taken me in.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Sister Blythe in the broken cathedral of Lyonesse in {minutes} minutes.",
+    "loss": "Sister Blythe drove {realm}'s raid out of the broken cathedral of Lyonesse; {raidLeader} fell back."
+  }
+}

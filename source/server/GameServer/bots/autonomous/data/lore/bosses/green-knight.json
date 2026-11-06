@@ -1,0 +1,87 @@
+{
+  "id": "green-knight",
+  "name": "Green Knight",
+  "catalogKey": "open-world/ofgreenknight",
+  "locationId": "forest-sauvage",
+  "realm": "Albion",
+  "aliases": [
+    "gk"
+  ],
+  "facts": [
+    {
+      "text": "Level 79, 100,000 health. Every 25-35 s rotting downy felwood (level 47-49) rises; at every tenth of his health he moves to one of four spots in the forest and heals (400); every 40-60 s he turns on a random healer.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs"
+    },
+    {
+      "text": "Middle English romance, not game canon: the Green Knight's beheading game with Gawain.",
+      "provenance": "myth",
+      "source": "Sir Gawain and the Green Knight (14th century)"
+    }
+  ],
+  "story": "The Green Knight keeps Forest Sauvage the way a gamekeeper keeps a wood, and he is courteous about it: he warns every traveller who stops that his forest is a delicate beast and that he must rise to defend it if it is woken. Those who wake it anyway find the forest on his side. Rotting felwood tears itself out of the earth to fight beside him. When he is wounded he steps back into the trees as if through a door and steps out of them somewhere else, whole again, so that a raid that thought it had him at bay finds itself facing an empty clearing. And he has a knight's eye for the one thing that keeps a war-band alive: every so often he leaves whoever he was fighting and goes straight for their healers.",
+  "legend": "Ten times he steps into the trees and comes out healed somewhere else, so keep everyone ready to move. Felwood keeps rising every half minute; kill it. Guard the healers: he goes for them every minute or so. Three full groups tried him once and all anyone saw was the release timer.",
+  "yells": {
+    "aggro": [
+      "You were warned. The forest wakes, and so do I."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tread lightly, I said. You did not listen."
+      },
+      {
+        "trigger": "addSpawn",
+        "text": "Rise, wood of Sauvage! Defend your home!"
+      }
+    ],
+    "death": [
+      "The forest... will remember you..."
+    ],
+    "slay": [
+      "The forest takes you back."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A knight in green waits among the trees."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "The Green Knight steps into the trees. He is gone!"
+      },
+      {
+        "trigger": "addSpawn",
+        "text": "Rotting felwood tears itself out of the ground!"
+      }
+    ],
+    "realmFirstKill": "The Green Knight has fallen. Sauvage is unguarded."
+  },
+  "botLines": {
+    "briefing": [
+      "green knight ports to one of 4 spots at every 10% and heals. follow him",
+      "felwood adds every 30 sec, kill them. guard the healers, he jumps them"
+    ],
+    "aftermathWin": [
+      "the green knight is down. nobody tell the woodsmen",
+      "ten ports later. gg"
+    ],
+    "aftermathLoss": [
+      "he kept going for the clerics and we let him"
+    ],
+    "rumour": [
+      "heard the green knight's blade never drops. i've never met anyone with one",
+      "[heard|someone said] the green knight warns you first. listen to him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "green knight",
+    "text": "He stands by the road and warns those who stop. His forest wakes with him: felwood tears out of the ground at his call, and when he is hurt he steps into the trees and comes out whole. He picks out your healers."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down the Green Knight in Forest Sauvage in {minutes} minutes.",
+    "loss": "the Green Knight drove {realm}'s raid out of Forest Sauvage; {raidLeader} fell back."
+  }
+}

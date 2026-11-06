@@ -1,0 +1,64 @@
+{
+  "id": "mouth",
+  "name": "Mouth",
+  "catalogKey": "albion-named-mobs-classic-zones/mouth",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "30,000 health. Casts Lifedrain and calls minions of its own kind ('Mouth's minion', level 55-59).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs"
+    }
+  ],
+  "story": "The hill-folk of Llyn Barfog gave it no name but what it is: a mouth. It lives in a den on the eastern slope where the ground itself looks chewed, and it eats, and when it is fighting it eats from whoever is nearest, drawing the life out of them to mend itself. Smaller mouths come when it calls, its own get. The old men say it came through the lake's door the night the ladies took their cattle home, because it was hungry, and that it has never once stopped being hungry since.",
+  "legend": "Mouth drains life from whoever it is fighting and calls minions as the fight goes on. Keep its target healed, kill the minions as they come, and do not let it feed on a careless caster who wandered in too close.",
+  "yells": {
+    "aggro": [],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Mouth opens wider."
+      }
+    ],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground here is chewed."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Mouth calls its young to the feast!"
+      }
+    ],
+    "realmFirstKill": "Mouth is shut for good."
+  },
+  "botLines": {
+    "briefing": [
+      "mouth lifedrains and calls minions. kill adds, heal the tank"
+    ],
+    "aftermathWin": [
+      "mouth is shut",
+      "that thing was just teeth"
+    ],
+    "aftermathLoss": [
+      "it kept draining the tank back to full itself"
+    ],
+    "rumour": [
+      "heard there's a thing at llyn barfog just called mouth. nobody knows what else to call it",
+      "[someone said|heard] mouth eats you to heal itself"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "mouth",
+    "text": "The hill-folk gave it no name but what it is. It lives where the ground looks chewed, it eats the life of whoever it fights, and smaller mouths come when it calls."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} silenced Mouth in Llyn Barfog in {minutes} minutes.",
+    "loss": "Mouth drove {realm}'s raid out of Llyn Barfog; {raidLeader} fell back."
+  }
+}
