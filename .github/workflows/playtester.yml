@@ -1,0 +1,68 @@
+# The automated playtester (docs/PLAYTESTER.md) on a minimal world that needs no game files: builds the server, makes
+# the world with make_test_world.py, starts a server on it and runs the scenarios that need no gamebots or quests
+# (login/save/restart, chat and a group between two scripted players). Nightly, on demand, and on changes to the
+# playtester itself. The scenarios that need the real release world run on the owner's PC.
+name: playtester
+
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "source/tools/OfflineDaoc.Playtester/**"
+      - "source/tools/OfflineDaoc.Playtester.Tests/**"
+      - "source/tools/make_test_world.py"
+      - "source/tools/tests/**"
+      - ".github/workflows/playtester.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  minimal-world:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Test make_test_world.py
+        run: python3 -m unittest discover -s source/tools/tests -v
+
+      - name: Test the playtester
+        run: dotnet test source/tools/OfflineDaoc.Playtester.Tests/OfflineDaoc.Playtester.Tests.csproj -c Release
+
+      - name: Build the server
+        run: |
+          cp source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
+          dotnet build "source/server/Dawn of Light.sln" -c Release
+
+      - name: Make the minimal test world
+        run: python3 source/tools/make_test_world.py minimal --out "$RUNNER_TEMP/minimal.db"
+
+      - name: Run the scenarios
+        run: |
+          dotnet build source/tools/OfflineDaoc.Playtester -c Release
+          dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
+            --world "$RUNNER_TEMP/minimal.db" --server-dir source/server/Release \
+            --scenarios login-save-restart,chat-players,group-players --out "$RUNNER_TEMP/playtest"
+
+      - name: Put the outcome on the run page
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/playtest/report.md" ]; then
+            sed -n '1,/^## /p' "$RUNNER_TEMP/playtest/report.md" | head -n -1 >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playtest-report
+          path: |
+            ${{ runner.temp }}/playtest/report.*
+            ${{ runner.temp }}/playtest/server-console-*.log
+          if-no-files-found: warn

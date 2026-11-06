@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The automated playtester: a scripted player that speaks the 1.127 client protocol to a server on 127.0.0.1:10300,
+       runs scenarios against a test world (make_test_world.py) and writes JSON and Markdown reports. See docs/PLAYTESTER.md. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>OfflineDaoc.Playtester</AssemblyName>
+    <RootNamespace>OfflineDaoc.Playtester</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- The server's own chat budget, to predict the /faction rate (ChatBudget.cs) -->
+    <EmbeddedResource Include="..\..\server\GameServer\bots\autonomous\data\chat\chat-budget.json" LogicalName="chat-budget.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="OfflineDaoc.Playtester.Tests" />
+  </ItemGroup>
+</Project>

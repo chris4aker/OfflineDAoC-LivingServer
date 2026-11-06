@@ -297,6 +297,33 @@ audit 2026-11-03).
   tests pass with the new rollback checks. The world report on a copy of the owner's test world: all 1,540 quest rows finish
   every walk. Not played in game.
 
+**An automated playtester** (for testing, not in the game; [docs/PLAYTESTER.md](docs/PLAYTESTER.md)). Until now every
+release was checked by hand in the game client. A scripted player can now run the same checks with no person at the
+keyboard, overnight or in CI:
+- **`make_test_world.py`** makes a test world from a clean release world: a new file, every save emptied as a release
+  is, three test accounts and a small roster of gamebots. Each realm's first gamebot is level 12 and trained for it,
+  so the group scenarios have someone to group with. It only reads the world you give it and never writes over a
+  file. A `minimal` world needs no game files at all.
+- **`OfflineDaoc.Playtester`** connects to the server as the original 1.127 client does, logs in, makes characters
+  and plays scenarios: log in, save and restart the server (the character comes back where it quit); say and tells
+  between two players; a group invite with group chat; a tell to a gamebot (it answers); /faction lines a minute,
+  passing at half the rate the server's own chat budget predicts for the bots online and the hour; a delivery quest
+  taken, carried and handed in.
+  - **A kill quest in a group with a gamebot.** A player is made an Armsman a few levels above the quest. It trains
+    at its trainer, buys a weapon, invites the level-12 gamebot, kills the target with it and hands the quest in.
+  - **Guild dues and merit.** A player's own guild sets dues, earns merit for its levels and takes a gamebot in. The
+    dues from the coin they loot together go to the guild bank.
+  - Each run writes a report in Markdown and JSON with timings and every chat line it saw.
+- **/faction counts the reply budget** (owner 2026-11-05, with PR #82). The expected /faction rate is now the chat budget's
+  target plus its reply target, as the 1.2 server paces them. A run above the server's ceiling (the ceiling plus the reply
+  ceiling) is flagged in the report and the console; `--fail-over-ceiling` makes it a failure. Against Beta 1.1.2's
+  budget, which has no reply target, the prediction is unchanged, and its 1.2 to 1.4 lines a minute at 10 bots a realm
+  are flagged.
+- It refuses any database that `make_test_world.py` did not make, and runs the server from a copy of its folder, so a
+  test run leaves nothing in your install.
+- Its protocol code comes from the new client's network client (`source/new-client`); lometur's HearthDAoC headless
+  client was the model for the idea (it runs inside the server, so it was not ported).
+
 **Also in 1.2: measuring the AI, and the new client**
 - **AI_PROFILE: what the bots' AI costs, measured every minute** (technical audit 2026-11-03, "measure before
   adding"). Nothing in the game changes: it only measures.
