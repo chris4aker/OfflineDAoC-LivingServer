@@ -1,0 +1,73 @@
+{
+  "id": "nogoribando",
+  "name": "Nogoribando",
+  "catalogKey": "fomor-city/nogoribando",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health. Nogoribando's Haste: 'begins attacking faster', then 'attacks return to normal'; Vitality Dispersal saps strength and constitution.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs"
+    },
+    {
+      "text": "Pulling him brings ten of his band: five creln, three gentarns, a hicjer and a hofscorian.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Nogoribando is Fomor's war-leader, the one the bellers sound for when the raiding parties go up into the Sylvan woods. He fights as the Fomorians of the old songs fought, in a frenzy that builds on itself: the longer the fight, the faster his blows, until even his own band stand back. Then the frenzy breaks, and he breathes, and it builds again. Those who stand against him feel their strength drain out of them as if he were drinking it. His band never leaves his side.",
+  "legend": "Clear his band of ten or they come with him. Watch for his haste: when he starts attacking faster, healers pour it on the tank until it fades. He drains strength and constitution, so rebuff. Do not drag the fight out.",
+  "yells": {
+    "aggro": [
+      "Nogoribando begins attacking faster!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Faster! The drums! Faster!"
+      }
+    ],
+    "death": [
+      "The drums... stop..."
+    ],
+    "slay": [
+      "Up the stair! There are more of them!"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A drum beats faster and faster."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Nogoribando's frenzy builds!"
+      }
+    ],
+    "realmFirstKill": "Nogoribando's war-drum is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "nogoribando hastes himself. when he speeds up, [heals on the tank|big heals]. clear his band first"
+    ],
+    "aftermathWin": [
+      "nogoribando down, drums stopped. [good tanking|nice]"
+    ],
+    "aftermathLoss": [
+      "he hasted and the tank [just evaporated|melted]. save the big heals for that"
+    ],
+    "rumour": [
+      "[heard|someone said] nogoribando leads the fomorian raids into domnann"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nogoribando",
+    "text": "Fomor's war-leader, whose frenzy builds until his blows come too fast to follow, and then breaks, and builds again."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew Nogoribando the war-leader in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by Nogoribando's frenzy after {minutes} minutes."
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "id": "myrddraxis",
+  "name": "Myrddraxis",
+  "catalogKey": "fomor-city/myrddraxis",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 80, 100,000 health, a hydra with four further heads (second to fifth) that rise with it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Each head's bite heals the body by half the damage it deals and the other heads by a tenth.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs"
+    },
+    {
+      "text": "Stunning breath at 80/60/40/20% health; a Breath of Annihilation over the area at 75/50/25%.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "On death: 'The earth lurches beneath your feet as Myrddraxis staggers and topples to the ground.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs"
+    },
+    {
+      "text": "Bot chat: the heads heal each other; a raid of fifty fought it for an hour; rumour of a scale that never breaks.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Myrddraxis was an egg once, small enough to carry, found by Fomorian hydrars in the black sand under Hy Brasil. They raised it in the lowest cistern of their city and fed it the way they feed their pride: generously, and on their enemies. It grew five heads. Each one is a mouth for the same hunger, and what any head tears from a victim goes straight to the great body under the water and to its sister heads, so that the hydra grows whole as it feeds. The trained shrillers scream round it so it never quite sleeps. When it is hurt it breathes, and its breath is of two kinds: one that leaves warriors stunned and staring, and one that the keepers call annihilation.",
+  "legend": "The heads feed the body with every bite, so the heads die first, and nobody lets a head chew on them longer than they must. Expect a stun breath every fifth of its health and a big area breath at each quarter: healers spread, purge the stuns. The stair is too narrow for a full raid; bring groups that know their jobs.",
+  "yells": {
+    "aggro": [
+      "Five heads rise from the cistern, all screaming."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Myrddraxis takes a massive breath of flames!"
+      },
+      {
+        "trigger": "health<=40",
+        "text": "Myrddraxis prepares a stunning breath."
+      }
+    ],
+    "death": [
+      "The earth lurches as Myrddraxis topples to the ground."
+    ],
+    "slay": [
+      "The heads squabble over the remains."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Five heads rise from the dark water."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "The hydra's breath of annihilation!"
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The heads are cut. The body starves."
+      }
+    ],
+    "realmFirstKill": "Myrddraxis is dead. The shrillers fall silent."
+  },
+  "botLines": {
+    "briefing": [
+      "heads first. every bite a head does heals the body. [kill the heads|heads, then body]",
+      "stun breath every twenty percent, area breath every quarter. [spread|purge ready]"
+    ],
+    "aftermathWin": [
+      "hydra down. the shrillers [finally shut up|stopped screaming]. best sound in fomor"
+    ],
+    "aftermathLoss": [
+      "we hit the body with three heads up and it [healed through everything|never moved]. heads first"
+    ],
+    "rumour": [
+      "[heard|someone said] myrddraxis drops a scale that never breaks. [never seen one|maybe]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Myrddraxis",
+    "text": "The hydra of Fomor, raised from an egg by the hydrars. Five heads, one hunger: every head's bite feeds the body. Cut the heads first."
+  },
+  "bookPage": "The hydrars of Fomor sing to their beast. I heard the song from a ledge and a Sylvan put words to it for me afterwards: eat, and be whole; eat, and be many; eat, and be ours. The heads bit, and the body grew whole. I asked the Sylvan how one kills such a thing. She said you starve it. Cut the mouths and the belly follows.",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew the hydra Myrddraxis in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by the heads of Myrddraxis after {minutes} minutes."
+  }
+}

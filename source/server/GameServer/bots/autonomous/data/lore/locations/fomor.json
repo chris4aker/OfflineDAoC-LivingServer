@@ -1,0 +1,147 @@
+{
+  "id": "fomor",
+  "name": "Fomor",
+  "realm": "Hibernia",
+  "regions": [
+    180
+  ],
+  "summary": "The sunken city of the Fomorians on Hy Brasil, where hydra-keepers tend the many-headed Myrddraxis.",
+  "facts": [
+    {
+      "text": "Shrouded Isles: Hy Brasil is 'being devastated by the monstrous Fomorians', and the Sylvan asked Hibernia for help against them.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/69398-matt-firor-interview-v15-69398.html"
+    },
+    {
+      "text": "The Fomorians are named as the ever-encroaching threat to Hy Brasil.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/69207-new-shrouded-isles-information.html"
+    },
+    {
+      "text": "Region 180 (zone 'Fomor') holds Fomorian ugats, bellers, gentarns, wolfentries, hydrars, nocturs, feralidins and many more, hydrar-trained shrillers and dark grove phantoms.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Its catalogued bosses are Myrddraxis (80), Anurigunda (75), Krackenschtein (70) and Nogoribando (70). It is a camp dungeon, not a raid: its navmesh has no path to Myrddraxis.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; AutonomousRealmRaid.cs:50"
+    },
+    {
+      "text": "Irish myth (not game canon): the Fomorians, enemies of the Tuatha Dé Danann, were broken at the second battle of Mag Tuired.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "Bot chat: the Fomorians lost and went to islands nobody could find, and now we fight them on an isle that was only a story.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "The lead brief called Fomor neutral; the catalog and world place it on Hy Brasil (Hibernia), so it is written as a Hibernian location.",
+      "provenance": "original",
+      "source": "conflict note"
+    }
+  ],
+  "story": "The bards say the Fomorians lost. After Mag Tuired they were driven from Ireland into the sea, and the sea kept them, and that is the end of the song. The Sylvan of Hy Brasil know the next verse, because they live in it. The Fomorians went west, to the isle that does not stay found, and they went down. Under the shore of Hy Brasil they built a city in the old way, in the dark and the wet, and called it by their own name: Fomor.\n\nIt is a city, not a camp. It has trades. There are bellers who call and wolfentries who guard, noctur who work by night and feralidin who were bred to fight, and in the deep halls there are hydrars, the keepers of the beast. Their pride is Myrddraxis, a hydra of five heads they raised from a hatchling in the lowest cistern, trained shrillers screaming round it, fed on whatever the raiding parties bring home. Above the hydra the city's great ones keep their own halls: Anurigunda, whose skin runs with lava; Nogoribando, who fights faster the longer he fights; and Krackenschtein, a thing stitched together in some Fomorian workshop that no blade can find from a distance.\n\nThe Fomorians do not think of themselves as monsters. They think of themselves as the first people of these isles, come home. Every year their raids push further into the Sylvan woods, and every year Hibernia's warriors go down into Fomor to push them back. Neither side has forgotten Mag Tuired. Only one side remembers losing it.",
+  "legend": "Not a place for a raid, the leaders say: the road down to the hydra is too narrow for a hundred, so groups camp the halls instead. Kill a big named and its whole household comes with it, so clear the rooms around first. At the bottom the heads of Myrddraxis feed the body with every bite, so the heads die first.",
+  "atmosphere": {
+    "firstEntry": [
+      "Fomor. The losers of Mag Tuired, at home.",
+      "Wet stone, low arches, and somewhere, screaming.",
+      "A city under the shore that the songs left out."
+    ],
+    "areas": [
+      {
+        "name": "the upper gate",
+        "x": 33801,
+        "y": 24157,
+        "z": 16084,
+        "radius": 1200,
+        "lines": [
+          "The Fomorians remember Mag Tuired. Do you?"
+        ]
+      },
+      {
+        "name": "the hydra's cistern",
+        "x": 32302,
+        "y": 32221,
+        "z": 15635,
+        "radius": 1800,
+        "lines": [
+          "Five heads rise from the dark water.",
+          "The shrillers scream. The hydra is hungry."
+        ]
+      },
+      {
+        "name": "Anurigunda's hall",
+        "x": 30912,
+        "y": 33136,
+        "z": 15860,
+        "radius": 1200,
+        "lines": [
+          "The floor is warm. The walls are melting."
+        ]
+      },
+      {
+        "name": "Krackenschtein's workshop",
+        "x": 31773,
+        "y": 37385,
+        "z": 16000,
+        "radius": 1100,
+        "lines": [
+          "Stitches, hooks, and something huge on a table."
+        ]
+      },
+      {
+        "name": "Nogoribando's hall",
+        "x": 31463,
+        "y": 29191,
+        "z": 16768,
+        "radius": 1100,
+        "lines": [
+          "A drum beats faster and faster."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the fomorians went west after mag tuired and [built a city under hy brasil|went down under the shore]. thats fomor",
+      "the fomorians think they are the first people of these isles [come home|back for what is theirs]",
+      "the hydrars in fomor raised myrddraxis from a hatchling. [it has five heads now|nobody is laughing anymore]"
+    ],
+    "rumour": [
+      "[heard|someone said] the fomorians are raiding [further into domnann|deeper into the sylvan woods] this season",
+      "myrddraxis [ate|took] a whole group last night. the shrillers were [screaming|loud] for an hour"
+    ],
+    "tell": [
+      "fomor is the fomorian city on hy brasil. groups camp it, the hydra myrddraxis is at the bottom",
+      "anurigunda, nogoribando, krackenschtein and myrddraxis. pull one and the whole room comes"
+    ]
+  },
+  "loremaster": {
+    "intro": "Fomor, the city of the Fomorians beneath Hy Brasil. The songs say they lost at Mag Tuired and went into the sea. The sea kept them, and they [built]. Their great ones keep the halls, and their keepers keep the [hydra].",
+    "topics": {
+      "built": "A real city, with trades and households. Bellers, wolfentries, noctur, feralidin. Their great ones are [Anurigunda], [Nogoribando] and [Krackenschtein].",
+      "hydra": "Myrddraxis, five heads, raised from a hatchling by the hydrars. Every bite a head takes feeds the body. Kill the heads first.",
+      "Anurigunda": "Her skin runs with lava, and her household comes when she is pressed.",
+      "Nogoribando": "He fights faster the longer he fights. End it quickly.",
+      "Krackenschtein": "Stitched together in a Fomorian workshop. Only a blade at arm's length can find him."
+    }
+  },
+  "book": {
+    "title": "Down the Shore Stair",
+    "pages": [
+      "The Sylvan warned me not to go down to Fomor and I went, because a young man always goes. The stair begins in a cleft under the cliffs and smells of the sea. Halfway down you hear the bellers, calling to each other in a tongue like rocks grinding. Further down you hear the other thing, a high continual screaming, and a Sylvan who had been there told me later it was the shrillers, trained to scream at the hydra so it never sleeps.",
+      "It is a city. I had expected a cave. There are streets of a kind, and doors, and families; I saw a Fomorian child, if that is the word, carrying water. They are not beasts. They have their great ones: a woman whose skin pours molten rock, a warrior who works himself into a frenzy, and a stitched giant in a room full of hooks that I will not describe. They told each other stories, I think. I would give a great deal to know whether we are in them.",
+      "At the bottom is the cistern where the hydrars keep Myrddraxis. I saw it from a ledge, which was as close as I wished to be. Five heads, and each one, when it bit, made the great body under the water heave and grow whole. The old keepers stood round it singing. The Sylvan say the Fomorians lost at Mag Tuired. Watching them sing to that thing, I thought: they do not believe it."
+    ]
+  },
+  "bosses": [
+    "myrddraxis",
+    "anurigunda",
+    "krackenschtein",
+    "nogoribando"
+  ]
+}

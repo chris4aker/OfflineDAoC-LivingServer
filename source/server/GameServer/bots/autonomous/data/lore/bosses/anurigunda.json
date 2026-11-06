@@ -1,0 +1,82 @@
+{
+  "id": "anurigunda",
+  "name": "Anurigunda",
+  "catalogKey": "fomor-city/anurigunda",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 75, 30,000 health. Her Touch of Flames covers foes in lava (45 damage every 2 s for 60 s): 'The lava falls from Anurigunda's skin.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs"
+    },
+    {
+      "text": "At 40% and 20% health she calls Fomorians (four each time), and pulling her brings fourteen of her household (anteen, batravian, bolach, harrien, shawilet).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She sends a player to a fixed spot in her hall.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Anurigunda is the oldest of Fomor's great ones, and the Fomorians say the fire in her came from the deep places under the sea, where the rock runs liquid. Her skin is never still. It cracks and runs and hardens and runs again, and whatever she touches is coated in it and burns for a long while after. She keeps a large household, and she keeps it close; touch her and every one of them comes. When she is pressed she calls more, from the halls around, in two great waves. She is proud, and she is very patient, and she has outlived every enemy she ever had.",
+  "legend": "Clear her household before you pull, or fourteen of them come with her. At forty and twenty she calls four more each time: tanks ready. Her lava sticks for a minute, so cure and heal through it, and do not panic when she drags someone across the hall.",
+  "yells": {
+    "aggro": [
+      "The lava falls from Anurigunda's skin."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=40",
+        "text": "Children of Fomor! Your mother calls!"
+      },
+      {
+        "trigger": "health<=20",
+        "text": "All of you. Come. Now."
+      }
+    ],
+    "death": [
+      "The lava hardens and falls away."
+    ],
+    "slay": [
+      "Another stone for my hall."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is warm. The walls are melting."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=40",
+        "text": "Anurigunda's household pours into the hall!"
+      }
+    ],
+    "realmFirstKill": "Anurigunda's fire is cold at last."
+  },
+  "botLines": {
+    "briefing": [
+      "clear anurigunda's room first, she brings fourteen. at forty and twenty [four more come|adds], tanks ready"
+    ],
+    "aftermathWin": [
+      "anurigunda down and her skin [went to stone|hardened right there]"
+    ],
+    "aftermathLoss": [
+      "pulled her with the room up. [fourteen adds|everyone came]. clear first"
+    ],
+    "rumour": [
+      "[heard|someone said] anurigunda is the oldest of the fomorian great ones"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Anurigunda",
+    "text": "The oldest of Fomor's great ones, her skin running with lava from the deep places. Her household comes when she is touched."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew Anurigunda of the lava skin in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by Anurigunda and her household after {minutes} minutes."
+  }
+}

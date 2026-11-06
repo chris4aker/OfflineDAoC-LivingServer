@@ -1,0 +1,78 @@
+{
+  "id": "krackenschtein",
+  "name": "Krackenschtein",
+  "catalogKey": "fomor-city/krackenschtein",
+  "locationId": "fomor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health. He takes no damage from attackers further than 300 from him: only those close to him can hurt him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Bolt of Doom and Thunder Stomp and throws a target to one of four spots; pulling him brings seven gentarns and a wolfentry.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat jokes that his name proves someone in Fomor has a sense of humour.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Fomor has workshops as well as halls, and in one of them the hydrars and their kin tried to make a champion. They took the strongest parts of their dead and stitched them together and woke the result with a bolt from the sky, and they named it Krackenschtein, which in their tongue may mean nothing at all. It was meant to be unbeatable and very nearly is. Whatever they woke it with clings round it like a storm, and turns aside any harm sent from a distance. Only someone close enough to smell the stitches can hurt it. It stamps, and the floor throws people across the room.",
+  "legend": "Spells and arrows from range do nothing to him. Everyone who wants to hurt him gets inside arm's length; casters with short-range spells can join, the rest heal. He throws people around the room and stamps, so tanks pick him up again fast. Clear his gentarns first.",
+  "yells": {
+    "aggro": [
+      "The stitched giant lurches off its table."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Thunder rolls inside Krackenschtein."
+      }
+    ],
+    "death": [
+      "The stitches give way, one by one."
+    ],
+    "slay": [
+      "Spare parts."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Stitches, hooks, and something huge on a table."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Krackenschtein's storm shrugs off all from afar!"
+      }
+    ],
+    "realmFirstKill": "Krackenschtein comes apart at the seams."
+  },
+  "botLines": {
+    "briefing": [
+      "krackenschtein is immune unless youre within a few steps. [melee fight|get close or dont bother]"
+    ],
+    "aftermathWin": [
+      "krackenschtein down. [came apart at the seams|stitches everywhere]"
+    ],
+    "aftermathLoss": [
+      "the casters stood back and did [nothing|zero damage]. its immune from range"
+    ],
+    "rumour": [
+      "krackenschtein is a real name, [i checked|honest]. somebody in fomor has a sense of humour"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Krackenschtein",
+    "text": "A champion stitched together from the Fomorian dead and woken by lightning. No harm from a distance reaches him; fight him close."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew Krackenschtein in {minutes} minutes.",
+    "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by Krackenschtein after {minutes} minutes."
+  }
+}
