@@ -4,6 +4,32 @@
   "catalogKey": "dodens-gruva/spiritmasteraros",
   "locationId": "dodens-gruva",
   "realm": "Midgard",
+  "aliases": [
+    "aros",
+    "the spiritmaster"
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "jarl-ormarr",
+      "relation": "his jarl"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the caller he holds his dead back from"
+    },
+    {
+      "id": "hamar",
+      "relation": "first name on his last tally"
+    },
+    {
+      "id": "gudlaugr",
+      "relation": "the jarl's hound he bound with the shift"
+    }
+  ],
   "facts": [
     {
       "text": "Aros the Spiritmaster is the level-72 final of Dodens Gruva with 40,000 health.",
@@ -46,12 +72,13 @@
       "source": "Scandinavian place-name glossary, to verify"
     }
   ],
-  "story": "Jarl Ormarr dug for iron under the Jamtland hills because a jarl needs iron to stay a jarl. His spiritmaster Aros stood at the shaft each morning and read the names of the shift aloud, and promised every man who went down that if he died in the dark he would be remembered. The skalds say a good name is the one thing that does not die. Aros believed it.\n\nThen the mine broke into a cold seam, and the cold seam opened on a hall below where something was calling the dead. The miners died, and their dead rose and began to walk downward, toward the calling. Aros kept his promise the only way he could. He bound them: to the mine, to their picks, to him, so that they would never be forgotten because they would never be gone, and so that whatever called from below could not have them. He bound himself with them. Somewhere in the binding he forgot the word good.\n\nHe fights as he lived, by ritual. His spirit champion rises at his side, the strongest of the shift, and stands between him and you. He strips away your guard against the spirit world, and then he spends himself in a burst that empties a room. And he tells every one of you the same thing. You will remember his name. You usually do.",
-  "legend": "Three groups beat him, but only the second time. His spirit champion comes with him: hold it, stun-break, and kill Aros through it. Spread out before his Soul Annihilation, which hits the whole room, and keep spirit resists up against his debuff. Say a dead friend's name aloud down there and Aros will learn it.",
+  "story": "Jarl Ormarr dug for iron under the Jamtland hills because a jarl needs iron to stay a jarl. His spiritmaster Aros stood at the shaft each morning and read the names of the shift aloud, and promised every man who went down that if he died in the dark he would be remembered. The Havamal says cattle die and kin die, and you yourself will die, but a good name never dies for the one who earns it. Aros believed it with all his heart. He was a spiritmaster of the old school, a binder of spirits, and he knew better than any skald what happened to a name when no one said it any more.\n\nThen the mine broke into a cold seam, and the cold seam opened on a hall below, the Summoner's Hall, where something was calling the dead in three tongues. The miners died. Their dead rose and began to walk downward, toward the calling. Aros understood at once what it meant: if they answered, they would belong to whatever called them, and no one in Midgard would ever say their names again. He did the only thing he could. He bound them, as a spiritmaster binds a spirit to serve him: to the mine, to their picks, to his own voice, so that they would never be forgotten because they would never be gone, and so that whatever was calling from below could not have them. He bound himself with them, because the binding had to be held. Somewhere in the binding he forgot the word good.\n\nHe fights as he lived, by ritual. When strangers reach his chamber he cries his own name at them, as if it were a weapon: you will remember my name! His spirit champion rises at his side, the strongest of the shift, bound like the rest, and stands between him and you, stunning whoever comes close. He strips away your guard against the spirit world with Negate Spirit. He extinguishes the life of one fighter at a time. And when the ritual is complete, he spends himself in Soul Annihilation, a burst of bound souls that empties a room.\n\nAnd he tells every one of you the same thing. You will remember his name. You usually do. The miners say the worst of it is that he is not cruel. He is keeping a promise. He reads their names every morning so that they hear themselves louder than the voice below, and he will go on reading until someone stops the calling for good. Then they may go. He will not. He has forgotten how.",
+  "legend": "Three groups beat him, but only the second time; the first three groups got their butts kicked, the Freddyshouse thread said. His spirit champion comes with him, linked: hold it, break its stuns, and kill Aros through it. Spread out before his Soul Annihilation, which hits the whole room, and keep spirit resists up against his Negate Spirit debuff, which he lays first. Heal through Extinguish Lifeforce on single targets. A player remembered him as insta-death and sprinted through his room. Say a dead friend's name aloud down there and Aros will learn it. Pull from the edge of his chamber.",
   "yells": {
     "aggro": [
       "You will remember my name! Aros! Say it!",
-      "I read the names at the shaft. I will read yours."
+      "I read the names at the shaft. I will read yours.",
+      "Say it! Aros! Say it so they hear it!"
     ],
     "phases": [
       {
@@ -61,14 +88,20 @@
       {
         "trigger": "health<=50",
         "text": "None will be forgotten. None will be gone. None!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The voice below is louder. I must read louder!"
       }
     ],
     "death": [
-      "Read... the names... someone read the names..."
+      "Read... the names... someone read the names...",
+      "Now they can go... but I cannot..."
     ],
     "slay": [
       "I have your name now. You will not be forgotten.",
-      "Another for the tally."
+      "Another for the tally.",
+      "I will read your name tomorrow."
     ]
   },
   "atmosphere": {
@@ -84,6 +117,10 @@
       {
         "trigger": "health<=50",
         "text": "Aros begins a ritual. The air goes white with souls!"
+      },
+      {
+        "trigger": "death",
+        "text": "Aros is silent. Far below, the calling stops."
       }
     ],
     "realmFirstKill": "Aros the Spiritmaster is silent. The picks stop."
@@ -91,27 +128,34 @@
   "botLines": {
     "briefing": [
       "aros + his spirit champion come together. tanks hold the champion, rest burn aros",
-      "when he starts the big ritual SPREAD, soul annihilation hits the whole room",
-      "spirit resist buffs up, he debuffs it first"
+      "when he starts the big ritual spread, soul annihilation hits the whole room",
+      "spirit resist buffs up, he debuffs it first",
+      "three groups for aros, the first three groups always lose lol"
     ],
     "aftermathWin": [
       "aros down!! [i will remember his name|ok i'll remember his name]",
-      "picks went quiet when he died. [creepy|chills]"
+      "picks went quiet when he died. [creepy|chills]",
+      "did the picks stop? i swear the picks stopped",
+      "aros's carved ice belt dropped"
     ],
     "aftermathLoss": [
       "soul annihilation, half the raid gone",
-      "his champion stunlocked the MT. [again|next time stun break]"
+      "his champion stunlocked the mt. [again|next time stun break]",
+      "negate spirit then soul annihilation, half dead",
+      "the champion stunned the mt and aros nuked the healers"
     ],
     "rumour": [
       "[never say|dont say] a dead friends name down in dodens gruva. aros [collects them|keeps them], [my gran said|the skalds say]",
-      "aros the spiritmaster [promised|swore] the miners theyd be remembered. [so he never let them leave|now they dig forever]"
+      "aros the spiritmaster [promised|swore] the miners theyd be remembered. [so he never let them leave|now they dig forever]",
+      "aros bound the miners so the summoners couldnt have them",
+      "aros reads the names every morning so the miners hear their own names louder than the voice below"
     ]
   },
   "loremasterTopic": {
     "keyword": "Aros",
-    "text": "Jarl Ormarr's spiritmaster, who read the names of the shift at the shaft and promised each man he would be remembered. When the dead began walking down toward a [calling] below, he bound them to the mine, and himself with them. The skalds say a good name never dies. Aros kept the names and forgot the word good."
+    "text": "Jarl [Ormarr]'s spiritmaster, who read the names of the shift at the shaft and promised each man he would be remembered. When the dead began walking down toward a call from below, he bound them to the mine, and himself with them. The skalds say a good name never dies. Aros kept the names and forgot the word good."
   },
-  "bookPage": "Here are the names of the shift that went down to the cold seam: Hamar, Bjorn the Younger, Kol, Ulf Half-hand, and the jarl's hound Gudlaugr, who would not be left behind. The spiritmaster read them out at the shaft and said none would be forgotten. That was the last tally. Whoever finds this slate: we are not forgotten. We are still digging. Something below is calling us, and Aros will not let us answer. We do not know which of them to thank. Do not read our names aloud.",
+  "bookPage": "Here are the names of the shift that went down to the cold seam: Hamar, Bjorn the Younger, Kol, Ulf Half-hand, and the jarl's hound Gudlaugr, who would not be left behind. The spiritmaster read them out at the shaft and said none would be forgotten. That was the last tally. Whoever finds this slate: we are not forgotten. We are still digging. Something below is calling us, and Aros will not let us answer. We do not know which of them to thank. Do not read our names aloud. Do not say your own either. He is listening for new ones.",
   "chronicle": {
     "win": "{raidLeader} of {realm} silenced Aros the Spiritmaster in {minutes} minutes; the picks of Dodens Gruva stopped.",
     "loss": "Aros the Spiritmaster added {raidLeader}'s raid from {realm} to his tally after {minutes} minutes."

@@ -4,6 +4,16 @@
   "catalogKey": "dodens-gruva/thanedyggve",
   "locationId": "dodens-gruva",
   "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "jarl-ormarr",
+      "relation": "his jarl"
+    }
+  ],
   "facts": [
     {
       "text": "Thane Dyggve is a level-66 named with 30,000 health in Dodens Gruva.",
@@ -26,11 +36,13 @@
       "source": "Ynglinga saga (public domain), to verify"
     }
   ],
-  "story": "Dyggve was Ormarr's thane, a troll of the old frontier who swung the first hammer in Dodens Gruva and called down Thor's lightning to split the rock. The miners said the mountain opened for him like a door. When the cold seam came he stood at the front with the jarl and fought what came up out of it, and he still fights, in his thane's harness, with the hammer in both hands. The lightning answers him yet, but slower and colder than it did, as if it reaches him from very far away.",
-  "legend": "Dyggve is one group's work if you melee him fast. Don't let him finish his hammers: interrupt, or the whole group eats 500 each. Old raiders say his hammers hurt more than the real Mjollnir, and they meant it as a warning.",
+  "story": "Dyggve was Ormarr's thane, a troll of the old frontier, huge and slow and devoted, who wore the harness of a thane of Thor and carried a two-handed hammer he had made himself. When the jarl chose the hill east of Glenlock for his mine, it was Dyggve who swung the first hammer. He did not swing it at the rock. He swung it at the sky, and called down Thor's lightning, and the lightning split the hill open like a log, and the miners cheered, and said the mountain had opened for him like a door. It was the proudest day of his life.\n\nHis name is an old one. The kings of the Yngling line, the saga says, had a Dyggvi among them who died in his bed of sickness rather than in battle, a shameful death for a king. Dyggve the thane would not have that. When the cold seam came and the dead began to walk, he stood at the front with the jarl and fought what came up out of the dark, and when the jarl went down to fetch the dead back, Dyggve went with him.\n\nHe still fights, in his thane's harness, with the hammer in both hands. He drains the strength from those around him and calls down his lightning hammers, Command Mjollnir, on a whole group at once, hammers that strike harder than any thane's Mjollnir in Jordheim. The lightning answers him yet, but slower and colder than it did, as if it reaches him from very far away, from a sky he can no longer see. The thanes of Midgard who fight him say they feel sorry for him. Then he hits them, and they stop.",
+  "legend": "Dyggve is one group's work if you melee him fast. Don't let him finish his hammers: interrupt, or the whole group eats 500 each. Old raiders say his hammers hurt more than the real Mjollnir, and they meant it as a warning. Two warriors and a bot did him in 2003; two paladins got him to half. He drains energy too, so long fights go badly. His glowing icebound hammer is the drop thanes want. Stagger the melee so the hammers don't catch everyone, and keep a healer out of the hammer circle at all times. Thanes like to fight him with their own Mjollnir, for the story.",
   "yells": {
     "aggro": [
-      "Thor! Split the rock one more time!"
+      "Thor! Split the rock one more time!",
+      "The mountain opened for me once!",
+      "Thor, hear your thane!"
     ],
     "phases": [
       {
@@ -39,43 +51,63 @@
       }
     ],
     "death": [
-      "The thunder... is so far away..."
+      "The thunder... is so far away...",
+      "Not in bed... not in bed... in battle..."
     ],
     "slay": [
-      "Split like the rock."
+      "Split like the rock.",
+      "Thunder answers me still.",
+      "Down, like the hill."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Scorch-marks of lightning streak the gallery walls."
+      "Scorch-marks of lightning streak the gallery walls.",
+      "A troll in a thane's harness waits with a hammer."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "Thane Dyggve calls down lightning hammers!"
+      },
+      {
+        "trigger": "death",
+        "text": "Thane Dyggve falls. The thunder goes quiet."
       }
     ],
     "realmFirstKill": "Thane Dyggve's hammer is still. The thunder fades."
   },
   "botLines": {
     "briefing": [
-      "dyggve: melee him fast and interrupt the hammers, aoe 500"
+      "dyggve: melee him fast and interrupt the hammers, aoe 500",
+      "interrupt dyggve's hammers, every single one",
+      "fast melee on dyggve, long fights go bad",
+      "hes drains energy, keep endurance up"
     ],
     "aftermathWin": [
-      "dyggve down, [glowy hammer!|anyone get the hammer]"
+      "dyggve down, [glowy hammer!|anyone get the hammer]",
+      "shimmering icebound warhammer!!",
+      "dyggve down, thunder stopped",
+      "got him before the second hammer"
     ],
     "aftermathLoss": [
-      "didnt interrupt the hammers. [ow|everyone died]"
+      "didnt interrupt the hammers. [ow|everyone died]",
+      "the hammers hit the whole group",
+      "two hammers in a row, nobody interrupted",
+      "he drained everyone then hammered"
     ],
     "rumour": [
-      "theres a troll thane in dodens gruva who still calls lightning. [old frontier days|from before the keeps]"
+      "theres a troll thane in dodens gruva who still calls lightning. [old frontier days|from before the keeps]",
+      "dyggve split the hill with lightning to start the mine",
+      "an old yngling king called dyggvi died in his bed. the thane wont have that",
+      "dyggve's hammers hurt more than real mjollnir, the old thanes say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Dyggve",
-    "text": "Ormarr's thane, a troll who swung the first hammer in [Dodens Gruva] and called down lightning to split the rock. The lightning still answers him, slower and colder, as if from far away."
+    "text": "Ormarr's thane, a troll who swung the first hammer of the mine and called down lightning to split the rock. The lightning still answers him, slower and colder, as if from far away."
   },
-  "bookPage": "",
+  "bookPage": "From the songs of the Jamtland thanes, as a thane of Jordheim taught them to me. When Ormarr wanted iron, Dyggve called the sky. The sky came down. The hill split. The thanes sing that this was the greatest calling of Thor any troll ever made, and that the god must have been pleased, because he answered at once. The song does not say whether the god was pleased with what was under the hill. The thane who sang it to me stopped there and said that every thane prays, before calling the lightning, that it will not open anything that should stay shut.",
   "chronicle": {
     "win": "{raidLeader} of {realm} stilled Thane Dyggve's hammer in {minutes} minutes.",
     "loss": "Thane Dyggve's lightning broke {raidLeader}'s party from {realm} after {minutes} minutes."

@@ -4,6 +4,24 @@
   "catalogKey": "dodens-gruva/gudlaugr",
   "locationId": "dodens-gruva",
   "realm": "Midgard",
+  "aliases": [
+    "the puppy",
+    "the jarl's hound"
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "jarl-ormarr",
+      "relation": "his master"
+    },
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "who bound him with the shift"
+    }
+  ],
   "facts": [
     {
       "text": "Gudlaugr is a level-64 named with 30,000 health in Dodens Gruva.",
@@ -26,11 +44,13 @@
       "source": "Old Norse name, to verify"
     }
   ],
-  "story": "Gudlaugr was the jarl's hound, a pup too young to be left behind, who followed the shift down to the cold seam. He is a pup still, curled by the stair that leads down out of the mine into the hall below, as if waiting for his master to come back up it. Wake him, and whatever the calling from below has done to him shows: he grows, and grows, and stands up a demon wolf the height of a troll, whole again, with a bite that drags you down and bleeds you. When it is over, the miners say, he is a pup again, and he goes back to waiting.",
-  "legend": "Don't trust the puppy. Gudlaugr changes and heals to full the first time, so don't blow your burst before he turns. Snare-break and bandages for his bite. He lies by the stair to Summoner's Hall: if you're going down, he is your last test in the mine.",
+  "story": "Gudlaugr was the jarl's hound, a pup of the great grey wolfhounds of Jamtland, too young to be left behind, who followed the last shift down to the cold seam because the jarl's son was on it. His name, a good Norse name, was the boy's joke; the jarl laughed and let it stand. When the shift died and the dead began to walk toward the voices below, the pup walked with them, because that is what a dog does. When Aros bound the shift to the mine, he bound the pup too. He was on the tally.\n\nHe is a pup still, curled by the stair that leads down out of the mine into the Summoner's Hall, as if waiting for the boy to come back up it. Players who reached him in the old days said he looked like a small puppy, lying close to the entrance to the hall below. He does not bark. He watches.\n\nWake him, and whatever the calling from below has done to him shows. He grows, and grows, and stands up a demon wolf the height of a troll, with a bite that wounds and drags and bleeds, and the first time he changes, he is whole again, every wound gone, as if the pup had never been hurt. The miners say it is the voice below that does it. It has been talking to him for a long time, because he is closest to it, and a pup listens.\n\nWhen it is over, the miners say, he is a pup again, and he goes back to waiting. When he dies, he whimpers like a puppy once, and the dead in the mine all stop digging for a moment, as if someone had called a dog's name.",
+  "legend": "Don't trust the puppy. Gudlaugr changes into a demon wolf and heals to full the first time, so don't blow your burst before he turns. Snare-break and bandages for his bite, which slows and bleeds. He lies by the stair to Summoner's Hall: if you're going down, he is your last test in the mine. His glacial emerald ring is a good drop. Some people feel bad about this one. He's close to the Summoner's Hall stair, so a raid heading down meets him last. Clear the area first, rest, then wake him with the tank in front. Some say pet him first, for luck. Don't.",
   "yells": {
     "aggro": [
-      "(The pup lifts its head. Its eyes are wrong.)"
+      "(The pup lifts its head. Its eyes are wrong.)",
+      "(The pup stands up. And up. And up.)",
+      "(A growl far too deep for a puppy.)"
     ],
     "phases": [
       {
@@ -39,43 +59,63 @@
       }
     ],
     "death": [
-      "(A puppy's whimper, and then silence.)"
+      "(A puppy's whimper, and then silence.)",
+      "(The dead in the mine stop digging, for a moment.)"
     ],
     "slay": [
-      "(The great wolf shrinks back into a pup and lies down.)"
+      "(The great wolf shrinks back into a pup and lies down.)",
+      "(The demon wolf pads back to the stair.)",
+      "(Gudlaugr licks his muzzle and lies down.)"
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A puppy waits by a stair that goes down. And down."
+      "A puppy waits by a stair that goes down. And down.",
+      "The puppy's eyes follow you. They are not a puppy's."
     ],
     "phases": [
       {
         "trigger": "formChange",
         "text": "The pup becomes a demon wolf!"
+      },
+      {
+        "trigger": "formChange",
+        "text": "The pup becomes a demon wolf, whole again!"
       }
     ],
     "realmFirstKill": "Gudlaugr, the jarl's hound, waits no longer."
   },
   "botLines": {
     "briefing": [
-      "gudlaugr looks like a puppy. he isnt. he heals to full when he changes, hold burst till then"
+      "gudlaugr looks like a puppy. he isnt. he heals to full when he changes, hold burst till then",
+      "snare break and bandages on gudlaugr",
+      "hes the last thing before the hall stair",
+      "burst after he changes"
     ],
     "aftermathWin": [
-      "killed the demon puppy. [i feel bad|poor dog|good dog]"
+      "killed the demon puppy. [i feel bad|poor dog|good dog]",
+      "glacial emerald ring!",
+      "good boy. rip",
+      "the picks stopped when he died. did you notice"
     ],
     "aftermathLoss": [
-      "blew everything before he changed. dumb"
+      "blew everything before he changed. dumb",
+      "burned him to half as a puppy, he healed to full",
+      "the bleed and snare got the mt",
+      "blew everything on the puppy and had nothing for the wolf"
     ],
     "rumour": [
-      "theres a puppy by the summoner's hall stair in dodens gruva. [dont pet it|seriously dont]"
+      "theres a puppy by the summoner's hall stair in dodens gruva. [dont pet it|seriously dont]",
+      "gudlaugr was on the last tally. aros bound the dog too",
+      "the puppy listens to the voice from the hall below. thats what changed him",
+      "the dead stop digging when gudlaugr dies, like someone called a dog"
     ]
   },
   "loremasterTopic": {
     "keyword": "Gudlaugr",
     "text": "The jarl's hound, too young to be left behind, who followed the shift down. He waits by the stair to the hall below, a pup until roused."
   },
-  "bookPage": "",
+  "bookPage": "From the second slate. The jarl's boy Ulf brought the pup down with him on the last shift, though the foreman said no. The pup sat by the face while we worked and chewed a bone and watched the dark at the end of the tunnel where the seam was. Before we broke through he started to whine at it. Then he stopped whining and just looked. Ulf said he was only a pup and pups are afraid of the dark. The pup was not afraid. The pup was listening. I think he still is.",
   "chronicle": {
     "win": "{raidLeader} of {realm} laid the jarl's hound Gudlaugr to rest in {minutes} minutes.",
     "loss": "Gudlaugr the demon wolf ran down {raidLeader}'s party from {realm} after {minutes} minutes."

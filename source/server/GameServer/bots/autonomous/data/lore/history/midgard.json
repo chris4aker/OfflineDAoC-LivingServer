@@ -134,8 +134,17 @@
           "source": "Living Server writing"
         }
       ],
-      "places": [],
-      "bosses": []
+      "places": [
+        "dodens-gruva"
+      ],
+      "bosses": [
+        "aros-the-spiritmaster",
+        "gudlaugr",
+        "hamar",
+        "jarl-ormarr",
+        "mistress-of-runes",
+        "thane-dyggve"
+      ]
     },
     {
       "id": "mid-era-realm-war",
@@ -405,21 +414,34 @@
       "id": "dodens-gruva-bound",
       "name": "The Bound of Dodens Gruva",
       "summary": "Jarl Ormarr's miners, huscarls and household, bound by Aros the Spiritmaster so the calling below could not have them.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "dodens-gruva"
+      ],
+      "bosses": [
+        "aros-the-spiritmaster",
+        "gudlaugr",
+        "hamar",
+        "jarl-ormarr",
+        "mistress-of-runes",
+        "thane-dyggve"
+      ]
     },
     {
       "id": "summoners",
       "name": "The Summoners",
       "summary": "The Grand Summoner Govannon and his three summoners, who call the dead of every realm in the hall under the three frontiers (shared with Albion and Hibernia).",
-      "places": [],
+      "places": [
+        "dodens-gruva"
+      ],
       "bosses": []
     },
     {
       "id": "lords-of-the-undead",
       "name": "The Lords of the Undead",
       "summary": "The faction of the Summoner's Hall's dead, the answerers of the calling (Allakhazam: the hall's mobs are on Lords of the Undead).",
-      "places": [],
+      "places": [
+        "dodens-gruva"
+      ],
       "bosses": []
     },
     {

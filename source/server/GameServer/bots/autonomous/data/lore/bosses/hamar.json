@@ -4,6 +4,16 @@
   "catalogKey": "dodens-gruva/hamar",
   "locationId": "dodens-gruva",
   "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "who read his name first on the last tally"
+    }
+  ],
   "facts": [
     {
       "text": "Hamar is a level-61 named with 30,000 health in Dodens Gruva, with no scripted tricks.",
@@ -21,11 +31,13 @@
       "source": "LORE-INVENTORY sample 3 (Living Server writing)"
     }
   ],
-  "story": "Hamar's name is the first on the last tally: the foreman of the shift that went down to the cold seam. Hammer, the name means, or the rock face a hammer is for, and he was both. He is still at the face, still swinging, a big dead man who never learned anything but work. He has no tricks. He does not need them. He only wants you to get out of the way of the rock. The other dead step aside for him.",
-  "legend": "Hamar is a plain fight: lots of health, hard hits, no tricks. A good group grinds him down. Some people call him the warm-up for the rest of the mine. Some people call him the only honest thing in it.",
+  "story": "Hamar's name is the first on the last tally: the foreman of the shift that went down to the cold seam. Hammer, the name means in the old tongue, or the crag a hammer is for, and he was both: a big, hard, quiet man who had worked the Jamtland mines since he was a boy and never in his life done anything but work. He did not argue with the jarl about the seam. He did not argue with the Mistress either. Foremen do not argue. They dig where they are told.\n\nHe was at the face when it broke through. He heard the voices in three tongues, and the miners around him dropped their picks and began to walk toward them, and Hamar did not, because nobody had told him the shift was over. He kept swinging. When the shift died he died swinging, and when Aros bound them all, he bound Hamar at the face with his pick in his hands, and he is still there.\n\nHe is still at the face, still swinging, a big dead man who never learned anything but work. He has no tricks. He does not need them. He hits like a man who has swung a pick ten thousand days, and he has a great deal of strength left, and he only wants you to get out of the way of the rock. The other dead step aside for him. The miners say that if anyone ever tells Hamar the shift is over, the mine will fall quiet at last, because he is the one the others are waiting for.",
+  "legend": "Hamar is a plain fight: lots of health, hard hits, no tricks. A good group grinds him down. Some people call him the warm-up for the rest of the mine. Some people call him the only honest thing in it. Fight him at the face; he doesn't wander. There's a superstition that telling him the shift is over before you pull makes the fight easier. It doesn't, but people say it anyway. He's the first of the mine's named most groups reach, and a good test: if your group can't hold Hamar, it can't hold the jarl. Don't let the rest of the shift add.",
   "yells": {
     "aggro": [
-      "Out of the way. The face needs cutting."
+      "Out of the way. The face needs cutting.",
+      "Nobody said the shift was over.",
+      "Pick up a pick or get out."
     ],
     "phases": [
       {
@@ -34,37 +46,59 @@
       }
     ],
     "death": [
-      "End... of shift..."
+      "End... of shift...",
+      "Shift's... over?"
     ],
     "slay": [
-      "Clear the rubble."
+      "Clear the rubble.",
+      "Back to work.",
+      "Rubble."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A pick rings against the rock face. Steady. Endless."
+      "A pick rings against the rock face. Steady. Endless.",
+      "A big dead man swings a pick at the rock face."
     ],
-    "realmFirstKill": "Hamar the foreman's shift is over at last."
+    "realmFirstKill": "Hamar the foreman's shift is over at last.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hamar keeps working. The shift is not over."
+      }
+    ]
   },
   "botLines": {
     "briefing": [
-      "hamar is just a big tank and spank"
+      "hamar is just a big tank and spank",
+      "hamar: tank and spank, he doesnt move from the face",
+      "tell him the shift's over before you pull, for luck",
+      "one group is fine"
     ],
     "aftermathWin": [
-      "hamar down. shift over [lol|rip]"
+      "hamar down. shift over [lol|rip]",
+      "shift over, hamar",
+      "the foreman's done. finally",
+      "hamar's done his last shift"
     ],
     "aftermathLoss": [
-      "he hits harder than he looks"
+      "he hits harder than he looks",
+      "he hits like he's been swinging for ten thousand days",
+      "someone pulled a phantom with him",
+      "the shift added and we wiped"
     ],
     "rumour": [
-      "the foreman of the dead shift is still swinging at the rock face down there"
+      "the foreman of the dead shift is still swinging at the rock face down there",
+      "if someone ever tells hamar the shift is over the mine goes quiet, the miners say",
+      "hamar didnt walk to the voices. nobody told him the shift was over",
+      "hamar was the foreman. the others still step aside for him"
     ]
   },
   "loremasterTopic": {
     "keyword": "Hamar",
-    "text": "First name on the last tally of [Dodens Gruva]: the foreman of the shift that went down to the cold seam. He is still at the face."
+    "text": "First name on the last tally of the mine: the foreman of the shift that went down to the cold seam. He did not walk to the voices, because nobody told him the shift was over. He is still at the face."
   },
-  "bookPage": "",
+  "bookPage": "From a song the Jamtland miners still sing, though there are no mines on the old frontier any more. Hamar the foreman, Hamar at the face, the hill fell in and Hamar stayed in place. The voices called and the shift went down, Hamar kept swinging and never turned round. Who will tell him the shift is done? Not the jarl, not the thane, not anyone. The miners sing it at the end of a long day, and then one of them says, quietly, shift's over, Hamar, and they all go home. The mine is quiet for a breath.",
   "chronicle": {
     "win": "{raidLeader} of {realm} ended Hamar's last shift in {minutes} minutes.",
     "loss": "Hamar kept working; {raidLeader}'s party from {realm} did not, after {minutes} minutes."
