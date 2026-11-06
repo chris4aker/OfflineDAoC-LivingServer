@@ -37,7 +37,7 @@
     },
     {
       "text": "Gofannon (Govannon) is the smith son of Don in the Welsh tales (to verify the spelling and role in the Mabinogion).",
-      "provenance": "original",
+      "provenance": "myth",
       "source": "Welsh myth, to verify"
     },
     {
@@ -62,7 +62,7 @@
         "text": "The price is paid. Aelfgar, come and collect."
       },
       {
-        "trigger": "morph",
+        "trigger": "formChange",
         "text": "Enough of this skin. Look at me as I am."
       }
     ],
@@ -89,7 +89,7 @@
         "text": "The Shade of Aelfgar rises to collect the price!"
       },
       {
-        "trigger": "morph",
+        "trigger": "formChange",
         "text": "Govannon tears off his elven shape. A demon stands!"
       }
     ],

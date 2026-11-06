@@ -44,7 +44,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Shards of me, hold them close."
       },
       {
@@ -66,7 +66,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Shards of living ice break from the walls!"
       }
     ],

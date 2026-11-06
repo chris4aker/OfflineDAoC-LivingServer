@@ -29,7 +29,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Another guard from the mud. And another."
       }
     ],

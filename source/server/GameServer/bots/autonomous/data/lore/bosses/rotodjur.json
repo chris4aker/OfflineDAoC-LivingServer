@@ -29,7 +29,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "(Spores burst. Small caps stand up and walk.)"
       }
     ],
@@ -46,7 +46,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Rotodjur buds, and its buds stand up!"
       }
     ],

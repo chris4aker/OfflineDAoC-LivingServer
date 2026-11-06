@@ -39,7 +39,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Morkimma, come out of the deep ice. Mend me."
       },
       {
@@ -60,7 +60,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Dark mist seeps from the walls around Hjalmar."
       }
     ],

@@ -34,7 +34,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "(Torst beats his wings, and the air itself freezes!)"
       }
     ],
@@ -51,7 +51,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Torst's wings stir freezing eddies!"
       }
     ],

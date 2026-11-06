@@ -34,7 +34,7 @@
     ],
     "phases": [
       {
-        "trigger": "morph",
+        "trigger": "formChange",
         "text": "(Gudlaugr grows, and grows, and does not stop.)"
       }
     ],
@@ -51,7 +51,7 @@
     ],
     "phases": [
       {
-        "trigger": "morph",
+        "trigger": "formChange",
         "text": "The pup becomes a demon wolf!"
       }
     ],

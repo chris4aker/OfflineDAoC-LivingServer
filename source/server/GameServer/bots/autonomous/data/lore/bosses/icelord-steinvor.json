@@ -29,7 +29,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "You are not going anywhere."
       }
     ],

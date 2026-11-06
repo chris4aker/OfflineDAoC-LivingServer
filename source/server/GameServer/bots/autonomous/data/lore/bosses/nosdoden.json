@@ -64,7 +64,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "They pour out of me. Catch them, if you can."
       },
       {
@@ -91,7 +91,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "The essence of the fallen spills out of Nosdoden!"
       },
       {

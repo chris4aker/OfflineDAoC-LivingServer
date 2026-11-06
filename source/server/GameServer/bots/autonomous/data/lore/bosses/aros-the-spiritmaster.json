@@ -37,7 +37,7 @@
     },
     {
       "text": "The Havamal says cattle die and kin die, but a good name never dies.",
-      "provenance": "original",
+      "provenance": "myth",
       "source": "Havamal, stanzas 76-77 (Poetic Edda, public domain)"
     },
     {
@@ -55,7 +55,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Stand up, first of the shift. We have visitors."
       },
       {
@@ -78,7 +78,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Aros calls the dead to stand beside him!"
       },
       {

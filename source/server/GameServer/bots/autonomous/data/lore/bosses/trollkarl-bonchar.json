@@ -34,11 +34,11 @@
     ],
     "phases": [
       {
-        "trigger": "morph",
+        "trigger": "formChange",
         "text": "(Bonchar's face splits, and the dark behind it opens.)"
       },
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "(Something crawls out of the Rift.)"
       }
     ],
@@ -55,7 +55,7 @@
     ],
     "phases": [
       {
-        "trigger": "morph",
+        "trigger": "formChange",
         "text": "Trollkarl Bonchar tears open. The Rift is here!"
       }
     ],

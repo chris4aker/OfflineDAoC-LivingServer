@@ -29,7 +29,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "More! There are always more of you, and more of mine."
       }
     ],
@@ -46,7 +46,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Otrygg's beasts pour out of the side tunnels!"
       }
     ],

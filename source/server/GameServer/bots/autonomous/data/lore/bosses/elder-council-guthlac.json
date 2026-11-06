@@ -34,7 +34,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Listen. The spike is learning to sing."
       },
       {
@@ -55,7 +55,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "An ice spike hums. It will not hold for long!"
       }
     ],

@@ -69,7 +69,7 @@
         "text": "Breathe in, little ones. It is the last cold air you will taste."
       },
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "My children! Come and feed!"
       },
       {
@@ -96,7 +96,7 @@
         "text": "Gjalpinulva breathes, and winter fills the ruins!"
       },
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Gjalpinulva calls her brood to her side!"
       },
       {

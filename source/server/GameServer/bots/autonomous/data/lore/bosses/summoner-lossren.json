@@ -34,7 +34,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Rise, all of you. Your summoner has need of you."
       }
     ],
@@ -51,7 +51,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "A swollen ghoul crawls out of Lossren's crowd!"
       }
     ],

@@ -22,7 +22,7 @@
     },
     {
       "text": "In the old tale the giants built Mokkurkalfi, a giant of clay, to stand beside Hrungnir against Thor; it fell to Thor's servant Thjalfi.",
-      "provenance": "original",
+      "provenance": "myth",
       "source": "Snorri, Skaldskaparmal (public-domain myth); inspiration"
     }
   ],
@@ -34,7 +34,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "(A piece of Mokkurvalve falls away and stands up.)"
       }
     ],
@@ -51,7 +51,7 @@
     ],
     "phases": [
       {
-        "trigger": "addsSpawned",
+        "trigger": "addsSpawn",
         "text": "Part of Mokkurvalve's body falls away and rises!"
       }
     ],
