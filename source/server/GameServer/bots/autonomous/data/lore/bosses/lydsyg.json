@@ -4,6 +4,17 @@
   "catalogKey": "iarnvidiur-s-lair/lydsyg",
   "locationId": "iarnvidiurs-lair",
   "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "dyranapur",
+      "relation": "queen of the same swarm"
+    }
+  ],
   "facts": [
     {
       "text": "Lydsyg is a level-58 named with 10,000 health; seven skuggande come with it.",
@@ -26,50 +37,78 @@
       "source": "Danish glossary, to verify"
     }
   ],
-  "story": "Where Dyranapur hums, Lydsyg sings, and its song is the sickness. It is something the skuggande made, or something they worship; the dwarves are not sure which. Its name in the old northern tongue means sick with sound, and anyone who has heard it close knows why: the drone gets into the teeth. It drains the life from whoever stands nearest and leaves a rot behind. The skuggande gather round it in the dark like a congregation, and fall silent only when it does.",
-  "legend": "Lydsyg is a group named with seven skuggande. Same plan as Dyranapur: clear the bugs, cure the plague, keep healers back. It drops a good wing cloak and a hammer the healers like. Fight it away from the waterfall room or both swarms come.",
+  "story": "Where Dyranapur hums, Lydsyg sings, and its song is the sickness. It hangs in a cave of the western passages, a thing of the skuggande that is not quite one of them: larger, paler, its wings stretched thin as smoke over a body that seems more light than horn. The scholars of Allakhazam called it magical, and the dwarves agree. They are not sure whether the skuggande made it or worship it. The insects gather around it in the dark like a congregation, seven of them close and many more on the walls, and fall silent only when it does.\n\nIts name, in an old northern tongue, means something like sick with sound, and anyone who has heard it close knows why. The drone it makes gets into the teeth and the skull and the marrow; it goes on and on; it is the sound of a fever. It drains the life from whoever stands nearest, like Dyranapur, and leaves the same long rot behind, so that a fighter who walks away from Lydsyg carries the plague out with him for most of an hour.\n\nThe dwarves say the drone is the sound of the rot itself, the sound the iron trees make at night when the black sickness works in them, and that Lydsyg is only the loudest place it is made. They say if the drone ever stopped for good the trees might heal. It stops when Lydsyg dies. It starts again when the next one hangs itself in the cave. The skuggande see to that.",
+  "legend": "Lydsyg is a group named with seven skuggande. Same plan as Dyranapur: clear the bugs, cure the plague, keep healers back. It drops a good wing cloak and a hammer the healers like. Fight it away from the waterfall room or both swarms come. A group of six or seven at fifty does it comfortably. The plague lasts most of an hour, so cure before moving on. Its life drain prefers whoever stands nearest, so the tank should be the nearest and the healer furthest. Stay off the walls of the cave; the skuggande on them will join if bumped.",
   "yells": {
     "aggro": [
-      "(A droning note fills the cave.)"
+      "(A droning note fills the cave.)",
+      "(The skuggande on the walls fall silent.)",
+      "(The drone rises into the teeth.)"
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "(The drone gets into your teeth.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(The drone breaks into a shriek.)"
       }
     ],
     "death": [
-      "(The note cuts off.)"
+      "(The note cuts off.)",
+      "(The cave is very quiet.)"
     ],
     "slay": [
-      "(Lydsyg hums over the fallen.)"
+      "(Lydsyg hums over the fallen.)",
+      "(The congregation stirs.)",
+      "(The drone settles lower.)"
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A drone fills the cave. Your teeth ache."
+      "A drone fills the cave. Your teeth ache.",
+      "The skuggande gather here as at worship."
     ],
-    "realmFirstKill": "Lydsyg's song has ended."
+    "realmFirstKill": "Lydsyg's song has ended.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Lydsyg's drone breaks into a shriek!"
+      }
+    ]
   },
   "botLines": {
     "briefing": [
-      "lydsyg + 7 skuggande, same as the waterfall bug"
+      "lydsyg + 7 skuggande, same as the waterfall bug",
+      "dont pull lydsyg near the waterfall room",
+      "cure plague after",
+      "tank nearest, healer furthest on lydsyg"
     ],
     "aftermathWin": [
-      "wing cloak dropped!"
+      "wing cloak dropped!",
+      "skuggande ephemeral wing!",
+      "willful war hammer for the healer",
+      "the drone stopped. finally"
     ],
     "aftermathLoss": [
-      "got drained and diseased"
+      "got drained and diseased",
+      "both swarms came",
+      "drained and diseased",
+      "somebody bumped the skuggande on the walls"
     ],
     "rumour": [
-      "heard lydsyg means sound-sick. [makes sense|my teeth hurt just hearing it]"
+      "heard lydsyg means sound-sick. [makes sense|my teeth hurt just hearing it]",
+      "the dwarves say lydsyg's drone is the sound the iron trees make at night",
+      "nobody knows if the skuggande made lydsyg or pray to it",
+      "lydsyg means sound-sick. [makes sense|my teeth hurt just hearing it]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Lydsyg",
     "text": "The singing thing of the skuggande. Its name means sick with sound, and its drone gets into the teeth."
   },
-  "bookPage": "",
+  "bookPage": "From Thorgrim of Faraheim's notes. I spent a night at the edge of the Iarnwood to hear the iron trees, because the dwarves said they make a sound. They do. It is a drone, very low, under the wind, and it goes on all night. In the morning my teeth ached. The dwarves laughed and said I had heard the trees singing to the cave, and the cave singing back. I asked what the song was about. One of them said: about being sick for a very long time. Another said: about getting better. They argued about it all through breakfast.",
   "chronicle": {
     "win": "{raidLeader} of {realm} ended Lydsyg's song in {minutes} minutes.",
     "loss": "Lydsyg's drone outlasted {raidLeader}'s party from {realm}, after {minutes} minutes."

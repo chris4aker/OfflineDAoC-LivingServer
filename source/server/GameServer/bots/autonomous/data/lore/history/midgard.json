@@ -32,7 +32,8 @@
       ],
       "places": [],
       "bosses": [
-        "fornfrusenen"
+        "fornfrusenen",
+        "mahattava"
       ]
     },
     {
@@ -58,11 +59,22 @@
         }
       ],
       "places": [
+        "iarnvidiurs-lair",
         "trollheim"
       ],
       "bosses": [
+        "ancient-syver",
+        "delegalt",
+        "droom",
+        "dyranapur",
+        "hati",
+        "hurjavelen",
+        "iarnvidiur",
+        "lydsyg",
         "nosdoden",
-        "rotodjur"
+        "rotodjur",
+        "skoll",
+        "stanga"
       ]
     },
     {
@@ -288,21 +300,43 @@
       "id": "fenris-brood",
       "name": "The Wolf's Brood",
       "summary": "Gjalpinulva the Fenris wolf's daughter, her drakulv and her firstborn Yar; and, by the grandmothers' tale, the wolves of the Iron Wood.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "iarnvidiurs-lair"
+      ],
+      "bosses": [
+        "hati",
+        "hurjavelen",
+        "iarnvidiur",
+        "skoll"
+      ]
     },
     {
       "id": "servants-of-iarnvidiur",
       "name": "The Servants of Iarnvidiur",
       "summary": "The old one of the Iarnwood and everything in her lair: her wolves, her herd of animus, her plague.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "iarnvidiurs-lair"
+      ],
+      "bosses": [
+        "ancient-syver",
+        "delegalt",
+        "droom",
+        "dyranapur",
+        "hati",
+        "hurjavelen",
+        "iarnvidiur",
+        "lydsyg",
+        "skoll",
+        "stanga"
+      ]
     },
     {
       "id": "iarn-dwarves",
       "name": "The Iarn Dwarves",
       "summary": "The free dwarf clans of Aegir: the Remnants of Faraheim with their griffons, and Chief Tarek's people under the iron trees.",
-      "places": [],
+      "places": [
+        "iarnvidiurs-lair"
+      ],
       "bosses": []
     },
     {
@@ -331,10 +365,15 @@
       "name": "Beasts of the Wild",
       "summary": "Great beasts who serve no one: griffons on the glacier, render packs and terror birds in Faraheim, the old fish of Mahattava's lake.",
       "places": [
+        "iarnvidiurs-lair",
         "tuscaran-glacier"
       ],
       "bosses": [
+        "ancient-syver",
+        "dyranapur",
         "hurika",
+        "lydsyg",
+        "mahattava",
         "rotodjur",
         "torst"
       ]

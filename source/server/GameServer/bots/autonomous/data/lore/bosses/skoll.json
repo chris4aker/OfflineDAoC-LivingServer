@@ -4,6 +4,28 @@
   "catalogKey": "iarnvidiur-s-lair/skoll",
   "locationId": "iarnvidiurs-lair",
   "realm": "Midgard",
+  "aliases": [
+    "the sun-chaser"
+  ],
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "hati",
+      "relation": "his brother at the door"
+    },
+    {
+      "id": "iarnvidiur",
+      "relation": "his mother"
+    },
+    {
+      "id": "raumarik-revenant",
+      "relation": "keeps the other stolen piece of the sun"
+    }
+  ],
   "facts": [
     {
       "text": "Skoll is a level-69 named with 30,000 health beside Hati at Iarnvidiur's door.",
@@ -21,50 +43,78 @@
       "source": "https://camelot.allakhazam.com/db/mob/4671"
     }
   ],
-  "story": "Skoll is the sun-chaser, the hot-tempered one, who runs at everything as if it were the sun and he were finally catching it. His bite burns and slows, and his poison stays. He wears a collar set with a sunstone that no one knows the origin of, and the iarn dwarves say he took it from the sky himself, once, and that is why the winters on Aegir are long. It is a joke. They do not laugh when they tell it.",
-  "legend": "Skoll slows your attacks and poisons; keep a cleanser on the tanks and burn him. Fight him with Hati, never with the door open. The sunstone collar is a nice drop for anyone who wants a story to wear. Kill him first.",
+  "story": "Skoll is the sun-chaser of the old songs, the hot-tempered one, who runs after the sun every day across the sky and will catch it at the end. The Skoll of the lair runs at everything as if it were the sun and he were finally catching it. He is a beast on four legs, all temper and teeth, and where his brother Hati lulls his prey to sleep, Skoll simply arrives.\n\nHis bite burns and weakens; it carries a debuff that sits in the wound. He slows the arms of whoever fights him so that their blows come half a beat late, and his poison stays in the blood. And he wears a collar set with a sunstone that no one knows the origin of. The iarn dwarves say he took it from the sky himself, once, on a long summer day when he came closer to the sun than any wolf before him, and bit, and came away with a piece. That is why the winters on Aegir are long, they say. It is a joke. They do not laugh when they tell it. In Raumarik on the mainland, the Galplen folk say Fenrir himself once bit the sun and spat out a splinter that the Revenant keeps; between the father and the son, the dwarves say, the sun has been bitten twice, and it is a wonder it still rises.\n\nHe lies at his mother's door beside Hati, and nothing passes the two of them. When he dies, the sunstone on his collar gutters like a lamp running out of oil, and the dwarves who have seen it say the hall goes darker by a shade, as if a little of the borrowed sun had gone back where it came from.",
+  "legend": "Skoll slows your attacks and poisons; keep a cleanser on the tanks and burn him. Fight him with Hati, never with the door open. His bite debuff stacks with the poison, so the tank needs both cures, and his haste debuff makes the tank's threat drop, so the tank should open hard. Kill him first, the old raiders say; Hati's sleep is worse with Skoll still biting. The sunstone collar is a nice drop for anyone who wants a story to wear. His poison and debuff stack on whoever holds him, so swap tanks if the cures fall behind. Kill him fast.",
   "yells": {
     "aggro": [
-      "(Skoll snarls and lunges, eyes burning.)"
+      "(Skoll snarls and lunges, eyes burning.)",
+      "(The sunstone on his collar flares.)",
+      "(Skoll's teeth snap at the air.)"
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "(Skoll's collar blazes like a small sun.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Skoll's collar blazes like a small sun.)"
       }
     ],
     "death": [
-      "(Skoll falls, the sunstone guttering.)"
+      "(Skoll falls, the sunstone guttering.)",
+      "(The light in the hall dims by a shade.)"
     ],
     "slay": [
-      "(Skoll howls at the roof, where the sky should be.)"
+      "(Skoll howls at the roof, where the sky should be.)",
+      "(He tears at the fallen.)",
+      "(Skoll paces, burning.)"
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A sunstone gleams on a wolf's collar in the dark."
+      "A sunstone gleams on a wolf's collar in the dark.",
+      "The air near the door is warmer than it should be."
     ],
-    "realmFirstKill": "Skoll the sun-chaser is slain. The sun is safe."
+    "realmFirstKill": "Skoll the sun-chaser is slain. The sun is safe.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Skoll's sunstone collar blazes!"
+      }
+    ]
   },
   "botLines": {
     "briefing": [
-      "skoll slows attacks and poisons, cleanse tanks"
+      "skoll slows attacks and poisons, cleanse tanks",
+      "skoll first, then hati",
+      "tank opens hard on skoll, the haste debuff kills threat",
+      "cleanse the tank on skoll every bite"
     ],
     "aftermathWin": [
-      "skoll dead! [who got the collar|collar dropped?]"
+      "skoll dead! [who got the collar|collar dropped?]",
+      "skoll's sunstone collar dropped!",
+      "the hall got darker when skoll died. [weird|did you see that]",
+      "sun chaser down"
     ],
     "aftermathLoss": [
-      "skoll's poison stacked on the MT"
+      "skoll's poison stacked on the mt",
+      "poison and debuff stacked on the mt",
+      "skoll and hati both alive and the healers asleep",
+      "no cleanse, mt dead"
     ],
     "rumour": [
-      "the iarn dwarves joke that skoll stole a piece of the sun. thats his collar"
+      "the iarn dwarves joke that skoll stole a piece of the sun. thats his collar",
+      "fenrir bit the sun once and skoll bit it again, the dwarves say. its been bitten twice",
+      "skoll is the sun-chaser of the old songs",
+      "skoll's collar sunstone came from the sky, the dwarves joke"
     ]
   },
   "loremasterTopic": {
     "keyword": "Skoll",
     "text": "The sun-chaser, hot-tempered brother to [Hati]. The iarn dwarves joke that the sunstone on his collar was taken from the sky, and that this is why Aegir's winters are long."
   },
-  "bookPage": "",
+  "bookPage": "A riddle of the iarn dwarves, as Thorgrim of Faraheim wrote it down. Who bit the sun first? The father, in Raumarik, and spat it out. Who bit it second? The son, on Aegir, and kept it. Who will bite it last? The answer the dwarf children give is: nobody, because the sun will be careful now. The answer the old dwarves give is different, and they give it only to each other, and the children are sent out of the house before it is said. The children listen at the door. They never hear the answer, and they ask every winter.",
   "chronicle": {
     "win": "{raidLeader} of {realm} slew Skoll the sun-chaser in {minutes} minutes.",
     "loss": "Skoll ran {raidLeader}'s party from {realm} down after {minutes} minutes."

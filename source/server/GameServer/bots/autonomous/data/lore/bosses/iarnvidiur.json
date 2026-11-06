@@ -4,6 +4,41 @@
   "catalogKey": "iarnvidiur-s-lair/iarnvidiur",
   "locationId": "iarnvidiurs-lair",
   "realm": "Midgard",
+  "aliases": [
+    "the old one",
+    "the woman of the iarnwood"
+  ],
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "hati",
+      "relation": "her brood, at her door"
+    },
+    {
+      "id": "skoll",
+      "relation": "her brood, at her door"
+    },
+    {
+      "id": "stanga",
+      "relation": "her first door-guard, kept at his post in death"
+    },
+    {
+      "id": "hurjavelen",
+      "relation": "the son who stole her dagger"
+    },
+    {
+      "id": "delegalt",
+      "relation": "herdsman of her animus"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "her daughter, by one grandmother's tale (hearsay)"
+    }
+  ],
   "facts": [
     {
       "text": "Iarnvidiur is the level-75 final of her lair with 40,000 health. She casts Iarnvidiur's Plague, Black Plague (a disease in an 850 radius lasting ten minutes), Plague Bolt and a 400-damage strike.",
@@ -36,11 +71,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
   ],
-  "story": "The old songs say that east of the world, in the Iron Wood, an old woman sits and breeds wolves: Fenrir's kin, the brood that will one day swallow the sun and the moon. The iarn dwarves of Aegir do not sing that song. They do not have to; they live beside her. Iarnvidiur is the woman of the Iarnwood, a giantess older than the island's maps, and the lair under the forest is her kennel, her nursery and her sickroom. Everything in it carries her plague, the black rot of the iron trees, and so does she: it hangs around her like a cloak and it closes her wounds faster than most raids can open them. She does not care to be fought. When you have hurt her badly enough to be a nuisance she simply begins to put you elsewhere, picking one fighter after another and setting them down far from the fight, the way a woman sets a pup back in its basket.",
-  "legend": "Bring cure disease, lots of it, and a raid big enough to outdamage her healing: thirty was not enough in 2004. From half health she sends people away, often into the water under the bridge; climb the pillars and come back, and watch for the red cons down there. Her wolves Hati and Skoll guard her door. My gran said she is the dragon's mother. My gran said a lot.",
+  "story": "The old songs say that east of the world, in the Iron Wood, an old woman sits and breeds wolves: Fenrir's kin, the brood that will one day swallow the sun and the moon. The iarn dwarves of Aegir do not sing that song. They do not have to; they live beside her. Iarnvidiur is the woman of the Iarnwood, a giantess older than the island's maps, older than the dwarf clans, perhaps as old as the dead dragon under Tuscaran. Jarnvidja, she of the Iron Wood, the old lists call such a giantess. The dwarves call her the old one.\n\nHer lair under the forest is her kennel, her nursery and her sickroom. She sits by the water under the bridge with her pups around her, the two-headed wolves and the egilvarg and the cruel grymvarg, and she licks them clean and sends them out into the iron trees to hunt, and they come back to her like dogs to a hearth. Hati and Skoll lie at her door. The dead wolf Stanga keeps the passage she set him to keep. Her herdsman Delegalt minds the giants who came to court her and stayed too long. Everything in the lair is hers, and everything in it is sick.\n\nBecause she is the plague. The black rot of the iron trees hangs around her like a cloak: her plague eats at everyone near her, her Black Plague spreads in a wide ring and lasts for many minutes, and her bolts carry it to whoever stands at range. And it closes her own wounds faster than most raids can open them. Thirty of Midgard's best stood around her in the years after the isles were found and could not get her past half.\n\nShe does not care to be fought. She looks at the raid the way a woman looks at weather. When you have hurt her badly enough to be a nuisance, at half her strength, she simply begins to put you elsewhere: she reaches out and picks one fighter after another and sets them down far from the fight, often in the black water under the bridge, the way a woman sets a pup back in its basket. Climb out, and come back, and she does it again.\n\nSome grandmothers in Midgard say she is Gjalpinulva's mother, that she bore the dragon to the Fenris wolf before the chain closed on him, and that this is why the dragon and the two-headed wolves have the same look. The old one has never said. When she dies she says only that her brood will run when the sun is eaten. The dwarves believe her.",
+  "legend": "Bring cure disease, lots of it, and a raid big enough to outdamage her healing: thirty was not enough in 2004. Shamans and healers on cure duty, nothing else. Kill Hati and Skoll at the door first. From half health she sends people away, often into the water under the bridge; climb the pillars and come back, and watch for the red cons down there. Keep a rezzer near the bridge. Don't let the fight stall or she heals back. The ring drop with parry, strength and constitution is the one everyone wants. My gran said she is the dragon's mother. My gran said a lot.",
   "yells": {
     "aggro": [
-      "Who let the pups out? Ah. Not pups. Supper."
+      "Who let the pups out? Ah. Not pups. Supper.",
+      "Hungry, my pups? Here is supper.",
+      "You came into my wood with summer on your boots."
     ],
     "phases": [
       {
@@ -50,45 +87,65 @@
       {
         "trigger": "teleport",
         "text": "There. Stay."
+      },
+      {
+        "trigger": "health<=75",
+        "text": "Tsk. Sick already. They always are."
       }
     ],
     "death": [
-      "My brood... will run... when the sun is eaten..."
+      "My brood... will run... when the sun is eaten...",
+      "Lick... them clean... for me..."
     ],
     "slay": [
-      "The rot takes you. Good. The wood is hungry."
+      "The rot takes you. Good. The wood is hungry.",
+      "Feed it to the pups.",
+      "The wood will have you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
       "The kennel of the Iron Wood. Something old is nursing here.",
-      "Black rot hangs in the air like smoke."
+      "Black rot hangs in the air like smoke.",
+      "An old woman sits by black water with her pups."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "Iarnvidiur seizes her attackers and casts them away!"
+      },
+      {
+        "trigger": "health<=75",
+        "text": "The plague around Iarnvidiur thickens!"
       }
     ],
     "realmFirstKill": "The woman of the Iarnwood is dead. Her brood howls."
   },
   "botLines": {
     "briefing": [
-      "iarnvidiur heals fast, we need dps AND cure disease, [shamans|healers] on cure duty",
+      "iarnvidiur heals fast, we need dps and cure disease, [shamans|healers] on cure duty",
       "from 50% she ports people to the corners. if you land in the water climb the pillars and come back",
-      "kill hati and skoll at the door first"
+      "kill hati and skoll at the door first",
+      "rezzer by the bridge for the ported people",
+      "if the fight stalls she heals back. keep dps on"
     ],
     "aftermathWin": [
       "iarnvidiur down! [gg|grats raid] the old wolf mother is dead",
-      "i got ported 4 times and still made it back for the kill"
+      "i got ported 4 times and still made it back for the kill",
+      "the old one is dead. the dwarves will sing about this",
+      "that ring dropped!! [parry str con|tank ring]"
     ],
     "aftermathLoss": [
       "she healed faster than we hit, same as last time",
-      "half the raid ended up in the water"
+      "half the raid ended up in the water",
+      "the plague made every heal half and the tanks died",
+      "everybody in the water and nobody hitting her"
     ],
     "rumour": [
       "[my gran says|they say] iarnvidiur is gjalpinulva's mother. [dunno|hearsay but still]",
-      "the old song has a giantess in the iron wood breeding wolves to eat the sun. iarnvidiur fits"
+      "the old song has a giantess in the iron wood breeding wolves to eat the sun. iarnvidiur fits",
+      "the dwarves say iarnvidiur was here before any of their clans",
+      "thirty people couldnt get her past half back in the day"
     ]
   },
   "loremasterTopic": {
