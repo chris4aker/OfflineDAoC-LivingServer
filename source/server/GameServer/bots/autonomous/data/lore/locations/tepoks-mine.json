@@ -1,0 +1,106 @@
+{
+  "id": "tepoks-mine",
+  "name": "Tepok's Mine",
+  "realm": "Albion",
+  "regions": [
+    24
+  ],
+  "aliases": [
+    "tepoks",
+    "tepok"
+  ],
+  "summary": "A Black Mountains mine the goblins took from the townsfolk, run by Overseer Tepok like a guild hall.",
+  "facts": [
+    {
+      "text": "Tepok's Mine (levels 17-38) lies in Black Mountains South, entered by a boulder at the foot of a cliff beside a ruined house. Savage Black Mountains goblins seized it from the local townsfolk and defend it hard.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+    },
+    {
+      "text": "Players in 2001-02 met a named goblin called 'The Director', found the undead miners unaggressive, and warned that pulling a red dwarf youth brings his kin; Tepok Overseer conned red at level 31.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+    },
+    {
+      "text": "Its people: goblins with trades (whips, watchers, cleaners, snatchers, beastmasters, patrol leaders, monitors), cave lions and bears, undead miners and red dwarf youths.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Existing bot chat: Overseer Tepok runs his mine like a guild leader.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    }
+  ],
+  "story": "The mine under the cliff in the Black Mountains was the townsfolk's, once. They dug silver out of it and built a house beside the entrance, which is a ruin now. Then the goblins came down out of the mountains and took it, and the townsfolk who were in it at the time are still there: the undead miners who swing their picks in the lower shafts and do not look up when you pass.\n\nWhat the goblins did next surprised everyone. They kept the mine working. Overseer Tepok runs it like a guild hall, with a goblin for every job: whips to keep the diggers digging, watchers on the passages, cleaners and snatchers, beastmasters for the cave lions and bears, patrol leaders and monitors and somewhere, the old stories say, a goblin who calls himself the Director. Red dwarves dig in the far galleries by some arrangement nobody understands, and their young are touchy; strike one and his whole family comes. Tepok's Mine is easy to find, the old guides said, and extremely difficult to walk out of.",
+  "legend": "Easy to find, hard to walk out of. Do not pull the red dwarf youths unless you want the whole clan. The undead miners will leave you alone if you leave them alone. Tepok himself is a red con for most and hits for a hundred; goblins have bosses too.",
+  "atmosphere": {
+    "firstEntry": [
+      "The goblins kept the mine working. Listen to the picks."
+    ],
+    "areas": [
+      {
+        "name": "the old shafts",
+        "x": 32893,
+        "y": 29076,
+        "z": 14946,
+        "radius": 700,
+        "lines": [
+          "Dead miners dig. They do not look up."
+        ]
+      },
+      {
+        "name": "the dwarf galleries",
+        "x": 35767,
+        "y": 31539,
+        "z": 14457,
+        "radius": 700,
+        "lines": [
+          "Red dwarves dig here. Leave their young alone."
+        ]
+      },
+      {
+        "name": "the beast pens",
+        "x": 33092,
+        "y": 24796,
+        "z": 14447,
+        "radius": 700,
+        "lines": [
+          "Cave lions in pens, and a goblin with a whip."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "overseer tepok runs his mine like a guild leader. goblins have bosses too",
+      "the undead miners in tepok's were the townsfolk who owned the place. [still digging|never stopped digging]"
+    ],
+    "rumour": [
+      "[heard|someone said] if you pull a red dwarf youth in tepok's the whole family shows up",
+      "there used to be a goblin called the director in tepok's mine, [heard|apparently]. management"
+    ],
+    "tell": [
+      "tepoks mine? goblin mine in black mountains south. goblins, cave lions, dead miners, dwarves. good xp twenties to thirties"
+    ]
+  },
+  "loremaster": {
+    "intro": "Tepok's Mine was the townsfolk's until the [goblins] took it. The townsfolk are still there, in their way: the [miners].",
+    "topics": {
+      "goblins": "They kept the mine working, which no one expected. Overseer Tepok runs it like a guild hall, a goblin for every trade, whips and watchers and beastmasters.",
+      "miners": "The dead diggers of the lower shafts, who were in the mine when it fell. They swing their picks and leave you be if you leave them be."
+    }
+  },
+  "book": {
+    "title": "Tally of the Black Mountain Silver",
+    "pages": [
+      "Third tally of the season, kept by the reeve of the mine under the cliff. Silver good. Seven men in the lower shaft, two in the upper. Goblins seen on the mountain again, more than last year. The overseer of the goblins came down and stood at the entrance and watched us for an hour, with his hands behind his back, like a man inspecting a property he means to buy. The men laughed at him. I did not. The next page of this tally is in another hand, and the hand is not a man's."
+    ]
+  },
+  "bosses": []
+}

@@ -160,9 +160,9 @@
     ]
   },
   "loremaster": {
-    "intro": "The isles Albion lost: Caldey, the Dales of Devwy, Gwyddneau, Inishail. [Morgana] raised the Roman dead there, and the [named] things of the isles are the war's leftovers.",
+    "intro": "The isles Albion lost: Caldey, the Dales of Devwy, Gwyddneau, Inishail. Morgana raised the Roman dead there, and the [named] things of the isles are the war's leftovers.",
     "topics": {
-      "named": "On Caldey the Amphiptere, Durval and Vortanos. In the Dales Qan'ris Duros, Ris'nir Cruss and Valnir Mordeth. In Gwyddneau, Coliath. On Inishail, Sarcondina and the [Spirit of Lord Emthoro]. Each has its trick."
+      "named": "On Caldey the Amphiptere, Durval and Vortanos. In the Dales Qan'ris Duros, Ris'nir Cruss and Valnir Mordeth. In Gwyddneau, Coliath. On Inishail, Sarcondina and the Spirit of Lord [Emthoro]. Each has its trick."
     }
   },
   "book": {

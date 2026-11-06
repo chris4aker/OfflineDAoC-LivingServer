@@ -1,0 +1,96 @@
+{
+  "id": "catacombs-of-cardova",
+  "name": "Catacombs of Cardova",
+  "realm": "Albion",
+  "regions": [
+    23
+  ],
+  "aliases": [
+    "cardova"
+  ],
+  "summary": "A Roman crypt under a ring of standing stones in Cornwall, where a legion still guards an emperor bound to four generals.",
+  "facts": [
+    {
+      "text": "A shepherd boy found an opening in a small crypt inside a ring of standing stones in Cornwall, leading to Roman-style halls; a legion had travelled with an emperor no one can name, though no record has Rome reaching that far or an emperor dying there; an expedition lost half its members to an awakened entity, and locals call it haunted.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=25"
+    },
+    {
+      "text": "Mythic's quest 'Fall of an Emperor': a wizard's spell opened the tomb's lower levels; the emperor Seleucus says a curse binds him to four generals, Olivarius, Taras, Crotus and Amminus, and asks to be laid to rest; their focus items are offered in the chamber of cleansing and the crypt of the displaced soul.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/quests.html?cquest=508"
+    },
+    {
+      "text": "Its dead keep Roman rank: legionaries, centurions of every grade, praetorian guards, optiones, tribunes, praetors, legates, aquilifer, imaginifer, draconarius, a dux.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Existing bot chat speaks of a nameless emperor and of coins with blank faces; the quest names Seleucus. Both are kept: the name is learned, not known.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    }
+  ],
+  "story": "In Cornwall, where Rome is not supposed to have reached, a small crypt stands alone inside a ring of standing stones, and under it lie halls of smooth Roman stone, tiled floors and pillars, deep enough to hold an army. A shepherd boy found the way in. The expedition that followed him lost half its people to something that woke and was not alive.\n\nA legion came here once with an emperor, the old stories say, though no chronicle of Rome records an emperor dying in Cornwall and the coins down there are said to have blank faces. The legion is still on duty. Every rank of it stands its post in the catacombs: legionaries and centurions, praetorians and tribunes, standard-bearers with their eagles and dragons, legates and praetors and a dux, a whole court of the Roman dead in good order.\n\nThose who go deep enough learn the emperor's name, and learn that he wants to die. Seleucus is bound to four generals by a curse, and while Olivarius, Taras, Crotus and Amminus stand, he cannot rest. He asks the living, in the chamber of cleansing, to end them. Albion's scholars still argue whether the curse was laid on him by his generals or by himself. The legion does not argue. It is waiting for the order to stand down.",
+  "legend": "Knock on the Cardova door twice before you go in; it is tradition and the dead seem to like it. Bring a cleric who likes stairs. The emperor down there is named Seleucus, if you do the quest, and nameless if you do not, which is the only kind of riddle the Roman dead seem to enjoy.",
+  "atmosphere": {
+    "firstEntry": [
+      "Roman halls under Cornwall. The legion is on duty."
+    ],
+    "areas": [
+      {
+        "name": "the command hall",
+        "x": 31152,
+        "y": 33984,
+        "z": 15803,
+        "radius": 1200,
+        "lines": [
+          "A dux and his legates. The eagles are still raised."
+        ]
+      },
+      {
+        "name": "the praetors' gallery",
+        "x": 34459,
+        "y": 32674,
+        "z": 15808,
+        "radius": 900,
+        "lines": [
+          "Praetors hold court for no one."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "cardova holds a roman emperor nobody can name. cornwall is a strange place to bury an emperor",
+      "emperor seleucus in cardova [has a name|is named], so he can't be the nameless one. [the forgotten emperor is the real mystery|that leaves the forgotten emperor]",
+      "the legion in cardova keeps rank. centurions, tribunes, praetors, a dux. [still waiting to stand down|nobody gave the order]"
+    ],
+    "rumour": [
+      "knock on the cardova door twice before you go in. it's tradition and the dead seem to like it",
+      "an old crafter i know swears the coins in cardova have a blank face on them. never saw one myself"
+    ],
+    "tell": [
+      "cardova? roman crypts in cornwall under a stone ring. a whole dead legion in rank, and an emperor at the bottom. thirties and forties"
+    ]
+  },
+  "loremaster": {
+    "intro": "Cardova is a Roman crypt where Rome never went. Its [legion] is still on duty, and at the bottom is an [emperor] who wants to die.",
+    "topics": {
+      "legion": "Every rank of a Roman legion stands its post there: legionaries, centurions, praetorians, standard-bearers, legates, a dux. They are waiting for the order to stand down.",
+      "emperor": "Seleucus, if you go deep enough to learn it. A curse binds him to four generals, Olivarius, Taras, Crotus and Amminus. End them, and he can be laid to rest."
+    }
+  },
+  "book": {
+    "title": "The Book of Deeds of Seleucus",
+    "pages": [
+      "Here are set down the deeds of Seleucus, emperor, who came to the edge of the world with his legion to found a city where no Roman had stood. Here too are set down the names of his four generals, Olivarius, Taras, Crotus and Amminus, who swore to stand by him in life and after it. The last pages are written in a shaking hand, and say only this: they kept their oath. I did not ask them to keep it so well. Whoever reads this, release them, and release me."
+    ]
+  },
+  "bosses": []
+}
