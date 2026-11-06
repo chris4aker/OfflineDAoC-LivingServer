@@ -1,0 +1,5070 @@
+{
+ "about": "Rows of a release world database (mob and npctemplate tables) the epic encounter catalog reads. Written by epic_encounter_catalog.py --world-db; world data only, no player data.",
+ "database": "opendaoc.sqlite3.db",
+ "mobsByClass": {
+  "AbomosSoultrapper": [
+   {
+    "name": "Abomos the Soultrapper",
+    "region": 190,
+    "x": 31471,
+    "y": 21474,
+    "z": 11612,
+    "level": 68,
+    "npcTemplate": 60157522
+   }
+  ],
+  "Agmundr": [
+   {
+    "name": "Icelord Agmundr",
+    "region": 160,
+    "x": 15037,
+    "y": 50114,
+    "z": 12408,
+    "level": 81,
+    "npcTemplate": 60162346
+   }
+  ],
+  "AidonTheArchwizard": [
+   {
+    "name": "Aidon the Archwizard",
+    "region": 233,
+    "x": 26834,
+    "y": 35210,
+    "z": 16062,
+    "level": 75,
+    "npcTemplate": 7721
+   },
+   {
+    "name": "Aidon the Archwizard",
+    "region": 277,
+    "x": 31353,
+    "y": 37634,
+    "z": 14873,
+    "level": 75,
+    "npcTemplate": 7721
+   }
+  ],
+  "AlbGolestandt": [
+   {
+    "name": "Golestandt",
+    "region": 1,
+    "x": 391326,
+    "y": 755351,
+    "z": 391,
+    "level": 80,
+    "npcTemplate": 60157497
+   }
+  ],
+  "Amphiptere": [
+   {
+    "name": "amphiptere",
+    "region": 51,
+    "x": 348958,
+    "y": 372378,
+    "z": 3856,
+    "level": 71,
+    "npcTemplate": 60157842
+   }
+  ],
+  "AncientSyver": [
+   {
+    "name": "Ancient Syver",
+    "region": 161,
+    "x": 25281,
+    "y": 33542,
+    "z": 16513,
+    "level": 68,
+    "npcTemplate": 83007
+   }
+  ],
+  "Anurigunda": [
+   {
+    "name": "Anurigunda",
+    "region": 180,
+    "x": 30912,
+    "y": 33136,
+    "z": 15860,
+    "level": 75,
+    "npcTemplate": 60157942
+   }
+  ],
+  "ApocInitializator": [
+   {
+    "name": "Apoc Initializator",
+    "region": 60,
+    "x": 29468,
+    "y": 25235,
+    "z": 19490,
+    "level": 50,
+    "npcTemplate": null
+   }
+  ],
+  "Archilus": [
+   {
+    "name": "Archilus",
+    "region": 181,
+    "x": 394935,
+    "y": 269327,
+    "z": 3512,
+    "level": 58,
+    "npcTemplate": 5006
+   }
+  ],
+  "Aroon": [
+   {
+    "name": "Aroon the Urlamhai",
+    "region": 191,
+    "x": 51478,
+    "y": 43359,
+    "z": 10369,
+    "level": 81,
+    "npcTemplate": 60158075
+   }
+  ],
+  "Avartack": [
+   {
+    "name": "Avartack the Champion",
+    "region": 276,
+    "x": 28896,
+    "y": 35752,
+    "z": 15065,
+    "level": 65,
+    "npcTemplate": 8820
+   }
+  ],
+  "Badb": [
+   {
+    "name": "Badb",
+    "region": 200,
+    "x": 384239,
+    "y": 744954,
+    "z": 5633,
+    "level": 70,
+    "npcTemplate": null
+   }
+  ],
+  "Balere": [
+   {
+    "name": "Balere",
+    "region": 181,
+    "x": 387625,
+    "y": 239667,
+    "z": 4764,
+    "level": 65,
+    "npcTemplate": null
+   }
+  ],
+  "Balor": [
+   {
+    "name": "Balor",
+    "region": 190,
+    "x": 32032,
+    "y": 31048,
+    "z": 15984,
+    "level": 81,
+    "npcTemplate": 60158225
+   }
+  ],
+  "BaneOfHope": [
+   {
+    "name": "Bane of Hope",
+    "region": 60,
+    "x": 31265,
+    "y": 30833,
+    "z": 13954,
+    "level": 81,
+    "npcTemplate": 60158245
+   }
+  ],
+  "Basilius": [
+   {
+    "name": "Basilius",
+    "region": 151,
+    "x": 483761,
+    "y": 335331,
+    "z": 7304,
+    "level": 66,
+    "npcTemplate": 60158315
+   }
+  ],
+  "Behemoth": [
+   {
+    "name": "Behemoth",
+    "region": 249,
+    "x": 44490,
+    "y": 49588,
+    "z": 20833,
+    "level": 99,
+    "npcTemplate": 60158340
+   }
+  ],
+  "BeranSupplyMaster": [
+   {
+    "name": "Beran the Supply Master",
+    "region": 61,
+    "x": 48907,
+    "y": 26990,
+    "z": 17163,
+    "level": 78,
+    "npcTemplate": 60158369
+   }
+  ],
+  "Birghir": [
+   {
+    "name": "Elder Council Birghir",
+    "region": 160,
+    "x": 34731,
+    "y": 56079,
+    "z": 11903,
+    "level": 80,
+    "npcTemplate": 60160391
+   }
+  ],
+  "BlackLady": [
+   {
+    "name": "Black Lady",
+    "region": 276,
+    "x": 30086,
+    "y": 37378,
+    "z": 15001,
+    "level": 65,
+    "npcTemplate": 8817
+   }
+  ],
+  "BlightController": [
+   {
+    "name": "Blight Controller",
+    "region": 200,
+    "x": 475928,
+    "y": 503020,
+    "z": 5259,
+    "level": 50,
+    "npcTemplate": null
+   }
+  ],
+  "Boligar": [
+   {
+    "name": "Boligar",
+    "region": 151,
+    "x": 409984,
+    "y": 378046,
+    "z": 7512,
+    "level": 64,
+    "npcTemplate": 60158603
+   }
+  ],
+  "BrotherDon": [
+   {
+    "name": "Brother Don",
+    "region": 1,
+    "x": 505411,
+    "y": 495024,
+    "z": 2432,
+    "level": 40,
+    "npcTemplate": 60158751
+   }
+  ],
+  "Cailean": [
+   {
+    "name": "Cailean",
+    "region": 200,
+    "x": 479042,
+    "y": 508134,
+    "z": 4569,
+    "level": 65,
+    "npcTemplate": 60158846
+   }
+  ],
+  "CailleachUragaig": [
+   {
+    "name": "Cailleach Uragaig",
+    "region": 1,
+    "x": 316218,
+    "y": 664484,
+    "z": 2736,
+    "level": 70,
+    "npcTemplate": 12941
+   }
+  ],
+  "CaithorDorocha": [
+   {
+    "name": "far dorocha",
+    "region": 200,
+    "x": 470314,
+    "y": 531497,
+    "z": 4990,
+    "level": 50,
+    "npcTemplate": 60160718
+   },
+   {
+    "name": "far dorocha",
+    "region": 200,
+    "x": 470452,
+    "y": 531732,
+    "z": 4985,
+    "level": 52,
+    "npcTemplate": 60160718
+   },
+   {
+    "name": "far dorocha",
+    "region": 200,
+    "x": 470480,
+    "y": 531273,
+    "z": 4991,
+    "level": 51,
+    "npcTemplate": 60160718
+   },
+   {
+    "name": "far dorocha",
+    "region": 200,
+    "x": 470716,
+    "y": 531669,
+    "z": 4984,
+    "level": 50,
+    "npcTemplate": 60160718
+   },
+   {
+    "name": "far dorocha",
+    "region": 200,
+    "x": 470759,
+    "y": 531389,
+    "z": 4984,
+    "level": 51,
+    "npcTemplate": 60160718
+   }
+  ],
+  "CaptainAtwell": [
+   {
+    "name": "Captain Atwell",
+    "region": 277,
+    "x": 33999,
+    "y": 38790,
+    "z": 14614,
+    "level": 63,
+    "npcTemplate": 7718
+   }
+  ],
+  "CaptainBardalph": [
+   {
+    "name": "Captain Bardalph",
+    "region": 277,
+    "x": 34604,
+    "y": 35842,
+    "z": 14134,
+    "level": 65,
+    "npcTemplate": null
+   }
+  ],
+  "CaptainHeathyr": [
+   {
+    "name": "Captain Heathyr",
+    "region": 277,
+    "x": 33731,
+    "y": 35840,
+    "z": 14646,
+    "level": 65,
+    "npcTemplate": 7717
+   }
+  ],
+  "ChiefTarek": [
+   {
+    "name": "Chief Tarek",
+    "region": 151,
+    "x": 445544,
+    "y": 404441,
+    "z": 5280,
+    "level": 68,
+    "npcTemplate": 60159136
+   }
+  ],
+  "ChieftainCaimheul": [
+   {
+    "name": "Chieftain Caimheul",
+    "region": 276,
+    "x": 32597,
+    "y": 38903,
+    "z": 15061,
+    "level": 65,
+    "npcTemplate": 8821
+   }
+  ],
+  "Colialt": [
+   {
+    "name": "Coliath",
+    "region": 51,
+    "x": 327855,
+    "y": 443917,
+    "z": 7514,
+    "level": 78,
+    "npcTemplate": 700000018
+   }
+  ],
+  "Conservator": [
+   {
+    "name": "Conservator",
+    "region": 191,
+    "x": 31246,
+    "y": 40938,
+    "z": 13433,
+    "level": 77,
+    "npcTemplate": 60159351
+   }
+  ],
+  "Cronk": [
+   {
+    "name": "Cronk",
+    "region": 151,
+    "x": 370164,
+    "y": 335964,
+    "z": 7728,
+    "level": 63,
+    "npcTemplate": 60159504
+   }
+  ],
+  "Cronwort": [
+   {
+    "name": "Cronwort",
+    "region": 181,
+    "x": 335342,
+    "y": 312006,
+    "z": 2374,
+    "level": 68,
+    "npcTemplate": null
+   }
+  ],
+  "CryptLord": [
+   {
+    "name": "Crypt Lord",
+    "region": 60,
+    "x": 26567,
+    "y": 40143,
+    "z": 15372,
+    "level": 86,
+    "npcTemplate": 60159518
+   }
+  ],
+  "Curengkur": [
+   {
+    "name": "Curengkur",
+    "region": 181,
+    "x": 376086,
+    "y": 172803,
+    "z": 3452,
+    "level": 75,
+    "npcTemplate": 60159530
+   }
+  ],
+  "Dagar": [
+   {
+    "name": "Dagar",
+    "region": 150,
+    "x": 32043,
+    "y": 43859,
+    "z": 15229,
+    "level": 60,
+    "npcTemplate": 60159616
+   }
+  ],
+  "Dalgo": [
+   {
+    "name": "Dalgo",
+    "region": 151,
+    "x": 414098,
+    "y": 347317,
+    "z": 7008,
+    "level": 70,
+    "npcTemplate": 60159633
+   }
+  ],
+  "DebenSeGecynde": [
+   {
+    "name": "Deben se Gecynde",
+    "region": 61,
+    "x": 21615,
+    "y": 54280,
+    "z": 14076,
+    "level": 80,
+    "npcTemplate": null
+   }
+  ],
+  "Delegalt": [
+   {
+    "name": "Delegalt",
+    "region": 161,
+    "x": 17956,
+    "y": 17650,
+    "z": 17976,
+    "level": 66,
+    "npcTemplate": 83019
+   }
+  ],
+  "Develin": [
+   {
+    "name": "Develin",
+    "region": 200,
+    "x": 478120,
+    "y": 530519,
+    "z": 5203,
+    "level": 60,
+    "npcTemplate": 60159930
+   }
+  ],
+  "DevelinAdd": [
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 476023,
+    "y": 536852,
+    "z": 5309,
+    "level": 54,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 476612,
+    "y": 531481,
+    "z": 5256,
+    "level": 55,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 476615,
+    "y": 534686,
+    "z": 5221,
+    "level": 57,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 476825,
+    "y": 530456,
+    "z": 5229,
+    "level": 54,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 476913,
+    "y": 535972,
+    "z": 5167,
+    "level": 52,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 477147,
+    "y": 537910,
+    "z": 5262,
+    "level": 54,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 477380,
+    "y": 533479,
+    "z": 5200,
+    "level": 52,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 477470,
+    "y": 529524,
+    "z": 5232,
+    "level": 52,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 477569,
+    "y": 530683,
+    "z": 5227,
+    "level": 53,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 477721,
+    "y": 531310,
+    "z": 5218,
+    "level": 54,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 477999,
+    "y": 535179,
+    "z": 5066,
+    "level": 57,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 478057,
+    "y": 536764,
+    "z": 5139,
+    "level": 55,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 478378,
+    "y": 529251,
+    "z": 5239,
+    "level": 56,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 478446,
+    "y": 533617,
+    "z": 5057,
+    "level": 53,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 478460,
+    "y": 531576,
+    "z": 5105,
+    "level": 56,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 478622,
+    "y": 530848,
+    "z": 5128,
+    "level": 55,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 478734,
+    "y": 529882,
+    "z": 5193,
+    "level": 56,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 478853,
+    "y": 536285,
+    "z": 5147,
+    "level": 52,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 478970,
+    "y": 529120,
+    "z": 5207,
+    "level": 53,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 479042,
+    "y": 530087,
+    "z": 5158,
+    "level": 53,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 479221,
+    "y": 534874,
+    "z": 5161,
+    "level": 57,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 479314,
+    "y": 531499,
+    "z": 4988,
+    "level": 52,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 479450,
+    "y": 529837,
+    "z": 5163,
+    "level": 53,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 479716,
+    "y": 530778,
+    "z": 5065,
+    "level": 53,
+    "npcTemplate": 60164991
+   },
+   {
+    "name": "pooka",
+    "region": 200,
+    "x": 479821,
+    "y": 535883,
+    "z": 5257,
+    "level": 54,
+    "npcTemplate": 60164991
+   }
+  ],
+  "DraargusMighty": [
+   {
+    "name": "Dra'argus the Mighty",
+    "region": 50,
+    "x": 26899,
+    "y": 37223,
+    "z": 8644,
+    "level": 68,
+    "npcTemplate": 60160055
+   }
+  ],
+  "DremcisFuiloltair": [
+   {
+    "name": "Dremcis Fuiloltair",
+    "region": 181,
+    "x": 307931,
+    "y": 294860,
+    "z": 3982,
+    "level": 70,
+    "npcTemplate": 60160146
+   }
+  ],
+  "DrihtenElreden": [
+   {
+    "name": "Drihten Elreden",
+    "region": 61,
+    "x": 37323,
+    "y": 68217,
+    "z": 15102,
+    "level": 80,
+    "npcTemplate": null
+   }
+  ],
+  "Droom": [
+   {
+    "name": "Droom",
+    "region": 161,
+    "x": 22055,
+    "y": 21795,
+    "z": 14903,
+    "level": 67,
+    "npcTemplate": 83003
+   }
+  ],
+  "DuraekEmpowered": [
+   {
+    "name": "Dura'ek the Empowered",
+    "region": 50,
+    "x": 32425,
+    "y": 28962,
+    "z": 8756,
+    "level": 71,
+    "npcTemplate": 60160230
+   }
+  ],
+  "Durval": [
+   {
+    "name": "Durval",
+    "region": 51,
+    "x": 319043,
+    "y": 406794,
+    "z": 3082,
+    "level": 65,
+    "npcTemplate": 60160233
+   }
+  ],
+  "Dyranapur": [
+   {
+    "name": "Dyranapur",
+    "region": 161,
+    "x": 31731,
+    "y": 24137,
+    "z": 15602,
+    "level": 59,
+    "npcTemplate": 83010
+   }
+  ],
+  "Easmarach": [
+   {
+    "name": "Easmarach",
+    "region": 191,
+    "x": 37918,
+    "y": 50523,
+    "z": 9865,
+    "level": 81,
+    "npcTemplate": 60160317
+   }
+  ],
+  "ElroTheAncient": [
+   {
+    "name": "Elro the Ancient",
+    "region": 181,
+    "x": 353016,
+    "y": 260457,
+    "z": 4908,
+    "level": 65,
+    "npcTemplate": 5022
+   }
+  ],
+  "EpicJuggernaut": [
+   {
+    "name": "Juggernaut",
+    "region": 200,
+    "x": 494209,
+    "y": 515141,
+    "z": 5443,
+    "level": 75,
+    "npcTemplate": null
+   }
+  ],
+  "Evern": [
+   {
+    "name": "Evern",
+    "region": 200,
+    "x": 429883,
+    "y": 380409,
+    "z": 2328,
+    "level": 76,
+    "npcTemplate": 60160628
+   }
+  ],
+  "FallingIce": [
+   {
+    "name": "falling ice",
+    "region": 160,
+    "x": 21470,
+    "y": 52037,
+    "z": 10871,
+    "level": 70,
+    "npcTemplate": null
+   },
+   {
+    "name": "falling ice",
+    "region": 160,
+    "x": 24807,
+    "y": 52249,
+    "z": 11391,
+    "level": 70,
+    "npcTemplate": null
+   },
+   {
+    "name": "falling ice",
+    "region": 160,
+    "x": 25062,
+    "y": 54828,
+    "z": 11730,
+    "level": 70,
+    "npcTemplate": null
+   },
+   {
+    "name": "falling ice",
+    "region": 160,
+    "x": 27203,
+    "y": 53558,
+    "z": 11906,
+    "level": 70,
+    "npcTemplate": null
+   }
+  ],
+  "FateChosen": [
+   {
+    "name": "Fate's Chosen",
+    "region": 60,
+    "x": 37500,
+    "y": 30162,
+    "z": 13969,
+    "level": 81,
+    "npcTemplate": 50040
+   }
+  ],
+  "Fester": [
+   {
+    "name": "Fester",
+    "region": 1,
+    "x": 438366,
+    "y": 384511,
+    "z": 5176,
+    "level": 64,
+    "npcTemplate": 13011
+   }
+  ],
+  "Flame": [
+   {
+    "name": "Flame",
+    "region": 200,
+    "x": 498866,
+    "y": 526153,
+    "z": 6133,
+    "level": 64,
+    "npcTemplate": 60160901
+   }
+  ],
+  "Fornfrusenen": [
+   {
+    "name": "Fornfrusenen",
+    "region": 160,
+    "x": 49618,
+    "y": 32876,
+    "z": 10859,
+    "level": 75,
+    "npcTemplate": 60161047
+   }
+  ],
+  "FostraOrm": [
+   {
+    "name": "Fostra Orm",
+    "region": 150,
+    "x": 31865,
+    "y": 43333,
+    "z": 14640,
+    "level": 61,
+    "npcTemplate": 60161054
+   }
+  ],
+  "Fuladl": [
+   {
+    "name": "Fuladl",
+    "region": 61,
+    "x": 38701,
+    "y": 28678,
+    "z": 12017,
+    "level": 77,
+    "npcTemplate": null
+   }
+  ],
+  "Fulafeallan": [
+   {
+    "name": "Fulafeallan",
+    "region": 61,
+    "x": 42353,
+    "y": 45665,
+    "z": 14586,
+    "level": 77,
+    "npcTemplate": null
+   }
+  ],
+  "GhostOfCaithor": [
+   {
+    "name": "Giant Caithor",
+    "region": 200,
+    "x": 470547,
+    "y": 531497,
+    "z": 4984,
+    "level": 62,
+    "npcTemplate": null
+   }
+  ],
+  "GiantSporiteCluster": [
+   {
+    "name": "Giant Sporite Cluster",
+    "region": 191,
+    "x": 37527,
+    "y": 48247,
+    "z": 13781,
+    "level": 79,
+    "npcTemplate": 60161336
+   }
+  ],
+  "GlacierGiant": [
+   {
+    "name": "Glacier Giant",
+    "region": 100,
+    "x": 651972,
+    "y": 626960,
+    "z": 5468,
+    "level": 86,
+    "npcTemplate": 60161360
+   }
+  ],
+  "Gneiss": [
+   {
+    "name": "Gneiss",
+    "region": 181,
+    "x": 288550,
+    "y": 287047,
+    "z": 1996,
+    "level": 70,
+    "npcTemplate": 60161448
+   }
+  ],
+  "Goretooth": [
+   {
+    "name": "Goretooth",
+    "region": 151,
+    "x": 412210,
+    "y": 370615,
+    "z": 6581,
+    "level": 68,
+    "npcTemplate": 60161492
+   }
+  ],
+  "GrandSummonerGovannon": [
+   {
+    "name": "Grand Summoner Govannon",
+    "region": 248,
+    "x": 32050,
+    "y": 40863,
+    "z": 15468,
+    "level": 80,
+    "npcTemplate": 18801
+   }
+  ],
+  "GreenMaw": [
+   {
+    "name": "Green Maw",
+    "region": 200,
+    "x": 488306,
+    "y": 521440,
+    "z": 6328,
+    "level": 65,
+    "npcTemplate": 50022
+   }
+  ],
+  "Gudlaugr": [
+   {
+    "name": "Gudlaugr",
+    "region": 246,
+    "x": 43652,
+    "y": 31972,
+    "z": 13437,
+    "level": 64,
+    "npcTemplate": 9919
+   }
+  ],
+  "Guthlac": [
+   {
+    "name": "Elder Council Guthlac",
+    "region": 160,
+    "x": 33580,
+    "y": 55666,
+    "z": 11887,
+    "level": 80,
+    "npcTemplate": 60160392
+   }
+  ],
+  "Hakr": [
+   {
+    "name": "Icelord Hakr",
+    "region": 160,
+    "x": 25415,
+    "y": 57215,
+    "z": 11357,
+    "level": 82,
+    "npcTemplate": 60162347
+   }
+  ],
+  "Hamar": [
+   {
+    "name": "Hamar",
+    "region": 246,
+    "x": 32017,
+    "y": 41854,
+    "z": 15484,
+    "level": 61,
+    "npcTemplate": 9910
+   }
+  ],
+  "Hati": [
+   {
+    "name": "Hati",
+    "region": 161,
+    "x": 13349,
+    "y": 14481,
+    "z": 18114,
+    "level": 69,
+    "npcTemplate": 83026
+   }
+  ],
+  "HibCuuldurach": [
+   {
+    "name": "Cuuldurach the Glimmer King",
+    "region": 200,
+    "x": 408646,
+    "y": 706432,
+    "z": 2965,
+    "level": 80,
+    "npcTemplate": 678903
+   }
+  ],
+  "HighLordBaelerdoth": [
+   {
+    "name": "High Lord Baelerdoth",
+    "region": 249,
+    "x": 49208,
+    "y": 31993,
+    "z": 15982,
+    "level": 80,
+    "npcTemplate": 60162129
+   }
+  ],
+  "HighLordBaln": [
+   {
+    "name": "High Lord Baln",
+    "region": 249,
+    "x": 35351,
+    "y": 39179,
+    "z": 14958,
+    "level": 70,
+    "npcTemplate": 60162130
+   }
+  ],
+  "HighLordOro": [
+   {
+    "name": "High Lord Oro",
+    "region": 249,
+    "x": 45048,
+    "y": 25215,
+    "z": 15924,
+    "level": 67,
+    "npcTemplate": 60162132
+   }
+  ],
+  "HighLordOroClone": [
+   {
+    "name": "High Lord Oro",
+    "region": 249,
+    "x": 44848,
+    "y": 25414,
+    "z": 15860,
+    "level": 68,
+    "npcTemplate": 90162132
+   },
+   {
+    "name": "High Lord Oro",
+    "region": 249,
+    "x": 45362,
+    "y": 25734,
+    "z": 15806,
+    "level": 66,
+    "npcTemplate": 90162132
+   }
+  ],
+  "HighLordSaeor": [
+   {
+    "name": "High Lord Saeor",
+    "region": 249,
+    "x": 49796,
+    "y": 38134,
+    "z": 15925,
+    "level": 70,
+    "npcTemplate": 60162133
+   }
+  ],
+  "HjalmarSuttungController": [
+   {
+    "name": "HjalmarSuttung Controller",
+    "region": 160,
+    "x": 32021,
+    "y": 53862,
+    "z": 11884,
+    "level": 50,
+    "npcTemplate": null
+   }
+  ],
+  "Hord": [
+   {
+    "name": "Council Hord",
+    "region": 160,
+    "x": 21916,
+    "y": 40173,
+    "z": 13422,
+    "level": 77,
+    "npcTemplate": 60159449
+   }
+  ],
+  "Hugi": [
+   {
+    "name": "Hugi",
+    "region": 100,
+    "x": 600086,
+    "y": 791775,
+    "z": 6220,
+    "level": 74,
+    "npcTemplate": 60162252
+   }
+  ],
+  "Hurika": [
+   {
+    "name": "Hurika",
+    "region": 160,
+    "x": 50839,
+    "y": 35892,
+    "z": 16154,
+    "level": 85,
+    "npcTemplate": 60162284
+   }
+  ],
+  "Hurionthex": [
+   {
+    "name": "Hurionthex",
+    "region": 191,
+    "x": 55672,
+    "y": 43536,
+    "z": 12417,
+    "level": 81,
+    "npcTemplate": 60162285
+   }
+  ],
+  "Hurjavelen": [
+   {
+    "name": "Hurjavelen",
+    "region": 161,
+    "x": 21487,
+    "y": 34669,
+    "z": 16513,
+    "level": 68,
+    "npcTemplate": 83015
+   }
+  ],
+  "Iarnvidiur": [
+   {
+    "name": "Iarnvidiur",
+    "region": 161,
+    "x": 13848,
+    "y": 11523,
+    "z": 18263,
+    "level": 75,
+    "npcTemplate": 83028
+   }
+  ],
+  "Issorden": [
+   {
+    "name": "Issorden",
+    "region": 160,
+    "x": 54453,
+    "y": 37638,
+    "z": 11435,
+    "level": 78,
+    "npcTemplate": 60162545
+   }
+  ],
+  "Jailer": [
+   {
+    "name": "Jailer Vifil",
+    "region": 160,
+    "x": 27074,
+    "y": 61280,
+    "z": 10351,
+    "level": 82,
+    "npcTemplate": 60162583
+   }
+  ],
+  "JarlOrmarr": [
+   {
+    "name": "Jarl Ormarr",
+    "region": 246,
+    "x": 45432,
+    "y": 37768,
+    "z": 13966,
+    "level": 65,
+    "npcTemplate": 9918
+   }
+  ],
+  "JehrogBysen": [
+   {
+    "name": "Jehrog se Bysen",
+    "region": 61,
+    "x": 28056,
+    "y": 54828,
+    "z": 15104,
+    "level": 76,
+    "npcTemplate": null
+   }
+  ],
+  "KieracDestroyer": [
+   {
+    "name": "Kierac the Destroyer",
+    "region": 190,
+    "x": 28439,
+    "y": 28150,
+    "z": 13246,
+    "level": 69,
+    "npcTemplate": null
+   }
+  ],
+  "KingBarfog": [
+   {
+    "name": "King of the Barfog Hills",
+    "region": 1,
+    "x": 445069,
+    "y": 378519,
+    "z": 6897,
+    "level": 65,
+    "npcTemplate": 13017
+   }
+  ],
+  "KingTuscar": [
+   {
+    "name": "King Tuscar",
+    "region": 160,
+    "x": 34542,
+    "y": 57121,
+    "z": 11881,
+    "level": 85,
+    "npcTemplate": 60162909
+   }
+  ],
+  "KontarCorrupt": [
+   {
+    "name": "Kontar the Corrupt",
+    "region": 181,
+    "x": 367892,
+    "y": 270043,
+    "z": 3416,
+    "level": 65,
+    "npcTemplate": null
+   }
+  ],
+  "Krackenschtein": [
+   {
+    "name": "Krackenschtein",
+    "region": 180,
+    "x": 31773,
+    "y": 37385,
+    "z": 16000,
+    "level": 70,
+    "npcTemplate": 60162981
+   }
+  ],
+  "KrevoRicik": [
+   {
+    "name": "Krevo Ricik",
+    "region": 61,
+    "x": 27189,
+    "y": 64319,
+    "z": 15614,
+    "level": 73,
+    "npcTemplate": null
+   }
+  ],
+  "Kvasir": [
+   {
+    "name": "Icelord Kvasir",
+    "region": 160,
+    "x": 20240,
+    "y": 52101,
+    "z": 10924,
+    "level": 80,
+    "npcTemplate": 60162348
+   }
+  ],
+  "LadyDarra": [
+   {
+    "name": "Lady Darra",
+    "region": 277,
+    "x": 29551,
+    "y": 31554,
+    "z": 13941,
+    "level": 68,
+    "npcTemplate": 7720
+   }
+  ],
+  "LegendaryAfanc": [
+   {
+    "name": "Legendary Afanc",
+    "region": 1,
+    "x": 455704,
+    "y": 389644,
+    "z": 2192,
+    "level": 70,
+    "npcTemplate": 13019
+   }
+  ],
+  "Legion": [
+   {
+    "name": "Legion",
+    "region": 249,
+    "x": 45027,
+    "y": 51899,
+    "z": 15468,
+    "level": 83,
+    "npcTemplate": 13333
+   }
+  ],
+  "LichLordIlron": [
+   {
+    "name": "Lich Lord Ilron",
+    "region": 60,
+    "x": 36385,
+    "y": 37593,
+    "z": 17006,
+    "level": 82,
+    "npcTemplate": 60163266
+   }
+  ],
+  "LieutenantMeade": [
+   {
+    "name": "Lieutenant Meade",
+    "region": 277,
+    "x": 31873,
+    "y": 34970,
+    "z": 15366,
+    "level": 50,
+    "npcTemplate": 7716
+   }
+  ],
+  "Loken": [
+   {
+    "name": "Loken",
+    "region": 100,
+    "x": 636788,
+    "y": 762435,
+    "z": 4596,
+    "level": 65,
+    "npcTemplate": 60163372
+   },
+   {
+    "name": "Loken",
+    "region": 100,
+    "x": 639272,
+    "y": 764711,
+    "z": 4685,
+    "level": 65,
+    "npcTemplate": 60163372
+   }
+  ],
+  "LordGildas": [
+   {
+    "name": "Lord Gildas",
+    "region": 277,
+    "x": 29015,
+    "y": 41910,
+    "z": 12933,
+    "level": 75,
+    "npcTemplate": 7719
+   }
+  ],
+  "LordSanguis": [
+   {
+    "name": "Lord Sanguis",
+    "region": 60,
+    "x": 34062,
+    "y": 32787,
+    "z": 14518,
+    "level": 81,
+    "npcTemplate": 60163412
+   }
+  ],
+  "LurfosHerald": [
+   {
+    "name": "Lurfos the Herald",
+    "region": 61,
+    "x": 31414,
+    "y": 65541,
+    "z": 15610,
+    "level": 76,
+    "npcTemplate": null
+   }
+  ],
+  "Luriquay": [
+   {
+    "name": "Luriquay",
+    "region": 200,
+    "x": 484374,
+    "y": 494761,
+    "z": 4981,
+    "level": 65,
+    "npcTemplate": 60163498
+   }
+  ],
+  "Lydsyg": [
+   {
+    "name": "Lydsyg",
+    "region": 161,
+    "x": 15652,
+    "y": 30474,
+    "z": 17483,
+    "level": 58,
+    "npcTemplate": 83009
+   }
+  ],
+  "Mahattava": [
+   {
+    "name": "Mahattava",
+    "region": 161,
+    "x": 17361,
+    "y": 29203,
+    "z": 12962,
+    "level": 66,
+    "npcTemplate": 83022
+   }
+  ],
+  "MaldaharTheGlimmerPrince": [
+   {
+    "name": "Maldahar the Glimmer Prince",
+    "region": 200,
+    "x": 388276,
+    "y": 696824,
+    "z": 2557,
+    "level": 73,
+    "npcTemplate": 44043
+   }
+  ],
+  "Marfoirwort": [
+   {
+    "name": "Marfoirwort",
+    "region": 181,
+    "x": 293831,
+    "y": 283911,
+    "z": 2695,
+    "level": 80,
+    "npcTemplate": 60163696
+   }
+  ],
+  "MelancholicFairyQueen": [
+   {
+    "name": "Melancholic Fairy Queen",
+    "region": 200,
+    "x": 309089,
+    "y": 733925,
+    "z": 6599,
+    "level": 65,
+    "npcTemplate": null
+   }
+  ],
+  "MidGjalpinulva": [
+   {
+    "name": "Gjalpinulva",
+    "region": 100,
+    "x": 708811,
+    "y": 1021459,
+    "z": 3014,
+    "level": 80,
+    "npcTemplate": 694189
+   }
+  ],
+  "MistressRunes": [
+   {
+    "name": "Mistress of Runes",
+    "region": 246,
+    "x": 29728,
+    "y": 42388,
+    "z": 12912,
+    "level": 63,
+    "npcTemplate": 9907
+   }
+  ],
+  "Mollunero": [
+   {
+    "name": "Mollunero",
+    "region": 181,
+    "x": 381822,
+    "y": 268541,
+    "z": 3403,
+    "level": 75,
+    "npcTemplate": 60164149
+   }
+  ],
+  "MoranTheMighty": [
+   {
+    "name": "Moran the Mighty",
+    "region": 1,
+    "x": 408341,
+    "y": 756300,
+    "z": 538,
+    "level": 73,
+    "npcTemplate": 770024
+   }
+  ],
+  "MorgusUrgalorg": [
+   {
+    "name": "Morgus Urgalorg",
+    "region": 61,
+    "x": 44808,
+    "y": 18929,
+    "z": 17164,
+    "level": 73,
+    "npcTemplate": null
+   }
+  ],
+  "Mortufoghus": [
+   {
+    "name": "Mortufoghus",
+    "region": 151,
+    "x": 451102,
+    "y": 350788,
+    "z": 7022,
+    "level": 77,
+    "npcTemplate": 60164200
+   }
+  ],
+  "Mouth": [
+   {
+    "name": "Mouth",
+    "region": 1,
+    "x": 471208,
+    "y": 384596,
+    "z": 6216,
+    "level": 62,
+    "npcTemplate": 13025
+   }
+  ],
+  "Myrddraxis": [
+   {
+    "name": "Myrddraxis",
+    "region": 180,
+    "x": 32302,
+    "y": 32221,
+    "z": 15635,
+    "level": 80,
+    "npcTemplate": 60164337
+   }
+  ],
+  "Nogoribando": [
+   {
+    "name": "Nogoribando",
+    "region": 180,
+    "x": 31463,
+    "y": 29191,
+    "z": 16768,
+    "level": 70,
+    "npcTemplate": 60164519
+   }
+  ],
+  "Nokkvi": [
+   {
+    "name": "Council Nokkvi",
+    "region": 160,
+    "x": 24061,
+    "y": 35640,
+    "z": 12918,
+    "level": 78,
+    "npcTemplate": 60159450
+   }
+  ],
+  "NorsobAnnihilator": [
+   {
+    "name": "Norsob the Annihilator",
+    "region": 190,
+    "x": 25033,
+    "y": 31235,
+    "z": 14109,
+    "level": 72,
+    "npcTemplate": null
+   }
+  ],
+  "Nosdoden": [
+   {
+    "name": "Nosdoden",
+    "region": 150,
+    "x": 37538,
+    "y": 12262,
+    "z": 13377,
+    "level": 80,
+    "npcTemplate": 60164545
+   }
+  ],
+  "OFGreenKnight": [
+   {
+    "name": "Green Knight",
+    "region": 1,
+    "x": 592359,
+    "y": 418245,
+    "z": 4988,
+    "level": 79,
+    "npcTemplate": 60161621
+   }
+  ],
+  "OlcasarGeomancer": [
+   {
+    "name": "Olcasar Geomancer",
+    "region": 191,
+    "x": 39115,
+    "y": 36863,
+    "z": 14977,
+    "level": 77,
+    "npcTemplate": 60164613
+   }
+  ],
+  "Olcasgean": [
+   {
+    "name": "Olcasgean",
+    "region": 191,
+    "x": 39237,
+    "y": 62644,
+    "z": 11685,
+    "level": 87,
+    "npcTemplate": 60164624
+   }
+  ],
+  "OlcasgeanInitializator": [
+   {
+    "name": "Olcasgean Initializator",
+    "region": 191,
+    "x": 41093,
+    "y": 64407,
+    "z": 12660,
+    "level": 50,
+    "npcTemplate": null
+   }
+  ],
+  "Oona": [
+   {
+    "name": "Oona",
+    "region": 100,
+    "x": 607233,
+    "y": 786850,
+    "z": 4384,
+    "level": 65,
+    "npcTemplate": 60164669
+   }
+  ],
+  "OonaUndeadSoldier": [
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 606538,
+    "y": 786850,
+    "z": 4384,
+    "level": 52,
+    "npcTemplate": 60167424
+   },
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 606610,
+    "y": 786338,
+    "z": 4404,
+    "level": 49,
+    "npcTemplate": 60167424
+   },
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 606664,
+    "y": 787145,
+    "z": 4384,
+    "level": 52,
+    "npcTemplate": 60167424
+   },
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 606968,
+    "y": 788071,
+    "z": 4384,
+    "level": 52,
+    "npcTemplate": 60167424
+   },
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 607233,
+    "y": 787588,
+    "z": 4384,
+    "level": 52,
+    "npcTemplate": 60167424
+   },
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 607311,
+    "y": 786190,
+    "z": 4384,
+    "level": 52,
+    "npcTemplate": 60167424
+   },
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 607745,
+    "y": 787981,
+    "z": 4384,
+    "level": 49,
+    "npcTemplate": 60167424
+   },
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 607894,
+    "y": 787075,
+    "z": 4384,
+    "level": 49,
+    "npcTemplate": 60167424
+   },
+   {
+    "name": "undead soldier",
+    "region": 100,
+    "x": 607932,
+    "y": 786249,
+    "z": 4384,
+    "level": 49,
+    "npcTemplate": 60167424
+   }
+  ],
+  "OreyEyedOghamist": [
+   {
+    "name": "Orey-eyed Oghamist",
+    "region": 200,
+    "x": 501730,
+    "y": 506784,
+    "z": 5192,
+    "level": 73,
+    "npcTemplate": 60164703
+   }
+  ],
+  "OrganicEnergyMechanism": [
+   {
+    "name": "Organic-Energy Mechanism",
+    "region": 191,
+    "x": 49406,
+    "y": 31276,
+    "z": 14392,
+    "level": 79,
+    "npcTemplate": 60164704
+   }
+  ],
+  "Orshom": [
+   {
+    "name": "Orshom Brong",
+    "region": 61,
+    "x": 31697,
+    "y": 70458,
+    "z": 15610,
+    "level": 80,
+    "npcTemplate": null
+   }
+  ],
+  "Orylle": [
+   {
+    "name": "Orylle",
+    "region": 61,
+    "x": 31413,
+    "y": 70773,
+    "z": 15765,
+    "level": 83,
+    "npcTemplate": null
+   }
+  ],
+  "Otrygg": [
+   {
+    "name": "Council Otrygg",
+    "region": 160,
+    "x": 23938,
+    "y": 41960,
+    "z": 13412,
+    "level": 77,
+    "npcTemplate": 60159451
+   }
+  ],
+  "Ozur": [
+   {
+    "name": "Council Ozur",
+    "region": 160,
+    "x": 21892,
+    "y": 39430,
+    "z": 13421,
+    "level": 77,
+    "npcTemplate": 60159452
+   }
+  ],
+  "PrinceAbdin": [
+   {
+    "name": "Prince Abdin",
+    "region": 249,
+    "x": 25647,
+    "y": 17946,
+    "z": 17684,
+    "level": 78,
+    "npcTemplate": 60165029
+   }
+  ],
+  "PrinceAsmoien": [
+   {
+    "name": "Prince Asmoien",
+    "region": 249,
+    "x": 24868,
+    "y": 32144,
+    "z": 16086,
+    "level": 78,
+    "npcTemplate": 60165030
+   }
+  ],
+  "PrinceBaalorien": [
+   {
+    "name": "Prince Ba'alorien",
+    "region": 249,
+    "x": 36680,
+    "y": 16197,
+    "z": 16051,
+    "level": 78,
+    "npcTemplate": 60165031
+   }
+  ],
+  "PrincessNahemah": [
+   {
+    "name": "Princess Nahemah",
+    "region": 249,
+    "x": 18560,
+    "y": 24840,
+    "z": 17203,
+    "level": 71,
+    "npcTemplate": 60165038
+   }
+  ],
+  "QanrisDuros": [
+   {
+    "name": "Qan'ris Duros",
+    "region": 51,
+    "x": 425043,
+    "y": 397100,
+    "z": 3056,
+    "level": 68,
+    "npcTemplate": 60165072
+   }
+  ],
+  "QueenCliodna": [
+   {
+    "name": "Queen Cliodna",
+    "region": 200,
+    "x": 388237,
+    "y": 752506,
+    "z": 5719,
+    "level": 70,
+    "npcTemplate": null
+   }
+  ],
+  "QueenKula": [
+   {
+    "name": "Queen Kula",
+    "region": 160,
+    "x": 34136,
+    "y": 57202,
+    "z": 12025,
+    "level": 85,
+    "npcTemplate": 60165083
+   }
+  ],
+  "QueenQunilaria": [
+   {
+    "name": "Queen Qunilaria",
+    "region": 190,
+    "x": 31066,
+    "y": 16596,
+    "z": 11951,
+    "level": 72,
+    "npcTemplate": 60165085
+   }
+  ],
+  "RaumarikRevenant": [
+   {
+    "name": "Raumarik Revenant",
+    "region": 100,
+    "x": 601367,
+    "y": 748425,
+    "z": 8296,
+    "level": 77,
+    "npcTemplate": 60165173
+   }
+  ],
+  "Rift": [
+   {
+    "name": "Trollkarl Bonchar",
+    "region": 150,
+    "x": 31992,
+    "y": 19566,
+    "z": 13281,
+    "level": 65,
+    "npcTemplate": null
+   }
+  ],
+  "RisnirCruss": [
+   {
+    "name": "Ris'nir Cruss",
+    "region": 51,
+    "x": 430763,
+    "y": 388496,
+    "z": 4870,
+    "level": 71,
+    "npcTemplate": 60165335
+   }
+  ],
+  "Rotoddjur": [
+   {
+    "name": "Rotodjur",
+    "region": 150,
+    "x": 46800,
+    "y": 39103,
+    "z": 14601,
+    "level": 71,
+    "npcTemplate": 60165428
+   }
+  ],
+  "Runil": [
+   {
+    "name": "Runil",
+    "region": 100,
+    "x": 642897,
+    "y": 757070,
+    "z": 4514,
+    "level": 59,
+    "npcTemplate": 60165485
+   }
+  ],
+  "Sarcondina": [
+   {
+    "name": "Sarcondina",
+    "region": 51,
+    "x": 260656,
+    "y": 456185,
+    "z": 4782,
+    "level": 65,
+    "npcTemplate": null
+   }
+  ],
+  "SarganConqueror": [
+   {
+    "name": "Sargan the Conqueror",
+    "region": 190,
+    "x": 25249,
+    "y": 38173,
+    "z": 14109,
+    "level": 71,
+    "npcTemplate": null
+   }
+  ],
+  "ScurceolHyrde": [
+   {
+    "name": "Scurceol Hyrde",
+    "region": 61,
+    "x": 51941,
+    "y": 20068,
+    "z": 17174,
+    "level": 81,
+    "npcTemplate": null
+   }
+  ],
+  "SergeantDarryn": [
+   {
+    "name": "Sergeant Darryn",
+    "region": 277,
+    "x": 28147,
+    "y": 33331,
+    "z": 14941,
+    "level": 50,
+    "npcTemplate": 7714
+   }
+  ],
+  "SergeantEddison": [
+   {
+    "name": "Sergeant Eddison",
+    "region": 277,
+    "x": 31556,
+    "y": 33790,
+    "z": 15094,
+    "level": 50,
+    "npcTemplate": 7713
+   }
+  ],
+  "SergeantReede": [
+   {
+    "name": "Sergeant Reede",
+    "region": 277,
+    "x": 32371,
+    "y": 34757,
+    "z": 15366,
+    "level": 51,
+    "npcTemplate": 7715
+   }
+  ],
+  "ShadeOfAelfgar": [
+   {
+    "name": "Shade of Aelfgar",
+    "region": 248,
+    "x": 31913,
+    "y": 40871,
+    "z": 15468,
+    "level": 70,
+    "npcTemplate": 18803
+   }
+  ],
+  "Shredclaw": [
+   {
+    "name": "Shredclaw",
+    "region": 151,
+    "x": 410524,
+    "y": 337323,
+    "z": 7602,
+    "level": 66,
+    "npcTemplate": null
+   }
+  ],
+  "Silencer": [
+   {
+    "name": "Silencer",
+    "region": 60,
+    "x": 31035,
+    "y": 36303,
+    "z": 15621,
+    "level": 81,
+    "npcTemplate": 60166029
+   }
+  ],
+  "Skeaghshee": [
+   {
+    "name": "Skeaghshee",
+    "region": 200,
+    "x": 498892,
+    "y": 502402,
+    "z": 4985,
+    "level": 71,
+    "npcTemplate": 60166165
+   }
+  ],
+  "SkeletalSacristan": [
+   {
+    "name": "Skeletal Sacristan",
+    "region": 60,
+    "x": 32158,
+    "y": 35804,
+    "z": 16750,
+    "level": 81,
+    "npcTemplate": 60166180
+   }
+  ],
+  "Skoll": [
+   {
+    "name": "Skoll",
+    "region": 161,
+    "x": 14985,
+    "y": 14528,
+    "z": 18125,
+    "level": 69,
+    "npcTemplate": 83027
+   }
+  ],
+  "Skuf": [
+   {
+    "name": "Icelord Skuf",
+    "region": 160,
+    "x": 30504,
+    "y": 49838,
+    "z": 11383,
+    "level": 80,
+    "npcTemplate": 60162349
+   }
+  ],
+  "SoulReckoner": [
+   {
+    "name": "Soul Reckoner",
+    "region": 60,
+    "x": 28967,
+    "y": 35874,
+    "z": 15370,
+    "level": 81,
+    "npcTemplate": 60166369
+   }
+  ],
+  "SpectralProvisionerSpawner": [
+   {
+    "name": "Spectral Provisioner Spawner",
+    "region": 60,
+    "x": 30063,
+    "y": 40880,
+    "z": 17004,
+    "level": 50,
+    "npcTemplate": null
+   }
+  ],
+  "SpindlerBroodmother": [
+   {
+    "name": "Spindler Broodmother",
+    "region": 191,
+    "x": 21283,
+    "y": 51707,
+    "z": 10876,
+    "level": 81,
+    "npcTemplate": 60166449
+   }
+  ],
+  "SpiritOfLordEmthoro": [
+   {
+    "name": "Spirit of Lord Emthoro",
+    "region": 51,
+    "x": 238081,
+    "y": 434761,
+    "z": 4521,
+    "level": 77,
+    "npcTemplate": 60166454
+   }
+  ],
+  "SpiritmasterAros": [
+   {
+    "name": "Aros the Spiritmaster",
+    "region": 246,
+    "x": 39061,
+    "y": 36970,
+    "z": 15495,
+    "level": 72,
+    "npcTemplate": 9916
+   }
+  ],
+  "Stanga": [
+   {
+    "name": "Stanga",
+    "region": 161,
+    "x": 21537,
+    "y": 32290,
+    "z": 16513,
+    "level": 66,
+    "npcTemplate": 83014
+   }
+  ],
+  "Steinvor": [
+   {
+    "name": "Icelord Steinvor",
+    "region": 160,
+    "x": 30416,
+    "y": 49307,
+    "z": 11384,
+    "level": 80,
+    "npcTemplate": 60162350
+   }
+  ],
+  "SummonerCunovinda": [
+   {
+    "name": "Summoner Cunovinda",
+    "region": 248,
+    "x": 24726,
+    "y": 36141,
+    "z": 15998,
+    "level": 75,
+    "npcTemplate": 18805
+   }
+  ],
+  "SummonerLossren": [
+   {
+    "name": "Summoner Lossren",
+    "region": 248,
+    "x": 39276,
+    "y": 41166,
+    "z": 16001,
+    "level": 75,
+    "npcTemplate": 18806
+   }
+  ],
+  "SummonerRoesia": [
+   {
+    "name": "Summoner Roesia",
+    "region": 248,
+    "x": 34577,
+    "y": 31371,
+    "z": 15998,
+    "level": 75,
+    "npcTemplate": 18804
+   }
+  ],
+  "SyssroRuthless": [
+   {
+    "name": "Sys'sro the Ruthless",
+    "region": 50,
+    "x": 41505,
+    "y": 39496,
+    "z": 8040,
+    "level": 68,
+    "npcTemplate": 60166729
+   }
+  ],
+  "Teazanodwc": [
+   {
+    "name": "Teazanodwc",
+    "region": 1,
+    "x": 456333,
+    "y": 423806,
+    "z": 5337,
+    "level": 63,
+    "npcTemplate": 13033
+   }
+  ],
+  "ThaneDyggve": [
+   {
+    "name": "Thane Dyggve",
+    "region": 246,
+    "x": 35169,
+    "y": 33571,
+    "z": 13937,
+    "level": 66,
+    "npcTemplate": 9913
+   }
+  ],
+  "Torst": [
+   {
+    "name": "Torst",
+    "region": 160,
+    "x": 50778,
+    "y": 35997,
+    "z": 16154,
+    "level": 80,
+    "npcTemplate": null
+   }
+  ],
+  "UafasCapall": [
+   {
+    "name": "Uafas Capall",
+    "region": 200,
+    "x": 502766,
+    "y": 522918,
+    "z": 5783,
+    "level": 72,
+    "npcTemplate": null
+   }
+  ],
+  "UaimhLairmaster": [
+   {
+    "name": "Uaimh Lairmaster",
+    "region": 191,
+    "x": 38123,
+    "y": 44719,
+    "z": 14468,
+    "level": 81,
+    "npcTemplate": 60167362
+   }
+  ],
+  "Ulfketill": [
+   {
+    "name": "Ulfketill",
+    "region": 100,
+    "x": 629994,
+    "y": 897954,
+    "z": 2291,
+    "level": 65,
+    "npcTemplate": 60167383
+   }
+  ],
+  "UlorBysen": [
+   {
+    "name": "Ulor se Bysen",
+    "region": 61,
+    "x": 28173,
+    "y": 53842,
+    "z": 15098,
+    "level": 73,
+    "npcTemplate": null
+   }
+  ],
+  "Vagn": [
+   {
+    "name": "Council Vagn",
+    "region": 160,
+    "x": 24412,
+    "y": 35856,
+    "z": 12921,
+    "level": 78,
+    "npcTemplate": 60159453
+   }
+  ],
+  "Valmak": [
+   {
+    "name": "Valmak",
+    "region": 151,
+    "x": 380811,
+    "y": 347640,
+    "z": 6004,
+    "level": 64,
+    "npcTemplate": 60167521
+   }
+  ],
+  "ValnirMordeth": [
+   {
+    "name": "Valnir Mordeth",
+    "region": 51,
+    "x": 378390,
+    "y": 398849,
+    "z": 4354,
+    "level": 70,
+    "npcTemplate": 700000014
+   }
+  ],
+  "Vasrem": [
+   {
+    "name": "Vasrem",
+    "region": 151,
+    "x": 451231,
+    "y": 449754,
+    "z": 9121,
+    "level": 70,
+    "npcTemplate": 60167546
+   }
+  ],
+  "VeraeriusBrave": [
+   {
+    "name": "Vera'erius the Brave",
+    "region": 50,
+    "x": 23752,
+    "y": 28660,
+    "z": 8791,
+    "level": 68,
+    "npcTemplate": 60167614
+   }
+  ],
+  "Vortanos": [
+   {
+    "name": "Vortanos",
+    "region": 51,
+    "x": 366820,
+    "y": 369691,
+    "z": 3048,
+    "level": 61,
+    "npcTemplate": 60167731
+   }
+  ],
+  "WarlordDorinakka": [
+   {
+    "name": "Warlord Dorinakka",
+    "region": 60,
+    "x": 35625,
+    "y": 41676,
+    "z": 15631,
+    "level": 85,
+    "npcTemplate": 60167787
+   }
+  ],
+  "WenoiakEnlightened": [
+   {
+    "name": "Weno'iak the Enlightened",
+    "region": 50,
+    "x": 35817,
+    "y": 33952,
+    "z": 8625,
+    "level": 68,
+    "npcTemplate": 60167846
+   }
+  ],
+  "WrathOfMordred": [
+   {
+    "name": "Wrath of Mordred",
+    "region": 1,
+    "x": 462575,
+    "y": 413391,
+    "z": 3182,
+    "level": 71,
+    "npcTemplate": 13039
+   }
+  ],
+  "WrethOfWinterArachite": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 628011,
+    "y": 764139,
+    "z": 4396,
+    "level": 75,
+    "npcTemplate": null
+   }
+  ],
+  "WrethOfWinterCrab": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 601734,
+    "y": 754700,
+    "z": 4663,
+    "level": 74,
+    "npcTemplate": null
+   }
+  ],
+  "WrethOfWinterIce": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 616988,
+    "y": 772547,
+    "z": 4384,
+    "level": 73,
+    "npcTemplate": null
+   }
+  ],
+  "WrethOfWinterJotun": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 602940,
+    "y": 783607,
+    "z": 4390,
+    "level": 77,
+    "npcTemplate": null
+   }
+  ],
+  "WrethOfWinterLich": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 633049,
+    "y": 781099,
+    "z": 4480,
+    "level": 74,
+    "npcTemplate": null
+   }
+  ],
+  "WrethOfWinterOgre": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 634596,
+    "y": 754491,
+    "z": 8118,
+    "level": 71,
+    "npcTemplate": null
+   }
+  ],
+  "WrethOfWinterRaumarik": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 603790,
+    "y": 748050,
+    "z": 8121,
+    "level": 74,
+    "npcTemplate": null
+   }
+  ],
+  "WrethOfWinterScorp": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 609376,
+    "y": 747204,
+    "z": 4384,
+    "level": 74,
+    "npcTemplate": null
+   }
+  ],
+  "WrethOfWinterSpider": [
+   {
+    "name": "Wretch of Winter",
+    "region": 100,
+    "x": 616116,
+    "y": 765878,
+    "z": 5023,
+    "level": 70,
+    "npcTemplate": null
+   }
+  ],
+  "WyvernicWraith": [
+   {
+    "name": "Wyvernic Wraith",
+    "region": 200,
+    "x": 500843,
+    "y": 533841,
+    "z": 5339,
+    "level": 74,
+    "npcTemplate": 60168073
+   }
+  ],
+  "Xaga": [
+   {
+    "name": "Xaga",
+    "region": 191,
+    "x": 27482,
+    "y": 54821,
+    "z": 12935,
+    "level": 81,
+    "npcTemplate": 60168075
+   }
+  ],
+  "Xanxicar": [
+   {
+    "name": "Xanxicar",
+    "region": 62,
+    "x": 31577,
+    "y": 35305,
+    "z": 14551,
+    "level": 80,
+    "npcTemplate": 102
+   }
+  ],
+  "Yar": [
+   {
+    "name": "Yar",
+    "region": 100,
+    "x": 695353,
+    "y": 1022775,
+    "z": 2824,
+    "level": 73,
+    "npcTemplate": 60168093
+   }
+  ],
+  "Zytka": [
+   {
+    "name": "Zytka",
+    "region": 181,
+    "x": 387356,
+    "y": 266838,
+    "z": 3416,
+    "level": 66,
+    "npcTemplate": null
+   }
+  ]
+ },
+ "npcTemplates": {
+  "91": {
+   "name": "xanxicarian champion",
+   "level": "60",
+   "tetherRange": 0,
+   "aggroLevel": 0,
+   "aggroRange": 0,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "102": {
+   "name": "Xanxicar",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "5006": {
+   "name": "Archilus",
+   "level": "58",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": null
+  },
+  "5022": {
+   "name": "Elro the Ancient",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 700,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": null
+  },
+  "7710": {
+   "name": "Spectral Paladin",
+   "level": "56;57;58;59",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 300,
+   "maxSpeed": 200,
+   "flags": 1,
+   "packageID": null
+  },
+  "7713": {
+   "name": "Sergeant Eddison",
+   "level": "50;51",
+   "tetherRange": 1600,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 225,
+   "flags": 1,
+   "packageID": null
+  },
+  "7714": {
+   "name": "Sergeant Darryn",
+   "level": "50;51",
+   "tetherRange": 1500,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 225,
+   "flags": 1,
+   "packageID": null
+  },
+  "7715": {
+   "name": "Sergeant Reede",
+   "level": "50;51",
+   "tetherRange": 1400,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 225,
+   "flags": 1,
+   "packageID": null
+  },
+  "7716": {
+   "name": "Lieutenant Meade",
+   "level": "50",
+   "tetherRange": 1300,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 225,
+   "flags": 1,
+   "packageID": null
+  },
+  "7717": {
+   "name": "Captain Heathyr",
+   "level": "62;63;64;65",
+   "tetherRange": 1500,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 225,
+   "flags": 1,
+   "packageID": null
+  },
+  "7718": {
+   "name": "Captain Atwell",
+   "level": "62;63;64;65",
+   "tetherRange": 1300,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 225,
+   "flags": 1,
+   "packageID": null
+  },
+  "7719": {
+   "name": "Lord Gildas",
+   "level": "75",
+   "tetherRange": 1500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": null
+  },
+  "7720": {
+   "name": "Lady Darra",
+   "level": "68",
+   "tetherRange": 1500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "7721": {
+   "name": "Aidon the Archwizard",
+   "level": "75",
+   "tetherRange": 1500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "8817": {
+   "name": "Black Lady",
+   "level": "65",
+   "tetherRange": 1500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "8818": {
+   "name": "Blue Lady",
+   "level": "65",
+   "tetherRange": 1300,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "8819": {
+   "name": "Red Lady",
+   "level": "65",
+   "tetherRange": 1500,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "8820": {
+   "name": "Avartack the Champion",
+   "level": "65",
+   "tetherRange": 1500,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "8821": {
+   "name": "Chieftain Caimheul",
+   "level": "65",
+   "tetherRange": 1300,
+   "aggroLevel": 200,
+   "aggroRange": 450,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "8823": {
+   "name": "Ancient Black Oak",
+   "level": "68",
+   "tetherRange": 0,
+   "aggroLevel": 0,
+   "aggroRange": 100,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": null
+  },
+  "9907": {
+   "name": "Mistress of Runes",
+   "level": "63",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 245,
+   "flags": 0,
+   "packageID": null
+  },
+  "9910": {
+   "name": "Hamar",
+   "level": "61",
+   "tetherRange": 0,
+   "aggroLevel": 250,
+   "aggroRange": 500,
+   "maxSpeed": 200,
+   "flags": 1,
+   "packageID": null
+  },
+  "9913": {
+   "name": "Thane Dyggve",
+   "level": "66",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 200,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": null
+  },
+  "9916": {
+   "name": "Aros the Spiritmaster",
+   "level": "72",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 255,
+   "flags": 0,
+   "packageID": null
+  },
+  "9918": {
+   "name": "Jarl Ormarr",
+   "level": "65",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 200,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": null
+  },
+  "9919": {
+   "name": "Gudlaugr",
+   "level": "64",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "12941": {
+   "name": "Cailleach Uragaig",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 265,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "12982": {
+   "name": "Sister Blythe",
+   "level": "69",
+   "tetherRange": 2500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "13011": {
+   "name": "Fester",
+   "level": "64",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 380,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "13017": {
+   "name": "King of the Barfog Hills",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 100,
+   "aggroRange": 600,
+   "maxSpeed": 260,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "13019": {
+   "name": "Legendary Afanc",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "13025": {
+   "name": "Mouth",
+   "level": "60-65",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "13033": {
+   "name": "Teazanodwc",
+   "level": "63",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "13039": {
+   "name": "Wrath of Mordred",
+   "level": "70-74",
+   "tetherRange": 4500,
+   "aggroLevel": 0,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 1,
+   "packageID": "Public_DB"
+  },
+  "13333": {
+   "name": "Legion",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 300,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "18801": {
+   "name": "Grand Summoner Govannon",
+   "level": "80",
+   "tetherRange": 1800,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "18803": {
+   "name": "Shade of Aelfgar",
+   "level": "70",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 1800,
+   "maxSpeed": 250,
+   "flags": 1,
+   "packageID": null
+  },
+  "18804": {
+   "name": "Summoner Roesia",
+   "level": "75",
+   "tetherRange": 1300,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "18805": {
+   "name": "Summoner Cunovinda",
+   "level": "75",
+   "tetherRange": 1300,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "18806": {
+   "name": "Summoner Lossren",
+   "level": "75",
+   "tetherRange": 1300,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "44043": {
+   "name": "Maldahar the Glimmer Prince",
+   "level": "73",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "50022": {
+   "name": "Green Maw",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 100,
+   "aggroRange": 400,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": null
+  },
+  "50023": {
+   "name": "Caithor",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 100,
+   "aggroRange": 450,
+   "maxSpeed": 210,
+   "flags": 0,
+   "packageID": null
+  },
+  "50035": {
+   "name": "Kelic",
+   "level": "65",
+   "tetherRange": 2500,
+   "aggroLevel": 100,
+   "aggroRange": 1000,
+   "maxSpeed": 280,
+   "flags": 1,
+   "packageID": null
+  },
+  "50040": {
+   "name": "Fate's Chosen",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 345,
+   "flags": 0,
+   "packageID": null
+  },
+  "83003": {
+   "name": "Droom",
+   "level": "65-68",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "83007": {
+   "name": "Ancient Syver",
+   "level": "68",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "83009": {
+   "name": "Lydsyg",
+   "level": "58",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": null
+  },
+  "83010": {
+   "name": "Dyranapur",
+   "level": "59",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": null
+  },
+  "83014": {
+   "name": "Stanga",
+   "level": "66",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": null
+  },
+  "83015": {
+   "name": "Hurjavelen",
+   "level": "68",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": null
+  },
+  "83019": {
+   "name": "Delegalt",
+   "level": "65-68",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "83022": {
+   "name": "Mahattava",
+   "level": "66",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": null
+  },
+  "83026": {
+   "name": "Hati",
+   "level": "69",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": null
+  },
+  "83027": {
+   "name": "Skoll",
+   "level": "69",
+   "tetherRange": 3500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": null
+  },
+  "83028": {
+   "name": "Iarnvidiur",
+   "level": "75",
+   "tetherRange": 4000,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": null
+  },
+  "678903": {
+   "name": "Cuuldurach the Glimmer King",
+   "level": "80",
+   "tetherRange": 2500,
+   "aggroLevel": 100,
+   "aggroRange": 800,
+   "maxSpeed": 400,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "694189": {
+   "name": "Gjalpinulva",
+   "level": "80",
+   "tetherRange": 2500,
+   "aggroLevel": 100,
+   "aggroRange": 800,
+   "maxSpeed": 400,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "770024": {
+   "name": "Moran the Mighty",
+   "level": "73",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": null
+  },
+  "60157497": {
+   "name": "Golestandt",
+   "level": "80",
+   "tetherRange": 2500,
+   "aggroLevel": 100,
+   "aggroRange": 800,
+   "maxSpeed": 400,
+   "flags": 0,
+   "packageID": "Public_DB"
+  },
+  "60157522": {
+   "name": "Abomos the Soultrapper",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60157842": {
+   "name": "amphiptere",
+   "level": "71",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60157942": {
+   "name": "Anurigunda",
+   "level": "75",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60157955": {
+   "name": "Apocalypse",
+   "level": "87",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 32,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158075": {
+   "name": "Aroon the Urlamhai",
+   "level": "81",
+   "tetherRange": 1800,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158225": {
+   "name": "Balor",
+   "level": "81",
+   "tetherRange": 2500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158245": {
+   "name": "Bane of Hope",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158315": {
+   "name": "Basilius",
+   "level": "66",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158330": {
+   "name": "Beatha",
+   "level": "67",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 235,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158340": {
+   "name": "Behemoth",
+   "level": "99",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 100,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158351": {
+   "name": "Beliathan",
+   "level": "70",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158353": {
+   "name": "Bellum",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158366": {
+   "name": "Beomarbhan",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158369": {
+   "name": "Beran the Supply Master",
+   "level": "78",
+   "tetherRange": 4000,
+   "aggroLevel": 100,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158603": {
+   "name": "Boligar",
+   "level": "64",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158751": {
+   "name": "Brother Don",
+   "level": "40",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60158846": {
+   "name": "Cailean",
+   "level": "65",
+   "tetherRange": 2000,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159136": {
+   "name": "Chief Tarek",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159351": {
+   "name": "Conservator",
+   "level": "77",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 1500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159435": {
+   "name": "Corrupt Primal of Air",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 0,
+   "maxSpeed": 300,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159436": {
+   "name": "Corrupt Primal of Earth",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159437": {
+   "name": "Corrupt Primal of Fire",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 0,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159438": {
+   "name": "Corrupt Primal of Water",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159449": {
+   "name": "Council Hord",
+   "level": "77",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159450": {
+   "name": "Council Nokkvi",
+   "level": "78",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159451": {
+   "name": "Council Otrygg",
+   "level": "77",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159452": {
+   "name": "Council Ozur",
+   "level": "77",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159453": {
+   "name": "Council Vagn",
+   "level": "78",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159504": {
+   "name": "Cronk",
+   "level": "63",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159518": {
+   "name": "Crypt Lord",
+   "level": "86",
+   "tetherRange": 10000,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159530": {
+   "name": "Curengkur",
+   "level": "75",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159616": {
+   "name": "Dagar",
+   "level": "60",
+   "tetherRange": 4000,
+   "aggroLevel": 100,
+   "aggroRange": 500,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159633": {
+   "name": "Dalgo",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60159930": {
+   "name": "Develin",
+   "level": "60",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160055": {
+   "name": "Dra'argus the Mighty",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 300,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160133": {
+   "name": "drau'gyn sphere",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 0,
+   "aggroRange": 600,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160146": {
+   "name": "Dremcis Fuiloltair",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160230": {
+   "name": "Dura'ek the Empowered",
+   "level": "71",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160233": {
+   "name": "Durval",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 700,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160317": {
+   "name": "Easmarach",
+   "level": "81",
+   "tetherRange": 2500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160391": {
+   "name": "Elder Council Birghir",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160392": {
+   "name": "Elder Council Guthlac",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160394": {
+   "name": "Elder Icelord Hjalmar",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160395": {
+   "name": "Elder Icelord Suttung",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160628": {
+   "name": "Evern",
+   "level": "76",
+   "tetherRange": 1700,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160685": {
+   "name": "fallen executioner",
+   "level": "51",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 235,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160695": {
+   "name": "Fames",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 16,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160718": {
+   "name": "far dorocha",
+   "level": "50-55",
+   "tetherRange": 4500,
+   "aggroLevel": 80,
+   "aggroRange": 500,
+   "maxSpeed": 210,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160741": {
+   "name": "fate's bearer",
+   "level": "77",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 200,
+   "maxSpeed": 191,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160835": {
+   "name": "Fifth Head of Myrddraxis",
+   "level": "75",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60160901": {
+   "name": "Flame",
+   "level": "64",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161047": {
+   "name": "Fornfrusenen",
+   "level": "75",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 450,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161054": {
+   "name": "Fostra Orm",
+   "level": "61",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161055": {
+   "name": "Fourth Head of Myrddraxis",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161151": {
+   "name": "Funus",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161336": {
+   "name": "Giant Sporite Cluster",
+   "level": "79",
+   "tetherRange": 2500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 190,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161360": {
+   "name": "Glacier Giant",
+   "level": "86",
+   "tetherRange": 4000,
+   "aggroLevel": 0,
+   "aggroRange": 500,
+   "maxSpeed": 300,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161448": {
+   "name": "Gneiss",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161492": {
+   "name": "Goretooth",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60161621": {
+   "name": "Green Knight",
+   "level": "79",
+   "tetherRange": 10000,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 400,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162129": {
+   "name": "High Lord Baelerdoth",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162130": {
+   "name": "High Lord Baln",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162132": {
+   "name": "High Lord Oro",
+   "level": "65-70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162133": {
+   "name": "High Lord Saeor",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162189": {
+   "name": "Hopeless Soul",
+   "level": "50",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 200,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162252": {
+   "name": "Hugi",
+   "level": "74",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 700,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162284": {
+   "name": "Hurika",
+   "level": "85",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 200,
+   "maxSpeed": 250,
+   "flags": 20,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162285": {
+   "name": "Hurionthex",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 750,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162346": {
+   "name": "Icelord Agmundr",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162347": {
+   "name": "Icelord Hakr",
+   "level": "82",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162348": {
+   "name": "Icelord Kvasir",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162349": {
+   "name": "Icelord Skuf",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162350": {
+   "name": "Icelord Steinvor",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162545": {
+   "name": "Issorden",
+   "level": "78",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162583": {
+   "name": "Jailer Vifil",
+   "level": "82",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162909": {
+   "name": "King Tuscar",
+   "level": "85",
+   "tetherRange": 1550,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60162981": {
+   "name": "Krackenschtein",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60163266": {
+   "name": "Lich Lord Ilron",
+   "level": "82",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60163267": {
+   "name": "Lich Lord Sanguis",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60163372": {
+   "name": "Loken",
+   "level": "65",
+   "tetherRange": 2000,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60163412": {
+   "name": "Lord Sanguis",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60163498": {
+   "name": "Luriquay",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60163696": {
+   "name": "Marfoirwort",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60163806": {
+   "name": "Master of Pain",
+   "level": "74",
+   "tetherRange": 2500,
+   "aggroLevel": 0,
+   "aggroRange": 0,
+   "maxSpeed": 260,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164144": {
+   "name": "Mokkurvalve",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164149": {
+   "name": "Mollunero",
+   "level": "75",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164171": {
+   "name": "Morbus",
+   "level": "83",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164200": {
+   "name": "Mortufoghus",
+   "level": "77",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 800,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164337": {
+   "name": "Myrddraxis",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 700,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164519": {
+   "name": "Nogoribando",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164545": {
+   "name": "Nosdoden",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 700,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164613": {
+   "name": "Olcasar Geomancer",
+   "level": "77",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 750,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164624": {
+   "name": "Olcasgean",
+   "level": "87",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 1000,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164669": {
+   "name": "Oona",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164703": {
+   "name": "Orey-eyed Oghamist",
+   "level": "73",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164704": {
+   "name": "Organic-Energy Mechanism",
+   "level": "79",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60164991": {
+   "name": "pooka",
+   "level": "52-57",
+   "tetherRange": 4500,
+   "aggroLevel": 80,
+   "aggroRange": 500,
+   "maxSpeed": 195,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165029": {
+   "name": "Prince Abdin",
+   "level": "78",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165030": {
+   "name": "Prince Asmoien",
+   "level": "78",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165031": {
+   "name": "Prince Ba'alorien",
+   "level": "78",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165038": {
+   "name": "Princess Nahemah",
+   "level": "71",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165072": {
+   "name": "Qan'ris Duros",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165083": {
+   "name": "Queen Kula",
+   "level": "85",
+   "tetherRange": 1800,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165085": {
+   "name": "Queen Qunilaria",
+   "level": "72",
+   "tetherRange": 2000,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 260,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165173": {
+   "name": "Raumarik Revenant",
+   "level": "77",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165335": {
+   "name": "Ris'nir Cruss",
+   "level": "71",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165428": {
+   "name": "Rotodjur",
+   "level": "71",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 225,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165485": {
+   "name": "Runil",
+   "level": "58-60",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 245,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60165727": {
+   "name": "Second Head of Myrddraxis",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60166029": {
+   "name": "Silencer",
+   "level": "81",
+   "tetherRange": 1600,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60166165": {
+   "name": "Skeaghshee",
+   "level": "71",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 500,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60166180": {
+   "name": "Skeletal Sacristan",
+   "level": "81",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60166369": {
+   "name": "Soul Reckoner",
+   "level": "81",
+   "tetherRange": 1800,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60166427": {
+   "name": "Spectral Provisioner",
+   "level": "79",
+   "tetherRange": 0,
+   "aggroLevel": 200,
+   "aggroRange": 200,
+   "maxSpeed": 300,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60166449": {
+   "name": "Spindler Broodmother",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60166454": {
+   "name": "Spirit of Lord Emthoro",
+   "level": "77",
+   "tetherRange": 1200,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60166729": {
+   "name": "Sys'sro the Ruthless",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 450,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167005": {
+   "name": "Third Head of Myrddraxis",
+   "level": "80",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 0,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167084": {
+   "name": "Tine",
+   "level": "67",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 235,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167362": {
+   "name": "Uaimh Lairmaster",
+   "level": "81",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 255,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167383": {
+   "name": "Ulfketill",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167424": {
+   "name": "undead soldier",
+   "level": "49;52",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 200,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167521": {
+   "name": "Valmak",
+   "level": "64",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167546": {
+   "name": "Vasrem",
+   "level": "70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 800,
+   "maxSpeed": 250,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167614": {
+   "name": "Vera'erius the Brave",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167731": {
+   "name": "Vortanos",
+   "level": "61",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167787": {
+   "name": "Warlord Dorinakka",
+   "level": "85",
+   "tetherRange": 2800,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60167846": {
+   "name": "Weno'iak the Enlightened",
+   "level": "68",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 400,
+   "maxSpeed": 250,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60168073": {
+   "name": "Wyvernic Wraith",
+   "level": "74",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60168075": {
+   "name": "Xaga",
+   "level": "81",
+   "tetherRange": 1800,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "60168093": {
+   "name": "Yar",
+   "level": "73",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 191,
+   "flags": 0,
+   "packageID": null
+  },
+  "60168100": {
+   "name": "Ydenia of the Seithkona",
+   "level": "65",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 1,
+   "packageID": "Templated - AutoScript;"
+  },
+  "90162132": {
+   "name": "High Lord Oro",
+   "level": "65-70",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": "Templated - AutoScript;"
+  },
+  "700000001": {
+   "name": "Morgana",
+   "level": "90",
+   "tetherRange": 2000,
+   "aggroLevel": 0,
+   "aggroRange": 500,
+   "maxSpeed": 200,
+   "flags": 16,
+   "packageID": null
+  },
+  "700000008": {
+   "name": "Silcharde",
+   "level": "65",
+   "tetherRange": 1500,
+   "aggroLevel": 100,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 32,
+   "packageID": null
+  },
+  "700000009": {
+   "name": "Bechard",
+   "level": "65",
+   "tetherRange": 1500,
+   "aggroLevel": 100,
+   "aggroRange": 500,
+   "maxSpeed": 280,
+   "flags": 32,
+   "packageID": null
+  },
+  "700000014": {
+   "name": "Valnir Mordeth",
+   "level": "70",
+   "tetherRange": 3500,
+   "aggroLevel": 100,
+   "aggroRange": 500,
+   "maxSpeed": 250,
+   "flags": 16,
+   "packageID": null
+  },
+  "700000018": {
+   "name": "Coliath",
+   "level": "78",
+   "tetherRange": 4500,
+   "aggroLevel": 200,
+   "aggroRange": 600,
+   "maxSpeed": 280,
+   "flags": 0,
+   "packageID": null
+  }
+ },
+ "packages": {
+  "AfancMinion": [],
+  "AgmundrBaf": [
+   {
+    "name": "hrimthursa depredator",
+    "region": 160,
+    "count": 1
+   },
+   {
+    "name": "hrimthursa icespine",
+    "region": 160,
+    "count": 2
+   },
+   {
+    "name": "hrimthursa icetouch",
+    "region": 160,
+    "count": 2
+   },
+   {
+    "name": "hrimthursa seer",
+    "region": 160,
+    "count": 1
+   }
+  ],
+  "AncientOakBaf": [],
+  "AncientSyverBaf": [
+   {
+    "name": "syver",
+    "region": 161,
+    "count": 5
+   }
+  ],
+  "AnurigundaBaf": [
+   {
+    "name": "fomorian anteen",
+    "region": 180,
+    "count": 4
+   },
+   {
+    "name": "fomorian batravian",
+    "region": 180,
+    "count": 4
+   },
+   {
+    "name": "fomorian bolach",
+    "region": 180,
+    "count": 1
+   },
+   {
+    "name": "fomorian harrien",
+    "region": 180,
+    "count": 3
+   },
+   {
+    "name": "fomorian shawilet",
+    "region": 180,
+    "count": 1
+   },
+   {
+    "name": "fomorian sweenglan",
+    "region": 180,
+    "count": 1
+   }
+  ],
+  "ApocBaf": [],
+  "BasiliusBaf": [
+   {
+    "name": "Hoden",
+    "region": 151,
+    "count": 1
+   },
+   {
+    "name": "morvalt befara",
+    "region": 151,
+    "count": 1
+   },
+   {
+    "name": "morvalt dodlig",
+    "region": 151,
+    "count": 3
+   },
+   {
+    "name": "morvalt gravmaniska",
+    "region": 151,
+    "count": 1
+   }
+  ],
+  "BechardMinion": [],
+  "CailleachUragaigBaf": [],
+  "CaimheulBaf": [],
+  "ChiefTarekBaf": [
+   {
+    "name": "iarn dwarf council",
+    "region": 151,
+    "count": 4
+   }
+  ],
+  "ChoosePath1": [],
+  "ChoosePath2": [],
+  "ChoosePath3": [],
+  "ChoosePath4": [],
+  "CliodnaBaf": [],
+  "CronkBaf": [
+   {
+    "name": "tradklan darter",
+    "region": 151,
+    "count": 2
+   },
+   {
+    "name": "tradklan medicine man",
+    "region": 151,
+    "count": 2
+   },
+   {
+    "name": "tradklan tribesman",
+    "region": 151,
+    "count": 1
+   },
+   {
+    "name": "Trude",
+    "region": 151,
+    "count": 1
+   },
+   {
+    "name": "Unne",
+    "region": 151,
+    "count": 1
+   },
+   {
+    "name": "Uppsala",
+    "region": 151,
+    "count": 1
+   }
+  ],
+  "CryptLordBaf": [
+   {
+    "name": "dark light",
+    "region": 60,
+    "count": 11
+   },
+   {
+    "name": "fate's bearer",
+    "region": 60,
+    "count": 10
+   },
+   {
+    "name": "forerunner",
+    "region": 60,
+    "count": 12
+   },
+   {
+    "name": "reckoned soul",
+    "region": 60,
+    "count": 10
+   }
+  ],
+  "DagarBaf": [
+   {
+    "name": "gruppchef",
+    "region": 150,
+    "count": 1
+   },
+   {
+    "name": "morvalt larling",
+    "region": 150,
+    "count": 2
+   }
+  ],
+  "DalgoBaf": [
+   {
+    "name": "skogsra greenhand",
+    "region": 151,
+    "count": 3
+   },
+   {
+    "name": "skogsra woodsman",
+    "region": 151,
+    "count": 4
+   }
+  ],
+  "DebenBaf": [],
+  "DelegaltBaf": [
+   {
+    "name": "animus rondjur",
+    "region": 161,
+    "count": 3
+   },
+   {
+    "name": "animus syndig",
+    "region": 161,
+    "count": 5
+   },
+   {
+    "name": "grymvarg",
+    "region": 161,
+    "count": 7
+   }
+  ],
+  "DorinakkaBaf": [
+   {
+    "name": "crypt knight",
+    "region": 60,
+    "count": 12
+   }
+  ],
+  "DrihtenBaf": [
+   {
+    "name": "thrawn ogre bocere",
+    "region": 61,
+    "count": 25
+   }
+  ],
+  "DroomBaf": [
+   {
+    "name": "narfi",
+    "region": 161,
+    "count": 10
+   }
+  ],
+  "DuraekBaf": [
+   {
+    "name": "dry'ak avowry",
+    "region": 50,
+    "count": 6
+   }
+  ],
+  "DurosBaf": [
+   {
+    "name": "drakoran guardsman",
+    "region": 51,
+    "count": 5
+   }
+  ],
+  "DurvalBaf": [
+   {
+    "name": "corpse delver",
+    "region": 51,
+    "count": 5
+   },
+   {
+    "name": "white light",
+    "region": 51,
+    "count": 4
+   }
+  ],
+  "DyranapurBaf": [
+   {
+    "name": "skuggande",
+    "region": 161,
+    "count": 7
+   }
+  ],
+  "EmthoroAdd": [],
+  "FamesBaf": [],
+  "FunusBaf": [],
+  "GhostHunterPet": [],
+  "GneissBaf": [
+   {
+    "name": "hardened granidon",
+    "region": 181,
+    "count": 6
+   }
+  ],
+  "GoretoothBaf": [
+   {
+    "name": "blood render",
+    "region": 151,
+    "count": 4
+   }
+  ],
+  "HakrBaf": [],
+  "HatiBaf": [],
+  "HostBaf": [
+   {
+    "name": "archlich",
+    "region": 60,
+    "count": 4
+   },
+   {
+    "name": "black revenant",
+    "region": 60,
+    "count": 5
+   },
+   {
+    "name": "cursed lacula",
+    "region": 60,
+    "count": 4
+   },
+   {
+    "name": "forerunner",
+    "region": 60,
+    "count": 3
+   },
+   {
+    "name": "herald of trucidation",
+    "region": 60,
+    "count": 2
+   },
+   {
+    "name": "idolum",
+    "region": 60,
+    "count": 3
+   }
+  ],
+  "HostReal": [],
+  "HurjavelenBaf": [
+   {
+    "name": "grymvarg",
+    "region": 161,
+    "count": 7
+   }
+  ],
+  "IssordenBaf": [
+   {
+    "name": "icebound skeleton",
+    "region": 160,
+    "count": 7
+   }
+  ],
+  "KrackenschteinBaf": [
+   {
+    "name": "fomorian gentarn",
+    "region": 180,
+    "count": 7
+   },
+   {
+    "name": "fomorian wolfentry",
+    "region": 180,
+    "count": 1
+   }
+  ],
+  "KvasirBaf": [
+   {
+    "name": "hrimthursa icetouch",
+    "region": 160,
+    "count": 2
+   }
+  ],
+  "LydsygBaf": [
+   {
+    "name": "skuggande",
+    "region": 161,
+    "count": 7
+   }
+  ],
+  "MahattavaBaf": [
+   {
+    "name": "fjarskafinn",
+    "region": 161,
+    "count": 28
+   }
+  ],
+  "MorbusBaf": [],
+  "MordethAdds": [],
+  "MordethBaf": [],
+  "MorgusBaf": [
+   {
+    "name": "Morgus's leornere",
+    "region": 61,
+    "count": 14
+   }
+  ],
+  "MouthAdd": [],
+  "NogoribandoBaf": [
+   {
+    "name": "fomorian creln",
+    "region": 180,
+    "count": 5
+   },
+   {
+    "name": "fomorian gentarn",
+    "region": 180,
+    "count": 3
+   },
+   {
+    "name": "fomorian hicjer",
+    "region": 180,
+    "count": 1
+   },
+   {
+    "name": "fomorian hofscorian",
+    "region": 180,
+    "count": 1
+   }
+  ],
+  "NosdodenGhostBerserker": [],
+  "NosdodenGhostBonedancer": [],
+  "NosdodenGhostHealer": [],
+  "NosdodenGhostHunter": [],
+  "NosdodenGhostRunemaster": [],
+  "NosdodenGhostSavage": [],
+  "NosdodenGhostShadowblade": [],
+  "NosdodenGhostShaman": [],
+  "NosdodenGhostSkald": [],
+  "NosdodenGhostSpiritmaster": [],
+  "NosdodenGhostThane": [],
+  "NosdodenGhostWarrior": [],
+  "ProvisionerBaf": [
+   {
+    "name": "ater skeleton",
+    "region": 60,
+    "count": 1
+   },
+   {
+    "name": "manifestation",
+    "region": 60,
+    "count": 5
+   }
+  ],
+  "QunilariaCombatAdd": [],
+  "RainOfFire": [],
+  "RealCaithorDorocha": [],
+  "RevenantBaf": [],
+  "RisnirCrussAdd": [],
+  "RunilBaf": [],
+  "SarcondinaAdd": [],
+  "ShredclawBaf": [
+   {
+    "name": "blood render",
+    "region": 151,
+    "count": 3
+   }
+  ],
+  "SilchardeMinion": [],
+  "SkollBaf": [],
+  "SoulReckonerBaf": [],
+  "StangaBaf": [
+   {
+    "name": "egilvarg",
+    "region": 161,
+    "count": 5
+   }
+  ],
+  "SyssroBaf": [
+   {
+    "name": "syhr'phint alblaster",
+    "region": 50,
+    "count": 6
+   },
+   {
+    "name": "syhr'phint dragoon",
+    "region": 50,
+    "count": 2
+   }
+  ],
+  "ThaneDyggveBaf": [],
+  "VeraeriusBaf": [],
+  "WenoiakBaf": [
+   {
+    "name": "wi'voron cuirassier",
+    "region": 50,
+    "count": 8
+   },
+   {
+    "name": "wi'voron warsteed",
+    "region": 50,
+    "count": 8
+   }
+  ]
+ }
+}

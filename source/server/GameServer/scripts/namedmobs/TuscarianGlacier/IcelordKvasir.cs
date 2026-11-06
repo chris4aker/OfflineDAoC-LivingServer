@@ -24,9 +24,16 @@ namespace DOL.GS
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            // Offline raids cannot coordinate class/weapon damage puzzles or heal-on-hit rules.
-            // Keep real damage, armor/resists, health, death phases, and the encounter tether.
+            // Offline DAoC: no cold-heal rule for bot raids; the original (cold heals him a fifth) is behind
+            // EpicEncounterMechanics.AllowKvasirColdHeal. Keep real damage, armor/resists, health, death phases, tether.
             if (!EpicEncounterActors.IsCombatant(source)) return;
+            if (EpicEncounterMechanics.AllowKvasirColdHeal && EpicEncounterRestores.KvasirHealedBy(damageType))
+            {
+                Health += MaxHealth / 5;
+                BroadcastMessage("Icelord Kvasir says, 'aahhhh thank you " + source.Name + " for healing me !'");
+                base.TakeDamage(source, damageType, 0, 0);
+                return;
+            }
             if (IsOutOfTetherRange)
                 base.TakeDamage(source, damageType, 0, 0);
             else

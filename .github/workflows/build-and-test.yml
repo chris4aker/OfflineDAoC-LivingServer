@@ -24,6 +24,18 @@ jobs:
           python3 tools/release/check_versions.py
           python3 -m unittest discover -s tools/release/tests -v
 
+  # The epic encounter catalog (docs/encounters) must match the boss scripts it was read from: a script change without
+  # a regenerated catalog, or with a hand check now out of date, fails here (source/tools/epic_encounter_catalog.py).
+  encounter-catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the epic encounter catalog is up to date
+        run: |
+          python3 source/tools/epic_encounter_catalog.py --check
+          python3 -m unittest discover -s source/tools/tests -v
+
   server:
     runs-on: windows-latest
     timeout-minutes: 45

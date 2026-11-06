@@ -173,6 +173,16 @@ namespace DOL.GS
         public static bool IsWipe(int engaged, int fallen, int healthPercent, int lowestPercent) =>
             engaged >= MinimumRaidersAtTarget && (fallen * 2 >= engaged || healthPercent >= 95 && lowestPercent <= 85);
 
+        /// <summary>
+        /// A failed attempt counts against the raid (a wipe: one of its two tries, Special Forces called) only when it was the
+        /// raid's: at least half the raid was in it, or half the raid fell. Aidon the Archwizard, 2026-11-05: 31 raiders were
+        /// drawn into a fight before the muster and all fell, while 56 others were elsewhere; that was counted as the raid's
+        /// first wipe. Now it is a lost skirmish: the raid regroups and rests, but no attempt is used.
+        /// </summary>
+        public static bool IsWipe(int engaged, int fallen, int healthPercent, int lowestPercent, int raidAtStart) =>
+            IsWipe(engaged, fallen, healthPercent, lowestPercent) &&
+            (raidAtStart <= 0 || engaged * 2 >= raidAtStart || fallen * 2 >= raidAtStart);
+
         /// <summary>Raiders a regroup waits for: 70% of the raid's roster (40% after 20 minutes), 8 to 150.</summary>
         public static int RegroupNeeded(int roster, long regroupMilliseconds) =>
             Math.Max(MinimumRaidersAtTarget, Math.Min(FinalMusterMaximum, (int)Math.Ceiling(roster *
@@ -194,13 +204,25 @@ namespace DOL.GS
             // An encounter just set aside for taking no damage is not switched back to because it attacks: Krondon,
             // 2026-10-21, Scurceol Hyrde (immune while his four Lyft Miht orbs live) was skipped and re-picked every
             // minute for over an hour, so the raid never turned to the orbs.
+            // An encounter whose tactic sends the raid to the current target is no switch (Scurceol Hyrde attacks the raid
+            // while it shoots his orbs; EpicEncounterTactics).
             return live.FirstOrDefault(n => n != _target && n is IGameEpicNpc && n.IsAlive && n.InCombat &&
+                                            !EpicEncounterTactics.Covers(n, _target, live) &&
                                             _routeRetry.GetValueOrDefault(n) <= now &&
                                             n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
                                             n.TargetObject is GameLiving victim && raiders.Contains(victim));
         }
 
-        private bool IsMusteredEncounter(GameNPC npc) => npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name);
+        private bool IsMusteredEncounter(GameNPC npc) =>
+            (npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name)) &&
+            // A boss's required adds are fought as part of its fight, without a muster of their own (EpicEncounterTactics).
+            !EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, _live);
+        // The region's NPCs as of this turn (AdvanceCore), for the tactic checks.
+        private IReadOnlyList<GameNPC> _live = [];
+
+        // The raid's living members inside when the attempt began (IsWipe's raid share), and the participants of this turn.
+        private int _attemptRaidSize;
+        private GameLiving[] _attemptParticipants;
 
         private void BeginAttempt(GameLiving[] raiders, long now)
         {
@@ -208,6 +230,7 @@ namespace DOL.GS
             _musterEngagedTick = now;
             _engaged.Clear();
             _engaged.UnionWith(raiders);
+            _attemptRaidSize = _attemptParticipants?.Count(p => p.IsAlive && p.CurrentRegionID == _region) ?? 0;
             _attemptLowestPercent = _target.HealthPercent;
             _pulls.Begin();
             // A pull is progress: the next muster for this encounter starts its own count.
@@ -228,6 +251,17 @@ namespace DOL.GS
             _engaged.Clear();
             if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent))
                 return false;
+            if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent, _attemptRaidSize))
+            {
+                // Lost skirmish: rest and muster again, but it was not the raid's attempt.
+                log.Warn($"REALM_EXPEDITION_SKIRMISH_LOST region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
+                         $"raid={_attemptRaidSize} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" " +
+                         $"reason=\"less than half the raid was in it and less than half fell; no attempt used\"");
+                _regrouping = true;
+                _regroupSince = _musterSince = now;
+                _targetProgressTick = now;
+                return false;
+            }
             int failures = _failedAttempts[_target.Name] = FailedAttempts(_target.Name) + 1;
             _wipes.Enqueue((_target.Name, failures));
             log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{_target.Name}\" level={_target.Level} failures={failures} " +
@@ -304,6 +338,58 @@ namespace DOL.GS
 
         public static bool CanDeferAirbornePatrol(Type type, GameNPC.eFlags flags) =>
             type == typeof(GameEpicNPC) && (flags & GameNPC.eFlags.FLYING) != 0;
+
+        /// <summary>How far from a required add its ranged raiders stand at most: inside the usual 1,500 spell range, with room to spare.</summary>
+        public const int RequiredAddRangedReach = 1_400;
+
+        /// <summary>
+        /// Krondon, 2026-11-06 (01:49 and 02:16): Scurceol Hyrde's tactic sent the raid to his four Lyft Miht orbs, which float
+        /// 230-580 above him (450-790 above the room floor). The ground-route gate (an approach within 256 of the target's height) failed
+        /// for every orb, they were set aside a minute at a time, and the raid walked off to Fuladl; no orb was attacked
+        /// and Scurceol was never fought. A required add is not walked to: its ranged raiders stand on a floor spot the raid
+        /// can reach, within <see cref="RequiredAddRangedReach"/> of it and with sight to the floor under it. Tried: the
+        /// floor under the add, the boss's floor, and two points between them. False, with why, when none works.
+        /// </summary>
+        /// <param name="reach">The approach the raid can walk to for a floor point, or null when none is proven.</param>
+        public static bool TryRangedStand(IPathfindingMgr nav, Zone zone, Vector3 add, Vector3 boss, Func<Vector3, Vector3?> reach,
+            out Vector3 stand, out string why)
+        {
+            stand = default;
+            if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
+            { why = "no navigation mesh here"; return false; }
+            Vector3? under = nav.GetClosestPoint(zone, add, 128, 128, RangedFlyerReach, nav.DefaultFilters);
+            var floors = new List<Vector3>();
+            void Add(Vector3? p)
+            {
+                if (p is Vector3 v && !floors.Any(f => Vector3.DistanceSquared(f, v) < 48 * 48)) floors.Add(v);
+            }
+            Add(under);
+            Add(nav.GetClosestPoint(zone, boss, 64, 64, 256, nav.DefaultFilters));
+            var level = new Vector3(add.X, add.Y, boss.Z);
+            foreach (float t in new[] { 0.67f, 0.33f })
+                Add(nav.GetClosestPoint(zone, Vector3.Lerp(boss, level, t), 96, 96, 256, nav.DefaultFilters));
+            if (floors.Count == 0)
+            { why = "no floor under it or near its boss"; return false; }
+            int reached = 0, inRange = 0;
+            foreach (Vector3 floor in floors)
+            {
+                if (reach(floor) is not Vector3 approach) continue;
+                reached++;
+                if (Vector3.Distance(approach, add) > RequiredAddRangedReach) continue;
+                inRange++;
+                // The mesh ray runs along the floor: sight to the floor under the add (or to the spot below it at the
+                // stand's height when it hovers over nothing).
+                Vector3 sight = under ?? new Vector3(add.X, add.Y, approach.Z);
+                if (Vector3.DistanceSquared(approach, sight) > 1 && !nav.HasLineOfSight(zone, approach, sight, nav.DefaultFilters)) continue;
+                stand = approach;
+                why = $"ranged from the floor {(int)Vector3.Distance(approach, add)} away";
+                return true;
+            }
+            why = reached == 0 ? $"none of {floors.Count} floor spots under or near it is reachable from the raid"
+                : inRange == 0 ? $"no reachable floor spot within {RequiredAddRangedReach} of it"
+                : $"no reachable floor spot within {RequiredAddRangedReach} has line of sight to it";
+            return false;
+        }
 
         private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
             string[] objectives = null, eRealm realm = eRealm.None)
@@ -505,6 +591,10 @@ namespace DOL.GS
         public const int FinalMusterMaximum = 150;
         public const long FinalMusterPatienceMilliseconds = 20 * 60_000;
         public const int FinalMusterRadius = 1_500;
+        /// <summary>How long a pull-back from an early-engaging encounter lasts at most (it has leashed home well before).</summary>
+        public const long BreakOffMilliseconds = 90_000;
+        public const long BreakOffRepeatMilliseconds = 5 * 60_000;
+        private readonly Dictionary<GameNPC, long> _lastBreakOff = new();
         public const float FinalMusterStandOff = 1_400f;
         public const long FinalEngageGraceMilliseconds = 2 * 60_000;
 
@@ -518,6 +608,27 @@ namespace DOL.GS
         /// </summary>
         private bool MusterForFinal(GameLiving[] participants, long now)
         {
+            // The muster was placed while the encounter was out chasing raiders; it is home again, so the muster follows it
+            // (Aidon the Archwizard, 2026-11-05: the muster went 2,600 from his home, on the ramp the chase had reached).
+            if (_musterTarget == _target && !_target.InCombat && MusterReference(_target) is var home &&
+                Vector3.Distance(home, _musterReference) > MusterFollowDistance)
+            {
+                Vector3 old = _musterPoint;
+                if (TryPointApproach(home, participants, out Vector3 approach)) Front = approach;
+                _musterPoint = MusterPoint(participants);
+                log.Info($"REALM_EXPEDITION_MUSTER_MOVED region={_region} target=\"{_target.Name}\" " +
+                         $"from={(int)old.X},{(int)old.Y},{(int)old.Z} to={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                         $"reason=\"the encounter is back at {(int)home.X},{(int)home.Y},{(int)home.Z}\"");
+            }
+            // The front is where every pull walks to. One resolved while the encounter was out chasing raiders stays there
+            // when it walks home (Aidon the Archwizard, 2026-11-05: three full musters went in to 31686,35683,14888, the
+            // approach from the 22:38 switch, while he stood at home 1,979 away; none entered combat and he was set aside).
+            if (_musterTarget == _target && now >= _nextFrontCheck &&
+                FrontIsStale(Front, MusterReference(_target), _target.InCombat))
+            {
+                _nextFrontCheck = now + FrontRefreshMilliseconds;
+                RefreshFront(participants, now);
+            }
             if (_musterTarget != _target)
             {
                 _musterTarget = _target;
@@ -529,18 +640,65 @@ namespace DOL.GS
                 _musterUnreachable = false;
                 _setAsideLine = null;
                 _pulls.Reset();
+                // Away from its home (out chasing raiders), the raid musters for it at home: the front is the approach there.
+                Vector3 reference = MusterReference(_target);
+                if (Vector3.Distance(reference, new Vector3(_target.X, _target.Y, _target.Z)) > 1 &&
+                    TryPointApproach(reference, participants, out Vector3 homeApproach))
+                    Front = homeApproach;
                 _musterPoint = MusterPoint(participants);
             }
             // While the raid regroups, the survivors may still be fighting: arrivals wait at the muster point rather than
             // going in by twos and threes, and the whole regroup goes in together.
+            _attemptParticipants = participants;
+            // A break-off in progress: the raid holds at the muster while the encounter leashes home.
+            if (EpicEncounterTactics.BrokenOff(_target, now) != null)
+            {
+                if (!_target.InCombat) EpicEncounterTactics.EndBreakOff(_target);
+                else
+                {
+                    Destination = _musterPoint; Hold = true;
+                    Status = $"Pulling back from {_target.Name} to the muster";
+                    _targetProgressTick = now;
+                    return true;
+                }
+            }
             if (_target.InCombat && !_regrouping)
             {
                 // A fight in progress is never interrupted. One the raid walked into without a muster (the encounter
-                // aggroed on the approach) is an attempt too, from the raiders around it.
-                GameLiving[] fighting = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region &&
-                                                               p.IsWithinRadius(_target, TargetPresenceRadius)).ToArray();
+                // aggroed on the approach) is answered as a whole (EpicEncounterTactics.ChooseEarlyPull): everyone in at once,
+                // or everyone back to the muster, never piecemeal (Aidon the Archwizard, 2026-11-05).
+                GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
+                GameLiving[] fighting = inside.Where(p => p.IsWithinRadius(_target, TargetPresenceRadius)).ToArray();
                 if (!_musterEngaged)
-                    BeginAttempt(fighting, now);
+                {
+                    bool resets = EpicEncounterTactics.ResetsWhenLeft(_target);
+                    // Pulling back only shakes it off when the muster lies past its tether (Fuladl, Krondon 2026-11-06: tether
+                    // 3,800, muster 1,400 from his spawn; he would follow the pull-back to the muster).
+                    int tether = EpicEncounterTactics.LeashOf(_target)?.TetherRange is int t && t > 0 ? t : _target.TetherRange;
+                    float musterFromSpawn = Vector3.Distance(_musterPoint, new Vector3(_target.SpawnPoint.X, _target.SpawnPoint.Y, _target.SpawnPoint.Z));
+                    bool shakesOff = EpicEncounterTactics.BreakOffShakesOff(resets, tether, musterFromSpawn);
+                    var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, shakesOff);
+                    // Pulled back from it a moment ago and it is still on the raid: it chases, so everyone commits now.
+                    if (choice == EpicEncounterTactics.EarlyPull.Disengage && _lastBreakOff.TryGetValue(_target, out long last) &&
+                        now - last < BreakOffRepeatMilliseconds)
+                        choice = EpicEncounterTactics.EarlyPull.Commit;
+                    log.Warn($"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
+                             $"inside={inside.Length} resets={resets} tether={tether} musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
+                             $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z}");
+                    if (choice == EpicEncounterTactics.EarlyPull.Disengage)
+                    {
+                        EpicEncounterTactics.BreakOff(_target, _musterPoint, now + BreakOffMilliseconds);
+                        _lastBreakOff[_target] = now;
+                        Destination = _musterPoint; Hold = true;
+                        Status = $"Pulling back from {_target.Name} to the muster";
+                        _targetProgressTick = now;
+                        return true;
+                    }
+                    // Commit: the whole raid is in this attempt, and goes to the fight now.
+                    BeginAttempt(inside, now);
+                    Destination = Front; Hold = false;
+                    _nextTargetCall = 0;
+                }
                 else
                     _engaged.UnionWith(fighting);
                 _pulls.SawCombat();
@@ -564,6 +722,7 @@ namespace DOL.GS
                     _setAsideLine = $"REALM_EXPEDITION_PULL_UNREACHED region={_region} target=\"{_target.Name}\" pulls={_pulls.PullsWithoutContact} " +
                         $"at={_target.X},{_target.Y},{_target.Z} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
                         $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                        $"frontDistance={(int)Vector3.Distance(Front, new Vector3(_target.X, _target.Y, _target.Z))} " +
                         $"closest={(int)participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).Select(p => (float)p.GetDistanceTo(_target)).DefaultIfEmpty(-1).Min()} " +
                         $"reason=\"the encounter never entered combat after {_pulls.PullsWithoutContact} pulls; set aside and tried again later\"";
                     _musterUnreachable = true;
@@ -642,6 +801,65 @@ namespace DOL.GS
             return true;
         }
 
+        /// <summary>A front further than this from an encounter out of combat is not where the encounter is: pulls that walk
+        /// there never reach it (about the aggro range of the big epics, and well past any approach the resolver snaps to).</summary>
+        public const float FrontStaleDistance = 1_000f;
+        /// <summary>The front is checked at most this often, and a failed approach search waits five times as long.</summary>
+        public const long FrontRefreshMilliseconds = 60_000;
+        private long _nextFrontCheck;
+
+        /// <summary>True when the front no longer leads to the encounter: it is out of combat (at home, or wherever it
+        /// stopped) and the front is more than <see cref="FrontStaleDistance"/> from it. In a fight the encounter moves
+        /// with the raid and the front is left alone.</summary>
+        public static bool FrontIsStale(Vector3 front, Vector3 encounter, bool encounterInCombat) =>
+            !encounterInCombat && Vector3.Distance(front, encounter) > FrontStaleDistance;
+
+        /// <summary>Resolves the front again from where the encounter stands now (rate-limited by
+        /// <see cref="FrontRefreshMilliseconds"/>). A pull already walking out goes to the new front; a muster still
+        /// waiting is placed again on the new approach. Pulls that went to the old front never
+        /// had a chance to reach the encounter, so they no longer count toward setting it aside.</summary>
+        private void RefreshFront(GameLiving[] participants, long now)
+        {
+            Vector3 old = Front;
+            // Where it stands, or its home when it is out of it and walking back (as for the muster).
+            Vector3 at = MusterReference(_target);
+            // Only an approach proven from the raid replaces the front: the raw point may be off the walked mesh (the end
+            // of a Darkness Falls waypoint chain is the front because no single path reaches the encounter).
+            bool resolved = TryPointApproach(at, participants, out Vector3 approach);
+            if (resolved)
+            {
+                Front = approach;
+                if (_musterEngaged) Destination = Front;
+                else _musterPoint = MusterPoint(participants);
+            }
+            else _nextFrontCheck = now + 5 * FrontRefreshMilliseconds;
+            int unreached = _pulls.PullsWithoutContact;
+            // Only a front that now leads to the encounter wipes the slate; otherwise the set-aside still comes.
+            if (!_pulls.Contact && !FrontIsStale(Front, at, false)) _pulls.Reset();
+            log.Warn($"REALM_EXPEDITION_FRONT_REFRESHED region={_region} target=\"{_target.Name}\" at={(int)at.X},{(int)at.Y},{(int)at.Z} " +
+                     $"from={(int)old.X},{(int)old.Y},{(int)old.Z} to={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                     $"was={(int)Vector3.Distance(old, at)} now={(int)Vector3.Distance(Front, at)} approach={(resolved ? "resolved" : "unresolved, front kept")} " +
+                     $"engaged={_musterEngaged} unreachedPulls={unreached} " +
+                     $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                     $"reason=\"the front was resolved while the encounter was elsewhere; pulls there never reach it\"");
+        }
+
+        /// <summary>Moved further than this from where the muster was measured, the encounter gets a new muster.</summary>
+        public const float MusterFollowDistance = 600f;
+        private Vector3 _musterReference;
+
+        /// <summary>
+        /// Where a muster is measured from: the encounter, or its spawn when it is out of its home (a leashed boss chasing
+        /// raiders walks home and resets, so the raid musters for it there).
+        /// </summary>
+        public static Vector3 MusterReference(Vector3 position, Vector3 spawn, int tetherRange, bool resets) =>
+            resets && tetherRange > 0 && Vector3.Distance(position, spawn) > Math.Min(tetherRange / 2f, MusterFollowDistance)
+                ? spawn : position;
+
+        private static Vector3 MusterReference(GameNPC npc) => MusterReference(new(npc.X, npc.Y, npc.Z),
+            new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z),
+            EpicEncounterTactics.LeashOf(npc)?.TetherRange is int t && t > 0 ? t : npc.TetherRange, EpicEncounterTactics.ResetsWhenLeft(npc));
+
         /// <summary>
         /// The point on the walked path from the raid's main body to the encounter's approach that lies
         /// <see cref="FinalMusterStandOff"/> from the encounter (or the main body itself when it is closer).
@@ -649,7 +867,8 @@ namespace DOL.GS
         private Vector3 MusterPoint(GameLiving[] participants)
         {
             var nav = PathfindingProvider.Instance;
-            Vector3 boss = new(_target.X, _target.Y, _target.Z);
+            Vector3 boss = MusterReference(_target);
+            _musterReference = boss;
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
             if (!TryRegroupFront(inside, out Vector3 body) || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
@@ -799,6 +1018,9 @@ namespace DOL.GS
                     !bot.IsWithinRadius(_target, 1500) || bot.TargetObject == _target ||
                     bot.Brain is not DOL.AI.Brain.BotBrain brain || !GameServer.ServerRules.IsAllowedToAttack(bot, _target, true))
                     continue;
+                // A flying required add (Scurceol Hyrde's orbs) is called for the raiders who can shoot it only.
+                if (AutonomousPveTargetPolicy.IsUnreachableFlyer(_target.Flags, _target.Z, bot.Z) && !EpicEncounterTactics.CanShootFlyers(bot))
+                    continue;
                 if (bot.InCombat || bot.IsAttacking)
                 {
                     if (busyLeft <= 0) continue;
@@ -895,9 +1117,11 @@ namespace DOL.GS
         /// there (all 535 camps the raid handed out lay 1,600-2,200 units away, at the muster), so the raid never walked
         /// in (2026-11-05). False, with the raw position, when no approach resolves.
         /// </summary>
-        private bool TryEncounterApproach(GameNPC npc, GameLiving[] participants, out Vector3 approach)
+        private bool TryEncounterApproach(GameNPC npc, GameLiving[] participants, out Vector3 approach) =>
+            TryPointApproach(new(npc.X, npc.Y, npc.Z), participants, out approach);
+
+        private bool TryPointApproach(Vector3 raw, GameLiving[] participants, out Vector3 approach)
         {
-            Vector3 raw = new(npc.X, npc.Y, npc.Z);
             approach = raw;
             var nav = PathfindingProvider.Instance;
             if (!nav.IsAvailable) return false;
@@ -913,11 +1137,101 @@ namespace DOL.GS
             return false;
         }
 
+        /// <summary>The current target's tactic sends the raid to another encounter (EpicEncounterTactics): a required add
+        /// of the boss, or the boss an encounter dies with. Logged as REALM_EXPEDITION_TACTIC for the run reports.</summary>
+        private void SwitchByTactic(GameNPC to, string reason, GameLiving[] participants, long now, Vector3? stand = null)
+        {
+            Vector3 approach;
+            bool resolved;
+            if (stand is Vector3 ranged) { approach = ranged; resolved = true; }
+            else
+            {
+                resolved = TryEncounterApproach(to, participants, out approach);
+                // A flying add is fought from the floor under it (the approach search only looks 256 up or down).
+                if (!resolved && (to.Flags & GameNPC.eFlags.FLYING) != 0)
+                {
+                    var nav = PathfindingProvider.Instance;
+                    Zone zone = WorldMgr.GetRegion(_region)?.GetZone(to.X, to.Y);
+                    if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone) &&
+                        nav.GetClosestPoint(zone, new Vector3(to.X, to.Y, to.Z), 128, 128, RangedFlyerReach, nav.DefaultFilters) is Vector3 below)
+                    { approach = below; resolved = true; }
+                }
+            }
+            GameNPC owner = EpicEncounterTactics.RequiredAddOwner(to, _live ?? []) ?? _target;
+            log.Info($"REALM_EXPEDITION_TACTIC region={_region} from=\"{_target?.Name}\" to=\"{to.Name}\" health={to.HealthPercent} " +
+                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(stand != null ? "ranged-stand" : resolved ? "resolved" : "raw")} " +
+                     $"reason=\"{reason}\" tactic={EpicEncounterTactics.For(owner)?.Encounter}");
+            _target = to; TargetName = to.Name; TargetLevel = to.Level;
+            Front = Destination = approach;
+            _targetProgressTick = _targetStartTick = now; _targetLowestHealth = to.Health;
+            _targetClosest = float.MaxValue; _targetApproachTick = now;
+            Hold = false; Status = "Clearing " + to.Name;
+        }
+
+        /// <summary>
+        /// The required add of <paramref name="boss"/> the raid fights next, and the floor spot it fights it from
+        /// (<see cref="TryRangedStand"/>): <paramref name="preferred"/> first, then the others nearest the front. Adds with
+        /// no stand are set aside a minute each. False, with every add's reason, when none has one.
+        /// </summary>
+        private bool TryRequiredAddStand(GameNPC boss, GameNPC preferred, GameLiving[] participants, long now,
+            out GameNPC add, out Vector3 stand, out string why)
+        {
+            add = null; stand = default;
+            static Vector3 At(GameObject o) => new(o.X, o.Y, o.Z);
+            GameNPC[] adds = EpicEncounterTactics.ShieldingAdds(boss, _live ?? [])
+                .Where(a => _routeRetry.GetValueOrDefault(a) <= now)
+                .OrderBy(a => a == preferred ? 0 : 1).ThenBy(a => Vector3.DistanceSquared(Front, At(a))).ToArray();
+            if (adds.Length == 0) { why = "every required add was set aside a moment ago"; return false; }
+            var nav = PathfindingProvider.Instance;
+            Vector3[] anchors = DistinctAnchors(Front, participants
+                .Where(p => p.IsAlive && p.CurrentRegionID == _region && (p.Group == null || p.Group.LivingLeader == p))
+                .Select(At), 6);
+            Vector3? Reach(Vector3 floor)
+            {
+                foreach (Vector3 anchor in anchors)
+                {
+                    Zone anchorZone = WorldMgr.GetRegion(_region)?.GetZone((int)anchor.X, (int)anchor.Y);
+                    if (anchorZone != null && nav.HasNavmesh(anchorZone) &&
+                        AutonomousZonePointApproach.TryResolve(nav, anchorZone, anchor, floor, 220, out Vector3 approach))
+                        return approach;
+                }
+                return null;
+            }
+            var reasons = new List<string>();
+            foreach (GameNPC a in adds)
+            {
+                Zone zone = WorldMgr.GetRegion(_region)?.GetZone(a.X, a.Y);
+                if (TryRangedStand(nav, zone, At(a), At(boss), Reach, out stand, out string found))
+                {
+                    add = a; why = found;
+                    EpicEncounterTactics.SetStand(boss, stand);
+                    return true;
+                }
+                reasons.Add($"{a.Name}@{a.X},{a.Y},{a.Z}: {found}");
+                _routeRetry[a] = now + 60_000;
+            }
+            why = string.Join("; ", reasons);
+            return false;
+        }
+
+        /// <summary>No required add of <paramref name="boss"/> can be fought (no ranged raider sees one from the floor):
+        /// the boss's tactic is set aside like an unreachable target, and tried again later.</summary>
+        private void SetTacticAside(GameNPC boss, string why, long now)
+        {
+            log.Warn($"REALM_EXPEDITION_TACTIC_ASIDE region={_region} encounter=\"{boss.Name}\" at={boss.X},{boss.Y},{boss.Z} " +
+                     $"tactic={EpicEncounterTactics.For(boss)?.Encounter} minutes={BlockedTargetRetryMilliseconds / 60_000} reason=\"{why}\"");
+            _routeRetry[boss] = now + BlockedTargetRetryMilliseconds;
+            _musterProgress.Remove(boss);
+            if (_musterTarget == boss) _musterTarget = null;
+            if (_target == boss || EpicEncounterTactics.RequiredAddOwner(_target, _live ?? []) == boss) _target = null;
+        }
+
         private void AdvanceCore(GameLiving[] participants, long now)
         {
             if (Complete || Defeated) return;
             if (_routeStartTick == 0) _routeStartTick = now;
             GameNPC[] live = WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>().ToArray() ?? [];
+            _live = live;
             foreach (GameNPC stale in _routeRetry.Keys.Where(n => !n.IsAlive || n.ObjectState != GameObject.eObjectState.Active).ToArray())
                 _routeRetry.Remove(stale);
             foreach (GameNPC npc in live.Where(n => _finalTypes.Contains(n.GetType().Name)))
@@ -933,6 +1247,18 @@ namespace DOL.GS
             }
             bool finalDeaths = _finalTypes.All(type => _finals.TryGetValue(type, out var boss) && !boss.IsAlive);
             if (finalDeaths) { Complete = true; Status = "Final encounter defeated"; return; }
+            if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active &&
+                EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target)
+            {
+                // A required add is fought from a floor spot its ranged raiders can reach and see it from, never walked to.
+                if (EpicEncounterTactics.RequiredAddOwner(tacticTarget, live) is { } addOwner)
+                {
+                    if (TryRequiredAddStand(addOwner, tacticTarget, participants, now, out GameNPC add, out Vector3 stand, out string why))
+                        SwitchByTactic(add, $"{tacticReason}; {why}", participants, now, stand);
+                    else SetTacticAside(addOwner, why, now);
+                }
+                else SwitchByTactic(tacticTarget, tacticReason, participants, now);
+            }
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
                 if (_target.Health < _targetLowestHealth) { _targetLowestHealth = _target.Health; _targetProgressTick = now; }
@@ -950,7 +1276,7 @@ namespace DOL.GS
                 if (near < MinimumRaidersAtTarget && (now - _targetStartTick < TargetAbsencePauseLimitMilliseconds || approaching))
                     _targetProgressTick = Math.Max(_targetProgressTick, now - 1_000);
                 // A tethered boss outside its tether is immune while the raid leads it home: not a stall.
-                if (_target is GameNPC tethered && AutonomousTetherReset.IsOutOfTether(tethered))
+                if (_target is GameNPC tethered && (AutonomousTetherReset.IsOutOfTether(tethered) || EpicEncounterTactics.OutsideHome(tethered)))
                 {
                     _targetProgressTick = Math.Max(_targetProgressTick, now - 1_000);
                     Hold = false; Status = $"Drawing {_target.Name} back to its lair ({_target.HealthPercent}%)"; return;
@@ -958,8 +1284,12 @@ namespace DOL.GS
                 // Never switch a live grind objective because another party has not
                 // arrived, but never hold the whole expedition on a target nobody damages.
                 // An epic encounter fighting our raiders comes before one we are still gathering for.
-                if (!_target.InCombat && HostileEncounter(live, participants) is { } attacker)
+                if (!_target.InCombat && HostileEncounter(live, participants) is { } hostile)
                 {
+                    GameNPC attacker = EpicEncounterTactics.RouteTarget(hostile, live, Front, out string hostileTactic);
+                    if (attacker != hostile)
+                        log.Info($"REALM_EXPEDITION_TACTIC region={_region} encounter=\"{hostile.Name}\" fights=\"{attacker.Name}\" " +
+                                 $"reason=\"{hostileTactic}\" tactic={EpicEncounterTactics.For(hostile)?.Encounter}");
                     bool resolved = TryEncounterApproach(attacker, participants, out Vector3 approach);
                     log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{_target.Name}\" to=\"{attacker.Name}\" level={attacker.Level} " +
                              $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
@@ -1078,6 +1408,34 @@ namespace DOL.GS
                 GameNPC npc = candidates[_probeCursor % candidates.Length];
                 _probeCursor = (_probeCursor + 1) % candidates.Length;
                 if (_routeRetry.GetValueOrDefault(npc) > now) continue;
+                // A boss shielded by its adds, or one that dies with another, is fought through its tactic (EpicEncounterTactics).
+                if (EpicEncounterTactics.RouteTarget(npc, live, Front, out string candidateTactic) is { } tactical && tactical != npc)
+                {
+                    log.Info($"REALM_EXPEDITION_TACTIC region={_region} encounter=\"{npc.Name}\" fights=\"{tactical.Name}\" " +
+                             $"reason=\"{candidateTactic}\" tactic={EpicEncounterTactics.For(npc)?.Encounter}");
+                    npc = tactical;
+                    // A required add set aside a minute is replaced by another of its boss's adds below.
+                    if (_routeRetry.GetValueOrDefault(npc) > now && EpicEncounterTactics.RequiredAddOwner(npc, live) == null) continue;
+                }
+                // A required add (Scurceol's floating orbs) never goes through the ground-route gate below: before its boss's
+                // fight is on the raid musters for the boss; once it is on, the add is fought from a ranged floor stand.
+                if (EpicEncounterTactics.RequiredAddOwner(npc, live) is { } addOwner)
+                {
+                    if (_routeRetry.GetValueOrDefault(addOwner) > now) continue;
+                    if (!EpicEncounterTactics.FightOn(addOwner, live)) npc = addOwner;
+                    else
+                    {
+                        probes++;
+                        if (TryRequiredAddStand(addOwner, npc, participants, now, out GameNPC add, out Vector3 stand, out string why))
+                        {
+                            SwitchByTactic(add, $"required-add of \"{addOwner.Name}\"; {why}", participants, now, stand);
+                            _probeCursor = 0; _blockedSince = 0;
+                            return;
+                        }
+                        SetTacticAside(addOwner, why, now);
+                        continue;
+                    }
+                }
                 probes++;
                 Vector3 raw = AutonomousDungeonGoalCatalog.TryGet(npc, out var point) ? point.Position : new(npc.X, npc.Y, npc.Z);
                 // A flyer is approached on the floor under it (the approach search only looks 256 up or down).

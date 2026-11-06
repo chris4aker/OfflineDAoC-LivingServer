@@ -32,7 +32,9 @@ namespace DOL.GS
 		}
 		public override int MaxHealth
 		{
-			get { return 200000; } // run 18: 300k fell ~1%/min under 60 raiders (owner permits incremental SH tweaks)
+			// run 18: 300k fell ~1%/min under 60 raiders (owner permits incremental SH tweaks). The original 300k is behind
+			// EpicEncounterMechanics.AllowGovannonFullHealth.
+			get { return EpicEncounterMechanics.AllowGovannonFullHealth ? 300000 : 200000; }
 		}
 		public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
 		{

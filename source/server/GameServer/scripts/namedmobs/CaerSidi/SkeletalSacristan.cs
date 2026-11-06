@@ -16,7 +16,9 @@ namespace DOL.GS.Scripts
                 case eDamageType.Slash: return 40;// dmg reduction for melee dmg
                 case eDamageType.Crush: return 40;// dmg reduction for melee dmg
                 case eDamageType.Thrust: return 40;// dmg reduction for melee dmg
-                default: return 55;// dmg reduction for rest resists (was 70; goal 3 tuning 2026-10-07, see the walk speed below)
+                // dmg reduction for rest resists (was 70; goal 3 tuning 2026-10-07, see the walk speed below). The original 70
+                // is behind EpicEncounterMechanics.AllowSacristanPatrol.
+                default: return EpicEncounterMechanics.AllowSacristanPatrol ? 70 : 55;
             }
         }
         public override int MaxHealth
@@ -116,7 +118,7 @@ namespace DOL.AI.Brain
                     _lastRoamIndex = 0;
                     Body.ReturnToSpawnPoint(NpcMovementComponent.DEFAULT_WALK_SPEED);
                 }
-                else if (Body.InCombatInLast(10 * 1000))
+                else if (Body.InCombatInLast(10 * 1000) && !EpicEncounterMechanics.AllowSacristanPatrol)
                 {
                     // Run 18 (2026-10-17, owner: change mechanics to suit bots): the raid chased him round his loop for
                     // 40 minutes without killing him; a 300-bot raid cannot keep up with a target that never stops. He
@@ -126,8 +128,10 @@ namespace DOL.AI.Brain
                 else if(!Body.IsMoving)
                     // Goal 3 (owner permission to tune epic bosses, 2026-10-07): he walked his loop at 195-250, faster than
                     // a raid runs (~191), so most of a 300-bot raid could never keep up (Caer Sidi run: 86% -> 60% in 15
-                    // minutes with 80+ bots idle and re-called). A walk the raid can follow keeps the chase.
-                    Body.WalkTo(_roamingPathPoints[_lastRoamIndex], (short)Util.Random(130, 160));
+                    // minutes with 80+ bots idle and re-called). A walk the raid can follow keeps the chase. The original loop
+                    // (195-250, never stopping) is behind EpicEncounterMechanics.AllowSacristanPatrol.
+                    Body.WalkTo(_roamingPathPoints[_lastRoamIndex], EpicEncounterMechanics.AllowSacristanPatrol
+                        ? (short)Util.Random(195, 250) : (short)Util.Random(130, 160));
             }
 
             if (Body.InCombatInLast(60 * 1000) == false && Body.InCombatInLast(65 * 1000))

@@ -8,6 +8,71 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+**Epic raids learn their first encounter rules.** Raids of gamebots now know two bosses that beat them by their rules, not
+by their damage. Everything below is built and covered by automated tests; none of it has been seen in a real raid yet.
+- **Scurceol Hyrde (Krondon).**
+  - **Before:** he takes no damage while his four floating Lyft Miht orbs live, but the raid hit only him, for an hour, and
+    all 42 raider deaths were his.
+  - **Now:** while an orb lives the raid's target is an orb. Each party takes one; casters and archers shoot it from the
+    floor, and melee wait under it, away from him. Nobody hits Scurceol until the last orb is down, then the whole raid
+    turns on him. Orbs stay dead if he resets.
+  - The raid also fights him in his own room: past 1,500 from his spawn it stops hitting him, and the raider he chases
+    leads him back.
+- **Black Lady and the Ancient Black Oak (Marfach Caverns).**
+  - **Before:** the raid dragged Black Lady out of her room until she went home at full health, then pulled her Oak 91
+    times without ever reaching it.
+  - **Now:** the Oak dies when Black Lady dies, so the raid fights her instead. Past 1,100 from her spawn (her leash is
+    1,500) the raid stops hitting her and leads her back, so she never resets mid-fight.
+- **Original boss mechanics are back, switched off.** In 23 places the fork had changed a boss for bot raids. Examples:
+  Aroon's damage-type order, Funus healing from the wrong weapons, the Earthmenders' class puzzle, Beatha healing Xaga,
+  King Tuscar and Queen Kula healing each other, Kvasir healed by cold, Govannon's full 300,000 health. The originals,
+  read from OpenDAoC's own code, are now behind 17 new switches in `EpicEncounterMechanics`, all off, so bosses play
+  exactly as before. Each one gets turned on once the raid knows how to beat it.
+- **Where to look.** The encounter catalog
+  ([docs/encounters/EPIC-ENCOUNTERS.md](docs/encounters/EPIC-ENCOUNTERS.md)) has three new lists: encounters the raid
+  has tactics for, the restored mechanics and their switches, and the mechanics that still only pick real players. The
+  server log shows each decision as `REALM_EXPEDITION_TACTIC` (the raid's target) and `EPIC_TACTIC_BOT` (a raider's).
+- **Raids answer a boss that jumps them before the muster.** Before, whoever was nearby fought it, and the rest arrived
+  in twos and threes. Now the whole raid answers together:
+  - With half the raid already near, or with a boss that would chase them down, everyone goes in at once.
+  - A boss also chases them down when the muster is inside its leash. On 2026-11-06 Fuladl (Krondon) could chase raiders
+    up to 3,800 from his spawn, and his muster was 1,400 from it. Then the raid goes in at once too. Most catalog bosses
+    have a leash longer than the 1,400 a muster stands off, Aidon's 1,500 included, so most early pulls now commit.
+  - Otherwise everyone pulls back to the muster, the boss walks home and resets, and the raid comes back together.
+  - Each decision is in the log as `REALM_EXPEDITION_EARLY_PULL`.
+- **A lost skirmish no longer counts as a wipe.** A failed fight now uses up one of the raid's two attempts (and calls
+  the Special Forces) only if at least half the raid was in it, or half the raid fell. Example: on 2026-11-05 Aidon
+  killed 31 raiders while 56 were elsewhere, and that counted as the raid's first wipe. It would now be a lost skirmish
+  (`REALM_EXPEDITION_SKIRMISH_LOST`): the raid rests and musters again without losing an attempt.
+- **Musters wait where the boss lives.** A boss that was out chasing raiders is mustered for at its home, and the
+  muster moves when the boss walks back (`REALM_EXPEDITION_MUSTER_MOVED`). On 2026-11-05 Aidon's muster sat on the ramp
+  his chase had reached, 2,600 from his room.
+- **Pulls go to where the boss stands.** The spot the raid walks to when it goes in (the front) is worked out again when
+  a boss that is not fighting stands more than 1,000 from it (`REALM_EXPEDITION_FRONT_REFRESHED`). Pulls that went to
+  the old spot no longer count toward setting the boss aside. On 2026-11-05 three full pulls on Aidon (75 and then 106
+  raiders) walked to the spot from his earlier chase and stopped 1,979 from him. He never entered combat and was set
+  aside (`REALM_EXPEDITION_PULL_UNREACHED`, which now also logs `frontDistance`). If no new route to the boss is found,
+  the old spot is kept (in Darkness Falls the last waypoint of a route is the spot on purpose).
+- **Floating required adds are shot from the floor (Scurceol Hyrde, Krondon).** On 2026-11-06 the raid turned to
+  Scurceol's four Lyft Miht orbs twice, but no route to them was found and each was set aside. They float 230-580 above
+  him, and the route only looks for a path to the spot it fights at. The raid went to Fuladl and never fought him. Now
+  the route never walks to a required add:
+  - The raid fights it from a floor spot it can walk to: under the add, beside its boss, or in between.
+  - The spot must be within 1,400 of the add and see it.
+  - Raiders who can't hit the add in the air wait at that spot.
+  - Only when no add has such a spot is the boss set aside, with the reason for each add (`REALM_EXPEDITION_TACTIC_ASIDE`).
+- **Aidon the Archwizard (Hall of the Corrupt).** The raid kills three of his four illusions and leaves the last one
+  alive, because he only summons a new set once all four are dead. Then everyone fights him, near his room. His damage
+  shield only hurts melee attackers; it doesn't make him harder to damage, so he can be beaten by design.
+- **Nosdoden (Trollheim).** When a wave of essences comes (every 10% of his health), the raid stops hitting him and
+  kills the wave first. His health then drops one step at a time and waves don't pile up.
+- **Xanxicar (Crystal Cave).** Before 80/60/40/20% and until his stomp has landed, everyone except the party he is
+  fighting moves 2,700 away. That party pushes him over and takes the 2,500-radius stomp, which is meant to kill whoever
+  is in it; the rest of the raid survives and comes back.
+- Not changed: Darkness Falls raid AI, Legion and the hardest level 70+ encounters still have no raid AI.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

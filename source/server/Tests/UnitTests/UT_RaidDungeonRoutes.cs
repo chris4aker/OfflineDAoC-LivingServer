@@ -164,6 +164,46 @@ namespace DOL.UnitTests
             Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, gildas, from), Is.True, "and back");
         }
 
+        // Hall of the Corrupt, 2026-11-05 (build 168f55d): after a lost fight with Aidon the raid's muster was placed at
+        // 30927,35039,15365, on the ramp his chase had reached, and gathered 0-2 of 75 in six minutes; Aldeorward, on Aidon's
+        // floor at 31855,35569,14889, logged "No navigable dungeon corridor to the next route stage". The muster is now
+        // measured from Aidon's home (RealmRaidDungeonRoute.MusterReference). This probe shows on the installed zone277.nav
+        // whether that ramp point is reachable from his floor and the entrance; it was not run when the fix was written.
+        [TestCase(32395, 31847, 16158)]   // the entrance
+        [TestCase(31855, 35569, 14889)]   // Aldeorward on Aidon's floor
+        [TestCase(31353, 37634, 14873)]   // Aidon's spawn
+        public void AidonsRampMusterIsReachable(int x, int y, int z)
+        {
+            Zone zone = LoadZone(277);
+            var nav = PathfindingProvider.LocalPathfindingMgr;
+            Vector3 from = nav.GetClosestPoint(zone, new(x, y, z), 64, 64, 64, nav.DefaultFilters).Value;
+            Vector3 muster = nav.GetClosestPoint(zone, new(30927, 35039, 15365), 64, 64, 64, nav.DefaultFilters).Value;
+            TestContext.Out.WriteLine($"{from} -> ramp muster {muster}: there {AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, from, muster)}, " +
+                                      $"back {AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, muster, from)}");
+            Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, from, muster), Is.True, "to the ramp muster");
+        }
+
+        // The muster measured from Aidon's home lies on the walked path from the entrance, 1,400 out from his approach.
+        [Test]
+        public void AidonsHomeMusterIsOnTheEntrancePath()
+        {
+            Zone zone = LoadZone(277);
+            var nav = PathfindingProvider.LocalPathfindingMgr;
+            var home = new Vector3(31353, 37634, 14873);
+            Vector3 entrance = nav.GetClosestPoint(zone, new(32395, 31847, 16158), 64, 64, 64, nav.DefaultFilters).Value;
+            Assert.That(AutonomousZonePointApproach.TryResolve(nav, zone, entrance, home, 220, out Vector3 approach), Is.True, "an approach to his home");
+            var nodes = new WrappedPathfindingNode[256];
+            var path = nav.GetPathStraight(zone, approach, entrance, nav.DefaultFilters, nodes);
+            Assert.That(path.Status, Is.EqualTo(PathfindingStatus.PathFound).Or.EqualTo(PathfindingStatus.PartialPathFound));
+            Vector3 muster = default;
+            for (int i = 1; i < path.NodeCount && muster == default; i++)
+                if (Vector3.Distance(nodes[i].Position, home) >= RealmRaidDungeonRoute.FinalMusterStandOff) muster = nodes[i].Position;
+            TestContext.Out.WriteLine($"approach {approach}, muster near {muster}");
+            Assert.That(muster, Is.Not.EqualTo(default(Vector3)));
+            Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, entrance, muster), Is.True, "the entrance reaches it");
+            Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, muster, approach), Is.True, "and it reaches Aidon");
+        }
+
         // Marfach Caverns, 2026-11-05: the raid turned on the Ancient Black Oak (spawned by Black Lady's script at
         // 30091,37620,15049) and used that point as its front. For 3.5 hours every party's camp stayed at the muster, 1,600-2,200
         // units away: no formation post resolved around the Oak (RealmRaidFormation needs sight and a corridor from the

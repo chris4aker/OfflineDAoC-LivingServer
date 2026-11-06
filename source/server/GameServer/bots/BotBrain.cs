@@ -3117,6 +3117,10 @@ namespace DOL.AI.Brain
             // A tethered boss outside its tether is immune: stop hitting it and lead it home (AutonomousTetherReset).
             if (Body.TargetObject is GameNPC tetheredBoss && AutonomousTetherReset.TryHandle(BotBody, tetheredBoss))
                 return;
+            // An epic encounter's tactic (EpicEncounterTactics, from the encounter catalog): its required adds first, fight it
+            // at home, or the boss it dies with. May set a new target and fight on, or use this turn to stand off.
+            if (Body.TargetObject is GameNPC tacticTarget && EpicEncounterTactics.TryHandle(BotBody, tacticTarget))
+                return;
 
             if (Body.TargetObject is GameLiving wallTarget && AutonomousRvrDefense.HoldWall(BotBody, wallTarget))
             {
