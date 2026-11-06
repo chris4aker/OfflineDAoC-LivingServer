@@ -10,13 +10,75 @@ namespace DOL.GS;
 /// blind to how many bots were already there. Now a camp counts as crowded when its bots outnumber half its live
 /// monsters (at least two bots allowed); the draw takes only uncrowded camps while any is left, otherwise the least
 /// crowded ones. No monster is added or moved, and nothing else about the choice changes.
+/// Camps of the same monster close together share their bots and monsters (<see cref="PublishCatalog"/>): a bot at
+/// one hunts within <see cref="NeighbourRadius"/> of itself, so they compete for the same spawns.
 /// </summary>
 public static class AutonomousCampCompetition
 {
     private const long RefreshMilliseconds = 30_000;
+    /// <summary>Same-monster camps this close count together (a bot at a camp looks for targets up to 5,000 away).</summary>
+    public const int NeighbourRadius = 5_000;
     private static readonly object Sync = new();
     private static Dictionary<string, int> _occupancy = new(StringComparer.OrdinalIgnoreCase);
     private static long _nextRefresh;
+
+    /// <summary>A camp's same-monster neighbours (itself included) and their live monsters together.</summary>
+    public sealed record Neighbourhood(string[] Ids, int LiveMobs);
+
+    private static volatile Dictionary<string, Neighbourhood> _neighbourhoods = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Records which catalog camps share spawns: outdoor camps of the same monster name in the same region within
+    /// <see cref="NeighbourRadius"/> of each other (2026-11-06: four Shannon Estuary camps of the same 7 level-1 haunted
+    /// driftwood were each counted alone, so up to 18 bots worked 7 monsters). Called when a new catalog is published.
+    /// </summary>
+    public static void PublishCatalog(IEnumerable<(string Id, ushort Region, int X, int Y, string Monster, int LiveMobs, bool Dungeon)> cells)
+    {
+        var result = new Dictionary<string, Neighbourhood>(StringComparer.OrdinalIgnoreCase);
+        long reach = (long)NeighbourRadius * NeighbourRadius;
+        foreach (var group in cells
+                     .Where(cell => !cell.Dungeon && !string.IsNullOrEmpty(cell.Id) && !string.IsNullOrEmpty(cell.Monster))
+                     .GroupBy(cell => (cell.Region, Name: cell.Monster.Trim().ToLowerInvariant())))
+        {
+            var members = group.ToArray();
+            if (members.Length < 2)
+                continue;
+            foreach (var cell in members)
+            {
+                List<string> ids = null;
+                int mobs = 0;
+                foreach (var other in members)
+                {
+                    long dx = (long)cell.X - other.X, dy = (long)cell.Y - other.Y;
+                    if (dx * dx + dy * dy > reach)
+                        continue;
+                    (ids ??= new()).Add(other.Id);
+                    mobs += Math.Max(0, other.LiveMobs);
+                }
+                if (ids is { Count: > 1 })
+                    result[cell.Id] = new Neighbourhood(ids.ToArray(), mobs);
+            }
+        }
+        _neighbourhoods = result;
+    }
+
+    /// <summary>The camp's neighbourhood, or null when no other camp shares its spawns.</summary>
+    public static Neighbourhood NeighbourhoodOf(string campId) =>
+        string.IsNullOrEmpty(campId) ? null : _neighbourhoods.GetValueOrDefault(campId);
+
+    /// <summary>True when the two camps are the same or share spawns.</summary>
+    public static bool SameSpawns(string campId, string otherId)
+    {
+        if (string.IsNullOrEmpty(campId) || string.IsNullOrEmpty(otherId))
+            return false;
+        if (string.Equals(campId, otherId, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return NeighbourhoodOf(campId)?.Ids.Contains(otherId, StringComparer.OrdinalIgnoreCase) == true;
+    }
+
+    /// <summary>The live monsters a camp's bots compete for: its neighbourhood's, or its own.</summary>
+    public static int SharedLiveMobs(string campId, int ownLiveMobs) =>
+        NeighbourhoodOf(campId)?.LiveMobs is int shared ? Math.Max(shared, ownLiveMobs) : ownLiveMobs;
 
     /// <summary>Pure rule: more bots than half the camp's live monsters (two always fit).</summary>
     public static bool Crowded(int bots, int liveMobs) => bots > Math.Max(2, liveMobs / 2);
@@ -24,13 +86,22 @@ public static class AutonomousCampCompetition
     /// <summary>How crowded a camp is: bots per live monster.</summary>
     public static double Pressure(int bots, int liveMobs) => bots / (double)Math.Max(1, liveMobs);
 
+    /// <summary>Bots at the camp and at the camps that share its spawns.</summary>
     public static int Occupancy(string campId)
     {
         if (string.IsNullOrEmpty(campId))
             return 0;
         Refresh();
+        Neighbourhood shared = NeighbourhoodOf(campId);
         lock (Sync)
-            return _occupancy.GetValueOrDefault(campId);
+        {
+            if (shared == null)
+                return _occupancy.GetValueOrDefault(campId);
+            int bots = 0;
+            foreach (string id in shared.Ids)
+                bots += _occupancy.GetValueOrDefault(id);
+            return bots;
+        }
     }
 
     private static void Refresh()
@@ -83,14 +154,15 @@ public static class AutonomousCampCompetition
         int Bots(T camp)
         {
             int count = Occupancy(id(camp));
-            if (own != null && string.Equals(id(camp), own, StringComparison.OrdinalIgnoreCase))
+            if (own != null && SameSpawns(id(camp), own))
                 count = Math.Max(0, count - partySize);
             return count + partySize;
         }
-        T[] quiet = camps.Where(camp => !Crowded(Bots(camp), liveMobs(camp))).ToArray();
+        int Mobs(T camp) => SharedLiveMobs(id(camp), liveMobs(camp));
+        T[] quiet = camps.Where(camp => !Crowded(Bots(camp), Mobs(camp))).ToArray();
         if (quiet.Length > 0)
             return quiet;
-        return camps.OrderBy(camp => Pressure(Bots(camp), liveMobs(camp)))
+        return camps.OrderBy(camp => Pressure(Bots(camp), Mobs(camp)))
             .Take(Math.Max(1, camps.Length / 3)).ToArray();
     }
 }

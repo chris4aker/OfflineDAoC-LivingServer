@@ -6021,7 +6021,7 @@ namespace DOL.GS
             string own, int party)
         {
             int bots = AutonomousCampCompetition.Occupancy(camp.Id);
-            if (own != null && string.Equals(camp.Id, own, StringComparison.OrdinalIgnoreCase))
+            if (own != null && AutonomousCampCompetition.SameSpawns(camp.Id, own))
                 bots = Math.Max(0, bots - party);
             int near = !destinations.TryGetValue(camp.Id, out CampDestination d) || d.RegionId != bot.CurrentRegionID ? 1
                 : Distance(bot.X, bot.Y, d.X, d.Y) switch { <= 15_000 => 4, <= 25_000 => 3, <= 40_000 => 2, _ => 1 };
