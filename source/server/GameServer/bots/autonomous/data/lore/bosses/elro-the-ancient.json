@@ -1,0 +1,78 @@
+{
+  "id": "elro-the-ancient",
+  "name": "Elro the Ancient",
+  "catalogKey": "open-world/elrotheancient",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, in World's End (353016, 260457). He cannot be crowd-controlled and calls up an ancient treant.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He shares a treant model (767) with Aroon the Urlamhai of Galladoria.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs; source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs"
+    },
+    {
+      "text": "Bot chat: 'elro the ancient waits out at world's end. i believe the name'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Elro stood at World's End before the titan was driven there. The Sylvan say he was one of the trees that drove him: a guardian of the old forest set at the edge of the world to keep watch, as Aroon in Galladoria was once set to keep the hollow. Aroon fell to the rot. Elro did not, quite. He is too old to be moved by charm or sleep or fear, and he still keeps his watch, but he no longer knows friend from enemy and he calls up the other ancient trees of the edge to fight beside him. The Sylvan leave him be. He may be the only thing still holding the titan's anger at the edge of the world.",
+  "legend": "No mezz, no root, no stun: he is too old for any of it. He calls an ancient treant to fight beside him, so tank it separately. A straight, heavy fight with no shortcuts. The Sylvan would rather you left him alone, and some of them will not trade with you afterwards.",
+  "yells": {
+    "aggro": [
+      "I keep the edge. Who comes to the edge?"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Brothers of the old wood, wake!"
+      }
+    ],
+    "death": [
+      "Who... will keep the edge now..."
+    ],
+    "slay": [
+      "Over the edge with you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tree as old as the hill. It is watching the sea."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "An ancient treant uproots itself beside Elro!"
+      }
+    ],
+    "realmFirstKill": "Elro the Ancient has fallen. Who keeps the edge now?"
+  },
+  "botLines": {
+    "briefing": [
+      "elro is immune to cc. [no mezz|dont bother rooting], tank his treant separately"
+    ],
+    "aftermathWin": [
+      "elro down. [the sylvan wont like this|hope nothing gets loose]"
+    ],
+    "aftermathLoss": [
+      "we tried to mezz his treant and [nothing stuck|it was immune too]. just tank it"
+    ],
+    "rumour": [
+      "[heard|someone said] elro was one of the trees that drove olcasgean to world's end"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Elro",
+    "text": "A guardian tree set at World's End to watch over the titan's exile. Too old for charm or fear, he no longer knows friend from foe."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Elro the Ancient in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Elro the Ancient after {minutes} minutes."
+  }
+}

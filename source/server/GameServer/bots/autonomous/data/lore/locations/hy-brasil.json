@@ -1,0 +1,138 @@
+{
+  "id": "hy-brasil",
+  "name": "Hy Brasil",
+  "realm": "Hibernia",
+  "regions": [
+    181
+  ],
+  "summary": "The lost isle of the Sylvan, where World's End, Cothrom Gorge and Allta Fearann keep their own old terrors.",
+  "facts": [
+    {
+      "text": "Shrouded Isles (2002) brought Hy Brasil, the long-lost home of the Sylvan, who sought Hibernia's aid against the Fomorians.",
+      "provenance": "mythic",
+      "source": "https://archive.rpgamer.com/news/Q3-2002/080502g.html"
+    },
+    {
+      "text": "Region 181's zones are Domnann, Caillte Garran, the Vale of Balor, Cothrom Gorge, World's End, Vigilant Rock and Allta Fearann.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Its named epics: in World's End Balere, Mollunero and Zytka (octonoid mothers), Kontar the Corrupt, Archilus and Elro the Ancient; in Cothrom Gorge Cronwort, Dremcis Fuiloltair with Beomarbhan, Gneiss and Marfoirwort; in Allta Fearann Curengkur.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Real-world legend: Hy-Brasil is a phantom island of Irish tradition, said to appear west of Ireland and vanish again in mist.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Brasil_(mythical_island)"
+    },
+    {
+      "text": "Bot chat: corrupt sylvan on the isle; Curengkur stalks Allta Fearann and the mantids whisper his name; Elro the Ancient waits at World's End.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Olcasgean's banishment to World's End is bot-chat lore, kept as Living Server canon.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Sailors of the west coast told of an island that rose out of the mist one day in seven years and was gone again before a boat could reach it. The Sylvan laugh at that. Hy Brasil was never lost, they say. It was hiding. When the Fomorians came, it stopped being able to hide, and the Sylvan came out of the mist to ask Hibernia for swords.\n\nWhat the Hibernians found was an old country with old troubles of its own. World's End lies on the far edge of the isle, the place the forests drove the titan Olcasgean before the first songs, and the land there still remembers him: treants as old as hills, shrouds of the dead that shake themselves apart into more shrouds, a Sylvan chieftain gone corrupt who keeps a guard of healers, and on its shores three great octonoid mothers, each with her brood. Cothrom Gorge is a wound in the earth where rot grows in flower-shapes, where a blood-drinker rides out on a stag that should be dead, where stone gets up and walks, and where the worst weed on the isle feeds on the living. Allta Fearann, the wild land, belongs to the mantids, and the mantids will not say aloud the name of the thing that hunts them.\n\nNone of these troubles came with the Fomorians. They were here first. The Sylvan only ask the realm's fighters to remember that, when they ride out from Domnann thinking they know what an enemy looks like.",
+  "legend": "Most of the Hy Brasil named bring their families: octonoid mothers with their broods, Kontar with his healing guards, Cronwort with its stinking weeds, Gneiss with its granidons. Clear around, kill the healers and the young first, and keep them near home, because almost all of them walk back if you drag them far.",
+  "atmosphere": {
+    "firstEntry": [
+      "Hy Brasil. The isle that was never lost, only hiding.",
+      "The mist lifts. An old country looks back at you."
+    ],
+    "areas": [
+      {
+        "name": "World's End",
+        "x": 375000,
+        "y": 262000,
+        "z": 4000,
+        "radius": 22000,
+        "lines": [
+          "The edge of the world. Something was banished here."
+        ]
+      },
+      {
+        "name": "Cothrom Gorge",
+        "x": 315000,
+        "y": 295000,
+        "z": 2600,
+        "radius": 20000,
+        "lines": [
+          "The gorge smells of rot and flowers."
+        ]
+      },
+      {
+        "name": "Allta Fearann",
+        "x": 376086,
+        "y": 172803,
+        "z": 3452,
+        "radius": 6000,
+        "lines": [
+          "The mantids have gone quiet. Something hunts here."
+        ]
+      },
+      {
+        "name": "the octonoid shore",
+        "x": 385000,
+        "y": 255000,
+        "z": 4200,
+        "radius": 9000,
+        "lines": [
+          "The shallows are full of soft, curling shapes."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the sylvan say hy brasil was never lost, [only hiding|it just hid in the mist]",
+      "world's end is where the forests drove olcasgean. [the land still remembers him|you can feel it]",
+      "three octonoid mothers on the world's end shore. balere, mollunero, zytka. [each with a brood|bring aoe]",
+      "the mantids in allta fearann wont say curengkur out loud. [i dont blame them|smart bugs]"
+    ],
+    "rumour": [
+      "[heard|someone said] kontar the corrupt has [more guards|a bigger guard] than last week",
+      "[word is|someone swore] marfoirwort in cothrom gorge [ate|drained] a whole group"
+    ],
+    "tell": [
+      "hy brasil open field: octonoid mothers and kontar in world's end, the gorge has cronwort, gneiss, dremcis and marfoirwort",
+      "curengkur in allta fearann, elro and archilus at world's end. most of them bring friends"
+    ]
+  },
+  "loremaster": {
+    "intro": "Hy Brasil was never lost, the Sylvan say. It was hiding. It has its own old troubles: [World's End], [Cothrom Gorge] and [Allta Fearann], and none of them came with the Fomorians.",
+    "topics": {
+      "World's End": "The far edge, where the forests drove the titan. Treants as old as hills, shrouds of the dead, three [octonoid mothers] and a Sylvan chieftain gone corrupt.",
+      "octonoid mothers": "Balere, Mollunero and Zytka, each with her brood in the shallows. The young come first.",
+      "Cothrom Gorge": "A wound in the earth where rot flowers. A blood-drinker rides a dead stag there, stone walks, and Marfoirwort feeds on the living.",
+      "Allta Fearann": "The wild land of the mantids, and of Curengkur, whose name they will not say aloud."
+    }
+  },
+  "book": {
+    "title": "A Sylvan Guide to the Old Troubles",
+    "pages": [
+      "You came for the Fomorians. Everyone does. Before you go looking for them, learn what else lives on this isle, because it was here before them and it will be here after. At World's End the land is old and sour. The treant Elro stood there before the titan was sent there, and Archilus haunts the shrouds of the dead. Three mothers keep their broods in the shallows. Do not walk the shore at low tide.",
+      "In the gorge called Cothrom the earth split long ago and something in the split went bad. Weeds grow there that stink like corpses and fight like dogs. A rider called Dremcis drinks blood and rides a stag that should be dead. Gneiss is a hill that decided to walk. And Marfoirwort, whose name means killer in our cousin tongue, feeds on whatever lives near it until it does not.",
+      "Last, Allta Fearann, the wild land, where the mantids live. They are not friendly and they are not enemies; they are busy. There is one thing they fear, and they do not say its name above a whisper. We write it here so that you need not say it either: Curengkur. Its nest burns the air. If the mantids go quiet, turn round."
+    ]
+  },
+  "bosses": [
+    "balere",
+    "mollunero",
+    "zytka",
+    "kontar-the-corrupt",
+    "archilus",
+    "elro-the-ancient",
+    "cronwort",
+    "dremcis-fuiloltair",
+    "beomarbhan",
+    "gneiss",
+    "marfoirwort",
+    "curengkur"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "kontar-the-corrupt",
+  "name": "Kontar the Corrupt",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/kontarcorrupt",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, in World's End. He calls eight to ten corruptor bodyguards whose heal (200) mends any of their side; tether 2,600.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/KontarCorrupt.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat mentions corrupt sylvan on the isle who were 'their own kin once'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Kontar was a chieftain of the Sylvan of World's End, and when the titan's roots soured that country he did not leave with his people. He stayed, and drank from the soured springs, and called it strength. His corruptors are the Sylvan who stayed with him. They are healers still, the old Sylvan say with grief, the best his clan ever had, and they keep him and each other whole no matter what the realm throws at them. Kontar calls it loyalty. His kin in Domnann call it the saddest thing on the isle.",
+  "legend": "His corruptor bodyguards heal everything on their side: kill the healers first, all eight to ten, then Kontar. Interrupt their heals if you can. Keep the fight near his camp or he walks home whole, and his guard is back at full strength before you are.",
+  "yells": {
+    "aggro": [
+      "The roots made me strong. They can make you strong."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Corruptors, to me! Mend your chief!"
+      }
+    ],
+    "death": [
+      "Domnann... tell them... I stayed..."
+    ],
+    "slay": [
+      "Another root for the titan."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Sylvan in dark bark stand guard. They do not blink."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Kontar's corruptors surround him!"
+      }
+    ],
+    "realmFirstKill": "Kontar the Corrupt is fallen. His kin can mourn."
+  },
+  "botLines": {
+    "briefing": [
+      "kontar's guards heal everything. [kill the corruptors first|healers first], interrupt their heals"
+    ],
+    "aftermathWin": [
+      "kontar down. [the sylvan in domnann will want to hear|tell domnann]"
+    ],
+    "aftermathLoss": [
+      "we hit kontar with the corruptors up and he [never dropped|healed through everything]"
+    ],
+    "rumour": [
+      "[heard|someone said] kontar was a sylvan chieftain who stayed when world's end went sour"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kontar",
+    "text": "A Sylvan chieftain who stayed when World's End soured, and drank from its springs. His corruptors are his old healers, and they heal him still."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Kontar the Corrupt in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Kontar the Corrupt after {minutes} minutes."
+  }
+}

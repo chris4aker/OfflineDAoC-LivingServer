@@ -1,0 +1,73 @@
+{
+  "id": "balere",
+  "name": "Balere",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/balere",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "World's End holds three octonoid mothers on its shore, each spawning young octonoids: Balere, Mollunero and Zytka.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Balere: level 65, 30,000 health, seven or eight young octonoids, a tether of 2,600.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Balere.cs; docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Balere is the eldest of the three octonoid mothers of the World's End shore, and the Sylvan fishers say the shallows belong to her by right of age. She lies half in the water and half on the rocks, a great soft bulk with arms like ships' cables, and her young cling all around her. Disturb her and they come off her in a wave, seven or eight at a time, curling over the rocks toward whoever was foolish enough. She will not follow far. She never needs to: the tide comes back, and so do her children.",
+  "legend": "Kill the young first or hold them: seven or eight come at once and they bite. AoE helps. She walks home if you drag her up the beach, so fight her by the water. Watch for her sisters down the shore.",
+  "yells": {
+    "aggro": [
+      "The eldest mother rises from the shallows."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Her young slide off her and curl toward you."
+      }
+    ],
+    "death": [
+      "The tide will bring more."
+    ],
+    "slay": [
+      "Food for the young."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The shallows are full of soft, curling shapes."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Balere's brood pours over the rocks!"
+      }
+    ],
+    "realmFirstKill": "Balere, eldest mother of the shore, is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "balere drops seven or eight babies. [aoe them|kill the young first], then her"
+    ],
+    "aftermathWin": [
+      "balere down. [the shallows went still|tide is ours]"
+    ],
+    "aftermathLoss": [
+      "the young got the healers. [aoe|kill the babies first]"
+    ],
+    "rumour": [
+      "[heard|someone said] balere is the eldest of the three octonoid mothers"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Balere",
+    "text": "Eldest of the three octonoid mothers of World's End. Her young come off her in a wave. Fight her by the water."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Balere in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Balere after {minutes} minutes."
+  }
+}

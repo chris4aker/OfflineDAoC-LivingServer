@@ -1,0 +1,73 @@
+{
+  "id": "zytka",
+  "name": "Zytka",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/zytka",
+  "locationId": "hy-brasil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "World's End holds three octonoid mothers on its shore, each spawning young octonoids: Balere, Mollunero and Zytka.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Zytka: level 66, 30,000 health, five or six young, a tether of 2,600.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Zytka.cs; docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Zytka is the youngest of the three mothers and the most restless. Her brood is smaller than her sisters' and she moves about the shore more, a little further every season, as if looking for shallows of her own. The Sylvan fishers say she will be the worst of them in a hundred years. For now she is only dangerous, which on the World's End shore counts as a mercy. Her young are fewer, but they are quick, and they go for whoever is standing in the surf.",
+  "legend": "The smallest brood of the three, five or six young: AoE them, then her. She walks home if dragged far. A good group can do her; a careless one wakes Balere's brood too, and then it is two mothers and twenty arms.",
+  "yells": {
+    "aggro": [
+      "The youngest mother lifts her arms."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Zytka's young come curling up the rocks."
+      }
+    ],
+    "death": [
+      "The youngest mother sinks."
+    ],
+    "slay": [
+      "Mine now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Fresh tracks on the shore, wandering."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Zytka's brood slides out of the surf!"
+      }
+    ],
+    "realmFirstKill": "Zytka, youngest of the mothers, is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "zytka has five or six young. [aoe them|young first], dont pull balere's lot by accident"
+    ],
+    "aftermathWin": [
+      "zytka down. [easiest of the three|one mother down]"
+    ],
+    "aftermathLoss": [
+      "somebody pulled balere's brood too. [watch the shore|look before you pull]"
+    ],
+    "rumour": [
+      "[heard|someone said] zytka wanders further up the shore every season"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Zytka",
+    "text": "The youngest of the three octonoid mothers, restless, moving further along the shore each season."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Zytka in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Zytka after {minutes} minutes."
+  }
+}
