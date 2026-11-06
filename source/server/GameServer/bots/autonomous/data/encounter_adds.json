@@ -44,6 +44,7 @@
    "beliathanminion"
   ],
   "bellum": [
+   "morbus",
    "warincarnatecrush",
    "warincarnateslash",
    "warincarnatethrust"
@@ -52,12 +53,16 @@
    "barrelexplosive"
   ],
   "blacklady": [
+   "ancientblackoak",
    "ogress"
   ],
   "blight": [
    "fireblight",
    "fleshblight",
    "lateblight"
+  ],
+  "blightcontroller": [
+   "blight"
   ],
   "bluelady": [
    "blueladyaxeadd",
@@ -87,6 +92,7 @@
    "draugynsphere"
   ],
   "dremcisfuiloltair": [
+   "beomarbhan",
    "fuilslathach"
   ],
   "earthprimal": [
@@ -97,6 +103,9 @@
   ],
   "evern": [
    "evernfairy"
+  ],
+  "fames": [
+   "bellum"
   ],
   "fireprimal": [
    "trailoffire"
@@ -109,6 +118,9 @@
   ],
   "fulafeallan": [
    "fulafeallanadd"
+  ],
+  "funus": [
+   "apocalypse"
   ],
   "ghostofcaithor": [
    "caithor"
@@ -144,8 +156,15 @@
   "hjalmar": [
    "morkimma"
   ],
+  "hjalmarsuttungcontroller": [
+   "hjalmar",
+   "suttung"
+  ],
   "jailer": [
    "jaileradd"
+  ],
+  "kieracdestroyer": [
+   "masterofpain"
   ],
   "kontarcorrupt": [
    "corruptorbodyguard"
@@ -169,7 +188,8 @@
    "lokenwolf"
   ],
   "lordsanguis": [
-   "bloodmage"
+   "bloodmage",
+   "lichlordsanguis"
   ],
   "luriquay": [
    "flamenormal"
@@ -184,6 +204,7 @@
    "molluneroadd"
   ],
   "morbus": [
+   "funus",
    "morbusswarm"
   ],
   "morgana": [
@@ -211,11 +232,16 @@
    "ogadds"
   ],
   "olcasgean": [
+   "olcasgean2",
    "olcasgeaneffect",
    "waterfallantipass"
   ],
   "olcasgeaninitializator": [
-   "vortex"
+   "airprimal",
+   "earthprimal",
+   "fireprimal",
+   "vortex",
+   "waterprimal"
   ],
   "oona": [
    "oonaundeadadd"
@@ -257,6 +283,9 @@
   "soulreckoner": [
    "reckonedsoul"
   ],
+  "spectralprovisionerspawner": [
+   "spectralprovisioner"
+  ],
   "spindlerbroodmother": [
    "sbadds",
    "sbdeadadds"
@@ -289,6 +318,10 @@
   ],
   "vortanos": [
    "vortanosadd"
+  ],
+  "xaga": [
+   "beatha",
+   "tine"
   ],
   "xanxicar": [
    "xanxicarianchampion"

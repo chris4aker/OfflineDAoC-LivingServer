@@ -565,7 +565,13 @@ def check_lore(problems):
                     problems.append(f'{where}: "[" without a "|" choice: {template}')
                     continue
                 for said in expand(template):
-                    check_text(said, tags, where, problems)
+                    found = []
+                    check_text(said, tags, where, found)
+                    # A Neutral place's lore is told in every realm, about every realm ("albion got avalon, midgard got
+                    # aegir"): naming another realm's place there is the point, not a slip (Hibernia writer, PR #91).
+                    if realm == 'Neutral':
+                        found = [p for p in found if ' in a line for realm *: ' not in p]
+                    problems += found
                     count += 1
     return count
 

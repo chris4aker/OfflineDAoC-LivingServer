@@ -2,7 +2,8 @@
 """Writes source/server/GameServer/bots/autonomous/data/encounter_adds.json from the epic encounter catalog.
 
 The lore engine (LoreBossWatch) counts a boss's adds for the "addSpawn", "orbDeath" and "addsDead" lore triggers; the
-server has no catalog at run time, so this small map (boss script class -> add script classes, lower case) is built into
+server has no catalog at run time, so this small map (boss script class -> the script classes of its adds and of the
+encounters it spawns, lower case) is built into
 GameServer.dll. UT_LoreBible fails when it is out of date with docs/encounters/epic-encounters.json.
 
   python3 tools/lore/build_encounter_adds.py          write it
@@ -21,7 +22,9 @@ def build():
     catalog = json.loads(CATALOG.read_text(encoding='utf-8'))
     adds = {}
     for e in catalog['encounters']:
-        names = sorted({a['class'].lower() for a in (e.get('adds') or []) if a.get('class')})
+        # Its adds, and the encounters it spawns (Xaga spawns Beatha and Tine): "addsDead" is when they are all dead.
+        names = sorted({a['class'].lower() for a in (e.get('adds') or []) if a.get('class')} |
+                       {c.lower() for c in (e.get('spawnsEncounters') or [])})
         if names:
             adds.setdefault(e['class'].lower(), set()).update(names)
     data = {'about': 'Boss script class -> add script classes (lower case), from docs/encounters/epic-encounters.json. '
