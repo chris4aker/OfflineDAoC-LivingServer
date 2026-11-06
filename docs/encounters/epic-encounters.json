@@ -63,14 +63,14 @@
   "source/server/GameServer/scripts/namedmobs/Dodens/MistressOfRunes.cs": "1be2111905ff677a08f5dbae65440e5d324ab6e8398fb165741f131da1d06a66",
   "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "00b3b24581786e8c591d0228899d57370b8e247cf21d1426344653eadcbea487",
   "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs": "517f5c24ba6f17771c2a4b88fc4901ad0ebf1c39d4f8ec23d65e1d4e8560d4d7",
-  "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "fb898e2c12cb105fd7017e45c5b6e884e7dddf45a4456176c6eeb39e39c9f23f",
+  "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "f3a81bdb0648cd9d5c26a880f6b4746ba103067eccd63917099caaad0ecb9a0c",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonCombatGeometry.cs": "3908bdb98f00d2bf319c7e650eac46fed1472b7533a3ab977f31c527f7a59271",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonDiagnostics.cs": "b1a90e5c650db04f8973ce5015ff5a9175fdd6266a862c965fa39a1fabcb85b9",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterAdds.cs": "c1494caffb7ba37b042544eb45e3703bb35429fd543599ad05528ecb75f2f6cd",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonFlightLanding.cs": "c6dbfb4c0f5ec02c29d9e5a144d7e86d5a945dfbac7f78d8e297f03a3f6ebb8e",
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonLairPlacement.cs": "574af55d780a64ce63e2f2de89b20044ce1c67cfeaa150e5125d230efcc23391",
-  "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "4c9df8312f40c9db8d908ce57c6f96a47d88a294a2867e713e11531f5020f678",
-  "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "b3b4affcb6076765c54bcb3b4446b1c3144baf461e8f494564f9cf363c7cfb31",
+  "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "6be979ddf9f0aaa57db6d73d7c07ebb7447018e10d78975683a3101f36e3d6bc",
+  "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "4fbf80163b3090cc6ca6e86b56b6c4d6df9adecb3334513a2f655b1c2ea19249",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "9084052aa6ba81476d14fabd8501cec65039beafd222e21df07b4356aa28a83f",
@@ -6869,8 +6869,8 @@
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 740,
-     "lineEnd": 802,
+     "line": 741,
+     "lineEnd": 803,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
@@ -6891,14 +6891,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@740"
+     "key": "phase@741"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 691,
-     "lineEnd": 691,
+     "line": 692,
+     "lineEnd": 692,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "HibCuuldurachBrain",
@@ -6907,7 +6907,7 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@691"
+     "key": "aggro_wipe@692"
     }
    ],
    "spells": [
@@ -6922,7 +6922,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 827,
+     "line": 828,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -6936,7 +6936,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 855,
+     "line": 856,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -6950,7 +6950,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 883,
+     "line": 884,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -6964,7 +6964,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 911,
+     "line": 912,
      "sourceClass": "HibCuuldurachBrain"
     },
     {
@@ -6978,7 +6978,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
-     "line": 939,
+     "line": 940,
      "sourceClass": "HibCuuldurachBrain"
     }
    ],
@@ -7011,8 +7011,8 @@
    "brain": "CuuldurachMessengerBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
    "lines": [
-    968,
-    1023
+    969,
+    1024
    ],
    "dungeon": "Cuuldurach's lair (Sheeroe Hills)",
    "region": 200,
@@ -7047,8 +7047,8 @@
    "brain": "CuuldurachSpawnedAdBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs",
    "lines": [
-    1274,
-    1338
+    1275,
+    1339
    ],
    "dungeon": "Cuuldurach's lair (Sheeroe Hills)",
    "region": 200,
@@ -13777,7 +13777,7 @@
    "verified": true
   },
   {
-   "id": "gjalpinulva-s-lair-myrkwood/midgjalpinulva",
+   "id": "gjalpinulva-s-lair-malmohus/midgjalpinulva",
    "boss": "Gjalpinulva",
    "class": "MidGjalpinulva",
    "base": "GameEpicBoss",
@@ -13787,7 +13787,7 @@
     13,
     266
    ],
-   "dungeon": "Gjalpinulva's lair (Myrkwood)",
+   "dungeon": "Gjalpinulva's lair (Malmohus)",
    "region": 100,
    "regionConfidence": "read",
    "level": 80,
@@ -13819,8 +13819,8 @@
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 739,
-     "lineEnd": 801,
+     "line": 740,
+     "lineEnd": 802,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
@@ -13841,14 +13841,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@739"
+     "key": "phase@740"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 690,
-     "lineEnd": 690,
+     "line": 691,
+     "lineEnd": 691,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "MidGjalpinulvaBrain",
@@ -13857,7 +13857,7 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@690"
+     "key": "aggro_wipe@691"
     }
    ],
    "spells": [
@@ -13872,7 +13872,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 826,
+     "line": 827,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -13886,7 +13886,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 854,
+     "line": 855,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -13900,7 +13900,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 882,
+     "line": 883,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -13914,7 +13914,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 910,
+     "line": 911,
      "sourceClass": "MidGjalpinulvaBrain"
     },
     {
@@ -13928,7 +13928,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
-     "line": 938,
+     "line": 939,
      "sourceClass": "MidGjalpinulvaBrain"
     }
    ],
@@ -13954,17 +13954,17 @@
    "verified": true
   },
   {
-   "id": "gjalpinulva-s-lair-myrkwood/gjalpinulvamessenger",
+   "id": "gjalpinulva-s-lair-malmohus/gjalpinulvamessenger",
    "boss": "Gjalpinulva's messenger",
    "class": "GjalpinulvaMessenger",
    "base": "GameNPC",
    "brain": "GjalpinulvaMessengerBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
    "lines": [
-    970,
-    1025
+    971,
+    1026
    ],
-   "dungeon": "Gjalpinulva's lair (Myrkwood)",
+   "dungeon": "Gjalpinulva's lair (Malmohus)",
    "region": 100,
    "regionConfidence": "read",
    "level": null,
@@ -13990,17 +13990,17 @@
    "verified": false
   },
   {
-   "id": "gjalpinulva-s-lair-myrkwood/gjalpinulvaspawnedadd",
+   "id": "gjalpinulva-s-lair-malmohus/gjalpinulvaspawnedadd",
    "boss": "Gjalpinulva Spawned Add",
    "class": "GjalpinulvaSpawnedAdd",
    "base": "GameNPC",
    "brain": "GjalpinulvaSpawnedAdBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs",
    "lines": [
-    1265,
-    1329
+    1266,
+    1330
    ],
-   "dungeon": "Gjalpinulva's lair (Myrkwood)",
+   "dungeon": "Gjalpinulva's lair (Malmohus)",
    "region": 100,
    "regionConfidence": "read",
    "level": null,
@@ -14068,8 +14068,8 @@
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 736,
-     "lineEnd": 798,
+     "line": 737,
+     "lineEnd": 799,
      "anchor": "if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)",
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
@@ -14090,14 +14090,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@736"
+     "key": "phase@737"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in ResetGlareRoam when if (IsRestless)",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 687,
-     "lineEnd": 687,
+     "line": 688,
+     "lineEnd": 688,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "AlbGolestandtBrain",
@@ -14106,7 +14106,7 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@687"
+     "key": "aggro_wipe@688"
     }
    ],
    "spells": [
@@ -14121,7 +14121,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 823,
+     "line": 824,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14135,7 +14135,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 851,
+     "line": 852,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14149,7 +14149,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 879,
+     "line": 880,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14163,7 +14163,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 907,
+     "line": 908,
      "sourceClass": "AlbGolestandtBrain"
     },
     {
@@ -14177,7 +14177,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
-     "line": 935,
+     "line": 936,
      "sourceClass": "AlbGolestandtBrain"
     }
    ],
@@ -14210,8 +14210,8 @@
    "brain": "GolestandtMessengerBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
    "lines": [
-    964,
-    1019
+    965,
+    1020
    ],
    "dungeon": "Golestandt's lair (Dartmoor)",
    "region": 1,
@@ -14246,8 +14246,8 @@
    "brain": "GolestandtSpawnedAdBrain",
    "file": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs",
    "lines": [
-    1270,
-    1334
+    1271,
+    1335
    ],
    "dungeon": "Golestandt's lair (Dartmoor)",
    "region": 1,

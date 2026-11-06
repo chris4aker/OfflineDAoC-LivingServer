@@ -531,6 +531,45 @@ def norm(text):
     return re.sub(r'[^a-z0-9{}]+', ' ', text.lower()).strip()
 
 
+LORE = ROOT / 'source/server/GameServer/bots/autonomous/data/lore'
+LORE_REALMS = {'Albion': 'alb', 'Midgard': 'mid', 'Hibernia': 'hib', 'Neutral': '*'}
+
+
+def check_lore(problems):
+    """Living Server 1.2: the lore bible's bot lines (data/lore, docs/LORE.md) go through the same era, slot and place
+    checks as the corpus. The server adds them at run time (LoreChat.CorpusLines), as ambient lore about a place, so they
+    are checked with those tags and the location's realm. The schema itself is UT_LoreBible's."""
+    if not LORE.exists():
+        return 0
+    realms = {}
+    files = sorted(LORE.glob('locations/*.json')) + sorted(LORE.glob('bosses/*.json'))
+    loaded = []
+    for path in files:
+        try:
+            data = json.loads(path.read_text(encoding='utf-8'))
+        except ValueError as error:
+            problems.append(f'{path.relative_to(ROOT)}: not valid JSON ({error})')
+            continue
+        loaded.append((path, data))
+        if path.parent.name == 'locations':
+            realms[data.get('id')] = data.get('realm')
+    count = 0
+    for path, data in loaded:
+        realm = realms.get(data.get('locationId'), data.get('realm')) if path.parent.name == 'bosses' else data.get('realm')
+        tags = fresh_tags()
+        tags.update(kind='ambient', topic='lore', realm=LORE_REALMS.get(realm, '*'), about=True)
+        for field, lines in (data.get('botLines') or {}).items():
+            for i, template in enumerate(lines or []):
+                where = f'{path.relative_to(ROOT)} botLines.{field}[{i}]'
+                if not CHOICE_RE.search(template) and ('[' in template or ']' in template):
+                    problems.append(f'{where}: "[" without a "|" choice: {template}')
+                    continue
+                for said in expand(template):
+                    check_text(said, tags, where, problems)
+                    count += 1
+    return count
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--check', action='store_true')
@@ -599,6 +638,8 @@ def main():
                 if have < need:
                     problems.append(f'coverage: {kind} for {realm} {lo}-{hi} has {have}, needs {need}')
 
+    lore_lines = check_lore(problems)
+
     if problems:
         print(f'{len(problems)} problem(s):')
         for p in problems:
@@ -617,6 +658,7 @@ def main():
     print('by kind: ' + ', '.join(f'{k} {n}' for k, n in sorted(by_kind.items())))
     print('openers invite: ' + ', '.join(f'{k} {n}' for k, n in sorted(collections.Counter(
         x['invites'] for x in lines if 'invites' in x).items())))
+    print(f'lore bible bot lines checked: {lore_lines}')
     print('by realm: ' + ', '.join(f'{k} {n}' for k, n in sorted(collections.Counter(x["realm"] for x in lines).items())))
     print('by type (lines that name types): ' + ', '.join(
         f'{t} {sum(1 for x in lines if t in x["who"])}' for t in sorted(TYPES)))

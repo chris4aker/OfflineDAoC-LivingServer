@@ -123,6 +123,8 @@ namespace DOL.GS.ServerRules
 				{ 
 					BroadcastMessage(messageDFLostControl, eRealm.None);
 					BroadcastMessage(messageDFGetControl, eRealm.None);
+					// Living Server 1.2: Darkness Falls changing hands is a screen-centre line too (at most every 15 minutes).
+					LoreAtmosphere.DarknessFallsChanged(messageDFGetControl);
 				}
 			}
 		}

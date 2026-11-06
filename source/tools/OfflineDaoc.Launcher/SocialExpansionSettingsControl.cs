@@ -49,6 +49,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _rumours = Switch("True rumours");
     private readonly CheckBox _holidays = Switch("Holiday chatter");
     private readonly CheckBox _leeroy = Switch("Leeroy in raids");
+    private readonly CheckBox _atmosphere = Switch("Atmosphere lines");
     private readonly NumericUpDown _manaRate = Rate("Power regeneration rate");
     private readonly CheckBox _manaHalved = Switch("Half below 50% power");
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
@@ -110,7 +111,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Dependent(Caption("HOW MUCH THEY TALK"), Add(voices, null, WithUnit(_chatRate, "×"),
             "2 (the default) sounds like a busy server; 1 is calmer, 3 very busy; 0 only answers. Chat still follows the hour and the bots online. Needs bot voices."), v => v.Voices);
 
-        var living = Card("SERVER LIFE", DaocTheme.Gold, 16);
+        var living = Card("SERVER LIFE", DaocTheme.Gold, 17);
         Add(living, _memory, null, "Bots of your realm remember grouping with you, your rezzes and rude words: they greet and thank you by name.");
         Add(living, _grats, null, "Dings get grats from the group and bots nearby; a new level 50 gets cheers in /faction.");
         Add(living, _firsts, null, "The first to level 50, to 50 in each class and to each realm rank is announced and goes in the Herald.");
@@ -128,6 +129,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(living, _rumours, null, "Bots pass on true rumours: a rare named that just spawned, an enemy keep with its guards down.");
         Add(living, _holidays, null, "Around Halloween, Christmas, New Year and other holidays on your PC's calendar, bots talk about them and wish you well.");
         Add(living, _leeroy, null, "One end-game raid in twenty has a bot who charges the final boss early, yelling his name. The raid follows him in.");
+        Add(living, _atmosphere, null, "Short lines in the middle of the screen: entering a dungeon, a boss's lair, a boss's phase, a dragon waking, a realm's first kill. One every 30 s at most; realm news first.");
 
         var power = Card("POWER REGENERATION", DaocTheme.Gold, 3);
         Captioned(Caption("REGENERATION RATE", part: false), Add(power, null, WithUnit(_manaRate, "×"),
@@ -195,7 +197,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
 
         foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved,
                      _personalities, _voices, _debates,
-                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy })
+                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere })
             box.CheckedChanged += (_, _) => Edited();
         _schedule.SelectedIndexChanged += (_, _) => Edited();
         _share.ValueChanged += (_, _) => Edited();
@@ -268,6 +270,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         LivingRumours = _rumours.Checked,
         LivingHolidays = _holidays.Checked,
         LivingLeeroy = _leeroy.Checked,
+        LivingAtmosphere = _atmosphere.Checked,
         PlayerXpByLevel = _playerXp.Value,
         BotXpByLevel = _botXp.Value,
         ManaRegenModifier = (double)_manaRate.Value,
@@ -309,6 +312,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _rumours.Checked = settings.LivingRumours;
         _holidays.Checked = settings.LivingHolidays;
         _leeroy.Checked = settings.LivingLeeroy;
+        _atmosphere.Checked = settings.LivingAtmosphere;
         _playerXp.Value = settings.PlayerXpByLevel;
         _botXp.Value = settings.BotXpByLevel;
         _loading = false;
@@ -424,8 +428,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         if (s.Voices) on.Add(s.Debates ? "voices and debates" : "voices");
         int living = new[] { s.LivingMemory, s.LivingGrats, s.LivingFirsts, s.LivingDeath, s.LivingAlarms, s.LivingNemesis,
             s.ScheduleMode != "off", s.LivingBreaks, s.LivingBodyLanguage, s.LivingBeggars,
-            s.LivingDeeds, s.LivingStorylines, s.LivingCharacters, s.LivingRumours, s.LivingHolidays, s.LivingLeeroy }.Count(x => x);
-        if (living > 0) on.Add($"Server life ({living} of 16 parts)");
+            s.LivingDeeds, s.LivingStorylines, s.LivingCharacters, s.LivingRumours, s.LivingHolidays, s.LivingLeeroy, s.LivingAtmosphere }.Count(x => x);
+        if (living > 0) on.Add($"Server life ({living} of 17 parts)");
         if (s.PlayerXpByLevel != "" || s.BotXpByLevel != "") on.Add("XP by level");
         return on.Count == 0
             ? "Settings are loaded from the saved server settings. Everything is off: the game plays like the normal release."

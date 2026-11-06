@@ -1,0 +1,305 @@
+{
+ "about": "Boss script class -> add script classes (lower case), from docs/encounters/epic-encounters.json. Written by tools/lore/build_encounter_adds.py; do not edit.",
+ "adds": {
+  "abomossoultrapper": [
+   "abomosadd"
+  ],
+  "aidonthearchwizard": [
+   "aidoncopyair",
+   "aidoncopyearth",
+   "aidoncopyfire",
+   "aidoncopyice"
+  ],
+  "amphiptere": [
+   "amphiptereadds"
+  ],
+  "anurigunda": [
+   "anurigundaadds"
+  ],
+  "apocalypse": [
+   "harbringeroffate",
+   "rainoffire"
+  ],
+  "aroon": [
+   "bruscaith",
+   "corpscaith",
+   "damhnascaith",
+   "fuarscaith",
+   "fuinneamgscaith",
+   "ropadhscaith",
+   "scorscaith",
+   "spioradscaith",
+   "taesscaith"
+  ],
+  "badb": [
+   "badbwraith"
+  ],
+  "balere": [
+   "balereadd"
+  ],
+  "balor": [
+   "baloreye"
+  ],
+  "beliathan": [
+   "beliathanminion"
+  ],
+  "bellum": [
+   "warincarnatecrush",
+   "warincarnateslash",
+   "warincarnatethrust"
+  ],
+  "beransupplymaster": [
+   "barrelexplosive"
+  ],
+  "blacklady": [
+   "ogress"
+  ],
+  "blight": [
+   "fireblight",
+   "fleshblight",
+   "lateblight"
+  ],
+  "bluelady": [
+   "blueladyaxeadd",
+   "blueladyswordadd"
+  ],
+  "cailean": [
+   "walkingtree",
+   "walkingtree2"
+  ],
+  "cailleachuragaig": [
+   "torchoflight"
+  ],
+  "colialt": [
+   "colialtadds"
+  ],
+  "cronwort": [
+   "breanwort"
+  ],
+  "curengkur": [
+   "curengkurnest"
+  ],
+  "debensegecynde": [
+   "debenfighter",
+   "debenmage"
+  ],
+  "draargusmighty": [
+   "draugynsphere"
+  ],
+  "dremcisfuiloltair": [
+   "fuilslathach"
+  ],
+  "earthprimal": [
+   "guardianearthmender",
+   "magicalearthmender",
+   "naturalearthmender",
+   "shadowyearthmender"
+  ],
+  "evern": [
+   "evernfairy"
+  ],
+  "fireprimal": [
+   "trailoffire"
+  ],
+  "fornfrusenen": [
+   "fornfrusenenshard"
+  ],
+  "fuladl": [
+   "fuladladd"
+  ],
+  "fulafeallan": [
+   "fulafeallanadd"
+  ],
+  "ghostofcaithor": [
+   "caithor"
+  ],
+  "giantsporitecluster": [
+   "gscadds"
+  ],
+  "gnat": [
+   "gnatants"
+  ],
+  "gneiss": [
+   "gneissadd"
+  ],
+  "grandsummonergovannon": [
+   "shadeofaelfgar",
+   "summoneddemon",
+   "summonedsacrifice"
+  ],
+  "greenmaw": [
+   "greenmawadd",
+   "greenmawadd2",
+   "greenmawadd3"
+  ],
+  "guthlac": [
+   "frozenbomb"
+  ],
+  "hakr": [
+   "hakradd"
+  ],
+  "highlordbaln": [
+   "balnminion"
+  ],
+  "hjalmar": [
+   "morkimma"
+  ],
+  "jailer": [
+   "jaileradd"
+  ],
+  "kontarcorrupt": [
+   "corruptorbodyguard"
+  ],
+  "krevoricik": [
+   "krevoladd"
+  ],
+  "kvasir": [
+   "tunnels"
+  ],
+  "ladydarra": [
+   "spectralpaladin"
+  ],
+  "legion": [
+   "legionadd"
+  ],
+  "lichlordilron": [
+   "ilronimages"
+  ],
+  "loken": [
+   "lokenwolf"
+  ],
+  "lordsanguis": [
+   "bloodmage"
+  ],
+  "luriquay": [
+   "flamenormal"
+  ],
+  "melancholicfairyqueen": [
+   "mfqguards"
+  ],
+  "mokkurvalve": [
+   "mokkurvalveadds"
+  ],
+  "mollunero": [
+   "molluneroadd"
+  ],
+  "morbus": [
+   "morbusswarm"
+  ],
+  "morgana": [
+   "bechard",
+   "demonicminion",
+   "silcharde"
+  ],
+  "myrddraxis": [
+   "myrddraxisfifthhead",
+   "myrddraxisfourthhead",
+   "myrddraxissecondhead",
+   "myrddraxisthirdhead"
+  ],
+  "nosdoden": [
+   "ghostskeletalcommander",
+   "ghostspiritchampion",
+   "nosdodenghostadd",
+   "nosdodensummonedadds",
+   "skeletalcommanderhealer"
+  ],
+  "ofgreenknight": [
+   "gktrees"
+  ],
+  "olcasargeomancer": [
+   "ogadds"
+  ],
+  "olcasgean": [
+   "olcasgeaneffect",
+   "waterfallantipass"
+  ],
+  "olcasgeaninitializator": [
+   "vortex"
+  ],
+  "oona": [
+   "oonaundeadadd"
+  ],
+  "organicenergymechanism": [
+   "oemadd"
+  ],
+  "orshom": [
+   "orshomfire"
+  ],
+  "otrygg": [
+   "otryggadd"
+  ],
+  "princessnahemah": [
+   "nahemahminion"
+  ],
+  "queenqunilaria": [
+   "qunilariaadd",
+   "qunilariaadd2"
+  ],
+  "redlady": [
+   "specialinnocent"
+  ],
+  "rift": [
+   "morkenhet"
+  ],
+  "rotoddjur": [
+   "rotoddjuradd"
+  ],
+  "scurceolhyrde": [
+   "lyftmihtfour",
+   "lyftmihtone",
+   "lyftmihtthree",
+   "lyftmihttwo"
+  ],
+  "sisterblythe": [
+   "fallenexecutioner"
+  ],
+  "soulreckoner": [
+   "reckonedsoul"
+  ],
+  "spindlerbroodmother": [
+   "sbadds",
+   "sbdeadadds"
+  ],
+  "spiritmasteraros": [
+   "spiritmasterarospet"
+  ],
+  "steinvor": [
+   "effectmob",
+   "hrimthursaseer"
+  ],
+  "summonerlossren": [
+   "explodeundead",
+   "torturedsouls"
+  ],
+  "syssroruthless": [
+   "pitmonster"
+  ],
+  "teazanodwc": [
+   "teazanodwcadd"
+  ],
+  "torst": [
+   "torsteddies"
+  ],
+  "ulfketill": [
+   "ulfketilladds"
+  ],
+  "valnirmordeth": [
+   "valnirmordethadd"
+  ],
+  "vortanos": [
+   "vortanosadd"
+  ],
+  "xanxicar": [
+   "xanxicarianchampion"
+  ],
+  "yar": [
+   "yaradd",
+   "yaradd2",
+   "yaradd3"
+  ],
+  "zytka": [
+   "zytkaadd"
+  ]
+ }
+}

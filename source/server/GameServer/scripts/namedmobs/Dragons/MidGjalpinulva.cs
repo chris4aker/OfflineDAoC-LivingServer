@@ -430,6 +430,7 @@ namespace DOL.AI.Brain
 					player.Out.SendSoundEffect(2467, 0, 0, 0, 0, 0);//play sound effect for every player in boss currentregion
 					player.Out.SendMessage("A booming voice echoes through the canyons, 'I grow restless. Who has dared to enter my domain? I shall freeze their flesh and grind their bones to dust!'", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
 				}
+				LoreAtmosphere.DragonWakes(Body);//Living Server 1.2: the waking as a screen-centre line (docs/LORE.md)
 
 				Body.Flags = GameNPC.eFlags.FLYING;//make dragon fly mode
 				ResetChecks = false;//reset it so can reset bools at end of path

@@ -8,6 +8,39 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+**The lore engine: dungeons and bosses with a story.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
+boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
+the part that shows it to you. The stories themselves arrive with the lore writers' files; until then only Krondon and its
+storm-keeper, Scurceol Hyrde, are filled in, as the first example.
+
+- **Atmosphere lines.** Short lines in the middle of the screen, like the ones for a keep taken or a relic:
+  - the first time each day you walk into a dungeon or epic zone ("Old words are carved here. The ogres cannot read them.");
+  - stepping into a boss's room or lair (once a session);
+  - a boss changing phase (at most two a fight: Scurceol Hyrde's last light going out);
+  - a dragon taking to the sky, in gold for everyone in its zone and smaller for its realm elsewhere (at most once an hour,
+    beside the dragon's own bellow in chat);
+  - a realm's first-ever kill of a boss, to the whole world, with a line in your chat naming the realm. It is remembered
+    across restarts, once per realm per boss;
+  - a raid forming, a line about the place for that realm only;
+  - Darkness Falls changing hands is now a gold line in the middle of the screen as well (at most once every 15 minutes;
+    it follows the RvR announcements switch).
+
+  At most one atmosphere line every 30 seconds, never more than four lines on screen at once, and realm news (keeps, relics,
+  raid results, sieges) always comes first: an atmosphere line waits 10 seconds after it. Only you see them; bots never get
+  them. A new switch in the launcher's Living Server tab, **Atmosphere lines** (on by default), turns them off.
+- **Bosses speak their lore.** A boss with a lore file yells its own lines when the fight starts, at its phases, when it
+  kills someone and when it dies. A boss whose script already speaks at that moment keeps its own words, and nothing is said
+  twice.
+- **Bots know the stories.** As a raid leaves its muster, its leader tells the realm in /faction what the boss does
+  ("storm keeper next. four lights in the corners, kill the lights first"). A minute or two after a raid, a veteran tells
+  how it went and then something about the place. Ask a bot "whats in krondon?" or "who is the storm keeper?" and it answers
+  from the lore. The lore and rumour lines join the bots' lore talk, checked like every other bot line.
+- **Fixes.** Gjalpinulva's lair is in Malmohus, not Myrkwood (the encounter catalog said Myrkwood). Bots no longer say Aidon
+  the Archwizard waits in Summoner's Hall: he is in the Hall of the Corrupt.
+- GMs: `/lstest lore` says which lore place you are in and lets its lines show again.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

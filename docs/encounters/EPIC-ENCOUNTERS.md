@@ -937,20 +937,20 @@ Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn). | `HibCuuldurach.cs:54` | inferred, verified |  | easy for the current raid AI | Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do). |
-| phase | At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE | `HibCuuldurach.cs:740` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| aggro_wipe | Clears its aggro list in ResetGlareRoam when if (IsRestless) | `HibCuuldurach.cs:691` | inferred, verified |  | easy for the current raid AI | Off-tanks pick it up after the wipe; healers keep the casters alive. |
+| phase | At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE | `HibCuuldurach.cs:741` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| aggro_wipe | Clears its aggro list in ResetGlareRoam when if (IsRestless) | `HibCuuldurach.cs:692` | inferred, verified |  | easy for the current raid AI | Off-tanks pick it up after the wipe; healers keep the casters alive. |
 
 Area spells: Cuuldurach's Glare (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 1000); Cuuldurach's Glare (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 1000); Cuuldurach's Breath (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 2000); Dragon's Stun (Stun, damage None, radius 2000); Dragon's Breath (SpiritResistDebuff, damage None, radius 2000).
 
 #### Cuuldurach's messenger (`CuuldurachMessenger`)
 
-`source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs` lines 968-1023. level (byte)Util.Random(50, 55); 1,500 health; raids: dragon-hibernia (monster on the way (not an epic NPC)); raid AI: dragon fight.
+`source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs` lines 969-1024. level (byte)Util.Random(50, 55); 1,500 health; raids: dragon-hibernia (monster on the way (not an epic NPC)); raid AI: dragon fight.
 
 No scripted rule found (normal fight: stats, resists, spells).
 
 #### Cuuldurach Spawned Add (`CuuldurachSpawnedAdd`)
 
-`source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs` lines 1274-1338. level (byte)Util.Random(60, 64); 5,000 health; raids: dragon-hibernia (monster on the way (not an epic NPC)); raid AI: dragon fight.
+`source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs` lines 1275-1339. level (byte)Util.Random(60, 64); 5,000 health; raids: dragon-hibernia (monster on the way (not an epic NPC)); raid AI: dragon fight.
 
 No scripted rule found (normal fight: stats, resists, spells).
 
@@ -1516,7 +1516,7 @@ See Xaga. Holds low over the floor while engaged so melee can reach her (offline
 Area spells: Tine's Fire (DirectDamageNoVariance, damage 450, radius 450).
 
 
-### Gjalpinulva's lair (Myrkwood) (region 100)
+### Gjalpinulva's lair (Malmohus) (region 100)
 
 #### Gjalpinulva (`MidGjalpinulva`)
 
@@ -1527,20 +1527,20 @@ Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn). | `MidGjalpinulva.cs:54` | inferred, verified |  | easy for the current raid AI | Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do). |
-| phase | At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE | `MidGjalpinulva.cs:739` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| aggro_wipe | Clears its aggro list in ResetGlareRoam when if (IsRestless) | `MidGjalpinulva.cs:690` | inferred, verified |  | easy for the current raid AI | Off-tanks pick it up after the wipe; healers keep the casters alive. |
+| phase | At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE | `MidGjalpinulva.cs:740` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| aggro_wipe | Clears its aggro list in ResetGlareRoam when if (IsRestless) | `MidGjalpinulva.cs:691` | inferred, verified |  | easy for the current raid AI | Off-tanks pick it up after the wipe; healers keep the casters alive. |
 
 Area spells: Gjalpinulva's Glare (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 1000); Gjalpinulva's Glare (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 1000); Gjalpinulva's Breath (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 2000); Dragon's Stun (Stun, damage None, radius 2000); Dragon's Breath (ColdResistDebuff, damage None, radius 2000).
 
 #### Gjalpinulva's messenger (`GjalpinulvaMessenger`)
 
-`source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs` lines 970-1025. level (byte)Util.Random(50, 55); 1,500 health; raids: dragon-midgard (monster on the way (not an epic NPC)); raid AI: dragon fight.
+`source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs` lines 971-1026. level (byte)Util.Random(50, 55); 1,500 health; raids: dragon-midgard (monster on the way (not an epic NPC)); raid AI: dragon fight.
 
 No scripted rule found (normal fight: stats, resists, spells).
 
 #### Gjalpinulva Spawned Add (`GjalpinulvaSpawnedAdd`)
 
-`source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs` lines 1265-1329. level (byte)Util.Random(60, 64); 5,000 health; raids: dragon-midgard (monster on the way (not an epic NPC)); raid AI: dragon fight.
+`source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs` lines 1266-1330. level (byte)Util.Random(60, 64); 5,000 health; raids: dragon-midgard (monster on the way (not an epic NPC)); raid AI: dragon fight.
 
 No scripted rule found (normal fight: stats, resists, spells).
 
@@ -1556,20 +1556,20 @@ Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn). | `AlbGolestandt.cs:55` | inferred, verified |  | easy for the current raid AI | Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do). |
-| phase | At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE | `AlbGolestandt.cs:736` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| aggro_wipe | Clears its aggro list in ResetGlareRoam when if (IsRestless) | `AlbGolestandt.cs:687` | inferred, verified |  | easy for the current raid AI | Off-tanks pick it up after the wipe; healers keep the casters alive. |
+| phase | At 90/80/70/60/50/40/30/20/10% health (DragonBreath): starts timer DragonCastDebuff; casts Dragon_PBAOE | `AlbGolestandt.cs:737` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| aggro_wipe | Clears its aggro list in ResetGlareRoam when if (IsRestless) | `AlbGolestandt.cs:688` | inferred, verified |  | easy for the current raid AI | Off-tanks pick it up after the wipe; healers keep the casters alive. |
 
 Area spells: Golestandt's Glare (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 1000); Golestandt's Glare (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 1000); Golestandt's Breath (DirectDamageNoVariance, damage RealmEventPolicy.DragonAttackDamageLimit, radius 2000); Dragon's Stun (Stun, damage None, radius 2000); Dragon's Breath (HeatResistDebuff, damage None, radius 2000).
 
 #### Golestandt's messenger (`GolestandtMessenger`)
 
-`source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs` lines 964-1019. level (byte)Util.Random(50, 55); 1,500 health; raids: dragon-albion (monster on the way (not an epic NPC)); raid AI: dragon fight.
+`source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs` lines 965-1020. level (byte)Util.Random(50, 55); 1,500 health; raids: dragon-albion (monster on the way (not an epic NPC)); raid AI: dragon fight.
 
 No scripted rule found (normal fight: stats, resists, spells).
 
 #### Golestandt Spawned Add (`GolestandtSpawnedAdd`)
 
-`source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs` lines 1270-1334. level (byte)Util.Random(60, 64); 5,000 health; raids: dragon-albion (monster on the way (not an epic NPC)); raid AI: dragon fight.
+`source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs` lines 1271-1335. level (byte)Util.Random(60, 64); 5,000 health; raids: dragon-albion (monster on the way (not an epic NPC)); raid AI: dragon fight.
 
 No scripted rule found (normal fight: stats, resists, spells).
 

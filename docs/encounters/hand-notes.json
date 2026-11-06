@@ -605,7 +605,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "4c9df8312f40c9db8d908ce57c6f96a47d88a294a2867e713e11531f5020f678"
+    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "6be979ddf9f0aaa57db6d73d7c07ebb7447018e10d78975683a3101f36e3d6bc"
    }
   },
   "darkness-falls/behemoth": {
@@ -993,7 +993,7 @@
     "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
    }
   },
-  "gjalpinulva-s-lair-myrkwood/midgjalpinulva": {
+  "gjalpinulva-s-lair-malmohus/midgjalpinulva": {
    "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@338": {
@@ -1008,7 +1008,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "b3b4affcb6076765c54bcb3b4446b1c3144baf461e8f494564f9cf363c7cfb31"
+    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "4fbf80163b3090cc6ca6e86b56b6c4d6df9adecb3334513a2f655b1c2ea19249"
    }
   },
   "golestandt-s-lair-dartmoor/albgolestandt": {
@@ -1026,7 +1026,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "fb898e2c12cb105fd7017e45c5b6e884e7dddf45a4456176c6eeb39e39c9f23f"
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "f3a81bdb0648cd9d5c26a880f6b4746ba103067eccd63917099caaad0ecb9a0c"
    }
   },
   "hall-of-the-corrupt/aidonthearchwizard": {
