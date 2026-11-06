@@ -127,7 +127,10 @@ function Get-BackupName([string]$Folder) { return ($Folder -replace '[\\/]', '_'
 # released file, so no game file ships whole. A file is changed only when it has the released fingerprint, and the
 # result must have the fixed one. Beta 1.0: Hall of the Corrupt's navmesh and eight new-client gate models; Beta 1.1:
 # the game's loading screen (pregame/splash.mpk, shipped whole under content/); Beta 1.1.1: the new client's quest
-# marker script (godot/game/quests/quest_markers.gd), a text file patched the same way.
+# marker script (godot/game/quests/quest_markers.gd), a text file patched the same way; 1.2: 14 more new-client scripts
+# from shadowofze's final code (game/net/server.gd, character_state, nif_particles, pregame, sky_system, npcs/name_plates,
+# npcs/npc_state, ui/chat_window, item_db, merchant_window, panel_sheets, player_data, quickbar, trainer_window; the ones
+# held back and why: docs/CLIENT-SCRIPTS-1.2.md).
 function Read-ContentPatches([string]$BuildDir) {
     $path = Join-Path $BuildDir 'content-patches.json'
     if (!(Test-Path -LiteralPath $path)) { return @() }

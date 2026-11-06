@@ -18,6 +18,12 @@ ALWAYS ON (the bots' own game, nothing to switch):
     keep and hall gates whose portcullis never rose in the new client and the new client's quest
     marker script (the NPC of your current quest step was coloured as if the quest were in
     progress elsewhere) (see INSTALL)
+  - on 0.37c, 14 more new-client scripts from shadowofze's final code: abilities (Sprint,
+    Stealth ...) drag onto the quickbar; a Stealth row in the Abilities window, /stealth and
+    /hide; SELL in the merchant window (APPRAISE shows but does nothing yet: it needs a newer
+    MMOEngine.dll); one PLAY click enters the world once; names hide behind walls; fog per
+    region; flickering casting hands; arrow / bolt / poison info. Untested in game so far.
+    What is held back and why: docs\CLIENT-SCRIPTS-1.2.md
 
 OFF UNTIL YOU SWITCH THEM ON (launcher -> Living Server tab):
   - Bot guilds .................... docs\BOT-GUILDS.md
