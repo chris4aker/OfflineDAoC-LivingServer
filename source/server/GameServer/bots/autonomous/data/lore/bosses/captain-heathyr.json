@@ -1,0 +1,65 @@
+{
+  "id": "captain-heathyr",
+  "name": "Captain Heathyr",
+  "catalogKey": "hall-of-the-corrupt/captainheathyr",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Heathyr's blows bleed for 65 every 3 seconds for 30 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Captain Heathyr kept the gate of the captains' hall and was the last of the three captains to fall, holding the door while the others sat down at the table and did not get up again. Her post is the doorway still. Her blows bleed like her brothers' blows, and she fights as if the door at her back still mattered, which, to the dead watch, it does. The Hall's dead do not know that the war they kept the door for ended long ago. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "Same as the other captains: her blows bleed for half a minute, so the tank needs steady heals. Fight her in the doorway where she stands. Kill the three captains one at a time, never all at once. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "Hold the door! Hold!"
+    ],
+    "phases": [],
+    "death": [
+      "The door... is open..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A captain in the doorway. She has not moved in years."
+    ],
+    "phases": [],
+    "realmFirstKill": "Captain Heathyr is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "heathyr bleeds like the other captains. healers stay on it",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "captain heathyr down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard captain heathyr held the door while the others died at the table",
+      "[someone said|heard] all three captains in the hall bleed you"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "heathyr",
+    "text": "Captain Heathyr kept the gate of the captains' hall and was the last of the three captains to fall, holding the door while the others sat down at the table and did not get up again."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Captain Heathyr from the Pennine watch in {minutes} minutes.",
+    "loss": "Captain Heathyr held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

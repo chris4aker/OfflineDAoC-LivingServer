@@ -1,0 +1,65 @@
+{
+  "id": "sergeant-eddison",
+  "name": "Sergeant Eddison",
+  "catalogKey": "hall-of-the-corrupt/sergeanteddison",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Sergeant Eddison, 5,000 health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantEddison.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Sergeant Eddison kept the duty roster of the watch and knew every man's post by heart, which is why the corruption kept him nearest the middle of the Hall: a dead watch still needs someone to know where everyone stands. He walks between the posts as he did in life, checking, and he raises the alarm when he finds a stranger where a watchman ought to be. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "Another 5,000-health sergeant. He sits in the middle of the Hall, so pull him carefully or you wake the posts around him. Kill him where he stands; dragged off his post he cannot be hurt. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "You are not on the roster."
+    ],
+    "phases": [],
+    "death": [
+      "Roster... incomplete..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Someone has been checking every post. Recently."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sergeant Eddison is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "eddison, sergeant. clear his watchmen, then him",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "sergeant eddison down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard eddison knows every post in the hall by heart",
+      "[someone said|heard] eddison is in the middle, pull careful"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "eddison",
+    "text": "Sergeant Eddison kept the duty roster of the watch and knew every man's post by heart, which is why the corruption kept him nearest the middle of the Hall: a dead watch still needs someone to know where everyone stands."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Sergeant Eddison from the Pennine watch in {minutes} minutes.",
+    "loss": "Sergeant Eddison held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

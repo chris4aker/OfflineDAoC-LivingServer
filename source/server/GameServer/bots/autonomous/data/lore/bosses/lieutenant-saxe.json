@@ -1,0 +1,65 @@
+{
+  "id": "lieutenant-saxe",
+  "name": "Lieutenant Saxe",
+  "catalogKey": "hall-of-the-corrupt/lieutenantsaxe",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Lieutenant Saxe, 5,000 health, tether 1,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantSaxe.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Lieutenant Saxe was a plain soldier of the watch, a Saxon-born sword raised to lieutenant because he never once left a post he was given. The corruption needed nothing clever to bind him. It only had to tell him to stay. He stands where Lord Gildas put him, with nothing to guard but a stretch of empty corridor, and he will guard it from you as fiercely as if the realm depended on it. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "A straight fight with no tricks to him: tank him, burn him, move on. The only rule is the Hall's rule. Do not drag him: past his short tether he is immune and walks back to his post at full health. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "Post held, my lord. Post held."
+    ],
+    "phases": [],
+    "death": [
+      "Post... abandoned..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An empty corridor, and one man guarding it."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lieutenant Saxe is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "saxe is a straight fight. keep him at his post",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "lieutenant saxe down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard saxe never left a post in his life. or after",
+      "[someone said|heard] the lieutenants in the hall are easy if you dont drag them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "saxe",
+    "text": "Lieutenant Saxe was a plain soldier of the watch, a Saxon-born sword raised to lieutenant because he never once left a post he was given."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Lieutenant Saxe from the Pennine watch in {minutes} minutes.",
+    "loss": "Lieutenant Saxe held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

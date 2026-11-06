@@ -1,0 +1,70 @@
+{
+  "id": "lady-darra",
+  "name": "Lady Darra",
+  "catalogKey": "hall-of-the-corrupt/ladydarra",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Four spectral paladins rise with her; she casts Spectral Heal (350) on her allies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The Lady Darra kept the sickroom of the Hall under the Pennines, and in the last bad winter she sat up every night with men whose wounds would not close. She is still sitting up with them. Death changed what she heals, not that she heals: her spells mend the dead of the watch now, and four spectral paladins, the knights of her household, stand at her door as they did in life. Of all the Hall's dead she is the one the Albion bards pity most, because she never did anything but try to save them.",
+  "legend": "Kill her paladins or hold them, and interrupt her heals: she mends her side for 350 a cast and will undo a careless raid's work on the captains. Fight her at her post; off it, nothing touches her. Kill her before the captains, not after.",
+  "yells": {
+    "aggro": [
+      "Not my sickroom. Not my men. Paladins!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Lie still, my lord's men. I will mend you."
+      }
+    ],
+    "death": [
+      "Who will... sit up with them now..."
+    ],
+    "slay": [
+      "Another for the sickroom."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lady's chamber. Her paladins still guard the door."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lady Darra rests. The sickroom of the Hall is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "darra heals her allies, interrupt her. 4 paladins with her, off tanks on them"
+    ],
+    "aftermathWin": [
+      "darra down. kind of sad honestly",
+      "paladins first then her, good"
+    ],
+    "aftermathLoss": [
+      "she healed everything we did. need interrupts"
+    ],
+    "rumour": [
+      "lady darra still heals lord gildas's men. [even dead|dead and all]",
+      "[heard|someone said] darra was the hall's healer and she still is"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "darra",
+    "text": "Lord Gildas' lady. She was the Hall's healer in life and she heals its dead now, and four spectral paladins keep her door. Silence her before you face her husband's men."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} silenced Lady Darra's healing in the Hall of the Corrupt in {minutes} minutes.",
+    "loss": "Lady Darra mended every wound {realm}'s raid gave; {raidLeader} could not stop her hands."
+  }
+}

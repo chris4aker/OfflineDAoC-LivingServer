@@ -1,0 +1,65 @@
+{
+  "id": "sergeant-darryn",
+  "name": "Sergeant Darryn",
+  "catalogKey": "hall-of-the-corrupt/sergeantdarryn",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Sergeant Darryn, 5,000 health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantDarryn.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Sergeant Darryn ran the watchmen of the Hall's west passage, and ran them hard, with a voice that the last reports say could be heard through two doors. The watchmen still answer it. He is not strong as the captains are strong, but where Darryn stands the restless watchmen stand thicker, and he holds his corner of the Hall as if Lord Gildas might come round on inspection at any moment. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "A sergeant with 5,000 health and a crowd of restless watchmen around him. Clear the watchmen first, then drop him fast at his post. Do not drag him into the corridor; he will not take a scratch there. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "On your feet, you dead dogs! Visitors!"
+    ],
+    "phases": [],
+    "death": [
+      "Dismissed..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A sergeant's voice echoes down the passage."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sergeant Darryn is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "darryn, sergeant, 5k hp. fast kill at his post",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "sergeant darryn down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard sergeant darryn's voice carries through two doors",
+      "[someone said|heard] the sergeants in the hall have watchmen all round them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "darryn",
+    "text": "Sergeant Darryn ran the watchmen of the Hall's west passage, and ran them hard, with a voice that the last reports say could be heard through two doors."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Sergeant Darryn from the Pennine watch in {minutes} minutes.",
+    "loss": "Sergeant Darryn held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

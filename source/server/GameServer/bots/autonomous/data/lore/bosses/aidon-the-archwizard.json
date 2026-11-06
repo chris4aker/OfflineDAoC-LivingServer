@@ -1,0 +1,92 @@
+{
+  "id": "aidon-the-archwizard",
+  "name": "Aidon the Archwizard",
+  "catalogKey": "hall-of-the-corrupt/aidonthearchwizard",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 75, 40,000 health, 30-40% resists, tether 1,500 (immune past it). A permanent Heat damage shield returns 100 per hit to melee attackers.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs"
+    },
+    {
+      "text": "When first attacked he raises four Illusions of Aidon, fire, ice, air and earth (5,000 health each), whose area spells hit 300 in 350 around their target; he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set comes 30-45 s after all four die, never while one lives.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Spawns of him exist in region 277 (Hall of the Corrupt) and region 233 (a later Summoner's Hall). Three bot lines put him in the Summoner's Hall.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "'Archwizard: good for about two groups' (Feb 2003 Albion raid guide, likely him).",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    }
+  ],
+  "story": "Aidon was the best of Camelot's wizards in his day, and that is why the realm sent him to the Pennine watch: the Summoners' wards had to be understood before they could be broken. He found that the wards were not built of stone but of promises, and a promise can be read, and a promise can be answered. Whatever he promised in return, the Summoners kept their side of it. The watch died at its posts and rose facing the other way, and Aidon became the archwizard of the Hall, their gatekeeper on Albion's road. He mastered four elements in life and he wears them now as four reflections of himself, fire, ice, air and earth, and he calls a fresh set only when the last of the old set is broken. Those who see him in the Summoner's Hall itself are not mistaken. A gatekeeper is called to his masters' table now and then. Whose side is he on? His own, and theirs.",
+  "legend": "Two groups if you know the trick, the old guides said. When the fight starts he splits into four reflections: break three, one party each, and leave the last one standing, because a new set only comes when all four are dead. Then everyone on him. Melee eat his fire shield; healers expect it. Never pull him off his floor: past his tether he is untouchable.",
+  "yells": {
+    "aggro": [
+      "Albion sends me visitors again. How thoughtful."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Fire. Ice. Air. Earth. Choose your death."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "You break my reflections? I have more."
+      }
+    ],
+    "death": [
+      "The wards... were only... promises..."
+    ],
+    "slay": [
+      "Your promise is kept. You are mine."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four of him, in four colours. The air hisses."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "Aidon divides into fire, ice, air and earth!"
+      }
+    ],
+    "realmFirstKill": "The Archwizard is dead. Albion's road is its own again."
+  },
+  "botLines": {
+    "briefing": [
+      "aidon splits into 4 illusions. kill 3, LEAVE ONE alive or he makes a new set",
+      "one party per illusion, then everyone on aidon. melee eat his damage shield",
+      "fight him on his floor, past his tether hes immune"
+    ],
+    "aftermathWin": [
+      "left one illusion up the whole time. thats how you do it",
+      "aidon down. two groups would have done it, honestly"
+    ],
+    "aftermathLoss": [
+      "someone killed the fourth illusion and he got a whole new set",
+      "his fire aoe plus four illusions. we stacked too tight"
+    ],
+    "rumour": [
+      "aidon the archwizard waits in the summoner's hall like he owns it, and nobody can say whose side he is on",
+      "[heard|someone said] you leave one of aidon's copies alive. kill all four and you get four new ones"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "aidon",
+    "text": "The realm sent him to study the Summoners' wards. He studied them too well. Four reflections attend him, fire, ice, air and earth. Break three and leave one; he calls them anew only when the last is broken."
+  },
+  "bookPage": "Master Aidon reports progress with the wards. He says the Summoners do not build their wards of stone but of promises, and that a promise can be read if one has the patience. He has had the patience. He has asked that the watch be doubled on the road, because he expects visitors. Lord Gildas has done as he asks. Captain Bardalph does not like it. Nor do I.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} left one reflection standing and broke Aidon the Archwizard in {minutes} minutes.",
+    "loss": "Aidon the Archwizard called his reflections again and again; {realm}'s raid under {raidLeader} broke on the fourth."
+  }
+}

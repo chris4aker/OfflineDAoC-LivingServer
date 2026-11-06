@@ -1,0 +1,65 @@
+{
+  "id": "lieutenant-elva",
+  "name": "Lieutenant Elva",
+  "catalogKey": "hall-of-the-corrupt/lieutenantelva",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Lieutenant Elva, 5,000 health, tether 1,500; her attacks poison.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantElva.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Lieutenant Elva kept the watch's armoury and was handy with poisons, as a frontier lieutenant had to be, for the things that came up the Summoners' road in the old days were not always alive enough to bleed. Her blades still carry her poisons. She is lightly built and lightly armoured, and she is bound to her post as tightly as the captains: drag her away and she shrugs off every blow and walks back to it. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "Elva poisons whoever she hits. Cure it or heal through it. She is soft, 5,000 health, so burn her fast, but at her post only, because her tether is short and beyond it she cannot be hurt. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "Who touches the watch's stores?"
+    ],
+    "phases": [],
+    "death": [
+      "Poisoned... by my own blade..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An armoury, its racks still full. Something sharp moves."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lieutenant Elva is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "elva poisons. cure poison or heal through it",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "lieutenant elva down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard elva in the hall of the corrupt poisons her blades",
+      "[someone said|heard] elva goes down fast if you dont drag her"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "elva",
+    "text": "Lieutenant Elva kept the watch's armoury and was handy with poisons, as a frontier lieutenant had to be, for the things that came up the Summoners' road in the old days were not always alive enough to bleed."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Lieutenant Elva from the Pennine watch in {minutes} minutes.",
+    "loss": "Lieutenant Elva held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

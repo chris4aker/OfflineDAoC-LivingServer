@@ -1,0 +1,65 @@
+{
+  "id": "lieutenant-meade",
+  "name": "Lieutenant Meade",
+  "catalogKey": "hall-of-the-corrupt/lieutenantmeade",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Lieutenant Meade, level 50, 5,000 health; Aching Curse lowers the target's melee damage by 21%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Lieutenant Meade was the one who wrote in the last reports that the men had lost the will to fight and could not say why. He found out. The despair that came up the Summoners' road settled in him first, and now he carries it like a disease: his Aching Curse saps the will of anyone he strikes, so that their blows land a fifth softer. He is the saddest of the watch, and the one most likely to make a raid feel it is losing. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "His curse cuts your melee damage by about a fifth. Cure it if you can, rotate melee if you cannot, and kill him at his post before the despair spreads to the whole front line. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "Why fight? Why does anyone fight?"
+    ],
+    "phases": [],
+    "death": [
+      "There was... a reason... once..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air here is heavy. Your arms feel tired."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lieutenant Meade is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "meade casts aching curse, melee does 21% less. cure it or rotate",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "lieutenant meade down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard meade in the hall of the corrupt saps your will to fight",
+      "[someone said|heard] meade wrote the last report from the watch"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "meade",
+    "text": "Lieutenant Meade was the one who wrote in the last reports that the men had lost the will to fight and could not say why."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Lieutenant Meade from the Pennine watch in {minutes} minutes.",
+    "loss": "Lieutenant Meade held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

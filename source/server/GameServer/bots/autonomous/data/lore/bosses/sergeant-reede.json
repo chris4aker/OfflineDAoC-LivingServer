@@ -1,0 +1,65 @@
+{
+  "id": "sergeant-reede",
+  "name": "Sergeant Reede",
+  "catalogKey": "hall-of-the-corrupt/sergeantreede",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Sergeant Reede, 5,000 health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Sergeant Reede kept the stair between the upper Hall and the captains' table. He was the youngest sergeant of the watch, and the Lady Darra's sickroom was at the top of his stair, and in the last bad winter he carried the wounded up it every night. He guards the stair still. The men he carried are on the other side of it, waiting. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "A 5,000-health sergeant on the stair. Fight him at the top or the bottom where he stands, kill him fast, and do not chase him; past his post he is untouchable and walks back. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "No one comes up my stair."
+    ],
+    "phases": [],
+    "death": [
+      "Carry them... up..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A narrow stair. Someone guards it from both ends."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sergeant Reede is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "reede, sergeant. same as the others, kill at his post",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "sergeant reede down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard reede carried the wounded up to lady darra every night",
+      "[someone said|heard] the stair sergeant in the hall is the last before the captains"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "reede",
+    "text": "Sergeant Reede kept the stair between the upper Hall and the captains' table."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Sergeant Reede from the Pennine watch in {minutes} minutes.",
+    "loss": "Sergeant Reede held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

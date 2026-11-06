@@ -1,0 +1,65 @@
+{
+  "id": "captain-bardalph",
+  "name": "Captain Bardalph",
+  "catalogKey": "hall-of-the-corrupt/captainbardalph",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Bardalph's blows bleed for 65 every 3 seconds for 30 seconds; tether 1,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Captain Bardalph did not like it when the wizard asked for the watch to be doubled, and said so, and was overruled. He was right, and he died at the post Lord Gildas gave him anyway, because that was his duty. He is the most bitter of the Hall's dead captains and the most dangerous to the careless: his wounds bleed like his brothers', and his post is a short one; draw him past it and he stands untouchable and walks back. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "Bardalph bleeds you like Atwell, 65 every three seconds. His tether is short, only 1,500, so pull him a step and fight him there. Drag him further and he is immune and walks home at full health. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "I said this would happen. I said it."
+    ],
+    "phases": [],
+    "death": [
+      "Told you... all..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A captain who argued, and was overruled."
+    ],
+    "phases": [],
+    "realmFirstKill": "Captain Bardalph is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "bardalph bleeds too. tether 1500, keep him close",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "captain bardalph down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard bardalph warned them about the wizard and nobody listened",
+      "[someone said|heard] bardalph has a short leash, keep him close"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bardalph",
+    "text": "Captain Bardalph did not like it when the wizard asked for the watch to be doubled, and said so, and was overruled."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Captain Bardalph from the Pennine watch in {minutes} minutes.",
+    "loss": "Captain Bardalph held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

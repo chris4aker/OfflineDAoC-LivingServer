@@ -1,0 +1,81 @@
+{
+  "id": "lord-gildas",
+  "name": "Lord Gildas",
+  "catalogKey": "hall-of-the-corrupt/lordgildas",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 75, 40,000 health; one of the raid's two finals. He fights with sword and shield; below 50% he changes to a two-handed polearm and his Strength rises to 340.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LordGildas.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "No count found for him in period sources.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    }
+  ],
+  "story": "Lord Gildas held the Hall under the Pennines for Albion, and he was a careful lord: shield first, sword second, and never a step back from the post. When the corruption came up the Summoners' road he ordered that no man leave his post for any reason, and his men obeyed him past death. He obeyed himself too. He stands at the bottom of the Hall where he made his last stand, and he fights now as he fought then, behind his shield, patient and hard to hurt, until he knows the day is lost. Then he throws the shield aside and takes up the poleaxe, as a knight of Albion does when there is nothing left to guard but his honour, and he hits like a falling gate.",
+  "legend": "Easy at first, then not. Above half he turtles behind a shield; below half he switches to a polearm and hits much harder, so the tanks need their best heals saved for the second half. Fight him at his post. He is the last thing in the Hall, so spend everything.",
+  "yells": {
+    "aggro": [
+      "No man leaves his post! Hold the road!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The shield is broken. Bring me my poleaxe!"
+      }
+    ],
+    "death": [
+      "Relieved... of my post... at last..."
+    ],
+    "slay": [
+      "Stand your post, dead man."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The old lord stands his post. His shield is up."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Lord Gildas casts down his shield! The poleaxe!"
+      }
+    ],
+    "realmFirstKill": "Lord Gildas is relieved of his post. The Hall is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "gildas swaps to polearm at 50% and hits way harder. save heals for the second half",
+      "fight him at his post, dont kite him"
+    ],
+    "aftermathWin": [
+      "gildas down. the old lord can rest",
+      "the poleaxe half was rough but we held"
+    ],
+    "aftermathLoss": [
+      "main tank folded the second he picked up the polearm"
+    ],
+    "rumour": [
+      "[heard|word is] gildas drops his shield at half and picks up a polearm",
+      "heard lord gildas ordered nobody leave their post. they still havent"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lord gildas",
+    "text": "He held the Hall for Albion with his lady, Darra. He holds it still, the other way about. He fights behind his shield until he knows he is losing, then takes up his poleaxe and hits twice as hard."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} relieved Lord Gildas of his last post in {minutes} minutes.",
+    "loss": "Lord Gildas took up his poleaxe and {realm}'s raid under {raidLeader} broke on it."
+  }
+}

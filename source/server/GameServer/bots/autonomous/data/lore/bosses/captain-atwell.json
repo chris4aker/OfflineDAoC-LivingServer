@@ -1,0 +1,65 @@
+{
+  "id": "captain-atwell",
+  "name": "Captain Atwell",
+  "catalogKey": "hall-of-the-corrupt/captainatwell",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Atwell's blows bleed for 65 every 3 seconds for 30 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Captain Atwell was the first of the watch to be cut on the Summoners' road, by something no one saw, and the cut never closed. He carried it to his post and died of it there, and now every wound he gives opens the same way, bleeding steadily for half a minute. The last report of the Pennine watch mentions him by name. He sits at the captains' table as if waiting for the healer who never came, and rises when anyone else comes in. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
+  "legend": "Atwell's blows bleed: 65 every three seconds for half a minute, and they stack on a tank that is not healed. Fight him at the captains' table where he stands, never drag him; off his post he cannot be hurt. The watch fights better together: clear the posts nearest it first.",
+  "yells": {
+    "aggro": [
+      "The road is held. Turn back."
+    ],
+    "phases": [],
+    "death": [
+      "The wound... closes..."
+    ],
+    "slay": [
+      "Back to your post. Forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Captains at their table. Their wounds never closed."
+    ],
+    "phases": [],
+    "realmFirstKill": "Captain Atwell is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "atwell bleeds you, 65 every 3 sec. healers keep the tank topped",
+      "fight it where it stands, off its post its immune"
+    ],
+    "aftermathWin": [
+      "captain atwell down, one less on the watch"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there"
+    ],
+    "rumour": [
+      "heard captain atwell's cuts never stop bleeding",
+      "[someone said|heard] atwell was the first one cut on the summoners road"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "atwell",
+    "text": "Captain Atwell was the first of the watch to be cut on the Summoners' road, by something no one saw, and the cut never closed."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Captain Atwell from the Pennine watch in {minutes} minutes.",
+    "loss": "Captain Atwell held the post against {realm}'s raid; {raidLeader} fell back."
+  }
+}

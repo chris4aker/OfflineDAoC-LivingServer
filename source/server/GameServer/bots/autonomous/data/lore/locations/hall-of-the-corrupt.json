@@ -1,0 +1,153 @@
+{
+  "id": "hall-of-the-corrupt",
+  "name": "Hall of the Corrupt",
+  "realm": "Albion",
+  "regions": [
+    277
+  ],
+  "summary": "The hall of Albion's old watch on the road to the Summoner's Hall, where the watch died at its posts and kept watching for the wrong master.",
+  "facts": [
+    {
+      "text": "Passage of Conflict replaced three older dungeons that led to the Summoner's Hall from the old frontier zones, entered from the Pennine Mountains, Jamtland Mountains and Breifine; the Summoners' wards guarded the way.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+    },
+    {
+      "text": "Marfach Caverns was a classic Hibernian dungeon entered from Breifine and removed by New Frontiers.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=70"
+    },
+    {
+      "text": "That the Hall of the Corrupt was Albion's old road to the Summoner's Hall, from the Pennine Mountains, is inferred from the two facts above (to verify).",
+      "provenance": "original",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+    },
+    {
+      "text": "Region 277 holds ghostly knights, restless watchmen, watchman lieutenants, spectral paladins, wizard apprentices and widow claws.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Its named: Aidon the Archwizard and Lord Gildas (the raid's two finals), Lady Darra, Captains Atwell, Bardalph and Heathyr, Lieutenants Elva, Meade and Saxe, Sergeants Darryn, Eddison and Reede.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The stock world database has Aidon both here (region 277) and in a later Summoner's Hall (region 233), which is why some bot chat puts him there.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "A February 2003 Albion guide rated the Archwizard 'good for about two groups'; an April 2003 thread is titled 'The Halls of the Corrupt'.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    }
+  ],
+  "story": "When the realms still fought over the old frontier, a road ran under the Pennine hills from Albion down to the Summoner's Hall, the one place where all three realms came within a sword's length of each other. Albion kept a watch at its end. Lord Gildas held the hall there with his lady, Darra, and a household of knights and watchmen, captains and sergeants, enough to hold a door against an army. And the realm sent them a wizard, Aidon, to study the Summoners' wards and learn how to break them.\n\nAidon studied them too well. Nobody knows whether the Summoners found him or he found them, only that one winter the watch stopped sending its reports to Camelot, and when riders went to ask why, they found the watch at its posts. Every man was where his captain had put him. Every man was dead, and every one was still watching. The corruption that came up that road did not drive the watch away. It bound them to their posts so tightly that they cannot be harmed away from them, and turned them to face the other way: now they guard the Summoners' road against Albion.\n\nAidon walks among them, the archwizard of the Hall, attended by four reflections of himself, one for each of the elements he mastered. Sometimes he is seen in the Summoner's Hall itself, like a servant called to his masters' table, and Albion's heralds have never agreed on where he truly belongs. Lady Darra still heals her husband's men as she did in life. And at the bottom of the Hall, Lord Gildas still holds his last post with sword and shield, until he knows the day is lost, and then he takes up his poleaxe.",
+  "legend": "Two groups for the Archwizard, the old guides said, if they know the trick: break three of his four reflections and leave the last one standing, because he only calls a fresh set when all four are gone. Never drag anything in the Hall off its post; the watch cannot be hurt away from where its captain stood it. And when Gildas drops his shield at half, he hits like a falling gate.",
+  "atmosphere": {
+    "firstEntry": [
+      "Every man is at his post. Every man is dead.",
+      "The watch is still kept here. Not for Albion."
+    ],
+    "areas": [
+      {
+        "name": "the archwizard's hall",
+        "x": 31353,
+        "y": 37634,
+        "z": 14873,
+        "radius": 900,
+        "lines": [
+          "Four of him, in four colours. The air hisses."
+        ]
+      },
+      {
+        "name": "Lord Gildas' last post",
+        "x": 29015,
+        "y": 41910,
+        "z": 12933,
+        "radius": 900,
+        "lines": [
+          "The old lord stands his post. His shield is up."
+        ]
+      },
+      {
+        "name": "the lady's chamber",
+        "x": 29551,
+        "y": 31554,
+        "z": 13941,
+        "radius": 800,
+        "lines": [
+          "A lady's chamber. Her paladins still guard the door."
+        ]
+      },
+      {
+        "name": "the captains' hall",
+        "x": 34200,
+        "y": 36800,
+        "z": 14400,
+        "radius": 1200,
+        "lines": [
+          "Captains at their table. Their wounds never closed."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the hall of the corrupt was albion's watch on the old road to the summoner's hall. [the watch is still there|they never left]",
+      "every man in the hall of the corrupt died at his post and kept watching. [just facing the other way now|wrong way round]",
+      "aidon was sent to study the summoners' wards. [studied them too well|he found what he was looking for]",
+      "lady darra still heals lord gildas's men. [even dead|dead and all]",
+      "aidon gets seen in the summoner's hall too, [they say|people swear]. the hall of the corrupt is his road there"
+    ],
+    "rumour": [
+      "[heard|someone said] the archwizard is good for about two groups if you know the trick",
+      "never pull anything in the hall of the corrupt off its post. [they cant be hurt away from it|immune off their post]",
+      "[heard|word is] gildas drops his shield at half and picks up a polearm"
+    ],
+    "tell": [
+      "hall of the corrupt? albion's old frontier dungeon on the road to the summoner's hall. dead watchmen, aidon the archwizard and lord gildas",
+      "ghost knights and a dead watch. two bosses at the end, aidon with his four copies and gildas at the bottom. six groups is plenty",
+      "the dead albion watch. dont drag anything off its post, it goes immune"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Hall of the Corrupt was Albion's [watch] on the road to the Summoner's Hall. The watch is still there. It answers to [Aidon] now, and to the Summoners beyond him, and [Lord Gildas] still holds his last post.",
+    "topics": {
+      "watch": "Captains, lieutenants, sergeants, knights and watchmen, every one at the post his captain gave him. They died there, and the corruption bound them to those posts so tightly that nothing harms them away from them. Fight each where it stands.",
+      "aidon": "The realm sent him to study the Summoners' wards. He studied them too well. Four reflections attend him, fire, ice, air and earth. Break three and leave one; he calls them anew only when the last is broken. He is seen in the [Summoner's Hall] as well, as a servant is seen at his master's table.",
+      "lord gildas": "He held the Hall for Albion with his lady, [Darra]. He holds it still, the other way about. He fights behind his shield until he knows he is losing, then takes up his poleaxe and hits twice as hard.",
+      "darra": "Lord Gildas' lady. She was the Hall's healer in life and she heals its dead now, and four spectral paladins keep her door. Silence her before you face her husband's men.",
+      "summoner's hall": "Where the three realms met under the old frontier, and where Grand Summoner Govannon keeps his court. The Hall of the Corrupt was Albion's door to it. Some say Aidon still holds the key."
+    }
+  },
+  "book": {
+    "title": "The Last Report of the Pennine Watch",
+    "pages": [
+      "To the Constable at Camelot, from the Hall under the Pennines. The road is quiet. The Summoners keep their wards as ever, and none of their servants has come up the road this season. Lord Gildas is well. The Lady Darra has had little to do but bind the sergeants' knuckles after their games. The wizard Aidon keeps to his tower and asks for more candles. We ask, again, for more candles.",
+      "To the Constable at Camelot. Master Aidon reports progress with the wards. He says the Summoners do not build their wards of stone but of promises, and that a promise can be read if one has the patience. He has had the patience. He has asked that the watch be doubled on the road, because he expects visitors. Lord Gildas has done as he asks. Captain Bardalph does not like it. Nor do I.",
+      "To the Constable. Captain Atwell was cut on the road by something none of us saw, and the cut will not close. Lieutenant Meade says the men have lost the will to fight and cannot say why. The wizard says it will pass. The Lady Darra has been at the sickbeds every night. Lord Gildas has ordered that no man leave his post for any reason. The men say they could not leave if they wanted to.",
+      "No report was sent this season. This page was found by the riders from Camelot on the Constable's own instruction, on the table of the captains' hall, beside a captain still sitting at it. The ink was dry. The watch was at its posts, every man, and every man was dead, and every man turned his head when the riders came in. They did not stay to read further."
+    ]
+  },
+  "bosses": [
+    "aidon-the-archwizard",
+    "lord-gildas",
+    "lady-darra",
+    "captain-atwell",
+    "captain-bardalph",
+    "captain-heathyr",
+    "lieutenant-elva",
+    "lieutenant-meade",
+    "lieutenant-saxe",
+    "sergeant-darryn",
+    "sergeant-eddison",
+    "sergeant-reede"
+  ]
+}
