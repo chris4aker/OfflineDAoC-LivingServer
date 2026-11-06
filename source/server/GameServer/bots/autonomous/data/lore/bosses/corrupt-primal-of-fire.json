@@ -21,23 +21,34 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Hy Brasil burns rarely, and the Sylvan fear fire more than any other thing, so it grieves them most that the Root has a fire of his own. It is the heat of rot, the kind that wakes inside a wet haystack: slow, sour and relentless. The Primal of Fire carries it on its skin, so that every blade that bites it is bitten back, and it leaves its footprints burning on the stone. Fight it where it stands and you will be standing in what it has left. Move, and keep moving, and let the healers mind the bitten hands.",
-  "legend": "It burns whoever hits it, so melee needs steady heals. It leaves fire on the floor behind it: drag it in a line, never in circles, and step out of the patches. A raid that fights it in a ring ends up standing in its own fire.",
+  "story": "Hy Brasil burns rarely, and the Sylvan fear fire more than any other thing, so it grieves them most that the Root has a fire of his own. It is the heat of rot, the kind that wakes inside a wet haystack: slow, sour and relentless. The Primal of Fire carries it on its skin, so that every blade that bites it is bitten back, and it leaves its footprints burning on the stone. Fight it where it stands and you will be standing in what it has left. Move, and keep moving, and let the healers mind the bitten hands.\n\nHy Brasil is a wet country and burns rarely, and the Sylvan fear fire above every other thing, because a Sylvan can burn. So it grieves them most of all that the Root has a fire of his own. It is not the bright fire of a hearth. It is the heat of rot, the warmth that wakes inside a wet haystack in autumn and smoulders for weeks until the stack goes up: slow, sour and relentless.\n\nThe guardian of fire carries that heat on its skin, so that every blade that bites it is bitten back, and it leaves its footsteps burning on the bridge stones behind it, a new patch every second. Living Server's druids have tamed the patches somewhat since the first raids, but they still burn. The fire guardian does not chase and does not hurry. It walks, and the floor it has walked on burns, and a raid that fights it in a circle ends up standing in its own fire. The Sylvan say that when it dies a smell of cut grass comes up out of the stones, as if the bridge remembered being a meadow.",
+  "legend": "It burns whoever hits it, so melee needs steady heals. It leaves fire on the floor behind it: drag it in a line, never in circles, and step out of the patches. A raid that fights it in a ring ends up standing in its own fire. Veterans drag it in a long straight line along the bridge with one tank, rotate melee so no one eats the shield for too long, and keep the casters on the far side of the patches. The Sylvan add one piece of advice of their own: when it dies, do not cheer on the bridge. Say nothing, and let the stones cool.",
   "yells": {
     "aggro": [
-      "Rot is a fire too. Slow. Patient."
+      "Rot is a fire too. Slow. Patient.",
+      "The stones under it begin to smoulder: we shall protect.",
+      "The heat of rot, given legs."
     ],
-    "phases": [],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The bridge burns where the rot-fire walks."
+      }
+    ],
     "death": [
-      "The fire... goes out."
+      "The fire... goes out.",
+      "A smell of cut grass rises from the stones."
     ],
     "slay": [
-      "We shall protect."
+      "We shall protect.",
+      "Smouldered away.",
+      "Rot takes everything in the end."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Four voices speak as one: we shall protect."
+      "Four voices speak as one: we shall protect.",
+      "The bridge stones are scorched in a long trail."
     ],
     "phases": [
       {
@@ -49,25 +60,59 @@
   },
   "botLines": {
     "briefing": [
-      "fire primal shields back on melee. [healers on the tanks|keep the melee topped]. and get out of the fire on the floor"
+      "fire primal shields back on melee. [healers on the tanks|keep the melee topped]. and get out of the fire on the floor",
+      "fire primal: one tank drags it in a straight line. [no circles|never circle it]",
+      "melee rotate, its shield bites back. [swap in and out|dont sit on it]",
+      "casters on the far side of the patches, never between. [range it|stay back]"
     ],
     "aftermathWin": [
-      "fire down. [nobody stood in it|only three of you stood in it]"
+      "fire down. [nobody stood in it|only three of you stood in it]",
+      "fire down and nobody stood in a patch. [miracle|first time ever]",
+      "dragged it the length of the bridge, textbook. [love this raid|grats]",
+      "smelled grass when it died. [like the sylvan said|weird]"
     ],
     "aftermathLoss": [
-      "we fought the fire primal in a circle and [stood in our own patches|cooked ourselves]"
+      "we fought the fire primal in a circle and [stood in our own patches|cooked ourselves]",
+      "we circled it and [cooked in our own fire|stood in patches]",
+      "the melee sat on it and [the shield killed them|burned themselves out]",
+      "healers stood in fire healing people standing in fire. [move|please move]"
     ],
     "rumour": [
-      "[heard|someone said] the fire on the bridge burns slower now. still burns"
+      "[heard|someone said] the fire on the bridge burns slower now. still burns",
+      "[heard|someone said] the fire primal is the heat inside a rotting haystack. sylvan fear it most",
+      "the druids [softened|tamed] the fire patches at the bridge. they still burn though",
+      "[heard|someone swears] the bridge smells like a meadow after the fire primal dies"
     ]
   },
   "loremasterTopic": {
     "keyword": "Primal of Fire",
     "text": "The heat of the Root's rot, given a body. It bites back every blade that bites it and leaves its footsteps burning. Keep moving."
   },
-  "bookPage": "",
+  "bookPage": "Aodhan's note: I have never seen a Sylvan afraid of anything but fire, and I saw one afraid of a story about fire. The fire-keeper of Domnann, of all people, told it: the Root's fire is the slow kind, the fire that sleeps in a wet rick of hay and wakes when no one is watching. It walks at the bridge now, she said, and wherever it walks the stones burn. The realm's warriors who fought it tell me the trick is to lead it in a straight line, never round, so that the fire it leaves is behind you. The fire-keeper nodded and said that is the trick with most things.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Corrupt Primal of Fire; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Fire after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the sleeper it guards"
+    },
+    {
+      "id": "corrupt-primal-of-air",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-earth",
+      "relation": "a fellow guardian"
+    }
+  ]
 }

@@ -24,13 +24,20 @@
       "text": "Scaith glosses (Irish, to verify): scáth 'shadow'; corp body, spiorad spirit, fuar cold, teas heat, damhna matter, fuinneamh energy, brú crush, ropadh stab, scor cut. 'Urlamhai' may echo urlámhas, 'control'.",
       "provenance": "original",
       "source": "to verify"
+    },
+    {
+      "text": "He has 300,000 health, the most of any Galladoria named, and his tether keeps the Scaith within 3,000.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Aroon was a guardian of the old forest, a tree-lord of the kind the Sylvan call a keeper, and the Root took him slowly, the way rot takes heartwood. What is left keeps nothing but himself. He learned in the hollow how a thing may be made very hard to kill: he cut his own nine weaknesses out of himself and gave each a shadow to carry. One holds the blade's edge, one the spear's point, one the hammer's weight; one holds cold, one heat, one the spirit and one the body; one holds the stuff of the world and one its energy. The nine stand round him with his own light in their eyes and turn on whoever he points at. The Sylvan say the name means one who holds sway. He holds it by holding the ground: when he speaks, roots rise and nobody near him moves.",
-  "legend": "Nine shadows, nine kinds of harm. The old guides said each Scaith had to die before its kind of damage would touch him, and veterans still kill them first out of habit: they hit hard and swap targets. Tanks pick up the Scaith that wander off. Expect the whole room rooted when he roots. Do not drag him away from his hall.",
+  "story": "Aroon was a guardian of the old forest, a tree-lord of the kind the Sylvan call a keeper, and the Root took him slowly, the way rot takes heartwood. What is left keeps nothing but himself. He learned in the hollow how a thing may be made very hard to kill: he cut his own nine weaknesses out of himself and gave each a shadow to carry. One holds the blade's edge, one the spear's point, one the hammer's weight; one holds cold, one heat, one the spirit and one the body; one holds the stuff of the world and one its energy. The nine stand round him with his own light in their eyes and turn on whoever he points at. The Sylvan say the name means one who holds sway. He holds it by holding the ground: when he speaks, roots rise and nobody near him moves.\n\nHe was set to keep the hollow long before it was the Root's, the Sylvan say, as Elro was set to keep the edge of the world. Elro held. Aroon did not. The rot came into him slowly from the roots upward, the way it comes into an old oak that still puts out leaves while its heart turns to powder, and by the time he knew it, the part of him that kept things had become the part that kept himself.\n\nThe nine shadows are the result. Each is called a Scaith, and each carries one of the nine ways a thing may be hurt: the body and the spirit; cold and heat; the stuff of the world and its living energy; the crush of a hammer, the edge of a blade, the point of a spear. With his weaknesses cut out and handed to servants, Aroon believed himself beyond harm, and in the oldest fights he nearly was: the realm's raiders learned to kill each Scaith in turn, so that one by one the ways to wound him came home. The raids of today find him less careful of his wounds. But the nine still stand, with his light in their eyes, swapping from foe to foe as he points, and when he speaks the roots of the hall rise and hold everyone near.\n\nHurionthex, a little way off, wears nine faces. Aroon holds nine shadows. The Sylvan say the two of them argue in the dark about which is the cleverer way to never die.",
+  "legend": "Nine shadows, nine kinds of harm. The old guides said each Scaith had to die before its kind of damage would touch him, and veterans still kill them first out of habit: they hit hard and swap targets. Tanks pick up the Scaith that wander off. Expect the whole room rooted when he roots. Do not drag him away from his hall. His hall is wide: tanks spread so the Scaith do not stack on one healer. When the roots come up, everyone near him is stuck for a while; cure what can be cured and keep healing. He has the biggest health in the hollow, so plan a long fight and rotate.",
   "yells": {
     "aggro": [
-      "Come, my shadows. Each of you knows a way to kill."
+      "Come, my shadows. Each of you knows a way to kill.",
+      "You have come to a tree that cannot be felled.",
+      "Nine wounds I gave away. Find them, if you can."
     ],
     "phases": [
       {
@@ -40,23 +47,35 @@
       {
         "trigger": "health<=25",
         "text": "You have learned my weaknesses. I have more."
+      },
+      {
+        "trigger": "health<=60",
+        "text": "Roots, rise. Hold them for my shadows."
       }
     ],
     "death": [
-      "The shadows... give back what they kept."
+      "The shadows... give back what they kept.",
+      "Elro... you were right... to hold..."
     ],
     "slay": [
-      "One shadow more."
+      "One shadow more.",
+      "Nine ways to die. You found one.",
+      "The shadows will share you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Nine shadows stand where none were cast."
+      "Nine shadows stand where none were cast.",
+      "A keeper-tree, rotten at the heart, waits."
     ],
     "phases": [
       {
         "trigger": "addsSpawn",
         "text": "Aroon summons the Scaith to do his bidding!"
+      },
+      {
+        "trigger": "health<=60",
+        "text": "Roots burst from the floor of Aroon's hall!"
       }
     ],
     "realmFirstKill": "Aroon's nine shadows fall dark."
@@ -64,25 +83,54 @@
   "botLines": {
     "briefing": [
       "aroon calls nine scaith, one per damage type. kill the scaith [first|before him], theyre the real danger",
-      "tanks, the scaith swap targets. [pick them back up|taunt them back]. and expect a room root"
+      "tanks, the scaith swap targets. [pick them back up|taunt them back]. and expect a room root",
+      "tanks spread out in aroon's hall, the scaith [swap targets|jump around]",
+      "long fight, three hundred thousand hp. [rotate healers|pace yourselves]"
     ],
     "aftermathWin": [
-      "nine shadows and a tree. [not bad|done]. aroon down"
+      "nine shadows and a tree. [not bad|done]. aroon down",
+      "nine shadows and the tree. [took forever|worth it]",
+      "the scaith went dark all at once when he fell. [beautiful|eerie]",
+      "aroon down, onwards. [hurionthex next|the falls next]"
     ],
     "aftermathLoss": [
-      "the scaith ran loose on the healers and that was it. [tanks|we need more taunts]"
+      "the scaith ran loose on the healers and that was it. [tanks|we need more taunts]",
+      "the scaith all jumped on one healer. [spread the tanks|peel faster]",
+      "rooted the whole raid and [the scaith walked through us|we couldnt move]",
+      "ran out of steam at a third. [long fight|pace it]"
     ],
     "rumour": [
-      "[old guides said|my guild leader swears] you could only hurt aroon with a damage type once its scaith died"
+      "[old guides said|my guild leader swears] you could only hurt aroon with a damage type once its scaith died",
+      "[heard|someone said] aroon and elro were set to keep the same old forest. elro held, aroon rotted",
+      "[word is|someone swears] aroon and hurionthex argue in the dark about who is harder to kill",
+      "the scaith names are the old words for body, spirit, cold, heat and the rest. [creepy|clever]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Aroon",
     "text": "A keeper of the old forest, rotted from within. He cut his nine weaknesses out and gave each to a shadow, a Scaith, to carry. Kill the shadows and you take back the ways to wound him."
   },
-  "bookPage": "The Sylvan word for a keeper-tree is not one I can spell, but the one they used for Aroon was simpler: they called him the one who gave his wounds away. A tree may be cut, burned, crushed, frozen or rotted. Aroon would be none of these, so he made nine servants and gave each a way he might die. I asked what happens when a servant dies. The old one smiled. Then the wound comes home, she said.",
+  "bookPage": "From a Sylvan teaching, as set down by Aodhan: A keeper-tree is set to keep one thing, and keeps it until it falls. Aroon was set to keep the hollow. When the Root came, Aroon kept the hollow still, but the hollow was the Root's, and so Aroon kept the Root. Then the rot reached his heart and he began to keep only himself. He cut away nine weaknesses and gave each to a shadow, and called himself safe. The teaching ends: there is no safety in giving your wounds away, for one day your servants die, and every wound comes home at once. Sylvan children learn this before they learn to climb.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to Aroon the Urlamhai and his nine Scaith; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Aroon the Urlamhai after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root that rotted him"
+    },
+    {
+      "id": "elro-the-ancient",
+      "relation": "a keeper-tree of the same old kind, who did not fall"
+    },
+    {
+      "id": "hurionthex",
+      "relation": "his neighbour, who has nine faces where Aroon has nine shadows"
+    }
+  ]
 }

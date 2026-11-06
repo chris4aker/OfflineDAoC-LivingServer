@@ -21,58 +21,102 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Where the titan's sap pools clearest, something keeps it. The Conservator does not hunt and does not wander. It sits at its pool and saves: every drop of the world soul that seeps down the walls, every glimmer of strength in the water, it gathers in and holds. The Sylvan say it was made to keep the isle's springs full in dry years. The Root taught it a miser's heart instead. It will spend its hoard only to protect it, but then it spends lavishly, pouring the world soul out as a burning sickness and as a blast that fills the cave. It cannot be lured from its water, and from any distance it is beyond harm, as a miser is beyond reach behind his door.",
-  "legend": "Fight it at its pool: from range or from outside its little circle you do nothing to it. Everyone stands close, healers included, and eats the big energy blast together. Cure the burning on the casters. Do not let the fight go quiet, or it resets.",
+  "story": "Where the titan's sap pools clearest, something keeps it. The Conservator does not hunt and does not wander. It sits at its pool and saves: every drop of the world soul that seeps down the walls, every glimmer of strength in the water, it gathers in and holds. The Sylvan say it was made to keep the isle's springs full in dry years. The Root taught it a miser's heart instead. It will spend its hoard only to protect it, but then it spends lavishly, pouring the world soul out as a burning sickness and as a blast that fills the cave. It cannot be lured from its water, and from any distance it is beyond harm, as a miser is beyond reach behind his door.\n\nIt was made, the Sylvan think, in the good years, to keep the isle's springs full when the summers were dry. A thing that saves is a good thing to have in a hard country. The trouble with a thing that saves is that it only ever needs to be taught one wrong lesson: that what it saves is its own.\n\nThe Root taught it that lesson, and the Conservator has been hoarding ever since. Every drop of sap the mechanism pumps through the galleries passes its pool, and some of every drop stays. The pool glows with it, and the bottom is covered in coins of light. It does not hunt and does not wander. It cannot be lured from its water, and from any distance it is beyond harm, as a miser is beyond reach behind his door: only those who come within a few paces of its pool can touch it at all. When they do, it spends lavishly. It pours the world soul out as a burning sickness on one foe and as a blast that fills the whole cave, and then it gathers energy from the water again. When the water primal at the bridge dies, the Conservator's pool dims. When the Conservator dies, the mechanism's heartbeat stumbles.",
+  "legend": "Fight it at its pool: from range or from outside its little circle you do nothing to it. Everyone stands close, healers included, and eats the big energy blast together. Cure the burning on the casters. Do not let the fight go quiet, or it resets. Bring everyone in close and keep them there; the blast is shared out among those it can reach, and a healer who stays back cannot reach the fighters anyway. If the fight stops for half a minute it resets, so no long breaks. The Sylvan say to leave the coins of light on the bottom of its pool when it dies. They go back into the isle, and the springs of Domnann run sweeter for it.",
   "yells": {
     "aggro": [
-      "Mine. All of it. Mine."
+      "Mine. All of it. Mine.",
+      "The pool brightens. Something counts its coins.",
+      "Thieves. Always thieves."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "You will not drink from my water."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Take it, then! Take all of it!"
       }
     ],
     "death": [
-      "Spilled... all of it... spilled."
+      "Spilled... all of it... spilled.",
+      "The coins of light go out, one by one."
     ],
     "slay": [
-      "Your strength, too, I will keep."
+      "Your strength, too, I will keep.",
+      "Saved.",
+      "Your strength joins the hoard."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The water glows. Something is saving it."
+      "The water glows. Something is saving it.",
+      "Coins of light lie on the bottom, hoarded."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "The Conservator gathers energy from the water..."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The Conservator spends its whole hoard at once!"
       }
     ],
     "realmFirstKill": "The Conservator's hoard runs back into the isle."
   },
   "botLines": {
     "briefing": [
-      "conservator is immune unless youre standing by its pool. everyone [in close|on top of it], no exceptions"
+      "conservator is immune unless youre standing by its pool. everyone [in close|on top of it], no exceptions",
+      "conservator: everyone within a few steps of its pool. [range does nothing|ranged classes move in]",
+      "big energy blast every so often, healers [stay close too|in the circle with us]",
+      "no pause longer than half a minute or it resets. [keep at it|no breaks]"
     ],
     "aftermathWin": [
-      "conservator down. the pool [went dark|stopped glowing] when it died"
+      "conservator down. the pool [went dark|stopped glowing] when it died",
+      "conservator down, the pool went dark. [all those little lights|sad really]",
+      "nobody stood back this time. [good|finally]",
+      "the mechanism stuttered when the conservator died, swear i heard it. [creepy|neat]"
     ],
     "aftermathLoss": [
-      "half the casters stood back and did nothing to it. [its immune from range|read the plan]"
+      "half the casters stood back and did nothing to it. [its immune from range|read the plan]",
+      "casters stood at range doing nothing. [its immune from range|get in]",
+      "we stopped for a drink and it [reset|healed]",
+      "the blast caught the healers who were standing back. [get in close|everyone in]"
     ],
     "rumour": [
-      "[heard|someone said] the conservator in galladoria [hoards the world soul|keeps the isle's sap]. creepy"
+      "[heard|someone said] the conservator in galladoria [hoards the world soul|keeps the isle's sap]. creepy",
+      "[heard|someone said] the conservator was made to keep the springs full in dry years. went miser",
+      "the conservator's pool has coins of light on the bottom. [dont try to loot them|i tried]",
+      "[word is|heard] the mechanism stutters when the conservator dies"
     ]
   },
   "loremasterTopic": {
     "keyword": "Conservator",
     "text": "The keeper of the pool, made to save the isle's springs and taught a miser's heart. It cannot be harmed from beyond its water, and it spends its hoard only on those who try."
   },
-  "bookPage": "",
+  "bookPage": "A Sylvan proverb, with Aodhan's gloss: The spring-keeper keeps the spring for the forest; when the keeper keeps it for himself, the forest dies of thirst beside a full pool. The Sylvan told me the proverb is about the Conservator, who was made in the good years to keep the springs full in drought, and who now sits in Galladoria on a pool full of the isle's strength and spends it only on those who come to take it. The realm's warriors say you must stand right at its edge to touch it at all. That is the way of misers, the fire-keeper said: they can only be robbed by those who come close enough to be burned.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Conservator's pool; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Conservator after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "organic-energy-mechanism",
+      "relation": "the heart whose sap it hoards"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "the spring whose waters feed its pool"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root that taught it to hoard"
+    }
+  ]
 }

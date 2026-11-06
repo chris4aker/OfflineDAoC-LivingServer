@@ -16,23 +16,34 @@
       "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
     }
   ],
-  "story": "The wind of Hy Brasil was the first of the four to be taken, the Sylvan say, because wind goes everywhere and so went down into the hollow before anything else. The Root kept it. Now it circles high over the bridge, a little knot of stale air that has forgotten how to blow. It has almost no body to wound, and it knows it: it never comes down to fight, never closes, never flees, only hangs there while its kin do the killing. Beasts and summoned things claw at it uselessly, for there is nothing to claw. A single honest spell of the right weight will scatter it. The trick is to remember it is there.",
-  "legend": "Air goes first and it goes fast: one good nuke from below kills it. Pets and turrets are useless on it, so send them at the others. Casters and archers look up the moment the primals spawn. Forget it and it will hang over the bridge all night while its kin do the killing.",
+  "story": "The wind of Hy Brasil was the first of the four to be taken, the Sylvan say, because wind goes everywhere and so went down into the hollow before anything else. The Root kept it. Now it circles high over the bridge, a little knot of stale air that has forgotten how to blow. It has almost no body to wound, and it knows it: it never comes down to fight, never closes, never flees, only hangs there while its kin do the killing. Beasts and summoned things claw at it uselessly, for there is nothing to claw. A single honest spell of the right weight will scatter it. The trick is to remember it is there.\n\nThe Sylvan remember the wind of Hy Brasil as a gentle thing. It carried seeds and rain and the smell of the sea, and on still days it went down into the earth through every crack and cave, because wind goes everywhere. That is how the Root caught it. It went down into the hollow one summer and did not come back up, and the forests had a dry year after, and then a dying one.\n\nWhat hangs over the bridge now is the wind's memory of itself: a knot of stale air with the Root's voice in it. It is the first of the four to speak when strangers come, and the weakest to strike, and it knows both things. So it never comes down. It hangs above the fight and watches its kin do the killing, and it waits for the raid to forget it. Beasts and summoned things claw at it and find nothing to claw. One honest spell from below scatters it. The Sylvan say that when it dies a breath of clean wind crosses the bridge, and that those who feel it should say thank you, because the wind was a friend once.",
+  "legend": "Air goes first and it goes fast: one good nuke from below kills it. Pets and turrets are useless on it, so send them at the others. Casters and archers look up the moment the primals spawn. Forget it and it will hang over the bridge all night while its kin do the killing. Mages and archers should have a target on it before the others have finished rising. If a raid loses its casters early, a single archer can still do it; it is the cheapest kill of the night and the most often forgotten. The Sylvan ask one thing: when it dies, feel the clean wind, and say thank you.",
   "yells": {
     "aggro": [
-      "The wind remembers nothing but the Root."
+      "The wind remembers nothing but the Root.",
+      "A whisper of stale air: we shall protect.",
+      "The wind that went down and never came back."
     ],
-    "phases": [],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "The wind... moves again."
+      }
+    ],
     "death": [
-      "The air... moves again."
+      "The air... moves again.",
+      "A breath of clean wind crosses the bridge."
     ],
     "slay": [
-      "We shall protect."
+      "We shall protect.",
+      "Breath, taken.",
+      "The air closes over you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Four voices speak as one: we shall protect."
+      "Four voices speak as one: we shall protect.",
+      "Something circles high above the bridge."
     ],
     "phases": [
       {
@@ -44,25 +55,59 @@
   },
   "botLines": {
     "briefing": [
-      "air primal has like nine hundred hp. [one nuke|first caster to look up] kills it. pets dont work on it"
+      "air primal has like nine hundred hp. [one nuke|first caster to look up] kills it. pets dont work on it",
+      "casters, air primal is your job the second it spawns. [one bolt|one nuke] each, done",
+      "pets on fire or earth, not on air. [pets do five damage to it|useless on it]",
+      "air is a flyer, it never comes down. [shoot it from below|look up]"
     ],
     "aftermathWin": [
-      "air down in two seconds, [nice eyes casters|well spotted]"
+      "air down in two seconds, [nice eyes casters|well spotted]",
+      "air dead before the others finished spawning. [best start ever|perfect]",
+      "felt the clean wind on the bridge when it died. [the sylvan said we would|nice touch]",
+      "one bolt. [bards will sing of it|i will sing of it]"
     ],
     "aftermathLoss": [
-      "everyone forgot the air primal [again|for five minutes]. look up"
+      "everyone forgot the air primal [again|for five minutes]. look up",
+      "nobody looked up for five minutes. [the air primal was still there|forgot it again]",
+      "all the casters died early and [nobody could reach the air|no ranged left]",
+      "pets wasted the whole fight on the air primal. [five damage a hit|send them elsewhere]"
     ],
     "rumour": [
-      "somebody said the air primal [only has a handful of hp|dies to one bolt]. sounds too easy"
+      "somebody said the air primal [only has a handful of hp|dies to one bolt]. sounds too easy",
+      "[heard|someone said] the air primal was the wind of hy brasil once. it went down a cave and never came out",
+      "[word is|someone said] a lone archer finished the air primal after every caster died",
+      "the sylvan say thank the wind when the air primal dies. [i did|felt silly, did it anyway]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Primal of Air",
     "text": "The wind of the isle, taken first and kept longest. It barely has a body. One true spell scatters it; claws and pets find nothing."
   },
-  "bookPage": "",
+  "bookPage": "From Aodhan's notes in Domnann: the Sylvan have a little prayer for wind, said at seed-time, asking it to carry the seed and come home. They say it every year still, though the wind they prayed to went down into the hollow long ago. When I asked why, the fire-keeper said: because it might hear. The realm's raiders tell me that the guardian of air has almost no body at all, that a single spell undoes it, and that a breath of clean air crosses the bridge when it goes. I told the fire-keeper. She went outside and stood in the doorway for a long time, with her face to the night, and said the prayer again.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Corrupt Primal of Air; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Air after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the sleeper it guards"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-fire",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-earth",
+      "relation": "a fellow guardian"
+    }
+  ]
 }

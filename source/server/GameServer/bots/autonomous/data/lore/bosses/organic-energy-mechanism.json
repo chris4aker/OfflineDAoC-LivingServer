@@ -21,28 +21,38 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Deep in the hollow something beats. The Sylvan call it a heart; the first Hibernians to see it called it a mechanism, because it looks made: a knot of root and stone and wet tissue that pumps the world soul through Galladoria as a heart pumps blood. It was grown, not built, but grown to a purpose, and the purpose is to keep the Root's sap moving. It wraps itself in that sap like armour, so that every blow on it is paid back. It calls the bottom feeders out of the pools to clean whatever it kills. And when it singles someone out, they sicken visibly, a moment before the essence bursts out of them.",
-  "legend": "Kill the bottom feeders as they come or they pile up. Melee takes damage back from its shield: rotate and heal. When someone 'looks sickly', they run away from the group before it erupts. Keep the fight going or it resets.",
+  "story": "Deep in the hollow something beats. The Sylvan call it a heart; the first Hibernians to see it called it a mechanism, because it looks made: a knot of root and stone and wet tissue that pumps the world soul through Galladoria as a heart pumps blood. It was grown, not built, but grown to a purpose, and the purpose is to keep the Root's sap moving. It wraps itself in that sap like armour, so that every blow on it is paid back. It calls the bottom feeders out of the pools to clean whatever it kills. And when it singles someone out, they sicken visibly, a moment before the essence bursts out of them.\n\nSomebody made it. That is what frightens the Sylvan most. Everything else in the hollow grew, or was bent, or went bad; the mechanism looks built. It is a knot of root and stone and wet tissue in a chamber of its own, and it beats, slow as a heart, and with each beat the sap of the isle, the world soul as the Sylvan call it, moves through the galleries of Galladoria. The Sylvan believe the Root grew it to a purpose, the way a tree grows a seed to a purpose. The first Hibernians to see it called it a mechanism because they had no better word.\n\nIt wears the world soul as armour, so that every blow on it is paid back. Every few heartbeats it calls the bottom feeders up out of the pools to clean what it kills. When it singles out a foe, the foe sickens visibly, and a moment later the essence bursts out of him over everyone near. It saps the strength of those who fight it and slows their feet. It is not angry. It is doing its work. Its work is the Root's blood, and the Conservator downstream hoards what it pumps.",
+  "legend": "Kill the bottom feeders as they come or they pile up. Melee takes damage back from its shield: rotate and heal. When someone 'looks sickly', they run away from the group before it erupts. Keep the fight going or it resets. The mechanism fight rewards discipline: one person calls the sickly mark, the marked one leaves at once, the AoE classes keep the feeders down, melee rotates against the shield. Keep the fight going or it resets. Old hands call it the heart and count its beats to time the feeders: every tenth beat, more come. Kill the heart and the whole hollow goes quiet for a moment, they say.",
   "yells": {
     "aggro": [
-      "The beat in the stone quickens."
+      "The beat in the stone quickens.",
+      "The beat in the stone quickens.",
+      "Thud. Thud. The chamber tightens around you."
     ],
     "phases": [
       {
         "trigger": "addsSpawn",
         "text": "Bottom feeders crawl from the pools to its call."
+      },
+      {
+        "trigger": "health<=40",
+        "text": "The essence of the world soul gathers in a victim."
       }
     ],
     "death": [
-      "The beat... falters... stops."
+      "The beat... falters... stops.",
+      "The beat falters... and stops."
     ],
     "slay": [
-      "The pools will have you."
+      "The pools will have you.",
+      "The pools will have you.",
+      "Feed the feeders."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A pulse in the stone, slow as a heart."
+      "A pulse in the stone, slow as a heart.",
+      "Root, stone and wet flesh, all one engine."
     ],
     "phases": [
       {
@@ -54,25 +64,51 @@
   },
   "botLines": {
     "briefing": [
-      "mechanism spawns bottom feeders every few seconds, [kill them as they come|aoe them]. if youre marked sickly, run out"
+      "mechanism spawns bottom feeders every few seconds, [kill them as they come|aoe them]. if youre marked sickly, run out",
+      "if youre marked sickly [run away from the group|get out] right now",
+      "melee rotate, it has a big damage shield. [swap|dont sit on it]",
+      "call the sickly mark on voice, [one caller|i will call it]"
     ],
     "aftermathWin": [
-      "the heart stopped. [the whole cave went quiet|you could hear it]"
+      "the heart stopped. [the whole cave went quiet|you could hear it]",
+      "the heart stopped. [you could hear the whole cave go quiet|silence]",
+      "nobody popped in the group this time. [well run|grats]",
+      "feeders down, heart down. [conservator next|on to the pool]"
     ],
     "aftermathLoss": [
-      "the sickly guy ran into the healers [instead of away|and popped]"
+      "the sickly guy ran into the healers [instead of away|and popped]",
+      "the marked guy ran into the healers and [popped|took them all]",
+      "feeders piled up while we hit the heart. [aoe them|kill feeders]",
+      "melee sat on the shield and [died|burned out]"
     ],
     "rumour": [
-      "[heard|swear] you can hear the mechanism beating from the galladoria entrance on a quiet night"
+      "[heard|swear] you can hear the mechanism beating from the galladoria entrance on a quiet night",
+      "[heard|someone said] the sylvan think the root grew the mechanism on purpose, like a seed",
+      "[word is|heard] you can hear it beating from the entrance on a still night",
+      "the conservator hoards whatever the mechanism pumps, they say"
     ]
   },
   "loremasterTopic": {
     "keyword": "mechanism",
     "text": "A heart grown out of root and stone that pumps the world soul through Galladoria. It wears the sap as armour and calls the bottom feeders."
   },
-  "bookPage": "",
+  "bookPage": "Aodhan writes: of all the things in the hollow the Sylvan fear the mechanism most, and they could not tell me why until the fire-keeper said it plainly. Everything else down there grew, she said, or went bad. That one was made. It sits in its chamber and beats like a heart, and the isle's sap moves with every beat, and the Conservator downstream keeps what it sends. Who makes a heart for a hollow? The Root, she said, as a tree makes a seed. Or something that taught the Root how. I asked what she meant. She said she hoped she was wrong.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Organic-Energy Mechanism; {raidLeader}'s raid finished it in {minutes} minutes. The heart of the hollow stopped.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Organic-Energy Mechanism after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "conservator",
+      "relation": "the miser that hoards what it pumps"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose blood it moves"
+    }
+  ]
 }

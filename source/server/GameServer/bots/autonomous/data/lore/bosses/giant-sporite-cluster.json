@@ -21,11 +21,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
     }
   ],
-  "story": "Nothing in the hollow grows alone, and the sporites least of all. The Giant Sporite Cluster is a colony grown so old and so large that it has become one creature with eight bodies, every one of them answering when any is touched. The cold it spits is not its own: the Sylvan say the first spores were shaken from the staff of Xaga, who walks the halls nearby, and the colony still uses her magic as a child uses its mother's words. Strike one bloom and the whole garden turns on you.",
-  "legend": "It is eight, not one: all the clusters come when you pull. Spread out against the cold bursts, AoE helps, and keep the healers back from the bloom. Do it before Xaga, so her garden is not at your back.",
+  "story": "Nothing in the hollow grows alone, and the sporites least of all. The Giant Sporite Cluster is a colony grown so old and so large that it has become one creature with eight bodies, every one of them answering when any is touched. The cold it spits is not its own: the Sylvan say the first spores were shaken from the staff of Xaga, who walks the halls nearby, and the colony still uses her magic as a child uses its mother's words. Strike one bloom and the whole garden turns on you.\n\nThe colony began, the Sylvan say, as a handful of spores shaken from Xaga's staff when she first came down into the hollow, testing what would grow there. Everything grew. The sporites took to the wet walls of one gallery and spread until they were a single garden, and then a single creature, eight great blooms joined below the floor by threads too fine to see.\n\nTouch one and all of them answer, because there is only one of them. Its cold is borrowed: it bursts out of the blooms in freezing clouds, and the Sylvan who have studied it say the burst is the same spell Xaga carries on her staff, learned the way a child learns its mother's words. The colony is not cruel and not clever. It simply wants the gallery, and the warm bodies that walk into the gallery are good soil. The blue cattail sporites and the virulent ones elsewhere in the hollow are its seedlings, gone wandering.",
+  "legend": "It is eight, not one: all the clusters come when you pull. Spread out against the cold bursts, AoE helps, and keep the healers back from the bloom. Do it before Xaga, so her garden is not at your back. Pull the whole garden at once on purpose, because it comes anyway; tanks spread across the blooms, casters AoE from the edge, and healers stay out of the burst radius. Do it before Xaga so her garden is never at your back. The Sylvan say to burn the spore-dust off your boots before you leave the hollow, or the colony grows a little further every raid. Most raiders forget. The colony does not.",
   "yells": {
     "aggro": [
-      "The blooms shiver all at once."
+      "The blooms shiver all at once.",
+      "Eight blooms tremble at once.",
+      "Spores rise like breath on a cold morning."
     ],
     "phases": [
       {
@@ -34,15 +36,19 @@
       }
     ],
     "death": [
-      "The colony withers, bloom by bloom."
+      "The colony withers, bloom by bloom.",
+      "The threads below the floor go slack."
     ],
     "slay": [
-      "Something new will grow there."
+      "Something new will grow there.",
+      "Good soil.",
+      "Something will grow there."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The blooms turn toward you. All of them."
+      "The blooms turn toward you. All of them.",
+      "Cold spores hang in the air like breath."
     ],
     "phases": [
       {
@@ -54,25 +60,47 @@
   },
   "botLines": {
     "briefing": [
-      "sporite cluster brings seven friends. [spread out|dont stack], the cold bursts hit everyone close"
+      "sporite cluster brings seven friends. [spread out|dont stack], the cold bursts hit everyone close",
+      "sporite cluster is eight blooms, all come at once. [tanks spread over them|everyone pick one]",
+      "healers out of the cold bursts. [stand back|edge of the room]",
+      "do the garden before xaga so its never behind us. [order matters|garden first]"
     ],
     "aftermathWin": [
-      "garden weeded. [next|on to xaga]"
+      "garden weeded. [next|on to xaga]",
+      "garden weeded, xaga next. [on we go|good]",
+      "all eight down together, [nice aoe|lovely]",
+      "nobody froze to death. [new record|grats]"
     ],
     "aftermathLoss": [
-      "we stacked on the sporites and the cold [ate the healers|did the rest]"
+      "we stacked on the sporites and the cold [ate the healers|did the rest]",
+      "stacked in the middle of the blooms and [froze|the bursts got us]",
+      "pulled xaga's room with the garden. [never again|oops]",
+      "healers stood in the spores. [move|outside the bursts]"
     ],
     "rumour": [
-      "[heard|someone said] the sporites in galladoria use xaga's magic. her staff or something"
+      "[heard|someone said] the sporites in galladoria use xaga's magic. her staff or something",
+      "[heard|someone said] the sporite colony grew from spores off xaga's staff",
+      "[word is|heard] all eight blooms are one creature joined under the floor",
+      "the wandering sporites in galladoria are its seedlings, they say"
     ]
   },
   "loremasterTopic": {
     "keyword": "sporites",
     "text": "A colony so old it is one creature with eight bodies. Its cold is borrowed from Xaga's staff. Touch one bloom and all of them answer."
   },
-  "bookPage": "",
+  "bookPage": "Aodhan writes: I asked whether the great sporite garden in the hollow was evil, and the Sylvan gardener I asked laughed at me, which they rarely do. A garden is not evil, she said. It is hungry. Xaga shook the first spores from her staff to see what would grow, and everything did, and now there is one great colony with eight blooms and one mind, and it wants its gallery and whatever walks into it. It uses her cold because it heard her use it. You would do the same, she said, if your mother were Xaga. I was not sure whether that was a joke.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Giant Sporite Cluster; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Giant Sporite Cluster after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "xaga",
+      "relation": "the seed-keeper whose staff sowed it"
+    }
+  ]
 }

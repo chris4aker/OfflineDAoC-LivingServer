@@ -21,28 +21,38 @@
       "source": "to verify"
     }
   ],
-  "story": "Every water that runs into Galladoria runs out over the great falls, and the falls have a will. The Sylvan call it Easmarach, a name with the old word for a waterfall at its start. It is the last door before the sanctum: while it lives the current is a wall, and anyone who presses too close is caught and thrown behind the curtain of water to fight their way back. It is strong only where it is rooted, at the foot of its own falls, and when it is hurt badly it does what a river does in flood: it pulls back into itself, forgets its enemies, and gathers again. When it dies at last, the roar drops to a murmur, and the way to the bridge is open.",
-  "legend": "Fight it at the foot of the falls, because from anywhere else it shrugs you off. At thirty it runs back into the waterfall and wipes its hate list: tanks, be ready to grab it again when it comes out. If the current throws you behind the falls, walk back calmly. Kill it and the bridge gets easier.",
+  "story": "Every water that runs into Galladoria runs out over the great falls, and the falls have a will. The Sylvan call it Easmarach, a name with the old word for a waterfall at its start. It is the last door before the sanctum: while it lives the current is a wall, and anyone who presses too close is caught and thrown behind the curtain of water to fight their way back. It is strong only where it is rooted, at the foot of its own falls, and when it is hurt badly it does what a river does in flood: it pulls back into itself, forgets its enemies, and gathers again. When it dies at last, the roar drops to a murmur, and the way to the bridge is open.\n\nThe great falls are older than the Root's coming. Every water that runs into the hollow runs out over them, and a falls that old has a will. The Sylvan named it Easmarach long ago, and in the good years it was a door that kept things out of the hollow. Now it keeps things in, and its will is the Root's.\n\nIt is strongest where it is rooted, at its own foot, and nothing can hurt it from anywhere else: a raider must stand in the spray to wound it. Those who press too close are caught by the current and thrown behind the curtain of water onto a ledge, a long wet walk from the fight. When it is badly hurt it does what a river does in flood. It pulls back into the falls, forgets everyone it was fighting, and gathers itself, an eighth of its strength returning. Then it comes out again, looking for whoever it remembers first.\n\nThe bridge lies beyond it. While Easmarach lives the current at the bridge is fierce, and the Sylvan say that is why the first raids failed: they went for the bridge with the falls still roaring. When Easmarach dies the current drops to a murmur and the way to the sanctum is open. The water primal and the falls were kin once, the Sylvan say, two parts of the same river.",
+  "legend": "Fight it at the foot of the falls, because from anywhere else it shrugs you off. At thirty it runs back into the waterfall and wipes its hate list: tanks, be ready to grab it again when it comes out. If the current throws you behind the falls, walk back calmly. Kill it and the bridge gets easier. Pick a spot in the spray at its foot and hold it. When it goes back into the falls, healers top everyone, tanks stand ready, and the first tank to taunt when it comes out keeps it. Kill it before the bridge, never after.",
   "yells": {
     "aggro": [
-      "The falls do not part for you."
+      "The falls do not part for you.",
+      "The roar of the falls rises to a shout.",
+      "The door was made to keep things out. Now it keeps you."
     ],
     "phases": [
       {
         "trigger": "health<=30",
         "text": "The river remembers its source."
+      },
+      {
+        "trigger": "teleport",
+        "text": "The strong current of the waterfall pushes you behind."
       }
     ],
     "death": [
-      "The water... grows quiet."
+      "The water... grows quiet.",
+      "With the death of the Easmarach, the current of the falls reduces significantly."
     ],
     "slay": [
-      "Carried away, like all the rest."
+      "Carried away, like all the rest.",
+      "Carried away.",
+      "Behind the curtain with the rest."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The current pulls at your legs like hands."
+      "The current pulls at your legs like hands.",
+      "The falls roar like a held breath let go."
     ],
     "phases": [
       {
@@ -54,25 +64,51 @@
   },
   "botLines": {
     "briefing": [
-      "easmarach only takes damage at the falls. at thirty it [runs back|retreats] and drops aggro, tanks grab it"
+      "easmarach only takes damage at the falls. at thirty it [runs back|retreats] and drops aggro, tanks grab it",
+      "easmarach: stand in the spray at its foot or you do nothing to it. [get wet|in the water]",
+      "if the current throws you behind the falls [walk back calm|just walk back], dont run in circles",
+      "kill easmarach before the bridge, never after. [current is a wall|the falls first]"
     ],
     "aftermathWin": [
-      "easmarach down, the falls went quiet. [bridge next|on to the bridge]"
+      "easmarach down, the falls went quiet. [bridge next|on to the bridge]",
+      "falls went quiet, bridge is open. [lets go|titan time]",
+      "caught it fresh out of the falls, perfect taunt. [nice tank|grats]",
+      "easmarach down first try. [about time|clean]"
     ],
     "aftermathLoss": [
-      "it came back out of the falls and [nobody had aggro|ate the healers]"
+      "it came back out of the falls and [nobody had aggro|ate the healers]",
+      "it came out of the falls and [went for the healers|nobody had it]",
+      "half the raid was behind the curtain [walking back|lost]",
+      "we tried the bridge with easmarach still up. [never again|the current]"
     ],
     "rumour": [
-      "got thrown behind the waterfall in galladoria [twice|three times]. easmarach does that"
+      "got thrown behind the waterfall in galladoria [twice|three times]. easmarach does that",
+      "[heard|someone said] the first galladoria raids failed because they skipped the falls",
+      "[word is|heard] easmarach and the water primal were the same river once",
+      "someone spent ten minutes behind the waterfall [looking for the way back|lost]. it happens"
     ]
   },
   "loremasterTopic": {
     "keyword": "Easmarach",
     "text": "The will of the great falls, the last door before the sanctum. It is strong only at its foot, and when wounded it withdraws into the water to gather itself. Its death quiets the current."
   },
-  "bookPage": "",
+  "bookPage": "From Aodhan's notes: the Sylvan say the great falls of the hollow were a door once, set to keep the dark things in the deep places away from the isle. The falls were called Easmarach, a name that begins with the old word for a waterfall; the rest of it the Sylvan would not explain. When the Root came, the door turned round. Now the falls keep strangers out of the hollow's last chamber and throw them back behind the water. The realm's raiders say that when it dies the roar drops to a murmur. The fire-keeper said: then it is a door again, only an open one, and someone should close it behind them.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the falls of Easmarach; {raidLeader}'s raid finished it in {minutes} minutes. The current dropped to a murmur.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Easmarach at the falls after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "kin of the same river"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose last door it guards"
+    }
+  ]
 }

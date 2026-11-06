@@ -26,33 +26,48 @@
       "source": "docs/encounters/hand-notes.json"
     }
   ],
-  "story": "The spindlers of Galladoria all come from one mother, and she has never stopped. The Broodmother is bloated past moving far, a sac of eggs on legs, and she does not need to hunt: the hollow brings her food. While she fights the young drop from her one by one and run at whoever is nearest. She lulls the strongest foe to stillness with a slow sway, as she lulls her eggs. And at the end, when her body fails, she gives the hollow everything she was still carrying, all at once. Raiders who celebrate her death too early have a short celebration.",
-  "legend": "Kill the hatchlings as they drop, steadily, and never forget the last part: when she dies twenty or more young spill out of her at once. Healers ready, AoE casters stacked on her corpse before the killing blow. Break the mezz on whoever she lulls.",
+  "story": "The spindlers of Galladoria all come from one mother, and she has never stopped. The Broodmother is bloated past moving far, a sac of eggs on legs, and she does not need to hunt: the hollow brings her food. While she fights the young drop from her one by one and run at whoever is nearest. She lulls the strongest foe to stillness with a slow sway, as she lulls her eggs. And at the end, when her body fails, she gives the hollow everything she was still carrying, all at once. Raiders who celebrate her death too early have a short celebration.\n\nEvery spindler in Galladoria is her child, and she has never stopped. The Sylvan think she came into the hollow as an ordinary cave-spinner, small and quick, and that the sap made her into a mother and nothing else. She is bloated past moving far now, a sac of eggs on legs, and she does not hunt: the hollow brings her food, and her children bring her more.\n\nWhile she fights the young drop from her one or two at a time, newly born and already hungry, and run at whoever is nearest. With a slow sway of her body she lulls her strongest foe into stillness, as she lulls her eggs. The first Living Server realm raid that came to her lost to her once, and had to be rescued by a band of the realm's best. And at the end, when her body fails, she does the last thing a mother can do. She gives the hollow everything she was still carrying, twenty or more half-formed young spilling out of her at once to avenge her. Raiders who cheer her death too early have a very short celebration.",
+  "legend": "Kill the hatchlings as they drop, steadily, and never forget the last part: when she dies twenty or more young spill out of her at once. Healers ready, AoE casters stacked on her corpse before the killing blow. Break the mezz on whoever she lulls. Stack the AoE casters behind the tank before the last tenth of her health, with healers ready on the melee. When she bursts, everything dies in the first two volleys or not at all. Superstition says never kill her while standing on an egg sac. Nobody remembers why; everybody steps off one when she gets low.",
   "yells": {
     "aggro": [
-      "The broodmother's sac shudders. Something inside moves."
+      "The broodmother's sac shudders. Something inside moves.",
+      "The broodmother's sac shudders. Something inside moves.",
+      "Hundreds of small eyes open in the dark."
     ],
     "phases": [
       {
         "trigger": "addsSpawn",
         "text": "A newly-born spindler drops from her and runs."
+      },
+      {
+        "trigger": "health<=10",
+        "text": "The broodmother swells. Something is about to come out."
       }
     ],
     "death": [
-      "Her body splits. The brood pours out!"
+      "Her body splits. The brood pours out!",
+      "Her last children pour out of her, screaming."
     ],
     "slay": [
-      "The young feed."
+      "The young feed.",
+      "The young feed.",
+      "Food for the brood.",
+      "Into the sac with you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The floor is soft. It moves."
+      "The floor is soft. It moves.",
+      "Egg-sacs hang from the roof like fruit."
     ],
     "phases": [
       {
         "trigger": "death",
         "text": "The Broodmother bursts. Her brood pours out!"
+      },
+      {
+        "trigger": "health<=10",
+        "text": "The Broodmother swells. Ready yourselves!"
       }
     ],
     "realmFirstKill": "The Spindler Broodmother is dead. Her brood is not."
@@ -60,25 +75,46 @@
   "botLines": {
     "briefing": [
       "broodmother drops babies the whole fight, kill them steady. when she dies [twenty more pop out|she bursts]",
-      "aoe casters on her corpse before the kill. [healers ready|dont celebrate early]"
+      "aoe casters on her corpse before the kill. [healers ready|dont celebrate early]",
+      "mezz breaks on whoever she lulls. [cure mezz|wake them up]",
+      "dont celebrate when she dies, [thats when it starts|the brood comes then]"
     ],
     "aftermathWin": [
-      "she popped and the aoe [ate every baby|cleaned it up]. perfect"
+      "she popped and the aoe [ate every baby|cleaned it up]. perfect",
+      "she popped and nothing reached the healers. [perfect|well done aoe]",
+      "two volleys and the brood was gone. [lovely|nice]",
+      "broodmother down, the floor stopped moving. [finally|thank goodness]"
     ],
     "aftermathLoss": [
-      "we killed her and then [the brood killed us|wiped to the babies]. classic"
+      "we killed her and then [the brood killed us|wiped to the babies]. classic",
+      "we cheered and [the babies killed us|wiped to the brood]",
+      "aoe casters were out of mana when she popped. [save mana|plan it]",
+      "the realm raid wiped here again. [the special forces will have to come|ugh]"
     ],
     "rumour": [
-      "[heard|someone said] the broodmother [wiped a whole raid|got the realm raid] with her babies after she died"
+      "[heard|someone said] the broodmother [wiped a whole raid|got the realm raid] with her babies after she died",
+      "[heard|someone said] the broodmother was a little cave spinner before the sap got her",
+      "[word is|heard] the realm raid lost to her once and the special forces had to save them",
+      "every spindler in galladoria is hers. every single one"
     ]
   },
   "loremasterTopic": {
     "keyword": "Broodmother",
     "text": "The mother of every spindler in Galladoria. Her young drop from her as she fights, and when she dies she gives up all she was carrying at once."
   },
-  "bookPage": "",
+  "bookPage": "Aodhan writes: the Sylvan do not hate the broodmother as they hate the rest. They pity her. She was a little cave-spinner once, they say, quick and clever, and the sap made her into a mother and nothing else, as it makes everything down there into one thing only. She cannot move far for the weight of her eggs. Her young drop from her as she fights, and when she dies she gives them all up at once. The fire-keeper told me that the Sylvan sing a lullaby when they hear she is dead, not for her, but for the ones that never hatched.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Spindler Broodmother; {raidLeader}'s raid finished it in {minutes} minutes. Her last brood died on her corpse.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Spindler Broodmother's brood after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose sap made her a mother of hundreds"
+    }
+  ]
 }

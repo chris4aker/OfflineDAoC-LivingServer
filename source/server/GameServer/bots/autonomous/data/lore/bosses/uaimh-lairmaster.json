@@ -16,11 +16,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
     }
   ],
-  "story": "The Uaimh were cave-folk, diggers and foragers who lived in the hollow before it was the Root's, and their lairmaster was the strongest of them, the one who kept the den. When the sap rose in the tunnels the Uaimh drank it like everyone else and began to dig where the cave told them. Their master still keeps the den. He swells when threatened, as cornered beasts do, and when he is hurt he does what every den-keeper does: he runs home, back to the heart of his lair, where his kin and his bones are. Those who chase him are fighting on his ground.",
-  "legend": "At sixty he breaks and runs back to his lair. Do not panic and do not scatter after him: the raid moves to his spot as a body and finishes him there. Clear the Uaimh diggers around his den before you pull.",
+  "story": "The Uaimh were cave-folk, diggers and foragers who lived in the hollow before it was the Root's, and their lairmaster was the strongest of them, the one who kept the den. When the sap rose in the tunnels the Uaimh drank it like everyone else and began to dig where the cave told them. Their master still keeps the den. He swells when threatened, as cornered beasts do, and when he is hurt he does what every den-keeper does: he runs home, back to the heart of his lair, where his kin and his bones are. Those who chase him are fighting on his ground.\n\nUaimh is only the old word for a cave, and the Uaimh were only cave-folk, diggers and foragers who lived in the hollow before it belonged to the Root. They kept dens between the stones, ate what the pools gave, and buried their dead in niches in the walls. Their lairmaster was the strongest of them, the one who kept the den and settled the quarrels.\n\nWhen the sap rose in the tunnels the Uaimh drank it like everyone else, and began to dig where the cave told them to: down, toward the roots, endlessly. Their diggers and delvers work the deep galleries still, and their foragers bring back what they find, and some of what they find is Hibernian. The lairmaster still keeps the den. He swells when threatened, as cornered beasts do, all bristles and teeth, and when he is hurt he does what every den-keeper does. He runs home, back to the heart of his lair, where his kin and his bones are stacked with care. The raid that chases him in ones and twos is fighting on his ground, among his family.",
+  "legend": "At sixty he breaks and runs back to his lair. Do not panic and do not scatter after him: the raid moves to his spot as a body and finishes him there. Clear the Uaimh diggers around his den before you pull. When he breaks at sixty the raid leader calls the move and everyone goes together, tanks first, healers behind; clear his diggers and delvers from the den before the fight so his home has no one left to help him. The Uaimh say a den-keeper never leaves his den twice, and he does not: once he is home, he stays home, and the fight ends there one way or the other.",
   "yells": {
     "aggro": [
-      "Uaimh Lairmaster feels threatened and appears more menacing!"
+      "Uaimh Lairmaster feels threatened and appears more menacing!",
+      "Uaimh Lairmaster feels threatened and appears more menacing!",
+      "The den-keeper bristles and bares his teeth."
     ],
     "phases": [
       {
@@ -29,15 +31,20 @@
       }
     ],
     "death": [
-      "The den... is empty now."
+      "The den... is empty now.",
+      "The den is empty now."
     ],
     "slay": [
-      "Drag it to the den."
+      "Drag it to the den.",
+      "Drag it to the den.",
+      "Bones for the niches.",
+      "Mine. My den. Mine."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Gnawed bones, stacked with care."
+      "Gnawed bones, stacked with care.",
+      "The den-keeper's smell is everywhere."
     ],
     "phases": [
       {
@@ -49,25 +56,47 @@
   },
   "botLines": {
     "briefing": [
-      "lairmaster runs home at sixty. [dont chase in ones and twos|move together] and finish him at his den"
+      "lairmaster runs home at sixty. [dont chase in ones and twos|move together] and finish him at his den",
+      "clear the uaimh diggers around his den first. [no friends for him|empty den]",
+      "when he runs, [we all move|everyone together], tanks first",
+      "his den is stacked with bones, [dont loot them|leave the bones], nothing in them anyway"
     ],
     "aftermathWin": [
-      "chased him home and killed him in his own bed. [rude but effective|grats]"
+      "chased him home and killed him in his own bed. [rude but effective|grats]",
+      "chased him home as a raid, not a rabble. [proud|good]",
+      "his den is empty now. [poor thing|good riddance]",
+      "lairmaster down at his own bones. [grim|grats]"
     ],
     "aftermathLoss": [
-      "he ran, half of us chased, half didnt. [split raid, dead raid|never again]"
+      "he ran, half of us chased, half didnt. [split raid, dead raid|never again]",
+      "he ran, ten people chased, forty didnt. [move together|call it]",
+      "we left diggers in the den and [they jumped us|it was a mess]",
+      "the healers got left behind when he ran. [stay together|move as one]"
     ],
     "rumour": [
-      "[heard|someone said] the uaimh were just cave folk before olcasgean's sap got into them"
+      "[heard|someone said] the uaimh were just cave folk before olcasgean's sap got into them",
+      "[heard|someone said] the uaimh buried their dead in the cave walls before the root came",
+      "[word is|heard] the uaimh dig toward the roots and never stop",
+      "uaimh just means cave in the old tongue. [they were cave folk|simple name]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Lairmaster",
     "text": "The keeper of the Uaimh den, cave-folk turned by the Root's sap. Wounded, he runs home to his lair, and he is worse there."
   },
-  "bookPage": "",
+  "bookPage": "Aodhan's note on the Uaimh: the Sylvan call them by the old word for a cave, as one might call a people the hill-folk or the river-folk. They were never the Sylvan's friends, but they were never enemies either; they kept to their dens and dug. Since the sap rose they dig toward the roots and do not stop, and their lairmaster, who used to settle their quarrels, now only guards the den. A raider told me he runs home when he is hurt. Of course he does, said the fire-keeper. Where else would a creature go to die?",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Uaimh Lairmaster's den; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Uaimh Lairmaster after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose sap made his folk dig"
+    }
+  ]
 }

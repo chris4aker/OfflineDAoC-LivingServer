@@ -34,13 +34,25 @@
       "text": "Titan, child of the earth, banished to World's End: bot-chat lore, kept as Living Server canon.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "He wakes 25 seconds after the fourth primal dies (OIBrain.DeadPrimalsCount >= 4) and resets after 60 seconds out of combat.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The safe points of his original puzzle are 40170, 62600 and 39237, 62644; whoever stood elsewhere drew his damage spells.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
     }
   ],
-  "story": "Olcasgean is the oldest thing on Hy Brasil and the forest's oldest enemy. When the first Sylvan woke he was already there, vast and slow and bitter, and the forests together pushed him to World's End. He went. His roots did not. They ran under the isle and ended here, in the hollow, and here he keeps the part of himself that still wants things.\n\nHe sleeps behind the falls with the isle's four elements bound around him as guards. When intruders cross the bridge the guardians speak with one voice, and he answers them from under the water, slow, spelling the word out as if he had forgotten it: protect. He admits he is tired. He does not stop. Only when the last guardian dies does he rise, and he does not rise alone: the Root has two trunks now, and both of them are him. 'I am eternal,' he tells the realm. He may be right. But he can be cut down, and Hibernia has done it.",
-  "legend": "Nothing touches him until the four primals are dead, so do not waste a single spell on the sleeping titan. When he wakes there are two of him, each with a full life: split the raid or burn one and then the other, but never half-hit both. Expect a big hit at half health from each. A hundred is enough if they know the bridge.",
+  "story": "Olcasgean is the oldest thing on Hy Brasil and the forest's oldest enemy. When the first Sylvan woke he was already there, vast and slow and bitter, and the forests together pushed him to World's End. He went. His roots did not. They ran under the isle and ended here, in the hollow, and here he keeps the part of himself that still wants things.\n\nHe sleeps behind the falls with the isle's four elements bound around him as guards. When intruders cross the bridge the guardians speak with one voice, and he answers them from under the water, slow, spelling the word out as if he had forgotten it: protect. He admits he is tired. He does not stop. Only when the last guardian dies does he rise, and he does not rise alone: the Root has two trunks now, and both of them are him. 'I am eternal,' he tells the realm. He may be right. But he can be cut down, and Hibernia has done it.\n\nWhat does the Root want? The Sylvan have argued it for an age. Some say he wants the isle back, all of it, every forest that drove him out turned to his own sour wood. Some say he wants nothing but to sleep, and that the four guardians and the halls full of servants are only the dreams of a sleeper who does not want to be woken. The oldest say both are true. He is tired, and he is angry, and the anger keeps him from rest.\n\nWhat is plain is that he made everything in Galladoria his. The keeper-tree Aroon was his first conquest, rotted from the heart. Xaga came to him of her own will and he taught her what grows in the dark. The four elements of the isle were taken one by one, wind first because wind goes everywhere, stone last because stone does not fall alone. He set them at the bridge, and he gave them one voice, and that is the voice that announces intruders. His own voice is the deep one, slow and broken, that answers.\n\nIn the old fight, the raiders say, he would not suffer anyone near him who did not stand where he allowed. Two places by the falls he tolerated; anyone elsewhere drew his fury, roots burst from the floor, and the unlucky were thrown across the sanctum. Living Server's raids fight him more plainly, two bodies of root and stone with a full life each, and each of them strikes hard when it is half cut through. Far away at World's End the old tree Elro still keeps the edge of the world where the forests sent him, and the Sylvan say Elro feels it, every time the Root is cut.",
+  "legend": "Nothing touches him until the four primals are dead, so do not waste a single spell on the sleeping titan. When he wakes there are two of him, each with a full life: split the raid or burn one and then the other, but never half-hit both. Expect a big hit at half health from each. A hundred is enough if they know the bridge. Raid leaders split it two ways: kill the first trunk, then the second, with the whole raid; or put the best half on each. Both work if nobody wavers between them. Save cooldowns for each body's half-health spell. The old guides spoke of standing on two safe spots and of being thrown about; those rules are off today, but veterans still keep the healers near the falls out of habit.",
   "yells": {
     "aggro": [
-      "I am eternal. You and your kind will die."
+      "I am eternal. You and your kind will die.",
+      "The roots tighten. Something enormous turns over in its sleep.",
+      "Why do you always come? The forest sent you, as it sent me."
     ],
     "phases": [
       {
@@ -50,19 +62,27 @@
       {
         "trigger": "health<=50",
         "text": "Cut one root and the tree grows two."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "I was old when your songs were young."
       }
     ],
     "death": [
-      "The forest... was always... afraid of me."
+      "The forest... was always... afraid of me.",
+      "Cut... and the tree... grows on..."
     ],
     "slay": [
-      "Return to the soil. I will drink you there."
+      "Return to the soil. I will drink you there.",
+      "Drink, little root. Drink of him.",
+      "Another for the hollow."
     ]
   },
   "atmosphere": {
     "lairEntry": [
       "Beyond the falls, something vast is tired.",
-      "The water here runs uphill, toward him."
+      "The water here runs uphill, toward him.",
+      "Two trunks of stone and root, one will."
     ],
     "phases": [
       {
@@ -72,6 +92,10 @@
       {
         "trigger": "health<=50",
         "text": "The titan's second trunk tears free!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The sanctum groans. The Root is failing."
       }
     ],
     "realmFirstKill": "Olcasgean is cut down. Hy Brasil breathes.",
@@ -81,28 +105,73 @@
     "briefing": [
       "dont touch the titan till all four primals are dead. hes asleep and [immune anyway|we just waste mana]",
       "when he wakes theres two of him, full health each. [main assist on the first|we kill one then the other]",
-      "both bodies hit hard at half. healers [save something|keep a big heal] for that"
+      "both bodies hit hard at half. healers [save something|keep a big heal] for that",
+      "fight starts when the last primal dies, he wakes twenty five seconds later. [be in place|get ready]",
+      "nobody touches the vortices at the bridge. [theyre just in the way|ignore them]"
     ],
     "aftermathWin": [
       "olcasgean down. the sylvan in domnann are going to [cry|sing all night]",
-      "two titans, one raid. [best night this realm has had|grats all]"
+      "two titans, one raid. [best night this realm has had|grats all]",
+      "the sylvan in domnann are going to sing our names. [no joke|they do that]",
+      "[cut the root|two-trunk down]. hy brasil breathes for a while",
+      "first time i ever heard the sanctum go quiet. [eerie|beautiful honestly]"
     ],
     "aftermathLoss": [
       "we split damage on both bodies and neither died. [one at a time next time|focus]",
-      "lost it on the second trunk. [so close|half a bar]"
+      "lost it on the second trunk. [so close|half a bar]",
+      "he woke and half the raid was still looting the primals. [focus|eyes up next time]",
+      "wavered between the two trunks and neither went down. [pick one|one at a time]",
+      "the big spell at half caught everyone stacked. [spread|save cooldowns]"
     ],
     "rumour": [
       "[heard|someone swears] they heard olcasgean talking at the bridge with nobody there. [i am tired|protect] or something",
-      "the trees in world's end look [sicker|worse] this week. maybe the root is waking"
+      "the trees in world's end look [sicker|worse] this week. maybe the root is waking",
+      "[heard|someone said] elro the ancient at world's end [groans|shakes] whenever olcasgean is cut",
+      "[word is|heard] olcasgean was the forest's oldest enemy before the fomorians ever came",
+      "someone swears the second trunk [is the real one|is the angry one]. cant both be right"
     ]
   },
   "loremasterTopic": {
     "keyword": "Olcasgean",
     "text": "The Root of Hy Brasil, driven to World's End before the first songs. His roots end in Galladoria, and his four guardians keep him asleep. When they fall he wakes as two, and both must be cut down."
   },
-  "bookPage": "On the night the realm went down to the Root, the bards who waited at the mouth say the ground moved twice: once when the last of the four guardians fell, and once, much later, when he did. Between the two the Sylvan sat in a ring and did not speak. When the raid came up, an old one asked only whether he had said anything at the end. They told her what they had heard. She said that was the first true thing he had said in an age, and went home.",
+  "bookPage": "From the songbook of the Sylvan of Domnann, put into our tongue by Aodhan of Tir na Nog. The Root was old, and the forest young; the forest pushed, and the Root went down. He went down to the end of the world, and the end of the world was not far enough, for roots do not go away, they go deep. Four of our own he took to guard him, wind and water, fire and stone. A hundred and forty of the mortal realm went down to him and cut him through, and he rose as two, and they cut him again. Sing the hundred and forty. Sing the four. Sing the Root, that he may hear it and be ashamed.",
   "chronicle": {
     "win": "{realm} woke the Root and cut him down: {raidLeader}'s raid felled both trunks of Olcasgean in {minutes} minutes.",
     "loss": "Olcasgean woke and drank {realm}'s raid under {raidLeader}; it lasted {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "corrupt-primal-of-air",
+      "relation": "guardian of his sleep"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "guardian of his sleep"
+    },
+    {
+      "id": "corrupt-primal-of-fire",
+      "relation": "guardian of his sleep"
+    },
+    {
+      "id": "corrupt-primal-of-earth",
+      "relation": "guardian of his sleep"
+    },
+    {
+      "id": "aroon-the-urlamhai",
+      "relation": "a keeper-tree he rotted"
+    },
+    {
+      "id": "xaga",
+      "relation": "a Sylvan who came to him willingly"
+    },
+    {
+      "id": "elro-the-ancient",
+      "relation": "one of the trees that drove him to World's End"
+    }
+  ]
 }

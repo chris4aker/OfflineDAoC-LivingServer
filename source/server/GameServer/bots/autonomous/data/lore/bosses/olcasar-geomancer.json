@@ -21,11 +21,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
     }
   ],
-  "story": "The Olcasar are stone that drank the Root's sap and learned to hate, and the Geomancer is the oldest of them, the one who first understood that a body of stone is only a quarry. When he needs a servant he breaks one off himself and throws it down, and it gets up. When a servant is broken he speaks over the rubble, and it gets up again. His own wounds he closes with the slow tear of a weeping rock. He is not fast and he is not proud. He simply does not run out of himself as quickly as his enemies run out of patience.",
-  "legend": "He makes adds out of himself on a timer and raises the ones you kill, so AoE them down where they stand and keep pressure on him. From eighty he snares the room and he stuns, so purge and keep the healers moving. Reflected damage on melee: heal through it.",
+  "story": "The Olcasar are stone that drank the Root's sap and learned to hate, and the Geomancer is the oldest of them, the one who first understood that a body of stone is only a quarry. When he needs a servant he breaks one off himself and throws it down, and it gets up. When a servant is broken he speaks over the rubble, and it gets up again. His own wounds he closes with the slow tear of a weeping rock. He is not fast and he is not proud. He simply does not run out of himself as quickly as his enemies run out of patience.\n\nThe Olcasar were the hollow's stone before they were anything else: the rock of the deep galleries, cool and patient and indifferent. The sap that seeps down the walls taught them to want things, and the first thing they wanted was to stop being patient. The Geomancer is the oldest of them, and the one who first understood the great secret of a body made of stone: it is only a quarry, and a quarry can be dug.\n\nWhen he needs a servant he tears a piece off himself and throws it down, and it gets up. When a servant is broken he speaks strange words over the rubble and it gets up again. He knows the ground: from the moment he is first hurt the floor around him grips the feet of his enemies, and he can strike a warrior so still that the warrior forgets how to move for the space of nine heartbeats. His wounds he closes with the slow tear of a weeping rock, and his skin bites back. The stonemelders, tainters, deepstalkers and trackers of the galleries are his kin; the spikelord and the belladonna are his captains.",
+  "legend": "He makes adds out of himself on a timer and raises the ones you kill, so AoE them down where they stand and keep pressure on him. From eighty he snares the room and he stuns, so purge and keep the healers moving. Reflected damage on melee: heal through it. The Geomancer fight is a test of AoE and patience: kill his chips where they stand, cure the snare, break the stun on whoever he picks, and never let the pile of rubble grow, because every piece of it can get back up. Superstition says crush weapons insult the Olcasar, and they hit the crush wielders first. Nobody has proved it. Everybody brings a hammer anyway.",
   "yells": {
     "aggro": [
-      "Stone remembers every blow."
+      "Stone remembers every blow.",
+      "The gallery walls lean in to listen.",
+      "Another quarry walks in on its own legs."
     ],
     "phases": [
       {
@@ -38,15 +40,20 @@
       }
     ],
     "death": [
-      "Gravel... only gravel..."
+      "Gravel... only gravel...",
+      "Only stone... only patient stone again..."
     ],
     "slay": [
-      "You break as easily as anything."
+      "You break as easily as anything.",
+      "Rubble, like the rest.",
+      "Rise. Serve. You are mine now.",
+      "Stone forgets nothing."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Rubble that was once something, waiting."
+      "Rubble that was once something, waiting.",
+      "Statues that have not decided to be statues."
     ],
     "phases": [
       {
@@ -58,25 +65,51 @@
   },
   "botLines": {
     "briefing": [
-      "geomancer makes adds out of his own body and raises the dead ones. [aoe them|kill them flat] and stay on him"
+      "geomancer makes adds out of his own body and raises the dead ones. [aoe them|kill them flat] and stay on him",
+      "geomancer stuns for nine seconds. [purge|cure stun] whoever he picks",
+      "the floor snares from eighty. [speed buffs|purge ready]",
+      "he heals himself with a stone tear, [interrupt|stop the heal] if you can"
     ],
     "aftermathWin": [
-      "geomancer is gravel. [good aoe|nice work casters]"
+      "geomancer is gravel. [good aoe|nice work casters]",
+      "no rubble left to get up. [great aoe|well done casters]",
+      "geomancer is gravel. [onwards|next]",
+      "stun broken every time, good clerics. [grats|nice]"
     ],
     "aftermathLoss": [
-      "the adds kept getting back up and we [ran out of mana|lost the healers]"
+      "the adds kept getting back up and we [ran out of mana|lost the healers]",
+      "the rubble kept getting up. [aoe the pieces|kill them flat]",
+      "stunned the tank and [nobody picked it up|it walked through us]",
+      "snared in place and his adds [ate the casters|got us]"
     ],
     "rumour": [
-      "[heard|word is] the olcasar are rocks that drank olcasgean's sap. makes sense when you see them"
+      "[heard|word is] the olcasar are rocks that drank olcasgean's sap. makes sense when you see them",
+      "[heard|someone said] the olcasar were just rock before the root's sap got into them",
+      "[word is|heard] the geomancer tears pieces off himself to make servants",
+      "the olcasar spikelord and belladonna are the geomancer's captains, they say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Olcasar",
     "text": "Stone that drank the Root's sap. The Geomancer breaks servants off his own body and raises them when they fall. He runs out of himself slowly."
   },
-  "bookPage": "",
+  "bookPage": "A Sylvan stone-song, with Aodhan's apology for the translation: Be patient, stone; you were patient when the world was water. The Sylvan sang it to the rocks of the hollow in the good years, and the rocks were patient. Then the Root's sap ran down the walls, and the rocks of the deep galleries woke impatient. The Olcasar, the Sylvan call them now. Their eldest, the Geomancer, makes servants from his own body and raises them when they fall. The fire-keeper said: he has forgotten the song. I asked whether the realm's warriors should sing it to him. She said they should hit him harder.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Olcasar Geomancer; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Olcasar Geomancer after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose sap woke the stone"
+    },
+    {
+      "id": "aroon-the-urlamhai",
+      "relation": "a fellow servant of the hollow"
+    }
+  ]
 }

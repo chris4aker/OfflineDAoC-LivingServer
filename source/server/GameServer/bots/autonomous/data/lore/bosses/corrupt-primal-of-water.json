@@ -21,11 +21,13 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "The rivers of Hy Brasil run toward the hollow now, and the water that reaches it stays. The Primal of Water is what the Root made of it: a guardian that remembers it was a spring. Hurt it badly and it does what water does when it is wounded. It goes home. It slides back into its pool, where nothing can reach it, and drinks, and comes back a sixth of itself the stronger. It does this once. The Sylvan say a spring can only forgive itself so many times. It also has a current's habit of carrying people where they did not mean to go.",
-  "legend": "Burn it to thirty, then stop: it runs to its pool and nothing hurts it there. Wait at the edge, let it heal, and kill it when it comes back. It only does it once. Watch for being swept to the far side of the falls.",
+  "story": "The rivers of Hy Brasil run toward the hollow now, and the water that reaches it stays. The Primal of Water is what the Root made of it: a guardian that remembers it was a spring. Hurt it badly and it does what water does when it is wounded. It goes home. It slides back into its pool, where nothing can reach it, and drinks, and comes back a sixth of itself the stronger. It does this once. The Sylvan say a spring can only forgive itself so many times. It also has a current's habit of carrying people where they did not mean to go.\n\nEvery spring of Hy Brasil once ran to the sea. Now the rivers bend toward the hollow, and the water that reaches it stays. The Root made a guardian of it, and the guardian remembers it was a spring: it fights like a flood, it carries people where they did not mean to go, two places by the falls where the current always drops them, and when it is badly hurt it does what water does.\n\nIt goes home. It slides back to its pool at the foot of the bridge, and while it is going nothing can hurt it, any more than a sword can hurt a river. In the pool it drinks, and comes back a sixth of itself the stronger, and fights again. It does this once. The Sylvan say a spring can forgive itself only so many times. When it dies the waters of the hollow run clear for a moment, and the Conservator's pool, far off in the galleries, dims, as if something had been taken from its hoard.",
+  "legend": "Burn it to thirty, then stop: it runs to its pool and nothing hurts it there. Wait at the edge, let it heal, and kill it when it comes back. It only does it once. Watch for being swept to the far side of the falls. The trap is mana. A raid that keeps casting while it walks to the pool spends everything on nothing, and has nothing left when it comes back. Call the pause loudly, hold, and burst it on its return. The old hands' word for it is simple: patience. Water forgives itself once; a raid gets no second chance if it wastes its mana.",
   "yells": {
     "aggro": [
-      "The water remembers. The water returns."
+      "The water remembers. The water returns.",
+      "The spring remembers the sea. It does not want to go.",
+      "Water rises over the bridge stones: we shall protect."
     ],
     "phases": [
       {
@@ -34,45 +36,87 @@
       }
     ],
     "death": [
-      "The water... runs out to sea."
+      "The water... runs out to sea.",
+      "The waters of the hollow run clear for a moment."
     ],
     "slay": [
-      "We shall protect."
+      "We shall protect.",
+      "Carried off, like all the rest.",
+      "Down to the pool with you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Four voices speak as one: we shall protect."
+      "Four voices speak as one: we shall protect.",
+      "A pool at the bridge's foot, dark and still."
     ],
     "phases": [
       {
         "trigger": "health<=30",
         "text": "The Water Primal sinks into its pool!"
+      },
+      {
+        "trigger": "death",
+        "text": "The waters of Galladoria run clear."
       }
     ],
     "realmFirstKill": "The waters of Galladoria run clear for the first time."
   },
   "botLines": {
     "briefing": [
-      "water primal runs to its pool at thirty. [stop hitting|hold dps] till it comes back, its immune in there"
+      "water primal runs to its pool at thirty. [stop hitting|hold dps] till it comes back, its immune in there",
+      "water primal: when it walks to its pool call hold. [nobody casts|stop everything] till it comes back",
+      "it throws people to two spots by the falls. [walk back calm|dont panic]",
+      "burst it the moment it comes out of the pool. [everything|all in]"
     ],
     "aftermathWin": [
-      "water down, [and nobody wasted their mana on the pool|good discipline]"
+      "water down, [and nobody wasted their mana on the pool|good discipline]",
+      "held at thirty like pros, burst it on the way back. [clean|lovely]",
+      "the conservator's pool dimmed when the water died, someone saw it from the gallery. [creepy|cool]",
+      "water down, nobody wasted a spell on the pool. [discipline|nice]"
     ],
     "aftermathLoss": [
-      "half the raid burned mana into the pool while it was immune. [again|every time]"
+      "half the raid burned mana into the pool while it was immune. [again|every time]",
+      "kept casting into the pool and [had no mana when it came back|went oom]",
+      "half the healers got thrown to the falls and [nobody walked back|we lost them]",
+      "it came back healed and we [had nothing|were empty]"
     ],
     "rumour": [
-      "[heard|word is] the water primal [heals in its pool|goes back to the pool]. you have to wait it out"
+      "[heard|word is] the water primal [heals in its pool|goes back to the pool]. you have to wait it out",
+      "[heard|someone said] every river on hy brasil bends toward galladoria now",
+      "[word is|heard] the conservator's pool goes dark when the water primal dies",
+      "someone says the water primal [only heals once|cant go home twice]. sylvan say a spring forgives itself once"
     ]
   },
   "loremasterTopic": {
     "keyword": "Primal of Water",
     "text": "The springs of the isle, turned to his use. Wounded, it slips back into its pool where nothing can follow, heals, and returns, but only once."
   },
-  "bookPage": "",
+  "bookPage": "A Sylvan water-song, as Aodhan heard it in Domnann: Spring, little spring, run to the sea; the sea is your mother, she waits for thee. They sang it to me with long faces and explained that the springs no longer run to the sea but down, into the hollow, and that the guardian at the bridge is all of them together, turned. I asked how the raiders kill it. A Sylvan warden said: you wound it, and it goes home to the pool to forgive itself, and you wait at the edge with your sword down, and when it comes back you finish it. You must be patient with water, he said. That is the whole of the song.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Corrupt Primal of Water; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Water after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the sleeper it guards"
+    },
+    {
+      "id": "corrupt-primal-of-air",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-fire",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-earth",
+      "relation": "a fellow guardian"
+    }
+  ]
 }

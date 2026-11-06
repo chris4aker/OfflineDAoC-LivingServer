@@ -21,11 +21,13 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Stone was the last of the four to fall to the Root and is the hardest to free, because stone does not fall alone. Four menders rise with it, one of each kind the old earth-tenders were: guardian, magical, natural and shadowy. They were the isle's healers once, the Sylvan say, the ones who closed the ground after a landslip. Now they close the Primal's wounds as fast as a raid can open them. The Primal itself barely moves from its place; stone never did. It does not need to. While its menders live, it has all the time in the world.",
-  "legend": "Kill the four Earthmenders first, one party on each, and only then the primal; while they live it heals faster than you hurt it. It will not leave its spot, so do not try to pull it. Bring a tank for each mender, because they fight back now.",
+  "story": "Stone was the last of the four to fall to the Root and is the hardest to free, because stone does not fall alone. Four menders rise with it, one of each kind the old earth-tenders were: guardian, magical, natural and shadowy. They were the isle's healers once, the Sylvan say, the ones who closed the ground after a landslip. Now they close the Primal's wounds as fast as a raid can open them. The Primal itself barely moves from its place; stone never did. It does not need to. While its menders live, it has all the time in the world.\n\nStone was the last of the four to fall to the Root, and it did not fall alone. When the earth of Hy Brasil was still its own there were earth-tenders among the Sylvan, menders who closed the ground after landslips and healed the scars of floods: guardians, magicians, those of the natural craft and those of the shadowed one. When the Root took the stone, he took them with it, and now the four Earthmenders rise beside the guardian of earth and close its wounds as fast as a raid can open them.\n\nThe guardian itself barely moves. Stone never did, and it is bound within a few paces of its place on the bridge. It does not need to move. While the menders live it has all the time in the world. In the earliest fights each mender could be hurt only by those of its own kind of craft, and raiders had to sort themselves into four bands to reach them; in Living Server's raids anyone can strike them, and since the menders began to fight back the raid can no longer pretend they are not there. They heal only the stone now. The Sylvan call their names when they fall, as if they were the Sylvan's own. They were.",
+  "legend": "Kill the four Earthmenders first, one party on each, and only then the primal; while they live it heals faster than you hurt it. It will not leave its spot, so do not try to pull it. Bring a tank for each mender, because they fight back now. Experienced raids send one party with a tank at each mender the moment the room starts, and leave the stone itself alone until the last mender falls. Do not try to pull it off its spot; it walks home and heals. Call the mender names as they fall, the Sylvan ask; they were earth-tenders of Domnann once, and their kin like to hear them called.",
   "yells": {
     "aggro": [
-      "Stone does not fall alone."
+      "Stone does not fall alone.",
+      "Stone and its menders rise together: we shall protect.",
+      "The ground of the isle remembers being whole."
     ],
     "phases": [
       {
@@ -34,15 +36,19 @@
       }
     ],
     "death": [
-      "The stone... remembers the sky."
+      "The stone... remembers the sky.",
+      "The stone cracks. Grass pushes through."
     ],
     "slay": [
-      "We shall protect."
+      "We shall protect.",
+      "Buried.",
+      "The earth closes over you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Four voices speak as one: we shall protect."
+      "Four voices speak as one: we shall protect.",
+      "Four figures kneel around a mound of stone."
     ],
     "phases": [
       {
@@ -55,25 +61,58 @@
   "botLines": {
     "briefing": [
       "earth primal: kill the four earthmenders first. [one group each|guardian, magical, natural, shadowy]",
-      "dont pull the earth primal, it wont move. [we go to it|fight it on its spot]"
+      "dont pull the earth primal, it wont move. [we go to it|fight it on its spot]",
+      "four menders: guardian, magical, natural, shadowy. [one party each|split four ways] at the start",
+      "dont touch the earth primal till all menders are dead. [waste of mana|it just heals]"
     ],
     "aftermathWin": [
-      "menders first then the rock. [textbook|exactly like we said]"
+      "menders first then the rock. [textbook|exactly like we said]",
+      "four menders down then the rock, [like clockwork|exactly the plan]",
+      "the sylvan said to call the menders' names. [someone did|we did]",
+      "earth down, the bridge is clear. [now the titan|here we go]"
     ],
     "aftermathLoss": [
-      "we hit the earth primal with all four menders up and it [never moved off full|healed through everything]"
+      "we hit the earth primal with all four menders up and it [never moved off full|healed through everything]",
+      "two menders were still up and the rock [healed to full|never moved]",
+      "the menders fight back now and [our light party died|we sent cloth to a mender]",
+      "someone pulled the earth primal off its spot and it [walked home healed|reset]"
     ],
     "rumour": [
-      "[heard|someone said] the earthmenders [fight back now|hit hard]. bring tanks for each"
+      "[heard|someone said] the earthmenders [fight back now|hit hard]. bring tanks for each",
+      "[heard|someone said] the earthmenders were sylvan once. earth tenders who mended landslips",
+      "[old guides said|my guild leader says] each mender used to take damage only from its own class",
+      "[heard|word is] the menders fight back now. bring tanks for each"
     ]
   },
   "loremasterTopic": {
     "keyword": "Primal of Earth",
     "text": "The stone of the isle, last to fall to the Root. Four menders rise with it and close its wounds. Kill the menders and the stone is bare."
   },
-  "bookPage": "",
+  "bookPage": "In Domnann they still keep the names of the earth-tenders who went down with the stone. Aodhan was shown the list, cut on a strip of bark: a guardian, a mage, one of the green craft and one of the shadow craft, the four kinds of menders the Sylvan always had. They closed the ground after landslips, the fire-keeper said, and after floods they sang the scars shut. Now they kneel around the guardian of stone on the bridge and sing its wounds shut instead, and they will not stop until they are cut down. When the realm's raiders do it, she asked me to tell them, say the names. I have written them below, in the Sylvan way, and will not translate them.",
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Corrupt Primal of Earth; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Earth after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the sleeper it guards"
+    },
+    {
+      "id": "corrupt-primal-of-air",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-fire",
+      "relation": "a fellow guardian"
+    }
+  ]
 }
