@@ -4,6 +4,9 @@
   "catalogKey": "caer-sidi/apocalypse",
   "locationId": "caer-sidi",
   "realm": "Albion",
+  "aliases": [
+    "apoc"
+  ],
   "facts": [
     {
       "text": "Level 87, 300,000 health; Caer Sidi's final encounter, called by Funus.",
@@ -76,7 +79,7 @@
       "rain of fire, move out of it. we need a hundred and we have [what we have|enough]"
     ],
     "aftermathWin": [
-      "APOCALYPSE DOWN. [gg all|gg], the end of the world is over",
+      "apocalypse down. [gg all|gg], the end of the world is over",
       "he said good harbingers are hard to come by. good raids too"
     ],
     "aftermathLoss": [

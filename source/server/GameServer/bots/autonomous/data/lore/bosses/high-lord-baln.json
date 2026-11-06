@@ -19,7 +19,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "More! I have more!"
       }
     ],
@@ -36,7 +36,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "High Lord Baln calls his household!"
       }
     ],

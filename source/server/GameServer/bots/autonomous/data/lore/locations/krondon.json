@@ -5,6 +5,9 @@
   "regions": [
     61
   ],
+  "aliases": [
+    "the hall under the hill"
+  ],
   "summary": "A hall older than Camelot under the Avalon hills, held now by thrawn ogres who wear its old titles.",
   "facts": [
     {
@@ -122,7 +125,7 @@
       "[guild|my old guild] wiped on the scribes in krondon. [pull one|you pull one], you get [the whole room|twenty five]"
     ],
     "tell": [
-      "krondon? ogre hall under avalon. orylle at the bottom, orshom next to her, a storm keeper with four lights, and a lot of ogres with old titles",
+      "krondon? ogre hall under avalon. orylle at the bottom with orshom, a storm keeper with four lights, and ogres with old titles",
       "thrawn ogres and the ghosts of the old hall. raid only past the first rooms. kill the lights before you touch the storm keeper",
       "big ogre dungeon in the isles. bring cold damage for orshom, nothing else hurts him"
     ]

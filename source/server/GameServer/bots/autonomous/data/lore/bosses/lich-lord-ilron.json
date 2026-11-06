@@ -4,6 +4,9 @@
   "catalogKey": "caer-sidi/lichlordilron",
   "locationId": "caer-sidi",
   "realm": "Albion",
+  "aliases": [
+    "ilron"
+  ],
   "facts": [
     {
       "text": "Level 79, 100,000 health. Raises four images of himself (level 70) that fight linked with him; tether 2,000.",
@@ -24,7 +27,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Behold me. And me. And me."
       }
     ],
@@ -41,7 +44,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Lich Lord Ilron divides into images of himself!"
       }
     ],

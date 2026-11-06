@@ -29,7 +29,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Go, little ones. Go and find them."
       }
     ],
@@ -46,7 +46,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Morbus looses his swarm! He cannot be touched!"
       }
     ],

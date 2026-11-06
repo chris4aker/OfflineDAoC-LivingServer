@@ -4,6 +4,10 @@
   "catalogKey": "krondon/orylle",
   "locationId": "krondon",
   "realm": "Albion",
+  "aliases": [
+    "the warrior queen",
+    "the ogre queen"
+  ],
   "facts": [
     {
       "text": "Level 83, 40,000 health. Fights linked with Orshom Brong; drawn past 3,800 she walks home.",
@@ -35,7 +39,7 @@
     ],
     "phases": [
       {
-        "trigger": "teleport",
+        "trigger": "health<=75",
         "text": "Back to the door with you. Come again, properly."
       },
       {
@@ -56,8 +60,8 @@
     ],
     "phases": [
       {
-        "trigger": "teleport",
-        "text": "Orylle hurls a challenger back down her hall!"
+        "trigger": "health<=75",
+        "text": "Orylle hurls challengers back down her hall!"
       }
     ],
     "realmFirstKill": "The queen of Krondon has fallen. The hall is empty."

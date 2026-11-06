@@ -4,6 +4,9 @@
   "catalogKey": "darkness-falls/beliathan",
   "locationId": "darkness-falls",
   "realm": "Neutral",
+  "aliases": [
+    "the worm"
+  ],
   "facts": [
     {
       "text": "Level 70, 100,000 health. It rises only when no prince or princess of Darkness Falls is alive: 'The tunnels rumble and shake..'.",
@@ -35,7 +38,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "The fallen rise as Beliathan's creatures!"
       }
     ],

@@ -43,7 +43,7 @@
         "text": "We are many. You are few. Soon you will be us."
       },
       {
-        "trigger": "bladeturn",
+        "trigger": "health<=75",
         "text": "Your little shields are delicious."
       }
     ],
@@ -64,7 +64,7 @@
         "text": "The souls inside Legion claw to get out!"
       },
       {
-        "trigger": "bladeturn",
+        "trigger": "health<=75",
         "text": "Legion swallows the wards and pours out its hunger!"
       }
     ],
@@ -77,7 +77,7 @@
       "it eats bladeturns and blasts after five. no bubbles on the tank"
     ],
     "aftermathWin": [
-      "LEGION DOWN. [gg|gg all]. all those voices and none of them ours",
+      "legion down. [gg|gg all]. all those voices and none of them ours",
       "nobody died for ten minutes. thats the whole trick"
     ],
     "aftermathLoss": [
@@ -97,31 +97,5 @@
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} stood close, did not die, and broke Legion in {minutes} minutes.",
     "loss": "Legion took {realm}'s fallen and grew strong on them; {raidLeader}'s raid became more voices in the choir."
-  },
-  "realmTakes": {
-    "Albion": {
-      "story": "Camelot's priests call Legion the Adversary's steward, the many-voiced thing of the gospel that named itself for its number. The knights who go down against it pray for the souls inside it as they strike.",
-      "botLines": {
-        "briefing": [
-          "the priests say pray for the souls inside it. pray later, stand close now"
-        ]
-      }
-    },
-    "Midgard": {
-      "story": "The skalds call Legion the Glutton-hall: a hall of the dead that eats its guests. A Norseman who dies to it gets no seat in any hall, so the Norse fight it angrier than anything else under the world.",
-      "botLines": {
-        "briefing": [
-          "die to legion and you get no seat in any hall. so dont die"
-        ]
-      }
-    },
-    "Hibernia": {
-      "story": "The druids say Legion is what the otherworld becomes when it has no law: a lord made of its own subjects. The bards will not sing its voices; they say a song about them would be a door.",
-      "botLines": {
-        "briefing": [
-          "the bards wont sing legion. lets give them something to sing"
-        ]
-      }
-    }
   }
 }

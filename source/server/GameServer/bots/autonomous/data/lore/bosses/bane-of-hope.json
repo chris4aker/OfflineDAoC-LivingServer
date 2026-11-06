@@ -19,7 +19,7 @@
     ],
     "phases": [
       {
-        "trigger": "teleport",
+        "trigger": "health<=75",
         "text": "Look for your friends. They are far away now."
       }
     ],
@@ -36,8 +36,8 @@
     ],
     "phases": [
       {
-        "trigger": "teleport",
-        "text": "The Bane of Hope casts someone far away!"
+        "trigger": "health<=75",
+        "text": "The Bane of Hope casts the raid apart!"
       }
     ],
     "realmFirstKill": "The Bane of Hope has fallen. There is a door after all."

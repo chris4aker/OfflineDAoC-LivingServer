@@ -19,8 +19,8 @@
     ],
     "phases": [
       {
-        "trigger": "slay",
-        "text": "Ahh. Another. Come closer."
+        "trigger": "health<=50",
+        "text": "Feed me more. I am still hungry."
       }
     ],
     "death": [
@@ -36,8 +36,8 @@
     ],
     "phases": [
       {
-        "trigger": "slay",
-        "text": "Saeor feeds on the fallen and is mended!"
+        "trigger": "health<=50",
+        "text": "Saeor hungers. Every death will mend him!"
       }
     ],
     "realmFirstKill": "High Lord Saeor has fallen, starved at last."

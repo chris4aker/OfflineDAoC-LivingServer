@@ -4,6 +4,9 @@
   "catalogKey": "krondon/orshom",
   "locationId": "krondon",
   "realm": "Albion",
+  "aliases": [
+    "orshom"
+  ],
   "facts": [
     {
       "text": "Level 80, 30,000 health, linked with Orylle. Takes no damage except Cold damage.",

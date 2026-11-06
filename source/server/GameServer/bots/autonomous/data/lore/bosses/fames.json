@@ -4,6 +4,10 @@
   "catalogKey": "caer-sidi/fames",
   "locationId": "caer-sidi",
   "realm": "Albion",
+  "aliases": [
+    "the horsemen",
+    "the four riders"
+  ],
   "facts": [
     {
       "text": "Level 83, 100,000 health; the first Horseman. He speaks first, asks a raider whether they challenge fate, and on 'yes' grants two minutes to prepare.",
@@ -29,8 +33,8 @@
     ],
     "phases": [
       {
-        "trigger": "spawn",
-        "text": "Do you challenge fate? Say no, and walk away."
+        "trigger": "health<=50",
+        "text": "Fate is patient. My brothers are more patient still."
       }
     ],
     "death": [
@@ -46,8 +50,8 @@
     ],
     "phases": [
       {
-        "trigger": "spawn",
-        "text": "Fames asks: do you challenge fate?"
+        "trigger": "health<=50",
+        "text": "Fames falters. Behind him, Bellum waits."
       }
     ],
     "realmFirstKill": "Fames has fallen. Hunger rides no more in Caer Sidi."

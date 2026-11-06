@@ -5,6 +5,12 @@
   "regions": [
     1
   ],
+  "zones": [
+    4
+  ],
+  "aliases": [
+    "golestandts lair"
+  ],
   "summary": "Albion's raid moor of granite giants and burnt grass, where the stone dragon Golestandt keeps her lair at the southern end.",
   "facts": [
     {
@@ -82,7 +88,7 @@
       "[heard|word is] two dozen good people can kill golestandt now. takes hours though"
     ],
     "tell": [
-      "dartmoor? raid zone south of cornwall. granite giants everywhere, moran the mighty on the high ground, golestandt in her lair at the south end",
+      "dartmoor? raid zone past cornwall. granite giants everywhere, moran on the high ground, golestandt in her lair at the south end",
       "albion's dragon lives at the bottom of dartmoor. bring heat resist and a raid",
       "big moor full of giants that look like rocks. dont go south alone"
     ]

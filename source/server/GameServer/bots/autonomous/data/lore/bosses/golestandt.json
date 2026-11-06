@@ -4,6 +4,12 @@
   "catalogKey": "golestandt-s-lair-dartmoor/albgolestandt",
   "locationId": "dartmoor",
   "realm": "Albion",
+  "aliases": [
+    "the stone dragon",
+    "the stone mother",
+    "gole",
+    "albion dragon"
+  ],
   "facts": [
     {
       "text": "Level 80, 300,000 health. Takes no damage outside her lair; breathes fire at every tenth of her health (90% down to 10%); her Dragon's Breath halves Heat resist; she glares, stuns and roars across the land.",
@@ -51,9 +57,8 @@
       "The moor... will remember... my name..."
     ],
     "slay": [
-      "Foolish {class}! Your flesh will make a splendid meal.",
-      "Meddle not in the affairs of dragons, {class}! Yes, you are indeed crunchy.",
-      "Perhaps your dark ages would end if {class}s like you continue to be weeded out!"
+      "Another for the moor. The heather will grow well here.",
+      "Your bones I will grind. Your name I will forget."
     ]
   },
   "atmosphere": {
@@ -80,7 +85,7 @@
       "one party on the granite giants as they come. everyone else on her"
     ],
     "aftermathWin": [
-      "GOLESTANDT DOWN. [gg|gg all], the stone mother is dead",
+      "golestandt down. [gg|gg all], the stone mother is dead",
       "she called us crunchy. who's crunchy now"
     ],
     "aftermathLoss": [

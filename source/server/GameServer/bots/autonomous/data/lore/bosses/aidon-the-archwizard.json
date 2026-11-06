@@ -4,6 +4,10 @@
   "catalogKey": "hall-of-the-corrupt/aidonthearchwizard",
   "locationId": "hall-of-the-corrupt",
   "realm": "Albion",
+  "aliases": [
+    "aidon",
+    "the archwizard"
+  ],
   "facts": [
     {
       "text": "Level 75, 40,000 health, 30-40% resists, tether 1,500 (immune past it). A permanent Heat damage shield returns 100 per hit to melee attackers.",
@@ -34,7 +38,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Fire. Ice. Air. Earth. Choose your death."
       },
       {
@@ -55,7 +59,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Aidon divides into fire, ice, air and earth!"
       }
     ],
@@ -63,7 +67,7 @@
   },
   "botLines": {
     "briefing": [
-      "aidon splits into 4 illusions. kill 3, LEAVE ONE alive or he makes a new set",
+      "aidon splits into 4 illusions. kill 3, leave one alive or he makes a new set",
       "one party per illusion, then everyone on aidon. melee eat his damage shield",
       "fight him on his floor, past his tether hes immune"
     ],

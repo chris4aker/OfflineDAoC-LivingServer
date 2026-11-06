@@ -4,6 +4,9 @@
   "catalogKey": "caer-sidi/soulreckoner",
   "locationId": "caer-sidi",
   "realm": "Albion",
+  "aliases": [
+    "the reckoner"
+  ],
   "facts": [
     {
       "text": "Level 81, 100,000 health. He starts with four to six reckoned souls and raises one or two more every 10-15 seconds; casts Drain Life Essence.",
@@ -24,7 +27,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Rise, reckoned ones. Stand between me and the uncounted."
       }
     ],
@@ -41,7 +44,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Reckoned souls rise to shield the Reckoner!"
       }
     ],

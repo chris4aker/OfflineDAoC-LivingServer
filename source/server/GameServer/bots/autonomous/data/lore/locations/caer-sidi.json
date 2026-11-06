@@ -5,6 +5,10 @@
   "regions": [
     60
   ],
+  "aliases": [
+    "sidi",
+    "cs"
+  ],
   "summary": "Arawn's turning gaol on the road to Annwn, where the dead who would not lie down are kept, and the end of all things waits at the top.",
   "facts": [
     {
@@ -23,8 +27,8 @@
       "source": "https://www.camelotherald.com/node/460"
     },
     {
-      "text": "Source myth (inspiration only): in the Welsh poem Preiddeu Annwfn, Caer Siddi is a revolving fortress of the otherworld where Gweir lies chained; three shiploads of Arthur's men sailed in Prydwen and only seven came back; a cauldron there, warmed by nine maidens' breath, will not boil a coward's food.",
-      "provenance": "original",
+      "text": "Welsh myth, not game canon: in the Welsh poem Preiddeu Annwfn, Caer Siddi is a revolving fortress of the otherworld where Gweir lies chained; three shiploads of Arthur's men sailed in Prydwen and only seven came back; a cauldron there, warmed by nine maidens' breath, will not boil a coward's food.",
+      "provenance": "myth",
       "source": "https://en.wikipedia.org/wiki/Caer_Sidi"
     },
     {
@@ -142,7 +146,7 @@
       "[heard|word is] the host in caer sidi is eight of him and only one is real"
     ],
     "tell": [
-      "caer sidi? albions epic dungeon past caldey. arawns old jail, full of liches and dead knights. apocalypse and four horsemen at the top, raid of a hundred",
+      "caer sidi? albions epic dungeon past caldey. arawns old jail, liches and dead knights, apocalypse and four horsemen on top. raid of 100",
       "undead fortress in the isles. soul reckoner, lich lords, crypt lord, and the horsemen. bring a hundred and a lot of clerics",
       "its the big one. you climb the whole fortress and at the top four riders ask you a question"
     ]

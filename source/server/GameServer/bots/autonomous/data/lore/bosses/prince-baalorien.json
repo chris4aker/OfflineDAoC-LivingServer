@@ -24,8 +24,8 @@
     ],
     "phases": [
       {
-        "trigger": "petDevoured",
-        "text": "Another for the pile."
+        "trigger": "health<=75",
+        "text": "Another servant for the pile."
       }
     ],
     "death": [
@@ -41,15 +41,15 @@
     ],
     "phases": [
       {
-        "trigger": "petDevoured",
-        "text": "Ba'alorien devours a pet and is mended!"
+        "trigger": "health<=75",
+        "text": "Ba'alorien hungers for your servants!"
       }
     ],
     "realmFirstKill": "Prince Ba'alorien has fallen. His tally ends."
   },
   "botLines": {
     "briefing": [
-      "PETS OUT for baalorien too. same rule, 2000+ away",
+      "pets out for baalorien too. same rule, 2000+ away",
       "he wiped more df raids than any prince. because of pets. dont be that guy"
     ],
     "aftermathWin": [

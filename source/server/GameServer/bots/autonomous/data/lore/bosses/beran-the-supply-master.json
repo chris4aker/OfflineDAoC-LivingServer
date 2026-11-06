@@ -24,7 +24,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Light it! Light another!"
       }
     ],
@@ -41,7 +41,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Beran sets a torch to a cask!"
       }
     ],

@@ -4,6 +4,9 @@
   "catalogKey": "darkness-falls/behemoth",
   "locationId": "darkness-falls",
   "realm": "Neutral",
+  "aliases": [
+    "behe"
+  ],
   "facts": [
     {
       "text": "Level 99 in Darkness Falls' bestiary.",

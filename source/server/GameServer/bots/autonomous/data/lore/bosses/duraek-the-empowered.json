@@ -4,6 +4,10 @@
   "catalogKey": "avalon-city/duraekempowered",
   "locationId": "avalon-city",
   "realm": "Albion",
+  "aliases": [
+    "duraek",
+    "the empowered"
+  ],
   "facts": [
     {
       "text": "Level 71, 30,000 health; Avalon City's raid final. Heat and Cold damage heal him instead of hurting him. Casts Flames of Dura'ek. Pulling him brings six dry'ak avowry.",
@@ -54,7 +58,7 @@
   },
   "botLines": {
     "briefing": [
-      "heat and cold HEAL duraek. wizards on the adds, everyone else on him",
+      "heat and cold heal duraek. wizards on the adds, everyone else on him",
       "six avowries linked, kill them first"
     ],
     "aftermathWin": [

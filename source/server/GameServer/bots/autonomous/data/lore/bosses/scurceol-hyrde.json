@@ -4,6 +4,11 @@
   "catalogKey": "krondon/scurceolhyrde",
   "locationId": "krondon",
   "realm": "Albion",
+  "aliases": [
+    "the storm keeper",
+    "storm-keeper",
+    "scurceol"
+  ],
   "facts": [
     {
       "text": "Level 81, 30,000 health, region 61. Four Lyft Miht orbs (level 90, 15,000 health) spawn in the corners of his room and float 450-790 above the floor; while any lives he takes no damage and has 320 Strength instead of 260.",
@@ -38,7 +43,7 @@
         "text": "You put out a light. There are others."
       },
       {
-        "trigger": "allOrbsDead",
+        "trigger": "addsDead",
         "text": "No... the airs are loose... the storm is loose..."
       }
     ],
@@ -59,7 +64,7 @@
         "text": "A light goes out. The air in the room stirs."
       },
       {
-        "trigger": "allOrbsDead",
+        "trigger": "addsDead",
         "text": "The lights go out. The storm-keeper can bleed."
       }
     ],

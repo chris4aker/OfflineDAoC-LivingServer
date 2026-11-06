@@ -4,6 +4,9 @@
   "catalogKey": "open-world/moranthemighty",
   "locationId": "dartmoor",
   "realm": "Albion",
+  "aliases": [
+    "moran"
+  ],
   "facts": [
     {
       "text": "Level 73, 40,000 health, a giant (size 230) in Dartmoor east of Golestandt's lair; tether 4,500.",

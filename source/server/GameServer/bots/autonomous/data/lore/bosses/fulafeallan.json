@@ -22,7 +22,7 @@
     "aggro": [],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "The foulness falls and splits."
       }
     ],
@@ -35,7 +35,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Fulafeallan breaks apart and crawls!"
       }
     ],

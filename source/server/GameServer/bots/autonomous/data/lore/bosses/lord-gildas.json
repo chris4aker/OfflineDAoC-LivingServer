@@ -4,6 +4,9 @@
   "catalogKey": "hall-of-the-corrupt/lordgildas",
   "locationId": "hall-of-the-corrupt",
   "realm": "Albion",
+  "aliases": [
+    "gildas"
+  ],
   "facts": [
     {
       "text": "Level 75, 40,000 health; one of the raid's two finals. He fights with sword and shield; below 50% he changes to a two-handed polearm and his Strength rises to 340.",

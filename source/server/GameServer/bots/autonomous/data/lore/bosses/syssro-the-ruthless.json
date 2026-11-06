@@ -24,7 +24,7 @@
     ],
     "phases": [
       {
-        "trigger": "teleport",
+        "trigger": "health<=75",
         "text": "Feed them! Feed my beasts!"
       }
     ],
@@ -41,8 +41,8 @@
     ],
     "phases": [
       {
-        "trigger": "teleport",
-        "text": "Sys'sro hurls someone into the pit!"
+        "trigger": "health<=75",
+        "text": "Sys'sro hurls the living into his pit!"
       }
     ],
     "realmFirstKill": "Sys'sro the Ruthless is dead. The pit goes hungry."

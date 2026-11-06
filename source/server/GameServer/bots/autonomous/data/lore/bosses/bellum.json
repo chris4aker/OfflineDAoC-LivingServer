@@ -29,7 +29,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Hammer, blade and spear. War has no other shapes."
       }
     ],
@@ -46,7 +46,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Bellum raises the weapons of war!"
       }
     ],

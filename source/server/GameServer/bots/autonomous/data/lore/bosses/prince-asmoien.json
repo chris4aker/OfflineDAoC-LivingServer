@@ -19,8 +19,8 @@
     ],
     "phases": [
       {
-        "trigger": "petDevoured",
-        "text": "Delicious. Bring me another."
+        "trigger": "health<=75",
+        "text": "Delicious little servants. Bring me another."
       }
     ],
     "death": [
@@ -36,15 +36,15 @@
     ],
     "phases": [
       {
-        "trigger": "petDevoured",
-        "text": "Prince Asmoien devours a pet and is mended!"
+        "trigger": "health<=75",
+        "text": "Asmoien hungers for your servants!"
       }
     ],
     "realmFirstKill": "Prince Asmoien has fallen. The familiars rest easy."
   },
   "botLines": {
     "briefing": [
-      "PETS OUT. asmoien eats a pet every 5 sec and heals off it. park them 2000+ away"
+      "pets out. asmoien eats a pet every 5 sec and heals off it. park them 2000+ away"
     ],
     "aftermathWin": [
       "nobody brought a pet in. proud of you",

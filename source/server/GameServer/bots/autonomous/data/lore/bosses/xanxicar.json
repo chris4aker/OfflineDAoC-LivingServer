@@ -4,6 +4,10 @@
   "catalogKey": "crystal-cave/xanxicar",
   "locationId": "crystal-cave",
   "realm": "Albion",
+  "aliases": [
+    "xanx",
+    "the two headed dragon"
+  ],
   "facts": [
     {
       "text": "Level 80, 100,000 health. At 80, 60, 40 and 20% he announces and brings down Xanxicar's Stomp on everything around him; from 50% Xanxicarian Champions (level 65) come one after another, 15-25 s apart, while he fights.",
@@ -73,7 +77,7 @@
       "this is a hundred man fight. the guards on the way in are the hard part"
     ],
     "aftermathWin": [
-      "XANXICAR DOWN. both heads",
+      "xanxicar down. both heads",
       "there's a light on the mound. nobody touch it"
     ],
     "aftermathLoss": [

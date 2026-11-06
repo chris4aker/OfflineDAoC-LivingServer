@@ -24,7 +24,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Mages! Feed the floor!"
       }
     ],
@@ -41,8 +41,8 @@
     ],
     "phases": [
       {
-        "trigger": "death",
-        "text": "Lord Sanguis falls. The red floor stirs."
+        "trigger": "addSpawn",
+        "text": "Blood mages rise from the red floor!"
       }
     ],
     "realmFirstKill": "Lord Sanguis has fallen. For a moment."

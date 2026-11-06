@@ -19,7 +19,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Get up, dead thing! Fight for Krevo!"
       }
     ],
@@ -36,7 +36,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Krevo Ricik drags a forgotten ghost into the fight!"
       }
     ],

@@ -24,7 +24,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Sceotan! Abrecan! The hall calls you!"
       }
     ],
@@ -41,7 +41,7 @@
     ],
     "phases": [
       {
-        "trigger": "adds",
+        "trigger": "addSpawn",
         "text": "Deben sounds the muster. More ogres come!"
       }
     ],

@@ -19,8 +19,8 @@
     ],
     "phases": [
       {
-        "trigger": "addsDead",
-        "text": "My other selves! You will pay for them!"
+        "trigger": "health<=30",
+        "text": "My other selves! Where are my other selves?"
       }
     ],
     "death": [

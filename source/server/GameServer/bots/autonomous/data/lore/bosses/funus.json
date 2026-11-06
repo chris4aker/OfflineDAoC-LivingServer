@@ -34,8 +34,8 @@
     ],
     "phases": [
       {
-        "trigger": "spawn",
-        "text": "Prepare to die. Sixty seconds you are given."
+        "trigger": "health<=50",
+        "text": "The candle gutters. It is yours, not mine."
       }
     ],
     "death": [
@@ -51,8 +51,8 @@
     ],
     "phases": [
       {
-        "trigger": "spawn",
-        "text": "The clerics glow. Funus has come."
+        "trigger": "health<=50",
+        "text": "Funus falters. The last door begins to open."
       }
     ],
     "realmFirstKill": "Funus has fallen. The last rider is unhorsed."
@@ -64,7 +64,7 @@
     ],
     "aftermathWin": [
       "four riders down. here comes the big one",
-      "funus dead. everyone rebuff NOW"
+      "funus dead. everyone rebuff now"
     ],
     "aftermathLoss": [
       "we spent everything on the riders and had nothing left for funus"
