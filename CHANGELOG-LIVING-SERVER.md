@@ -10,6 +10,10 @@ Older entries below keep the names they were written with.
 
 ## 1.2 (in development)
 
+<!-- Integration (integration/1.2): the dungeon and boss lore (feature/lore-1.2, PRs #90-#93 and Albion) is merged
+     last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
+     entries below and the Beta 1.1.2 section as they are. -->
+
 **Battleground keeps change hands** (playtest 2026-11-04: in Thidranki 210 level-22 bots fought for 45 minutes, the
 gates fell, and the Renegade Lord never dropped below 100%).
 - **Before:** once the gates were down, every gamebot walked up to the lord on its own, from wherever its last fight or

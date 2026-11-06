@@ -310,7 +310,7 @@ Added for 1.2 (owner Chris, 2026-11-01) after a player's report on r/daoc: gameb
 5,000 units, instantly and all at once, whenever you were in their line of sight. Now they notice you the way players
 did in 2003. The observer cap, the calibration, duty and the pet caps follow the North Star audit of 2026-11-03
 (challenge 2 and priority 7; `docs/audits/2026-11-03/technical.md` §8.2 on the audit branch). The design notes are in
-`docs/BOT-BUILDS-AND-RVR.md` on the `plan/rvr-builds` branch.
+[BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md) (from the `plan/rvr-builds` branch, PR #52).
 
 - **Who it changes:** autonomous gamebots in the frontier, the battlegrounds and Darkness Falls, when they pick an enemy
   player, a player's companion or a player's pet. Enemy gamebots, siege engines, keep guards, doors and monsters are
