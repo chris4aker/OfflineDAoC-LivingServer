@@ -1,0 +1,40 @@
+# The original Offline DAoC release files (shadowofze/OfflineDAoC, tags v0.36 to v0.37c), as each release's
+# SHA256SUMS.txt lists them on 2026-10-31. Living Server Setup accepts its copy of these files only when they match.
+# Copied from those SHA256SUMS.txt files (the "joined parts" line left out); one line per file: <sha256>  v<tag>/<name>
+d45a9022f6ecd1200046e2c6019c4d03a13477cc5b268160f5abd85a371d178c  v0.36/download-manifest.json
+1acb30418f872c5d2e39d5f1a06c480bf97919fb3918496c875ea32b98a93600  v0.36/Download-OfflineDAoC-v0.36.zip
+7384b1b2951cadba4371ca2217cf02aecd038341c860a17a4af0b2cd7e272535  v0.36b/download-manifest.json
+7e82bc45d0e3079ea787fc5a44d833dd0dd860e65268d146adf037ec09a6ffc6  v0.36b/Download-OfflineDAoC-v0.36b.zip
+90d56a536af3e389a7073fbf140ab9f801e744488726e9ad716b896598d80b1f  v0.36b/OfflineDAoC-v0.36b.zip.001
+ba6ffa2b8912dd75602f612544db79b6c0770b2463dd1d75fcb7a2ddec9928e0  v0.36b/OfflineDAoC-v0.36b.zip.002
+6c9c1c870a19eb60e4cbcabe77a5bb9e1fc0173143b65a4ab85157497a39a992  v0.36b/OfflineDAoC-v0.36b.zip.003
+7a3609e50ab92c1bad0a64642cac11a47b3064d5149d1728cb05b9496f33161e  v0.36c/download-manifest.json
+b5737ee469db8c5aacfc913e793f7a2b3601ef45ccc38984317e51bffaa51c6f  v0.36c/Download-OfflineDAoC-v0.36c.zip
+a782cbb828bb8b62570a3c73e3a1ef14d704b33764ce566e202dbf93ca28ac12  v0.36c/OfflineDAoC-v0.36c-part01.zip
+76d1d523126664bcfe326ea67976a9d7ee6a19c0743ac349383365a8d6927253  v0.36c/OfflineDAoC-v0.36c-part02.zip
+3fbb6b10e18997ba18afcc9f421401160f380eba59f2135d78e7c646907859e8  v0.36c/OfflineDAoC-v0.36c-part03.zip
+78795cff5988c30f509fa4ddd34d96e9d3558a031749d194735ff9c05dbb3c69  v0.36c/OfflineDAoC-v0.36c-part04.zip
+df4c7e8ddee9669ed193be4d8100d835b51a81b288c423111d75f8b36e839585  v0.36c/OfflineDAoC-v0.36c-part05.zip
+42f3b13760e15a1d83c9c573c8f61e0b4a432b7d974d3c7184249a23aa69bb0b  v0.36c/OfflineDAoC-v0.36c-part06.zip
+1eaa404729dc18aaebecf64306581bc341bb64c255e24add367b37c7023f6cc0  v0.36c/OfflineDAoC-v0.36c-part07.zip
+ddc103c0538c958cd340f8f637f059fd11b1a102f8d0d20c501e407b2de08162  v0.36c/OfflineDAoC-v0.36c-part08.zip
+2b12a42d1ba9438e52e2701a5ef1a9ec9c24bbdb2b4cb7f7cfb9e026e31c7624  v0.36c/OfflineDAoC-v0.36c-part09.zip
+8dc4a9e369ff7753d515ff6b66356c1fb0feb8014f6448cb46d8ebd8f6f21526  v0.36c/OfflineDAoC-v0.36c-part10.zip
+2bb7013721b7a34ec01b30de7ff6b0fe9f6929e5ac38be65f465a32d93e3e3b2  v0.36c/OfflineDAoC-v0.36c-part11.zip
+afb5b15f80083db12fe291c8594ef883d548b0e788aaa0f58e6d571b9e3c6e26  v0.36c/OfflineDAoC-v0.36c-part12.zip
+1d2623cc51c9f7bc5dd2876704526348ebd3f3efe9eb6e4de85263f3affc0ad5  v0.36c/OfflineDAoC-v0.36c-part13.zip
+b74c1f388b0a39a9262ea773e78e515fa05aa49ba1c74bea7a34e136cf2a0273  v0.36c/OfflineDAoC-v0.36c-part14.zip
+082776b1e4985c11e5afdd7db253556e84a7fec8bc2be1695d87bfa28fb9d7e0  v0.36c/OfflineDAoC-v0.36c-part15.zip
+857e6064ef89a30ccec215455330b070711bd0df40849951bf53c3397bcae688  v0.36c/OfflineDAoC-v0.36c-part16.zip
+aac692504d09b716d0588ba9ec7cacccd5cde2e79285dd3ec671ae206e11e20f  v0.36c/OfflineDAoC-v0.36c-part17.zip
+1605ec4bb167c95a8678bc1061544e6b9d120c1f052163d9213508ae59e346a2  v0.36c/OfflineDAoC-v0.36c-part18.zip
+605b55d7220ec2c2c004c4f6181a366aecef44c39af5bf7aeea1d0b83fed7ff1  v0.36c/OfflineDAoC-v0.36c-part19.zip
+dbd94baed8fc31330472465979a2535a43e28a93f4a8bb223f9a9a5d1cb35171  v0.37/download-manifest.json
+774afe79d4fad901b19be491ddfa3ad7a0736bb6cf9ad71ad88bb8ab8113230c  v0.37/Download-OfflineDAoC-v0.37.zip
+ab96bef2089bb35bc77865a3e21e2a6468b9d0cd482bf928e5f5be2ff5fbb743  v0.37b/download-manifest.json
+93ad7c8ccf5db7a0da6bb8297149f61185a36c407c8d7565a2e777c4dc5b8e0e  v0.37b/Download-OfflineDAoC-v0.37b.zip
+48fd6482433c4e66748bee4842cb811df87a16e8b82b65fd017b91dd46d769c1  v0.37b/OfflineDAoC-v0.37-game-patch.zip
+5f675ea050cf94f6da7d55d987cf1f886955d0b67a513bf83ac48c8489b86495  v0.37c/download-manifest.json
+d538126ec1d4a186a42c3303c6f68ea52cfebc57150dffd89344c7f16bfaac12  v0.37c/Download-OfflineDAoC-v0.37c.zip
+1d9b5796b1594d0c798cabb7d443dce7b7e25fc609bb4ac852805b94293cc49a  v0.37c/OfflineDAoC-v0.37c-client-patch-part01.zip
+e5dce62abea6bca8516fd353be588c0004e53fec476416b13be2efcaef1705d9  v0.37c/OfflineDAoC-v0.37c-client-patch-part02.zip

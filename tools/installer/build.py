@@ -13,6 +13,7 @@ The exe carries two payloads:
 """
 import argparse
 import hashlib
+import re
 import shutil
 import subprocess
 import sys
@@ -28,6 +29,8 @@ REPO = "chris4aker/OfflineDAoC-LivingServer"
 
 # shadowofze/OfflineDAoC Get-OfflineDAoC.ps1 at tags v0.37, v0.37b and v0.37c (identical); checked 2026-10-27.
 DOWNLOADER_SHA256 = "8f000a12d11fa3d69d89a6bae0149adb2b345990b9f7eb33fbef1bf4592557b4"
+UPSTREAM_RELEASES = b"https://github.com/shadowofze/OfflineDAoC/releases/download/v"
+COPY_RELEASES = b"https://github.com/chris4aker/OfflineDAoC-base-files/releases/download/v"
 # Packages known by hash. Any other package is accepted when it has a complete BUILD-INFO.txt (CI builds new ones).
 KNOWN_PACKAGES = {
     "OfflineDAoC-LivingServer-1.0-beta.zip": "ce31cf1721b3405ff0f8b971c5b58d237aaebfd1bbc737bb3a79acd8c3dd1d4b",
@@ -99,6 +102,15 @@ def main():
                  "If shadowofze released a new one, check it and update DOWNLOADER_SHA256.")
     (PAYLOAD / "Get-OfflineDAoC.ps1").write_bytes(data)
     print(f"Downloader: Get-OfflineDAoC.ps1  sha256 {got} (pinned)")
+    # 2026-10-31: the same downloader with its two release links pointed at Living Server's byte-identical copy of the
+    # release files, used by Setup only if shadowofze's releases are gone (Sources in src/Model.cs). Nothing else changes.
+    assert data.count(UPSTREAM_RELEASES) == 2, "the pinned downloader should name the release link exactly twice"
+    copy = data.replace(UPSTREAM_RELEASES, COPY_RELEASES)
+    (PAYLOAD / "Get-OfflineDAoC-copy.ps1").write_bytes(copy)
+    print(f"Downloader for the copy: Get-OfflineDAoC-copy.ps1  sha256 {hashlib.sha256(copy).hexdigest()}")
+    pins = [l for l in (HERE / "src" / "Assets" / "base-files.sha256").read_text().splitlines() if l and not l.startswith("#")]
+    if len(pins) < 30 or not all(re.fullmatch(r"[0-9a-f]{64}  v0\.3[67][bc]?/[A-Za-z0-9._-]+", l) for l in pins):
+        sys.exit("src/Assets/base-files.sha256 is not the pin list of the release files")
     if a.no_build:
         return
 

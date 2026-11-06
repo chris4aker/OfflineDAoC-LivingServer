@@ -115,9 +115,10 @@ namespace LivingServerSetup
         public static string ExtractDownloader(string dir)
         {
             Directory.CreateDirectory(dir);
+            // Same file name for both sources, so its .downloads folder (finished parts) is shared between them.
             var path = Path.Combine(dir, "Get-OfflineDAoC.ps1");
             byte[] data;
-            using (var s = Theme.Resource("Get-OfflineDAoC.ps1")) using (var ms = new MemoryStream()) { s.CopyTo(ms); data = ms.ToArray(); }
+            using (var s = Theme.Resource(Sources.UseCopy ? "Get-OfflineDAoC-copy.ps1" : "Get-OfflineDAoC.ps1")) using (var ms = new MemoryStream()) { s.CopyTo(ms); data = ms.ToArray(); }
             if (!File.Exists(path) || !File.ReadAllBytes(path).SequenceEqual(data)) File.WriteAllBytes(path, data);
             return path;
         }
@@ -365,6 +366,7 @@ namespace LivingServerSetup
         {
             try
             {
+                Sources.Decide();
                 ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
                 var js = new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
                 Dictionary<string, object> Fetch(string v)
@@ -372,7 +374,9 @@ namespace LivingServerSetup
                     using (var wc = new QuickClient())
                     {
                         wc.Headers[HttpRequestHeader.UserAgent] = "OfflineDAoC-LivingServer-Setup";
-                        var text = Encoding.UTF8.GetString(wc.DownloadData(Upstream + v + "/download-manifest.json")).TrimStart('\uFEFF');
+                        var bytes = wc.DownloadData(Sources.Base + v + "/download-manifest.json");
+                        Sources.CheckPinned("v" + v + "/download-manifest.json", bytes);
+                        var text = Encoding.UTF8.GetString(bytes).TrimStart('\uFEFF');
                         return js.Deserialize<Dictionary<string, object>>(text);
                     }
                 }
@@ -400,6 +404,113 @@ namespace LivingServerSetup
             catch (Exception e)
             {
                 Log.Write("Could not read the release manifests (" + e.Message + "); using the 0.37 sizes.");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Where the Offline DAoC release files come from. Owner 2026-10-31: shadowofze put Offline DAoC on hold, and if his
+    /// releases ever disappear a new install could not download the game at all. Living Server keeps a byte-identical
+    /// copy of every 0.36 / 0.37 release file in chris4aker/OfflineDAoC-base-files. Setup uses his releases while they
+    /// answer; only when they are gone (an HTTP 404 or 410, not a dropped connection) and the copy answers does it switch
+    /// to the copy, and then every manifest must match the SHA-256 pinned in base-files.sha256 (the downloader checks
+    /// every part against its manifest, so the pin covers the whole download). --base-files-copy forces the copy.
+    /// </summary>
+    internal static class Sources
+    {
+        public const string Copy = "https://github.com/chris4aker/OfflineDAoC-base-files/releases/download/v";
+        public static bool Forced;
+        public static bool UseCopy { get; private set; }
+        static bool decided;
+        static Dictionary<string, string> pins;
+
+        public static string Base => UseCopy ? Copy : Manifests.Upstream;
+        public static string Describe => UseCopy ? "Living Server's copy of the Offline DAoC release files" : "shadowofze's Offline DAoC releases";
+
+        /// <summary>Picks the source once. Quiet on failure: an offline PC keeps the default and fails later as before.</summary>
+        public static void Decide()
+        {
+            if (decided) return;
+            decided = true;
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+            if (Forced) { UseCopy = true; Log.Write("Release files: " + Describe + " (asked for with --base-files-copy)."); return; }
+            var probe = Payload.BaseRelease + "b/download-manifest.json";
+            var upstream = Answer(Manifests.Upstream + probe);
+            if (upstream == null || upstream == true) { Log.Write("Release files: " + Describe + "."); return; }
+            if (Answer(Copy + probe) == true)
+            {
+                UseCopy = true;
+                Log.Write("shadowofze's release files are gone (not found); using " + Describe + ".");
+            }
+            else Log.Write("shadowofze's release files are gone and Living Server's copy didn't answer either.");
+        }
+
+        /// <summary>true = the file is there, false = the server says it is gone (404/410), null = no answer.</summary>
+        static bool? Answer(string url)
+        {
+            try
+            {
+                using (var wc = new QuickClient())
+                {
+                    wc.Headers[HttpRequestHeader.UserAgent] = "OfflineDAoC-LivingServer-Setup";
+                    wc.DownloadData(url);
+                    return true;
+                }
+            }
+            catch (WebException e) when (e.Response is HttpWebResponse r && (r.StatusCode == HttpStatusCode.NotFound || r.StatusCode == HttpStatusCode.Gone))
+            {
+                return false;
+            }
+            catch (Exception) { return null; }
+        }
+
+        /// <summary>The pinned SHA-256 of an original release file ("v0.37b/download-manifest.json"), or null.</summary>
+        public static string Pin(string file)
+        {
+            if (pins == null)
+            {
+                var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                using (var s = Theme.Resource("base-files.sha256"))
+                using (var r = new StreamReader(s, Encoding.UTF8))
+                {
+                    string line;
+                    while ((line = r.ReadLine()) != null)
+                    {
+                        line = line.Trim();
+                        if (line.Length == 0 || line[0] == '#') continue;
+                        var m = Regex.Match(line, @"^([0-9a-f]{64})\s+(\S+)$");
+                        if (m.Success) map[m.Groups[2].Value] = m.Groups[1].Value;
+                    }
+                }
+                pins = map;
+            }
+            return pins.TryGetValue(file, out var sha) ? sha : null;
+        }
+
+        /// <summary>From the copy, a file must be the original byte for byte; from shadowofze's releases nothing changes.</summary>
+        public static void CheckPinned(string file, byte[] data)
+        {
+            if (!UseCopy) return;
+            var want = Pin(file);
+            string got;
+            using (var sha = SHA256.Create()) got = BitConverter.ToString(sha.ComputeHash(data)).Replace("-", "").ToLowerInvariant();
+            if (want == null || want != got)
+                throw new InvalidDataException("Living Server's copy of " + file + " is not the original release file (sha256 " + got + "); Setup won't use it.");
+        }
+
+        /// <summary>Before a download from the copy: every manifest the downloader will read must be the pinned original.</summary>
+        public static void CheckCopyManifests()
+        {
+            if (!UseCopy) return;
+            foreach (var tag in new[] { "0.36", "0.36b", "0.36c", "0.37", "0.37b", "0.37c" })
+            {
+                var file = "v" + tag + "/download-manifest.json";
+                if (Pin(file) == null) continue;
+                using (var wc = new QuickClient())
+                {
+                    wc.Headers[HttpRequestHeader.UserAgent] = "OfflineDAoC-LivingServer-Setup";
+                    CheckPinned(file, wc.DownloadData(Copy + tag + "/download-manifest.json"));
+                }
             }
         }
     }

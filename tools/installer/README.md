@@ -28,6 +28,17 @@ Setup doesn't reimplement anything that already has a tested script. It embeds t
   by SHA-256 in `build.py`). Every game file comes from his GitHub releases, checked part by part against his
   manifests. Its download cache goes to `Offline DAoC setup files\.downloads` beside the game folder, so a stopped
   install continues where it stopped.
+  - **If his releases are ever gone** (owner 2026-10-31: he put Offline DAoC on hold), Setup downloads from Living
+    Server's byte-identical copy in [chris4aker/OfflineDAoC-base-files](https://github.com/chris4aker/OfflineDAoC-base-files)
+    instead. It switches only when his release answers "not found" and the copy answers (a dropped connection
+    changes nothing), uses the same downloader with only its two release links changed (`build.py` makes
+    `Get-OfflineDAoC-copy.ps1` and checks that nothing else differs), and refuses the copy unless every manifest
+    matches the original's SHA-256 in `src/Assets/base-files.sha256`; the downloader then checks every part against
+    its manifest, as it does for his. Finished parts are shared between the two, so a stopped download continues
+    from either. `--base-files-copy` uses the copy on purpose (for testing it).
+  - The copy is kept by `mirror_base_files.py` (`--copy` to fill it one file at a time, `--check` to compare it with
+    the pins), which the copy repository runs itself on GitHub Actions: on a change, by hand, and a check every
+    Monday. It is in its own repository so that a takedown of the game client files can't touch Living Server's.
 - **the Living Server release package** (`BUILD-INFO.txt` names the build and the release it fits). Setup unpacks it
   into the game folder, as a player would, and runs its `install-server-build.ps1` / `rollback-server-build.ps1`, so
   every check stays: the version check, the refusal while the game runs, backups of every replaced file, the
@@ -59,7 +70,7 @@ in Cinzel (SIL Open Font License): `python tools/installer/art/make_art.py` rebu
 ```
 LivingServerSetup.exe --silent --new [--dest DIR] [--classic] [--new-client] [--import-from OLD_GAME]
 LivingServerSetup.exe --silent --game DIR [--add-client] [--remove] [--force] [--fresh-copy]
-     common: [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--log FILE]
+     common: [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--base-files-copy] [--log FILE]
 LivingServerSetup.exe --scan [--game DIR] --log FILE       # what Setup finds, and how it reads each game
 LivingServerSetup.exe --screenshots DIR [--scale 1.5]      # pictures of every page with made-up data
 ```

@@ -38,6 +38,7 @@ namespace LivingServerSetup
                 return 3;
             }
 
+            Sources.Forced = args.Has("--base-files-copy");
             if (args.Has("--info")) return 0;
             if (args.Has("--scan"))
             {
@@ -142,7 +143,7 @@ namespace LivingServerSetup
             }
             else
             {
-                Log.Write("Usage: LivingServerSetup.exe --silent (--new [--dest DIR] [--classic] [--new-client] [--import-from DIR] | --game DIR [--add-client] [--remove] [--force] [--fresh-copy]) [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--log FILE]");
+                Log.Write("Usage: LivingServerSetup.exe --silent (--new [--dest DIR] [--classic] [--new-client] [--import-from DIR] | --game DIR [--add-client] [--remove] [--force] [--fresh-copy]) [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--base-files-copy] [--log FILE]");
                 return 3;
             }
             // As in the window: a first install of Living Server gets every feature on at the suggested settings.
