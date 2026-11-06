@@ -5,7 +5,8 @@ namespace OfflineDaoc.Launcher;
 
 internal sealed class RealmEventRecordsControl : UserControl
 {
-    private readonly string _path;
+    // Found again at each read: the server moves the ledger from runtime\server to runtime\data at its first 1.1.2 start.
+    private readonly Func<string> _locate;
     private readonly ComboBox _realm=new(){DropDownStyle=ComboBoxStyle.DropDownList,Width=110};
     private readonly ComboBox _kind=new(){DropDownStyle=ComboBoxStyle.DropDownList,Width=125};
     private readonly ComboBox _outcome=new(){DropDownStyle=ComboBoxStyle.DropDownList,Width=165};
@@ -17,9 +18,10 @@ internal sealed class RealmEventRecordsControl : UserControl
     private readonly TextBox _details=new(){ReadOnly=true,Multiline=true,Dock=DockStyle.Fill,ScrollBars=ScrollBars.Vertical,BackColor=DaocTheme.StoneDark,ForeColor=DaocTheme.Text};
     private readonly System.Windows.Forms.Timer _debounce=new(){Interval=300};
     private int _page,_request;
-    internal RealmEventRecordsControl(string path)
+    internal RealmEventRecordsControl(string path):this(()=>path){}
+    internal RealmEventRecordsControl(Func<string> locate)
     {
-        _path=path;Dock=DockStyle.Fill;BackColor=DaocTheme.Panel;ForeColor=DaocTheme.Text;Font=new Font("Georgia",9);
+        _locate=locate;Dock=DockStyle.Fill;BackColor=DaocTheme.Panel;ForeColor=DaocTheme.Text;Font=new Font("Georgia",9);
         var layout=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=1,RowCount=4,Padding=new Padding(8)};
         layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));
         layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));layout.RowStyles.Add(new RowStyle(SizeType.Percent,100));
@@ -58,7 +60,7 @@ internal sealed class RealmEventRecordsControl : UserControl
         _refresh.Enabled=_next.Enabled=_previous.Enabled=false;_status.Text="Reading event records…";
         try
         {
-            var result=await Task.Run(()=>RealmEventRecordStore.Read(_path,realm,kind,outcome,search,page));
+            var result=await Task.Run(()=>RealmEventRecordStore.Read(_locate(),realm,kind,outcome,search,page));
             if(IsDisposed||request!=_request)return;
             if(page>0&&result.Rows.Count==0){_page=0;await RefreshAsync();return;}
             _grid.DataSource=result.Rows.Select(r=>new Row(r)).ToList();
@@ -79,7 +81,7 @@ internal sealed class RealmEventRecordsControl : UserControl
         _deleteAll.Enabled=false;
         try
         {
-            int deleted=await Task.Run(()=>RealmEventRecordStore.DeleteAll(_path));
+            int deleted=await Task.Run(()=>RealmEventRecordStore.DeleteAll(_locate()));
             if(IsDisposed)return;
             _page=0;await RefreshAsync();
             _status.Text=$"Deleted {deleted:N0} records. Game data was not changed.";

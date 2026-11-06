@@ -74,10 +74,15 @@ namespace DOL.GS.Friends
 			PlayersFriendsListsCache.TryAdd(player, friends);
 
 			if (friends.Length == 0)
+			{
+				// Fork: an empty status list too, or the first friend added got no offline status ("was not registered").
+				PlayersFriendsStatusCache.TryAdd(player, []);
 				return;
+			}
 
 			IList<DbCoreCharacter> offlineFriends = await DOLDB<DbCoreCharacter>.SelectObjectsAsync(DB.Column("Name").IsIn(friends));
-			FriendStatus[] offlineFriendStatus = offlineFriends.Select(chr => new FriendStatus(chr.Name, chr.Level, chr.Class, chr.LastPlayed)).ToArray();
+			FriendStatus[] offlineFriendStatus = offlineFriends.Select(chr => new FriendStatus(chr.Name, chr.Level, chr.Class, chr.LastPlayed))
+				.Concat(BotFriends.OfflineStatuses(friends, offlineFriends.Select(chr => chr.Name), player.Realm)).ToArray();
 			PlayersFriendsStatusCache.TryAdd(player, offlineFriendStatus);
 		}
 
@@ -128,17 +133,18 @@ namespace DOL.GS.Friends
 				return false;
 			}
 
-			player.Out.SendAddFriends(new[] { friend });
+			BotFriends.OnFriendAdded(player, friend); // Fork: the whole online list; the old client's AddFriend replaces Friends Monitor.
 			player.SerializedFriendsList = this[player];
 			DbCoreCharacter offlineFriend = Database.SelectObjects<DbCoreCharacter>(DB.Column("Name").IsEqualTo(friend)).FirstOrDefault();
 			FriendStatus[] currentFriendsStatus;
+			FriendStatus botStatus = offlineFriend == null ? BotFriends.OfflineStatus(friend, player.Realm) : null;
 
-			if (offlineFriend != null)
+			if (offlineFriend != null || botStatus != null)
 			{
 				while (PlayersFriendsStatusCache.TryGetValue(player, out currentFriendsStatus))
 				{
 					if (PlayersFriendsStatusCache.TryUpdate(player, currentFriendsStatus.Where(frd => frd.Name != friend)
-																						.Concat(new[] { new FriendStatus(offlineFriend.Name, offlineFriend.Level, offlineFriend.Class, offlineFriend.LastPlayed) })
+																						.Concat(new[] { botStatus ?? new FriendStatus(offlineFriend.Name, offlineFriend.Level, offlineFriend.Class, offlineFriend.LastPlayed) })
 																						.ToArray(), currentFriendsStatus))
 						break;
 				}
@@ -245,6 +251,8 @@ namespace DOL.GS.Friends
 					eChatType.CT_SocialInterface, eChatLoc.CL_SystemWindow);
 			}
 
+			index = BotFriends.SendOnlineBots(player, offlineFriends, index);
+
 			// Query Offline Characters
 			FriendStatus[] offline;
 
@@ -269,11 +277,11 @@ namespace DOL.GS.Friends
 		/// <param name="player">GamePlayer to send the list to.</param>
 		private bool SendPlayerFriendsList(GamePlayer player)
 		{
-			player.Out.SendAddFriends(this[player].Where(name =>
+			player.Out.SendAddFriends(BotFriends.WithOnlineBots(player, this[player].Where(name =>
 			{
 				var pair = PlayersFriendsListsCache.FirstOrDefault(kv => kv.Key != null && kv.Key.Name == name);
 				return pair.Key != null && !pair.Key.IsAnonymous;
-			}).ToArray());
+			}).ToArray()));
 			return true;
 		}
 

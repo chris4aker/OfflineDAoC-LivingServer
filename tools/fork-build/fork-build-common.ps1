@@ -5,6 +5,11 @@ $Script:ServerFolders = @('runtime/server', 'runtime/server/lib', 'runtime/serve
 # The launcher (its Living Server tab): the game's own copy, and the 0.37c new client's copy when present.
 $Script:LauncherFolders = @('runtime', 'new-client/runtime')
 $Script:LauncherFiles = @('OfflineDAoC.dll', 'OfflineDAoC.exe', 'OfflineDAoC.pdb', 'OfflineDAoC.deps.json', 'OfflineDAoC.runtimeconfig.json')
+# The server's own libraries beside GameServer.dll, shipped in the build's core\ folder (Living Server 1.1.2: save safety
+# changed CoreDatabase, CoreBase and CoreServer, and a server whose GameServer.dll was new but CoreDatabase.dll released
+# stopped at start, playtest 2026-11-04). Each one replaces the folder's copy only where the folder has one; its .pdb
+# goes with it where the folder has a .pdb too.
+$Script:CoreFiles = @('CoreBase.dll', 'CoreDatabase.dll', 'CoreServer.dll')
 # Also the 0.37c new client and its launcher, which share the game's runtime.
 $Script:ProcessNames = @('CoreServer', 'DOLServer', 'OfflineDAoC', 'game', 'camelot', 'connect', 'Godot_v4.7.2-stable_mono_win64')
 
@@ -38,8 +43,11 @@ function Find-GameFolder([string]$Given, [string]$BuildDir) {
         if (Test-GameFolder $full) { return $full }
         Stop-WithMessage "No Offline DAoC game in '$full' (runtime\server\GameServer.dll is missing)."
     }
-    $starts = @()
     $parent = Split-Path -Parent $BuildDir
+    # The documented place is inside the game folder: when the build sits there, that folder wins, even if other
+    # playable* folders sit next to it (playtest 2026-11-04: three side-by-side installs refused to install).
+    if ($parent -and (Test-GameFolder $parent)) { return [IO.Path]::GetFullPath($parent) }
+    $starts = @()
     if ($parent) { $starts += $parent; $grand = Split-Path -Parent $parent; if ($grand) { $starts += $grand } }
     $starts += $BuildDir
     $found = @()
@@ -159,4 +167,33 @@ function Get-BytesSha256([byte[]]$Bytes) {
 
 function Get-ContentPath([string]$Game, [string]$Relative) {
     return (Join-Path $Game ($Relative.Replace('/', [IO.Path]::DirectorySeparatorChar)))
+}
+
+# The world database and its WAL files, when present (Living Server 1.1.2: the installer backs them up first). With the
+# server closed, the database file and its -wal are a consistent set; -shm is only an index SQLite rebuilds.
+function Get-WorldDatabaseFiles([string]$Game) {
+    $db = Join-Path $Game 'runtime\data\opendaoc.sqlite3.db'
+    if (!(Test-Path -LiteralPath $db)) { return @() }
+    $files = @($db)
+    foreach ($suffix in @('-wal', '-shm')) { if (Test-Path -LiteralPath "$db$suffix") { $files += "$db$suffix" } }
+    return $files
+}
+
+function Get-FreeBytes([string]$Path) {
+    try {
+        $root = [IO.Path]::GetPathRoot([IO.Path]::GetFullPath($Path))
+        return (New-Object IO.DriveInfo $root).AvailableFreeSpace
+    } catch { return $null }
+}
+
+# Keeps the world database copies of the newest $Keep installs (each install's data\ folder) and removes older ones. Only
+# the data\ folders go; the server and launcher backups stay, so ROLLBACK.cmd and -ToRelease work as before.
+function Remove-OldDatabaseBackups([string]$Game, [int]$Keep) {
+    $root = Join-Path $Game 'runtime\server\deployment-backups'
+    if (!(Test-Path -LiteralPath $root)) { return 0 }
+    $withData = @(Get-ChildItem -LiteralPath $root -Directory -Filter 'fork-build-*' | Sort-Object Name |
+        Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'data') })
+    $old = if ($withData.Count -gt $Keep) { $withData[0..($withData.Count - $Keep - 1)] } else { @() }
+    foreach ($folder in $old) { Remove-Item -LiteralPath (Join-Path $folder.FullName 'data') -Recurse -Force }
+    return @($old).Count
 }

@@ -3,8 +3,8 @@
 name: build-and-test
 
 on:
+  # Every push, main included, so main is tested again after each merge.
   push:
-    branches-ignore: [main]
   pull_request:
   workflow_dispatch:
 
@@ -12,6 +12,30 @@ permissions:
   contents: read
 
 jobs:
+  # README.md, ForkBuildInfo.BuildName, MainForm.DisplayVersion and the newest released changelog heading must name the
+  # same release (audit 2026-11-03 §8.6; main said Beta 1.1 after 1.1.1 was out). Also the release scripts' own tests.
+  versions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the README and release versions agree
+        run: |
+          python3 tools/release/check_versions.py
+          python3 -m unittest discover -s tools/release/tests -v
+
+  # The epic encounter catalog (docs/encounters) must match the boss scripts it was read from: a script change without
+  # a regenerated catalog, or with a hand check now out of date, fails here (source/tools/epic_encounter_catalog.py).
+  encounter-catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the epic encounter catalog is up to date
+        run: |
+          python3 source/tools/epic_encounter_catalog.py --check
+          python3 -m unittest discover -s source/tools/tests -v
+
   server:
     runs-on: windows-latest
     timeout-minutes: 45
@@ -86,13 +110,13 @@ jobs:
           name: server-test-results
           path: "**/TestResults/*.trx"
 
-      # The launcher ships in the build too (its Living Server tab). Its own tests for that tab must pass;
-      # the rest of the launcher tests run in the informational launcher job below.
+      # The launcher ships in the build too (its Living Server tab and, from 1.1.2, its update check). Their own tests
+      # must pass; the rest of the launcher tests run in the informational launcher job below.
       - name: Build launcher and test the Living Server tab
         shell: bash
         run: |
           dotnet build source/tools/OfflineDaoc.Launcher/OfflineDaoc.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
-          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
+          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests|FullyQualifiedName~Tests.Update" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
           summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
           echo "::notice title=Living Server tab tests::${summary:-no summary line found}"
 
@@ -133,13 +157,24 @@ jobs:
             Copy-Item "$launcher/$file" "$dir/launcher"
             $launcherInfo += "launcher/$file=$((Get-FileHash "$dir/launcher/$file" -Algorithm SHA256).Hash.ToLowerInvariant())"
           }
+          # The server's own libraries (1.1.2 on): a GameServer.dll built against changed ones fails at start beside the
+          # released ones (playtest 2026-11-04), so they always ship with it.
+          New-Item -ItemType Directory -Path "$dir/core" -Force | Out-Null
+          $coreInfo = @()
+          foreach ($file in "lib/CoreBase.dll", "lib/CoreBase.pdb", "lib/CoreDatabase.dll", "lib/CoreDatabase.pdb", "CoreServer.dll", "CoreServer.pdb") {
+            $from = "source/server/Release/$file"
+            if (!(Test-Path $from)) { throw "No $from" }
+            Copy-Item $from "$dir/core"
+            $leaf = Split-Path -Leaf $file
+            $coreInfo += "core/$leaf=$((Get-FileHash "$dir/core/$leaf" -Algorithm SHA256).Hash.ToLowerInvariant())"
+          }
           $dll = (Get-FileHash "$dir/GameServer.dll" -Algorithm SHA256).Hash.ToLowerInvariant()
           $pdb = (Get-FileHash "$dir/GameServer.pdb" -Algorithm SHA256).Hash.ToLowerInvariant()
           $content = (Get-FileHash "$dir/content-patches.json" -Algorithm SHA256).Hash.ToLowerInvariant()
           Set-Content -Path "$dir/BUILD-INFO.txt" -Encoding UTF8 -Value (@(
             "BuildName=$name", "BaseRelease=$base", "Commit=${{ github.sha }}", "Branch=${{ github.ref_name }}",
             "Built=$((Get-Date).ToUniversalTime().ToString('o'))", "GameServer.dll=$dll", "GameServer.pdb=$pdb",
-            "content-patches.json=$content") + $launcherInfo)
+            "content-patches.json=$content") + $coreInfo + $launcherInfo)
           "dir=$dir" >> $env:GITHUB_OUTPUT
           "artifact=OfflineDAoC-LivingServer-$name-$short" >> $env:GITHUB_OUTPUT
           Write-Host "::notice title=Server build package::$name commit $short GameServer.dll sha256 $dll"

@@ -1,11 +1,15 @@
 # Builds the Living Server Setup exe and tests it on Windows: pictures of every page, then a real install of
 # Offline DAoC from shadowofze's releases and every path Setup takes (tools/installer/test-installer.ps1).
+# Beta 1.1.2: also which package Setup installs (a newer one from GitHub, checked by its digest), and the launcher's
+# update path end to end on a fake game folder (tools/installer/test-launcher-update.ps1).
 name: installer
 
 on:
   push:
     paths:
       - 'tools/installer/**'
+      - 'source/tools/OfflineDaoc.Launcher/Updates/**'
+      - 'source/tools/OfflineDaoc.Launcher/MainForm.Updates.cs'
       - '.github/workflows/installer.yml'
   workflow_dispatch:
     inputs:
@@ -14,6 +18,17 @@ on:
         default: "v1.0-beta"
       e2e:
         description: "Run the real-download end-to-end tests (about 30-60 minutes)"
+        type: boolean
+        default: true
+  # The release workflow (release.yml) builds and tests a published release's Setup with these same jobs.
+  workflow_call:
+    inputs:
+      package_release:
+        description: "Living Server release tag whose package Setup embeds"
+        type: string
+        required: true
+      e2e:
+        description: "Run the real-download end-to-end tests"
         type: boolean
         default: true
 
@@ -54,6 +69,61 @@ jobs:
         with:
           name: screenshots
           path: tools/installer/shots/
+          if-no-files-found: warn
+
+  # Which package Setup installs (no game needed): GitHub's newest release when it is newer than the embedded one,
+  # checked by its SHA-256 digest; the embedded one with --no-update or when the digest is wrong or missing.
+  setup-newest:
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingServer-Setup
+          path: setup
+      - name: Newest release, --no-update, wrong and missing digests
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $exe = Get-ChildItem setup -Recurse -Filter *.exe | Select-Object -First 1
+          $pkg = Get-ChildItem setup -Recurse -Filter LivingServer.zip | Select-Object -First 1
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& 'tools/installer/test-installer.ps1' -Exe '$($exe.FullName)' -Package '$($pkg.FullName)' -Work 'C:\lsnewest' -Scenario newest; exit `$LASTEXITCODE"
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: setup-newest-logs
+          path: C:\lsnewest\logs\
+          if-no-files-found: warn
+
+  # The launcher's update path (GET UPDATE without the window): the published v1.1-beta package installed on a fake
+  # 0.37 game, then the launcher built from this commit applies the v1.1.1-beta release file with --apply-update,
+  # INSTALL.cmd runs after it closes, and ROLLBACK.cmd undoes it. About two minutes, no game download.
+  launcher-update:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Build the launcher
+        run: dotnet build source/tools/OfflineDaoc.Launcher/OfflineDaoc.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
+      - name: Update v1.1-beta to v1.1.1-beta through the launcher, then roll back
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/installer/test-launcher-update.ps1 -Launcher source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows/OfflineDAoC.exe -Work C:\lsupdate -From v1.1-beta -To v1.1.1-beta
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: launcher-update-logs
+          path: C:\lsupdate\logs\
           if-no-files-found: warn
 
   e2e:

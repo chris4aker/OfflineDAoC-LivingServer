@@ -55,15 +55,16 @@ namespace DOL.GS
 
         public static readonly RaidDungeon[] RaidDungeons =
         [
-            new("dungeon-albion-krondon", "Krondon", eRealm.Albion, 61, "Orylle", 160, new(31413, 70773, 15765), ["Orylle"]),
-            new("dungeon-albion-avalon", "Avalon City", eRealm.Albion, 50, "DuraekEmpowered", 120, new(32425, 28962, 8756), ["DuraekEmpowered"]),
+            // Sizes: the period's comfortable raid (docs/RAID-SIZES.md, 2026-11-04); win-rate sizing moves them 70-150%.
+            new("dungeon-albion-krondon", "Krondon", eRealm.Albion, 61, "Orylle", 64, new(31413, 70773, 15765), ["Orylle"]),
+            new("dungeon-albion-avalon", "Avalon City", eRealm.Albion, 50, "DuraekEmpowered", 64, new(32425, 28962, 8756), ["DuraekEmpowered"]),
             new("dungeon-albion-crystal", "Crystal Cave", eRealm.Albion, 62, "Xanxicar", 120, new(31577, 35305, 14551), ["Xanxicar"], Through: 50),
-            new("dungeon-albion-corrupt", "Hall of the Corrupt", eRealm.Albion, 277, "AidonTheArchwizard", 120, new(31353, 37634, 14873),
+            new("dungeon-albion-corrupt", "Hall of the Corrupt", eRealm.Albion, 277, "AidonTheArchwizard", 48, new(31353, 37634, 14873),
                 ["AidonTheArchwizard", "LordGildas"]),
-            new("dungeon-midgard-trollheim", "Trollheim", eRealm.Midgard, 150, "Nosdoden", 160, new(37538, 12262, 13377), ["Nosdoden"]),
-            new("dungeon-midgard-iarnvidiur", "Iarnvidiur's Lair", eRealm.Midgard, 161, "Iarnvidiur", 120, new(13848, 11523, 18263), ["Iarnvidiur"]),
-            new("dungeon-midgard-dodens", "Dodens Gruva", eRealm.Midgard, 246, "SpiritmasterAros", 96, new(39061, 36970, 15495), ["SpiritmasterAros"]),
-            new("dungeon-hibernia-tursuil", "Tur Suil", eRealm.Hibernia, 190, "Balor", 160, new(32032, 31048, 15984), ["Balor"]),
+            new("dungeon-midgard-trollheim", "Trollheim", eRealm.Midgard, 150, "Nosdoden", 64, new(37538, 12262, 13377), ["Nosdoden"]),
+            new("dungeon-midgard-iarnvidiur", "Iarnvidiur's Lair", eRealm.Midgard, 161, "Iarnvidiur", 64, new(13848, 11523, 18263), ["Iarnvidiur"]),
+            new("dungeon-midgard-dodens", "Dodens Gruva", eRealm.Midgard, 246, "SpiritmasterAros", 40, new(39061, 36970, 15495), ["SpiritmasterAros"]),
+            new("dungeon-hibernia-tursuil", "Tur Suil", eRealm.Hibernia, 190, "Balor", 40, new(32032, 31048, 15984), ["Balor"]),
             new("dungeon-hibernia-marfach", "Marfach Caverns", eRealm.Hibernia, 276, "BlackLady", 64, new(30086, 37378, 15001),
                 ["BlackLady", "ChieftainCaimheul", "Avartack"]),
         ];
@@ -92,6 +93,8 @@ namespace DOL.GS
             /// <summary>Formation slots with no staging or hub post (tight ground by the entrance); skipped from then on.</summary>
             public readonly HashSet<int> UnusableSlots = new();
             public RealmRaidDungeonRoute DungeonRoute;
+            /// <summary>A dragon raid's attempts and regroups (2026-10-30); null for a dungeon raid.</summary>
+            public RealmRaidDragonFight DragonFight;
             public readonly RealmRaidLootOwner.Ledger LootLedger = new();
             public readonly Dictionary<Group, Party> Parties = new();
             public GameLiving[] Support = [];
@@ -101,6 +104,10 @@ namespace DOL.GS
             public long NextPostWarning;
             /// <summary>Level-50 bots this raid must stage (200 when forced; scaled to the realm when automatic).</summary>
             public int Required = RealmRaidRecruitmentPolicy.AutonomousMinimumPresent;
+            /// <summary>Level-50 bots of the realm this raid recruits (300 when forced; sized with Required when automatic).</summary>
+            public int RecruitCap = RealmRaidRecruitmentPolicy.MaximumBots;
+            /// <summary>How an automatic raid was sized from its encounter's record (null when forced).</summary>
+            public RealmRaidRecruitmentPolicy.RaidSizing Sizing;
             /// <summary>This raid's members did most of the damage to its final encounter (LootOwner).</summary>
             public bool FinalKillCredited;
             /// <summary>Another realm's raid was credited with this raid's final encounter (a contested neutral dungeon).</summary>
@@ -108,6 +115,8 @@ namespace DOL.GS
             /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): a dragon raid's charge at staging, once.</summary>
             public bool LeeroyRolled, LeeroyDone;
             public string LeeroyName;
+            /// <summary>Wipes this raid took (dungeon encounters and dragons): a time-out with none is no result.</summary>
+            public int Wipes;
         }
         private sealed class Party
         {
@@ -229,6 +238,8 @@ namespace DOL.GS
                 eRealm realm = ScheduledRealms[index];
                 if (!NextScheduled.TryGetValue(realm, out long due))
                     NextScheduled[realm] = due = now + RealmRaidRecruitmentPolicy.FirstScheduledDelayMilliseconds(index);
+                // A slot that comes due during the startup ramp waits for it (Start refuses until then).
+                if (!AutonomousPopulationController.StartupRampFinished) continue;
                 int online = OnlineLevelFifty(realm);
                 if (!RealmRaidRecruitmentPolicy.ScheduledRaidDue(now, due, Raids.Values.Any(r => r.Definition.Realm == realm), online, minutes))
                     continue;
@@ -238,16 +249,16 @@ namespace DOL.GS
                     .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
                 if (chosen == null)
                 {
-                    Log.Info($"REALM_RAID_SCHEDULE_SKIPPED realm={realm} online={online} reason=\"no encounter available (respawning or on cooldown)\"");
+                    Log.Info($"REALM_RAID_SCHEDULE_SKIPPED realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"no encounter available (respawning or on cooldown)\"");
                     continue;
                 }
                 if (Start(chosen.Id, realm, out string reason))
                 {
-                    Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={realm} online={online} required={Raids[chosen.Id].Required} " +
-                             $"recruitCap={RealmRaidRecruitmentPolicy.RecruitCap(Raids[chosen.Id].Required)} nextMinutes={minutes}");
+                    Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} required={Raids[chosen.Id].Required} " +
+                             $"recruitCap={Raids[chosen.Id].RecruitCap} {SizeField(Raids[chosen.Id])} nextMinutes={minutes}");
                 }
                 else
-                    Log.Warn($"REALM_RAID_SCHEDULE_FAILED event={chosen.Id} realm={realm} online={online} reason=\"{reason}\"");
+                    Log.Warn($"REALM_RAID_SCHEDULE_FAILED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"{reason}\"");
             }
         }
         /// <summary>
@@ -279,26 +290,37 @@ namespace DOL.GS
                 }
                 if (!Start(chosen.Id, realm, out reason))
                     return false;
-                reason = $"{chosen.Name}: {Raids[chosen.Id].Required} of {online} free level 50s must gather (at least 15 minutes)";
-                Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={realm} online={online} required={Raids[chosen.Id].Required} forced=lstest");
+                Raid opened = Raids[chosen.Id];
+                reason = $"{chosen.Name}: {opened.Required} of {online} free level 50s must gather (at least 15 minutes), up to {opened.RecruitCap} recruited" +
+                         (opened.Sizing is { } sizing && sizing.Percent != 100 ? $"; {sizing.Percent:0.#}% of its full {sizing.FullRequired} ({sizing.Why})" : "");
+                Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} required={opened.Required} " +
+                         $"recruitCap={opened.RecruitCap} {SizeField(opened)} forced=lstest");
                 return true;
             }
         }
 
+        private static string SizeField(Raid raid) => raid.Sizing is { } sizing ? $"size={sizing.Percent:0.#}% full={sizing.FullRequired}" : "size=100%";
+
+        /// <summary>
+        /// Every raid encounter. The last number is the raid's full size (an automatic raid's Required before win-rate
+        /// sizing moves it 70-150%): the comfortable size of a 2002-2004 raid there, from period forum threads
+        /// (docs/RAID-SIZES.md, owner 2026-11-04). It was 200 for every dragon, epic and neutral raid. Forced raids
+        /// from the launcher still need 200.
+        /// </summary>
         public static readonly Definition[] Definitions =
         [
-            new("dragon-albion", "Golestandt", eRealm.Albion, 1, "AlbGolestandt", 200),
-            new("dragon-midgard", "Gjalpinulva", eRealm.Midgard, 100, "MidGjalpinulva", 200),
-            new("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, 200, "HibCuuldurach", 200),
-            new("epic-albion", "Caer Sidi", eRealm.Albion, 60, "ApocInitializator", 200),
-            new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 200),
-            new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 200),
-            new("summoners-albion", "Summoner's Hall", eRealm.Albion, 248, "GrandSummonerGovannon", 200),
-            new("summoners-midgard", "Summoner's Hall", eRealm.Midgard, 248, "GrandSummonerGovannon", 200),
-            new("summoners-hibernia", "Summoner's Hall", eRealm.Hibernia, 248, "GrandSummonerGovannon", 200),
-            new("darkness-albion", "Darkness Falls", eRealm.Albion, 249, "Legion", 200),
-            new("darkness-midgard", "Darkness Falls", eRealm.Midgard, 249, "Legion", 200),
-            new("darkness-hibernia", "Darkness Falls", eRealm.Hibernia, 249, "Legion", 200),
+            new("dragon-albion", "Golestandt", eRealm.Albion, 1, "AlbGolestandt", 70),
+            new("dragon-midgard", "Gjalpinulva", eRealm.Midgard, 100, "MidGjalpinulva", 70),
+            new("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, 200, "HibCuuldurach", 70),
+            new("epic-albion", "Caer Sidi", eRealm.Albion, 60, "ApocInitializator", 100),
+            new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 100),
+            new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 100),
+            new("summoners-albion", "Summoner's Hall", eRealm.Albion, 248, "GrandSummonerGovannon", 64),
+            new("summoners-midgard", "Summoner's Hall", eRealm.Midgard, 248, "GrandSummonerGovannon", 64),
+            new("summoners-hibernia", "Summoner's Hall", eRealm.Hibernia, 248, "GrandSummonerGovannon", 64),
+            new("darkness-albion", "Darkness Falls", eRealm.Albion, 249, "Legion", 64),
+            new("darkness-midgard", "Darkness Falls", eRealm.Midgard, 249, "Legion", 64),
+            new("darkness-hibernia", "Darkness Falls", eRealm.Hibernia, 249, "Legion", 64),
             ..RaidDungeons.Select(d => new Definition(d.Id, d.Name, d.Realm, d.Region, d.BossType, d.SuggestedBots))
         ];
 
@@ -399,10 +421,13 @@ namespace DOL.GS
                             RealmEventRecords.Progress(raid.Definition.Id, "Battle", "Expedition began advancing to the encounter.", raid.Support.Length, present);
                             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
                                 $"The {raid.Definition.Name} expedition is advancing with {present} staged level-50 adventurers.");
-                            // An expedition that lost here the last two times brings the Epic Special Forces from the start.
-                            if (raid.Definition.IsDungeon && AutonomousEpicSpecialForces.ComesFromStart(raid.Definition.Id))
+                            // An expedition that lost here the last two times brings the Epic Special Forces from the start
+                            // (dragon raids too since 2026-10-30; their record is the dragon's own ledger).
+                            if (AutonomousEpicSpecialForces.ComesFromStart(raid.Definition.Id))
                                 AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm,
                                     "the last two expeditions here were defeated");
+                            // A dragon raid's first attempt: everyone at the staging ring is in it.
+                            raid.DragonFight?.Engage(StagedBots(raid).OfType<GameBot>().Select(b => b.DatabaseID), DragonState(raid), now);
                             if (leeroy != null && AutonomousRaidLeeroy.Charge(leeroy, raid.Boss, staged, raid.Definition.Name))
                                 raid.LeeroyName = leeroy.Name;
                         }
@@ -423,6 +448,19 @@ namespace DOL.GS
                         { End(raid, now, "Route blocked: no remaining encounter was reachable from the raid's positions for 20 minutes."); continue; }
                         if (raid.DungeonRoute.Complete)
                         { End(raid, now, CompletionReason(raid, $"The {raid.Definition.Name} expedition defeated the final encounter.")); continue; }
+                    }
+                    // A dragon raid's wipe (2026-10-30): the same regroup and Special Forces call as a dungeon raid's.
+                    if (raid.Started && raid.DragonFight is { } fight)
+                    {
+                        fight.Advance(DragonRaiders(raid), DragonState(raid), now);
+                        while (fight.TryTakeWipe(out int failures))
+                            OnWipe(raid, raid.Boss.Name, failures, now);
+                        if (fight.Defeated)
+                        {
+                            // "after 2 failed attempts", or a regroup nobody reached for 20 minutes (2026-10-31).
+                            End(raid, now, $"Defeated at {fight.DefeatedAt} {fight.DefeatedHow}.");
+                            continue;
+                        }
                     }
                     foreach (Party party in raid.Parties.Values) UpdateView(raid, party);
                 }
@@ -453,7 +491,7 @@ namespace DOL.GS
             lock (Sync)
             {
                 if (Membership.TryGetValue(leader.Group, out Raid joined)) { view = joined.Parties[leader.Group].View; return true; }
-                Raid raid = Raids.Values.FirstOrDefault(r => r.Definition.Realm == leader.Realm && !r.Forced && r.Parties.Count < RealmRaidRecruitmentPolicy.MaximumParties);
+                Raid raid = Raids.Values.FirstOrDefault(r => r.Definition.Realm == leader.Realm && !r.Forced && RealmParties(r) < RealmRaidRecruitmentPolicy.MaximumParties);
                 if (raid == null && Raids.Values.Any(r => r.Definition.Realm == leader.Realm)) return false;
                 if (raid == null)
                 {
@@ -473,7 +511,9 @@ namespace DOL.GS
                 else if (Random.Shared.NextDouble() >= RealmRaidRecruitmentPolicy.JoinExistingChance) return false;
                 // Removing a party must not make its count reuse a surviving
                 // party's staging slot and pile reinforcements on top of it.
-                if (raid.Support.Length + members.Length > RealmRaidRecruitmentPolicy.MaximumBots) return false;
+                // An automatic raid takes parties that answer on their own only up to its recruit cap, counting the
+                // parties it has planned (its size is the lever of the win-rate balance; before, they filled it to 300).
+                if (PartyCapRefusal(raid, false, members.Length + raid.ForcedParties.Sum(p => p.Length), raid.RecruitCap) != null) return false;
                 if (!TryFreeSlot(raid, out int slot, out Vector3 staging, out var hubPost)) return false;
                 var party = new Party { Members = members, FormationSlot = slot, Staging = staging, HubPost = hubPost, Target = members.Length };
                 raid.Parties[leader.Group] = party;
@@ -500,6 +540,13 @@ namespace DOL.GS
                 Log.Warn($"REALM_RAID_START_UNAVAILABLE event={id} reason=\"no validated entrance\" detail=\"{RealmRaidDungeonRoute.LastFailure}\"");
                 return false;
             }
+            // An automatic raid waits for the startup ramp: its size comes from the realm's online level 50s, and two minutes
+            // after a restart few are in (Tuscaran Glacier opened at 20:48 on 2026-11-04 with full=58, not 100).
+            if (!forced && !AutonomousPopulationController.StartupRampFinished)
+            {
+                reason = $"the realm's gamebots are still logging in after the server start (at most {AutonomousPopulationController.StartupRampMinutesLeft} more minutes)";
+                return false;
+            }
             if (preview != null) SupersedeAutomatic(realm, id);
             GameBot[][] recruits = forced && rallyHub != null
                 ? AutonomousBotGroupCoordinator.PlanForcedRaid(realm, rallyHub.Region, rallyHub.Center) : [];
@@ -517,6 +564,12 @@ namespace DOL.GS
                 if (forced && recruits.SelectMany(p => p).Any(b => IsReserved(b) || GetView(b.Group) != null))
                 { reason = "A planned recruit joined another expedition. Nothing was reassigned; please retry."; return false; }
                 long now = GameLoop.GameLoopTime;
+                // An automatic raid's size comes from its encounter's record (win-rate sizing, 2026-11-04); a forced
+                // raid keeps its 200 to stage and 300 to recruit.
+                RealmRaidRecruitmentPolicy.RaidSizing sizing = forced ? null : RealmRaidRecruitmentPolicy.Size(
+                    RealmRaidRecruitmentPolicy.RequiredBots(OnlineLevelFifty(realm), definition.SuggestedBots, RealmRaidRecruitmentPolicy.MinimumBotsSetting),
+                    RealmRaidRecord.GetResults(id), RealmRaidRecruitmentPolicy.RulesFromSettings(), RealmRaidRecord.Loaded,
+                    RealmRaidRecruitmentPolicy.MinimumBotsSetting > 0);
                 // An event may list several muster hubs; the first with a complete, connected
                 // hub-to-encounter route is used (far frontier entrances, e.g. Summoner's Hall).
                 Raid raid = null;
@@ -524,8 +577,8 @@ namespace DOL.GS
                 foreach (RealmRaidMuster.Hub hub in RealmRaidMuster.Hubs.Where(h => h.Event == id))
                 {
                     var candidate = new Raid { Definition = definition, Boss = Bosses[id], Forced = forced, Created = now, Hub = hub,
-                        Required = forced ? RealmRaidRecruitmentPolicy.AutonomousMinimumPresent
-                            : RealmRaidRecruitmentPolicy.RequiredBots(OnlineLevelFifty(realm), definition.SuggestedBots, RealmRaidRecruitmentPolicy.MinimumBotsSetting),
+                        Required = sizing?.Required ?? RealmRaidRecruitmentPolicy.AutonomousMinimumPresent,
+                        RecruitCap = sizing?.RecruitCap ?? RealmRaidRecruitmentPolicy.MaximumBots, Sizing = sizing,
                         Deadline = forced ? long.MaxValue : now + RealmRaidRecruitmentPolicy.AutonomousStagingLimitMilliseconds };
                     if (definition.IsDungeon)
                     {
@@ -538,6 +591,8 @@ namespace DOL.GS
                         }
                         candidate.DungeonRoute = route;
                     }
+                    else
+                        candidate.DragonFight = new RealmRaidDragonFight(candidate.Boss.Name);
                     bool staged = TryStaging(candidate, 0, out var destination);
                     bool posted = TryHubPost(candidate, 0, out var origin);
                     if (!staged || !posted || !RealmRaidMuster.TryRoute(WorldMgr.GetRegion(hub.Region), PathfindingProvider.Instance, realm,
@@ -553,6 +608,7 @@ namespace DOL.GS
                 }
                 if (raid == null) return false;
                 Raids[id] = raid;
+                if (sizing != null) Log.Info(RealmRaidRecruitmentPolicy.SizedLine(id, GlobalConstants.RealmToName(realm), sizing));
                 // One raid in twenty has a raider who can't wait for the final encounter (bot_living_leeroy).
                 raid.LeeroyRolled = AutonomousRaidLeeroy.On && AutonomousRaidLeeroy.RollForRaid(Random.Shared.NextDouble());
                 if (raid.DungeonRoute != null) raid.DungeonRoute.LeeroyRolled = raid.LeeroyRolled;
@@ -567,10 +623,10 @@ namespace DOL.GS
                 RealmEventNotices.QueueScreen(id, realm, $"A {definition.Name} raid is forming at {raid.Hub.Name}.", AnnouncementKind.PveRealmEvent);
                 RealmEventNotices.Queue(id, realm, forced
                     ? $"{definition.Name}: {recruits.Sum(p => p.Length)} level-50 adventurers reserved; gather at {raid.Hub.Name}. {startCondition}"
-                    : $"{definition.Name}: recruiting up to 300 level-50 adventurers via {raid.Hub.Name}; at least 200 must arrive before assault.",
+                    : $"{definition.Name}: recruiting up to {raid.RecruitCap} level-50 adventurers via {raid.Hub.Name}; at least {raid.Required} must arrive before assault.",
                     "raid_forming", RaidSlots(definition.Name, null));
                 reason = forced ? $"Reserved {recruits.Sum(p => p.Length)} level-50 bots, closest to {raid.Hub.Name} first. The raid starts as soon as 200 are staged and runs until the encounter is defeated or you press Stop event. {startCondition}" :
-                    $"Recruiting up to 300 level-50 bots via {raid.Hub.Name}. At least 200 must arrive before assault; staging can last up to {RealmRaidRecruitmentPolicy.AutonomousStagingLimitMilliseconds / 60_000} minutes.";
+                    $"Recruiting up to {raid.RecruitCap} level-50 bots via {raid.Hub.Name}. At least {raid.Required} must arrive before assault; staging can last up to {RealmRaidRecruitmentPolicy.AutonomousStagingLimitMilliseconds / 60_000} minutes.";
                 return true;
             }
         }
@@ -588,6 +644,34 @@ namespace DOL.GS
             RealmRaidStaging.DragonCountsAsLanded((raid.Boss.Flags & GameNPC.eFlags.FLYING) != 0,
                 raid.Boss.IsWithinRadius(DragonLairPlacement.Home(raid.Definition.Realm), 2000), raid.Boss.InCombat);
 
+        /// <summary>The dragon as its raid's fight tracker sees it this pulse (RealmRaidDragonFight).</summary>
+        private static RealmRaidDragonFight.Dragon DragonState(Raid raid) =>
+            new(raid.Boss.InCombat, DragonLanded(raid), DragonLairPlacement.IsOutOfLair(raid.Boss), raid.Boss.HealthPercent, raid.Boss.Health);
+
+        /// <summary>
+        /// The raid's roster as the fight tracker sees it: standing (alive, in the dragon's region, not walking back from
+        /// a release), at the dragon (within the dungeon route's presence radius) and at the staging ring.
+        /// Review fix, 2026-10-31: a dragon raider releases to a bind in the dragon's own region (TryRaidRelease is for
+        /// dungeons), and the autonomous controller clears IsReturningAfterRelease on its next turn, so a released raider
+        /// is "standing" again seconds after it fell. The tracker therefore remembers who fell during an attempt instead
+        /// of judging the wipe from the corpses of the last minute and a half.
+        /// </summary>
+        private static List<RealmRaidDragonFight.Raider> DragonRaiders(Raid raid)
+        {
+            var raiders = new List<RealmRaidDragonFight.Raider>(raid.Support.Length);
+            foreach (GameBot bot in raid.Support.OfType<GameBot>())
+            {
+                bool standing = bot.IsAlive && bot.CurrentRegionID == raid.Definition.Region && !bot.IsReturningAfterRelease;
+                raiders.Add(new(bot.DatabaseID, standing,
+                    standing && bot.IsWithinRadius(raid.Boss, RealmRaidDungeonRoute.TargetPresenceRadius),
+                    standing && IsStaged(raid, bot)));
+            }
+            return raiders;
+        }
+
+        /// <summary>A dragon raid regrouping at its staging ring after a wipe (RealmRaidDragonFight).</summary>
+        private static bool Regrouping(Raid raid) => raid.DragonFight?.Regrouping == true;
+
         private static int PresentAtHub(Raid raid, Party party) => party.Members.Count(b => IsAtHub(raid, party, b));
 
         private static bool IsAtHub(Raid raid, Party party, GameBot b) => IsEligible(b) && b.IsAlive && !b.IsReturningAfterRelease && !b.IsOnStableMasterRoute &&
@@ -599,19 +683,29 @@ namespace DOL.GS
         /// a raid by tight ground fills the slots that fit instead of waiting on one that never will (Krondon, 2026-10-21:
         /// the raid asked for slot 7 for 90 minutes with 7 parties gathered, and its rally failed).
         /// </summary>
-        private static bool TryFreeSlot(Raid raid, out int slot, out Vector3 staging, out Vector3 hubPost)
+        private static bool TryFreeSlot(Raid raid, out int slot, out Vector3 staging, out Vector3 hubPost, bool specialForces = false)
         {
             staging = hubPost = default;
-            for (slot = 0; slot < RealmRaidRecruitmentPolicy.MaximumParties; slot++)
+            foreach (int candidate in RealmRaidRecruitmentPolicy.SlotOrder(specialForces))
             {
-                int candidate = slot;
                 if (raid.UnusableSlots.Contains(candidate) || raid.Parties.Values.Any(p => p.FormationSlot == candidate)) continue;
+                slot = candidate;
                 if (TryStaging(raid, candidate, out staging) && TryHubPost(raid, candidate, out hubPost)) return true;
                 raid.UnusableSlots.Add(candidate);
             }
             slot = -1;
             return false;
         }
+
+        /// <summary>A party made only of the Epic Special Forces (they come on top of the realm's limits).</summary>
+        private static bool IsSpecialForcesParty(Party party) => party.Members.Length > 0 && party.Members.All(b => b.IsEpicSpecialForce);
+
+        private static int RealmParties(Raid raid) => raid.Parties.Values.Count(p => !IsSpecialForcesParty(p));
+        private static int SpecialForcesParties(Raid raid) => raid.Parties.Values.Count(IsSpecialForcesParty);
+        private static int RealmBots(Raid raid) => raid.Support.Count(b => b is not GameBot { IsEpicSpecialForce: true });
+
+        private static string PartyCapRefusal(Raid raid, bool specialForces, int joining, int recruitCap = RealmRaidRecruitmentPolicy.MaximumBots) =>
+            RealmRaidRecruitmentPolicy.PartyCapRefusal(specialForces, RealmParties(raid), RealmBots(raid), SpecialForcesParties(raid), joining, recruitCap);
 
         private static bool TryHubPost(Raid raid, int slot, out Vector3 post)
         {
@@ -631,11 +725,12 @@ namespace DOL.GS
             return true;
         }
 
-        private static int PresentAtStaging(Raid raid) => raid.Parties.Values
-            .Sum(p =>
-            p.Members.Count(b => IsEligible(b) && b.IsAlive && !b.IsOnStableMasterRoute && b.Group != null &&
-                b.CurrentRegionID == (raid.Definition.IsDungeon ? raid.DungeonRoute.Entrance.SourceRegion : raid.Definition.Region) &&
-                AtStaging(raid, b)));
+        private static int PresentAtStaging(Raid raid) => raid.Parties.Values.Sum(p => p.Members.Count(b => IsStaged(raid, b)));
+
+        /// <summary>A living member standing on the raid's staging ring (outside a dungeon's door, around a dragon's lair).</summary>
+        private static bool IsStaged(Raid raid, GameBot b) => IsEligible(b) && b.IsAlive && !b.IsOnStableMasterRoute && b.Group != null &&
+            b.CurrentRegionID == (raid.Definition.IsDungeon ? raid.DungeonRoute.Entrance.SourceRegion : raid.Definition.Region) &&
+            AtStaging(raid, b);
 
         private static GameLiving[] StagedBots(Raid raid) => raid.Parties.Values
             .SelectMany(p => p.Members.Where(b => IsEligible(b) && b.IsAlive && !b.IsOnStableMasterRoute && b.Group != null &&
@@ -649,13 +744,15 @@ namespace DOL.GS
                 home == null ? null : new Vector3(home.X,home.Y,home.Z));
         }
 
+        /// <summary>A dragon raid gathering at its staging ring, before it starts or while it regroups after a wipe: its
+        /// members in the dragon's region walk the checked route around the lair, never through it.</summary>
         public static bool TryPendingDragonRally(GameBot bot, out Vector3 home)
         {
             home=default;
             if (bot?.IsAutonomousWorldBot != true || bot.Group == null) return false;
             lock(Sync)
             {
-                if (!Membership.TryGetValue(bot.Group,out var raid) || raid.Started || raid.Definition.IsDungeon ||
+                if (!Membership.TryGetValue(bot.Group,out var raid) || raid.Started && !Regrouping(raid) || raid.Definition.IsDungeon ||
                     !raid.HubDeparted || bot.CurrentRegionID != raid.Definition.Region) return false;
                 var point=DragonLairPlacement.Home(raid.Definition.Realm);
                 home=new(point.X,point.Y,point.Z);
@@ -663,10 +760,11 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>The raid's dragon while the raid is not going in: nobody pulls it alone (also during a regroup).</summary>
         public static bool IsPendingDragonTarget(GameBot bot, GameLiving target)
         {
             if(bot?.IsAutonomousWorldBot != true || bot.Group == null || target == null) return false;
-            lock(Sync) return Membership.TryGetValue(bot.Group,out var raid) && !raid.Started &&
+            lock(Sync) return Membership.TryGetValue(bot.Group,out var raid) && (!raid.Started || Regrouping(raid)) &&
                 !raid.Definition.IsDungeon && ReferenceEquals(raid.Boss,target);
         }
 
@@ -696,12 +794,13 @@ namespace DOL.GS
                     // An automatic raid holds up to three planned parties at once and forms whichever eight (or the final
                     // four) are free first: one fixed roster of solo grinders was rarely out of combat all at once, and
                     // the first scheduled dragon rally (2026-10-19) stalled at 24 of 58 for twenty minutes.
-                    int recruitCap = RealmRaidRecruitmentPolicy.RecruitCap(raid.Required);
+                    int recruitCap = raid.RecruitCap;
                     int planned = raid.ForcedParties.Sum(p => p.Length);
-                    if (!raid.Forced && raid.Support.Length + planned < recruitCap &&
+                    int realmBots = RealmBots(raid); // the Special Forces come on top of the cap
+                    if (!raid.Forced && realmBots + planned < recruitCap &&
                         raid.ForcedParties.Count < RealmRaidRecruitmentPolicy.AutomaticPlannedParties)
                     {
-                        int size = Math.Min(8, recruitCap - raid.Support.Length - planned);
+                        int size = Math.Min(8, recruitCap - realmBots - planned);
                         var waiting = AutonomousBotGroupCoordinator.PlanWaitingRaidParty(raid.Definition.Realm, size);
                         if (waiting != null)
                         {
@@ -746,7 +845,9 @@ namespace DOL.GS
                 foreach (var raid in Raids.Values)
                 {
                     if (now < raid.NextRefill) continue;
-                    var shortParty = raid.Parties.FirstOrDefault(p => RealmRaidRecruitmentPolicy.NeedsReplacement(p.Value.Target, p.Value.Members.Length));
+                    // The Special Forces are not topped up with the realm's own bots.
+                    var shortParty = raid.Parties.FirstOrDefault(p => !IsSpecialForcesParty(p.Value) &&
+                        RealmRaidRecruitmentPolicy.NeedsReplacement(p.Value.Target, p.Value.Members.Length));
                     if (shortParty.Key == null) continue;
                     raid.NextRefill = now + 10_000;
                     refills.Add((raid.Definition.Id, shortParty.Key, raid.Hub, raid.Forced, raid.Released.ToArray()));
@@ -798,8 +899,8 @@ namespace DOL.GS
             lock (Sync)
             {
                 if (!Membership.TryGetValue(group, out Raid raid) || !raid.Parties.TryGetValue(group, out Party party) ||
-                    !RealmRaidRecruitmentPolicy.NeedsReplacement(party.Target, party.Members.Length) ||
-                    raid.Support.Length >= RealmRaidRecruitmentPolicy.MaximumBots) return false;
+                    !RealmRaidRecruitmentPolicy.NeedsReplacement(party.Target, party.Members.Length) || IsSpecialForcesParty(party) ||
+                    RealmBots(raid) >= RealmRaidRecruitmentPolicy.MaximumBots) return false;
                 party.Members = party.Members.Append(bot).ToArray();
                 if (raid.HubDeparted || raid.Started) party.CatchingUp.Add(bot.DatabaseID);
                 raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
@@ -808,14 +909,18 @@ namespace DOL.GS
             }
         }
 
-        public static bool TryGetForcedStaging(string id, out AutonomousBotGroupCoordinator.SharedCamp camp)
+        /// <summary>The raid's post for a new party, or why there is none (named in REALM_RAID_SPECIAL_FORCES_FAILED).</summary>
+        public static bool TryGetForcedStaging(string id, bool specialForces, int joining,
+            out AutonomousBotGroupCoordinator.SharedCamp camp, out string refusal)
         {
             camp = null;
             lock (Sync)
             {
-                if (!Raids.TryGetValue(id, out var raid) || raid.Parties.Count >= RealmRaidRecruitmentPolicy.MaximumParties) return false;
-                if (!TryFreeSlot(raid, out int slot, out _, out var staging))
+                if (!Raids.TryGetValue(id, out var raid)) { refusal = "the raid is not running"; return false; }
+                if ((refusal = PartyCapRefusal(raid, specialForces, joining)) != null) return false;
+                if (!TryFreeSlot(raid, out int slot, out _, out var staging, specialForces))
                 {
+                    refusal = $"no free formation slot with a staging and hub post (parties={raid.Parties.Count} unusableSlots={raid.UnusableSlots.Count})";
                     if (GameLoop.GameLoopTime >= raid.NextPostWarning)
                     {
                         raid.NextPostWarning = GameLoop.GameLoopTime + 60_000;
@@ -831,20 +936,23 @@ namespace DOL.GS
             }
         }
 
-        public static bool CommitForcedParty(string id, Group group)
+        public static bool CommitForcedParty(string id, Group group, out string refusal)
         {
             lock (Sync)
             {
-                if (!Raids.TryGetValue(id, out var raid) ||
-                    raid.Parties.Count >= RealmRaidRecruitmentPolicy.MaximumParties || Membership.ContainsKey(group)) return false;
+                if (!Raids.TryGetValue(id, out var raid)) { refusal = "the raid is not running"; return false; }
+                if (Membership.ContainsKey(group)) { refusal = "the group is already in a raid"; return false; }
                 var members = group.GetMembersInTheGroup().OfType<GameBot>().ToArray();
-                // The Epic Special Forces come on top of the realm's own raiders (the 300-bot limit is the realm's).
+                // The Epic Special Forces come on top of the realm's own raiders: the 38-party and 300-bot limits are the
+                // realm's, and they have three parties of their own (in-game check 2026-11-04: a full raid refused them).
                 bool specialForces = members.Length > 0 && members.All(b => b.IsEpicSpecialForce);
-                if (members.Length is not (4 or 8) ||
-                    !specialForces && raid.Support.Length + members.Length > RealmRaidRecruitmentPolicy.MaximumBots ||
-                    members.Any(b => !IsEligible(b) || b.Realm != raid.Definition.Realm ||
-                    Reservations.GetValueOrDefault(b.DatabaseID) != id)) return false;
-                if (!TryFreeSlot(raid, out int slot, out var staging, out var hubPost)) return false;
+                if ((refusal = PartyCapRefusal(raid, specialForces, members.Length)) != null) return false;
+                if (members.Length is not (4 or 8)) { refusal = $"the group has {members.Length} bots, not 4 or 8"; return false; }
+                if (members.Any(b => !IsEligible(b))) { refusal = "a member is not an eligible level 50"; return false; }
+                if (members.Any(b => b.Realm != raid.Definition.Realm)) { refusal = "a member is of another realm"; return false; }
+                if (members.Any(b => Reservations.GetValueOrDefault(b.DatabaseID) != id)) { refusal = "a member is not reserved for this raid"; return false; }
+                if (!TryFreeSlot(raid, out int slot, out var staging, out var hubPost, specialForces))
+                { refusal = $"no free formation slot with a staging and hub post (parties={raid.Parties.Count} unusableSlots={raid.UnusableSlots.Count})"; return false; }
                 var party = new Party { Members = members, FormationSlot = slot, Staging = staging, HubPost = hubPost, Target = members.Length };
                 // They arrive at the hub after the raid has left it, and walk in like late members.
                 if (specialForces && (raid.HubDeparted || raid.Started))
@@ -981,7 +1089,10 @@ namespace DOL.GS
                 return;
             }
             bool landed = DragonLanded(raid);
-            bool hold = !raid.Started || !landed;
+            // After a wipe the raid regroups at its staging ring, outside the dragon's aggro, and goes in again together
+            // (RealmRaidDragonFight, 2026-10-30).
+            bool regrouping = Regrouping(raid);
+            bool hold = !raid.Started || !landed || regrouping;
             // A dragon drawn out of its lair is immune there: the raid forms at the lair and draws it home
             // (Gjalpinulva, 2026-10-20: the raid's posts followed her out and she stayed at 100% for an hour).
             Vector3 point = hold ? party.Staging :
@@ -991,6 +1102,7 @@ namespace DOL.GS
             { point = party.Anchor ?? party.Staging; hold = true; }
             string state = !raid.Started ? !landed
                 ? "Raid rally — dragon airborne" : "Raid rally"
+                : regrouping ? "RAID — regrouping at the staging ring after a wipe"
                 : !landed ? "Waiting for dragon landing" : hold ? "RAID — waiting for a clear formation post" : "RAID — fighting";
             party.DestinationView = new(raid.Definition.Id, state,
                 new($"realm-event-{raid.Definition.Id}", raid.Boss.Name, raid.Boss.CurrentZone?.Description ?? raid.Definition.Name,
@@ -1331,15 +1443,25 @@ namespace DOL.GS
             string[] named = raid.DungeonRoute?.NamedDefeated.ToArray() ?? [];
             if (outcome != "Boss defeated" && named.Length > 0)
                 reason += $" Named encounters defeated: {string.Join(", ", named)}.";
-            RealmEventRecords.Finish(raid.Definition.Id, outcome, reason, raid.Support.Length);
+            // A raid started from the launcher is marked in the ledger: its result is not part of the encounter's record
+            // for raid sizing or the Special Forces (owner, 2026-11-04). So is a raid the Special Forces joined: a win they
+            // took part in makes their next call-up here a party smaller.
+            int specialForcesJoined = AutonomousEpicSpecialForces.Joined(raid.Definition.Id);
+            // And the size it ran at, so the next raid here carries on from it (2026-11-05).
+            double? sizePercent = raid.Sizing?.RecordedPercent;
+            // And how many wipes it took: a time-out without one stays out of the record (owner, 2026-11-05).
+            RealmEventRecords.Finish(raid.Definition.Id, outcome, RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
+                RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes),
+                specialForcesJoined), sizePercent), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
-            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, outcome);
+            AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes),
+                raid.Forced, sizePercent);
             Log.Info($"REALM_RAID_ENDED event={raid.Definition.Id} outcome=\"{outcome}\" support={raid.Support.Length} required={raid.Required} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
-                     $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} reason=\"{reason}\"");
+                     $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} wipes={raid.Wipes} reason=\"{reason}\"");
             if (outcome == "Defeated")
                 GameWideAnnouncements.Queue(AnnouncementKind.PveRealmEvent, GameWideAnnouncements.RaidDefeated(raid.Definition.Realm,
-                    raid.DungeonRoute?.DefeatedAt ?? raid.Definition.BossType, raid.Definition.Name));
+                    raid.DungeonRoute?.DefeatedAt ?? raid.DragonFight?.DefeatedAt ?? raid.Definition.BossType, raid.Definition.Name));
             // Owner 2026-10-07: every realm hears when a raid (automatic or forced) brings down the final boss of an
             // epic dungeon, Summoner's Hall or Darkness Falls.
             if (outcome == "Boss defeated" && raid.Definition.IsDungeon)
@@ -1388,9 +1510,11 @@ namespace DOL.GS
 
         private const string StoppedByPlayer = "Stopped by the player";
 
-        /// <summary>A named encounter wiped the raid: the realm hears it, and the raid regroups for one more attempt.</summary>
+        /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
+        /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
         private static void OnWipe(Raid raid, string boss, int failures, long now)
         {
+            raid.Wipes++;
             Log.Info($"REALM_RAID_WIPE event={raid.Definition.Id} boss=\"{boss}\" failures={failures} support={raid.Support.Length} " +
                      $"living={raid.Support.Count(b => b.IsAlive)} minutes={(now - raid.Created) / 60_000}");
             if (failures >= RealmRaidDungeonRoute.MaximumFailedAttempts) return;
@@ -1435,7 +1559,7 @@ namespace DOL.GS
             lock (Sync) return Definitions.Select(d =>
             {
                 if (Raids.TryGetValue(d.Id, out var r)) return new Summary(d.Id, d.Name, GlobalConstants.RealmToName(d.Realm),
-                    r.Started ? "RAID — " + (r.DungeonRoute?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :
+                    r.Started ? "RAID — " + (r.DungeonRoute?.Status ?? r.DragonFight?.Status ?? (DragonLanded(r) ? "underway" : "waiting for dragon landing")) :
                     $"Raid rally — {(r.Forced ? "forced" : "automatic")} — {(r.HubDeparted ? "travel/final staging" : r.Hub.Name)}" +
                         (r.Forced ? " — starts when 200 are staged" + (!DragonLanded(r) ? " and the dragon lands" : "") :
                         GameLoop.GameLoopTime >= r.Deadline ? !DragonLanded(r) ? " — waiting for dragon landing" : " — waiting for arrivals" : ""),

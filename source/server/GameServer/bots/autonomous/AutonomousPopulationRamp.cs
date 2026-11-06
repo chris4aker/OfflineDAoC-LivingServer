@@ -39,6 +39,25 @@ public static class AutonomousPopulationRamp
         return Math.Min(target, desired);
     }
 
+    /// <summary>Minutes after the ramp's end that it counts as finished even if some bots never logged in.</summary>
+    public const int FinishGraceMinutes = 10;
+
+    /// <summary>
+    /// The startup ramp has finished: the population is off, or the ramp's minutes have passed and the whole roster is
+    /// online (<paramref name="populationSatisfied"/>), or the ramp ended <see cref="FinishGraceMinutes"/> ago. Until
+    /// then no automatic realm raid opens (2026-11-04/05 on the owner's test copy: Tuscaran Glacier opened two minutes
+    /// after a restart and was sized from the few level 50s already online, 58 instead of 100).
+    /// </summary>
+    public static bool Finished(bool enabled, int rampMinutes, TimeSpan sinceStartup, bool populationSatisfied)
+    {
+        double ramp = Math.Max(0, rampMinutes), minutes = sinceStartup.TotalMinutes;
+        return !enabled || minutes >= ramp && populationSatisfied || minutes >= ramp + FinishGraceMinutes;
+    }
+
+    /// <summary>Minutes until <see cref="Finished"/> at the latest.</summary>
+    public static int MinutesLeft(int rampMinutes, TimeSpan sinceStartup) =>
+        Math.Max(0, (int)Math.Ceiling(Math.Max(0, rampMinutes) + FinishGraceMinutes - sinceStartup.TotalMinutes));
+
     public static TimeSpan NominalLoginOffset(int ordinal, int rosterCount, int rampMinutes)
     {
         int target = Math.Max(0, rosterCount);

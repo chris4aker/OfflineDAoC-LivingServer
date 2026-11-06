@@ -5,7 +5,7 @@
 #   ROLLBACK.cmd -DryRun
 #   PREPARE-FOR-UPDATE.cmd     (= ROLLBACK.cmd -ToRelease)
 #
-# Restores the GameServer.dll/.pdb files, the launcher files, helper scripts and game files the last install replaced or
+# Restores the GameServer.dll/.pdb files, the server libraries (CoreBase, CoreDatabase, CoreServer), the launcher files, helper scripts and game files the last install replaced or
 # fixed, from its backup, and checks every restored file by SHA-256. It refuses if the installed files changed since
 # (unless -Force). Run it again to undo the install before that one.
 #
@@ -40,12 +40,16 @@ if ($ToRelease) {
     $clientManifest = Read-ManifestFile (Join-Path $game 'new-client\PACKAGE MANIFEST.sha256')
     $wanted = @()
     foreach ($folder in $Script:ServerFolders) { foreach ($name in @('GameServer.dll', 'GameServer.pdb')) { $wanted += "$folder/$name" } }
+    foreach ($folder in $Script:ServerFolders) {
+        foreach ($name in $Script:CoreFiles) { $wanted += "$folder/$name"; $wanted += "$folder/$([IO.Path]::ChangeExtension($name, '.pdb'))" }
+    }
     foreach ($folder in $Script:LauncherFolders) { foreach ($name in $Script:LauncherFiles) { $wanted += "$folder/$name" } }
     $backups = Join-Path $game 'runtime\server\deployment-backups'
     $copies = @{}
     if (Test-Path -LiteralPath $backups) {
         foreach ($file in Get-ChildItem -LiteralPath $backups -Recurse -File) {
-            if ($file.Name -like 'GameServer.*' -or $Script:LauncherFiles -contains $file.Name) {
+            $core = $Script:CoreFiles | Where-Object { $file.Name -eq $_ -or $file.Name -eq [IO.Path]::ChangeExtension($_, '.pdb') }
+            if ($file.Name -like 'GameServer.*' -or $core -or $Script:LauncherFiles -contains $file.Name) {
                 $hash = Get-Sha256 $file.FullName
                 if (!$copies.ContainsKey($hash)) { $copies[$hash] = $file.FullName }
             }
@@ -112,6 +116,16 @@ foreach ($entry in $record.Folders) {
     $saved = Join-Path $record.BackupFolder (Get-BackupName $entry.Folder)
     if ((Get-Sha256 (Join-Path $saved 'GameServer.dll')) -ne $entry.OldDll) { Stop-WithMessage "The backup of $($entry.Folder) is damaged." }
 }
+foreach ($entry in @($record.CoreFiles)) {
+    if ($null -eq $entry) { continue }
+    $path = Join-Path $game (Join-Path $entry.Folder $entry.Name)
+    $current = if (Test-Path -LiteralPath $path) { Get-Sha256 $path } else { '' }
+    if ($current -ne $entry.NewHash -and !$Force) {
+        Stop-WithMessage "$($entry.Folder)\$($entry.Name) changed since that install (another build installed over it?). -Force restores the backup anyway."
+    }
+    $saved = Join-Path $record.BackupFolder ((Get-BackupName $entry.Folder) + '_core')
+    if ((Get-Sha256 (Join-Path $saved $entry.Name)) -ne $entry.OldHash) { Stop-WithMessage "The backup of $($entry.Folder)\$($entry.Name) is damaged." }
+}
 foreach ($entry in @($record.LauncherFolders)) {
     if ($null -eq $entry) { continue }
     $dll = Join-Path $game (Join-Path $entry.Folder 'OfflineDAoC.dll')
@@ -149,6 +163,14 @@ foreach ($entry in $record.Folders) {
     elseif (Test-Path -LiteralPath (Join-Path $target 'GameServer.pdb')) { Remove-Item -LiteralPath (Join-Path $target 'GameServer.pdb') }
     if ((Get-Sha256 (Join-Path $target 'GameServer.dll')) -ne $entry.OldDll) { Stop-RestoreFailed "Restoring $($entry.Folder) failed verification." }
 }
+foreach ($entry in @($record.CoreFiles)) {
+    if ($null -eq $entry) { continue }
+    $saved = Join-Path $record.BackupFolder ((Get-BackupName $entry.Folder) + '_core')
+    $target = Join-Path $game $entry.Folder
+    Copy-Item -LiteralPath (Join-Path $saved $entry.Name) -Destination $target -Force
+    if ($entry.OldPdb) { Copy-Item -LiteralPath (Join-Path $saved ([IO.Path]::ChangeExtension($entry.Name, '.pdb'))) -Destination $target -Force }
+    if ((Get-Sha256 (Join-Path $target $entry.Name)) -ne $entry.OldHash) { Stop-RestoreFailed "Restoring $($entry.Folder)\$($entry.Name) failed verification." }
+}
 foreach ($entry in @($record.LauncherFolders)) {
     if ($null -eq $entry) { continue }
     $saved = Join-Path $record.BackupFolder ((Get-BackupName $entry.Folder) + '_launcher')
@@ -179,6 +201,10 @@ foreach ($item in $contentRestore) {
 Set-Content -LiteralPath (Join-Path $record.BackupFolder 'rolled-back.txt') -Value "Rolled back at $(Get-Date -Format o)."
 Write-Host ''
 Write-Host "Rolled back $($record.BuildName). The files it replaced are back." -ForegroundColor Green
+# Living Server 1.1.2: the world database is never rolled back (that would undo your play since that install).
+if (Test-Path -LiteralPath (Join-Path $record.BackupFolder 'data\opendaoc.sqlite3.db')) {
+    Write-Host "Your world database was left as it is. Its copy from before that install: $(Join-Path $record.BackupFolder 'data')"
+}
 Write-Host 'Settings it switched on stay in the database, where the original server ignores them. To clear them, turn'
 Write-Host 'everything off in the Living Server tab before you roll back.'
 exit 0

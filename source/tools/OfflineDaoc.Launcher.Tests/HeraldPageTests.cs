@@ -85,6 +85,30 @@ public class HeraldPageTests
         Assert.That(html, Does.Contain("RR2L0"), "Chrisplays has 7,200 realm points");
     }
 
+    [Test] public void APlayersGuildCountsTheGamebotsHeInvited()
+    {
+        // r/daoc report (1.1.1): a player's guild with 30 invited gamebots showed 1 member, because the Herald read only
+        // the bot guilds' table. Invited gamebots are in offline_world_bot_guild (AutonomousBotGuilds).
+        Seed();
+        Exec("""
+            CREATE TABLE offline_world_bot_guild (BotId INTEGER PRIMARY KEY, GuildID TEXT, BotName TEXT, JoinedUtc TEXT, InvitedBy TEXT);
+            INSERT INTO offline_world_bots VALUES (10, 'Aldwin', 1, 'Cleric', 40, 100, 0);
+            INSERT INTO offline_world_bots VALUES (11, 'Berwyn', 1, 'Armsman', 41, 200, 0);
+            INSERT INTO offline_world_bots VALUES (12, 'Cedric', 1, 'Wizard', 42, 300, 0);
+            INSERT INTO offline_world_bots VALUES (13, 'Oldbones', 1, 'Friar', 45, 400, 1);
+            INSERT INTO offline_world_bot_guild VALUES (10, 'g1', 'Aldwin', '2026-11-01T00:00:00Z', 'Chrisplays');
+            INSERT INTO offline_world_bot_guild VALUES (11, 'g1', 'Berwyn', '2026-11-01T00:00:00Z', 'Chrisplays');
+            INSERT INTO offline_world_bot_guild VALUES (12, 'g1', 'Cedric', '2026-11-01T00:00:00Z', 'Chrisplays');
+            INSERT INTO offline_world_bot_guild VALUES (13, 'g1', 'Oldbones', '2026-11-01T00:00:00Z', 'Chrisplays');
+            INSERT INTO offline_bot_guild_members VALUES (12, 'g1');
+            """);
+        string html = HeraldPage.Build(_database, Path.Combine(_folder, "none.sqlite3"), DateTime.Now);
+        // Chrisplays and his three active gamebots; Cedric, in both tables, once; the retired Oldbones not at all.
+        Assert.That(html, Does.Match(@"<td>Knights of the Dawn</td><td><span class=""realm [a-z]+"">Albion</span></td><td class=""num"">4</td>"));
+        Assert.That(html, Does.Match(@"<td>Fianna</td><td><span class=""realm [a-z]+"">Hibernia</span></td><td class=""num"">1</td>"),
+            "a bot guild is counted as before");
+    }
+
     [Test] public void AnEmptyOrOldDatabaseStillMakesAPage()
     {
         Exec("CREATE TABLE ServerProperty (Key TEXT)");

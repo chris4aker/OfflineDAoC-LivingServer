@@ -197,10 +197,16 @@ public static class AutonomousChatThreads
     /// </summary>
     public static bool ReadsAsAnswer(string message, eAutonomousChatIntent intent)
     {
-        if (string.IsNullOrWhiteSpace(message) || FollowUpWord(message) is { } word && word != "y")
+        if (string.IsNullOrWhiteSpace(message))
+            return false;
+        // "farming, u?", "29, wbu?": an answer that asks back (Beta 1.1.2).
+        bool asksBack = Regex.IsMatch(message, @"^[^?,]{1,40},\s*(u|you|wbu|hbu|and you|and u|urself|yourself)\s*\?\s*$|^[^?]{1,40}\b(wbu|hbu)\s*\??\s*$",
+            RegexOptions.IgnoreCase);
+        if (!asksBack && FollowUpWord(message) is { } word && word != "y")
             return false;
         // "i might, what lvl" answers with a question of its own; a plain question is not an answer.
-        if (message.Contains('?') && !Regex.IsMatch(message, @"^\s*(yes|yeah|yep|ya|no|nope|nah|maybe|i might|sure|prob|probably)\b", RegexOptions.IgnoreCase))
+        if (message.Contains('?') && !asksBack &&
+            !Regex.IsMatch(message, @"^\s*(yes|yeah|yep|ya|no|nope|nah|maybe|i might|sure|prob|probably)\b", RegexOptions.IgnoreCase))
             return false;
         if (intent is eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Laugh or
             eAutonomousChatIntent.Away or eAutonomousChatIntent.Back or eAutonomousChatIntent.Abuse or eAutonomousChatIntent.IgnoreOutOfWorld or
@@ -298,6 +304,29 @@ public static class AutonomousChatThreads
         if (yes == false)
             sets.Add("lfg");
         return sets.Distinct().ToArray();
+    }
+
+    /// <summary>
+    /// The answer to "where?" about a place the bot just named ("try the bone camp in Muspelheim" -> "muspelheim, take a horse
+    /// from jordheim"), or null when the line named none (Beta 1.1.2, a short thread memory). Pure.
+    /// </summary>
+    public static string WhereIsIt(string botLine, string capital, Random random)
+    {
+        AutonomousChatPlaces.Place place = string.IsNullOrWhiteSpace(botLine) ? null : AutonomousChatQuestions.PlaceNamed(botLine, AutonomousChatPlaces.All);
+        if (place == null)
+            return null;
+        string name = place.Aliases.FirstOrDefault() ?? place.Key;
+        string zone = place.Zones.FirstOrDefault();
+        string levels = place.Levels is { Length: 2 } l ? $"{l[0]}-{l[1]}" : null;
+        capital = string.IsNullOrEmpty(capital) ? "town" : capital.ToLowerInvariant();
+        return place.Type switch
+        {
+            "capital" => random.Next(2) == 0 ? $"{name}, the capital" : $"{name}, follow the road",
+            "dungeon" => levels != null ? $"{name}, its a {levels} dungeon" : $"the {name} entrance, its a trek from here",
+            "town" when zone != null && !string.Equals(zone, name, StringComparison.OrdinalIgnoreCase) => $"{name}, in {zone.ToLowerInvariant()}",
+            "frontier" or "battleground" => $"{name}, through the portal keep",
+            _ => random.Next(2) == 0 ? $"{name}, take a horse from {capital}" : $"{name}, stablemaster in {capital} goes near it",
+        };
     }
 
     /// <summary>The closing sets that fit the question asked, most specific first ("ask_where" then "ask").</summary>

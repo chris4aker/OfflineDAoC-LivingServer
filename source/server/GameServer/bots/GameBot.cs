@@ -1072,6 +1072,15 @@ namespace DOL.GS
 
         public const long SiegeCorpseWaitMilliseconds = 240_000;
 
+        // Fork: /allrelease runs the death timer's release at once; the timer ends itself once the bot is alive
+        public bool ReleaseNow()
+        {
+            if (IsAlive || ObjectState != eObjectState.Active)
+                return false;
+            ReleaseToNearestBindAndReturn();
+            return IsAlive;
+        }
+
         private bool HasViableResurrector()
         {
             if (Group == null)
@@ -1127,6 +1136,7 @@ namespace DOL.GS
                 if (releaseZone == null || !AutonomousRealmBoundary.Allows(Realm, releaseRegion, releaseZone.ID))
                     release = null;
             }
+            if (release == null && IsAutonomousWorldBot) BotGroupRelease.TryPortalKeep(this, releaseRegion, returnToParty, out release); // Fork: battlegrounds have no bind points
             if (release == null && IsAutonomousWorldBot && returnToParty &&
                 AutonomousRealmRaid.TryRaidRelease(this, out ushort hubRegion, out Point3D hub))
             {
@@ -1163,6 +1173,7 @@ namespace DOL.GS
             }
             if (!moved)
                 return;
+            BotGroupRelease.NoteRelease(this, releaseRegion, release, returnToParty); // Fork: a release in a player's group shows in the log
             Health = Math.Max(1, MaxHealth / 3);
             Mana = Math.Max(0, MaxMana / 3);
             Endurance = Math.Max(0, MaxEndurance / 3);
@@ -1286,6 +1297,26 @@ namespace DOL.GS
             _stableReturnPlan = null;
         }
 
+        /// <summary>
+        /// Living Server: a gamebot in a player's group that stalled on its way back plans it again from where it stands
+        /// (a stablemaster route when one is faster, else a walk with detours around hostile monsters) before
+        /// BotGroupRelease lets it join the leader. False when that can't apply here.
+        /// </summary>
+        public bool RestartReturnToLeader(GamePlayer leader)
+        {
+            if (!IsAlive || IsOnStableMasterRoute || leader == null || leader.CurrentRegionID != CurrentRegionID)
+                return false;
+            StopFollowing();
+            StopMovingOnPath();
+            StopMoving();
+            WakeRecoveryRest();
+            (Brain as BotBrain)?.Disengage();
+            _stableReturnPlan = null;
+            IsReturningAfterRelease = true;
+            Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
+            return true;
+        }
+
         public bool ContinueReturnJourney()
         {
             if (!IsReturningAfterRelease || !IsAlive)
@@ -1301,8 +1332,19 @@ namespace DOL.GS
             Point3D destination = leader?.IsAlive == true && leader.CurrentRegionID == CurrentRegionID
                 ? new Point3D(leader.X, leader.Y, leader.Z)
                 : _deathLocation;
-            if (CurrentRegionID != _deathRegionId && (leader == null || leader.CurrentRegionID != CurrentRegionID))
-                return true;
+            if (BotGroupRelease.WaitsForLeader(this)) return true; // Fork: its corpse is no goal, the group goes on where the player comes back
+            if ((CurrentRegionID != _deathRegionId || BotGroupRelease.IsGroupReturn(this)) && (leader == null || leader.CurrentRegionID != CurrentRegionID)) // Fork: its leader left the region it died in
+            {
+                // Living Server: a stablemaster ride in progress ends at its stable before the bot may join its leader.
+                if (IsOnStableMasterRoute)
+                {
+                    MaintainStableMasterRoute();
+                    if (IsMovingOnPath || CurrentPathPoint != null || !TryCompleteStableMasterRouteAfterArrival())
+                        return true;
+                    _stableReturnPlan = null;
+                }
+                return BotGroupRelease.TryReturnToLeader(this, _deathTick); // Fork: it stood here for good, nothing else moves a bot in a player's group
+            }
 
             if (GetDistanceTo(destination) <= 350)
             {
@@ -1311,6 +1353,7 @@ namespace DOL.GS
                 CompleteStableMasterRoute();
                 Say(ReturnDialogue("arrive"));
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
+                BotGroupRelease.FinishReturn(this); // Fork: as an invitation does
                 return false;
             }
 
@@ -1369,8 +1412,10 @@ namespace DOL.GS
         {
             Vector3 current = new(X, Y, Z);
             Vector3 desired = new(destination.X, destination.Y, destination.Z);
+            // Fork: 900-unit steps stopped at the first wall, a planned route finds the door. Living Server: a detour around a
+            // hostile monster still comes first, so only a clear way is walked as one planned route.
             AutonomousThreatAwarePathing.SafeStep step = AutonomousThreatAwarePathing.ChooseStep(this, current, desired, 900);
-            PathTo(step.Position, MaxSpeed);
+            PathTo(BotGroupRelease.ReturnStepTarget(BotGroupRelease.IsGroupReturn(this), step.Detouring, step.Position, desired), MaxSpeed);
             if (PersistentRecord != null)
             {
                 PersistentRecord.Activity = step.Detouring ? step.Reason : "Walking back to the party";
@@ -1607,7 +1652,7 @@ namespace DOL.GS
         public TryPickUpResult TryAutoPickUpMoney(GameMoney money)
         {
             money.AssertLockAcquisition();
-            long share = AutonomousBotGuildEconomy.ShareAfterDues(this, money.Value, out long dues);
+            long share = AutonomousBotGuildEconomy.ShareAfterDues(this, money.Value, out long dues, out Guild duesGuild);
             // The whole coin must fit in the purse before it is split, so returned dues can never be lost (audit 2026-10-16).
             // The Epic Special Forces take nothing: the realm's own raiders keep every coin and drop.
             if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || DatabaseID <= 0 ||
@@ -1615,7 +1660,7 @@ namespace DOL.GS
                 !AutonomousBotEconomy.AddMoney(DatabaseID, share))
                 return TryPickUpResult.DoesNotWant;
             // Guild dues come out of the same real coin; a full bank leaves them with the bot.
-            if (!AutonomousBotGuildEconomy.DepositDues(this, dues))
+            if (!AutonomousBotGuildEconomy.DepositDues(duesGuild, dues))
                 AutonomousBotEconomy.AddMoney(DatabaseID, dues);
 
             money.RemoveFromWorld();
@@ -1712,7 +1757,11 @@ namespace DOL.GS
             AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.RealmPoints);
             MarkAutonomousStateDirty();
             if (RealmLevel != previousRealmLevel)
+            {
+                // Realm ranks earn the bot's guild merit points as a player's do (GuildEvents.RealmRankUp).
+                AutonomousBotGuildEconomy.OnBotRealmLevelsGained(this, previousRealmLevel);
                 AutonomousLivingServer.OnBotRealmLevel(this, previousRealmLevel);
+            }
         }
 
         public override void GainRealmPoints(long amount) => GainRealmPoints(amount, true);

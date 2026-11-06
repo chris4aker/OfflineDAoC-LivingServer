@@ -227,7 +227,7 @@ public class UT_FrontierTravelContracts
         bot.Realm=eRealm.Midgard;
         typeof(GameBot).GetProperty(nameof(GameBot.IsAutonomousWorldBot)).SetValue(bot,true);
         typeof(GameBot).GetProperty(nameof(GameBot.PersistentRecord)).SetValue(bot,new OfflineWorldBotRecord{ObjectiveKind="RvR"});
-        var keep=new GameKeep {DBKeep=new DbKeep{Realm=2}};
+        var keep=new GameKeep {DBKeep=new DbKeep{Realm=2,X=100_000}};
         var door=new GameKeepDoor{Component=new GameKeepComponent{Keep=keep}};
         Assert.That(Pathfinder.CanUseFriendlyKeepDoor(bot,door),Is.True);
         bot.Realm=eRealm.Albion;
@@ -236,6 +236,11 @@ public class UT_FrontierTravelContracts
         bot.PersistentRecord.ObjectiveKind="SoloPve";
         Assert.That(Pathfinder.CanUseFriendlyKeepDoor(bot,door),Is.False);
         Assert.That(Pathfinder.CanUseFriendlyKeepDoor((GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC)),door),Is.False);
+        // Inside its own keep, as an army is when the keep falls and its objective turns back to PvE.
+        keep.DBKeep.X=0;
+        Assert.That(Pathfinder.CanUseFriendlyKeepDoor(bot,door),Is.True);
+        bot.Realm=eRealm.Albion;
+        Assert.That(Pathfinder.CanUseFriendlyKeepDoor(bot,door),Is.False,"never an enemy keep");
     }
     [Test]
     public void EveryRealmHasDistinctNativeArrivalsInBothEnemyFrontiers()

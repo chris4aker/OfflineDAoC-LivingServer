@@ -19,6 +19,20 @@ public sealed partial class AutonomousWorldBotController
     private Vector3 _darknessFallsLastExitProbePosition;
     private long _darknessFallsNextExitProbeTick;
     private int _darknessFallsExitCandidateWindow;
+    private long _darknessFallsExitHoldSince;
+
+    // Owner 2026-10-27: Adaoenbel (17) held on a Darkness Falls floor with no certified exit route for half an hour and
+    // Tadoindan (13) probed the exit every 15 seconds, one probe a 118 ms AI turn of 67 path queries. After four empty
+    // probes the next come every minute, and a bot still holding after three minutes moves to its realm's safe capital.
+    public const int DarknessFallsExitQuickProbes = 4;
+    public const long DarknessFallsExitSlowProbeMilliseconds = 60_000;
+    public const long DarknessFallsExitHoldMilliseconds = 3 * 60_000;
+
+    public static long NextExitProbeDelay(int emptyProbes) =>
+        emptyProbes >= DarknessFallsExitQuickProbes ? DarknessFallsExitSlowProbeMilliseconds : 15_000;
+
+    public static bool ExitHoldTooLong(long holdSince, long now) =>
+        holdSince > 0 && now - holdSince >= DarknessFallsExitHoldMilliseconds;
     private long _darknessFallsNextNearbyCampProbeTick;
     private string _darknessFallsRaidChainFailKey;
     private Vector3 _darknessFallsRaidChainFailPosition;
@@ -149,6 +163,24 @@ public sealed partial class AutonomousWorldBotController
         return false;
     }
 
+    private bool RelocateFromDarknessFallsHold(GameBot bot, Vector3 current)
+    {
+        AutonomousStuckWatchdog.CapitalLocation capital = AutonomousStuckWatchdog.SafeCapitalFor(bot.Realm);
+        if (capital.RegionId == 0 || !bot.MoveTo(capital.RegionId, capital.X, capital.Y, capital.Z, bot.Heading))
+            return false;
+        Log.Warn($"AUTONOMOUS_DF_EXIT_HOLD_RELOCATED bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                 $"realm={GlobalConstants.RealmToName(bot.Realm)} from=249:{(int)current.X},{(int)current.Y},{(int)current.Z} " +
+                 $"to={capital.Name} probes={_darknessFallsExitCandidateWindow}");
+        _darknessFallsLastExitProbeKey = null;
+        _darknessFallsNextExitProbeTick = 0;
+        _darknessFallsExitCandidateWindow = 0;
+        _darknessFallsExitHoldSince = 0;
+        ResetRouteOrderState();
+        SetStatus(bot, "Left Darkness Falls", "Return to own realm",
+            "No certified route to the home exit for three minutes; moved to the realm's safe capital");
+        return true;
+    }
+
     /// <summary>On leaving DF, follow a proven tail to the physical own-realm
     /// portal. A saved or reassigned bot may rejoin a nearby out-anchor only
     /// after a complete strict native current-to-anchor check; otherwise it
@@ -172,12 +204,16 @@ public sealed partial class AutonomousWorldBotController
                 current, now, _darknessFallsNextExitProbeTick);
             if (shouldProbe && (!string.Equals(_darknessFallsLastExitProbeKey, key, StringComparison.Ordinal) ||
                 Vector3.DistanceSquared(current, _darknessFallsLastExitProbePosition) >= 96 * 96))
+            {
                 _darknessFallsExitCandidateWindow = 0;
+                _darknessFallsExitHoldSince = 0;
+            }
             if (shouldProbe && TryStartDarknessFallsExitRoute(bot, key))
             {
                 _darknessFallsLastExitProbeKey = null;
                 _darknessFallsNextExitProbeTick = 0;
                 _darknessFallsExitCandidateWindow = 0;
+                _darknessFallsExitHoldSince = 0;
             }
             else
             {
@@ -185,9 +221,13 @@ public sealed partial class AutonomousWorldBotController
                 {
                     _darknessFallsLastExitProbeKey = key;
                     _darknessFallsLastExitProbePosition = current;
-                    _darknessFallsNextExitProbeTick = now + 15_000;
                     _darknessFallsExitCandidateWindow++;
+                    _darknessFallsNextExitProbeTick = now + NextExitProbeDelay(_darknessFallsExitCandidateWindow);
                 }
+                if (_darknessFallsExitHoldSince == 0)
+                    _darknessFallsExitHoldSince = now;
+                if (ExitHoldTooLong(_darknessFallsExitHoldSince, now) && RelocateFromDarknessFallsHold(bot, current))
+                    return true;
                 bot.StopMovingOnPath();
                 bot.StopMoving();
                 SetStatus(bot, "Holding inside Darkness Falls", "Reach own realm exit",

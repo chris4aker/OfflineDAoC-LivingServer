@@ -1245,6 +1245,7 @@ namespace DOL.AI.Brain
 
         public override void Think()
         {
+            if (BotGroupRelease.TryUnstick(BotBody)) return; // Fork: first, whatever below would keep a released bot from its player
             // Living Server linkdead (bot_living_breaks): the bot stands still and does nothing until it
             // "reconnects" (30-90 s) or is attacked (AutonomousBotSchedule.OnAttacked wakes it).
             if (AutonomousBotSchedule.IsFrozen(BotBody))
@@ -1672,9 +1673,16 @@ namespace DOL.AI.Brain
             }
 
             DateTime now = DateTime.UtcNow;
+            // Beta 1.1.2: bots try to talk more often while their realm's channels run under the chat budget's target, so a
+            // thin crowd can still keep them alive (AutonomousChatBudget.LivePressure, 1-4; two cached numbers per realm).
+            double pressure = AutonomousBotVoices.Enabled
+                ? AutonomousChatBudget.LivePressure(bot, AutonomousBotChatCoordinator.RealmBots(bot.Realm), nowTick)
+                : 1.0;
+            // Beta 1.1.2, round 5: the realm's regulars (and a guild's) talk far more often than everyone else.
+            bool regular = AutonomousBotVoices.Enabled && AutonomousBotChatCoordinator.IsRegular(bot, nowTick);
             if (!AutonomousBotChat.ShouldSpeak(now, _lastIdleRoleplayUtc,
                     bot.InCombat || bot.IsAttacking || bot.IsCasting || bot.IsOnStableMasterRoute,
-                    null, AutonomousBotPersonality.ChatRateFactor(bot)))
+                    null, AutonomousBotPersonality.ChatRateFactor(bot), pressure, regular))
                 return;
 
             OfflineWorldBotRecord record = bot.PersistentRecord;
@@ -3108,6 +3116,10 @@ namespace DOL.AI.Brain
             Body.TargetObject = protectionTarget ?? directAttacker ?? activePetTarget ?? CalculateNextAttackTarget();
             // A tethered boss outside its tether is immune: stop hitting it and lead it home (AutonomousTetherReset).
             if (Body.TargetObject is GameNPC tetheredBoss && AutonomousTetherReset.TryHandle(BotBody, tetheredBoss))
+                return;
+            // An epic encounter's tactic (EpicEncounterTactics, from the encounter catalog): its required adds first, fight it
+            // at home, or the boss it dies with. May set a new target and fight on, or use this turn to stand off.
+            if (Body.TargetObject is GameNPC tacticTarget && EpicEncounterTactics.TryHandle(BotBody, tacticTarget))
                 return;
 
             if (Body.TargetObject is GameLiving wallTarget && AutonomousRvrDefense.HoldWall(BotBody, wallTarget))
@@ -5551,7 +5563,7 @@ namespace DOL.AI.Brain
             BotBody.TargetObject = corpse;
             if (BotBody.CastSpell(resurrection, m_mobSpellLine, false))
             {
-                log.Info($"AUTONOMOUS_SIEGE_RESURRECTION healer=\"{BotBody.Name}\" corpse=\"{corpse.Name}\" realm={BotBody.Realm} " +
+                log.Info($"AUTONOMOUS_SIEGE_RESURRECTION healer=\"{BotBody.Name}\" corpse=\"{corpse.Name}\" realm={GlobalConstants.RealmToName(BotBody.Realm)} " +
                          $"region={BotBody.CurrentRegionID} at={BotBody.X},{BotBody.Y},{BotBody.Z}");
                 return true;
             }

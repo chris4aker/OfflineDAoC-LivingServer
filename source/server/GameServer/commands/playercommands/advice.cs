@@ -97,6 +97,9 @@ namespace DOL.GS.Commands
             if (Properties.DISCORD_ACTIVE)
                 WebhookMessage.LogChatMessage(client.Player, eChatType.CT_Advise, msg);
 
+            // Living Server 1.1.2: an experienced gamebot of the realm may answer, from what it really knows.
+            AutonomousBotChatCoordinator.OnPlayerAdvice(client.Player, msg);
+
             if (client.Account.PrivLevel == 1)
                 client.Player.TempProperties.SetProperty(advTimeoutString, GameLoop.GameLoopTime);
 

@@ -263,7 +263,10 @@ namespace DOL.UnitTests
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, false, true, false, false, false]), Is.EqualTo(-SiegeDefenseBalance.Step),
                     "attackers lost most: fewer defenders");
                 Assert.That(SiegeDefenseBalance.NextShift(0, [true, true, false]), Is.Zero, "two in three: unchanged");
-                Assert.That(SiegeDefenseBalance.NextShift(0.25, [true, true, true]), Is.EqualTo(0.25), "never more than 0.25 off the setting");
+                Assert.That(SiegeDefenseBalance.NextShift(0.25, [true, true, true]), Is.EqualTo(0.375),
+                    "past the share's limit the attackers' cap is trimmed (2026-11-06)");
+                Assert.That(SiegeDefenseBalance.RatioAt(0.75, 0.375), Is.EqualTo(1.0), "the share never more than 0.25 off the setting");
+                Assert.That(SiegeDefenseBalance.NextShift(-0.25, [false, false, false]), Is.EqualTo(-0.25), "nor less");
                 Assert.That(DOL.GS.RealmEventPolicy.DefenseRatio, Is.EqualTo(0.75));
             });
         }

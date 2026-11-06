@@ -35,6 +35,10 @@ public static class AutonomousKeepGateGoals
 
     public static bool IsInsideFootprint(float dx, float dy, float radius) => dx * dx + dy * dy <= radius * radius;
 
+    /// <summary>Within the keep's walls, its wall walks included (the farthest door's ring plus the wall's own depth).</summary>
+    public static bool IsWithinWalls(AbstractGameKeep keep, float x, float y) =>
+        IsInsideFootprint(x - keep.X, y - keep.Y, FootprintRadius(keep) + WallMargin);
+
     public static float CourtyardRadius(float outerRadius) => Math.Max(MinimumCourtyardRadius, outerRadius - WallMargin);
 
     public static bool IsOuterGate(float doorDistance, float outerRadius) => doorDistance >= outerRadius - OuterGateBand;

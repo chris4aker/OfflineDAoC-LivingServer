@@ -147,7 +147,7 @@ namespace DOL.GS
 				return false;
 			}
 
-			if (player.GetCraftingSkillValue(skill) < ((percentNeeded / 100) * CraftingMgr.GetItemCraftLevel(item)))
+			if (!HasSkillToRepair(player.GetCraftingSkillValue(skill), CraftingMgr.GetItemCraftLevel(item), percentNeeded))
 			{
 				player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "Repair.IsAllowedToBeginWork.NotEnoughSkill", item.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 				return false;
@@ -157,6 +157,17 @@ namespace DOL.GS
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Whether a crafting skill is enough to repair an item: at least <paramref name="percentNeeded"/> percent of the
+		/// item's craft level (50 for a repair, 100 for a repair in the trade window). 2026-10-30: this was written as
+		/// (percentNeeded / 100) * craftLevel, integer division, so the 50 of BeginWork became 0 and anyone could start a
+		/// repair, with the chance from CalculateSuccessChances at 0% below 44% skill.
+		/// </summary>
+		public static bool HasSkillToRepair(int skill, int craftLevel, int percentNeeded)
+		{
+			return (long)skill * 100 >= (long)craftLevel * percentNeeded;
+		}
 
 		#region Calcul functions
 

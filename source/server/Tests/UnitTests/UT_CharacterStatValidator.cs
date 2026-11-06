@@ -18,6 +18,23 @@ namespace DOL.GS.Tests
             Assert.Throws<ArgumentNullException>(() => CharacterStatValidator.Validate(charStats, null, eStat.STR, eStat.DEX, eStat.CON, 1, out points));
         }
 
+        // Playtest 2026-11-04: a Half Ogre wizard (race 16, class 7) threw KeyNotFoundException; races this server doesn't
+        // offer have no starting stats and are simply invalid.
+        [TestCase(16)]
+        [TestCase(17)]
+        [TestCase(18)]
+        [TestCase(19)]
+        public void Validate_ARaceWithoutStartingStats_IsInvalidNotAnError(int race)
+        {
+            var character = new DOL.Database.DbCoreCharacter { Race = race, Class = 7, Level = 1, Strength = 60, Constitution = 60,
+                Dexterity = 60, Quickness = 60, Intelligence = 60, Piety = 60, Empathy = 60, Charisma = 60 };
+            bool result = true;
+            int points = -1;
+            Assert.DoesNotThrow(() => result = CharacterStatValidator.Validate(character, out points));
+            Assert.That(result, Is.False);
+            Assert.That(points, Is.EqualTo(0));
+        }
+
         [Test]
         public void Validate_MissingStatInCharacter_ReturnsFalse()
         {

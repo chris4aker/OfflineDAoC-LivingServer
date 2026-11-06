@@ -37,7 +37,7 @@ public static class RealmRaidStaging
     public static bool TryDragonPost(IPathfindingMgr nav, Zone zone, Vector3 home, int slot, IReadOnlyCollection<Vector3> occupied, out Vector3 staging)
     {
         staging = default;
-        if (slot < 0 || slot >= RealmRaidRecruitmentPolicy.MaximumParties || nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return false;
+        if (slot < 0 || slot >= RealmRaidRecruitmentPolicy.FormationSlots || nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return false;
         // Posts on the ground the route planner places the lair on (its zone road areas). Hibernia's post 6 lay on
         // ground the planner took for another area, so the party's route led out through Shannon Estuary and no zone
         // step reached the post (route audit 2026-10-18).

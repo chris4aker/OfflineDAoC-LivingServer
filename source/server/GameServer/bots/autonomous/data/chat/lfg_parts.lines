@@ -9,8 +9,8 @@
 @needs solo
 @invites lfg
 [lfg|lf grp|lf group] {level} {class}[, | - ][any xp|anything really|xp group|dungeon or camp, dont mind][ pst| /tell me|]
-{level} {class} [lfg|looking for group|lf grp][, ][can start now|ready to go|full pots|got time][ pst|]
-{class} {level} [lfg|lf any group][, ][been solo too long|solo is slow|bored of soloing|need the xp]
+{level} {class} [lfg|looking for group|lf grp][, | ][can start now|ready to go|full pots|got time][ pst|]
+{class} {level} [lfg|lf any group][, | ][been solo too long|solo is slow|bored of soloing|need the xp]
 [anyone need a|any group need a|group need a] {level} {class}[?|? pst|? happy to travel]
 [lfg|lf grp] {level} {class}[, know my class|, been playing a while|, wont die on you][, pst|]
 [lfg|lf group] {level} {class}[, couple hours|, an hour or so][ to play|]

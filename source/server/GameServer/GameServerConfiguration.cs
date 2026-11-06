@@ -383,7 +383,10 @@ namespace DOL.GS
 		    m_invalidNamesFile = Path.Combine(Path.Combine(".", "config"), "invalidnames.txt");
 
 			m_dbType = EConnectionType.DATABASE_SQLITE;
-			m_dbConnectionString = string.Format("Data Source={0};Version=3;Pooling=False;Cache Size=1073741824;Journal Mode=Off;Synchronous=Off;Foreign Keys=True;Default Timeout=60",
+			// Living Server 1.1.2: WAL with Synchronous=Normal (was Journal Mode=Off, Synchronous=Off: a crash in the middle
+			// of a save could corrupt the world). The server applies the same settings to any configured string
+			// (WorldDatabaseSafety.PrepareConnectionString); this is what a new serverconfig.xml is written with.
+			m_dbConnectionString = string.Format("Data Source={0};Version=3;Pooling=True;Cache Size=1073741824;Journal Mode=WAL;Synchronous=Normal;Foreign Keys=True;BusyTimeout=10000;Default Timeout=60",
 			                                     Path.Combine(m_rootDirectory, "dol.sqlite3.db"));
 			m_autoSave = true;
 			m_saveInterval = 10;

@@ -519,7 +519,7 @@ namespace DOL.UnitTests
         public void LootedUniqueItemAndEquipmentSlotSurviveActualSqliteSaveReload()
         {
             // A new, isolated database: never the user's world or account data.
-            string path = Path.Combine(Path.GetTempPath(), "daoc-loot-test-" + Guid.NewGuid().ToString("N") + ".sqlite3");
+            string path = TemporarySqlite.NewDatabasePath("daoc-loot-test");
             LootServer server = (LootServer)GameServer.Instance;
             try
             {
@@ -552,15 +552,15 @@ namespace DOL.UnitTests
             finally
             {
                 server.TestDatabase = null;
-                // Only the exact GUID-named file created by this test is removed.
-                if (File.Exists(path)) File.Delete(path);
+                // Only the GUID-named folder created by this test is removed.
+                TemporarySqlite.DeleteDatabase(path);
             }
         }
 
         [Test]
         public void BulkInventoryPersistenceKeepsEveryOwnerSlotAndDurableDeletion()
         {
-            string path = Path.Combine(Path.GetTempPath(), "daoc-bulk-inventory-test-" + Guid.NewGuid().ToString("N") + ".sqlite3");
+            string path = TemporarySqlite.NewDatabasePath("daoc-bulk-inventory-test");
             LootServer server = (LootServer)GameServer.Instance;
             try
             {
@@ -608,7 +608,7 @@ namespace DOL.UnitTests
             finally
             {
                 server.TestDatabase = null;
-                if (File.Exists(path)) File.Delete(path);
+                TemporarySqlite.DeleteDatabase(path);
             }
         }
 
@@ -632,7 +632,7 @@ namespace DOL.UnitTests
         [TestCase(true)] [TestCase(false)]
         public void ConcurrentRemovalOrEquipmentMoveCannotEraseSaveOwnerOrLoseLaterMutation(bool remove)
         {
-            string path = Path.Combine(Path.GetTempPath(), "daoc-inventory-race-" + Guid.NewGuid().ToString("N") + ".sqlite3");
+            string path = TemporarySqlite.NewDatabasePath("daoc-inventory-race");
             LootServer server = (LootServer)GameServer.Instance;
             try
             {
@@ -664,13 +664,13 @@ namespace DOL.UnitTests
                     Assert.That(final.Single().Name, Is.EqualTo(item.Name));
                 }
             }
-            finally { server.TestDatabase = null; if (File.Exists(path)) File.Delete(path); }
+            finally { server.TestDatabase = null; TemporarySqlite.DeleteDatabase(path); }
         }
 
         [Test]
         public void FailedUniqueDefinitionCannotLeaveAnOrphanInventoryRow()
         {
-            string path = Path.Combine(Path.GetTempPath(), "daoc-definition-guard-" + Guid.NewGuid().ToString("N") + ".sqlite3");
+            string path = TemporarySqlite.NewDatabasePath("daoc-definition-guard");
             LootServer server = (LootServer)GameServer.Instance;
             try
             {
@@ -693,7 +693,7 @@ namespace DOL.UnitTests
             finally
             {
                 server.TestDatabase = null;
-                if (File.Exists(path)) File.Delete(path);
+                TemporarySqlite.DeleteDatabase(path);
             }
         }
 

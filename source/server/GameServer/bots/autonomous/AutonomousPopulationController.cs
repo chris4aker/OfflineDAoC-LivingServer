@@ -47,6 +47,7 @@ public static class AutonomousPopulationController
     public static void OnServerStarted(DOLEvent e, object sender, EventArgs args)
     {
         Interlocked.Increment(ref _loginGeneration);
+        _rampFinished = false;
         _startedUtc = DateTime.UtcNow;
         AutonomousBotSchedule.NoteServerStarted(_startedUtc);
         OfflineWorldBotRecord[] previouslyOnline = DOLDB<OfflineWorldBotRecord>
@@ -125,6 +126,8 @@ public static class AutonomousPopulationController
                 missing = Math.Min(missing, desired + desired / 4 - AutonomousBotRegistry.Count - PendingSpawns.Count);
             }
             _populationSatisfied = missing <= 0;
+            if (!_rampFinished && AutonomousPopulationRamp.Finished(_cachedEnabled, _cachedRampMinutes, nowUtc - _startedUtc, missing <= 0))
+                _rampFinished = true;
             if (missing <= 0)
                 return;
 
@@ -219,6 +222,20 @@ public static class AutonomousPopulationController
                 // stored position. Recovery and bind paths intentionally remain
                 // capital-based and are not part of new-character placement.
                 PlaceAtCapitalFallback(bot, record);
+            }
+
+            // Owner 2026-10-29: after a restart 16 to 29 solo gamebots a time died within minutes in Darkness Falls, where they were
+            // saved: they came back standing in the middle of a pack, no camp, no party (13-23 monsters around, 3-5 attacking).
+            // A bot saved inside the dungeon returns at its realm's entrance of Darkness Falls, inside the dungeon.
+            if (record.RegionId == AutonomousDarknessFallsPolicy.RegionId &&
+                AutonomousDarknessFallsNavigation.TryGetRealmEntrance((eRealm)record.Realm, out Vector3 dungeonEntrance))
+            {
+                Log.Info($"AUTONOMOUS_DF_LOGIN_AT_ENTRANCE bot={record.Name} id={record.BotId} realm={GlobalConstants.RealmToName((eRealm)record.Realm)} " +
+                         $"saved={record.X},{record.Y},{record.Z} entrance={(int)dungeonEntrance.X},{(int)dungeonEntrance.Y},{(int)dungeonEntrance.Z}");
+                bot.CurrentRegionID = AutonomousDarknessFallsPolicy.RegionId;
+                bot.X = (int)dungeonEntrance.X;
+                bot.Y = (int)dungeonEntrance.Y;
+                bot.Z = (int)dungeonEntrance.Z;
             }
 
             // GameNPC keeps a separate interpolated movement position. Before
@@ -387,6 +404,15 @@ public static class AutonomousPopulationController
     }
 
     private static volatile bool _populationSatisfied;
+    private static volatile bool _rampFinished;
+
+    /// <summary>The startup ramp has finished (AutonomousPopulationRamp.Finished) since this server start; true when the
+    /// population controller has not started (tests, tools).</summary>
+    public static bool StartupRampFinished => _rampFinished || _startedUtc == default;
+
+    /// <summary>Minutes until the ramp counts as finished at the latest (0 once it has).</summary>
+    public static int StartupRampMinutesLeft => StartupRampFinished ? 0
+        : AutonomousPopulationRamp.MinutesLeft(_cachedRampMinutes, DateTime.UtcNow - _startedUtc);
 
     /// <summary>The non-retired roster as last read by the control plane (read-only; empty before the first read).</summary>
     internal static OfflineWorldBotRecord[] CachedRoster => _cachedRoster;

@@ -1,0 +1,2005 @@
+{
+ "about": "Hand-checked part of the epic encounter catalog (source/tools/epic_encounter_catalog.py). Per encounter: verified (a person read every rule against its script) with the script hashes it was read against, notes, and per-rule corrections keyed kind@line (kind@File.cs:line for a rule in another file). After checking again, run epic_encounter_catalog.py --stamp <id>.",
+ "priority": [
+  {
+   "id": "krondon/scurceolhyrde",
+   "title": "Scurceol Hyrde (Krondon): immune while his four orbs live",
+   "evidence": "docs/NIGHT-SIEGES-AND-MARFACH.md §1b: build 8d7baa3, 2026-11-05 14:27-15:40. 59-77 of 101 raiders fought him 3,219 units from his spawn; he stayed at 100%; all 42 raider deaths were to him; he was skipped every 20 minutes and switched back to; the Beran muster stalled at 2-5 of 50. 'Lyft' is in no log line. 2026-11-06 (168f55d): the tactic fired at 01:49 and 02:16, but every orb failed the ground-route gate and was set aside; the raid went to Fuladl.",
+   "why": "No damage is possible until the orbs die, and the raid never targets them: the orbs never attack, so the 'fighting the raid' switch never picks them, and melee can't reach them.",
+   "plan": "Fight him in his own room, not 3,000 units out where the raid met him: one tank party holds him near his spawn while four ranged parties take one orb each from the floor below it (the route already shoots flyers from below), then everyone on him. Orb kills survive his resets."
+  },
+  {
+   "id": "marfach-caverns/ancientblackoak",
+   "also": [
+    "marfach-caverns/blacklady"
+   ],
+   "title": "Black Lady and her Ancient Black Oak (Marfach Caverns)",
+   "evidence": "docs/NIGHT-SIEGES-AND-MARFACH.md §1: 2026-11-05 01:28-05:19, 91 pulls on the Oak, never in combat, 0 raiders within 1,000; Black Lady leashed home from 44% after being drawn 1,618 from her spawn. Timed out. 2026-11-05 (168f55d): won with the dies-with tactic; Black Lady died in 1.2 minutes.",
+   "why": "The Oak never pulls itself (AggroLevel 0) and stands inside its tree; the raid fought Black Lady away from her spawn so she leashed and healed.",
+   "plan": "Skip the Oak: it dies when Black Lady dies. Fight Black Lady where she stands (don't drag her), one party on Ogresses. PR #77 already fights the Oak from a walkable approach and sets it aside after three empty pulls."
+  },
+  {
+   "id": "trollheim/nosdoden",
+   "title": "Nosdoden (Trollheim): nine waves of 12-18 adds",
+   "evidence": "overnight-2026-11-04 checks 5 and day run: Defeated twice in a row at Nosdoden (support 80, then 104; and 132 at 135% size), Special Forces joined each time.",
+   "why": "Each 10% step spawns 12-18 level 60 adds at his feet; a big raid's damage pushes several steps at once and the waves stack.",
+   "plan": "Pace the damage one 10% step at a time; at each threshold stop on him and AoE the wave down; healers stay with the tank."
+  },
+  {
+   "id": "crystal-cave/xanxicar",
+   "title": "Xanxicar (Crystal Cave): stomps and champions",
+   "evidence": "overnight notes, day run 2026-11-05: Defeated at Xanxicar with support 199 (required 150), Special Forces joined, one named kill.",
+   "why": "Four announced point-blank stomps on everyone around him plus an endless chain of level 65 epic champions from 50%; the throw and glare skip bots, so the danger is the stomp and the champions.",
+   "plan": "Casters and healers outside the stomp radius on each announcement; one party per champion, killed away from the tank; healers top up before 80/60/40/20%."
+  },
+  {
+   "id": "galladoria/olcasgeaninitializator",
+   "also": [
+    "galladoria/earthprimal",
+    "galladoria/airprimal",
+    "galladoria/waterprimal",
+    "galladoria/fireprimal",
+    "galladoria/olcasgean"
+   ],
+   "title": "Galladoria's last room: the four primals before Olcasgean",
+   "evidence": "Code history: run 12 (2026-10-15) the event never started; run 14 Earth primal skipped while Earthmenders healed it; 2026-10-16 Air primal skipped circling 690 up; run 17-18 Earthmenders healed to full. Olcasgean wakes only when all four primals are dead.",
+   "why": "Four different fights in one room (a 900-health flyer, a primal that retreats to heal, fire trails, a primal healed by four Earthmenders) gate the final boss.",
+   "plan": "Assign a group per primal: ranged on Air, Earthmenders before Earth, stop on Water while it heals, keep out of fire trails. Then two raid halves for Olcasgean and his copy."
+  },
+  {
+   "id": "galladoria/spindlerbroodmother",
+   "also": [
+    "galladoria/xaga",
+    "galladoria/tine",
+    "galladoria/beatha"
+   ],
+   "title": "Spindler Broodmother and Xaga's fairies (Galladoria)",
+   "evidence": "overnight notes, build 8d7baa3 (2026-11-05): Hibernia epic wiped at Spindler Broodmother 15:08 and at Tine 15:37.",
+   "why": "Steady spindler adds and a 20-25-add burst on her death; Xaga, Tine and Beatha pull each other in.",
+   "plan": "Spindler: an add party on newborns, AoE on her corpse. Xaga: pull all three together on purpose and kill the fairies first."
+  },
+  {
+   "id": "darkness-falls/princebaalorien",
+   "also": [
+    "darkness-falls/princeasmoien"
+   ],
+   "title": "Princes Ba'alorien and Asmoien (Darkness Falls, no raid AI)",
+   "evidence": "overnight-2026-11-04 checks 2-3: Albion and Hibernia Darkness Falls raids each Defeated after two wipes at Prince Ba'alorien.",
+   "why": "They eat a pet every 5 s and heal by its health; raids bring many pet classes.",
+   "plan": "Pet classes park pets out of reach (more than 2,000) for the princes. Darkness Falls has no raid AI; this is a proposal only."
+  },
+  {
+   "id": "tuscaran-glacier/fornfrusenen",
+   "also": [
+    "tuscaran-glacier/agmundr"
+   ],
+   "title": "Fornfrusenen and Icelord Agmundr (Tuscaran Glacier)",
+   "evidence": "overnight-2026-11-04 checks 2-3: Midgard epic wiped at Fornfrusenen 22:57, then twice at Icelord Agmundr (00:24, 01:02) and was Defeated.",
+   "why": "Fornfrusenen takes no damage from anyone more than 200 from him (casters and archers do nothing) and his shards only from within 400 of their point; Agmundr brings his whole BAF pack with boosted stats and a Cold DD (650, radius 500).",
+   "plan": "Fornfrusenen: melee only, casters on the shards from close in. Agmundr: pull his pack to the raid and clear it first."
+  },
+  {
+   "id": "hall-of-the-corrupt/aidonthearchwizard",
+   "title": "Aidon the Archwizard (Hall of the Corrupt)",
+   "evidence": "overnight-2026-11-04 check 5: Albion Hall of the Corrupt wiped at Aidon 03:25 (living 13 of 56) and 03:58, Defeated. Again 2026-11-05 (168f55d): 22:38 switch to Aidon without a muster, 31 engaged / 31 fallen at 99%, counted as a wipe with 56 living; the next muster on the ramp gathered 0-2 of 75. Later the same night (server.log 22:50-23:16) the regroup filled (FINAL_ENGAGE 22:58:13 75/75, then 23:00 and 23:02 106/53) but all three pulls walked to the front left from the 22:38 switch (31686,35683,14888) while he stood at home (31353,37634,14873); the closest raider ended 1,979 away and REALM_EXPEDITION_PULL_UNREACHED set him aside at 23:04. The front is now resolved again from his home (REALM_EXPEDITION_FRONT_REFRESHED).",
+   "why": "A permanent damage shield, a 500 Heat AoE every 10-15 s, and four illusions (5,000 health, 300 AoE each) that come back every 30-45 s once all are dead; tether 1,500.",
+   "plan": "Built in step 3: the early pull is answered by the whole raid (pull back to the muster, he leashes and resets), the muster is measured from his home, and the raid kills three illusions and leaves the last alive, then fights him at home."
+  },
+  {
+   "id": "galladoria/conservator",
+   "also": [
+    "galladoria/organicenergymechanism"
+   ],
+   "title": "Conservator and the Organic-Energy Mechanism (Galladoria)",
+   "evidence": "Code history (RealmRaidDungeonRoute): run 25 Conservator wiped the raid twice (45%, 42%); 2026-10-20 the Organic-Energy Mechanism wiped 152 of 156 and the regroup did worse.",
+   "why": "Raw damage plus adds every 10 s (3-5 bottom feeders) and a damage shield on the Mechanism; Conservator's stand-near-the-spawn rule is off today.",
+   "plan": "Add party on the feeders; melee respect the Mechanism's shield; fight Conservator at his spawn."
+  }
+ ],
+ "upstream": {
+  "source": "OpenDAoC/OpenDAoC-Core 3513bad49912 (2026-11-04) and OpenDAoC/OpenDAoC-Database 7068aef09830, cloned 2026-11-05. Upstream has been refactored since this fork's base (instance fields instead of statics, ProcessDeath), so the behaviour was read, not copied.",
+  "changes": [
+   {
+    "encounters": [
+     "caer-sidi/fames",
+     "caer-sidi/morbus",
+     "caer-sidi/funus"
+    ],
+    "places": 3,
+    "original": "Out of its tether a horseman heals to full and drops its aggro.",
+    "ours": "It drops its aggro and keeps its health (heals only when the fight is over).",
+    "switch": "AllowHorsemenTetherHeal"
+   },
+   {
+    "encounters": [
+     "caer-sidi/funus"
+    ],
+    "places": 1,
+    "original": "Only clerics, and mercenaries with a short bow, armsmen and infiltrators with a crossbow, scouts with a longbow damage Funus; any other attacker (pets too) heals him to full.",
+    "ours": "Everyone damages him.",
+    "switch": "AllowFunusWeaponPuzzle"
+   },
+   {
+    "encounters": [
+     "caer-sidi/skeletalsacristan"
+    ],
+    "places": 2,
+    "original": "He walks his loop without stopping (195-250 in this fork's base; upstream now a 220 path) with 70% magic resists.",
+    "ours": "He walks at 130-160, stands still while hit, 55% magic resists.",
+    "switch": "AllowSacristanPatrol"
+   },
+   {
+    "encounters": [
+     "caer-sidi/soulreckoner"
+    ],
+    "places": 2,
+    "original": "No damage at all while a reckoned soul lives, or outside a 900 room.",
+    "ours": "A quarter of the damage while a soul lives; the room is 1,500.",
+    "switch": "AllowSoulReckonerFullShield, AllowSoulReckonerSmallRoom"
+   },
+   {
+    "encounters": [
+     "galladoria/aroon"
+    ],
+    "places": 9,
+    "original": "The nine Scaiths die in order (slash, thrust, crush, body, cold, energy, heat, matter, spirit): each is immune until the one before is dead, and Aroon takes only the damage types whose Scaith has died (nothing at first).",
+    "ours": "Any damage type hurts Aroon and every Scaith.",
+    "switch": "AllowAroonDamageOrder"
+   },
+   {
+    "encounters": [
+     "galladoria/olcasgeaninitializator"
+    ],
+    "places": 1,
+    "original": "The primals come when a real player (not a bot) stands within 350 of the bridge spot.",
+    "ours": "A raid bot within 1,500 of the spot starts it (players still 350).",
+    "switch": "AllowGalladoriaBridgeSpot (bots within 350; a bot-only rule would be unwinnable)"
+   },
+   {
+    "encounters": [
+     "galladoria/olcasgean"
+    ],
+    "places": 1,
+    "original": "Split-position and throw puzzle.",
+    "ours": "Off.",
+    "switch": "AllowPositionPuzzle (already a switch; nothing new)"
+   },
+   {
+    "encounters": [
+     "galladoria/fireprimal"
+    ],
+    "places": 1,
+    "original": "Trail of fire: 220 damage in a 450 radius.",
+    "ours": "120 in 300.",
+    "switch": "AllowFullFirePatches"
+   },
+   {
+    "encounters": [
+     "galladoria/earthprimal"
+    ],
+    "places": 4,
+    "original": "Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal.",
+    "ours": "Everyone hurts them; they fight back; no quick reset while raiders are in the room; they heal the primal only.",
+    "switch": "AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal"
+   },
+   {
+    "encounters": [
+     "galladoria/beatha"
+    ],
+    "places": 1,
+    "original": "Beatha's damage heals Xaga by twice the amount.",
+    "ours": "No heal.",
+    "switch": "AllowBeathaHealsXaga"
+   },
+   {
+    "encounters": [
+     "galladoria/beatha",
+     "galladoria/tine"
+    ],
+    "places": 2,
+    "original": "The fairies circle the room (250, flying) even while fought.",
+    "ours": "They hold still while fought.",
+    "switch": "AllowFairyFlight"
+   },
+   {
+    "encounters": [
+     "summoner-s-hall/grandsummonergovannon"
+    ],
+    "places": 1,
+    "original": "300,000 health.",
+    "ours": "200,000.",
+    "switch": "AllowGovannonFullHealth"
+   },
+   {
+    "encounters": [
+     "tuscaran-glacier/kvasir"
+    ],
+    "places": 1,
+    "original": "Cold damage heals him a fifth of his health and does nothing else (upstream has no out-of-tether immunity for him).",
+    "ours": "Cold hurts him.",
+    "switch": "AllowKvasirColdHeal"
+   },
+   {
+    "encounters": [
+     "tuscaran-glacier/queenkula",
+     "tuscaran-glacier/kingtuscar"
+    ],
+    "places": 2,
+    "original": "Damage to one twin heals the other by the same amount while it is below full health.",
+    "ours": "No heal.",
+    "switch": "AllowTuscarTwinHeal"
+   }
+  ],
+  "scurceolOrbs": "Upstream's Lyft Miht orbs are the same: level 90, 15,000 health, 40/50% resists, AF 250, flying at the same four corners. Upstream only replaced the static orb counters with a per-boss list (a bug fix: our static counters are shared by every Scurceol and can drift).",
+  "helperPacks": "OpenDAoC-Database mob.sql compared with the 0.37b release world: of the 47 packages empty in our world, 42 are empty upstream too (the script looks for helpers that never existed: DebenBaf, FamesBaf, MorbusBaf, HatiBaf, SkollBaf, ApocBaf ...). Five have upstream spawns our world lacks: AncientOakBaf (14 \"Ancient Oak\" in Black Lady's room, none in ours), CaimheulBaf (6 reanimated guardians; 1 in ours, under PackageID offline-classic-frontier-dungeon-restored), CailleachUragaigBaf (3 cailleach guards), RevenantBaf (11 wraiths and wights by the Raumarik Revenant), RunilBaf (4 clan deserters). Not changed here: adding world spawns is a world update for the owner to decide."
+ },
+ "openQuestions": [
+  "Upstream helper packs: add the 38 spawns our world lacks (AncientOakBaf 14, CaimheulBaf 5, CailleachUragaigBaf 3, RevenantBaf 11, RunilBaf 4) as a world update, or leave those packs empty?",
+  "Scurceol's orbs are level 90 upstream too. Keep them, or lower them only when bots must kill them?",
+  "Which restored mechanic should the raid AI learn first? Each is off until its tactic exists; the catalog lists them under 'Restored behind switches'.",
+  "Player-only mechanics stay player-only for now; the catalog lists every one as a candidate to target bots later. Which matter most for the 'wow' factor (throws, glares, Nosdoden's spirits)?"
+ ],
+ "handEntries": [
+  {
+   "id": "galladoria/eyes-watching-you",
+   "boss": "Eyes Watching You",
+   "class": "EyesWatchingYouInit",
+   "base": "GameNPC",
+   "file": "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs",
+   "lines": [
+    9,
+    218
+   ],
+   "dungeon": "Galladoria",
+   "region": 191,
+   "regionConfidence": "read",
+   "level": 50,
+   "maxHealth": null,
+   "raids": [
+    {
+     "id": "epic-hibernia",
+     "role": "ambience (no fight)"
+    }
+   ],
+   "raidAi": "generic dungeon route",
+   "notes": "Written by hand: the generator finds no boss here (an initializator and an effect NPC, both GameNPC). Every 25-45 s it shows an eye effect over one random real player in Galladoria for 5 s. Visual only: the effect NPC is untargetable, peaceful, and its brain (OlcasgeanEffectBrain) casts nothing.",
+   "rules": [
+    {
+     "kind": "hazard",
+     "summary": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears on one random real player for 5 s (visual only, no damage).",
+     "file": "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs",
+     "line": 105,
+     "lineEnd": 130,
+     "anchor": "public void PickPlayer()",
+     "confidence": "read",
+     "affects": "real players only (bots are never picked)",
+     "sourceClass": "EyesWatchingYouInitBrain",
+     "method": "PickPlayer",
+     "tactic": "Nothing to do: it is ambience.",
+     "difficulty": "easy for the current raid AI"
+    }
+   ],
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "931f35a51e869304d1980160f2559e24661fc6ac6d59a6405084eceaade0ca25"
+   }
+  },
+  {
+   "id": "open-world/brother-don",
+   "boss": "Brother Don",
+   "class": "BrotherDon",
+   "base": "GameNPC",
+   "file": "source/server/GameServer/scripts/namedmobs/BrotherDon.cs",
+   "lines": [
+    7,
+    84
+   ],
+   "dungeon": "Open world",
+   "region": null,
+   "regionConfidence": null,
+   "level": null,
+   "maxHealth": null,
+   "raids": [],
+   "raidAi": "no raid",
+   "notes": "Written by hand: a quest NPC in the namedmobs folder (he takes a wolf pelt cloak and gives quest experience). No fight, no encounter rule.",
+   "rules": [],
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/BrotherDon.cs": "8964e56930f3d641f924427da766faabeca87ea5d3fcb1cfb62d604e69bb18c7"
+   }
+  }
+ ],
+ "encounters": {
+  "albion-named-mobs-classic-zones/cailleachuragaig": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs": "742a59d2fe8155b2718f766c1fefd50d04932db3ab613dfd8b3c5f7ebcea4d28"
+   }
+  },
+  "albion-named-mobs-classic-zones/fester": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Fester.cs": "43e981bf07934f0a8231a81c88448434770946d54cbb70518693ed7e1b10bab3"
+   }
+  },
+  "albion-named-mobs-classic-zones/kingbarfog": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/KingOfTheBarfogHills.cs": "95023c311861809f6b79ee8d3f992619fb3d40ad1eb2bc753c8ef16cf78a3027"
+   }
+  },
+  "albion-named-mobs-classic-zones/legendaryafanc": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "5ca2c58062ed0e529f4da17a73fb7f86daa4b61b4c60487bea9cb1c9be84d926"
+   }
+  },
+  "albion-named-mobs-classic-zones/morgana": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "7e15d7495a65f5404665e4f3051de7435309bea94a895a922a652dd1ff0d03bf"
+   }
+  },
+  "albion-named-mobs-classic-zones/mouth": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs": "ceb60c7908e5a89d8ab4c622bb46dc0d0b6ec4b0ff54076988d57f5a01bf9762"
+   }
+  },
+  "albion-named-mobs-classic-zones/sisterblythe": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/SisterBlythe.cs": "892e0fcf04c452655aa6f3ded924b2d2b0945ad6ecbdba24a8714cba41fc5d44"
+   }
+  },
+  "albion-named-mobs-classic-zones/teazanodwc": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Teazanodwc.cs": "62b5465cf6f2714c3b9205a6a83bbc3ceae677033beae06e47432f7acf03c6a9"
+   }
+  },
+  "albion-named-mobs-classic-zones/wrathofmordred": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/WrathOfMordred.cs": "327f6a9d9838178ebd77b8bfa490e84a08f6d652b7d034653d9d2cb5cab383c7"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/amphiptere": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Amphiptere.cs": "bad936cd372529e69f84ba0ebdfbbbd97d8e6a58009314e5237a2cf5ec398ce7"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/colialt": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Colialt.cs": "926b00c2391f2c7ea80abe0e14d74724115575534c8e009b7787a6ff70583b6b"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/durval": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs": "a20ffa4999aebfce381e1bdd501352f02ea1b8791013c54161e2c75e6c084bb9"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/qanrisduros": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs": "de4ccc8702ba2f5b59cdfa7cf9bf4d3be8fbd0db27e47f92a7a65725ec7dff95"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/risnircruss": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs": "7711220bebb32a8691b3f1d7ae8549d920cec3fb9ed64906b3bdfe96558d5db0"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/sarcondina": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Sarcondina.cs": "9562d9201b4260ae059916b6eeaa60c0595a4b1fd682b2fbd2dbe2037d6831c2"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/spiritoflordemthoro": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs": "9f359d995ad6b6fc5bea2b824cfa459c667761c5379f53ec7e44b09bc4964a71"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/valnirmordeth": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs": "8d54e7f51ce0d282a797d6b1c1d919fb1563794980759d2942a8757891a0aacd"
+   }
+  },
+  "albion-named-mobs-shrouded-isles/vortanos": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs": "043ca32ac0443bb16ccadbd99ce2757fbfba911460bd6029dc3e14dbfbbe144d"
+   }
+  },
+  "avalon-city/draargusmighty": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "59035e368b36262cd6b3f2c7503459bd18741ec3e38105cd72bd78ad78e1a855"
+   }
+  },
+  "avalon-city/duraekempowered": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs": "1b4a503df6d398e60ec25599b729006779555528528b05f6f7087e154e73fa27"
+   }
+  },
+  "avalon-city/syssroruthless": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "5acb2842eb2e7a8a107cfd18c647e85925e939e995a0d0e11daa108e861d9843"
+   }
+  },
+  "avalon-city/veraeriusbrave": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs": "f92eb6d85f0d2b90cee7fb7e836af2faa4869cedb6a970cbab27b8d74295617d"
+   }
+  },
+  "avalon-city/wenoiakenlightened": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs": "01037d035afe6761834bbc92154732fc27f2d596680aa686e26e4abdc64b57b5"
+   }
+  },
+  "caer-sidi/apocalypse": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+   }
+  },
+  "caer-sidi/baneofhope": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "3f2bc2dff0c75b5d1537474009a522eca849656ac14411fa760a3483f5639133"
+   }
+  },
+  "caer-sidi/bellum": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+   }
+  },
+  "caer-sidi/cryptlord": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "1b8735746b1c9051f55cc920c7ebbe0941abbd766c33b0a4baae767ce3f3d3d5"
+   }
+  },
+  "caer-sidi/fames": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+   }
+  },
+  "caer-sidi/fatechosen": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs": "b4037d917fcbfb2c84542097738575f0a806e08b6e0c816825f0831f8b454f42"
+   }
+  },
+  "caer-sidi/funus": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+   }
+  },
+  "caer-sidi/host": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "1e80b77de1f2e1bc50d34a432af5eec6c96775d15404d5e1809e39434322667c"
+   }
+  },
+  "caer-sidi/lichlordilron": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs": "1b55fb71aa108c987dd029a3e25d45187575044bd6688a7dd02a4016f2f4b103"
+   }
+  },
+  "caer-sidi/lichlordsanguis": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3"
+   }
+  },
+  "caer-sidi/lordsanguis": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3"
+   }
+  },
+  "caer-sidi/morbus": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ebe7867b9e18c14495e6c98d6ce32cc9887416d022118d9b3160e5a7c8b291f7"
+   }
+  },
+  "caer-sidi/silencer": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/Silencer.cs": "e5060ec57836251496f991973dc069e54b13c0bc326e1637d99d183b3d373491"
+   }
+  },
+  "caer-sidi/skeletalsacristan": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs": "1952d864db5b1b094cb8ad3ab8552d16d49034b7a37c8805f74684699889a2de"
+   }
+  },
+  "caer-sidi/soulreckoner": {
+   "notes": "Mechanic change (owner 2026-10-14/15): while a reckoned soul lives he takes a quarter of the damage instead of none. Out of his room (SoulReckonerBrain.InRoom false) he takes none.",
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "b0b4cc8c6d55ffd5cf29023f221008eeea0e69a0fc007c6f39f49397dae4ce9c"
+   }
+  },
+  "caer-sidi/spectralprovisioner": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "53056a47bd9af9bbac17a990066e5aeafb0b1be234acf84c094ce6d3b72c2634"
+   }
+  },
+  "caer-sidi/spectralprovisionerspawner": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs": "53056a47bd9af9bbac17a990066e5aeafb0b1be234acf84c094ce6d3b72c2634"
+   }
+  },
+  "caer-sidi/warlorddorinakka": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/WarlordDorinakka.cs": "a81529c15a2e59963c705bf0c11b374ff8ed7708a4f81846e02a7a9c9dae58e1"
+   }
+  },
+  "crystal-cave/xanxicar": {
+   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random real player within 2,500 every 20-40 s and glares at another (players only).",
+   "currentRaidAi": "2026-11-05: lost with support 199 (required 150, Special Forces joined), one named kill.",
+   "rules": {
+    "phase@337": {
+     "summary": "At 80/60/40/20% health: announces and casts Xanxicar's Stomp, a point-blank AoE on everything around him (1 s after the announcement).",
+     "tactic": "On the announcement casters, healers and archers step out of the stomp radius; melee eat it with full health. Healers top up before each threshold.",
+     "difficulty": "needs new raid AI"
+    },
+    "adds@382": {
+     "summary": "At 50%: one Xanxicarian Champion (GameEpicNPC, level 65); after it dies another follows every 15-25 s while he fights.",
+     "tactic": "One party holds and kills each Champion away from the main tank. The route treats an epic NPC as its own encounter, not his add.",
+     "difficulty": "needs new raid AI"
+    },
+    "teleport@224": {
+     "summary": "ThrowPlayer: every 20-40 s a random real player within 2,500 (not his target) is moved to 32338,32387,16539 ('hurled into the air').",
+     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: a thrown bot walks back and rejoins its party.",
+     "difficulty": "off today"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "6533b8df4ed97433e4fe887c95cae1fb66ec6741b7f3ecf0494e8033a52b3415"
+   },
+   "aiTactics": {
+    "blastThresholds": [
+     80,
+     60,
+     40,
+     20
+    ],
+    "blastRadius": 2500,
+    "summary": "Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back."
+   }
+  },
+  "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach": {
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "rules": {
+    "heal@341": {
+     "drop": true
+    },
+    "immune_while@54": {
+     "summary": "Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn).",
+     "subtype": "out_of_tether",
+     "tactic": "Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do).",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "4c9df8312f40c9db8d908ce57c6f96a47d88a294a2867e713e11531f5020f678"
+   }
+  },
+  "darkness-falls/behemoth": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "8d6fd48ba5adddf2a722a9a766b3f5edb522a25d5d60923155d72a10e90cc3f7"
+   }
+  },
+  "darkness-falls/beliathan": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "97fa422b8631fb1f40c5cce96f0b351ff85a9200df24b37d83d090d87ae95528"
+   }
+  },
+  "darkness-falls/highlordbaelerdoth": {
+   "rules": {
+    "reflect@79": {
+     "summary": "Below 25% health every hit on him makes him cast AbsDebuff, a point-blank absorption debuff on the raiders around him.",
+     "kind": "phase",
+     "tactic": "Burn the last 25% fast with the whole raid; healers expect bigger hits.",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs": "5c40dbe73a2338b51b225428ac91efb12f9918e3bef32f25a61908367a4a90cc"
+   }
+  },
+  "darkness-falls/highlordbaln": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "ea20ed907819ebba2dba2dde9703fee62d88d8ea945cf8b5a4edb084cdc2d7b9"
+   }
+  },
+  "darkness-falls/highlordoro": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494"
+   }
+  },
+  "darkness-falls/highlordoroclone": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "cf017bfe11ca5e811ebdafe29e449fd07cacbef70a440a1ae5b8716ec105e494"
+   }
+  },
+  "darkness-falls/highlordsaeor": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "0f44370d05d55a397fbcd0c5b2bbdb0ac7c65c96fb347a1cfbe1b5bf5957a19e"
+   }
+  },
+  "darkness-falls/legion": {
+   "notes": "Level 83, 300,000 health. No raid AI: listed for completeness.",
+   "rules": {
+    "immune_while@242": {
+     "summary": "Takes no damage from attackers more than 1,400 from him.",
+     "tactic": "Everyone fights within 1,400 of him (casters too).",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "8d6fd48ba5adddf2a722a9a766b3f5edb522a25d5d60923155d72a10e90cc3f7"
+   }
+  },
+  "darkness-falls/princeabdin": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09"
+   }
+  },
+  "darkness-falls/princeasmoien": {
+   "rules": {
+    "pet_devour@111": {
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+     "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "ed786219f6c2df5a16b38e5369ff20707444d17685919e1a3e6250245112e096"
+   }
+  },
+  "darkness-falls/princebaalorien": {
+   "notes": "Prince of Darkness Falls. Every five seconds he eats the nearest pet within 2,000 and heals by the pet's maximum health (changed from every pet on every brain turn, owner 2026-10-14).",
+   "currentRaidAi": "2026-11-04: Albion and Hibernia's Darkness Falls raids were each defeated at him (two wipes each, Special Forces joined). No raid AI for Darkness Falls.",
+   "rules": {
+    "pet_devour@110": {
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+     "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull and fight without them.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "2f464529d3943e2dac47145c3310ec786d1b172f1303582acd0c567bdd5f59b0"
+   }
+  },
+  "darkness-falls/princessnahemah": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs": "e4979c4b62aaa342d40f11378aad1e1072120cec7bdef3c1e7d771e5b0dc4d63"
+   }
+  },
+  "dodens-gruva/arosthespiritmaster": {
+   "rules": {
+    "linked_pack@ArosBrain.cs:153": {
+     "drop": true
+    }
+   }
+  },
+  "dodens-gruva/gameepicaros": {
+   "rules": {
+    "linked_pack@ArosBrain.cs:153": {
+     "drop": true
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
+    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "2a1e19c21f32d541d586915e2b9505b41cda72493183b3ce1dc8650f7753d910"
+   }
+  },
+  "dodens-gruva/gudlaugr": {
+   "rules": {
+    "heal@151": {
+     "summary": "When he turns into the demon wolf (rage) for the first time he heals to full.",
+     "tactic": "Expect a full heal at the change; burn him from there.",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Dodens/Gudlaugr.cs": "e5bca75835cdf49f1d95f376357350c62764ab1afdb5243f2eb93cceb1a1427e"
+   }
+  },
+  "dodens-gruva/mistressofrunes": {
+   "rules": {
+    "linked_pack@192": {
+     "drop": true
+    }
+   }
+  },
+  "dodens-gruva/mistressrunes": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs": "adfb030967b09490f534237d17a13fc0789a7119c5ef6fd48fd9bf25a73da223"
+   }
+  },
+  "dodens-gruva/spiritmasteraros": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "00b3b24581786e8c591d0228899d57370b8e247cf21d1426344653eadcbea487"
+   }
+  },
+  "dodens-gruva/thanedyggve": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs": "517f5c24ba6f17771c2a4b88fc4901ad0ebf1c39d4f8ec23d65e1d4e8560d4d7"
+   }
+  },
+  "fomor-city/anurigunda": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "e3ceb2cb16e859fd21ee26f589dc7b786abe86a6956f1923e15406954f5cfb62"
+   }
+  },
+  "fomor-city/krackenschtein": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs": "ce2a3b5bebe789530311b2824e9fb09ec4686bdb05e9d8904b9b76b79e66c7d5"
+   }
+  },
+  "fomor-city/myrddraxis": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "1f827170b7428801f21a6391a56abd1d18c72dc8507ebfbd98a3d4388b2dc2de"
+   }
+  },
+  "fomor-city/nogoribando": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "5d3b338eec35ec06bacef311189dc0066981669f761bf95d88deaf814d987712"
+   }
+  },
+  "galladoria/airprimal": {
+   "notes": "900 health (by design: one strong nuke kills it), flies (FLYING), never melees (StartAttack empty), never walks home (ReturnToSpawnPoint does nothing while alive). Pets and turrets deal a fixed 5 per hit.",
+   "currentRaidAi": "2026-10-16: it circled 690 above the floor and was skipped; route now shoots flyers within 1,200 from below (RealmRaidDungeonRoute.IsOutOfRangedReach).",
+   "rules": {
+    "damage_reduced@1112": {
+     "summary": "Pets and turrets (GameSummonedPet, TurretPet) deal a fixed 5 per hit; everyone else deals normal damage.",
+     "tactic": "Casters and archers kill it from below with direct damage; pets attack the other primals.",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+   }
+  },
+  "galladoria/aroon": {
+   "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history.",
+   "rules": {
+    "aggro_wipe@1372": {
+     "summary": "Each Scaith now and then drops its aggro and picks one random real player from its PlayersToAttack list (List<GamePlayer>).",
+     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: tanks pick the Scaith back up.",
+     "difficulty": "off today"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "ccb632a3d55ab9e622df2cb1874ef95aaf46c73e9dd428f4078aab09e191dcff"
+   }
+  },
+  "galladoria/beatha": {
+   "notes": "See Xaga. Holds low over the floor while engaged so melee can reach her (offline change).",
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
+   }
+  },
+  "galladoria/conservator": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "0cbda933dcdfc6bad6b81061392d36c30404dea863ac6c8ad68ae723aa24822d"
+   }
+  },
+  "galladoria/earthprimal": {
+   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot.",
+   "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000).",
+   "rules": {
+    "heal@2545": {
+     "summary": "Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender).",
+     "tactic": "Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+   }
+  },
+  "galladoria/easmarach": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "54f836419f50975ca5c7d4df1b25fe764081c4b9b9be87b5f49e84f8b02fae65"
+   }
+  },
+  "galladoria/fireprimal": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+   }
+  },
+  "galladoria/giantsporitecluster": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "63d9d69def059a8a1ba2c6182f0ee50d58b96ae7816fda602452f228012ccc79"
+   }
+  },
+  "galladoria/hurionthex": {
+   "notes": "Changes form every 18 s: base, Treant (casts a damage add on itself), Saiyan (monkey: Black Plague disease) and Granidon (damage shield 120). 2026-10-14 he reset from 31% again and again; the 8 s quiet rule fixed it.",
+   "rules": {
+    "reflect@681": {
+     "summary": "In Granidon form he casts Damage Shield (120 per hit back on melee attackers).",
+     "tactic": "Melee ease off or eat it with healing during Granidon form; casters keep going.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "803467b4edadf2428fd2ef50dba29d129204e09353cfd8e8536d9afa4a13e13a"
+   }
+  },
+  "galladoria/olcasargeomancer": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "db1e12260333888721c01612fb1f9b2e2874c392103ac68308de886effefc402"
+   }
+  },
+  "galladoria/olcasgean": {
+   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second 250,000-health body) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are switched off for bots.",
+   "rules": {
+    "position_puzzle@658": {
+     "summary": "AllowPositionPuzzle (false today) gates his whole fight script: Root Effects, the throw, the DD spam at whoever is not at the two safe points (40170,62600 and 39237,62644), and the Waterfall Antipass.",
+     "tactic": "Off today. To play it: two parties stand on the two safe points the whole fight, the rest fight him.",
+     "difficulty": "off today"
+    },
+    "adds@750": {
+     "summary": "Spawns Olcasgean2, a second body with its own 250,000 health, when he is placed.",
+     "tactic": "Both bodies are final encounters for the route; split the raid or kill them one at a time.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+   }
+  },
+  "galladoria/olcasgean2": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+   }
+  },
+  "galladoria/olcasgeaninitializator": {
+   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4).",
+   "rules": {
+    "immune_while@3201": {
+     "kind": "hazard",
+     "summary": "Watery Vortex: an invulnerable hazard when AllowInvulnerableHazards is on (no damage from anyone). Today the switch is false and a vortex takes normal damage.",
+     "tactic": "Off today. With the switch on: stay out of the vortices and never target them.",
+     "difficulty": "off today"
+    },
+    "adds@223": {
+     "summary": "Spawns eleven Watery Vortices at fixed spots around the waterfall room with the primals.",
+     "tactic": "Today they are ordinary targets; with the hazard switch on, route parties around them.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+   }
+  },
+  "galladoria/organicenergymechanism": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "4eeda42809772bf316ee1a95144177c43a02c704e4a1d02bb6fbc3f5b0313425"
+   }
+  },
+  "galladoria/spindlerbroodmother": {
+   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mezz on a random target every 20-30 s. Her teleport is off for bots.",
+   "currentRaidAi": "2026-11-05 (build 8d7baa3): the Hibernian epic raid wiped at her once (Special Forces arrived).",
+   "rules": {
+    "adds@90": {
+     "summary": "When she dies: about 20-25 underdeveloped spindlers at her body.",
+     "tactic": "Healers ready at her death; AoE classes stack on her corpse; the route treats them as adds.",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "149668060824c2e550b27e9244d813e2c7f5b1de4c575e692093e9dd9c9feb30"
+   }
+  },
+  "galladoria/tine": {
+   "notes": "See Xaga. Holds low over the floor while engaged so melee can reach her (offline change).",
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
+   }
+  },
+  "galladoria/uaimhlairmaster": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "b378898bd7a8665b766bf4412fc6cf3b31bdb4fc7f76d0994cb1751edb863f0c"
+   }
+  },
+  "galladoria/waterprimal": {
+   "rules": {
+    "phase@1649": {
+     "summary": "Below 30% (once) it walks to its pool, stops fighting (dontattack: immune), heals a sixth of its health and comes back.",
+     "tactic": "Stop attacking while it is in the pool; be ready when it comes back.",
+     "difficulty": "needs new raid AI"
+    },
+    "immune_while@1542": {
+     "summary": "Takes no damage while it is retreating to its pool (WaterPrimalBrain.dontattack).",
+     "tactic": "Stop attacking while it is immune; the raid's no-damage clock should not set it aside.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "f8be4319e328b90d851aaeb10b1f9347bdb9233cd8e9235155baadd9d719fb4d"
+   }
+  },
+  "galladoria/xaga": {
+   "notes": "Xaga spawns Tine and Beatha (two 50,000-health fairies) and calls them in when she is attacked; each calls the others. Beatha's damage used to heal Xaga twice over; that is removed for bots (offline change).",
+   "currentRaidAi": "2026-11-05 (build 8d7baa3): the Hibernian epic raid wiped at Tine.",
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
+   }
+  },
+  "gjalpinulva-s-lair-myrkwood/midgjalpinulva": {
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "rules": {
+    "heal@338": {
+     "drop": true
+    },
+    "immune_while@54": {
+     "summary": "Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn).",
+     "subtype": "out_of_tether",
+     "tactic": "Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do).",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "b3b4affcb6076765c54bcb3b4446b1c3144baf461e8f494564f9cf363c7cfb31"
+   }
+  },
+  "golestandt-s-lair-dartmoor/albgolestandt": {
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick real players only. Messengers are retired (SpawnMssengers returns at once). Adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
+   "rules": {
+    "heal@339": {
+     "drop": true
+    },
+    "immune_while@55": {
+     "summary": "Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn).",
+     "subtype": "out_of_tether",
+     "tactic": "Fight it in its lair (RealmRaidDragonFight and AutonomousTetherReset already do).",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "fb898e2c12cb105fd7017e45c5b6e884e7dddf45a4456176c6eeb39e39c9f23f"
+   }
+  },
+  "hall-of-the-corrupt/aidonthearchwizard": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "c683203d719045871e96965b960220e2abc41ea07a64d0ea5297211d8a3e543a"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "AidonCopyFire",
+     "AidonCopyIce",
+     "AidonCopyAir",
+     "AidonCopyEarth"
+    ],
+    "keepAlive": 1,
+    "fightAtHomeRadius": 1100,
+    "summary": "Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back."
+   },
+   "notes": "Level 75, 40,000 health, 30/40% resists, tether 1,500 (immune past it). What stops damage: only the tether; his permanent Damage Shield (Heat, 100 per hit back on melee attackers, recast whenever it is not on him) does not reduce damage taken, so he is killable by design; no damage type bypasses anything and no dispel is needed (he recasts it at once). What kills raids: his four illusions (5,000 health each, spawned at fixed spots the first time he is attacked) each cast a 300 area hit in 350 around their target every brain turn, and he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set of illusions comes 30-45 s after all four are dead, never while one lives. No player-only mechanic is needed to beat him, so no switch has to flip.",
+   "currentRaidAi": "2026-11-05 (build 168f55d): at 22:21 about 40 raiders fell in ten seconds to the illusions' stacked area hits while clearing trash near him; at 22:38 the raid switched to him (\"it is fighting the raid\") without a muster; 31 raiders fought him, all fell, he never went below 99%, and that counted as the raid's first wipe with 56 living. The next muster was placed on the ramp his chase had reached (30927,35039,15365, 2,600 from his home) and gathered 0-2 of 75 in six minutes while the fallen walked back from Camelot Hills."
+  },
+  "hall-of-the-corrupt/captainatwell": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs": "2660a077543835d7cdbac811627b37b7ab380474eb9bf81db7d63c065274f684"
+   }
+  },
+  "hall-of-the-corrupt/captainbardalph": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs": "1e6344c750ac65fbc54d13a04c41d884fc95af67e452582f6341344f77667b96"
+   }
+  },
+  "hall-of-the-corrupt/captainheathyr": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs": "04866264482b4c82fc0ae6684bd2968cb0c20d584ba707d1e65de5bb540184c8"
+   }
+  },
+  "hall-of-the-corrupt/ladydarra": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs": "959ab906c88607fc0ba4e43bd5336e47b018907a91e5caedd00c559e254bbbf5"
+   }
+  },
+  "hall-of-the-corrupt/lieutenantelva": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantElva.cs": "594f33f0f73a6b69051c35a9055a76e8ee650eb10470dfd1122c0aecca7efca4"
+   }
+  },
+  "hall-of-the-corrupt/lieutenantmeade": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs": "34d7b479dc2cd9abb40bc12f631bfa35fbbb3f16439befa022b330cabc53ad38"
+   }
+  },
+  "hall-of-the-corrupt/lieutenantsaxe": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantSaxe.cs": "3612d154819d943e53fe949fd3d18dfaad056d85e5d29d7e89f63abb1c836dfe"
+   }
+  },
+  "hall-of-the-corrupt/lordgildas": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LordGildas.cs": "2e85c44acc69e503faf8943ee3251394fb90f2b21f1d298671f88697f8e6eb0f"
+   }
+  },
+  "hall-of-the-corrupt/sergeantdarryn": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantDarryn.cs": "9d1dee82918a9797b4a01895fc1c35244b0489c40a1c6acd6e12e1f30ea69015"
+   }
+  },
+  "hall-of-the-corrupt/sergeanteddison": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantEddison.cs": "38b9bf4b7124a23ced26589ad3de2f75cb686551a921c7310e855632bc778f14"
+   }
+  },
+  "hall-of-the-corrupt/sergeantreede": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs": "a374bf41adac4310bc37835fe6bae8567b8b512ee2ab762d6dfc17f3d8176a34"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/badb": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Badb.cs": "40472c719834487f43d09e693debe2cdb5f5f387ab5e3e406ab8f2e180aa16e2"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/blight": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Blight.cs": "70e2338f0f22585784b3fcabdaa029f13c5f281cce44e3e38ce312fdf90cddbf"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/blightcontroller": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Blight.cs": "70e2338f0f22585784b3fcabdaa029f13c5f281cce44e3e38ce312fdf90cddbf"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/cailean": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Cailean.cs": "28b1e6ac3aaa689d306f5c48c2102a8e1e3935e34b778fa0b19cbcae021ec138"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/develin": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Develin.cs": "bcd13b0082ee0ad056c67b877d59c8a2cf55bca41e7f985ff5b0cb18bf331bd4"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/epicjuggernaut": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Juggernaut.cs": "bdd9fcc6c6c9adc87a202987374172c040b004251546308a697974f9b54a239b"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/flame": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Flame.cs": "5b239cc643def71d44c18005e75c5d2672dd567c23565ed2f877dec1b03e231d"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/ghostofcaithor": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Caithor.cs": "a6649b98002e2a74d630a8e1a4f50ea21765e8de347803c4c3221d21efa22171"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/greenmaw": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/GreenMaw.cs": "5f136ca74852efa9411d087dc68014cd5167b89a3ee1e3407a418f66e7a9b464"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/luriquay": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Flame.cs": "5b239cc643def71d44c18005e75c5d2672dd567c23565ed2f877dec1b03e231d"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/melancholicfairyqueen": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/MelancholicFairyQueen.cs": "42c2cdedb4b67b89c2a6e041a2bb95975561304d4d0d79c9ffcc23da864e9678"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/queencliodna": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/QueenCliodna.cs": "75e1ba4e83d7d4fc0ed57565c875dd412841ec65b5ad421e06347b2bae0c0e3f"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/skeaghshee": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Skeaghshee.cs": "985baa3454a61d98d53a2c58e3c6d0fc0f59ff92e5c32d0c12071e5d3f315757"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/uafascapall": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/UafasCapall.cs": "8559ecf481e763e8c7e84ab0512418d41dc4d3d6202580ff3c6c4ff6af827a9c"
+   }
+  },
+  "hibernia-named-mobs-classic-zones/wyvernicwraith": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/WyvernicWraith.cs": "fbbaea3360d197592d4af0de17016ffa0159f745fd1f17afda57224446b91ca5"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/balere": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Balere.cs": "a0f757f55943327bb4794141945bdec620a3e34aca255124c3456b4530ab3612"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/beomarbhan": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/DremcisFuiloltair.cs": "2fd1e4ff24e2dd67f31762cd920b0a572ed9633e4f7768c01c50f945af68b6c7"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/cronwort": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Cronwort.cs": "488c51e438a28fdfe28f380f6a438b136feac5e78d4b9e3fd9b1f03f65249a8f"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/curengkur": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Curengkur.cs": "6d61b0630a2784a309252aeb05efbe947ff0b951bea566186088ce066152232a"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/dremcisfuiloltair": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/DremcisFuiloltair.cs": "2fd1e4ff24e2dd67f31762cd920b0a572ed9633e4f7768c01c50f945af68b6c7"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/gneiss": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Gneiss.cs": "0ffc5371321edee807ad4538aad34c52c423bc0b0a3210f9c1f5331d6c5d7019"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/kontarcorrupt": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/KontarCorrupt.cs": "f29d3da7e488e027e6ba71b9cb5d57d805ca37d63740378c8d5d0242d66e0db2"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/marfoirwort": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Marfoirwort.cs": "96a0b9a0a0bd225d8a2242bafb8019e93a6c024f1002e6105c07530ab38bbbbf"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/mollunero": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Mollunero.cs": "16d49d4528f6349df4332a0dff8cf327e151bf53287c8b702de68284f3c89116"
+   }
+  },
+  "hibernia-named-mobs-shrouded-isles/zytka": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Zytka.cs": "ed485519325440451133ba1cde94c64d3a4b640bcdc807ef3ff29763563f8922"
+   }
+  },
+  "iarnvidiur-s-lair/ancientsyver": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/AncientSyver.cs": "f19a7ad65d3fcee2d9a84dc72977fed9e7480808a949b603f5b30a7c61e3a253"
+   }
+  },
+  "iarnvidiur-s-lair/delegalt": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Delegalt.cs": "d012c7f4ee605983ccd359209cbbb829043e0794d6f73fd830488221288c6c96"
+   }
+  },
+  "iarnvidiur-s-lair/droom": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Droom.cs": "3ab86ed0b05aef43d5322577a4984e838fc06334b61c06e8e0d944bfbcc53b58"
+   }
+  },
+  "iarnvidiur-s-lair/dyranapur": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Dyranapur.cs": "86c4e1343a60ddf7553d6f44726c8f85a73c1e16c8bf7faca4a2c449bdf685e1"
+   }
+  },
+  "iarnvidiur-s-lair/hati": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hati.cs": "b45f866977458c1d05c36695e688e9fc580b6015b79d65e64fdc5650c567cfcc"
+   }
+  },
+  "iarnvidiur-s-lair/hurjavelen": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hurjavelen.cs": "b232139af678ba92bd1dd639fc4a51d336ccbf5c085550630f3904a80958cae6"
+   }
+  },
+  "iarnvidiur-s-lair/iarnvidiur": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "31bd6ef22d8d81a88a10e99c33a6bddee5b08e76ddce5d818a1b588d84db13a2"
+   }
+  },
+  "iarnvidiur-s-lair/lydsyg": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Lydsyg.cs": "58b055d2e6018677976e4eaa2f9f5b37d51f3eeafb799c0495dfff6913f4e026"
+   }
+  },
+  "iarnvidiur-s-lair/mahattava": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Mahattava.cs": "7c933eda3886469fb90badc23fab1118f675f719e2ee166da1793823e7c3db29"
+   }
+  },
+  "iarnvidiur-s-lair/skoll": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Skoll.cs": "96ff2701447217c01b437fbb61fb54387738853b50076f4efa894e34e15585ea"
+   }
+  },
+  "iarnvidiur-s-lair/stanga": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Stanga.cs": "c5280d44f68475ed0f22a134e7802b40d56340836892daeecd53002cca37d928"
+   }
+  },
+  "krondon/beransupplymaster": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs": "9b02e8d452e417df93032c54b5e7b841e0997d099ecdbe5db4c912a8e7616eea"
+   }
+  },
+  "krondon/debensegecynde": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/DebenSeGecynde.cs": "991feb86734ad0a6b32a009c1fc7c58342a4f689f091700f14ed934c0250f968"
+   }
+  },
+  "krondon/drihtenelreden": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/DrihtenElreden.cs": "f24b92e1dabe64b333934384af8bc50ae639191a2c65eb6361a93500b1c5a07a"
+   }
+  },
+  "krondon/fuladl": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs": "5c77e0755bcf96121b2fa459a5ba574b6b289795ab47a5d850adee33cf270c70"
+   }
+  },
+  "krondon/fulafeallan": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs": "f5ba58840999e90587f405a2b1be64ade0457b090be3aebddc35311537ecf756"
+   }
+  },
+  "krondon/jehrogbysen": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs": "0ac5434189658322d288521185e65e00b48cf3e067506695b1981fca31adf1fc"
+   }
+  },
+  "krondon/krevoricik": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "146de3a3f7b0a15f3ce4296e14a73966d8e908fc5bfa367df3cc1018de72b59f"
+   }
+  },
+  "krondon/lurfosherald": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs": "87caa007651e218233567dfbb5641ec0d7fed25f6d08320006c2d3b69befd650"
+   }
+  },
+  "krondon/morgusurgalorg": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/MorgusUrgalorg .cs": "52e5bc6478a7fc8c154a7423a91fdd4843068c67cda4d20d4323f0a1c6057bcb"
+   }
+  },
+  "krondon/orshom": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "8d2e120d34b915ce2e459612498985039185d7361df433a9a9de0cc99f838d02"
+   }
+  },
+  "krondon/orylle": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "8d2e120d34b915ce2e459612498985039185d7361df433a9a9de0cc99f838d02"
+   }
+  },
+  "krondon/scurceolhyrde": {
+   "notes": "Immune while any of his four Lyft Miht orbs lives. The orbs (level 90, 15,000 health, 40% melee and 50% magic resists, AF 250) float 450-790 above the room floor at its four corners (51236,20849 / 51316,19228 / 52702,19214 / 52713,20841; floor about 16964), never attack (StartAttack is empty), have a 250 aggro range and RespawnInterval -1. Once dead they stay dead: his reset does not bring them back, only his own respawn (SpawnOrbs runs in AddToWorld). He gains 60 Strength while any orb lives.",
+   "currentRaidAi": "The orbs are IGameEpicNpc, so the route treats them as named encounters, not as his adds (IsEncounterAdd excludes epic NPCs). They never fight, so HostileEncounter never turns to them, while Scurceol attacks the raid and pins it. Melee bots can't reach them (more than 400 up: AutonomousPveTargetPolicy.IsUnreachableFlyer); ranged can (under RangedFlyerReach 1,200). 2026-11-05: he was fought 3,219 units from his spawn, so the raid stood far from the orbs. 2026-11-06 (build 168f55d, night run): the tactic fired twice (REALM_EXPEDITION_TACTIC 01:49:29 and 02:16:58, fights=\"Lyft Miht\" alive=4), but the route then probed each orb through the ground-route gate (an approach within 256 of the target's height), which no orb passes; every orb was set aside a minute at a time and the raid went to Fuladl. No orb was attacked and he was never fought. Now a required add is never walked to: the route fights it from a floor spot the raid can reach within 1,400 of it with sight to the floor under it (RealmRaidDungeonRoute.TryRangedStand: under the orb, by Scurceol, or between), and sets the tactic aside only when no orb has one (REALM_EXPEDITION_TACTIC_ASIDE, with the reason per orb).",
+   "rules": {
+    "immune_while@33": {
+     "summary": "Takes no damage of any type while any of the four Lyft Miht orbs (LyftMihtOne-Four, static counters Orb1Count-Orb4Count) is alive.",
+     "tactic": "In the raid AI (EpicEncounterTactics, required adds): while an orb lives the raid's target is an orb, each party takes the orb its index points at, casters and archers shoot it from the floor, melee stands off under it, and nobody hits him. Then the whole raid turns on him.",
+     "difficulty": "needs new raid AI",
+     "note": "Tactic built in step 2. Seen in the 2026-11-06 run: it fired, but the ground-route gate set every orb aside; step 3 fights them from a ranged floor stand (unit tests only; not yet seen in a run)."
+    },
+    "adds@132": {
+     "summary": "Spawns his four Lyft Miht orbs when he spawns, one per room corner, only if that orb's counter is 0; they never respawn by themselves.",
+     "tactic": "Count orb kills as permanent progress: a wipe or reset on Scurceol does not undo them.",
+     "difficulty": "needs new raid AI"
+    },
+    "teleport@684": {
+     "summary": "An orb hit by a real player has a 25% chance (once per pick) to throw that player, 8-15 s later, to one of four spots on the floor and deal 20% of their health as falling damage. The same code is in all four orb brains.",
+     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it: a thrown bot walks back to its orb party.",
+     "difficulty": "off today"
+    },
+    "empowered@180": {
+     "summary": "Strength 320 instead of 260 while any orb lives (he hits harder until the orbs die).",
+     "tactic": "Another reason to kill the orbs first; the tank party needs extra healing until then.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "LyftMihtOne",
+     "LyftMihtTwo",
+     "LyftMihtThree",
+     "LyftMihtFour"
+    ],
+    "fightAtHomeRadius": 1500,
+    "summary": "Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back."
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "7fd6006aded2a9ce15d30543416ccfc02a9f5feaaec6e0c537dfb567f3d92cef"
+   }
+  },
+  "krondon/ulorbysen": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs": "0ac5434189658322d288521185e65e00b48cf3e067506695b1981fca31adf1fc"
+   }
+  },
+  "marfach-caverns/ancientblackoak": {
+   "notes": "Spawned by Black Lady's AddToWorld at 30091,37620,15049 (48 units above her spawn floor, probably inside the tree). Level 68 (npc template 8823), 40,000 health. AggroLevel 0 with AggroRange 400: it never pulls itself; it fights whoever attacks it. Its Ancient Root (Body, 700 damage, radius 800, 60% snare 30 s) goes off on half of its melee hits.",
+   "currentRaidAi": "2026-11-05 (build 168f55d): the dies-with tactic sent the raid to Black Lady (REALM_EXPEDITION_TACTIC 20:46:33); she died in 1.2 minutes and the Hibernian Marfach raid won with no wipe.",
+   "rules": {
+    "linked_pack@176": {
+     "summary": "When pulled it puts every living NPC with PackageID \"AncientOakBaf\" in the region on its aggro list. The release world database has no such NPC, so today it brings nobody.",
+     "tactic": "Nothing to do today; if the world gets AncientOakBaf mobs, clear or pull them first.",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "aiTactics": {
+    "diesWith": "BlackLady",
+    "summary": "Dies with Black Lady: while she lives the raid fights her instead of the Oak."
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs": "b55ebdb4163258f61661656bd550e975173411aacc683b9fe25646a0136d7491"
+   }
+  },
+  "marfach-caverns/avartack": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AvartackTheChampion.cs": "c7a546a688cb23eb4a554d2e8bd644774271cab73f97c1f2c3c0d6b024caa026"
+   }
+  },
+  "marfach-caverns/blacklady": {
+   "notes": "Level 65 (npc template 8817), 40,000 health. Spawns the Ancient Black Oak when she spawns; when she dies the Oak dies with her (Die kills every AncientBlackOakBrain NPC in the region). Casts Void Strike (Cold, 400, radius 350) every brain turn she has a target.",
+   "currentRaidAi": "2026-11-05: taken to 44%, drawn 1,618 from her spawn and leashed home at full health (AUTONOMOUS_TETHER_RESET); the raid then switched to the Oak and never came back to her.",
+   "rules": {
+    "adds@122": {
+     "summary": "Spawns the Ancient Black Oak (a separate epic encounter, RespawnInterval -1) when she spawns; her death kills it.",
+     "tactic": "In the raid AI (EpicEncounterTactics, dies with): the raid fights Black Lady instead of the Oak; the Oak dies with her. She is fought within 1,100 of her spawn (fight at home).",
+     "difficulty": "needs new raid AI"
+    },
+    "adds@207": {
+     "summary": "Each brain turn in combat (every 2 s), a 20% chance to spawn one Ogress (level 50-55, 2,500 health, aggro 1,200) at one of two spots, up to 5 alive. Ogresses put healer and caster classes on their aggro list at 150 and others at 10 (GetPlayersInRadius: real players only).",
+     "tactic": "One party kills Ogresses as they appear; they are script-spawned adds, so the route already puts them first.",
+     "difficulty": "easy for the current raid AI"
+    }
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 1100,
+    "summary": "Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed."
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "79b4405bf7c6dfc9bc71e9238231ccf3cd5a10f1eacc7b02d124e94ef8c7a67b"
+   }
+  },
+  "marfach-caverns/bluelady": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlueLady.cs": "346219674d0de534a7ea0603e761218fc128ecc9549ee02e209a6c4a00fcd88c"
+   }
+  },
+  "marfach-caverns/chieftaincaimheul": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs": "3eebd1d0c1f025fe67097232c18088e47908ffa4b5e87ac086d1c0a64d79eb34"
+   }
+  },
+  "marfach-caverns/redlady": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs": "98f04623b5c8f19a1e84059408c2d9b871e933a2d10cc724e5e47b3f3326ed9a"
+   }
+  },
+  "midgard-named-mobs-classic-zones/hugi": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Hugi.cs": "a7e9286fc8a4842e928f975ad9dd6964b5e10d90456f4675c2b1a95a020168c3"
+   }
+  },
+  "midgard-named-mobs-classic-zones/kelic": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Kelic.cs": "7f30815802a1c71234ebf3999437e95dd2090ce95c11ee8c9906ab2cfab75118"
+   }
+  },
+  "midgard-named-mobs-classic-zones/loken": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Loken.cs": "5dc2bfdea94037d23d29eafa8d239758fb7325222985191b4c144e3580817b03"
+   }
+  },
+  "midgard-named-mobs-classic-zones/mokkurvalve": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Mokkurvalve.cs": "6382636e117ffb121a7115729ebf6e09fbaabeaee18dbba07c24a138c6b7d7ab"
+   }
+  },
+  "midgard-named-mobs-classic-zones/oona": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Oona.cs": "3079b70b902642971a70fa26007bd6df42bea80a2334594b003174fd44121915"
+   }
+  },
+  "midgard-named-mobs-classic-zones/raumarikrevenant": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/RaumarikRevenant.cs": "3aae917ad79c29fe668e7d0e100eb06053e0be91524505498351bbb7bc7223c6"
+   }
+  },
+  "midgard-named-mobs-classic-zones/runil": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Runil.cs": "7bf552d955fd5eb28c59e5917aa88b303d39f725f7af60074ee3b73d78df4fee"
+   }
+  },
+  "midgard-named-mobs-classic-zones/ulfketill": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ulfketill.cs": "645dfb0ec4ab74d670c66de0c0da84bd69f43361910540e4888b8dae9cdc8d50"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwinterarachite": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwintercrab": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwinterice": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwinterjotun": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwinterlich": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwinterogre": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwinterraumarik": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwinterscorp": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/wrethofwinterspider": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/WretchOfWinter.cs": "60347e5ad9cbbca4a9a3a1c7fc829dd9403429235a7eb568c9544cd35e2dcceb"
+   }
+  },
+  "midgard-named-mobs-classic-zones/ydenia": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs": "5233e97cf9925374a0939b6b78fe3315b5ad58d5da45c8c4e045d65efcffa52e"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/basilius": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Basilius.cs": "60f53f2bfd8b4c682a98b1b186b39bfe874fc4cebf2c468580206effc7085c0c"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/boligar": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs": "c42f90da28992a5dc86f53f3d4c0751a1b04886574053db9f83a0014d0d852f8"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/chieftarek": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/ChiefTarek.cs": "7a2ef957bd71f47f33ae86012cad6f6bbe38a8f88f2580d4cc23b5a044ff80f8"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/cronk": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Cronk.cs": "1546cb7c0c138c6b9f884a8540576ece1a0026e4086b03ab961998ba036cd313"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/dalgo": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Dalgo.cs": "f72b57c8bdaf0ef19f51543340ca4393117194a9c85b7bcb97c6df9794491774"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/goretooth": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Goretooth.cs": "6c422b2360d12e69397c564bbf46b5fd30a84a1fae839ab02e74f0b6c4a68055"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/mortufoghus": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Mortufoghus.cs": "cb68d88c71261f8985838757c57b7dc47d48cae78a0df1fd104ef80afaae91c1"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/shredclaw": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Shredclaw.cs": "b4a0cce03ac3565174173d7c34bd51e761aac14b911ddf941a9fff671339d447"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/valmak": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Valmak.cs": "459dd23c05add851e92b2f6fd78efd957c3af1a068a3377807552a6d9ab9a725"
+   }
+  },
+  "midgard-named-mobs-shrouded-isles/vasrem": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs": "5a6d0d84e1cea4cb4ccaf5c14e582941a6780b5083e5ba5ca17294d5f7430556"
+   }
+  },
+  "open-world/archilus": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Archilus.cs": "9a7b1f7df01cbf9c75612a458ee7147d813a5f071855e9cd509929dd96485834"
+   }
+  },
+  "open-world/elrotheancient": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666"
+   }
+  },
+  "open-world/evern": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe"
+   }
+  },
+  "open-world/glaciergiant": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "108f8cec1d0f52c5292c61ab3ecbba0900ef4568e417042517e830de9ca19c3f"
+   }
+  },
+  "open-world/gnat": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Gnat.cs": "0cc35e556f8aff83f999e735bd6f9664d686fd701955c5884951198730c22f82"
+   }
+  },
+  "open-world/maldahartheglimmerprince": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/MaldaharTheGlimmerPrince.cs": "cb79af21ccefe4c643d37e945ae01ff30ad5e5f3c999dfa682a6d05413028996"
+   }
+  },
+  "open-world/moranthemighty": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "3b23f640c300478931f75387d98e910323f4dfb123f2b600f0397fcb03433070"
+   }
+  },
+  "open-world/ofgreenknight": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "9c4f41705b39a834414fa82f2602f659b2b1dc5c1608105d7231434752f92b06"
+   }
+  },
+  "open-world/yar": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Yar.cs": "e2ffa172eca1beb7af889d425248ba5bcd22ec6c99a65c038754f3ce563d989b"
+   }
+  },
+  "summoner-s-hall/grandsummonergovannon": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "c132394348b47059a3c7427a8b46a6282c7c6b2633f0d14d4d459219a93a141d"
+   }
+  },
+  "summoner-s-hall/summonercunovinda": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "07a221b7d2168ae615e73edf3d3fecd75e4e724fc5dfe292fee0f83759d879ae"
+   }
+  },
+  "summoner-s-hall/summonerlossren": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "8ae1d2761326e5c7753464c61e5cad23b20da2695914f41890909ccb1ac4103f"
+   }
+  },
+  "summoner-s-hall/summonerroesia": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "d8c2fdb4251b6e18fe8c1e6138486c6b6cfd3c75e1e2dd814e3e2387244b5257"
+   }
+  },
+  "trollheim/dagar": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs": "9c54b8e58b90b96c8d0cc2e20a20b5a50eb5a2f1f156172b47e89e7c3cada7b8"
+   }
+  },
+  "trollheim/nosdoden": {
+   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on random real players within 2,000 only (GetPlayersInRadius), so bots never draw them. Spirits of the fallen are made only from dead real players.",
+   "currentRaidAi": "2026-11-05: lost twice at full size (support 80 and 132, Special Forces joined both times). The essence waves are script-spawned, not epic, so the route does put them first; the raid still died.",
+   "rules": {
+    "adds@674": {
+     "summary": "SpawnEssences: about 12-18 essence of fallen (NosdodenSummonedAdds, StandardMobBrain-based, aggro range 1,500) around him at each of nine thresholds (90, 80, ... 10%).",
+     "tactic": "Push him one 10% step at a time: stop damage on him at each threshold, AoE classes and two parties burn the wave down at his feet, healers keep the tank up, then the next step. Don't let three waves stack.",
+     "difficulty": "needs new raid AI"
+    },
+    "phase@577": {
+     "summary": "At 90/80/70/60/50/40/30/20/10% health: one essence wave each (SpawnEssences).",
+     "tactic": "Damage pacing: a raid that blows through two thresholds at once doubles the wave.",
+     "difficulty": "needs new raid AI"
+    },
+    "adds@158": {
+     "summary": "EnemyKilled: when he kills a real player he makes a 'Spirit of <name>' ghost with that player's race, armour and class behaviour (GameBot deaths never make one).",
+     "tactic": "Off for bots today: it picks only real players (GameBot is a GameNPC, not a GamePlayer). To play it with bots: a dead bot's ghost fights the raid; kill it, or res the bot (the ghost dies when its owner lives again).",
+     "difficulty": "off today"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "051a7b31283af19fee23593bd9ea76682a27309dc03a94681559bce109f14aa3"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "NosdodenSummonedAdds"
+    ],
+    "summary": "Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack."
+   }
+  },
+  "trollheim/rift": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs": "8d11894906325de83614eed8ce5bdf22f368f0ce2d4dd8bf50d6006b8eed813a"
+   }
+  },
+  "trollheim/rotoddjur": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs": "9c7eb27994026aa4ed0168158089af2f5acc1abc71efd255079ccc00f7e0e24c"
+   }
+  },
+  "tur-suil/abomossoultrapper": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs": "c41910c457057f8bb67f3ce8925a29a01d1367d02476e0a71ef5d63f242b576d"
+   }
+  },
+  "tur-suil/balor": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "a9477171adf115c8bb1764506e50bef9f16f232c01ca76ab1df16a2cfae31bee"
+   }
+  },
+  "tur-suil/kieracdestroyer": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "667bf9aa6176cfa63fd7f48a97255f08977135bd7f232c1020e49eab79509feb"
+   }
+  },
+  "tur-suil/masterofpain": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "667bf9aa6176cfa63fd7f48a97255f08977135bd7f232c1020e49eab79509feb"
+   }
+  },
+  "tur-suil/norsobannihilator": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs": "5766d2efe3a988e2f903d78369ea74c84b6c3d49353be25bd65d808e5fb328ac"
+   }
+  },
+  "tur-suil/queenqunilaria": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs": "906a572c53b279f424e39f79e057ea1ddd7c53ae56e836d7b347bb2a9eb33362"
+   }
+  },
+  "tur-suil/sarganconqueror": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TurSuil/NorsobAndSargan.cs": "5766d2efe3a988e2f903d78369ea74c84b6c3d49353be25bd65d808e5fb328ac"
+   }
+  },
+  "tuscaran-glacier/agmundr": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "968acafc599e2fb740ec84a8df0f79f4c8c2831918dc434648eee93c572b42aa"
+   }
+  },
+  "tuscaran-glacier/birghir": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "7136db091fcc4565c05dc388dbcf0ebe6463da1cc3e6b93c28b3202427741afb"
+   }
+  },
+  "tuscaran-glacier/fallingice": {
+   "rules": {
+    "immune_while@15": {
+     "kind": "hazard",
+     "summary": "Falling ice: a scripted hazard that takes no damage from anyone.",
+     "tactic": "Don't target it; stay out from under it.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/FallingIce.cs": "27ce0908e96c664642e3ec04c1bd8c5e6869b4f5c6f5ba2aca5363017eebf4a3"
+   }
+  },
+  "tuscaran-glacier/fornfrusenen": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "902b66c51eecf6e1743f713eae627d606f0ff2e553bf4a9621a0a8ca51faad94"
+   }
+  },
+  "tuscaran-glacier/guthlac": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "7136db091fcc4565c05dc388dbcf0ebe6463da1cc3e6b93c28b3202427741afb"
+   }
+  },
+  "tuscaran-glacier/hakr": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "b745a3588f7bb91559d24dbbbd71bd554a2c110c2264a778907918fdd5d89b62"
+   }
+  },
+  "tuscaran-glacier/hjalmar": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "275e75682c460266e74b69c4ecea06a67666c2822ba021ac9e2ddb3490d230c6"
+   }
+  },
+  "tuscaran-glacier/hjalmarsuttungcontroller": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "275e75682c460266e74b69c4ecea06a67666c2822ba021ac9e2ddb3490d230c6"
+   }
+  },
+  "tuscaran-glacier/hord": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs": "f21c3e552ea4280627e1dbb87c762a4a5309d9cbec086d099d6231442327abc3"
+   }
+  },
+  "tuscaran-glacier/hurika": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "e1e39b483c515c83a04986d5ec43de8de45ccec4b172d2ce8fd8ce1e740d1510"
+   }
+  },
+  "tuscaran-glacier/issorden": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055"
+   }
+  },
+  "tuscaran-glacier/jailer": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "f68680bbe041558b0a4471b2fe24e0bacf0d9f14b80fe70929b8f8e31ed986b3"
+   }
+  },
+  "tuscaran-glacier/kingtuscar": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8e304d98cda194e4bd00a9c2437f85b7bd57e68d168e88e58837a10f72021e84"
+   }
+  },
+  "tuscaran-glacier/kvasir": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "e5c585f338292eb70d61bc290c846548563de0fdf0969d8230e367e61839e881"
+   }
+  },
+  "tuscaran-glacier/nokkvi": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2"
+   }
+  },
+  "tuscaran-glacier/otrygg": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs": "2b25c53806a59264da80fa2bc3fd0116213e688d2cb49e57989b263298c18b3f"
+   }
+  },
+  "tuscaran-glacier/ozur": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "919e4a542ee6d21bbdfa153cb5d6ade286ee2e5249e5e7b817522d330c6545d5"
+   }
+  },
+  "tuscaran-glacier/queenkula": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8e304d98cda194e4bd00a9c2437f85b7bd57e68d168e88e58837a10f72021e84"
+   }
+  },
+  "tuscaran-glacier/skuf": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "00675a6799f362bf98e12ff83038acc80a445405c2f3be22905162d122f9e6cf"
+   }
+  },
+  "tuscaran-glacier/steinvor": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "00675a6799f362bf98e12ff83038acc80a445405c2f3be22905162d122f9e6cf"
+   }
+  },
+  "tuscaran-glacier/suttung": {
+   "rules": {
+    "enrage_timer@158": {
+     "kind": "empowered",
+     "summary": "Every 20-35 s in combat he goes berserk for 10-20 s: Strength 850 (hits much harder).",
+     "tactic": "Tanks use their defensive abilities and healers focus the tank during berserk; off-tanks ready to take over.",
+     "difficulty": "needs new raid AI"
+    }
+   },
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "275e75682c460266e74b69c4ecea06a67666c2822ba021ac9e2ddb3490d230c6"
+   }
+  },
+  "tuscaran-glacier/torst": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "e1e39b483c515c83a04986d5ec43de8de45ccec4b172d2ce8fd8ce1e740d1510"
+   }
+  },
+  "tuscaran-glacier/vagn": {
+   "verified": true,
+   "scriptHashes": {
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2"
+   }
+  }
+ }
+}

@@ -23,9 +23,14 @@ public sealed record SocialExpansionSettings
     public bool GuildClaims { get; init; } = true;
     public bool GuildEconomy { get; init; } = true;
     public bool GuildAlliances { get; init; } = true;
+    /// <summary>Gamebots you invite into your guild pay its dues and earn it merit (Living Server 1.1.2). On by default; works with bot guilds off.</summary>
+    public bool PlayerGuildEconomy { get; init; } = true;
     public bool Personalities { get; init; }
     public bool Voices { get; init; } = true;
     public bool Debates { get; init; } = true;
+    /// <summary>How much bots talk unprompted, 0 to 3 (bot_voices_chat_rate). 2 by default from Living Server 1.1.2 (owner
+    /// 2026-11-04, after the playtest measured 6.4 lines a minute in Albion at 900 bots a realm with 1).</summary>
+    public double ChatRate { get; init; } = 2.0;
     public bool LivingMemory { get; init; } = true;
     public bool LivingGrats { get; init; } = true;
     public bool LivingFirsts { get; init; }
@@ -48,6 +53,15 @@ public sealed record SocialExpansionSettings
     public bool LivingLeeroy { get; init; } = true;
     public string PlayerXpByLevel { get; init; } = "";
     public string BotXpByLevel { get; init; } = "";
+    /// <summary>
+    /// Power regeneration multiplier for players and bots alike (Living Server 1.1.2: 1.5; 1 is the classic pre-1.87 rate,
+    /// which patch 1.87 doubled).
+    /// </summary>
+    public double ManaRegenModifier { get; init; } = DefaultManaRegenModifier;
+    /// <summary>The classic rule: list casters regenerate power at half speed below 50% power. Off by default since 1.1.2.</summary>
+    public bool ManaHalvedBelowHalf { get; init; }
+
+    public const double DefaultManaRegenModifier = 1.5, MinManaRegenModifier = 0.25, MaxManaRegenModifier = 10;
 
     /// <summary>The server's defaults: since Beta 1.1 (the talking update) bot voices, bot memory and grats on, the rest off.</summary>
     public static SocialExpansionSettings Defaults { get; } = new();
@@ -60,6 +74,7 @@ public sealed record SocialExpansionSettings
     public static SocialExpansionSettings Recommended { get; } = new()
     {
         BotGuilds = true, GuildSocial = true, GuildRecruitPlayer = true, GuildClaims = true, GuildEconomy = true, GuildAlliances = true,
+        PlayerGuildEconomy = true, ManaRegenModifier = DefaultManaRegenModifier, ManaHalvedBelowHalf = false,
         Personalities = true, Voices = true, Debates = true,
         LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true, LivingNemesis = true,
         ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingDeeds = true,
@@ -76,11 +91,13 @@ public sealed record SocialExpansionSettings
         ("bot_guild_social", "guild", "When bot guilds are on: guild members greet, congratulate and chat in guild chat when a real member can hear, answer your /gu, and bot guild officers recruit in /faction."),
         ("bot_guild_recruit_player", "guild", "When bot guild social life is on: bot guild officers may invite you to their guild with a yes/no dialog."),
         ("bot_guild_claims_keeps", "guild", "When bot guilds are on: bot guilds claim keeps and towers their realm takes, and defend them first."),
-        ("bot_guild_economy", "guild", "When bot guilds are on: guilded gamebots pay dues from real loot, level-ups earn merit points, and leaders buy guild buffs."),
+        ("bot_guild_economy", "guild", "When bot guilds are on: guilded gamebots pay dues from real loot, level-ups and realm ranks earn merit points, and leaders buy guild buffs."),
+        ("bot_player_guild_economy", "guild", "Gamebots you invite into your guild pay its dues (the rate its leader set) from the real coin they loot, and their level-ups and realm ranks earn it merit points as a player's do. Guild realm points, keep claims and guild buffs still never count a bot. Works whether bot guilds are on or off."),
         ("bot_guild_alliances", "guild", "When bot guilds are on: each realm's RvR and raiding bot guilds form one alliance."),
         ("bot_personalities_enabled", "bots", "Autonomous gamebots get a personality and traits that tilt town breaks, goals, dungeons, camps and chattiness (see docs/BOT-PERSONALITIES.md)."),
         ("bot_voices_enabled", "bots", "Autonomous gamebots say pre-written, period lines in their own writing style (docs/bot-voices/DESIGN.md)."),
         ("bot_voices_debates", "bots", "When bot voices are on: bots of a realm play debates and long threads in /faction while you are online."),
+        ("bot_voices_chat_rate", "bots", ChatRateDescription),
         ("bot_living_memory", "bots", "Server life: autonomous gamebots of your realm remember grouping with you, your rezzes and rude words; they greet you by name, thank you for an old rez, answer you by name, mention you in /faction now and then, and stay cool after insults. Chat only. False keeps today's bots."),
         ("bot_living_grats", "bots", "Server life: when you or a bot gains a level, groupmates say grats in /group and bots nearby in /say, and a realm's bots cheer a new level 50 in /faction."),
         ("bot_living_firsts", "bots", "Server life: the first character on the server (you or a bot) to reach level 50, the first of each class to reach 50 and the first to each realm rank from 2 up are announced to everyone and recorded for the Camelot Herald."),
@@ -99,7 +116,13 @@ public sealed record SocialExpansionSettings
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
+        ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab."),
+        ("mana_regen_amount_halved_below_50_percent", "rates", "Halve power regeneration below 50% power for list casters (the classic rule). Applies to real players and gamebots alike. Off by default in the Living Server; set in the launcher's Living Server tab."),
     ];
+
+    /// <summary>The server's description of bot_voices_chat_rate (ServerProperties.BOT_VOICES_CHAT_RATE).</summary>
+    public const string ChatRateDescription =
+        "When bot voices are on: how much bots talk on their own, from 0 (they only answer) to 3. 2 (the default) sounds like a busy server; 1 is calmer, 3 very busy. Chat already rises and falls with the hour and with how many bots are on (chat-budget.json).";
 
     /// <summary>The value the server would read for each key.</summary>
     public IReadOnlyDictionary<string, string> ToStoredValues() => new Dictionary<string, string>
@@ -112,9 +135,11 @@ public sealed record SocialExpansionSettings
         ["bot_guild_claims_keeps"] = Bool(GuildClaims),
         ["bot_guild_economy"] = Bool(GuildEconomy),
         ["bot_guild_alliances"] = Bool(GuildAlliances),
+        ["bot_player_guild_economy"] = Bool(PlayerGuildEconomy),
         ["bot_personalities_enabled"] = Bool(Personalities),
         ["bot_voices_enabled"] = Bool(Voices),
         ["bot_voices_debates"] = Bool(Debates),
+        ["bot_voices_chat_rate"] = ChatRate.ToString("0.##", CultureInfo.InvariantCulture),
         ["bot_living_memory"] = Bool(LivingMemory),
         ["bot_living_grats"] = Bool(LivingGrats),
         ["bot_living_firsts"] = Bool(LivingFirsts),
@@ -133,6 +158,8 @@ public sealed record SocialExpansionSettings
         ["bot_living_leeroy"] = Bool(LivingLeeroy),
         ["xp_rate_by_level"] = PlayerXpByLevel.Trim(),
         ["bot_xp_rate_by_level"] = BotXpByLevel.Trim(),
+        ["mana_regen_amount_modifier"] = ManaRegenModifier.ToString("0.##", CultureInfo.InvariantCulture),
+        ["mana_regen_amount_halved_below_50_percent"] = Bool(ManaHalvedBelowHalf),
     };
 
     private static string Bool(bool value) => value ? "True" : "False";
@@ -191,6 +218,38 @@ public sealed record SocialExpansionSettings
             else
                 minLevel = level;
         }
+        double manaRate = d.ManaRegenModifier;
+        if (stored.TryGetValue("mana_regen_amount_modifier", out string? manaText) && !string.IsNullOrWhiteSpace(manaText))
+        {
+            if (!double.TryParse(manaText.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double rate) || double.IsNaN(rate))
+            {
+                Problem("mana_regen_amount_modifier", $"mana_regen_amount_modifier = \"{manaText}\" is not a number, so the server reads it as 0 (the slowest regeneration).");
+                manaRate = MinManaRegenModifier;
+            }
+            else if (rate < MinManaRegenModifier || rate > MaxManaRegenModifier)
+            {
+                Problem("mana_regen_amount_modifier", $"mana_regen_amount_modifier = \"{manaText}\" is outside {MinManaRegenModifier.ToString(CultureInfo.InvariantCulture)} to {MaxManaRegenModifier.ToString(CultureInfo.InvariantCulture)}.");
+                manaRate = Math.Clamp(rate, MinManaRegenModifier, MaxManaRegenModifier);
+            }
+            else
+                manaRate = Math.Round(rate, 2, MidpointRounding.AwayFromZero);
+        }
+        double chatRate = d.ChatRate;
+        if (stored.TryGetValue("bot_voices_chat_rate", out string? rateText) && !string.IsNullOrWhiteSpace(rateText))
+        {
+            if (!double.TryParse(rateText.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double rate))
+            {
+                Problem("bot_voices_chat_rate", $"bot_voices_chat_rate = \"{rateText}\" is not a number, so the server reads it as 0 (bots only answer).");
+                chatRate = 0;
+            }
+            else if (rate < 0 || rate > 3)
+            {
+                Problem("bot_voices_chat_rate", $"bot_voices_chat_rate = \"{rateText}\" is outside 0 to 3.");
+                chatRate = Math.Clamp(rate, 0, 3);
+            }
+            else
+                chatRate = rate;
+        }
         string schedule = d.ScheduleMode;
         if (stored.TryGetValue("bot_schedule_mode", out string? scheduleText) && !string.IsNullOrWhiteSpace(scheduleText))
         {
@@ -211,9 +270,11 @@ public sealed record SocialExpansionSettings
             GuildClaims = ReadBool("bot_guild_claims_keeps", d.GuildClaims),
             GuildEconomy = ReadBool("bot_guild_economy", d.GuildEconomy),
             GuildAlliances = ReadBool("bot_guild_alliances", d.GuildAlliances),
+            PlayerGuildEconomy = ReadBool("bot_player_guild_economy", d.PlayerGuildEconomy),
             Personalities = ReadBool("bot_personalities_enabled", d.Personalities),
             Voices = ReadBool("bot_voices_enabled", d.Voices),
             Debates = ReadBool("bot_voices_debates", d.Debates),
+            ChatRate = chatRate,
             LivingMemory = ReadBool("bot_living_memory", d.LivingMemory),
             LivingGrats = ReadBool("bot_living_grats", d.LivingGrats),
             LivingFirsts = ReadBool("bot_living_firsts", d.LivingFirsts),
@@ -233,6 +294,8 @@ public sealed record SocialExpansionSettings
             // Kept as written: an invalid range setting shows its own error in the tab (the server ignores it).
             PlayerXpByLevel = stored.TryGetValue("xp_rate_by_level", out string? player) ? player?.Trim() ?? "" : "",
             BotXpByLevel = stored.TryGetValue("bot_xp_rate_by_level", out string? bots) ? bots?.Trim() ?? "" : "",
+            ManaRegenModifier = manaRate,
+            ManaHalvedBelowHalf = ReadBool("mana_regen_amount_halved_below_50_percent", d.ManaHalvedBelowHalf),
         };
     }
 
@@ -246,7 +309,8 @@ public sealed record SocialExpansionSettings
 
     /// <summary>
     /// "All off": the three features, every Living Server part and both XP ranges off. The share, lowest level and each part keep their
-    /// values, so turning a feature back on later restores the player's own choices.
+    /// values, so turning a feature back on later restores the player's own choices. Power regeneration is a rate, not a feature,
+    /// and keeps its values too.
     /// </summary>
     public SocialExpansionSettings AllOff() => this with
     {
@@ -266,6 +330,8 @@ public sealed record SocialExpansionSettings
         if (GuildSharePercent is < 0 or > 100) return "The share of bots in guilds must be 0 to 100%.";
         if (GuildMinLevel is < 0 or > 50) return "The lowest guild level must be 0 to 50.";
         if (!ScheduleModes.Contains(ScheduleMode)) return "The bot schedule must be off, session or clock.";
+        if (double.IsNaN(ManaRegenModifier) || ManaRegenModifier < MinManaRegenModifier || ManaRegenModifier > MaxManaRegenModifier)
+            return $"The power regeneration rate must be {MinManaRegenModifier.ToString(CultureInfo.InvariantCulture)} to {MaxManaRegenModifier.ToString(CultureInfo.InvariantCulture)}.";
         return XpError("Your XP by level", PlayerXpByLevel) ?? XpError("Bot XP by level", BotXpByLevel);
     }
 

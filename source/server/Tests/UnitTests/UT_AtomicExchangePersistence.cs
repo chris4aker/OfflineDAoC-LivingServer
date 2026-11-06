@@ -129,8 +129,6 @@ namespace DOL.UnitTests
             finally
             {
                 DeleteTemporaryFile(path);
-                DeleteTemporaryFile(path + "-wal");
-                DeleteTemporaryFile(path + "-shm");
             }
         }
 
@@ -160,10 +158,7 @@ namespace DOL.UnitTests
             }
             finally
             {
-                System.Data.SQLite.SQLiteConnection.ClearAllPools();
                 DeleteTemporaryFile(path);
-                DeleteTemporaryFile(path + "-wal");
-                DeleteTemporaryFile(path + "-shm");
             }
         }
 
@@ -299,13 +294,10 @@ namespace DOL.UnitTests
             return database;
         }
 
-        private static string TemporaryPath() => Path.Combine(Path.GetTempPath(),
-            "daoc-atomic-exchange-" + Guid.NewGuid().ToString("N") + ".sqlite3");
+        // Each test gets its own %TEMP%\daoc-atomic-exchange-<guid> folder, never a server database. Deleting it clears
+        // the pools and retries while a closing connection still holds the file (PR #56 failed on Windows here).
+        private static string TemporaryPath() => TemporarySqlite.NewDatabasePath("daoc-atomic-exchange");
 
-        private static void DeleteTemporaryFile(string path)
-        {
-            // The test creates only this GUID-named SQLite file, never a server database.
-            if (File.Exists(path)) File.Delete(path);
-        }
+        private static void DeleteTemporaryFile(string path) => TemporarySqlite.DeleteDatabase(path);
     }
 }

@@ -58,13 +58,26 @@ namespace DOL.GS
         }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            // Offline raids cannot coordinate class/weapon damage puzzles or heal-on-hit rules.
-            // Keep real damage, armor/resists, health, death phases, and the encounter tether.
+            // Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below
+            // full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.
             if (!EpicEncounterActors.IsCombatant(source)) return;
             if (IsOutOfTetherRange)
+            {
                 base.TakeDamage(source, damageType, 0, 0);
-            else
-                base.TakeDamage(source, damageType, damageAmount, criticalAmount);
+                return;
+            }
+            if (EpicEncounterMechanics.AllowTuscarTwinHeal)
+            {
+                foreach (GameNPC npc in GetNPCsInRadius(5000))
+                {
+                    if (npc is KingTuscar && npc.IsAlive && npc.HealthPercent < 100)
+                    {
+                        npc.Health += damageAmount + criticalAmount;
+                        EpicEncounterRestores.TellImmune(source, "Your damage is healing King Tuscar!");
+                    }
+                }
+            }
+            base.TakeDamage(source, damageType, damageAmount, criticalAmount);
         }
         #endregion
 
@@ -509,13 +522,26 @@ namespace DOL.GS
         }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            // Offline raids cannot coordinate class/weapon damage puzzles or heal-on-hit rules.
-            // Keep real damage, armor/resists, health, death phases, and the encounter tether.
+            // Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below
+            // full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.
             if (!EpicEncounterActors.IsCombatant(source)) return;
             if (IsOutOfTetherRange)
+            {
                 base.TakeDamage(source, damageType, 0, 0);
-            else
-                base.TakeDamage(source, damageType, damageAmount, criticalAmount);
+                return;
+            }
+            if (EpicEncounterMechanics.AllowTuscarTwinHeal)
+            {
+                foreach (GameNPC npc in GetNPCsInRadius(5000))
+                {
+                    if (npc is QueenKula && npc.IsAlive && npc.HealthPercent < 100)
+                    {
+                        npc.Health += damageAmount + criticalAmount;
+                        EpicEncounterRestores.TellImmune(source, "Your damage is healing Queen Kula!");
+                    }
+                }
+            }
+            base.TakeDamage(source, damageType, damageAmount, criticalAmount);
         }
         #endregion
 

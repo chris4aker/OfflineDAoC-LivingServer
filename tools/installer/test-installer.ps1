@@ -15,6 +15,10 @@
 #   netfx     .NET Framework 3.5 turned on through Setup (informational where the runner can't turn it off first)
 #   smoke     the installed game's server starts with Living Server (FORK_BUILD in its log) and a login works
 #   ui        the real window, driven page by page through a new install (--autopilot), with pictures
+#   newest    (no game needed) which package Setup installs: a newer one from GitHub's newest release, the embedded one
+#             with --no-update, and the embedded one when the release's digest is wrong or missing
+#
+# Every run except "newest" passes --no-update, so Setup installs the package it embeds and the checks below hold.
 param(
     [Parameter(Mandatory)] [string]$Exe,
     [Parameter(Mandatory)] [string]$Package,
@@ -51,10 +55,10 @@ try {
 } finally { $zip.Dispose() }
 Write-Host "Package $($info['BuildName']) for $($info['BaseRelease']) (root folder $pkgRoot)"
 
-function Setup([string]$name, [string[]]$argList) {
+function Setup([string]$name, [string[]]$argList, [switch]$CheckNewest) {
     $script:n++
     $log = Join-Path $logs ('{0:00}-{1}.log' -f $script:n, $name)
-    $all = @('--silent') + $argList + @('--log', $log)
+    $all = @('--silent') + $(if ($CheckNewest) { @() } else { @('--no-update') }) + $argList + @('--log', $log)
     Write-Host ''
     Write-Host "== $name : Setup $($all -join ' ')" -ForegroundColor Cyan
     $start = Get-Date
@@ -69,7 +73,7 @@ function Setup([string]$name, [string[]]$argList) {
 function Start-Setup([string]$name, [string[]]$argList) {
     $script:n++
     $log = Join-Path $logs ('{0:00}-{1}.log' -f $script:n, $name)
-    $all = @('--silent') + $argList + @('--log', $log)
+    $all = @('--silent', '--no-update') + $argList + @('--log', $log)
     Write-Host ''
     Write-Host "== $name : Setup $($all -join ' ') (in the background)" -ForegroundColor Cyan
     $p = Start-Process -FilePath $Exe -ArgumentList ($all | ForEach-Object { if ($_ -match '\s') { '"' + $_ + '"' } else { $_ } }) -PassThru -NoNewWindow
@@ -118,6 +122,49 @@ function Newest-Release([string]$game) {
 $base = $info['BaseRelease']
 $fresh = Join-Path $root "playable-v$($base)b"
 Get-PSDrive -PSProvider FileSystem | Format-Table Name, @{n='FreeGB';e={[math]::Round($_.Free/1GB,1)}}, @{n='UsedGB';e={[math]::Round($_.Used/1GB,1)}} | Out-String | Write-Host
+
+if ($Scenario -contains 'newest') {
+    # Beta 1.1.2: Setup asks GitHub for the newest release and installs its package when it is newer than the embedded
+    # one, checked against GitHub's SHA-256 digest; anything wrong leaves the embedded package. --info stops after that
+    # decision ("WOULD INSTALL <build>"), so no game is needed.
+    Write-Host ''
+    Write-Host '== newest: which package Setup installs' -ForegroundColor Cyan
+    $headers = @{ 'User-Agent' = 'OfflineDAoC-LivingServer-tests' }
+    if ($env:GH_TOKEN) { $headers['Authorization'] = "Bearer $env:GH_TOKEN" }
+    $latest = Invoke-RestMethod -Uri 'https://api.github.com/repos/chris4aker/OfflineDAoC-LivingServer/releases/latest' -Headers $headers
+    function NumberOf([string]$build) {
+        $parts = @(($build -replace '^v', '' -replace '-beta.*$', '').Split('.') | ForEach-Object { [int]$_ })
+        while ($parts.Count -lt 4) { $parts += 0 }
+        return [version]($parts[0..3] -join '.')
+    }
+    $embedded = $info['BuildName']
+    $newestBuild = $latest.tag_name.TrimStart('v')
+    $newer = (NumberOf $newestBuild) -gt (NumberOf $embedded)
+    Write-Host "   embedded $embedded, GitHub's newest $newestBuild (newer: $newer)"
+
+    $r = Setup 'newest-off' @('--info')
+    Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($embedded)) " -and $r.Log -match 'off \(--no-update\)') 'newest: --no-update installs the embedded package'
+
+    $r = Setup 'newest-on' @('--info') -CheckNewest
+    if ($r.Log -match "Couldn't ask GitHub") { Write-Host '   INFO  newest: GitHub did not answer this runner (rate limit?); Setup kept the embedded package as designed' }
+    elseif ($newer) {
+        Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($newestBuild)) " -and $r.Log -match 'checked against its SHA-256 digest') "newest: Setup uses GitHub's newer $newestBuild"
+    } else {
+        Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($embedded)) " -and $r.Log -match 'it is the newest release') 'newest: the embedded package is the newest, so it stays'
+    }
+
+    if ($newer) {
+        $asset = @($latest.assets | Where-Object { $_.name -eq "OfflineDAoC-LivingServer-$newestBuild.zip" })[0]
+        $json = $latest | ConvertTo-Json -Depth 8
+        foreach ($case in @(@{ Name = 'wrong'; Digest = '"sha256:' + ('0' * 64) + '"'; Expect = "doesn't match the SHA-256" },
+                            @{ Name = 'missing'; Digest = 'null'; Expect = 'no SHA-256 digest' })) {
+            $file = Join-Path $Work "release-digest-$($case.Name).json"
+            [IO.File]::WriteAllText($file, ($json -replace ('"' + [regex]::Escape($asset.digest) + '"'), $case.Digest))
+            $r = Setup "newest-digest-$($case.Name)" @('--info', '--release-json', $file) -CheckNewest
+            Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($embedded)) " -and $r.Log -match [regex]::Escape($case.Expect)) "newest: a $($case.Name) digest is refused and the embedded package is installed"
+        }
+    } else { Write-Host '   INFO  newest: the embedded package is not older than GitHub''s newest, so the digest cases were not run' }
+}
 
 if ($Scenario -contains 'fresh') {
     $r = Setup 'fresh-install' @('--new', '--dest', $fresh)
@@ -328,7 +375,7 @@ if ($Scenario -contains 'ui') {
     $log = Join-Path $logs 'ui-autopilot.log'
     Write-Host ''
     Write-Host "== ui: the real window, clicked through a new install" -ForegroundColor Cyan
-    $p = Start-Process -FilePath $Exe -ArgumentList '--autopilot', ('"' + $game + '"'), '--shots', ('"' + $shotDir + '"'), '--log', ('"' + $log + '"'), '--minutes', '90' -Wait -PassThru
+    $p = Start-Process -FilePath $Exe -ArgumentList '--autopilot', ('"' + $game + '"'), '--no-update', '--shots', ('"' + $shotDir + '"'), '--log', ('"' + $log + '"'), '--minutes', '90' -Wait -PassThru
     Get-Content $log | Where-Object { $_ -match 'autopilot|RESULT|FAILED' } | Select-Object -Last 20 | Write-Host
     Check ($p.ExitCode -eq 0) "ui: the window went from Begin to The realm awaits (exit $($p.ExitCode))"
     Check (@(Get-ChildItem $shotDir -Filter *.png).Count -ge 5) 'ui: a picture of every page'

@@ -272,6 +272,25 @@ it went ("thanks a lot ..." or "cant believe that worked"). He is a damage deale
 usually a Daredevil or No-lifer. Never on a retry after a wipe. Logs `RAID_LEEROY_ROLLED`, `RAID_LEEROY`,
 `REALM_EXPEDITION_LEEROY` (dungeons) and `REALM_RAID_LEEROY_START` (dragons).
 
+### Raid wipes and the Epic Special Forces (always on)
+A raid that wipes at a named encounter is not over: it regroups, rests and rebuffs for at least five minutes, and goes
+in once more together when 70% of its roster is back (40% after 20 minutes). On the first wipe the realm's **Epic
+Special Forces** answer: 24 geared level 50s at first; a win they took part in sends one party (8) fewer next time at
+that encounter, down to 8 (they always answer a wipe), a win without them changes nothing, and every defeat or
+time-out sends a party more, up to 24. Each raid's own
+size follows the same record: it starts at the period's raid size there and shrinks after wins and grows after losses,
+70-150% of it, aiming at two wins in three ([RAID-SIZES.md](RAID-SIZES.md)). They arrive at the raid's muster hub, walk in
+like a late party, take no loot and leave when the raid ends. Two failed attempts and the raid is **Defeated** and goes
+home. Dungeon raids have done this since 0.37-se.2; dragon raids do it since 2026-10-30 (Beta 1.1.1): an attempt at the
+dragon ends when it is out of combat after the approach or has taken no damage for five minutes while a trickle keeps
+it busy, and it was a wipe by the same half-the-raid-fallen or healed-back-to-95% rule (a raider who died and released
+counts as fallen even though it is back on its feet, since dragon raiders release to a bind in the dragon's own
+region). The regroup is at the staging ring around the lair, outside the dragon's aggro, the retry waits for the dragon
+to land, and a ring nobody has reached for twenty minutes ends the raid as Defeated. Logs: `REALM_RAID_WIPE`,
+`REALM_RAID_DRAGON_WIPE`, `REALM_RAID_DRAGON_REGROUP`, `REALM_RAID_DRAGON_ENGAGE`, `REALM_RAID_DRAGON_REGROUP_UNREACHABLE`,
+`REALM_RAID_SPECIAL_FORCES_ARRIVED` / `_NOT_NEEDED`. The dragon part has automated tests (`UT_DragonRaidWipes`) and has
+not been played in game yet.
+
 ### Bot names (always on)
 New bots are named the way a 2003 server's players named themselves:
 - **Three in four in the 2003 style:**
@@ -339,7 +358,14 @@ through the part's own code, lines and logging, in your realm and around you.
 | `/lstest holiday <name, off>` | Bots treat today as that holiday until `off` or a restart |
 | `/lstest leeroy` | The next realm raid has a Leeroy (start one with `/lstest raid dragon`) |
 | `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once |
-| `/lstest raid [dragon] [alb, mid, hib]` | A realm's automatic raid (yours unless named) opens now, sized to its free level 50s (at least 40; raids from the launcher need 300) |
+| `/lstest raid [dragon] [alb, mid, hib]` | A realm's automatic raid (yours unless named) opens now, sized to its free level 50s and its record (at least 40 before sizing; raids from the launcher need 300) |
+
+## Why a bot said that: /lswhy (every player)
+
+`/lswhy` shows the last chat decisions of your target, or of the last gamebot that spoke to or near you. Each one gives
+the channel, what set it off, the rule and score it used, and why, or why it stayed quiet. `/lswhy <name>` shows one bot,
+`/lswhy last [n]` the realm's last decisions, and `/lswhy budget` how busy each channel around you is against its
+floor, target and ceiling. How bots decide how much to say: [bot-voices/CHAT-BUDGETS.md](bot-voices/CHAT-BUDGETS.md).
 
 ## Tests
 

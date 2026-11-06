@@ -549,7 +549,10 @@ namespace DOL.AI.Brain
             {
                 // Mechanic change (2026-10-16): out of its tether the horseman drops its fight and walks home but keeps its
                 // health; it heals only when the fight is really over. Every excursion past the tether used to restore
-                // it to full at once, so a raid that dragged it a step too far started over.
+                // it to full at once, so a raid that dragged it a step too far started over. The original full heal is behind
+                // EpicEncounterMechanics.AllowHorsemenTetherHeal.
+                if (DOL.GS.EpicEncounterMechanics.AllowHorsemenTetherHeal)
+                    Body.Health = Body.MaxHealth;
                 ClearAggroList();
             }
             else if (Body.InCombatInLast(30 * 1000) == false && this.Body.InCombatInLast(35 * 1000))
@@ -1582,7 +1585,10 @@ namespace DOL.AI.Brain
             {
                 // Mechanic change (2026-10-16): out of its tether the horseman drops its fight and walks home but keeps its
                 // health; it heals only when the fight is really over. Every excursion past the tether used to restore
-                // it to full at once, so a raid that dragged it a step too far started over.
+                // it to full at once, so a raid that dragged it a step too far started over. The original full heal is behind
+                // EpicEncounterMechanics.AllowHorsemenTetherHeal.
+                if (DOL.GS.EpicEncounterMechanics.AllowHorsemenTetherHeal)
+                    Body.Health = Body.MaxHealth;
                 ClearAggroList();
                 BafMobs3 = false;
             }
@@ -1889,13 +1895,25 @@ namespace DOL.GS
         }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            // Offline raids cannot coordinate class/weapon damage puzzles or heal-on-hit rules.
+            // Offline DAoC: no class/weapon puzzle for bot raids; the original (only the classes and weapons listed above
+            // hurt him, any other attacker heals him to full) is behind EpicEncounterMechanics.AllowFunusWeaponPuzzle.
             // Keep real damage, armor/resists, health, death phases, and the encounter tether.
             if (!EpicEncounterActors.IsCombatant(source)) return;
             if (IsOutOfTetherRange)
+            {
                 base.TakeDamage(source, damageType, 0, 0);
-            else
-                base.TakeDamage(source, damageType, damageAmount, criticalAmount);
+                return;
+            }
+            if (EpicEncounterMechanics.AllowFunusWeaponPuzzle &&
+                !EpicEncounterRestores.FunusAccepts(EpicEncounterRestores.ClassId(source), EpicEncounterRestores.WeaponType(source)))
+            {
+                EpicEncounterRestores.TellImmune(source, Name + " absorbs all your damage to heal iself!");
+                BroadcastMessage("Funus takes damage from " + source.Name + " and restoring it's whole health.");
+                Health += MaxHealth;
+                base.TakeDamage(source, damageType, 0, 0);
+                return;
+            }
+            base.TakeDamage(source, damageType, damageAmount, criticalAmount);
         }
 
         public override int MeleeAttackRange => 350;
@@ -2034,7 +2052,10 @@ namespace DOL.AI.Brain
             {
                 // Mechanic change (2026-10-16): out of its tether the horseman drops its fight and walks home but keeps its
                 // health; it heals only when the fight is really over. Every excursion past the tether used to restore
-                // it to full at once, so a raid that dragged it a step too far started over.
+                // it to full at once, so a raid that dragged it a step too far started over. The original full heal is behind
+                // EpicEncounterMechanics.AllowHorsemenTetherHeal.
+                if (DOL.GS.EpicEncounterMechanics.AllowHorsemenTetherHeal)
+                    Body.Health = Body.MaxHealth;
                 ClearAggroList();
             }
             else if (Body.InCombatInLast(30 * 1000) == false && this.Body.InCombatInLast(35 * 1000))

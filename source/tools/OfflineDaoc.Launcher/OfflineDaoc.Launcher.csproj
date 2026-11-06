@@ -10,7 +10,16 @@
     <AssemblyTitle>Offline DAoC Launcher and Population Monitor</AssemblyTitle>
     <!-- Windows enlarges fonts for display scaling; UiScale scales the pixel layout to match. -->
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <!-- Living Server: the build this launcher ships with, read from the server's ForkBuildInfo.BuildName, so the
+         update check (Updates/) compares releases with the build that is really installed. -->
+    <ForkBuildInfoText>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)../../server/GameServer/gameutils/ForkBuildInfo.cs'))</ForkBuildInfoText>
+    <LivingServerBuild>$([System.Text.RegularExpressions.Regex]::Match($(ForkBuildInfoText), 'BuildName = "([^"]+)"').Groups[1].Value)</LivingServerBuild>
   </PropertyGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="LivingServerBuild" Value="$(LivingServerBuild)" />
+    <!-- Written to runtime\updates when an update is applied: it runs INSTALL.cmd once the launcher has closed. -->
+    <EmbeddedResource Include="Updates\apply-update.ps1" LogicalName="OfflineDaoc.Updates.apply-update.ps1" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
     <Compile Include="../../server/GameServer/bots/autonomous/BotGoalSettings.cs" Link="Configuration/BotGoalSettings.cs" />

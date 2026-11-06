@@ -1,0 +1,149 @@
+# Beta 1.1.2: replies for lines the first blind evaluation found the bots could not read.
+# New writing (see docs/bot-voices/WRITING-GUIDE.md). {player} is whoever is being answered.
+
+# ---- roleplay: the player spoke in character. Each act gets a reply in kind (Beta 1.1.2, round 2: stock musings didn't fit).
+# A greeting is returned, a challenge answered, a question answered as well as a stranger can, a mourning met with respect,
+# a toast with a toast; anything else gets an emote. Short, never a lecture.
+@kind reply
+@answers player_rp_greeting
+@who *
+well met, friend
+hail and well met
+aye, well met
+*nods* well met, traveler
+greetings to ye
+and to you, friend
+*tips hat* hail
+hail, friend. fair travels
+*bows* well met
+@who Socialite
+well met {player}, sit and share the fire
+*bows* well met, {player}
+
+@kind reply
+@answers player_rp_challenge
+@who *
+peace, friend. i am of the realm
+*raises hands* no quarrel here
+easy, i am but a traveler
+i come in peace, friend
+*sheathes blade* a friend of the realm
+nay, no trouble from me
+@who Daredevil
+*grips sword* name the place and time
+@realm alb
+peace, i serve Albion as you do
+@realm mid
+peace, i fight for Midgard same as you
+@realm hib
+peace, i am of Hibernia, same as thee
+
+@kind reply
+@answers player_rp_question
+@who *
+i know not, friend. ask at the guard post
+nay, i have not seen such a one
+alas, i cannot say
+i know not, but the guards may
+*shakes head* i cannot help ye there
+not that i have seen, traveler
+ask the townsfolk, they know more than i
+
+@kind reply
+@answers player_rp_mourn
+@who *
+*bows head*
+*kneels a moment*
+may they rest well
+*lowers eyes* they will be remembered
+*bows low*
+rest easy, friend
+
+@kind reply
+@answers player_rp_toast
+@who *
+*raises a mug*
+*raises a tankard* aye!
+*drinks*
+to the realm!
+*clinks mugs*
+@realm alb
+to Albion!
+@realm mid
+to Midgard!
+@realm hib
+to Hibernia!
+
+@kind reply
+@answers player_rp_emote
+@who *
+*nods*
+*bows*
+*smiles*
+*nods slowly*
+*waves*
+*grins*
+
+@kind reply
+@answers player_rp_remark
+@who *
+aye
+aye, true enough
+*nods* aye
+well said, friend
+aye, that it is
+
+# ---- a mishap told for a laugh ("i fell off the bridge again", "1 shotted by a grey con") -------------------------------
+@kind reply
+@answers player_mishap
+@who *
+lol rip
+rip lol
+ouch lol
+lol been there
+happens to everyone heh
+haha classic
+rofl nice
+lol nice one
+gg
+oof, rip
+we have all done that
+lol again?
+hah, smooth
+@who NoLifer
+did that once, never again
+@who Socialite
+aww lol, you ok?
+@who Daredevil
+lol thats how i do it too
+
+# ---- relief after a close fight ("that was close", "phew") ----------------------------------------------------------
+@kind reply
+@answers player_close
+@who *
+too close lol
+phew
+heart attack lol
+nice save there
+yeah that was close
+lol my heart
+i thought we were dead
+close one heh
+@who Daredevil
+close? that was fun lol
+
+# ---- an apology from the player ("sorry, my fault", "my bad") ---------------------------------------------------------
+@kind reply
+@answers player_sorry
+@who *
+no worries at all
+its ok
+happens
+all good
+dont worry about it
+np, happens to everyone
+nah its fine
+@who Socialite
+aw no worries {player}
+@who NoLifer
+np, just dont do it again lol

@@ -16,8 +16,9 @@ namespace DOL.GS
     /// in the guild list and social window, carries the guild name under its name (own realm only, enemies keep seeing
     /// its realm rank title), wears the guild emblem on cloak and shield (everyone sees the emblem), and talks in guild
     /// chat. /spawn companions never join: they only show their owner's guild name and emblem while with the owner.
-    /// Membership is kept here, not on the bot's IGamePlayer Guild, so guild realm points, merit, keep claims and guild
-    /// buffs never see a bot. A bot removed from the launcher's roster leaves its guild.
+    /// Membership is kept here, not on the bot's IGamePlayer Guild, so guild realm points, keep claims and guild buffs
+    /// never see a bot. Since Living Server 1.1.2 (owner 2026-11-03) a member pays the guild's dues and earns it merit
+    /// through AutonomousBotGuildEconomy (bot_player_guild_economy). A bot removed from the launcher's roster leaves its guild.
     /// </summary>
     public static class AutonomousBotGuilds
     {

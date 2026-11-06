@@ -808,23 +808,31 @@ namespace DOL.AI.Brain
 
 		/// <summary>
 		/// Perform some checks on 'm_orderAttackTarget'. Returns it if it's still a valid target, sets it to null otherwise.
+		/// Offline DAoC 2026-11-05: the field is read once. NpcService threw a NullReferenceException here (an Animist
+		/// turret, TurretBrain.CalculateNextAttackTarget via AttackMostWanted) when the order target was cleared on another
+		/// thread between the null check and its use, and the server removed the turret. A body that has left the world has
+		/// no target either.
 		/// </summary>
 		protected virtual GameLiving CheckAttackOrderTarget()
 		{
-			if (m_orderAttackTarget != null && !CompanionEngagementMode.Allows(Body, m_orderAttackTarget))
-                m_orderAttackTarget = null;
-			if (m_orderAttackTarget == null)
+			GameLiving target = m_orderAttackTarget;
+			if (target == null)
 				return null;
 
-			if (!m_orderAttackTarget.IsAlive ||
-				m_orderAttackTarget.ObjectState is not GameObject.eObjectState.Active ||
-				!GameServer.ServerRules.IsAllowedToAttack(Body, m_orderAttackTarget, true))
+			GameNPC body = Body;
+			if (body == null || body.ObjectState is not GameObject.eObjectState.Active ||
+				!CompanionEngagementMode.Allows(body, target) ||
+				!target.IsAlive ||
+				target.ObjectState is not GameObject.eObjectState.Active ||
+				!GameServer.ServerRules.IsAllowedToAttack(body, target, true))
 			{
-				m_orderAttackTarget = null;
+				// Only the target checked here: an order given meanwhile on another thread stays.
+				if (ReferenceEquals(m_orderAttackTarget, target))
+					m_orderAttackTarget = null;
 				return null;
 			}
 
-			return m_orderAttackTarget;
+			return target;
 		}
 
 		protected override GameLiving CalculateNextAttackTarget()

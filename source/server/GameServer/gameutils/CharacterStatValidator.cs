@@ -30,7 +30,14 @@ namespace DOL.GS
         public static bool Validate(DbCoreCharacter character, Dictionary<eStat, int> stats, out int distributedPoints)
         {
             ICharacterClass charClass = ScriptMgr.FindCharacterClass(character.Class);
-            Dictionary<eStat, int> raceStats = GlobalConstants.STARTING_STATS_DICT[(eRace) character.Race];
+            // A race this server doesn't offer (Half Ogre, Frostalf, Shar and the Minotaurs came with Catacombs and
+            // Labyrinth) has no starting stats: the character is invalid, not an error. The client still shows those
+            // races, and creating one threw KeyNotFoundException (playtest 2026-11-04, a Half Ogre wizard).
+            if (charClass == null || !GlobalConstants.STARTING_STATS_DICT.TryGetValue((eRace) character.Race, out Dictionary<eStat, int> raceStats))
+            {
+                distributedPoints = 0;
+                return false;
+            }
 
             return Validate(
                 stats,

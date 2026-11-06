@@ -17,6 +17,11 @@ function RunIn([string]$dir, [string]$scriptName, [string[]]$arguments) {
     $out = & $shell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $dir $scriptName) @arguments 2>&1 | Out-String
     return [pscustomobject]@{ Code = $LASTEXITCODE; Output = $out }
 }
+$coreLayout = @{
+    'runtime/server' = @('CoreBase.dll', 'CoreBase.pdb', 'CoreDatabase.dll', 'CoreDatabase.pdb', 'CoreServer.dll', 'CoreServer.pdb')
+    'runtime/server/lib' = @('CoreBase.dll', 'CoreBase.pdb', 'CoreDatabase.dll', 'CoreDatabase.pdb')
+    'runtime/server/win-x64' = @('CoreBase.dll', 'CoreDatabase.dll', 'CoreServer.dll')
+}
 $launcherFiles = @('OfflineDAoC.dll', 'OfflineDAoC.exe', 'OfflineDAoC.pdb', 'OfflineDAoC.deps.json', 'OfflineDAoC.runtimeconfig.json')
 function New-FakeLauncher([string]$dir, [string]$prefix) {
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
@@ -29,7 +34,8 @@ function New-FakeLauncher([string]$dir, [string]$prefix) {
 }
 # -ReleaseNotes: the layout of a game updated by a patch (0.37 on): no editions\ folder, and the manifest lists each
 # release's docs/RELEASE-<version>.md up to this one.
-function New-FakeGame([string]$root, [string]$edition, [switch]$NewClient, [string[]]$ReleaseNotes = @()) {
+# -NoDatabase: a game whose runtime\data has no world database yet. -Wal: the database has a -wal file beside it (WAL mode).
+function New-FakeGame([string]$root, [string]$edition, [switch]$NewClient, [string[]]$ReleaseNotes = @(), [switch]$NoDatabase, [switch]$Wal) {
     $folders = @('runtime/server', 'runtime/server/lib', 'runtime/server/win-x64')
     $lines = @()
     foreach ($folder in $folders) {
@@ -39,8 +45,18 @@ function New-FakeGame([string]$root, [string]$edition, [switch]$NewClient, [stri
         [IO.File]::WriteAllText((Join-Path $dir 'GameServer.pdb'), "original release symbols")
         $lines += "$(Sha (Join-Path $dir 'GameServer.dll'))  $folder/GameServer.dll"
         $lines += "$(Sha (Join-Path $dir 'GameServer.pdb'))  $folder/GameServer.pdb"
+        # The server's own libraries as the release has them: CoreServer only beside the exe, no .pdb in win-x64.
+        foreach ($name in $coreLayout[$folder]) {
+            [IO.File]::WriteAllText((Join-Path $dir $name), "original release $folder/$name")
+            $lines += "$(Sha (Join-Path $dir $name))  $folder/$name"
+        }
     }
     $lines += New-FakeLauncher (Join-Path $root 'runtime') 'runtime'
+    if (!$NoDatabase) {
+        New-Item -ItemType Directory -Path (Join-Path $root 'runtime\data') -Force | Out-Null
+        [IO.File]::WriteAllText((Join-Path $root 'runtime\data\opendaoc.sqlite3.db'), 'the player''s world and saves')
+        if ($Wal) { [IO.File]::WriteAllText((Join-Path $root 'runtime\data\opendaoc.sqlite3.db-wal'), 'saves not yet in the main file') }
+    }
     if ($NewClient) {
         $client = New-FakeLauncher (Join-Path $root 'new-client\runtime') 'new-client/runtime'
         Set-Content -LiteralPath (Join-Path $root 'new-client\PACKAGE MANIFEST.sha256') -Value $client -Encoding UTF8
@@ -85,6 +101,16 @@ foreach ($folder in @('runtime', 'new-client\runtime')) {
         Check ((Sha (Join-Path $game "$folder\$name")) -eq $info["launcher/$name"]) "new launcher $name in $folder"
     }
 }
+# The server's own libraries (1.1.2 on): each one the folder has is replaced, with its .pdb where the folder has one,
+# and none is added where the folder has none.
+$shipsCore = [bool]$info['core/CoreDatabase.dll']
+Check $shipsCore 'the build ships the server libraries (core\)'
+foreach ($folder in $coreLayout.Keys) {
+    foreach ($name in $coreLayout[$folder]) {
+        Check ((Sha (Join-Path $game "$folder\$name")) -eq $info["core/$name"]) "new $name in $folder"
+    }
+}
+Check (!(Test-Path (Join-Path $game 'runtime\server\lib\CoreServer.dll')) -and !(Test-Path (Join-Path $game 'runtime\server\win-x64\CoreBase.pdb'))) 'no server library is added where the release has none'
 Check (Test-Path (Join-Path $game 'tools\claude-version\set_bot_guilds.py')) 'helper scripts installed'
 Check (Test-Path (Join-Path $game 'tools\claude-version\set_bot_social.py')) 'social switch installed'
 Check (@(Get-ChildItem (Join-Path $game 'runtime\server\deployment-backups') -Directory).Count -eq 1) 'one backup folder'
@@ -100,6 +126,13 @@ Check ($rollbackHalf.Code -eq 0) "rollback of the repair install`n$($rollbackHal
 $rollback = Run 'rollback-server-build.ps1' @('-GameFolder', $game)
 Check ($rollback.Code -eq 0) "rollback succeeds`n$($rollback.Output)"
 Check ((Sha (Join-Path $game 'runtime\server\lib\GameServer.dll')) -eq $original) 'rollback restores the original dll'
+$coreBack = $true
+foreach ($folder in $coreLayout.Keys) {
+    foreach ($name in $coreLayout[$folder]) {
+        if ([IO.File]::ReadAllText((Join-Path $game "$folder\$name")) -ne "original release $folder/$name") { $coreBack = $false }
+    }
+}
+Check $coreBack 'rollback restores the original server libraries and their .pdb files'
 Check ((Sha (Join-Path $game 'runtime\OfflineDAoC.dll')) -eq $originalLauncher) 'rollback restores the original launcher'
 Check ([IO.File]::ReadAllText((Join-Path $game 'new-client\runtime\OfflineDAoC.dll')) -eq 'original launcher OfflineDAoC.dll') 'rollback restores the new client launcher'
 Check (!(Test-Path (Join-Path $game 'tools\claude-version\set_bot_guilds.py'))) 'rollback removes helpers it added'
@@ -108,6 +141,50 @@ $nothing = Run 'rollback-server-build.ps1' @('-GameFolder', $game)
 Check ($nothing.Code -ne 0) 'a second rollback has nothing to undo'
 $reinstall = Run 'install-server-build.ps1' @('-GameFolder', $game)
 Check ($reinstall.Code -eq 0) 'install works again after a rollback'
+
+# Living Server 1.1.2: the world database is backed up before an install, with its -wal file, verified; a rollback never
+# puts it back (that would undo the play since); only the newest 3 installs keep their database copy.
+$dbGame = Join-Path $work 'database'
+New-FakeGame $dbGame $base -Wal
+$db = Join-Path $dbGame 'runtime\data\opendaoc.sqlite3.db'
+$dbHash = Sha $db; $walHash = Sha "$db-wal"
+$dbDry = Run 'install-server-build.ps1' @('-GameFolder', $dbGame, '-DryRun')
+Check ($dbDry.Code -eq 0 -and !(Test-Path (Join-Path $dbGame 'runtime\server\deployment-backups'))) "database: a dry run backs nothing up`n$($dbDry.Output)"
+$dbInstall = Run 'install-server-build.ps1' @('-GameFolder', $dbGame)
+$dbBackup = @(Get-ChildItem (Join-Path $dbGame 'runtime\server\deployment-backups') -Directory)[0].FullName
+Check ($dbInstall.Code -eq 0 -and (Test-Path (Join-Path $dbBackup 'data\opendaoc.sqlite3.db')) -and
+       (Sha (Join-Path $dbBackup 'data\opendaoc.sqlite3.db')) -eq $dbHash -and (Sha (Join-Path $dbBackup 'data\opendaoc.sqlite3.db-wal')) -eq $walHash) "database: the install backs up the database and its -wal first`n$($dbInstall.Output)"
+Check ($dbInstall.Output -match 'World database backed up') 'database: the install says where the database copy is'
+$dbRecord = Get-Content -LiteralPath (Join-Path $dbBackup 'install-record.json') -Raw | ConvertFrom-Json
+Check (@($dbRecord.Database).Count -eq 2 -and @($dbRecord.Database | Where-Object { $_.Name -eq 'opendaoc.sqlite3.db' -and $_.Hash -eq $dbHash }).Count -eq 1) 'database: the install record lists the database copy'
+Check ((Sha $db) -eq $dbHash) 'database: the install leaves the database itself unchanged'
+[IO.File]::WriteAllText($db, 'the world after more play')
+$played = Sha $db
+$dbRollback = Run 'rollback-server-build.ps1' @('-GameFolder', $dbGame)
+Check ($dbRollback.Code -eq 0 -and (Sha $db) -eq $played -and (Test-Path (Join-Path $dbBackup 'data\opendaoc.sqlite3.db'))) "database: rollback keeps the played database and its pre-install copy`n$($dbRollback.Output)"
+foreach ($round in 1..3) {
+    $null = Run 'install-server-build.ps1' @('-GameFolder', $dbGame)
+    if ($round -lt 3) { $null = Run 'rollback-server-build.ps1' @('-GameFolder', $dbGame) }
+}
+$dataFolders = @(Get-ChildItem (Join-Path $dbGame 'runtime\server\deployment-backups') -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'data') })
+$allFolders = @(Get-ChildItem (Join-Path $dbGame 'runtime\server\deployment-backups') -Directory)
+Check ($allFolders.Count -eq 4 -and $dataFolders.Count -eq 3 -and !(Test-Path (Join-Path $dbBackup 'data')) -and
+       (Test-Path (Join-Path $dbBackup 'runtime_server\GameServer.dll'))) "database: only the newest 3 installs keep a database copy; their server backups all stay ($($allFolders.Count) folders, $($dataFolders.Count) with data)"
+$noDb = Join-Path $work 'no-database'
+New-FakeGame $noDb $base -NoDatabase
+$noDbInstall = Run 'install-server-build.ps1' @('-GameFolder', $noDb)
+Check ($noDbInstall.Code -eq 0 -and (Sha (Join-Path $noDb 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll'] -and
+       $noDbInstall.Output -match 'No world database') "database: a game with no database yet still installs`n$($noDbInstall.Output)"
+
+# The build placed inside one game folder that has other game folders beside it (playtest 2026-11-04: three
+# side-by-side installs): the folder it sits in wins, without -GameFolder.
+$siblings = Join-Path $work 'siblings'
+New-FakeGame (Join-Path $siblings 'playable-a') $base
+New-FakeGame (Join-Path $siblings 'playable-b') $base
+$placed = Join-Path $siblings 'playable-a\LivingServer-placed'
+Copy-Item -LiteralPath $BuildDir -Destination $placed -Recurse
+$sibDry = RunIn $placed 'install-server-build.ps1' @('-DryRun')
+Check ($sibDry.Code -eq 0 -and $sibDry.Output -match [regex]::Escape((Join-Path $siblings 'playable-a'))) "folder search: the game folder the build sits in wins over its siblings`n$($sibDry.Output)"
 
 # Wrong release: refused, nothing changed.
 $other = Join-Path $work 'other'
@@ -121,6 +198,14 @@ New-FakeGame $changed $base
 [IO.File]::WriteAllText((Join-Path $changed 'runtime\server\GameServer.dll'), 'someone else''s build')
 $unknown = Run 'install-server-build.ps1' @('-GameFolder', $changed)
 Check ($unknown.Code -ne 0 -and (Sha (Join-Path $changed 'runtime\server\lib\GameServer.dll')) -ne $info['GameServer.dll']) 'an unknown dll is refused'
+
+# A hand-changed server library: refused, and nothing is touched.
+$changedCore = Join-Path $work 'changed-core'
+New-FakeGame $changedCore $base
+[IO.File]::WriteAllText((Join-Path $changedCore 'runtime\server\CoreDatabase.dll'), 'someone else''s database layer')
+$unknownCore = Run 'install-server-build.ps1' @('-GameFolder', $changedCore)
+Check ($unknownCore.Code -ne 0 -and (Sha (Join-Path $changedCore 'runtime\server\GameServer.dll')) -ne $info['GameServer.dll'] -and
+       (Sha (Join-Path $changedCore 'runtime\server\lib\CoreDatabase.dll')) -ne $info['core/CoreDatabase.dll']) "an unknown server library is refused`n$($unknownCore.Output)"
 
 # A hand-changed launcher: refused, and the server is not touched either.
 $changedLauncher = Join-Path $work 'changed-launcher'
@@ -158,6 +243,13 @@ foreach ($folder in @('runtime\server', 'runtime\server\lib', 'runtime\server\wi
 }
 Check ($toRelease.Code -eq 0 -and $allBack -and (Sha (Join-Path $chain 'runtime\OfflineDAoC.dll')) -eq $releasedLauncher -and
        (Sha (Join-Path $chain 'new-client\runtime\OfflineDAoC.dll')) -eq $releasedClient) "-ToRelease puts the released server and launchers back`n$($toRelease.Output)"
+$coreReleased = $true
+foreach ($folder in $coreLayout.Keys) {
+    foreach ($name in $coreLayout[$folder]) {
+        if ([IO.File]::ReadAllText((Join-Path $chain "$folder\$name")) -ne "original release $folder/$name") { $coreReleased = $false }
+    }
+}
+Check $coreReleased "-ToRelease puts the released server libraries back`n$($toRelease.Output)"
 $nothingLeft = Run 'rollback-server-build.ps1' @('-GameFolder', $chain)
 Check ($nothingLeft.Code -ne 0) 'after -ToRelease no install is left to undo'
 $reinstall = Run 'install-server-build.ps1' @('-GameFolder', $chain)

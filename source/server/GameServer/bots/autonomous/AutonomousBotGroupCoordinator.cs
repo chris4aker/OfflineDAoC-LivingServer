@@ -2112,6 +2112,9 @@ public static partial class AutonomousBotGroupCoordinator
         if (session.Recovery.Observe(RecoveryMembers(session, members, false), session.TaskClock.HasStarted))
         {
             session.Wipes++;
+            // Beta 1.1.2, round 7: a wipe is a story one of the party may tell in /faction.
+            if (members.Length > 0 && Random.Shared.NextDouble() < 0.5)
+                AutonomousBotChatCoordinator.TellStory("wipe", members[Random.Shared.Next(members.Length)]);
             session.WipePenalty = session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve
                 ? AutonomousGroupTargetPolicy.PenaltyAfterWipe((int)Math.Round(members.Average(member => member.Level)),
                     members.Length, session.WipePenalty, session.Camp?.TargetLevel ?? 0)
@@ -2210,7 +2213,7 @@ public static partial class AutonomousBotGroupCoordinator
             // RvR heads out through its director as soon as assembly completes.
             if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
                 StartTaskClock(session, members);
-            Log.Info($"AUTONOMOUS_GROUP_ASSEMBLED group={session.Id} realm={members[0].Realm} size={members.Length} " +
+            Log.Info($"AUTONOMOUS_GROUP_ASSEMBLED group={session.Id} realm={GlobalConstants.RealmToName(members[0].Realm)} size={members.Length} " +
                      $"members=\"{string.Join(",", members.Select(member => member.Name))}\" " +
                      $"region={members[0].CurrentRegionID} rendezvous={(int)session.Rendezvous.X},{(int)session.Rendezvous.Y},{(int)session.Rendezvous.Z}");
         }
@@ -3057,12 +3060,18 @@ public static partial class AutonomousBotGroupCoordinator
         activeSize >= 3 && activeSize <= 8 && activeSize == lockedSize &&
         tanks > 0 && healers > 0 && attackers > 0;
 
+    // Owner 2026-10-29: a Necromancer is never the puller unless the party can offer no one else, and a Cleric only
+    // when no other class can pull.
+    public static int PullerClassPenalty(GameBot member) => member.CharacterClass == null ? 0 :
+        (eCharacterClass)member.CharacterClass.ID switch { eCharacterClass.Necromancer => 2, eCharacterClass.Cleric => 1, _ => 0 };
+
     private static GameBot ChooseLockedPvePuller(Session session, GameBot[] members)
     {
         if (AutonomousDefensivePull.UsesDefensivePull(true, members.Length, members.All(member => member.Level == 50)))
         {
             GameBot ranged = members.Where(AutonomousDefensivePull.HasRangedPull)
-                .OrderBy(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role)
+                .OrderBy(PullerClassPenalty)
+                .ThenBy(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role)
                     ? role == BotPveGroupRole.Tank ? 0 : role == BotPveGroupRole.Healer ? 2 : 1 : 3)
                 .ThenBy(MemberKey).FirstOrDefault();
             if (ranged != null) return ranged;

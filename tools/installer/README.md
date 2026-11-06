@@ -59,8 +59,9 @@ in Cinzel (SIL Open Font License): `python tools/installer/art/make_art.py` rebu
 ```
 LivingServerSetup.exe --silent --new [--dest DIR] [--classic] [--new-client] [--import-from OLD_GAME]
 LivingServerSetup.exe --silent --game DIR [--add-client] [--remove] [--force] [--fresh-copy]
-     common: [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--log FILE]
+     common: [--no-shortcuts] [--netfx] [--recommended-settings | --no-recommended-settings] [--local-assets DIR] [--no-update] [--log FILE]
 LivingServerSetup.exe --scan [--game DIR] --log FILE       # what Setup finds, and how it reads each game
+LivingServerSetup.exe --info [--no-update] [--release-json FILE] --log FILE   # which package it would install
 LivingServerSetup.exe --screenshots DIR [--scale 1.5]      # pictures of every page with made-up data
 ```
 
@@ -85,9 +86,21 @@ Exit codes: 0 done, 1 failed, 2 stopped, 3 bad arguments or a game Setup can't h
 
 Not covered: a real player's PC (antivirus, SmartScreen, odd folders), and playing the game.
 
+`.github/workflows/release.yml` runs these same jobs for every published release, then attaches the tested exe and
+puts its SHA-256 in the release notes ("Releasing Living Server" in [docs/DEVELOPMENT.md](../../docs/DEVELOPMENT.md)).
+
 ## Notes
 
 - The exe isn't code-signed, so Windows SmartScreen shows "Windows protected your PC" the first time: More info, then
   Run anyway.
-- Setup is built for one Living Server package; a newer package needs a newer Setup (`build.py --package`).
+- **The newest package (Beta 1.1.2).** Before it reads your games, Setup asks GitHub's releases API for Living
+  Server's newest release (`PackageUpdate.cs`, with the launcher's shared update code in
+  `source/tools/OfflineDaoc.Launcher/Updates`). When that release's package is newer than the embedded one and made
+  for the same Offline DAoC release, Setup downloads it, checks it against the SHA-256 digest GitHub publishes and
+  the package rules (one `LivingServer-<build>` folder, `BUILD-INFO.txt` naming the tag's build, the scripts, the
+  server's hash), and installs it. Anything else (offline, a rate limit, a bad or missing digest, a package for
+  another release) keeps the embedded package; the progress page's first step names the build and says why.
+  `--no-update` (or `--offline`) skips the question; the test runs pass it so they install the embedded package, and
+  the `newest` scenario of `test-installer.ps1` tests the choice. A package for a newer Offline DAoC release still
+  needs a newer Setup (`build.py --package`).
 - Dark Age of Camelot belongs to Electronic Arts and Broadsword. This is a free, non-commercial fan project.

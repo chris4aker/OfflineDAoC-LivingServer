@@ -394,7 +394,7 @@ public static class AutonomousBotRealmGuilds
         }
         catch (Exception exception)
         {
-            Log.Error($"Bot guilds: could not found guild {request.Ordinal} for {request.Realm}", exception);
+            Log.Error($"Bot guilds: could not found guild {request.Ordinal} for {GlobalConstants.RealmToName(request.Realm)}", exception);
         }
         finally
         {
@@ -409,7 +409,7 @@ public static class AutonomousBotRealmGuilds
         Guild guild = GuildMgr.CreateGuild(realm, name);
         if (guild == null)
         {
-            Log.Warn($"Bot guilds: could not create guild \"{name}\" for {realm}");
+            Log.Warn($"Bot guilds: could not create guild \"{name}\" for {GlobalConstants.RealmToName(realm)}");
             return null;
         }
 
@@ -442,7 +442,7 @@ public static class AutonomousBotRealmGuilds
         var info = new BotGuildInfo(guild.GuildID, realm, charter, ordinal);
         BotGuilds[guild.GuildID] = info;
         if (Log.IsInfoEnabled)
-            Log.Info($"Bot guilds: founded {charter} guild \"{name}\" in {realm}");
+            Log.Info($"Bot guilds: founded {charter} guild \"{name}\" in {GlobalConstants.RealmToName(realm)}");
         return info;
     }
 
