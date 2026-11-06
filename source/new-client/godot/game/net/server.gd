@@ -1421,7 +1421,11 @@ func on_inventory(d: Dictionary) -> void:
 ## keeper's page: the account vault when you last right-clicked an Account Vault Keeper, else the house vault.
 func _house_window_title() -> String:
 	var v: Node = viewer()
-	var n = v.get("_interact_npc") if v else null
+	# the 0.37c zone viewer doesn't keep the NPC you last spoke to (1.2's does): without it, keep the 0.37c title - this
+	# server.gd ships to 0.37c games for issue #34, where the account vault would have been titled "HOUSE VAULT"
+	if v == null or not ("_interact_npc" in v):
+		return "ACCOUNT VAULT"
+	var n = v.get("_interact_npc")
 	if is_instance_valid(n) and n is Node and n.get("spawn") is Dictionary 			and String(n.spawn.get("name", "")).to_lower().contains("account"):
 		return "ACCOUNT VAULT"
 	return "HOUSE VAULT"
