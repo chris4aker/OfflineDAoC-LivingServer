@@ -438,14 +438,15 @@ namespace DOL.UnitTests
         // ---- restored mechanics ------------------------------------------------------------------------------------
 
         [Test]
-        public void EveryRestoredMechanicIsOffByDefault()
+        public void EveryRestoredMechanicIsOffByDefaultUntilTheRaidPlaysIt()
         {
             Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(17));
             foreach (string name in EpicEncounterMechanics.RestoreSwitches)
             {
                 PropertyInfo p = typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
                 Assert.That(p, Is.Not.Null, name);
-                Assert.That((bool)p.GetValue(null), Is.False, name);
+                // 1.2: the Earthmenders' class rule is on; the raid assigns classes to it (UT_EpicEncounterTactics3).
+                Assert.That((bool)p.GetValue(null), Is.EqualTo(name == nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle)), name);
             }
         }
 

@@ -27,30 +27,35 @@ Difficulty: *easy for the current raid AI* (it would do this with small changes,
 | `AllowAroonDamageOrder` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:36` |
 | `AllowGalladoriaBridgeSpot` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:39` |
 | `AllowFullFirePatches` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:41` |
-| `AllowEarthmenderClassPuzzle` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:43` |
-| `AllowEarthmendersPassive` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:45` |
-| `AllowEarthmenderQuickReset` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:47` |
-| `AllowEarthmenderMutualHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:49` |
-| `AllowBeathaHealsXaga` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:51` |
-| `AllowFairyFlight` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:53` |
-| `AllowGovannonFullHealth` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:55` |
-| `AllowKvasirColdHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:57` |
-| `AllowTuscarTwinHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:59` |
-| `ResetQuietMilliseconds` | 8000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:79` |
-| `PetDevourIntervalMilliseconds` | 5000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:87` |
+| `AllowEarthmenderClassPuzzle` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:44` |
+| `AllowEarthmendersPassive` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:46` |
+| `AllowEarthmenderQuickReset` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:48` |
+| `AllowEarthmenderMutualHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:50` |
+| `AllowBeathaHealsXaga` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:52` |
+| `AllowFairyFlight` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:54` |
+| `AllowGovannonFullHealth` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:56` |
+| `AllowKvasirColdHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:58` |
+| `AllowTuscarTwinHeal` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:60` |
+| `ResetQuietMilliseconds` | 8000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:80` |
+| `PetDevourIntervalMilliseconds` | 5000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:88` |
 
 ## Encounters with raid tactics
 
-The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tactics, read from the hand notes' `aiTactics` into `EpicEncounterTactics.Catalog.cs`. Tested by unit and harness tests only; not yet seen in an overnight run (its log lines: `REALM_EXPEDITION_TACTIC`, `EPIC_TACTIC_BOT`).
+The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tactics, read from the hand notes' `aiTactics` into `EpicEncounterTactics.Catalog.cs`. The ones new in 1.2 are tested by unit and harness tests only and have not been seen in a run yet (log lines: `REALM_EXPEDITION_TACTIC`, `EPIC_TACTIC_BOT`).
 
-| Encounter | Tactic |
-|---|---|
-| Xanxicar (Crystal Cave) | Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back. |
-| Aidon the Archwizard (Hall of the Corrupt) | Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back. |
-| Scurceol Hyrde (Krondon) | Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back. |
-| Ancient Black Oak (Marfach Caverns) | Dies with Black Lady: while she lives the raid fights her instead of the Oak. |
-| Black Lady (Marfach Caverns) | Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. |
-| Nosdoden (Trollheim) | Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack. |
+| Encounter | Since | Tactic |
+|---|---|---|
+| Corrupt Primal of Earth (Galladoria) | **1.2 (new)** | Required adds by class: once the fight is on the raid kills the four Earthmenders (they heal the primal 2,000 each) before the primal. With the original class rule on (AllowEarthmenderClassPuzzle, on since 1.2) each raider takes an Earthmender its class hurts: Guardian: blademasters, heroes, champions; Magical: eldritchs, enchanters, mentalists; Natural: bards, druids, wardens; Shadowy: nightshades, rangers; animists and valewalkers any (spread by party); pets hurt all four. A class none of them takes damage from (bainshee, vampiir, mauler) fights the primal and keeps it busy. |
+| Spindler Broodmother (Galladoria) | **1.2 (new)** | Ranged adds: casters and archers kill each newly-born spindler (8,000 health, 1-2 every 25-45 s) as it comes, while melee, tanks and healers stay on her, so newborns never pile on the healers. Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on. |
+| Orylle (Krondon) | **1.2 (new)** | After Orshom Brong: while Orshom lives the party Orylle fights holds her and everyone else kills Orshom (30,000 health, lower resists) first; the route goes for Orshom before her. Hazard: stay out of Orshom's Fire, as for him. |
+| Orshom Brong (Krondon) | **1.2 (new)** | Hazard: Orshom's Fire is never a target (the route skips it and never switches to it; a raider aiming at it fights Orshom or Orylle instead), and a raider within 450 of it steps out to 600 before fighting on. |
+| Grand Summoner Govannon (Summoner's Hall) | **1.2 (new)** | Spread in demon form: while he is the demon (model 636), casters, archers and healers outside his target's party keep 550 from that target, out of his Shroud of Agony (radius 300 around it), and fight and heal from there; melee can't get clear (every melee spot is inside 300 of his target) and fight on, kept up by healers who are no longer in it. Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. |
+| Xanxicar (Crystal Cave) | 1.1.2 | Blasts: within 3% above 80/60/40/20% and for 9 s after crossing one, everyone except the party he is fighting withdraws 2,700 from him; that party pushes him over and takes the 2,500-radius stomp (it is meant to kill whoever is in it), the rest of the raid survives it and comes back. |
+| Aidon the Archwizard (Hall of the Corrupt) | 1.1.2 | Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back. |
+| Scurceol Hyrde (Krondon) | 1.1.2 | Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back. |
+| Ancient Black Oak (Marfach Caverns) | 1.1.2 | Dies with Black Lady: while she lives the raid fights her instead of the Oak. |
+| Black Lady (Marfach Caverns) | 1.1.2 | Fight at home: past 1,100 from her spawn (her tether is 1,500) the raid stops hitting her and the raider she chases leads her back, so she is never leashed and healed. |
+| Nosdoden (Trollheim) | 1.1.2 | Waves as required adds: when a wave of essences spawns (every 10% from 90%), the raid stops hitting him and kills the wave, then goes back to him; so his health falls one step at a time and waves don't stack. |
 
 ## Restored behind switches
 
@@ -66,7 +71,7 @@ Where the fork had changed a mechanic for bots with no switch, the original is b
 | galladoria/olcasgeaninitializator | 1 | The primals come when a real player (not a bot) stands within 350 of the bridge spot. | A raid bot within 1,500 of the spot starts it (players still 350). | `AllowGalladoriaBridgeSpot (bots within 350; a bot-only rule would be unwinnable)` |
 | galladoria/olcasgean | 1 | Split-position and throw puzzle. | Off. | `AllowPositionPuzzle (already a switch; nothing new)` |
 | galladoria/fireprimal | 1 | Trail of fire: 220 damage in a 450 radius. | 120 in 300. | `AllowFullFirePatches` |
-| galladoria/earthprimal | 4 | Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal. | Everyone hurts them; they fight back; no quick reset while raiders are in the room; they heal the primal only. | `AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal` |
+| galladoria/earthprimal | 4 | Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal. | Since 1.2 the class rule is back on (AllowEarthmenderClassPuzzle) and the raid assigns classes to it. Still changed: they fight back; no quick reset while raiders are in the room; they heal the primal only. | `AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal` |
 | galladoria/beatha | 1 | Beatha's damage heals Xaga by twice the amount. | No heal. | `AllowBeathaHealsXaga` |
 | galladoria/beatha, galladoria/tine | 2 | The fairies circle the room (250, flying) even while fought. | They hold still while fought. | `AllowFairyFlight` |
 | summoner-s-hall/grandsummonergovannon | 1 | 300,000 health. | 200,000. | `AllowGovannonFullHealth` |
@@ -240,7 +245,7 @@ Rules of Corrupt Primal of Earth (`source/server/GameServer/scripts/namedmobs/Ga
 - **reset** (verified): Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) `OlcasgeanAndPrimals.cs:2288`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
 - **reset** (verified): Resets after 30 s out of combat: aggro cleared, full health `OlcasgeanAndPrimals.cs:2504`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
 - **heal** (verified): Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender). `OlcasgeanAndPrimals.cs:2545`. *needs new raid AI*: Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can.
-- **offline_change** (verified): Offline DAoC: no class puzzle for bot raids; the original (each Earthmender is hurt only by its own class group, pets always) is behind EpicEncounterMechanics.AllowEarthmenderClassPuzzle. Keep real damage, armor/resists, health, death phases, and the encounter tether. `OlcasgeanAndPrimals.cs:2388`. *off today*: Off today (AllowEarthmenderClassPuzzle is false). To play it: follow the mechanic.
+- **offline_change** (verified): Offline DAoC: no class puzzle for bot raids; the original (each Earthmender is hurt only by its own class group, pets always) is behind EpicEncounterMechanics.AllowEarthmenderClassPuzzle. Keep real damage, armor/resists, health, death phases, and the encounter tether. `OlcasgeanAndPrimals.cs:2388`. *easy for the current raid AI*: On: the original is back (AllowEarthmenderClassPuzzle is true) and the raid AI plays it (see Encounters with raid tactics).
 - **offline_change** (verified): Run 18 (2026-10-17): the Earthmenders fight back now (they never attacked, so raiders busy with the primals never turned on them and all four were skipped, leaving the Earth primal healed and Olcasgean asleep). `OlcasgeanAndPrimals.cs:2407`. *off today*: Off today (AllowEarthmendersPassive is false). To play it: follow the mechanic.
 - **offline_change** (verified): Run 17 (2026-10-17): the raid hit each Earthmender, the primals pulled the raiders off and the Earthmender healed to full 30 s later; all four were skipped in turn. It keeps its damage while raiders are in the room. `OlcasgeanAndPrimals.cs:2500`. *off today*: Off today (AllowEarthmenderQuickReset is false). To play it: follow the mechanic.
 - **offline_change** (verified): Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four kept every one of them at full health through the bot raid (2,000 every 3 s from each of three). `OlcasgeanAndPrimals.cs:2512`. *off today*: Off today (AllowEarthmenderMutualHeal is false). To play it: follow the mechanic.
@@ -291,8 +296,8 @@ Rules of Olcasgean (`source/server/GameServer/scripts/namedmobs/Galladoria/Olcas
 
 Rules of Spindler Broodmother (`source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs`):
 
-- **adds** (verified): When she dies: about 20-25 underdeveloped spindlers at her body. `SpindlerBroodmother.cs:90`. *easy for the current raid AI*: Healers ready at her death; AoE classes stack on her corpse; the route treats them as adds.
-- **adds** (verified): Spawns Newly-born spindler (SBAdds): on a timer (10000 ms); count about 1-2 (loop to a random bound) `SpindlerBroodmother.cs:230`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
+- **adds** (verified): When she dies: about 20-25 underdeveloped spindlers (800 health, level 50) at her body. `SpindlerBroodmother.cs:90`. *easy for the current raid AI*: In the raid AI (EpicEncounterTactics): death adds: the route clears them at her body, though she is dead, before moving on.
+- **adds** (verified): Spawns Newly-born spindler (SBAdds): on a timer (10000 ms); count about 1-2 (loop to a random bound) `SpindlerBroodmother.cs:230`. *needs new raid AI*: In the raid AI (EpicEncounterTactics): ranged adds: casters and archers take each newborn as it comes; melee, tanks and healers stay on her.
 - **reset** (verified): Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) `SpindlerBroodmother.cs:169`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
 - **teleport** (verified): Teleports TeleportTarget to a fixed spot (MoveTo Body.CurrentRegionID, 21115, 53483, 11286, 2100) `SpindlerBroodmother.cs:357`. *off today*: Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.
 - **linked_pack** (verified): Brings others into the fight `SpindlerBroodmother.cs:482`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
@@ -1419,7 +1424,7 @@ Area spells: Mesmerized (Mesmerize, damage None, radius 350).
 
 #### Corrupt Primal of Earth (`EarthPrimal`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 2177-2248. level 83; 125,000 health; npc template 60159436; raids: epic-hibernia (named); raid AI: generic dungeon route; spawned by OlcasgeanInitializator.
+`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs` lines 2177-2248. level 83; 125,000 health; npc template 60159436; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by OlcasgeanInitializator.
 
 The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot.
 
@@ -1430,7 +1435,7 @@ The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and he
 | reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `OlcasgeanAndPrimals.cs:2288` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `OlcasgeanAndPrimals.cs:2504` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | heal | Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender). | `OlcasgeanAndPrimals.cs:2545` | read, verified |  | needs new raid AI | Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can. |
-| offline_change | Offline DAoC: no class puzzle for bot raids; the original (each Earthmender is hurt only by its own class group, pets always) is behind EpicEncounterMechanics.AllowEarthmenderClassPuzzle. Keep real damage, armor/resists, health, death phases, and the encounter tether. | `OlcasgeanAndPrimals.cs:2388` | read, verified | AllowEarthmenderClassPuzzle | off today | Off today (AllowEarthmenderClassPuzzle is false). To play it: follow the mechanic. |
+| offline_change | Offline DAoC: no class puzzle for bot raids; the original (each Earthmender is hurt only by its own class group, pets always) is behind EpicEncounterMechanics.AllowEarthmenderClassPuzzle. Keep real damage, armor/resists, health, death phases, and the encounter tether. | `OlcasgeanAndPrimals.cs:2388` | read, verified | AllowEarthmenderClassPuzzle | easy for the current raid AI | On: the original is back (AllowEarthmenderClassPuzzle is true) and the raid AI plays it (see Encounters with raid tactics). |
 | offline_change | Run 18 (2026-10-17): the Earthmenders fight back now (they never attacked, so raiders busy with the primals never turned on them and all four were skipped, leaving the Earth primal healed and Olcasgean asleep). | `OlcasgeanAndPrimals.cs:2407` | read, verified | AllowEarthmendersPassive | off today | Off today (AllowEarthmendersPassive is false). To play it: follow the mechanic. |
 | offline_change | Run 17 (2026-10-17): the raid hit each Earthmender, the primals pulled the raiders off and the Earthmender healed to full 30 s later; all four were skipped in turn. It keeps its damage while raiders are in the room. | `OlcasgeanAndPrimals.cs:2500` | read, verified | AllowEarthmenderQuickReset | off today | Off today (AllowEarthmenderQuickReset is false). To play it: follow the mechanic. |
 | offline_change | Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four kept every one of them at full health through the bot raid (2,000 every 3 s from each of three). | `OlcasgeanAndPrimals.cs:2512` | read, verified | AllowEarthmenderMutualHeal | off today | Off today (AllowEarthmenderMutualHeal is false). To play it: follow the mechanic. |
@@ -1450,14 +1455,14 @@ Area spells: Essense of World Soul (DamageOverTime, damage 200, radius 600).
 
 #### Spindler Broodmother (`SpindlerBroodmother`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs` lines 10-150. level 81; 100,000 health; npc template 60166449; raids: epic-hibernia (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs` lines 10-150. level 81; 100,000 health; npc template 60166449; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mezz on a random target every 20-30 s. Her teleport is off for bots.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | When she dies: about 20-25 underdeveloped spindlers at her body. | `SpindlerBroodmother.cs:90` | inferred, verified |  | easy for the current raid AI | Healers ready at her death; AoE classes stack on her corpse; the route treats them as adds. |
-| adds | Spawns Newly-born spindler (SBAdds): on a timer (10000 ms); count about 1-2 (loop to a random bound) | `SpindlerBroodmother.cs:230` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| adds | When she dies: about 20-25 underdeveloped spindlers (800 health, level 50) at her body. | `SpindlerBroodmother.cs:90` | inferred, verified |  | easy for the current raid AI | In the raid AI (EpicEncounterTactics): death adds: the route clears them at her body, though she is dead, before moving on. |
+| adds | Spawns Newly-born spindler (SBAdds): on a timer (10000 ms); count about 1-2 (loop to a random bound) | `SpindlerBroodmother.cs:230` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): ranged adds: casters and archers take each newborn as it comes; melee, tanks and healers stay on her. |
 | reset | Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `SpindlerBroodmother.cs:169` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | teleport / fixed_spot | Teleports TeleportTarget to a fixed spot (MoveTo Body.CurrentRegionID, 21115, 53483, 11286, 2100) *(real players only (bots are never picked))* | `SpindlerBroodmother.cs:357` | inferred, verified | AllowDisplacement | off today | Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them. |
 | linked_pack | Brings others into the fight | `SpindlerBroodmother.cs:482` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
@@ -2208,7 +2213,9 @@ Area spells: Fire Strike (DirectDamageNoVariance, damage 300, radius 300); Ice S
 
 #### Orylle (`Orylle`)
 
-`source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs` lines 11-83. level 83; 40,000 health; raids: dungeon-albion-krondon (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs` lines 11-83. level 83; 40,000 health; raids: dungeon-albion-krondon (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2219,13 +2226,15 @@ Area spells: Fire Strike (DirectDamageNoVariance, damage 300, radius 300); Ice S
 
 #### Orshom Brong (`Orshom`)
 
-`source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs` lines 182-254. level 80; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs` lines 182-254. level 80; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When he gets a target he lights Orshom's Fire at 31406,69599 (907 from his spawn): an epic NPC with 10,000 health that takes only Cold damage, never moves or attacks, and casts Fire Burn (500 Heat, radius 300) on its own spot every 3 s. At 50% he pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. Orylle throws real players (never bots) into the fire spot while the fire burns.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| immune_while / damage_type | Takes no damage except from Cold damage. | `OrylleAndOrshom.cs:365` | inferred, verified |  | needs new raid AI | Only the named damage type hurts it: classes that deal it attack, the rest stand off. |
-| adds | Spawns Orshom's Fire (OrshomFire): from SpawnFire; count 1 spawn call in SpawnFire | `OrylleAndOrshom.cs:328` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
-| phase | At 50% health (Think): calls AddAggroListTo | `OrylleAndOrshom.cs:302` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| immune_while / damage_type | Orshom's Fire (not Orshom) takes no damage except from Cold damage. | `OrylleAndOrshom.cs:365` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): a hazard: nobody attacks it, and raiders keep out of its 300 radius. |
+| adds | Spawns Orshom's Fire (OrshomFire): from SpawnFire; count 1 spawn call in SpawnFire | `OrylleAndOrshom.cs:328` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): the fire is a hazard, not an add: never a route target, never 'fighting the raid'. |
+| phase | At 50% health Orylle joins the fight (he adds his aggro list to her). | `OrylleAndOrshom.cs:302` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): Orylle's tactic: the party she fights holds her, everyone else finishes Orshom. |
 | tether | Tether range 3800: drawn further from its spawn it walks home. | `OrylleAndOrshom.cs:242` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
 | reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `OrylleAndOrshom.cs:272` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | linked_pack | Brings others into the fight: OrylleBrain | `OrylleAndOrshom.cs:311` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
@@ -2737,16 +2746,18 @@ Area spells: Might of the Forrest (DirectDamageNoVariance, damage 250, radius 35
 
 #### Grand Summoner Govannon (`GrandSummonerGovannon`)
 
-`source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs` lines 11-208. level 80; npc template 18801; raids: summoners-albion (final), summoners-midgard (final), summoners-hibernia (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs` lines 11-208. level 80; npc template 18801; raids: summoners-albion (final), summoners-midgard (final), summoners-hibernia (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+Level 80, 200,000 health (300,000 behind AllowGovannonFullHealth, off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, throws real players only). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `GrandSummonerGovannon.cs:42` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| adds | Spawns 2 kinds of add (summoned sacrifice (SummonedSacrifice), summoned demon (SummonedDemon)): from Think when if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false) | `GrandSummonerGovannon.cs:311` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| adds | Spawns ShadeOfAelfgar: from SpawnShadeOfAelfgar; count 1 spawn call in SpawnShadeOfAelfgar | `GrandSummonerGovannon.cs:337` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
+| adds | Spawns 2 kinds of add (summoned sacrifice (SummonedSacrifice), summoned demon (SummonedDemon)): from Think when if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false) | `GrandSummonerGovannon.cs:311` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): ranged adds: casters and archers kill the sacrifice and the demon on their walk to the altar; the rest stay on him. |
+| adds | Spawns the Shade of Aelfgar (one at a time) once both the sacrifice and the demon have reached his altar (32063,40896) and died there; killed on the way, they never count. | `GrandSummonerGovannon.cs:337` | inferred, verified |  | needs new raid AI | Kill the sacrifice and the demon before they reach the altar (ranged adds); a Shade that comes anyway attacks the raid and the route turns on it. |
 | phase | At 80% health (Think): calls SendSpellEffectAnimation; calls SpawnDemonAndSacrifice; Strength = 650 | `GrandSummonerGovannon.cs:269` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| phase | At 50% health (Think): calls MorphIntoDemon | `GrandSummonerGovannon.cs:285` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| phase / form | Changes form in MorphIntoDemon (Strength = 800) | `GrandSummonerGovannon.cs:304` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| phase | At 50% health (Think): calls MorphIntoDemon | `GrandSummonerGovannon.cs:285` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): at 50% he becomes the demon at full health and starts his Shroud of Agony (radius 300 around his target): the raid spreads (see his tactic). |
+| phase / form | Changes form in MorphIntoDemon (Strength = 800) | `GrandSummonerGovannon.cs:304` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics): spread while he has the demon model (636). |
 | reset | Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `GrandSummonerGovannon.cs:234` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `GrandSummonerGovannon.cs:294` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | teleport / fixed_spot | Teleports RandomTarget to a fixed spot (MoveTo Body.CurrentRegionID, 32091, 39684, 16302, 4094) *(real players only (bots are never picked))* | `GrandSummonerGovannon.cs:689` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them. |

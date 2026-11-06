@@ -8,6 +8,49 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2 (in development)
+
+**Epic raids learn four more bosses (raid tactics, round 3).** Everything below is built and covered by automated
+tests; none of it has been seen in a real raid yet. Govannon and Orshom are level 80: this teaches the raid their rules,
+it does not make them easy, and the hardest level 70+ encounters, Darkness Falls raid AI and Legion still have no raid
+tactics.
+- **Grand Summoner Govannon (Summoner's Hall, all three realms).**
+  - **Before:** on 2026-11-06 the Midgard raid took him to 53% and then 51%, twice. Each time, at 50%, he turned into a
+    demon at full health and the raid fell in about a minute: 88 and then 101 raider deaths, most with nobody hitting
+    them. His Shroud of Agony hurts everyone within 300 of his target, and the raid stood in one pile on that target.
+  - **Now:** in his demon form, casters, archers and healers stand clear of his target (550 from it) and fight and heal
+    from there. Melee can't get clear and fight on, but the healers are no longer dying beside them. The party he is
+    fighting holds him.
+  - At 80% (in each form) he summons a sacrifice and a demon that walk slowly to his altar. Only if both reach it does the
+    Shade of Aelfgar come. The raid's casters and archers now kill them on the way while everyone else stays on him.
+  - His full 300,000 health stays switched off.
+- **Orshom Brong and Orylle (Krondon).**
+  - **Before:** the Albion raid lost at Orshom twice overnight (lowest 59%, then 28%). His fire pit, Orshom's Fire, burns
+    500 every 3 seconds within 300 of it and only cold hurts it. Bots it burned fought back, standing in it.
+  - **Now:** the fire is never a target, and the raid never turns on it because "it is fighting the raid". A raider within
+    450 of it steps out to 600 first and fights on.
+  - When Orylle joins at 50%, the party she attacks holds her and everyone else finishes Orshom first. The raid also goes
+    for Orshom before her.
+- **Galladoria.**
+  - **The Earthmenders' class rule is back on.** Each of the four Earthmenders that heal the Corrupt Primal of Earth
+    again takes damage only from its own classes, as in the original:
+    - Guardian: blademasters, heroes and champions.
+    - Magical: eldritchs, enchanters and mentalists.
+    - Natural: bards, druids and wardens.
+    - Shadowy: nightshades and rangers.
+    - Animists, valewalkers and pets hurt all four.
+  - The raid now kills the Earthmenders before the primal, and each raider takes one its class can hurt. A class none of
+    them takes damage from (bainshee, vampiir) fights the primal and keeps it busy. A player fighting them yourself plays
+    by the same rule.
+  - **Spindler Broodmother.** Casters and archers kill each newborn spindler as it comes, while melee and healers stay on
+    her. The 20-25 small spindlers that burst from her body when she dies are cleared there before the raid moves on.
+- **A quieter log.** `REALM_EXPEDITION_EARLY_PULL` had one line for every Darkness Falls named the raid walked into (53
+  in four hours). It is now logged for a raid's final boss and for catalogued scripted bosses (once per boss every ten
+  minutes), and always for a pull-back. The rest go to the debug log, and the next logged line counts them
+  (`quietSinceLast=`).
+- **The encounter catalog** (`docs/encounters/EPIC-ENCOUNTERS.md`) marks the new tactics "1.2 (new)". It also shows
+  which restored mechanic is now on, and records what the 2026-11-06 logs showed for each of these bosses.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
