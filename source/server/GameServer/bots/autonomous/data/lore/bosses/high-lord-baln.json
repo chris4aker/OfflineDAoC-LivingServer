@@ -1,0 +1,71 @@
+{
+  "id": "high-lord-baln",
+  "name": "High Lord Baln",
+  "catalogKey": "darkness-falls/highlordbaln",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 70, 100,000 health, immune to crowd control. Every 20-35 seconds he calls eight to twelve Baln minions (level 58).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs"
+    }
+  ],
+  "story": "High Lord Baln has the largest household of any lord in the court below, and he has never once fought alone. His servants have servants, and theirs have servants, and when he is threatened he calls them all, wave after wave, eight or ten or a dozen at a time. The imps say Baln has more minions than wit. The imps say a great many things, but they never say it within his hearing, because the imps are, after all, the lowest servants of his household.",
+  "legend": "Waves of eight to twelve minions every half minute. Area damage on the waves, a solid tank on Baln, and do not let two waves stack. He cannot be mezzed or stunned, so do not waste the crowd control on him.",
+  "yells": {
+    "aggro": [
+      "To me, my household! All of you!"
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "More! I have more!"
+      }
+    ],
+    "death": [
+      "My household... scatters..."
+    ],
+    "slay": [
+      "Join my household."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A high lord, and his servants, and theirs."
+    ],
+    "phases": [
+      {
+        "trigger": "adds",
+        "text": "High Lord Baln calls his household!"
+      }
+    ],
+    "realmFirstKill": "High Lord Baln has fallen. His household scatters."
+  },
+  "botLines": {
+    "briefing": [
+      "baln calls 8-12 adds every 30 sec. aoe the waves, dont let them stack",
+      "no cc on baln himself, hes immune"
+    ],
+    "aftermathWin": [
+      "aoe groups earned their keep",
+      "baln down. his household is out of work"
+    ],
+    "aftermathLoss": [
+      "three waves at once. we drowned"
+    ],
+    "rumour": [
+      "heard high lord baln never fights alone",
+      "[someone said|heard] baln has more minions than wit. dont tell him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "baln",
+    "text": "The high lord with the largest household in the court. When threatened he calls them all, wave after wave. Bring those who strike many at once."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cut through High Lord Baln's household wave by wave in {minutes} minutes.",
+    "loss": "High Lord Baln's household buried {realm}'s raid; {raidLeader} let the waves stack."
+  }
+}

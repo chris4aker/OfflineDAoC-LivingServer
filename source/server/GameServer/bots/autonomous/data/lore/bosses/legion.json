@@ -1,0 +1,127 @@
+{
+  "id": "legion",
+  "name": "Legion",
+  "catalogKey": "darkness-falls/legion",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "The arch-demon who dominates Darkness Falls.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "April 2002: Mythic fixed Legion's resists, made it reclaim souls more often, fixed its reach on distant players and kept Behemoth to its own area.",
+      "provenance": "mythic",
+      "source": "https://gamebanshee.com/news/68454-beware-of-legion.html"
+    },
+    {
+      "text": "Level 83, 300,000 health. Takes no damage from attackers more than 1,400 away. Heals 2.5% of its health for every player it kills ('Your soul give me new strength'), and a quarter of the Body damage it deals.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs"
+    },
+    {
+      "text": "It destroys bladeturn bubbles, and after consuming five releases a soul-consuming blast; graspering souls join it at every 5% of its health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs"
+    },
+    {
+      "text": "'4 fg took him out' (Feb 2004); 'as few as about three groups' (Feb 2003).",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    }
+  ],
+  "story": "Legion is the court of Darkness Falls in one body. When a demon of that kingdom dies badly, Legion takes what is left of it, and when a mortal dies in its lair it takes that too, and every one of them is still there, somewhere, in the voice. That is what Legion is: everyone it has ever eaten, speaking at once. It sits at the bottom of the kingdom and rules it not by cunning but by appetite, for every soul it takes mends its wounds, and it has never been short of souls. It cannot abide enemies at a distance; those who would hurt it must come close enough to be eaten. It eats the wards men raise against blows, and when it has eaten enough of them it opens and pours out a hunger that drinks the life of everyone near it. And as it weakens, the souls inside it try to get out, and cannot, and grasp at the living instead.",
+  "legend": "Three or four groups who stand close and do not die. It cannot be hurt from more than about fourteen hundred away, so casters come in too. Every death heals it, so do not die. It eats bladeturns, and after five it blasts the whole lair, so do not feed it bubbles. Kill the graspering souls as they come out.",
+  "yells": {
+    "aggro": [
+      "More voices for the choir."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "We are many. You are few. Soon you will be us."
+      },
+      {
+        "trigger": "bladeturn",
+        "text": "Your little shields are delicious."
+      }
+    ],
+    "death": [
+      "We... are... free..."
+    ],
+    "slay": [
+      "Your soul give me new strength."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Many voices speak at once. All of them are hungry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The souls inside Legion claw to get out!"
+      },
+      {
+        "trigger": "bladeturn",
+        "text": "Legion swallows the wards and pours out its hunger!"
+      }
+    ],
+    "realmFirstKill": "Legion is broken. A thousand voices fall silent."
+  },
+  "botLines": {
+    "briefing": [
+      "everyone within 1400 of legion, casters too, or you do no damage",
+      "every death heals it. dont die. healers, thats on you and on us",
+      "it eats bladeturns and blasts after five. no bubbles on the tank"
+    ],
+    "aftermathWin": [
+      "LEGION DOWN. [gg|gg all]. all those voices and none of them ours",
+      "nobody died for ten minutes. thats the whole trick"
+    ],
+    "aftermathLoss": [
+      "we fed it six deaths and it healed back to full",
+      "casters stood back and did nothing. its immune from range"
+    ],
+    "rumour": [
+      "legion keeps a court down there like a king. princes, high lords, dukes, earls, marquises, and every demon knows its rank",
+      "[heard|someone said] legion speaks with the voice of everyone it ever ate"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "legion",
+    "text": "Not one demon but many, a court in one body, and it feeds on souls. Every soul it takes mends it. Stand close to it, for it cannot be hurt from afar, and do not die, for each death makes it stronger."
+  },
+  "bookPage": "The imp would not say what Legion is. It said only that Legion is everyone, and that when a demon of the court dies badly, Legion takes what is left, and it is not seen again but is somehow there, in the voice. It said that Legion speaks with every voice it has ever eaten. It said this was an honour. It did not look honoured. I gave it a second candle-end and it told me about the ledge.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} stood close, did not die, and broke Legion in {minutes} minutes.",
+    "loss": "Legion took {realm}'s fallen and grew strong on them; {raidLeader}'s raid became more voices in the choir."
+  },
+  "realmTakes": {
+    "Albion": {
+      "story": "Camelot's priests call Legion the Adversary's steward, the many-voiced thing of the gospel that named itself for its number. The knights who go down against it pray for the souls inside it as they strike.",
+      "botLines": {
+        "briefing": [
+          "the priests say pray for the souls inside it. pray later, stand close now"
+        ]
+      }
+    },
+    "Midgard": {
+      "story": "The skalds call Legion the Glutton-hall: a hall of the dead that eats its guests. A Norseman who dies to it gets no seat in any hall, so the Norse fight it angrier than anything else under the world.",
+      "botLines": {
+        "briefing": [
+          "die to legion and you get no seat in any hall. so dont die"
+        ]
+      }
+    },
+    "Hibernia": {
+      "story": "The druids say Legion is what the otherworld becomes when it has no law: a lord made of its own subjects. The bards will not sing its voices; they say a song about them would be a door.",
+      "botLines": {
+        "briefing": [
+          "the bards wont sing legion. lets give them something to sing"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "high-lord-saeor",
+  "name": "High Lord Saeor",
+  "catalogKey": "darkness-falls/highlordsaeor",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 70, 100,000 health, immune to crowd control. Every player he kills heals him by that player's maximum health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs"
+    }
+  ],
+  "story": "High Lord Saeor grows fat on the fallen. Every mortal who dies at his hand feeds him the whole of their life at once, and he has been feeding for a very long time. He is not the strongest high lord, but he is the hardest to kill, because he is the one who most enjoys being fought. A careless raid leaves his hall with fewer men than it brought, and Saeor larger than before. The other lords of the court do not envy him. They are afraid of what he will become.",
+  "legend": "Every person he kills heals him by their whole health. Do not let anyone die: tanks rotate early, healers stay on the front. A wipe on Saeor starts with one death and ends with him at full. No crowd control works on him.",
+  "yells": {
+    "aggro": [
+      "Come, feed me."
+    ],
+    "phases": [
+      {
+        "trigger": "slay",
+        "text": "Ahh. Another. Come closer."
+      }
+    ],
+    "death": [
+      "Starved... at last..."
+    ],
+    "slay": [
+      "Your life is mine now. All of it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The high lord here grows fat on the fallen."
+    ],
+    "phases": [
+      {
+        "trigger": "slay",
+        "text": "Saeor feeds on the fallen and is mended!"
+      }
+    ],
+    "realmFirstKill": "High Lord Saeor has fallen, starved at last."
+  },
+  "botLines": {
+    "briefing": [
+      "every death heals saeor by the dead guy's max hp. nobody dies. nobody"
+    ],
+    "aftermathWin": [
+      "zero deaths on saeor. thats the whole fight",
+      "saeor starved"
+    ],
+    "aftermathLoss": [
+      "one death, then another, and he was back to full"
+    ],
+    "rumour": [
+      "heard saeor heals off everyone he kills",
+      "[someone said|heard] high lord saeor grows fat on the dead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "saeor",
+    "text": "The high lord who grows fat on the fallen. Every mortal he kills feeds him a whole life at once. Give him no one."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} gave High Lord Saeor no one to feed on and starved him in {minutes} minutes.",
+    "loss": "High Lord Saeor fed on {realm}'s fallen until he was whole; {raidLeader}'s raid was his meal."
+  }
+}

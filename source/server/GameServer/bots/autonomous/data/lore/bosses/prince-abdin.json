@@ -1,0 +1,65 @@
+{
+  "id": "prince-abdin",
+  "name": "Prince Abdin",
+  "catalogKey": "darkness-falls/princeabdin",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 78, 100,000 health, a prince of Darkness Falls; no scripted mechanic beyond his reset.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs"
+    },
+    {
+      "text": "Darkness Falls' bestiary lists its princes among the court.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    }
+  ],
+  "story": "Prince Abdin is the eldest of the princes of the court below, and the most proud of it. He has no tricks. He does not need them, he says: a prince is a prince because he is stronger than what is under him, and that is all. He keeps wagers with the other princes on which of the three realms will come down through its door next, and the imps say he lost heavily on Albion one season and has hated it since. He expects visitors to kneel. Few do.",
+  "legend": "The honest prince: no pet-eating, no clones, no tricks, just a lot of health and a hard hitter. Tank him, heal him, burn him. He is one of the four royals you need dead before Beliathan rises, so do not skip him to save time.",
+  "yells": {
+    "aggro": [
+      "Kneel, mortal. I will make it quick."
+    ],
+    "phases": [],
+    "death": [
+      "A prince... of the court... falls..."
+    ],
+    "slay": [
+      "You should have knelt."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A prince's hall. He expects you to kneel."
+    ],
+    "phases": [],
+    "realmFirstKill": "Prince Abdin has fallen. The court loses a wager."
+  },
+  "botLines": {
+    "briefing": [
+      "abdin has no tricks, straight fight. save cooldowns for the other princes"
+    ],
+    "aftermathWin": [
+      "abdin down. one prince of four",
+      "he wanted us to kneel. no thanks"
+    ],
+    "aftermathLoss": [
+      "we lost to the one prince with no tricks"
+    ],
+    "rumour": [
+      "prince abdin, prince asmoien, prince ba'alorien. say them three times and see who shows up",
+      "[heard|someone said] abdin bets on which realm comes down next"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "abdin",
+    "text": "The eldest prince of the court below, and the proudest. He has no tricks and wants none. He keeps wagers on which realm will come down next."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} refused to kneel and felled Prince Abdin in {minutes} minutes.",
+    "loss": "Prince Abdin made {realm}'s raid kneel; {raidLeader} fell back to the door."
+  }
+}

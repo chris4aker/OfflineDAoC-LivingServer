@@ -1,0 +1,70 @@
+{
+  "id": "prince-asmoien",
+  "name": "Prince Asmoien",
+  "catalogKey": "darkness-falls/princeasmoien",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 78, 100,000 health. Every 5 seconds the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs"
+    }
+  ],
+  "story": "Prince Asmoien has a taste for the beasts and servants that follow mortal masters: the summoned, the charmed, the bound. He calls them to him, and they go, and he eats them, and every one he eats mends him. The pet-masters of all three realms hate him above every other demon of the court. He finds that flattering. His hall smells of wet fur and old sorcery, and the familiars of anyone who walks into it whimper and pull at their bonds.",
+  "legend": "He eats a pet every five seconds from up to two thousand away and heals by its whole health. Pet classes park their pets well outside his hall before the pull and fight without them. One careless necro and he is back at full.",
+  "yells": {
+    "aggro": [
+      "What lovely little servants you have brought me."
+    ],
+    "phases": [
+      {
+        "trigger": "petDevoured",
+        "text": "Delicious. Bring me another."
+      }
+    ],
+    "death": [
+      "Still... hungry..."
+    ],
+    "slay": [
+      "Your master will follow you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Your pet whimpers. Something here is hungry for it."
+    ],
+    "phases": [
+      {
+        "trigger": "petDevoured",
+        "text": "Prince Asmoien devours a pet and is mended!"
+      }
+    ],
+    "realmFirstKill": "Prince Asmoien has fallen. The familiars rest easy."
+  },
+  "botLines": {
+    "briefing": [
+      "PETS OUT. asmoien eats a pet every 5 sec and heals off it. park them 2000+ away"
+    ],
+    "aftermathWin": [
+      "nobody brought a pet in. proud of you",
+      "asmoien down, the pet classes cheer"
+    ],
+    "aftermathLoss": [
+      "someone's pet wandered in and he healed to full"
+    ],
+    "rumour": [
+      "[heard|someone said] prince asmoien eats pets and heals off them",
+      "pet classes hate asmoien more than legion, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "asmoien",
+    "text": "A prince with a taste for the beasts that follow mortal masters. He calls them, they go, he eats them, and each one mends him. Leave your servants outside his hall."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} left every pet at the door and starved Prince Asmoien in {minutes} minutes.",
+    "loss": "Prince Asmoien fed on {realm}'s servants and mended faster than {raidLeader}'s raid could wound him."
+  }
+}
