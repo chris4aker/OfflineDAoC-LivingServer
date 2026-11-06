@@ -234,6 +234,15 @@ public static class AutonomousBotDebates
     private static readonly object Sync = new();
     private static readonly Dictionary<eRealm, Running> Scenes = new();
     private static readonly Dictionary<eRealm, long> NextStartAt = new();
+    /// <summary>When each realm's next scene was planned (1.2: its wait is stretched on a small roster, AutonomousChatBudget.SceneDue).</summary>
+    private static readonly Dictionary<eRealm, long> PlannedAt = new();
+
+    /// <summary>Plans a realm's next scene <paramref name="waitMs"/> from now (before the roster's stretch). Call under Sync.</summary>
+    private static void Plan(eRealm realm, long now, long waitMs)
+    {
+        NextStartAt[realm] = now + waitMs;
+        PlannedAt[realm] = now;
+    }
     /// <summary>/lstest: the topic the next scene in a realm must have (null: any), used once.</summary>
     private static readonly Dictionary<eRealm, string> ForcedTopic = new();
 
@@ -242,7 +251,7 @@ public static class AutonomousBotDebates
     {
         lock (Sync)
             if (!Scenes.ContainsKey(realm))
-                NextStartAt[realm] = now + FirstSceneDelayMs + Random.Shared.Next(5 * 60_000);
+                Plan(realm, now, FirstSceneDelayMs + Random.Shared.Next(5 * 60_000));
     }
 
     /// <summary>
@@ -260,6 +269,7 @@ public static class AutonomousBotDebates
                 return false;
             }
             NextStartAt[realm] = 0;
+            PlannedAt[realm] = 0;
             if (topic == null)
                 ForcedTopic.Remove(realm);
             else
@@ -379,9 +389,11 @@ public static class AutonomousBotDebates
             Scenes.TryGetValue(realm, out running);
             if (running == null)
             {
-                if (!NextStartAt.TryGetValue(realm, out long start))
-                    NextStartAt[realm] = start = now + FirstSceneDelayMs + Random.Shared.Next(5 * 60_000);
-                if (now < start)
+                if (!NextStartAt.ContainsKey(realm))
+                    Plan(realm, now, FirstSceneDelayMs + Random.Shared.Next(5 * 60_000));
+                // 1.2: a small roster hears scenes less often (AutonomousChatBudget.SceneScale); 300 bots a realm and up as before.
+                long start = NextStartAt[realm];
+                if (!AutonomousChatBudget.SceneDue(PlannedAt.GetValueOrDefault(realm, start), start, now, AutonomousBotChatCoordinator.RealmBots(realm)))
                     return;
             }
             else if (now < running.NextAt)
@@ -486,7 +498,7 @@ public static class AutonomousBotDebates
         {
             if (cast == null)
             {
-                NextStartAt[realm] = now + 5 * 60_000; // try again in a few minutes
+                Plan(realm, now, 5 * 60_000); // try again in a few minutes
                 return;
             }
             if (reset)
@@ -764,7 +776,7 @@ public static class AutonomousBotDebates
                 if (running.StoryKey != null)
                     AutonomousBotStorylines.OnEpisodeEnded(realm, running.StoryKey, running.Scene.Id, reason == "finished", DateTime.UtcNow);
             }
-            NextStartAt[realm] = GameLoop.GameLoopTime + NextGapMs(Random.Shared);
+            Plan(realm, GameLoop.GameLoopTime, NextGapMs(Random.Shared));
         }
     }
 

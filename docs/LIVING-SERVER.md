@@ -429,9 +429,11 @@ through the part's own code, lines and logging, in your realm and around you.
 ## Why a bot said that: /lswhy (every player)
 
 `/lswhy` shows the last chat decisions of your target, or of the last gamebot that spoke to or near you. Each one gives
-the channel, what set it off, the rule and score it used, and why, or why it stayed quiet. `/lswhy <name>` shows one bot,
-`/lswhy last [n]` the realm's last decisions, and `/lswhy budget` how busy each channel around you is against its
-floor, target and ceiling. How bots decide how much to say: [bot-voices/CHAT-BUDGETS.md](bot-voices/CHAT-BUDGETS.md).
+the channel, its reason code (`exempt-named`, `hold-reply-target`, `below-minimum`...), what set it off, the rule and score
+it used, and why, or why it stayed quiet. `/lswhy <name>` shows one bot, `/lswhy last [n]` the realm's last decisions,
+`/lswhy me` why bots answered your own lines or didn't, `/lswhy held [n]` the replies the reply budget held back, and
+`/lswhy budget` how busy each channel around you is against its floor, target and ceiling, with /faction's and /say's
+replies counted apart. A tell to a bot, or a line naming one, is always answered. How bots decide how much to say: [bot-voices/CHAT-BUDGETS.md](bot-voices/CHAT-BUDGETS.md).
 
 ## Tests
 

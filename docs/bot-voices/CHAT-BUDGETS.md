@@ -1,15 +1,16 @@
 # The chat budgets: how busy the world is, and when a bot answers you
 
-Living Server Beta 1.1.2. The goal (owner, 2026-11-03): chat that feels like about 3,000 players across the three
+Living Server Beta 1.1.2, with the reply rate budget of 1.2. The goal (owner, 2026-11-03): chat that feels like about 3,000 players across the three
 realms on a busy peak evening, realistic and responsive, and busier than before. Bot chat has two separate
 budgets:
 
 - **The ambient budget** sets how much the world says on its own: openers, answers between bots, news, bursts, town
   broadcasts, guild and group talk. It has a floor and a ceiling per channel, and it grows with the number of bots
   online, with no cap.
-- **The reply budget** sets when a bot answers *you*. A reply has to fit what you said. A weak reply becomes something
-  short that does fit ("ty", "lol", "dunno", "no heals on a thane sry"), or silence for spam, scams and lines said to
-  someone else.
+- **The reply budget** sets when a bot answers *you*, and (1.2) how many replies a channel carries. A reply has to fit
+  what you said. A weak reply becomes something short that does fit ("ty", "lol", "dunno", "no heals on a thane sry"),
+  or silence for spam, scams and lines said to someone else. Replies are counted apart from the ambient lines, against a
+  reply target and a reply ceiling of their own. **A tell to a bot, and a line that names a bot, are always answered.**
 
 Silence is only ever the answer to a line no bot should answer, or to a weak reply nothing short can fix. The ambient world is never held back to avoid a bad line:
 it picks another line or another channel.
@@ -46,8 +47,14 @@ Each channel has three numbers, in lines per minute as one player hears that cha
 - **Floor:** below it, a bot with something to say starts at once without waiting for the gap. While a channel is under
   its target, bots there also try to talk more often, up to four times as often, resting two minutes between lines
   instead of four. A thin crowd can still keep a capital or a guild alive.
-- **Ceiling:** every bot line in the channel counts, including answers, news and bursts. Above the ceiling nothing new
-  starts and bursts drop their remaining lines.
+- **Ceiling:** above it nothing new starts. It counts the channel's ambient lines: openers, news, stories, debates, the
+  gold spammer's ads, every scene. From 1.2 the answers count against the channel's reply budget instead (below), in
+  /faction and /say; elsewhere (lfg, trade, broadcast, guild, group) every line still counts here.
+- **How the rate is measured (1.2):** over a window long enough to hold about four lines at the target, from 2 to 20
+  minutes. 1.1.2 always used two minutes, which can't see a slow channel's floor: with 10 bots a realm the /faction floor
+  is 0.18 a minute, and one line in two minutes already reads as 0.5. So "under the floor" fired after every quiet two
+  minutes, a bot spoke at once, and its answers came on top. The automated playtester (PR #72) measured /faction at 1.2
+  to 1.4 lines a minute there, about four times the 0.27 to 0.36 its own budget asked for.
 
 A bot that wants to talk picks the channel it can be heard in that runs furthest under its target.
 
@@ -74,16 +81,40 @@ the chat to be quiet, even if something in our research says the old servers wer
 - **The level:** the defaults are a **busy peak server**, deliberately above the research's own high estimates. Every
   number is an estimate to tune by playing.
 
-| Channel | Floor / target / ceiling at 1,000 bots, prime time | The research's 2003 estimate (likely / high) |
+| Channel | Floor / target / ceiling at 1,000 bots, prime time | Replies: target / ceiling (1.2) | The research's 2003 estimate (likely / high) |
+|---|---|---|---|
+| `faction` | 2.0 / 4.0 / 10 | 4.0 / 8.0 | none; this server's own channel [O] |
+| `lfg` | 0.6 / 1.8 / 4 (1.1.2: target 1.6) | counted with the ambient lines | public LFG chat group, 1 / 3 |
+| `trade` | 0.5 / 1.6 / 3.5 (1.1.2: target 1.3) | counted with the ambient lines | public trade chat group, 1 / 3 |
+| `say` | 1.0 / 2.0 / 5 (1.1.2: floor 0.5) | 2.0 / 4.0 | busy camp area, 0.8 / 3 |
+| `capital` | 1.5 / 4.0 / 7 | counted with the ambient lines | capital /broadcast, 1.5 / 4 |
+| `town` | 0.4 / 1.5 / 3.5 | counted with the ambient lines | bind town /broadcast, 0.6 / 2 |
+| `guild` (50 online) | 1.5 / 4.0 / 8 (1.1.2: floor 0.5) | counted with the ambient lines | 2.5 / 5 at 50 online, 6 / 12 at 150 |
+| `group` | 0.3 / 1.0 / 3 (bot banter; fight calls come on top) | counted with the ambient lines | PvE camp group, 1.5 / 4 counting calls |
+
+**The 1.2 re-balance** (owner's rule: the amount of chat must not go down; re-balance, don't cut). Counting replies apart
+gave /faction's openers back the turns the answers had taken from them, and gave the answers a band of their own. The
+turns that 1.1.2's busy /faction had pushed into /lfg and /trade went back to /faction, so their targets were raised to
+what 1.1.2 actually delivered. 1.1.2's two-minute window had kept a slow guild or /say near the player alive by accident
+(every quiet two minutes read as "under the floor"); their floors were raised instead, so they stay alive on purpose.
+`UT_ChatBudgetSimulation`, five evening hours a side at `bot_voices_chat_rate` 1:
+
+| Bots a realm | 1.1.2: /faction, all channels | 1.2: /faction (of which replies), all channels |
 |---|---|---|
-| `faction` | 2.0 / 4.0 / 10 | none; this server's own channel [O] |
-| `lfg` | 0.6 / 1.6 / 4 | public LFG chat group, 1 / 3 |
-| `trade` | 0.5 / 1.3 / 3.5 | public trade chat group, 1 / 3 |
-| `say` | 0.5 / 2.0 / 5 | busy camp area, 0.8 / 3 |
-| `capital` | 1.5 / 4.0 / 7 | capital /broadcast, 1.5 / 4 |
-| `town` | 0.4 / 1.5 / 3.5 | bind town /broadcast, 0.6 / 2 |
-| `guild` (50 online) | 0.5 / 4.0 / 8 | 2.5 / 5 at 50 online, 6 / 12 at 150 |
-| `group` | 0.3 / 1.0 / 3 (bot banter; fight calls come on top) | PvE camp group, 1.5 / 4 counting calls |
+| 300 | 2.46, 6.02 | 2.63 (1.18), 6.26 |
+| 1,000 | 4.86, 12.56 | 5.07 (2.20), 13.22 |
+
+A small realm is where the change shows (rate 2, the default). With 10 bots a realm /faction goes from 0.72 to 0.59 a
+minute in the model. On the real server, the playtester's faction-rate scenario measured 1.20 and 1.33 lines a minute
+before and 0.87 and 0.97 after (two half-hour runs each, against an opener target of about 0.3 and a reply target of the
+same). The model has no gold spammer and no debates; on the server they make most of what is left over the budget,
+because they came at the same pace on any server. They count against the openers' budget (bots start fewer lines while
+one runs).
+
+**Scenes on a small roster (1.2, owner 2026-11-05).** Debates and the gold spammer's waves wait longer below 300 bots a
+realm: their gap is divided by `SceneScale` = the square root of (bots online / 300), between 0.1 and 1, read when a
+scene comes due (a server start has few bots on yet), and a wave's ads are scaled the same way (two at least). 10 bots a
+realm hear them about a fifth as often; 300, 900 and 1,000 exactly as before.
 
 - **Nights:** calmer than prime time, never dead. The lowest hour factor is 0.45, or 0.7 with the clock schedule.
 - **Small rosters:** `population_exponent` is 0.65, so a 300-bot realm still talks at 46% of a full server.
@@ -102,7 +133,8 @@ server first, and a bot killed by or paying back its nemesis each start a burst 
 - 3–6 lines (`burst_min`, `burst_max`), fewer on a thin server;
 - most of them in the first minute, all within about 90 seconds (`burst_spread_s`);
 - each from a different bot, with no near-copies;
-- none once /faction is at its ceiling.
+- they are replies to the news (1.2): said up to /faction's reply ceiling, not stopped at its reply target, since a big
+  moment may be loud.
 
 A keep lost, a relic moved or Darkness Falls also reaches the capital's /broadcast, wherever a player can hear it.
 
@@ -200,6 +232,27 @@ otherwise an emote such as *nods*.
 Bots also answer `/advice` (one knowledgeable bot of your realm, when it knows the answer), and questions in
 `/broadcast` and chat groups, by tell.
 
+**How many replies a channel carries (1.2).** In /faction and /say, replies are counted apart from the ambient lines,
+against the channel's `reply_target` and `reply_ceiling` (scaled like its ambient band, and by `bot_voices_chat_rate` but
+never below 1, so "0 = bots only answer" still answers):
+
+| Who the reply answers | Rule | Reason code when held |
+|---|---|---|
+| A tell to the bot, a line that names it, a /say to the bot in front of you, a follow-up to its own line | always answered | never held (`exempt-tell`, `exempt-named`, `exempt-addressed`, `exempt-thread`) |
+| The first answer to your line said to nobody in particular | said below the reply ceiling | `hold-reply-ceiling` |
+| A big moment's burst of reactions | said below the reply ceiling | `hold-reply-ceiling` |
+| Bots answering bots (an opener's answers and thread, a story's riffs, reactions to the gold spammer), and pile-ons after the first answer to you | said below the reply target; between target and ceiling with a chance that falls from 1 to 0 | `hold-reply-target`, `hold-reply-ceiling` |
+
+So the room between the reply target and the ceiling is mostly left for your lines. A thread is decided once, when it
+starts: it is said whole or not at all, and a story over the budget is told by its teller alone. Replies are measured over
+a window that holds about eight of them at the target (they come in clumps).
+
+**Saying nothing untrue (1.2).** A reply that says something untrue of the bot about to say it ("im a cleric" from a thane,
+"38 zerk here" from a 41) is dropped whatever chose it (`contradicts-self`), and so is a group or trade ad pasted into a
+conversation about neither ("need a healer still?" to "gn all"; the blind round's sixth complaint). The bot then says
+something short that fits, or nothing. Bots also answer where they are from their own state: "what zone r u in?",
+"are you in camelot hills?" (`self-knowledge`).
+
 **Who answers, and when:**
 - **One primary answer.** A hello, a ding, a goodbye or a call may draw up to `reply.pileon_cap` (2) more short ones. A
   joke, a mishap or a remark now and then draws a "lol", "+1", "this" or "^".
@@ -211,9 +264,19 @@ Bots also answer `/advice` (one knowledgeable bot of your realm, when it knows t
 ## Seeing it in game: /lswhy
 
 `/lswhy` (every player) shows why your target, or the last gamebot that spoke to or near you, said what it said. Each
-entry gives the channel, what set it off, the rule it used, its score and the reason. `/lswhy <name>` shows one bot,
-`/lswhy last [n]` shows the realm's last decisions (the silences too), and `/lswhy budget` shows each channel's floor,
-target, ceiling and current rate around you.
+entry gives the channel, the outcome and its **reason code** in brackets, what set it off, the rule it used, its score and
+the reason. `/lswhy <name>` shows one bot, `/lswhy last [n]` shows the realm's last decisions (the silences too),
+`/lswhy me` (1.2) why bots answered your own lines or didn't, `/lswhy held [n]` (1.2) the last replies the reply budget
+held back, and `/lswhy budget` each channel's floor, target, ceiling and current rate around you, with /faction's and
+/say's replies apart (their target, ceiling, and how many were held or let through). A GM sees every realm.
+
+**Reason codes** (`AutonomousChatWhy.Codes`):
+- **Said:** `exempt-tell`, `exempt-named`, `exempt-addressed`, `exempt-thread` (always answered); `reply-in-budget`,
+  `reply-over-target` (the reply budget let it through); `pileon`; `self-knowledge` (from the bot's own state);
+  `short-below-minimum`, `rescue-below-minimum` (under the minimum fit, something short that fits); `ambient`, `sent`.
+- **Held or silent:** `hold-reply-target`, `hold-reply-ceiling` (the reply budget); `below-minimum` (no reply fits well
+  enough); `contradicts-self`; `spam`; `other-addressee` (said to someone else); `ack-line` ("ok", "k"); `undirected`
+  ("wb Sigrun" to nobody a bot knows); `no-false-credit` (thanks for heals it can't give); `no-fit`; `held`.
 
 ## Tuning
 
@@ -225,5 +288,9 @@ target, ceiling and current rate around you.
   roster livelier.
 - **The day:** `hours`, 24 factors from midnight.
 - **Replies:** `reply.min_fit` 1 lets weak replies through (the Beta 1.1.1 behaviour); 3 keeps only specific ones.
+- **How many replies (1.2):** a channel's `reply_target` and `reply_ceiling`. Leave them out (as a 1.1.2 copy of the file
+  does) and that channel counts its replies with its ambient lines, as before.
 - **After a change:** run `UT_ChatBudgetSimulation` with `TALK_BUDGET_OUT=<file>` for an evening hour at 300 and
-  1,000 bots a realm. Check a played evening with `/lswhy budget`.
+  1,000 bots a realm (1.1.1, 1.1.2 and 1.2 side by side), and `TALK_BUDGET_SMALL=<file>` for 10 and 30. Check a played
+  evening with `/lswhy budget`. The automated playtester's faction-rate scenario predicts the ambient target only; the
+  realm hears up to the ambient target plus the reply target.

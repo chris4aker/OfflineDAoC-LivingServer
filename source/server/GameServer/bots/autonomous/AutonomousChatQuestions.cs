@@ -118,6 +118,9 @@ public static class AutonomousChatQuestions
         (new Regex(@"\b((you|u) coming to the raid|(you|u) in for the raid|coming to the raid)\b"), "raid"),
         (new Regex(@"\b(whats (ur|your) spec|how (are|r) (you|u) specced|(ur|your) spec|what spec (are|r) (you|u)|what (are|r) (you|u) specced|(you|u) (specd|specced|spec d) (for|in|into))\b"), "spec"),
         (new Regex(@"\b((you|u) (going|goin|gonna go|heading|headed|coming) (to|out)\b(?! (sell|buy|make|be|need|pull|rez|heal|help|give|trade|craft)\b)|what (are |r )?(you|u) (doing|up to) (tonight|later|tomorrow)|(you|u) (doing|running) (rvr|df|emain|a raid)|(you|u) (going|goin) \w+ (later|tonight)|whatcha (up to|doing)|(you|u) (heading|headed|going|goin) (anywhere|somewhere)|(you|u) still (lvling|leveling|levelling|pve|rvr|grinding))"), "plans"),
+        // 1.2: "what zone r u in", "which area are you", "u in emain?" (blind round 1: bots didn't know where they were). Last, so a
+        // group, guild or busy question goes first; "u in X?" is answered only when X is a known place (AnswerSelf).
+        (new Regex(@"\b(what zone (are |r )?(you|u)|which zone (are |r )?(you|u)|(what|which) (area|zone|region) (are|r) (you|u)|(are|r) (you|u) (in|at) \w+|(you|u) (in|at) \w+ (atm|now|rn|still))"), "zone"),
     ];
 
     private static int StableHash(string text)
@@ -369,6 +372,20 @@ public static class AutonomousChatQuestions
                 return bot.GroupSize > 1
                     ? random.Next(2) == 0 ? $"yeah, {bot.GroupSize} of us" : $"grouped, {bot.GroupSize} of us atm"
                     : random.Next(2) == 0 ? "solo atm" : "nope, solo";
+            case "zone":
+            {
+                // 1.2: where the bot is, from its own state.
+                AutonomousChatPlaces.Place named = PlaceNamed(text, AutonomousChatPlaces.All);
+                if (string.IsNullOrWhiteSpace(bot.Zone))
+                    return named == null ? null : random.Next(2) == 0 ? "nope, not there" : "no, other side of the map lol";
+                if (named == null)
+                    return Regex.IsMatch(t, @"\b(what|which) (zone|area|region)\b") ? random.Next(2) == 0 ? bot.Zone : $"{bot.Zone} atm" : null;
+                bool there = string.Equals(Normalize(named.Key), Normalize(bot.Zone), StringComparison.Ordinal) ||
+                             named.Zones?.Any(zone => string.Equals(Normalize(zone), Normalize(bot.Zone), StringComparison.Ordinal)) == true;
+                return there
+                    ? random.Next(2) == 0 ? "yep" : $"yeah, {bot.Zone}"
+                    : random.Next(2) == 0 ? $"nope, {bot.Zone}" : $"no, im in {bot.Zone}";
+            }
             case "hunting":
                 if (!string.IsNullOrEmpty(bot.Target))
                     return string.IsNullOrEmpty(bot.Zone) ? AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant())
@@ -376,6 +393,66 @@ public static class AutonomousChatQuestions
                 return random.Next(2) == 0 ? "nothing yet, looking for a camp" : "not sure yet, ideas?";
         }
         return null;
+    }
+
+    #endregion
+
+    #region Saying nothing untrue about itself (1.2)
+
+    /// <summary>Class words players use that aren't a prefix of the class's name.</summary>
+    private static readonly Dictionary<string, string> ClassAliases = new(StringComparer.Ordinal)
+    {
+        ["zerk"] = "berserker", ["zerker"] = "berserker", ["pally"] = "paladin", ["cabby"] = "cabalist", ["shammy"] = "shaman",
+        ["sm"] = "spiritmaster", ["rm"] = "runemaster", ["bd"] = "bonedancer", ["bm"] = "blademaster", ["ns"] = "nightshade",
+        ["vw"] = "valewalker", ["sb"] = "shadowblade", ["champ"] = "champion",
+    };
+
+    // "im a cleric", "me, 38 thane", "im only 20 zerk"; and at the start of a reply, "thane here", "38 zerk here" ("any healer here?" asks).
+    private static readonly Regex ClassClaim = new(@"\b(?:im|i m|i am|me|me too)(?: just| only| still)?(?: an?)?(?: (?<n>\d{1,2}))? (?<w>[a-z]+)\b|^(?:(?<n>\d{1,2}) )?(?<w>[a-z]+) here\b");
+
+    private static readonly Regex LevelClaim = new(
+        @"\b(?:im|i m|i am)(?: just| only| still)? (?:lvl|level) ?(?<n>\d{1,2})\b|\b(?:lvl|level) ?(?<n>\d{1,2}) here\b|\b(?:im|i m|i am)(?: just| only| still)? (?<n>\d{1,2}) (?:now|atm|already)\b");
+
+    /// <summary>
+    /// Whether a reply says something untrue about the bot that says it (1.2, "replies that don't give bots away"): another class
+    /// or role ("im a cleric" from a thane, "healer here" from a wizard), or another level ("im lvl 30", "38 zerk here" from a 41).
+    /// Advice ("as a friar u want...") and the player's own class are not claims. Pure.
+    /// </summary>
+    public static bool ContradictsSelf(string reply, BotFacts bot)
+    {
+        if (string.IsNullOrWhiteSpace(reply) || bot == null || string.IsNullOrWhiteSpace(bot.ClassName))
+            return false;
+        string t = Normalize(reply);
+        string cls = bot.ClassName.ToLowerInvariant();
+        foreach (Match claim in ClassClaim.Matches(t))
+        {
+            string word = claim.Groups["w"].Value;
+            bool classWord = AutonomousChatShortTalk.NamesAClass(word) || ClassAliases.ContainsKey(word);
+            if (RoleWords.TryGetValue(word.TrimEnd('s'), out string[] roleClasses))
+            {
+                if (!roleClasses.Contains(bot.ClassName, StringComparer.OrdinalIgnoreCase) && !cls.StartsWith(word.TrimEnd('s'), StringComparison.Ordinal))
+                    return true;
+            }
+            else if (classWord && !SameClass(word, cls))
+                return true;
+            if ((classWord || roleClasses != null) && claim.Groups["n"].Success && int.TryParse(claim.Groups["n"].Value, out int claimed) && claimed != bot.Level)
+                return true;
+        }
+        foreach (Match claim in LevelClaim.Matches(t))
+            if (int.TryParse(claim.Groups["n"].Value, out int claimed) && claimed is >= 1 and <= 50 && claimed != bot.Level)
+                return true;
+        return false;
+    }
+
+    /// <summary>Whether a class word ("necro", "zerkers", "sm") names this class.</summary>
+    private static bool SameClass(string word, string cls)
+    {
+        string w = word.TrimEnd('s');
+        if (w.Length == 0)
+            return false;
+        if (ClassAliases.TryGetValue(w, out string full) || ClassAliases.TryGetValue(word, out full))
+            return string.Equals(full, cls, StringComparison.Ordinal);
+        return AutonomousChatShortTalk.SameClassWord(w, cls) || cls.StartsWith(w, StringComparison.Ordinal);
     }
 
     #endregion

@@ -216,6 +216,50 @@ audit 2026-11-03).
 - **Not yet:** the party doesn't walk to town and back together with you: the break ends the party. Gamebots have no
   potions or wearing gear, so there are no breaks for those. Nothing here has been played in game yet.
 
+**Replies that don't give bots away** (roadmap item 6; how it works: [docs/bot-voices/CHAT-BUDGETS.md](docs/bot-voices/CHAT-BUDGETS.md))
+- **Bots answer you first.** A tell to a bot, and a line in /faction or /say that names a bot, are always answered, however
+  busy the channel is. So is a /say to the bot right in front of you, and a "why?" or "where?" about a bot's own line.
+- **Replies have a budget of their own.** In /faction and /say, bots' answers are now counted apart from the lines bots
+  start on their own, with their own target and ceiling. When a channel is busy, bots stop answering each other first; the
+  room that's left goes to answering you.
+- **/faction on a small server keeps to its budget.** With 10 gamebots a realm, /faction ran at about four times the pace
+  the server's own budget asked for (the automated playtester measured 1.2 to 1.4 lines a minute against 0.27 to 0.36).
+  The server measured each channel over the last two minutes, which can't tell a slow channel's floor from silence, so
+  every quiet two minutes a bot spoke at once, and the answers came on top. It now measures over a window long enough for
+  the channel's pace (2 to 20 minutes). The automated re-run (the playtester's faction-rate scenario, 10 gamebots a
+  realm, two half-hour listens each, in the development container): **before 1.20 and 1.33 lines a minute, after 0.87
+  and 0.97**, against an opener target of 0.27 to 0.31 and a reply target of the same. Most of what is still over the
+  budget is the gold spammer's waves (6 to 11 ads in half an hour) and the debate scenes: they come at the same pace on
+  any server, however few bots it has. They now count against the openers' budget, so bots start fewer lines of their
+  own while one runs.
+- **Debates and gold spammers fit the crowd** (owner 2026-11-05). On a realm with fewer than 300 gamebots online, the
+  /faction debates and the gold spammer's waves come less often, and a wave has fewer ads: with 10 bots a realm they come
+  about a fifth as often and a wave is two ads. From 300 bots a realm up, nothing changes, so at 900 they come exactly
+  as before. In the evening model at "How much they talk" 2, /faction with 10 bots a realm goes from 0.86 to 0.74 lines a
+  minute, and with 300, 900 and 1,000 it stays at 3.96, 6.78 and 6.77.
+  The playtester's faction-rate scenario with 10 gamebots a realm (two runs, in the development container): 0.62 and
+  1.03 lines a minute against the 0.66 to 0.69 it now expects (the opener target plus the reply target), with no debate
+  or spam wave in the listen, and neither run flagged. The playtester now listens until 10 lines are expected, so these
+  listens were 14.5 minutes, shorter than the half hour of the earlier runs.
+- **No quieter on a full server.** The world was re-balanced, not cut: /faction's openers keep 4 a minute at a full server
+  and its answers come on top of them; /lfg and /trade aim at what 1.1.2 actually delivered (1.8 and 1.6 a minute, were
+  1.6 and 1.3); a guild's chat and /say near you have higher floors, so a few bots keep them going. In the evening model
+  (`UT_ChatBudgetSimulation`) at the default "How much they talk" (2), all the channels you hear together go from 7.9 to
+  8.4 lines a minute with 300 bots a realm, and from 16.4 to 18.0 with 1,000. A 10-bot realm is quieter than in 1.1.2,
+  because it was running far over its budget.
+- **Nothing untrue about themselves.** A reply that would say the bot is another class, role or level ("im a cleric" from
+  a thane, "38 zerk here" from a 41) is dropped for something short that fits, or nothing. So is a group or trade ad said
+  to a line about neither ("need a healer still?" to "gn all"). Bots also say where they are: "what zone r u in?", "are
+  you in camelot hills?".
+- **`/lswhy` shows a reason code** for every decision ("said [exempt-named]", "held [hold-reply-target]", "silent
+  [below-minimum]"). New: `/lswhy me` shows why bots answered your own lines or didn't, and `/lswhy held` the replies the
+  budget held back. `/lswhy budget` shows /faction's and /say's replies apart from the lines bots start.
+- **Tuning:** `reply_target` and `reply_ceiling` per channel in `chat-budget.json`. A copy of the file from 1.1.2, without
+  them, works as before.
+- **Checked:** automated only. New tests (`UT_RepliesDontGiveBotsAway`) and the evening model compared against 1.1.1 and
+  1.1.2; the full server suite passes. The playtester's faction-rate scenario, before and after, is above. Not played in
+  game.
+
 **Also in 1.2: measuring the AI, and the new client**
 - **AI_PROFILE: what the bots' AI costs, measured every minute** (technical audit 2026-11-03, "measure before
   adding"). Nothing in the game changes: it only measures.
