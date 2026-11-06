@@ -37,11 +37,12 @@ public static partial class AutonomousBotGroupCoordinator
             while (free.Count >= minimum && formed < 12)
             {
                 GameBot leader = free[0];
-                GameBot[] mates = free.Skip(1)
+                // Pet caps (audit 2026-11-03): at most rvr_group_pet_cap pet classes in one party; the rest wait for the next.
+                GameBot[] mates = AutonomousRvrPetCap.Pick(free.Skip(1)
                     .Where(bot => bot.CurrentRegionID == leader.CurrentRegionID && bot.IsWithinRadius(leader, SiegePartyGatherRadius))
-                    .OrderBy(bot => bot.GetDistanceTo(leader))
-                    .Take(SiegePartySize - 1)
-                    .ToArray();
+                    .OrderBy(bot => bot.GetDistanceTo(leader)),
+                    SiegePartySize - 1, AutonomousRvrPetCap.IsPetClass(leader) ? 1 : 0,
+                    AutonomousRvrPetCap.CapFor(SiegePartySize, ServerProperties.Properties.RVR_GROUP_PET_CAP), AutonomousRvrPetCap.IsPetClass);
                 free.Remove(leader);
                 if (mates.Length + 1 < minimum) continue;
                 GameBot[] members = new[] { leader }.Concat(mates).ToArray();
