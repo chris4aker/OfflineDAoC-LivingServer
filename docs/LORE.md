@@ -49,10 +49,16 @@ Optional fields the engine adds to the brief's format:
 
 | Field | What it is for |
 |---|---|
-| `zones` | For a lair inside a realm's open world (Sheeroe Hills is region 200). With zones, the location is those zones only; without, it is the whole region. **Required** when a region is an open-world one (1, 51, 100, 151, 163, 181, 200). |
+| `zones` | For a lair inside a realm's open world (Sheeroe Hills is region 200). With zones, the location is those zones only and wins over an umbrella there; without, it is the whole region. |
 | `aliases` | Other names players use, for answers to "whats in ...?". The name, the id's words and the name without "the ..." / "'s lair" count already. |
 | `atmosphere.areas[].region` | The area's region when the location has several; defaults to the first. |
 | `atmosphere.raidForming` | A realm-only line when a raid on this place forms. |
+
+**Umbrella locations.** Open-world bosses belong to umbrella locations over a realm's open world (`hibernia-wilds`,
+`hy-brasil`) with one atmosphere area per zone or lair. Without `zones`, such a location's `firstEntry` shows once a day on
+coming into that open world. `"regions": []` is allowed (`shrouded-isles`: Gnat has no known region); such a location has
+no first entry, and each of its areas gives its own `region`. Areas are found by their region, whatever location they
+belong to.
 
 Area `x`, `y`, `z` are region coordinates (the boss spawns in `docs/encounters/world-spawns.json` are a good source).
 With `z` set, the area is that floor only (within 800 units of height); `z: 0` means any height.
@@ -78,9 +84,20 @@ With `z` set, the area is that floor only (within 800 units of height); `z: 0` m
 - `catalogKey` is the encounter's id in `docs/encounters/epic-encounters.json` (`krondon/scurceolhyrde`) or its script
   class (`ScurceolHyrde`). The engine finds the boss in the world by its script class, so both work. Gjalpinulva's id is
   now `gjalpinulva-s-lair-malmohus/midgjalpinulva` (the class `MidGjalpinulva` is the safer choice).
-- **Phase triggers:** `health<=N` (N from 1 to 99: once a fight, when its health first falls to N% or less), `addSpawn`
-  (its adds appear), `orbDeath` (one of its adds dies, but not the last), `addsDead` (the last of its adds dies). The add
-  triggers need adds in the catalog (`data/encounter_adds.json`, built from it by `tools/lore/build_encounter_adds.py`).
+- **Phase triggers** (for `yells.phases` and `atmosphere.phases`):
+
+  | Trigger | When |
+  |---|---|
+  | `health<=N` | N from 1 to 99: once a fight, when its health first falls to N% or less |
+  | `addsSpawn` (or `addSpawn`) | its adds appear (each new wave) |
+  | `orbDeath` | one of its adds dies, but not the last |
+  | `addsDead` | the last of its adds dies (once a fight) |
+  | `formChange` | its model changes (a shape-shifter: Hurionthex, Govannon) |
+  | `death` | it dies: the yell joins its death yells, the atmosphere line goes to its zone |
+  | `wake` | a dragon takes to the sky: the yell is said, the atmosphere line is the wake line if `wake` is empty |
+
+  The add triggers need adds in the catalog (`data/encounter_adds.json`, built from it by
+  `tools/lore/build_encounter_adds.py`).
 - `wake` is for the dragons (said when one takes to the sky).
 
 ### Bot lines
@@ -99,14 +116,15 @@ era, banned-word, place and realm checks. In short:
 - **References resolve:** every boss in a location's `bosses` has a file whose `locationId` is that location, and every
   boss's location lists it; `catalogKey` is a catalog id or script class; a boss's realm is its location's (or the
   location is Neutral).
-- **Realm** is Albion, Midgard, Hibernia or Neutral. **Regions** are given; an open-world region needs `zones`.
-- **Facts:** at least one; provenance `mythic`, `game`, `legend` or `original`; every fact but an `original` one names its
-  source.
+- **Realm** is Albion, Midgard, Hibernia or Neutral. `zones` need a region; `regions` may be empty.
+- **Facts:** at least one; provenance `mythic` (Mythic's canon), `game` (scripts, world data), `legend` (era player talk),
+  `myth` (the real-world myth a name comes from, not game canon) or `original`; every fact but an `original` one names
+  its source.
 - **Lengths** (with some slack around the brief's): location story 130-460 words, boss story 70-345, legends 30-140, book
   pages and `bookPage` 50-160.
 - **Atmosphere:** every line 60 characters or fewer, said as written; a location has at least one `firstEntry` line; a
-  boss has at least one atmosphere line of any kind. Areas have a name, x/y, a radius from 100 to 5,000, a region of the
-  location, and lines.
+  boss has at least one atmosphere line of any kind. Areas have a name, x/y, a radius from 100 to 30,000 (a whole zone in an
+  umbrella), a region of the location (their own when the location has none), and lines.
 - **Bot lines:** `[a|b]` parses, lower case, no slots, 160 characters or fewer in every way of saying it. A location has
   at least one `tell` line and three bot lines in all; a boss three bot lines in all.
 - **Yells:** 200 characters or fewer; phase triggers parse; add triggers only for bosses with adds.

@@ -150,6 +150,10 @@ namespace DOL.GS.Tests
             Assert.That(LoreFightRules.TryParseTrigger("health<=0", out _), Is.False);
             Assert.That(LoreFightRules.TryParseTrigger("health<=100", out _), Is.False);
             Assert.That(LoreFightRules.TryParseTrigger("enrage", out _), Is.False);
+            Assert.That(LoreFightRules.TryParseTrigger("addsSpawn", out t) && t.Kind == LoreFightRules.Kind.AddSpawn, Is.True);
+            Assert.That(LoreFightRules.TryParseTrigger("formChange", out t) && !t.NeedsAdds && !t.ByEvent, Is.True);
+            Assert.That(LoreFightRules.TryParseTrigger("death", out t) && t.ByEvent && !t.NeedsAdds, Is.True);
+            Assert.That(LoreFightRules.TryParseTrigger("wake", out t) && t.ByEvent, Is.True);
         }
 
         [Test]
@@ -179,6 +183,18 @@ namespace DOL.GS.Tests
             Assert.That(LoreFightRules.Observe(fight, triggers, 100, 2), Is.EqualTo(new[] { "addSpawn" }), "a new wave");
             Assert.That(LoreFightRules.Observe(fight, triggers, 100, 0), Is.Empty, "addsDead once a fight");
             Assert.That(LoreFightRules.Observe(new LoreFightRules.Fight(), ["addsDead"], 100, -1), Is.Empty, "no adds counted");
+        }
+
+        [Test]
+        public void AFormChangeIsANewModel()
+        {
+            var fight = new LoreFightRules.Fight();
+            string[] triggers = ["formChange", "death", "wake"];
+            Assert.That(LoreFightRules.Observe(fight, triggers, 100, -1, 900), Is.Empty, "the first look only learns the form");
+            Assert.That(LoreFightRules.Observe(fight, triggers, 90, -1, 900), Is.Empty);
+            Assert.That(LoreFightRules.Observe(fight, triggers, 60, -1, 901), Is.EqualTo(new[] { "formChange" }));
+            Assert.That(LoreFightRules.Observe(fight, triggers, 30, -1, 902), Is.EqualTo(new[] { "formChange" }), "every new form");
+            Assert.That(LoreBossWatch.PhaseTexts([new("death", "a"), new("wake", "b"), new("Death", "c")], LoreFightRules.Kind.Death), Is.EqualTo(new[] { "a", "c" }));
         }
 
         [Test]

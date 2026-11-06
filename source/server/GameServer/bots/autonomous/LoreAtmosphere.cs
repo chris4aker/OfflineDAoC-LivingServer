@@ -291,15 +291,15 @@ public static class LoreAtmosphere
         string previous = state.Polled ? state.LocationId : null;
         state.Polled = true;
         state.LocationId = here?.Id;
-        if (here == null)
-            return;
         Random random = Random.Shared;
-        if (here.FirstEntry.Length > 0 &&
+        if (here != null && here.FirstEntry.Length > 0 &&
             LoreEntryRules.EntryDue(previous, here.Id, EntryDay(player.ObjectId, here.Id), LoreEntryRules.Day(DateTime.Now)))
             Local(player, here.FirstEntry[random.Next(here.FirstEntry.Length)], EntryTtlMs, LoreEntryRules.EntryKey(here.Id), perDay: true);
-        foreach (LoreBible.Area area in here.Areas)
+        // Every location's areas in this region, not only this place's: an umbrella's lair areas (hibernia-wilds) inside a
+        // dragon's zone, and areas of a location with no regions of its own (shrouded-isles).
+        foreach ((LoreBible.Location owner, LoreBible.Area area) in bible.AreasInRegion(region))
         {
-            string key = LoreEntryRules.AreaKey(here.Id, area.Name);
+            string key = LoreEntryRules.AreaKey(owner.Id, area.Name);
             if (area.Lines.Length > 0 && !state.Session.Contains(key) && LoreEntryRules.InArea(area, region, player.X, player.Y, player.Z))
                 Local(player, area.Lines[random.Next(area.Lines.Length)], AreaTtlMs, key);
         }
@@ -366,9 +366,11 @@ public static class LoreAtmosphere
         if (!On || dragon == null)
             return;
         LoreBible.Boss boss = LoreBible.Current.BossForClass(dragon.GetType().Name);
-        string text = !string.IsNullOrWhiteSpace(boss?.Wake) ? boss.Wake : $"{dragon.Name} takes to the sky!";
+        string wakePhase = boss?.AtmospherePhases.FirstOrDefault(p => LoreFightRules.TryParseTrigger(p.Trigger, out var t) && t.Kind == LoreFightRules.Kind.Wake)?.Text;
+        string text = !string.IsNullOrWhiteSpace(boss?.Wake) ? boss.Wake : !string.IsNullOrWhiteSpace(wakePhase) ? wakePhase : $"{dragon.Name} takes to the sky!";
         if (!Due("wake:" + dragon.GetType().Name, LoreOnceRules.DragonWakeGapMs))
             return;
+        LoreBossWatch.EventYell(dragon, boss, LoreFightRules.Kind.Wake);
         Zone zone = dragon.CurrentZone;
         eRealm home = dragon.Realm != eRealm.None ? dragon.Realm : RealmOf(boss);
         Realm(eRealm.None, text, true, null, player => player.CurrentZone == zone);

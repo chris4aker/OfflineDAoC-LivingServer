@@ -141,16 +141,18 @@ public static class LoreEntryRules
 /// <summary>
 /// A boss fight's triggers as pure rules (UT_LoreAtmosphere): the boss's health and its adds are watched every couple of
 /// seconds while it fights, and these rules say which data lines are due. Triggers: "health&lt;=N" (once a fight, when its
-/// health first falls to N% or less), "addSpawn" (its adds appear), "orbDeath" (one of its adds dies), "addsDead" (the last
-/// of them dies).
+/// health first falls to N% or less), "addsSpawn" (its adds appear), "orbDeath" (one of its adds dies), "addsDead" (the last
+/// of them dies), "formChange" (its model changes); "death" and "wake" come from events (it dies, a dragon wakes).
 /// </summary>
 public static class LoreFightRules
 {
-    public enum Kind { Health, AddSpawn, OrbDeath, AddsDead }
+    public enum Kind { Health, AddSpawn, OrbDeath, AddsDead, FormChange, Death, Wake }
 
     public sealed record Trigger(Kind Kind, int Percent)
     {
-        public bool NeedsAdds => Kind != Kind.Health;
+        public bool NeedsAdds => Kind is Kind.AddSpawn or Kind.OrbDeath or Kind.AddsDead;
+        /// <summary>Said by an event, not by looking at the fight: the boss dies, a dragon takes to the sky.</summary>
+        public bool ByEvent => Kind is Kind.Death or Kind.Wake;
     }
 
     public static bool TryParseTrigger(string text, out Trigger trigger)
@@ -159,8 +161,14 @@ public static class LoreFightRules
         string t = (text ?? string.Empty).Replace(" ", string.Empty);
         if (t.StartsWith("health<=", StringComparison.OrdinalIgnoreCase) && int.TryParse(t[8..], out int percent) && percent is >= 1 and <= 99)
             trigger = new Trigger(Kind.Health, percent);
-        else if (string.Equals(t, "addSpawn", StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals(t, "addSpawn", StringComparison.OrdinalIgnoreCase) || string.Equals(t, "addsSpawn", StringComparison.OrdinalIgnoreCase))
             trigger = new Trigger(Kind.AddSpawn, 0);
+        else if (string.Equals(t, "formChange", StringComparison.OrdinalIgnoreCase))
+            trigger = new Trigger(Kind.FormChange, 0);
+        else if (string.Equals(t, "death", StringComparison.OrdinalIgnoreCase))
+            trigger = new Trigger(Kind.Death, 0);
+        else if (string.Equals(t, "wake", StringComparison.OrdinalIgnoreCase))
+            trigger = new Trigger(Kind.Wake, 0);
         else if (string.Equals(t, "orbDeath", StringComparison.OrdinalIgnoreCase))
             trigger = new Trigger(Kind.OrbDeath, 0);
         else if (string.Equals(t, "addsDead", StringComparison.OrdinalIgnoreCase))
@@ -174,6 +182,7 @@ public static class LoreFightRules
         public int LowestHealth = 100;
         public int Adds = -1;
         public bool HadAdds;
+        public int Model = -1;
         public readonly HashSet<string> Said = new(StringComparer.Ordinal);
         public int AtmosphereLines;
     }
@@ -186,9 +195,12 @@ public static class LoreFightRules
     /// order. Updates the fight. A health trigger fires once a fight; addSpawn when the count rises, orbDeath when it falls,
     /// addsDead when it reaches 0 after there were some.
     /// </summary>
-    public static List<string> Observe(Fight fight, IEnumerable<string> triggers, int healthPercent, int adds)
+    public static List<string> Observe(Fight fight, IEnumerable<string> triggers, int healthPercent, int adds, int model = -1)
     {
         var fired = new List<string>();
+        bool newForm = model >= 0 && fight.Model >= 0 && model != fight.Model;
+        if (model >= 0)
+            fight.Model = model;
         int before = fight.LowestHealth;
         fight.LowestHealth = Math.Min(fight.LowestHealth, healthPercent);
         int previousAdds = fight.Adds;
@@ -210,6 +222,7 @@ public static class LoreFightRules
                 Kind.AddSpawn => spawned,
                 Kind.OrbDeath => died && !allDead,
                 Kind.AddsDead => allDead && !fight.Said.Contains(text),
+                Kind.FormChange => newForm,
                 _ => false,
             };
             if (!fire)

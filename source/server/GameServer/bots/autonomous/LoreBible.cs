@@ -77,6 +77,7 @@ public sealed class LoreBible
     private readonly Dictionary<string, Location> _locationById;
     private readonly Dictionary<string, Boss> _bossById;
     private readonly Dictionary<ushort, Location[]> _locationsByRegion;
+    private readonly Dictionary<ushort, (Location, Area)[]> _areasByRegion;
     private readonly Dictionary<string, Boss[]> _bossesByClass;
     private readonly Dictionary<string, Boss[]> _bossesByLocation;
 
@@ -93,6 +94,8 @@ public sealed class LoreBible
             _bossById.TryAdd(boss.Id, boss);
         _locationsByRegion = locations.SelectMany(l => l.Regions.Distinct().Select(r => (Region: r, Location: l)))
             .GroupBy(p => p.Region).ToDictionary(g => g.Key, g => g.Select(p => p.Location).ToArray());
+        _areasByRegion = locations.SelectMany(l => l.Areas.Select(a => (Location: l, Area: a))).GroupBy(p => p.Area.Region)
+            .ToDictionary(g => g.Key, g => g.Select(p => (p.Location, p.Area)).ToArray());
         _bossesByClass = bosses.Where(b => b.ClassKey.Length > 0).GroupBy(b => b.ClassKey, StringComparer.Ordinal)
             .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
         _bossesByLocation = bosses.GroupBy(b => b.LocationId ?? string.Empty, StringComparer.OrdinalIgnoreCase)
@@ -104,6 +107,9 @@ public sealed class LoreBible
     public Location LocationById(string id) => id != null && _locationById.TryGetValue(id, out Location l) ? l : null;
     public Boss BossById(string id) => id != null && _bossById.TryGetValue(id, out Boss b) ? b : null;
     public Location[] LocationsInRegion(ushort region) => _locationsByRegion.TryGetValue(region, out Location[] l) ? l : [];
+
+    /// <summary>Every location's areas in a region (an area names its own region, so an umbrella's lairs are found too).</summary>
+    public (Location Location, Area Area)[] AreasInRegion(ushort region) => _areasByRegion.TryGetValue(region, out var a) ? a : [];
     public Boss[] BossesAt(string locationId) => locationId != null && _bossesByLocation.TryGetValue(locationId, out Boss[] b) ? b : [];
 
     /// <summary>The boss file for a script class ("ScurceolHyrde"), or null. A class with two files (never valid) gives the first.</summary>
@@ -397,14 +403,17 @@ public sealed class LoreBible
     public const int MaxBotLineLength = AutonomousBotVoiceCorpus.MaxLength;
     public const int MaxYellLength = 200;
     public static readonly string[] Realms = ["Albion", "Midgard", "Hibernia", "Neutral"];
-    public static readonly string[] Provenances = ["mythic", "game", "legend", "original"];
+    /// <summary>"myth": the real-world myth a name comes from, not game canon (Balor, Hati and Skoll). Needs its source too.</summary>
+    public static readonly string[] Provenances = ["mythic", "game", "legend", "myth", "original"];
     public static readonly string[] ChronicleSlots = ["realm", "raidLeader", "minutes"];
 
     /// <summary>
-    /// Regions that are a whole realm's open world, not one place: a location there needs "zones", or its first-entry line
-    /// would greet everyone who walks into Hibernia (Sheeroe Hills is region 200, zone by zone).
+    /// Regions that are a whole realm's open world. A location there without "zones" is an umbrella (hibernia-wilds): its
+    /// first-entry line shows once a day on coming into that open world, and its areas mark the lairs. A location with zones
+    /// (a dragon's lair) wins inside them.
     /// </summary>
     public static readonly ushort[] OpenWorldRegions = [1, 51, 100, 151, 163, 181, 200];
+    public const int MaxAreaRadius = 30_000;
 
     private static readonly Regex IdRe = new("^[a-z0-9]+(-[a-z0-9]+)*$", RegexOptions.Compiled);
     private static readonly Regex KeywordRe = new(@"\[([^\[\]|]+)\]", RegexOptions.Compiled);
@@ -489,7 +498,7 @@ public sealed class LoreBible
             {
                 if (!LoreFightRules.TryParseTrigger(phase.Trigger, out LoreFightRules.Trigger trigger))
                 {
-                    problems.Add($"{boss.File}: {what} trigger \"{phase.Trigger}\" is not health<=N (1-99), addsDead, orbDeath or addSpawn");
+                    problems.Add($"{boss.File}: {what} trigger \"{phase.Trigger}\" is not health<=N (1-99), addsSpawn, orbDeath, addsDead, formChange, death or wake");
                     continue;
                 }
                 Need(!string.IsNullOrWhiteSpace(phase.Text), $"{boss.File}: {what} \"{phase.Trigger}\" has no text");
@@ -511,9 +520,9 @@ public sealed class LoreBible
             CheckId(l.Id, f, "locations");
             Need(!string.IsNullOrWhiteSpace(l.Name), $"{f}: a name");
             Need(Realms.Contains(l.Realm), $"{f}: realm \"{l.Realm}\" must be one of {string.Join(", ", Realms)}");
-            Need(l.Regions.Length > 0, $"{f}: at least one region");
-            Need(l.Zones.Length > 0 || !l.Regions.Any(r => OpenWorldRegions.Contains(r)),
-                $"{f}: region {string.Join(",", l.Regions.Where(r => OpenWorldRegions.Contains(r)))} is a realm's open world: add \"zones\" (the lair's zone ids)");
+            // "regions": [] is allowed (shrouded-isles: Gnat has no known region); such a location has no first entry and its
+            // areas name their own region.
+            Need(l.Zones.Length == 0 || l.Regions.Length > 0, $"{f}: \"zones\" need the region they are in");
             Need(!string.IsNullOrWhiteSpace(l.Summary), $"{f}: a summary");
             CheckFacts(l.Facts, f);
             CheckWords(l.Story, 130, 460, "story", f);
@@ -524,9 +533,11 @@ public sealed class LoreBible
             foreach (Area area in l.Areas)
             {
                 Need(!string.IsNullOrWhiteSpace(area.Name), $"{f}: an area without a name");
-                Need(area.Radius is >= 100 and <= 5000, $"{f}: area \"{area.Name}\" radius {area.Radius} (want 100-5000)");
+                Need(area.Radius >= 100 && area.Radius <= MaxAreaRadius, $"{f}: area \"{area.Name}\" radius {area.Radius} (want 100-{MaxAreaRadius})");
                 Need(area.X != 0 || area.Y != 0, $"{f}: area \"{area.Name}\" has no x/y (the room's position in region coordinates)");
-                Need(l.Regions.Contains(area.Region), $"{f}: area \"{area.Name}\" region {area.Region} is not one of the location's regions");
+                Need(l.Regions.Length == 0 ? area.Region > 0 : l.Regions.Contains(area.Region),
+                    l.Regions.Length == 0 ? $"{f}: area \"{area.Name}\" needs its \"region\" (the location lists none)"
+                        : $"{f}: area \"{area.Name}\" region {area.Region} is not one of the location's regions");
                 Need(area.Lines.Length > 0, $"{f}: area \"{area.Name}\" has no lines");
                 CheckAtmosphere(area.Lines, $"area \"{area.Name}\"", f);
             }

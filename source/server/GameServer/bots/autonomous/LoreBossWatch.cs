@@ -135,8 +135,12 @@ public static class LoreBossWatch
                 if (boss == null)
                     return;
                 Fights.TryRemove(npc, out Watched watched);
-                if (!ScriptSpeaksOn(boss.ClassKey, "death") && boss.DeathYells.Length > 0)
-                    Yell(npc, watched ?? new Watched { Boss = boss }, boss.DeathYells, GameLoop.GameLoopTime, force: true);
+                // A "death" phase is one more way to die: its yell joins the death yells, its atmosphere line goes to the zone.
+                string[] deathYells = boss.DeathYells.Concat(PhaseTexts(boss.PhaseYells, LoreFightRules.Kind.Death)).ToArray();
+                if (!ScriptSpeaksOn(boss.ClassKey, "death") && deathYells.Length > 0)
+                    Yell(npc, watched ?? new Watched { Boss = boss }, deathYells, GameLoop.GameLoopTime, force: true);
+                foreach (string line in PhaseTexts(boss.AtmospherePhases, LoreFightRules.Kind.Death).Take(1))
+                    LoreAtmosphere.Zone(npc.CurrentZone, line, LoreAtmosphere.PhaseTtlMs);
                 eRealm realm = LoreOnceRules.KillerRealm(killer);
                 if (realm is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia && !AutonomousLivingServer.IsStaff(killer as GameLiving) &&
                     LoreAtmosphere.ClaimFirstKill(realm, boss.Id, killer?.Name ?? string.Empty))
@@ -162,6 +166,19 @@ public static class LoreBossWatch
     }
 
     private static readonly ConcurrentDictionary<Type, LoreBible.Boss> ByType = new();
+
+    /// <summary>The texts of the phase lines with this event trigger ("death", "wake").</summary>
+    public static IEnumerable<string> PhaseTexts(IEnumerable<LoreBible.PhaseLine> phases, LoreFightRules.Kind kind) =>
+        (phases ?? []).Where(p => LoreFightRules.TryParseTrigger(p.Trigger, out var t) && t.Kind == kind && !string.IsNullOrWhiteSpace(p.Text)).Select(p => p.Text);
+
+    /// <summary>A boss's yell for an event trigger ("wake": a dragon takes to the sky), if its file has one.</summary>
+    public static void EventYell(GameNPC npc, LoreBible.Boss boss, LoreFightRules.Kind kind)
+    {
+        string[] lines = PhaseTexts(boss?.PhaseYells, kind).ToArray();
+        if (npc == null || lines.Length == 0)
+            return;
+        npc.Yell(LoreText.Pick(lines[Random.Shared.Next(lines.Length)], Random.Shared));
+    }
 
     /// <summary>The lore boss an NPC is (by its script class), cached per type: the attack event fires for every hit in the world.</summary>
     public static LoreBible.Boss BossOf(GameNPC npc)
@@ -229,7 +246,7 @@ public static class LoreBossWatch
         if (triggers.Any(t => LoreFightRules.TryParseTrigger(t, out var trigger) && trigger.NeedsAdds) &&
             Adds.TryGetValue(boss.ClassKey, out string[] addClasses))
             adds = npc.GetNPCsInRadius(AddRadius).Count(n => n.IsAlive && n != npc && addClasses.Contains(n.GetType().Name.ToLowerInvariant()));
-        foreach (string fired in LoreFightRules.Observe(watched.Fight, triggers, npc.HealthPercent, adds))
+        foreach (string fired in LoreFightRules.Observe(watched.Fight, triggers, npc.HealthPercent, adds, npc.Model))
         {
             string[] yells = boss.PhaseYells.Where(p => string.Equals(p.Trigger, fired, StringComparison.OrdinalIgnoreCase)).Select(p => p.Text).ToArray();
             Yell(npc, watched, yells, now);
