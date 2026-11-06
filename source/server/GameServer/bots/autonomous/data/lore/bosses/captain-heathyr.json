@@ -16,23 +16,35 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Captain Heathyr kept the gate of the captains' hall and was the last of the three captains to fall, holding the door while the others sat down at the table and did not get up again. Her post is the doorway still. Her blows bleed like her brothers' blows, and she fights as if the door at her back still mattered, which, to the dead watch, it does. The Hall's dead do not know that the war they kept the door for ended long ago. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
-  "legend": "Same as the other captains: her blows bleed for half a minute, so the tank needs steady heals. Fight her in the doorway where she stands. Kill the three captains one at a time, never all at once. The watch fights better together: clear the posts nearest it first.",
+  "story": "The door. Captain Heathyr kept the door of the captains' hall, the last gate between the upper hall and the road, and she had it rehung the season before the corruption came, because she liked a door that shut properly. On the last night, the clerk wrote, she was at the door when the wizard came down, and she said that she could not feel her hands. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nShe held the door anyway, while the other captains sat down at the table and did not get up again. She was the last of the three to fall, and her post is the doorway still. Her blows bleed like her brothers', and she fights as if the door at her back still mattered, which, to the dead watch, it does: behind it sit Atwell and Bardalph and the clerk with his pen. The hall's dead do not know that the war they kept the door for ended long ago. Heathyr, the bards say, suspects it, and holds the door anyway.\n\nThe riders from Camelot who found the watch could have passed her, the bards say; she was only one dead captain in a doorway. They did not. Something in the way she turned her head told them the door was still held, and they went back down the hall the way they had come, and that is why the order to seal the road was never carried out.",
+  "legend": "Same as the other captains: her blows bleed for half a minute, so the tank needs steady heals from the first swing. Fight her in the doorway where she stands; she will not leave it and cannot be hurt a step beyond it. She is the last of the three captains, and the strongest-willed: the old hands kill her last, after Atwell and Bardalph, so that only one bleeding captain is ever on the raid at a time. Darra must be dead before any of them. Heathyr does not chase; she holds. Use that, and pull her a single step into the room.",
   "yells": {
     "aggro": [
-      "Hold the door! Hold!"
+      "Hold the door! Hold!",
+      "No one passes this door.",
+      "I cannot feel my hands. I do not need them."
     ],
-    "phases": [],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hold! The door must hold!"
+      }
+    ],
     "death": [
-      "The door... is open..."
+      "The door... is open...",
+      "Shut it... behind you..."
     ],
     "slay": [
-      "Back to your post. Forever."
+      "Back to your post. Forever.",
+      "The door holds.",
+      "Not through my door.",
+      "Bleed on the threshold."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A captain in the doorway. She has not moved in years."
+      "A captain in the doorway. She has not moved in years.",
+      "The door was rehung. It shuts properly."
     ],
     "phases": [],
     "realmFirstKill": "Captain Heathyr is released from the watch."
@@ -40,26 +52,52 @@
   "botLines": {
     "briefing": [
       "heathyr bleeds like the other captains. healers stay on it",
-      "fight it where it stands, off its post its immune"
+      "fight it where it stands, off its post its immune",
+      "fight her in the doorway",
+      "she goes last of the three",
+      "darra must be dead first"
     ],
     "aftermathWin": [
-      "captain heathyr down, one less on the watch"
+      "captain heathyr down, one less on the watch",
+      "heathyr down. the door is open",
+      "three captains, no deaths",
+      "she held it as long as she could",
+      "door's open, on to the stair"
     ],
     "aftermathLoss": [
-      "someone dragged it off its post again. immune out there"
+      "someone dragged it off its post again. immune out there",
+      "pulled her with atwell",
+      "bleeds",
+      "darra healed her the whole time"
     ],
     "rumour": [
       "heard captain heathyr held the door while the others died at the table",
-      "[someone said|heard] all three captains in the hall bleed you"
+      "[someone said|heard] all three captains in the hall bleed you",
+      "heard heathyr couldnt feel her hands on the last night",
+      "the bards say heathyr knows the war is over and holds the door anyway"
     ]
   },
   "loremasterTopic": {
     "keyword": "heathyr",
     "text": "Captain Heathyr kept the gate of the captains' hall and was the last of the three captains to fall, holding the door while the others sat down at the table and did not get up again."
   },
-  "bookPage": "",
+  "bookPage": "Then Captain Heathyr, at the door, said that she could not feel her hands, and Captain Bardalph said that he had told us so, and the Lady Darra began to pray. That is the last thing the clerk Tobias wrote. The riders from Camelot found Heathyr in the doorway of the captains' hall, standing, her sword in hands that had gone the colour of slate. She turned her head when they came in. They did not try to pass her. They went back the way they had come, and the riders' captain said afterwards that it was the first time in his life he had been turned back by a door.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Captain Heathyr from the Pennine watch in {minutes} minutes.",
     "loss": "Captain Heathyr held the post against {realm}'s raid; {raidLeader} fell back."
-  }
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "captain-atwell",
+      "relation": "fellow captain"
+    },
+    {
+      "id": "captain-bardalph",
+      "relation": "fellow captain"
+    }
+  ]
 }

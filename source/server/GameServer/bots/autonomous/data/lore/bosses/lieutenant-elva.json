@@ -16,23 +16,35 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Lieutenant Elva kept the watch's armoury and was handy with poisons, as a frontier lieutenant had to be, for the things that came up the Summoners' road in the old days were not always alive enough to bleed. Her blades still carry her poisons. She is lightly built and lightly armoured, and she is bound to her post as tightly as the captains: drag her away and she shrugs off every blow and walks back to it. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
-  "legend": "Elva poisons whoever she hits. Cure it or heal through it. She is soft, 5,000 health, so burn her fast, but at her post only, because her tether is short and beyond it she cannot be hurt. The watch fights better together: clear the posts nearest it first.",
+  "story": "The armoury. Lieutenant Elva kept the watch's armoury, and she was handy with poisons, as a frontier lieutenant had to be, for the things that came up the Summoners' road in the old days were not always alive enough to bleed. When Captain Atwell's cut would not close, she had the armoury poisons brought out and the blades dressed, as for the old wars, and the clerk wrote it down. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nHer blades still carry those poisons. She is lightly built and lightly armoured, the softest of the hall's officers, and she knows it; she fights from the edge of her armoury among the racks, darting in to cut and out again. She is bound to her post as tightly as the captains, so tightly that her tether is the same short leash as Bardalph's. The bards say she was dressing a blade for Lord Gildas when the end came, and that the blade is still on her bench, half-finished, and that no raider who has seen it has dared to pick it up.\n\nThe clerk thought she was afraid, and said so in his report, and he was right; she was the only officer of the watch who said aloud that the cut on Atwell's arm was not a natural wound. She dressed every blade in the armoury that last week. Not one of them was ever carried up the road against the visitors, because the visitors never came up it. They were already inside.",
+  "legend": "Elva poisons whoever she hits; cure poison on the spot or heal through the ticks. She has only five thousand health, the lowest of the officers, so burn her fast with a small team, but only at her post: her tether is 1,500, and beyond it she cannot be hurt and walks home whole. Watch for her darting among the racks; tanks keep her facing the wall. Old hands say leave the half-finished blade on her bench alone. Healers who can cure poison stand nearest her; the ticks are what kill, not the cuts. Two healers on her target is plenty.",
   "yells": {
     "aggro": [
-      "Who touches the watch's stores?"
+      "Who touches the watch's stores?",
+      "The blades are dressed. Come and taste them.",
+      "Out of my armoury!"
     ],
-    "phases": [],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The poisons of the old wars. Taste them."
+      }
+    ],
     "death": [
-      "Poisoned... by my own blade..."
+      "Poisoned... by my own blade...",
+      "The blade... for my lord... unfinished..."
     ],
     "slay": [
-      "Back to your post. Forever."
+      "Back to your post. Forever.",
+      "The poison works.",
+      "Dressed for the old wars.",
+      "Sleep."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "An armoury, its racks still full. Something sharp moves."
+      "An armoury, its racks still full. Something sharp moves.",
+      "A half-finished blade lies on a bench."
     ],
     "phases": [],
     "realmFirstKill": "Lieutenant Elva is released from the watch."
@@ -40,26 +52,48 @@
   "botLines": {
     "briefing": [
       "elva poisons. cure poison or heal through it",
-      "fight it where it stands, off its post its immune"
+      "fight it where it stands, off its post its immune",
+      "5k hp, burn her fast",
+      "short tether, fight her at her post",
+      "tank keeps her facing the wall"
     ],
     "aftermathWin": [
-      "lieutenant elva down, one less on the watch"
+      "lieutenant elva down, one less on the watch",
+      "elva down, the armoury is ours",
+      "she went down in seconds",
+      "nobody touched the blade on the bench, good",
+      "poison cured, clean"
     ],
     "aftermathLoss": [
-      "someone dragged it off its post again. immune out there"
+      "someone dragged it off its post again. immune out there",
+      "nobody had cure poison",
+      "she danced around the racks and got the healer",
+      "dragged her and she reset"
     ],
     "rumour": [
       "heard elva in the hall of the corrupt poisons her blades",
-      "[someone said|heard] elva goes down fast if you dont drag her"
+      "[someone said|heard] elva goes down fast if you dont drag her",
+      "heard there's a half finished blade on elva's bench",
+      "heard nobody dares touch elva's blade"
     ]
   },
   "loremasterTopic": {
     "keyword": "elva",
     "text": "Lieutenant Elva kept the watch's armoury and was handy with poisons, as a frontier lieutenant had to be, for the things that came up the Summoners' road in the old days were not always alive enough to bleed."
   },
-  "bookPage": "",
+  "bookPage": "To the Constable. Lieutenant Elva has had the armoury poisons brought out and the blades dressed, as for the old wars, because Captain Atwell's cut will not close and she does not trust whatever made it. She says the things that came up the road in her grandmother's day were not alive enough to bleed, and that a poison finds what a blade cannot. She is dressing a sword for Lord Gildas now, by lamplight, and says it will be the finest blade in the hall. I do not know what she thinks it is for. I have not asked her. I think she does not know either.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Lieutenant Elva from the Pennine watch in {minutes} minutes.",
     "loss": "Lieutenant Elva held the post against {realm}'s raid; {raidLeader} fell back."
-  }
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "captain-atwell",
+      "relation": "she dressed the blades because of his cut"
+    }
+  ]
 }

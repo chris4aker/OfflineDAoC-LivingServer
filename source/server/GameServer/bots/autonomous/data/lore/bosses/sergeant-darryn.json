@@ -16,23 +16,35 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Sergeant Darryn ran the watchmen of the Hall's west passage, and ran them hard, with a voice that the last reports say could be heard through two doors. The watchmen still answer it. He is not strong as the captains are strong, but where Darryn stands the restless watchmen stand thicker, and he holds his corner of the Hall as if Lord Gildas might come round on inspection at any moment. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
-  "legend": "A sergeant with 5,000 health and a crowd of restless watchmen around him. Clear the watchmen first, then drop him fast at his post. Do not drag him into the corridor; he will not take a scratch there. The watch fights better together: clear the posts nearest it first.",
+  "story": "The voice. Sergeant Darryn ran the watchmen of the hall's west passage, and ran them hard, with a voice that the reports say could be heard through two doors. He was the loudest man in the hall and proud of it; Lady Darra used to say she could tell the hour by which of his men he was shouting at. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nThe watchmen still answer that voice. He is not strong as the captains are strong, but where Darryn stands the restless watchmen stand thicker, called by the shout that once got them out of their bunks. He holds his corner of the hall as if Lord Gildas might come round on inspection at any moment, and he still shouts at his men to stand straight, though they have been dead for longer than most raiders have been alive. The bards say that his shouting is the reason the Silencer of Caer Sidi would hate the Pennine watch, if it ever heard of it.\n\nThe reports say he had a son in Camelot whom he wrote to every month, loudly, so that the clerk could hear every word through the door and set them down if the sergeant asked. The last letter is in the clerk's hand, unfinished, on the table of the captains' hall. It tells the boy to stand straight and mind his mother. It does not say goodbye.",
+  "legend": "A sergeant with five thousand health and a crowd of restless watchmen around him who answer his shout. Clear the watchmen around his post first, then drop him fast where he stands. Do not drag him into the corridor; he will not take a scratch there and will walk back with his voice still going. He hits no harder than a living sergeant would. The danger is purely the watchmen he calls. The watchmen around him are restless watchmen: soft one by one, deadly in a crowd. Area damage first, then the sergeant, then rest before the stair.",
   "yells": {
     "aggro": [
-      "On your feet, you dead dogs! Visitors!"
+      "On your feet, you dead dogs! Visitors!",
+      "Stand straight! Shields up!",
+      "Watch! To me!"
     ],
-    "phases": [],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Watch! To me! All of you!"
+      }
+    ],
     "death": [
-      "Dismissed..."
+      "Dismissed...",
+      "At... ease..."
     ],
     "slay": [
-      "Back to your post. Forever."
+      "Back to your post. Forever.",
+      "Stand up, soldier. Oh. Never mind.",
+      "Another for the bunks.",
+      "Dismissed."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A sergeant's voice echoes down the passage."
+      "A sergeant's voice echoes down the passage.",
+      "Restless watchmen stand thick in the west passage."
     ],
     "phases": [],
     "realmFirstKill": "Sergeant Darryn is released from the watch."
@@ -40,26 +52,48 @@
   "botLines": {
     "briefing": [
       "darryn, sergeant, 5k hp. fast kill at his post",
-      "fight it where it stands, off its post its immune"
+      "fight it where it stands, off its post its immune",
+      "clear his watchmen first",
+      "dont drag him",
+      "the watchmen are the danger"
     ],
     "aftermathWin": [
-      "sergeant darryn down, one less on the watch"
+      "sergeant darryn down, one less on the watch",
+      "darryn down. finally quiet",
+      "watchmen cleared, sergeant dead",
+      "he can stop shouting now",
+      "west passage is clear"
     ],
     "aftermathLoss": [
-      "someone dragged it off its post again. immune out there"
+      "someone dragged it off its post again. immune out there",
+      "pulled him with all his watchmen",
+      "too many watchmen",
+      "dragged him into the corridor"
     ],
     "rumour": [
       "heard sergeant darryn's voice carries through two doors",
-      "[someone said|heard] the sergeants in the hall have watchmen all round them"
+      "[someone said|heard] the sergeants in the hall have watchmen all round them",
+      "heard darryn still shouts at his dead men to stand straight",
+      "darra used to tell the hour by darryn's shouting, [heard|they say]"
     ]
   },
   "loremasterTopic": {
     "keyword": "darryn",
     "text": "Sergeant Darryn ran the watchmen of the Hall's west passage, and ran them hard, with a voice that the last reports say could be heard through two doors."
   },
-  "bookPage": "",
+  "bookPage": "Sergeant Darryn has been shouting since dawn. He says the watchmen of the west passage are slack, and that a doubled watch is twice as many men to be slack, and that he will not have it. I can hear him through two doors as I write. The Lady Darra says she can tell the hour by which man he is shouting at. Tonight, after the trouble on the road, he went quiet for the first time in all my years here, and the quiet was worse than the shouting. In the morning he was shouting again, and we were all, I think, relieved.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Sergeant Darryn from the Pennine watch in {minutes} minutes.",
     "loss": "Sergeant Darryn held the post against {realm}'s raid; {raidLeader} fell back."
-  }
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lady-darra",
+      "relation": "told the hour by his shouting"
+    }
+  ]
 }

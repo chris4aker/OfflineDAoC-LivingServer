@@ -24,11 +24,13 @@
       "source": "docs/RAID-SIZES.md"
     }
   ],
-  "story": "Lord Gildas held the Hall under the Pennines for Albion, and he was a careful lord: shield first, sword second, and never a step back from the post. When the corruption came up the Summoners' road he ordered that no man leave his post for any reason, and his men obeyed him past death. He obeyed himself too. He stands at the bottom of the Hall where he made his last stand, and he fights now as he fought then, behind his shield, patient and hard to hurt, until he knows the day is lost. Then he throws the shield aside and takes up the poleaxe, as a knight of Albion does when there is nothing left to guard but his honour, and he hits like a falling gate.",
-  "legend": "Easy at first, then not. Above half he turtles behind a shield; below half he switches to a polearm and hits much harder, so the tanks need their best heals saved for the second half. Fight him at his post. He is the last thing in the Hall, so spend everything.",
+  "story": "Lord Gildas held the Hall under the Pennines for Albion, and he was a careful lord: shield first, sword second, and never a step back from the post. When the corruption came up the Summoners' road he ordered that no man leave his post for any reason, and his men obeyed him past death. He obeyed himself too. He stands at the bottom of the Hall where he made his last stand, and he fights now as he fought then, behind his shield, patient and hard to hurt, until he knows the day is lost. Then he throws the shield aside and takes up the poleaxe, as a knight of Albion does when there is nothing left to guard but his honour, and he hits like a falling gate.\n\nThe careful lord. Lord Gildas was chosen for the Pennine watch because he was careful: shield first, sword second, and never a step back from the post. He kept the hall under the Pennines for twenty years, and in all that time nothing came up the Summoners' road that his watch could not turn back. He trusted the wizard because the realm had sent the wizard, and a careful lord trusts his realm.\n\nHis last order. When the corruption came he gave the only order he had: no man leaves his post for any reason. His men obeyed him past death, and the corruption used the order to bind them. He obeyed himself, too. He stands at the bottom of the hall, at the post where he made his last stand, the deepest point of Albion's side of the road. He fights now as he fought then, behind his shield, patient and hard to hurt, until he knows the day is lost. Then he throws the shield aside and takes up the poleaxe, as an armsman of Albion does when there is nothing left to guard but his honour, and he hits like a falling gate.\n\nWhat he knows. The Camelot loremasters say Gildas is the only one of the watch who knows what was done to them, because he gave the order that made it possible, and that this is why he fights hardest. His lady Darra is upstairs in her sickroom still mending his men. He has not seen her since the last winter. When he dies, his last words are always the same: relieved of my post, at last.",
+  "legend": "Easy at first, then not. Above half he turtles behind a shield and hits like a careful knight; below half he throws it aside, takes up a two-handed polearm and his strength jumps, so the main tank takes far bigger hits. Save the best heals and the cooldowns for the second half, and have a second tank ready to take over if the first goes down. Fight him at his post, the lowest point of the hall: past his tether he is immune and walks home. He is the last thing in the Hall, so spend everything you have left. Kill Lady Darra before you come down to him, or her heals reach the officers who stand between.",
   "yells": {
     "aggro": [
-      "No man leaves his post! Hold the road!"
+      "No man leaves his post! Hold the road!",
+      "Shields! Shields up!",
+      "I held this road twenty years."
     ],
     "phases": [
       {
@@ -37,15 +39,19 @@
       }
     ],
     "death": [
-      "Relieved... of my post... at last..."
+      "Relieved... of my post... at last...",
+      "Darra... tell Darra..."
     ],
     "slay": [
-      "Stand your post, dead man."
+      "Stand your post, dead man.",
+      "Hold, then. Forever.",
+      "Another for the watch."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The old lord stands his post. His shield is up."
+      "The old lord stands his post. His shield is up.",
+      "The lowest point of the hall. The old lord's last stand."
     ],
     "phases": [
       {
@@ -58,27 +64,50 @@
   "botLines": {
     "briefing": [
       "gildas swaps to polearm at 50% and hits way harder. save heals for the second half",
-      "fight him at his post, dont kite him"
+      "fight him at his post, dont kite him",
+      "second tank ready for the switch",
+      "spend everything, he's the last one"
     ],
     "aftermathWin": [
       "gildas down. the old lord can rest",
-      "the poleaxe half was rough but we held"
+      "the poleaxe half was rough but we held",
+      "relieved of his post. gg",
+      "hall of the corrupt cleared"
     ],
     "aftermathLoss": [
-      "main tank folded the second he picked up the polearm"
+      "main tank folded the second he picked up the polearm",
+      "we kited him off his post and he went immune",
+      "no cooldowns left for the second half",
+      "darra was still alive and healing the officers"
     ],
     "rumour": [
       "[heard|word is] gildas drops his shield at half and picks up a polearm",
-      "heard lord gildas ordered nobody leave their post. they still havent"
+      "heard lord gildas ordered nobody leave their post. they still havent",
+      "heard gildas knows what was done to the watch",
+      "gildas's last words are always the same, [heard|they say]"
     ]
   },
   "loremasterTopic": {
     "keyword": "lord gildas",
     "text": "He held the Hall for Albion with his lady, Darra. He holds it still, the other way about. He fights behind his shield until he knows he is losing, then takes up his poleaxe and hits twice as hard."
   },
-  "bookPage": "",
+  "bookPage": "Lord Gildas held the Pennine road for twenty years, and in all that time nothing came up from the Summoners that his watch could not turn back. When the corruption came he gave the only order he had, the order a careful lord gives: no man leaves his post for any reason. The corruption used it. When we reached him at the bottom of the hall he fought behind his shield, patiently, as he had fought all his life. At the end he threw the shield down and took up the poleaxe, and said, before he fell, that he was relieved of his post at last.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} relieved Lord Gildas of his last post in {minutes} minutes.",
     "loss": "Lord Gildas took up his poleaxe and {realm}'s raid under {raidLeader} broke on it."
-  }
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lady-darra",
+      "relation": "his lady"
+    },
+    {
+      "id": "aidon-the-archwizard",
+      "relation": "the wizard he trusted"
+    }
+  ]
 }

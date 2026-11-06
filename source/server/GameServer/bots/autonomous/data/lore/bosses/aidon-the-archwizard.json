@@ -30,11 +30,13 @@
       "source": "docs/RAID-SIZES.md"
     }
   ],
-  "story": "Aidon was the best of Camelot's wizards in his day, and that is why the realm sent him to the Pennine watch: the Summoners' wards had to be understood before they could be broken. He found that the wards were not built of stone but of promises, and a promise can be read, and a promise can be answered. Whatever he promised in return, the Summoners kept their side of it. The watch died at its posts and rose facing the other way, and Aidon became the archwizard of the Hall, their gatekeeper on Albion's road. He mastered four elements in life and he wears them now as four reflections of himself, fire, ice, air and earth, and he calls a fresh set only when the last of the old set is broken. Those who see him in the Summoner's Hall itself are not mistaken. A gatekeeper is called to his masters' table now and then. Whose side is he on? His own, and theirs.",
-  "legend": "Two groups if you know the trick, the old guides said. When the fight starts he splits into four reflections: break three, one party each, and leave the last one standing, because a new set only comes when all four are dead. Then everyone on him. Melee eat his fire shield; healers expect it. Never pull him off his floor: past his tether he is untouchable.",
+  "story": "Aidon was the best of Camelot's wizards in his day, and that is why the realm sent him to the Pennine watch: the Summoners' wards had to be understood before they could be broken. He found that the wards were not built of stone but of promises, and a promise can be read, and a promise can be answered. Whatever he promised in return, the Summoners kept their side of it. The watch died at its posts and rose facing the other way, and Aidon became the archwizard of the Hall, their gatekeeper on Albion's road. He mastered four elements in life and he wears them now as four reflections of himself, fire, ice, air and earth, and he calls a fresh set only when the last of the old set is broken. Those who see him in the Summoner's Hall itself are not mistaken. A gatekeeper is called to his masters' table now and then. Whose side is he on? His own, and theirs.\n\nWhat he was sent to do. Aidon came to the Pennine watch with the realm's commission in his satchel and the best mind in Camelot behind his eyes. His orders were plain: learn the Summoners' wards, so that if Albion ever needed to close the road, it could. He took a tower in the hall and filled it with apprentices and candles, and for a season his reports were the most hopeful the Constable had ever read.\n\nWhat he found. The wards were not stone but promises: the Summoners bind the dead and the living alike by bargains, and a bargain can be read, and a bargain read closely enough can be answered. Nobody knows what Aidon answered. The watch's clerk wrote that he stopped sleeping, that he asked for the watch to be doubled because he expected visitors, and that one night he came down from his tower with four of himself beside him. Whatever he promised, the Summoners paid. The watch died at its posts and rose facing the other way, and Aidon became the gatekeeper of the road he was sent to close.\n\nHow he fights. He mastered four elements in life and wears them now as four reflections: fire, ice, air and earth, each a full illusion of him, each casting a storm of its element around whoever it faces. He calls a fresh set only when the last of the old set is broken, as if he can only bear to make four new selves once the old four are all gone. He wraps himself in fire that burns whoever strikes him close, and throws great gouts of it into the ranks. Past the edge of his hall he cannot be touched; the Summoners' bargain keeps him at his post like any watchman.\n\nWhere he belongs. He is seen in the Summoner's Hall too, standing at Govannon's elbow as a steward stands at his master's table, and Albion's heralds have argued for years about which hall is truly his. The answer, the Camelot loremasters say, is both: he is the door between them.",
+  "legend": "Two groups if you know the trick, the old guide said. When the fight starts Aidon splits into four reflections, fire, ice, air and earth, each with five thousand health and an area spell of its element around its target. Break three of them, one party each, and leave the fourth standing: he calls a new set only when all four are dead, thirty to forty-five seconds after the last one falls. Then everyone on Aidon. His fire shield burns melee for a hundred a hit, which adds up; healers on the melee. He throws a big fire blast into the raid every ten to fifteen seconds, so do not stack. Fight him on his own floor: past his tether he takes no damage and walks home, and the raids that dragged him spent ten minutes hitting a man who could not be hurt. If you see a fourth reflection standing at the end of the fight, nobody touch it until Aidon is down.",
   "yells": {
     "aggro": [
-      "Albion sends me visitors again. How thoughtful."
+      "Albion sends me visitors again. How thoughtful.",
+      "I read the wards. Now read me.",
+      "Fire, ice, air, earth. Choose."
     ],
     "phases": [
       {
@@ -44,18 +46,26 @@
       {
         "trigger": "addsDead",
         "text": "You break my reflections? I have more."
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Fire. Ice. Air. Earth. Choose your death."
       }
     ],
     "death": [
-      "The wards... were only... promises..."
+      "The wards... were only... promises...",
+      "Tell the Constable... I kept my word... to someone..."
     ],
     "slay": [
-      "Your promise is kept. You are mine."
+      "Your promise is kept. You are mine.",
+      "Another for the road.",
+      "The Summoners thank you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Four of him, in four colours. The air hisses."
+      "Four of him, in four colours. The air hisses.",
+      "Candles burn in the wizard's tower. Many candles."
     ],
     "phases": [
       {
@@ -69,28 +79,50 @@
     "briefing": [
       "aidon splits into 4 illusions. kill 3, leave one alive or he makes a new set",
       "one party per illusion, then everyone on aidon. melee eat his damage shield",
-      "fight him on his floor, past his tether hes immune"
+      "fight him on his floor, past his tether hes immune",
+      "aidon splits into 4 illusions. kill 3, leave one alive or he makes a new set",
+      "dont stack, his fire blast hits around its target"
     ],
     "aftermathWin": [
       "left one illusion up the whole time. thats how you do it",
-      "aidon down. two groups would have done it, honestly"
+      "aidon down. two groups would have done it, honestly",
+      "the archwizard is dead. albion's road is ours",
+      "nobody touched the last illusion. perfect"
     ],
     "aftermathLoss": [
       "someone killed the fourth illusion and he got a whole new set",
-      "his fire aoe plus four illusions. we stacked too tight"
+      "his fire aoe plus four illusions. we stacked too tight",
+      "dragged him out and he was immune",
+      "melee died to the shield, not enough heals on them"
     ],
     "rumour": [
       "aidon the archwizard waits in the summoner's hall like he owns it, and nobody can say whose side he is on",
-      "[heard|someone said] you leave one of aidon's copies alive. kill all four and you get four new ones"
+      "[heard|someone said] you leave one of aidon's copies alive. kill all four and you get four new ones",
+      "heard aidon was the best wizard in camelot once",
+      "the loremasters say aidon is the door between the two halls"
     ]
   },
   "loremasterTopic": {
     "keyword": "aidon",
     "text": "The realm sent him to study the Summoners' wards. He studied them too well. Four reflections attend him, fire, ice, air and earth. Break three and leave one; he calls them anew only when the last is broken."
   },
-  "bookPage": "Master Aidon reports progress with the wards. He says the Summoners do not build their wards of stone but of promises, and that a promise can be read if one has the patience. He has had the patience. He has asked that the watch be doubled on the road, because he expects visitors. Lord Gildas has done as he asks. Captain Bardalph does not like it. Nor do I.",
+  "bookPage": "To the Constable. I do not know if this will reach you. The wizard came down from his tower tonight with four of himself walking beside him, one in fire, one in ice, one in air and one in stone, and he said that the visitors had come and that we should stand to. We stood to. Nothing came up the road. He looked at us very kindly, as a man looks at friends he has sold, and said that he had read the promise and answered it, and that we would all be kept. I asked him kept by whom. He did not answer.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} left one reflection standing and broke Aidon the Archwizard in {minutes} minutes.",
     "loss": "Aidon the Archwizard called his reflections again and again; {realm}'s raid under {raidLeader} broke on the fourth."
-  }
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "summoners"
+  ],
+  "related": [
+    {
+      "id": "lord-gildas",
+      "relation": "the lord he betrayed"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the master he answers"
+    }
+  ]
 }

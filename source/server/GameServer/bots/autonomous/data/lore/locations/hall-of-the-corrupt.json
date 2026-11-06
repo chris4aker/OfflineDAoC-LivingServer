@@ -50,14 +50,27 @@
       "text": "A February 2003 Albion guide rated the Archwizard 'good for about two groups'; an April 2003 thread is titled 'The Halls of the Corrupt'.",
       "provenance": "legend",
       "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Its watch's named ranks bleed (the captains), poison (Elva) and sap the will to fight (Meade's Aching Curse, 21% less melee damage); Lady Darra heals her side for 350.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Grand Summoner Govannon keeps the Summoner's Hall (region 248) at the bottom of the road; the Midgard writer's Summoner's Hall entry calls it the cellar under the Hall of the Corrupt in Albion's telling.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/lore/locations/summoners-hall.json (feature/lore-mid)"
     }
   ],
-  "story": "When the realms still fought over the old frontier, a road ran under the Pennine hills from Albion down to the Summoner's Hall, the one place where all three realms came within a sword's length of each other. Albion kept a watch at its end. Lord Gildas held the hall there with his lady, Darra, and a household of knights and watchmen, captains and sergeants, enough to hold a door against an army. And the realm sent them a wizard, Aidon, to study the Summoners' wards and learn how to break them.\n\nAidon studied them too well. Nobody knows whether the Summoners found him or he found them, only that one winter the watch stopped sending its reports to Camelot, and when riders went to ask why, they found the watch at its posts. Every man was where his captain had put him. Every man was dead, and every one was still watching. The corruption that came up that road did not drive the watch away. It bound them to their posts so tightly that they cannot be harmed away from them, and turned them to face the other way: now they guard the Summoners' road against Albion.\n\nAidon walks among them, the archwizard of the Hall, attended by four reflections of himself, one for each of the elements he mastered. Sometimes he is seen in the Summoner's Hall itself, like a servant called to his masters' table, and Albion's heralds have never agreed on where he truly belongs. Lady Darra still heals her husband's men as she did in life. And at the bottom of the Hall, Lord Gildas still holds his last post with sword and shield, until he knows the day is lost, and then he takes up his poleaxe.",
-  "legend": "Two groups for the Archwizard, the old guides said, if they know the trick: break three of his four reflections and leave the last one standing, because he only calls a fresh set when all four are gone. Never drag anything in the Hall off its post; the watch cannot be hurt away from where its captain stood it. And when Gildas drops his shield at half, he hits like a falling gate.",
+  "story": "When the realms still fought over the old frontier, a road ran under the Pennine hills from Albion down to the Summoner's Hall, the one place where all three realms came within a sword's length of each other. Albion kept a watch at its end. Lord Gildas held the hall there with his lady, Darra, and a household of knights and watchmen, captains and sergeants, enough to hold a door against an army. And the realm sent them a wizard, Aidon, to study the Summoners' wards and learn how to break them.\n\nAidon studied them too well. Nobody knows whether the Summoners found him or he found them, only that one winter the watch stopped sending its reports to Camelot, and when riders went to ask why, they found the watch at its posts. Every man was where his captain had put him. Every man was dead, and every one was still watching. The corruption that came up that road did not drive the watch away. It bound them to their posts so tightly that they cannot be harmed away from them, and turned them to face the other way: now they guard the Summoners' road against Albion.\n\nAidon walks among them, the archwizard of the Hall, attended by four reflections of himself, one for each of the elements he mastered. Sometimes he is seen in the Summoner's Hall itself, like a servant called to his masters' table, and Albion's heralds have never agreed on where he truly belongs. Lady Darra still heals her husband's men as she did in life. And at the bottom of the Hall, Lord Gildas still holds his last post with sword and shield, until he knows the day is lost, and then he takes up his poleaxe.\n\nHow the watch was built. After Camlann, when the three realms first went to war, the frontier ran through the Pennine hills, and in their roots an old road ran down to a hall that belonged to none of the realms and was reached by all three: the Summoner's Hall, where the Summoners kept their court and called the dead. Albion did not trust the Summoners and could not ignore them. So Camelot built a hall at the Albion end of the road and put a watch in it: a lord to hold it, Gildas, a careful man; his lady, Darra, to keep its sickroom; three captains, Atwell, Bardalph and Heathyr, for its three gates; lieutenants and sergeants for every corridor and stair; ghostly knights and watchmen at every post. The realm sent them a wizard, too, Aidon, the best of Camelot's in his day, with orders to study the Summoners' wards and learn how they might be broken.\n\nThe last winter. The reports to the Constable at Camelot survive, and they tell the story better than any bard. The road was quiet. The wizard asked for candles. The wizard said the wards were built of promises, and that a promise can be read. The wizard asked that the watch be doubled because he expected visitors. Captain Atwell was cut on the road by something nobody saw, and the cut did not close. Lieutenant Meade wrote that the men had lost the will to fight and could not say why. Lord Gildas ordered that no man leave his post for any reason. The men said they could not leave if they wanted to. Then the reports stopped.\n\nWhat the riders found. When riders came from Camelot they found the watch at its posts, every man where his captain had stood him, every man dead, every man turning his head to watch them in. The corruption that came up the road had not driven the watch out. It had kept them, bound them to their posts so tightly that no blow can harm them away from where they stand, and turned them to face the other way. Now the dead watch guards the Summoners' road against Albion. The captains still bleed from wounds that never closed and make others bleed the same. The lady still heals her husband's men. The wizard's apprentices still climb his tower. And the wizard walks the hall with four reflections of himself, the gatekeeper of a road he was sent to close.\n\nWhy it matters. The Hall of the Corrupt is the realm's oldest shame from the frontier wars: a watch Camelot built, a wizard Camelot sent, and both turned against it by the very thing they were set to guard. New Frontiers moved the realms' roads and the Summoner's Hall can now be reached by others, but the old hall is still there under the Pennines, still kept, and every Albion raid that clears it says the same thing at the end: they did their duty. That was the trouble.",
+  "legend": "Two groups for the Archwizard, the 2003 Albion guide said, if they know the trick, and six groups is plenty for the whole Hall. The trick with Aidon is famous: when the fight starts he splits into four reflections, fire, ice, air and earth; break three, and leave the fourth standing, because he only calls a fresh set when all four are broken. The Hall's own rule is just as famous: never drag anything off its post. Every officer of the dead watch is bound to where his captain stood him and cannot be harmed one step past it. The captains' cuts bleed; cure the bleed or heal through it. Elva poisons. Meade saps your arm. Darra heals the others, so she dies first. Gildas fights behind his shield until half, then takes up the poleaxe, and the old hands say that is when you learn whether your healers are any good. Some Albion bards call the place the Pennine watch and refuse to call it corrupt. The watch kept its orders, they say. The orders were what went bad. People still argue whether Aidon is really in the Summoner's Hall; the answer is that he is seen in both.",
   "atmosphere": {
     "firstEntry": [
       "Every man is at his post. Every man is dead.",
-      "The watch is still kept here. Not for Albion."
+      "The watch is still kept here. Not for Albion.",
+      "A road runs on below, to a hall that is no realm's.",
+      "Reports to Camelot lie unsent on a table.",
+      "The watch is doubled. The wizard expected visitors."
     ],
     "areas": [
       {
@@ -67,7 +80,8 @@
         "z": 14873,
         "radius": 900,
         "lines": [
-          "Four of him, in four colours. The air hisses."
+          "Four of him, in four colours. The air hisses.",
+          "Fight him here. Past the floor's edge, nothing lands."
         ]
       },
       {
@@ -77,7 +91,8 @@
         "z": 12933,
         "radius": 900,
         "lines": [
-          "The old lord stands his post. His shield is up."
+          "The old lord stands his post. His shield is up.",
+          "The lowest point of Albion's road."
         ]
       },
       {
@@ -87,7 +102,8 @@
         "z": 13941,
         "radius": 800,
         "lines": [
-          "A lady's chamber. Her paladins still guard the door."
+          "A lady's chamber. Her paladins still guard the door.",
+          "Empty cots in rows. She is still tending them."
         ]
       },
       {
@@ -97,7 +113,52 @@
         "z": 14400,
         "radius": 1200,
         "lines": [
-          "Captains at their table. Their wounds never closed."
+          "Captains at their table. Their wounds never closed.",
+          "A clerk at the table, his pen still in his hand."
+        ]
+      },
+      {
+        "name": "the upper gate",
+        "x": 32395,
+        "y": 31847,
+        "z": 16158,
+        "radius": 900,
+        "lines": [
+          "A watchman turns his head as you pass.",
+          "The gate is held. It is held the wrong way."
+        ]
+      },
+      {
+        "name": "the lower road",
+        "x": 26428,
+        "y": 37869,
+        "z": 13478,
+        "radius": 900,
+        "lines": [
+          "The road goes on down. Something calls from below.",
+          "The Summoners' wards hum in the stone."
+        ]
+      },
+      {
+        "name": "the lieutenants' corridor",
+        "x": 31873,
+        "y": 34970,
+        "z": 15366,
+        "radius": 800,
+        "lines": [
+          "The air is heavy. Your arms feel tired.",
+          "An armoury, its racks still full."
+        ]
+      },
+      {
+        "name": "the sergeants' stair",
+        "x": 32371,
+        "y": 34757,
+        "z": 15366,
+        "radius": 700,
+        "lines": [
+          "A narrow stair. Someone guards it from both ends.",
+          "A sergeant's voice echoes down the passage."
         ]
       }
     ]
@@ -108,17 +169,35 @@
       "every man in the hall of the corrupt died at his post and kept watching. [just facing the other way now|wrong way round]",
       "aidon was sent to study the summoners' wards. [studied them too well|he found what he was looking for]",
       "lady darra still heals lord gildas's men. [even dead|dead and all]",
-      "aidon gets seen in the summoner's hall too, [they say|people swear]. the hall of the corrupt is his road there"
+      "aidon gets seen in the summoner's hall too, [they say|people swear]. the hall of the corrupt is his road there",
+      "the hall of the corrupt has a table with the watch's last reports on it. [nobody sent them|never sent]",
+      "aidon told camelot the summoners' wards were built out of promises. [and promises can be read|he read them]",
+      "the captains in the hall of the corrupt still bleed from cuts that never closed",
+      "lord gildas ordered nobody leave their post. [they still havent|dead and still at their posts]",
+      "some bards wont call it the hall of the corrupt. they call it the pennine watch. [the watch did its duty|the orders went bad not the men]",
+      "the road under the hall of the corrupt goes down to the summoner's hall. [aidon guards it now|its the summoners road]",
+      "lieutenant meade wrote the men lost the will to fight. [then he got it too|now he gives it to you]",
+      "captain bardalph warned them about the wizard. [nobody listened|overruled]",
+      "lady darra sat up every night with the wounded that last winter. [still does|she never stopped]",
+      "sergeant reede carried the wounded up his stair to darra. [he still guards it|still on the stair]"
     ],
     "rumour": [
       "[heard|someone said] the archwizard is good for about two groups if you know the trick",
       "never pull anything in the hall of the corrupt off its post. [they cant be hurt away from it|immune off their post]",
-      "[heard|word is] gildas drops his shield at half and picks up a polearm"
+      "[heard|word is] gildas drops his shield at half and picks up a polearm",
+      "[heard|someone said] the old guide said six groups is plenty for the whole hall",
+      "[heard|word is] new frontiers moved the roads but the old hall is still down there",
+      "[heard|someone said] darra dies first or the captains never do",
+      "heard if you read the last report out loud the watchmen stop and listen",
+      "[heard|someone said] aidon is in both places. the hall and the summoner's hall"
     ],
     "tell": [
       "hall of the corrupt? albion's old frontier dungeon on the road to the summoner's hall. dead watchmen, aidon the archwizard and lord gildas",
       "ghost knights and a dead watch. two bosses at the end, aidon with his four copies and gildas at the bottom. six groups is plenty",
-      "the dead albion watch. dont drag anything off its post, it goes immune"
+      "the dead albion watch. dont drag anything off its post, it goes immune",
+      "is the hall of the corrupt hard? aidon is two groups if you know the trick, the whole place is about six. dont drag anything off its post",
+      "where is the hall of the corrupt? the old albion road to the summoner's hall, under the pennines",
+      "what drops there? aidon and gildas are the end. the captains bleed you, darra heals them, kill her first"
     ]
   },
   "loremaster": {
@@ -128,16 +207,23 @@
       "aidon": "The realm sent him to study the Summoners' wards. He studied them too well. Four reflections attend him, fire, ice, air and earth. Break three and leave one; he calls them anew only when the last is broken. He is seen in the [Summoner's Hall] as well, as a servant is seen at his master's table.",
       "lord gildas": "He held the Hall for Albion with his lady, [Darra]. He holds it still, the other way about. He fights behind his shield until he knows he is losing, then takes up his poleaxe and hits twice as hard.",
       "darra": "Lord Gildas' lady. She was the Hall's healer in life and she heals its dead now, and four spectral paladins keep her door. Silence her before you face her husband's men.",
-      "summoner's hall": "Where the three realms met under the old frontier, and where Grand Summoner Govannon keeps his court. The Hall of the Corrupt was Albion's door to it. Some say Aidon still holds the key."
+      "summoner's hall": "Where the three realms met under the old frontier, and where Grand Summoner Govannon keeps his court. The Hall of the Corrupt was Albion's door to it. Some say Aidon still holds the key.",
+      "reports": "The watch's last reports to the Constable survive, and tell it plain: candles, promises, a doubled watch, a cut that would not close, men who could not leave their posts. Then silence.",
+      "posts": "Every officer of the watch is bound to where his captain stood him. A step past it, no blow lands. Fight each where it stands.",
+      "captains": "Atwell, first cut on the road; Bardalph, who warned against the wizard; Heathyr, who held the door. Their wounds never closed, and they make yours bleed the same.",
+      "lieutenants": "Elva of the armoury and her poisons; Meade, who wrote that the men had lost the will to fight; Saxe, who never left a post in his life.",
+      "sergeants": "Darryn of the west passage, Eddison who kept the roster, Reede who carried the wounded up his stair. Each keeps his corner as if Lord Gildas might come on inspection.",
+      "pennine road": "The road under the Pennines down to the [Summoner's Hall]. The Hall of the Corrupt is its Albion end. Aidon keeps it now."
     }
   },
   "book": {
     "title": "The Last Report of the Pennine Watch",
     "pages": [
-      "To the Constable at Camelot, from the Hall under the Pennines. The road is quiet. The Summoners keep their wards as ever, and none of their servants has come up the road this season. Lord Gildas is well. The Lady Darra has had little to do but bind the sergeants' knuckles after their games. The wizard Aidon keeps to his tower and asks for more candles. We ask, again, for more candles.",
-      "To the Constable at Camelot. Master Aidon reports progress with the wards. He says the Summoners do not build their wards of stone but of promises, and that a promise can be read if one has the patience. He has had the patience. He has asked that the watch be doubled on the road, because he expects visitors. Lord Gildas has done as he asks. Captain Bardalph does not like it. Nor do I.",
-      "To the Constable. Captain Atwell was cut on the road by something none of us saw, and the cut will not close. Lieutenant Meade says the men have lost the will to fight and cannot say why. The wizard says it will pass. The Lady Darra has been at the sickbeds every night. Lord Gildas has ordered that no man leave his post for any reason. The men say they could not leave if they wanted to.",
-      "No report was sent this season. This page was found by the riders from Camelot on the Constable's own instruction, on the table of the captains' hall, beside a captain still sitting at it. The ink was dry. The watch was at its posts, every man, and every man was dead, and every man turned his head when the riders came in. They did not stay to read further."
+      "To the Constable at Camelot, from the Hall under the Pennines, in the hand of Tobias, clerk of the watch. The road is quiet. The Summoners keep their wards as ever, and none of their servants has come up the road this season. Lord Gildas is well. The Lady Darra has had little to do but bind the sergeants' knuckles after their games. Captain Heathyr has had the upper gate rehung. The wizard Aidon keeps to his tower and asks for more candles. We ask, again, for more candles, and for a cooper; the casks in the stores are leaking.",
+      "To the Constable at Camelot. Master Aidon reports progress with the wards. He says the Summoners do not build their wards of stone but of promises, and that a promise can be read if one has the patience. He has had the patience. His apprentices say he has stopped sleeping. He has asked that the watch be doubled on the road, because he expects visitors. Lord Gildas has done as he asks. Captain Bardalph does not like it and told the wizard so at table, and the wizard smiled at him. Nor do I like it. I set it down here so that someone knows.",
+      "To the Constable. Captain Atwell was cut on the road by something none of us saw, and the cut will not close. The Lady Darra has bound it four times. Lieutenant Meade says the men have lost the will to fight and cannot say why; he says he feels it himself. Lieutenant Elva has had the armoury poisons brought out, as for the old wars. The wizard says it will pass. Lord Gildas has ordered that no man leave his post for any reason. The men say they could not leave if they wanted to. Sergeant Reede carries the wounded up to the sickroom every night.",
+      "To the Constable. I do not know if this will reach you. The wizard came down from his tower tonight with four of himself walking beside him, one in fire, one in ice, one in air and one in stone, and he said that the visitors had come and that we should stand to. We stood to. Nothing came up the road. Then Captain Heathyr, at the door, said that she could not feel her hands, and Captain Bardalph said that he had told us so, and the Lady Darra began to pray, and I find that I cannot put down this pen.",
+      "No report was sent this season. This page was found by the riders from Camelot on the Constable's own instruction, on the table of the captains' hall, beside a captain still sitting at it. The ink was dry. The watch was at its posts, every man, and every man was dead, and every man turned his head when the riders came in. The clerk Tobias was at the table, his pen still in his hand. The riders did not stay to read further. The Constable ordered the road sealed at the Albion end. The order was never carried out. No one would go back to carry it."
     ]
   },
   "bosses": [
@@ -153,5 +239,10 @@
     "sergeant-darryn",
     "sergeant-eddison",
     "sergeant-reede"
+  ],
+  "era": "alb-the-dark-age",
+  "factions": [
+    "summoners",
+    "pennine-watch"
   ]
 }

@@ -16,11 +16,13 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "The Lady Darra kept the sickroom of the Hall under the Pennines, and in the last bad winter she sat up every night with men whose wounds would not close. She is still sitting up with them. Death changed what she heals, not that she heals: her spells mend the dead of the watch now, and four spectral paladins, the knights of her household, stand at her door as they did in life. Of all the Hall's dead she is the one the Albion bards pity most, because she never did anything but try to save them.",
-  "legend": "Kill her paladins or hold them, and interrupt her heals: she mends her side for 350 a cast and will undo a careless raid's work on the captains. Fight her at her post; off it, nothing touches her. Kill her before the captains, not after.",
+  "story": "The Lady Darra kept the sickroom of the Hall under the Pennines, and in the last bad winter she sat up every night with men whose wounds would not close. She is still sitting up with them. Death changed what she heals, not that she heals: her spells mend the dead of the watch now, and four spectral paladins, the knights of her household, stand at her door as they did in life. Of all the Hall's dead she is the one the Albion bards pity most, because she never did anything but try to save them.\n\nThe sickroom. The Lady Darra kept the sickroom of the hall under the Pennines, at the top of Sergeant Reede's stair, and in the watch's last bad winter she sat up every night with men whose wounds would not close. She bound Captain Atwell's cut four times. She prayed when Captain Heathyr said she could not feel her hands. She did not stop praying when the watch died, and she has not stopped since.\n\nWhat she heals now. Death changed what she heals, not that she heals. Her spells mend the dead of the watch, and she pours them on whichever of her husband's officers is hurt, as she did in life. Four spectral paladins, the knights of her own household, stand at her door as they did then, and rise to her side when she is threatened. Of all the Hall's dead, she is the one the Albion bards pity most, because she never did anything but try to save them, and because she does not know that the men she saves are now the realm's enemies. She has not seen Lord Gildas since that winter. He is at the bottom of the hall; she is at the top of the stair; neither may leave their post. The bards say that is the cruellest part of the whole corruption, and that the Summoners did it on purpose.",
+  "legend": "Kill her first, before the captains. Her four spectral paladins rise when she is threatened; off-tanks hold them while the raid burns her, or kill them first if your raid is small. Interrupt her heals: she mends an ally for 350 a cast and will undo a careless raid's work on the captains in seconds. Fight her in her chamber; past her post she cannot be harmed and walks home whole. The old hands say pull her paladins to the doorway so her line of sight to the rest of the hall is broken. Her heals are the reason the Hall feels harder than it is.",
   "yells": {
     "aggro": [
-      "Not my sickroom. Not my men. Paladins!"
+      "Not my sickroom. Not my men. Paladins!",
+      "Lie still. I will mend you.",
+      "Who brings swords into a sickroom?"
     ],
     "phases": [
       {
@@ -29,42 +31,71 @@
       }
     ],
     "death": [
-      "Who will... sit up with them now..."
+      "Who will... sit up with them now...",
+      "Gildas... I never saw you... again..."
     ],
     "slay": [
-      "Another for the sickroom."
+      "Another for the sickroom.",
+      "Rest. I will tend you later.",
+      "Lie down, child."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A lady's chamber. Her paladins still guard the door."
+      "A lady's chamber. Her paladins still guard the door.",
+      "Bandages, rolled and ready, on every shelf."
     ],
     "phases": [],
     "realmFirstKill": "Lady Darra rests. The sickroom of the Hall is empty."
   },
   "botLines": {
     "briefing": [
-      "darra heals her allies, interrupt her. 4 paladins with her, off tanks on them"
+      "darra heals her allies, interrupt her. 4 paladins with her, off tanks on them",
+      "kill darra before the captains",
+      "fight her in her chamber",
+      "pull the paladins to the doorway"
     ],
     "aftermathWin": [
       "darra down. kind of sad honestly",
-      "paladins first then her, good"
+      "paladins first then her, good",
+      "no more heals for the watch",
+      "she can rest now"
     ],
     "aftermathLoss": [
-      "she healed everything we did. need interrupts"
+      "she healed everything we did. need interrupts",
+      "the paladins got the casters",
+      "we did the captains first and she undid it all",
+      "dragged her and she went immune"
     ],
     "rumour": [
       "lady darra still heals lord gildas's men. [even dead|dead and all]",
-      "[heard|someone said] darra was the hall's healer and she still is"
+      "[heard|someone said] darra was the hall's healer and she still is",
+      "[someone said|heard] darra was the hall's healer and she still is",
+      "heard darra hasnt seen gildas since the last winter",
+      "the bards say keeping darra and gildas apart was the cruellest part"
     ]
   },
   "loremasterTopic": {
     "keyword": "darra",
     "text": "Lord Gildas' lady. She was the Hall's healer in life and she heals its dead now, and four spectral paladins keep her door. Silence her before you face her husband's men."
   },
-  "bookPage": "",
+  "bookPage": "The Lady Darra was at the sickbeds every night of that last winter, the clerk of the watch wrote, and she bound Captain Atwell's cut four times and it opened four times. When we came up Reede's stair she was still there, among the empty cots, with her paladins at the door, and when we drew she cried out that this was her sickroom and these were her men. She healed them against us, one after another. Our priests prayed for her as they fought her. When she fell she asked who would sit up with them now. Nobody could answer that.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} silenced Lady Darra's healing in the Hall of the Corrupt in {minutes} minutes.",
     "loss": "Lady Darra mended every wound {realm}'s raid gave; {raidLeader} could not stop her hands."
-  }
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lord-gildas",
+      "relation": "her lord, whom she has not seen since"
+    },
+    {
+      "id": "sergeant-reede",
+      "relation": "carried the wounded up to her"
+    }
+  ]
 }

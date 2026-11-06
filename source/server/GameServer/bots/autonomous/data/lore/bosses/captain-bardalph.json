@@ -16,23 +16,35 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Captain Bardalph did not like it when the wizard asked for the watch to be doubled, and said so, and was overruled. He was right, and he died at the post Lord Gildas gave him anyway, because that was his duty. He is the most bitter of the Hall's dead captains and the most dangerous to the careless: his wounds bleed like his brothers', and his post is a short one; draw him past it and he stands untouchable and walks back. When the riders came from Camelot, the dead at this post turned to watch them go, and have watched the door ever since.",
-  "legend": "Bardalph bleeds you like Atwell, 65 every three seconds. His tether is short, only 1,500, so pull him a step and fight him there. Drag him further and he is immune and walks home at full health. The watch fights better together: clear the posts nearest it first.",
+  "story": "The captain who argued. Captain Bardalph kept the outer gate, and he did not like the wizard. He said so at table, in front of Lord Gildas, when Aidon asked for the watch to be doubled: that a wizard who expects visitors on a road that has been quiet for twenty years knows something he is not telling. The wizard smiled at him. Lord Gildas doubled the watch anyway, because the realm had sent the wizard. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nBardalph was right, and he died at the post he was given anyway, because that was his duty. He is the most bitter of the hall's dead captains. His wounds bleed like his brothers', and his post is the shortest in the hall, a single stretch of gate he will not leave by a step. The clerk's last report says that on the final night, when the wizard came down with four of himself, Bardalph said only: I told you so. The bards of Albion have made a song of that, and the captains' dead in the hall are said to hum it.\n\nHe kept the outer gate because Lord Gildas trusted him most with the road, and the argument at table did not change that; Gildas sent him back to his gate that same night. The clerk thought the lord regretted overruling him by morning. The bards say Bardalph knew he would be proved right and stayed at his post anyway, to see it through.",
+  "legend": "Bardalph bleeds you like Atwell, 65 every three seconds for thirty seconds. His tether is the shortest in the hall, only 1,500, so pull him a single step and fight him right there; drag him further and he is immune and walks home whole. He hits harder than the others when he is low. Kill Darra first, then the captains one at a time. The old hands say if you shout 'you were right' at him he hesitates; it is not true, but everyone does it. And whatever you do, do not argue with him. He has heard it all before.",
   "yells": {
     "aggro": [
-      "I said this would happen. I said it."
+      "I said this would happen. I said it.",
+      "Back! The gate is held!",
+      "Another visitor. The wizard will be pleased."
     ],
-    "phases": [],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I told you. I told all of you."
+      }
+    ],
     "death": [
-      "Told you... all..."
+      "Told you... all...",
+      "I was right... much good it did..."
     ],
     "slay": [
-      "Back to your post. Forever."
+      "Back to your post. Forever.",
+      "I warned them.",
+      "Bleed, like the rest of us.",
+      "Should have listened."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A captain who argued, and was overruled."
+      "A captain who argued, and was overruled.",
+      "The outer gate. He has not moved in years."
     ],
     "phases": [],
     "realmFirstKill": "Captain Bardalph is released from the watch."
@@ -40,26 +52,48 @@
   "botLines": {
     "briefing": [
       "bardalph bleeds too. tether 1500, keep him close",
-      "fight it where it stands, off its post its immune"
+      "fight it where it stands, off its post its immune",
+      "pull him one step only",
+      "kill darra first",
+      "he hits harder when hes low, heals up"
     ],
     "aftermathWin": [
-      "captain bardalph down, one less on the watch"
+      "captain bardalph down, one less on the watch",
+      "bardalph down. you were right, buddy",
+      "short tether, short fight",
+      "second captain done",
+      "nice, nobody dragged him"
     ],
     "aftermathLoss": [
-      "someone dragged it off its post again. immune out there"
+      "someone dragged it off its post again. immune out there",
+      "bleeds stacked",
+      "darra was up",
+      "he hit like a truck at the end"
     ],
     "rumour": [
       "heard bardalph warned them about the wizard and nobody listened",
-      "[someone said|heard] bardalph has a short leash, keep him close"
+      "[someone said|heard] bardalph has a short leash, keep him close",
+      "the bards made a song of bardalph saying i told you so",
+      "heard the dead captains hum bardalph's song"
     ]
   },
   "loremasterTopic": {
     "keyword": "bardalph",
     "text": "Captain Bardalph did not like it when the wizard asked for the watch to be doubled, and said so, and was overruled."
   },
-  "bookPage": "",
+  "bookPage": "To the Constable. At table tonight Master Aidon asked Lord Gildas to double the watch on the road, because he expects visitors. Captain Bardalph put down his cup and said, in front of everyone, that a wizard who expects visitors on a road that has been quiet for twenty years must know something he is not telling his lord. The wizard only smiled. Lord Gildas did as the wizard asked, for the realm sent him. Captain Bardalph went out to his gate and did not come in to sleep. I write this so that, if he is right, someone will know he said it.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Captain Bardalph from the Pennine watch in {minutes} minutes.",
     "loss": "Captain Bardalph held the post against {realm}'s raid; {raidLeader} fell back."
-  }
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "aidon-the-archwizard",
+      "relation": "the wizard he warned against"
+    }
+  ]
 }
