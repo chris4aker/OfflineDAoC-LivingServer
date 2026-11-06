@@ -34,14 +34,25 @@
       "text": "Players called him the only male of the three dragons (Allakhazam comment, May 2003); raiders held four entrances against his adds.",
       "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmob=3606"
+    },
+    {
+      "text": "When he dies the server says 'The hills seem to weep for the loss of their king'; his kills are announced as a force of N warriors.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs"
+    },
+    {
+      "text": "He wears a Spirit-resist debuff spell in his kit ('Decreases a target's given resistance to Spirit magic by 50%').",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs"
     }
   ],
-  "story": "Cuuldurach came through the Veil when Sheeroe opened, and he came as a king, not a beast. He keeps a king's manners: he warns before he kills, his voice rolling down from the clouds, and he names the trespasser before he crushes him. His court is the Glimmer, cold lights that may once have been sparks of the Veil itself, and his heir is Maldahar, who rides the ridges in his name.\n\nThe hills are sworn to him. Draw him out of his lair and no weapon in Hibernia will bite; that is not cowardice but law, the law of a land that will not let its king bleed on foreign ground. Inside the lair the law runs the other way. Every tenth part of his strength that falls, he answers with a breath of fire, and as the fight turns against him his courtiers come pouring in through the four doors to die at his feet. The old Hibernians who remember the green summers say the court is the true fight and the dragon only the crown on it. Since the druids found that heat hurts him, the realm's casters go up the pass smiling. They stop smiling at the first breath.",
-  "legend": "Hold the four doors and he is only a dragon. Tanks on him inside the lair, never out of it; once he is past the edge of his court he is untouchable and you are only feeding him. Heal through the breath at every tenth. Heat hurts him, so the eldritch and the mana mentalists earn their keep. And when he glares at you, you are the one he means: spread out and do not stand where your friends stand.",
+  "story": "Cuuldurach came through the Veil when Sheeroe opened, and he came as a king, not a beast. He keeps a king's manners: he warns before he kills, his voice rolling down from the clouds, and he names the trespasser before he crushes him. His court is the Glimmer, cold lights that may once have been sparks of the Veil itself, and his heir is Maldahar, who rides the ridges in his name.\n\nThe hills are sworn to him. Draw him out of his lair and no weapon in Hibernia will bite; that is not cowardice but law, the law of a land that will not let its king bleed on foreign ground. Inside the lair the law runs the other way. Every tenth part of his strength that falls, he answers with a breath of fire, and as the fight turns against him his courtiers come pouring in through the four doors to die at his feet. The old Hibernians who remember the green summers say the court is the true fight and the dragon only the crown on it. Since the druids found that heat hurts him, the realm's casters go up the pass smiling. They stop smiling at the first breath.\n\nWhat does he want? The sages of Tir na Nog have three answers and none is comforting. The first is that he wants nothing more than any king wants: his court about him, his land his own, and trespassers punished. The second is that he is waiting, as the Glimmer wait, for the Veil to open wider, and that Sheeroe is not a kingdom but a beachhead. The third, which the old druids of Lough Gur hold, is that he is homesick, and that a homesick king is the most dangerous kind.\n\nOf his kin there is talk in all three realms. Albion has its stone dragon in Dartmoor and Midgard its wolf-headed dragon in Malmohus; the Hibernian bards like to point out that only theirs came with a crown on, and only theirs is a he. His son Maldahar rides the borders and cannot be held by any charm. The eggs found after his death, in the long campaign the Herald wrote of many years later, are said to hold the same cold light as his court. Every breath he takes before a breath of fire is audible across the lair: he inhales deeply, the air rushes past the raid, and the healers have the space of that breath to get ready. When he glares, he means one person, and that person should step away from everyone they love.",
+  "legend": "Hold the four doors and he is only a dragon. Tanks on him inside the lair, never out of it; once he is past the edge of his court he is untouchable and you are only feeding him. Heal through the breath at every tenth. Heat hurts him, so the eldritch and the mana mentalists earn their keep. And when he glares at you, you are the one he means: spread out and do not stand where your friends stand. His breath is announced: when he inhales, everyone braces. Spirit resists suffer under his debuff, so the healers watch the spirit-weak. Superstition says the respec stones he drops are pieces of the old green hills, and should be used, never sold.",
   "yells": {
     "aggro": [
       "Let all who intrude into my domain pay heed.",
-      "You stand in my court uninvited. I will remember your face."
+      "You stand in my court uninvited. I will remember your face.",
+      "I will seek you out and cast you into the arms of Death."
     ],
     "phases": [
       {
@@ -55,20 +66,31 @@
       {
         "trigger": "health<=10",
         "text": "Light does not die. It only waits."
+      },
+      {
+        "trigger": "breath",
+        "text": "Cuuldurach inhales deeply. Brace yourselves!"
+      },
+      {
+        "trigger": "glare",
+        "text": "Cuuldurach stares and prepares a massive attack."
       }
     ],
     "death": [
-      "The hills seem to weep for the loss of their king."
+      "The hills seem to weep for the loss of their king.",
+      "My court... remember me... beyond the Veil..."
     ],
     "slay": [
       "Your body will rest at my lair, little one.",
-      "One more light for my court."
+      "One more light for my court.",
+      "Your end is near, little one. I will taste your flesh."
     ]
   },
   "atmosphere": {
     "lairEntry": [
       "The air hums. A king is near.",
-      "Four doors. The court is coming."
+      "Four doors. The court is coming.",
+      "The ground here is warm, and the air hums."
     ],
     "phases": [
       {
@@ -78,6 +100,10 @@
       {
         "trigger": "health<=20",
         "text": "The sky over Sheeroe burns."
+      },
+      {
+        "trigger": "health<=85",
+        "text": "The first of the court answers its king."
       }
     ],
     "realmFirstKill": "The Glimmer King has fallen. Sheeroe will heal.",
@@ -88,28 +114,55 @@
       "ok listen up. four doors, one party on each. nobody leaves a door [for anything|even if i die]",
       "fight him in the lair. if he drifts out stop hitting, hes immune out there. [let him come back|wait]",
       "every tenth of his health he breathes. healers spread out, [no stacking|dont clump]",
-      "he takes heat badly. casters [go heat|on heat] if you have it"
+      "he takes heat badly. casters [go heat|on heat] if you have it",
+      "when he inhales, [brace|healers ready], the breath comes right after"
     ],
     "aftermathWin": [
       "the glimmer king is down. did anyone else hear the hills [weep|cry] or was that just me",
-      "four doors held all night. [proud of every one of you|best raid ive led]"
+      "four doors held all night. [proud of every one of you|best raid ive led]",
+      "seventy hibs, four doors, one king. [proud of this realm|grats everyone]",
+      "respec stones for everyone who held a door. [fair|well earned]"
     ],
     "aftermathLoss": [
       "we lost the [north|east|west|south] door and that was the fight. [next time|again tomorrow]",
-      "someone chased him out of the lair again. [hes immune out there|i said this]. reform at the bog"
+      "someone chased him out of the lair again. [hes immune out there|i said this]. reform at the bog",
+      "the glare picked a healer and she stood in the middle of us. [step away when glared|move]",
+      "ran out of time on the last tenth. [so close|again]",
+      "spirit debuff and nobody watched the casters. [watch the debuff|heal them]"
     ],
     "rumour": [
       "[heard|word is] the clouds over sheeroe stopped moving. hes awake",
-      "somebody counted the glimmers out loud on the ridge. [now maldahar is out|guess who came down]"
+      "somebody counted the glimmers out loud on the ridge. [now maldahar is out|guess who came down]",
+      "[heard|someone said] the sages think sheeroe is a beachhead for the otherworld",
+      "[word is|heard] glimmer eggs were found [after he fell|on the ridge] once",
+      "the druids of lough gur say the glimmer king is homesick. [scary thought|sad]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Glimmer King",
     "text": "Cuuldurach, king of the otherworld court that leaned into Sheeroe. Outside his lair the land itself shields him; inside it he breathes fire at every tenth wound and his court comes through four doors. Tell your raid leader about the doors before you go, not after."
   },
-  "bookPage": "Of the King's Law, as the druids of Connacht teach it: a king may not be wounded on ground that is not his. So it is with Cuuldurach. Beyond the edge of his court the hills cover him like a cloak, and steel turns aside. Within it he is as mortal as any king, and like any king he calls his household when he is pressed. Count his wounds by tenths, for each tenth brings fire. Count his doors by fours, for each door brings the court. The druids add, more quietly, that heat is a sickness to light that came from the cold side of the Veil.",
+  "bookPage": "Of the King's Law, as the druids of Lough Gur teach it: a king may not be wounded on ground that is not his. So it is with Cuuldurach. Beyond the edge of his court the hills cover him like a cloak, and steel turns aside. Within it he is as mortal as any king, and like any king he calls his household when he is pressed. Count his wounds by tenths, for each tenth brings fire. Count his doors by fours, for each door brings the court. Listen for his breath, for he draws it before he burns. The druids add, more quietly, that heat is a sickness to light that came from the cold side of the Veil, and that this is the one mercy the old law allows.",
   "chronicle": {
     "win": "{realm} held the four doors of Sheeroe, and {raidLeader}'s raid brought down the Glimmer King in {minutes} minutes. The hills wept.",
     "loss": "{realm} went up to Sheeroe under {raidLeader}; after {minutes} minutes a door fell, and the Glimmer King's court did the rest."
-  }
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "glimmer-court"
+  ],
+  "related": [
+    {
+      "id": "maldahar-the-glimmer-prince",
+      "relation": "his son and the rider of his borders"
+    },
+    {
+      "id": "golestandt",
+      "relation": "the stone dragon of Albion"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "the wolf-headed dragon of Midgard"
+    }
+  ]
 }

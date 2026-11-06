@@ -26,11 +26,13 @@
       "source": "Living Server"
     }
   ],
-  "story": "Every court needs someone to ride its borders, and Maldahar is the Glimmer King's. The Hibernians call him the prince, and the Glimmer part for him as he passes. He rides a horse of the same cold light as the rest of the court, and like the rest of the court he is in no hurry. Charms slide off him; no bard has ever sung him to sleep and no druid has ever rooted him to the grass, for he is not wholly here to be held. What he is, is patient. Leave him alone for the space of a long breath and he is whole again, as if the wounds had been a rumour. The shepherds' children say he is looking for something his father lost when the sky tore. The Azure say he is looking for them.",
-  "legend": "Mezz and root are wasted on him, so bring damage, not tricks. Commit to the fight: if your group drifts off for a minute he heals to full and you start again. Pull him away from the glimmer camps so the court does not join. And never count the glimmers aloud on the ridge, or so every Sheeroe veteran swears.",
+  "story": "Every court needs someone to ride its borders, and Maldahar is the Glimmer King's. The Hibernians call him the prince, and the Glimmer part for him as he passes. He rides a horse of the same cold light as the rest of the court, and like the rest of the court he is in no hurry. Charms slide off him; no bard has ever sung him to sleep and no druid has ever rooted him to the grass, for he is not wholly here to be held. What he is, is patient. Leave him alone for the space of a long breath and he is whole again, as if the wounds had been a rumour. The shepherds' children say he is looking for something his father lost when the sky tore. The Azure say he is looking for them.\n\nHe is not only a rider of borders. The Cullen shepherds say Maldahar goes further than his father's court ever reaches: down the pass to the edge of the bog, and on certain nights west to Lough Gur, where the Melancholic Fairy Queen weeps beside a door that will not open for her. Whether he goes as a suitor, a cousin, or a spy, nobody can say. He never stays.\n\nAs a fighter he is a prince's son, trained and proud and impossible to hold. Mesmerism slides off him; roots cannot find his feet; a stun is an insult he does not notice. He fights with plain force and great patience, and he has a prince's arrogance about wounds: if no one presses him for a minute he simply forgets them, and is whole again. The Glimmer part for him as he rides. When he falls, the shepherds say, every glimmer on the ridge dims for the space of a breath, as a hall falls silent when the heir is carried out, and somewhere at the top of the hills something very large turns its head.",
+  "legend": "Mezz and root are wasted on him, so bring damage, not tricks. Commit to the fight: if your group drifts off for a minute he heals to full and you start again. Pull him away from the glimmer camps so the court does not join. And never count the glimmers aloud on the ridge, or so every Sheeroe veteran swears. He is a group's target, not a raid's: a strong group with no tricks can do it if it commits and does not stop. Pull him well away from the glimmer camps. Superstition: never call him by name on the ridge, call him 'the rider', or he hears you and comes. The shepherds say he dims the ridge when he dies, and that you should not be standing on the ridge when the king notices.",
   "yells": {
     "aggro": [
-      "My father's hills do not want you."
+      "My father's hills do not want you.",
+      "You threw a stone at me once. Your kind always does.",
+      "The court is watching. Do not disappoint them."
     ],
     "phases": [
       {
@@ -39,15 +41,19 @@
       }
     ],
     "death": [
-      "Tell my father... the doors are open."
+      "Tell my father... the doors are open.",
+      "The light... goes home..."
     ],
     "slay": [
-      "Another for the court."
+      "Another for the court.",
+      "My father will hear of you.",
+      "Dim, and done."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Hoofbeats of light on the grey grass."
+      "Hoofbeats of light on the grey grass.",
+      "The Glimmer part for someone you cannot see."
     ],
     "phases": [
       {
@@ -60,25 +66,50 @@
   "botLines": {
     "briefing": [
       "no cc on maldahar, dont waste the mezz. [burn him|all in]",
-      "if we break off he resets in a minute. [commit or dont pull|all or nothing]"
+      "if we break off he resets in a minute. [commit or dont pull|all or nothing]",
+      "pull him well away from the glimmer camps, [or the court joins|or the camps add]",
+      "a strong group can do him, [no tricks|just damage]"
     ],
     "aftermathWin": [
-      "maldahar down. the glimmers went [quiet|dim] for a moment, swear it"
+      "maldahar down. the glimmers went [quiet|dim] for a moment, swear it",
+      "the whole ridge dimmed for a second when he died. [saw it|creepy]",
+      "committed and never stopped. [thats the trick|grats]",
+      "maldahar down, now get off the ridge. [quick|before the king notices]"
     ],
     "aftermathLoss": [
-      "we stopped to rest and he was full again. [told you|knew it]"
+      "we stopped to rest and he was full again. [told you|knew it]",
+      "mezz didnt stick, root didnt stick, [nothing sticks|told you]",
+      "pulled him into a glimmer camp. [adds everywhere|bad pull]",
+      "he forgot his wounds while we rezzed. [one minute is all he needs|reset]"
     ],
     "rumour": [
-      "someone counted glimmers on the ridge [again|last night]. maldahar came down [within a minute|right after]"
+      "someone counted glimmers on the ridge [again|last night]. maldahar came down [within a minute|right after]",
+      "[heard|someone said] maldahar rides to lough gur some nights to see the fairy queen",
+      "call him the rider on the ridge, never his name. [old shepherd rule|just in case]",
+      "[word is|heard] the king turns his head when maldahar falls"
     ]
   },
   "loremasterTopic": {
     "keyword": "Maldahar",
     "text": "The Glimmer Prince, who rides the borders of his father's court. No charm holds him, and if he is let be for a minute he is whole again. Fight him all at once or not at all."
   },
-  "bookPage": "",
+  "bookPage": "From Eoghan the shepherd's account: the rider goes further than his father's court. I have seen him at the edge of the bog in winter, sitting his horse of light and looking west, toward Lough Gur, where the sad queen of the Good Folk weeps beside her shut door. Some say he courts her. My wife says he is lonely, which is a woman's answer and may be the true one. The raids that go after him say no charm holds him and no sleep takes him, and if they let him be for a minute he is whole again. Princes are like that, my wife says. They do not keep their wounds. Other people keep them for them.",
   "chronicle": {
     "win": "{realm} unhorsed Maldahar the Glimmer Prince on the Sheeroe ridges; {raidLeader} called it in {minutes} minutes.",
     "loss": "{realm} chased the Glimmer Prince for {minutes} minutes under {raidLeader}, and he rode on whole."
-  }
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "glimmer-court"
+  ],
+  "related": [
+    {
+      "id": "cuuldurach-the-glimmer-king",
+      "relation": "his father"
+    },
+    {
+      "id": "melancholic-fairy-queen",
+      "relation": "a lost royal of the otherworld at Lough Gur, whom he is said to visit"
+    }
+  ]
 }
