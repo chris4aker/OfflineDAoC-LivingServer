@@ -1,0 +1,69 @@
+{
+  "id": "spindelhalla",
+  "name": "Spindelhalla",
+  "realm": "Midgard",
+  "regions": [
+    125
+  ],
+  "summary": "The spider hall under Midgard where arachites farm silk with svartalf thralls and something deeper is worshipped.",
+  "facts": [
+    {
+      "text": "Allakhazam's bestiary lists 49 creatures in Spindelhalla: arachites (prelate, krigare, vakt, impaler, grymherre, tunnelhost, husker), spindel silksters and layers, svartalf thralls, workers and a foreman, cave trows and a trow trollkarl, deeplurks, djupt beasts, ekyps, a kopparorm and lost hagbui.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=56"
+    },
+    {
+      "text": "The bot camp catalog finds the same peoples there (region 125).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/capnbry_classic_si_goals.json"
+    },
+    {
+      "text": "Bot chat says the arachites keep svartalf slaves to tend the spiders and silk, that the prelates pray to something in the deep, and that it goes deeper than the maps.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Swedish spindel means spider and hall (halla) hall; djupt means deep (to verify the Mythic usage).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    }
+  ],
+  "story": "Spindelhalla is the spider hall, and the arachites who built it farm silk the way the people of Svealand farm barley. The upper galleries are the farm: spindel layers and silksters in their webs, and svartalf thralls bent over the strands under the eyes of a svartalf foreman who has been a slave so long he has forgotten to mind it. The arachite warriors, the krigare and vakt and impalers, keep the thralls working and the strangers out.\n\nLower down the farm gives way to the temple. The arachite prelates pray there, toward the deep, and nobody who has gone down far enough to hear the prayers has come back eager to say what they pray to. The halls do not end where the maps say. Below the arachites live the deeplurks and the djupt beasts, the deep things, and cave trows with a sorcerer of their own, and the lost hagbui of some older people who were buried here before the spiders came. The webs hide another stair, the old scouts say, and the silk covers the rest.\n\nThe tailors of Jordheim swear the finest thread in Midgard comes out of Spindelhalla. None of them has ever had any to sell.",
+  "legend": "Spindelhalla goes deeper than the maps: the further down, the stranger. Upper halls for the late thirties, the deep for fifty. Watch the webs, the spiders come out of them. Don't free the thralls; they'll only be taken again, and they know it.",
+  "atmosphere": {
+    "firstEntry": [
+      "The spider hall. Silk hangs everywhere, like smoke.",
+      "Thralls bend over the webs. Something prays below."
+    ],
+    "areas": []
+  },
+  "botLines": {
+    "lore": [
+      "the arachites keep svartalf slaves in spindelhalla to tend the [spiders|silk]. [grim stuff|makes my skin crawl]",
+      "the arachite prelates in spindelhalla pray to something in the deep. never stayed to find out what",
+      "under the spider farm in spindelhalla there are cave trows and deep things. the djupt, the svartalfar call them"
+    ],
+    "rumour": [
+      "[old|some] [scouts|explorers] [say|claim] spindelhalla goes deeper than the maps. [the webs hide another stair|the silk covers the rest]",
+      "[my tailor friend|an old tailor] swears the finest thread in midgard comes from spindelhalla. nobody [i know|ever] has [any to sell|some to sell]"
+    ],
+    "tell": [
+      "spindelhalla is arachites, spiders and svartalf thralls up top, trows and deep things lower down. late 30s to 50",
+      "spindelhalla? spider dungeon. good xp, watch the webs"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Spindelhalla, the spider hall. The [arachites] farm silk there with svartalf thralls, and below the farm is a [temple].\"",
+    "topics": {
+      "arachites": "Spider-folk who keep svartalf thralls at the webs. Their warriors keep the strangers out and the thralls in.",
+      "temple": "Where the arachite prelates pray toward the deep. Below it live the djupt beasts, the deep things, and cave trows. Nobody says what the prelates pray to."
+    }
+  },
+  "book": {
+    "title": "A Thrall's Prayer",
+    "pages": [
+      "Scratched in svartalf letters on a silk-frame, as a scholar of Jordheim read it for me. 'Lord of the dark, who gave our people the deep roads, we have been sold to the spiders. They feed us and we feed the webs. The foreman says to be glad because the prelates pray for us too. I have heard the prelates pray. They do not pray to you. They pray to something underneath you, and it is listening, and when they finish it is a long time before the webs stop shaking. If you are still there, lord, come and take us home before it answers them.'"
+    ]
+  },
+  "bosses": []
+}

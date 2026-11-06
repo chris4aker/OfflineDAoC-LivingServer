@@ -1,0 +1,68 @@
+{
+  "id": "vendo-caverns",
+  "name": "Vendo Caverns",
+  "realm": "Midgard",
+  "regions": [
+    126
+  ],
+  "summary": "The caves north of Mularn where the vendo and their goblins live, and where you must never whistle.",
+  "facts": [
+    {
+      "text": "Allakhazam's bestiary lists the vendo (guards, reavers, savagers, yowlers, a snake charmer, the svendo), goblin guards and advisors, cave maulers and bears, a cave ogre and Grjotgard, for levels of about 16-37.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=57"
+    },
+    {
+      "text": "Period comments place the caves on the mountain above two vendo camps north of Mularn, past Haggerfel and Fort Veldon, and call them the best experience in Midgard for levels 13-28.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=57"
+    },
+    {
+      "text": "Bot chat says the goblins run for help every time, and that you should never whistle in the caves or Grjotgard answers.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/dungeons.lines"
+    },
+    {
+      "text": "Grjotgard may be read as Old Norse grjot, stone, and gardr, enclosure (to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify"
+    }
+  ],
+  "story": "Every young warrior of Mularn learns the road north: past Haggerfel, past Fort Veldon, west a little to the two vendo camps, and up the mountain to the cave mouth above them. The vendo live in the caves, a hairy, howling people who were in these hills before Mularn was a village. They keep goblins the way some farmers keep geese, loud and quarrelsome and always running to fetch help. They keep a snake charmer, who drops a piece of armour for anyone who can kill him. And deeper in, where the albino maulers and the cave bears den, they keep away from something in the stone.\n\nIts name is Grjotgard, the stone-yard, or so the old women of Mularn say, and it is not big and it is not strong, and nobody knows quite what it is. It answers whistling. Every guild has a story of the night somebody whistled in Vendo, and something whistled back from inside the rock, and the vendo yowlers all stopped yowling at once. The vendo will not whistle. They are wiser than they look.",
+  "legend": "Vendo Caverns is where Midgard learns to group: the entrance in the teens, the bear cave and the deep rooms into the thirties. Camp the snake charmer if you wear studded or leather. The goblins always run for help, so kill them first. And don't whistle.",
+  "atmosphere": {
+    "firstEntry": [
+      "Vendo Caverns. Somewhere in the rock, something listens.",
+      "Howls echo from the deep caves. Do not whistle."
+    ],
+    "areas": []
+  },
+  "botLines": {
+    "lore": [
+      "the vendo were in those hills before mularn was a village",
+      "the goblins in vendo run for help every single time"
+    ],
+    "rumour": [
+      "[dont|never] whistle in vendo caverns. [something|grjotgard] [hears|answers], [my old group swore|everyone knows that]",
+      "camp the vendo snake charmer if you wear leather, he drops armour every time"
+    ],
+    "tell": [
+      "vendo caverns, north of mularn past fort veldon, up above the two vendo camps. teens and twenties",
+      "vendo? vendo, goblins, cave bears. great first group dungeon. dont whistle"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Vendo Caverns. Every young Midgardian goes there. The [vendo] are old in those hills, and there is something in the stone called [Grjotgard].\"",
+    "topics": {
+      "vendo": "A hairy, howling people who keep goblins like geese. They were there before Mularn.",
+      "Grjotgard": "The stone-yard. It answers whistling. The vendo will not whistle, and they are wiser than they look."
+    }
+  },
+  "book": {
+    "title": "The Night Someone Whistled",
+    "pages": [
+      "We were six, all of us in our teens, camping the bear cave, and Hakon was bored and started whistling a drinking song. Halfway through the second verse the vendo yowlers in the next cave stopped. All of them, all at once. Then from inside the wall, not from any cave, the second verse came back, whistled, perfectly, a little slower than Hakon had done it. We ran. Hakon says he doesn't remember the song any more. He says sometimes he wakes up whistling it."
+    ]
+  },
+  "bosses": []
+}

@@ -1,0 +1,73 @@
+{
+  "id": "cursed-tomb",
+  "name": "Cursed Tomb",
+  "realm": "Midgard",
+  "regions": [
+    128
+  ],
+  "summary": "The tomb in Gotar where Midgard buries those the gods refused: deserters, oath-breakers and kings who died badly.",
+  "facts": [
+    {
+      "text": "The Cursed Tomb is the final resting place of dishonoured warriors and kings of Midgard who deserted in battle, betrayed their comrades, let greed and vice outweigh honour or died in less than heroic ways, and whom the gods would not allow into Valhalla. Its entrance is in Gotar at 60k, 54k.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=40"
+    },
+    {
+      "text": "Its bestiary lists draugr warriors, hounds and a commander, a tomb priestess, a dread lichess, cursed and vengeful dead, dishonored hagbui, cursed mora (dancers and weepers), roaming corpses that burst into corpse crawlers, trapped thralls and a way keeper.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=40"
+    },
+    {
+      "text": "Period comments say killing the Draugr Commander spawns the princess, killing her brings back the commander and six warriors, and roaming corpses split into corpse crawlers; it was a coin-loot dungeon early on and was once renamed the Burial Halls.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=40"
+    },
+    {
+      "text": "Draugr and haugbui are the walking dead of the sagas, and a mara is a spirit that rides sleepers.",
+      "provenance": "myth",
+      "source": "Norse sagas and folklore (public domain)"
+    },
+    {
+      "text": "Bot chat says the dread lichess was a queen once, and nobody says whose.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Not everyone goes to Valhalla. When a warrior of Midgard dies running, or breaks an oath, or sells his comrades, or lets greed rule him, or dies some small, shameful death that no skald will sing, the valkyries pass him by. He still has to go somewhere. Midgard sends its dishonoured dead to a tomb in the hills of Gotar, above the bone bridge south of Nalliten, and seals it, and does not visit.\n\nThe dead inside have not accepted it. The draugr warriors still drill under their commander, and when he falls the princess comes, and when she falls he comes back with six more, as if the shame of it will not let them stop. The hagbui, the barrow-dwellers, walk the halls of the kings. The mora dance and weep in the pit room. The thralls who were buried with their masters are trapped with them still. The roaming corpses split into crawling things when they are struck down, because even their bodies have learned to run.\n\nSomewhere in the deep crypt the dread lichess keeps her court. She was a queen once, the bards say, and they will not say whose, because the queen's line still has descendants, and they are proud.",
+  "legend": "The Cursed Tomb is the twenties dungeon: draugr, mora and the walking corpses. Kill the commander, then the princess, and they loop forever. When a roaming corpse dies, step back, because the crawlers are a level higher. Spirit damage does wonders in the big room. Nobody knows whose queen the lichess was.",
+  "atmosphere": {
+    "firstEntry": [
+      "The tomb of the dishonoured. Valhalla did not want them.",
+      "The dead here drill and weep. They cannot rest."
+    ],
+    "areas": []
+  },
+  "botLines": {
+    "lore": [
+      "the cursed tomb is where midgard puts the dead the gods wouldnt take. deserters, oathbreakers, bad kings",
+      "kill the draugr commander and the princess comes, kill her and he comes back. they never stop"
+    ],
+    "rumour": [
+      "the dread lichess in the cursed tomb was a queen once, they say. nobody says whose",
+      "corpse crawlers in the cursed tomb, worst name worst monster"
+    ],
+    "tell": [
+      "cursed tomb is in gotar above the bone bridge south of nalliten. draugr and mora, twenties",
+      "cursed tomb? the dishonoured dead. good xp in your twenties"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"The Cursed Tomb is where we put the [dishonoured], the dead the valkyries passed by. And a [queen] who will not be named.\"",
+    "topics": {
+      "dishonoured": "Deserters, oath-breakers, those who sold their comrades or died shamefully. They still drill and weep in there.",
+      "queen": "The dread lichess. The bards will not say whose queen she was, because her line has descendants, and they are proud."
+    }
+  },
+  "book": {
+    "title": "Sealing the Tomb",
+    "pages": [
+      "When a warrior of my village died running from a Hibernian charge, his father would not let us burn him. He said the smoke would only make the gods look at us. We carried him to the tomb in Gotar instead, in the night, with no torches, and the old priestess opened the door just wide enough and we pushed him through. From inside, something said thank you. The priestess shut the door and told us not to answer, ever, whatever we heard from in there. We walked home without speaking. I still do not know if it was him."
+    ]
+  },
+  "bosses": []
+}
