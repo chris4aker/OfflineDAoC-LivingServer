@@ -66,6 +66,8 @@
         <EmbeddedResource Include=".\bots\autonomous\data\dungeon_navigation_points.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\darkness_falls_raid_event_mobs.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\darkness_falls_navigation_proofs.json" />
+        <!-- Living Server 1.2: the lore bible (docs/LORE.md), read by the lore channels and the lore engine. -->
+        <EmbeddedResource Include=".\bots\autonomous\data\lore\**\*.json" />
         <TranslationFiles Include=".\language\**\*.txt" />
         <APIDocs Include=".\API\docs\*" />
         <Content Include="API\docs\index.css" />

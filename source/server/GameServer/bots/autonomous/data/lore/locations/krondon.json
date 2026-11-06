@@ -1,0 +1,42 @@
+{
+  "id": "krondon",
+  "name": "Krondon",
+  "realm": "Albion",
+  "regions": [61],
+  "summary": "An Avalon hall older than Camelot, held by thrawn ogres, where a storm-keeper still burns four lights.",
+  "facts": [
+    {"text": "Krondon is an Avalon dungeon of the Shrouded Isles, whose setting is Morgana's war on Avalon.", "provenance": "mythic", "source": "LORE-INVENTORY.md section 10: GB_RT, GB_SI (GameBanshee 2002 news mirrors)"},
+    {"text": "Krondon's mobs carry Old English names: hygegeomor, modsefa, losian, thrawn ogres and an abrecan mage.", "provenance": "game", "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"},
+    {"text": "Krondon raids took 50 or more players.", "provenance": "legend", "source": "docs/RAID-SIZES.md (Feb 2003 thread)"},
+    {"text": "The halls under the hill belonged to an older people of the isles before Camelot.", "provenance": "original", "source": "Living Server 1.2"}
+  ],
+  "story": "Long before Camelot, the people of the isles kept their halls under the hills and their words in an older tongue, and Krondon was the greatest of those halls. Its keepers counted wealth in weather rather than gold, and its storm-keeper, the Scurceol Hyrde, held the shore against every raider who came for Avalon. When Morgana's war broke on the isles, Krondon fell to the thrawn ogres and their warrior queen. The old words fell with it. The names carved on the walls speak of sorrow and of perishing, as if the hall itself were sad of mind and wished to be done. The ogres cannot read them. They hold the hall by strength alone, and the storm-keeper made his bargain with them: his storm for his hall. He is down there still, among the ogres, with four lights burning in the corners of his chamber.",
+  "legend": "Krondon is a fifty-man night at least, and the ogres hit like falling stone. Everyone says the same thing about the storm-keeper: put out the four lights before you touch him. Old Avalonians swear a sudden squall off Caldey means he is restless.",
+  "atmosphere": {
+    "firstEntry": ["Old words are carved here. The ogres cannot read them."],
+    "areas": [
+      {"name": "the storm-keeper's chamber", "x": 51941, "y": 20068, "z": 17174, "radius": 900, "lines": ["Four lights burn in the corners. The air is held still."]}
+    ]
+  },
+  "botLines": {
+    "lore": ["krondon names are [old english|older than camelot]. hyrde means shepherd, [my guildie says|so the scholars say]. shepherd of what is the question"],
+    "rumour": ["[heard|someone in my guild swore] the lights in krondon throw you across the room if you hit them wrong"],
+    "tell": ["krondon? ogres, lots of them, and a storm keeper with four lights. bring 50"]
+  },
+  "loremaster": {
+    "intro": "Krondon? A hall older than Camelot, and the [names] down there are older still. The ogres hold it now, under their [warrior queen], but the worst of it is the [storm-keeper].",
+    "topics": {
+      "names": "The walls are cut with words of an older tongue. Scholars read sorrow in them, and perishing. The ogres cannot read them, which may be a mercy for the ogres. Ask after the [storm-keeper] if you mean to go down.",
+      "warrior queen": "The thrawn ogres follow a warrior queen. They took the hall in Morgana's war and keep it by strength, not by right. The [storm-keeper] keeps his own counsel among them."
+    }
+  },
+  "book": {
+    "title": "Of the Hall under the Hill",
+    "pages": [
+      "Before the stones of Camelot were cut, the people of the isles dug their halls into the hills, and of those halls Krondon was the deepest. They wrote in a tongue older than ours, and they wrote on walls, because walls do not burn. I have copied what I could read. Most of it is names.",
+      "The keepers of Krondon did not count wealth in gold but in weather. A hall with a good storm-shepherd kept its shore, and the Hyrde of Krondon was the best of them. I have read that he took four airs out of the sky and set them in the corners of his chamber, that he might hold a storm still as a man holds a hound. If that is so, the winds are there yet.",
+      "When the war came to Avalon the ogres came with it, great thrawn brutes under a queen of their own, and the hall fell. I do not know what the storm-keeper did that night. I know that he lives, if that is the word, and that the ogres leave his chamber alone. Sailors out of Caldey will not speak his name at sea."
+    ]
+  },
+  "bosses": ["scurceol-hyrde"]
+}
