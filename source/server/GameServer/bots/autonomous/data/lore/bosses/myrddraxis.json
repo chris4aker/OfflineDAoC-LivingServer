@@ -31,11 +31,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
     }
   ],
-  "story": "Myrddraxis was an egg once, small enough to carry, found by Fomorian hydrars in the black sand under Hy Brasil. They raised it in the lowest cistern of their city and fed it the way they feed their pride: generously, and on their enemies. It grew five heads. Each one is a mouth for the same hunger, and what any head tears from a victim goes straight to the great body under the water and to its sister heads, so that the hydra grows whole as it feeds. The trained shrillers scream round it so it never quite sleeps. When it is hurt it breathes, and its breath is of two kinds: one that leaves warriors stunned and staring, and one that the keepers call annihilation.",
-  "legend": "The heads feed the body with every bite, so the heads die first, and nobody lets a head chew on them longer than they must. Expect a stun breath every fifth of its health and a big area breath at each quarter: healers spread, purge the stuns. The stair is too narrow for a full raid; bring groups that know their jobs.",
+  "story": "Myrddraxis was an egg once, small enough to carry, found by Fomorian hydrars in the black sand under Hy Brasil. They raised it in the lowest cistern of their city and fed it the way they feed their pride: generously, and on their enemies. It grew five heads. Each one is a mouth for the same hunger, and what any head tears from a victim goes straight to the great body under the water and to its sister heads, so that the hydra grows whole as it feeds. The trained shrillers scream round it so it never quite sleeps. When it is hurt it breathes, and its breath is of two kinds: one that leaves warriors stunned and staring, and one that the keepers call annihilation.\n\nThe hydrars sing three lines to it, and the lines are the whole of its life: eat, and be whole; eat, and be many; eat, and be ours. It has done all three. It grew from an egg found in the black sand into a thing of five heads and a great sunken body that no Fomorian has ever seen wholly out of the water. The shrillers on the cistern walls are trained to scream at it day and night, so that it never sleeps. A thing that never sleeps, the Sylvan say, never forgets an insult, and Myrddraxis has had many raids to remember.\n\nEvery head is a mouth for the same hunger. What a head bites from a victim goes to the body under the water, half of it, and a little to each of its sister heads, so that the hydra grows whole as it feeds and the heads mend one another. That is the truth behind the old tavern story that its heads heal each other. Its breath comes in two kinds: a stunning breath that leaves warriors staring, at each fifth of its strength, and the breath of annihilation at each quarter, a sheet of flame across the whole cistern. When it finally dies the earth lurches, and on the mound where it lay a glowing light forms, as it does where dragons fall. The Fomorians think it more than a beast. They call it the city's luck.",
+  "legend": "The heads feed the body with every bite, so the heads die first, and nobody lets a head chew on them longer than they must. Expect a stun breath every fifth of its health and a big area breath at each quarter: healers spread, purge the stuns. The stair is too narrow for a full raid; bring groups that know their jobs. Cut the heads one at a time with the whole group, starting with whichever is biting the healers. Purge the stuns fast; heal through the annihilation. Bring more groups than you think, because the cistern is wide. Superstition: shout no insult at the hydra from the ledge. It never sleeps, and it never forgets.",
   "yells": {
     "aggro": [
-      "Five heads rise from the cistern, all screaming."
+      "Five heads rise from the cistern, all screaming.",
+      "The shrillers scream louder. The water heaves.",
+      "Eat, and be whole. Eat, and be many."
     ],
     "phases": [
       {
@@ -45,18 +47,26 @@
       {
         "trigger": "health<=40",
         "text": "Myrddraxis prepares a stunning breath."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The last head falls. The body thrashes, starving."
       }
     ],
     "death": [
-      "The earth lurches as Myrddraxis topples to the ground."
+      "The earth lurches as Myrddraxis topples to the ground.",
+      "A glowing light forms on the mound where it lay."
     ],
     "slay": [
-      "The heads squabble over the remains."
+      "The heads squabble over the remains.",
+      "The heads squabble over the remains.",
+      "Eat, and be ours."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Five heads rise from the dark water."
+      "Five heads rise from the dark water.",
+      "The shrillers scream. The hydra is hungry."
     ],
     "phases": [
       {
@@ -73,25 +83,61 @@
   "botLines": {
     "briefing": [
       "heads first. every bite a head does heals the body. [kill the heads|heads, then body]",
-      "stun breath every twenty percent, area breath every quarter. [spread|purge ready]"
+      "stun breath every twenty percent, area breath every quarter. [spread|purge ready]",
+      "heads first, [one at a time|whole group on one], start with whoever is biting the healers",
+      "stun breath every fifth, [purge|cure stuns] fast",
+      "annihilation breath every quarter, [heal through it|spread out]",
+      "bring extra groups, the cistern is wide. [more is better|dont skimp]"
     ],
     "aftermathWin": [
-      "hydra down. the shrillers [finally shut up|stopped screaming]. best sound in fomor"
+      "hydra down. the shrillers [finally shut up|stopped screaming]. best sound in fomor",
+      "the shrillers stopped screaming. [best sound in fomor|silence]",
+      "a light formed on its mound like a dragon. [cool|saw it]",
+      "the city's luck is dead. [hope it stays dead|grats]"
     ],
     "aftermathLoss": [
-      "we hit the body with three heads up and it [healed through everything|never moved]. heads first"
+      "we hit the body with three heads up and it [healed through everything|never moved]. heads first",
+      "hit the body with heads up and it [healed through everything|never moved]",
+      "nobody purged the stun breath. [we stood there|frozen]",
+      "annihilation breath caught everyone together. [spread|again]",
+      "not enough groups for the cistern. [bring more|too few]"
     ],
     "rumour": [
-      "[heard|someone said] myrddraxis drops a scale that never breaks. [never seen one|maybe]"
+      "[heard|someone said] myrddraxis drops a scale that never breaks. [never seen one|maybe]",
+      "[heard|someone said] the fomorians call myrddraxis the city's luck",
+      "[word is|heard] a light forms on its mound when it dies, like a dragon",
+      "the hydrars sing to it so it never sleeps. [eat and be whole|creepy song]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Myrddraxis",
     "text": "The hydra of Fomor, raised from an egg by the hydrars. Five heads, one hunger: every head's bite feeds the body. Cut the heads first."
   },
-  "bookPage": "The hydrars of Fomor sing to their beast. I heard the song from a ledge and a Sylvan put words to it for me afterwards: eat, and be whole; eat, and be many; eat, and be ours. The heads bit, and the body grew whole. I asked the Sylvan how one kills such a thing. She said you starve it. Cut the mouths and the belly follows.",
+  "bookPage": "The hydrars of Fomor sing to their beast. Fiachra of Howth heard the song from a ledge and a Sylvan put words to it for him afterwards: eat, and be whole; eat, and be many; eat, and be ours. The heads bit, and the body grew whole. He asked the Sylvan how one kills such a thing. She said you starve it. Cut the mouths and the belly follows. He asked how long that takes. She said it depends how many friends you bring, and how much they mind being bitten. The realm's bands bring more every year, she said, and the hydrars sing louder.",
   "chronicle": {
     "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew the hydra Myrddraxis in {minutes} minutes.",
     "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by the heads of Myrddraxis after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "anurigunda",
+      "relation": "an elder of the city"
+    },
+    {
+      "id": "nogoribando",
+      "relation": "the city's war-leader"
+    },
+    {
+      "id": "krackenschtein",
+      "relation": "the workshop's champion"
+    },
+    {
+      "id": "balor",
+      "relation": "the king in the tower on the crag"
+    }
+  ]
 }

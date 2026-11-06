@@ -16,28 +16,38 @@
       "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Nogoribando is Fomor's war-leader, the one the bellers sound for when the raiding parties go up into the Sylvan woods. He fights as the Fomorians of the old songs fought, in a frenzy that builds on itself: the longer the fight, the faster his blows, until even his own band stand back. Then the frenzy breaks, and he breathes, and it builds again. Those who stand against him feel their strength drain out of them as if he were drinking it. His band never leaves his side.",
-  "legend": "Clear his band of ten or they come with him. Watch for his haste: when he starts attacking faster, healers pour it on the tank until it fades. He drains strength and constitution, so rebuff. Do not drag the fight out.",
+  "story": "Nogoribando is Fomor's war-leader, the one the bellers sound for when the raiding parties go up into the Sylvan woods. He fights as the Fomorians of the old songs fought, in a frenzy that builds on itself: the longer the fight, the faster his blows, until even his own band stand back. Then the frenzy breaks, and he breathes, and it builds again. Those who stand against him feel their strength drain out of them as if he were drinking it. His band never leaves his side.\n\nWhen the Fomorians go up the stair to raid the Sylvan woods, it is Nogoribando who leads them, and the bellers of the city sound for him. He is young, as Fomorians count it, and he fights as the Fomorians of the old songs fought, in a frenzy that builds on itself: the longer the fight, the faster his blows, until even his own band stand back to watch. Then it breaks, and he breathes, and his attacks fall back to the speed of an ordinary monster, and then it builds again.\n\nThose who stand against him feel their strength drain out of them, as if he drank it to feed the frenzy. His band of ten never leaves his side: creln, gentarns, a hicjer and a hofscorian, the old names of Fomorian war-ranks. His hall is hung with the war-banners of the next raid. Anurigunda, the elder, thinks him a fool and says so; he thinks her a relic and says so louder. The Sylvan say that every time the realm kills him the raids on Domnann stop for a season, until the city chooses another war-leader and the bellers find his name.",
+  "legend": "Clear his band of ten or they come with him. Watch for his haste: when he starts attacking faster, healers pour it on the tank until it fades. He drains strength and constitution, so rebuff. Do not drag the fight out. Clear his band of ten, then fight him with one solid tank and heals that can spike. When the haste comes, everything the healers have goes to the tank; when it breaks, rebuff and breathe. Superstition: when you hear the bellers from the shore, go down and kill him before he climbs. The Sylvan children of Domnann get a quiet season out of it.",
   "yells": {
     "aggro": [
-      "Nogoribando begins attacking faster!"
+      "Nogoribando begins attacking faster!",
+      "Sound the bellers! The fight comes to us for once!",
+      "Faster than you. Always faster."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "Faster! The drums! Faster!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Nogoribando's attacks return to normal. He breathes hard."
       }
     ],
     "death": [
-      "The drums... stop..."
+      "The drums... stop...",
+      "The bellers... will find... another..."
     ],
     "slay": [
-      "Up the stair! There are more of them!"
+      "Up the stair! There are more of them!",
+      "Up the stair! There are more of them!",
+      "Next!"
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A drum beats faster and faster."
+      "A drum beats faster and faster.",
+      "The bellers wait for his signal."
     ],
     "phases": [
       {
@@ -49,25 +59,59 @@
   },
   "botLines": {
     "briefing": [
-      "nogoribando hastes himself. when he speeds up, [heals on the tank|big heals]. clear his band first"
+      "nogoribando hastes himself. when he speeds up, [heals on the tank|big heals]. clear his band first",
+      "clear his band of ten first. [all of them|no shortcuts]",
+      "when he hastes, [every heal on the tank|spike heals]",
+      "he drains str and con, [rebuff|buffers ready]"
     ],
     "aftermathWin": [
-      "nogoribando down, drums stopped. [good tanking|nice]"
+      "nogoribando down, drums stopped. [good tanking|nice]",
+      "the drums stopped. [no raid on domnann this season|good]",
+      "spike heals on the haste were perfect. [great healers|grats]",
+      "war-leader down. [bellers need a new name|ha]"
     ],
     "aftermathLoss": [
-      "he hasted and the tank [just evaporated|melted]. save the big heals for that"
+      "he hasted and the tank [just evaporated|melted]. save the big heals for that",
+      "the haste melted the tank. [heal harder|save heals]",
+      "his band came with him. [clear first|ugh]",
+      "forgot to rebuff and [we got weaker and weaker|folded]"
     ],
     "rumour": [
-      "[heard|someone said] nogoribando leads the fomorian raids into domnann"
+      "[heard|someone said] nogoribando leads the fomorian raids into domnann",
+      "[heard|someone said] the raids on domnann stop for a season when nogoribando dies",
+      "[word is|heard] anurigunda calls nogoribando a fool to his face",
+      "the bellers sound for nogoribando before every raid, they say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Nogoribando",
     "text": "Fomor's war-leader, whose frenzy builds until his blows come too fast to follow, and then breaks, and builds again."
   },
-  "bookPage": "",
+  "bookPage": "From Fiachra of Howth's account: the war-leader's hall was hung with banners, new ones, painted for a raid that had not happened yet, and his band sat beneath them sharpening things. I was close enough to hear him, before we ran, and he was laughing. The Sylvan said he is young for a Fomorian and fights in the old frenzy, faster and faster until even his own people stand back. Every time the realm kills him, they said, there is a quiet season in Domnann, and the children are allowed in the woods. Then the bellers find a new name, and the children come home.",
   "chronicle": {
     "win": "{realm} went down the shore stair into Fomor under {raidLeader} and slew Nogoribando the war-leader in {minutes} minutes.",
     "loss": "{realm}'s fighters under {raidLeader} were driven back up the Fomor stair by Nogoribando's frenzy after {minutes} minutes."
-  }
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "anurigunda",
+      "relation": "an elder of the city"
+    },
+    {
+      "id": "krackenschtein",
+      "relation": "the workshop's champion"
+    },
+    {
+      "id": "myrddraxis",
+      "relation": "the hydra of the cistern"
+    },
+    {
+      "id": "balor",
+      "relation": "the king in the tower on the crag"
+    }
+  ]
 }
