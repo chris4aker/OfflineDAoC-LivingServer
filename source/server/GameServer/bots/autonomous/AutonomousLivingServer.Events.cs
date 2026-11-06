@@ -169,7 +169,7 @@ public static partial class AutonomousLivingServer
         };
         if (!Firsts.TryAdd(title, row))
             return false;
-        Log.Info($"LIVING_SERVER_FIRST title=\"{title}\" name=\"{who.Name}\" realm={who.Realm} class=\"{row.ClassName}\"");
+        Log.Info($"LIVING_SERVER_FIRST title=\"{title}\" name=\"{who.Name}\" realm={GlobalConstants.RealmToName(who.Realm)} class=\"{row.ClassName}\"");
         foreach (GamePlayer player in ClientService.Instance.GetPlayers())
         {
             if (player?.Client == null)
@@ -328,7 +328,7 @@ public static partial class AutonomousLivingServer
         if (AutonomousBotVoices.TryEventLine(bot, "alarm", out string line, slots: slots, flags: ["in_rvr"]))
         {
             Speak(bot, Channel.Faction, line);
-            Log.Info($"LIVING_SERVER_ALARM realm={bot.Realm} enemy={enemy} count={count} place=\"{place}\" speaker=\"{bot.Name}\"");
+            Log.Info($"LIVING_SERVER_ALARM realm={GlobalConstants.RealmToName(bot.Realm)} enemy={enemy} count={count} place=\"{place}\" speaker=\"{bot.Name}\"");
         }
     }
 

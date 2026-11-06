@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DOL.GS.ServerProperties;
 
 namespace DOL.GS;
@@ -139,4 +140,31 @@ public static class RealmRaidRecruitmentPolicy
 
     /// <summary>A raid party that lost members (but still exists) takes replacements up to its size when it joined.</summary>
     public static bool NeedsReplacement(int target, int members) => members > 0 && members < target;
+
+    /// <summary>
+    /// Formation slots a raid has: the realm's 38 parties plus the Epic Special Forces' three. In-game check 2026-11-04:
+    /// an automatic Summoner's Hall raid of small parties (34 at the hub, four more joining on the road) held all 38 slots
+    /// with 277 bots, and after its wipe at Grand Summoner Govannon all three Special Forces parties were refused.
+    /// </summary>
+    public const int FormationSlots = MaximumParties + AutonomousEpicSpecialForces.MaximumParties;
+
+    /// <summary>The slots a new party may take, in order: the realm's parties take 0-37; the Special Forces take their
+    /// own 38-40 first, then any slot the realm left free.</summary>
+    public static IEnumerable<int> SlotOrder(bool specialForces)
+    {
+        if (specialForces)
+            for (int slot = MaximumParties; slot < FormationSlots; slot++) yield return slot;
+        for (int slot = 0; slot < MaximumParties; slot++) yield return slot;
+    }
+
+    /// <summary>
+    /// Why a raid cannot take another party, or null when it can. The realm's limits (38 parties, 300 bots) count only
+    /// the realm's own parties and bots; the Epic Special Forces come on top of them, up to their own three parties.
+    /// </summary>
+    public static string PartyCapRefusal(bool specialForces, int realmParties, int realmBots, int specialForcesParties, int joining) =>
+        specialForces
+            ? specialForcesParties >= AutonomousEpicSpecialForces.MaximumParties
+                ? $"the raid already has {specialForcesParties} Special Forces parties" : null
+            : realmParties >= MaximumParties ? $"the raid already has its {MaximumParties} parties"
+            : realmBots + joining > MaximumBots ? $"the raid would have {realmBots + joining} of its {MaximumBots} bots" : null;
 }

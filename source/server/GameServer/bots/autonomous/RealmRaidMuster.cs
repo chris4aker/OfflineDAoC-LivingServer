@@ -99,7 +99,7 @@ public static class RealmRaidMuster
         IReadOnlyCollection<Vector3> occupied, out Vector3 post, Func<Vector3, bool> safe = null)
     {
         post = default;
-        if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone) || slot < 0 || slot >= RealmRaidRecruitmentPolicy.MaximumParties) return false;
+        if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone) || slot < 0 || slot >= RealmRaidRecruitmentPolicy.FormationSlots) return false;
         // 38 parties need 38 posts. Border-keep hubs among now-walled mountains (Svasud Faste,
         // Druim Cain) fit only ~20 within 2,250 units, so musters stalled below 200 (2026-10-06).
         for (int attempt = 0; attempt < MusterPostAttempts; attempt++)

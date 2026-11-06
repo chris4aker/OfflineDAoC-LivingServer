@@ -515,7 +515,7 @@ namespace DOL.GS
                 {
                     if (listed++ >= 4) break;
                     GameKeepDoor keepDoor = door as GameKeepDoor;
-                    text.Append($"[{door.DoorId} {door.GetType().Name} {door.State} realm={door.Realm} " +
+                    text.Append($"[{door.DoorId} {door.GetType().Name} {door.State} realm={GlobalConstants.RealmToName(door.Realm)} " +
                                 $"keep={keepDoor?.Component?.Keep?.KeepID.ToString() ?? "-"} portal={keepDoor?.Component?.Keep?.IsPortalKeep} " +
                                 $"usable={(keepDoor != null && CanUseFriendlyKeepDoor(Owner, keepDoor))} interact={door.CanBeOpenedViaInteraction} " +
                                 $"dist={Owner.GetDistanceTo(door)}]");

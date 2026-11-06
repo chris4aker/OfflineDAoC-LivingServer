@@ -239,6 +239,16 @@ realm that feels like a full server at its busiest. How it works and how to tune
   the whole list from being built, so every gamebot kept "Searching for a valid XP camp". It is now left out.
 
 **Fixes**
+- **The Epic Special Forces join a full raid after a wipe** (found in the 2026-11-04 playtest). Albion's automatic
+  Summoner's Hall raid was made of small parties: 34 left the hub and four more joined on the road, 38 parties with 277
+  bots. It wiped at Grand Summoner Govannon, and all three Special Forces parties were turned away ("the raid did not
+  accept the party"), because a raid takes at most 38 parties and that limit counted them too. They now come on top of
+  the realm's limits, as intended: the realm's 38 parties and 300 bots count only the realm's own bots, and the Special
+  Forces have three parties and three formation places of their own beside the raid. Forced raids and dragon raids keep
+  their rules. They also no longer need a "waiting for a group" goal to answer an automatic raid, and the realm doesn't
+  top up their parties with its own bots. When a party is still refused, `REALM_RAID_SPECIAL_FORCES_FAILED` (and
+  `REALM_RAID_FORCED_PARTY_RETRY`) now say why (`refusal="..."`), and raid and Special Forces log lines name Albion as
+  Albion, not `_FirstPlayerRealm`. Checked: unit tests (`UT_SpecialForcesJoinFullRaids`); not played in game yet.
 - Repairing an item never checked the crafter's skill: the gate was written as `(percentNeeded / 100) * craftLevel`,
   integer division, so the 50% a repair asks for became 0 and anyone could start one (with a 0% chance below 44% of the
   item's craft level). A repair now needs half the item's craft level in the skill, a repair in the trade window the

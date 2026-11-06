@@ -240,16 +240,16 @@ namespace DOL.GS
                     .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
                 if (chosen == null)
                 {
-                    Log.Info($"REALM_RAID_SCHEDULE_SKIPPED realm={realm} online={online} reason=\"no encounter available (respawning or on cooldown)\"");
+                    Log.Info($"REALM_RAID_SCHEDULE_SKIPPED realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"no encounter available (respawning or on cooldown)\"");
                     continue;
                 }
                 if (Start(chosen.Id, realm, out string reason))
                 {
-                    Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={realm} online={online} required={Raids[chosen.Id].Required} " +
+                    Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} required={Raids[chosen.Id].Required} " +
                              $"recruitCap={RealmRaidRecruitmentPolicy.RecruitCap(Raids[chosen.Id].Required)} nextMinutes={minutes}");
                 }
                 else
-                    Log.Warn($"REALM_RAID_SCHEDULE_FAILED event={chosen.Id} realm={realm} online={online} reason=\"{reason}\"");
+                    Log.Warn($"REALM_RAID_SCHEDULE_FAILED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} reason=\"{reason}\"");
             }
         }
         /// <summary>
@@ -282,7 +282,7 @@ namespace DOL.GS
                 if (!Start(chosen.Id, realm, out reason))
                     return false;
                 reason = $"{chosen.Name}: {Raids[chosen.Id].Required} of {online} free level 50s must gather (at least 15 minutes)";
-                Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={realm} online={online} required={Raids[chosen.Id].Required} forced=lstest");
+                Log.Info($"REALM_RAID_SCHEDULED event={chosen.Id} realm={GlobalConstants.RealmToName(realm)} online={online} required={Raids[chosen.Id].Required} forced=lstest");
                 return true;
             }
         }
@@ -471,7 +471,7 @@ namespace DOL.GS
             lock (Sync)
             {
                 if (Membership.TryGetValue(leader.Group, out Raid joined)) { view = joined.Parties[leader.Group].View; return true; }
-                Raid raid = Raids.Values.FirstOrDefault(r => r.Definition.Realm == leader.Realm && !r.Forced && r.Parties.Count < RealmRaidRecruitmentPolicy.MaximumParties);
+                Raid raid = Raids.Values.FirstOrDefault(r => r.Definition.Realm == leader.Realm && !r.Forced && RealmParties(r) < RealmRaidRecruitmentPolicy.MaximumParties);
                 if (raid == null && Raids.Values.Any(r => r.Definition.Realm == leader.Realm)) return false;
                 if (raid == null)
                 {
@@ -491,7 +491,7 @@ namespace DOL.GS
                 else if (Random.Shared.NextDouble() >= RealmRaidRecruitmentPolicy.JoinExistingChance) return false;
                 // Removing a party must not make its count reuse a surviving
                 // party's staging slot and pile reinforcements on top of it.
-                if (raid.Support.Length + members.Length > RealmRaidRecruitmentPolicy.MaximumBots) return false;
+                if (PartyCapRefusal(raid, false, members.Length) != null) return false;
                 if (!TryFreeSlot(raid, out int slot, out Vector3 staging, out var hubPost)) return false;
                 var party = new Party { Members = members, FormationSlot = slot, Staging = staging, HubPost = hubPost, Target = members.Length };
                 raid.Parties[leader.Group] = party;
@@ -647,19 +647,29 @@ namespace DOL.GS
         /// a raid by tight ground fills the slots that fit instead of waiting on one that never will (Krondon, 2026-10-21:
         /// the raid asked for slot 7 for 90 minutes with 7 parties gathered, and its rally failed).
         /// </summary>
-        private static bool TryFreeSlot(Raid raid, out int slot, out Vector3 staging, out Vector3 hubPost)
+        private static bool TryFreeSlot(Raid raid, out int slot, out Vector3 staging, out Vector3 hubPost, bool specialForces = false)
         {
             staging = hubPost = default;
-            for (slot = 0; slot < RealmRaidRecruitmentPolicy.MaximumParties; slot++)
+            foreach (int candidate in RealmRaidRecruitmentPolicy.SlotOrder(specialForces))
             {
-                int candidate = slot;
                 if (raid.UnusableSlots.Contains(candidate) || raid.Parties.Values.Any(p => p.FormationSlot == candidate)) continue;
+                slot = candidate;
                 if (TryStaging(raid, candidate, out staging) && TryHubPost(raid, candidate, out hubPost)) return true;
                 raid.UnusableSlots.Add(candidate);
             }
             slot = -1;
             return false;
         }
+
+        /// <summary>A party made only of the Epic Special Forces (they come on top of the realm's limits).</summary>
+        private static bool IsSpecialForcesParty(Party party) => party.Members.Length > 0 && party.Members.All(b => b.IsEpicSpecialForce);
+
+        private static int RealmParties(Raid raid) => raid.Parties.Values.Count(p => !IsSpecialForcesParty(p));
+        private static int SpecialForcesParties(Raid raid) => raid.Parties.Values.Count(IsSpecialForcesParty);
+        private static int RealmBots(Raid raid) => raid.Support.Count(b => b is not GameBot { IsEpicSpecialForce: true });
+
+        private static string PartyCapRefusal(Raid raid, bool specialForces, int joining) =>
+            RealmRaidRecruitmentPolicy.PartyCapRefusal(specialForces, RealmParties(raid), RealmBots(raid), SpecialForcesParties(raid), joining);
 
         private static bool TryHubPost(Raid raid, int slot, out Vector3 post)
         {
@@ -750,10 +760,11 @@ namespace DOL.GS
                     // the first scheduled dragon rally (2026-10-19) stalled at 24 of 58 for twenty minutes.
                     int recruitCap = RealmRaidRecruitmentPolicy.RecruitCap(raid.Required);
                     int planned = raid.ForcedParties.Sum(p => p.Length);
-                    if (!raid.Forced && raid.Support.Length + planned < recruitCap &&
+                    int realmBots = RealmBots(raid); // the Special Forces come on top of the cap
+                    if (!raid.Forced && realmBots + planned < recruitCap &&
                         raid.ForcedParties.Count < RealmRaidRecruitmentPolicy.AutomaticPlannedParties)
                     {
-                        int size = Math.Min(8, recruitCap - raid.Support.Length - planned);
+                        int size = Math.Min(8, recruitCap - realmBots - planned);
                         var waiting = AutonomousBotGroupCoordinator.PlanWaitingRaidParty(raid.Definition.Realm, size);
                         if (waiting != null)
                         {
@@ -798,7 +809,9 @@ namespace DOL.GS
                 foreach (var raid in Raids.Values)
                 {
                     if (now < raid.NextRefill) continue;
-                    var shortParty = raid.Parties.FirstOrDefault(p => RealmRaidRecruitmentPolicy.NeedsReplacement(p.Value.Target, p.Value.Members.Length));
+                    // The Special Forces are not topped up with the realm's own bots.
+                    var shortParty = raid.Parties.FirstOrDefault(p => !IsSpecialForcesParty(p.Value) &&
+                        RealmRaidRecruitmentPolicy.NeedsReplacement(p.Value.Target, p.Value.Members.Length));
                     if (shortParty.Key == null) continue;
                     raid.NextRefill = now + 10_000;
                     refills.Add((raid.Definition.Id, shortParty.Key, raid.Hub, raid.Forced, raid.Released.ToArray()));
@@ -850,8 +863,8 @@ namespace DOL.GS
             lock (Sync)
             {
                 if (!Membership.TryGetValue(group, out Raid raid) || !raid.Parties.TryGetValue(group, out Party party) ||
-                    !RealmRaidRecruitmentPolicy.NeedsReplacement(party.Target, party.Members.Length) ||
-                    raid.Support.Length >= RealmRaidRecruitmentPolicy.MaximumBots) return false;
+                    !RealmRaidRecruitmentPolicy.NeedsReplacement(party.Target, party.Members.Length) || IsSpecialForcesParty(party) ||
+                    RealmBots(raid) >= RealmRaidRecruitmentPolicy.MaximumBots) return false;
                 party.Members = party.Members.Append(bot).ToArray();
                 if (raid.HubDeparted || raid.Started) party.CatchingUp.Add(bot.DatabaseID);
                 raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
@@ -860,14 +873,18 @@ namespace DOL.GS
             }
         }
 
-        public static bool TryGetForcedStaging(string id, out AutonomousBotGroupCoordinator.SharedCamp camp)
+        /// <summary>The raid's post for a new party, or why there is none (named in REALM_RAID_SPECIAL_FORCES_FAILED).</summary>
+        public static bool TryGetForcedStaging(string id, bool specialForces, int joining,
+            out AutonomousBotGroupCoordinator.SharedCamp camp, out string refusal)
         {
             camp = null;
             lock (Sync)
             {
-                if (!Raids.TryGetValue(id, out var raid) || raid.Parties.Count >= RealmRaidRecruitmentPolicy.MaximumParties) return false;
-                if (!TryFreeSlot(raid, out int slot, out _, out var staging))
+                if (!Raids.TryGetValue(id, out var raid)) { refusal = "the raid is not running"; return false; }
+                if ((refusal = PartyCapRefusal(raid, specialForces, joining)) != null) return false;
+                if (!TryFreeSlot(raid, out int slot, out _, out var staging, specialForces))
                 {
+                    refusal = $"no free formation slot with a staging and hub post (parties={raid.Parties.Count} unusableSlots={raid.UnusableSlots.Count})";
                     if (GameLoop.GameLoopTime >= raid.NextPostWarning)
                     {
                         raid.NextPostWarning = GameLoop.GameLoopTime + 60_000;
@@ -883,20 +900,23 @@ namespace DOL.GS
             }
         }
 
-        public static bool CommitForcedParty(string id, Group group)
+        public static bool CommitForcedParty(string id, Group group, out string refusal)
         {
             lock (Sync)
             {
-                if (!Raids.TryGetValue(id, out var raid) ||
-                    raid.Parties.Count >= RealmRaidRecruitmentPolicy.MaximumParties || Membership.ContainsKey(group)) return false;
+                if (!Raids.TryGetValue(id, out var raid)) { refusal = "the raid is not running"; return false; }
+                if (Membership.ContainsKey(group)) { refusal = "the group is already in a raid"; return false; }
                 var members = group.GetMembersInTheGroup().OfType<GameBot>().ToArray();
-                // The Epic Special Forces come on top of the realm's own raiders (the 300-bot limit is the realm's).
+                // The Epic Special Forces come on top of the realm's own raiders: the 38-party and 300-bot limits are the
+                // realm's, and they have three parties of their own (in-game check 2026-11-04: a full raid refused them).
                 bool specialForces = members.Length > 0 && members.All(b => b.IsEpicSpecialForce);
-                if (members.Length is not (4 or 8) ||
-                    !specialForces && raid.Support.Length + members.Length > RealmRaidRecruitmentPolicy.MaximumBots ||
-                    members.Any(b => !IsEligible(b) || b.Realm != raid.Definition.Realm ||
-                    Reservations.GetValueOrDefault(b.DatabaseID) != id)) return false;
-                if (!TryFreeSlot(raid, out int slot, out var staging, out var hubPost)) return false;
+                if ((refusal = PartyCapRefusal(raid, specialForces, members.Length)) != null) return false;
+                if (members.Length is not (4 or 8)) { refusal = $"the group has {members.Length} bots, not 4 or 8"; return false; }
+                if (members.Any(b => !IsEligible(b))) { refusal = "a member is not an eligible level 50"; return false; }
+                if (members.Any(b => b.Realm != raid.Definition.Realm)) { refusal = "a member is of another realm"; return false; }
+                if (members.Any(b => Reservations.GetValueOrDefault(b.DatabaseID) != id)) { refusal = "a member is not reserved for this raid"; return false; }
+                if (!TryFreeSlot(raid, out int slot, out var staging, out var hubPost, specialForces))
+                { refusal = $"no free formation slot with a staging and hub post (parties={raid.Parties.Count} unusableSlots={raid.UnusableSlots.Count})"; return false; }
                 var party = new Party { Members = members, FormationSlot = slot, Staging = staging, HubPost = hubPost, Target = members.Length };
                 // They arrive at the hub after the raid has left it, and walk in like late members.
                 if (specialForces && (raid.HubDeparted || raid.Started))

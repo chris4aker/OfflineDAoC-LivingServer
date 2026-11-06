@@ -218,10 +218,10 @@ public static class AutonomousEpicSpecialForces
                 continue;
             }
             foreach (GameBot bot in members) AutonomousRealmRaid.ReserveSpecialForce(bot, call.RaidId);
-            if (!AutonomousBotGroupCoordinator.FormForcedRaidParty(call.RaidId, members))
+            if (!AutonomousBotGroupCoordinator.FormForcedRaidParty(call.RaidId, members, out string refusal))
             {
                 foreach (GameBot bot in members) bot.Delete();
-                Log.Warn($"REALM_RAID_SPECIAL_FORCES_FAILED event={call.RaidId} party={party + 1} reason=\"the raid did not accept the party\"");
+                Log.Warn(FailedLine(call.RaidId, party + 1, refusal));
                 continue;
             }
             lock (Sync)
@@ -231,14 +231,24 @@ public static class AutonomousEpicSpecialForces
             }
             joined += members.Length;
         }
-        Log.Info($"REALM_RAID_SPECIAL_FORCES_ARRIVED event={call.RaidId} realm={call.Realm} members={joined} asked={call.Members} " +
-                 $"reason=\"{call.Reason}\" history=\"{string.Join(",", History(call.RaidId))}\"");
+        Log.Info(ArrivedLine(call.RaidId, call.Realm, joined, call.Members, call.Reason, History(call.RaidId)));
         if (joined == 0) return;
         GameWideAnnouncements.Queue(AnnouncementKind.PveRealmEvent,
             $"The {GuildName} answer {GlobalConstants.RealmToName(call.Realm)}'s call at {call.RaidName}!");
         RealmEventNotices.Queue(call.RaidId, call.Realm,
             $"{joined} of the {GuildName} have arrived at the hub and are marching to join the {call.RaidName} expedition.");
     }
+
+    /// <summary>The log line for a party the raid refused, naming the refusal (in-game check 2026-11-04 logged only
+    /// "the raid did not accept the party", three times, and the cause had to be read out of the code).</summary>
+    public static string FailedLine(string raidId, int party, string refusal) =>
+        $"REALM_RAID_SPECIAL_FORCES_FAILED event={raidId} party={party} reason=\"the raid did not accept the party\" " +
+        $"refusal=\"{(string.IsNullOrWhiteSpace(refusal) ? "unknown" : refusal)}\"";
+
+    /// <summary>The realm by its name: eRealm.Albion shares its value with _FirstPlayerRealm, so ToString() can print that.</summary>
+    public static string ArrivedLine(string raidId, eRealm realm, int joined, int asked, string reason, IEnumerable<string> history) =>
+        $"REALM_RAID_SPECIAL_FORCES_ARRIVED event={raidId} realm={GlobalConstants.RealmToName(realm)} members={joined} asked={asked} " +
+        $"reason=\"{reason}\" history=\"{string.Join(",", history ?? [])}\"";
 
     private static GameBot Create(eRealm realm, eCharacterClass characterClass, ushort region, Vector3 post, int party, int slot, ISet<string> names)
     {
@@ -267,7 +277,7 @@ public static class AutonomousEpicSpecialForces
         }
         catch (Exception exception)
         {
-            Log.Error($"Could not create an {GuildName} {characterClass} for {realm}", exception);
+            Log.Error($"Could not create an {GuildName} {characterClass} for {GlobalConstants.RealmToName(realm)}", exception);
             return null;
         }
     }

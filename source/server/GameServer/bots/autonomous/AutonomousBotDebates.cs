@@ -862,7 +862,7 @@ public static class AutonomousBotDebates
                     }
                     catch (Exception exception)
                     {
-                        Log.Warn($"Bot debates: could not reset heard scenes for {(eRealm)realm}", exception);
+                        Log.Warn($"Bot debates: could not reset heard scenes for {GlobalConstants.RealmToName((eRealm)realm)}", exception);
                     }
                 }
                 if (adds.Length > 0)

@@ -2213,7 +2213,7 @@ public static partial class AutonomousBotGroupCoordinator
             // RvR heads out through its director as soon as assembly completes.
             if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
                 StartTaskClock(session, members);
-            Log.Info($"AUTONOMOUS_GROUP_ASSEMBLED group={session.Id} realm={members[0].Realm} size={members.Length} " +
+            Log.Info($"AUTONOMOUS_GROUP_ASSEMBLED group={session.Id} realm={GlobalConstants.RealmToName(members[0].Realm)} size={members.Length} " +
                      $"members=\"{string.Join(",", members.Select(member => member.Name))}\" " +
                      $"region={members[0].CurrentRegionID} rendezvous={(int)session.Rendezvous.X},{(int)session.Rendezvous.Y},{(int)session.Rendezvous.Z}");
         }
