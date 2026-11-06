@@ -1,0 +1,83 @@
+{
+  "id": "summoner-roesia",
+  "name": "Summoner Roesia",
+  "catalogKey": "summoner-s-hall/summonerroesia",
+  "locationId": "summoners-hall",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Summoner Roesia is a level-75 summoner with 100,000 health, one of the three objectives before the Grand Summoner.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She wears a damage shield (Roesia Damage Shield), casts Summoner Pain over a wide area and, at 25%, heals herself over time; she cannot be hurt past her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam comments: a vicious area energy damage-over-time, so set resists; three Albion players took her in about 45 minutes (2003-2005).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3958"
+    },
+    {
+      "text": "Roesia is a medieval Anglo-Norman woman's name (to verify).",
+      "provenance": "original",
+      "source": "name glossary, to verify"
+    }
+  ],
+  "story": "Roesia is the hall's keeper of pain. She wraps herself in a shield that burns whoever strikes her and spreads a slow agony across her chamber, and when she is hurt at last she knits herself back together with a patience her fellow summoners lack. She keeps the bargains the others make, the hall's sidhe say; she is the one who makes sure the price hurts. Her name is a Camelot name, and the hall's sidhe say she curses Albion raiders in their own tongue, as if she remembers it.",
+  "legend": "Energy resists up for Roesia's pain, and melee watch their health against her damage shield. At 25% she heals over time: save your burst for then and push through it. A small group can take her slowly; a raid takes her fast.",
+  "yells": {
+    "aggro": [
+      "Every bargain has a price. I am the price."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Not yet. I mend. I always mend."
+      }
+    ],
+    "death": [
+      "The pain... is... mine at last..."
+    ],
+    "slay": [
+      "Paid in full."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air of this chamber aches."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Roesia begins to mend herself!"
+      }
+    ],
+    "realmFirstKill": "Summoner Roesia is slain. The ache fades."
+  },
+  "botLines": {
+    "briefing": [
+      "roesia: energy resists, melee watch the damage shield. burst at 25% when she starts healing"
+    ],
+    "aftermathWin": [
+      "roesia down, nice burst at the end"
+    ],
+    "aftermathLoss": [
+      "she healed through our burst at 25"
+    ],
+    "rumour": [
+      "heard roesia is the one who makes sure the summoners' bargains hurt"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Roesia",
+    "text": "The keeper of pain among the summoners. She makes sure every bargain hurts, and mends herself when she is hurt in turn."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Summoner Roesia in {minutes} minutes.",
+    "loss": "Summoner Roesia made {raidLeader}'s raid from {realm} pay in full after {minutes} minutes."
+  }
+}

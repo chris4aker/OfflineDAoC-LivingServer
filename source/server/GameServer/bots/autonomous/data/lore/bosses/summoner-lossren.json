@@ -1,0 +1,84 @@
+{
+  "id": "summoner-lossren",
+  "name": "Summoner Lossren",
+  "catalogKey": "summoner-s-hall/summonerlossren",
+  "locationId": "summoners-hall",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Summoner Lossren is a level-75 summoner with 100,000 health, one of the three objectives before the Grand Summoner.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He raises tortured souls, eighteen to twenty-five at a time, and an infected ghoul that crawls toward a player and bursts in a plague (1,000 damage in a 500 radius).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs"
+    },
+    {
+      "text": "Summoned pets do only 5 damage per hit to him, and he cannot be hurt past his tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A 2003 Allakhazam comment says one summoner kept summoning 'yellow conned lil zombie things' non-stop.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3985"
+    }
+  ],
+  "story": "Lossren is the Grand Summoner's gatherer. Where his master calls the dead, Lossren collects them, and he keeps the ones who come in pieces. The tortured souls stream out of him by the score, every one of them someone who answered the call from a frontier dungeon floor, and now and then a ghoul swollen with plague crawls out toward whoever looks warmest and bursts. He holds the living in contempt and their pets in less: a summoned beast barely scratches him.",
+  "legend": "Lossren is an add fight. Area damage on the souls, and when the ghoul crawls at someone, that someone runs and the rest get out of its way: it bursts for a thousand. Pet classes, leave your pets home or on the adds; they do nothing to him.",
+  "yells": {
+    "aggro": [
+      "More for the gathering. Come in whole, leave in pieces."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "Rise, all of you. Your summoner has need of you."
+      }
+    ],
+    "death": [
+      "They are... leaving me..."
+    ],
+    "slay": [
+      "Gathered."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tortured souls drift here by the score."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawned",
+        "text": "A swollen ghoul crawls out of Lossren's crowd!"
+      }
+    ],
+    "realmFirstKill": "Summoner Lossren is slain. His gathered souls fly free."
+  },
+  "botLines": {
+    "briefing": [
+      "lossren: aoe on the souls, if the ghoul crawls at you RUN, 1000 dmg pop",
+      "pets do nothing to him, put them on adds"
+    ],
+    "aftermathWin": [
+      "lossren down, the souls just faded"
+    ],
+    "aftermathLoss": [
+      "the ghoul popped in the healer group"
+    ],
+    "rumour": [
+      "the souls lossren raises were people who answered the call from the frontier dungeons. [grim|sad]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lossren",
+    "text": "The Grand Summoner's gatherer, who collects the dead his master calls and keeps the ones that come in pieces. His swollen ghouls burst."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Summoner Lossren and freed his gathered souls in {minutes} minutes.",
+    "loss": "Summoner Lossren gathered {raidLeader}'s raid from {realm} after {minutes} minutes."
+  }
+}

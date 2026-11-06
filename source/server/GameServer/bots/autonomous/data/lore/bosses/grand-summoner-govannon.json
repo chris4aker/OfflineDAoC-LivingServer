@@ -1,0 +1,167 @@
+{
+  "id": "grand-summoner-govannon",
+  "name": "Grand Summoner Govannon",
+  "catalogKey": "summoner-s-hall/grandsummonergovannon",
+  "locationId": "summoners-hall",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Grand Summoner Govannon is the level-80 final of Summoner's Hall for all three realms' raids; the Offline DAoC build gives him 200,000 health (300,000 originally).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "At 80% he grows stronger and calls a summoned sacrifice and a summoned demon. The sacrifice walks to his feet and is consumed there; once it has been consumed and the demon is dead, the Shade of Aelfgar rises and joins the fight, stunning with Aelfgar's Shout.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    },
+    {
+      "text": "At 50% he drops his elven shape, becomes a demon, heals to full health and hits harder still.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
+    },
+    {
+      "text": "He casts Govannon's Shroud of Agony (an area damage over time) and a bleeding Demon's Scar, sends a random attacker to a fixed spot, and cannot be hurt when drawn past his tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as a level-80 demon. A period player wrote that you first see an elf caster, then a taller shape, and at 60% his true demon form; 43 people took close to 30 minutes.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3789"
+    },
+    {
+      "text": "Bot chat says he starts as an elf and finishes as a demon, and tells a 'shield node' story that the script does not have (hearsay).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_shared.lines"
+    },
+    {
+      "text": "Gofannon (Govannon) is the smith son of Don in the Welsh tales (to verify the spelling and role in the Mabinogion).",
+      "provenance": "original",
+      "source": "Welsh myth, to verify"
+    },
+    {
+      "text": "Aelfgar is an Old English name; aelf means elf and gar spear (to verify).",
+      "provenance": "original",
+      "source": "Old English glossary, to verify"
+    }
+  ],
+  "story": "Govannon is the name of a smith in the old tales of the west, a maker who forged for the gods. The Grand Summoner took the name because he too is a maker, and what he makes is bargains. He sits in the deepest room of the hall that lies under all three frontiers, in a chamber built to the pattern of Legion's own, and he calls. The dead of Albion, Midgard and Hibernia hear him through the floors of their frontier dungeons, and some of them answer.\n\nHe wears the shape of one of the sidhe, a tall caster in fine robes, and for a while he fights like one. When he has been hurt enough to take you seriously he makes a bargain in front of you: a sacrifice walks to his feet across the floor, and a demon stands up beside him. Let the sacrifice reach him and the price is paid, and when the demon falls, the Shade of Aelfgar comes to collect, an old spear-ghost whose shout drops men where they stand. At half his strength he stops pretending. The elf splits and the demon steps out of it, whole again, as if the first half of the fight had happened to someone else. Nobody knows which one was the real Govannon. Possibly he does not know either.",
+  "legend": "Govannon is two fights. At 80% kill the sacrifice before it reaches his feet, or the Shade of Aelfgar comes once the demon dies; stun break for the shade's shout. At 50% he turns demon and heals to full, so pace your power: the second half is the real fight. Don't drag him off his spot, he can't be hurt past his tether. Period raids took about 40 people and half an hour. The shield node story is old raid talk; nobody has found the node.",
+  "yells": {
+    "aggro": [
+      "You came down through your own floors to me. I have been calling your dead for years. Now I call you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "A bargain, then. Walk to me, little sacrifice. Rise, my demon."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The price is paid. Aelfgar, come and collect."
+      },
+      {
+        "trigger": "morph",
+        "text": "Enough of this skin. Look at me as I am."
+      }
+    ],
+    "death": [
+      "Every bargain... ends... I forgot..."
+    ],
+    "slay": [
+      "Another voice for my hall.",
+      "You will answer when I call, now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The deepest room. It is built like Legion's own.",
+      "A tall figure in robes is calling. The dead listen."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "A sacrifice walks toward Govannon. Stop it!"
+      },
+      {
+        "trigger": "addsDead",
+        "text": "The Shade of Aelfgar rises to collect the price!"
+      },
+      {
+        "trigger": "morph",
+        "text": "Govannon tears off his elven shape. A demon stands!"
+      }
+    ],
+    "realmFirstKill": "The Grand Summoner is silent. The calling has stopped."
+  },
+  "botLines": {
+    "briefing": [
+      "govannon at 80%: kill the sacrifice before it reaches him, or we get the shade of aelfgar",
+      "at 50% he goes demon and heals to FULL. dont blow everything early, second half is the real fight",
+      "dont pull him off his spot, he goes immune past his tether"
+    ],
+    "aftermathWin": [
+      "govannon down!! [elf, demon, dead|three forms and he still died]",
+      "the calling stopped. [did anyone else hear it stop?|weird quiet down there now]"
+    ],
+    "aftermathLoss": [
+      "he went demon at half and healed up and we had nothing left",
+      "let the sacrifice through. aelfgar's shout stunned the whole raid"
+    ],
+    "rumour": [
+      "grand summoner govannon starts the fight as an elf and finishes it as a demon. nobody knows which one is the real him",
+      "[the old raiders say|word is] there's a shield node in govannon's room. [never seen it|nobody's found it]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Govannon",
+    "text": "The Grand Summoner, named for a smith of the old tales because he too is a maker; what he makes is bargains. He wears a sidhe's shape until half his strength is gone, and then the demon steps out of it, whole. Stop his sacrifice reaching his feet, or the Shade of Aelfgar comes to collect."
+  },
+  "bookPage": "Of the bargains of the Grand Summoner, from a sidhe magicker who had been his student, as near as I could follow her. Every calling has a price, she said, and he always pays it, because a maker who does not pay is only a thief. The price walks to him on its own feet. If it arrives, the debt is settled, and the one he owes, an old ghost named Aelfgar, comes up out of the floor to take what is owed. If it does not arrive, he must find another way to pay, and he does not like that. She said the elf you see is the shape he was paid in, long ago. She would not say what paid it.",
+  "chronicle": {
+    "win": "In the deepest room under the three frontiers, {raidLeader} of {realm} slew Grand Summoner Govannon in {minutes} minutes; the calling stopped.",
+    "loss": "Grand Summoner Govannon added {raidLeader}'s raid from {realm} to the voices of his hall after {minutes} minutes."
+  },
+  "realmTakes": {
+    "albion": {
+      "botLines": {
+        "briefing": [
+          "govannon: sacrifice dies before it reaches him, thats the whole trick. clerics ready for the shade's stun"
+        ],
+        "aftermathWin": [
+          "for albion! the summoner is dead. [huzzah|gg all]"
+        ],
+        "rumour": [
+          "the priests in camelot say the shade of aelfgar was one of ours once. a knight, they say"
+        ]
+      }
+    },
+    "midgard": {
+      "botLines": {
+        "briefing": [
+          "govannon. kill the sacrifice, kill the demon, if the shade comes break the stun. at half he heals to full"
+        ],
+        "aftermathWin": [
+          "thats for ormarr's miners. [the calling is done|aros can rest]"
+        ],
+        "rumour": [
+          "dodens gruva's dead were walking down to him. aros held them back. [now we've finished it|good riddance]"
+        ]
+      }
+    },
+    "hibernia": {
+      "botLines": {
+        "briefing": [
+          "the summoner wears a sidhe's face, dont be fooled. sacrifice dies first, save power for the demon half"
+        ],
+        "aftermathWin": [
+          "the false sidhe is dead. [tir na nog will sing of this|for hibernia]"
+        ],
+        "rumour": [
+          "the druids say govannon wears the shape of one of the good folk. [an insult|shameful]"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "id": "summoner-cunovinda",
+  "name": "Summoner Cunovinda",
+  "catalogKey": "summoner-s-hall/summonercunovinda",
+  "locationId": "summoners-hall",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Summoner Cunovinda is a level-75 summoner with 100,000 health, one of the three objectives before the Grand Summoner.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She casts Summoner Bolt, sends a random attacker to a fixed high spot of her room, and cannot be hurt past her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam comments: 'possibly the hardest summoner to kill'; she teleports sporadically, constantly throws people, evades many attacks, and throws people to the top of the room (2003-2006).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/6428"
+    },
+    {
+      "text": "Cunovinda looks like a Brittonic or Gaulish name (cuno- hound, vinda white; to verify).",
+      "provenance": "original",
+      "source": "Celtic name elements, to verify"
+    }
+  ],
+  "story": "Cunovinda's name means white hound in a tongue older than Camelot, and she hunts like one: never where you expect, always a little to the side. She was the Grand Summoner's first student and is still his best. She does not stand and trade blows. She puts you somewhere else, high on the ledges of her chamber, and goes on casting while you climb down. Veterans of the hall say she is harder than her master, and they say it with real respect.",
+  "legend": "Cunovinda throws people to the top of her room, so the healers must be ready to rez or heal at range. Don't chase her past her tether, she can't be hurt there. One skilled full group can do her, the old hands say, but it takes time and patience.",
+  "yells": {
+    "aggro": [
+      "Up you go, little hound. Look down on your friends."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Not there. Here. No, there."
+      }
+    ],
+    "death": [
+      "Tell him... his best student... was not enough..."
+    ],
+    "slay": [
+      "Fetch."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Ledges rise high in this chamber. Someone is up there."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Cunovinda hurls someone to the ledges above!"
+      }
+    ],
+    "realmFirstKill": "Summoner Cunovinda, the white hound, is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "cunovinda throws people up to the ledges. if you go up, climb down and come back",
+      "dont pull her off her spot, tether immune"
+    ],
+    "aftermathWin": [
+      "cunovinda down, the hardest summoner done"
+    ],
+    "aftermathLoss": [
+      "half the raid was on the ledges when she killed the healers"
+    ],
+    "rumour": [
+      "heard cunovinda is harder than govannon himself. [believe it|could be]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cunovinda",
+    "text": "The white hound, the Grand Summoner's first and best student. She does not trade blows; she puts you somewhere else, high on the ledges of her chamber."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Summoner Cunovinda in {minutes} minutes.",
+    "loss": "Summoner Cunovinda scattered {raidLeader}'s raid from {realm} across her ledges for {minutes} minutes."
+  }
+}
