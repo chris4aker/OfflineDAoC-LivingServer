@@ -387,7 +387,8 @@ public class SocialExpansionSettingsTests
         Directory.CreateDirectory(folder);
         var launcher = Assembly.Load("OfflineDAoC");
 
-        using (var form = (Form)Activator.CreateInstance(launcher.GetType("OfflineDaoc.Launcher.MainForm")!)!)
+        var form = (Form)Activator.CreateInstance(launcher.GetType("OfflineDaoc.Launcher.MainForm")!)!;
+        try
         {
             form.ShowInTaskbar = false;
             form.StartPosition = FormStartPosition.Manual;
@@ -403,6 +404,10 @@ public class SocialExpansionSettingsTests
                 form.DrawToBitmap(image, new Rectangle(Point.Empty, image.Size));
                 image.Save(Path.Combine(folder, file));
             }
+        }
+        finally
+        {
+            DisposeWhenSettled(form, TimeSpan.FromSeconds(30));
         }
 
         var type = launcher.GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
@@ -468,6 +473,61 @@ public class SocialExpansionSettingsTests
         _stopped = false;
         Render("7-tab-server-running.png", _ => { });
         TestContext.Progress.WriteLine("UI previews: " + folder);
+    }
+
+    /// <summary>
+    /// Disposes a shown launcher window once it has settled. When shown, the launcher starts its own work (the dashboard
+    /// and Realm Exchange reads, then the update check), and Dispose throws "Dispose() cannot be called while doing
+    /// CreateHandle()" when it meets a control whose window handle is still being created (CI, 2026-11-05, twice; a
+    /// re-run passed). So the test pumps the message loop until that start-up work has reached its timers and no control
+    /// is creating its handle, and if Dispose still meets one, pumps again and retries, naming the control in the test
+    /// log. Only the test waits; the launcher is unchanged.
+    /// </summary>
+    private static void DisposeWhenSettled(Form form, TimeSpan timeout)
+    {
+        DateTime until = DateTime.UtcNow + timeout;
+        void Pump() { Application.DoEvents(); Thread.Sleep(20); }
+        // The launcher starts its auto-refresh timer once the Shown handler's reads are done (MainForm's Shown).
+        var autoRefresh = form.GetType().GetField("_autoRefresh", Hidden)?.GetValue(form) as System.Windows.Forms.Timer;
+        DateTime readsUntil = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+        while (autoRefresh is { Enabled: false } && DateTime.UtcNow < readsUntil) Pump();
+        for (int i = 0; i < 5; i++) Pump();
+        for (int attempt = 1; ; attempt++)
+        {
+            while (CreatingHandle(form) != null && DateTime.UtcNow < until) Pump();
+            try
+            {
+                form.Dispose();
+                return;
+            }
+            catch (InvalidOperationException e) when (e.Message.Contains("CreateHandle") && attempt < 20 && DateTime.UtcNow < until)
+            {
+                Control busy = CreatingHandle(form);
+                TestContext.Progress.WriteLine($"Dispose met a control still creating its handle ({(busy == null ? "not found" : busy.GetType().Name + " '" + busy.Name + "'")}); " +
+                                               $"pumping and trying again (attempt {attempt}).");
+                for (int i = 0; i < 10; i++) Pump();
+            }
+        }
+    }
+
+    // Control.GetState(States.CreatingHandle), read by reflection: null when this WinForms has no such state to read.
+    private static readonly MethodInfo GetStateMethod = typeof(Control).GetMethods(Hidden)
+        .FirstOrDefault(m => m.Name == "GetState" && m.GetParameters() is [{ ParameterType.IsEnum: true }] && m.ReturnType == typeof(bool));
+    private static readonly object CreatingHandleState = GetStateMethod != null &&
+        Enum.TryParse(GetStateMethod.GetParameters()[0].ParameterType, "CreatingHandle", out object state) ? state : null;
+
+    /// <summary>The first control under root (root included) whose window handle is being created now, or null.</summary>
+    private static Control CreatingHandle(Control root)
+    {
+        if (CreatingHandleState == null) return null;
+        try
+        {
+            return new[] { root }.Concat(All(root)).FirstOrDefault(c => (bool)GetStateMethod.Invoke(c, [CreatingHandleState])!);
+        }
+        catch (InvalidOperationException)
+        {
+            return null; // the control tree changed while it was read (another thread); the retry still covers it
+        }
     }
 
     private static IEnumerable<Control> All(Control root)
