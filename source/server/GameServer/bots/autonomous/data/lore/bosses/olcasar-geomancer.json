@@ -1,0 +1,82 @@
+{
+  "id": "olcasar-geomancer",
+  "name": "Olcasar Geomancer",
+  "catalogKey": "galladoria/olcasargeomancer",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. He 'tears off a chunk of himself and tosses it to the ground' to make a minion, raises slain minions, stuns for 9 seconds, and snares the area from 80%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He carries a damage shield and a self-heal (Olcasar Tear).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Olcasar of Galladoria include stonemelders, tainters, deepstalkers, trackers, a spikelord, a mystic and a belladonna.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "The Olcasar are stone that drank the Root's sap and learned to hate, and the Geomancer is the oldest of them, the one who first understood that a body of stone is only a quarry. When he needs a servant he breaks one off himself and throws it down, and it gets up. When a servant is broken he speaks over the rubble, and it gets up again. His own wounds he closes with the slow tear of a weeping rock. He is not fast and he is not proud. He simply does not run out of himself as quickly as his enemies run out of patience.",
+  "legend": "He makes adds out of himself on a timer and raises the ones you kill, so AoE them down where they stand and keep pressure on him. From eighty he snares the room and he stuns, so purge and keep the healers moving. Reflected damage on melee: heal through it.",
+  "yells": {
+    "aggro": [
+      "Stone remembers every blow."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Olcasar tears off a chunk of himself and tosses it to the ground."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "Rise. The quarry is not empty."
+      }
+    ],
+    "death": [
+      "Gravel... only gravel..."
+    ],
+    "slay": [
+      "You break as easily as anything."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Rubble that was once something, waiting."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=80",
+        "text": "The stone floor grips your feet."
+      }
+    ],
+    "realmFirstKill": "The Olcasar Geomancer is broken to gravel."
+  },
+  "botLines": {
+    "briefing": [
+      "geomancer makes adds out of his own body and raises the dead ones. [aoe them|kill them flat] and stay on him"
+    ],
+    "aftermathWin": [
+      "geomancer is gravel. [good aoe|nice work casters]"
+    ],
+    "aftermathLoss": [
+      "the adds kept getting back up and we [ran out of mana|lost the healers]"
+    ],
+    "rumour": [
+      "[heard|word is] the olcasar are rocks that drank olcasgean's sap. makes sense when you see them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Olcasar",
+    "text": "Stone that drank the Root's sap. The Geomancer breaks servants off his own body and raises them when they fall. He runs out of himself slowly."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Olcasar Geomancer; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Olcasar Geomancer after {minutes} minutes."
+  }
+}

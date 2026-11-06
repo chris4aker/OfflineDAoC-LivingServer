@@ -1,0 +1,73 @@
+{
+  "id": "uaimh-lairmaster",
+  "name": "Uaimh Lairmaster",
+  "catalogKey": "galladoria/uaimhlairmaster",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. On aggro he 'feels threatened and appears more menacing'; at 60% health he 'starts fleeing' back to his spawn.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Uaimh of Galladoria are diggers, delvers and foragers. Irish uaimh means 'cave'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "The Uaimh were cave-folk, diggers and foragers who lived in the hollow before it was the Root's, and their lairmaster was the strongest of them, the one who kept the den. When the sap rose in the tunnels the Uaimh drank it like everyone else and began to dig where the cave told them. Their master still keeps the den. He swells when threatened, as cornered beasts do, and when he is hurt he does what every den-keeper does: he runs home, back to the heart of his lair, where his kin and his bones are. Those who chase him are fighting on his ground.",
+  "legend": "At sixty he breaks and runs back to his lair. Do not panic and do not scatter after him: the raid moves to his spot as a body and finishes him there. Clear the Uaimh diggers around his den before you pull.",
+  "yells": {
+    "aggro": [
+      "Uaimh Lairmaster feels threatened and appears more menacing!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=60",
+        "text": "Uaimh Lairmaster starts fleeing!"
+      }
+    ],
+    "death": [
+      "The den... is empty now."
+    ],
+    "slay": [
+      "Drag it to the den."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gnawed bones, stacked with care."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=60",
+        "text": "The Lairmaster flees to his den!"
+      }
+    ],
+    "realmFirstKill": "The Uaimh Lairmaster's den is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "lairmaster runs home at sixty. [dont chase in ones and twos|move together] and finish him at his den"
+    ],
+    "aftermathWin": [
+      "chased him home and killed him in his own bed. [rude but effective|grats]"
+    ],
+    "aftermathLoss": [
+      "he ran, half of us chased, half didnt. [split raid, dead raid|never again]"
+    ],
+    "rumour": [
+      "[heard|someone said] the uaimh were just cave folk before olcasgean's sap got into them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lairmaster",
+    "text": "The keeper of the Uaimh den, cave-folk turned by the Root's sap. Wounded, he runs home to his lair, and he is worse there."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Uaimh Lairmaster's den; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Uaimh Lairmaster after {minutes} minutes."
+  }
+}

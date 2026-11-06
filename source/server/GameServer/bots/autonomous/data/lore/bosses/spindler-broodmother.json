@@ -1,0 +1,84 @@
+{
+  "id": "spindler-broodmother",
+  "name": "Spindler Broodmother",
+  "catalogKey": "galladoria/spindlerbroodmother",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. One or two newly-born spindlers hatch every few seconds while she fights.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "When she dies, 20-25 underdeveloped spindlers burst from her body.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "She mesmerises a random target every 20-30 seconds; her teleport is off for bot raids.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The Hibernian epic raid wiped at her once on 2026-11-05 (build 8d7baa3).",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "The spindlers of Galladoria all come from one mother, and she has never stopped. The Broodmother is bloated past moving far, a sac of eggs on legs, and she does not need to hunt: the hollow brings her food. While she fights the young drop from her one by one and run at whoever is nearest. She lulls the strongest foe to stillness with a slow sway, as she lulls her eggs. And at the end, when her body fails, she gives the hollow everything she was still carrying, all at once. Raiders who celebrate her death too early have a short celebration.",
+  "legend": "Kill the hatchlings as they drop, steadily, and never forget the last part: when she dies twenty or more young spill out of her at once. Healers ready, AoE casters stacked on her corpse before the killing blow. Break the mezz on whoever she lulls.",
+  "yells": {
+    "aggro": [
+      "The broodmother's sac shudders. Something inside moves."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "A newly-born spindler drops from her and runs."
+      }
+    ],
+    "death": [
+      "Her body splits. The brood pours out!"
+    ],
+    "slay": [
+      "The young feed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is soft. It moves."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "The Broodmother bursts. Her brood pours out!"
+      }
+    ],
+    "realmFirstKill": "The Spindler Broodmother is dead. Her brood is not."
+  },
+  "botLines": {
+    "briefing": [
+      "broodmother drops babies the whole fight, kill them steady. when she dies [twenty more pop out|she bursts]",
+      "aoe casters on her corpse before the kill. [healers ready|dont celebrate early]"
+    ],
+    "aftermathWin": [
+      "she popped and the aoe [ate every baby|cleaned it up]. perfect"
+    ],
+    "aftermathLoss": [
+      "we killed her and then [the brood killed us|wiped to the babies]. classic"
+    ],
+    "rumour": [
+      "[heard|someone said] the broodmother [wiped a whole raid|got the realm raid] with her babies after she died"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Broodmother",
+    "text": "The mother of every spindler in Galladoria. Her young drop from her as she fights, and when she dies she gives up all she was carrying at once."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Spindler Broodmother; {raidLeader}'s raid finished it in {minutes} minutes. Her last brood died on her corpse.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Spindler Broodmother's brood after {minutes} minutes."
+  }
+}

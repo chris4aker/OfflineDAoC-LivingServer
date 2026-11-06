@@ -1,0 +1,79 @@
+{
+  "id": "corrupt-primal-of-earth",
+  "name": "Corrupt Primal of Earth",
+  "catalogKey": "galladoria/earthprimal",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The four Corrupt Primals rise at the waterfall bridge after the voices; Olcasgean wakes only when all four are dead. Their shared line is 'We shall protect.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "Level 83, 125,000 health, tethered within 890 of its spot. Four Earthmenders (Guardian, Magical, Natural, Shadowy) rise with it and each heals it for 2,000.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "For Living Server raids the menders heal only the primal and fight back; the original class puzzle (each mender hurt only by its own class group) is behind a switch.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Stone was the last of the four to fall to the Root and is the hardest to free, because stone does not fall alone. Four menders rise with it, one of each kind the old earth-tenders were: guardian, magical, natural and shadowy. They were the isle's healers once, the Sylvan say, the ones who closed the ground after a landslip. Now they close the Primal's wounds as fast as a raid can open them. The Primal itself barely moves from its place; stone never did. It does not need to. While its menders live, it has all the time in the world.",
+  "legend": "Kill the four Earthmenders first, one party on each, and only then the primal; while they live it heals faster than you hurt it. It will not leave its spot, so do not try to pull it. Bring a tank for each mender, because they fight back now.",
+  "yells": {
+    "aggro": [
+      "Stone does not fall alone."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The menders are gone. The stone cracks."
+      }
+    ],
+    "death": [
+      "The stone... remembers the sky."
+    ],
+    "slay": [
+      "We shall protect."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four voices speak as one: we shall protect."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The last Earthmender falls. The stone is bare."
+      }
+    ],
+    "realmFirstKill": "The earth of Hy Brasil is its own again."
+  },
+  "botLines": {
+    "briefing": [
+      "earth primal: kill the four earthmenders first. [one group each|guardian, magical, natural, shadowy]",
+      "dont pull the earth primal, it wont move. [we go to it|fight it on its spot]"
+    ],
+    "aftermathWin": [
+      "menders first then the rock. [textbook|exactly like we said]"
+    ],
+    "aftermathLoss": [
+      "we hit the earth primal with all four menders up and it [never moved off full|healed through everything]"
+    ],
+    "rumour": [
+      "[heard|someone said] the earthmenders [fight back now|hit hard]. bring tanks for each"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Primal of Earth",
+    "text": "The stone of the isle, last to fall to the Root. Four menders rise with it and close its wounds. Kill the menders and the stone is bare."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Corrupt Primal of Earth; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Earth after {minutes} minutes."
+  }
+}

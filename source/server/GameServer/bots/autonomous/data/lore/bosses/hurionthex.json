@@ -1,0 +1,83 @@
+{
+  "id": "hurionthex",
+  "name": "Hurionthex",
+  "catalogKey": "galladoria/hurionthex",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Every 18 seconds he changes form: his own, a Treant, a 'Saiyan' ape that spreads Black Plague, and a Granidon with a 120 damage shield.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Messages: 'A ring of magical energy emanates from Hurionthex', 'Hurionthex returns to his natural form'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs"
+    },
+    {
+      "text": "Bot chat: he wears a different shape every time, so trust nothing that looks friendly.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Hurionthex has no shape of his own that anyone trusts. The Sylvan think he was a shapechanger of the old forest, a druid of their own kind who learned to wear any skin, and that the Root taught him to forget which one was his. Now he cannot hold a form for longer than a few breaths. He becomes a treant, heavy and grinding; then a great ape that carries plague in its fur; then a granidon of living stone that wounds every hand that strikes it; then, briefly, himself, whatever that is. A ring of light marks each change. Raiders learn to read the ring as sailors read the sky.",
+  "legend": "Watch the forms. Stone form hurts every melee hit back: melee ease off or eat it with heals, casters keep going. Ape form spreads plague, so cure fast. He resets if you let the fight drop, so do not stop. Trust nothing friendly-looking in his hall.",
+  "yells": {
+    "aggro": [
+      "Which of me will you fight?"
+    ],
+    "phases": [
+      {
+        "trigger": "formChange",
+        "text": "A ring of magical energy emanates from Hurionthex."
+      },
+      {
+        "trigger": "health<=30",
+        "text": "I have forgotten my own face. I will take yours."
+      }
+    ],
+    "death": [
+      "Hurionthex returns to his natural form."
+    ],
+    "slay": [
+      "Your shape will suit me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Footprints of four creatures, ending in one."
+    ],
+    "phases": [
+      {
+        "trigger": "formChange",
+        "text": "Hurionthex's body twists into a new shape!"
+      }
+    ],
+    "realmFirstKill": "Hurionthex lies still, wearing his own face at last."
+  },
+  "botLines": {
+    "briefing": [
+      "hurionthex changes form every few seconds. stone form reflects melee, [melee back off|casters only] then",
+      "ape form spreads plague. [cure it|clerics on cure disease]"
+    ],
+    "aftermathWin": [
+      "he died in his own shape. [nobody knows what it was|looked sad, honestly]"
+    ],
+    "aftermathLoss": [
+      "the melee kept swinging into stone form and [killed themselves|died to the shield]"
+    ],
+    "rumour": [
+      "[heard|someone said] hurionthex took the shape of a sylvan [once|last week] and walked up to a group"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hurionthex",
+    "text": "A shapechanger of the old forest who forgot which shape was his. Treant, plague-ape, living stone, then himself for a breath. Read the ring of light and change your fight with him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to Hurionthex, in whatever shape he died; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Hurionthex after {minutes} minutes."
+  }
+}

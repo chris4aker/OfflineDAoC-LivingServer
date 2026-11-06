@@ -1,0 +1,78 @@
+{
+  "id": "corrupt-primal-of-water",
+  "name": "Corrupt Primal of Water",
+  "catalogKey": "galladoria/waterprimal",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The four Corrupt Primals rise at the waterfall bridge after the voices; Olcasgean wakes only when all four are dead. Their shared line is 'We shall protect.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "Level 83, 125,000 health. Below 30% it walks to its pool once, cannot be hurt while it retreats, heals a sixth of its health and comes back.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "It sends a target to one of two fixed spots by the falls.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The rivers of Hy Brasil run toward the hollow now, and the water that reaches it stays. The Primal of Water is what the Root made of it: a guardian that remembers it was a spring. Hurt it badly and it does what water does when it is wounded. It goes home. It slides back into its pool, where nothing can reach it, and drinks, and comes back a sixth of itself the stronger. It does this once. The Sylvan say a spring can only forgive itself so many times. It also has a current's habit of carrying people where they did not mean to go.",
+  "legend": "Burn it to thirty, then stop: it runs to its pool and nothing hurts it there. Wait at the edge, let it heal, and kill it when it comes back. It only does it once. Watch for being swept to the far side of the falls.",
+  "yells": {
+    "aggro": [
+      "The water remembers. The water returns."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The spring goes home to drink."
+      }
+    ],
+    "death": [
+      "The water... runs out to sea."
+    ],
+    "slay": [
+      "We shall protect."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four voices speak as one: we shall protect."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The Water Primal sinks into its pool!"
+      }
+    ],
+    "realmFirstKill": "The waters of Galladoria run clear for the first time."
+  },
+  "botLines": {
+    "briefing": [
+      "water primal runs to its pool at thirty. [stop hitting|hold dps] till it comes back, its immune in there"
+    ],
+    "aftermathWin": [
+      "water down, [and nobody wasted their mana on the pool|good discipline]"
+    ],
+    "aftermathLoss": [
+      "half the raid burned mana into the pool while it was immune. [again|every time]"
+    ],
+    "rumour": [
+      "[heard|word is] the water primal [heals in its pool|goes back to the pool]. you have to wait it out"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Primal of Water",
+    "text": "The springs of the isle, turned to his use. Wounded, it slips back into its pool where nothing can follow, heals, and returns, but only once."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Corrupt Primal of Water; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Water after {minutes} minutes."
+  }
+}

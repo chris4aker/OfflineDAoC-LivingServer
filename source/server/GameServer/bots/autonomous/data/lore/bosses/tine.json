@@ -1,0 +1,78 @@
+{
+  "id": "tine",
+  "name": "Tine",
+  "catalogKey": "galladoria/tine",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 67, 50,000 health, spawned by Xaga; a flying spirit whose spell Tine's Fire deals 450 heat over a 450 radius.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "For Living Server raids she holds low over the floor while fought so melee can reach her; otherwise she circles the room.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish tine means 'fire'.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Tine is the fire Xaga bound to her staff, a spirit of flame that circles the seed-keeper's room on the air. She was a hearth-fire once, the Sylvan say, the small fire a wanderer lights in a wet wood to stay alive, and Xaga kept her because nothing grows in the dark without a little warmth. Now she warms nothing. When her mistress is touched she drops from the air and bursts in a ring of heat, and she calls her sister Beatha to do the same. She will come down to fight; she will not come down to be caught.",
+  "legend": "Fire spirit with a big heat burst: spread out and keep heat resists up. She calls Beatha and Xaga, so be ready for all three. Melee can reach her while she is fought. The realm raid wiped on her not long ago; take her seriously.",
+  "yells": {
+    "aggro": [
+      "The spirit of fire flares and dives."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tine burns brighter, calling her sister."
+      }
+    ],
+    "death": [
+      "The hearth-fire gutters and goes out."
+    ],
+    "slay": [
+      "Ash, and then nothing."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small fire circles overhead, hungry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tine's fire fills the room!"
+      }
+    ],
+    "realmFirstKill": "Tine, Xaga's fire, is put out at last."
+  },
+  "botLines": {
+    "briefing": [
+      "tine is the fire one. [spread out|no stacking], the burst hits everyone near"
+    ],
+    "aftermathWin": [
+      "tine down. [one spirit to go|beatha next]"
+    ],
+    "aftermathLoss": [
+      "wiped on tine [again|like last time]. everyone was stacked"
+    ],
+    "rumour": [
+      "[heard|someone said] the realm raid wiped on tine. the little fire one"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tine",
+    "text": "Xaga's fire, a hearth-flame turned to a weapon. She bursts in a ring of heat and calls her sister Beatha."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to Tine, Xaga's fire; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Tine, Xaga's fire after {minutes} minutes."
+  }
+}

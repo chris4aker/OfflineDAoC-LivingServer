@@ -1,0 +1,108 @@
+{
+  "id": "olcasgean",
+  "name": "Olcasgean",
+  "catalogKey": "galladoria/olcasgean",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 87, 250,000 health, Galladoria's final. He sleeps until all four Corrupt Primals are dead, then wakes 25 seconds later.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "His voices: 'Intruders have entered inner sanctum', a deep 'P...R...O...T...E...C...T..', 'I am tired, and yet, there is much left for me to take care of this day', 'We shall protect', and on waking 'I am eternal. You and your kind will die.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "When he wakes a second body (Olcasgean2) with its own 250,000 health rises with him; at 50% each casts a heavy spell.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His original split-position puzzle (two safe points, roots, throws, the waterfall wall) is switched off for bot raids.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Killed by 140 Hibernians in May 2003 after 340 failed.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "Titan, child of the earth, banished to World's End: bot-chat lore, kept as Living Server canon.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Olcasgean is the oldest thing on Hy Brasil and the forest's oldest enemy. When the first Sylvan woke he was already there, vast and slow and bitter, and the forests together pushed him to World's End. He went. His roots did not. They ran under the isle and ended here, in the hollow, and here he keeps the part of himself that still wants things.\n\nHe sleeps behind the falls with the isle's four elements bound around him as guards. When intruders cross the bridge the guardians speak with one voice, and he answers them from under the water, slow, spelling the word out as if he had forgotten it: protect. He admits he is tired. He does not stop. Only when the last guardian dies does he rise, and he does not rise alone: the Root has two trunks now, and both of them are him. 'I am eternal,' he tells the realm. He may be right. But he can be cut down, and Hibernia has done it.",
+  "legend": "Nothing touches him until the four primals are dead, so do not waste a single spell on the sleeping titan. When he wakes there are two of him, each with a full life: split the raid or burn one and then the other, but never half-hit both. Expect a big hit at half health from each. A hundred is enough if they know the bridge.",
+  "yells": {
+    "aggro": [
+      "I am eternal. You and your kind will die."
+    ],
+    "phases": [
+      {
+        "trigger": "wake",
+        "text": "P...R...O...T...E...C...T.."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Cut one root and the tree grows two."
+      }
+    ],
+    "death": [
+      "The forest... was always... afraid of me."
+    ],
+    "slay": [
+      "Return to the soil. I will drink you there."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Beyond the falls, something vast is tired.",
+      "The water here runs uphill, toward him."
+    ],
+    "phases": [
+      {
+        "trigger": "wake",
+        "text": "The Root wakes. The whole isle shudders."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The titan's second trunk tears free!"
+      }
+    ],
+    "realmFirstKill": "Olcasgean is cut down. Hy Brasil breathes.",
+    "wake": "Olcasgean wakes. The roots of Hy Brasil tighten."
+  },
+  "botLines": {
+    "briefing": [
+      "dont touch the titan till all four primals are dead. hes asleep and [immune anyway|we just waste mana]",
+      "when he wakes theres two of him, full health each. [main assist on the first|we kill one then the other]",
+      "both bodies hit hard at half. healers [save something|keep a big heal] for that"
+    ],
+    "aftermathWin": [
+      "olcasgean down. the sylvan in domnann are going to [cry|sing all night]",
+      "two titans, one raid. [best night this realm has had|grats all]"
+    ],
+    "aftermathLoss": [
+      "we split damage on both bodies and neither died. [one at a time next time|focus]",
+      "lost it on the second trunk. [so close|half a bar]"
+    ],
+    "rumour": [
+      "[heard|someone swears] they heard olcasgean talking at the bridge with nobody there. [i am tired|protect] or something",
+      "the trees in world's end look [sicker|worse] this week. maybe the root is waking"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Olcasgean",
+    "text": "The Root of Hy Brasil, driven to World's End before the first songs. His roots end in Galladoria, and his four guardians keep him asleep. When they fall he wakes as two, and both must be cut down."
+  },
+  "bookPage": "On the night the realm went down to the Root, the bards who waited at the mouth say the ground moved twice: once when the last of the four guardians fell, and once, much later, when he did. Between the two the Sylvan sat in a ring and did not speak. When the raid came up, an old one asked only whether he had said anything at the end. They told her what they had heard. She said that was the first true thing he had said in an age, and went home.",
+  "chronicle": {
+    "win": "{realm} woke the Root and cut him down: {raidLeader}'s raid felled both trunks of Olcasgean in {minutes} minutes.",
+    "loss": "Olcasgean woke and drank {realm}'s raid under {raidLeader}; it lasted {minutes} minutes."
+  }
+}

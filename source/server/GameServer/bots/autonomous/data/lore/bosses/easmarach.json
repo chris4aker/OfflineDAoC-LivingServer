@@ -1,0 +1,78 @@
+{
+  "id": "easmarach",
+  "name": "Easmarach",
+  "catalogKey": "galladoria/easmarach",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. It takes damage only from attackers near the falls; at 30% it retreats to the waterfall, clears its foes and heals an eighth.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It can push a player behind the falls ('The strong current of the waterfall pushes you behind'); its death message: 'the current of the falls reduces significantly.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs"
+    },
+    {
+      "text": "Irish eas means 'waterfall'; the rest of the name is unglossed (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Every water that runs into Galladoria runs out over the great falls, and the falls have a will. The Sylvan call it Easmarach, a name with the old word for a waterfall at its start. It is the last door before the sanctum: while it lives the current is a wall, and anyone who presses too close is caught and thrown behind the curtain of water to fight their way back. It is strong only where it is rooted, at the foot of its own falls, and when it is hurt badly it does what a river does in flood: it pulls back into itself, forgets its enemies, and gathers again. When it dies at last, the roar drops to a murmur, and the way to the bridge is open.",
+  "legend": "Fight it at the foot of the falls, because from anywhere else it shrugs you off. At thirty it runs back into the waterfall and wipes its hate list: tanks, be ready to grab it again when it comes out. If the current throws you behind the falls, walk back calmly. Kill it and the bridge gets easier.",
+  "yells": {
+    "aggro": [
+      "The falls do not part for you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The river remembers its source."
+      }
+    ],
+    "death": [
+      "The water... grows quiet."
+    ],
+    "slay": [
+      "Carried away, like all the rest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The current pulls at your legs like hands."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Easmarach retreats into the waterfall!"
+      }
+    ],
+    "realmFirstKill": "The falls of Galladoria fall quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "easmarach only takes damage at the falls. at thirty it [runs back|retreats] and drops aggro, tanks grab it"
+    ],
+    "aftermathWin": [
+      "easmarach down, the falls went quiet. [bridge next|on to the bridge]"
+    ],
+    "aftermathLoss": [
+      "it came back out of the falls and [nobody had aggro|ate the healers]"
+    ],
+    "rumour": [
+      "got thrown behind the waterfall in galladoria [twice|three times]. easmarach does that"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Easmarach",
+    "text": "The will of the great falls, the last door before the sanctum. It is strong only at its foot, and when wounded it withdraws into the water to gather itself. Its death quiets the current."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the falls of Easmarach; {raidLeader}'s raid finished it in {minutes} minutes. The current dropped to a murmur.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Easmarach at the falls after {minutes} minutes."
+  }
+}

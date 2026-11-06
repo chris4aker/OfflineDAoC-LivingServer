@@ -1,0 +1,78 @@
+{
+  "id": "organic-energy-mechanism",
+  "name": "Organic-Energy Mechanism",
+  "catalogKey": "galladoria/organicenergymechanism",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 79, 100,000 health, a 150 damage shield (Shield of World Soul), and three to five Summoned Bottom Feeders every ten seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It marks a target ('looks sickly... powerfull magic essense will errupt'), slows, and saps strength and constitution.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs"
+    },
+    {
+      "text": "It resets after 40 seconds out of combat.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Deep in the hollow something beats. The Sylvan call it a heart; the first Hibernians to see it called it a mechanism, because it looks made: a knot of root and stone and wet tissue that pumps the world soul through Galladoria as a heart pumps blood. It was grown, not built, but grown to a purpose, and the purpose is to keep the Root's sap moving. It wraps itself in that sap like armour, so that every blow on it is paid back. It calls the bottom feeders out of the pools to clean whatever it kills. And when it singles someone out, they sicken visibly, a moment before the essence bursts out of them.",
+  "legend": "Kill the bottom feeders as they come or they pile up. Melee takes damage back from its shield: rotate and heal. When someone 'looks sickly', they run away from the group before it erupts. Keep the fight going or it resets.",
+  "yells": {
+    "aggro": [
+      "The beat in the stone quickens."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Bottom feeders crawl from the pools to its call."
+      }
+    ],
+    "death": [
+      "The beat... falters... stops."
+    ],
+    "slay": [
+      "The pools will have you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pulse in the stone, slow as a heart."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Mechanism pumps faster. The walls throb."
+      }
+    ],
+    "realmFirstKill": "The heart of Galladoria has stopped beating."
+  },
+  "botLines": {
+    "briefing": [
+      "mechanism spawns bottom feeders every few seconds, [kill them as they come|aoe them]. if youre marked sickly, run out"
+    ],
+    "aftermathWin": [
+      "the heart stopped. [the whole cave went quiet|you could hear it]"
+    ],
+    "aftermathLoss": [
+      "the sickly guy ran into the healers [instead of away|and popped]"
+    ],
+    "rumour": [
+      "[heard|swear] you can hear the mechanism beating from the galladoria entrance on a quiet night"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "mechanism",
+    "text": "A heart grown out of root and stone that pumps the world soul through Galladoria. It wears the sap as armour and calls the bottom feeders."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Organic-Energy Mechanism; {raidLeader}'s raid finished it in {minutes} minutes. The heart of the hollow stopped.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Organic-Energy Mechanism after {minutes} minutes."
+  }
+}

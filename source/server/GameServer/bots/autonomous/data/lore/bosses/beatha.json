@@ -1,0 +1,78 @@
+{
+  "id": "beatha",
+  "name": "Beatha",
+  "catalogKey": "galladoria/beatha",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 67, 50,000 health, spawned by Xaga; a flying spirit whose Beatha's Void deals 450 cold over a 450 radius.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Originally Beatha's damage healed Xaga for twice its amount; that is removed for Living Server raids and kept behind a switch.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish beatha means 'life'.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Beatha is the life Xaga bound, and the Sylvan think her the cruellest thing in the seed-keeper's room. She was the green force that pushes a shoot out of a seed, and Xaga turned her inside out. Now what she touches does not grow; it empties, a void of cold that leaves the living a little less alive. In the old telling the life she took went straight to her mistress, and Xaga drank it and was whole. Whether or not that is still so, Beatha circles the room on the air beside her sister Tine, and comes down the moment Xaga is touched.",
+  "legend": "The pale one. Her cold burst hits everyone near her: spread out and keep cold resists up. The old guides said every hurt she did healed Xaga twice over, so veterans still kill her before Xaga out of habit. She comes with Tine and calls her.",
+  "yells": {
+    "aggro": [
+      "The pale spirit drops without a sound."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cold pours out of Beatha like breath."
+      }
+    ],
+    "death": [
+      "The pale light fades. Something green stirs."
+    ],
+    "slay": [
+      "Emptied, and given to my mistress."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pale light circles. The air goes thin."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Beatha's void drinks the warmth from the room!"
+      }
+    ],
+    "realmFirstKill": "Beatha is unbound. Life returns to life."
+  },
+  "botLines": {
+    "briefing": [
+      "beatha is the pale one, cold burst. [spread|dont clump]. kill her before xaga"
+    ],
+    "aftermathWin": [
+      "beatha down. [the room felt warmer after|swear the air came back]"
+    ],
+    "aftermathLoss": [
+      "beatha's cold went through the whole raid. [resists next time|spread out]"
+    ],
+    "rumour": [
+      "[old guides said|someone told me] beatha's hits used to heal xaga [double|twice over]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Beatha",
+    "text": "Xaga's other spirit, life turned inside out. What she touches empties into cold. The old tales say what she took went to her mistress."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to Beatha, Xaga's pale spirit; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Beatha, Xaga's pale spirit after {minutes} minutes."
+  }
+}

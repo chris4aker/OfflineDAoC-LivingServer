@@ -1,0 +1,88 @@
+{
+  "id": "xaga",
+  "name": "Xaga",
+  "catalogKey": "galladoria/xaga",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. When she spawns, Tine and Beatha (two 50,000-health flying spirits) rise with her; she calls them when attacked and each calls the others.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "She cannot be hurt outside her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish tine means 'fire' and beatha means 'life'.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "The Hibernian epic raid wiped at Tine on 2026-11-05 (build 8d7baa3).",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "Xaga was a wise-woman of the Sylvan, a keeper of seeds, and the Root did not have to take her: she came to him. She went down into the hollow to learn what grew there, and she learned. Now she keeps two spirits as other women keep hounds, Tine and Beatha, fire and life, bound to her staff with the old words. They circle her room on the air, and when anyone lifts a hand against her they come at once, each calling the other. The Sylvan say the cruelty of it is in the names. Fire she made to burn. Life she made to empty. The spores of the great cluster nearby were shaken from her staff, and her garden still speaks her magic.",
+  "legend": "Xaga never fights alone: Tine and Beatha come as soon as you touch her, and they call each other. Kill the spirits first, fire then life or life then fire, but one at a time, then Xaga. Spread against their bursts. Fight her in her room; drag her out and she cannot be hurt.",
+  "yells": {
+    "aggro": [
+      "Tine! Beatha! To me!"
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "My spirits... you will pay for each of them."
+      },
+      {
+        "trigger": "health<=30",
+        "text": "Everything I planted down here will remember you."
+      }
+    ],
+    "death": [
+      "The seeds... will still grow..."
+    ],
+    "slay": [
+      "Feed the garden."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two lights circle the room, fire and something pale."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Xaga's spirits are gone. She stands alone."
+      }
+    ],
+    "realmFirstKill": "Xaga's spirits are free. Her garden withers."
+  },
+  "botLines": {
+    "briefing": [
+      "touch xaga and tine and beatha come too. [kill the spirits first|spirits first], one at a time",
+      "fight xaga in her room, outside it shes immune. [no dragging|stay put]"
+    ],
+    "aftermathWin": [
+      "xaga and both her spirits down. [good discipline|thats how its done]"
+    ],
+    "aftermathLoss": [
+      "we split on tine and beatha and [neither died|both killed us]"
+    ],
+    "rumour": [
+      "[heard|someone said] xaga was a sylvan seed keeper who went down to galladoria [on purpose|willingly]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Xaga",
+    "text": "A Sylvan seed-keeper who went down to the Root willingly. She binds two spirits, Tine and Beatha, fire and life, and they come the moment she is touched."
+  },
+  "bookPage": "The Sylvan do not say Xaga's name loudly. She was one of theirs, a keeper of seeds, and she was not taken. She went. She said the hollow grew things no forest had ever grown and that a keeper of seeds should know them all. When the others went down to find her she was waiting with two spirits at her shoulders, one burning and one pale, and she called them by the words for fire and for life. The pale one was the worse.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to Xaga and her two spirits; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Xaga and her spirits after {minutes} minutes."
+  }
+}

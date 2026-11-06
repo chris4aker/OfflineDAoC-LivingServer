@@ -1,0 +1,68 @@
+{
+  "id": "corrupt-primal-of-air",
+  "name": "Corrupt Primal of Air",
+  "catalogKey": "galladoria/airprimal",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The four Corrupt Primals rise at the waterfall bridge after the voices; Olcasgean wakes only when all four are dead. Their shared line is 'We shall protect.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "Level 83 with only 900 health; it flies, never melees and never walks home. Pets and turrets deal a fixed 5 per hit; direct damage kills it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "The wind of Hy Brasil was the first of the four to be taken, the Sylvan say, because wind goes everywhere and so went down into the hollow before anything else. The Root kept it. Now it circles high over the bridge, a little knot of stale air that has forgotten how to blow. It has almost no body to wound, and it knows it: it never comes down to fight, never closes, never flees, only hangs there while its kin do the killing. Beasts and summoned things claw at it uselessly, for there is nothing to claw. A single honest spell of the right weight will scatter it. The trick is to remember it is there.",
+  "legend": "Air goes first and it goes fast: one good nuke from below kills it. Pets and turrets are useless on it, so send them at the others. Casters and archers look up the moment the primals spawn. Forget it and it will hang over the bridge all night while its kin do the killing.",
+  "yells": {
+    "aggro": [
+      "The wind remembers nothing but the Root."
+    ],
+    "phases": [],
+    "death": [
+      "The air... moves again."
+    ],
+    "slay": [
+      "We shall protect."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four voices speak as one: we shall protect."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "A breath of clean wind crosses the bridge."
+      }
+    ],
+    "realmFirstKill": "The wind over Galladoria is free again."
+  },
+  "botLines": {
+    "briefing": [
+      "air primal has like nine hundred hp. [one nuke|first caster to look up] kills it. pets dont work on it"
+    ],
+    "aftermathWin": [
+      "air down in two seconds, [nice eyes casters|well spotted]"
+    ],
+    "aftermathLoss": [
+      "everyone forgot the air primal [again|for five minutes]. look up"
+    ],
+    "rumour": [
+      "somebody said the air primal [only has a handful of hp|dies to one bolt]. sounds too easy"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Primal of Air",
+    "text": "The wind of the isle, taken first and kept longest. It barely has a body. One true spell scatters it; claws and pets find nothing."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Corrupt Primal of Air; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Air after {minutes} minutes."
+  }
+}

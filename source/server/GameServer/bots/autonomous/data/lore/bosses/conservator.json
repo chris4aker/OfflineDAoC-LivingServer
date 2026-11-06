@@ -1,0 +1,78 @@
+{
+  "id": "conservator",
+  "name": "Conservator",
+  "catalogKey": "galladoria/conservator",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. It takes no damage unless the attacker stands within 800 of its spawn by the water.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It 'gathers energy from the water' and casts Essence of World Soul (energy damage over time) and a 550-point energy blast over 1,200.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs"
+    },
+    {
+      "text": "It resets after 30 seconds out of combat.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Where the titan's sap pools clearest, something keeps it. The Conservator does not hunt and does not wander. It sits at its pool and saves: every drop of the world soul that seeps down the walls, every glimmer of strength in the water, it gathers in and holds. The Sylvan say it was made to keep the isle's springs full in dry years. The Root taught it a miser's heart instead. It will spend its hoard only to protect it, but then it spends lavishly, pouring the world soul out as a burning sickness and as a blast that fills the cave. It cannot be lured from its water, and from any distance it is beyond harm, as a miser is beyond reach behind his door.",
+  "legend": "Fight it at its pool: from range or from outside its little circle you do nothing to it. Everyone stands close, healers included, and eats the big energy blast together. Cure the burning on the casters. Do not let the fight go quiet, or it resets.",
+  "yells": {
+    "aggro": [
+      "Mine. All of it. Mine."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You will not drink from my water."
+      }
+    ],
+    "death": [
+      "Spilled... all of it... spilled."
+    ],
+    "slay": [
+      "Your strength, too, I will keep."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The water glows. Something is saving it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Conservator gathers energy from the water..."
+      }
+    ],
+    "realmFirstKill": "The Conservator's hoard runs back into the isle."
+  },
+  "botLines": {
+    "briefing": [
+      "conservator is immune unless youre standing by its pool. everyone [in close|on top of it], no exceptions"
+    ],
+    "aftermathWin": [
+      "conservator down. the pool [went dark|stopped glowing] when it died"
+    ],
+    "aftermathLoss": [
+      "half the casters stood back and did nothing to it. [its immune from range|read the plan]"
+    ],
+    "rumour": [
+      "[heard|someone said] the conservator in galladoria [hoards the world soul|keeps the isle's sap]. creepy"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Conservator",
+    "text": "The keeper of the pool, made to save the isle's springs and taught a miser's heart. It cannot be harmed from beyond its water, and it spends its hoard only on those who try."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Conservator's pool; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Conservator after {minutes} minutes."
+  }
+}

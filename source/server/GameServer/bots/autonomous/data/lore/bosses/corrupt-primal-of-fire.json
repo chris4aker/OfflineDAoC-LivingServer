@@ -1,0 +1,73 @@
+{
+  "id": "corrupt-primal-of-fire",
+  "name": "Corrupt Primal of Fire",
+  "catalogKey": "galladoria/fireprimal",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The four Corrupt Primals rise at the waterfall bridge after the voices; Olcasgean wakes only when all four are dead. Their shared line is 'We shall protect.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "Level 83, 125,000 health, a damage shield of 80, and a trail of fire left on the ground every second.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The fire patches were softened for Living Server raids (owner, 2026-10-19); the original strength is behind a switch.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Hy Brasil burns rarely, and the Sylvan fear fire more than any other thing, so it grieves them most that the Root has a fire of his own. It is the heat of rot, the kind that wakes inside a wet haystack: slow, sour and relentless. The Primal of Fire carries it on its skin, so that every blade that bites it is bitten back, and it leaves its footprints burning on the stone. Fight it where it stands and you will be standing in what it has left. Move, and keep moving, and let the healers mind the bitten hands.",
+  "legend": "It burns whoever hits it, so melee needs steady heals. It leaves fire on the floor behind it: drag it in a line, never in circles, and step out of the patches. A raid that fights it in a ring ends up standing in its own fire.",
+  "yells": {
+    "aggro": [
+      "Rot is a fire too. Slow. Patient."
+    ],
+    "phases": [],
+    "death": [
+      "The fire... goes out."
+    ],
+    "slay": [
+      "We shall protect."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four voices speak as one: we shall protect."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The stones of the bridge are burning."
+      }
+    ],
+    "realmFirstKill": "The rot-fire of Galladoria is quenched."
+  },
+  "botLines": {
+    "briefing": [
+      "fire primal shields back on melee. [healers on the tanks|keep the melee topped]. and get out of the fire on the floor"
+    ],
+    "aftermathWin": [
+      "fire down. [nobody stood in it|only three of you stood in it]"
+    ],
+    "aftermathLoss": [
+      "we fought the fire primal in a circle and [stood in our own patches|cooked ourselves]"
+    ],
+    "rumour": [
+      "[heard|someone said] the fire on the bridge burns slower now. still burns"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Primal of Fire",
+    "text": "The heat of the Root's rot, given a body. It bites back every blade that bites it and leaves its footsteps burning. Keep moving."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Corrupt Primal of Fire; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Fire after {minutes} minutes."
+  }
+}

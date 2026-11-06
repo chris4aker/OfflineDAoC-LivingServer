@@ -1,0 +1,78 @@
+{
+  "id": "giant-sporite-cluster",
+  "name": "Giant Sporite Cluster",
+  "catalogKey": "galladoria/giantsporitecluster",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 79, 100,000 health; seven more clusters spawn with it and all join the fight together.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Its spell is a 200-radius cold blast named 'Xaga Staff Bomb'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs"
+    },
+    {
+      "text": "Sporites (blue cattail, virulent) grow throughout Galladoria.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Nothing in the hollow grows alone, and the sporites least of all. The Giant Sporite Cluster is a colony grown so old and so large that it has become one creature with eight bodies, every one of them answering when any is touched. The cold it spits is not its own: the Sylvan say the first spores were shaken from the staff of Xaga, who walks the halls nearby, and the colony still uses her magic as a child uses its mother's words. Strike one bloom and the whole garden turns on you.",
+  "legend": "It is eight, not one: all the clusters come when you pull. Spread out against the cold bursts, AoE helps, and keep the healers back from the bloom. Do it before Xaga, so her garden is not at your back.",
+  "yells": {
+    "aggro": [
+      "The blooms shiver all at once."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Spores rise in a freezing cloud."
+      }
+    ],
+    "death": [
+      "The colony withers, bloom by bloom."
+    ],
+    "slay": [
+      "Something new will grow there."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The blooms turn toward you. All of them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The whole garden wakes at once!"
+      }
+    ],
+    "realmFirstKill": "The great sporite colony is dead to the root."
+  },
+  "botLines": {
+    "briefing": [
+      "sporite cluster brings seven friends. [spread out|dont stack], the cold bursts hit everyone close"
+    ],
+    "aftermathWin": [
+      "garden weeded. [next|on to xaga]"
+    ],
+    "aftermathLoss": [
+      "we stacked on the sporites and the cold [ate the healers|did the rest]"
+    ],
+    "rumour": [
+      "[heard|someone said] the sporites in galladoria use xaga's magic. her staff or something"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sporites",
+    "text": "A colony so old it is one creature with eight bodies. Its cold is borrowed from Xaga's staff. Touch one bloom and all of them answer."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Giant Sporite Cluster; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Giant Sporite Cluster after {minutes} minutes."
+  }
+}
