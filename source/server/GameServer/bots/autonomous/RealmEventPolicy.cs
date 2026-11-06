@@ -55,6 +55,8 @@ namespace DOL.GS
         public static double EffectiveDefenseRatio => SiegeDefenseBalance.Ratio(DefenseRatio);
 
         public static int AttackerCap(bool relic) => relic ? RelicAttackers : KeepAttackers;
+        /// <summary>The attackers' cap in use: the full cap, trimmed by the siege balance once the defenders' share is at its limit.</summary>
+        public static int EffectiveAttackerCap(bool relic) => SiegeDefenseBalance.AttackerCap(AttackerCap(relic));
         /// <summary>
         /// Defenders a siege takes: the defense share of the attacking army, measured on its larger size, when it marched or
         /// now, at least 8 and at most the cap. 2026-10-19/20: the share was taken of the army that marched (10-60) while

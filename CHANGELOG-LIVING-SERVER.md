@@ -248,6 +248,29 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - Checked: unit tests (`UT_MarfachAndNightSieges`); the Marfach approach probe needs the installed navmeshes and has not
   run. Not played in game.
 
+**Keep sieges: when attackers keep winning, fewer of them come** (2026-11-06)
+- **What happened:** the next night, attackers took 13 of 17 keep sieges. The siege balance had already given
+  defenders all it could (one defender allowed per attacker), but that limit was rarely what held the defense back:
+  - **Defenders:** in most lost keeps the realm sent 35-90, all it had free.
+  - **Attackers:** reinforcements filled to the full 128 in 10 of 17 battles.
+  - **Fast losses:** five keeps fell in 9-13 minutes, before their defenders arrived.
+- **Change:** once the defenders' share is at its limit and attackers still take more than 5 of the last 6 keeps, the
+  balance now lowers the attackers' limit. It drops one step at a time, from 128 to 112 to 96 (240 to 210 to 180 for a
+  relic keep). When defenders start winning again, the attackers' limit comes back first, and then the defenders'
+  share falls as before.
+- **What stays the same:**
+  - the muster still waits for 64 (120 for a relic keep);
+  - the third realm still sends up to 64;
+  - forced sieges, retakes after your own capture, and the defense of a keep you attack keep their sizes.
+- **New log lines:**
+  - `RVR_SIEGE_PRESENCE`, every 5 minutes of a battle, shows who is actually at the keep beside who is committed.
+  - `RVR_EVENT_ENDED` adds the battle's length, who was at the keep at the end and at most, when the first defender
+    arrived (`defendersFirstAt`), and the attackers' limit.
+  - `SIEGE_DEFENSE_BALANCE` shows the attackers' limit.
+  - Details: [docs/NIGHT-SIEGES-AND-MARFACH.md](docs/NIGHT-SIEGES-AND-MARFACH.md), section 4.
+- **Checked:** unit tests only (`UT_SiegeBalanceNov06`). Not played in game; a night's run will show whether it brings
+  captures near half.
+
 **Dragon raids call the Epic Special Forces after a wipe** (2026-10-30)
 - Dragon raids had no wipe rule at all: after a wipe at the dragon the fallen released to the nearest bind and walked
   back by twos and threes to a dragon at full health, until it died or the four hours ran out, and the Special Forces

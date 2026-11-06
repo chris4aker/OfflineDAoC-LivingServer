@@ -13,13 +13,24 @@ namespace DOL.GS;
 /// sieges in one session before it moved at all; on the owner's test copy, restarted many times that day, 6 of 7 keep
 /// sieges were captured. The record is now rebuilt from the event ledger at start (<see cref="Load"/>): the last
 /// <see cref="LedgerResults"/> bot sieges, replayed. Every change is logged (SIEGE_DEFENSE_BALANCE).
+///
+/// 2026-11-06 (build 168f55d, 18:42-07:30): the shift sat at +0.25 all night (share 1.0) while attackers took 13 of 17
+/// keeps. The share only caps the defenders a siege may draw, and it was rarely the limit: in 11 of the 13 captures the
+/// realm committed 35-90 defenders, what it had free, while attacker reinforcements filled their 128 in 10 of 17
+/// battles. So past the share's limit the balance now trims the attackers' cap instead, by up to
+/// <see cref="MaximumAttackerTrim"/> (128 to 112 to 96 for a keep). When defenders win again the trim comes off first,
+/// then the share (docs/NIGHT-SIEGES-AND-MARFACH.md, section 4).
 /// </summary>
 public static class SiegeDefenseBalance
 {
     public const int Window = 6;
     public const int MinimumResults = 3;
     public const double Step = 0.125;
+    /// <summary>How far the defenders' share moves from the setting, either way.</summary>
     public const double MaximumShift = 0.25;
+    /// <summary>How far past <see cref="MaximumShift"/> the shift goes on the defenders' side: the share of the attackers'
+    /// cap that it takes away (two steps: 128, 112, 96 for a keep; 240, 210, 180 for a relic keep).</summary>
+    public const double MaximumAttackerTrim = 0.25;
     /// <summary>Attacker win share above which defenders get more, and below which they get fewer.</summary>
     public const double HighWinShare = 0.8, LowWinShare = 0.45;
     /// <summary>Sieges replayed from the ledger at start: four windows, twice the steps from one limit to the other.</summary>
@@ -94,12 +105,29 @@ public static class SiegeDefenseBalance
         double share = results.Count(won => won) / (double)results.Count;
         if (share > HighWinShare) shift += Step;
         else if (share < LowWinShare) shift -= Step;
-        return Math.Clamp(shift, -MaximumShift, MaximumShift);
+        return Math.Clamp(shift, -MaximumShift, MaximumShift + MaximumAttackerTrim);
     }
+
+    /// <summary>The defenders' share at this shift: the setting moved by at most <see cref="MaximumShift"/>.</summary>
+    public static double RatioAt(double baseRatio, double shift) =>
+        Math.Clamp(baseRatio + Math.Min(shift, MaximumShift), 0.25, 2.0);
+
+    /// <summary>The share of the attackers' cap taken away at this shift: whatever lies past <see cref="MaximumShift"/>.</summary>
+    public static double AttackerTrimAt(double shift) => Math.Clamp(shift - MaximumShift, 0, MaximumAttackerTrim);
+
+    /// <summary>The attackers' cap at this shift (at least 8).</summary>
+    public static int AttackerCapAt(int fullCap, double shift) =>
+        Math.Max(8, (int)Math.Round(fullCap * (1 - AttackerTrimAt(shift))));
 
     public static double Ratio(double baseRatio)
     {
-        lock (Sync) return Math.Clamp(baseRatio + _shift, 0.25, 2.0);
+        lock (Sync) return RatioAt(baseRatio, _shift);
+    }
+
+    /// <summary>The attackers' cap in use: the full cap, trimmed once the defenders' share is at its limit.</summary>
+    public static int AttackerCap(int fullCap)
+    {
+        lock (Sync) return AttackerCapAt(fullCap, _shift);
     }
 
     public static double Shift
@@ -107,10 +135,12 @@ public static class SiegeDefenseBalance
         get { lock (Sync) return _shift; }
     }
 
-    /// <summary>The log line of a change: what happened, the shift before and after, the window (C = captured, D = defended).</summary>
+    /// <summary>The log line of a change: what happened, the shift before and after, the share and the keep attackers' cap
+    /// (setting -> in use), the window (C = captured, D = defended).</summary>
     public static string Line(string what, double before, double after, IEnumerable<bool> window) =>
         $"SIEGE_DEFENSE_BALANCE event=\"{what}\" shift={before:+0.###;-0.###;0}->{after:+0.###;-0.###;0} " +
-        $"share={RealmEventPolicy.DefenseRatio:0.###}->{Math.Clamp(RealmEventPolicy.DefenseRatio + after, 0.25, 2.0):0.###} " +
+        $"share={RealmEventPolicy.DefenseRatio:0.###}->{RatioAt(RealmEventPolicy.DefenseRatio, after):0.###} " +
+        $"attackerCap={RealmEventPolicy.KeepAttackers}->{AttackerCapAt(RealmEventPolicy.KeepAttackers, after)} " +
         $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\"";
 
     /// <summary>Tests only.</summary>

@@ -12,6 +12,8 @@ internal static class RvrEventTestState
         // These fixtures document the continuous (unstaged) assault; UT_StagedSiegeOct6 covers staging.
         AutonomousRvrEventLayer.StagedAssault = false;
         AutonomousRvrEventLayer.SiegeScheduling = false;
+        // The siege balance is process-wide too: a fixture that ended sieges must not trim the next one's attackers.
+        SiegeDefenseBalance.Reset();
         foreach (string name in new[] { "Events", "CarrierEvents", "CarrierTargets", "Cooldowns", "ReleasedForces", "SelectedKeeps", "SelectedRelics", "DefenseAlarms", "DefenseWarnings", "KeepCombatPressure" })
         {
             object value = typeof(AutonomousRvrEventLayer).GetField(name, BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
