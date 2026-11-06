@@ -10,8 +10,9 @@ Older entries below keep the names they were written with.
 
 ## Beta 1.1.2 (in development)
 
-Chat: a much busier realm, and bots that answer what you actually said. Playing with your bot group: dragon raids
-that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
+Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
+by their own wins and losses, that no longer stand for hours at an encounter they can't reach. Playing with your bot
+group: dragon raids that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
 XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
 Offline DAoC, updates from the launcher, and a world database that is safe from crashes and backed up every day.
 Built and tested; it ships once it has been played (the checks are in [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md)).
