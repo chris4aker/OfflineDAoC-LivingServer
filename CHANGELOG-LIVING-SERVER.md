@@ -8,10 +8,17 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## 1.2 (in development)
+## Beta 1.1.2 (in development)
 
-**Epic raids learn their first encounter rules.** Raids of gamebots now know two bosses that beat them by their rules, not
-by their damage. Everything below is built and covered by automated tests; none of it has been seen in a real raid yet.
+Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
+by their own wins and losses, that no longer stand for hours at an encounter they can't reach, and their first boss tactics. Playing with your bot
+group: dragon raids that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
+XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
+Offline DAoC, updates from the launcher, and a world database that is safe from crashes and backed up every day.
+Built and tested; it ships once it has been played (the checks are in [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md)).
+
+**Epic raids learn their first encounter rules** (owner 2026-11-06: shipped in 1.1.2, not 1.2). Raids of gamebots now
+know five bosses that beat them by their rules, not by their damage. Everything below is built and covered by automated tests; none of it has been seen in a real raid yet.
 - **Scurceol Hyrde (Krondon).**
   - **Before:** he takes no damage while his four floating Lyft Miht orbs live, but the raid hit only him, for an hour, and
     all 42 raider deaths were his.
@@ -25,7 +32,8 @@ by their damage. Everything below is built and covered by automated tests; none 
     times without ever reaching it.
   - **Now:** the Oak dies when Black Lady dies, so the raid fights her instead. Past 1,100 from her spawn (her leash is
     1,500) the raid stops hitting her and leads her back, so she never resets mid-fight.
-- **Original boss mechanics are back, switched off.** In 23 places the fork had changed a boss for bot raids. Examples:
+- **Original boss mechanics are back, switched off.** In 23 places the fork had changed a boss for bot raids; 22 of
+  them have their original back. Examples:
   Aroon's damage-type order, Funus healing from the wrong weapons, the Earthmenders' class puzzle, Beatha healing Xaga,
   King Tuscar and Queen Kula healing each other, Kvasir healed by cold, Govannon's full 300,000 health. The originals,
   read from OpenDAoC's own code, are now behind 17 new switches in `EpicEncounterMechanics`, all off, so bosses play
@@ -72,15 +80,6 @@ by their damage. Everything below is built and covered by automated tests; none 
   fighting moves 2,700 away. That party pushes him over and takes the 2,500-radius stomp, which is meant to kill whoever
   is in it; the rest of the raid survives and comes back.
 - Not changed: Darkness Falls raid AI, Legion and the hardest level 70+ encounters still have no raid AI.
-
-## Beta 1.1.2 (in development)
-
-Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
-by their own wins and losses, that no longer stand for hours at an encounter they can't reach. Playing with your bot
-group: dragon raids that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
-XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
-Offline DAoC, updates from the launcher, and a world database that is safe from crashes and backed up every day.
-Built and tested; it ships once it has been played (the checks are in [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md)).
 
 **Chat: a busier, more human realm** (owner 2026-11-04: shipped in 1.1.2, not as a separate 1.1.3). The goal is a
 realm that feels like a full server at its busiest. How it works and how to tune it:

@@ -21,10 +21,12 @@ the large new systems each get their own release:
 - **1.1.2 now:** the combined candidate (PR #66: #44-#46, #50, #60-#65) plus the raid fixes (#73 Epic Special
   Forces join full raids, #75 raid sizes and the win balance, #77 Marfach/Krondon set-aside rules, time-outs without
   a wipe count as neither, siege logging). The release candidate is `test/1.1.2-rc`.
+  - Changed the same day (owner, 07:13): **the epic encounter catalog and the first raid tactics ship with 1.1.2**
+    (#81, #83, #85), not 1.2.
 - **1.2 = "bots that play with you":** what's built on the 1.2 line: bot-led groups B1-B4 (#74, #78, #79, #84) on the
-  duty lease (#71), RvR perception (#80), replies that don't give bots away (#82), the epic encounter catalog and
-  raid tactics (#81, #83, #85), the quest harness (#70), the battleground keep rally (#69), the automated playtester
-  (#72) and the AI profiler (#67).
+  duty lease (#71), RvR perception (#80), replies that don't give bots away (#82), the quest harness (#70), the
+  battleground keep rally (#69), the automated playtester (#72) and the AI profiler (#67). (As first decided it also
+  held the epic encounter catalog and raid tactics, #81/#83/#85; moved to 1.1.2 at 07:13.)
 - **1.3:** live events, the guild social package with guild tiers, a crowded prime time, a server with a past, and
   era builds from the Wayback research.
 
@@ -89,13 +91,17 @@ cap on how many bots notice one target). Era authenticity breaks ties; it doesn'
 
 ### 1.1.2 — safe and correct, plus the raid fixes (release candidate 2026-11-06)
 
-The release candidate (2026-11-06) is `test/1.1.2-rc`: `test/1.1.2-combined` (PR #66) with #73, #75 and #77 merged
-in that order. Draft release notes: [RELEASE-NOTES-1.1.2.md](RELEASE-NOTES-1.1.2.md).
+The release candidate (2026-11-06) is `test/1.1.2-rc`: `test/1.1.2-combined` (PR #66) with #73, #75, #77 and #85
+(which carries #81 and #83) merged in that order. Draft release notes: [RELEASE-NOTES-1.1.2.md](RELEASE-NOTES-1.1.2.md).
 
 - [ ] **In the candidate, waiting for the owner's merges:** save safety and network defaults (#64), release gates
       (#61), ported fork fixes (#62), gamebots in your guild and power regeneration (#63), updates from the launcher
       (#60), quests with bots (#50: #44, #45, #46), the chat track (#65, folded in 2026-11-04), the Epic Special Forces
-      joining full raids (#73), raid sizes and the win balance (#75), Marfach/Krondon and siege logging (#77)
+      joining full raids (#73), raid sizes and the win balance (#75), Marfach/Krondon and siege logging (#77), the
+      epic encounter catalog (#81) and the first raid tactics (#83, #85: Scurceol's orbs, Black Lady fought at home,
+      Aidon's illusions, Nosdoden's waves, Xanxicar's stomps, bosses that jump the raid early, lost skirmishes that
+      don't use an attempt). The 22 original boss mechanics restored behind switches stay off. Darkness Falls raid
+      AI, Legion and the hardest level 70+ encounters are not implemented
 - [ ] One overnight soak of the candidate's build on the owner's test copy
 - [ ] The owner's short played check: guild dues and merit, a quest in a bot group, chat feel in Camelot
 - [ ] Publish `v1.1.2-beta` as Latest (the release workflow builds Setup and fills in the SHA-256s); close #61-#65
@@ -131,7 +137,7 @@ The checklist as written on 2026-11-03 (its items are now in the candidate above
 ### 1.2 — bots that play with you (owner 2026-11-06)
 
 Headline: the world's gamebots play *with* you: they invite you, lead groups you can simply follow, see you in RvR
-the way a 2003 player would, answer without giving themselves away, and raid the classic encounters with tactics.
+the way a 2003 player would, and answer without giving themselves away.
 Everything below is built on branches with green automated tests; nothing is merged into `release/1.2` or played yet.
 
 - [ ] The duty lease record (#71): raids and RvR events claim a bot's time with a priority; the watchdog exempts
@@ -141,9 +147,9 @@ Everything below is built on branches with green automated tests; nothing is mer
       natural break and the pull call (#84)
 - [ ] RvR perception 1.2 (#80): an observer cap per target, calibrated time to notice, duty, pet caps
 - [ ] Replies that don't give bots away (#82): the reply budget, reason codes, `/lswhy me`
-- [ ] Epic encounters: the catalog of what every boss script does (#81), the first raid tactics (#83), early pulls,
-      skirmishes and home musters with more tactics (#85). These branches sit on #77 and are moved onto the 1.2 line
-      after 1.1.2 merges. Darkness Falls raid AI, Legion and the hardest level 70+ encounters stay out of scope
+- [ ] More raid tactics, if the 1.1.2 ones hold up in play: the next restored mechanics turned on one at a time as the
+      raid learns them (the catalog's open question). The catalog and first tactics themselves moved to 1.1.2
+      (owner 2026-11-06 07:13)
 - [ ] The quest harness, repeatable quests and deliveries, epic chains linked without Python (#70)
 - [ ] Battlegrounds: realms rally inside the breach and take the keep lord together (#69)
 - [ ] The automated playtester: a scripted player, `make_test_world.py`, eight scenarios (#72)
@@ -153,7 +159,7 @@ Everything below is built on branches with green automated tests; nothing is mer
 - [ ] Not placed by the split, for the owner to place: his world scripts as Setup steps; the new-client scripts
       (#54); era build weights (#55) go with 1.3's era builds
 - [ ] Soaks one system at a time; played: invited into a group and a raid, following a bot leader, a battleground
-      session, a raid with the new tactics
+      session
 
 ### 1.2 as planned on 2026-11-01 — the comprehensive update (superseded 2026-11-06 by the split)
 
@@ -283,7 +289,7 @@ It also strengthens the case for decision 3: the spell-use engine it builds on (
 tank guarding) is in shadowofze's final `main`.
 
 Taken (2026-11-06), the owner's: **the split.** 1.1.2 now (the combined candidate plus the raid fixes #73, #75,
-#77); 1.2 = "bots that play with you"; 1.3 = live events, the guild social package with guild tiers, a crowded prime
+#77, and from 07:13 the epic encounter catalog and first raid tactics #81, #83, #85); 1.2 = "bots that play with you"; 1.3 = live events, the guild social package with guild tiers, a crowded prime
 time, a server with a past and the era builds from the Wayback research (see "The split" at the top). It supersedes
 the next entry.
 
@@ -323,8 +329,8 @@ On 2026-11-06:
 | Stop | State |
 |---|---|
 | 1.1.1 | Released 2026-11-03 (`v1.1.1-beta`, the latest release; Setup built and tested on Windows by CI) |
-| 1.1.2 | Release candidate `test/1.1.2-rc` (#66 plus #73, #75, #77), 4,772 server tests passing; waits for the owner's merges, an overnight soak, his played check and publishing. #51 not in it (owner and legal decision) |
-| 1.2 | Bots that play with you: built on branches (#67, #69-#72, #74, #78-#85), automated tests only; merges into the 1.2 line after 1.1.2 |
+| 1.1.2 | Release candidate `test/1.1.2-rc` (PR #86: #66 plus #73, #75, #77, #85 with #81 and #83), 4,798 server tests passing; waits for the owner's merges, an overnight soak, his played check and publishing. #51 not in it (owner and legal decision) |
+| 1.2 | Bots that play with you: built on branches (#67, #69-#72, #74, #78-#80, #82, #84), automated tests only; merges into the 1.2 line after 1.1.2 |
 | 1.2.x | Planned (play with friends) |
 | 1.3 | Planned (live events, guild tiers, a crowded prime time, a server with a past, era builds) |
 | 2.0 | Planned |

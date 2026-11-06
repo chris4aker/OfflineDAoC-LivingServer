@@ -9,8 +9,8 @@ filled in by the release workflow. Nothing here names the Easter eggs or the pro
 ### A busier realm, raids sized like the era, and bots that count in your guild
 
 1.1.1 fixed your first reports. 1.1.2 is the first update with new things to play: a realm that talks like a full
-server on a busy evening, raids the size they were in 2002-2004, quests that work with your bot group, and gamebots
-that pull their weight in your guild. Under the hood, your world is now safe from crashes and backed up every day.
+server on a busy evening, raids the size they were in 2002-2004 with their first boss tactics, quests that work with
+your bot group, and gamebots that pull their weight in your guild. Under the hood, your world is now safe from crashes and backed up every day.
 
 It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client, like 1.1 and 1.1.1.
 
@@ -64,6 +64,36 @@ gives about 70%. Those lines are known, so that is a regression check, and a fre
 - **No more hours at a muster.** A raid that can't reach an encounter after three pulls sets it aside for 15 minutes
   and goes on to the others; a muster that stops gaining raiders for 20 minutes does the same. A raid now fights from a
   walkable spot even when a monster attacks it from a hard-to-reach one.
+
+### Raids that know their bosses
+
+Some bosses can't be beaten by hitting harder, and bot raids used to try anyway. Five of them now get the tactics a
+2003 raid leader would have called:
+
+- **Scurceol Hyrde (Krondon)** can't be hurt while his four floating orbs live. The raid now shoots the orbs down first,
+  one party to an orb, casters and archers from the floor, melee waiting clear of him, and only then turns on him.
+- **Black Lady (Marfach Caverns)** is fought at home. Raids used to drag her out of her room until she went back at
+  full health; now they keep her in reach of her room and lead her back when she strays. Her Ancient Black Oak falls
+  with her, so nobody wastes the night on it.
+- **Aidon the Archwizard (Hall of the Corrupt)** only summons new illusions once all four are dead, so the raid kills
+  three and leaves the last one standing, then everyone fights him.
+- **Nosdoden (Trollheim)** sends a wave of essences as his health falls. The raid stops and clears each wave before
+  going back to him, so the waves don't pile up.
+- **Xanxicar (Crystal Cave)** stomps everything around him at set points in the fight. Before each stomp the raid
+  backs off, and only the party holding him stays in.
+
+For every raid:
+- **A boss that jumps the raid before it's ready** is answered by the whole raid at once, or the raid pulls back
+  together and lets it reset, instead of trickling in by twos and threes.
+- **A lost skirmish no longer uses up an attempt.** Only a fight most of the raid was in, or lost half its people in,
+  counts as one of the raid's two tries.
+- **Raids muster where the boss lives**, and walk to where it actually stands, not to where it last chased someone.
+
+*The research:* every scripted boss in the game was read from its script into one catalog: what it does, when, and
+what a raid needs to do about it. That reading also found 22 places where the game's bosses had been softened for
+bot raids. Their original rules, read from the OpenDAoC project's own code, are back in the game behind switches,
+**all off**: those bosses play exactly as in 1.1.1, and each original rule is turned on only once the raid has a
+tactic for it.
 
 ### Quests with your bot group
 
@@ -140,7 +170,7 @@ untouched.
 
 ### How it was tested
 
-- **Automated:** the full server suite (4,772 server tests) and the launcher and installer tests on Windows
+- **Automated:** the full server suite (4,798 server tests) and the launcher and installer tests on Windows
   pass on every build. The raid sizing was checked against a simulation of 2,000 raids; the models of how likely a
   raid of a given size is to win are estimates, not measurements.
 - **Played:** [owner: one line on the overnight soak and the played check, filled in before publishing]. Already seen on a playtest PC before this release: the chat level at a 900-bot
@@ -151,10 +181,13 @@ untouched.
 
 ### Known issues (it's a beta)
 
-- **Hard encounters are still won on numbers.** Darkness Falls' raid bosses, Legion and the other hardest level 70+
-  encounters have no special tactics for bots; their mechanics aren't scripted. A raid can still lose them.
-- **Raiders can still stick to a boss they can't hurt** (for example one shielded by adds that must die first). The
-  raid now moves on from an encounter it can't reach, but not from one it can reach and can't damage.
+- **Only five bosses have tactics so far.** Darkness Falls' raid bosses, Legion and the other hardest level 70+
+  encounters are **not** implemented for bot raids: they are still won on numbers, and a raid can still lose them.
+  Other bosses with special rules are fought as before.
+- **The new tactics haven't been seen in a real raid yet.** They pass their automated tests, including test fights
+  with a boss, its adds and a raid; real raids may still find a case they miss.
+- **The 22 restored boss rules stay off.** Turning one on before the raid has a tactic for it would make that boss
+  much harder for bots.
 - **Night sieges win less often than daytime ones** in long test runs, with the same bots online. The cause isn't
   found yet; 1.1.2 logs each siege's army so the next runs can show why.
 - **New raid sizes need a few raids to settle.** Each encounter's size moves with its own wins and losses, so the
@@ -170,8 +203,7 @@ untouched.
 ### Coming next
 
 - **1.2, bots that play with you:** bots that invite you, groups led by a bot that you can simply follow, gamebots
-  that see you in RvR the way a player would, replies that don't give a bot away, and raid tactics for the classic
-  encounters.
+  that see you in RvR the way a player would, and replies that don't give a bot away.
 - **1.3:** live events, the guild package, a crowded prime time and a server with a past.
 
 ### Files
