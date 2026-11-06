@@ -556,23 +556,29 @@ def check_lore(problems):
     count = 0
     for path, data in loaded:
         realm = realms.get(data.get('locationId'), data.get('realm')) if path.parent.name == 'bosses' else data.get('realm')
-        tags = fresh_tags()
-        tags.update(kind='ambient', topic='lore', realm=LORE_REALMS.get(realm, '*'), about=True)
-        for field, lines in (data.get('botLines') or {}).items():
-            for i, template in enumerate(lines or []):
-                where = f'{path.relative_to(ROOT)} botLines.{field}[{i}]'
-                if not CHOICE_RE.search(template) and ('[' in template or ']' in template):
-                    problems.append(f'{where}: "[" without a "|" choice: {template}')
-                    continue
-                for said in expand(template):
-                    found = []
-                    check_text(said, tags, where, found)
-                    # A Neutral place's lore is told in every realm, about every realm ("albion got avalon, midgard got
-                    # aegir"): naming another realm's place there is the point, not a slip (Hibernia writer, PR #91).
-                    if realm == 'Neutral':
-                        found = [p for p in found if ' in a line for realm *: ' not in p]
-                    problems += found
-                    count += 1
+        # The shared lines, then each realm's take (realmTakes: Summoner's Hall told the Albion way) as that realm's lines.
+        groups = [('botLines', realm, data.get('botLines') or {})]
+        for key, take in (data.get('realmTakes') or {}).items():
+            if isinstance(take, dict):
+                groups.append((f'realmTakes.{key}.botLines', key.capitalize(), take.get('botLines') or {}))
+        for prefix, group_realm, bot_lines in groups:
+            tags = fresh_tags()
+            tags.update(kind='ambient', topic='lore', realm=LORE_REALMS.get(group_realm, '*'), about=True)
+            for field, lines in bot_lines.items():
+                for i, template in enumerate(lines or []):
+                    where = f'{path.relative_to(ROOT)} {prefix}.{field}[{i}]'
+                    if not CHOICE_RE.search(template) and ('[' in template or ']' in template):
+                        problems.append(f'{where}: "[" without a "|" choice: {template}')
+                        continue
+                    for said in expand(template):
+                        found = []
+                        check_text(said, tags, where, found)
+                        # A Neutral place's lore is told in every realm, about every realm ("albion got avalon, midgard got
+                        # aegir"): naming another realm's place there is the point, not a slip (Hibernia writer, PR #91).
+                        if group_realm == 'Neutral' or realm == 'Neutral':
+                            found = [p for p in found if not re.search(r' in a line for realm [a-z*]+: ', p)]
+                        problems += found
+                        count += 1
     return count
 
 

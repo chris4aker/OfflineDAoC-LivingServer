@@ -1455,9 +1455,11 @@ namespace DOL.GS
             // And the size it ran at, so the next raid here carries on from it (2026-11-05).
             double? sizePercent = raid.Sizing?.RecordedPercent;
             // And how many wipes it took: a time-out without one stays out of the record (owner, 2026-11-05).
-            RealmEventRecords.Finish(raid.Definition.Id, outcome, RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
+            // And who led it, for the Herald's chronicle sentence (Living Server 1.2, LoreChronicle): the first party's leader.
+            string raidLeader = raid.Parties.Keys.Select(g => g?.LivingLeader?.Name).FirstOrDefault(n => !string.IsNullOrWhiteSpace(n));
+            RealmEventRecords.Finish(raid.Definition.Id, outcome, LoreChannels.LoreChronicle.WithRaidLeader(RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
                 RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes),
-                specialForcesJoined), sizePercent), raid.Support.Length);
+                specialForcesJoined), sizePercent), raidLeader), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
             AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes),
                 raid.Forced, sizePercent);

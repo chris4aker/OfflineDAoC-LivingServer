@@ -14,9 +14,9 @@ using DOL.Logging;
 namespace DOL.GS;
 
 /// <summary>
-/// What the lore channels remember across restarts (Living Server 1.2): a character's first-entry line for a place today
-/// ("entry:{character}:{location}" = day) and each realm's first kill of each boss ("firstkill:{realm}:{boss}" = when, who).
-/// Kept small: one row per character and place, one per realm and boss. An optional progress table (progress-policy.json).
+/// What the atmosphere lines remember across restarts (Living Server 1.2): a character's first-entry line for a place today
+/// ("entry:{location}:{character}" = day). One row per character and place. An optional progress table (progress-policy.json).
+/// A realm's first kills are LoreFirstKills' (the realm event ledger).
 /// </summary>
 [DataTable(TableName = "offline_lore_memory")]
 public sealed class OfflineLoreMemoryRecord : DataObject, ILivingServerRow
@@ -84,10 +84,11 @@ public static class LoreAtmosphere
             Log.Warn("Lore: could not read offline_lore_memory; first entries and first kills start fresh", exception);
         }
         _flushTimer = new Timer(_ => Memory.Flush(), null, 10_000, 10_000);
-        ThreadPool.QueueUserWorkItem(_ => _ = LoreBible.Current);
+        // The lore channels (loremasters, books, codex, Herald, first kills) read the engine's bible from here on.
+        LoreChannels.LoreChannelHub.UseSource(new LoreBibleSource(LoreBible.Current));
         LoreBossWatch.Start();
         if (Log.IsInfoEnabled)
-            Log.Info($"Lore: atmosphere lines {(On ? "on" : "off")}, {Memory.Count} remembered entries and first kills");
+            Log.Info($"Lore: atmosphere lines {(On ? "on" : "off")}, {Memory.Count} remembered first entries");
     }
 
     [GameServerStoppedEvent]
@@ -115,29 +116,6 @@ public static class LoreAtmosphere
                 row.Value = day;
                 row.UpdatedUtc = DateTime.UtcNow.ToString("O");
             });
-
-    /// <summary>Claims a realm's first kill of a boss, once ever. True the first time.</summary>
-    public static bool ClaimFirstKill(eRealm realm, string bossId, string killer) => ClaimFirstKill(Memory, realm, bossId, killer);
-
-    /// <summary>The rule of <see cref="ClaimFirstKill(eRealm, string, string)"/> on any table (tests pass their own).</summary>
-    public static bool ClaimFirstKill(LivingServerTable<string, OfflineLoreMemoryRecord> memory, eRealm realm, string bossId, string killer)
-    {
-        string key = LoreOnceRules.FirstKillKey(realm, bossId);
-        string value = $"{DateTime.UtcNow:O}|{killer}";
-        if (value.Length > 128)
-            value = value[..128];
-        return memory.TryAdd(key, new OfflineLoreMemoryRecord { MemoryKey = key, Value = value, UpdatedUtc = DateTime.UtcNow.ToString("O") });
-    }
-
-    /// <summary>The bosses a realm has ever beaten (boss ids), for the Herald's bestiary.</summary>
-    public static string[] FirstKills(eRealm realm) => FirstKills(Memory, realm);
-
-    public static string[] FirstKills(LivingServerTable<string, OfflineLoreMemoryRecord> memory, eRealm realm)
-    {
-        string prefix = $"firstkill:{(int)realm}:";
-        return memory.Where(row => row.MemoryKey.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-            .Select(row => row.MemoryKey[prefix.Length..]).OrderBy(id => id, StringComparer.Ordinal).ToArray();
-    }
 
     #endregion
 

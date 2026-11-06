@@ -146,14 +146,21 @@ public static class LoreEntryRules
 /// </summary>
 public static class LoreFightRules
 {
-    public enum Kind { Health, AddSpawn, OrbDeath, AddsDead, FormChange, Death, Wake }
+    public enum Kind { Health, AddSpawn, OrbDeath, AddsDead, FormChange, PartnerDead, Death, Wake, PlayerDeath, ScriptOnly }
 
     public sealed record Trigger(Kind Kind, int Percent)
     {
         public bool NeedsAdds => Kind is Kind.AddSpawn or Kind.OrbDeath or Kind.AddsDead;
-        /// <summary>Said by an event, not by looking at the fight: the boss dies, a dragon takes to the sky.</summary>
-        public bool ByEvent => Kind is Kind.Death or Kind.Wake;
+        public bool NeedsPartners => Kind is Kind.PartnerDead;
+        /// <summary>Said by an event, not by looking at the fight: the boss dies, a dragon takes to the sky, it kills a player.</summary>
+        public bool ByEvent => Kind is Kind.Death or Kind.Wake or Kind.PlayerDeath;
     }
+
+    /// <summary>
+    /// Triggers the writers use for moments only a boss's own script sees (its teleport, a berserk, a dragon's breath or
+    /// glare). They are valid in the files and never fire from the engine: no generic event says they happened.
+    /// </summary>
+    public static readonly string[] ScriptOnlyTriggers = ["teleport", "berserk", "breath", "glare"];
 
     public static bool TryParseTrigger(string text, out Trigger trigger)
     {
@@ -169,6 +176,12 @@ public static class LoreFightRules
             trigger = new Trigger(Kind.Death, 0);
         else if (string.Equals(t, "wake", StringComparison.OrdinalIgnoreCase))
             trigger = new Trigger(Kind.Wake, 0);
+        else if (string.Equals(t, "partnerDead", StringComparison.OrdinalIgnoreCase))
+            trigger = new Trigger(Kind.PartnerDead, 0);
+        else if (string.Equals(t, "playerDeath", StringComparison.OrdinalIgnoreCase))
+            trigger = new Trigger(Kind.PlayerDeath, 0);
+        else if (ScriptOnlyTriggers.Contains(t, StringComparer.OrdinalIgnoreCase))
+            trigger = new Trigger(Kind.ScriptOnly, 0);
         else if (string.Equals(t, "orbDeath", StringComparison.OrdinalIgnoreCase))
             trigger = new Trigger(Kind.OrbDeath, 0);
         else if (string.Equals(t, "addsDead", StringComparison.OrdinalIgnoreCase))
@@ -183,6 +196,7 @@ public static class LoreFightRules
         public int Adds = -1;
         public bool HadAdds;
         public int Model = -1;
+        public int Partners = -1;
         public readonly HashSet<string> Said = new(StringComparer.Ordinal);
         public int AtmosphereLines;
     }
@@ -195,9 +209,12 @@ public static class LoreFightRules
     /// order. Updates the fight. A health trigger fires once a fight; addSpawn when the count rises, orbDeath when it falls,
     /// addsDead when it reaches 0 after there were some.
     /// </summary>
-    public static List<string> Observe(Fight fight, IEnumerable<string> triggers, int healthPercent, int adds, int model = -1)
+    public static List<string> Observe(Fight fight, IEnumerable<string> triggers, int healthPercent, int adds, int model = -1, int partners = -1)
     {
         var fired = new List<string>();
+        bool partnerDied = partners >= 0 && fight.Partners > partners;
+        if (partners >= 0)
+            fight.Partners = partners;
         bool newForm = model >= 0 && fight.Model >= 0 && model != fight.Model;
         if (model >= 0)
             fight.Model = model;
@@ -223,6 +240,7 @@ public static class LoreFightRules
                 Kind.OrbDeath => died && !allDead,
                 Kind.AddsDead => allDead && !fight.Said.Contains(text),
                 Kind.FormChange => newForm,
+                Kind.PartnerDead => partnerDied,
                 _ => false,
             };
             if (!fire)
@@ -243,17 +261,6 @@ public static class LoreOnceRules
     public const long DragonWakeGapMs = 60 * 60_000L;
     public const long DarknessFallsGapMs = 15 * 60_000L;
 
-    public static string FirstKillKey(eRealm realm, string bossId) => $"firstkill:{(int)realm}:{bossId}";
-
     /// <summary>Whether a rate-limited realm line may go out again (dragon wakes hourly, Darkness Falls every 15 minutes).</summary>
     public static bool GapOver(long? last, long now, long gap) => last == null || now - last.Value >= gap;
-
-    /// <summary>Who killed it, for the realm: a player or bot, or the owner of a pet; None for a monster.</summary>
-    public static eRealm KillerRealm(GameObject killer) => killer switch
-    {
-        GamePlayer player => player.Realm,
-        GameBot bot => bot.Realm,
-        GameNPC { Brain: AI.Brain.IControlledBrain controlled } => controlled.GetPlayerOwner()?.Realm ?? (controlled.Owner as GameLiving)?.Realm ?? eRealm.None,
-        _ => eRealm.None,
-    };
 }

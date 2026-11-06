@@ -56,16 +56,30 @@ public static class LoreChat
             }
         }
         foreach (LoreBible.Location location in bible.Locations)
+        {
             foreach (string line in location.Lore.Concat(location.Rumour))
                 Add(line, location.Realm, location.Id);
+            // A realm's take (a neutral place told its realm's way) is said by that realm's bots only.
+            foreach ((string key, string realm) in LoreBible.TakeRealms)
+                if (location.RealmTakes.TryGetValue(key, out LoreBible.RealmTake take))
+                    foreach (string line in take.Lore.Concat(take.Rumour))
+                        Add(line, realm, location.Id + "@" + key);
+        }
         foreach (LoreBible.Boss boss in bible.Bosses)
+        {
             foreach (string line in boss.Rumour)
                 Add(line, bible.LocationOf(boss)?.Realm ?? boss.Realm, boss.Id);
+            foreach ((string key, string realm) in LoreBible.TakeRealms)
+                if (boss.RealmTakes.TryGetValue(key, out LoreBible.RealmTake take))
+                    foreach (string line in take.Rumour)
+                        Add(line, realm, boss.Id + "@" + key);
+        }
         return lines.GroupBy(l => l.Id).Select(g => g.First()).ToArray();
     }
 
     /// <summary>"whats in krondon?" and the like: a lore answer, or false. Pure but for the random.</summary>
-    public static bool TryAnswer(string text, out string answer) => LoreBible.Current.TryAnswer(text, Random.Shared, out answer);
+    public static bool TryAnswer(string text, out string answer, eRealm realm = eRealm.None) =>
+        LoreBible.Current.TryAnswer(text, Random.Shared, out answer, realm);
 
     /// <summary>Whether /faction has room for one more line for this realm now (the chat budget's ceiling).</summary>
     public static bool FactionHasRoom(eRealm realm)
@@ -101,7 +115,7 @@ public static class LoreChat
         if (!AutonomousBotVoices.Enabled || leader == null || string.IsNullOrEmpty(bossType))
             return;
         LoreBible.Boss boss = LoreBible.Current.BossForClass(bossType);
-        string[] lines = PickBriefing(boss?.Briefing, Random.Shared);
+        string[] lines = PickBriefing(boss?.BriefingFor(leader.Realm), Random.Shared);
         for (int i = 0; i < lines.Length; i++)
         {
             string text = lines[i];
@@ -119,10 +133,12 @@ public static class LoreChat
                 return;
             LoreBible bible = LoreBible.Current;
             LoreBible.Boss boss = bible.BossForClass(bossType);
-            string[] pool = won ? boss?.AftermathWin : boss?.AftermathLoss;
-            LoreBible.Location place = bible.LocationOf(boss) ?? bible.LocationsInRegion(region).FirstOrDefault();
-            string[] lore = place == null ? [] : place.Lore.Concat(place.Rumour).ToArray();
             GameBot veteran = raiders.Where(AutonomousLivingServer.IsSpeaker).OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
+            if (veteran == null)
+                return;
+            string[] pool = boss?.AftermathFor(veteran.Realm, won);
+            LoreBible.Location place = bible.LocationOf(boss) ?? bible.LocationsInRegion(region).FirstOrDefault();
+            string[] lore = place == null ? [] : place.LoreFor(veteran.Realm).Concat(place.RumourFor(veteran.Realm)).ToArray();
             if (veteran == null || (pool == null || pool.Length == 0) && lore.Length == 0)
                 return;
             int delay = AftermathMinMs + Random.Shared.Next(AftermathSpreadMs);

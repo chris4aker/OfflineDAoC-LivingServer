@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using DOL.Database;
 using DOL.GS.ServerProperties;
 using NUnit.Framework;
 using Line = DOL.GS.AtmosphereThrottle.Line;
@@ -216,51 +213,22 @@ namespace DOL.GS.Tests
 
         #endregion
 
-        #region First kills
-
-        /// <summary>A database that keeps what is written, so a table can be "restarted" from it.</summary>
-        public class RecordingDatabase : DispatchProxy
-        {
-            public static readonly List<DataObject> Rows = new();
-
-            protected override object Invoke(MethodInfo method, object[] args)
-            {
-                if (method.Name is "AddObject" or "SaveObject")
-                {
-                    foreach (DataObject row in args[0] is IEnumerable many ? many.Cast<DataObject>() : [(DataObject)args[0]])
-                    {
-                        row.IsPersisted = true;
-                        row.Dirty = false;
-                        Rows.Add(row);
-                    }
-                    return true;
-                }
-                Type type = method.ReturnType;
-                return type == typeof(bool) ? true : type.IsValueType ? Activator.CreateInstance(type) : null;
-            }
-        }
-
         [Test]
-        public void ARealmsFirstKillIsClaimedOnceEverAndSurvivesARestart()
+        public void TheWritersEventAndScriptTriggersAreKnown()
         {
-            RecordingDatabase.Rows.Clear();
-            IObjectDatabase database = DispatchProxy.Create<IObjectDatabase, RecordingDatabase>();
-            var memory = new LivingServerTable<string, OfflineLoreMemoryRecord>("test", r => r.MemoryKey, StringComparer.OrdinalIgnoreCase, () => database);
-            Assert.That(LoreAtmosphere.ClaimFirstKill(memory, eRealm.Albion, "scurceol-hyrde", "Brannoc"), Is.True);
-            Assert.That(LoreAtmosphere.ClaimFirstKill(memory, eRealm.Albion, "scurceol-hyrde", "Other"), Is.False);
-            Assert.That(LoreAtmosphere.ClaimFirstKill(memory, eRealm.Midgard, "scurceol-hyrde", "Kvar"), Is.True, "each realm has its own first");
-            memory.Flush(wait: true);
-            Assert.That(RecordingDatabase.Rows.Cast<OfflineLoreMemoryRecord>().Select(r => r.MemoryKey).Distinct().Count(), Is.EqualTo(2));
-
-            var restarted = new LivingServerTable<string, OfflineLoreMemoryRecord>("test", r => r.MemoryKey, StringComparer.OrdinalIgnoreCase, () => database);
-            restarted.Load(RecordingDatabase.Rows.Cast<OfflineLoreMemoryRecord>().GroupBy(r => r.MemoryKey).Select(g => g.Last()));
-            Assert.That(LoreAtmosphere.ClaimFirstKill(restarted, eRealm.Albion, "scurceol-hyrde", "Late"), Is.False, "remembered after a restart");
-            Assert.That(LoreAtmosphere.FirstKills(restarted, eRealm.Albion), Is.EqualTo(new[] { "scurceol-hyrde" }));
-            Assert.That(LoreAtmosphere.FirstKills(restarted, eRealm.Hibernia), Is.Empty);
-            Assert.That(restarted.TryGet(LoreOnceRules.FirstKillKey(eRealm.Albion, "scurceol-hyrde"), out var row) && row.Value.EndsWith("|Brannoc"), Is.True);
+            Assert.That(LoreFightRules.TryParseTrigger("partnerDead", out var t) && t.NeedsPartners && !t.ByEvent, Is.True);
+            Assert.That(LoreFightRules.TryParseTrigger("playerDeath", out t) && t.ByEvent, Is.True);
+            foreach (string script in new[] { "teleport", "berserk", "breath", "glare" })
+                Assert.That(LoreFightRules.TryParseTrigger(script, out t) && t.Kind == LoreFightRules.Kind.ScriptOnly, Is.True, script);
+            var fight = new LoreFightRules.Fight();
+            string[] triggers = ["partnerDead", "teleport", "breath"];
+            Assert.That(LoreFightRules.Observe(fight, triggers, 100, -1, -1, 4), Is.Empty);
+            Assert.That(LoreFightRules.Observe(fight, triggers, 90, -1, -1, 3), Is.EqualTo(new[] { "partnerDead" }));
+            Assert.That(LoreFightRules.Observe(fight, triggers, 80, -1, -1, 3), Is.Empty);
+            Assert.That(LoreFightRules.Observe(fight, triggers, 70, -1, -1, 1), Is.EqualTo(new[] { "partnerDead" }), "each partner that falls");
+            Assert.That(LoreFightRules.Observe(new LoreFightRules.Fight(), ["partnerDead"], 70, -1, -1, -1), Is.Empty, "no partners counted");
         }
 
-        #endregion
 
         [Test]
         public void TheSwitchIsOnByDefault()

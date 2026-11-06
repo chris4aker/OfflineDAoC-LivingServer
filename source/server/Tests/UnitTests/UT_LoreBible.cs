@@ -26,6 +26,12 @@ namespace DOL.GS.Tests
 
         private static string LoreDir(string root) => Path.Combine(root, "source", "server", "GameServer", "bots", "autonomous", "data", "lore");
 
+        /// <summary>
+        /// The tests' own Krondon and Scurceol Hyrde (inventory sample 2), so they do not change when the writers' files
+        /// replace the shipped ones. They must pass the same checks.
+        /// </summary>
+        private static string FixtureDir(string root) => Path.Combine(root, "source", "server", "Tests", "UnitTests", "LoreFixtures");
+
         private static IEnumerable<(string Path, string Json)> DiskFiles(string root)
         {
             string dir = LoreDir(root);
@@ -38,6 +44,7 @@ namespace DOL.GS.Tests
             using JsonDocument document = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "docs", "encounters", "epic-encounters.json")));
             var ids = new HashSet<string>(StringComparer.Ordinal);
             var adds = new Dictionary<string, string[]>(StringComparer.Ordinal);
+            var partners = new Dictionary<string, string[]>(StringComparer.Ordinal);
             foreach (JsonElement e in document.RootElement.GetProperty("encounters").EnumerateArray())
             {
                 ids.Add(e.GetProperty("id").GetString());
@@ -48,14 +55,17 @@ namespace DOL.GS.Tests
                 if (e.TryGetProperty("spawnsEncounters", out JsonElement spawned) && spawned.ValueKind == JsonValueKind.Array)
                     names = names.Concat(spawned.EnumerateArray().Select(x => x.GetString().ToLowerInvariant())).ToArray();
                 adds[cls] = (adds.TryGetValue(cls, out string[] had) ? had : []).Concat(names).Distinct().OrderBy(x => x, StringComparer.Ordinal).ToArray();
+                if (e.TryGetProperty("partners", out JsonElement mates) && mates.ValueKind == JsonValueKind.Array && mates.GetArrayLength() > 0)
+                    partners[cls] = (partners.TryGetValue(cls, out string[] known) ? known : [])
+                        .Concat(mates.EnumerateArray().Select(x => x.GetString().ToLowerInvariant())).Distinct().OrderBy(x => x, StringComparer.Ordinal).ToArray();
             }
-            return new LoreBible.Catalog(ids, adds);
+            return new LoreBible.Catalog(ids, adds, partners);
         }
 
         private static LoreBible Fixture()
         {
             string root = RepoRoot();
-            string dir = LoreDir(root);
+            string dir = FixtureDir(root);
             return LoreBible.Parse(new[] { "locations/krondon.json", "bosses/scurceol-hyrde.json" }
                 .Select(p => (p, File.ReadAllText(Path.Combine(dir, p)))));
         }
@@ -65,7 +75,7 @@ namespace DOL.GS.Tests
             params (string Path, string Json)[] extra)
         {
             string root = RepoRoot();
-            string dir = LoreDir(root);
+            string dir = FixtureDir(root);
             string location = File.ReadAllText(Path.Combine(dir, "locations/krondon.json"));
             string boss = File.ReadAllText(Path.Combine(dir, "bosses/scurceol-hyrde.json"));
             var files = new List<(string, string)>
@@ -110,6 +120,9 @@ namespace DOL.GS.Tests
             foreach (var pair in expected)
                 Assert.That(built[pair.Key], Is.EqualTo(pair.Value), pair.Key + ": run python3 tools/lore/build_encounter_adds.py");
             Assert.That(LoreBossWatch.Adds.ContainsKey("scurceolhyrde"), Is.True, "the map is built into the server");
+            var partners = LoreBossWatch.ParseAdds(File.ReadAllText(Path.Combine(root, "source", "server", "GameServer", "bots", "autonomous", "data", "encounter_adds.json")), "partners");
+            Assert.That(partners, Is.EquivalentTo(CatalogFrom(root).PartnersByClass), "partners: run python3 tools/lore/build_encounter_adds.py");
+            Assert.That(LoreBossWatch.Partners["lordsanguis"], Is.EqualTo(new[] { "lichlordsanguis" }));
         }
 
         [Test]
@@ -126,6 +139,13 @@ namespace DOL.GS.Tests
         #endregion
 
         #region Parsing and indexes
+
+        [Test]
+        public void TheTestFixturesPassTheSchema()
+        {
+            string root = RepoRoot();
+            Assert.That(Fixture().Validate(CatalogFrom(root)), Is.Empty);
+        }
 
         [Test]
         public void TheFixturesAreIndexedByRegionClassAndId()
@@ -189,7 +209,7 @@ namespace DOL.GS.Tests
         public void DuplicateIdsAndCatalogKeysFail()
         {
             string root = RepoRoot();
-            string boss = File.ReadAllText(Path.Combine(LoreDir(root), "bosses/scurceol-hyrde.json"));
+            string boss = File.ReadAllText(Path.Combine(FixtureDir(root), "bosses/scurceol-hyrde.json"));
             var problems = ProblemsWith(null, null, ("bosses/scurceol-hyrde-2.json", boss.Replace("\"id\": \"scurceol-hyrde\"", "\"id\": \"scurceol-hyrde-2\"")));
             Assert.That(problems, Has.Some.Contains("catalogKey \"krondon/scurceolhyrde\" is used by"));
             problems = ProblemsWith(null, null, ("bosses/x.json", boss));
@@ -245,7 +265,8 @@ namespace DOL.GS.Tests
         [Test]
         public void TheWritersTriggersAreKnown()
         {
-            foreach (string trigger in new[] { "health<=25", "addsSpawn", "addSpawn", "addsDead", "orbDeath", "death", "wake", "formChange" })
+            foreach (string trigger in new[] { "health<=25", "addsSpawn", "addSpawn", "addsDead", "orbDeath", "death", "wake", "formChange",
+                         "playerDeath", "teleport", "berserk", "breath", "glare" })
                 Assert.That(ProblemsWith(editBoss: b => b.Replace("\"trigger\": \"orbDeath\"", $"\"trigger\": \"{trigger}\"")), Is.Empty, trigger);
         }
 
@@ -260,6 +281,76 @@ namespace DOL.GS.Tests
         [Test]
         public void ChronicleSlotsAreOnlyRealmLeaderAndMinutes() =>
             Assert.That(ProblemsWith(editBoss: b => b.Replace("{minutes} minutes", "{time}")), Has.Some.Contains("slot {time}"));
+
+        [Test]
+        public void PartnerDeadNeedsPartners() =>
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"trigger\": \"orbDeath\"", "\"trigger\": \"partnerDead\"")),
+                Has.Some.Contains("needs partners"));
+
+        #endregion
+
+        #region Realm takes (Midgard writer, PR #93)
+
+        private const string Takes = ", \"realmTakes\": {" +
+            "\"midgard\": {\"legend\": \"Jordheim's raid leaders tell it their own way: the ogres are only the door, the keepers are the house, and the deepest keeper is the storm itself. Count the lights before you count the ogres, they say, and you will come home.\", " +
+            "\"botLines\": {\"tell\": [\"krondon is an alb hole. ogres and old keepers, [heard|so they say]\"], \"lore\": [\"the albs lost a hall to ogres and still brag about it\"]}, " +
+            "\"loremaster\": {\"intro\": \"Krondon, the Albions' old hall. Ask of its [keepers].\", \"topics\": {\"keepers\": \"Old masters of weather and law.\"}}}}";
+
+        private static string WithTakes(string json) => json.TrimEnd().TrimEnd('}') + Takes + "}";
+
+        [Test]
+        public void RealmTakesParseAndAreChecked()
+        {
+            Assert.That(ProblemsWith(WithTakes), Is.Empty);
+            Assert.That(ProblemsWith(l => WithTakes(l).Replace("\"midgard\": {", "\"Midgard\": {")), Is.Empty, "a realm key in any case");
+            Assert.That(ProblemsWith(l => WithTakes(l).Replace("\"midgard\": {", "\"norse\": {")), Has.Some.Contains("realmTakes \"norse\""));
+            Assert.That(ProblemsWith(l => WithTakes(l).Replace("\"krondon is an alb hole", "\"Krondon is an alb hole")), Has.Some.Contains("realmTakes.midgard.tell"));
+            Assert.That(ProblemsWith(l => WithTakes(l).Replace("Ask of its [keepers]", "Ask of its [wardens]")), Has.Some.Contains("[wardens]"));
+            Assert.That(ProblemsWith(l => WithTakes(l).Replace("\"legend\": \"Jordheim's", "\"lgend\": \"Jordheim's")), Has.Some.Contains("unknown field \"lgend\""));
+        }
+
+        private static LoreBible TakesBible()
+        {
+            string dir = FixtureDir(RepoRoot());
+            return LoreBible.Parse(new[]
+            {
+                // As a neutral place, so every realm's loremaster tells it.
+                ("locations/krondon.json", WithTakes(File.ReadAllText(Path.Combine(dir, "locations/krondon.json"))).Replace("\"realm\": \"Albion\"", "\"realm\": \"Neutral\"")),
+                ("bosses/scurceol-hyrde.json", File.ReadAllText(Path.Combine(dir, "bosses/scurceol-hyrde.json"))),
+            });
+        }
+
+        [Test]
+        public void EachRealmHearsItsOwnTake()
+        {
+            LoreBible bible = TakesBible();
+            var random = new Random(2);
+            Assert.That(bible.TryAnswer("whats in krondon?", random, out string answer, eRealm.Midgard) && answer.StartsWith("krondon is an alb hole"), Is.True);
+            Assert.That(bible.TryAnswer("whats in krondon?", random, out answer, eRealm.Albion) && answer.StartsWith("krondon? ogres"), Is.True);
+            var lines = LoreChat.CorpusLines(bible);
+            Assert.That(lines.Single(l => l.Text.StartsWith("the albs lost a hall")).Realm, Is.EqualTo("mid"));
+        }
+
+        [Test]
+        public void TheChannelsReadTheEngineBibleWithRealmTakes()
+        {
+            var source = new LoreBibleSource(TakesBible());
+            LoreChannels.LoreLocation krondon = source.GetLocation("krondon");
+            Assert.That(krondon.Loremaster.Topics.Select(t => t.Key), Is.EquivalentTo(new[] { "names", "warrior queen" }));
+            Assert.That(krondon.Book.Pages.Length, Is.EqualTo(2));
+            Assert.That(krondon.Areas.Single().Radius, Is.EqualTo(900));
+            Assert.That(source.GetBoss("scurceol-hyrde").LoremasterTopic.Keyword, Is.EqualTo("storm-keeper"));
+            Assert.That(source.GetBoss("scurceol-hyrde").Chronicle.Win, Does.Contain("{raidLeader}"));
+            Assert.That(source.GetBoss("scurceol-hyrde").IsClass("ScurceolHyrde"), Is.True);
+            var midgard = LoreChannels.LoreRealmView.For(source, LoreChannels.LoreRealm.Midgard);
+            Assert.That(midgard.GetLocation("krondon").Legend, Does.StartWith("Jordheim's raid leaders"));
+            Assert.That(midgard.GetLocation("krondon").Story, Is.EqualTo(krondon.Story), "what a take leaves out stays shared");
+            Assert.That(LoreChannels.LoreRealmView.For(source, LoreChannels.LoreRealm.Albion).GetLocation("krondon").Legend, Is.EqualTo(krondon.Legend));
+            var dialogue = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Midgard, "Loremaster Sigrun");
+            Assert.That(dialogue.Resolve("keepers")?.Text, Is.EqualTo("Old masters of weather and law."), "the realm's own topics");
+            var lenient = LoreChannels.LoreJson.ParseLocation(WithTakes(File.ReadAllText(Path.Combine(FixtureDir(RepoRoot()), "locations/krondon.json"))));
+            Assert.That(lenient.ForRealm(LoreChannels.LoreRealm.Midgard).Loremaster.Intro, Does.StartWith("Krondon, the Albions'"), "the launcher's reader too");
+        }
 
         #endregion
 

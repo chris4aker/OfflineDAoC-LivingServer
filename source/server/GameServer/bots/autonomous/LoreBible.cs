@@ -34,6 +34,28 @@ public sealed class LoreBible
 
     public sealed record Book(string Title, string[] Pages);
 
+    /// <summary>
+    /// One realm's take on a neutral place or boss ("realmTakes": {"albion": {...}}): its own story, legend, bot lines,
+    /// loremaster words or loremaster topic. A field left out falls back to the shared one.
+    /// </summary>
+    public sealed record RealmTake(string Story, string Legend, string[] Lore, string[] Rumour, string[] Tell, string[] Briefing,
+        string[] AftermathWin, string[] AftermathLoss, Loremaster Loremaster, string LoremasterKeyword, string LoremasterText)
+    {
+        public IEnumerable<(string Field, string[] Lines)> BotLines =>
+            [("lore", Lore), ("rumour", Rumour), ("tell", Tell), ("briefing", Briefing), ("aftermathWin", AftermathWin), ("aftermathLoss", AftermathLoss)];
+    }
+
+    /// <summary>The realm keys of "realmTakes", as written ("albion") and as the realm is named.</summary>
+    public static readonly (string Key, string Realm)[] TakeRealms = [("albion", "Albion"), ("midgard", "Midgard"), ("hibernia", "Hibernia")];
+
+    public static string TakeKey(eRealm realm) => realm switch
+    {
+        eRealm.Albion => "albion",
+        eRealm.Midgard => "midgard",
+        eRealm.Hibernia => "hibernia",
+        _ => string.Empty,
+    };
+
     public sealed record Location(string Id, string Name, string Realm, ushort[] Regions, string Summary, Fact[] Facts,
         string Story, string Legend, string[] FirstEntry, Area[] Areas, string[] Lore, string[] Rumour, string[] Tell,
         Loremaster Loremaster, Book Book, string[] Bosses)
@@ -44,7 +66,15 @@ public sealed class LoreBible
         public string[] RaidForming { get; init; } = [];
         /// <summary>Other names players use ("krondon", "the glacier"); the name and id always count. Optional ("aliases").</summary>
         public string[] Aliases { get; init; } = [];
+        /// <summary>Each realm's own take (a neutral place), by "albion", "midgard", "hibernia". Optional ("realmTakes").</summary>
+        public IReadOnlyDictionary<string, RealmTake> RealmTakes { get; init; } = new Dictionary<string, RealmTake>();
         public string File { get; init; } = string.Empty;
+
+        public RealmTake TakeFor(eRealm realm) => RealmTakes.TryGetValue(TakeKey(realm), out RealmTake take) ? take : null;
+        /// <summary>The "tell" lines a bot of this realm answers with: its realm's take first.</summary>
+        public string[] TellFor(eRealm realm) => TakeFor(realm)?.Tell is { Length: > 0 } t ? t : Tell;
+        public string[] RumourFor(eRealm realm) => TakeFor(realm)?.Rumour is { Length: > 0 } r ? r : Rumour;
+        public string[] LoreFor(eRealm realm) => TakeFor(realm)?.Lore is { Length: > 0 } l ? l : Lore;
     }
 
     public sealed record Boss(string Id, string Name, string CatalogKey, string LocationId, string Realm, Fact[] Facts,
@@ -55,7 +85,15 @@ public sealed class LoreBible
     {
         /// <summary>Other names players use ("cuuldurach", "the glimmer king"). Optional ("aliases").</summary>
         public string[] Aliases { get; init; } = [];
+        /// <summary>Each realm's own take (a neutral boss: Govannon). Optional ("realmTakes").</summary>
+        public IReadOnlyDictionary<string, RealmTake> RealmTakes { get; init; } = new Dictionary<string, RealmTake>();
         public string File { get; init; } = string.Empty;
+
+        public RealmTake TakeFor(eRealm realm) => RealmTakes.TryGetValue(TakeKey(realm), out RealmTake take) ? take : null;
+        public string[] BriefingFor(eRealm realm) => TakeFor(realm)?.Briefing is { Length: > 0 } b ? b : Briefing;
+        public string[] AftermathFor(eRealm realm, bool won) =>
+            (won ? TakeFor(realm)?.AftermathWin : TakeFor(realm)?.AftermathLoss) is { Length: > 0 } a ? a : won ? AftermathWin : AftermathLoss;
+        public string[] RumourFor(eRealm realm) => TakeFor(realm)?.Rumour is { Length: > 0 } r ? r : Rumour;
 
         /// <summary>The boss's script class in lower case ("scurceolhyrde"), from a catalog id or a class name.</summary>
         public string ClassKey => ClassKeyOf(CatalogKey);
@@ -202,12 +240,13 @@ public sealed class LoreBible
     }
 
     private static readonly string[] LocationKeys =
-        ["id", "name", "realm", "regions", "zones", "aliases", "summary", "facts", "story", "legend", "atmosphere", "botLines", "loremaster", "book", "bosses"];
+        ["id", "name", "realm", "regions", "zones", "aliases", "summary", "facts", "story", "legend", "atmosphere", "botLines", "loremaster", "book", "bosses", "realmTakes"];
     private static readonly string[] LocationAtmosphereKeys = ["firstEntry", "areas", "raidForming"];
     private static readonly string[] AreaKeys = ["name", "region", "x", "y", "z", "radius", "lines"];
     private static readonly string[] LocationBotKeys = ["lore", "rumour", "tell"];
     private static readonly string[] BossKeys =
-        ["id", "name", "catalogKey", "locationId", "realm", "aliases", "facts", "story", "legend", "yells", "atmosphere", "botLines", "loremasterTopic", "bookPage", "chronicle"];
+        ["id", "name", "catalogKey", "locationId", "realm", "aliases", "facts", "story", "legend", "yells", "atmosphere", "botLines", "loremasterTopic", "bookPage", "chronicle", "realmTakes"];
+    private static readonly string[] TakeKeys = ["story", "legend", "botLines", "loremaster", "loremasterTopic"];
     private static readonly string[] YellKeys = ["aggro", "phases", "death", "slay"];
     private static readonly string[] BossAtmosphereKeys = ["lairEntry", "phases", "realmFirstKill", "wake"];
     private static readonly string[] BossBotKeys = ["briefing", "aftermathWin", "aftermathLoss", "rumour"];
@@ -313,6 +352,71 @@ public sealed class LoreBible
         return list.ToArray();
     }
 
+    private static Loremaster ParseLoremaster(JsonElement master, string file, List<string> problems)
+    {
+        if (master.ValueKind != JsonValueKind.Object)
+            return null;
+        Unknown(master, ["intro", "topics"], file + " loremaster", problems);
+        var topics = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        if (master.TryGetProperty("topics", out JsonElement t))
+        {
+            if (t.ValueKind != JsonValueKind.Object)
+                problems.Add($"{file}: \"loremaster.topics\" must be an object of keyword: text");
+            else
+                foreach (JsonProperty topic in t.EnumerateObject())
+                {
+                    if (topic.Value.ValueKind != JsonValueKind.String)
+                        problems.Add($"{file}: loremaster topic \"{topic.Name}\" must be text");
+                    else if (!topics.TryAdd(topic.Name, topic.Value.GetString() ?? string.Empty))
+                        problems.Add($"{file}: loremaster topic \"{topic.Name}\" is there twice");
+                }
+        }
+        return new Loremaster(Str(master, "intro"), topics);
+    }
+
+    private static IReadOnlyDictionary<string, RealmTake> ParseTakes(JsonElement root, string file, string[] botKeys, List<string> problems)
+    {
+        var takes = new Dictionary<string, RealmTake>(StringComparer.Ordinal);
+        if (root.ValueKind != JsonValueKind.Object || !root.TryGetProperty("realmTakes", out JsonElement all) || all.ValueKind == JsonValueKind.Null)
+            return takes;
+        if (all.ValueKind != JsonValueKind.Object)
+        {
+            problems.Add($"{file}: \"realmTakes\" must be an object of albion, midgard, hibernia");
+            return takes;
+        }
+        foreach (JsonProperty realm in all.EnumerateObject())
+        {
+            // "albion" or "Albion" (the Albion writer, PR #94): kept by its lower-case key.
+            string key = realm.Name.Trim().ToLowerInvariant();
+            string where = $"{file} realmTakes.{realm.Name}";
+            if (!TakeRealms.Any(r => r.Key == key))
+            {
+                problems.Add($"{file}: realmTakes \"{realm.Name}\" is not albion, midgard or hibernia");
+                continue;
+            }
+            if (takes.ContainsKey(key))
+            {
+                problems.Add($"{file}: realmTakes \"{realm.Name}\" is there twice");
+                continue;
+            }
+            JsonElement e = realm.Value;
+            if (e.ValueKind != JsonValueKind.Object)
+            {
+                problems.Add($"{where}: must be an object");
+                continue;
+            }
+            Unknown(e, TakeKeys, where, problems);
+            JsonElement bot = Obj(e, "botLines");
+            Unknown(bot, botKeys, where + " botLines", problems);
+            JsonElement topic = Obj(e, "loremasterTopic");
+            Unknown(topic, ["keyword", "text"], where + " loremasterTopic", problems);
+            takes[key] = new RealmTake(Str(e, "story"), Str(e, "legend"), Strs(bot, "lore", where, problems), Strs(bot, "rumour", where, problems),
+                Strs(bot, "tell", where, problems), Strs(bot, "briefing", where, problems), Strs(bot, "aftermathWin", where, problems),
+                Strs(bot, "aftermathLoss", where, problems), ParseLoremaster(Obj(e, "loremaster"), where, problems), Str(topic, "keyword"), Str(topic, "text"));
+        }
+        return takes;
+    }
+
     private static Location ParseLocation(JsonElement root, string file, List<string> problems)
     {
         Unknown(root, LocationKeys, file, problems);
@@ -337,34 +441,20 @@ public sealed class LoreBible
         }
         JsonElement bot = Obj(root, "botLines");
         Unknown(bot, LocationBotKeys, file + " botLines", problems);
-        JsonElement master = Obj(root, "loremaster");
-        Unknown(master, ["intro", "topics"], file + " loremaster", problems);
-        var topics = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        if (master.ValueKind == JsonValueKind.Object && master.TryGetProperty("topics", out JsonElement t))
-        {
-            if (t.ValueKind != JsonValueKind.Object)
-                problems.Add($"{file}: \"loremaster.topics\" must be an object of keyword: text");
-            else
-                foreach (JsonProperty topic in t.EnumerateObject())
-                {
-                    if (topic.Value.ValueKind != JsonValueKind.String)
-                        problems.Add($"{file}: loremaster topic \"{topic.Name}\" must be text");
-                    else if (!topics.TryAdd(topic.Name, topic.Value.GetString() ?? string.Empty))
-                        problems.Add($"{file}: loremaster topic \"{topic.Name}\" is there twice");
-                }
-        }
+        Loremaster master = ParseLoremaster(Obj(root, "loremaster"), file, problems);
         JsonElement book = Obj(root, "book");
         Unknown(book, ["title", "pages"], file + " book", problems);
         return new Location(Str(root, "id"), Str(root, "name"), Str(root, "realm"), regions, Str(root, "summary"),
             Facts(root, file, problems), Str(root, "story"), Str(root, "legend"), Strs(atmosphere, "firstEntry", file, problems),
             areas.ToArray(), Strs(bot, "lore", file, problems), Strs(bot, "rumour", file, problems), Strs(bot, "tell", file, problems),
-            master.ValueKind == JsonValueKind.Object ? new Loremaster(Str(master, "intro"), topics) : null,
+            master,
             book.ValueKind == JsonValueKind.Object ? new Book(Str(book, "title"), Strs(book, "pages", file, problems)) : null,
             Strs(root, "bosses", file, problems))
         {
             Zones = Ushorts(root, "zones", file, problems),
             RaidForming = Strs(atmosphere, "raidForming", file, problems),
             Aliases = Strs(root, "aliases", file, problems),
+            RealmTakes = ParseTakes(root, file, LocationBotKeys, problems),
             File = file,
         };
     }
@@ -391,6 +481,7 @@ public sealed class LoreBible
             Str(topic, "keyword"), Str(topic, "text"), Str(root, "bookPage"), Str(chronicle, "win"), Str(chronicle, "loss"))
         {
             Aliases = Strs(root, "aliases", file, problems),
+            RealmTakes = ParseTakes(root, file, BossBotKeys, problems),
             File = file,
         };
     }
@@ -420,7 +511,8 @@ public sealed class LoreBible
     private static readonly Regex SlotRe = new(@"\{([A-Za-z]+)\}", RegexOptions.Compiled);
 
     /// <summary>What the encounter catalog knows, for <see cref="Validate"/> (built from docs/encounters/epic-encounters.json).</summary>
-    public sealed record Catalog(IReadOnlySet<string> Ids, IReadOnlyDictionary<string, string[]> AddsByClass)
+    public sealed record Catalog(IReadOnlySet<string> Ids, IReadOnlyDictionary<string, string[]> AddsByClass,
+        IReadOnlyDictionary<string, string[]> PartnersByClass = null)
     {
         public bool Knows(string key) => !string.IsNullOrWhiteSpace(key) && (Ids.Contains(key.Trim()) || AddsByClass.ContainsKey(ClassKeyOf(key)));
     }
@@ -498,22 +590,41 @@ public sealed class LoreBible
             {
                 if (!LoreFightRules.TryParseTrigger(phase.Trigger, out LoreFightRules.Trigger trigger))
                 {
-                    problems.Add($"{boss.File}: {what} trigger \"{phase.Trigger}\" is not health<=N (1-99), addsSpawn, orbDeath, addsDead, formChange, death or wake");
+                    problems.Add($"{boss.File}: {what} trigger \"{phase.Trigger}\" is not health<=N (1-99), addsSpawn, orbDeath, addsDead, " +
+                                 "formChange, partnerDead, death, wake, playerDeath, teleport, berserk, breath or glare");
                     continue;
                 }
                 Need(!string.IsNullOrWhiteSpace(phase.Text), $"{boss.File}: {what} \"{phase.Trigger}\" has no text");
                 if (catalog != null && trigger.NeedsAdds)
                     Need(catalog.AddsByClass.TryGetValue(boss.ClassKey, out string[] adds) && adds.Length > 0,
                         $"{boss.File}: {what} trigger \"{phase.Trigger}\" needs adds, and the catalog lists none for {boss.CatalogKey}");
+                if (catalog?.PartnersByClass != null && trigger.NeedsPartners)
+                    Need(catalog.PartnersByClass.TryGetValue(boss.ClassKey, out string[] mates) && mates.Length > 0,
+                        $"{boss.File}: {what} trigger \"{phase.Trigger}\" needs partners, and the catalog lists none for {boss.CatalogKey}");
             }
         }
 
         // Locations
         foreach (var group in Locations.GroupBy(l => l.Id ?? string.Empty, StringComparer.OrdinalIgnoreCase).Where(g => g.Count() > 1))
             problems.Add($"location id \"{group.Key}\" is used by {string.Join(", ", group.Select(l => l.File))}");
-        var bossKeywords = Bosses.Where(b => !string.IsNullOrWhiteSpace(b.LoremasterKeyword))
-            .GroupBy(b => b.LocationId ?? string.Empty, StringComparer.OrdinalIgnoreCase)
-            .ToDictionary(g => g.Key, g => g.Select(b => b.LoremasterKeyword).ToArray(), StringComparer.OrdinalIgnoreCase);
+        var bossKeywords = Bosses.GroupBy(b => b.LocationId ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(g => g.Key, g => g.SelectMany(b => new[] { b.LoremasterKeyword }.Concat(b.RealmTakes.Values.Select(t => t.LoremasterKeyword)))
+                .Where(k => !string.IsNullOrWhiteSpace(k)).ToArray(), StringComparer.OrdinalIgnoreCase);
+        void CheckTakes(IReadOnlyDictionary<string, RealmTake> takes, string f, int storyLow, int storyHigh)
+        {
+            foreach ((string realm, RealmTake take) in takes)
+            {
+                string what = $"realmTakes.{realm}";
+                if (!string.IsNullOrWhiteSpace(take.Story))
+                    CheckWords(take.Story, storyLow, storyHigh, what + ".story", f);
+                if (!string.IsNullOrWhiteSpace(take.Legend))
+                    CheckWords(take.Legend, 30, 140, what + ".legend", f);
+                foreach ((string field, string[] lines) in take.BotLines)
+                    CheckBotLines(lines, $"{what}.{field}", f);
+                Need(string.IsNullOrWhiteSpace(take.LoremasterKeyword) == string.IsNullOrWhiteSpace(take.LoremasterText),
+                    $"{f}: {what}.loremasterTopic needs both keyword and text");
+            }
+        }
         foreach (Location l in Locations)
         {
             string f = l.File;
@@ -554,11 +665,15 @@ public sealed class LoreBible
                 var known = new HashSet<string>(l.Loremaster.Topics.Keys, StringComparer.OrdinalIgnoreCase);
                 if (bossKeywords.TryGetValue(l.Id ?? string.Empty, out string[] extra))
                     known.UnionWith(extra);
-                foreach (string text in new[] { l.Loremaster.Intro }.Concat(l.Loremaster.Topics.Values))
+                Loremaster[] takes = l.RealmTakes.Values.Select(t => t.Loremaster).Where(m => m != null).ToArray();
+                foreach (Loremaster take in takes)
+                    known.UnionWith(take.Topics.Keys);
+                foreach (string text in new[] { l.Loremaster }.Concat(takes).SelectMany(m => new[] { m.Intro }.Concat(m.Topics.Values)))
                     foreach (Match m in KeywordRe.Matches(text ?? string.Empty))
                         Need(known.Contains(m.Groups[1].Value.Trim()),
                             $"{f}: loremaster keyword [{m.Groups[1].Value}] has no topic here or in one of its bosses' loremasterTopic");
             }
+            CheckTakes(l.RealmTakes, f, 130, 460);
             if (l.Book == null)
                 problems.Add($"{f}: a book (title and pages)");
             else
@@ -621,6 +736,7 @@ public sealed class LoreBible
             CheckBotLines(b.AftermathWin, "aftermathWin", f);
             CheckBotLines(b.AftermathLoss, "aftermathLoss", f);
             CheckBotLines(b.Rumour, "rumour", f);
+            CheckTakes(b.RealmTakes, f, 70, 345);
             Need(b.Briefing.Length + b.AftermathWin.Length + b.AftermathLoss.Length + b.Rumour.Length >= 3, $"{f}: at least 3 bot lines");
             Need(string.IsNullOrWhiteSpace(b.LoremasterKeyword) == string.IsNullOrWhiteSpace(b.LoremasterText),
                 $"{f}: loremasterTopic needs both keyword and text");
@@ -699,14 +815,15 @@ public sealed class LoreBible
     /// A bot's answer to a question about a place or boss, in chat voice: a place's "tell" lines, else its rumours; a
     /// boss's rumours, else its briefing (what a raid leader would say). "[a|b]" choices are picked. Pure but for the random.
     /// </summary>
-    public bool TryAnswer(string text, Random random, out string answer)
+    public bool TryAnswer(string text, Random random, out string answer, eRealm realm = eRealm.None)
     {
         answer = string.Empty;
         (Location location, Boss boss) = Subject(text);
+        // The asker's realm's take first (a neutral place or boss told its realm's way).
         string[] pool = location != null
-            ? (location.Tell.Length > 0 ? location.Tell : location.Rumour.Length > 0 ? location.Rumour : location.Lore)
+            ? (location.TellFor(realm) is { Length: > 0 } tell ? tell : location.RumourFor(realm) is { Length: > 0 } rumour ? rumour : location.LoreFor(realm))
             : boss != null
-                ? (boss.Rumour.Length > 0 ? boss.Rumour : boss.Briefing)
+                ? (boss.RumourFor(realm) is { Length: > 0 } said ? said : boss.BriefingFor(realm))
                 : [];
         if (pool.Length == 0)
             return false;

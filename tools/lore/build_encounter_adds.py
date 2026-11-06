@@ -20,16 +20,21 @@ OUT = ROOT / 'source/server/GameServer/bots/autonomous/data/encounter_adds.json'
 
 def build():
     catalog = json.loads(CATALOG.read_text(encoding='utf-8'))
-    adds = {}
+    adds, partners = {}, {}
     for e in catalog['encounters']:
+        mates = sorted({c.lower() for c in (e.get('partners') or [])})
+        if mates:
+            partners.setdefault(e['class'].lower(), set()).update(mates)
         # Its adds, and the encounters it spawns (Xaga spawns Beatha and Tine): "addsDead" is when they are all dead.
         names = sorted({a['class'].lower() for a in (e.get('adds') or []) if a.get('class')} |
                        {c.lower() for c in (e.get('spawnsEncounters') or [])})
         if names:
             adds.setdefault(e['class'].lower(), set()).update(names)
-    data = {'about': 'Boss script class -> add script classes (lower case), from docs/encounters/epic-encounters.json. '
+    data = {'about': 'Boss script class -> add script classes, and -> partner encounters (lower case), from '
+                     'docs/encounters/epic-encounters.json. '
                      'Written by tools/lore/build_encounter_adds.py; do not edit.',
-            'adds': {k: sorted(v) for k, v in sorted(adds.items())}}
+            'adds': {k: sorted(v) for k, v in sorted(adds.items())},
+            'partners': {k: sorted(v) for k, v in sorted(partners.items())}}
     return json.dumps(data, indent=1, ensure_ascii=False) + '\n'
 
 

@@ -41,6 +41,22 @@ storm-keeper, Scurceol Hyrde, are filled in, as the first example.
   the Archwizard waits in Summoner's Hall: he is in the Hall of the Corrupt.
 - GMs: `/lstest lore` says which lore place you are in and lets its lines show again.
 
+**The lore reaches you beyond bot chat** (Living Server 1.2: every dungeon, dragon and boss gets a story). Built and
+covered by automated tests; none of it has been seen in game yet.
+- **A loremaster in each capital:** Loremaster Aldwin in Camelot's library, Loremaster Sigrun at Jordheim's temple of the
+  gods and Loremaster Eithne by the bards of Tir na Nog. Ask them of the [places] of your realm and the places no realm
+  holds. Every place and every boss has its own words, and the links lead from one to the next.
+- **Lore books:** one book per place, which you read with "use", a page at a time. The loremasters copy them out for a
+  silver, and now and then a book turns up on a monster near the place it tells of. It's rare, never one you already
+  carry, and they never crowd out real loot. The delve says what each book is about.
+- **The Herald tells the tale:** each raid in the launcher's Realm Records, and in the Camelot Herald, ends with a sentence
+  from its boss's story: who led it, how long it took, won or lost.
+- **The Bestiary:** a new page under Realm Records lists every boss of your realm's places and the neutral ones, with
+  what the raid leaders say. A boss's full story, your realm's first kill and its raid record open once your realm has
+  brought it down. Raids won before 1.2 count. The Camelot Herald gains a "Bestiary of the Realms".
+- **/lore in either client** shows your realm's places and bosses and what your realm has slain. In the new client the
+  journal's LORE button opens it in its own window, where every name is a link.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

@@ -25,6 +25,7 @@ public static class LoreBossWatch
     public const long YellGapMs = 12_000;
     public const long SlayGapMs = 30_000;
     public const ushort AddRadius = 4_000;
+    public const ushort PartnerRadius = 6_000;
 
     private sealed class Watched
     {
@@ -63,21 +64,27 @@ public static class LoreBossWatch
 
     #region Adds map
 
-    private static readonly Lazy<IReadOnlyDictionary<string, string[]>> AddsMap = new(LoadAdds);
+    private static readonly Lazy<IReadOnlyDictionary<string, string[]>> AddsMap = new(() => LoadAdds("adds"));
 
     /// <summary>Boss class -> add classes (lower case), built into the server (data/encounter_adds.json).</summary>
     public static IReadOnlyDictionary<string, string[]> Adds => AddsMap.Value;
 
-    public static IReadOnlyDictionary<string, string[]> ParseAdds(string json)
+    public static IReadOnlyDictionary<string, string[]> ParseAdds(string json, string section = "adds")
     {
         using JsonDocument document = JsonDocument.Parse(json);
         var map = new Dictionary<string, string[]>(StringComparer.Ordinal);
-        foreach (JsonProperty boss in document.RootElement.GetProperty("adds").EnumerateObject())
-            map[boss.Name] = boss.Value.EnumerateArray().Select(x => x.GetString()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+        if (document.RootElement.TryGetProperty(section, out JsonElement all))
+            foreach (JsonProperty boss in all.EnumerateObject())
+                map[boss.Name] = boss.Value.EnumerateArray().Select(x => x.GetString()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
         return map;
     }
 
-    private static IReadOnlyDictionary<string, string[]> LoadAdds()
+    private static readonly Lazy<IReadOnlyDictionary<string, string[]>> PartnersMap = new(() => LoadAdds("partners"));
+
+    /// <summary>Boss class -> its partner encounters (lower case): the Horsemen, Lord and Lich Lord Sanguis.</summary>
+    public static IReadOnlyDictionary<string, string[]> Partners => PartnersMap.Value;
+
+    private static IReadOnlyDictionary<string, string[]> LoadAdds(string section)
     {
         try
         {
@@ -87,7 +94,7 @@ public static class LoreBossWatch
                 return new Dictionary<string, string[]>();
             using Stream stream = assembly.GetManifestResourceStream(name);
             using var reader = new StreamReader(stream);
-            return ParseAdds(reader.ReadToEnd());
+            return ParseAdds(reader.ReadToEnd(), section);
         }
         catch (Exception exception)
         {
@@ -104,12 +111,28 @@ public static class LoreBossWatch
     {
         GameEventMgr.AddHandler(GameLivingEvent.AttackedByEnemy, new DOLEventHandler(OnAttacked));
         GameEventMgr.AddHandler(GameLivingEvent.Dying, new DOLEventHandler(OnDying));
+        LoreChannels.LoreFirstKills.FirstKill -= OnFirstKill;
+        LoreChannels.LoreFirstKills.FirstKill += OnFirstKill;
+    }
+
+    /// <summary>
+    /// A realm's first kill of a boss (decided once, with its staff and Special Forces rules, and saved in the realm event
+    /// ledger by LoreFirstKills): the world-wide atmosphere line. Raid wins from before 1.2 count as first kills there and
+    /// raise nothing, so an old win is never announced as new.
+    /// </summary>
+    private static void OnFirstKill(LoreChannels.LoreFirstKill kill, LoreChannels.LoreBoss channelBoss)
+    {
+        LoreBible.Boss boss = LoreBible.Current.BossById(kill?.BossId ?? channelBoss?.Id);
+        eRealm realm = (eRealm)(kill?.Realm ?? 0);
+        if (boss != null && realm is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia)
+            LoreAtmosphere.FirstKill(realm, boss);
     }
 
     public static void Stop()
     {
         GameEventMgr.RemoveHandler(GameLivingEvent.AttackedByEnemy, new DOLEventHandler(OnAttacked));
         GameEventMgr.RemoveHandler(GameLivingEvent.Dying, new DOLEventHandler(OnDying));
+        LoreChannels.LoreFirstKills.FirstKill -= OnFirstKill;
         Fights.Clear();
     }
 
@@ -141,22 +164,24 @@ public static class LoreBossWatch
                     Yell(npc, watched ?? new Watched { Boss = boss }, deathYells, GameLoop.GameLoopTime, force: true);
                 foreach (string line in PhaseTexts(boss.AtmospherePhases, LoreFightRules.Kind.Death).Take(1))
                     LoreAtmosphere.Zone(npc.CurrentZone, line, LoreAtmosphere.PhaseTtlMs);
-                eRealm realm = LoreOnceRules.KillerRealm(killer);
-                if (realm is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia && !AutonomousLivingServer.IsStaff(killer as GameLiving) &&
-                    LoreAtmosphere.ClaimFirstKill(realm, boss.Id, killer?.Name ?? string.Empty))
-                {
-                    Log.Info($"LORE_FIRST_KILL boss={boss.Id} realm={GlobalConstants.RealmToName(realm)} killer=\"{killer?.Name}\"");
-                    LoreAtmosphere.FirstKill(realm, boss);
-                }
+                // A realm's first kill is decided and saved once, by LoreFirstKills (the lore channels); its line is OnFirstKill.
             }
             else if (sender is GamePlayer && killer is GameNPC bossNpc && Fights.TryGetValue(bossNpc, out Watched watched))
             {
                 long now = GameLoop.GameLoopTime;
-                if (!ScriptSpeaksOn(watched.Boss.ClassKey, "slay") && watched.Boss.SlayYells.Length > 0 && now - watched.LastSlay >= SlayGapMs)
+                // A "playerDeath" phase is one more slay yell; its atmosphere line goes to the zone once a fight.
+                string[] slay = watched.Boss.SlayYells.Concat(PhaseTexts(watched.Boss.PhaseYells, LoreFightRules.Kind.PlayerDeath)).ToArray();
+                if (!ScriptSpeaksOn(watched.Boss.ClassKey, "slay") && slay.Length > 0 && now - watched.LastSlay >= SlayGapMs)
                 {
                     watched.LastSlay = now;
-                    Yell(bossNpc, watched, watched.Boss.SlayYells, now, force: true);
+                    Yell(bossNpc, watched, slay, now, force: true);
                 }
+                if (watched.Fight.Said.Add("playerDeath") && watched.Fight.AtmosphereLines < LoreFightRules.MaxAtmospherePerFight)
+                    foreach (string line in PhaseTexts(watched.Boss.AtmospherePhases, LoreFightRules.Kind.PlayerDeath).Take(1))
+                    {
+                        watched.Fight.AtmosphereLines++;
+                        LoreAtmosphere.Zone(bossNpc.CurrentZone, line, LoreAtmosphere.PhaseTtlMs);
+                    }
             }
         }
         catch (Exception exception)
@@ -246,7 +271,11 @@ public static class LoreBossWatch
         if (triggers.Any(t => LoreFightRules.TryParseTrigger(t, out var trigger) && trigger.NeedsAdds) &&
             Adds.TryGetValue(boss.ClassKey, out string[] addClasses))
             adds = npc.GetNPCsInRadius(AddRadius).Count(n => n.IsAlive && n != npc && addClasses.Contains(n.GetType().Name.ToLowerInvariant()));
-        foreach (string fired in LoreFightRules.Observe(watched.Fight, triggers, npc.HealthPercent, adds, npc.Model))
+        int partners = -1;
+        if (triggers.Any(t => LoreFightRules.TryParseTrigger(t, out var trigger) && trigger.NeedsPartners) &&
+            Partners.TryGetValue(boss.ClassKey, out string[] partnerClasses))
+            partners = npc.GetNPCsInRadius(PartnerRadius).Count(n => n.IsAlive && n != npc && partnerClasses.Contains(n.GetType().Name.ToLowerInvariant()));
+        foreach (string fired in LoreFightRules.Observe(watched.Fight, triggers, npc.HealthPercent, adds, npc.Model, partners))
         {
             string[] yells = boss.PhaseYells.Where(p => string.Equals(p.Trigger, fired, StringComparison.OrdinalIgnoreCase)).Select(p => p.Text).ToArray();
             Yell(npc, watched, yells, now);
