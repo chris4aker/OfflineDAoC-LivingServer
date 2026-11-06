@@ -16,50 +16,81 @@
       "source": "common usage"
     }
   ],
-  "story": "Arawn's gaol had a chapel of its own, and the chapel had a sacristan to keep its vessels: the cups, the lamps, and, the Inconnu say, the rim of a cauldron that nine maidens once kept warm with their breath. The vessels are long gone, stolen or broken when the gaol rose, but the Sacristan does not know it. He walks his round of the high walk as he always has, from the sacristy to the chapel and back, checking for things that are no longer there. He will not stop for you. You must stop him.",
-  "legend": "He walks a loop and used to outrun whole raids. Here he stands and fights once you engage, so catch him on his walk, hold him there and burn him. Do not chase him round his circuit; let him come to you.",
+  "story": "Arawn's gaol had a chapel of its own, and the chapel had a sacristan to keep its vessels: the cups, the lamps, and, the Inconnu say, the rim of a cauldron that nine maidens once kept warm with their breath. The vessels are long gone, stolen or broken when the gaol rose, but the Sacristan does not know it. He walks his round of the high walk as he always has, from the sacristy to the chapel and back, checking for things that are no longer there. He will not stop for you. You must stop him.\n\nThe keeper of the vessels. Arawn's gaol had a chapel, and the chapel had a sacristan to keep its vessels: the cups and lamps, the vestments, and, the Inconnu say, the rim of the cauldron that nine maidens once kept warm with their breath, which Arawn lent to Caer Sidi so that its prisoners might be fed. The vessels are long gone, stolen or broken when the gaol rose, and the cauldron's rim lies cold in the larders below.\n\nHis round. The Sacristan does not know any of this, or does not accept it. He walks his round of the high walk as he always has, from the sacristy to the chapel and back, checking for things that are no longer there, and he used to walk it faster than a raid could run, so that whole raids chased him round the circuit for an hour and never caught him. On this server he stands to fight once a raid engages him. He will not stop for you of his own accord. You must stand in his way.",
+  "legend": "He walks a fixed loop of the high walk and once outran whole raids. Here he stands and fights once engaged, so catch him on his walk, hold him there and burn him; do not chase him round the circuit, let him come to you and block. He resets a minute after the fight leaves him, so commit when you pull. Set the wall of tanks on the narrow stretch of the walk past the chapel door; he cannot get round you there. The old raids that ran after him for an hour still talk about it, and none of them fondly.",
   "yells": {
     "aggro": [
-      "The vessels. Where are the vessels?"
+      "The vessels. Where are the vessels?",
+      "Stand aside from the walk.",
+      "The round is not finished."
     ],
-    "phases": [],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Out of the way! The round must be kept!"
+      }
+    ],
     "death": [
-      "The round... is not... finished..."
+      "The round... is not... finished...",
+      "Who will keep the vessels?"
     ],
     "slay": [
-      "Stand aside from the walk."
+      "Stand aside from the walk.",
+      "Out of the sacristy.",
+      "Not a vessel. Discard."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Footsteps on the walk above. Always the same round."
+      "Footsteps on the walk above. Always the same round.",
+      "The walk is worn smooth by one pair of feet."
     ],
     "phases": [],
     "realmFirstKill": "The Sacristan's round is ended. The walk is quiet."
   },
   "botLines": {
     "briefing": [
-      "catch the sacristan on his walk and hold him. dont chase his loop"
+      "catch the sacristan on his walk and hold him. dont chase his loop",
+      "block his path, he stops when engaged",
+      "commit when you pull, he resets after a minute",
+      "melee on him, casters watch adds"
     ],
     "aftermathWin": [
       "sacristan down. his round is over",
-      "he stood still for once"
+      "he stood still for once",
+      "caught him first try",
+      "the walk is quiet"
     ],
     "aftermathLoss": [
-      "we chased him round the loop again"
+      "we chased him round the loop again",
+      "he reset while we were running after him",
+      "nobody blocked his path",
+      "pulled him and then everyone stopped"
     ],
     "rumour": [
       "heard the sacristan still checks for vessels that are long gone",
-      "[someone said|heard] the sacristan used to outrun whole raids"
+      "[someone said|heard] the sacristan used to outrun whole raids",
+      "heard the cauldron's rim is still down in the larders",
+      "the inconnu say the cauldron was kept warm by nine maidens"
     ]
   },
   "loremasterTopic": {
     "keyword": "sacristan",
     "text": "The keeper of the sacred vessels. He still walks his round on the high walk, though the vessels are long gone. Stand in his way."
   },
-  "bookPage": "",
+  "bookPage": "On the high walk we heard footsteps going round and round, always the same pace, always the same round, and our raid leader said that the old raids had chased the Sacristan for an hour and never caught him. So we did not chase him. We stood across the walk in a wall and waited, and he came round to us, still looking for the vessels that are not there, and found us in his way instead. He seemed more puzzled than angry. When he fell he asked who would keep the vessels now. Nobody had an answer that would have comforted him.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} stood in the Sacristan's way and ended his round in {minutes} minutes.",
     "loss": "The Skeletal Sacristan walked on past {realm}'s raid; {raidLeader} could not stop him."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "spectral-provisioner",
+      "relation": "fellow keeper; the cauldron in his care fed the provisioner's charges"
+    }
+  ]
 }

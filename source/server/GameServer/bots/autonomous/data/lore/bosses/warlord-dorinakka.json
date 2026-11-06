@@ -16,11 +16,13 @@
       "source": "source/server/GameServer/scripts/quests/Bounty/BountyQuest.cs"
     }
   ],
-  "story": "Dorinakka was sent to Caer Sidi because he would not lay down his sword, and he has not laid it down yet. He commanded a warband in a war nobody remembers and died at its head, and when Arawn's keepers came for him he fought them too. When the gaol rose he took the yard and found Arawn's own crypt knights there, and he did what he had always done: he drilled them. Twelve of them march at his back now, and they come when he calls.",
-  "legend": "Twelve crypt knights come with him. Pull him away from the yard's edges, keep him inside his short tether, and pick the knights off with the off-tanks while the main tank holds him. A straight brawl, but a big one.",
+  "story": "Dorinakka was sent to Caer Sidi because he would not lay down his sword, and he has not laid it down yet. He commanded a warband in a war nobody remembers and died at its head, and when Arawn's keepers came for him he fought them too. When the gaol rose he took the yard and found Arawn's own crypt knights there, and he did what he had always done: he drilled them. Twelve of them march at his back now, and they come when he calls.\n\nWho he was. Dorinakka commanded a warband in a war nobody now remembers, on a shore nobody now names, and he died at its head with his sword in his hand. When Arawn's keepers came for his soul he fought them too, and killed two, and so he was sent not to the Deadlands but to Caer Sidi, with the others who would not lay down their swords.\n\nThe yard. He has not laid it down yet. When the gaol rose he took the yard where Arawn's crypt knights drilled, and found the knights still there, leaderless, and he did what he had always done: he drilled them. Twelve of them march at his back now, in better order than they ever kept for Arawn, and they come when he calls. Before every drill he salutes toward the hall above where Bellum rides, because the warlord knows his own god when he sees him. The bounty-masters of Albion say he rallies Caer Sidi's war-dead; the Inconnu say the Crypt Lord gives him orders, and that Dorinakka has not yet noticed.",
+  "legend": "Twelve crypt knights come with him. Keep him inside his short tether, about two thousand units; drag him further and he walks home. Off-tanks pick up the knights and kill them while the main tank holds the warlord, and the casters stand where the knights cannot reach them. A straight brawl, but a big one, and the knights hit hard. The knights are the fight. If you have the off-tanks, kill them in pairs from the end of the line inward, and the warlord comes apart without them. If you do not have the off-tanks, do not pull the yard.",
   "yells": {
     "aggro": [
-      "Form ranks! The living are at the gate!"
+      "Form ranks! The living are at the gate!",
+      "Knights! Shields up!",
+      "I did not lay it down for Arawn. I will not for you."
     ],
     "phases": [
       {
@@ -29,15 +31,19 @@
       }
     ],
     "death": [
-      "Still... standing... still..."
+      "Still... standing... still...",
+      "Hold the... line..."
     ],
     "slay": [
-      "Next rank."
+      "Next rank.",
+      "Fall out.",
+      "Dismissed."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Dead knights at drill. Their warlord is watching."
+      "Dead knights at drill. Their warlord is watching.",
+      "A yard of packed earth, scarred by drill."
     ],
     "phases": [],
     "realmFirstKill": "Warlord Dorinakka has laid down his sword at last."
@@ -45,27 +51,50 @@
   "botLines": {
     "briefing": [
       "dorinakka plus 12 crypt knights. off tanks grab knights, main on him",
-      "short tether, dont drag him"
+      "short tether, dont drag him",
+      "casters stay out of knight range",
+      "kill knights first, then the warlord"
     ],
     "aftermathWin": [
       "the warlord's muster is over",
-      "twelve knights and a warlord. gg"
+      "twelve knights and a warlord. gg",
+      "he finally laid down his sword",
+      "knights died fast, good offtanking"
     ],
     "aftermathLoss": [
-      "the knights overran the casters"
+      "the knights overran the casters",
+      "dragged him and he went home",
+      "not enough off tanks for twelve knights",
+      "the knights hit way harder than they look"
     ],
     "rumour": [
       "heard dorinakka drills arawn's own crypt knights now",
-      "[someone said|heard] dorinakka never laid down his sword, even dead"
+      "[someone said|heard] dorinakka never laid down his sword, even dead",
+      "heard dorinakka salutes bellum before every drill",
+      "the inconnu say the crypt lord gives dorinakka orders and he hasnt noticed"
     ]
   },
   "loremasterTopic": {
     "keyword": "dorinakka",
     "text": "A warlord who would not lay down his sword, alive or dead. He took the yard of Caer Sidi and drills Arawn's own crypt knights. Twelve of them march at his back."
   },
-  "bookPage": "",
+  "bookPage": "In the yard the dead knights were at drill when we came, twelve of them in a line, and their warlord walking the line as a living sergeant would, correcting the angle of a shield here, the set of a foot there. He saw us and did not hurry. He formed them up. He told them the living were at the gate. Then he came at us at their head, and it was the best-ordered charge I have ever faced. Brother Cadoc said afterwards that it was almost a pity to break it. I did not think it was a pity at all.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} ended Warlord Dorinakka's bloody muster in {minutes} minutes.",
     "loss": "Dorinakka's crypt knights held the line against {realm}'s raid; {raidLeader} fell back."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "bellum",
+      "relation": "the god of war he salutes"
+    },
+    {
+      "id": "crypt-lord",
+      "relation": "gives him orders"
+    }
+  ]
 }

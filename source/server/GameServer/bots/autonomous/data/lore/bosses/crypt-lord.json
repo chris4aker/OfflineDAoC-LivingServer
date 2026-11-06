@@ -16,11 +16,13 @@
       "source": "source/server/GameServer/scripts/quests/Bounty/BountyQuest.cs"
     }
   ],
-  "story": "The Crypt Lord was Arawn's warden over the crypts of Caer Sidi, the deep rows where the prisoners slept between their reckonings. When the gaol rose he did not join the rising. He did something colder: he let the prisoners believe they had won, and then took command of them. Every forerunner, every dark light, every fate's bearer in his court answers to him now, and they come all at once. He is the gaol's real master under the riders, and he knows it.",
-  "legend": "Forty-odd dead come when he is pulled: dark lights, fate's bearers, forerunners and reckoned souls. Clear the court in sections before you touch him, or bring enough to fight a small army. He is the highest level in the fortress below the riders.",
+  "story": "The Crypt Lord was Arawn's warden over the crypts of Caer Sidi, the deep rows where the prisoners slept between their reckonings. When the gaol rose he did not join the rising. He did something colder: he let the prisoners believe they had won, and then took command of them. Every forerunner, every dark light, every fate's bearer in his court answers to him now, and they come all at once. He is the gaol's real master under the riders, and he knows it.\n\nThe warden. The Crypt Lord was Arawn's warden over the deep rows, the crypts where the prisoners of Caer Sidi slept between their reckonings, and he was the best of Arawn's keepers until the day the gaol rose. He did not join the rising, and he did not resist it. He waited. He let the prisoners break the lesser keepers and believe they had won, and then he walked out among them and gave them orders, and they obeyed, because a prisoner who has won his freedom inside his prison still wants someone to tell him what to do with it.\n\nHis court. He keeps his court in the crypts now: dark lights and forerunners, fate's bearers and reckoned souls, forty-odd dead standing in ranks, and when he is struck all of them answer. He is the highest-levelled master in the fortress below the riders. The bounty-masters of Albion say he commands Caer Sidi's restless dead; the Inconnu say he commands them for himself, and that if Arawn ever retakes his gaol, the warden is the first he will want to speak to.",
+  "legend": "Forty-odd dead come when he is pulled: dark lights, fate's bearers, forerunners and reckoned souls. Clear his court in sections from the edges before you touch him, or bring enough to fight a small army at once. He is level 86, the highest in the fortress below the riders; rotate tanks, and keep a full heal rotation on them. He resets a minute after the fight leaves him, so do not stall. Mark the forerunners first: they run, and they bring friends. The fate's bearers carry word upward to the riders, and the old hands swear Fames knows who killed them.",
   "yells": {
     "aggro": [
-      "Rise, all of you. The warden calls the count."
+      "Rise, all of you. The warden calls the count.",
+      "You walk in my crypts uninvited.",
+      "Ranks! Close ranks!"
     ],
     "phases": [
       {
@@ -29,15 +31,19 @@
       }
     ],
     "death": [
-      "The crypts... are unwatched..."
+      "The crypts... are unwatched...",
+      "Let Arawn have them back, then."
     ],
     "slay": [
-      "Another for the rows."
+      "Another for the rows.",
+      "Lie down. You are home.",
+      "Your bed was made long ago."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The dead stand in ranks. Their lord is awake."
+      "The dead stand in ranks. Their lord is awake.",
+      "The rows run further than your torchlight."
     ],
     "phases": [],
     "realmFirstKill": "The Crypt Lord has fallen. Caer Sidi's dead are leaderless."
@@ -45,27 +51,51 @@
   "botLines": {
     "briefing": [
       "crypt lord pulls 40+ adds. we clear the court in sections first",
-      "highest level in the place below the riders. tanks rotate"
+      "highest level in the place below the riders. tanks rotate",
+      "edges first, then the middle, then him",
+      "dont stall, he resets after a minute"
     ],
     "aftermathWin": [
       "crypt lord down. the warden's off duty",
-      "cleared the court first, then him. clean"
+      "cleared the court first, then him. clean",
+      "forty adds and nobody died, wow",
+      "the rows are empty now"
     ],
     "aftermathLoss": [
-      "someone body pulled the crypt lord with the court up"
+      "someone body pulled the crypt lord with the court up",
+      "the court came in one piece and buried us",
+      "we stalled and he reset",
+      "tanks couldnt hold an 86"
     ],
     "rumour": [
       "the crypt lord commands caer sidi's restless dead, [they say|heard]",
-      "[heard|someone said] forty dead come with the crypt lord"
+      "[heard|someone said] forty dead come with the crypt lord",
+      "heard the crypt lord let the prisoners think they won",
+      "the inconnu say arawn wants a word with the crypt lord"
     ]
   },
   "loremasterTopic": {
     "keyword": "crypt lord",
     "text": "Arawn's warden over the deep crypts. When the gaol rose he let the prisoners think they had won, and then took command of them. Clear his court before you strike him."
   },
-  "bookPage": "",
+  "bookPage": "We lost nine of eighty in the crypts before our raid leader learned to pull the warden's court in pieces. The dead stand there in ranks, rows upon rows, as if waiting for an inspection, and their lord walks among them. He did not shout when we came. He looked at us as a gaoler looks at new arrivals, and said that we walked in his crypts uninvited, and every head in every rank turned at once. The Inconnu say he was Arawn's best warden. I believe it. He is still a warden. He has only changed masters, and the master is himself.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} cleared the crypts and broke the Crypt Lord's command in {minutes} minutes.",
     "loss": "The Crypt Lord's court rose as one against {realm}'s raid; {raidLeader} was buried in the rows."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "soul-reckoner",
+      "relation": "the keeper below who never turned"
+    },
+    {
+      "id": "warlord-dorinakka",
+      "relation": "commands him, in name"
+    }
+  ]
 }
