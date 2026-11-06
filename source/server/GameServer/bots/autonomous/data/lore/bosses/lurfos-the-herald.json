@@ -11,50 +11,81 @@
       "source": "source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs"
     }
   ],
-  "story": "Every queen needs a herald, and Lurfos stands on the long road to Orylle's hall to announce whoever comes. He has a voice like a rockfall and a blade to match, and he takes the duty seriously: no one reaches the queen unannounced, and most who meet him are announced as dead. He is the last door before the deepest hall. The old heralds of Krondon carried a staff and a list of names; Lurfos carries a blade and no list, because he has never needed to remember anyone for long.",
-  "legend": "A straight fight: a big ogre with a big blade and nothing clever about him. Kill him clean, with no deaths and no wasted power, because the queen's hall is right behind him and you want your mana and your endurance for her.",
+  "story": "Every queen needs a herald, and Lurfos stands on the long road to Orylle's hall to announce whoever comes. He has a voice like a rockfall and a blade to match, and he takes the duty seriously: no one reaches the queen unannounced, and most who meet him are announced as dead. He is the last door before the deepest hall. The old heralds of Krondon carried a staff and a list of names; Lurfos carries a blade and no list, because he has never needed to remember anyone for long.\n\nThe last door. Every queen needs a herald, and when Orylle took the hall she put Lurfos on the long road to her chair, where the hall-folk's own heralds once stood with staves and lists of names. Lurfos has a voice like a rockfall and a blade to match, and he takes the duty seriously: no one reaches the queen unannounced, and most who meet him are announced as dead.\n\nWhat he guards. He stands where the road to the deepest hall narrows, and the throw spot where Orylle hurls her challengers lies just behind him, so that a raider the queen has swept out lands within sight of her herald, and must walk back past him. The old heralds of Krondon carried a staff and a list of names; Lurfos carries a blade and no list, because he has never needed to remember anyone for long. The ghosts say he is the one ogre who stands exactly where his title says he should. They do not mean it as praise.",
+  "legend": "A straight fight: a big ogre with a big blade and nothing clever about him. Kill him clean, with no deaths and no wasted power, because the queen's hall is right behind him and you want your mana and your endurance for her.\n\nKill him before the queen fight, never during it: the walk back from her throw passes his post, and a living Lurfos on that road kills the thrown one by one. Old raid leaders use Lurfos to check the raid before the queen: if he costs you anyone, rest and rebuff before you go on. There is nothing behind him but Orylle, Orshom and the long walk back.",
   "yells": {
     "aggro": [
-      "Who comes before the queen? Name yourselves!"
+      "Who comes before the queen? Name yourselves!",
+      "No one passes unannounced!",
+      "Hear me, hall: guests on the road!"
     ],
-    "phases": [],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hear me, queen! Guests at the door!"
+      }
+    ],
     "death": [
-      "The queen... is told..."
+      "The queen... is told...",
+      "Announced... at last..."
     ],
     "slay": [
-      "Announced: one more dead."
+      "Announced: one more dead.",
+      "Named and finished.",
+      "The queen need not trouble with you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A herald waits on the road to the queen."
+      "A herald waits on the road to the queen.",
+      "The road narrows. A great voice waits ahead."
     ],
     "phases": [],
     "realmFirstKill": "Lurfos the Herald is silent. The queen is unwarned."
   },
   "botLines": {
     "briefing": [
-      "lurfos is straight tank and spank. save mana, orylle is right after"
+      "lurfos is straight tank and spank. save mana, orylle is right after",
+      "kill him before the queen, never during",
+      "the throw spot is behind him",
+      "clean kill, no deaths"
     ],
     "aftermathWin": [
       "herald down, the queen is next",
-      "lurfos didnt get to announce us"
+      "lurfos didnt get to announce us",
+      "clean, nobody died",
+      "the road to the queen is open"
     ],
     "aftermathLoss": [
-      "we wiped on the herald? the herald?"
+      "we wiped on the herald? the herald?",
+      "pulled lurfos during the queen fight",
+      "people died to lurfos walking back from the throw",
+      "used everything on him and had nothing for orylle"
     ],
     "rumour": [
       "heard the herald in krondon announces everyone. mostly as dead",
-      "lurfos stands right before the queen's hall, [they say|heard]"
+      "lurfos stands right before the queen's hall, [they say|heard]",
+      "heard orylle throws people right past lurfos",
+      "the ghosts say lurfos is the only ogre where his title says he should be"
     ]
   },
   "loremasterTopic": {
     "keyword": "lurfos",
     "text": "Orylle's herald. He stands on the road to the deepest hall and lets no one reach the queen unannounced. Fight him clean; she is behind him."
   },
-  "bookPage": "",
+  "bookPage": "On the road to the queen a great voice called out to know who came, and our raid leader called back our realm and her name, and the voice said that we were announced, and then that we were dead. Lurfos stood where the road narrows, where the hall-folk's own heralds once stood with staves and lists. We killed him cleanly, as the old hands said we must, because the place where the queen throws her challengers lies just behind his post, and nobody wants to land at the feet of a herald with a sword.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} silenced Lurfos the Herald on the road to Krondon's queen in {minutes} minutes.",
     "loss": "Lurfos the Herald announced {realm}'s raid as dead; {raidLeader} never reached the queen."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "orylle",
+      "relation": "his queen"
+    }
+  ]
 }

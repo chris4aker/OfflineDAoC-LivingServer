@@ -11,11 +11,13 @@
       "source": "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs"
     }
   ],
-  "story": "Krevo Ricik is an ogre who discovered that the dead of Krondon are afraid of him, and he has made a trade of it. He walks the passages where the hall's ghosts drift and drags them out to fight for him, forgotten things with no names left, and when a challenger comes too close he seizes him and flings him at the roof. The ogres find him funny. The ghosts do not. They come when he calls because they cannot remember how to refuse, and when he dies they drift back to the walls of Krondon as if nothing had happened, which for them is nearly true.",
-  "legend": "He throws you straight up and the floor does the rest; land it, heal it, get back in. Every time you hit him there is a chance a forgotten ghost rises to help him. Kill the ghosts as they come, keep the heals going, and keep the casters out of his reach.",
+  "story": "Krevo Ricik is an ogre who discovered that the dead of Krondon are afraid of him, and he has made a trade of it. He walks the passages where the hall's ghosts drift and drags them out to fight for him, forgotten things with no names left, and when a challenger comes too close he seizes him and flings him at the roof. The ogres find him funny. The ghosts do not. They come when he calls because they cannot remember how to refuse, and when he dies they drift back to the walls of Krondon as if nothing had happened, which for them is nearly true.\n\nThe bully of the dead. Krevo Ricik is the one ogre in Krondon who can see the ghosts. Nobody knows why; the ghosts say he was born in the deep seams close to where the hall-folk buried their dead in the oldest days. Whatever the reason, he discovered early that the dead of Krondon are afraid of him, and he has made a trade of it.\n\nThe forgotten ghosts. He walks the passages where the hall's ghosts drift and drags them out of the walls to fight for him, forgotten things with no names left, and when a challenger comes too close he seizes him and flings him at the roof, and laughs at the fall. The other ogres find him funny and a little frightening, because they cannot see what he is shouting at. The ghosts come when he calls because they cannot remember how to refuse, and when he dies they drift back to the walls as if nothing had happened, which for them is nearly true. Of all the ogres in Krondon, the ghosts hate him most. They have said so to every reader of the old tongue who has asked.",
+  "legend": "He throws you straight up and the floor does the rest; land it, heal it, get back in. Every time you hit him there is a chance a forgotten ghost rises to help him. Kill the ghosts as they come, keep the heals going, and keep the casters out of his reach.\n\nThe forgotten ghosts are weak but they distract the healers; one off-tank picks them up. Take the casters out of his throwing reach and let the melee eat the falls. The old hands also say: read a title on a ghost's door aloud before you leave. It costs nothing, the ghosts are grateful, and some swear Krevo hits softer in the next fight when the dead are not afraid.",
   "yells": {
     "aggro": [
-      "Up you go!"
+      "Up you go!",
+      "Ghosts! Out of the walls! Fight!",
+      "I see you, dead things."
     ],
     "phases": [
       {
@@ -24,15 +26,19 @@
       }
     ],
     "death": [
-      "The dead... laugh at me now..."
+      "The dead... laugh at me now...",
+      "Let them... go..."
     ],
     "slay": [
-      "Down you come."
+      "Down you come.",
+      "Ha! The floor wins.",
+      "Another for the walls."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The ghosts here keep to the walls. Something scares them."
+      "The ghosts here keep to the walls. Something scares them.",
+      "The ghosts press flat to the walls here."
     ],
     "phases": [
       {
@@ -44,28 +50,42 @@
   },
   "botLines": {
     "briefing": [
-      "krevo throws you in the air, expect falling dmg. ghosts spawn when hes hit, kill them"
+      "krevo throws you in the air, expect falling dmg. ghosts spawn when hes hit, kill them",
+      "casters out of his reach",
+      "one off tank on the ghosts",
+      "heal the falls"
     ],
     "aftermathWin": [
       "krevo down, the ghosts can rest",
-      "landed every throw. gg"
+      "landed every throw. gg",
+      "the ghosts went back in the walls",
+      "nobody died to a fall"
     ],
     "aftermathLoss": [
       "too many ghosts up at once",
-      "the throws plus the dark explosion. healers couldnt keep up"
+      "the throws plus the dark explosion. healers couldnt keep up",
+      "casters got thrown",
+      "nobody picked up the ghosts"
     ],
     "rumour": [
       "heard krevo ricik in krondon bullies the ghosts into fighting for him",
-      "[someone said|heard] krevo throws you at the roof"
+      "[someone said|heard] krevo throws you at the roof",
+      "heard krevo is the only ogre who can see the ghosts",
+      "the ghosts hate krevo most of all, [heard|they say]"
     ]
   },
   "loremasterTopic": {
     "keyword": "krevo",
     "text": "An ogre who found the dead of Krondon fear him, and made a trade of it. He drags the forgotten ghosts into his fights and throws challengers at the roof."
   },
-  "bookPage": "",
+  "bookPage": "In the passage the ghosts haunt, one of them spoke to me. It asked me to read the title over its door aloud, because no one had read it in a long time, and I did, and it wept. Then an ogre came round the corner shouting at the empty air, and the ghost I had been speaking to was torn out of the wall and flung at me. That was Krevo Ricik. He is the only ogre in Krondon who can see the dead, and he uses it as a bully uses a stick. When we killed him, the ghost drifted back to its door. I read the title to it again before I left.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} put down Krevo Ricik and his borrowed ghosts in {minutes} minutes.",
     "loss": "Krevo Ricik flung {realm}'s raid at the roof until {raidLeader} called it."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": []
 }

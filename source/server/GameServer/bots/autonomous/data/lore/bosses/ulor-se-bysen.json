@@ -16,11 +16,13 @@
       "source": "https://oldenglishdictionary.net/word/bysen"
     }
   ],
-  "story": "In the old hall the word bysen meant an example, the pattern a young man was told to follow, and also a command. The ogres gave the title to two brothers, Ulor and Jehrog, and every young ogre in Krondon is told to be like them. Ulor is the younger and the hungrier. He feeds on the strength of whoever stands before him, as if to prove he can take whatever the hall's enemies have, and he never fights without his brother at his back.",
-  "legend": "The brothers come together and fall together. Ulor drains the life out of whoever he faces; Jehrog strips your body resist and covers you in sores. Kill one at a time with the whole raid and keep the healers on whoever is sored.",
+  "story": "In the old hall the word bysen meant an example, the pattern a young man was told to follow, and also a command. The ogres gave the title to two brothers, Ulor and Jehrog, and every young ogre in Krondon is told to be like them. Ulor is the younger and the hungrier. He feeds on the strength of whoever stands before him, as if to prove he can take whatever the hall's enemies have, and he never fights without his brother at his back.\n\nThe younger example. In the old hall the word bysen meant an example, the pattern a young man was told to follow, and also a command. The hall-folk gave it as a title to the best of each generation. The ogres gave it to two brothers, Ulor and Jehrog, and every young ogre in Krondon is brought to their room and told to be like them.\n\nWhat he takes. Ulor is the younger and the hungrier. He devours the strength of whoever stands before him, as if to prove to the watching young that an ogre of Krondon can take whatever the hall's enemies have. He never fights without his brother at his back. When one of the bysen is struck, both answer, because that is the lesson: an ogre of Krondon does not fight alone and does not fall alone. The young ogres who watch them fight are Orylle's next generation, and the brothers know that every fight in their room is also a class. The ghosts of the hall's own bysen, the true examples, drift through that room too, and the ghosts say the brothers would have made good examples once, if anyone had ever taught them what an example is for.",
+  "legend": "The brothers come together and fall together. Ulor drains the life out of whoever he faces; Jehrog strips your body resist and covers you in sores. Kill one at a time with the whole raid and keep the healers on whoever is sored.\n\nUlor is the softer of the two by health; many raids kill him first to end the drain sooner. Whichever you pick, the whole raid hits the same brother. His drain heals him, so the healers on the tank must keep pace; a tank that dips under half is feeding Ulor. When Ulor falls, Jehrog grows angry: save a cooldown for him.",
   "yells": {
     "aggro": [
-      "Brother! They come to learn by our example!"
+      "Brother! They come to learn by our example!",
+      "Watch, little ones. This is how we take.",
+      "Your strength is mine."
     ],
     "phases": [
       {
@@ -29,15 +31,19 @@
       }
     ],
     "death": [
-      "Be the example... brother..."
+      "Be the example... brother...",
+      "Remember... how we stood..."
     ],
     "slay": [
-      "Learn from me."
+      "Learn from me.",
+      "Taken.",
+      "Your strength feeds the example."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Two ogres stand side by side, like a lesson."
+      "Two ogres stand side by side, like a lesson.",
+      "Young ogres watch from the doorway."
     ],
     "phases": [],
     "realmFirstKill": "Ulor se Bysen has fallen. The example is broken."
@@ -45,27 +51,46 @@
   "botLines": {
     "briefing": [
       "ulor and jehrog are linked. kill ulor first, everyone on the same target",
-      "ulor drains, jehrog debuffs body resist. cure the sores"
+      "ulor drains, jehrog debuffs body resist. cure the sores",
+      "never split damage between the brothers",
+      "the young ogres in the doorway are just watching"
     ],
     "aftermathWin": [
       "both brothers down. bad example",
-      "ulor first, jehrog after. clean"
+      "ulor first, jehrog after. clean",
+      "nobody split damage",
+      "the young ones learned something tonight"
     ],
     "aftermathLoss": [
-      "we split dps between the brothers. never again"
+      "we split dps between the brothers. never again",
+      "ulor drained the tank dry",
+      "nobody cured the sores",
+      "half the raid was on jehrog"
     ],
     "rumour": [
       "bysen means example in the old tongue, [heard|someone said]. the ogres hold those two up as the model ogre",
-      "heard the bysen brothers never fight alone"
+      "heard the bysen brothers never fight alone",
+      "heard the young ogres are brought to watch the brothers fight",
+      "ulor is the hungry one, [heard|they say]"
     ]
   },
   "loremasterTopic": {
     "keyword": "bysen",
     "text": "An example, in the old tongue, and a command too. The ogres gave it as a title to two brothers, Ulor and Jehrog, whom every young ogre is told to follow. They never fight apart."
   },
-  "bookPage": "",
+  "bookPage": "Every young ogre in Krondon is brought to the brothers' room and told to be like them. We found a dozen of the young ones crowded in the doorway when we came, and they did not flee; they watched, as they had been told to. Ulor, the younger, took the strength out of our tank as a boy drinks milk, and grinned at the doorway while he did it. Jehrog opened our bodies to harm and covered us in sores. They fought side by side, and when Ulor fell, Jehrog roared to him to stand. The young ogres in the doorway learned something that night. I hope it was the right thing.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} broke the Example of Krondon, Ulor se Bysen, in {minutes} minutes.",
     "loss": "Ulor se Bysen and his brother made an example of {realm}'s raid under {raidLeader}."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "jehrog-se-bysen",
+      "relation": "his elder brother"
+    }
+  ]
 }

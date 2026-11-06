@@ -6,7 +6,8 @@
     61
   ],
   "aliases": [
-    "the hall under the hill"
+    "the hall under the hill",
+    "the ogre hall"
   ],
   "summary": "A hall older than Camelot under the Avalon hills, held now by thrawn ogres who wear its old titles.",
   "facts": [
@@ -49,14 +50,27 @@
       "text": "Nothing reachable from Mythic describes Krondon's history. The story below is Living Server writing built on the names.",
       "provenance": "original",
       "source": "LORE-INVENTORY.md section 7"
+    },
+    {
+      "text": "Albion bot chat says the orcs of Inishail fled the ogres, and asks what Krondon did to them.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Morgus Urgalorg leads fourteen 'Morgus's leornere'; Drihten Elreden twenty-five thrawn ogre bocere; Beran calls 'onstal hyrde'; the ghosts are hygegeomor and losian modsefa.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
     }
   ],
-  "story": "Long before Camelot, the people of the isles kept their halls under the hills and their words in an older tongue, and Krondon was the greatest of those halls. It had its keepers and its scribes, its poets who were called bold, its champions, its watchers on the stair and its elders at the high table, and a keeper of the storm who sat apart from them all. The hall counted its wealth in weather and in words: a good storm kept the shore, and a good book kept the hall.\n\nWhen Morgana's war broke on Avalon the hall was already old and half asleep. The thrawn ogres came up out of the deep seams, stubborn and crooked and patient, and they did not burn Krondon as the drakoran burned the city. They moved in. They took the hall's titles the way a thief takes a cloak off a peg, so that now there are ogre scribes who cannot write and ogre poets who have never made a verse, and the true dead of Krondon drift between them, sad of mind and perishing, as if the hall itself were grieving.\n\nTheir warrior queen, Orylle, sits in the deepest hall with Orshom Brong at her side, a brute who swallowed the hall's hearth-fire and now feels nothing but cold. The storm-keeper bent the knee to her rather than lose his chamber, and the lords below her keep their own rooms: a quartermaster with his pitch-casks, a lord of the scribes with his whole scriptorium at his back, two brothers held up as the example to every young ogre, and things in the low passages that are only rot that learned to move. Krondon is not a ruin. That is the worst of it. It is a hall that is still kept, by the wrong people.",
-  "legend": "Fifty or more for the queen, the old guides said, and they meant fifty who listen. Every Krondon story is a list of rules: kill the four lights before the storm-keeper, bring cold for Orshom because nothing else bites him, never pull the lord of the scribes without counting the scribes, and when Orylle throws you, walk back. Old Avalonians say a squall off Caldey with no cloud in it means the storm-keeper is restless.",
+  "story": "Long before Camelot, the people of the isles kept their halls under the hills and their words in an older tongue, and Krondon was the greatest of those halls. It had its keepers and its scribes, its poets who were called bold, its champions, its watchers on the stair and its elders at the high table, and a keeper of the storm who sat apart from them all. The hall counted its wealth in weather and in words: a good storm kept the shore, and a good book kept the hall.\n\nWhen Morgana's war broke on Avalon the hall was already old and half asleep. The thrawn ogres came up out of the deep seams, stubborn and crooked and patient, and they did not burn Krondon as the drakoran burned the city. They moved in. They took the hall's titles the way a thief takes a cloak off a peg, so that now there are ogre scribes who cannot write and ogre poets who have never made a verse, and the true dead of Krondon drift between them, sad of mind and perishing, as if the hall itself were grieving.\n\nTheir warrior queen, Orylle, sits in the deepest hall with Orshom Brong at her side, a brute who swallowed the hall's hearth-fire and now feels nothing but cold. The storm-keeper bent the knee to her rather than lose his chamber, and the lords below her keep their own rooms: a quartermaster with his pitch-casks, a lord of the scribes with his whole scriptorium at his back, two brothers held up as the example to every young ogre, and things in the low passages that are only rot that learned to move. Krondon is not a ruin. That is the worst of it. It is a hall that is still kept, by the wrong people.\n\nOrigin. The hall-folk who built Krondon were not Britons, nor Romans, nor anything the colleges of Avalon could name; they were a people of the isles who came before the isles had a name, and they spoke a tongue that later drifted into the speech of the Saxon shore. They lived by order. Every person in the hall had a title, and every title a duty: the bocere wrote, the scop sang and was called bold for it, the lareow taught and the leornere learned, the cempa stood at the door and the sceawere watched the stair, the ealdor sat at the high table, and the hyrde kept each store, each fire, each flock, and one hyrde kept the weather. A child of the hall was given a bysen, an example, to follow; the best of each generation were themselves called bysen, so that the young would have a pattern.\n\nWhat went wrong. The hall grew old before Morgana ever came. Its people grew fewer, its storms gentler, its books longer and less read. When the war broke on Avalon and the dragon-men burned the city across the water, Krondon had no champions left to send, and the thrawn ogres who had dug under the isles since the beginning came up the old seams and found the doors open. They did not slaughter. They are thrawn, which in the old north speech means stubborn and crooked, and a stubborn people does not waste a good hall. They took it room by room and title by title. The queen who led them, Orylle, gave every ogre a name off the walls, and the last of the hall-folk faded into ghosts among the new owners, sad of mind and perishing, as the old words carved over their doors still say.\n\nKrondon now. Today the hall runs as it always ran, with the wrong people in every chair. Thrawn ogre scribes copy the shapes of letters in Drihten Elreden's scriptorium. Morgus Urgalorg teaches his fourteen learners one lesson. Beran keeps the stores and their siege pitch, Deben keeps the muster, Lurfos keeps the road, the brothers called the Example keep the young in line, and Krevo Ricik bullies the ghosts. The storm-keeper, the one hall-born master who kept his chamber, sits among his four lights and lends the queen his weather. In the drains, the rot the hall-folk named and walled away has been let out again. The orcs of Inishail, who once dug where the ogres dig, fled to the marsh rather than share a seam with them.\n\nWhy it matters to Albion. Krondon is the proof that Morgana's war took more than Avalon City. A hall older than Camelot, with its books and its laws and its weather, has passed to a people who keep its forms and none of its meaning. Albion's scholars want the books back. Albion's raid leaders want the queen dead. The ghosts, if anyone asked them, would want the doors shut and the names on them read aloud once more by someone who understands them.",
+  "legend": "Fifty or more for the queen, the old Albion guide said in February 2003, and they meant fifty who listen. Krondon raids are a list of rules, and the old hands recite them at the muster: kill the four lights before you touch the storm-keeper; bring cold for Orshom, because nothing else bites him; never pull the lord of the scribes without counting the scribes, all twenty-five; spread out in Beran's stores and watch the torches; kill every wave of Deben's muster as it comes; never fight both rots at once; one brother at a time; and when Orylle throws you, walk back. The ogre titles are Old English, and every Albion guild has one member who learned them and will tell you that hyrde means shepherd whether you asked or not. Old Avalonians say a squall off Caldey under a clear sky means the storm-keeper is restless, and sailors out of Caldey will not say his name at sea. Nobody has ever explained what the ghosts want. Most raiders walk around them.",
   "atmosphere": {
     "firstEntry": [
       "Old words are carved here. The ogres wear them as titles.",
-      "Krondon is still kept. Not by the ones who built it."
+      "Krondon is still kept. Not by the ones who built it.",
+      "The doors still bear the old titles. Ogres wear them.",
+      "Ghosts drift past, sad of mind. No one sees them.",
+      "A hall that remembers better days. Every room is kept."
     ],
     "areas": [
       {
@@ -66,7 +80,9 @@
         "z": 17174,
         "radius": 900,
         "lines": [
-          "Four lights burn in the corners. The air is held still."
+          "Four lights burn in the corners. The air is held still.",
+          "Fight him here. Nowhere else.",
+          "The lights hate him. You can feel it."
         ]
       },
       {
@@ -76,7 +92,9 @@
         "z": 15765,
         "radius": 900,
         "lines": [
-          "The deepest hall. A queen's chair, and a fire that is cold."
+          "The deepest hall. A queen's chair, and a fire that is cold.",
+          "Orshom burns at the queen's shoulder.",
+          "The bold are thrown back down this hall."
         ]
       },
       {
@@ -86,7 +104,9 @@
         "z": 15102,
         "radius": 900,
         "lines": [
-          "Scribes at every desk. None of them can write."
+          "Scribes at every desk. None of them can write.",
+          "Twenty-five pens. Twenty-five ogres.",
+          "The lamps hang low over books no one reads."
         ]
       },
       {
@@ -96,7 +116,9 @@
         "z": 17163,
         "radius": 800,
         "lines": [
-          "Pitch-casks stacked to the roof. Mind the torches."
+          "Pitch-casks stacked to the roof. Mind the torches.",
+          "The casks are old siege pitch.",
+          "The floor is scorched in rings."
         ]
       },
       {
@@ -106,7 +128,86 @@
         "z": 15610,
         "radius": 700,
         "lines": [
-          "A herald waits on the road to the queen."
+          "A herald waits on the road to the queen.",
+          "The road narrows. A great voice waits.",
+          "Behind him, the queen throws her guests."
+        ]
+      },
+      {
+        "name": "the entrance hall",
+        "x": 33013,
+        "y": 31379,
+        "z": 15698,
+        "radius": 900,
+        "lines": [
+          "The great doors stand open. They were never forced.",
+          "Titles are carved over every arch."
+        ]
+      },
+      {
+        "name": "Deben's muster",
+        "x": 21615,
+        "y": 54280,
+        "z": 14076,
+        "radius": 900,
+        "lines": [
+          "A war-horn hangs on the wall. It is not dusty.",
+          "Archers in the galleries. Mages in the side rooms."
+        ]
+      },
+      {
+        "name": "the low drains",
+        "x": 38701,
+        "y": 28678,
+        "z": 12017,
+        "radius": 900,
+        "lines": [
+          "The drains of the old hall. Something here is alive.",
+          "The hall-folk walled this place up. Someone opened it."
+        ]
+      },
+      {
+        "name": "the wet passage",
+        "x": 42353,
+        "y": 45665,
+        "z": 14586,
+        "radius": 900,
+        "lines": [
+          "Water drips from the roof. Not all of it is water.",
+          "Look up."
+        ]
+      },
+      {
+        "name": "the ghost walk",
+        "x": 27189,
+        "y": 64319,
+        "z": 15614,
+        "radius": 800,
+        "lines": [
+          "The ghosts here keep to the walls. Something scares them.",
+          "An ogre laughs. The dead flinch."
+        ]
+      },
+      {
+        "name": "the old school",
+        "x": 44808,
+        "y": 18929,
+        "z": 17164,
+        "radius": 800,
+        "lines": [
+          "Young ogres sit in rows, watching their master.",
+          "One lesson is taught here. It is fire."
+        ]
+      },
+      {
+        "name": "the brothers' room",
+        "x": 28173,
+        "y": 53842,
+        "z": 15098,
+        "radius": 800,
+        "lines": [
+          "Two ogres stand side by side, like a lesson.",
+          "The young are brought here to learn by example."
         ]
       }
     ]
@@ -117,17 +218,34 @@
       "the ogres in krondon didnt burn the place, they moved in. [ogre scribes|scribes] who cant write, [poets|bards] who never made a verse",
       "[heard|someone told me] the ghosts in krondon are the people who built it. sad of mind, the old word says",
       "krondon's queen is orylle. [she sits in the deepest hall|the deepest hall is hers] and orshom brong stands next to her",
-      "a hall older than camelot and its still kept. [just by the wrong people|by ogres now]"
+      "a hall older than camelot and its still kept. [just by the wrong people|by ogres now]",
+      "the hall folk of krondon gave everyone a title. scribe, poet, keeper, teacher. [the ogres kept the titles|the ogres stole them all]",
+      "thrawn means stubborn and crooked in the old northern speech. [fits the ogres|good name for them]",
+      "bysen means example in the old tongue. the bysen brothers are what every young ogre is told to be",
+      "the storm keeper is the only hall born master left in krondon. [he made a deal with the queen|bent the knee to orylle]",
+      "krondon was already old and half empty when morgana came. [the ogres just walked in|nobody was left to fight]",
+      "morgus urgalorg runs the old school in krondon. fourteen students and [one lesson|its all fire]",
+      "the drains in krondon were walled up by the hall folk. [the ogres opened them|someone let the rot out]",
+      "beran in krondon found the old siege pitch. [now he blows it up|now he lights casks at you]",
+      "lurfos stands on the road to the queen. [last door before orylle|the herald]"
     ],
     "rumour": [
       "[heard|word is] krondon needs fifty for the queen. [fifty who listen|and they have to listen]",
       "[someone said|heard] the squalls off caldey mean the storm keeper is restless. [no cloud|clear sky] and rain anyway",
-      "[guild|my old guild] wiped on the scribes in krondon. [pull one|you pull one], you get [the whole room|twenty five]"
+      "[guild|my old guild] wiped on the scribes in krondon. [pull one|you pull one], you get [the whole room|twenty five]",
+      "[heard|someone said] the scholars in camelot want the krondon books back. good luck",
+      "[heard|someone said] orshom brong is immune to everything but cold",
+      "[heard|word is] the ghosts in krondon want their names read out by someone who understands them",
+      "sailors from caldey wont say the storm keeper's name at sea, [heard|they say]",
+      "[heard|someone said] the orcs on inishail left because of krondon's ogres"
     ],
     "tell": [
       "krondon? ogre hall under avalon. orylle at the bottom with orshom, a storm keeper with four lights, and ogres with old titles",
       "thrawn ogres and the ghosts of the old hall. raid only past the first rooms. kill the lights before you touch the storm keeper",
-      "big ogre dungeon in the isles. bring cold damage for orshom, nothing else hurts him"
+      "big ogre dungeon in the isles. bring cold damage for orshom, nothing else hurts him",
+      "is krondon hard? past the first rooms its a raid. fifty for the queen and every named has a rule you have to know",
+      "where is krondon? in the shrouded isles, avalon side. take the boat from the isle of glass",
+      "krondon has 13 nameds. orylle and orshom at the bottom, the storm keeper, the scribes lord, two rots, the bysen brothers"
     ]
   },
   "loremaster": {
@@ -138,16 +256,23 @@
       "orshom brong": "The ogres say he swallowed the hearth-fire of Krondon and has been burning inside ever since. Fire will not hurt him. Only cold. Tell your raid leader before you go, not after.",
       "storm-keeper": "The Scurceol Hyrde, the shepherd of the storm-ship. He bound four airs as lights in his chamber. While they burn, no blade bites him and his arm is twice as heavy. Put out the lights.",
       "hall's dead": "The ghosts. Sad of mind, the old word calls them, and perishing. They are what is left of the people who kept the hall. They do not know it is not theirs any more. See the [names].",
-      "scribes": "Drihten Elreden keeps the scriptorium, a lord over two dozen ogre scribes. Strike him and every desk empties. Count them before you start."
+      "scribes": "Drihten Elreden keeps the scriptorium, a lord over two dozen ogre scribes. Strike him and every desk empties. Count them before you start.",
+      "thrawn": "Stubborn and crooked, in the old north speech. The ogres of the deep seams earned it. They do not waste what they take, which is why they kept the hall and its titles.",
+      "orshom": "Ask of [Orshom Brong]. Fire will not hurt him. Only cold.",
+      "school": "Morgus Urgalorg keeps the hall's old school with fourteen learners. The hall-folk taught letters and law there; Morgus teaches fire.",
+      "drains": "The hall-folk walled up the drains and wrote the names of what lived there over the bricks: [fuladl] and [fulafeallan]. The ogres could not read the warning.",
+      "bysen": "The old word for an example to follow. The ogres hold up two brothers as the bysen for every young ogre."
     }
   },
   "book": {
     "title": "Of the Hall under the Hill",
     "pages": [
-      "Before there was a Camelot there were the halls under the hills, and the greatest was Krondon. Its keepers did not reckon their wealth in gold. They reckoned it in weather and in words. The hall had scribes at long desks and poets called bold, champions at the doors, watchers on the stair, elders at the high table, and keepers for every store and fire. The old tongue had a word for each of them, and the words are cut into the stone yet, over doors that no longer open for the ones they name.",
-      "The keepers of Krondon did not count wealth in gold but in weather. A hall with a good storm-shepherd kept its shore, and the Hyrde of Krondon was the best of them. I have read that he took the four winds out of the sky and set them in the corners of his chamber, that he might hold a storm still as a man holds a hound. If that is so, the winds are there yet. Sailors out of Caldey will not speak his name at sea.",
-      "When the dragon-men burned Avalon, Krondon did not burn. The thrawn ogres came up from the deep seams and moved in, and they kept the titles as a thief keeps a stolen cloak. Now there is an ogre called a scribe who cannot write, an ogre called a poet who has never made a verse, and two brothers called the Example whom every young ogre is told to follow. The dead of the hall walk between them, grieving. The ogres do not seem to see them.",
-      "Their queen is Orylle, and beside her stands Orshom Brong, who is said to have eaten the hearth-fire of the deepest hall. Fire is nothing to him; only the cold bites. The queen does not slay a challenger who reaches her. She hurls him back down her hall, as if to say: come again, and properly. Those who wrote this book went to her twice. The second time, there were fifty of us, and we came home."
+      "Of the Hall under the Hill, gathered by Wenna of Caer Gothwaite, reader of the college of Avalon, from the carvings, the ghosts and her own two descents. Before there was a Camelot there were the halls under the hills, and the greatest was Krondon. Its keepers did not reckon their wealth in gold. They reckoned it in weather and in words. The hall had scribes at long desks and poets called bold, champions at the doors, watchers on the stair, elders at the high table, and keepers for every store and fire. The old tongue had a word for each of them, and the words are cut into the stone yet.",
+      "The keepers of Krondon did not count wealth in gold but in weather. A hall with a good storm-shepherd kept its shore, and the Hyrde of Krondon was the best of them. I have read that he took the four winds out of the sky and set them in the corners of his chamber, that he might hold a storm still as a man holds a hound. If that is so, the winds are there yet. I believe it is so. I have stood at his door and felt the air in that room held as still as a breath before a word. Sailors out of Caldey will not speak his name at sea.",
+      "The hall was old before the witch came. I have counted the empty chairs in the carvings of the last feast, and they outnumber the full. When the dragon-men burned Avalon, Krondon had no champions left to send, and the thrawn ogres came up the deep seams and found the doors open. They did not burn it. They moved in, and they kept the titles as a thief keeps a stolen cloak. Now there is an ogre called a scribe who cannot write, an ogre called a poet who has never made a verse, and two brothers called the Example whom every young ogre is told to follow.",
+      "The dead of the hall walk between them, grieving. The old words carved over their doors call them hygegeomor, sad of mind, and losian, perishing, as if the masons had known. The ogres do not seem to see them. One ogre does: the one called Krevo Ricik, who drags them out of the walls to fight for him and laughs when they flinch. I spoke to one of the dead in the passage he haunts. It did not know that the hall was lost. It asked me to read the title over its door aloud, because no one had read it in a long time. I did. It wept.",
+      "Below the hall run the drains the hall-folk walled up, and over the bricks they wrote the names of what lived there, in plain words for plain horrors: the foul sickness, the foul thing that falls. The ogres cannot read. They opened the drains for the space, and the rot came out, and now it crawls the low passages and splits when you cut it. Beran the Supply Master found the old siege pitch in the stores and learned what a torch does to a cask. Deben the Rightful keeps the muster. Morgus keeps the school. Drihten keeps the scriptorium. Every room is kept.",
+      "Their queen is Orylle, and beside her stands Orshom Brong, who is said to have eaten the hearth-fire of the deepest hall. Fire is nothing to him; only the cold bites. The queen does not slay a challenger who reaches her. She hurls him back down her hall toward the door, as if to say: come again, and properly. Those who wrote this book went to her twice. The first time there were twenty of us, and we were swept out. The second time, there were fifty of us, and we came home, and I read the titles over every door on the way out, aloud."
     ]
   },
   "bosses": [
@@ -164,5 +289,10 @@
     "morgus-urgalorg",
     "ulor-se-bysen",
     "jehrog-se-bysen"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres",
+    "krondon-hall-folk"
   ]
 }

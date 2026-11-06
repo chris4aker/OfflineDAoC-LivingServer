@@ -30,12 +30,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
     }
   ],
-  "story": "Orylle came up out of the deep seams at the head of the thrawn ogres and took Krondon without burning it, which is the most dangerous thing anyone did in Morgana's war. She kept the hall's order and put ogres in every chair. She has no use for the old learning, but she understands a hall: a queen at the end of it, a champion at her side, a herald on the road and lords in every room below. Those who reach her are not killed at once. She seizes the boldest and hurls them back down her hall toward the door, a queen's answer to a guest who came in without leave. If they walk back, she will fight them. She has never been afraid of a crowd; she simply makes the crowd come to her one thrown man at a time, while Orshom Brong burns at her shoulder.",
-  "legend": "Fifty or more, and kill her with Orshom in mind: they come together, so the cold-damage casters are on him and everyone else is on her. When she throws you, do not release and do not panic. Walk back up the hall and get in. The raids that lost to her lost because the thrown men wandered off.",
+  "story": "Orylle came up out of the deep seams at the head of the thrawn ogres and took Krondon without burning it, which is the most dangerous thing anyone did in Morgana's war. She kept the hall's order and put ogres in every chair. She has no use for the old learning, but she understands a hall: a queen at the end of it, a champion at her side, a herald on the road and lords in every room below. Those who reach her are not killed at once. She seizes the boldest and hurls them back down her hall toward the door, a queen's answer to a guest who came in without leave. If they walk back, she will fight them. She has never been afraid of a crowd; she simply makes the crowd come to her one thrown man at a time, while Orshom Brong burns at her shoulder.\n\nWhere she came from. Orylle was born in the deep seams under the isles, where the thrawn ogres have dug since before the hall-folk built their hall, and she was the first of her people to climb out and look at the world they had been digging under. She saw the hall of Krondon, old and half empty, its champions dead and its storms grown gentle, and she understood something no ogre before her had understood: that a people could take a thing without breaking it.\n\nHow she rules. So she took Krondon whole. She walked its rooms reading the titles over the doors, which she cannot read, and asked the ghosts what they meant, which the ghosts told her, and then she gave every title to an ogre. She bargained with the storm-keeper rather than fight him. She let Beran keep the pitch and Deben keep the horn and Morgus keep the school. She put her herald on the road and her champion at her side, and she sits at the end of the deepest hall where the ealdor once sat. She does not kill the bold who reach her chair. She seizes the boldest and hurls them back down the hall toward the door, a queen's answer to a guest who came in without leave, and waits to see if they come back properly. Those who walk back, she fights. The raids that lost to her lost to the walk.",
+  "legend": "Fifty or more, and kill her with Orshom in mind: they come together, so the cold-damage casters are on him and everyone else is on her. When she throws you, do not release and do not panic. Walk back up the hall and get in. The raids that lost to her lost because the thrown men wandered off.\n\nKeep the walking paths open between the throw spot and her chair, and keep a healer near the throw spot for the falls. She hits hard but fair; the danger of Orylle is always the scattering, never the blows. Walking back is the whole trick.",
   "yells": {
     "aggro": [
       "Who walks into my hall without leave?",
-      "Krondon has a queen. Kneel, or be swept out."
+      "Krondon has a queen. Kneel, or be swept out.",
+      "Orshom! Guests!"
     ],
     "phases": [
       {
@@ -45,18 +46,31 @@
       {
         "trigger": "health<=50",
         "text": "Orshom! Burn them!"
+      },
+      {
+        "trigger": "teleport",
+        "text": "Back to the door with you. Come again, properly."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Orshom! No!"
       }
     ],
     "death": [
-      "The hall... was kept... it was kept..."
+      "The hall... was kept... it was kept...",
+      "The hall was kept... it was kept...",
+      "Read them... the titles... someone..."
     ],
     "slay": [
-      "Another guest who forgot his manners."
+      "Another guest who forgot his manners.",
+      "Swept out, like ash.",
+      "Come again. Properly."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A queen's chair, and a cold fire beside it."
+      "A queen's chair, and a cold fire beside it.",
+      "The ealdor's chair. A queen sits in it now."
     ],
     "phases": [
       {
@@ -70,28 +84,62 @@
     "briefing": [
       "orylle and orshom come together. cold dmg on orshom, everyone else on the queen",
       "she throws people back up the hall. if its you, walk back in, dont release",
-      "fifty of us minimum. nobody pulls until the cold casters are set"
+      "fifty of us minimum. nobody pulls until the cold casters are set",
+      "healer near the throw spot for the falls",
+      "walk back up the hall, dont release",
+      "cold casters on orshom only, everyone else on her",
+      "keep the path from the throw spot clear of adds"
     ],
     "aftermathWin": [
       "[gg|gg all], the queen is down. krondon has no queen tonight",
-      "the thrown guys walked back every time. thats the kill right there"
+      "the thrown guys walked back every time. thats the kill right there",
+      "the queen is dead. long live nobody",
+      "everyone walked back every time. proud",
+      "krondon cleared, gg",
+      "fifty and we listened. thats the trick"
     ],
     "aftermathLoss": [
       "too many people lost after she threw them. walk back next time",
-      "orshom wiped the casters. need more cold on him"
+      "orshom wiped the casters. need more cold on him",
+      "people wandered off after the throw",
+      "orshom ate the cold casters and she ate the rest",
+      "too few healers for the falls",
+      "we pulled lurfos and the queen together"
     ],
     "rumour": [
       "heard orylle never kills you first, she throws you out the door",
-      "[someone said|heard] orylle took krondon without burning a thing. smart queen"
+      "[someone said|heard] orylle took krondon without burning a thing. smart queen",
+      "heard orylle asked the ghosts what the titles meant before she handed them out",
+      "[someone said|heard] orylle sits in the old ealdor's chair",
+      "heard orylle was the first ogre to climb out of the seams",
+      "orylle took krondon without breaking anything, [heard|they say]"
     ]
   },
   "loremasterTopic": {
     "keyword": "orylle",
     "text": "The warrior queen of Krondon. She took the hall without burning it and put an ogre in every chair. She hurls the bold back down her hall. Walk back to her; the raids that wandered off are the ones we sing about as lost."
   },
-  "bookPage": "Orylle does not slay a challenger who reaches her chair. She hurls him back down her hall toward the door, as a queen might sweep an unbidden guest from her hearth, and waits to see if he returns. The ogres say she has done this to a hundred men and that only the ones who walked back are worth killing. Orshom Brong stands at her shoulder through all of it, burning. They fall together or not at all.",
+  "bookPage": "Orylle does not slay a challenger who reaches her chair. She hurls him back down her hall toward the door, as a queen might sweep an unbidden guest from her hearth, and waits to see if he returns. The ogres say she has done this to a hundred men and that only the ones who walked back were worth killing. I was thrown twice. The second time I walked back past Lurfos's post and the ghosts on the walls, and they watched me come, and I think they were glad of it. Orshom Brong burned at her shoulder through all of it. They fell together.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} walked back up Orylle's hall as often as she threw them and ended Krondon's queen in {minutes} minutes.",
     "loss": "Orylle swept {realm}'s raid out of her hall; {raidLeader} lost too many to the long walk back."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "orshom-brong",
+      "relation": "her champion and consort"
+    },
+    {
+      "id": "lurfos-the-herald",
+      "relation": "her herald"
+    },
+    {
+      "id": "scurceol-hyrde",
+      "relation": "bound to her by a bargain"
+    }
+  ]
 }

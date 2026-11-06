@@ -16,11 +16,13 @@
       "source": "Bosworth-Toller (to verify)"
     }
   ],
-  "story": "Drihten Elreden holds the scriptorium of Krondon, where the old keepers wrote their histories at long desks under the lamps. He is lord of the bocere, the scribes, and there are two dozen of them now, ogres bent over books they cannot read, copying the shapes of letters because their lord says that is what scribes do. He is proud of them. Touch him and every desk empties at once, and the old blessing he learned from the walls, a prayer for swiftness the hall's priests once said for their champions, makes his blows fall faster.",
-  "legend": "Count the scribes. Pull Drihten and all twenty-five come with him, so clear the room's edges first or bring enough to tank a scriptorium. When he starts swinging faster, rotate tanks. The scribes hit soft and die easy, but there are so many that the casters at the back are always the first to learn it.",
+  "story": "Drihten Elreden holds the scriptorium of Krondon, where the old keepers wrote their histories at long desks under the lamps. He is lord of the bocere, the scribes, and there are two dozen of them now, ogres bent over books they cannot read, copying the shapes of letters because their lord says that is what scribes do. He is proud of them. Touch him and every desk empties at once, and the old blessing he learned from the walls, a prayer for swiftness the hall's priests once said for their champions, makes his blows fall faster.\n\nThe lord of the scribes. Drihten means lord, and Drihten Elreden is lord of the bocere, the scribes of Krondon's scriptorium, where the hall-folk wrote their histories at long desks under hanging lamps. The ghosts say the scriptorium was the hall's heart; whoever kept it kept the hall's memory. Orylle gave it to Drihten because he asked for it, and he asked for it because he liked the lamps.\n\nHis scribes. He has twenty-five scribes now, ogres bent over books they cannot read, copying the shapes of the letters because their lord says that is what scribes do, and he is proud of them as a father is proud of children who cannot do sums. Touch him and every desk empties at once. He learned one thing from the walls: an old blessing the hall's priests said over their champions, the swiftness of the heavenly host, and when he says it his blows fall faster. The scholars of Avalon would give a great deal to see his books; most of them are the hall's histories, copied over and over in a hand that understands nothing.",
+  "legend": "Count the scribes. Pull Drihten and all twenty-five come with him, so clear the room's edges first or bring enough to tank a scriptorium. When he starts swinging faster, rotate tanks. The scribes hit soft and die easy, but there are so many that the casters at the back are always the first to learn it.\n\nPull from the far end of the scriptorium so the scribes come to you through the desks, and keep the area damage for them. Do not loot the books; they are only copies of copies, and the scholars of Avalon will not pay for them.",
   "yells": {
     "aggro": [
-      "Scribes! Put down your pens!"
+      "Scribes! Put down your pens!",
+      "This is the hall's memory. Leave it.",
+      "Swift as the heavenly host!"
     ],
     "phases": [
       {
@@ -29,15 +31,19 @@
       }
     ],
     "death": [
-      "Write it down... someone... write it..."
+      "Write it down... someone... write it...",
+      "The lamps... keep the lamps lit..."
     ],
     "slay": [
-      "Struck from the book."
+      "Struck from the book.",
+      "Blotted.",
+      "A line through your name."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Scribes at every desk. None of them can write."
+      "Scribes at every desk. None of them can write.",
+      "Lamps hang over every desk. The ink is fresh."
     ],
     "phases": [
       {
@@ -50,28 +56,46 @@
   "botLines": {
     "briefing": [
       "drihten brings all 25 scribes. we clear edges first or we tank a library",
-      "when drihten speeds up, swap tanks"
+      "when drihten speeds up, swap tanks",
+      "aoe on the scribes, they're soft",
+      "pull from the far end"
     ],
     "aftermathWin": [
       "25 scribes and their lord. thats a lot of homework done",
-      "drihten down. nobody has to read those books now"
+      "drihten down. nobody has to read those books now",
+      "great aoe on the scribes",
+      "the scriptorium is empty"
     ],
     "aftermathLoss": [
       "somebody pulled drihten with the scribes up. thats the whole room",
-      "his haste chewed through the main tank"
+      "his haste chewed through the main tank",
+      "scribes killed the casters",
+      "nobody swapped tanks"
     ],
     "rumour": [
       "heard there are ogre scribes in krondon that cant read. they copy the letters anyway",
-      "drihten means lord, [my guildie says|apparently]. lord of a library full of ogres"
+      "drihten means lord, [my guildie says|apparently]. lord of a library full of ogres",
+      "heard the scholars want drihten's books",
+      "drihten took the scriptorium because he liked the lamps, [heard|they say]"
     ]
   },
   "loremasterTopic": {
     "keyword": "scribes",
     "text": "Drihten Elreden keeps the scriptorium, a lord over two dozen ogre scribes. Strike him and every desk empties. Count them before you start."
   },
-  "bookPage": "",
+  "bookPage": "The scriptorium of Krondon is the most terrible room I have stood in, and nothing in it tried to kill me until we touched its lord. Twenty-five ogres sat at the long desks under the lamps, copying. I looked over one shoulder. He was copying a history of the hall, letter by letter, and he had been copying it so long that the page was nearly worn through, and he did not know what any word meant. Drihten Elreden watched them as a father watches his children. When we struck him, every pen went down at once. I took one book. It is in my satchel. I cannot bear to open it.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} emptied Krondon's scriptorium and struck Drihten Elreden from the book in {minutes} minutes.",
     "loss": "Drihten Elreden's scribes rose from every desk; {realm}'s raid under {raidLeader} was written off."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "morgus-urgalorg",
+      "relation": "the other keeper of the hall's learning"
+    }
+  ]
 }

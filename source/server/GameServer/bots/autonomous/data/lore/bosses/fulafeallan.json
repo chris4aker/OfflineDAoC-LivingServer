@@ -16,22 +16,34 @@
       "source": "Bosworth-Toller (to verify)"
     }
   ],
-  "story": "Fuladl's twin in the low passages, or its other half: the old keepers never decided. They called it Fulafeallan, the foul thing that falls, because it drops from the roof of the passage where the water seeps through. Like its kin it is only rot that learned to move, and like its kin it comes apart under a blade and keeps coming. The keepers' last records say they bricked up the wet passage and wrote its name over the bricks, so that no one would open it by mistake. The ogres cannot read. They opened it.",
-  "legend": "Same as Fuladl: it splits when you cut it, so kill the pieces before they reach the casters. Look up before you walk under the wet stretch of roof, because that is where it waits. One raid, one rot at a time, never both.",
+  "story": "Fuladl's twin in the low passages, or its other half: the old keepers never decided. They called it Fulafeallan, the foul thing that falls, because it drops from the roof of the passage where the water seeps through. Like its kin it is only rot that learned to move, and like its kin it comes apart under a blade and keeps coming. The keepers' last records say they bricked up the wet passage and wrote its name over the bricks, so that no one would open it by mistake. The ogres cannot read. They opened it.\n\nThe thing that falls. Fuladl's twin in the low passages, or its other half: the old keepers never decided, and wrote both names on the same wall. They called this one Fulafeallan, the foul thing that falls, because it lives on the roof of the wet passage where the sea seeps through the rock and drops on whatever walks beneath it.\n\nThe bricked passage. The hall-folk's last records say they bricked up the wet passage and wrote its name over the bricks so that no one would open it by mistake. The ogres cannot read. They opened it, looking for another storeroom, and the first ogre through the gap is part of Fulafeallan now. Like its kin it is only rot that learned to move, and like its kin it comes apart under a blade into four or five crawling pieces that keep coming. The ghosts of the hall avoid the wet passage more than any other place in Krondon, and the ogres, who do not see the ghosts, have never asked them why.",
+  "legend": "Same as Fuladl: it splits when you cut it, so kill the pieces before they reach the casters. Look up before you walk under the wet stretch of roof, because that is where it waits. One raid, one rot at a time, never both.\n\nIt hangs on the roof; if you walk under it unready it lands on the middle of the raid. Pull it from the edge of the wet stretch with a tank already in place. Some raids skip both rots and walk around the drains entirely, because the rots guard nothing a raid needs. The ones who kill them do it for the old hall-folk, who walled them away and wrote their names to warn us.",
   "yells": {
-    "aggro": [],
+    "aggro": [
+      "...",
+      "Water drips. Then something heavier.",
+      "Above you."
+    ],
     "phases": [
       {
         "trigger": "addSpawn",
         "text": "The foulness falls and splits."
       }
     ],
-    "death": [],
-    "slay": []
+    "death": [
+      "The roof is only stone now.",
+      "The dripping stops."
+    ],
+    "slay": [
+      "Fallen on.",
+      "Taken from above.",
+      "Swallowed."
+    ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Water drips from the roof. Not all of it is water."
+      "Water drips from the roof. Not all of it is water.",
+      "The roof here glistens and bulges."
     ],
     "phases": [
       {
@@ -43,27 +55,47 @@
   },
   "botLines": {
     "briefing": [
-      "fulafeallan, same deal as fuladl. it splits, aoe the bits"
+      "fulafeallan, same deal as fuladl. it splits, aoe the bits",
+      "it drops from the roof, tank in place first",
+      "pull from the edge of the wet bit",
+      "never pull both rots"
     ],
     "aftermathWin": [
       "both rots done. krondon smells a bit better",
-      "fulafeallan down, that was messy"
+      "fulafeallan down, that was messy",
+      "nobody got landed on",
+      "pieces died fast"
     ],
     "aftermathLoss": [
-      "the bits got us again. we never learn"
+      "the bits got us again. we never learn",
+      "it dropped on the healers",
+      "walked under it with no tank ready",
+      "too many pieces"
     ],
     "rumour": [
       "[heard|someone said] fulafeallan drops off the ceiling in the wet tunnels",
-      "fuladl and fulafeallan. two rots, old names, same mess"
+      "fuladl and fulafeallan. two rots, old names, same mess",
+      "heard the ghosts avoid the wet passage",
+      "heard the ogres opened the bricked passage looking for a storeroom"
     ]
   },
   "loremasterTopic": {
     "keyword": "fulafeallan",
     "text": "The foul thing that falls, the keepers called it, for it drops from the wet roof of the low passages. It is kin to Fuladl and splits as Fuladl does."
   },
-  "bookPage": "",
+  "bookPage": "The last records of the hall-folk say they bricked up the wet passage and wrote the name of its tenant over the bricks: the foul thing that falls. The ogres opened it looking for another storeroom. When our raid leader read me the name, I looked up, and I am glad I did, because the roof above us was glistening and bulging like the belly of a fish. We pulled it from the edge, as the old hands said, with our tank already standing where it would fall. It fell on him. He has not forgiven any of us. We burned the pieces and went on.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} burned Fulafeallan out of Krondon's low passages in {minutes} minutes.",
     "loss": "Fulafeallan fell on {realm}'s raid in the dark; {raidLeader} could not cut the pieces fast enough."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "krondon-hall-folk"
+  ],
+  "related": [
+    {
+      "id": "fuladl",
+      "relation": "its kin, or its other half"
+    }
+  ]
 }

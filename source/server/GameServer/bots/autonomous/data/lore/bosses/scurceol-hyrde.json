@@ -31,11 +31,13 @@
       "source": "docs/RAID-SIZES.md"
     }
   ],
-  "story": "In the old days Krondon's storm-keeper was called the Scurceol Hyrde, the shepherd of the storm-ship. His craft was weather. When raiders came for Avalon's shore he loosed his storm on them, and when the hall needed calm he held it. To hold a storm still he took four airs out of the sky and bound them in the four corners of his chamber as lights, high up under the roof, and while they burned nothing in the world could wound him and his arm fell like a gale. When Morgana's war came and the thrawn ogres took the hall, the shepherd made his bargain with their queen: his storm for his chamber. He is still down there with the four lights burning. Strike a light carelessly and the bound air flings you across the room like a torn sail. Put all four out and he is only an old man in a cold room, and he knows it.",
-  "legend": "Put out the four lights in the corners before you touch him. Until then he cannot be hurt and hits like a gale. One party per light, shoot from the floor under it, and mind your footing: a light that throws you does it a few seconds late. A light you kill stays dead even if you wipe on him. Old Avalonians say a sudden squall off Caldey means he is restless.",
+  "story": "In the old days Krondon's storm-keeper was called the Scurceol Hyrde, the shepherd of the storm-ship. His craft was weather. When raiders came for Avalon's shore he loosed his storm on them, and when the hall needed calm he held it. To hold a storm still he took four airs out of the sky and bound them in the four corners of his chamber as lights, high up under the roof, and while they burned nothing in the world could wound him and his arm fell like a gale. When Morgana's war came and the thrawn ogres took the hall, the shepherd made his bargain with their queen: his storm for his chamber. He is still down there with the four lights burning. Strike a light carelessly and the bound air flings you across the room like a torn sail. Put all four out and he is only an old man in a cold room, and he knows it.\n\nThe last hall-born master. Of all the masters of the old hall, only the Scurceol Hyrde kept his chamber when the ogres came, and he kept it by bargain, not by strength. He knew his craft would be worth more to Orylle than his death, and he offered her his storm for his room. She took it. Since then the squalls off Caldey that wreck the ships of Albion have come from his chamber, and the ogres call him a traitor to the hall behind his back, and the ghosts call him worse.\n\nThe four lights. The airs he bound are not his servants. They are prisoners, the four winds of the isles taken out of the sky and set in the corners of his chamber, high under the roof, burning as cold lights. While any of them burns, the bound air wraps him like a gale-coat and no blade bites him, and his arm falls with the weight of a storm. The airs hate him. When a mortal strikes one carelessly, the bound wind lashes out at whatever is nearest and flings it across the room, and the fall breaks bones. Kill a light and it stays dead; the hyrde cannot catch a wind twice. Put all four out and he is only an old man in a cold room, the last keeper of a hall that has forgotten him.",
+  "legend": "Put out the four lights in the corners before you touch him. Until then he cannot be hurt and hits like a gale. One party per light, shoot from the floor under it, and mind your footing: a light that throws you does it a few seconds late. A light you kill stays dead even if you wipe on him. Old Avalonians say a sudden squall off Caldey means he is restless.\n\nThe lights float high in the corners; ranged fight them from the floor below, melee stand under them and wait. A thrown raider walks back to the same light. Never fight him three thousand units out in the corridors: fight him in his own room, near his spawn, with one tank party holding him while the lights die.",
   "yells": {
     "aggro": [
-      "The air is mine. Every breath you take, I lend you."
+      "The air is mine. Every breath you take, I lend you.",
+      "Four winds I took from the sky. Come and take them back.",
+      "The hall is the queen's. The weather is mine."
     ],
     "phases": [
       {
@@ -48,15 +50,19 @@
       }
     ],
     "death": [
-      "Let the weather go where it will."
+      "Let the weather go where it will.",
+      "The squall passes. It always passes."
     ],
     "slay": [
-      "Blown out, like a candle."
+      "Blown out, like a candle.",
+      "Another sail torn from its mast.",
+      "Becalmed."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Four lights burn in the corners. The air is held still."
+      "Four lights burn in the corners. The air is held still.",
+      "The air in this room is held, like a breath."
     ],
     "phases": [
       {
@@ -74,28 +80,48 @@
     "briefing": [
       "storm keeper: four lights in the corners, one party each. [nobody|noone] touches him till theyre all out",
       "shoot the lights from the floor under them. melee stand under yours and wait",
-      "if a light throws you, walk back to your light. dead lights stay dead if we wipe"
+      "if a light throws you, walk back to your light. dead lights stay dead if we wipe",
+      "fight him in his own room, not out in the halls",
+      "one party per light, the rest wait",
+      "dead lights stay dead even if we wipe",
+      "nobody touches him till all four are out"
     ],
     "aftermathWin": [
       "all four lights first, then him. textbook",
-      "the storm keeper is just an old man once the lights go"
+      "the storm keeper is just an old man once the lights go",
+      "four lights, one kill, gg",
+      "no squalls off caldey tonight"
     ],
     "aftermathLoss": [
       "somebody hit him with the lights still up. he cant be hurt then, people",
-      "we got three lights. the fourth is still up, go back for it"
+      "we got three lights. the fourth is still up, go back for it",
+      "fought him in the corridor, wasted an hour",
+      "the thrown people never came back"
     ],
     "rumour": [
       "the storm keeper in krondon has four lights in the corners of his room. [kill the lights|put the lights out] first or [dont bother|you are hitting a wall]",
-      "[heard|someone in my guild swore] the lights in krondon throw you across the room if you hit them wrong"
+      "[heard|someone in my guild swore] the lights in krondon throw you across the room if you hit them wrong",
+      "heard the storm keeper made a deal with the queen to keep his room",
+      "[heard|someone said] the squalls off caldey come from krondon"
     ]
   },
   "loremasterTopic": {
     "keyword": "storm-keeper",
     "text": "The Scurceol Hyrde, the shepherd of the storm-ship. He bound four airs as lights in his chamber. While they burn, no blade bites him. Tell your raid leader that before you go, not after."
   },
-  "bookPage": "The keepers of Krondon did not count wealth in gold but in weather. A hall with a good storm-shepherd kept its shore, and the Hyrde of Krondon was the best of them. I have read that he took the four winds out of the sky and set them in the corners of his chamber, that he might hold a storm still as a man holds a hound. If that is so, the winds are there yet. Sailors out of Caldey will not speak his name at sea.",
+  "bookPage": "The keepers of Krondon did not count wealth in gold but in weather. A hall with a good storm-shepherd kept its shore, and the Hyrde of Krondon was the best of them. I have read that he took the four winds out of the sky and set them in the corners of his chamber, that he might hold a storm still as a man holds a hound. If that is so, the winds are there yet, and they hate him; when we struck the lights, the air threw us about the room as if glad to be asked. When the last went out he sat down. Sailors out of Caldey will not speak his name at sea.",
   "chronicle": {
     "win": "{realm} put out the four lights of Krondon one by one and {raidLeader}'s raid broke the storm-keeper in {minutes} minutes.",
     "loss": "The Scurceol Hyrde's lights still burn; {realm}'s raid under {raidLeader} struck a man the storm would not let them wound."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "krondon-hall-folk"
+  ],
+  "related": [
+    {
+      "id": "orylle",
+      "relation": "bound to her by a bargain"
+    }
+  ]
 }
