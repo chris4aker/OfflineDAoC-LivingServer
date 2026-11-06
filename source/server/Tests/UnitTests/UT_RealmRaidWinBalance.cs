@@ -663,8 +663,10 @@ namespace DOL.UnitTests
             Assert.Multiple(() =>
             {
                 Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.ShiftAfter(sixOfSeven)));
-                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.MaximumShift), "6 of 7 captured: defenders at +0.25");
+                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.MaximumShift + SiegeDefenseBalance.Step),
+                    "6 of 7 captured: defenders at +0.25, and the attackers trimmed one step (2026-11-06)");
                 Assert.That(SiegeDefenseBalance.Ratio(0.75), Is.EqualTo(1.0));
+                Assert.That(SiegeDefenseBalance.AttackerCap(128), Is.EqualTo(112));
             });
         }
 
@@ -691,7 +693,7 @@ namespace DOL.UnitTests
         [Test]
         public void TheSiegeLineShowsTheShiftAndTheWindow() =>
             Assert.That(SiegeDefenseBalance.Line("captured", 0.125, 0.25, [true, true, false, true]),
-                Is.EqualTo("SIEGE_DEFENSE_BALANCE event=\"captured\" shift=+0.125->+0.25 share=0.75->1 window=\"CCDC\""));
+                Is.EqualTo("SIEGE_DEFENSE_BALANCE event=\"captured\" shift=+0.125->+0.25 share=0.75->1 attackerCap=128->128 window=\"CCDC\""));
 
         [Test]
         public void TheLedgerGivesBackOnlyBotSieges()
