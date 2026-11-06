@@ -4,6 +4,16 @@
   "catalogKey": "tuscaran-glacier/hakr",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "queen-kula",
+      "relation": "keeps her iceweavers"
+    }
+  ],
   "facts": [
     {
       "text": "Hakr is a level-82 icelord with 100,000 health, guarded by two Royal Iceweavers that spawn with him.",
@@ -26,33 +36,48 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
   ],
-  "story": "Hakr keeps the queen's iceweavers. They are long cold serpents of the deep, and every night they weave the walls of the citadel new, so that no crack lasts until morning. Two of them never leave his side. Hakr has a giant's sense of humour, which is to say he likes to throw things, and the thing he likes to throw best is a person: up, high, and down again on the ice. He fights behind a barrier the iceweavers spin for him, and when it fades he is only a giant with a temper.",
-  "legend": "Kill the iceweavers or keep them off the healers, their poison stacks. Expect to fly when Hakr picks you; land, get healed, run back. A raid that laughs at the throwing does better than one that panics. Kill the serpents first if you can spare the damage.",
+  "story": "Hakr keeps the queen's iceweavers. They are long cold serpents of the deep ice, iceweavers and their trainers and their hatchlings, and the royal ones among them are the largest and oldest of their kind. Every night, while the giants sleep, they move through the citadel and weave the walls new: they spin a thread of ice so fine it cannot be seen and lay it over every crack, so that no crack in Tuscaran lasts until morning. It is the reason the glacier never falls, the hrimthursa say, and the reason Kula trusts Hakr as she trusts few others. Two of the royal iceweavers never leave his side.\n\nHakr has a giant's sense of humour, which is to say he likes to throw things, and the thing he likes to throw best is a person. When you reach his hall he picks one of you up and throws you straight up, high into the vault, and laughs as you come down onto the ice. He has a joke he says each time. It is not a good joke. The iceweavers do not laugh at it, but then they never laugh at anything.\n\nHe fights behind a barrier the iceweavers spin for him: a shell of woven ice that turns blows aside, so that for a while he seems untouchable. Then the weave thins and fades, and he is only a giant with a temper and a long reach, and he knows it, and he throws people harder. The royal iceweavers bite as he fights, and their poison stays in the blood for half a minute and stacks bite on bite, so that a healer they are left to chew on does not last.\n\nThe iarn dwarves would give a great deal for a single thread of iceweaver silk. Hakr knows it, and the one time a dwarf came to bargain for it, Hakr threw him too.",
+  "legend": "Kill the iceweavers or keep them off the healers, their poison stacks fast. Expect to fly when Hakr picks you: land, get healed, run back. Don't waste your big hits while his barrier is up; wait for the message that it fades, then burn him. A raid that laughs at the throwing does better than one that panics. The serpents have a long tether, so they follow you a long way. Hakr's hauberk is a good drop. His iceweaver hatchlings and trainers live nearby too; clear them first. Cure poison is worth bringing in bulk for this hall. Bring bandages for the fall damage too.",
   "yells": {
     "aggro": [
-      "Iceweavers! We have guests who need lifting."
+      "Iceweavers! We have guests who need lifting.",
+      "Iceweavers, up! We have guests!",
+      "Who wants to fly first?"
     ],
     "phases": [
       {
         "trigger": "teleport",
         "text": "Up you go! Let us see how you come down!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "My weave thins. Then I will throw harder."
       }
     ],
     "death": [
-      "The walls... will crack... by morning..."
+      "The walls... will crack... by morning...",
+      "Weave... the walls... without me..."
     ],
     "slay": [
-      "Landed badly. They always do."
+      "Landed badly. They always do.",
+      "Landed badly.",
+      "Next time, land on your feet.",
+      "Weavers, tidy that up."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Woven ice glistens on every wall. Something mends it."
+      "Woven ice glistens on every wall. Something mends it.",
+      "Long cold serpents coil in the woven walls."
     ],
     "phases": [
       {
         "trigger": "teleport",
         "text": "Hakr hurls someone into the air!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Hakr's woven barrier fades away!"
       }
     ],
     "realmFirstKill": "Icelord Hakr is dead. The iceweavers fall still."
@@ -60,23 +85,34 @@
   "botLines": {
     "briefing": [
       "hakr has 2 royal iceweavers, kill them or keep them off healers, poison stacks",
-      "he throws people up. if you fly, just run back in"
+      "he throws people up. if you fly, just run back in",
+      "save burst for when hakr's barrier fades",
+      "iceweaver tether is long, theyll chase you"
     ],
     "aftermathWin": [
-      "hakr dead. i flew three times and lived [lol|somehow]"
+      "hakr dead. i flew three times and lived [lol|somehow]",
+      "iceweavers dead first this time, way easier",
+      "hakr's hauberk dropped [grats|gz]",
+      "nobody died to the poison this time"
     ],
     "aftermathLoss": [
-      "iceweavers ate the cleric group while we were flying around"
+      "iceweavers ate the cleric group while we were flying around",
+      "we burned into his barrier and had nothing left",
+      "flew, landed on a weaver, died. [classic|lol]",
+      "the royal iceweavers chased the healers all over the hall"
     ],
     "rumour": [
-      "the iceweavers [fix|mend] the glacier walls every night, they say. thats why it never cracks"
+      "the iceweavers [fix|mend] the glacier walls every night, they say. thats why it never cracks",
+      "one thread of iceweaver silk is worth a fortune to the iarn dwarves",
+      "hakr threw a dwarf who came to buy silk. [true story|so they say]",
+      "the queen's iceweavers mend every crack in the glacier by morning"
     ]
   },
   "loremasterTopic": {
     "keyword": "Hakr",
     "text": "Keeper of the queen's iceweavers, the cold serpents that weave the walls new each night. He likes to throw things, and people most of all. His barrier is their weaving; when it fades he is only a giant with a temper."
   },
-  "bookPage": "",
+  "bookPage": "From the notebook of Brannulf, dwarf of the Remnants, a weaver by trade. I have seen the iceweavers at their work through a crack in the outer ice. They go along the wall in the dark, three or four together, and where they pass the wall is whole that was cracked. I could not see the thread. I could only see the cracks close. I would give my beard for a spindle of it. I asked the giant Hakr for one and he laughed and threw me down the tunnel, and I broke two ribs, and I would ask again tomorrow.",
   "chronicle": {
     "win": "Icelord Hakr fell to {raidLeader}'s raid from {realm} in {minutes} minutes, and nobody flew twice.",
     "loss": "Icelord Hakr threw {raidLeader}'s raid from {realm} about the ice for {minutes} minutes and won."

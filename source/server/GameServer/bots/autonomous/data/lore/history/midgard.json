@@ -1,0 +1,415 @@
+{
+  "realm": "Midgard",
+  "id": "midgard",
+  "summary": "Midgard's history as the Living Server tells it: Mythic's canon where it exists, Norse myth as inspiration, and original writing where both are silent.",
+  "eras": [
+    {
+      "id": "mid-era-ice",
+      "order": 1,
+      "name": "The Age of Ice",
+      "summary": "Before the gods set the world in order: the rime giants, a dragon dying in the northern ice, things frozen that are still frozen.",
+      "events": [
+        {
+          "text": "In Norse myth the rime-giants (hrimthursar) descend from Bergelmir, who alone survived the flood of Ymir's blood.",
+          "provenance": "myth",
+          "source": "Snorri, Gylfaginning (public domain)"
+        },
+        {
+          "text": "In Norse myth the primeval cow Audhumla fed Ymir and licked the first of the gods out of the ice.",
+          "provenance": "myth",
+          "source": "Snorri, Gylfaginning (public domain)"
+        },
+        {
+          "text": "Living Server: a dragon died in the ice of Aegir long before any people came; Kula later raised Tuscaran's citadel on its bones.",
+          "provenance": "original",
+          "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+        },
+        {
+          "text": "Living Server: Fornfrusenen was frozen into the north wall of the glacier in this age, and the bones of Modernagrav were buried.",
+          "provenance": "original",
+          "source": "Living Server writing"
+        }
+      ],
+      "places": [],
+      "bosses": [
+        "fornfrusenen"
+      ]
+    },
+    {
+      "id": "mid-era-troll-fathers",
+      "order": 2,
+      "name": "The Age of the Troll Fathers",
+      "summary": "The ancient precursors of trolls and kobolds dig Trollheim under Aegir and give their dead to the mound at its root; the iarn dwarves already live in the iron wood beside the old one.",
+      "events": [
+        {
+          "text": "Troll and kobold myths tell of the Troll Fathers, wise precursors of both races, who lived in Trollheim on the island of Aegir.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=65"
+        },
+        {
+          "text": "Living Server: the Troll Fathers raised a mound of the dead under Trollheim's last hall; Nosdoden later lay down on it.",
+          "provenance": "original",
+          "source": "Living Server writing"
+        },
+        {
+          "text": "Living Server: Iarnvidiur, the old one of the Iarnwood, was on Aegir before the iarn dwarf clans; Mahattava's lake was older still.",
+          "provenance": "original",
+          "source": "Living Server writing"
+        }
+      ],
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "mid-era-binding",
+      "order": 3,
+      "name": "The Binding of the Wolf",
+      "summary": "The gods bind Fenrir and Loki. Before the chain closes, the wolf's daughter flies south to Malmohus; his brood runs in the Iron Wood; a splinter of the sun lies in Raumarik's snow.",
+      "events": [
+        {
+          "text": "In Norse myth the gods bind the wolf Fenrir with the fetter Gleipnir until Ragnarok, and bind Loki under a serpent's dripping venom.",
+          "provenance": "myth",
+          "source": "Snorri, Gylfaginning (public domain)"
+        },
+        {
+          "text": "In Norse myth an old giantess in the Iron Wood breeds Fenrir's wolf-kin, among them the wolves who chase the sun and moon.",
+          "provenance": "myth",
+          "source": "Voluspa 40 (Poetic Edda, public domain)"
+        },
+        {
+          "text": "Gjalpinulva's own taunts name an aunt who keeps a place in Niflheim for her victims; bot chat calls her the Fenris wolf's daughter.",
+          "provenance": "game",
+          "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+        },
+        {
+          "text": "The quest 'The Legend of Fenrir's Folly' sends players to win a sun fragment back from the Raumarik Revenant.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/db/quest/1770"
+        }
+      ],
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "mid-era-jarls",
+      "order": 4,
+      "name": "The Age of the Jarls",
+      "summary": "The old kingdoms of Midgard: jarls on the frontier hills, the Cursed Tomb sealed, tomte driven underground, the vendo in their caves, and the mine of Dodens Gruva breaking into the hall below.",
+      "events": [
+        {
+          "text": "Dodens Gruva lay on the old Jamtland frontier east of Glenlock Faste and was removed by New Frontiers.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=68"
+        },
+        {
+          "text": "The Cursed Tomb holds the dishonoured warriors and kings whom the gods would not admit to Valhalla.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=40"
+        },
+        {
+          "text": "Summoner's Hall connects the zones of the three realms; Midgard reaches it from Dodens Gruva.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=74"
+        },
+        {
+          "text": "Living Server: Jarl Ormarr's miners broke into the Summoner's Hall and their spiritmaster Aros bound them to the mine.",
+          "provenance": "original",
+          "source": "Living Server writing"
+        }
+      ],
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "mid-era-realm-war",
+      "order": 5,
+      "name": "The War of the Realms",
+      "summary": "After Arthur's death the three realms go to war. Keeps rise on the frontiers, the Glacier Giant throws all comers, Hibernia's champions raid Raumarik, and Midgard's heroes earn their epics.",
+      "events": [
+        {
+          "text": "The conflict between Albion, Midgard and Hibernia began with the power vacuum left by King Arthur's death.",
+          "provenance": "mythic",
+          "source": "https://camelotherald.com/node/5"
+        },
+        {
+          "text": "Midgard's epic quests send healers and shamans after Loken, hunters and shadowblades after Oona, and the mystics after Kelic.",
+          "provenance": "game",
+          "source": "source/server/GameServer/scripts/quests/Midgard/epic/"
+        },
+        {
+          "text": "Each frontier has an old giant who belongs to no realm: a green knight, the Glacier Giant and Evern.",
+          "provenance": "game",
+          "source": "source/server/GameServer/bots/autonomous/data/chat/lore_shared.lines"
+        }
+      ],
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "mid-era-shrouded-isles",
+      "order": 6,
+      "name": "The Shrouded Isles",
+      "summary": "A Troll Father walks into Jordheim: the morvalt have overrun Aegir. Midgard sails with the Valkyn to reclaim Trollheim and meets the rime giants, the old one of the Iarnwood and the morvalt's dig for their Mother.",
+      "events": [
+        {
+          "text": "A lone Troll Father came to Jordheim: the morvalt had swept Aegir and Trollheim held out only for a time; the tamed Valkyn joined Midgard to cleanse the island.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=65"
+        },
+        {
+          "text": "The morvalt broke Faraheim's rockwall to reach Modernagrav, seeking the Mother, and found an ancient skeleton guarded by the dead.",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=116"
+        },
+        {
+          "text": "The Shrouded Isles expansion added Tuscaran Glacier, Trollheim and Iarnvidiur's Lair as Midgard's epic dungeons (2002).",
+          "provenance": "mythic",
+          "source": "https://camelot.allakhazam.com/zones.html?czone=76"
+        }
+      ],
+      "places": [
+        "tuscaran-glacier"
+      ],
+      "bosses": [
+        "council-hord",
+        "council-nokkvi",
+        "council-otrygg",
+        "council-ozur",
+        "council-vagn",
+        "elder-council-birghir",
+        "elder-council-guthlac",
+        "elder-icelord-hjalmar",
+        "elder-icelord-suttung",
+        "hurika",
+        "icelord-agmundr",
+        "icelord-hakr",
+        "icelord-kvasir",
+        "icelord-skuf",
+        "icelord-steinvor",
+        "issorden",
+        "jailer-vifil",
+        "king-tuscar",
+        "queen-kula",
+        "torst"
+      ]
+    },
+    {
+      "id": "mid-era-present",
+      "order": 7,
+      "name": "The Present Day",
+      "summary": "The Living Server's own time: the realm raids the old places, the Herald records the kills, and the dead of every era still wait for an answer.",
+      "events": [
+        {
+          "text": "Living Server raids each epic place with sizes taken from period accounts.",
+          "provenance": "game",
+          "source": "docs/RAID-SIZES.md"
+        }
+      ],
+      "places": [],
+      "bosses": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "hrimthursa",
+      "name": "The Hrimthursa",
+      "summary": "The rime giants of Tuscaran Glacier: Queen Kula and King Tuscar, a Council that argued for peace and Icelords who wanted war.",
+      "places": [
+        "tuscaran-glacier"
+      ],
+      "bosses": [
+        "council-hord",
+        "council-nokkvi",
+        "council-otrygg",
+        "council-ozur",
+        "council-vagn",
+        "elder-council-birghir",
+        "elder-council-guthlac",
+        "elder-icelord-hjalmar",
+        "elder-icelord-suttung",
+        "fornfrusenen",
+        "icelord-agmundr",
+        "icelord-hakr",
+        "icelord-kvasir",
+        "icelord-skuf",
+        "icelord-steinvor",
+        "issorden",
+        "jailer-vifil",
+        "king-tuscar",
+        "queen-kula"
+      ]
+    },
+    {
+      "id": "troll-fathers",
+      "name": "The Troll Fathers",
+      "summary": "The ancient precursors of trolls and kobolds who built Trollheim and fled deeper when it fell.",
+      "places": [
+        "tuscaran-glacier"
+      ],
+      "bosses": [
+        "jailer-vifil"
+      ]
+    },
+    {
+      "id": "valkyn",
+      "name": "The Valkyn",
+      "summary": "Morvalt tamed by the Troll Fathers, who took a Norse god and joined Midgard.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "morvalt",
+      "name": "The Morvalt",
+      "summary": "Prehistoric savages who overran Aegir and hold Trollheim; the crazed ones dig for their Mother on Modernagrav.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "fenris-brood",
+      "name": "The Wolf's Brood",
+      "summary": "Gjalpinulva the Fenris wolf's daughter, her drakulv and her firstborn Yar; and, by the grandmothers' tale, the wolves of the Iron Wood.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "servants-of-iarnvidiur",
+      "name": "The Servants of Iarnvidiur",
+      "summary": "The old one of the Iarnwood and everything in her lair: her wolves, her herd of animus, her plague.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "iarn-dwarves",
+      "name": "The Iarn Dwarves",
+      "summary": "The free dwarf clans of Aegir: the Remnants of Faraheim with their griffons, and Chief Tarek's people under the iron trees.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "svartalfar",
+      "name": "The Svartalfar",
+      "summary": "Dark elves: thralls of the arachites in Spindelhalla, dragon-watchers of Svarhamr in Malmohus.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "skogsra",
+      "name": "The Skogsra",
+      "summary": "Forest folk of Faraheim who lead travellers astray, the Shade Seekers among them.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "tradklan",
+      "name": "The Tradklan",
+      "summary": "A small, loud tree-clan of Faraheim led by Cronk.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "wild-beasts",
+      "name": "Beasts of the Wild",
+      "summary": "Great beasts who serve no one: griffons on the glacier, render packs and terror birds in Faraheim, the old fish of Mahattava's lake.",
+      "places": [
+        "tuscaran-glacier"
+      ],
+      "bosses": [
+        "hurika",
+        "torst"
+      ]
+    },
+    {
+      "id": "lokis-mischief",
+      "name": "Loki's Mischief",
+      "summary": "What gets out when the venom bowl spills: Loken in Raumarik, and the jotuns who do the bound god's work, like Ulfketill.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "jotuns-of-vanern",
+      "name": "The Jotuns of Vanern",
+      "summary": "Swamp giants who build in clay and still try to better the clay giant of the old tale.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "dishonoured-dead",
+      "name": "The Dishonoured Dead",
+      "summary": "The dead the valkyries passed by: the Cursed Tomb's draugr, Raumarik's deserters and curses, the Wretch of Winter, the Revenant's fortress.",
+      "places": [],
+      "bosses": [
+        "issorden"
+      ]
+    },
+    {
+      "id": "dodens-gruva-bound",
+      "name": "The Bound of Dodens Gruva",
+      "summary": "Jarl Ormarr's miners, huscarls and household, bound by Aros the Spiritmaster so the calling below could not have them.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "summoners",
+      "name": "The Summoners",
+      "summary": "The Grand Summoner Govannon and his three summoners, who call the dead of every realm in the hall under the three frontiers (shared with Albion and Hibernia).",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "lords-of-the-undead",
+      "name": "The Lords of the Undead",
+      "summary": "The faction of the Summoner's Hall's dead, the answerers of the calling (Allakhazam: the hall's mobs are on Lords of the Undead).",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "sidhe-of-the-hall",
+      "name": "The Sidhe of the Hall",
+      "summary": "Sidhe magickers, protectors and a high lord who serve the summoners as if they had forgotten whose they are (shared).",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "werewolves",
+      "name": "The Werewolves",
+      "summary": "The varulv of Skona and the court of King Hresvelgr in Varulvhamn, with the old wolfaur.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "arachites",
+      "name": "The Arachites",
+      "summary": "Spider-folk of Spindelhalla who farm silk with svartalf thralls and pray to something in the deep.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "tomte",
+      "name": "The Tomte",
+      "summary": "House-spirits driven underground by forgotten butter, led by Nisse.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "vendo",
+      "name": "The Vendo",
+      "summary": "A hairy, howling people of the caves north of Mularn, with their goblins.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "hibernian-invaders",
+      "name": "Hibernia's Champions",
+      "summary": "Hibernians who carry the war into Midgard's own wilds, like Oona at Raumarik's river fork.",
+      "places": [],
+      "bosses": []
+    },
+    {
+      "id": "frontier-giants",
+      "name": "The Frontier Giants",
+      "summary": "The old giants who belong to no realm and stand on the frontiers; Midgard's is the Glacier Giant.",
+      "places": [],
+      "bosses": []
+    }
+  ]
+}

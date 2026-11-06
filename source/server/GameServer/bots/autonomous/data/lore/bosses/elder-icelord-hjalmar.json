@@ -4,6 +4,20 @@
   "catalogKey": "tuscaran-glacier/hjalmar",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "elder-icelord-suttung",
+      "relation": "his rival and alternate; the glacier wakes only one"
+    },
+    {
+      "id": "elder-council-birghir",
+      "relation": "the councillor whose peace he mocked"
+    }
+  ],
   "facts": [
     {
       "text": "Hjalmar is a level-81 elder icelord with 100,000 health. A controller spawns either Hjalmar or Suttung, never both: one of the two holds the hall each time.",
@@ -31,11 +45,13 @@
       "source": "Old Norse name, to verify (Cleasby-Vigfusson)"
     }
   ],
-  "story": "Hjalmar and Suttung are the two elder icelords, and they have never once agreed on anything except that the Council was wrong. The glacier will not keep them both awake. When the howl runs through the tunnels, one of them has risen and the other sleeps in the ice, and no hrimthursa can say beforehand which it will be. Hjalmar is the one who keeps accounts. He knows how many council members have died in his lifetime and he grieved for none of them. He calls their peace a mockery and you its proof. He fights with the morkimma at his heels, dark mist-things of the deep ice that close his wounds while he works, and every one that reaches him buys him time.",
-  "legend": "You never know if it is Hjalmar or Suttung until the howl. If it's Hjalmar, kill the morkimma when they show up or he heals through the raid. Some groups bring a dedicated add team just for him. If the add team is slow, he outlasts the healers.",
+  "story": "Hjalmar and Suttung are the two elder icelords, and they have never once agreed on anything except that the Council was wrong. They were raised in the same tunnels, trained under the same old icelord, and given the same hall when he died, and from the first day they could not share it. The hrimthursa tell it as a curse or a joke depending on who is listening: the glacier will not keep both elders awake. When one wakes, the other sleeps in the ice of the hall, and when the hall is entered a howl runs through the tunnels, an otherworldly sound with no word in it, and then whichever of them the glacier has chosen stands up. No giant can say beforehand which it will be. Raid leaders cannot either.\n\nHjalmar is the one who keeps accounts. He knows to the giant how many council members have died in his lifetime, of age and accident and the island's small wars, and he grieved for none of them. He has told the Council so to their faces. When you reach him he tells you too: the price of invading the frozen fortress is death, your presence mocks the pacifist philosophy of his opponents on the Council, and he weeps for no councillor who has perished. He means you to understand that he will not weep for you either.\n\nHe does not fight alone. As he strikes, the morkimma come out of the deep ice to his side: dark mist-things, the name means something like dark breath, that seep from the cracks of the oldest walls and wrap around him and close his wounds. One in five of his blows brings another. Each one that reaches him buys him time, and time is how Hjalmar wins: he outlasts healers. Kill the mist as it comes, or the count goes on.\n\nWhen he dies, his last word is for Suttung, to wake and finish it. The glacier does not oblige. The hall will be his rival's next time, and Suttung will tell you what he thought of Hjalmar, which is nothing good.",
+  "legend": "You never know if it is Hjalmar or Suttung until the howl. If it's Hjalmar, the fight is about the morkimma: they come out of the walls as he swings and each one heals him. A dedicated add team kills them on sight; if the add team is slow, he outlasts the healers. Don't drag him out of his hall or he resets, and don't let the fight stall for half a minute. He's a giant with big hits but no tricks beyond the mist. The old raiders keep a tally of which elder they got, and swear the glacier gives you Hjalmar when you brought too few healers, out of spite.",
   "yells": {
     "aggro": [
-      "You walk the halls of the Ice Lords. The price is the one we always ask."
+      "You walk the halls of the Ice Lords. The price is the one we always ask.",
+      "Your presence mocks the Council's peace. Good. I despise it too.",
+      "I weep for no councillor. I will not weep for you."
     ],
     "phases": [
       {
@@ -45,23 +61,35 @@
       {
         "trigger": "health<=50",
         "text": "I weep for no council member. I will not weep for you."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Suttung would have fallen by now. I am not Suttung."
       }
     ],
     "death": [
-      "Suttung... wake... finish this..."
+      "Suttung... wake... finish this...",
+      "The count... ends with me..."
     ],
     "slay": [
-      "One fewer. I keep count."
+      "One fewer. I keep count.",
+      "Add that one to the tally.",
+      "Morkimma, take what is left."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A howl runs through the ice. An icelord has woken."
+      "A howl runs through the ice. An icelord has woken.",
+      "Dark mist seeps from the cracks of the oldest walls."
     ],
     "phases": [
       {
         "trigger": "addsSpawn",
         "text": "Dark mist seeps from the walls around Hjalmar."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Hjalmar fights on, wrapped in black mist."
       }
     ],
     "realmFirstKill": "Elder Icelord Hjalmar is dead. The howling stops."
@@ -69,23 +97,34 @@
   "botLines": {
     "briefing": [
       "if the howl gives us hjalmar, add team on the morkimma, they heal him",
-      "hjalmar or suttung, we only get one. listen for the howl"
+      "hjalmar or suttung, we only get one. listen for the howl",
+      "add team: kill every morkimma the second it spawns",
+      "hjalmar resets if you drag him, fight him in the hall"
     ],
     "aftermathWin": [
-      "got hjalmar this time. nice add work everyone"
+      "got hjalmar this time. nice add work everyone",
+      "got hjalmar, add team was on point",
+      "hjalmar down. suttung next time probably",
+      "hjalmar's quiver dropped for our hunter"
     ],
     "aftermathLoss": [
-      "morkimma kept healing him, we never got him under half"
+      "morkimma kept healing him, we never got him under half",
+      "morkimma stacked up on him and he healed to full",
+      "add team got distracted. [gg|thats the fight]",
+      "he outlasted the healers. we need more dps or a better add team"
     ],
     "rumour": [
-      "there are two elder icelords and only one ever shows up. nobody knows why [hjalmar|it] gets picked"
+      "there are two elder icelords and only one ever shows up. nobody knows why [hjalmar|it] gets picked",
+      "[heard|i swear] the glacier gives you hjalmar when you're short on healers",
+      "hjalmar and suttung grew up together and hated each other from day one",
+      "the morkimma are dark mist from the oldest ice. they heal hjalmar"
     ]
   },
   "loremasterTopic": {
     "keyword": "Hjalmar",
-    "text": "One of the two elder icelords. The glacier never keeps both awake; a howl in the tunnels says one has risen. Hjalmar keeps count of the dead and grieves for none. The [morkimma] of the deep ice heal him while he fights."
+    "text": "One of the two elder icelords. The glacier never keeps both awake; a howl in the tunnels says one has risen. Hjalmar keeps count of the dead and grieves for none. The morkimma, dark mist-things of the deep ice, heal him while he fights. His rival is [Suttung]."
   },
-  "bookPage": "",
+  "bookPage": "From 'A Tally of the Icelords', kept by a Valkyn scout who spent a winter watching the glacier's tunnels from a crack in Delling's rim. The giants come and go by the eastern tunnel. Twice I heard the howl from inside, a sound with no voice in it, and both times a single elder walked out to the head of the tunnel and looked at the crater as if counting it. The first time it was the one they call Hjalmar, and there was black mist about his feet. The second time it was Suttung, and he stood a long while and then laughed. I never saw them together. The giants say no one has, since the old icelord died.",
   "chronicle": {
     "win": "The howl rose and Hjalmar answered; {raidLeader} of {realm} put him back in the ice in {minutes} minutes.",
     "loss": "Elder Icelord Hjalmar added {realm}'s raid under {raidLeader} to his count after {minutes} minutes."

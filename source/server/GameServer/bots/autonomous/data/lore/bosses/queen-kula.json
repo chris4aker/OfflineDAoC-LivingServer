@@ -4,6 +4,36 @@
   "catalogKey": "tuscaran-glacier/queenkula",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "aliases": [
+    "the ice queen",
+    "kula"
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "king-tuscar",
+      "relation": "husband, who forged her axe"
+    },
+    {
+      "id": "jailer-vifil",
+      "relation": "her jailer"
+    },
+    {
+      "id": "elder-council-birghir",
+      "relation": "her council's eldest, who sits by her leave"
+    },
+    {
+      "id": "issorden",
+      "relation": "the dead king she froze into her service"
+    },
+    {
+      "id": "icelord-hakr",
+      "relation": "keeper of her iceweavers"
+    }
+  ],
   "facts": [
     {
       "text": "Queen Kula is a level-85 hrimthursa giant with 300,000 health, fought together with King Tuscar as the glacier's final.",
@@ -46,12 +76,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
   ],
-  "story": "Every skald in Jordheim sings Kula the same way: the youngest and coldest of Bergelmir's line, who stayed in the north when her brothers marched south for green land. She found a dragon dead in the ice, ribs wide as a fjord, and raised her citadel on it so that no summer could ever reach her. Tuscar came later, a smith of the rime giants, and he forged her an axe so fine he still boasts of it. He took her hand. She kept the throne. The council sits on the dragon's ribs because she allows it, and the icelords guard the tunnels because she has never needed to ask twice. Kula despises the guardians who failed to stop you and says so to your face: she believes only the merciless live through a winter. That is the whole of her law, and she fights by it. She will freeze one of you where you stand, pull another to her feet, and when she is cut to half she stops playing and breaks the air with cold. Kill her husband first and she does not grieve. She fights harder.",
-  "legend": "Never split the twins across the room: they stand together and they die together, or not at all. Most raid leaders kill Tuscar first because he hits like his own hammer, and accept that Kula goes cold and furious after. Keep cure-mez ready, because she sleeps whoever she dislikes most. The old raiders say she has never once looked at the King while fighting.",
+  "story": "Every skald in Jordheim sings Kula the same way: the youngest and coldest of Bergelmir's line, who stayed in the north when her brothers marched south for green land. Bergelmir was the one giant who lived through the flood when Ymir died, and his children are the hrimthursa, the rime giants, who remember the world before the gods built it. Kula remembers it best. She does not want the gods' world. She wants the one before it, white and still and endless.\n\nShe found it in Delling Crater: a dragon dead in the ice, ribs wide as a fjord, so vast that no summer could ever thaw it. She raised her citadel on the bones. She did not ask the Troll Fathers, who were still in their city across the island, and she did not ask the iarn dwarves, who watched her giants cut the first tunnels and went home to their wood very quietly. When a war-band of the dead came up out of the south to take the bones from her, she did not fight it. She froze it, standing, every skeleton with its weapon raised, and gave it orders. Issorden's army still keeps them.\n\nTuscar came courting with an axe that rang like a bell. She took the axe first, the skalds say, and the smith second, and gave him a throne beside hers and a crown that is mostly a courtesy. He forges; she rules. The Council sits on the ribs because she lets it, and argues for peace because a quiet council costs a queen nothing. The Icelords hold the tunnels because she has never had to ask them twice. Her iceweavers mend the walls each night. Her jailer keeps a cell for every enemy she has named.\n\nShe has one law, and she will tell it to you herself when you reach her: only the merciless live through a winter. She despises her own guardians for letting you pass, and says so to your face. Then she fights by her law. She sleeps whoever she dislikes most, roots another where he stands, and reaches out to pull a third across the floor to her throne, so that the raid is always picking itself up. Cut her to half and she stops playing: the cold she brings up then is older than the gods, a blast that reaches across the whole throne room, and her blows land harder. Kill Tuscar first and she does not grieve. She simply has no more reason to hold back.\n\nThe skalds who sing her end the song the same way. When the queen of winter dies, they say, the ice will remember her name. Then they look at the door, as if the ice might be listening.",
+  "legend": "Never split the twins across the room: they stand together and they die together, or not at all. Most raid leaders kill Tuscar first because he hits like his own hammer and his bleed stacks on the tanks; when he falls, Kula hits at full strength for the rest of the fight, so the healers must be fresh for it. Keep cure-mez ready, because she sleeps whoever she dislikes most, and someone on root-break. When she reaches out and pulls someone to her throne, that one runs straight back; don't chase her there. At half she starts the cold blasts, so spread the casters. The old raiders say she has never once looked at the King while fighting, and that if you watch closely when he dies, she smiles.",
   "yells": {
     "aggro": [
       "You walked past my guardians. They will answer for that. You will answer to me.",
-      "Winter keeps only the merciless. Let us see what it keeps of you."
+      "Winter keeps only the merciless. Let us see what it keeps of you.",
+      "So you got past all my guardians. Useless, every one. I will teach you what they could not."
     ],
     "phases": [
       {
@@ -61,20 +92,28 @@
       {
         "trigger": "partnerDead",
         "text": "Tuscar? Then the throne is mine alone. It always was."
+      },
+      {
+        "trigger": "health<=80",
+        "text": "Sleep, little summer thing. Dream of green."
       }
     ],
     "death": [
-      "The ice... remembers... my name..."
+      "The ice... remembers... my name...",
+      "Bergelmir... I kept the cold... for you..."
     ],
     "slay": [
       "Another summer creature. They never last.",
-      "Lay there. The glacier will keep you."
+      "Lay there. The glacier will keep you.",
+      "Merciless lives. You were not merciless.",
+      "The glacier keeps everything. It will keep you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
       "The throne of the rime giants. The air itself is still.",
-      "Two thrones. Only one of them is warm with use."
+      "Two thrones. Only one of them is warm with use.",
+      "Frost creeps across the floor toward your feet."
     ],
     "phases": [
       {
@@ -84,6 +123,10 @@
       {
         "trigger": "partnerDead",
         "text": "Kula does not mourn. She grows colder."
+      },
+      {
+        "trigger": "death",
+        "text": "The ice queen is dead. The throne room cracks."
       }
     ],
     "realmFirstKill": "The Ice Queen has fallen. Tuscaran Glacier is silent."
@@ -92,26 +135,34 @@
     "briefing": [
       "kula and tuscar together, dont split them. tanks on tuscar first, [healers|clerics] watch for mez on kula",
       "when kula hits half she starts throwing cold around. [spread out|dont stack] near the throne",
-      "she pulls people to her throne. if it's you, dont panic, just run back to the group"
+      "she pulls people to her throne. if it's you, dont panic, just run back to the group",
+      "root break and cure mez on kula, she sleeps and roots the whole fight"
     ],
     "aftermathWin": [
       "kula down!! [first time|finally] i saw that throne empty",
-      "gg. the ice queen is dead. somebody grab a screenshot of that crown"
+      "gg. the ice queen is dead. somebody grab a screenshot of that crown",
+      "kula's crown dropped. [who needs it|somebody roll]",
+      "the throne room cracked when she died. [did you hear it|creepy]"
     ],
     "aftermathLoss": [
       "kula froze half the raid at 50%. we need more cure",
-      "[wiped|we wiped] at the thrones. tuscar went down and she just went nuts"
+      "[wiped|we wiped] at the thrones. tuscar went down and she just went nuts",
+      "she pulled the mt to her throne and we lost him",
+      "everyone stacked at 50% and the cold blast did the rest",
+      "kula at half with tuscar dead is just too much damage for our healers"
     ],
     "rumour": [
       "[they say|heard] kula built that whole citadel on a dragon's ribs. [nice seat|cold seat]",
-      "kula calls her own giants useless to your face. [imagine working for her|harsh boss]"
+      "kula calls her own giants useless to your face. [imagine working for her|harsh boss]",
+      "kula froze a whole army of skeletons and made them guards. [issorden|thats the east hall]",
+      "they say kula smiled when tuscar died. [nice wife|ice queen indeed]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Kula",
-    "text": "The coldest of Bergelmir's line, the skalds say. She built on a dead dragon so no summer could reach her, took Tuscar for husband and kept the throne. She believes only the merciless survive. Do not expect her to mourn him if he falls first; expect her to fight harder."
+    "text": "The coldest of Bergelmir's line, the skalds say. She built on a dead dragon so no summer could reach her, took [Tuscar] for husband and kept the throne. Her law is that only the merciless survive. Do not expect her to mourn him if he falls first; expect her to fight harder."
   },
-  "bookPage": "The skald who sang for me at Dellinstad would not finish the song of Kula until I paid him twice. Her brothers, he said, wanted green land and went south to die in it. She wanted a winter that would never end, and she found one lying dead in the ice with ribs like the beams of a mead hall. She built there. When the smith Tuscar came courting with an axe that rang like a bell, she took the axe and then the smith. The skald laughed at that part. I did not, after I saw the throne room.",
+  "bookPage": "From 'The Song of the Coldest Daughter', as a skald of Jordheim sings it, set down by Brother Arnulf. Bergelmir rode out the flood of Ymir's blood in a hollow tree, and his children were many, and they were cold. The eldest went south and were burned. The middle ones went east and were drowned. The youngest, Kula, stayed where the ice was, and walked north until she found a death so large that nothing would ever thaw it, and sat down on it. A smith came to her with an axe. She took the axe. A war came to her with an army of bone. She took the army. The skald says one day someone will come to her with nothing, and she will not know what to take.",
   "chronicle": {
     "win": "{realm} broke the thrones of Tuscaran Glacier: {raidLeader}'s raid slew Queen Kula and King Tuscar in {minutes} minutes.",
     "loss": "Queen Kula still sits her throne. {raidLeader}'s raid from {realm} froze at her feet after {minutes} minutes."

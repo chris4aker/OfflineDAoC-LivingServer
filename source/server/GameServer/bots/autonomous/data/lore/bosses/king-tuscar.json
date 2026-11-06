@@ -4,6 +4,25 @@
   "catalogKey": "tuscaran-glacier/kingtuscar",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "aliases": [
+    "tuscar",
+    "the anvil",
+    "the rime king"
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "queen-kula",
+      "relation": "wife, who carries the axe he forged"
+    },
+    {
+      "id": "icelord-skuf",
+      "relation": "carries a crusher of his making"
+    }
+  ],
   "facts": [
     {
       "text": "King Tuscar is a level-85 hrimthursa with 300,000 health, fought beside Queen Kula as the glacier's final.",
@@ -36,12 +55,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
   ],
-  "story": "Tuscar was a smith before he was a king, and in his heart he is a smith still. The rime giants say he learned his craft at a forge so old that the first spearheads of the gods were quenched in its trough, and that he took away more than the trade: an oath-word of Odin's, burned into the haft of his hammer. Nobody knows if that is true. What is known is that the weapons of Tuscaran are his work, and that he wanted a queen who would carry the best of them. He gave Kula her axe and she gave him a crown that is mostly a courtesy. He minds less than the skalds think. In a fight he is all forge-heat in a cold hall. Cut him to half and the old oath answers: he calls on Odin, of all names, and the hammer-blows come down as Mjolnir's Fury and Thor's Might. Kill Kula before him and he forgets the forge entirely and fights like a widower.",
-  "legend": "Raid leaders call him the anvil: he looks like any other hrimthursa until you are standing in front of him. Tanks rotate on him because his bleed stacks up. Stay out of the ring around him when he hits half, because the hammers land on everyone close. Some say kill him first so Kula's rage comes later; some say the reverse. Nobody says split them.",
+  "story": "Tuscar was a smith before he was a king, and in his heart he is a smith still. The rime giants say he learned his craft at a forge so old that the first spearheads of the gods were quenched in its trough, in the days when giants and gods still traded, before the wall around Asgard was built and paid for with a trick. He took away more than the trade. He took an oath-word of Odin's, they say, burned into the haft of his hammer while the god's back was turned, and he has carried it ever since. Nobody knows if that is true. What is known is that he calls on Odin when he bleeds, of all the names a giant might call, and something answers.\n\nEvery weapon of Tuscaran is his work: the axes of the bladehands, the crushers of the icelords, the hammers of the throne guard. When he heard that the coldest daughter of Bergelmir had raised a citadel on a dragon's bones, he made the finest axe of his life and carried it across the island to her. She took it. Then she took him, and gave him a throne beside hers and a crown he was told to wear at feasts. He minds less than the skalds think. He has his forge in the back of the throne hall, and he has a queen who carries his best work into every fight, and he tells anyone who reaches the thrones that his own weapon is almost as good.\n\nIn a fight he is all forge-heat in a cold hall. His blows open wounds that keep bleeding, the scar of the gods, he calls it. Cut him to half and the old oath answers: he roars Odin's name, his strength rises, and the blows come down around him as Mjolnir's Fury and Thor's Might, hammer-strokes and thunder on everyone close enough to be hit by a smith. Kill Kula before him and he forgets the forge entirely. He screams for her, and gathers his strength, and fights like a widower who has nothing left to make.\n\nThe iarn dwarves, who know something about smiths, say the saddest thing in the glacier is not the frozen army or the last cell. It is the forge behind the thrones, where the fire is kept lit every day for a king who is only ever asked to make weapons.",
+  "legend": "Raid leaders call him the anvil: he looks like any other hrimthursa until you are standing in front of him. A visitor in 2003 said he didn't look like a king at all, just a big giant, and then found out. Tanks rotate on him because his bleed stacks up. When he hits half, the hammer and thunder blasts land around him on everyone close, so melee step out for a beat, then back in. Some say kill him first so Kula's rage comes later; some say kill Kula first so his bleeds stop sooner. Nobody says split them. His weapons drop for every class and every guild wants one.",
   "yells": {
     "aggro": [
       "You came for my steel? Then have it, edge first!",
-      "Kula carries my best work. I carry the second best. You will feel both."
+      "Kula carries my best work. I carry the second best. You will feel both.",
+      "My steel against yours. Mine was made by a master."
     ],
     "phases": [
       {
@@ -51,19 +71,27 @@
       {
         "trigger": "partnerDead",
         "text": "KULA! You will burn for this in a cold forge!"
+      },
+      {
+        "trigger": "health<=80",
+        "text": "That blade? Who made that? A dwarf? It shows."
       }
     ],
     "death": [
-      "My forge... let it go out..."
+      "My forge... let it go out...",
+      "Kula... keep the axe... sharp..."
     ],
     "slay": [
       "Bent and broken. Bad steel.",
-      "Another blade for the slag pile."
+      "Another blade for the slag pile.",
+      "Bad temper in the metal. It broke.",
+      "Flawed. All of you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Hammer-marks score the ice around the second throne."
+      "Hammer-marks score the ice around the second throne.",
+      "Somewhere behind the thrones, a forge burns."
     ],
     "phases": [
       {
@@ -73,6 +101,10 @@
       {
         "trigger": "partnerDead",
         "text": "King Tuscar screams for his queen!"
+      },
+      {
+        "trigger": "death",
+        "text": "King Tuscar falls. His forge-fire dies with him."
       }
     ],
     "realmFirstKill": "Tuscar's forge is cold. The rime king has fallen."
@@ -81,26 +113,34 @@
     "briefing": [
       "tuscar first. he bleeds the tanks so [rotate|swap] every bleed stack",
       "at half he does the hammer thing around him, melee step out when you see it",
-      "if kula drops first tuscar goes mental. be ready"
+      "if kula drops first tuscar goes mental. be ready",
+      "tuscar's bleed stacks, tank swap every couple stacks"
     ],
     "aftermathWin": [
       "tuscar down, anyone get the sword? [grats|gz] whoever",
-      "the anvil broke! [gg all|nice work raid]"
+      "the anvil broke! [gg all|nice work raid]",
+      "tuscar's sword dropped!! [mine|roll for it]",
+      "he really did shout odin's name at half. [weird giant|what]"
     ],
     "aftermathLoss": [
       "his hammers at half wiped the whole melee train",
-      "we split them by accident. never again"
+      "we split them by accident. never again",
+      "the tank swaps were late, bleed killed both mts",
+      "we pulled kula into the melee train at his 50%. [bad idea|never again]",
+      "the hammers at half got the whole melee train"
     ],
     "rumour": [
       "heard tuscar made every weapon in that glacier. kula's axe too",
-      "funny thing, tuscar shouts odin's name when he gets hurt. a giant. odin. go figure"
+      "funny thing, tuscar shouts odin's name when he gets hurt. a giant. odin. go figure",
+      "tuscar keeps a forge lit behind the thrones. [the dwarves say|my smith friend says] its the saddest thing up there",
+      "they say tuscar stole a word from odin and burned it on his hammer"
     ]
   },
   "loremasterTopic": {
     "keyword": "Tuscar",
     "text": "A smith first and a king second. He forged Kula's axe and boasts of it still. The rime giants say an oath-word of Odin's is burned into his hammer, and that it answers him when he bleeds. Whether that is true, he calls the All-Father's name at half his strength, and the hammers come down."
   },
-  "bookPage": "",
+  "bookPage": "From the workbook of Hroald, weaponsmith of Bjarkan. I was shown, by a Valkyn who had been inside, a broken axe-head of hrimthursa make. It was ice and it was steel, both at once, and the edge would not dull on my stone. I have made weapons for forty years and I do not know how it was done. The Valkyn said the king of the glacier made it, and that he makes them all, and that he is happiest at his forge and least happy on his throne. I believe it. A smith who could make that edge would not want to be bothered with anything as dull as a crown.",
   "chronicle": {
     "win": "King Tuscar's forge went cold under {raidLeader} of {realm}, after {minutes} minutes at the thrones.",
     "loss": "King Tuscar's hammers rang over {raidLeader}'s fallen raid from {realm} after {minutes} minutes."

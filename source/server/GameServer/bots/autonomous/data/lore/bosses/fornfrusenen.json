@@ -4,6 +4,21 @@
   "catalogKey": "tuscaran-glacier/fornfrusenen",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "aliases": [
+    "the long-frozen one",
+    "the sleeper in the wall",
+    "the wall"
+  ],
+  "era": "mid-era-ice",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "queen-kula",
+      "relation": "older than her citadel; the giants cut around him"
+    }
+  ],
   "facts": [
     {
       "text": "Fornfrusenen is a level-75 being with 100,000 health that wakes from the ice walls; he takes no damage from attackers further than 200 from him.",
@@ -36,11 +51,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
   ],
-  "story": "Fornfrusenen is older than the citadel. When Kula's giants cut their first tunnels they found him already in the wall, a long shape asleep in clear ice, and they cut around him and left him there, because even hrimthursa have sense. His name only means the long-frozen one. He does not mind; he has forgotten his own. He has not forgotten anyone else's. Wake him and he knows your name, and tells you so, and promises you a place beside him in the wall. He cannot be hurt from a distance: the cold around him swallows arrows and spells alike, and only a blade close enough to feel his breath will bite. His shards are the same. When he dies they melt, and so, the hrimthursa hope, does the promise.",
-  "legend": "Fornfrusenen is a melee fight, full stop. Casters and archers do nothing past 200. Bring every tank and every melee you have, heal them hard, and kill the shards up close too. More Midgard raids die here than anywhere else in the glacier.",
+  "story": "Fornfrusenen is older than the citadel. When Kula's giants cut their first tunnels through the north side of the glacier they found him already in the wall, a long shape asleep in clear ice, with a face that was not a giant's face and not a dragon's and not a man's. The tunnel-cutters would not work near him. They told the overseer something in the ice was watching them, and he laughed, and the next morning he did not laugh. So they cut around him instead, a great hollow in the ice, and left him there, because even hrimthursa have sense. The children of the glacier are told that if they shout in that hall the sleeper will learn their names. They do not shout there.\n\nHis name only means the long-frozen one. He does not mind; he has forgotten his own. He has not forgotten anyone else's. He knows the names of everyone who has walked past his wall in all the centuries he has been asleep, and when he is woken he knows yours. He tells you so, with a hiss and a laugh, as he steps out of the ice: look around you, he says, because this is where you will be entombed for all eternity. The old icesplitter who told me about him said he was older than the dragon under the citadel. Then he said he had said too much.\n\nHe cannot be hurt from a distance. The cold around him is so old and so deep that it swallows arrows and spells alike before they reach him; only a blade close enough to feel his breath will bite. The shards he raises from the walls are pieces of the same cold, two or three at a time, and they are the same: stand close, or do nothing. The frost of the shards shocks whoever is near them. Midgard's raids die here more than anywhere else in the glacier, the casters standing helpless at the back while the warriors try to do the work of a whole raid.\n\nWhen he dies, the frosty glow in his eyes blinks out, and his shape fades slowly into the ice, and the shards evaporate as if they had never been. The hrimthursa hope that the promise goes with them. They are not sure. The wall is empty after, they say, but it is not smooth. It still has the shape of him.",
+  "legend": "Fornfrusenen is a melee fight, full stop. Nothing hurts him from more than a couple of steps away: casters and archers do nothing past 200. Bring every tank and every melee you have, heal them hard, and kill the shards up close too. Casters buff, heal and rez. Don't drag him out of his hollow or he resets, and keep the fight going. More Midgard raids die here than anywhere else in the glacier; the Living Server's own raid wiped here. Nickname: the wall. Never shout in his hall, the old hands say. He learns your name. His shards evaporate when he dies, so don't waste time on the last ones.",
   "yells": {
     "aggro": [
-      "I know your name. Look around you. This is where you will lie, forever."
+      "I know your name. Look around you. This is where you will lie, forever.",
+      "Look around you. Within this ice you will lie forever.",
+      "Ahh. So many names. I will keep them all."
     ],
     "phases": [
       {
@@ -50,13 +67,20 @@
       {
         "trigger": "health<=50",
         "text": "Closer. Only the close ones matter."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The dark of the ice is calling me. I will take you with me."
       }
     ],
     "death": [
-      "Back... into the dark... of the ice..."
+      "Back... into the dark... of the ice...",
+      "The ice... remembers... your names..."
     ],
     "slay": [
-      "Into the wall with you. I will keep your name."
+      "Into the wall with you. I will keep your name.",
+      "Another name for the wall.",
+      "Sleep. I will wake you, some day."
     ]
   },
   "atmosphere": {
@@ -68,6 +92,10 @@
       {
         "trigger": "addsSpawn",
         "text": "Shards of living ice break from the walls!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The glow in Fornfrusenen's eyes flickers."
       }
     ],
     "realmFirstKill": "Fornfrusenen fades into the ice. The wall is empty."
@@ -75,25 +103,34 @@
   "botLines": {
     "briefing": [
       "fornfrusenen only takes melee from up close. casters on heals and buffs, [archers|hunters] go melee or sit",
-      "kill the shards up close too, they're the same"
+      "kill the shards up close too, they're the same",
+      "dont drag fornfrusenen out of the hollow, he resets",
+      "casters: buffs, heals, rez. dont even try to nuke him"
     ],
     "aftermathWin": [
-      "fornfrusenen down, that's the one that keeps wiping us. [huge|gg]"
+      "fornfrusenen down, that's the one that keeps wiping us. [huge|gg]",
+      "did you see his shape stay in the wall after? [creepy|chills]",
+      "fornfrusenen down, the rest is downhill",
+      "the wall is down!! [best melee in midgard|gg melee]"
     ],
     "aftermathLoss": [
       "wiped at fornfrusenen again, not enough melee",
-      "the frozen thing in the wall said my name. creepy"
+      "the frozen thing in the wall said my name. creepy",
+      "not enough melee, again",
+      "the shards killed the healers while the tanks were on him"
     ],
     "rumour": [
       "fornfrusenen was in the ice before kula came, they say",
-      "fornfrusenen knows your name when you wake him. [i'm not waking him|no thanks]"
+      "fornfrusenen knows your name when you wake him. [i'm not waking him|no thanks]",
+      "the giants cut around fornfrusenen because the tunnel cutters were too scared",
+      "[an old icesplitter said|they say] fornfrusenen is older than the dragon under the glacier"
     ]
   },
   "loremasterTopic": {
     "keyword": "Fornfrusenen",
     "text": "The long-frozen one. He was in the wall before the citadel was cut. He knows the name of whoever wakes him, and only a blade close enough to feel his breath will bite him."
   },
-  "bookPage": "The tunnel-cutters would not work the north wall. They told the overseer something in it watched them, and he laughed, and the next morning he did not laugh. They cut around it instead, a great hollow in the ice, and left it sleeping. Hrimthursa children are told that if they shout in that hall it will learn their names. Hrimthursa children do not shout there. I asked one of the old icesplitters what it was. He said it was older than the dragon. Then he said he had said too much.",
+  "bookPage": "The tunnel-cutters would not work the north wall. They told the overseer something in it watched them, and he laughed, and the next morning he did not laugh. They cut around it instead, a great hollow in the ice, and left it sleeping. Hrimthursa children are told that if they shout in that hall it will learn their names. Hrimthursa children do not shout there. I asked one of the old icesplitters what it was. He said it was older than the dragon. Then he said he had said too much, and would not speak to me again, and the next time I came to Dellinstad he had gone back up to the glacier.",
   "chronicle": {
     "win": "{raidLeader} of {realm} put Fornfrusenen back into the ice for good in {minutes} minutes.",
     "loss": "Fornfrusenen learned the names of {raidLeader}'s raid from {realm} after {minutes} minutes."

@@ -4,6 +4,16 @@
   "catalogKey": "tuscaran-glacier/vagn",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-nokkvi",
+      "relation": "his inseparable partner"
+    }
+  ],
   "facts": [
     {
       "text": "Vagn is a level-78 Council member with 100,000 health, linked to Council Nokkvi: pull one and both come.",
@@ -26,56 +36,82 @@
       "source": "Old Norse glossary, to verify"
     }
   ],
-  "story": "Vagn and Nokkvi are named for a wagon and a boat, because in the Council's early days they carried everything between them: the votes, the gossip, the grudges. They still go everywhere together. Vagn is the talker, with a frost shock to end an argument; Nokkvi is the one who listens and does not fall down. The Council says you cannot move one without the other, and the Council has rarely been more right. They argued for peace together and they will die together, and neither would have it any other way.",
-  "legend": "Vagn and Nokkvi come as a pair and have huge resists. One group kites or holds Vagn while the raid works Nokkvi, or the reverse. Don't stand casters in Vagn's frost shock range. When one dies the other grieves loudly and hits harder for it, so have the second kill planned before the first one drops.",
+  "story": "Vagn and Nokkvi are named for a wagon and a boat, because in the Council's early days they carried everything between them: the votes, the gossip, the grudges, the queen's wishes down to the outer seats and the outer seats' complaints back up to the ribs. A wagon on the ice and a boat on the water, the joke went; between them, nothing in Tuscaran went undelivered. They still go everywhere together. They sit side by side in the outer council hall, their seats worn alike, and where one is seen the other is never far.\n\nVagn is the talker. He has opinions about everything and shares them freely: about the Icelords' manners, about Otrygg's kennel, about Hord's endless mending, about the queen's choice of husband, which he mentions only when Tuscar is far away. He has a frost shock to end an argument with, a bolt of cold that hits for more than most giants' fists, and he uses it on whoever is casting, because in his view a caster is someone who argues from a distance.\n\nNokkvi is the one who listens and does not fall down. The Council says you cannot move one without the other, and in this the Council has rarely been more right. Pull one and both come. They argued for peace together for a hundred years, and they will die together, and neither would have it any other way. When one falls, the other grieves loudly and hits harder for it. Vagn's grief, as you would expect, is the louder: he wants to know who will carry the vote now.",
+  "legend": "Vagn and Nokkvi come as a pair and have huge resists. One group kites or holds Vagn while the raid works Nokkvi, or the reverse. Don't stand casters in Vagn's frost shock range; he picks casters. When one dies the other grieves loudly and hits harder for it, so have the second kill planned before the first one drops. Both reset if dragged past their tether or left out of combat for half a minute. Vagn likes to talk; the council's pair are the cleanest test of whether a raid can split itself. Interrupt his frost shocks if you can.",
   "yells": {
     "aggro": [
-      "Nokkvi, they have come to the Council uninvited."
+      "Nokkvi, they have come to the Council uninvited.",
+      "Order! Order in the outer hall!",
+      "You argue from a distance? Then so do I."
     ],
     "phases": [
       {
         "trigger": "partnerDead",
         "text": "Nokkvi! Who will carry the vote now?"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Motion to end this. All in favour? I am."
       }
     ],
     "death": [
-      "The wagon... stops here..."
+      "The wagon... stops here...",
+      "Nokkvi... carry it... on your own..."
     ],
     "slay": [
-      "Motion carried."
+      "Motion carried.",
+      "Silence from the back.",
+      "No further questions."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Two council seats stand side by side, worn alike."
+      "Two council seats stand side by side, worn alike.",
+      "A giant is talking. Another is listening."
     ],
     "phases": [
       {
         "trigger": "partnerDead",
         "text": "Vagn wails for Nokkvi!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Vagn's frost shock lashes the casters!"
       }
     ],
     "realmFirstKill": "Councils Vagn and Nokkvi have fallen together."
   },
   "botLines": {
     "briefing": [
-      "vagn and nokkvi, pair pull. one group holds vagn away, [rest|everyone else] on nokkvi"
+      "vagn and nokkvi, pair pull. one group holds vagn away, [rest|everyone else] on nokkvi",
+      "casters out of vagn's range, he hunts casters",
+      "vagn and nokkvi reset if dragged or left alone 30 sec",
+      "one group on vagn, rest on nokkvi"
     ],
     "aftermathWin": [
-      "wagon and boat both sunk lol"
+      "wagon and boat both sunk lol",
+      "vagn finally shut up lol",
+      "council pair down, boots and staffs dropped",
+      "vagn's mantle dropped"
     ],
     "aftermathLoss": [
-      "vagn's frost shock kept killing casters while we were on nokkvi"
+      "vagn's frost shock kept killing casters while we were on nokkvi",
+      "vagn's frost shocks chewed through the casters",
+      "the kiting group lost vagn and he came back to the raid",
+      "nokkvi died, vagn went mad and hit for double"
     ],
     "rumour": [
-      "[heard|someone said] vagn means wagon and nokkvi means boat. [weird names for giants|giants are weird]"
+      "[heard|someone said] vagn means wagon and nokkvi means boat. [weird names for giants|giants are weird]",
+      "vagn only talks about kula's choice of husband when tuscar is far away",
+      "vagn and nokkvi carried every vote between them for a century",
+      "vagn and nokkvi: a wagon and a boat. [the giants think its funny|its a joke apparently]"
     ]
   },
   "loremasterTopic": {
     "keyword": "Vagn",
     "text": "A wagon and a boat, the Council named him and [Nokkvi], because they carried everything between them. They still go everywhere together. Vagn talks; Nokkvi does not fall down."
   },
-  "bookPage": "",
+  "bookPage": "From the sculptor's account of the Council. Vagn spoke on every question. On the morvalt: a nuisance. On the dwarves: a smaller nuisance. On the Icelords: a large nuisance with good manners when it suits them. On the queen's husband: nothing, while the king was in earshot, and a great deal otherwise. Nokkvi spoke on no question at all. When the vote was called, Vagn raised his hand, and Nokkvi raised his, and that was two votes for whatever Vagn had said. The sculptor said he carved them together, as one block, and that it was the only carving of his the Council ever liked.",
   "chronicle": {
     "win": "{raidLeader} of {realm} unseated Councils Vagn and Nokkvi in {minutes} minutes.",
     "loss": "Councils Vagn and Nokkvi turned back {raidLeader}'s raid from {realm} after {minutes} minutes."

@@ -4,6 +4,20 @@
   "catalogKey": "tuscaran-glacier/hord",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-ozur",
+      "relation": "fellow councillor of the outer seats"
+    },
+    {
+      "id": "council-otrygg",
+      "relation": "fellow councillor of the outer seats"
+    }
+  ],
   "facts": [
     {
       "text": "Hord is a level-77 Council member with 100,000 health who heals himself with Minor Emendation.",
@@ -16,56 +30,82 @@
       "source": "https://camelot.allakhazam.com/db/mob/4688"
     }
   ],
-  "story": "Hord was the Council's healer when the Council still believed it would never need one. He mended the cracked hands of the sculptors and the frostbitten feet of the icesplitters, and he keeps doing it now, on himself, in the middle of the fight. The heal is small. It is enough to undo a careless raid, which he thinks is the point. The sculptors still leave him gifts of carved bone on the seat beside his own, and he has never once refused one.",
-  "legend": "Hord heals himself. Interrupt him, keep the damage steady, and don't let the melee wander off to other pulls while he is up. A raid that stops hitting him for half a minute gives back everything it took. The old guides put him early in the climb for exactly that reason: he teaches a raid to keep its focus.",
+  "story": "Hord was the Council's healer in the years when the Council still believed it would never need one. The citadel was young then, and the giants who cut it got hurt in the ordinary ways: hands split by the cold, feet frozen in the deep tunnels, ribs cracked by falling ice. Hord mended them. He had a giant's hands and a dwarf's patience, and the sculptors and icesplitters loved him for it. They still leave him gifts of carved bone on the seat beside his own, and he has never once refused one.\n\nWhen the peace held, Hord had little to do on the Council but listen, and he listened mostly to Birghir. He believed what Birghir believed, that the island would forget the glacier if the glacier let it. He had a healer's reason for believing it: he had seen what the Icelords' little wars on the island cost, one cracked skull at a time.\n\nNow he mends himself, in the middle of the fight, a little at a time. The mending is small, a minor emendation, he calls it with a healer's dry humour, and it comes again and again. It is enough to undo a careless raid, which he thinks is the point. He is not a warrior. He fights the way a healer fights, by refusing to let the wound win, and a raid that stops hitting him for half a minute gives back everything it took.\n\nWhen he dies, they say, he looks at his own hands, as if surprised they could not mend this one too.",
+  "legend": "Hord heals himself. Interrupt him, keep the damage steady, and don't let the melee wander off to other pulls while he is up. A raid that stops hitting him for half a minute gives back everything it took. The old guides put him early in the climb for exactly that reason: he teaches a raid to keep its focus. He's social, so clear around him first. Good belts and tinctures drop. Pull him away from Ozur's seat; the two are close. Stuns and interrupts are worth more than raw damage on him; a healer who is never allowed to finish a heal is only a giant.",
   "yells": {
     "aggro": [
-      "I mended your kind once. I remember the way bones knit."
+      "I mended your kind once. I remember the way bones knit.",
+      "Let me see that wound. Ah. You meant it for me.",
+      "I am a healer. I will not let you win."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "A small mending. Again. And again."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Again. And again. The wound does not win."
       }
     ],
     "death": [
-      "No more... mending..."
+      "No more... mending...",
+      "My hands... could not mend this..."
     ],
     "slay": [
-      "Beyond mending."
+      "Beyond mending.",
+      "I could have saved that one. Once.",
+      "Rest. I will not mend you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Old poultices and bone-needles lie by a seat of ice."
+      "Old poultices and bone-needles lie by a seat of ice.",
+      "Carved bone gifts are heaped beside a healer's seat."
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "Council Hord knits his own wounds closed!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Hord keeps mending. Keep hitting!"
       }
     ],
     "realmFirstKill": "Council Hord is beyond mending."
   },
   "botLines": {
     "briefing": [
-      "hord self heals. [interrupt|stun] him and keep dps on"
+      "hord self heals. [interrupt|stun] him and keep dps on",
+      "hord: interrupt the heals, steady dps, no wandering off",
+      "clear the social adds around hord first",
+      "hord first, stuns on cooldown"
     ],
     "aftermathWin": [
-      "hord down, good interrupts"
+      "hord down, good interrupts",
+      "hord down, good interrupts everyone",
+      "the healer giant is dead. felt bad tbh",
+      "hord's braided belt dropped"
     ],
     "aftermathLoss": [
-      "hord kept healing up, we ran out of power"
+      "hord kept healing up, we ran out of power",
+      "we stopped dps for the adds and hord healed back to full",
+      "no interrupts, no kill",
+      "we pulled hord and ozur together"
     ],
     "rumour": [
-      "heard the council has its own healer. [figures|of course it does]"
+      "heard the council has its own healer. [figures|of course it does]",
+      "the sculptors still leave carved bone gifts on hord's seat",
+      "hord mended the giants who cut the glacier. [nice guy|for a giant]",
+      "hord put salve on a cast-out sculptor's hands before they sent him away"
     ]
   },
   "loremasterTopic": {
     "keyword": "Hord",
     "text": "The Council's healer, from the years when it thought it needed none. He mends himself in the middle of a fight, a little at a time."
   },
-  "bookPage": "",
+  "bookPage": "From the sculptor's account, the last part. When they cast me out, he said, it was Hord who came to the tunnel mouth to see me go. He looked at my hands, which were cracked from the cold, and he put salve on them without asking, and he said that a carver needs his hands even in exile. Then he went back up to the ribs. I asked the sculptor what he would carve if he could carve one more thing in the glacier. He said: Hord's hands. Not his face. His hands. I have been told I may not.",
   "chronicle": {
     "win": "Council Hord's mending ran out under {raidLeader} of {realm} after {minutes} minutes.",
     "loss": "Council Hord mended faster than {raidLeader}'s raid from {realm} could hurt him, for {minutes} minutes."

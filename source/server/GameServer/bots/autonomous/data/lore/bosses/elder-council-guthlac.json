@@ -4,6 +4,16 @@
   "catalogKey": "tuscaran-glacier/guthlac",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "elder-council-birghir",
+      "relation": "his partner, whose votes he always seconded"
+    }
+  ],
   "facts": [
     {
       "text": "Guthlac is a level-80 Council elder with 100,000 health, linked to Birghir.",
@@ -26,11 +36,13 @@
       "source": "Old English glossary, to verify (Bosworth-Toller)"
     }
   ],
-  "story": "Guthlac is the Council's craftsman of cold. While Birghir talked, Guthlac listened to the ice, and he learned how it breaks. The spikes he raises are not weapons in the hrimthursa way of thinking; they are lessons, frozen too fast, holding more cold than ice should hold. Left alone they crack, and when they crack the whole chamber learns at once. He never wanted to teach that lesson to anyone. He agreed with Birghir that the glacier should be left in peace, though for a quieter reason: he knew exactly what the glacier could do to the island if anyone asked it to. Now someone has. He roots the brave, blinds the quick and sets his spikes among you, and he does not stop until Birghir does.",
-  "legend": "When Guthlac's spike appears, everyone near it moves, or someone kills it, now. It goes off across the whole room. The old guides say the elders were the real test of the glacier, not the throne: a raid that cannot handle the spikes will never see Kula.",
+  "story": "Guthlac is the Council's craftsman of cold. While Birghir talked, Guthlac listened, not to the giants but to the ice. He has sat on the same rib for a century with his ear against the glacier, hearing it shift and settle, learning where it is strong and where it lies, and above all learning how it breaks. The hrimthursa sculptors come to him to ask where to cut. The icesplitters come to ask where not to. He tells them both, in very few words, and goes back to listening.\n\nHe agreed with Birghir that the glacier should be left in peace, though for a quieter reason. Birghir believed the island would forget the giants. Guthlac knew exactly what the glacier could do to the island if anyone asked it to, and he did not want anyone to ask. Every vote Birghir called for peace, Guthlac seconded. The other councillors thought he had no opinions. He had one: that some things should stay frozen.\n\nNow someone has asked. When outsiders reach the ribs, Guthlac raises his spikes: blue stelae of ice that rise out of the chamber floor, beside a fighter or near the healers. They are not weapons in the hrimthursa way of thinking. They are lessons, ice frozen too fast, holding more cold than ice should hold, and they cannot hold it for long. Left alone a spike cracks, and when it cracks the whole chamber learns at once: the blast fills every corner of the council room. Kill it, or get as far from it as the room allows.\n\nBetween spikes he roots the brave where they stand, curses the quick with blindness that drags at their hands and feet, and casts a rune of mazing that wounds and slows. He does not stop until Birghir does. When Birghir falls, the old giants say, Guthlac stops listening to the ice for the first time in a hundred years, and simply lets it break.",
+  "legend": "When Guthlac's spike appears, everyone near it moves, or someone kills it, now. It goes off across the whole room for a lot of damage, and a raid that ignores it once does not get a second try. Assign an add killer or two just for spikes. Root-break or purge helps, because he roots and then spikes. The old guides say the elders are where you find out whether the raid listens to its leader. Fight them on the ribs, don't pull them out, and don't leave them out of combat or they reset. The spike is the whole fight: everything else he does only sets it up.",
   "yells": {
     "aggro": [
-      "You should not have made me remember how ice breaks."
+      "You should not have made me remember how ice breaks.",
+      "Listen. Can you hear it? No. You never listen.",
+      "Birghir spoke for peace. I listened for this."
     ],
     "phases": [
       {
@@ -40,47 +52,70 @@
       {
         "trigger": "partnerDead",
         "text": "Birghir! Then let the whole chamber break!"
+      },
+      {
+        "trigger": "addsDead",
+        "text": "You broke my lesson. There are others."
       }
     ],
     "death": [
-      "The spikes will melt... in a thousand years..."
+      "The spikes will melt... in a thousand years...",
+      "Let it... stay frozen..."
     ],
     "slay": [
-      "Frozen through. It is quick, at least."
+      "Frozen through. It is quick, at least.",
+      "The ice was louder than you.",
+      "A lesson learned. Too late."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Spikes of blue ice stand in the chamber like stelae."
+      "Spikes of blue ice stand in the chamber like stelae.",
+      "The floor hums under your feet. The ice is listening."
     ],
     "phases": [
       {
         "trigger": "addsSpawn",
         "text": "An ice spike hums. It will not hold for long!"
+      },
+      {
+        "trigger": "death",
+        "text": "Guthlac falls. The spikes go quiet."
       }
     ],
     "realmFirstKill": "Guthlac's spikes stand silent. The council has fallen."
   },
   "botLines": {
     "briefing": [
-      "guthlac drops ice spikes. when one spawns [kill it|get away from it] NOW, it hits the whole room",
-      "dont group up under guthlac, his root and the spike combo is how raids die there"
+      "guthlac drops ice spikes. when one spawns [kill it|get away from it] now, it hits the whole room",
+      "dont group up under guthlac, his root and the spike combo is how raids die there",
+      "two people on spike duty for guthlac, nothing else",
+      "guthlac roots then spikes. purge ready"
     ],
     "aftermathWin": [
-      "nobody stood on a spike this time. [proud of you all|miracle]"
+      "nobody stood on a spike this time. [proud of you all|miracle]",
+      "guthlac down, the spike team was perfect",
+      "elders done and nobody stood on a spike",
+      "spike team, best team"
     ],
     "aftermathLoss": [
-      "spike went off and took 30 people. [ouch|gg]"
+      "spike went off and took 30 people. [ouch|gg]",
+      "the spike team got rooted",
+      "rooted next to a spike. gg",
+      "somebody stood next to the spike to loot. [why|every time]"
     ],
     "rumour": [
-      "heard guthlac's spikes go off for like 2500. [no thanks|i'll stand at the back]"
+      "heard guthlac's spikes go off for like 2500. [no thanks|i'll stand at the back]",
+      "guthlac listened to the ice for a hundred years. thats how he knows where it breaks",
+      "[heard|they say] guthlac never said a word on the council. just voted with birghir",
+      "the giants ask guthlac where to cut tunnels. he listens to the ice and tells them"
     ]
   },
   "loremasterTopic": {
     "keyword": "Guthlac",
     "text": "The elder who listened to the ice and learned how it breaks. His spikes hold more cold than ice should; left alone, they crack, and the whole chamber learns at once. He sat beside [Birghir] for a century and dies beside him."
   },
-  "bookPage": "",
+  "bookPage": "Told to me by an icesplitter of the glacier, a giant who had come down to Dellinstad to trade for salt, which surprised everyone. Before we cut a new tunnel, he said, we go to the elder Guthlac and ask where. He puts his ear to the rib he sits on and listens for a long time. Then he says: there. Or: not there. Once he said: nowhere, not ever, and we cut nowhere for ten years. I asked what he had heard. The icesplitter said Guthlac told him only one thing, and he did not understand it: that the ice under the citadel was not asleep, only holding its breath.",
   "chronicle": {
     "win": "Guthlac's spikes fell silent before {raidLeader} and {realm}, after {minutes} minutes on the ribs.",
     "loss": "An ice spike broke {raidLeader}'s raid from {realm} in the council chamber after {minutes} minutes."

@@ -4,6 +4,20 @@
   "catalogKey": "tuscaran-glacier/skuf",
   "locationId": "tuscaran-glacier",
   "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "icelord-steinvor",
+      "relation": "the hammer to his anvil"
+    },
+    {
+      "id": "king-tuscar",
+      "relation": "forged his cave crusher"
+    }
+  ],
   "facts": [
     {
       "text": "Skuf is a level-80 icelord with 100,000 health, linked to Icelord Steinvor; pull one and both come.",
@@ -16,56 +30,82 @@
       "source": "https://camelot.allakhazam.com/db/mob/6065"
     }
   ],
-  "story": "Skuf is the anvil to Steinvor's hammer. He says little and needs to say less. Where Steinvor pins one man with a pillar of frost, Skuf stands in front of the rest and takes the blows meant for his brother icelord, and gives them back with a crusher the size of a door. The other hrimthursa say he has never once been moved from where he chose to stand. They also say he was the only icelord who sat with the Council at its feasts, and that he never spoke there either.",
-  "legend": "Skuf has no tricks, just a lot of health and a big crusher. Tank him away from Steinvor's pillar target and keep the melee on one icelord at a time. Kill whichever your raid can burn faster. Raid leaders who forget him because he is quiet learn about the crusher the hard way.",
+  "story": "Skuf is the anvil to Steinvor's hammer. He says little and needs to say less. Where Steinvor picks one fighter and pins him with a pillar of frost, Skuf stands in front of the rest and takes the blows meant for his brother icelord, and gives them back with a cave crusher the size of a door, forged for him by King Tuscar himself in the days when Tuscar still made things for the asking.\n\nThe other hrimthursa say Skuf has never once been moved from where he chose to stand. They mean it literally. When the morvalt came over the rim in the early days and a war-band of them broke into the middle tunnel, Skuf stood in the mouth of it and the morvalt broke around him like a stream around a stone. When the Council argued and the icelords shouted, Skuf stood at the back of the hall and did not join in. He was the only icelord who sat with the Council at its feasts, they say, and he never spoke there either. The councillors found him restful.\n\nHe has no tricks. He does not need them. He has more strength than any giant of the middle tunnels and more patience than any but Steinvor, and he spends them both on a single idea: that no one passes. When Steinvor falls, Skuf bellows for him once, the only sound most raiders ever hear him make, and then goes back to being immovable, only angrier.\n\nWhen Skuf dies at last, the hrimthursa say, he says one word, and the word is that he has been moved. It is said with surprise.",
+  "legend": "Skuf has no tricks, just a lot of health and a big crusher. Tank him away from Steinvor's pillar target and keep the melee on one icelord at a time. Kill whichever your raid can burn faster. Raid leaders who forget him because he is quiet learn about the crusher the hard way. He's linked with Steinvor and both reset if dragged. Good weapon drops, and a hauberk. Some raids put a second tank team on him from the start so the first team can deal with Steinvor's pillars. He drops Skuf's Cave Crusher, one of the best two-handers on Aegir.",
   "yells": {
     "aggro": [
-      "Stand. I will not move."
+      "Stand. I will not move.",
+      "...",
+      "No one passes."
     ],
     "phases": [
       {
         "trigger": "partnerDead",
         "text": "Steinvor! Then I am hammer and anvil both."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Still here."
       }
     ],
     "death": [
-      "Moved... at last..."
+      "Moved... at last...",
+      "...not... here..."
     ],
     "slay": [
-      "Flattened."
+      "Flattened.",
+      "...",
+      "Stand aside. You cannot. Ah."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A giant stands here as if he grew from the floor."
+      "A giant stands here as if he grew from the floor.",
+      "An icelord stands as if he grew from the floor."
     ],
     "phases": [
       {
         "trigger": "partnerDead",
         "text": "Skuf bellows for his brother icelord!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Skuf has not moved one step."
       }
     ],
     "realmFirstKill": "Icelord Skuf has been moved, at last. He is dead."
   },
   "botLines": {
     "briefing": [
-      "skuf is just a big hitter, tank him off the steinvor pillar"
+      "skuf is just a big hitter, tank him off the steinvor pillar",
+      "skuf: just tank him, theres no trick, he just hits hard",
+      "skuf and steinvor linked, dont pull one alone",
+      "second tank team on skuf from the pull"
     ],
     "aftermathWin": [
-      "skuf didnt move till he died lol"
+      "skuf didnt move till he died lol",
+      "skuf finally moved. by dying [lol|gg]",
+      "cave crusher dropped!",
+      "skuf's hauberk dropped"
     ],
     "aftermathLoss": [
-      "skuf flattened our tanks while we chased the pillar guy"
+      "skuf flattened our tanks while we chased the pillar guy",
+      "we ignored skuf to chase pillars and he flattened the tanks",
+      "skuf just wont die. [so much hp|ugh]",
+      "the second tank team was too small for skuf"
     ],
     "rumour": [
-      "they say skuf never moves from his spot. [believe it|can confirm]"
+      "they say skuf never moves from his spot. [believe it|can confirm]",
+      "skuf sat with the council at feasts and never said a word. they found him restful",
+      "tuscar made skuf's crusher back when tuscar made things for the asking",
+      "skuf held the middle tunnel alone against forty morvalt, the valkyn say"
     ]
   },
   "loremasterTopic": {
     "keyword": "Skuf",
     "text": "The anvil to [Steinvor]'s hammer. He stands where he chooses and is never moved, and he takes the blows meant for his brother icelord."
   },
-  "bookPage": "",
+  "bookPage": "A story the Valkyn tell of the early days on Aegir. A war-band of the morvalt, forty strong, came over the rim of Delling and down into the glacier's middle tunnel, howling. In the mouth of the tunnel stood one giant. They went at him with spears and clubs all day. When night came, the giant was still standing in the mouth of the tunnel, and there were not forty morvalt any more, and the ones that were left went home. The Valkyn say his name was Skuf. They say the morvalt still will not go down that tunnel, and that the tamed ones among them tell it to their children as a warning about stubbornness.",
   "chronicle": {
     "win": "Icelord Skuf, who never moved, was laid down by {raidLeader} of {realm} in {minutes} minutes.",
     "loss": "Icelord Skuf did not move, and {raidLeader}'s raid from {realm} did not get past him in {minutes} minutes."
