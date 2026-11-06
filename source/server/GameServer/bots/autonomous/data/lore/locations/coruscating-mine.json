@@ -1,0 +1,93 @@
+{
+  "id": "coruscating-mine",
+  "name": "Coruscating Mine",
+  "realm": "Hibernia",
+  "regions": [
+    220
+  ],
+  "summary": "The Unseelie Court's true-silver mine under the Silvermine Mountains, worked by captives under geas and collar.",
+  "facts": [
+    {
+      "text": "The mine lies in the heart of the Silvermine Mountains and is wholly in the hands of the Unseelie Court, whose bounty hunters raid human and firbolg settlements for workers held by geas, collars or mind-craft.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=23"
+    },
+    {
+      "text": "It is mined for true silver (mithril), prized by both courts; rumour says the Silver Hand of Nuada lies deep within under Unseelie guard, which troubles the Seelie Court. Level 30-45.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=23"
+    },
+    {
+      "text": "The level-25 epic 'Secret of Nuada's Silver' speaks of a Silvermine with two entrances, one guarded and sealed by Siabra, and of 'Nuada's Silver Wrist'.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/quests.html?cquest=313"
+    },
+    {
+      "text": "Region 220 holds silvermine sentries and guards, geas-bound hewers, coerced groovers, collared gemgetters, enthralled silviers, Unseelie overmen, viewers and underviewers, weeweres, vein golems, phantom miners and silver-maddened werewolves.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Bot chat: 'the overseer of the silver hand in coruscating mine. silver hand, like nuada. that is no accident'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Irish myth (not game canon): Nuada lost his hand in battle and ruled again with a hand of silver.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Nuada_Airgetl%C3%A1m"
+    }
+  ],
+  "story": "Every Hibernian child knows that Nuada the king lost his hand in battle and could not rule, because a king must be whole, until a hand of silver was made for him. The bards do not say where the silver came from. The Unseelie Court says it knows.\n\nUnder the Silvermine Mountains the dark court works a mine that glitters so brightly in the torchlight that the miners named it for the glitter: Coruscating. What comes out of it is true silver, the metal both courts want for blades and armour and things less easy to name. The Unseelie do not dig it themselves. Their bounty hunters ride down on human and firbolg farmsteads and bring back hands to work, and the hands are kept by geas, or by collars, or by having their minds turned quietly inside out. Hewers who cannot stop hewing. Groovers who cannot remember being anything else. Gemgetters wearing collars that hum. Above them all, Unseelie overmen, viewers and underviewers watch, and a little higher still, an overseer whose title the miners speak with care.\n\nThe rumour the Seelie fear is that deep in the lowest gallery the Unseelie keep the Silver Hand itself, or the silver it was made from, under guard. Some of the miners have gone mad from the silver; some have gone wolf. Nobody has come up from the bottom gallery to say whether the rumour is true.",
+  "legend": "Good money and a long climb back up if you fall off the ramp. Mind the adds: the overmen call the whole gallery. The collared workers are victims, the old druids say, but they will still kill you. Bring a bard to keep the pace up, and never follow the silver-maddened down into the dark.",
+  "atmosphere": {
+    "firstEntry": [
+      "The walls glitter. Somewhere, chains clink.",
+      "Captive hands work here, and cannot stop.",
+      "True silver, and the dark court that mines it."
+    ],
+    "areas": [
+      {
+        "name": "the mine mouth",
+        "x": 33534,
+        "y": 33660,
+        "z": 16049,
+        "radius": 1200,
+        "lines": [
+          "Collars hum in the dark like bees."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the unseelie run coruscating mine with slaves. [geas, collars, the lot|humans and firbolgs both]",
+      "theres true silver in coruscating. [they say nuada's hand came from there|both courts want it]",
+      "the collared workers in the mine were farmers once. [the unseelie took them|kinda grim xp]"
+    ],
+    "rumour": [
+      "[heard|someone said] the unseelie keep nuada's silver hand at the bottom of coruscating mine",
+      "[word is|heard] the silver drove another miner [wolf|mad] down there"
+    ],
+    "tell": [
+      "coruscating mine, under silvermine. unseelie, enslaved miners, golems. thirties to mid forties, mind the ramp"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Coruscating Mine is the [Unseelie] Court's, deep under Silvermine. They dig for [true silver] with stolen hands. And there is a [rumour] the Seelie Court does not like at all.",
+    "topics": {
+      "Unseelie": "The dark court. Their bounty hunters raid our farmsteads for workers and keep them by geas and collar.",
+      "true silver": "Mithril, prized by both courts for blades and armour. It drives some miners mad, and some wolf.",
+      "rumour": "That the [Silver Hand] of Nuada lies in the lowest gallery, under Unseelie guard.",
+      "Silver Hand": "Nuada lost his hand and could not rule until a silver one was made. Where the silver came from, the bards do not say."
+    }
+  },
+  "book": {
+    "title": "A Miner's Collar",
+    "pages": [
+      "This was found in the Coruscating Mine on a collar, scratched small on the inside where the overmen would not see. I was a groom in Mag Mell. They came at night on black horses and took six of us. I do not know how long I have been here. The collar hums when I think of home, so I try not to. The silver is very beautiful. That is the worst of it. I have started to love it.",
+      "Second scratching, later, the letters worse: they say the hand is at the bottom. The king's hand. They say the overseer goes down to look at it and comes back up smiling. Today Breanne from Ardee stopped working and did not start again and they took her down. If anyone reads this, tell my mother in Mag Mell I did not forget. Tell the Seelie the rumour is true. Tell them hurry."
+    ]
+  },
+  "bosses": []
+}

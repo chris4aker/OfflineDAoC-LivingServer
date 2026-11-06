@@ -1,0 +1,80 @@
+{
+  "id": "spraggon-den",
+  "name": "Spraggon Den",
+  "realm": "Hibernia",
+  "regions": [
+    222
+  ],
+  "summary": "The rocky warren of the spraggons near Howth and Ardagh, a little kingdom of earth that never stops arguing.",
+  "facts": [
+    {
+      "text": "A Hibernian dungeon listed for levels 20-25, a rocky warren near the watch tower between Howth and Ardagh, full of spraggons, worms, rock sprites and earth sprites; about half root or snare, and most attacks are earth-based.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=55"
+    },
+    {
+      "text": "A 2003 comment tells of a named that looks like a giant spraggon, near 'Tabor', whose ghost attacks with spells after it dies.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=55"
+    },
+    {
+      "text": "Region 222 holds spraggon springers, pit spraggons, spraggonixes, spraggonotes, spraggon cutters, spraggonales, spraggon runners, pit bosses, root worms and rock and earth sprites.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Bot chat: earthquakes caved in part of the den and the spraggons picked a new leader.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "The spraggons are the earth's own small folk, knobbled and grey as the stones they live among, and their den under the hills between Howth and Ardagh is the closest thing they have to a kingdom. It is not a quiet kingdom. Spraggons argue about everything: who digs, who guards, who runs messages, who is a springer and who is merely a spraggonote, and above all who is boss. There are pit bosses. There are cutters who answer to no pit boss. There are sprites of rock and earth who are not spraggons at all and live there anyway because nobody can agree to throw them out.\n\nSome years ago the earth shook and a part of the den fell in, and with it, the spraggons say, their old leader, a great spraggon bigger than any of them. They picked a new one, after a great deal of argument. The old one has not entirely accepted this: groups that kill the big spraggon in the deep part of the den say its ghost gets up afterwards and keeps fighting with spells, as if it had never heard it was over.\n\nFor young Hibernians the den is a lesson in earth magic, because almost everything in it roots or snares, and a lesson in politics, because pull one spraggon and its whole faction comes.",
+  "legend": "Bring a healer and a tank, and expect to be rooted: half the den roots or snares. Some of them call for help, so pull carefully. The earthen gear is worth having at your level. And if you kill the big one at the back, do not loot too fast: its ghost is not finished.",
+  "atmosphere": {
+    "firstEntry": [
+      "The stones are arguing. Some of them are spraggons.",
+      "The earth holds your feet. It does not want you here."
+    ],
+    "areas": [
+      {
+        "name": "the den mouth",
+        "x": 32722,
+        "y": 34761,
+        "z": 15179,
+        "radius": 1100,
+        "lines": [
+          "Small grey faces vanish into the rock."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "spraggons argue about everything. [who digs, who guards, who is boss|even their pit bosses have bosses]",
+      "an earthquake caved in the old spraggon king. [they picked a new one|his ghost still fights]",
+      "half the spraggon den roots or snares. [bring purges|you will be stuck]"
+    ],
+    "rumour": [
+      "[heard|someone said] the big spraggon at the back of the den [came back as a ghost|gets up after it dies]"
+    ],
+    "tell": [
+      "spraggon den between howth and ardagh. twenties, earth magic, lots of roots. good earthen gear"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Spraggon Den, between Howth and Ardagh. The [spraggons] are the earth's own small folk, and they have a kingdom of sorts, and a [quarrel] about who rules it.",
+    "topics": {
+      "spraggons": "Knobbled and grey as stones. Springers, cutters, runners, pit bosses. Every one of them has an opinion.",
+      "quarrel": "The earth shook and their old leader fell in with half the den. They chose a new one. The old one's [ghost] disagrees.",
+      "ghost": "Kill the great spraggon in the deep den and it rises again as a ghost and fights with spells."
+    }
+  },
+  "book": {
+    "title": "Notes on Spraggon Politics",
+    "pages": [
+      "A druid of Howth who spent a summer watching the den writes: the spraggons have more ranks than the court of Tir na Nog. A springer outranks a spraggonote, unless the spraggonote is a cutter. A pit boss rules his pit, except when the runners say he does not. The rock sprites are not spraggons and are not consulted, and they consider this an outrage. I found it restful, in its way. Nobody was trying to kill me who was not also trying to kill someone else.",
+      "After the earthquake the den was in uproar for a month. Their great old leader had gone down with the deep galleries, and there was an election, if that is the word for it. The new leader is smaller. The old one, the spraggons say, is not reconciled, and comes back to fight whoever disturbs the deep den, even after he is dead. I asked whether this troubled them. One said, through my interpreter: he always did."
+    ]
+  },
+  "bosses": []
+}

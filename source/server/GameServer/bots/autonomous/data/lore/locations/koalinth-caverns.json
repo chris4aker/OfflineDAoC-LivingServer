@@ -1,0 +1,80 @@
+{
+  "id": "koalinth-caverns",
+  "name": "Koalinth Caverns",
+  "realm": "Hibernia",
+  "regions": [
+    223
+  ],
+  "summary": "Sea-caves by the Cliffs of Moher where a Koalinth tribe from under the waves has made a fighting-hall, and keeps a line to home.",
+  "facts": [
+    {
+      "text": "The Koalinth are coastal hobgoblins; a tribe migrated from undersea homelands and took caves and old tunnels near the Cliffs of Moher, raids nearby settlements and can reach the sea to speak with its homeland. Why it left its element is unknown and 'hints at darker powers'. Level 20-30.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=53"
+    },
+    {
+      "text": "Its named include the Koalinth Castellan, the Koalinth Elder (a caster with crab escorts) and the Pelagian Alliant; Druid Tobryn of Tir Urphost gives the quest 'The Broken Seal' against the Castellan and Elder.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=53"
+    },
+    {
+      "text": "Region 223 holds Koalinth spectators, sentinels, guardians, warders, bouncers, envoys, wardens and wrestlers, Pelagian guards and crabs, and watery escorts.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Bot chat: 'koalinth caverns are wet, cold and full of fish people'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/dungeons.lines"
+    }
+  ],
+  "story": "The Koalinth came up out of the sea, and the druids of Tir Urphost have never learned why. They are hobgoblins of the deep coast, cold and scaled and quick, and their true home lies somewhere under the waves off the Cliffs of Moher. One tribe of them left it. They took the sea-caves and the old tunnels behind the cliffs, raided the farmsteads above, and settled in as if they meant to stay. They have kept a door open to the sea. Their envoys go down it and come back up, and the druids would very much like to know what is said on the other side.\n\nWhat is plain is that the tribe is a warrior people and the caves are a warrior's hall. There are wrestlers and bouncers, and there are spectators, and the spectators are not there by chance: the Koalinth hold fights in their great cave, as the old Hibernian kings held games, and watch them as keenly. Pelagian crabs scuttle under the benches. Wardens, warders and sentinels keep the doors. Somewhere deep in, the Elder speaks for the tribe and the Castellan holds its keep, and the druids suspect both of them answer to something further down.\n\nWhy would a sea-people leave the sea? Not for the farmland. The druids say it in a low voice: something drove them out, or something sent them up.",
+  "legend": "Often empty and always cold. Good coin, poor loot until you reach the wrestling cave and the left branch. The Elder brings crab escorts; the Castellan is the druid's quest. Do not try to swim out through their sea-door, and do not cheer in the fighting cave: the spectators take sides.",
+  "atmosphere": {
+    "firstEntry": [
+      "Salt air, wet stone, and a crowd cheering.",
+      "The sea is close. Something down there is listening."
+    ],
+    "areas": [
+      {
+        "name": "the sea-cave mouth",
+        "x": 27318,
+        "y": 32267,
+        "z": 17266,
+        "radius": 1100,
+        "lines": [
+          "A door to the sea, and someone just used it."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the koalinth came up out of the sea and nobody knows why. [something drove them|or sent them]",
+      "the koalinth hold fights in their big cave. [wrestlers, bouncers, spectators|its an arena]",
+      "they kept a door open to the sea. [envoys go down and come back|talking to home]"
+    ],
+    "rumour": [
+      "[heard|someone said] the koalinth envoys came back up [with something|with orders] from the deep"
+    ],
+    "tell": [
+      "koalinth caverns by the cliffs of moher. sea hobgoblins, crabs, an arena. twenties, decent coin"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Koalinth Caverns, behind the Cliffs of Moher. A tribe of the sea's [hobgoblins] came up out of the waves and stayed. They keep a [door] to the sea, and the druids do not know [why] they came.",
+    "topics": {
+      "hobgoblins": "Cold, scaled and quick, a warrior people. Their great cave is a fighting hall with wrestlers and spectators.",
+      "door": "A way down to their home under the waves. Their envoys use it. What they say down there, we cannot hear.",
+      "why": "A sea-people does not leave the sea for farmland. Something drove them out, or something sent them up."
+    }
+  },
+  "book": {
+    "title": "Druid Tobryn's Letter on the Koalinth",
+    "pages": [
+      "To the Circle at Tir na Nog, from Tobryn at Tir Urphost. You asked what I have learned of the Koalinth. Less than I would like. They are of the sea, unquestionably; their envoys go down through a flooded passage at the back of the caves and return some hours later, dry-eyed and in a hurry. Their Elder is no fool. Their Castellan is a soldier and nothing else. I have set the realm's young on both of them, with a seal of my making, to see who comes when the seal is broken.",
+      "Of the fighting cave: yes, it is what you heard. They wrestle, and they watch, and they wager, I think, in shells. It is very like a fair at Tara and I do not care for the likeness. What troubles me more is this. A people who keep games are a people who mean to stay. And a people from under the sea who mean to stay on land have been told the sea is no longer safe. I would like to know by whom."
+    ]
+  },
+  "bosses": []
+}

@@ -1,0 +1,85 @@
+{
+  "id": "treibh-caillte",
+  "name": "Treibh Caillte",
+  "realm": "Hibernia",
+  "regions": [
+    224
+  ],
+  "summary": "The caves of the lost tribe, where the ursine keep thralls and patrols in the dark among spiders and stone.",
+  "facts": [
+    {
+      "text": "Region 224 holds ursine patrols, thralls, dwellers, warriors, sorcerers and a shaman, arachnites and arachnids, rock golems, troglodytes, lair worms, merucha and scraggers.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Treibh Caillte is a camp dungeon of the bot system; no Mythic description was found in this pass.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs; source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Irish treibh 'tribe' + caillte 'lost': the lost tribe (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Bot chat: 'treibh caillte is a long walk for a short pull'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/dungeons.lines"
+    },
+    {
+      "text": "That the ursine are the lost tribe, and keep their own kind as thralls, is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Treibh Caillte means the lost tribe, or near enough, and Hibernians have argued for generations about which tribe was lost. The firbolg say it was a clan of theirs who went into the hills in a hard winter and did not come out. The elves say it was nobody's tribe at all. The ursine, if anyone asked them, might say it was theirs.\n\nThe ursine are bear-folk, big and shaggy and clever with their hands, and the caves are theirs now. They keep them like a hold. Patrols walk the tunnels in pairs, warriors guard the halls, and sorcerers and a shaman see to the things bear-folk see to in the dark. They also keep thralls, and the thralls are ursine too: their own kind, collared and worked. The druids who have looked in say that is the clue. A tribe that enslaves itself is a tribe that has lost something, and the ursine of Treibh Caillte have lost whatever it was that once made them one people. What is left is a hierarchy and a long memory of a quarrel nobody can now name.\n\nAround them the caves go on with their own business. Arachnites spin in the side passages, rock golems stand in the deep galleries where the stone woke up, and lair worms bore through everything. The walk in is long. Most young Hibernians decide, about halfway, that it was not worth it, and then find out that it was.",
+  "legend": "A long walk for a short pull, everyone says, and then everyone keeps going. The ursine fight in pairs and call their patrols, so pull at the edges. Spiders in the side tunnels. Do not free the thralls: they will not thank you, and their masters will notice.",
+  "atmosphere": {
+    "firstEntry": [
+      "The lost tribe. Whose tribe, nobody remembers.",
+      "Bear-folk patrol the dark in pairs."
+    ],
+    "areas": [
+      {
+        "name": "the long tunnel",
+        "x": 35393,
+        "y": 30865,
+        "z": 14990,
+        "radius": 1100,
+        "lines": [
+          "A long walk in. The dark is patient."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "treibh caillte means the lost tribe [i think|says my guild]. nobody agrees whose tribe",
+      "the ursine in treibh caillte keep their own kind as thralls. [thats the lost part|grim]",
+      "firbolgs say treibh caillte was a clan of theirs that [went into the hills|never came back]"
+    ],
+    "rumour": [
+      "[heard|someone said] the ursine shaman in treibh caillte [knows what the quarrel was|remembers]"
+    ],
+    "tell": [
+      "treibh caillte, the lost tribe caves. ursine, spiders, golems. long walk in, decent once you get there"
+    ]
+  },
+  "loremaster": {
+    "intro": "Treibh Caillte, the lost tribe. The [firbolg] say it was theirs. The caves belong to the [ursine] now, and they keep [thralls] of their own kind.",
+    "topics": {
+      "firbolg": "A clan that went into the hills in a hard winter and did not come out, so the firbolg tell it.",
+      "ursine": "Bear-folk, clever with their hands. Patrols in pairs, warriors, sorcerers, a shaman. They keep the caves like a hold.",
+      "thralls": "Ursine, collared by ursine. The druids say that is what was lost: whatever once made them one people."
+    }
+  },
+  "book": {
+    "title": "Who Was the Lost Tribe?",
+    "pages": [
+      "Three answers, collected at three firesides. A firbolg herder near Lough Derg: they were ours, a clan who went up into the hills to wait out the hard winter, and the hills kept them. An elven scholar in Tir na Nog: there was no tribe; it is a name for a place where people get lost, which is a different thing. A druid who had been inside: go and look at the thralls, and then tell me there was no tribe.",
+      "I went and looked. The ursine keep their own kind in collars, working the deep tunnels while the warriors and sorcerers watch. They do not seem to hate the thralls. They do not seem to see them. The druid says something split the bear-folk long ago, a quarrel so old that neither side remembers what it was about, and the winners kept the losers. That is a lost tribe, he said. Not lost in the hills. Lost to itself."
+    ]
+  },
+  "bosses": []
+}

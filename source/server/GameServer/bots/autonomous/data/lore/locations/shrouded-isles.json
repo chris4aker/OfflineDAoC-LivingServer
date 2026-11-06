@@ -1,0 +1,70 @@
+{
+  "id": "shrouded-isles",
+  "name": "The Shrouded Isles",
+  "realm": "Neutral",
+  "regions": [],
+  "summary": "The three isles each realm found in the mists in the same year: Avalon, Aegir and Hy Brasil, and the small strange things they share.",
+  "facts": [
+    {
+      "text": "Shrouded Isles (2002) gave each realm a new land: Avalon for Albion, Aegir for Midgard, Hy Brasil for Hibernia.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/69207-new-shrouded-isles-information.html"
+    },
+    {
+      "text": "Albion's Avalon was overrun by Morgana's forces; Midgard's Aegir is the land of the Troll Fathers; Hibernia's Hy Brasil is the Sylvan home beset by Fomorians.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/68904-new-shrouded-isles-info.html"
+    },
+    {
+      "text": "The encounter catalog holds one named with no region at all: Gnat, level 35, whose script keeps it as 'SI_Gnat'. This location exists so it has a home; its regions are left empty on purpose.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/scripts/namedmobs/Gnat.cs"
+    },
+    {
+      "text": "That all three isles rose from the mist together, and share their small wanderers, is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "In the same year, the three realms each found a new land in the mist. Albion's sailors came upon Avalon, the isle of the old songs, smoking from Morgana's war. Midgard's longships found Aegir, the land the Troll Fathers had lost. Hibernia's fishers watched Hy Brasil rise out of the western sea, as the old stories had always promised it would, and the Sylvan came down to the shore to ask for help. Each realm thinks its isle is the one that matters. Each realm is, in its own way, right.\n\nThe scholars who compare such things, and there are a few in every capital, have noticed something the warriors have not. The three isles share small things: a weed that grows on all three shores, a bird whose call is the same in three accents, and a few wanderers who turn up on one isle one season and another the next, as though the mists between them were only a fence with a gap in it. The Albion scholars say it proves the isles were once one land, sunk and raised again. The Norse say it proves nothing except that small things travel. The Hibernians say the mist is a door, and doors open both ways.\n\nGnat is the most famous of the wanderers, though famous is a big word for a small menace. Every realm has a story about it, and the stories do not agree on anything except the whistle and the ants.",
+  "legend": "Ask an Albion where Gnat lives and he will say an Avalon marsh; ask a Norseman and he will say a burned hillside on Aegir; ask a Hibernian and she will say it walks the Hy Brasil shore. They are all sure. They have all heard the whistle. Kill it quickly, before the ants come, is the one thing they agree on.",
+  "atmosphere": {
+    "firstEntry": [
+      "The mists part. Three isles, one sea."
+    ],
+    "areas": []
+  },
+  "botLines": {
+    "lore": [
+      "albion got avalon, midgard got aegir, we got hy brasil. [same year|all at once]. nobody thinks thats odd?",
+      "[some scholar|a sage in the capital] says the three shrouded isles share the same birds. [the mist is a door|make of that what you will]",
+      "every realm has a gnat story and [none of them agree|they all swear its theirs]"
+    ],
+    "rumour": [
+      "[heard|someone said] gnat turned up on [avalon|aegir|hy brasil] this season. whistling"
+    ],
+    "tell": [
+      "the shrouded isles: avalon, aegir, hy brasil. three new lands in one year, and a few odd things they share"
+    ]
+  },
+  "loremaster": {
+    "intro": "Three realms, three isles out of the mist in one year. Each realm tells it its own way: ask me about [Avalon], [Aegir] or [Hy Brasil]. And then there are the [wanderers].",
+    "topics": {
+      "Avalon": "Albion's isle of the old songs, found smoking from Morgana's war. The Albions say the three isles were one land once.",
+      "Aegir": "The land the Troll Fathers lost, which Midgard sailed to free. The Norse say small things travel and that is all.",
+      "Hy Brasil": "Our own isle, rising out of the western sea as the stories promised. We say the mist is a door.",
+      "wanderers": "Small things seen on all three isles in turn. The best known is [Gnat], who whistles and brings ants.",
+      "Gnat": "Every realm claims it and none agree where it lives. Kill it before the ants arrive, they all say that much."
+    }
+  },
+  "book": {
+    "title": "On the Things the Three Isles Share",
+    "pages": [
+      "I have read the reports of three realms' scholars on the Shrouded Isles, which is more than most scholars of any realm will admit to. They agree on almost nothing. They do agree that the same small things are found on all three isles: a salt-weed, a grey shore-bird, and certain wanderers. Each realm explains this to its own satisfaction. The Albion thinks of sunken lands. The Norse thinks of birds. The Hibernian, being a Hibernian, thinks of doors.",
+      "The best known wanderer is called Gnat. It is not large and not especially fierce. It whistles, high and thin, and the ground answers with ants that burn. The Albion reports place it in an Avalon marsh, the Norse on a burned slope of Aegir, the Hibernian on the Hy Brasil shore. Each is certain. I am inclined to believe all three, which is why scholars of three realms no longer answer my letters."
+    ]
+  },
+  "bosses": [
+    "gnat"
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "id": "gnat",
+  "name": "Gnat",
+  "catalogKey": "open-world/gnat",
+  "locationId": "shrouded-isles",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 35, neutral gender, model 917. It 'lets loose a high pitch whistle' and below 95% health calls seven fiery ants (levels 30-34), which fight with it; tether 2,000.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Gnat.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It has no region in the catalog or the world spawn list; the script names its static field 'SI_Gnat'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Gnat.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Each realm's claim on Gnat is Living Server lore, written to fit its unplaced data.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Every realm has a Gnat story, and every one of them begins the same way: with a whistle, high and thin, from somewhere you cannot see. The Albions tell it as a marsh-sprite of Avalon, a small spiteful thing left behind when the drakoran burned the isle's old orchards, that whistles up fire-ants from the scorched roots. The Norse tell it as a troll-child's pet from Aegir, lost when the Morvalt drove the Troll Fathers out, still calling for a master who will not come. The Hibernians say it walks the Hy Brasil shore and came over the mist from somewhere else entirely, as the wanderers do. All three agree on what happens next. Touch it, and it whistles, and seven fiery ants come boiling out of the ground to defend it.",
+  "legend": "Small, and not to be laughed at by a small group: the moment it is hurt it whistles up seven fiery ants. Burst it down fast, or AoE the ants as they come. Albions, Norsemen and Hibernians all claim it and all tell the same advice, which is a rare thing in this world.",
+  "yells": {
+    "aggro": [
+      "Gnat lets loose a high pitch whistle."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "The ground cracks open and fiery ants pour out!"
+      }
+    ],
+    "death": [
+      "The whistle stops. The ants scatter."
+    ],
+    "slay": [
+      "The ants carry off the remains."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A thin whistle, from somewhere close."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "Fiery ants boil out of the ground!"
+      }
+    ],
+    "realmFirstKill": "Gnat is dead. Three realms will claim it."
+  },
+  "botLines": {
+    "briefing": [
+      "gnat whistles up seven fire ants as soon as you hit it. [burst it|aoe the ants]"
+    ],
+    "aftermathWin": [
+      "gnat down. [the albs will say it was theirs|now everyone claims it]"
+    ],
+    "aftermathLoss": [
+      "seven ants on a group of four. [we laughed at it|it is not funny]"
+    ],
+    "rumour": [
+      "[heard|someone swore] gnat walks the hy brasil shore now. came over the mist [from avalon|from aegir]",
+      "an alb told me gnat is an avalon marsh sprite. a norseman told me its from aegir. [both wrong|cant all be right]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Gnat",
+    "text": "A small whistling wanderer that every realm claims. It calls seven fiery ants from the ground the moment it is hurt. The Albions say Avalon, the Norse say Aegir, we say the mist is a door."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} silenced the whistle of Gnat; {raidLeader}'s band was done in {minutes} minutes, and three realms argued about it.",
+    "loss": "Gnat whistled, the ants came, and {realm}'s band under {raidLeader} ran after {minutes} minutes."
+  }
+}

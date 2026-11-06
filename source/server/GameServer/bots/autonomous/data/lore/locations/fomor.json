@@ -25,7 +25,7 @@
     {
       "text": "Its catalogued bosses are Myrddraxis (80), Anurigunda (75), Krackenschtein (70) and Nogoribando (70). It is a camp dungeon, not a raid: its navmesh has no path to Myrddraxis.",
       "provenance": "game",
-      "source": "docs/encounters/epic-encounters.json; AutonomousRealmRaid.cs:50"
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs:50"
     },
     {
       "text": "Irish myth (not game canon): the Fomorians, enemies of the Tuatha Dé Danann, were broken at the second battle of Mag Tuired.",
