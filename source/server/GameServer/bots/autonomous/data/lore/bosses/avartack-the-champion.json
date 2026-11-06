@@ -1,0 +1,78 @@
+{
+  "id": "avartack-the-champion",
+  "name": "Avartack the Champion",
+  "catalogKey": "marfach-caverns/avartack",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, a realm-raid final. He fights with crushing blows and casts Avartack's Force, 300 body damage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AvartackTheChampion.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He cannot be hurt outside his tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "'Avartack' is unglossed; the champion's oath is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Every chieftain had a champion, the man who stood in the ford so his lord need not, and Avartack was Caimheul's. He swore the champion's oath: to stand before his lord until his lord no longer needed him. Caimheul died. The oath did not say what to do then, so Avartack was buried at his lord's feet, and when the keeners sang them both back he simply took up his post again. He fights like a man defending a ford, heavy and unmoving, and when he lays a hand on his enemy the force of it goes straight through armour into the body. He does not leave his floor. He never left the ford either.",
+  "legend": "A straight fight, but a hard one: his force spell goes through armour, so the healers watch the cloth classes. He will not be pulled off his floor; fight him there. Clear the living dead around him before you start.",
+  "yells": {
+    "aggro": [
+      "No one passes. My lord is resting."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I held the ford for him. I will hold this."
+      }
+    ],
+    "death": [
+      "My lord... I am relieved... at last..."
+    ],
+    "slay": [
+      "The ford is held."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A champion stands guard for a dead lord."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Avartack plants his feet and will not yield."
+      }
+    ],
+    "realmFirstKill": "Avartack the Champion is relieved of his oath."
+  },
+  "botLines": {
+    "briefing": [
+      "avartack is a straight fight but his force spell [ignores armour|goes through plate]. healers watch the casters"
+    ],
+    "aftermathWin": [
+      "avartack down. [oath kept, oath broken|he finally got to rest]"
+    ],
+    "aftermathLoss": [
+      "avartack's force [one-shot the casters|went through the cloth like paper]"
+    ],
+    "rumour": [
+      "[heard|someone said] avartack was the chieftain's champion. still guarding him, all these years"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Avartack",
+    "text": "Caimheul's champion, who swore to stand before his lord until he was no longer needed. Nobody told him when that was."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced Avartack the Champion in {minutes} minutes. His oath is discharged.",
+    "loss": "{realm} lost {raidLeader}'s raid to Avartack the Champion in the Marfach Caverns after {minutes} minutes."
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "id": "ancient-black-oak",
+  "name": "Ancient Black Oak",
+  "catalogKey": "marfach-caverns/ancientblackoak",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 68, 40,000 health, raised by the Black Lady when she spawns and killed when she dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "It never pulls itself (aggro level 0); it fights only whoever attacks it. Half its blows release Ancient Root: 700 body damage over 800 with a long snare.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "It cannot be hurt outside its tether; its linked pack (AncientOakBaf) has no NPCs in the release world.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Patch 1.66zd made Marfach's withered oaks a plant type.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/k69yq"
+    }
+  ],
+  "story": "The oak on Caimheul's grave was planted green. It is black now, black as the bog oak turf-cutters dig from the peat, and its roots have gone through the chieftain's bones and on down toward the road below. It does not hate anyone. It does not do anything at all unless it is struck; then the old root-strength comes up out of the floor and tears at everyone near, and holds them where they stand. The withered oaks in the upper caves are its seedlings. The tree is the Black Lady's grief given wood, and it lives exactly as long as she does.",
+  "legend": "Do not fight it. It will not start anything, it hits the whole area with roots if you do, and it dies on its own the moment the Black Lady dies. The only raids that fought the oak were the ones that lost the Lady and turned on the nearest big thing.",
+  "yells": {
+    "aggro": [
+      "The black wood groans. The roots rise."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Roots burst from the floor and hold fast."
+      }
+    ],
+    "death": [
+      "The black oak stops, like a held breath."
+    ],
+    "slay": [
+      "The roots close over the fallen."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Bark like wet coal. It does not move. Yet."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ancient roots tear up through the floor!"
+      }
+    ],
+    "realmFirstKill": "The Ancient Black Oak is felled at last."
+  },
+  "botLines": {
+    "briefing": [
+      "the oak is not the target. it dies with the black lady. [if you hit it, you pay for the roots|dont]"
+    ],
+    "aftermathWin": [
+      "oak dropped when the lady did. [never touched it|zero damage on the tree, perfect]"
+    ],
+    "aftermathLoss": [
+      "someone hit the oak and the roots [snared the whole raid|held us all]"
+    ],
+    "rumour": [
+      "[heard|someone said] the withered oaks upstairs are the black oak's seedlings"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "black oak",
+    "text": "Planted green on the chieftain's grave, black now as bog oak. It does nothing unless struck, and it dies when the Black Lady dies."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced the Ancient Black Oak in {minutes} minutes.",
+    "loss": "{realm} lost {raidLeader}'s raid to the roots of the Ancient Black Oak in the Marfach Caverns after {minutes} minutes."
+  }
+}
