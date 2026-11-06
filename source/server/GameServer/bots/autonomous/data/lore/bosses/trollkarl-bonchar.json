@@ -4,6 +4,20 @@
   "catalogKey": "trollheim/rift",
   "locationId": "trollheim",
   "realm": "Midgard",
+  "aliases": [
+    "the rift",
+    "bonchar"
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "valkyn"
+  ],
+  "related": [
+    {
+      "id": "nosdoden",
+      "relation": "the beast below the road he sought"
+    }
+  ],
   "facts": [
     {
       "text": "Trollkarl Bonchar is a level-65 named with 30,000 health. Calm, he looks like a Valkyn sorcerer; when attacked he becomes 'The Rift' and stays so while he has aggro.",
@@ -26,11 +40,14 @@
       "source": "Swedish and Old Norse glossaries (to verify the period sense)"
     }
   ],
-  "story": "Bonchar was a trollkarl, a sorcerer, of the people the Troll Fathers tamed. When the morvalt broke into Trollheim he did not flee with the others. He went looking for the way the Fathers had gone, down into the dark, and he found the place where the dark is thin. He opened it. He meant to follow them through. Instead the rift came through him. Now he stands in his chamber with a sorcerer's face and a sorcerer's patience until someone touches him, and then he is not Bonchar any more but the Rift itself, and the morkenhet come out of it, things of the deep dark, one after another, for as long as anyone fights him. When the fight ends he is Bonchar again, and he does not remember.",
-  "legend": "The Rift isn't hard, the morkenhet are. One or two groups on add patrol, stuns and area damage, everyone else on the Rift. Target him with nearest-enemy. The old raiders say killing him gave them nothing at all, and they killed him anyway.",
+  "story": "Bonchar was a trollkarl, a sorcerer, of the people the Troll Fathers tamed. He was one of the first Valkyn born after the taming, and he was the cleverest of them, and the Fathers taught him more than they taught the others: the old words, the deep roads, the shape of the dark under the city. When the morvalt broke into Trollheim he did not flee with the rest of his people to Midgard. He stayed in the upper city, hiding among his savage cousins, wearing their paint, waiting.\n\nHe was looking for the way the Fathers had gone. They had gone down, everyone knew that, below the holy halls and below the mound, by a road only they knew. Bonchar believed the road was not a tunnel at all. He believed the Fathers had gone through the dark itself, through a place where the dark is thin, and he spent years in a chamber of the middle city listening for it. He found it. He opened it. He meant to follow them through.\n\nInstead the rift came through him. Now he stands in his chamber with a sorcerer's face and a sorcerer's patience, very still, as if listening, until someone touches him. Then he is not Bonchar any more. His face splits and the dark behind it opens, and the thing in his place is the Rift itself, a great tear of nothing that strikes at whoever is near, and the morkenhet, the darkness-things, crawl out of it one after another, every ten or twenty breaths, for as long as anyone fights him. The morvalt who kept watch over his chamber vanished when the Rift first opened; players of old asked whether killing it would bring them back. It does not.\n\nWhen the fight ends, he is Bonchar again, standing still, listening. The Allakhazam scholars recorded his shade in the same halls. The Valkyn say he does not remember. They say that if he ever does, he will finish opening the door, and then everyone will know where the Fathers went.",
+  "legend": "The Rift isn't hard, the morkenhet are. One or two groups on add patrol with stuns and area damage, everyone else on the Rift; healers at the base of the stone with aggro magnets near them for the adds that get through. Target the Rift with nearest-enemy, it's easy to lose. Don't drag him past his tether or he walks home and resets. The first known kill on Kay in May 2003 dropped nothing and gave no experience, and they killed him anyway. These days the Rift's helm and leggings drop. Pac healers' area stuns and supp spiritmasters on add patrol are the classic answer.",
   "yells": {
     "aggro": [
-      "Wait. Do not touch me. It is coming through. It is coming thr-"
+      "Wait. Do not touch me. It is coming through. It is coming thr-",
+      "Do not touch me. It is so close. It is coming through.",
+      "The Fathers went this way. Did you know that? This way.",
+      "Wait. Wait. Listen."
     ],
     "phases": [
       {
@@ -40,23 +57,35 @@
       {
         "trigger": "addsSpawn",
         "text": "(Something crawls out of the Rift.)"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "(The Rift widens. Something vast moves on the other side.)"
       }
     ],
     "death": [
-      "Closed... it is closed... where did they go..."
+      "Closed... it is closed... where did they go...",
+      "(The tear in the dark seals, and a sorcerer kneels.)"
     ],
     "slay": [
-      "(The Rift swallows the fallen.)"
+      "(The Rift swallows the fallen.)",
+      "(Something on the other side takes hold.)",
+      "(The dark closes over them.)"
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A sorcerer stands very still. The air behind him is thin."
+      "A sorcerer stands very still. The air behind him is thin.",
+      "The dark behind the sorcerer is too thin."
     ],
     "phases": [
       {
         "trigger": "formChange",
         "text": "Trollkarl Bonchar tears open. The Rift is here!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Morkenhet crawl out of the Rift!"
       }
     ],
     "realmFirstKill": "The Rift in Trollheim is closed. Bonchar is free."
@@ -64,23 +93,34 @@
   "botLines": {
     "briefing": [
       "bonchar turns into the rift when pulled. [add team|2 groups] on the morkenhet, rest on the rift",
-      "use target nearest for the rift"
+      "use target nearest for the rift",
+      "healers at the base of the stone, aggro magnets with them",
+      "dont pull the rift past its tether"
     ],
     "aftermathWin": [
-      "rift closed. no loot. [classic|typical]"
+      "rift closed. no loot. [classic|typical]",
+      "helm of the rift dropped!",
+      "rift closed, morkenhet gone. smooth",
+      "bonchar's back to standing still. creepy"
     ],
     "aftermathLoss": [
-      "morkenhet just kept coming"
+      "morkenhet just kept coming",
+      "the adds got the healers at the stone",
+      "lost the rift target and nuked adds for 5 minutes",
+      "morkenhet piled up faster than we killed them"
     ],
     "rumour": [
-      "heard the sorcerer in trollheim opened a hole to wherever the troll fathers went. [it opened him instead|didnt end well]"
+      "heard the sorcerer in trollheim opened a hole to wherever the troll fathers went. [it opened him instead|didnt end well]",
+      "bonchar stayed in trollheim pretending to be morvalt for years",
+      "the morvalt that used to stand by the rift vanished when it opened",
+      "bonchar learned the deep words from the troll fathers themselves"
     ]
   },
   "loremasterTopic": {
     "keyword": "Bonchar",
     "text": "A trollkarl, a sorcerer, who stayed in Trollheim when the morvalt came and went looking for the way the Fathers had gone. He found where the dark is thin and opened it. It opened him instead."
   },
-  "bookPage": "",
+  "bookPage": "From the notes of Hallveig, the Valkyn guide. My grandmother knew Bonchar when he was young. She said he was the cleverest of all of us, and the saddest, because he was the only one the Fathers loved enough to teach the deep words. When they left he could not bear it. He said he would follow them, wherever they had gone. She told him the Fathers had left us so that we would have to stand on our own. He said that was a story for children. She said she did not know which of them had been right. She said she still did not know.",
   "chronicle": {
     "win": "{raidLeader} of {realm} closed the Rift in Trollheim in {minutes} minutes.",
     "loss": "The Rift in Trollheim stayed open; {raidLeader}'s raid from {realm} fell to the morkenhet after {minutes} minutes."

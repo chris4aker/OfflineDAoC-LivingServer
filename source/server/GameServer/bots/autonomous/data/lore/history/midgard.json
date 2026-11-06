@@ -57,8 +57,13 @@
           "source": "Living Server writing"
         }
       ],
-      "places": [],
-      "bosses": []
+      "places": [
+        "trollheim"
+      ],
+      "bosses": [
+        "nosdoden",
+        "rotodjur"
+      ]
     },
     {
       "id": "mid-era-binding",
@@ -176,10 +181,12 @@
         "council-otrygg",
         "council-ozur",
         "council-vagn",
+        "dagar",
         "elder-council-birghir",
         "elder-council-guthlac",
         "elder-icelord-hjalmar",
         "elder-icelord-suttung",
+        "fostra-orm",
         "hurika",
         "icelord-agmundr",
         "icelord-hakr",
@@ -190,7 +197,8 @@
         "jailer-vifil",
         "king-tuscar",
         "queen-kula",
-        "torst"
+        "torst",
+        "trollkarl-bonchar"
       ]
     },
     {
@@ -244,25 +252,37 @@
       "name": "The Troll Fathers",
       "summary": "The ancient precursors of trolls and kobolds who built Trollheim and fled deeper when it fell.",
       "places": [
+        "trollheim",
         "tuscaran-glacier"
       ],
       "bosses": [
-        "jailer-vifil"
+        "jailer-vifil",
+        "nosdoden",
+        "rotodjur"
       ]
     },
     {
       "id": "valkyn",
       "name": "The Valkyn",
       "summary": "Morvalt tamed by the Troll Fathers, who took a Norse god and joined Midgard.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "trollheim"
+      ],
+      "bosses": [
+        "trollkarl-bonchar"
+      ]
     },
     {
       "id": "morvalt",
       "name": "The Morvalt",
       "summary": "Prehistoric savages who overran Aegir and hold Trollheim; the crazed ones dig for their Mother on Modernagrav.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "trollheim"
+      ],
+      "bosses": [
+        "dagar",
+        "fostra-orm"
+      ]
     },
     {
       "id": "fenris-brood",
@@ -315,6 +335,7 @@
       ],
       "bosses": [
         "hurika",
+        "rotodjur",
         "torst"
       ]
     },

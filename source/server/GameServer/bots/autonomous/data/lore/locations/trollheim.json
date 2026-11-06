@@ -5,6 +5,16 @@
   "regions": [
     150
   ],
+  "aliases": [
+    "the troll fathers' city",
+    "the troll city"
+  ],
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "troll-fathers",
+    "morvalt",
+    "valkyn"
+  ],
   "summary": "The ancient city of the Troll Fathers on Aegir, overrun by the morvalt, with Nosdoden coiled on the mound of the dead at its root.",
   "facts": [
     {
@@ -36,14 +46,37 @@
       "text": "Living Server sizes the Trollheim raid at 64; no period count was found for Nosdoden (a Dec 2003 thread 'Nosdoden Beckons' exists).",
       "provenance": "legend",
       "source": "https://forums.freddyshouse.com/threads/nosdoden-beckons.164875/"
+    },
+    {
+      "text": "The Stoneheart quest from Dyrfjall leads to the depths of Trollheim past the bridge room and a spiral ramp, and requires wearing the runed cloak of the trolls; its rewards are Troll's Fist and Troll's Bite.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/698"
+    },
+    {
+      "text": "Nosdoden is one of the scale-bearers of the Midgard quest Dragon Myths & Legends, alongside Gjalpinulva.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/3822"
+    },
+    {
+      "text": "Trollheim's bestiary also names Olen den Bartender, Magister Kurgol, Alchemist Phorzberg, Jarala den Kvinnlig, Remandun den Laerd and the Nedat and Uppat leaders.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=67"
+    },
+    {
+      "text": "Bot chat: trolls tap their shields three times before going in; first-timers wander for an hour.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
   ],
-  "story": "Before there were trolls or kobolds there were the Troll Fathers, and before there was Jordheim there was Trollheim. They dug it down into the rock of Aegir, hall under hall, a bridge over a chasm and a spiral stair below it, and at the root of it all a mound where the spirits of their dead were given back to the land. Their children went out into the world and became the trolls and kobolds of Midgard, and remembered the Fathers only in stories.\n\nThen one day a Troll Father walked into Jordheim out of the stories, with bad news. The morvalt, savages older than any people of Midgard, had swept across Aegir. Trollheim held for a time. It did not hold. The Fathers tamed some of the savages and gave them a god and a name, the Valkyn, and the Valkyn came to Midgard. The rest of the morvalt kept the city.\n\nNow morvalt bowmen walk the Fathers' halls, morvalt butchers keep their kitchens and a morvalt bartender named Olen keeps a bar he has never once served from. The weapons on the walls get up and fight by themselves. In the east halls the floor grows. A Valkyn sorcerer stands in one chamber with a rift behind his face. And at the bottom, on the mound of the dead, lies Nosdoden, who was a dragon once, swallowing the spirits the Fathers left behind.",
-  "legend": "Trolls tap their shields three times before going in, and trolls come back. The halls go down and down; first-timers wander for an hour. Rez fast at the bottom or fight your own ghosts. Some say the Fathers are still alive below Nosdoden. Some say they are inside him.",
+  "story": "I. The city of the Fathers.\nBefore there were trolls or kobolds there were the Troll Fathers, and before there was Jordheim there was Trollheim. The troll and kobold myths remember the Fathers as ancient and wise, the precursors of both peoples, and remember their city as the greatest work ever cut in stone. They dug it down into the rock of Aegir under the Gripklosa Mountains, hall under hall like a hand laid under a hand. They threw a bridge across a chasm in the upper city and cut a spiral stair below it. The upper halls were for the living: forges, granaries, halls of counsel where the Uppat, the upward ones, kept order. The lower halls were holy, kept by the Nedat, the downward ones. At the root of it all, below the deepest hall, they raised a mound where the spirits of their dead were given back to the land.\n\nThe Fathers' children went out into the world. Some went up into the light and grew huge and slow and patient, and became the trolls of Midgard. Some went into the small dark places and grew quick and clever, and became the kobolds. Both remembered the Fathers only in stories, and told the stories to their young, especially about the Fathers' legendary wisdom and power. For a long age nobody in Midgard believed the stories were true.\n\nII. The fall.\nThen one day, out of the pages of myth, a lone Troll Father walked into Jordheim. He was old beyond counting and he brought bad news. The morvalt, a race of prehistoric savages older than any people of Midgard, had swept across Aegir and destroyed all in their path. Trollheim held for a time. It did not hold. The morvalt came in through the gates, and the Fathers went down, deeper than the holy halls, by roads only they knew. Some say they still live below the mound. Some say they went somewhere else entirely, and that the sorcerer Bonchar found the door they used.\n\nThe Fathers did not leave empty-handed. They had tamed some of the savages before the end, and given them a god of the Norse pantheon and a name, the Valkyn, and the Valkyn came to Midgard and joined the Norse to cleanse Aegir and take Trollheim back. They could have kept the city for themselves, a skald of Bjarkan says. They chose to come to us instead.\n\nIII. What lives there now.\nThe morvalt hold every hall. Their bowmen, the bagskytt, walk the Fathers' galleries; their warriors and butchers, krigare and slaktare, keep the kitchens; a home guard, the hem'varn, holds the gates under its captains. Their shamans and magisters keep the Fathers' workshops, an alchemist among them, and a morvalt bartender named Olen keeps a bar in the upper city from which no adventurer has ever been served. The weapons on the walls, the Fathers' spears and axes and swords, get down and fight on their own when strangers pass. Dagar, who counts the days, keeps a hall scratched full of marks, with the foster-serpent Fostra Orm asleep in the warm water nearby. In the empty east halls the floor grows, and the great fungus Rotodjur buds and walks. In one chamber a Valkyn sorcerer stands with a rift behind his face. And at the bottom, on the mound of the dead, lies Nosdoden, who was a dragon once, swallowing the spirits the Fathers left behind.\n\nIV. Why it matters.\nTo the trolls and kobolds of Midgard, Trollheim is the old country, the grandfathers' house in the hands of thieves. Trolls tap their shields before they go in and come out quiet. To the Valkyn it is the place they were made, and the place their uncles still hold. To the realm it is the second epic of the Shrouded Isles, and a promise half kept: Midgard swore to the Troll Father that it would take his city back, and every raid that reaches the mound and comes home is a payment on that promise.",
+  "legend": "Trollheim is deep, and first-timers wander for an hour; the halls just keep going down. Trolls tap their shields three times before going in, and trolls come back, so everyone taps. The upper city is morvalt camps all the way down to the bridge; below the spiral stair it gets strange. The weapons on the walls fight back. Don't fight Dagar and the snake together. Clear the back of the east halls before you go near the big mushroom. The Rift gives nothing when it dies and everyone kills it anyway. At the bottom, rez fast or fight your friends: Nosdoden makes ghosts of the dead, nine waves of the fallen spill out of him, and the light that rises from the mound after he dies is the Fathers' dead going home. Nobody has ever been served by Olen the bartender. People keep trying. Nicknames: the worm (Nosdoden), the old country (the trolls' word for the whole city), the bar (Olen's hall, a common meeting spot for groups).",
   "atmosphere": {
     "firstEntry": [
       "The halls of the Troll Fathers. The savages live here now.",
-      "Older than Jordheim. Deeper than you think."
+      "Older than Jordheim. Deeper than you think.",
+      "The savages live here now. The halls remember better.",
+      "Somewhere below, the Fathers' dead are not at rest.",
+      "Weapons hang on the walls. One of them moves."
     ],
     "areas": [
       {
@@ -53,7 +86,9 @@
         "z": 13377,
         "radius": 1500,
         "lines": [
-          "The air below is thick with the old dead."
+          "The air below is thick with the old dead.",
+          "A mound of the dead. Something lies coiled on it.",
+          "Cold faces drift in the dark. They are watching."
         ]
       },
       {
@@ -63,7 +98,8 @@
         "z": 13281,
         "radius": 900,
         "lines": [
-          "The dark behind the sorcerer is too thin."
+          "The dark behind the sorcerer is too thin.",
+          "A Valkyn stands very still, as if listening."
         ]
       },
       {
@@ -73,7 +109,19 @@
         "z": 15229,
         "radius": 900,
         "lines": [
-          "Scratches cover every wall. Days, counted."
+          "Scratches cover every wall. Days, counted.",
+          "A morvalt chief is counting. You are a number."
+        ]
+      },
+      {
+        "name": "the warm water",
+        "x": 31865,
+        "y": 43333,
+        "z": 14640,
+        "radius": 700,
+        "lines": [
+          "Warm water steams here. Something long sleeps in it.",
+          "The morvalt keep their house-serpents here."
         ]
       },
       {
@@ -83,9 +131,13 @@
         "z": 14601,
         "radius": 1100,
         "lines": [
-          "The floor is soft underfoot. It is alive."
+          "The floor is soft underfoot. It is alive.",
+          "No troll has lived here since the Fathers left."
         ]
       }
+    ],
+    "raidForming": [
+      "Midgard gathers to go down to the mound of Trollheim."
     ]
   },
   "botLines": {
@@ -93,17 +145,33 @@
       "trollheim was the troll fathers' city. the morvalt took it and the fathers [went deeper|vanished below]",
       "the valkyn are tamed morvalt. the troll fathers gave them a god and sent them to us",
       "at the bottom of trollheim theres a mound where the troll fathers put their dead. nosdoden is lying on it",
-      "there's a morvalt bartender in trollheim called olen. [never served anyone|i've never been served]"
+      "there's a morvalt bartender in trollheim called olen. [never served anyone|i've never been served]",
+      "the troll fathers came before trolls and kobolds both. trollheim was their city",
+      "a troll father walked into jordheim and told us the morvalt had taken aegir. thats how the isles started for us",
+      "the valkyn could have kept trollheim for themselves, a skald told me. they came to us instead",
+      "uppat were the upward ones and nedat the downward ones in trollheim. living halls above, holy halls below",
+      "the weapons on the walls in trollheim fight on their own. the fathers' old spears and axes",
+      "dagar in trollheim scratches a mark on his wall every morning. counting days till the mother wakes",
+      "the morvalt keep blood orms in trollheim like we keep dogs. fostra orm is the first of them",
+      "nosdoden is a scale bearer in the dragon myths quest. the old ones count him as a dragon"
     ],
     "rumour": [
       "[heard|someone said] the troll fathers are still alive under nosdoden. [or inside him|hope not inside him]",
-      "a sorcerer in trollheim opened a hole in the dark. now he IS the hole",
-      "[i tap my shield|tap your shield] three times before trollheim. [laugh all you want|works for me]"
+      "a sorcerer in trollheim opened a hole in the dark. now he is the hole",
+      "[i tap my shield|tap your shield] three times before trollheim. [laugh all you want|works for me]",
+      "[heard|someone told me] the troll fathers left by a door under the city. bonchar found it",
+      "olen the bartender in trollheim has never served anyone. [i keep trying|one day]",
+      "the light on the mound after nosdoden dies is the fathers' dead going home",
+      "wear the troll cloak the whole time for stoneheart or it doesnt count. [learned that the hard way|trust me]",
+      "the east halls of trollheim grow. [the floor is soft|creepy place]"
     ],
     "tell": [
       "trollheim is the troll fathers' old city on aegir, gripklosa mountains. morvalt everywhere, nosdoden at the bottom",
       "trollheim? [deep|long] dungeon, morvalt, a big mushroom, the rift and nosdoden. bring a raid for the bottom",
-      "its the troll fathers' city. the morvalt hold it now. go down far enough and you meet nosdoden"
+      "its the troll fathers' city. the morvalt hold it now. go down far enough and you meet nosdoden",
+      "is trollheim hard? the top is a group dungeon, the bottom is a raid. nosdoden takes 64",
+      "where is trollheim? gripklosa mountains on aegir, around 24k 32k. take a horse to bjarkan",
+      "the hard part is the bottom. rez fast, nine waves of adds, and dont let your ghost kill your friends"
     ]
   },
   "loremaster": {
@@ -111,14 +179,21 @@
     "topics": {
       "Troll Fathers": "Ancient and wise, the stories say, and the stories turned out to be true when one of them walked into Jordheim. They tamed some of the [morvalt] into the Valkyn. Where the Fathers went after the city fell, nobody knows.",
       "morvalt": "Savages older than any people of Midgard. They broke Trollheim and keep it still. The ones the Fathers tamed are the Valkyn; the rest still fill the halls.",
-      "mound": "Where the Fathers gave their dead back to the land. Something with a dragon's shape lay down on it and fed. We call it Nosdoden. Raise your fallen quickly near it, or it keeps them."
+      "mound": "Where the Fathers gave their dead back to the land. Something with a dragon's shape lay down on it and fed. We call it Nosdoden. Raise your fallen quickly near it, or it keeps them.",
+      "Valkyn": "Morvalt the Fathers tamed before the end, given a god and a name. They joined us to take the island back. They could have kept Trollheim; they came to Midgard instead.",
+      "Uppat and Nedat": "The upward ones and the downward ones: the keepers of the living halls above the bridge and of the holy halls below it. The morvalt kept the names and forgot what they meant.",
+      "the weapons": "The Fathers' spears and axes still hang on the walls, and when strangers pass, some of them get down and fight. The morvalt do not touch them.",
+      "Olen": "A morvalt who keeps a bar in the upper city of Trollheim. Nobody has ever been served. The groups meet there anyway.",
+      "Stoneheart": "A quest that begins with a rejected dwarf in Dyrfjall and ends in the depths of Trollheim with [Dagar]. Wear the runed cloak of the trolls the whole way."
     }
   },
   "book": {
-    "title": "The Halls Under Gripklosa",
+    "title": "The Halls Under Gripklosa, by Hallveig, a Valkyn guide",
     "pages": [
       "The Valkyn who guided me would not go past the bridge. Below it, she said, the halls belong to her uncles who were not tamed. She told me the Fathers cut the city so that each hall sits under the last like a hand under a hand, and that the bridge was the line between the living halls above and the holy ones below. The morvalt have no such line. They live everywhere. She showed me where the Fathers' weapons still hang on the walls, and told me not to touch them, because sometimes the weapons decide to fight without a hand to hold them.",
-      "We passed a hall where a sorcerer stood alone and did not look at us. My guide said his name was Bonchar and that he had been one of her own people, and that he had tried to follow the Fathers down. She said: he found the door. Then she would not say more. Below that we did not go. She said the last hall is a mound, and the mound is full, and something lies on it that has eaten the dead of her people for longer than she has been alive. She said: we will go down one day, all of us together, and take them back."
+      "We passed a hall where a sorcerer stood alone and did not look at us. My guide said his name was Bonchar and that he had been one of her own people, and that he had tried to follow the Fathers down. She said: he found the door. Then she would not say more. Below that we did not go. She said the last hall is a mound, and the mound is full, and something lies on it that has eaten the dead of her people for longer than she has been alive. She said: we will go down one day, all of us together, and take them back.",
+      "She told me how her people were made. The Fathers came to the morvalt camps when the morvalt were still only wild, and they did not fight them. They sat by the fires and waited. When a morvalt child came close, they gave it bread, and a word, and came back the next night and gave it another word. In a generation there were morvalt who could speak with the Fathers. In two there were morvalt who would not go back to the fires. Those were the first Valkyn. She said her grandmother's grandmother learned her first word from a Troll Father, and that the word was 'stay'.",
+      "Last, at Bjarkan, before I sailed. A troll of that town, very old, asked me whether I had been to Trollheim, and when I said yes, he asked whether I had tapped my shield. I had not. He looked at me a long time and then said that every troll taps his shield three times before he goes into the old country: once for the Fathers, once for the dead on the mound, and once for himself, so the city knows he is family. He said I was lucky to come out. Then he gave me a shield and told me to practise."
     ]
   },
   "bosses": [

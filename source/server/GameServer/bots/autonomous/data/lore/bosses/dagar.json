@@ -4,6 +4,16 @@
   "catalogKey": "trollheim/dagar",
   "locationId": "trollheim",
   "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "fostra-orm",
+      "relation": "the house-serpent kept by his hall"
+    }
+  ],
   "facts": [
     {
       "text": "Dagar is a level-60 morvalt named with 8,000 health; a gruppchef and two morvalt larlings come with him.",
@@ -21,50 +31,78 @@
       "source": "Swedish glossary, to verify the morvalt usage"
     }
   ],
-  "story": "The morvalt keep no calendars, except Dagar. His name means days, and he is the one who counts them: a scratch on the wall of his hall for every dawn since the morvalt took Trollheim, and a longer scratch for every dawn the crazed ones say brings the Mother closer. He keeps his apprentices close and his group chief closer, and when strangers come wearing the runed cloak of the trolls, he takes it as an insult to his count.",
-  "legend": "Dagar is straight melee with a lot of health and a small pack. Pull him to a quiet spot, debuff, and grind. The Stoneheart quest makes people kill him wearing the troll cloak; don't forget it, or the quest won't count. Two groups is safe.",
+  "story": "The morvalt keep no calendars, except Dagar. His name, in the tongue the morvalt borrowed for their titles, means days, and he is the one who counts them. On the morning after the morvalt took Trollheim he scratched a single mark on the wall of the hall he had claimed, and he has scratched one every morning since. The wall is full. The next wall is full. The marks run round the hall three times and up onto the ceiling where he has to stand on a bench to reach.\n\nSome of the marks are longer than the others. Those are the days the crazed shamans of the morvalt say bring the Mother closer: the Mother whom the morvalt dig for on Modernagrav, whose waking, they say, will make Trollheim only the first thing that falls. Dagar does not dig. He is a war-chief, not a priest. But he believes, and he counts, and when the count is finished, he says, he will know.\n\nHe keeps a small war-band close: a gruppchef, a group-leader he trusts to hold the line, and two morvalt larlings, apprentices learning the count. He fights plainly, with a great deal of strength and no tricks, and he does not like interruptions. Strangers who come to his hall in the runed cloak of the trolls, as the Stoneheart quest sends them, insult him twice: once by coming, and once by wearing the cloak of the people whose city this was. He takes it as an insult to his count, as if they meant to tell him that the days of the morvalt in Trollheim are numbered too.\n\nThe house-serpent Fostra Orm sleeps in the warm water near his hall. He feeds it himself. It is the only creature in Trollheim he does not count as a day.",
+  "legend": "Dagar is straight melee with a lot of health and a small pack: a gruppchef and two larlings. Pull him to a quiet spot, debuff, and grind; a support-spec bonedancer soloed him in eight minutes once. The Stoneheart quest makes people kill him wearing the troll cloak; don't forget it, or the quest won't count, and sometimes he doesn't spawn because something else holds his spot. Two groups is safe. Don't fight him and Fostra Orm together. His shimmering weapons are popular. He hits hard and steadily, so a single tank with a good healer can hold him; the danger is the gruppchef reaching the healer. Kill the larlings last, they barely matter.",
   "yells": {
     "aggro": [
-      "Another day. Another mark on the wall. You."
+      "Another day. Another mark on the wall. You.",
+      "The troll cloak? Here? In my hall?",
+      "Larlings! Count them!"
     ],
     "phases": [
       {
         "trigger": "health<=50",
         "text": "Larlings! Gruppchef! Count them out!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The count is not finished! Not yet!"
       }
     ],
     "death": [
-      "Who... will count... the days..."
+      "Who... will count... the days...",
+      "Mark it. Mark this one long."
     ],
     "slay": [
-      "One more mark."
+      "One more mark.",
+      "Counted.",
+      "A short day for you."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Thousands of scratches cover the wall. Someone counts."
+      "Thousands of scratches cover the wall. Someone counts.",
+      "Marks run round the walls three times, and up."
     ],
-    "realmFirstKill": "Dagar's count has ended in Trollheim."
+    "realmFirstKill": "Dagar's count has ended in Trollheim.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Dagar's larlings scratch a new mark in panic!"
+      }
+    ]
   },
   "botLines": {
     "briefing": [
-      "dagar is a tank and spank with 3 adds. [wear the cloak|cloak on] if you're on stoneheart"
+      "dagar is a tank and spank with 3 adds. [wear the cloak|cloak on] if you're on stoneheart",
+      "pull dagar to the quiet corner and grind him",
+      "kill the gruppchef first",
+      "one tank on dagar, one on the gruppchef"
     ],
     "aftermathWin": [
-      "dagar down, [stoneheart done|got my step]"
+      "dagar down, [stoneheart done|got my step]",
+      "shimmering great axe dropped [grats|gz]",
+      "dagar's count is over lol",
+      "stoneheart step done finally"
     ],
     "aftermathLoss": [
-      "forgot the cloak. [again|ugh]"
+      "forgot the cloak. [again|ugh]",
+      "dagar plus the snake. [nope|bad pull]",
+      "the gruppchef held the tank while dagar ate the healer",
+      "he didnt spawn, his placeholder did. [wasted trip|ugh]"
     ],
     "rumour": [
-      "dagar keeps scratching marks on his wall. counting days till something, they say"
+      "dagar keeps scratching marks on his wall. counting days till something, they say",
+      "the long marks on dagar's wall are days the mother gets closer",
+      "dagar feeds fostra orm himself. only thing he doesnt count",
+      "dagar's marks go round his hall three times and up onto the ceiling"
     ]
   },
   "loremasterTopic": {
     "keyword": "Dagar",
     "text": "The morvalt who counts the days: a scratch on his wall for every dawn since Trollheim fell, and a longer one for every dawn the crazed ones say brings the Mother closer."
   },
-  "bookPage": "",
+  "bookPage": "From the notes of Hallveig, the Valkyn guide, on the morvalt. My uncles who were not tamed have no word for tomorrow. They have a word for now, and a word for the time before, and a word for the time of the Mother, which is not tomorrow but something else. Dagar is the only one of them who counts. I asked a captured larling what the count was for. He said that when the marks reach the floor again, the Mother wakes. I asked how many marks were left. He looked at me as if I were very stupid and said: fewer.",
   "chronicle": {
     "win": "{raidLeader} of {realm} ended Dagar's count in Trollheim in {minutes} minutes.",
     "loss": "Dagar scratched another mark: {raidLeader}'s raid from {realm} fell after {minutes} minutes."

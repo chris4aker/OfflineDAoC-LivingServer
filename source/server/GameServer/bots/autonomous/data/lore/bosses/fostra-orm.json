@@ -4,6 +4,16 @@
   "catalogKey": "trollheim/fostraorm",
   "locationId": "trollheim",
   "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "dagar",
+      "relation": "the chief who feeds it"
+    }
+  ],
   "facts": [
     {
       "text": "Fostra Orm is a level-61 serpent with 8,000 health that poisons (Orm Poison) and diseases.",
@@ -21,11 +31,13 @@
       "source": "Swedish glossary, to verify"
     }
   ],
-  "story": "The morvalt keep serpents the way Jordheim keeps hounds: blood orms, house beasts, raised from eggs in the warm runoff under the halls. Fostra Orm is the first of them, the foster-serpent, raised by hand by the morvalt who first broke the gates, and grown fat on Trollheim. It sleeps near Dagar's hall. Its bite carries a poison and a rot together, so that the poison works and the healing does not. The morvalt children feed it by hand, and it has never bitten one of them.",
-  "legend": "Fostra Orm is an easy kill for a level 50 group, but cure the disease or the poison outheals you. Shamans earn their keep here. It sits near Dagar; don't pull both at once unless you mean to. Bring an antidote or two for the tank.",
+  "story": "The morvalt keep serpents the way Jordheim keeps hounds. They call them hus'djur, house-beasts, and they raise them from eggs in the warm runoff that seeps under the halls of Trollheim, where the Fathers' old forges still leak heat into the rock. The blood orms, the young ones, curl by the morvalt fires and are fed by hand by morvalt children, and they have never bitten one of them. They bite everyone else.\n\nFostra Orm is the first of them: the foster-serpent, raised from the egg by the morvalt who first broke the gates of Trollheim, and grown fat on the city ever since. It is very old for a serpent and very large, and it sleeps in the warm water near Dagar's hall, coiled in the steam like a rope thrown into a pot. Dagar feeds it himself. The morvalt say it is lucky, and touch its scales as they pass, which it tolerates from them alone.\n\nIts bite carries a poison and a rot together. The poison eats at the blood for half a minute; the rot, the disease, sits in the wound and turns every heal to half. Together they mean that the poison works and the healing does not, and that a fighter bitten twice without a cure is a fighter lying in the warm water with the serpent. The rings the morvalt make from its old cast skins, the rings of the ancients, are said to keep off the same rot. Nobody has proved it. The serpent's remains are a trophy any morvalt would kill for.",
+  "legend": "Fostra Orm is an easy kill for a level 50 group, but cure the disease or the poison outheals you. Shamans earn their keep here. It sits near Dagar; don't pull both at once unless you mean to. Bring an antidote or two for the tank. A melee-only group is fine if it has cures. Its remains, the ring of the ancients and the shadow needle are the drops. Its bite stacks if no one cures, so one healer watches the tank's debuffs and nothing else. It is a good fight to teach a new healer what cure disease is for. Kill it in the water if you like; it doesn't leave the steam.",
   "yells": {
     "aggro": [
-      "(The serpent hisses and uncoils.)"
+      "(The serpent hisses and uncoils.)",
+      "(Steam rolls off its scales.)",
+      "(Its tongue tastes the air.)"
     ],
     "phases": [
       {
@@ -34,37 +46,59 @@
       }
     ],
     "death": [
-      "(The great serpent goes limp.)"
+      "(The great serpent goes limp.)",
+      "(It sinks into the warm water.)"
     ],
     "slay": [
-      "(It coils around the fallen.)"
+      "(It coils around the fallen.)",
+      "(The serpent settles back into the steam.)",
+      "(Fostra Orm hisses softly.)"
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Warm water steams here. Something long sleeps in it."
+      "Warm water steams here. Something long sleeps in it.",
+      "Something long sleeps coiled in the steam."
     ],
-    "realmFirstKill": "The foster-serpent of Trollheim is slain."
+    "realmFirstKill": "The foster-serpent of Trollheim is slain.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fostra Orm's venom sprays across the water!"
+      }
+    ]
   },
   "botLines": {
     "briefing": [
-      "fostra orm poisons and diseases. cure both or heals dont land"
+      "fostra orm poisons and diseases. cure both or heals dont land",
+      "cure disease on the tank every bite",
+      "dont pull dagar with the snake",
+      "one healer watches the tank's debuffs only"
     ],
     "aftermathWin": [
-      "snake down, easy"
+      "snake down, easy",
+      "ring of the ancients dropped!",
+      "fostra orm's remains. trophy time",
+      "morvalt shadow needle dropped"
     ],
     "aftermathLoss": [
-      "pulled dagar with the snake by accident [oops|my bad]"
+      "pulled dagar with the snake by accident [oops|my bad]",
+      "no cure disease and the poison won",
+      "the snake brought dagar. [great|ugh]",
+      "the bites stacked and nobody cured"
     ],
     "rumour": [
-      "the morvalt keep snakes as pets in trollheim. house snakes. [nope|no thanks]"
+      "the morvalt keep snakes as pets in trollheim. house snakes. [nope|no thanks]",
+      "morvalt kids feed the blood orms by hand and never get bitten",
+      "the morvalt touch fostra orm's scales for luck",
+      "the morvalt raise blood orms in the warm runoff from the old forges"
     ]
   },
   "loremasterTopic": {
     "keyword": "Fostra Orm",
     "text": "The first of the morvalt's house serpents, the foster-serpent, raised by hand from an egg in Trollheim's warm runoff. Its bite brings poison and rot together."
   },
-  "bookPage": "",
+  "bookPage": "From the notes of Hallveig, the Valkyn guide. My people kept a blood orm too, after we came to Midgard; my grandmother brought an egg in her pack. It hatched in a pot by the fire in Aegirhamn and grew as long as a man and never bit any of us. When it died she would not let us skin it. She said the house-beasts remember the warm water of Trollheim, and that ours had wanted to go home, and that the least we could do was bury it facing east. We did. My uncles who were not tamed would have eaten it.",
   "chronicle": {
     "win": "{raidLeader} of {realm} slew the foster-serpent of Trollheim in {minutes} minutes.",
     "loss": "Fostra Orm's venom turned back {raidLeader}'s party from {realm} after {minutes} minutes."
