@@ -25,9 +25,19 @@ public sealed record LoreLocation(string Id, string Name, string Realm, int[] Re
         {
             Story = string.IsNullOrWhiteSpace(take.Story) ? Story : take.Story,
             Legend = string.IsNullOrWhiteSpace(take.Legend) ? Legend : take.Legend,
-            Loremaster = take.Loremaster ?? Loremaster,
+            Loremaster = Merge(Loremaster, take.Loremaster),
         }
         : this;
+
+    /// <summary>A realm's loremaster words over the shared ones: its intro, and its topics beside (or over) the shared topics.</summary>
+    public static LoreLoremasterText Merge(LoreLoremasterText shared, LoreLoremasterText take)
+    {
+        if (take == null) return shared;
+        if (shared == null) return take;
+        var topics = take.Topics.ToList();
+        topics.AddRange(shared.Topics.Where(s => !take.Topics.Any(t => string.Equals(t.Key, s.Key, StringComparison.OrdinalIgnoreCase))));
+        return new LoreLoremasterText(string.IsNullOrWhiteSpace(take.Intro) ? shared.Intro : take.Intro, topics);
+    }
 }
 
 /// <summary>One realm's take on a neutral place or boss: whatever it gives replaces the shared text for that realm.</summary>

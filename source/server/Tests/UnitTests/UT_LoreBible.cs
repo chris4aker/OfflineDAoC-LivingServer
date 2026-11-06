@@ -59,6 +59,18 @@ namespace DOL.GS.Tests
                     partners[cls] = (partners.TryGetValue(cls, out string[] known) ? known : [])
                         .Concat(mates.EnumerateArray().Select(x => x.GetString().ToLowerInvariant())).Distinct().OrderBy(x => x, StringComparer.Ordinal).ToArray();
             }
+            // As tools/lore/build_encounter_adds.py: "<Boss>Add" and a "...SpawnedAdd" naming its boss as partner are adds too.
+            foreach (JsonElement e in document.RootElement.GetProperty("encounters").EnumerateArray())
+            {
+                string cls = e.GetProperty("class").GetString();
+                var bosses = new List<string>();
+                if (cls.EndsWith("Add", StringComparison.Ordinal) && adds.ContainsKey(cls[..^3].ToLowerInvariant()))
+                    bosses.Add(cls[..^3].ToLowerInvariant());
+                if (cls.EndsWith("SpawnedAdd", StringComparison.Ordinal) && e.TryGetProperty("partners", out JsonElement p) && p.ValueKind == JsonValueKind.Array)
+                    bosses.AddRange(p.EnumerateArray().Select(x => x.GetString().ToLowerInvariant()));
+                foreach (string boss in bosses)
+                    adds[boss] = (adds.TryGetValue(boss, out string[] had) ? had : []).Append(cls.ToLowerInvariant()).Distinct().OrderBy(x => x, StringComparer.Ordinal).ToArray();
+            }
             return new LoreBible.Catalog(ids, adds, partners);
         }
 
@@ -223,6 +235,7 @@ namespace DOL.GS.Tests
             Assert.That(ProblemsWith(l => l.Replace("[bring 50|take a full raid]", "[bring 50 take a full raid]")), Has.Some.Contains("has no \"|\""));
             Assert.That(ProblemsWith(l => l.Replace("[bring 50|take a full raid]", "[bring [50|60]|x]")), Has.Some.Contains("do not nest"));
             Assert.That(ProblemsWith(l => l.Replace("krondon? ogres", "Krondon? ogres")), Has.Some.Contains("lower case"));
+            Assert.That(ProblemsWith(l => l.Replace("[bring 50|take a full raid]", "[bring 50|take a FULL raid]")), Is.Empty, "shouting in caps is 2003 chat");
         }
 
         [Test]
@@ -348,6 +361,7 @@ namespace DOL.GS.Tests
             Assert.That(LoreChannels.LoreRealmView.For(source, LoreChannels.LoreRealm.Albion).GetLocation("krondon").Legend, Is.EqualTo(krondon.Legend));
             var dialogue = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Midgard, "Loremaster Sigrun");
             Assert.That(dialogue.Resolve("keepers")?.Text, Is.EqualTo("Old masters of weather and law."), "the realm's own topics");
+            Assert.That(dialogue.Resolve("warrior queen")?.Text, Does.Contain("ogres"), "and the shared ones");
             var lenient = LoreChannels.LoreJson.ParseLocation(WithTakes(File.ReadAllText(Path.Combine(FixtureDir(RepoRoot()), "locations/krondon.json"))));
             Assert.That(lenient.ForRealm(LoreChannels.LoreRealm.Midgard).Loremaster.Intro, Does.StartWith("Krondon, the Albions'"), "the launcher's reader too");
         }

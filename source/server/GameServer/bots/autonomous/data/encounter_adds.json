@@ -10,6 +10,9 @@
    "aidoncopyfire",
    "aidoncopyice"
   ],
+  "albgolestandt": [
+   "golestandtspawnedadd"
+  ],
   "amphiptere": [
    "amphiptereadds"
   ],
@@ -88,6 +91,9 @@
    "debenfighter",
    "debenmage"
   ],
+  "develin": [
+   "develinadd"
+  ],
   "draargusmighty": [
    "draugynsphere"
   ],
@@ -150,6 +156,9 @@
   "hakr": [
    "hakradd"
   ],
+  "hibcuuldurach": [
+   "cuuldurachspawnedadd"
+  ],
   "highlordbaln": [
    "balnminion"
   ],
@@ -196,6 +205,9 @@
   ],
   "melancholicfairyqueen": [
    "mfqguards"
+  ],
+  "midgjalpinulva": [
+   "gjalpinulvaspawnedadd"
   ],
   "mokkurvalve": [
    "mokkurvalveadds"

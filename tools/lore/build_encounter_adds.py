@@ -21,7 +21,15 @@ OUT = ROOT / 'source/server/GameServer/bots/autonomous/data/encounter_adds.json'
 def build():
     catalog = json.loads(CATALOG.read_text(encoding='utf-8'))
     adds, partners = {}, {}
+    classes = {e['class'] for e in catalog['encounters']}
     for e in catalog['encounters']:
+        # An add with an encounter of its own: "<Boss>Add" (DevelinAdd), or a spawned add naming its boss as partner
+        # (GjalpinulvaSpawnedAdd -> MidGjalpinulva, the dragons' adds from DragonEncounterAdds).
+        if e['class'].endswith('Add') and e['class'][:-3] in classes:
+            adds.setdefault(e['class'][:-3].lower(), set()).add(e['class'].lower())
+        if e['class'].endswith('SpawnedAdd'):
+            for boss in e.get('partners') or []:
+                adds.setdefault(boss.lower(), set()).add(e['class'].lower())
         mates = sorted({c.lower() for c in (e.get('partners') or [])})
         if mates:
             partners.setdefault(e['class'].lower(), set()).update(mates)

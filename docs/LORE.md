@@ -99,7 +99,7 @@ With `z` set, the area is that floor only (within 800 units of height); `z: 0` m
   | `playerDeath` | it kills a player: the yell joins its slay yells, the atmosphere line goes to its zone once a fight |
   | `teleport`, `berserk`, `breath`, `glare` | accepted, never fired: only the boss's own script sees these moments |
 
-  The add triggers need adds in the catalog (`data/encounter_adds.json`, built from it by
+  The add triggers need adds in the catalog: its adds, the encounters it spawns, a `<Boss>Add` encounter, a dragon's `...SpawnedAdd` (`data/encounter_adds.json`, built from it by
   `tools/lore/build_encounter_adds.py`).
 - `wake` is for the dragons (said when one takes to the sky).
 
@@ -115,13 +115,14 @@ A neutral place or boss (Summoner's Hall, Govannon) may give each realm its own 
 }
 ```
 
-Every field is optional; what a take leaves out stays the shared text. Bot lines in a take are that realm's bots' lines
+Every field is optional; what a take leaves out stays the shared text. A take's loremaster intro replaces the shared one and its topics join the shared topics. A take's story may be shorter (from 60 words for a
+place, 40 for a boss). Realm keys are `albion`, `midgard`, `hibernia` in any case. Bot lines in a take are that realm's bots' lines
 (a location's `lore`, `rumour`, `tell`; a boss's `briefing`, `aftermathWin`, `aftermathLoss`, `rumour`), and that realm's
 loremaster, /lore codex and bestiary show its story, legend and loremaster words. The checks are the shared ones.
 
 ### Bot lines
 
-Bot lines are 2003 chat voice: lower case, no `{slots}`, at most 160 characters as said. The corpus's `[a|b]` choices
+Bot lines are 2003 chat voice: lower case (caps for shouting, "SPREAD", "MT", are fine; a Capitalized word is not), no `{slots}`, at most 160 characters as said. The corpus's `[a|b]` choices
 work (`[a|]` is a or nothing; no nesting). Atmosphere lines are said as written, at most 60 characters, no choices.
 
 ## What the files must pass
@@ -144,7 +145,7 @@ era, banned-word, place and realm checks. In short:
 - **Atmosphere:** every line 60 characters or fewer, said as written; a location has at least one `firstEntry` line; a
   boss has at least one atmosphere line of any kind. Areas have a name, x/y, a radius from 100 to 30,000 (a whole zone in an
   umbrella), a region of the location (their own when the location has none), and lines.
-- **Bot lines:** `[a|b]` parses, lower case, no slots, 160 characters or fewer in every way of saying it. A location has
+- **Bot lines:** `[a|b]` parses, lower case (caps only for shouting), no slots, 160 characters or fewer in every way of saying it. A location has
   at least one `tell` line and three bot lines in all; a boss three bot lines in all.
 - **Yells:** 200 characters or fewer; phase triggers parse; add triggers only for bosses with adds.
 - **Loremaster:** a location has an intro and topics; every `[keyword]` in them is a topic of the location or one of its

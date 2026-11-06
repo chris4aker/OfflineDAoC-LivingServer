@@ -509,6 +509,8 @@ public sealed class LoreBible
     private static readonly Regex IdRe = new("^[a-z0-9]+(-[a-z0-9]+)*$", RegexOptions.Compiled);
     private static readonly Regex KeywordRe = new(@"\[([^\[\]|]+)\]", RegexOptions.Compiled);
     private static readonly Regex SlotRe = new(@"\{([A-Za-z]+)\}", RegexOptions.Compiled);
+    /// <summary>A Capitalized word ("Krondon", "Camelot"): one capital, then lower case.</summary>
+    private static readonly Regex TitleCaseRe = new(@"\b[A-Z][a-z]", RegexOptions.Compiled);
 
     /// <summary>What the encounter catalog knows, for <see cref="Validate"/> (built from docs/encounters/epic-encounters.json).</summary>
     public sealed record Catalog(IReadOnlySet<string> Ids, IReadOnlyDictionary<string, string[]> AddsByClass,
@@ -569,7 +571,8 @@ public sealed class LoreBible
                     problems.Add($"{file}: {what} line: {error}: {line}");
                     continue;
                 }
-                Need(line == line.ToLowerInvariant(), $"{file}: {what} lines are in 2003 chat voice, lower case: {line}");
+                // 2003 chat voice: lower case, but shouting in caps is the era ("SPREAD", "MT"); a Capitalized word is not.
+                Need(!TitleCaseRe.IsMatch(line), $"{file}: {what} lines are in 2003 chat voice, lower case (caps for shouting only): {line}");
                 Need(!SlotRe.IsMatch(line), $"{file}: {what} lines take no {{slots}}: {line}");
                 foreach (string said in LoreText.Expand(line))
                     Need(said.Length <= MaxBotLineLength, $"{file}: {what} line is {said.Length} characters as said (max {MaxBotLineLength}): {said}");
@@ -673,7 +676,7 @@ public sealed class LoreBible
                         Need(known.Contains(m.Groups[1].Value.Trim()),
                             $"{f}: loremaster keyword [{m.Groups[1].Value}] has no topic here or in one of its bosses' loremasterTopic");
             }
-            CheckTakes(l.RealmTakes, f, 130, 460);
+            CheckTakes(l.RealmTakes, f, 60, 460);   // a take is one realm's angle, shorter than the story
             if (l.Book == null)
                 problems.Add($"{f}: a book (title and pages)");
             else
@@ -736,7 +739,7 @@ public sealed class LoreBible
             CheckBotLines(b.AftermathWin, "aftermathWin", f);
             CheckBotLines(b.AftermathLoss, "aftermathLoss", f);
             CheckBotLines(b.Rumour, "rumour", f);
-            CheckTakes(b.RealmTakes, f, 70, 345);
+            CheckTakes(b.RealmTakes, f, 40, 345);
             Need(b.Briefing.Length + b.AftermathWin.Length + b.AftermathLoss.Length + b.Rumour.Length >= 3, $"{f}: at least 3 bot lines");
             Need(string.IsNullOrWhiteSpace(b.LoremasterKeyword) == string.IsNullOrWhiteSpace(b.LoremasterText),
                 $"{f}: loremasterTopic needs both keyword and text");
