@@ -1,0 +1,77 @@
+{
+  "id": "jarl-ormarr",
+  "name": "Jarl Ormarr",
+  "catalogKey": "dodens-gruva/jarlormarr",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Jarl Ormarr is a level-65 named with 30,000 health in Dodens Gruva.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He boasts as he fights: 'You call that a hit? I'll show you a hit!' and 'I am a warrior, you can't kill me!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/JarlOrmarr.cs"
+    },
+    {
+      "text": "Allakhazam lists him at 55-64; he drops icebound and niveous gear. The bestiary also lists phantom huscarls in the mine.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6440"
+    },
+    {
+      "text": "Ormarr is an Old Norse personal name; ormr means serpent (to verify).",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    }
+  ],
+  "story": "Ormarr was a jarl of Jamtland in the years before the frontier keeps had names, and he dug Dodens Gruva for iron because a jarl without iron is only a rich farmer. He went down himself when the cold seam opened, at the head of his huscarls, because a jarl does not send men where he will not go. None of them came back up. His huscarls walk the galleries still, phantoms in mail, and Ormarr holds the hall at the end of them. He still believes he cannot be killed. Whatever Aros did to him has made that almost true, and the boast has outlived the man by a long way.",
+  "legend": "Jarl Ormarr talks a lot and hits hard, but he is a straight fight: one good group can do him. He says he can't be killed; he can. Clear the phantom huscarls on the way, because everything in Dodens Gruva helps everything else.",
+  "yells": {
+    "aggro": [
+      "Haha! Come then! A jarl fears nothing under the hill!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Is that all? I have been killed before. It did not take."
+      }
+    ],
+    "death": [
+      "Huscarls... to me... one last time..."
+    ],
+    "slay": [
+      "Another one who thought a jarl could die."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A jarl's hall, cut in the rock. The hearth is cold."
+    ],
+    "realmFirstKill": "Jarl Ormarr has died at last, boast and all."
+  },
+  "botLines": {
+    "briefing": [
+      "jarl ormarr is tank and spank, ignore the trash talk"
+    ],
+    "aftermathWin": [
+      "he said we couldnt kill him. [we did|lol]"
+    ],
+    "aftermathLoss": [
+      "pulled two huscarls with the jarl [oops|my bad]"
+    ],
+    "rumour": [
+      "the jarl down there boasts he cant be killed. [he can|took us 5 min]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ormarr",
+    "text": "The jarl who dug Dodens Gruva for iron and went down at the head of his huscarls when the cold seam opened. He still believes he cannot be killed. Whatever [Aros] did has made it almost true."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} proved Jarl Ormarr mortal in {minutes} minutes.",
+    "loss": "Jarl Ormarr's boast held against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

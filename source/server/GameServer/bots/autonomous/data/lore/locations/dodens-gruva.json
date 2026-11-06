@@ -1,0 +1,143 @@
+{
+  "id": "dodens-gruva",
+  "name": "Dodens Gruva",
+  "realm": "Midgard",
+  "regions": [
+    246
+  ],
+  "summary": "Jarl Ormarr's mine of death under the Jamtland frontier, whose cold seam opens on the Summoner's Hall below.",
+  "facts": [
+    {
+      "text": "Dodens Gruva is Swedish for 'the mine of death'.",
+      "provenance": "original",
+      "source": "Swedish glossary"
+    },
+    {
+      "text": "It is a level 40-50 dungeon on the hill east of Glenlock Faste in the Jamtland Mountains, between Fensalir and Glenlock (62k, 48k). It no longer exists after New Frontiers.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=68"
+    },
+    {
+      "text": "Its bestiary lists Aros the Spiritmaster, Jarl Ormarr, Thane Dyggve, the Mistress of Runes, Gudlaugr, phantom huscarls, decayed dire wolves, icebound moribund, pained spirits, undead guards, cavernous yetis, snow vendo and the neutral Innocents.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=68"
+    },
+    {
+      "text": "A 2002 visitor said the entrance Innocents are neutral and buff passers-by with a 40-minute disease called Leprosy; a 2003 reply said its dark 'second floor' is a different dungeon.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=68"
+    },
+    {
+      "text": "Asked how to reach Summoner's Hall from Midgard, a December 2003 player answered: from Dodens Gruva, after the hard parts.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=74"
+    },
+    {
+      "text": "A guild beat Aros with three groups in January 2003 after an earlier three-group defeat; Living Server sizes the raid at 40.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/dodens-gruva-named-mobs-etc.110133/"
+    }
+  ],
+  "story": "East of Glenlock, on the hill you can see from the keep's walls, Jarl Ormarr opened a mine. He wanted iron. His thane Dyggve swung the first hammer and called down lightning to split the rock; his Mistress of Runes cut the marks that told the tunnels where to go; his spiritmaster Aros read the names of each shift at the shaft and promised that no man who died below would be forgotten. For a while it was a good mine.\n\nThen the Mistress read the mountain and said not here, and the jarl dug anyway, and the picks broke into a cold seam. Below it was not rock but a hall, old and dark and wide, where something was calling the dead, from every realm at once. The miners died. Their dead stood up and began to walk downward, toward the call. The jarl and his huscarls went down to fetch them back and did not return. Aros did the only thing he could think of: he bound them all to the mine, the dead and the living who followed, so that whatever was calling could not have them.\n\nSo the picks still ring in Dodens Gruva. The huscarls patrol as phantoms, the jarl boasts in his hall, Dyggve's lightning comes cold and late, and the jarl's hound waits by the stair down as a pup. At the entrance the Innocents, the families who came looking, press their sickness on you as a gift. And below it all the stair goes on, down out of Midgard, into the Summoner's Hall.",
+  "legend": "The old frontier dungeon: every realm had one, and every one led down to the same hall. Everything in Dodens Gruva helps everything else, so pull clean. Aros took three groups, the second time. The Innocents at the door are harmless, and their gift is leprosy. Don't pet the puppy by the stair. Don't read the names aloud.",
+  "atmosphere": {
+    "firstEntry": [
+      "Picks ring in the dark. No living hand swings them.",
+      "The mine of death. Its miners never left."
+    ],
+    "areas": [
+      {
+        "name": "Aros's chamber",
+        "x": 39061,
+        "y": 36970,
+        "z": 15495,
+        "radius": 900,
+        "lines": [
+          "A voice in the cold is counting names."
+        ]
+      },
+      {
+        "name": "the stair down",
+        "x": 43652,
+        "y": 31972,
+        "z": 13437,
+        "radius": 900,
+        "lines": [
+          "The stair goes down out of Midgard. Something calls."
+        ]
+      },
+      {
+        "name": "the jarl's hall",
+        "x": 45432,
+        "y": 37768,
+        "z": 13966,
+        "radius": 900,
+        "lines": [
+          "A cold hearth. A jarl who will not lie down."
+        ]
+      },
+      {
+        "name": "the last runes",
+        "x": 29728,
+        "y": 42388,
+        "z": 12912,
+        "radius": 800,
+        "lines": [
+          "The runes end here. The last one says: not here."
+        ]
+      },
+      {
+        "name": "the rock face",
+        "x": 32017,
+        "y": 41854,
+        "z": 15484,
+        "radius": 800,
+        "lines": [
+          "A pick rings against stone, steady and endless."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "dodens gruva means the mine of death. [whoever named it|the dwarves who named it] [wasnt joking|knew]",
+      "the jarl dug for iron and broke into the summoner's hall. thats why the dead down there walk",
+      "aros bound the dead miners to the mine so the summoners couldnt have them. [mercy|or not]",
+      "the innocents at the door of dodens gruva are harmless. they give you leprosy as a present"
+    ],
+    "rumour": [
+      "[never say|dont say] a dead friends name in dodens gruva. aros [collects|keeps] them",
+      "the puppy by the stair isnt a puppy. [ask anyone|trust me]",
+      "the stair at the bottom of dodens gruva goes all the way to the summoner's hall. albs and hibs come up the other side"
+    ],
+    "tell": [
+      "dodens gruva is the old frontier mine east of glenlock. undead miners, a jarl, a thane, a runecarver, and aros at the end",
+      "its the mine of death in jamtland. bring three groups for aros. the stair at the bottom goes down to summoner's hall",
+      "dodens gruva? dead miners and their spiritmaster. everything adds to everything, pull clean"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Dodens Gruva. Jarl [Ormarr] dug it for [iron] and found the [cold seam] instead. His spiritmaster [Aros] made the miners a promise, and he is keeping it still.\"",
+    "topics": {
+      "Ormarr": "A jarl of the old Jamtland frontier. He went down at the head of his huscarls when the seam opened, and believes still that he cannot be killed.",
+      "iron": "A jarl needs iron to stay a jarl. The mine gave good iron for a while. The Mistress of Runes read the mountain and warned him off the last seam. He dug anyway.",
+      "cold seam": "It did not open on rock. It opened on a hall, older than Midgard, where something calls the dead of every realm. We call it the Summoner's Hall. The stair is still there, at the bottom, past a puppy you should not pet.",
+      "Aros": "He promised every man who died below would be remembered. When the dead began walking down toward the call, he bound them to the mine so it could not have them. The skalds say a good name never dies. Aros kept the names and forgot the word good. Take three groups, hold his champion while you kill him, and do not tell him yours."
+    }
+  },
+  "book": {
+    "title": "The Tally of Dodens Gruva",
+    "pages": [
+      "A miner's slate, found near the shaft. Here are the names of the shift that went down to the cold seam: Hamar the foreman, Bjorn the Younger, Kol, Ulf Half-hand, and the jarl's hound Gudlaugr, who would not be left behind. The spiritmaster read them out at the shaft and said none would be forgotten. That was the last tally. Whoever finds this slate: we are not forgotten. We are still digging. Do not read our names aloud.",
+      "Second side of the slate, in another hand. The Mistress says the seam is not rock. She says there is a hall under it with a floor older than the hill, and lights moving, and voices calling in three tongues, ours and two others. The jarl laughed and sent us down. When we broke through I heard the voices. They knew my name. Then Aros was beside me, reading names, louder than they were. I do not know which of them I am listening to now. I am still digging."
+    ]
+  },
+  "bosses": [
+    "aros-the-spiritmaster",
+    "jarl-ormarr",
+    "thane-dyggve",
+    "mistress-of-runes",
+    "gudlaugr",
+    "hamar"
+  ]
+}

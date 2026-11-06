@@ -1,0 +1,72 @@
+{
+  "id": "hamar",
+  "name": "Hamar",
+  "catalogKey": "dodens-gruva/hamar",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Hamar is a level-61 named with 30,000 health in Dodens Gruva, with no scripted tricks.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Old Norse hamarr means hammer, and also a crag or rock face (to verify).",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify"
+    },
+    {
+      "text": "The sample tally slate of the lore inventory names Hamar among the shift that went down to the cold seam.",
+      "provenance": "original",
+      "source": "LORE-INVENTORY sample 3 (Living Server writing)"
+    }
+  ],
+  "story": "Hamar's name is the first on the last tally: the foreman of the shift that went down to the cold seam. Hammer, the name means, or the rock face a hammer is for, and he was both. He is still at the face, still swinging, a big dead man who never learned anything but work. He has no tricks. He does not need them. He only wants you to get out of the way of the rock. The other dead step aside for him.",
+  "legend": "Hamar is a plain fight: lots of health, hard hits, no tricks. A good group grinds him down. Some people call him the warm-up for the rest of the mine. Some people call him the only honest thing in it.",
+  "yells": {
+    "aggro": [
+      "Out of the way. The face needs cutting."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Shift's not done. Shift's never done."
+      }
+    ],
+    "death": [
+      "End... of shift..."
+    ],
+    "slay": [
+      "Clear the rubble."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pick rings against the rock face. Steady. Endless."
+    ],
+    "realmFirstKill": "Hamar the foreman's shift is over at last."
+  },
+  "botLines": {
+    "briefing": [
+      "hamar is just a big tank and spank"
+    ],
+    "aftermathWin": [
+      "hamar down. shift over [lol|rip]"
+    ],
+    "aftermathLoss": [
+      "he hits harder than he looks"
+    ],
+    "rumour": [
+      "the foreman of the dead shift is still swinging at the rock face down there"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hamar",
+    "text": "First name on the last tally of [Dodens Gruva]: the foreman of the shift that went down to the cold seam. He is still at the face."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended Hamar's last shift in {minutes} minutes.",
+    "loss": "Hamar kept working; {raidLeader}'s party from {realm} did not, after {minutes} minutes."
+  }
+}

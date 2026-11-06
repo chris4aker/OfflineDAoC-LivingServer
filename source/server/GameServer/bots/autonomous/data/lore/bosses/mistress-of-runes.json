@@ -1,0 +1,78 @@
+{
+  "id": "mistress-of-runes",
+  "name": "Mistress of Runes",
+  "catalogKey": "dodens-gruva/mistressrunes",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "The Mistress of Runes is a level-63 named with 30,000 health in Dodens Gruva.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She casts flaming spears from above (Odin's Hatred, 650 damage in a 450 radius) and Mistress's Vision, a nearsight on a far target.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs"
+    },
+    {
+      "text": "Allakhazam lists her at 55-60; she drops a staff of runes and icy sapphire jewels for all three realms.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4104"
+    }
+  ],
+  "story": "The Mistress of Runes cut the marks that told the mine where to go. A good runecarver can read a mountain, and she read this one better than anyone, and she warned the jarl against the cold seam. He dug anyway. Now she guards the gallery where her runes run out, and she throws the spears of Odin's Hatred down on anyone who passes, from above, where the marks end. Her vision-curse dims the eyes of whoever looks at her too long. The runes she carved on the last wall say only: not here.",
+  "legend": "Spread out: her flaming spears land in a circle. Her nearsight hits from a long way off, so casters fight from inside it or get purged. One group can manage her if they don't clump. Her sapphire jewels drop for every realm, which nobody can explain.",
+  "yells": {
+    "aggro": [
+      "I told him. Not here. Not this seam."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Odin's Hatred, fall on them!"
+      }
+    ],
+    "death": [
+      "Read... the last wall..."
+    ],
+    "slay": [
+      "You did not read the runes either."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Runes run along the wall and stop. The last says: not here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Flaming spears fall from above!"
+      }
+    ],
+    "realmFirstKill": "The Mistress of Runes is slain. Her warning stands."
+  },
+  "botLines": {
+    "briefing": [
+      "mistress of runes: spread for the spears, purge the nearsight"
+    ],
+    "aftermathWin": [
+      "mistress down, got a sapphire"
+    ],
+    "aftermathLoss": [
+      "we clumped and the spears did the rest"
+    ],
+    "rumour": [
+      "the runecarver in dodens gruva warned the jarl not to dig. [he dug|nobody listens]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Mistress of Runes",
+    "text": "The runecarver who read the mountain for Jarl [Ormarr] and warned him off the cold seam. He dug anyway. The last rune she carved says only: not here."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced the Mistress of Runes in {minutes} minutes.",
+    "loss": "The Mistress of Runes rained Odin's Hatred on {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

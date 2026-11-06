@@ -1,0 +1,83 @@
+{
+  "id": "gudlaugr",
+  "name": "Gudlaugr",
+  "catalogKey": "dodens-gruva/gudlaugr",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "facts": [
+    {
+      "text": "Gudlaugr is a level-64 named with 30,000 health in Dodens Gruva.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Roused, he turns into a demon wolf (rage form, Strength 330); the first time he changes he heals to full. His bite wounds snare and bleed.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam says he lies close to the entrance to Summoner's Hall and looks like a small puppy until aggroed, when he grows to about the height of a troll.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6433"
+    },
+    {
+      "text": "Gudlaugr (Gudlaugr) is an Old Norse personal name (to verify).",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    }
+  ],
+  "story": "Gudlaugr was the jarl's hound, a pup too young to be left behind, who followed the shift down to the cold seam. He is a pup still, curled by the stair that leads down out of the mine into the hall below, as if waiting for his master to come back up it. Wake him, and whatever the calling from below has done to him shows: he grows, and grows, and stands up a demon wolf the height of a troll, whole again, with a bite that drags you down and bleeds you. When it is over, the miners say, he is a pup again, and he goes back to waiting.",
+  "legend": "Don't trust the puppy. Gudlaugr changes and heals to full the first time, so don't blow your burst before he turns. Snare-break and bandages for his bite. He lies by the stair to Summoner's Hall: if you're going down, he is your last test in the mine.",
+  "yells": {
+    "aggro": [
+      "(The pup lifts its head. Its eyes are wrong.)"
+    ],
+    "phases": [
+      {
+        "trigger": "morph",
+        "text": "(Gudlaugr grows, and grows, and does not stop.)"
+      }
+    ],
+    "death": [
+      "(A puppy's whimper, and then silence.)"
+    ],
+    "slay": [
+      "(The great wolf shrinks back into a pup and lies down.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A puppy waits by a stair that goes down. And down."
+    ],
+    "phases": [
+      {
+        "trigger": "morph",
+        "text": "The pup becomes a demon wolf!"
+      }
+    ],
+    "realmFirstKill": "Gudlaugr, the jarl's hound, waits no longer."
+  },
+  "botLines": {
+    "briefing": [
+      "gudlaugr looks like a puppy. he isnt. he heals to full when he changes, hold burst till then"
+    ],
+    "aftermathWin": [
+      "killed the demon puppy. [i feel bad|poor dog|good dog]"
+    ],
+    "aftermathLoss": [
+      "blew everything before he changed. dumb"
+    ],
+    "rumour": [
+      "theres a puppy by the summoner's hall stair in dodens gruva. [dont pet it|seriously dont]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Gudlaugr",
+    "text": "The jarl's hound, too young to be left behind, who followed the shift down. He waits by the stair to the hall below, a pup until roused."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} laid the jarl's hound Gudlaugr to rest in {minutes} minutes.",
+    "loss": "Gudlaugr the demon wolf ran down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}
