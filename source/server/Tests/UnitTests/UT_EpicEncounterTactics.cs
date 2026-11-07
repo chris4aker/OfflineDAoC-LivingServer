@@ -445,9 +445,12 @@ namespace DOL.UnitTests
             {
                 PropertyInfo p = typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
                 Assert.That(p, Is.Not.Null, name);
-                // 1.2: the Earthmenders' class rule is on (UT_EpicEncounterTactics3), and Galladoria's others since wave 2
-                // (UT_EpicWaveTwo.GalladoriasRestoredMechanicsAreOn).
-                Assert.That((bool)p.GetValue(null), Is.EqualTo(UT_EpicWaveTwo.GalladoriaRestoresOn.Contains(name)), name);
+                // 1.2: the Earthmenders' class rule is on (UT_EpicEncounterTactics3), Galladoria's others since wave 2
+                // (UT_EpicWaveTwo.GalladoriasRestoredMechanicsAreOn), and the Tuscar/Kula twin heal, Kvasir's cold heal and
+                // Govannon's full health (UT_EpicWave2MidHib).
+                bool played = UT_EpicWaveTwo.GalladoriaRestoresOn.Contains(name) || name is nameof(EpicEncounterMechanics.AllowTuscarTwinHeal) or
+                    nameof(EpicEncounterMechanics.AllowKvasirColdHeal) or nameof(EpicEncounterMechanics.AllowGovannonFullHealth);
+                Assert.That((bool)p.GetValue(null), Is.EqualTo(played), name);
             }
         }
 

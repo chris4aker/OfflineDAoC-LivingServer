@@ -61,7 +61,8 @@ namespace DOL.GS
 
         // Original OpenDAoC mechanics the fork had edited out for bot raids (docs/encounters/EPIC-ENCOUNTERS.md, "Restored
         // behind switches"). Each is off, so the game plays as before, until the raid AI can play it; the ones it plays are on
-        // (Galladoria's since 1.2, epic wave 2). The values were read
+        // (1.2, epic wave 2: Galladoria's, the Earthmender class puzzle, Kvasir's cold heal, the Tuscar/Kula twin heal,
+        // Govannon's full health). The values were read
         // from OpenDAoC-Core 3513bad (2026-11-04). Settable so the tests and the next raid AI step can turn one on.
 
         /// <summary>Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over).</summary>
@@ -96,12 +97,15 @@ namespace DOL.GS
         public static bool AllowBeathaHealsXaga { get; set; } = true;
         /// <summary>Beatha and Tine circle the room even while they are fought.</summary>
         public static bool AllowFairyFlight { get; set; } = true;
-        /// <summary>Grand Summoner Govannon has 300,000 health (not 200,000).</summary>
-        public static bool AllowGovannonFullHealth { get; set; }
-        /// <summary>Cold damage heals Icelord Kvasir by a fifth of his health and does no damage.</summary>
-        public static bool AllowKvasirColdHeal { get; set; }
-        /// <summary>Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health.</summary>
-        public static bool AllowTuscarTwinHeal { get; set; }
+        /// <summary>Grand Summoner Govannon has 300,000 health (not 200,000). On since 1.2 (epic wave 2): the raid kills his
+        /// sacrifice and demon at range and spreads in his demon form (EpicEncounterTactics); the owner tests the win rate.</summary>
+        public static bool AllowGovannonFullHealth { get; set; } = true;
+        /// <summary>Cold damage heals Icelord Kvasir by a fifth of his health and does no damage. On since 1.2: no bot casts
+        /// cold at him (EpicEncounterTactics.ForbidsSpell).</summary>
+        public static bool AllowKvasirColdHeal { get; set; } = true;
+        /// <summary>Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health.
+        /// On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics).</summary>
+        public static bool AllowTuscarTwinHeal { get; set; } = true;
 
         /// <summary>Every restore switch, by name (for logs, tests and the catalog).</summary>
         public static readonly string[] RestoreSwitches =
@@ -151,6 +155,29 @@ namespace DOL.GS
             // AllowDisplacement): see docs/encounters/EPIC-ENCOUNTERS.md.
             Ship(nameof(AllowPositionPuzzle), "Conservator", true),
             Ship(nameof(AllowPositionPuzzle), "Easmarach", true),
+            // Epic wave 2, Midgard and Hibernia (EpicEncounterTactics.Tuscaran/SummonersHall/Hibernia, UT_EpicWave2MidHib).
+            // Tuscaran Glacier: Kula's drag to her throne and frost circle, Vifil's jail (a team clears the guards), the throws.
+            Ship(nameof(AllowDisplacement), "QueenKula", true),
+            Ship(nameof(AllowPositionPuzzle), "QueenKula", true),
+            Ship(nameof(AllowBotDisplacement), "QueenKula", true),
+            Ship(nameof(AllowDisplacement), "Jailer", true),
+            Ship(nameof(AllowBotDisplacement), "Jailer", true),
+            Ship(nameof(AllowDisplacement), "Hakr", true),
+            Ship(nameof(AllowBotDisplacement), "Hakr", true),
+            Ship(nameof(AllowDisplacement), "Hurika", true),
+            Ship(nameof(AllowBotDisplacement), "Hurika", true),
+            // Summoner's Hall: Cunovinda's ledge, the Shade of Aelfgar's gallery.
+            Ship(nameof(AllowBotDisplacement), "SummonerCunovinda", true),
+            Ship(nameof(AllowBotDisplacement), "ShadeOfAelfgar", true),
+            // Midgard: Iarnvidiur's teleport, Boligar's port, Mortufoghus's and Ydenia's throws, the Glacier Giant's kick.
+            Ship(nameof(AllowBotDisplacement), "Iarnvidiur", true),
+            Ship(nameof(AllowBotDisplacement), "Boligar", true),
+            Ship(nameof(AllowBotDisplacement), "Mortufoghus", true),
+            Ship(nameof(AllowBotDisplacement), "Ydenia", true),
+            Ship(nameof(AllowBotDisplacement), "GlacierGiant", true),
+            // Fomor: Krackenschtein's throw, Anurigunda's doorway push.
+            Ship(nameof(AllowBotDisplacement), "Krackenschtein", true),
+            Ship(nameof(AllowBotDisplacement), "Anurigunda", true),
         ];
 
         private static (string, string, bool) Ship(string name, string encounter, bool value) => (name, encounter, value);

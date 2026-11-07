@@ -130,7 +130,8 @@ namespace DOL.UnitTests
             var govannon = Row("GrandSummonerGovannon");
             Assert.That((govannon.SpreadRadius, govannon.SpreadWhileModel), Is.EqualTo((300, 636)), "Shroud of Agony, demon model");
             Assert.That(govannon.RangedAdds, Is.EqualTo(new[] { "SummonedSacrifice", "SummonedDemon" }));
-            Assert.That(govannon.RequiredAdds, Is.Empty, "he is never immune to the raid: nobody leaves him for good");
+            // Epic wave 2: the Shade of Aelfgar (only if both walkers reach his altar) is killed first; he is never immune.
+            Assert.That(govannon.RequiredAdds, Is.EqualTo(new[] { "ShadeOfAelfgar" }));
             var orshom = Row("Orshom");
             Assert.That((orshom.Hazards.Single(), orshom.HazardRadius), Is.EqualTo(("OrshomFire", 300)), "Fire Burn's radius");
             Assert.That(Row("Orylle").After, Is.EqualTo("Orshom"));
@@ -144,7 +145,7 @@ namespace DOL.UnitTests
                              .Concat(t.After == null ? [] : [t.After]))
                     Assert.That(gs.GetTypes().Any(x => x.Name == type && typeof(GameNPC).IsAssignableFrom(x)), Is.True, type);
             Assert.That(EpicEncounterTactics.SwitchOn(nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle)), Is.True);
-            Assert.That(EpicEncounterTactics.SwitchOn(nameof(EpicEncounterMechanics.AllowGovannonFullHealth)), Is.False);
+            Assert.That(EpicEncounterTactics.SwitchOn(nameof(EpicEncounterMechanics.AllowGovannonFullHealth)), Is.True, "on since epic wave 2");
             Assert.That(EpicEncounterTactics.SwitchOn("NoSuchSwitch"), Is.False);
         }
 
@@ -450,7 +451,11 @@ namespace DOL.UnitTests
         {
             var on = EpicEncounterMechanics.RestoreSwitches.Where(name =>
                 (bool)typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static).GetValue(null)).ToArray();
-            Assert.That(on, Is.EquivalentTo(UT_EpicWaveTwo.GalladoriaRestoresOn), "the class rule and Galladoria's wave-2 switches");
+            // Epic wave 2: Galladoria's (UT_EpicWaveTwo) and the three the raid now plays in Tuscaran Glacier and Summoner's
+            // Hall (UT_EpicWave2MidHib).
+            Assert.That(on, Is.EquivalentTo(UT_EpicWaveTwo.GalladoriaRestoresOn.Concat(new[] {
+                nameof(EpicEncounterMechanics.AllowGovannonFullHealth), nameof(EpicEncounterMechanics.AllowKvasirColdHeal),
+                nameof(EpicEncounterMechanics.AllowTuscarTwinHeal) })), "the class rule and wave 2's switches");
         }
     }
 }

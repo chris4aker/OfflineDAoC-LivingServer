@@ -37,6 +37,39 @@ wave 2). Tested by automated tests only; not played in game yet. These fights ar
   can't finish him on the waterfall yet), and Legion throwing bots (his platform has no way down). Legion's adds, his
   range and his heal on a kill have raid rules now, but the Darkness Falls raid is still not a full raid AI.
 
+**Tuscaran Glacier, Summoner's Hall, Iarnvidiur's Lair and the Fomor and Marfach bosses play their full mechanics, and
+the raid plays them** (the epic encounters, wave 2, Midgard and Hibernia). Tested by automated tests only; not played in
+game yet.
+- **King Tuscar and Queen Kula heal each other again:** damage to one heals the other while it is hurt. The raid kills
+  Kula first, only the King's own tank keeps him busy, and the casters on Kula stay out of his hammer blows. Kula drags
+  raiders (bots too) to her throne, where her frost circle freezes them: a bot waits it out like you would and walks back,
+  and nobody fights inside the circle.
+- **Icelord Kvasir drinks cold again:** cold heals him a fifth of his health. Bots never cast cold at him (your companions
+  neither). When his primal scream is due, everyone but his tank's group steps away from his tank before the mass
+  mesmerize lands, then goes back in.
+- **Jailer Vifil's jail is back, for bots too.** Once the fight starts, one or two groups of bots run down the tunnel,
+  kill the two guards at the jail and come back, so whoever he jails after that walks straight out. Your own group is
+  never sent; you hear when a team goes.
+- **Fornfrusenen:** the raid kills his shards first (each one takes a quarter of his health while he is above 35%), and
+  everyone, casters too, fights him from close by, since he only takes damage from within 200.
+- **Council Vagn and Nokkvi:** casters fight Nokkvi, everyone else Vagn (each shrugs off 90% of the other kind).
+- **Icelord Hakr's toss and Hurika's gust** now hit bots too; they fall, take the fall damage and run back, and the
+  healers see to them first. Torst and Hurika still sit on their perches (their flying patrol stays off: the raid can't
+  pull a flying patrol yet).
+- **Grand Summoner Govannon has his full 300,000 health again.** If both his walkers reach the altar, the raid kills the
+  Shade of Aelfgar first; the Shade sends raiders (bots too) to the gallery. Summoner Cunovinda's ledge throw hits bots
+  too. At Summoner Lossren, the raider the infected ghoul crawls toward walks away from it while the casters kill it.
+- **Iarnvidiur, Boligar, Mortufoghus, Ydenia and the Glacier Giant** throw and teleport bots too; the bots run back.
+- **Fomor:** Krackenschtein is fought from close by (he only takes damage within 300) and his throw hits bots too; his
+  throw no longer breaks when nobody is near him. Myrddraxis's raid steps back before his stunning breath and his breath
+  of annihilation. Anurigunda pushes bots back from her doorway too.
+- **Marfach Caverns:** casters and healers stay clear of the Black Lady's Void Strike around her tank, and whoever
+  Avartack fights turns to face him (his back strike hurts).
+- **Your group calls it:** a bot in your group calls each mechanic in /group as the raid plays it ("dont touch the king,
+  all on kula", "no cold on kvasir, it heals him", "shards first").
+- **Test first:** Govannon at full health with his heal to full at 50%, and Kula and Tuscar with the twin heal, may be
+  much harder than before for a raid of bots.
+
 **Boss throws, teleports and jails now hit bots too, and bots get back** (the epic encounters, wave 1). Tested by
 automated tests only; not played in game yet.
 - **Before:** a boss's throw or teleport only ever picked you. Bots were never thrown, so the mechanic either landed on

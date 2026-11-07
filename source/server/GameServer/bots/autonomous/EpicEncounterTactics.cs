@@ -368,7 +368,8 @@ namespace DOL.GS
             Reposition
         }
 
-        public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason);
+        /// <param name="Call">The party's call for this decision (a combat_calls.lines topic; dungeon rules), or null.</param>
+        public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason, string Call = null);
 
         /// <summary>
         /// The tactic for one raider about to attack <paramref name="target"/>. <paramref name="partyIndex"/> spreads the
@@ -398,6 +399,9 @@ namespace DOL.GS
                 return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
             // Epic wave 2 (EpicEncounterTactics.Signals.cs): announced mechanics, close-range and safe-spot rules.
             if (DecideWaveTwo(raider, target, live, partyIndex, canShootFlyers, now, classId) is Advice waveTwo) return waveTwo;
+            // The encounter's own code rules (EpicEncounterTactics.<Dungeon>.cs) come before the catalog's generic ones.
+            if (DungeonAdvice(new RuleContext(raider, target, live, partyIndex, canShootFlyers, now, classId)) is { Action: not BotAction.None } own)
+                return own;
             if (For(target) is { HasHazards: true } ht)
                 foreach (GameNPC hazard in LiveHazards(target, live))
                     if (HazardEscape(at, new(hazard.X, hazard.Y, hazard.Z), ht.HazardRadius) is Vector3 outOfIt)
@@ -647,9 +651,12 @@ namespace DOL.GS
         public static bool TryHandle(GameBot bot, GameNPC target)
         {
             if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup ||
-                For(target) == null && !IsTacticPart(target) && !HasWaveTwoRule(bot, target, GameLoop.GameLoopTime)) return false;
+                For(target) == null && !IsTacticPart(target) && !HasWaveTwoRule(bot, target, GameLoop.GameLoopTime) && !HasDungeonRule(target))
+                return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
+            DungeonActs(bot, target, live);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
+            if (advice.Call != null) MechanicCall(bot, advice.Call, RequiredAddOwner(target, live) ?? target, advice.Target);
             switch (advice.Action)
             {
                 case BotAction.Retarget:

@@ -177,7 +177,10 @@ namespace DOL.AI.Brain
 					}
 				}
 			}
-			if (CanPort == false)
+			// 1.2: only living raiders still near him (the list was never pruned), and none at all is no throw (it threw).
+			Enemys_To_Port.RemoveAll(l => l == null || !l.IsAlive || l.ObjectState != GameObject.eObjectState.Active ||
+				l.CurrentRegionID != Body.CurrentRegionID || !l.IsWithinRadius(Body, 2000));
+			if (CanPort == false && Enemys_To_Port.Count > 0)
 			{
 				GameLiving Target = Enemys_To_Port[Util.Random(0, Enemys_To_Port.Count - 1)];//pick random target from list
 				TeleportTarget = Target;//set random target to static RandomTarget
