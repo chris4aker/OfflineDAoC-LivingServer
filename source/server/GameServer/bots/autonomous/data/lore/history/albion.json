@@ -41,7 +41,8 @@
         "xanxicar",
         "legendary-afanc",
         "cailleach-uragaig",
-        "scurceol-hyrde"
+        "scurceol-hyrde",
+        "marsh-lord"
       ]
     },
     {
@@ -107,7 +108,8 @@
         "avalon-city",
         "forest-sauvage",
         "caer-sidi",
-        "camelot-hills"
+        "camelot-hills",
+        "avalon-marsh"
       ],
       "bosses": [
         "wrath-of-mordred",
@@ -386,7 +388,8 @@
       "places": [
         "camelot",
         "camelot-hills",
-        "black-mountains-south"
+        "black-mountains-south",
+        "avalon-marsh"
       ],
       "bosses": []
     },
@@ -403,7 +406,8 @@
         "camelot-hills",
         "salisbury-plains",
         "black-mountains-south",
-        "campacorentin-forest"
+        "campacorentin-forest",
+        "avalon-marsh"
       ],
       "bosses": [
         "golestandt",
@@ -415,7 +419,8 @@
         "mouth",
         "fester",
         "cailleach-uragaig",
-        "green-knight"
+        "green-knight",
+        "marsh-lord"
       ]
     },
     {
