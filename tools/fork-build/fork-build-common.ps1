@@ -172,7 +172,10 @@ function Get-ContentPatchReplaces($Patch) {
 # Keyed by Path: the content patches of the build folder a script runs from.
 function Get-ContentPatchMap([string]$BuildDir) {
     $map = @{}
-    foreach ($patch in Read-ContentPatches $BuildDir) { $map[[string]$patch.Path] = $patch }
+    # Assigned first: Windows PowerShell 5.1's ConvertFrom-Json writes the whole list as one object, and a foreach over
+    # the call itself would see that one object (CI 2026-11-07); the assignment unrolls it, as the installer's does.
+    $patches = Read-ContentPatches $BuildDir
+    foreach ($patch in $patches) { if ($patch.Path) { $map[[string]$patch.Path] = $patch } }
     return $map
 }
 
