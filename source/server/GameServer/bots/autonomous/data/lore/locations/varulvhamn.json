@@ -197,5 +197,15 @@
       "The wolfaur said one more thing to me, the night it decided not to kill me. It said that the young ones in the upper tunnels think the old ones are soft because they talk. It said that talk is what a wolf does when it has already decided it can win, and is deciding whether to bother. Then it walked me to the ramp that goes up to Skona, and I came out under the stars, and I have not been down since. My son wants to go. I have given him this book and told him to read the last page twice."
     ]
   },
-  "bosses": []
+  "bosses": [
+    "hresvelgr",
+    "high-lord-athulf",
+    "high-lord-modolfr",
+    "high-lord-tarnkappe",
+    "lords-of-the-table",
+    "ritter",
+    "manstrale",
+    "thelod",
+    "faz"
+  ]
 }
