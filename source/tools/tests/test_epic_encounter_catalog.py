@@ -86,8 +86,14 @@ class CatalogFileTests(unittest.TestCase):
 
     def test_move_picks_include_bots_exactly_where_bot_displacement_ships_on(self):
         # 1.2: EncounterTargets.DisplacesBots asks the move's own switch (AllowBotDisplacement per encounter).
-        self.assertEqual(cat.shipped_bot_displacement(), {"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar"})
+        # The foundation's four, and wave 2's (Albion: Krondon's orbs, Krevo and Orylle, Sys'sro, the sphere, Moran, Bane).
+        self.assertLessEqual({"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar", "Orylle", "LyftMihtOne",
+                              "SyssroRuthless", "MoranTheMighty"}, cat.shipped_bot_displacement())
+        self.assertNotIn("Jailer", cat.shipped_bot_displacement())
         by_id = {e["id"]: e for e in self.data["encounters"]}
+        orylle = [r for r in by_id["krondon/orylle"]["rules"] if r["kind"] == "teleport"]
+        self.assertTrue(orylle)
+        self.assertNotIn("real players only", orylle[0].get("affects") or "", "Orylle's throw picks bots as shipped (wave 2)")
         throw = [r for r in by_id["crystal-cave/xanxicar"]["rules"] if r["kind"] == "teleport"]
         self.assertTrue(throw)
         self.assertNotIn("real players only", throw[0].get("affects") or "", "Xanxicar's throw picks bots as shipped")

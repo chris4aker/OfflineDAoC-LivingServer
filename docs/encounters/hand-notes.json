@@ -464,8 +464,9 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
-   }
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+   },
+   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two."
   },
   "caer-sidi/baneofhope": {
    "verified": true,
@@ -476,7 +477,7 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -497,7 +498,7 @@
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -514,13 +515,14 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
     "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full, so only clerics, scouts with their longbow (who step back rather than ever swing a melee weapon at him) and a mercenary, armsman or infiltrator already holding its bow or crossbow fight him (bots of those three don't switch weapons, so in practice clerics and scouts). Everyone else drops him, calls its pet off and waits 1,400 away, and never puts an area spell where he stands (EpicEncounterTactics.CaerSidi). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics."
   },
   "caer-sidi/host": {
    "verified": true,
@@ -557,7 +559,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -566,7 +568,8 @@
     "fightAtHomeRadius": 2700,
     "summary": "Required adds (1.2, with his original swarm shield on): while a swarm of morbus lives (6-10 a wave, 15,000 health, weak to cold, every 25-40 s once the last wave is dead) he takes no damage and stops fighting, so the raid kills the swarm (each party takes one) and turns back on him once it is gone. Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 (wave 2): his swarm shield is on (AllowAddShield per encounter) and counts the swarm alive within 4,000 (SwarmAlive), not the static count; the raid kills the swarm first (catalog required adds)."
   },
   "caer-sidi/silencer": {
    "verified": true,
@@ -699,7 +702,7 @@
   "darkness-falls/beliathan": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "b41053d04f15f0debb8a6a6c94ff930b205b7efabc171512b30c072fde09b9e4"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "5265ec39624ceb7e570ecda41a168e7edf51cf58114b03a565fafa7f4ec3cd4c"
    },
    "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid."
   },
@@ -1949,8 +1952,9 @@
   "open-world/moranthemighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "1e4281f1e82a152f99318a38e62c74907512296934a5796f2ccfc23df1d11aa7"
-   }
+    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "faf306406385799b4d8b9b2af801bdb6d7dd4f10ec3ac641a06cd9b038b24583"
+   },
+   "notes": "1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran."
   },
   "open-world/ofgreenknight": {
    "verified": true,
