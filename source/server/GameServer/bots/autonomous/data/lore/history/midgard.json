@@ -116,8 +116,11 @@
       "bosses": [
         "arnulv",
         "bjornvarg",
+        "burr",
         "desukva",
         "eildird",
+        "eiorharn",
+        "esulv",
         "geirolf",
         "gjalpinulva",
         "gunnolf",
@@ -128,6 +131,7 @@
         "leildolf",
         "ljornrn",
         "mokerkialfi",
+        "rana",
         "raumarik-revenant",
         "runemistress-shayla",
         "steinolf",
@@ -205,6 +209,7 @@
         "aros-the-spiritmaster",
         "captain-gruff",
         "cargila",
+        "danin",
         "fas",
         "fjalar",
         "freyana",
@@ -214,18 +219,23 @@
         "hamar",
         "igo",
         "jarl-ormarr",
+        "kalph",
         "mistress-of-runes",
         "nagoltooth",
         "noma-rindasdottir",
         "ond",
         "rottild-the-traitor",
+        "smarta",
         "stripe",
         "summoned-guardian",
         "summoner-cunovinda",
         "summoner-lossren",
         "summoner-roesia",
+        "tebui",
         "thane-dyggve",
+        "vixitr",
         "ydenia-of-the-seithkona",
+        "yleg",
         "zrit-zrit"
       ]
     },
@@ -509,7 +519,10 @@
       "bosses": [
         "arnulv",
         "bjornvarg",
+        "burr",
         "eildird",
+        "eiorharn",
+        "esulv",
         "geirolf",
         "gjalpinulva",
         "gunnolf",
@@ -582,7 +595,10 @@
         "desukva",
         "eildird",
         "gunflor",
-        "kariig"
+        "kariig",
+        "rana",
+        "smarta",
+        "tebui"
       ]
     },
     {
@@ -716,7 +732,8 @@
         "runil",
         "soulsong",
         "thorkatla",
-        "wretch-of-winter"
+        "wretch-of-winter",
+        "yleg"
       ]
     },
     {
@@ -804,7 +821,11 @@
         "spindelhalla"
       ],
       "bosses": [
-        "gunflor"
+        "gunflor",
+        "kalph",
+        "smarta",
+        "vixitr",
+        "yleg"
       ]
     },
     {
@@ -1011,6 +1032,7 @@
       "summary": "What holds the deep roads under Spindelhalla's farm: the cave trows and their chief, the deeplurks, and the two old things at the bottom the svartalfar name for evil and dread.",
       "places": [],
       "bosses": [
+        "danin",
         "fas",
         "igo",
         "ond"
