@@ -390,6 +390,15 @@
       ]
     },
     {
+      "id": "stonecrush",
+      "name": "The Stonecrush ogres of Dartmoor",
+      "summary": "Granite-eating ogres out of the Cornish tin workings who dig Dartmoor's western slopes and eat the granite giants; Kez leads the diggers toward the Bed, and a few who would rather trade keep the hill of Grimspound for Albion.",
+      "places": [
+        "dartmoor"
+      ],
+      "bosses": []
+    },
+    {
       "id": "dead-legions",
       "name": "The dead legions of Rome",
       "summary": "The Roman dead who never stood down: Mithras' soldiers keeping their oaths, the legion of Cardova and its emperor, the magistrate Sanguis.",
