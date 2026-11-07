@@ -9,14 +9,14 @@ namespace DOL.GS.Commands;
 // It opens a forced realm raid of a chosen size on a chosen encounter, the launcher's forced-raid path with the period size
 // (docs/RAID-SIZES.md) instead of 300, and moves the reserved level 50s to the raid's muster hub, which stands in for the
 // realm's bots walking there from all over the world. From the hub on everything is the game's own: parties form, assemble,
-// travel to the staging post, go in when 90% are staged, and the dungeon route, tactics and encounter scripts run the fight.
+// travel to the staging post, go in when 80% are staged, and the dungeon route, tactics and encounter scripts run the fight.
 // It works from the server console (no player needed) and in game for a GM.
 [CmdAttribute(
     "&epictest",
     ePrivLevel.GM,
     "Play test: open a realm raid of a chosen size on a chosen encounter",
     "/epictest list - every raid, its realm, period size and hub",
-    "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub] - a forced raid of <size> bots (era = the period size, start = 125%); the reserved bots are moved to its hub unless nohub",
+    "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub",
     "/epictest gather <event> - move the raid's party members still away from its hub to it (before it leaves), or those not yet on its staging ring to the entrance (before it goes in)",
     "/epictest status - the running raids",
     "/epictest stop <event> - end a running raid")]
@@ -75,13 +75,14 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
         if (args.Length < 3) { DisplaySyntaxOf(client); return; }
         var definition = AutonomousRealmRaid.Definitions.FirstOrDefault(d => d.Id == args[2]);
         if (definition == null) { Say(client, $"No raid {args[2]}; /epictest list shows them."); return; }
-        string sizeWord = args.Skip(3).FirstOrDefault(a => !a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase) && a != "nohub");
+        string sizeWord = args.Skip(3).FirstOrDefault(a => !a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase) && a != "nohub" && a != "atstaging");
         int size = SizeFor(sizeWord?.ToLowerInvariant(), definition.SuggestedBots);
         if (size <= 0) { Say(client, $"Size \"{sizeWord}\" is not a number of 8 or more, era or start."); return; }
         string[] focus = args.Skip(3).Where(a => a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase))
             .SelectMany(a => a[6..].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)).ToArray();
         bool moveToHub = !args.Contains("nohub");
-        if (!AutonomousRealmRaid.Start(definition.Id, definition.Realm, out string reason, true, size, focus.Length > 0 ? focus : null))
+        bool atStaging = args.Contains("atstaging");
+        if (!AutonomousRealmRaid.Start(definition.Id, definition.Realm, out string reason, true, size, focus.Length > 0 ? focus : null, atStaging))
         {
             Say(client, $"Not started: {reason}");
             return;
@@ -130,7 +131,7 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
     }
 
     private static void DisplaySyntaxOf(GameClient client) =>
-        Say(client, "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub]");
+        Say(client, "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging]");
 
     private static void Say(GameClient client, string message)
     {

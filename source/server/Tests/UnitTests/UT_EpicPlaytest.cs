@@ -21,11 +21,11 @@ namespace DOL.UnitTests
         public void SizeIsEraStartOrANumber(string word, int period, int expected) =>
             Assert.That(EpicPlaytestCommandHandler.SizeFor(word, period), Is.EqualTo(expected));
 
-        [TestCase(100, 90)]
-        [TestCase(64, 58)]
-        [TestCase(70, 63)]
+        [TestCase(100, 80)]
+        [TestCase(64, 52)]
+        [TestCase(70, 56)]
         [TestCase(8, 8)]
-        public void APlaytestRaidGoesInWithNinetyPercentStaged(int size, int required) =>
+        public void APlaytestRaidGoesInWithEightyPercentStaged(int size, int required) =>
             Assert.That(AutonomousRealmRaid.PlaytestRequired(size), Is.EqualTo(required));
 
         [Test]

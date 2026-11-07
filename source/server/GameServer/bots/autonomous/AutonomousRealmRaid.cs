@@ -455,6 +455,8 @@ namespace DOL.GS
                             raid.Started = true;
                             raid.Deadline = !raid.Clocked ? long.MaxValue : now + RealmRaidRecruitmentPolicy.BattleMilliseconds;
                             RealmEventRecords.Progress(raid.Definition.Id, "Battle", "Expedition began advancing to the encounter.", raid.Support.Length, present);
+                            Log.Info($"REALM_RAID_STARTED event={raid.Definition.Id} present={present} required={raid.Required} " +
+                                     $"support={raid.Support.Length} minutes={(now - raid.Created) / 60_000} forced={raid.Forced} playtest={raid.Playtest}");
                             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
                                 $"The {raid.Definition.Name} expedition is advancing with {present} staged level-50 adventurers.");
                             // An expedition that lost here the last two times brings the Epic Special Forces from the start
@@ -564,15 +566,18 @@ namespace DOL.GS
         }
 
         public static bool Start(string id, eRealm realm, out string reason, bool forced = false) =>
-            Start(id, realm, out reason, forced, 0, null);
+            Start(id, realm, out reason, forced, 0, null, false);
 
         /// <summary>
         /// A play test's raid (/epictest, 1.2): a forced raid of <paramref name="playtestSize"/> bots (the encounter's period
         /// size, docs/RAID-SIZES.md) instead of the launcher's 300; it goes in when 90% of them stand at the staging post.
         /// <paramref name="playtestFocus"/> (names or class names) limits the dungeon route to those encounters and the adds
         /// around them, with no first-hour trash clear: the raid walks to them and fights what attacks it on the way.
+        /// <paramref name="playtestAtStaging"/> musters the raid at its own staging post instead of the realm's hub (a test
+        /// server with only the dungeon's navmeshes, or a test of the fight alone): the walk from the hub is skipped.
         /// </summary>
-        public static bool Start(string id, eRealm realm, out string reason, bool forced, int playtestSize, string[] playtestFocus)
+        public static bool Start(string id, eRealm realm, out string reason, bool forced, int playtestSize, string[] playtestFocus,
+            bool playtestAtStaging)
         {
             int forcedRoster = playtestSize > 0 ? playtestSize : RealmRaidRecruitmentPolicy.MaximumBots;
             RealmRaidMuster.Hub rallyHub = RealmRaidMuster.Hubs.FirstOrDefault(h => h.Event == id);
@@ -642,9 +647,16 @@ namespace DOL.GS
                     else
                         candidate.DragonFight = new RealmRaidDragonFight(candidate.Boss.Name);
                     bool staged = TryStaging(candidate, 0, out var destination);
+                    if (staged && playtestAtStaging)
+                    {
+                        ushort stagingRegion = definition.IsDungeon ? candidate.DungeonRoute.Entrance.SourceRegion : definition.Region;
+                        Zone stagingZone = WorldMgr.GetRegion(stagingRegion)?.GetZone((int)destination.X, (int)destination.Y);
+                        candidate.Hub = new RealmRaidMuster.Hub(id, $"the {definition.Name} staging post (play test)", stagingRegion,
+                            (ushort)(stagingZone?.ID ?? 0), 0, 0, destination);
+                    }
                     bool posted = TryHubPost(candidate, 0, out var origin);
-                    if (!staged || !posted || !RealmRaidMuster.TryRoute(WorldMgr.GetRegion(hub.Region), PathfindingProvider.Instance, realm,
-                            origin, destination, out candidate.OutboundSeams, hub.Via))
+                    if (!staged || !posted || !RealmRaidMuster.TryRoute(WorldMgr.GetRegion(candidate.Hub.Region), PathfindingProvider.Instance, realm,
+                            origin, destination, out candidate.OutboundSeams, candidate.Hub.Via))
                     {
                         reason = "No complete connected hub-to-encounter route was found. No party was assigned.";
                         Log.Warn($"REALM_RAID_START_UNAVAILABLE event={id} hub=\"{hub.Name}\" staging={staged} hubPost={posted} " +
@@ -687,8 +699,10 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>A play-test raid goes in when 90% of its roster is staged (rounded up): the launcher's forced raid needs 200 of 300.</summary>
-        public static int PlaytestRequired(int size) => Math.Max(8, (size * 9 + 9) / 10);
+        /// <summary>A play-test raid goes in when 80% of its roster is staged (rounded up; the rest follow it in, as late arrivals
+        /// of any raid do): an automatic raid's 125% recruits 160 to stage 125 (78%). 90% held a Caer Sidi raid at 87 of 90 for
+        /// half an hour with members out of reach (2026-11-07).</summary>
+        public static int PlaytestRequired(int size) => Math.Max(8, (size * 4 + 4) / 5);
 
         /// <summary>The bots a running raid has reserved and not yet formed into parties (the play test moves them to the hub).</summary>
         public static GameBot[] ReservedRecruits(string id)

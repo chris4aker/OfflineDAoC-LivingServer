@@ -664,7 +664,7 @@ gamebot raids, and these came out of it:
 - **`/epictest`, a raid on a chosen encounter now.** For the owner and testers (GM in game, or typed in the server window):
   `/epictest start <event> [era|start|size] [focus=Name,Name]` opens the launcher's forced raid at the encounter's period
   size (docs/RAID-SIZES.md) instead of 300, and moves the reserved level 50s to the raid's muster hub; from there the raid
-  forms, travels, stages and fights as any raid. It goes in when 90% are staged, runs on the automatic raid's clocks (a late
+  forms, travels, stages and fights as any raid. It goes in when 80% are staged, runs on the automatic raid's clocks (a late
   or short start, the four-hour window) and does not count toward the raid's win-rate record. `focus=` sends the dungeon
   route only to those encounters (no first-hour trash clear). `/epictest gather`, `status`, `stop`, `list`.
 - **Commands typed in the server window work again.** The console ran every command without an account, so each one
@@ -672,6 +672,13 @@ gamebot raids, and these came out of it:
 - **The server log says what the lore engine says.** Each boss yell and centre-screen line it shows is a `LORE_LINE` line,
   and each hit that heals Funus to full is an `EPIC_FUNUS_HEALED` line (who, class, weapon), so a fight can be read
   without the game client.
+- **`/epictest start ... atstaging`** musters the raid at its own staging post (outside the dungeon door, or the dragon's
+  ring) instead of the realm's hub, to test the fight alone.
+- **A boss that heals itself is no longer skipped while the raid wears it down.** The dungeon route set an encounter aside
+  after "no damage for five minutes" unless its health went below its lowest yet. Easmarach takes back an eighth of his
+  health on the waterfall top each time he falls to 30%, so the raid shooting him from the falls stands took him from 42% to
+  35% and he was still skipped (as on the owner's test server on 2026-11-06, at 39-42%); out of combat he healed to full.
+  Health going down again, within a quarter of its maximum above the lowest, now counts as damage.
 - **A navmesh audit of the encounters' positions** (`UT_EpicPositionAudit`, a tool run by hand): every throw, teleport and
   jail landing, and the tactics' waiting spots (Easmarach's waterfall stands, the Sacristan's stations, the Vifil tunnel,
   Kula's frost circle, the Apocalypse room), checked both ways, to the boss and back.
