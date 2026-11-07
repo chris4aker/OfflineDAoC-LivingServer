@@ -21,8 +21,8 @@
       "source": "to verify"
     }
   ],
-  "story": "Every water that runs into Galladoria runs out over the great falls, and the falls have a will. The Sylvan call it Easmarach, a name with the old word for a waterfall at its start. It is the last door before the sanctum: while it lives the current is a wall, and anyone who presses too close is caught and thrown behind the curtain of water to fight their way back. It is strong only where it is rooted, at the foot of its own falls, and when it is hurt badly it does what a river does in flood: it draws back into itself, forgets its enemies, and gathers again. When it dies at last, the roar falls to a murmur, and the way to the bridge is open.\n\nThe great falls are older than the Root's coming. Every water that runs into the hollow runs out over them, and a falls that old has a will. The Sylvan named it Easmarach long ago, and in the good years it was a door that kept things out of the hollow. Now it keeps things in, and its will is the Root's.\n\nIt is strongest where it is rooted, at its own foot, and nothing can hurt it from anywhere else: no blade has reached it from outside its spray. Those who press too close are caught by the current and thrown behind the curtain of water onto a ledge, a long wet walk from where they stood. When it is badly hurt it does what a river does in flood. It draws back into the falls, forgets everyone it was fighting, and gathers itself, an eighth of its strength returning. Then it comes out again, looking for the first living thing it meets.\n\nThe bridge lies beyond it. While Easmarach lives the current at the bridge is fierce, and the Sylvan say that is why the three hundred and forty failed: they went for the bridge with the falls still roaring. When Easmarach dies the current slackens to a murmur and the way to the sanctum is open. The water primal and the falls were kin once, the Sylvan say, two parts of the same river.\n\nThe falls were a door the Sylvan set to keep the deep places, the Underneath, shut; the Root turned it round. Orlaith's company killed it before the bridge; Labhrás of Howth wrote songs about the ledge and the murmur.",
-  "legend": "Fight it at the foot of the falls, because from anywhere else it shrugs you off. At thirty it runs back into the waterfall and wipes its hate list: tanks, be ready to grab it again when it comes out. If the current throws you behind the falls, walk back calmly. Kill it and the bridge gets easier. Pick a spot in the spray at its foot and hold it. When it goes back into the falls, healers top everyone, tanks stand ready, and the first tank to taunt when it comes out keeps it. Kill it before the bridge, never after.",
+  "story": "Every water that runs into Galladoria runs out over the great falls, and the falls have a will. The Sylvan call it Easmarach, a name with the old word for a waterfall at its start. It is the last door before the sanctum: while it lives the current is a wall, and in the first years anyone who pressed too close was caught and thrown behind the curtain of water to find their way back. It is strong only where it is rooted, at the foot of its own falls, and when it is hurt badly it does what a river does in flood: it draws back into itself, forgets its enemies, and gathers again. When it dies at last, the roar falls to a murmur, and the way to the bridge is open.\n\nThe great falls are older than the Root's coming. Every water that runs into the hollow runs out over them, and a falls that old has a will. The Sylvan named it Easmarach long ago, and in the good years it was a door that kept things out of the hollow. Now it keeps things in, and its will is the Root's.\n\nIn the first years it was strong only where it was rooted, at its own foot, and nothing could hurt it from anywhere else; the Sylvan say the current has slackened since. Those who pressed too close were caught by the current and thrown behind the curtain onto a ledge, a long wet walk from where they had stood, until the falls stopped throwing anyone back. When it is badly hurt it does what a river does in flood. It draws back into the falls, forgets everyone it was fighting, gathers itself, and comes out stronger. Then it comes out again, looking for the first living thing it meets.\n\nThe bridge lies beyond it. While Easmarach lives the current at the bridge is fierce, and the Sylvan say that is why the three hundred and forty failed: they went for the bridge with the falls still roaring. When Easmarach dies the current slackens to a murmur and the way to the sanctum is open. The water primal and the falls were kin once, the Sylvan say, two parts of the same river.\n\nThe falls were a door the Sylvan set to keep the deep places, the Underneath, shut; the Root turned it round. Orlaith's company killed it before the bridge; Labhrás of Howth wrote songs about the ledge and the murmur.",
+  "legend": "The old guides said you had to fight it in the spray at the foot of the falls and that the current threw people behind the waterfall; neither happens today, it takes damage from anywhere. At thirty it runs back into the waterfall and wipes its hate list: tanks, be ready to grab it again when it comes out. Its hits still land hard on whoever holds it. Kill it and the bridge gets easier. Fight it where the healers can see the falls, because that is where it comes back out. When it goes back into the falls, healers top everyone, tanks stand ready, and the first tank to taunt when it comes out keeps it. Kill it before the bridge, never after.",
   "yells": {
     "aggro": [
       "The falls do not part for you.",
@@ -46,7 +46,7 @@
     "slay": [
       "Carried away, like all the rest.",
       "Carried away.",
-      "Behind the curtain with the rest."
+      "The river takes you, as it took the rest."
     ]
   },
   "atmosphere": {
@@ -64,9 +64,9 @@
   },
   "botLines": {
     "briefing": [
-      "easmarach only takes damage at the falls. at thirty it [runs back|retreats] and drops aggro, tanks grab it",
-      "easmarach: stand in the spray at its foot or you do nothing to it. [get wet|in the water]",
-      "if the current throws you behind the falls [walk back calm|just walk back], dont run in circles",
+      "easmarach at thirty [runs back into the falls|retreats], heals some and drops aggro. tanks grab it when it comes out",
+      "old guides say stand in easmarach's spray or you cant hurt it. [not anymore|range works now]",
+      "watch the falls when it runs, [first taunt keeps it|grab it as it comes out]",
       "kill easmarach before the bridge, never after. [current is a wall|the falls first]"
     ],
     "aftermathWin": [
@@ -78,14 +78,14 @@
     "aftermathLoss": [
       "it came back out of the falls and [nobody had aggro|ate the healers]",
       "it came out of the falls and [went for the healers|nobody had it]",
-      "half the raid was behind the curtain [walking back|lost]",
+      "it came out of the falls healed and [went for the healers|nobody had it]. again",
       "we tried the bridge with easmarach still up. [never again|the current]"
     ],
     "rumour": [
-      "got thrown behind the waterfall in galladoria [twice|three times]. easmarach does that",
+      "[heard|old guides say] easmarach used to throw people behind the waterfall. [doesnt now|not anymore]",
       "[heard|someone said] the first galladoria raids failed because they skipped the falls",
       "[word is|heard] easmarach and the water primal were the same river once",
-      "someone spent ten minutes behind the waterfall [looking for the way back|lost]. it happens"
+      "theres a ledge behind the waterfall in galladoria. [nobody goes there now|labhras's walk, the bards call it]"
     ]
   },
   "loremasterTopic": {
@@ -119,7 +119,7 @@
     },
     {
       "title": "Behind the Curtain",
-      "text": "Easmarach fights as a current fights. It is strong only where it is rooted, at the foot of its own falls; from anywhere else no harm reaches it, as no swimmer on the bank can hurt a river. Nobody has wounded it except from inside its spray. Those who press too close are caught by the current and thrown behind the curtain, onto a narrow ledge of wet stone behind the falling water, a long cold walk from where they had stood. The three hundred and forty lost a whole party there for most of an hour, walking the ledges in the dark looking for the way back; one of them, a bard of Howth named Labhrás, made a song about it that every alehouse in Howth still knows and nobody will sing at the falls.\n\nWhen it is badly hurt it does what a river does in flood. It draws back into the falls, forgets every enemy it was fighting, and gathers itself, an eighth of its strength returning. Then it comes out again and goes for the first living thing it meets, as a flood takes the nearest house. Labhrás's companions said a spearman of Connacht stood at the curtain with his shield up for most of that hour, so that the first thing it met would be him.\n\nThe Sylvan say the falls and the water guardian at the bridge are two parts of the same river: one that throws strangers back, one that carries them off. Those who have stood against both say they feel alike, cold and patient and without anger. The ledge has a name in Howth now, Labhrás's Walk."
+      "text": "Easmarach fights as a current fights. In the first years it was strong only where it was rooted, at the foot of its own falls, and no harm reached it from anywhere else, as no swimmer on the bank can hurt a river; those who pressed close enough to wound it were caught by the current and thrown behind the curtain, onto a narrow ledge of wet stone behind the falling water, a long cold walk from where they had stood. The Sylvan say the current has slackened in the seasons since, and the falls no longer throw anyone back. They are not sure it is a kindness. The three hundred and forty lost a whole party there for most of an hour, walking the ledges in the dark looking for the way back; one of them, a bard of Howth named Labhrás, made a song about it that every alehouse in Howth still knows and nobody will sing at the falls.\n\nWhen it is badly hurt it does what a river does in flood. It draws back into the falls, forgets every enemy it was fighting, and gathers itself, and comes out stronger than it went in. Then it comes out again and goes for the first living thing it meets, as a flood takes the nearest house. Labhrás's companions said a spearman of Connacht stood at the curtain with his shield up for most of that hour, so that the first thing it met would be him.\n\nThe Sylvan say the falls and the water guardian at the bridge are two parts of the same river: one that throws strangers back, one that carries them off. Those who have stood against both say they feel alike, cold and patient and without anger. The ledge has a name in Howth now, Labhrás's Walk."
     },
     {
       "title": "The Price of the Open Door",
