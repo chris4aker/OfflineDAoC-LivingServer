@@ -126,6 +126,7 @@
         "kariig",
         "kleng",
         "ljornrn",
+        "mokerkialfi",
         "raumarik-revenant",
         "steinolf",
         "ulf",
@@ -165,6 +166,7 @@
         "cursed-tomb",
         "dodens-gruva",
         "nisses-lair",
+        "skona-ravine",
         "spindelhalla",
         "summoners-hall",
         "vanern-swamp",
@@ -223,6 +225,7 @@
         "oona",
         "red-hagen",
         "runil",
+        "storslange",
         "ulfketill",
         "valthjof"
       ]
@@ -546,6 +549,7 @@
         "iarnvidiurs-lair",
         "iarnwood",
         "modernagrav",
+        "skona-ravine",
         "tuscaran-glacier"
       ],
       "bosses": [
@@ -572,10 +576,12 @@
       "summary": "What gets out when the venom bowl spills: Loken in Raumarik, and the jotuns who do the bound god's work, like Ulfketill.",
       "places": [
         "raumarik",
+        "skona-ravine",
         "vanern-swamp"
       ],
       "bosses": [
         "loken",
+        "storslange",
         "ulfketill"
       ]
     },
@@ -587,6 +593,7 @@
         "vanern-swamp"
       ],
       "bosses": [
+        "mokerkialfi",
         "mokkurvalve",
         "ulfketill",
         "valthjof"
@@ -674,6 +681,7 @@
       "name": "The Werewolves",
       "summary": "The varulv of Skona and the court of King Hresvelgr in Varulvhamn, with the old wolfaur.",
       "places": [
+        "skona-ravine",
         "varulvhamn"
       ],
       "bosses": []
