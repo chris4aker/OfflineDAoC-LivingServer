@@ -1,0 +1,114 @@
+{
+ "id": "archivist-borath",
+ "name": "Archivist Borath",
+ "tier": "minor",
+ "npcNames": [
+  "Archivist Borath"
+ ],
+ "aliases": [
+  "borath",
+  "the archivist"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "throne-of-legion",
+  "chthonic-chapter"
+ ],
+ "related": [
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "his master"
+  },
+  {
+   "id": "malroch-the-cook",
+   "relation": "cooked the recipe he found"
+  },
+  {
+   "id": "director-kobil",
+   "relation": "his neighbour above the Gate"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "his order once"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Archivist Borath is a level 40 plain GameNPC, using model 653 (the Chthonic Knight model) at size 65, high above the centre of Darkness Falls about 1,740 units from Director Kobil, respawning in 300 seconds.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In Hibernia's 'Black Plague' Waljan's chain sends the player to Darkness Falls to slay Archivist Borath and bring back the stoppered wondrous potion.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "Prima's map key lists Archivist Borath.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "No demonology source found for the name Borath.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "The records, his knightly past and the recipe are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Archivist Borath keeps what the Chancellor does not cut. The ten Rolls on the walls of the approach say who holds which place, and nothing else; everything else the court has ever written down, the Inquisition's findings, the Marshal's counts, the wagers of the princes, the court's old remedies and older sicknesses, is copied on slates and kept in Borath's records, high above the centre of the hollow near the chambers over the Gate. Borath answers to Grand Chancellor Adremal and to nobody else.\n\nHe was a Chthonic Knight once, the only one of the first chapter who could read, and the Chancellor took him out of the chapter house in the Second Roll to keep the slates. He still wears the knights' shape, though years bent over records have shrunk it to half a knight's height. He taught the knight Tamuel to read, which the Chancellor has not forgiven either of them.\n\nWhen the court wanted a sickness for the realms, it was Borath who found one in the records: a rot of the Uncounted Age that began in the back, as if the sufferer had lain on coals. He copied it out for Malroch the Cook. Hibernia's druids traced the plague up from Tir na Nog's sickbeds to his slates, and Hibernia came for him; the stoppered cure he keeps is the record's own remedy, written on the slate below the sickness. The court says Borath copied both, because he copies everything.",
+ "legend": "Borath is the Hibernian target of the Black Plague quest: Waljan sends you, and you kill him high above the middle of Darkness Falls, near Director Kobil's chambers over the Gate, for the stoppered potion. Level 40, a plain NPC, small, with the Chthonic Knight look shrunk to half size. The climb is the hard part; mind the Gate watch on the way. He respawns in about five minutes. Kobil is within a long pull, so do not fight Borath toward the Director's rooms unless you mean to do Breaking the Blade too.",
+ "yells": {
+  "aggro": [
+   "Do not touch the slates.",
+   "You are not in the records. You will be."
+  ],
+  "phases": [],
+  "death": [
+   "Copy it... someone copy it..."
+  ],
+  "slay": [
+   "Recorded."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Slates are stacked to the ceiling, every one written on.",
+   "A small knight-shaped figure bends over a slate."
+  ],
+  "phases": [],
+  "realmFirstKill": "Archivist Borath is dead. The records lie unread."
+ },
+ "botLines": {
+  "briefing": [
+   "borath is way up above the middle, near kobil's rooms. [hib plague quest|black plague]",
+   "40, normal npc. [the climb is the hard part|mind the gate on the way up]"
+  ],
+  "aftermathWin": [
+   "borath down. [potion got|got the potion]",
+   "the archivist is dead. [back to waljan|turn it in]"
+  ],
+  "aftermathLoss": [
+   "pulled kobil with borath. [oops|now we do blade too]",
+   "the gate got us on the way to borath. [slower|wipe]"
+  ],
+  "rumour": [
+   "[heard|word is] archivist borath found the black plague in the demon records",
+   "borath was a chthonic knight that learned to read. [tiny now|he shrank]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "borath",
+  "text": "Archivist Borath, keeper of everything the court writes down except the Rolls, high above the centre near the chambers over the Gate. Once the only reading knight of the [Chthonic Knights]; he found the Black Plague in the records and copied it out for [Malroch], with its cure on the slate below."
+ },
+ "bookPage": "From a Hibernian druid's notes, given to Waljan at Tir na Nog: The archivist's rooms are full of slates, floor to roof, and every one written. He stood between us and the slates as if they were his children. When he fell I looked at the slate on his desk. It was in their scratches, but there were pictures in the margin: a back with burns on it, a jar with a stopper. Below the jar was a second picture I did not understand until we came home: a sickbed, empty, made up clean.",
+ "chronicle": {
+  "win": "{realm}'s company under {raidLeader} closed Archivist Borath's records in {minutes} minutes."
+ }
+}

@@ -1,0 +1,185 @@
+{
+ "id": "duke-bimure",
+ "name": "Duke Bimure",
+ "tier": "epic",
+ "npcNames": [
+  "Duke Bimure"
+ ],
+ "aliases": [
+  "bimure",
+  "the warden of the east"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baelerdoth",
+   "relation": "his old lord; refused to carry his claim"
+  },
+  {
+   "id": "high-lord-oro",
+   "relation": "kept his three bodies"
+  },
+  {
+   "id": "high-lord-saeor",
+   "relation": "laughed at the Feast"
+  },
+  {
+   "id": "duke-sallis",
+   "relation": "argued Oro's case beside him"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "the Gate copies his Ward"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "six keep his Ward"
+  },
+  {
+   "id": "mutilators",
+   "relation": "six keep his Ward"
+  },
+  {
+   "id": "inquisitors",
+   "relation": "six keep his Ward"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Duke Bimure is a level 75 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in the east, between the halls of High Lords Oro and Baelerdoth.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Duke Bimure among the dukes of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Duke Bimure is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Hibernia's Darkness Falls entrance comes down in the east of the dungeon, near High Lord Saeor and the eastern halls.",
+   "provenance": "game",
+   "source": "world data: ZonePoint table, region 249"
+  },
+  {
+   "text": "High Lord Baelerdoth, below a quarter of his health, casts an absorption debuff on the raiders around him.",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs"
+  },
+  {
+   "text": "In the Ars Goetia, Bune (26) is a duke of hell; Bimure may read as Bune's variant Bime, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "His seat, master, feuds and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The duke of the eastern tunnels",
+   "text": "The east of the hollow is crowded with high lords. Three of the four keep their halls there, Oro, Baelerdoth and Saeor, and in the Uncounted Age the tunnels between their thrones were the bloodiest ground under the world, because none of the three would give way to the others and there was nowhere else for their followers to stand. Bimure was born, as far as a demon is born, in those tunnels. He served Baelerdoth, whose presence drinks the strength out of every ward and warding near him, and the court says Bimure grew up in that thirst and never learned to keep a ward of his own. He has never needed one. He was large, and patient, and in the Uncounted Age his work for Baelerdoth was to stand in the tunnel between his master's hall and the next and make sure that whatever came through it from the other side did not leave.\n\nWhen Baelerdoth knelt at the Feast of Thrones, Bimure was the only one of his followers who went with him into the deep chamber. The other two high lords of the east had brought their whole households and stood them round the walls, and Baelerdoth had brought one duke. Saeor laughed at it. Bimure has said that he remembers who laughed. When the Feast was over and the eleven survivors went back to their halls, Bimure walked behind Baelerdoth down the eastern tunnels and stopped at the place where three tunnels met between the three halls, and stood there, and has stood there in one way or another ever since."
+  },
+  {
+   "title": "The East Ward",
+   "text": "The First Roll gave the three high lords of the east their halls and left the ground between them unwritten, and within a Roll they were fighting over it again. The bargain says a high lord may not fall from its place without being eaten, and none of them would risk it in person, but their followers had no such protection, and the dead piled up in the tunnels faster than the Mutilators could carry them west. Grand Chancellor Adremal settled it the way he settles most things, by writing something down. He cut a new line on the Roll for the ground itself: the East Ward, belonging to no high lord, garrisoned by the three orders, with a warden over it who answers to the Master. He made Bimure the warden, because Bimure had been standing in it already.\n\nThe Ward was the model for Gatekeeper Dommel's watch, though the Gatekeeper will not admit it. The Ward's garrison is drawn from all three orders, like the Gate's, and is larger: the Chthonic Knights Aciel, Ain, Babyzu, Carnivon, Prosel and Zafan, the Mutilators Laicanroth, Lazorous, Nianax, Novinrac, Uxybab and Xakanos, and the Inquisitors Haimir, Hellos, Morg, Morrian, Nej and Yor. They keep the ground between the halls in mixed company, and their work is to stand between one high lord's followers and the next. They are very good at it, and they have never once enjoyed it. Bimure keeps them from each other, and the three high lords from each other, and himself from all of them, and the court calls him the most tired duke on the Roll."
+  },
+  {
+   "title": "The quarrel of the three",
+   "text": "The Ward's hardest Roll was the Third, when High Lord Oro came back from the deep fires as three bodies instead of one. Two of the three are weaker than the first, and it is not clear even to Oro's own household which of the three is the high lord, but all of them answer to the name. Saeor and Baelerdoth saw at once that the east now had five high lords in it and only three halls, and each sent to the Ward to claim one of Oro's extra bodies for its own household. Baelerdoth's claim came through Bimure, as his old master's always had.\n\nHe refused to carry it. It is the only time in the history of the court that a warden has refused his own former lord, and Baelerdoth's followers have never forgiven him. Bimure's reasoning, which he set out at the Chancellor's table, was that a warden who carries one high lord's claim into the Ward is no longer a warden but a follower with a garrison. The Chancellor agreed, and Duke Sallis of Oro's household came to the table to argue that the Roll counts names, and all three bodies answer to Oro, so there is still only one. Adremal accepted that too. Oro kept all three. Duke Eligar, from Baln's hall in the south, had argued that Oro had fallen and ought to be replaced; he lost, and the east has watched the south with suspicion since. Bimure still stands at the meeting of the three tunnels, nearest Baelerdoth's door, facing outward."
+  },
+  {
+   "title": "The Hibernian stair",
+   "text": "When the three doors opened, Hibernia's door came down in the east. The stair from the Hibernian hall, high above the court, lands at the edge of the East Ward, and the first named demons Hibernia ever met below the world were Bimure's garrison. As Dommel's Gate was for Albion, the Ward was for Hibernia: the place where the realm first learned what the court is. Bimure does not take a toll. He has a different custom, which Hibernia's bards tell of and nobody else believes. The Hibernians who die in the Ward are not where they fell when their friends come back for them. They are a little further east, laid out in a row, facing the stair they came down, as if someone had tidied them.\n\nHibernia's druids say this is the oldest custom of all, older than the court, the custom of laying out the dead, and that Bimure learned it from somewhere he should not have been. The bards of Tir na Nog have a song about the warden who tidies the dead, and sing it at wakes. Albion's knights, who rarely come through the east, call him Baelerdoth's dog and say it is only habit, a guard putting things back where they belong. Midgard's skalds say that a warrior laid out facing home has been given a kind of honour, and that it is the strangest courtesy any demon has ever shown them.\n\nBimure has never said why. He stands nearest Baelerdoth's door, at the meeting of the three tunnels, and when the mortals have passed and the Ward is quiet again, he walks it, and moves what needs moving."
+  }
+ ],
+ "story": "Duke Bimure is the warden of the East Ward, the ground between the halls of High Lords Oro, Baelerdoth and Saeor. In the Uncounted Age those tunnels were the bloodiest under the world. Bimure served Baelerdoth, whose presence drinks the strength from every ward, and his work was to stand in the tunnel between halls and make sure nothing that came through left. At the Feast of Thrones he was the only follower Baelerdoth brought; Saeor laughed, and Bimure remembers it.\n\nThe First Roll left the ground between the eastern halls unwritten, and the high lords' followers died there faster than the Mutilators could carry them away. Adremal cut a line for the ground itself, the East Ward, belonging to no high lord, garrisoned by all three orders in equal number and kept by a warden answering to the Master. He made Bimure warden. The Ward's knights, Mutilators and Inquisitors keep the ground between the halls together, keeping one high lord's people from the next, and the court calls Bimure the most tired duke on the Roll.\n\nIn the Third Roll High Lord Oro came back from the deep fires as three bodies. Saeor and Baelerdoth each claimed one of the extras, and Bimure refused to carry his own old master's claim, because a warden who carries one lord's claim is only a follower with a garrison. Duke Sallis argued that the Roll counts names; Adremal agreed, and Oro kept all three.\n\nHibernia's stair comes down in the east, so the Ward was the first of the court that Hibernia ever met. Hibernians who die there are found later a little further east, laid out in a row facing the stair. Tir na Nog's bards sing of the warden who tidies the dead; Albion calls it a guard's habit; Midgard's skalds call it a strange honour.",
+ "legend": "Bimure stands in the east, between the halls of the three eastern high lords, nearest High Lord Baelerdoth's door, and the eighteen of the East Ward stand in mixed camps on the ground around him. He is level 75 with no script. For a Hibernian raid he is often the first big named of the trip; for everyone else he is the duke you clear before Baelerdoth or Saeor. Clear the Ward's camps first, then pull Bimure out toward the stair, away from Baelerdoth, Marquis Scottiax and Duke Harboris. Hibernians swear their dead get moved in the Ward and laid out in a row. It is a story, but rez your dead quickly anyway.",
+ "yells": {
+  "aggro": [
+   "Ward! Stand between.",
+   "You came down the eastern stair. You will face it again.",
+   "Stand between. That is all I have ever done."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Hold the Ward. Hold it for no one's lord."
+   }
+  ],
+  "death": [
+   "Lay me... facing the door.",
+   "The Ward... is between."
+  ],
+  "slay": [
+   "Tidy that one later.",
+   "Facing the stair. Always facing the stair.",
+   "One more in the row."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Three tunnels meet here, between three halls.",
+   "Knight, flayer and questioner keep the Ward together.",
+   "Somewhere east, the dead have been laid out in a row."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Warden of the East will not leave the Ward."
+   }
+  ],
+  "realmFirstKill": "Duke Bimure has fallen. The East Ward has no warden."
+ },
+ "botLines": {
+  "briefing": [
+   "bimure is in the east ward by baelerdoth's door. [clear the ward camps first|camps first], then him",
+   "pull bimure out toward the stair, [away from baelerdoth|not near baelerdoth or scottiax]",
+   "75 no tricks. [hibs, this is our first big one|first real named for us hibs]",
+   "rez the dead fast in the ward. [the hibs say they get moved|just do it]"
+  ],
+  "aftermathWin": [
+   "bimure down. [the ward is clear|east ward done]",
+   "warden's dead. [nobody got tidied|we picked up our own dead this time]",
+   "duke bimure done, [baelerdoth next|on to the high lords]",
+   "bimure dead. [nice camps clear|good pulls]"
+  ],
+  "aftermathLoss": [
+   "bimure plus a ward camp, [wiped|gg]. clear the ward first next time",
+   "pulled baelerdoth with bimure. [never again|our wards got eaten]",
+   "came back for the bodies and they were laid out in a row. [creepy|not funny]",
+   "too much in the ward for us. [need more groups|regroup at the stair]"
+  ],
+  "rumour": [
+   "[heard|word is] bimure lays out the hib dead in a row facing the stair. [tidy demon|weird]",
+   "the east ward is between three high lords. bimure keeps them [off each other|apart]",
+   "[someone said|my guildie says] bimure refused his own old lord baelerdoth once. [over oros clones|over the three oros]",
+   "the hib stair comes down by the east ward. [we meet bimure first|first thing we see]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "bimure",
+  "text": "Warden of the East Ward, the ground between High Lords [Oro], [Baelerdoth] and [Saeor], kept by six of each order. He once refused to carry his own old lord's claim. Hibernia's stair comes down by his Ward, and the Hibernian dead there are found laid out in a row."
+ },
+ "bookPage": "From The Warden Who Tidies the Dead, as the bards of Tir na Nog sing it at wakes, set down in prose by a student of the College of Bards: We came down the eastern stair, eight score of us, and at the foot of it the demons were waiting for us, knight and flayer and questioner side by side. Fedelm fell there, and Loarn, and Cathal of the long spear. We fought through to the high lord's door and back, and when we came back to the foot of the stair for them they were not where they had fallen.",
+ "bookPages": [
+  "From The Warden Who Tidies the Dead, as the bards of Tir na Nog sing it at wakes, set down in prose by a student of the College of Bards: We came down the eastern stair, eight score of us, and at the foot of it the demons were waiting for us, knight and flayer and questioner side by side. Fedelm fell there, and Loarn, and Cathal of the long spear. We fought through to the high lord's door and back, and when we came back to the foot of the stair for them they were not where they had fallen.",
+  "The student's prose goes on: They were further east, all three, laid in a row on the stone with their hands on their breasts and their faces to the stair. Their weapons were beside them. Nothing was taken. A great demon was standing a little way off by a door, quite still, with his back to us. Our druid said that the laying-out of the dead is older than any court above or below, and that whoever had taught it to the warden had done it a long time ago, and was owed a wake. We gave one, at the foot of the stair. The warden did not move until we had finished."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} broke the East Ward and its warden Duke Bimure in {minutes} minutes.",
+  "loss": "Duke Bimure held the East Ward against {realm}'s raid under {raidLeader}, and laid their dead out facing the stair."
+ }
+}

@@ -1,0 +1,238 @@
+{
+ "id": "lieutenants",
+ "name": "The Field Marshal's Lieutenants",
+ "tier": "order",
+ "npcNames": [
+  "Lieutenant Gargantan",
+  "Lieutenant Loran",
+  "Lieutenant Persun"
+ ],
+ "aliases": [
+  "the clerks",
+  "the marshal's officers"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "host-of-the-marshal"
+ ],
+ "related": [
+  {
+   "id": "field-marshal-nebir",
+   "relation": "their Marshal"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "Persun lives in their house"
+  },
+  {
+   "id": "earl-zhalzhak",
+   "relation": "brought his brood home in rows"
+  },
+  {
+   "id": "director-kobil",
+   "relation": "Loran counted his Army"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "charged the brood its toll"
+  },
+  {
+   "id": "earl-mermer",
+   "relation": "Persun asked him about his oath"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Lieutenants Gargantan and Loran are level 68 GameEpicNPCs standing within about 200 units of Field Marshal Nebir in Baln's hall; both use model 649 (the demoniac familiar model) at size 95.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Lieutenant Persun is level 68 and stands in the Chthonic Knights' chapter house in the north-west, using model 651.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists 'Commander Abgar, Lieutenant Persun' together near the Chthonic Knights; the world data has no Commander Abgar.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Prima's bestiary lists Lieutenant Gargantan and Commander Abgar.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), Darkness Falls bestiary table"
+  },
+  {
+   "text": "All three respawn in 180 seconds and have no scripts or template spells.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Their offices and the fate of Abgar are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Field Marshal Nebir has three officers, and the court calls them the Marshal's lieutenants as if there were no other kind. The Marshal chose them himself, which no other office in the court has ever been allowed to do, and Grand Chancellor Adremal wrote their lines under the Marshal's in the Second Roll on the condition that there would never be more than the Marshal could keep at his table. Two of them stand there still, at the war table in High Lord Baln's hall where the whole hollow is cut into black stone and the realms' frontier is cut around the edge; the third lives among the Chthonic Knights.\n\nGargantan moves the pieces. Loran keeps the count. Between them they are the reason the Marshal is never surprised: Gargantan sets out where everything is, Loran tells him how much of it there is, and Nebir works out what it would take to kill it and where. They are small for officers, the size of the familiars that run the halls, and the host of the south has learned not to laugh. In the Seventh Roll, when the brood of Baln's walls overflowed and Earl Zh'alzhak led it north to the Gate, it was Gargantan who moved the pieces that brought it home in rows, and Loran who counted it back in, short by exactly the number Gatekeeper Dommel had charged.\n\nThe third officer is the Marshal's eye. After the feud of the Blade and the Hook, Nebir asked each of the three orders to keep one of his officers in its house, so that he would never again learn of a war from the dead. The Mutilators refused. The Inquisition said it would be glad to, and would of course examine the officer first, and the Marshal withdrew the offer. Only Prince Abdin's knights agreed, and Lieutenant Persun has lived in their chapter house since. He writes to the Marshal. The knights know he writes. They have never asked to read the letters, and Persun has never offered, and the arrangement has held for six Rolls on that understanding.\n\nThe realms' oldest maps name a fourth, Commander Abgar, beside Persun in the knights' house. The court has an account of that too: Abgar was called to the war table in the Ninth Roll, when Prince Abdin first began work on the Army of Shadows, and did not come back to the house, and his place there is kept empty. The Marshal does not speak of him. Loran, asked how many officers the Marshal has, says three, and does not hesitate, which in Loran is the same as an answer.\n\nThe realms each have a word for the lieutenants. Albion's sergeants say the Marshal's officers are the only demons who would understand a muster roll. Midgard's huscarls say a war-chief is only as good as the men who tell him the truth, and that the Marshal has two. Hibernia's druids, who distrust counting, say the small ones at the table are more dangerous than the Marshal, because the Marshal only decides, and they are the ones who know.",
+ "legend": "Gargantan and Loran stand at the Field Marshal's war table at the south end of Baln's hall, within a couple of hundred units of Nebir, so expect all three together; they are level 68 and go down faster than the Marshal, so kill them first. Persun is the odd one out: he is in the Chthonic Knights' chapter house in the north-west, a 68 among the knights, and you meet him while clearing the house. All three are plain melee with no scripts and respawn in about three minutes, so the table lieutenants can come back on you if the Marshal fight drags. Players call Gargantan and Loran the clerks, and old guides list a Commander Abgar next to Persun who is not in this world at all.",
+ "yells": {
+  "aggro": [
+   "For the Marshal.",
+   "You were counted at the Gate.",
+   "The table has you already."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The count changes. Mark it."
+   }
+  ],
+  "death": [
+   "Tell the Marshal... the number...",
+   "Off the table..."
+  ],
+  "slay": [
+   "Counted.",
+   "Moved.",
+   "Reported."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Small officers lean over a table of black stone.",
+   "Someone is counting under his breath."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The lieutenant marks a new number on the table."
+   }
+  ],
+  "realmFirstKill": "The Marshal's lieutenants have fallen. His table is empty."
+ },
+ "botLines": {
+  "briefing": [
+   "gargantan and loran are on the marshal. [kill them first|lieutenants first]",
+   "they respawn in 3 min. [dont drag the marshal fight|be quick on nebir]",
+   "persun is in the knights' house in the nw. [clear the house first|with the chapter]",
+   "68s, no tricks. [easy|quick]"
+  ],
+  "aftermathWin": [
+   "lieutenants down. [now nebir|on the marshal]",
+   "gargantan and loran dead. [marshal's alone|nebir alone now]",
+   "persun down. [chapter house clear|house done]",
+   "the clerks are dead. [no more counting|lol]"
+  ],
+  "aftermathLoss": [
+   "lieutenants came back mid fight. [too slow|three minutes]",
+   "all three at once with nebir. [wipe|gg]",
+   "the clerks got us. [regroup|rez]",
+   "persun brought the chapter house. [too many|wipe]"
+  ],
+  "rumour": [
+   "[heard|word is] the marshal's lieutenants run his war table",
+   "loran counted the army of shadows once and wont say the number. [creepy|so they say]",
+   "[someone said|my guildie says] persun spies on the knights for the marshal",
+   "the old guides have a commander abgar. [hes not in our df|never seen him]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "lieutenants",
+  "text": "Field Marshal [Nebir]'s three officers: Gargantan, who moves the pieces at the war table; Loran, who keeps the count; and Persun, the Marshal's eye in the [Chthonic Knights]' chapter house. The old maps name a Commander Abgar, whose place in the house is kept empty."
+ },
+ "bookPage": "From a Midgard skald's account of the war table, kept at Jordheim: There were two small ones at the table, no taller than a dog on its hind legs, and the great one stood behind them and said nothing. The first moved stones on the table without looking up. The second spoke numbers, one after another, in a voice like a man reckoning a debt. I knew some of the numbers. One was the count of our war-band at the stair. One was the count of us still standing. The second number changed while I listened, and the small one said it again, smaller, without looking at us at all.",
+ "bookPages": [
+  "From a Midgard skald's account of the war table, kept at Jordheim: There were two small ones at the table, no taller than a dog on its hind legs, and the great one stood behind them and said nothing. The first moved stones on the table without looking up. The second spoke numbers, one after another, in a voice like a man reckoning a debt. I knew some of the numbers. One was the count of our war-band at the stair. One was the count of us still standing. The second number changed while I listened, and the small one said it again, smaller, without looking at us at all.",
+  "The skald went on: Later, in the black knights' house, we found a third officer, who was not a knight and who stood among them as a stranger stands at a feast. He fought us as they did. When he fell he said a few words that were plainly meant for someone else, as if he had been writing them in his head for a long time. Beside him was an empty place on the floor, kept clear, with a mark cut into the stone. Our scout, who reads a little of their scratches, said it was a name, and a rank higher than his."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} cleared the Field Marshal's lieutenants from his table in {minutes} minutes.",
+  "loss": "The Field Marshal's lieutenants counted {realm}'s raid under {raidLeader} down to nothing."
+ },
+ "members": [
+  {
+   "name": "Lieutenant Gargantan",
+   "level": 68,
+   "post": "the Field Marshal's war table, Baln's hall",
+   "story": "Gargantan is the Marshal's hand at the war table. He moves the pieces: the stones of three colours that stand on the frontier cut into the table's edge, and the pieces of the court's own host on the hollow cut into its top. He has moved them for ten Rolls without once being told he was wrong, and a Midgard skald who watched him swore he moved one the right way before word of the frontier reached the hollow.",
+   "yells": {
+    "aggro": [
+     "A piece moves. You were that piece.",
+     "The table says you lose."
+    ],
+    "death": [
+     "Move me... to the edge of the table..."
+    ],
+    "slay": [
+     "Off the table."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A lieutenant leans over the war table, moving stones."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "gargantan",
+    "text": "Gargantan is the Marshal's hand at the war table. He moves the pieces: the stones of three colours that stand on the frontier cut into the table's edge, and the pieces of the court's own host on the hollow cut into its top."
+   }
+  },
+  {
+   "name": "Lieutenant Loran",
+   "level": 68,
+   "post": "the Field Marshal's war table, Baln's hall",
+   "story": "Loran keeps the count. Every number the Marshal works with passes through Loran first: the host of the south, the knights at the east arch, the mortals the Gate reports, the dead. Loran writes nothing down, and has never yet forgotten a number, and the Marshal trusts nobody else to tell him how many. Loran is said to have counted Director Kobil's Army of Shadows once, and to have refused ever since to say the number.",
+   "yells": {
+    "aggro": [
+     "Counted. You are counted.",
+     "Fewer than you were."
+    ],
+    "death": [
+     "Subtract one... from the count..."
+    ],
+    "slay": [
+     "One fewer."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A lieutenant by the war table mutters numbers."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "loran",
+    "text": "Loran keeps the count. Every number the Marshal works with passes through Loran first: the host of the south, the knights at the east arch, the mortals the Gate reports, the dead."
+   }
+  },
+  {
+   "name": "Lieutenant Persun",
+   "level": 68,
+   "post": "the Marshal's officer in the Chthonic Chapter house, the north-west",
+   "story": "Persun is the Marshal's eye in the north-west. After the feud of the Blade and the Hook, Nebir asked each order to keep one of his officers; only the knights agreed, and Persun has lived in their chapter house since, a guest who is never quite trusted. The realms' old maps put a Commander Abgar beside him there. The chapter says Abgar was called to the war table in the Ninth Roll and never came back, and that his place in the house is kept empty.",
+   "yells": {
+    "aggro": [
+     "The Marshal will hear of this.",
+     "I am a guest here. You are not."
+    ],
+    "death": [
+     "Write to the Marshal... the knights..."
+    ],
+    "slay": [
+     "Reported."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "In the chapter house an officer, not a knight, watches."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "persun",
+    "text": "Persun is the Marshal's eye in the north-west. After the feud of the Blade and the Hook, Nebir asked each order to keep one of his officers; only the knights agreed, and Persun has lived in their chapter house since, a guest who is never quite trusted."
+   }
+  }
+ ]
+}

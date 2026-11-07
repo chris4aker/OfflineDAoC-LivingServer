@@ -1,0 +1,168 @@
+{
+ "id": "duke-satori",
+ "name": "Duke Satori",
+ "tier": "epic",
+ "npcNames": [
+  "Duke Satori"
+ ],
+ "aliases": [
+  "satori",
+  "the shadow on the approach"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "throne-of-legion"
+ ],
+ "related": [
+  {
+   "id": "legion",
+   "relation": "serves him directly as his listener"
+  },
+  {
+   "id": "chamberlain",
+   "relation": "set him on the floor when he sat in the Queen's chair"
+  },
+  {
+   "id": "marquis-valupa",
+   "relation": "stands near him on the approach"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "called him a mouth with a title"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "cut the Master's name into his line"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Duke Satori is a level 73 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands on the approach to Legion's lair, near Marquis Valupa.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Duke Satori among the dukes of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Duke Satori is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Duke Satori spawns with the stealth flag; no other duke does.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "No demonology source found for the name Satori.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "His seat, master, feuds and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The Queen's favourite",
+   "text": "Satori was never a lord of the Uncounted Age. He was something the lords of that age found more useful and trusted less: a carrier of words. He went between the thrones of the hollow with messages, and he was the only demon of his time who could carry a threat from one lord to another and come back with both his arms, because every lord knew that a messenger who was eaten would never bring the next message. Lilith noticed him early. When she went to the Feast of Thrones she took Satori with her, walking a step behind her, to carry whatever she might want to say to the thirty lords. She did not say anything. She watched, and when nineteen voices were speaking out of one throat she knelt, and Satori knelt behind her.\n\nThe First Roll gave Lilith her line beside the Chancellor's, above the Blood, and gave Satori his: Duke, of the Queen's household, at the Queen's side. He was the only peer of the court whose master was a queen and not a prince or a high lord, and he has never let anyone forget it. For six Rolls he stood at her shoulder wherever she went, and carried her words to the Blood, to the High Lords and to the Master's door. The princes hated him the way all courts hate a favourite. Prince Abdin once said that Satori was not a duke but a mouth with a title. Satori carried the remark to the Queen word for word, and Abdin did not sit at her side again for a Roll."
+  },
+  {
+   "title": "The chair",
+   "text": "In the Seventh Roll the Queen went away. Satori was not with her; it is the one thing about that Roll that every account agrees on. She did not tell her favourite where she was going, or whether she meant to come back, and Satori has spent every Roll since trying to decide which of those two silences hurt more.\n\nHe waited for a whole Roll. Then, in the Eighth, he walked down the approach past the Chancellor's table, past the walls where his line was cut beside hers, to the Master's door, where her chair stood empty with the Chamberlain beside it. He sat down in it. His reasoning, as he set it out afterwards to anyone who would listen, was that a favourite stands at a queen's side, and that when there is no queen the side is all that is left, and the chair is the side. The Chamberlain lifted him out of the chair by his collar, set him on the floor in front of it, and told him that the duke had mistaken the chair.\n\nNobody in the court has seen Satori since. He is there; he is felt; his voice is heard at the edge of conversations on the approach, finishing the last word of other demons' sentences. The court does not agree on why. Most say it is shame, that a favourite set on the floor in front of the whole approach can never bear to be looked at again. Grand Chancellor Adremal says it is policy, that a demon nobody can see is a demon everybody will tell things to by accident. The imps say Satori was never properly seen anyway, and that nothing has changed but the light."
+  },
+  {
+   "title": "The Master's listener",
+   "text": "With the Queen gone, Satori's line on the Roll had no master in it, and a line without a master is a dangerous thing to carve. Adremal solved it in the Chancellor's way, by cutting the Master's name into the place where the Queen's had been. So Satori serves Legion directly, the only peer of the court who does, and what he does is listen. He stands unseen on the approach between the Chancellor's table and the Master's door, where every demon who wishes to see the Master must walk, and when he hears something the Master ought to know he goes to the door and the Chamberlain lets him in. He does not go through the Chancellor first. Adremal has never complained of this, which the court finds more alarming than if he had.\n\nThe most famous thing Satori ever heard was in the Ninth Roll. A great demon of the Master's army, one of the strongest in the court, was overheard on the approach explaining to two marquises exactly how he meant to carry out a plan of the Master's, which the Master had not yet finished deciding on. Satori carried it to the door that night. The demon was Mystemas. Mystemas has said ever since that he was punished for something he had nothing to do with, and when he says it, he looks at the empty air beside him on the approach as if he can see who is standing in it. The imps say that is the only time anyone has ever made Satori step back."
+  },
+  {
+   "title": "Unseen among the visitors",
+   "text": "Since the doors opened, the approach has been walked by mortals as well as by demons, and Satori listens to them too. He stands unseen near Marquis Valupa, on the stretch of the slope below the Chancellor's table, and lets the realms' companies walk past him as he lets the court walk past him. What he hears he does not carry to the Master. The imps say he carries it to the knights and the Mutilators of Legion's Own, a little further down the slope, and the Chancellor's Roll of the Visitors holds more than one line for a company that reached the approach in good order and never reached the door. The first the imps point to is a Midgard war-band out of Jordheim under a skald called Hrolf the Counter, who sang his band's names aloud at the head of the slope so that every man could hear who still stood. The Roll gives his band forty-one at the slope and none at the door, and Midgard's skalds have not sung a muster aloud below the world since.\n\nEach realm claims to understand him. Albion's scouts say Satori is the shadow on the approach that every scout of Camelot is warned of before she ever sees the Albion stair, and Camelot's chaplains keep a prayer against him among their road-prayers. Midgard's shadowblades say he is a demon who learned their own trade, that the court has its own kind of sneak, and that they would like to meet him one day alone, as a matter of professional interest. Hibernia's nightshades say he is not hiding at all but ashamed, and that a creature that hides out of shame is the most dangerous kind, because it has nothing it still wants to keep.\n\nWhat Satori wants he has never said out loud, because he is never heard saying anything whole. The court guesses. It guesses that he wants the Queen back, so that he can be seen at her side again. It also guesses that he wants her chair. Both may be true. The Chamberlain keeps a hand near the chair."
+  }
+ ],
+ "story": "Duke Satori was the Queen's favourite. In the Uncounted Age he was a carrier of messages between the lords, the one demon who could take a threat to a throne and come back whole. Lilith took him to the Feast of Thrones a step behind her, and when she knelt he knelt. The First Roll made him Duke of the Queen's household, at the Queen's side, the only peer whose master was a queen. For six Rolls he carried her words; when Prince Abdin called him a mouth with a title, he carried that to her too.\n\nIn the Seventh Roll the Queen left without telling him. In the Eighth he walked down the approach and sat in her empty chair beside the Master's door, reasoning that the chair was all that was left of her side. The Chamberlain lifted him out by the collar and told him he had mistaken the chair. Nobody has seen Satori since. Most of the court say shame; the Chancellor says policy, since everyone tells secrets to a demon they cannot see; the imps say he was never properly seen anyway.\n\nAdremal cut the Master's name into his line where the Queen's had been, so Satori serves Legion directly and listens on the approach. In the Ninth Roll he overheard Mystemas explaining how he would carry out a plan the Master had not finished deciding, and carried it to the door; Mystemas was made an imp, and still glares at the empty air beside him.\n\nNow he stands unseen near Marquis Valupa and listens to the mortals on the slope as he listens to the court; the Roll of the Visitors holds lines for companies that reached the slope and never reached the door. Albion's scouts call him the shadow on the approach; Midgard's shadowblades call him a demon who learned their trade; Hibernia's nightshades say he hides out of shame, and that this makes him dangerous.",
+ "legend": "Satori is stealthed. He stands on the approach to Legion's lair near Marquis Valupa, between the Chancellor and the Throne, and you will not see him until he is on someone. Level 73, no script beyond the stealth. Bring someone who can see hidden things or sweep the slope before you pull Valupa, and keep the group tight so that whoever he opens on is not alone. When he opens up, everyone turns on him at once; at 73 he is a little below the dukes in Baln's hall. Players call him the shadow on the approach, and the old joke is that if you can hear your own raid leader's plan repeated back to you in a whisper, it is Satori.",
+ "yells": {
+  "aggro": [
+   "You were saying? Go on.",
+   "I have heard your plan. It was not a good plan.",
+   "Behind you. Always behind you."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "You see me now. Remember it. Nobody else will."
+   }
+  ],
+  "death": [
+   "Tell her... no. Tell no one.",
+   "Seen. At last, seen."
+  ],
+  "slay": [
+   "You said something interesting before that.",
+   "One fewer voice on the slope.",
+   "I will carry that to the door."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The slope feels crowded, though it is empty.",
+   "Someone is whispering. You cannot tell from where.",
+   "A voice finishes the last word of yours."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The hidden duke stands revealed and wounded."
+   }
+  ],
+  "realmFirstKill": "Duke Satori is seen, and slain, on the approach."
+ },
+ "botLines": {
+  "briefing": [
+   "satori is stealthed on the approach near valupa. [sweep the slope|someone see hidden] before we pull",
+   "stay tight on the slope, [nobody wanders off|no stragglers], he opens on whoever is alone",
+   "when satori opens up, [everyone on him|swap to satori]. he goes down quick for a duke",
+   "73, stealth is his only trick. [dont panic|stay calm] when he pops"
+  ],
+  "aftermathWin": [
+   "satori down. [found the shadow|got the sneaky one]",
+   "duke satori dead. [nice sweep|good eyes]",
+   "satori done, [valupa next|on down the slope]",
+   "the shadow on the approach is dead. [for now|till he respawns]"
+  ],
+  "aftermathLoss": [
+   "satori opened on us before we saw him. [need to sweep|bring a see hidden]",
+   "lost the raid to satori and valupa at once. [bad pull|ugh]",
+   "nobody saw satori coming, [again|as usual]",
+   "stealth duke wiped the back line. [regroup|rez up]"
+  ],
+  "rumour": [
+   "[heard|word is] satori was the demon queens favourite. sat in her chair and got thrown out of it",
+   "satori listens on legions approach. [dont say the plan out loud|whisper your pulls]",
+   "[someone said|my guildie says] satori is the one who got mystemas turned into an imp",
+   "satori hides because hes ashamed, [the hibs say|my hib friend says]. [ashamed of what|of being dropped on the floor]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "satori",
+  "text": "Duke of the Queen's household, her favourite, who sat in her empty chair in the Eighth Roll and was set on the floor by the [Chamberlain]. Nobody has seen him since. He serves [Legion] directly, listening on the approach, and it was he who carried [Mystemas]'s plan to the Master's door."
+ },
+ "bookPage": "From a Hibernian nightshade's notes, Tir na Nog, kept for her sisters of the shadow: On the slope below the Chancellor there is one of us. I mean a demon who walks unseen. I felt him before I saw him, which is not how it should go. He stood beside me for the length of a long breath and said nothing, then he said the last word of what our leader had just said behind me, in our leader's voice, and went. I have been hiding from things for twenty years. I knew by the way he moved that he was not hiding from me. He was hiding from something that was not there.",
+ "bookPages": [
+  "From a Hibernian nightshade's notes, Tir na Nog, kept for her sisters of the shadow: On the slope below the Chancellor there is one of us. I mean a demon who walks unseen. I felt him before I saw him, which is not how it should go. He stood beside me for the length of a long breath and said nothing, then he said the last word of what our leader had just said behind me, in our leader's voice, and went. I have been hiding from things for twenty years. I knew by the way he moved that he was not hiding from me. He was hiding from something that was not there.",
+  "She went on: The imps in our hall say he was the Queen's favourite and that she left without a word to him. They say that he sat in her chair and the doorkeeper put him on the floor in front of the whole court, and that he has not let anyone look at him since. I believe it. I have known Hibernians do the same over less. But I set this down for my sisters' sake and not for pity: a thing that hides out of shame has given up wanting to be seen, and so it has given up being careful. I will not walk that slope again."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} found Duke Satori on the approach and slew him in {minutes} minutes.",
+  "loss": "Duke Satori heard every plan {realm}'s raid under {raidLeader} made on the approach, and none of them saw him."
+ }
+}

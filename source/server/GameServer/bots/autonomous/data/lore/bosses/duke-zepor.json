@@ -1,0 +1,182 @@
+{
+ "id": "duke-zepor",
+ "name": "Duke Zepor",
+ "tier": "epic",
+ "npcNames": [
+  "Duke Zepor"
+ ],
+ "aliases": [
+  "zepor",
+  "the oathbreaker"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "eastern-halls",
+  "chthonic-chapter"
+ ],
+ "related": [
+  {
+   "id": "high-lord-saeor",
+   "relation": "his lord, for whom he left the knights"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "his first lord; demanded he be struck off"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "the order he left; they call him the Oathbreaker"
+  },
+  {
+   "id": "duke-bimure",
+   "relation": "moved the Ward's routes to keep the knights from him"
+  },
+  {
+   "id": "lieutenants",
+   "relation": "Persun writes to the Marshal about the feud"
+  },
+  {
+   "id": "earl-oraxus",
+   "relation": "stands with him at Saeor's door"
+  },
+  {
+   "id": "marquis-almen",
+   "relation": "stands with him at Saeor's door"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Duke Zepor is a level 64 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in front of High Lord Saeor's hall at the far east, near Earl Oraxus and Marquis Almen.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Duke Zepor among the dukes of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Below level 70, Duke Zepor is an ordinary grind target for gamebots, not a raid-reserved demon.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Zepar (16) is a duke of hell; Duke Zepor reads as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Duke Zepor uses model 653, the model of the Chthonic Knights, and is the lowest-level duke.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "High Lord Saeor heals himself by a player's maximum health whenever he kills that player.",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs"
+  },
+  {
+   "text": "His seat, master, feuds and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "A knight of the deep earth",
+   "text": "Zepor is the only duke of the court who began as a knight, and he still wears the shape. He was sworn to the Chthonic Knights in the First Roll, when Prince Abdin founded the order in his north-western quarter and its first knights knelt in the chapter house and took their oath to the deep earth itself: to hold what is taken whole, to keep what is kept, and to go down rather than give ground. Zepor took it among the first. He was a hard, plain knight, not large, and he made his name in the north-west by never once giving ground in any fight the order sent him to, including several he should not have survived.\n\nThe order sent him east in the Second Roll, as part of the first garrison of the East Ward under Warden Bimure, and there he met High Lord Saeor. Saeor's hall is at the far east of the hollow and his appetite is the largest after the Master's. He grows fat on the fallen: whatever dies under his hand goes into him, whole, and the east says a lord who has just killed is never weaker than he was before. The knights of the Ward kept Saeor's followers from the other high lords' halls, and Saeor watched them do it, and took particular notice of the plain, small knight who never gave ground. He sent for Zepor three times. The first two times Zepor did not go, because his oath was to the deep earth and to Abdin. The third time, in the Sixth Roll, he went."
+  },
+  {
+   "title": "The oath",
+   "text": "Nobody but Zepor and Saeor knows what the high lord offered him. The knights of the chapter house say it was strength: that Saeor promised to teach him the trick of his own appetite, to take something out of every enemy struck, and that Zepor, who had spent five Rolls not giving ground, wanted to stop having to. The Mutilators say it was a seat, plain and simple, and laugh. The Inquisitors, who examined him afterwards, will not say what they found. What is certain is that Zepor walked out of the East Ward and into Saeor's hall and knelt to the high lord, and that a knight who kneels to a lord other than his prince has broken his oath.\n\nPrince Abdin demanded that he be struck from the Roll. The case went to the Chancellor's table on the approach. The Inquisitors examined Zepor and reported that he had left his place in the order. The Mutilators were ready. Adremal ruled against them all: a knight who leaves the order to serve a high lord has not fallen from his place, but risen above it, since a high lord stands above a prince's order on the Roll. He could not be eaten. He could not stay a knight either. So the Chancellor cut a new line for him among the peers, Duke, of High Lord Saeor's household, the only line on the Roll that was ever cut by promoting a demon to stop the court from killing it. Prince Abdin has not walked down the approach since."
+  },
+  {
+   "title": "The Oathbreaker",
+   "text": "The Chthonic Knights call him the Oathbreaker, and every Roll since the Sixth they have sent a champion east to call him out. The custom of the yield lets them: a peer may fight a peer to the yield, and the knights' champions are peers of a kind, sworn and written. Zepor has never refused. He has fought eleven of them, in the East Ward with Bimure's garrison standing round, and he has never yielded, and neither have they. Eleven knights of the deep earth have gone down rather than give ground, as their oath requires, and Zepor, who once took the same oath, has given none either. The court thinks it the most pointless feud on the Roll. The knights think it the only one worth fighting.\n\nThe knights of the East Ward, Aciel and Ain and the others, will not take a post near Saeor's door while Zepor is there, and Bimure has had to move the Ward's posts to keep them apart. Lieutenant Persun, the Field Marshal's officer in the knights' chapter house, has written to Nebir that the order talks of nothing else. The Marshal has written back that the order is the court's soldiery and its soldiery is short eleven knights, and that if the Oathbreaker would yield once, to anyone, the matter would be over. Zepor has answered that he has not given ground since the First Roll, and that his oath to the deep earth was the one oath he never broke, whatever he swore to Abdin."
+  },
+  {
+   "title": "Saeor's table",
+   "text": "Zepor serves at High Lord Saeor's table now, at the far east end of the hollow near the Hibernian stair. His work is to bring Saeor the fallen. When mortals come into the high lord's hall, Zepor stands in front of his lord with Earl Oraxus and Marquis Almen, and whatever he cuts down falls where Saeor can reach it, and Saeor grows fat. He has learned at least some of his lord's trick, the court says, but not all of it; he still has to take what he takes the old way, with a blade, and he is the smallest duke on the Roll and the lowest in strength. The other dukes say it is what comes of being a knight.\n\nThe realms each see something different in him. Albion's knights see a fallen knight, and some of them have gone down to the east only to look at him, the way a novice is sometimes taken to look at a hanged deserter. Midgard's huscarls see a man who changed jarls, which happens, and they think less of Saeor for taking him than of Zepor for going. Hibernia's champions, who meet him first because their stair comes down in the east, see a geis broken, and say among themselves that a warrior who breaks one is followed for the rest of his life by the thing he swore against, which in Zepor's case is giving ground. Their bards keep the count of the champions who have tried to make him give it. He never has."
+  }
+ ],
+ "story": "Duke Zepor is the only duke who began as a Chthonic Knight, and he still wears the knights' shape. He was sworn among the first in Prince Abdin's chapter house, to the deep earth, to hold what is taken whole and to go down rather than give ground, and he made his name by never giving any. In the Second Roll the order sent him east to the first garrison of the East Ward, where High Lord Saeor, who grows fat on the strength of whatever he kills, noticed him. Saeor sent for him three times; the third time, in the Sixth Roll, he went.\n\nNobody knows what Saeor offered. The knights say strength, the Mutilators say a seat, the Inquisitors who examined him will not say. A knight who kneels to anyone but his prince has broken his oath, and Abdin demanded he be struck off. Adremal ruled that leaving a prince's order for a high lord is rising above one's place, not falling, and cut him a new line as Duke of Saeor's household: the only line ever cut by promoting a demon so the court would not kill it. Abdin has not walked down the approach since.\n\nThe knights call him the Oathbreaker and send a champion east every Roll to fight him to the yield. Eleven have come, none has yielded, and neither has he, so all eleven went down. The East Ward's knights will not stand near Saeor's door, and Bimure has had to move their posts.\n\nHe serves at Saeor's table, cutting down what comes into the hall where his lord can reach it, with Earl Oraxus and Marquis Almen. Albion's knights look at him as at a hanged deserter; Midgard's huscarls think less of Saeor for taking him; Hibernia's champions call him a broken geis and try to make him give ground.",
+ "legend": "Zepor stands in front of High Lord Saeor's hall at the far east, with Earl Oraxus and Marquis Almen close by. He is the lowest duke at 64 and uses a Chthonic Knight's body, so do not let the 'duke' scare you. No script. The danger is Saeor: the high lord heals by the full health of every player he kills, so nobody may die to him, and you want Zepor, Oraxus and Almen dead and out of the way before anyone goes near him, and then the whole raid on Saeor at once. For Hibernia this is near your stair, so it is often an early stop. People call Zepor the Oathbreaker and say the knights in the East Ward will not stand near him. The East Ward's camps stand further west; leave them for later and do not drag Zepor into them.",
+ "yells": {
+  "aggro": [
+   "Not one step. I have not given one since the First Roll.",
+   "Come, then. For my lord's table.",
+   "You want me to give ground. Everyone does."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Down rather than give ground. I kept that oath."
+   }
+  ],
+  "death": [
+   "Down... and not one step back.",
+   "Tell the chapter... I did not yield."
+  ],
+  "slay": [
+   "For the table.",
+   "Fallen where my lord can reach you.",
+   "One more for Saeor."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A knight's shape stands where a duke should be.",
+   "The far east. A high lord's appetite fills the air.",
+   "No knight of the Ward keeps a post near this door."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Oathbreaker holds his ground."
+   }
+  ],
+  "realmFirstKill": "Duke Zepor has fallen. He did not give ground."
+ },
+ "botLines": {
+  "briefing": [
+   "zepor, oraxus, almen first. [then saeor|saeor last] and the whole raid on him",
+   "zepor is 64 in a knight body. [easy duke|softest duke], no tricks",
+   "keep zepor away from saeor, [saeor heals off every kill|nobody dies to saeor]",
+   "hibs, this ones near our stair. [quick one|early stop]"
+  ],
+  "aftermathWin": [
+   "zepor down. [oathbreaker done|the knight duke is dead]",
+   "duke zepor dead, [oraxus next|on to oraxus]",
+   "zepor didnt give ground. [didnt need to|we just killed him]",
+   "zepor done. [saeor soon|clear the rest for saeor]"
+  ],
+  "aftermathLoss": [
+   "saeor came in with zepor. [healed off our dead|people died and he healed]",
+   "dragged zepor into the east ward camps, [wipe|bad pull]",
+   "the oathbreaker got us. [regroup|rez]",
+   "too close to saeor. [pull zepor out next time|pull him back]"
+  ],
+  "rumour": [
+   "[heard|word is] zepor was a chthonic knight who broke his oath and became a duke",
+   "the knights send a champion to kill zepor every time. [none ever wins|they all die]",
+   "[someone said|my guildie says] zepor never gave ground once. [not even to his own order|stubborn]",
+   "the east ward knights wont stand near zepor. [hate him|oathbreaker]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "zepor",
+  "text": "The Oathbreaker: a [Chthonic Knights] knight who left Prince [Abdin]'s order for High Lord [Saeor]'s table. The Chancellor made him a duke rather than let him be eaten. Every Roll the knights send a champion to fight him to the yield; none has yielded, and neither has he."
+ },
+ "bookPage": "From The Chapter Roll of the Deep Earth, as a Midgard prisoner heard the knights recite it in their house: They say the names of their champions who went east, one each Roll since the sixth, standing in a ring with their swords point down in the floor. They say each name and then the same words after it: he did not give ground. Eleven names, eleven times. Then they say a twelfth name, and after it they say nothing. I asked the officer among them, the one who belongs to the Marshal, whose name that was. He said it was the Oathbreaker's.",
+ "bookPages": [
+  "From The Chapter Roll of the Deep Earth, as a Midgard prisoner heard the knights recite it in their house: They say the names of their champions who went east, one each Roll since the sixth, standing in a ring with their swords point down in the floor. They say each name and then the same words after it: he did not give ground. Eleven names, eleven times. Then they say a twelfth name, and after it they say nothing. I asked the officer among them, the one who belongs to the Marshal, whose name that was. He said it was the Oathbreaker's.",
+  "The prisoner went on: The officer told me more than he meant to, because he was bored, I think, and I was in a cage and of no account. He said the twelfth name is said because the Oathbreaker was sworn in this house, and the oath to the deep earth cannot be unsworn, only broken. He said the knights believe the Oathbreaker keeps the half of his oath he did not break, which is not giving ground, and that this is why none of their champions can make him yield. He said he had written to his Marshal that the feud would end only when the deep earth itself decided who was right."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} cut down Duke Zepor at Saeor's door in {minutes} minutes; he gave no ground.",
+  "loss": "Duke Zepor gave no ground at Saeor's door, and {realm}'s raid under {raidLeader} fell where his lord could reach them."
+ }
+}

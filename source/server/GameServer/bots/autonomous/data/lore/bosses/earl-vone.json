@@ -1,0 +1,139 @@
+{
+ "id": "earl-vone",
+ "name": "Earl Vone",
+ "npcNames": [
+  "Earl Vone"
+ ],
+ "aliases": [
+  "vone",
+  "the clerk"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "throne-of-legion"
+ ],
+ "related": [
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "his master; draws the chalk he cuts"
+  },
+  {
+   "id": "duke-aypol",
+   "relation": "wants the metal of his chisel back"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "sent him false chalk"
+  },
+  {
+   "id": "prince-asmoien",
+   "relation": "sent him false chalk"
+  },
+  {
+   "id": "marquis-valupa",
+   "relation": "keeps the ground he stands on"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Vone is a level 71 plain GameNPC (not a GameEpicNPC like the other earls) of the Demon Lords faction; it stands on the approach about 1,500 units above Grand Chancellor Adremal, among Legion's Own.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists Earl Vone with Chthonic Knights, Mutilators and Inquisitors, next to Grand Chancellor Adremal.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Vone has no raid-event row, unlike the epic earls.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Vine (45) is a king and earl who builds towers and throws down stone walls; Vone may read as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Earl Vone cannot read, and that is why he holds the chisel. In the Uncounted Age he was a scratcher, one of the small demons who cut marks into the walls of the hollow for no reason anyone could discover, and Adremal, who could read the scratches the first lords had left, found that Vone's were the only marks in the long gallery that meant nothing at all. When the First Roll was to be cut, the Chancellor went looking for a hand that would cut exactly what it was told. A clerk who can read may improve a line. A clerk who cannot will cut the shape he is shown. Adremal draws each line in chalk, and Vone cuts the chalk.\n\nHe has cut ten Rolls since, every line of them, and he has gouged every line that was struck. His claws are worn to the quick, and since the Third Roll he has used a chisel the Chancellor had struck from Duke Aypol's white metal, which Aypol has asked for back every Roll. The line of Mystemas in the Ninth Roll was his hardest work: the Chancellor's chalk moved the name from high on the wall to the very bottom and drew it a tenth of its old size, and Vone cut it small without knowing whose it was. The imps say Mystemas has never forgiven the hand, though he knows the hand could not read what it cut.\n\nThe court tests him. Princes Abdin and Asmoien, who share one line, have each sent him chalk of their own in the night, a line drawn a finger higher than the other's. Vone cut neither, because neither was in the Chancellor's hand, which is the one shape he knows. Since the doors opened he has cut a second kind of line on the Roll of the Visitors, a realm and a number, already struck, and the Chancellor says Vone cuts those faster than any others, since there are no names in them to go wrong.\n\nHe stands a little up the slope from the Chancellor's table among the knights and Mutilators of Legion's Own, with the chisel in one hand and a bag of chalk at his belt. He holds an earl's line because the hand that cuts the Rolls must stand above most of what it cuts, and for no other reason, and he seems content with it.",
+ "legend": "Vone stands on the approach a little above Grand Chancellor Adremal, among the knights and Mutilators of Legion's Own: Tamuel, Olov, Oprionach and Samiol are all within about twelve hundred units. Level 71 and, unlike the rest of the court, a plain NPC rather than an epic one, so he goes down faster than his level suggests. Pull him first and on his own, before the Chancellor; if the approach knights come with him you have the whole slope on you. Players call him the clerk or the chisel and swear the scratches on the approach walls are the demons' kill list, with every raid's number on it. Hibernians say if you read your own name off the wall you will not come back up; Albion clerics say it is only lines of precedence, which is somehow worse.",
+ "yells": {
+  "aggro": [
+   "Hold still. I am told to cut you.",
+   "No chalk for you. You are already struck.",
+   "Realm and number. That is all you are."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Chancellor! A line is coming loose!"
+   }
+  ],
+  "death": [
+   "The chisel... someone pick up the chisel...",
+   "Cut me small. Cut me very small."
+  ],
+  "slay": [
+   "Struck.",
+   "One more gouge.",
+   "Realm and number, done."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Fresh chalk lines glimmer on the wall of the approach.",
+   "Somewhere above, a chisel taps on stone."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The clerk drops his chalk and grips the chisel."
+   }
+  ],
+  "realmFirstKill": "Earl Vone has fallen. The chisel lies on the slope."
+ },
+ "botLines": {
+  "briefing": [
+   "vone first, hes above the chancellor. [single pull|pull him alone]",
+   "vone is a normal npc not epic, [goes down fast|dies quick for a 71]",
+   "dont let the approach knights come with vone. [wait for it|careful]",
+   "after vone, the chancellor. [mana check|rebuff]"
+  ],
+  "aftermathWin": [
+   "vone down. [no more chisel|the clerk is done]",
+   "earl vone dead, [chancellor next|on to adremal]",
+   "vone done. [easy one|told you he dies fast]",
+   "the clerk's dead. [did anyone grab the chisel lol|no chisel drop]"
+  ],
+  "aftermathLoss": [
+   "vone brought tamuel and olov. [wipe|too many]",
+   "pulled vone and the chancellor at once. [gg|mess]",
+   "vone got us. [regroup|rez]",
+   "the slope came down on us with vone. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] earl vone cant read and thats why he cuts the demon rolls",
+   "the scratches on the approach walls are a list. [every raid on it|our realm too]",
+   "[someone said|my guildie says] vone's chisel is made from duke aypol's metal",
+   "mystemas hates vone for cutting his line small. [the imp holds grudges|lol]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "vone",
+  "text": "Earl Vone, clerk of Grand Chancellor [Adremal], who cannot read and so cuts exactly the lines he is shown in chalk. He has cut all ten Rolls of the court and every line struck from them, and in the Ninth Roll he cut [Mystemas] small."
+ },
+ "bookPage": "From the notes of a Camelot stonemason who went down behind a column of knights to copy the approach walls: The cutting is the best I have seen, better than any in the city, and the chalk is still on the newest line. Every stroke is even. Every gouge is clean to the same depth. I watched the one who cuts. He held the chisel as I hold mine and set it to a chalk mark and struck, and when I spoke to him he looked at me with no understanding at all. He cannot read what he cuts. A mason who cannot read cannot carve a mistake. I envied him for that, and I am ashamed of it.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} struck the chisel from Earl Vone's hand in {minutes} minutes.",
+  "loss": "Earl Vone cut {realm}'s raid under {raidLeader} into the Roll of the Visitors, already struck."
+ }
+}

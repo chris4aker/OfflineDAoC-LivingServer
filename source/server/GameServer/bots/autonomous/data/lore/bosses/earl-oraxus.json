@@ -1,0 +1,149 @@
+{
+ "id": "earl-oraxus",
+ "name": "Earl Oraxus",
+ "npcNames": [
+  "Earl Oraxus"
+ ],
+ "aliases": [
+  "oraxus",
+  "the taster"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-saeor",
+   "relation": "his lord; tastes for him"
+  },
+  {
+   "id": "duke-zepor",
+   "relation": "judged him for Saeor"
+  },
+  {
+   "id": "marquis-almen",
+   "relation": "shares Saeor's door"
+  },
+  {
+   "id": "high-lord-oro",
+   "relation": "judged his two lesser bodies thin"
+  },
+  {
+   "id": "duke-bimure",
+   "relation": "refused to carry the claims"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Oraxus is a level 71 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands outside High Lord Saeor's hall at the far east end, with Duke Zepor and Marquis Almen.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists Duke Zepor, Marquis Almen and Earl Oraxus together, beside High Lord Saeor.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Oraxus is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Earl Oraxus uses model 656 at size 80.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "High Lord Saeor's script heals him by a player's maximum health whenever he kills that player.",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs"
+  },
+  {
+   "text": "In the Ars Goetia, Morax or Marax (21) is an earl and president who teaches the virtues of herbs and precious stones; Oraxus may read as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "High Lord Saeor grows strong on what he strikes, and Earl Oraxus tells him what it was worth. He is Saeor's taster. In the Uncounted Age the east was full of demons who would eat anything, and Saeor, who heals on the strength of whatever he kills, learned early that not all strength is alike. Some of it sustains, some of it sickens, and some of it, taken from the wrong demon, carries that demon's quarrels with it. Oraxus, a squat and careful earl of his household, could tell the difference by touch. He lays a hand on whatever Saeor has cut down and names what is in it, as a herb-wife names a leaf, and Saeor eats accordingly.\n\nHe has advised his lord on everything Saeor has taken since, and the court remembers two of his judgements. In the Third Roll, when High Lord Oro came back as three, Oraxus told Saeor that the two lesser bodies were thin and would feed nothing, and Saeor dropped his claim to one of them while High Lord Baelerdoth was still pressing his; Duke Bimure had refused to carry either claim, and Saeor's withdrawal is the reason that quarrel ended at the Chancellor's table and not in the Ward. In the Sixth Roll it was Oraxus who went west to the Chthonic Chapter house at Saeor's word and touched the shoulder of a knight called Zepor at the end of his watch. He came back and told his lord that Zepor's strength would never give ground, because it did not know how. Saeor sent for the knight the third time that Roll, and Zepor came.\n\nSince the doors opened Oraxus has had mortals to taste. He stands outside Saeor's hall at the far east end of the hollow with Duke Zepor and Marquis Almen, and the court says he has formed opinions on the three realms. Albion's strength, he says, is iron and prayer and keeps well. Midgard's is cold and rich and goes to the head. Hibernia's comes down the eastern stair first, and he describes it as green, which nobody in the court understands. He has never once been wrong about what a thing was worth. He has been wrong, the Inquisitors note, about who would end up eating it.",
+ "legend": "Oraxus stands outside High Lord Saeor's hall at the far east end, with Duke Zepor less than nine hundred units away and Marquis Almen close. Level 71, no script, a squat earl. Kill him before you go near Saeor, because Saeor heals by a whole player's health every time he kills one and you want the room empty, and nobody dying, when you start on him. Pull Oraxus away from Zepor if you can; the two together will chew through a main tank. Players call him the taster and say he tells Saeor how good you are to eat. Hibernians, who meet him first off the eastern stair, say he called them green, and have never decided whether that was an insult. Albion groups take 'keeps well' as a compliment, which tells you something about Albion.",
+ "yells": {
+  "aggro": [
+   "Hold still. Let me see what you are worth.",
+   "Iron and prayer. Albion. It keeps well.",
+   "My lord is hungry. I am only choosing."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Thin. You are thinner than I judged."
+   }
+  ],
+  "death": [
+   "I misjudged... the eater...",
+   "Tell my lord... you were not worth it."
+  ],
+  "slay": [
+   "Tasted.",
+   "Fit for the high lord.",
+   "Weighed, and wanting."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The air smells faintly of herbs and old blood.",
+   "Someone here sorts the dead by weight."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The taster frowns. You are not what he judged."
+   }
+  ],
+  "realmFirstKill": "Earl Oraxus has fallen. Saeor's table is bare."
+ },
+ "botLines": {
+  "briefing": [
+   "oraxus outside saeors hall, zepor right next to him. [split them|pull oraxus away]",
+   "kill oraxus before saeor. [saeor heals off kills|empty room for saeor]",
+   "zepor and oraxus together eat the mt. [dont|single pulls]",
+   "71 no tricks. [squat little earl|easy to lose, assist]"
+  ],
+  "aftermathWin": [
+   "oraxus down. [the taster is done|no more tasting]",
+   "earl oraxus dead. [zepor next|on to zepor]",
+   "oraxus done, [split them nice|good split]",
+   "the taster's dead. [almen then saeor|almen next]"
+  ],
+  "aftermathLoss": [
+   "oraxus and zepor together. [mt died|wipe]",
+   "pulled saeor with oraxus. [people died and he healed|gg]",
+   "oraxus got us. [regroup|rez]",
+   "lost the pull at saeors door. [slower|careful]"
+  ],
+  "rumour": [
+   "[heard|word is] earl oraxus tastes what saeor eats",
+   "oraxus told saeor to take zepor from the knights. [thats how zepor turned|so they say]",
+   "[someone said|my guildie says] oraxus calls hibs green. [no idea why|lol]",
+   "oraxus says albs keep well. [like salt pork|lol]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "oraxus",
+  "text": "Earl of High Lord [Saeor]'s household, the taster who tells his lord what each fallen thing's strength is worth. He ended the quarrel over [Oro]'s bodies by judging them thin, and in the Sixth Roll he judged that Duke [Zepor] would never give ground."
+ },
+ "bookPage": "From a letter of an Albion friar, held below for some days and traded back up the Albion stair: A demon came to my cage today, small and squat and careful in his movements, and put his hand on my shoulder as a farmer feels a beast at market. He held it there a long while. Then he said, in our own tongue, that I was iron and prayer and would keep. He did not say it unkindly. He went away and spoke to the great one at the end of the hall, and the great one looked at me, and I was not chosen. I have prayed every night since for whoever was.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} cleared Earl Oraxus from High Lord Saeor's table in {minutes} minutes.",
+  "loss": "Earl Oraxus weighed {realm}'s raid under {raidLeader} and found it fit for the high lord."
+ }
+}

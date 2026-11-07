@@ -1,0 +1,212 @@
+{
+ "id": "abermenai",
+ "name": "Abermenai",
+ "realm": "Neutral",
+ "regions": [
+  253
+ ],
+ "era": "neu-the-proving-fields",
+ "factions": [
+  "renegades"
+ ],
+ "summary": "The youngest of the four proving fields, a drowned shore of bogeys and grieving spectres around Dun Abermenai, for the realms' youngest soldiers (15-19).",
+ "facts": [
+  {
+   "text": "Abermenai is the battleground for levels 15 to 19 (region 253); level is the only limit in Offline DAoC.",
+   "provenance": "game",
+   "source": "source/server/GameServer/world/BattlegroundBrackets.cs"
+  },
+  {
+   "text": "Its central keep is Dun Abermenai; an Albion, a Midgard and a Hibernia portal keep stand at the same three places as in the other battlegrounds.",
+   "provenance": "game",
+   "source": "world data: Keep table, regions 250-253"
+  },
+  {
+   "text": "Dun Abermenai starts neutral in the release world.",
+   "provenance": "game",
+   "source": "source/tools/release-world-defaults.json"
+  },
+  {
+   "text": "Thidranki, Murdaigean and Caledonia were the classic battlegrounds; Abermenai came with patch 1.62 (June 2003).",
+   "provenance": "legend",
+   "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md"
+  },
+  {
+   "text": "Its monsters are boogey spawn, forlorn spectres, clicking beetles, large rats and forest cats (levels 13-19); renegade guardians, rangers and commanders (22) hold Dun Abermenai under Renegade Chieftain Abermenai (29).",
+   "provenance": "game",
+   "source": "world data: Mob table, regions 250-253 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Abermenai Point is a real headland on the Menai Strait in Wales; Welsh \"aber\" means a river mouth or estuary. The battleground's name reads as Welsh, to verify that Mythic meant the place.",
+   "provenance": "myth",
+   "source": "https://en.wikipedia.org/wiki/Abermenai_Point"
+  },
+  {
+   "text": "The bot chat already talks about Abermenai: first RvR at 15, the keep, twinks in crafted gear.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/chat/battlegrounds.lines"
+  },
+  {
+   "text": "The drowned shore, the first muster and the Ferryman's Peace are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Abermenai is the youngest of the proving fields, and it was made young on purpose.\n\nThe shore before. Before there was any keep there, Abermenai was a shore: a wide flat of sand and reed where a river ran out into a grey strait, and where the ferrymen of the old kings carried the living across and, the shore-folk said, sometimes the dead. The name is the old western tongue for the mouth of the Menai, and the people who lived there spoke it long before Albion was called Albion. They built a small fort of turf and timber above the ford to keep the crossing, and called it Dun Abermenai, and when the sea came in over the flat in one bad winter they left it and did not come back. The sea went out again. The fort stayed. What the sea had drowned stayed too.\n\nThe first muster. When Arthur died and the realms went to war over the frontier, the young went first and came back last. The three realms each began, without ever agreeing on it, to send their recruits to the contested fields away from the great frontier, Thidranki first, then Murdaigean and Caledon, where soldiers of an age fought soldiers of an age. It did not save enough of them. A squire of fifteen sent to Thidranki was a squire sent among men five years older, and the realms counted their youngest dead and could not bear the count. So in the third summer of the fields each realm, again without agreeing, opened the drowned shore as a fourth field, for the youngest of all. Albion's chaplains blessed its portal keep first, by a few days, and Albion has claimed the field ever since on that account; Midgard and Hibernia say a blessing is not a deed.\n\nWhat lives there now. The shore has not forgotten the sea. The forlorn spectres that walk the flats are the drowned of that bad winter and of every crossing that went wrong, and they grieve aloud, and do not know the realms' banners from the ferrymen's lanterns. The boogeys, small hungry things of the reeds, are older than the spectres; the shore-folk scared their children with them, and the children were right. Beetles click in the dunes and the rats are large. Dun Abermenai itself, rebuilt in stone by somebody after the shore-folk left, is held by renegades: deserters and exiles of all three realms, who fly no banner and pay no tithe, under a chieftain who keeps the keep's name. The renegades of Abermenai are the weakest of the four fields' renegades and the most patient, because their enemies are fifteen.\n\nWhy it matters. The realms' captains say that every soldier remembers their first field, and for most of a generation that field has been Abermenai. The Ferryman's Peace, which the three realms' chaplains swore on the shore in the first summer of the field and have never once kept, held that no recruit of any realm should be left for the spectres; the shore-folk believed a body left on the flats would be taken across by the drowned ferrymen, and the recruits believe it still. It is the one custom of the fields that all three realms tell alike. The bards say the drowned shore is the only place in the world where the three realms have ever agreed about anything, and it was about their dead.",
+ "legend": "Abermenai is the 15-19 battleground: the first real RvR most characters see, and the first time a lot of players meet the other two realms. Dun Abermenai in the middle is held by renegades (guardians, rangers and commanders at 22, Renegade Chieftain Abermenai at 29), so a group of fifteens needs to be a real group to take it. The flats are full of boogey spawn and forlorn spectres, which aggro on anyone, so do not drag a fight through them. The three portal keeps are safe ground; everything between is not. Players call it the beach, the kiddie pool or the twink pond, and grumble about level 19s in full crafted armour. The old superstition from the bot chat is that you never leave a dead friend on the sand, because the spectres take them across. Rez your dead or drag them home. Everyone does it, and nobody admits why.",
+ "atmosphere": {
+  "firstEntry": [
+   "Sand and reed and a grey strait. The drowned shore.",
+   "Something on the flats is weeping, very far off.",
+   "The youngest field. Everyone here is young.",
+   "A keep of old stone stands above the ford.",
+   "Lanterns of the dead move out on the water."
+  ],
+  "areas": [
+   {
+    "name": "Dun Abermenai",
+    "x": 33089,
+    "y": 38271,
+    "z": 3720,
+    "radius": 1500,
+    "lines": [
+     "Renegades hold the old fort above the ford.",
+     "No banner flies over Dun Abermenai.",
+     "The stones of the keep are crusted with old salt."
+    ]
+   },
+   {
+    "name": "Albion portal keep",
+    "x": 37301,
+    "y": 52362,
+    "z": 3944,
+    "radius": 1200,
+    "lines": [
+     "Albion's chaplains blessed this keep first.",
+     "Albion's portal keep. The ground is safe here."
+    ]
+   },
+   {
+    "name": "Midgard portal keep",
+    "x": 54053,
+    "y": 24680,
+    "z": 4320,
+    "radius": 1200,
+    "lines": [
+     "Midgard's portal keep stands on the dunes.",
+     "The wind off the strait smells of salt and smoke."
+    ]
+   },
+   {
+    "name": "Hibernia portal keep",
+    "x": 18362,
+    "y": 18257,
+    "z": 4320,
+    "radius": 1200,
+    "lines": [
+     "Hibernia's portal keep looks out over the reeds.",
+     "Reed-bogeys rustle in the marsh below the walls."
+    ]
+   },
+   {
+    "name": "the drowned flats",
+    "x": 42703,
+    "y": 34155,
+    "z": 3726,
+    "radius": 6000,
+    "lines": [
+     "The flats are wet. The spectres here grieve aloud.",
+     "Something under the sand remembers the sea.",
+     "A lantern moves where no one is walking."
+    ]
+   }
+  ]
+ },
+ "botLines": {
+  "lore": [
+   "abermenai was a shore once, [the sea drowned it|a bad winter drowned it]. the spectres are the drowned",
+   "the realms opened abermenai for the youngest because [too many kids died in thid|thidranki was killing the squires]",
+   "dun abermenai was built by [the old shore folk|people older than albion]. renegades have it now",
+   "[they say|old hands say] the forlorn spectres cant tell a realm banner from a ferryman's lantern",
+   "the boogey things on the beach are older than the spectres. [shore folk scared their kids with them|older than the keep]",
+   "abermenai means the mouth of the menai, [old western tongue|so the albs say]",
+   "albion blessed its portal keep there first, [by a few days|and never shuts up about it]",
+   "the ferryman's peace says nobody leaves a recruit on the sand. [nobody keeps it|everyone means to]",
+   "the renegades in abermenai are deserters from [all three realms|everywhere]. [no banner|no tithe]",
+   "[my first rvr was|everyone's first rvr is] abermenai. [you never forget the beach|still remember it]",
+   "the chieftain in dun abermenai keeps the keep's name. [like the others|all the chieftains do]",
+   "abermenai is the one place [the three realms agree|all three realms tell it the same], and its about the dead"
+  ],
+  "rumour": [
+   "[heard|someone said] if you leave a body on the abermenai sand the drowned ferrymen take it across",
+   "the shore folk said the abermenai spectres look for the ferrymen's lanterns. [old story|creepy story]",
+   "[word is|i heard] the old shore folk still walk the flats at night. [creepy|the spectres i guess]",
+   "[someone told me|heard] an alb chaplain forbade lanterns on the abermenai flats. [after a squire died|old story]",
+   "the beetles in the dunes are [older than the keep|been there since the shore folk], [heard that once|supposedly]",
+   "[heard|word is] there was a fort there before the stone keep. [turf and timber|older than albion]",
+   "abermenai renegade chieftain is 29. [ten levels on us|dont solo him lol]",
+   "[someone said|my guildie says] the albs blessed the beach and thats why spectres hate them"
+  ],
+  "tell": [
+   "abermenai? the 15-19 battleground. [drowned shore|a beach with ghosts]. renegades in the middle keep",
+   "is abermenai hard? the [mobs are fine|beach mobs are easy], the [renegades in the keep|keep] and the other realms are the hard part",
+   "where is abermenai? [portal from your realm's frontier|the bg portal] at 15. you cant go in past 19",
+   "whats in abermenai? boogey spawn, forlorn spectres, beetles, rats, [a few cats|forest cats]",
+   "who holds abermenai? [renegades|deserters from all three realms], under the chieftain abermenai",
+   "abermenai keep? [take it with a full group|need a real group], the chieftain is 29"
+  ]
+ },
+ "loremaster": {
+  "intro": "Abermenai? The drowned shore, and the youngest of the four [proving fields]. Before it was a field it was a ford and a [ferry], and the old fort above it, [Dun Abermenai], was built by people older than Albion. The realms opened it last, for the [first muster] of their youngest. Ask me about the [spectres] or the [boogeys], or the [renegades] who hold the keep, or the [Ferryman's Peace].",
+  "topics": {
+   "proving fields": "The four contested fields away from the great frontier where the realms send soldiers of one age at a time: [Abermenai], Thidranki, Murdaigean and Caledon. Each has a central keep and three portal keeps, and each takes soldiers of an age and turns the rest away at the portal stones.",
+   "abermenai": "The youngest field, a drowned shore of sand and reed on the mouth of the Menai, opened in the third summer of the fields for recruits too young for Thidranki. Its keep is [Dun Abermenai].",
+   "ferry": "Before the keep there was a ford and a ferry over the strait, and the shore-folk said the ferrymen carried the dead across as well as the living. The [spectres] still look for their lanterns.",
+   "dun abermenai": "A fort of turf and timber built by the shore-folk above the ford, left when the sea came in, and rebuilt in stone by somebody since. The [renegades] hold it, under a chieftain who keeps the keep's name.",
+   "first muster": "When the realms counted their youngest dead in Thidranki and could not bear the count, each opened the drowned shore as a fourth field, for the youngest of all. Albion's chaplains blessed their portal keep first, by a few days, and Albion has claimed the field on that account ever since.",
+   "spectres": "The forlorn spectres of the flats are the drowned: of the bad winter that took the shore, and of every crossing that went wrong. They grieve aloud and cannot tell a banner from a [ferry] lantern.",
+   "boogeys": "The boogey spawn of the reeds are older than the [spectres]. The shore-folk frightened their children with them, and the children were right to be frightened.",
+   "renegades": "Deserters and exiles of all three realms who hold the central keeps of the [proving fields] under a chieftain named for the keep. Abermenai's are the weakest of the four and the most patient, because their enemies are fifteen.",
+   "ferryman's peace": "An oath the three realms' chaplains swore on the shore in the first summer of the field: that no recruit of any realm would be left on the sand for the [spectres]. None of them has ever kept it to the letter. Every recruit believes in it."
+  }
+ },
+ "book": {
+  "title": "The Drowned Shore, by Brother Deiniol, chaplain to Albion's first recruits",
+  "pages": [
+   "I went down to the shore with the first of our young, in the third summer of the fields, and I blessed the portal keep, and I write this so that whoever follows me will know what they are blessing. It is a shore. The river runs out over a flat of sand into a grey strait, and the reeds stand higher than a boy. Above the ford there is an old fort, rebuilt in stone, and it is held by men of no realm. I was told that the shore-folk who built the first fort called it by a word that means only the mouth of the river. They left it when the sea came in.",
+   "The sea went out again. I have seen the line it left, a crust of salt on the stones of the keep at the height of a man's head, and I have seen what it left on the flats. They walk at dusk, grey and slow, and they weep. Our recruits call them the forlorn, and I have not corrected them. They do not seem to know us. They walk toward any light. A squire of ours carried a lantern out onto the sand the first night to see them better, and I will not write what happened, only that I have forbidden lanterns on the flats.",
+   "There are older things in the reeds, small and hungry, that the recruits call bogeys. The shore-folk, I am told, used them to frighten their children into staying close to the fire. I have begun to do the same. On the fourth day of the muster the chaplains of the other two realms came down to the shore under a white cloth, a priest of the northmen and a druid of the west, and the three of us swore on the sand that no recruit of any realm would be left there for the drowned. I meant it. I believe they did.",
+   "We have not kept it. I have seen our young drag their dead back to the portal stones under the arrows of the other realms, and I have seen theirs do the same, and I have seen bodies left. The recruits keep it better than their chaplains. They have made a saying of it, that the drowned ferrymen take across whatever is left on the sand, and the saying does what the oath could not. I set this down as the first page of my account: that the youngest soldiers of three realms keep one law in common, and it is about their dead."
+  ]
+ },
+ "bosses": [],
+ "realmTakes": {
+  "albion": {
+   "story": "Albion tells Abermenai as its own field. Its chaplains blessed the Albion portal keep a few days before the others were blessed, and Brother Deiniol's account of the first muster is read to Albion's recruits before they go; the Church teaches that the forlorn spectres are souls who drowned without a priest, and that a recruit who dies on the sand should be prayed over before anything else is done. Albion's squires call the field the Chapel Shore.",
+   "legend": "Albion players say the beach is theirs because they blessed it first, and joke that the spectres hate Albion for it. Old Albion hands still say a quick prayer over a dead groupmate on the sand before the rez, out of habit more than faith.",
+   "botLines": {
+    "lore": [
+     "the church says the spectres in abermenai drowned [without a priest|unshriven]. pray over the dead first, [the chaplains say|thats the rule]"
+    ]
+   }
+  },
+  "midgard": {
+   "story": "Midgard does not much care who blessed the shore first. Its skalds say the drowned shore is a place where the sea took a whole people and gave back only their grief, and that Midgard's young go there to learn what a lost fight sounds like before they have to hear one. The Midgard priest who swore the Ferryman's Peace is remembered only as the priest of the white cloth. Midgard's recruits call the field the Weeping Sand.",
+   "legend": "Midgard players have a superstition about torches on the flats, from the old chaplain's story of the squire and the lantern. It does nothing in game, everyone knows it does nothing, and still nobody from Midgard lights one on the sand.",
+   "botLines": {
+    "lore": [
+     "skalds say abermenai is where the young learn [what a lost fight sounds like|what losing sounds like]. the weeping sand"
+    ]
+   }
+  },
+  "hibernia": {
+   "story": "Hibernia's druids say the drowned shore is a thin place, where the water and the land and the otherworld meet, and that the forlorn spectres are not lost at all but waiting for a ferry that still runs on the other side. The druid who swore the Ferryman's Peace is remembered in Tir na Nog by name, Sarnat of the reeds, and her people sing that she kept it alone after the others forgot. Hibernia's recruits call the field the Ford of the Dead.",
+   "legend": "Hibernians say the boogeys are the shore's own Good Folk gone sour, and some of them still leave a crust of bread on the portal keep's wall before they ride out. The boogeys attack them anyway, which the Hibernians say proves the point.",
+   "botLines": {
+    "lore": [
+     "the druids say abermenai is a thin place, [water and land and the other side|where the otherworld comes close]"
+    ]
+   }
+  }
+ }
+}
