@@ -197,8 +197,7 @@
     ]
   },
   "bosses": [
-    "evern",
-    "mikka"
+    "evern"
   ],
   "era": "hib-age-of-the-veil",
   "factions": [
@@ -248,6 +247,10 @@
     },
     {
       "id": "bog-of-cullen",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "valley-of-bri-leith",
       "relation": "a zone of the region, with its own file"
     },
     {

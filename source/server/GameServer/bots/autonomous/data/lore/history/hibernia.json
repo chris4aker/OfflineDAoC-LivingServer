@@ -152,7 +152,8 @@
         "hibernia-wilds",
         "lough-derg",
         "lough-gur",
-        "silvermine-mountains"
+        "silvermine-mountains",
+        "valley-of-bri-leith"
       ],
       "bosses": [
         "atur",
@@ -470,7 +471,8 @@
         "cursed-forest",
         "hibernia-wilds",
         "lough-derg",
-        "lough-gur"
+        "lough-gur",
+        "valley-of-bri-leith"
       ],
       "bosses": [
         "badb",
@@ -656,7 +658,8 @@
         "lough-derg",
         "lough-gur",
         "shannon-estuary",
-        "silvermine-mountains"
+        "silvermine-mountains",
+        "valley-of-bri-leith"
       ],
       "bosses": []
     },
