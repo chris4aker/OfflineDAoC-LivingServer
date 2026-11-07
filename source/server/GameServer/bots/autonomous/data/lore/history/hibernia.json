@@ -142,7 +142,8 @@
       "places": [
         "coruscating-mine",
         "hibernia-wilds",
-        "lough-derg"
+        "lough-derg",
+        "silvermine-mountains"
       ],
       "bosses": [
         "atur",
@@ -537,7 +538,8 @@
       "name": "The Unseelie Court",
       "summary": "The dark court of the Veil, whose servants work the Coruscating Mine.",
       "places": [
-        "coruscating-mine"
+        "coruscating-mine",
+        "silvermine-mountains"
       ],
       "bosses": [
         "lobigan",
@@ -618,7 +620,8 @@
       "name": "The Siabra",
       "summary": "The siabra, cousins of the elves who did not go behind the Veil, and who hold great stretches of the old country against the realm: the dergan furies and enchanters of Lough Derg, the magi of the Cullen bog, the camps of the Silvermine and the Shannon shore.",
       "places": [
-        "lough-derg"
+        "lough-derg",
+        "silvermine-mountains"
       ],
       "bosses": []
     },
