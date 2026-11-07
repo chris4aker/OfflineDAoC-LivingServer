@@ -10,6 +10,13 @@ Older entries below keep the names they were written with.
 
 ## 1.2 (in development)
 
+**The Darkness Falls raid walks to Princess Nahemah from Ba'alorien's room** (owner's 1.1.2 test, 2026-11-07). After
+Prince Ba'alorien died, every Hibernian raider's path to Nahemah's muster failed: Detour cuts a 20,000-unit corridor at
+its 256-polygon limit, and Darkness Falls accepts only complete paths, so each raider got "no path", 37 gave up the goal
+and the raid's own event camp was benched for two hours. A Darkness Falls bot now walks a cut corridor's own end when
+that walk is itself a complete, checked path (both halves of this route are), then goes on from there. The navmesh is
+unchanged. A realm raid's own event camp is never benched by the generic camp-route rule.
+
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
 the part that shows it to you. All the stories are now in: 107 places and 578 bosses (with 4 realm histories), written for
