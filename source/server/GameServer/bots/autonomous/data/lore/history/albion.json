@@ -46,9 +46,27 @@
         "kalnraw",
         "tusker",
         "agidad",
+        "apocalypse",
+        "bane-of-hope",
+        "bellum",
         "borimo",
+        "crypt-lord",
+        "fames",
+        "fates-chosen",
+        "funus",
+        "host",
+        "kez",
+        "lich-lord-ilron",
+        "lich-lord-sanguis",
+        "lord-sanguis",
+        "moran-the-mighty",
+        "morbus",
+        "silencer",
+        "skeletal-sacristan",
+        "soul-reckoner",
+        "spectral-provisioner",
         "trahern",
-        "kez"
+        "warlord-dorinakka"
       ]
     },
     {
@@ -84,7 +102,12 @@
       "bosses": [
         "cailleach-uragaig",
         "lord-sanguis",
-        "lich-lord-sanguis"
+        "lich-lord-sanguis",
+        "amminus-pilus",
+        "emperor-seleucus",
+        "forgotten-emperor",
+        "priestess-of-purity",
+        "taras-princep-praetorii"
       ]
     },
     {
@@ -130,7 +153,8 @@
         "teazanodwc",
         "mouth",
         "fester",
-        "cauld-lad"
+        "cauld-lad",
+        "wizard-lichas"
       ]
     },
     {
@@ -173,11 +197,27 @@
         "sister-blythe",
         "draco-magnificens",
         "celain-elrich",
-        "leorcelis-grant",
-        "cirfans",
-        "ellyll-seer",
         "belgrik",
-        "soulfear"
+        "cailleach-uragaig",
+        "captain-atwell",
+        "captain-bardalph",
+        "captain-heathyr",
+        "cirfans",
+        "director-botok",
+        "ellyll-seer",
+        "lady-darra",
+        "leorcelis-grant",
+        "lieutenant-elva",
+        "lieutenant-meade",
+        "lieutenant-saxe",
+        "morgana",
+        "morvel-glyne",
+        "overseer-tepok",
+        "sergeant-darryn",
+        "sergeant-eddison",
+        "sergeant-reede",
+        "soulfear",
+        "tuder-glyne"
       ]
     },
     {
@@ -222,7 +262,45 @@
         "apocalypse",
         "orylle",
         "morgana",
-        "lord-caddug"
+        "adelon",
+        "amphiptere",
+        "beath",
+        "beonoc-dyer",
+        "beran-the-supply-master",
+        "cabalist-meical",
+        "coliath",
+        "deben-se-gecynde",
+        "draargus-the-mighty",
+        "drihten-elreden",
+        "durval",
+        "fuladl",
+        "fulafeallan",
+        "heavy-metal-mark-i",
+        "jehrog-se-bysen",
+        "krevo-ricik",
+        "lord-caddug",
+        "lurfos-the-herald",
+        "malefact",
+        "morgus-urgalorg",
+        "orshom-brong",
+        "pazia",
+        "qanris-duros",
+        "risnir-cruss",
+        "sarcondina",
+        "scurceol-hyrde",
+        "spirit-of-lord-emthoro",
+        "syssro-the-ruthless",
+        "the-hoges-household",
+        "the-lindon-household",
+        "throttler",
+        "tower-guardian",
+        "tower-keeper",
+        "tyian",
+        "ulor-se-bysen",
+        "valnir-mordeth",
+        "veraerius-the-brave",
+        "vortanos",
+        "wenoiak-the-enlightened"
       ]
     },
     {
@@ -259,7 +337,10 @@
         "dales-of-devwy",
         "gwyddneau",
         "caldey",
-        "inishail-island"
+        "inishail-island",
+        "caer-sidi",
+        "crystal-cave",
+        "krondon"
       ],
       "bosses": [
         "morgana",
@@ -269,7 +350,16 @@
         "amphiptere",
         "valnir-mordeth",
         "sarcondina",
-        "leorcelis-grant"
+        "beath",
+        "beonoc-dyer",
+        "cabalist-meical",
+        "leorcelis-grant",
+        "risnir-cruss",
+        "spirit-of-lord-emthoro",
+        "the-hoges-household",
+        "the-lindon-household",
+        "tower-guardian",
+        "wizard-lichas"
       ]
     },
     {
@@ -294,7 +384,15 @@
         "xanxicar",
         "qanris-duros",
         "risnir-cruss",
-        "lord-caddug"
+        "beath",
+        "cabalist-meical",
+        "heavy-metal-mark-i",
+        "lord-caddug",
+        "pazia",
+        "throttler",
+        "tower-guardian",
+        "tower-keeper",
+        "tyian"
       ]
     },
     {
@@ -311,7 +409,8 @@
         "avalon-isle",
         "dales-of-devwy",
         "gwyddneau",
-        "caldey"
+        "caldey",
+        "avalon-city"
       ],
       "bosses": [
         "soul-reckoner",
@@ -320,9 +419,18 @@
         "spectral-provisioner",
         "sister-blythe",
         "celain-elrich",
-        "lord-caddug",
+        "apocalypse",
+        "bane-of-hope",
+        "bellum",
+        "fames",
+        "fates-chosen",
+        "funus",
         "leorcelis-grant",
-        "soulfear"
+        "lord-caddug",
+        "morbus",
+        "silencer",
+        "soulfear",
+        "vortanos"
       ]
     },
     {
@@ -345,7 +453,8 @@
         "host",
         "silencer",
         "bane-of-hope",
-        "fates-chosen"
+        "fates-chosen",
+        "crypt-lord"
       ]
     },
     {
@@ -366,7 +475,8 @@
         "lurfos-the-herald",
         "morgus-urgalorg",
         "ulor-se-bysen",
-        "jehrog-se-bysen"
+        "jehrog-se-bysen",
+        "malefact"
       ]
     },
     {
@@ -399,7 +509,8 @@
       "name": "The Pennine watch",
       "summary": "Lord Gildas, Lady Darra and the captains, lieutenants and sergeants of Albion's watch on the Summoners' road, dead at their posts and bound to them facing the other way.",
       "places": [
-        "hall-of-the-corrupt"
+        "hall-of-the-corrupt",
+        "pennine-mountains"
       ],
       "bosses": [
         "lord-gildas",
@@ -451,9 +562,12 @@
         "snowdonia",
         "isle-of-glass",
         "dales-of-devwy",
-        "caldey"
+        "caldey",
+        "tepoks-mine"
       ],
-      "bosses": []
+      "bosses": [
+        "adelon"
+      ]
     },
     {
       "id": "old-powers",
@@ -474,7 +588,9 @@
         "cornwall",
         "hadrians-wall",
         "snowdonia",
-        "inishail-island"
+        "inishail-island",
+        "crystal-cave",
+        "stonehenge-barrows"
       ],
       "bosses": [
         "golestandt",
@@ -491,15 +607,22 @@
         "kalnraw",
         "tusker",
         "rob-ria",
+        "agidad",
+        "amphiptere",
+        "belgrik",
+        "borimo",
         "cauld-lad",
         "cirfans",
-        "agidad",
-        "borimo",
-        "trahern",
-        "kez",
         "ellyll-seer",
-        "belgrik",
-        "soulfear"
+        "kez",
+        "morvel-glyne",
+        "priestess-of-purity",
+        "sarcondina",
+        "soulfear",
+        "trahern",
+        "tuder-glyne",
+        "wizard-lichas",
+        "xanxicar"
       ]
     },
     {
@@ -525,7 +648,11 @@
       ],
       "bosses": [
         "lord-sanguis",
-        "lich-lord-sanguis"
+        "lich-lord-sanguis",
+        "amminus-pilus",
+        "emperor-seleucus",
+        "forgotten-emperor",
+        "taras-princep-praetorii"
       ]
     },
     {
@@ -549,7 +676,12 @@
         "black-mountains-south",
         "black-mountains-north"
       ],
-      "bosses": []
+      "bosses": [
+        "director-botok",
+        "morvel-glyne",
+        "overseer-tepok",
+        "tuder-glyne"
+      ]
     },
     {
       "id": "mordred",

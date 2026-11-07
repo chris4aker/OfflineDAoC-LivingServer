@@ -352,7 +352,19 @@
   "bosses": [
     "qanris-duros",
     "risnir-cruss",
-    "valnir-mordeth"
+    "valnir-mordeth",
+    "tower-guardian",
+    "tower-keeper",
+    "tyian",
+    "pazia",
+    "heavy-metal-mark-i",
+    "throttler",
+    "cabalist-meical",
+    "adelon",
+    "beath",
+    "beonoc-dyer",
+    "the-hoges-household",
+    "the-lindon-household"
   ],
   "era": "alb-the-shrouded-isles",
   "factions": [

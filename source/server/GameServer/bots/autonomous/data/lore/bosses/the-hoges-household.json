@@ -1,0 +1,134 @@
+{
+  "id": "the-hoges-household",
+  "name": "The Hoges household",
+  "npcNames": [
+    "Idonea Hoges",
+    "Hamon Hoges",
+    "Eunice Hoges",
+    "Clarice Hoges",
+    "Sibyl Hoges"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the hoges",
+    "hoges family",
+    "idonea hoges",
+    "hamon hoges",
+    "eunice hoges",
+    "clarice hoges",
+    "sibyl hoges"
+  ],
+  "facts": [
+    {
+      "text": "The Hoges are five ghosts in the far west of the Dales by the old burying ground, all aggro level 200 within 500, no faction, no spells or styles, respawn 80 seconds: Idonea (55, a woman, 382883, 425473), Hamon (53, a man, 580 from her), Eunice (52, a woman, two spawns), Clarice (51, a woman, 60 from Idonea) and Sibyl (50, a woman, 410 from Idonea).",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Lindons' garden is about 1,300 south of theirs; Valnir Mordeth's pit lies well to the north.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "An NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Idonea gives every name in the house in order, her husband's and her daughters' (from the Dales file). Hamon the hedger, the three daughters' parts, the tithe-reeve's custom, the gate kept shut and the burying-ground rights are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Hoges farmed in the far west of the dales beside the old burying ground, which was a burying ground before there were colleges to bury anyone, and they held their land from the colleges by the year, and paid their tithe at midsummer to the colleges' reeve, who came out from Avalon with his book and his boy and his two mules. The custom of the dales was that the head of the house met the reeve at the gate and gave every name in the house, in order, so that he could write them down and tithe them; and Idonea Hoges, who was the head of that house in all but name, gave them better than anyone. Her own name first, as the one who kept the book of the house. Then her husband's, Hamon. Then her daughters', Eunice, Clarice and Sibyl, eldest to youngest.\n\nShe gives them still. Morgana's dead came through the western dales in the first summer of the war, out of the old burying ground itself, and the Hoges died in their house and their garden; and when the registrar of Fort Gwyntell came out to ask, years after, Idonea answered him across her own garden with the names in order, as if he were the reeve. He wrote them down. He did not go into the garden.\n\nEach of them keeps the house in their own way. Hamon was a hedger, and walks the line of the hedge he laid, a little apart from the house, as if he had just come in from it. Eunice, the eldest, keeps two places, the house and the far end of the garden by the gate, and is seen at both, and the households say she was courting and never decided. Clarice keeps at her mother's elbow, close enough to touch. Sibyl, the youngest, keeps a little behind, as the youngest does. None of them calls the others; each comes for a stranger who walks into their own part of the garden. But it is a small garden, and a stranger who walks in finds out how small.\n\nThe Priest of Arawn holds that the drakoran necromancer Beath keeps them in their house, and that they are the hardest of the dales' dead to speak to and to leave because Valnir Mordeth's larder lies to the north and their own burying ground is under their feet. The Hoges themselves say nothing about it. They give their names, in order, and the gate stays shut.",
+  "legend": "The Hoges household are five named ghosts (50 to 55) in their garden in the far west of the Dales of Devwy, by the old burying ground, with the Lindons' house about 1,300 south. All are aggressive from about 500 away. None has a faction, so nobody is called in, but they stand so close together (Clarice is 60 from Idonea, Sibyl 410, Hamon about 580, Eunice by the house and again at the far end) that walking into the garden pulls several. Pull from the outside: Hamon on his hedge line and the far Eunice first, then the rest one at a time, Idonea (55) last. No spells or styles in the data: melee ghosts, a group of fifties. Respawn about 80 seconds each, so keep moving. Valnir Mordeth's pit is well to the north; do not wander into it.",
+  "yells": {
+    "aggro": [
+      "Idonea Hoges, of this house. Hamon. Eunice. Clarice. Sibyl.",
+      "You are not the reeve.",
+      "Shut the gate behind you. No. Do not come in."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Every name! I gave you every name!"
+      }
+    ],
+    "death": [
+      "Write us... in order...",
+      "The tithe... is paid..."
+    ],
+    "slay": [
+      "Tithed.",
+      "Written down.",
+      "Out of the garden."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small garden by the old burying ground.",
+      "A woman by the gate says names, in order."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Hoges gather in their small garden."
+      }
+    ],
+    "realmFirstKill": "The Hoges household is laid. The garden gate stands open."
+  },
+  "botLines": {
+    "briefing": [
+      "hoges house, 5 named ghosts 50-55 in the far west of the dales. all aggro at 500, all standing close",
+      "no faction, nobody gets called, but walking in pulls 3 or 4. pull from the outside",
+      "hamon on the hedge and the far eunice first, idonea is 55, last",
+      "80 sec respawns, keep moving. valnir's pit is north, dont wander up there"
+    ],
+    "aftermathWin": [
+      "hoges cleared. idonea read us the whole list again",
+      "pulled from the outside, worked",
+      "80 sec respawns though, go",
+      "the lindons are next door if you want more"
+    ],
+    "aftermathLoss": [
+      "walked straight into the garden, got all five",
+      "forgot eunice has two spots",
+      "wandered north into valnir's larder after",
+      "the respawns caught up with us"
+    ],
+    "rumour": [
+      "[heard|someone said] idonea hoges gives every name in her house in order like you were the tithe reeve",
+      "heard eunice hoges is seen at the house and at the gate both. she never decided",
+      "[heard|someone said] the hoges died when morgana's dead came out of their own burying ground",
+      "heard the priest of arawn says beath keeps the hoges in their house"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "hoges",
+    "text": "A western household of the [dales of devwy] beside the old burying ground: Idonea, who gives every name in the house in order as if to the colleges' tithe-reeve; Hamon her husband, the hedger, on his hedge line; and their daughters Eunice, seen at two places, Clarice at her mother's elbow and Sibyl a little behind. They died when Morgana's dead came out of their own burying ground. The [lindon] house is their neighbour."
+  },
+  "bookPage": "From the second book of Gracien Adamson, name registrar of Fort Gwyntell. Idonea Hoges, of the western house. Hamon Hoges, her husband. Eunice Hoges, eldest daughter. Clarice Hoges. Sibyl Hoges, youngest. Given by Idonea across her garden, in that order, as she would have given them to the colleges' reeve at midsummer. I asked whether there were any others in the house. She said no, the house was the house. I asked whether she wished me to send for anyone. She said the reeve was late. I have put a mark beside each name. I have put a second mark beside Eunice's, because I saw her at the house and at the gate in the same breath, and I do not know which to write.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} laid the Hoges household in their garden in {minutes} minutes.",
+    "loss": "The Hoges household tithed {raidLeader}'s company of {realm} and shut the gate."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "the-lindon-household",
+      "relation": "their neighbours to the south, as hard to leave"
+    },
+    {
+      "id": "valnir-mordeth",
+      "relation": "his larder lies to the north of their garden"
+    },
+    {
+      "id": "beath",
+      "relation": "the Priest of Arawn says his craft keeps them in their house"
+    }
+  ]
+}
