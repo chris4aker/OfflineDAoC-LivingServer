@@ -6,7 +6,8 @@
     62
   ],
   "aliases": [
-    "crystal caves"
+    "crystal caves",
+    "the crystal caves"
   ],
   "summary": "The cavern of light under Avalon City where Xanxicar, the two-headed dragon the drakoran follow, sleeps on his mound.",
   "facts": [
@@ -39,14 +40,27 @@
       "text": "That Xanxicar is the dragon the drakoran follow is Living Server writing, built on the 'Xanxicarian' guard names and the Avalon Isle text.",
       "provenance": "original",
       "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "A December 2002 party of five 45+ groups was wiped in about two minutes by two patrolling elites at the entrance; a May 2003 raid of six level-50 groups found the first level-75 guards respawning behind them.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=97"
+    },
+    {
+      "text": "A 2010 patch (1.101) made Avalon City and Crystal Cave an Epic Zone.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=97"
     }
   ],
-  "story": "Under the heart of Avalon City the ground is not earth but crystal, and the old scholars who built their colleges above it never knew, or never said. A way goes down from the burned city into a cavern where the walls give back every light a hundredfold, cold and many-coloured, and at the bottom of it, on a mound of glittering stone, sleeps Xanxicar.\n\nHe has two heads, the few who have seen him swear, and a hide like frost on silver. The drakoran do not speak of him to outsiders, but their guards on the way down bear his name, and the elites who keep his cave are called Xanxicarian, as a king's household is called by the king. The Avalon Isle tales say the dragon-men follow a huge dragon. Here he is.\n\nSome in Albion think he was the lock on the isle: that the colleges were built over him to keep him sleeping, and that when Morgana burned them the lock broke and his children came up out of the ground. Others think the scholars were the prisoners and he the keeper. What is certain is that he does not sleep lightly. When he wakes he rears up and brings his weight down on everything around him, again and again as he weakens, and from half his strength his champions come to him one after another, and he does not stop calling them until he dies. When he does, a light forms on the mound where he lay, and nobody yet knows what it means.",
-  "legend": "Well over a hundred, the old guides said, and the guards on the way in were worse than the dragon. Two heads, one temper. Stay out of his stomp: at four, three, two and one fifths of his health he rears up and crushes everything near him. From half, champions come one after another until he dies. Some swear the cave fills with lightning if you dawdle.",
+  "story": "Under the heart of Avalon City the ground is not earth but crystal, and the old scholars who built their colleges above it never knew, or never said. A way goes down from the burned city into a cavern where the walls give back every light a hundredfold, cold and many-coloured, and at the bottom of it, on a mound of glittering stone, sleeps Xanxicar.\n\nHe has two heads, the few who have seen him swear, and a hide like frost on silver. The drakoran do not speak of him to outsiders, but their guards on the way down bear his name, and the elites who keep his cave are called Xanxicarian, as a king's household is called by the king. The Avalon Isle tales say the dragon-men follow a huge dragon. Here he is.\n\nSome in Albion think he was the lock on the isle: that the colleges were built over him to keep him sleeping, and that when Morgana burned them the lock broke and his children came up out of the ground. Others think the scholars were the prisoners and he the keeper. What is certain is that he does not sleep lightly. When he wakes he rears up and brings his weight down on everything around him, again and again as he weakens, and from half his strength his champions come to him one after another, and he does not stop calling them until he dies. When he does, a light forms on the mound where he lay, and nobody yet knows what it means.\n\nThe lid. The readers of Avalon did not know they had built their city on a lid. Their oldest map knew: drawn before the first college, it marks the heart of the isle with a small beast of two heads. The cave under the city is not earth but crystal, grown over ages around the sleeper at its heart, and every light that enters it comes back a hundred times, cold and many-coloured. The Camelot loremasters argue whether Xanxicar grew the crystal or the crystal grew Xanxicar. The drakoran do not argue. The drakoran guard it.\n\nThe guard. The way down from the burned city is held by Xanxicarian sentries, and the cave itself by Xanxicarian elites, the dragon's own household, who wear his name as a king's knights wear the king's. The elites are the reason Allakhazam's old page called the Crystal Cave possibly the hardest dungeon in the game to enter: they patrol, they hit hard enough to break a raid in two minutes, and they come back. Few raids that reached the dragon in 2003 reached him fresh.\n\nThe waking. The readers saw a light rise on the third night of the burning, and many in Albion believe that was the moment the lid broke and Xanxicar woke for the first time since before Avalon. The drakoran, who had come to the isles at Morgana's call, went down to him and came up his servants, and the five clans of the city have been his ever since, whether their lords admit it or not. Dura'ek the Empowered, who rules them, is the one who went down first.\n\nWhat it means for Albion. If the drakoran follow a dragon, and the dragon is under Avalon, then Albion's war on the isles is not only against Morgana. The Camelot loremasters say plainly what the readers only whisper: kill the dragon, and the clans will have no reason to stay. Albion's raids have killed him. The clans are still there. And when he dies, a light forms on the mound where he lay, and nobody has yet dared to touch it.",
+  "legend": "Well over a hundred, the 2003 Albion guide said, and the guards on the way in are worse than the dragon. Two groups of elites patrolling the entrance wiped five groups of forty-fives in two minutes in December 2002, and the level-75 guards inside come back behind you. Send one person in first to scout the patrols; it was the first advice anyone ever wrote about the place. The dragon himself has two heads, a hide like frost on silver, and a stomp: at four, three, two and one fifths of his health he rears up and brings his whole weight down on everything near him. From half, his champions come one after another until he dies. He flings people into the air when he feels like it. A five-group wipe was still news in 2005. Some swear the cave fills with lightning if you dawdle; nobody has proved it, and everybody hurries anyway. Do not touch the light on the mound.",
   "atmosphere": {
     "firstEntry": [
       "The walls give back your light a hundredfold.",
-      "Every guard here bears a dragon's name."
+      "Every guard here bears a dragon's name.",
+      "Light comes back cold and many-coloured from every wall.",
+      "Somewhere ahead, something breathes in two rhythms.",
+      "The Xar patrol here. Scout before you move."
     ],
     "areas": [
       {
@@ -56,7 +70,20 @@
         "z": 14551,
         "radius": 1500,
         "lines": [
-          "Two heads rest on a mound of light. Both are watching."
+          "Two heads rest on a mound of light. Both are watching.",
+          "Stay out of reach when he rears.",
+          "His champions wait in the dark of the cave."
+        ]
+      },
+      {
+        "name": "the way in",
+        "x": 28648,
+        "y": 31962,
+        "z": 16205,
+        "radius": 900,
+        "lines": [
+          "Elites patrol the entrance. Send a scout first.",
+          "The guards here come back behind you."
         ]
       }
     ]
@@ -65,17 +92,34 @@
     "lore": [
       "a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. [wait too long|dawdle] and the cave fills with lightning",
       "[i think|my theory is] xanxicar was [guarding|sitting under] avalon [long before|before] the drakoran came. [maybe that's why it stayed hidden|it was the lock]",
-      "the drakoran follow a huge dragon, the isle stories say. [its xanxicar|thats xanxicar], his guards even carry his name"
+      "the drakoran follow a huge dragon, the isle stories say. [its xanxicar|thats xanxicar], his guards even carry his name",
+      "the readers of avalon built their city on top of the crystal cave. [on a lid|didnt know]",
+      "the oldest map of avalon has a two headed beast drawn in the middle. [before the colleges|older than the city]",
+      "the xanxicarian elites are xanxicar's household. [like knights of a king|they wear his name]",
+      "dura'ek went down to the crystal cave first. [came back empowered|thats where the power came from]",
+      "the loremasters say kill the dragon and the drakoran have no reason to stay. [we killed him and theyre still there|didnt work yet]",
+      "the crystal cave walls throw every light back a hundred times",
+      "allakhazam called the crystal cave maybe the hardest dungeon in the game to get into",
+      "[heard|someone said] xanxicar grew the crystal. or the crystal grew him",
+      "the light the readers saw on the third night was xanxicar waking, [i think|they say]"
     ],
     "rumour": [
       "[heard|someone said] the guards in the crystal cave are worse than the dragon",
       "[heard|word is] xanxicar wiped five full groups in one go",
-      "heard a light forms on xanxicar's mound when he dies. nobody knows what it is"
+      "heard a light forms on xanxicar's mound when he dies. nobody knows what it is",
+      "send one guy in first to scout the crystal cave patrols. [oldest advice there is|always]",
+      "[heard|someone said] two elites wiped five groups at the crystal cave entrance in two minutes",
+      "[heard|someone said] the level 75 guards in the crystal cave respawn behind you",
+      "nobody touches the light on xanxicar's mound. [nobody|dont]",
+      "[heard|word is] a five group wipe on xanxicar was still news in 2005"
     ],
     "tell": [
       "crystal cave? under avalon city. xanxicar, a two headed dragon, and his xanxicarian guards. raid of over a hundred",
       "hardest dungeon to get into in albion. the guards hit harder than you think, the dragon stomps",
-      "its the dragon under avalon. stay out of his stomps and kill his champions"
+      "its the dragon under avalon. stay out of his stomps and kill his champions",
+      "is the crystal cave hard? the guards are harder than the dragon. scout the patrols",
+      "where is the crystal cave? under the middle of avalon city, past the xanxicarian sentries",
+      "what's in the crystal cave? xanxicar and his elites. thats it, and its plenty"
     ]
   },
   "loremaster": {
@@ -83,17 +127,30 @@
     "topics": {
       "xanxicar": "A dragon with two heads and a hide like frost on silver. When he wakes he rears and crushes all around him, again and again as he weakens. From half his strength his champions come to him, one after another. Keep away from his feet.",
       "guards": "The Xar, the travellers call them: xanxicarian sentries in the city above, xanxicarian elites in the cave. A king's household is called by the king's name. So is a dragon's.",
-      "lock": "One tale says the scholars built their colleges over him to keep him asleep, and when Morgana burned them the lock broke. Another says he was the keeper and they the prisoners. Both tales agree he did not wake by accident."
+      "lock": "One tale says the scholars built their colleges over him to keep him asleep, and when Morgana burned them the lock broke. Another says he was the keeper and they the prisoners. Both tales agree he did not wake by accident.",
+      "elites": "The Xanxicarian elites, the dragon's household. They patrol the way in, they hit hard enough to break a raid, and the guards inside come back behind you. Send a scout first.",
+      "map": "The oldest map of Avalon, from before the colleges, marks the isle's heart with a beast of two heads. The readers took it for ornament.",
+      "light on the mound": "When Xanxicar dies, a light forms on the mound where he lay. No one has dared to touch it. Some say it is what the readers saw rising on the third night.",
+      "dura'ek": "He went down to the cave first, the clans whisper, and came back Empowered. Ask in Avalon City of [the clans].",
+      "the clans": "Five drakoran clans hold Avalon City above the cave. Whether their lords admit it or not, the cave's master is theirs too.",
+      "lid": "The readers' master of stars said it when he saw the old map: we built our city on a lid. He was right."
     }
   },
   "book": {
     "title": "The Map with No Name",
     "pages": [
-      "The oldest map of Avalon that survives was drawn before the colleges were built. It shows the isle, the marsh, the water, and at the heart of the isle a small drawing of a beast with two heads, and no name at all. The readers of the college thought it a mapmaker's ornament. Those who have gone down the way under the burned city and come back do not think so. They say the drawing is accurate. They say it was drawn from life.",
-      "He sleeps on a mound of stone that gives back light. When he wakes he rears up, both heads high, and brings his weight down on everything near him; the ground lurches, and those beneath him do not rise. He does this not once but as often as he is hurt, at every fifth part of his strength. At the half his champions begin to come, and they do not stop. When he dies, a light forms on the mound. No one has yet dared to touch it."
+      "The Map with No Name, a reader's commentary by Elowen of Caer Gothwaite. The oldest map of Avalon that survives was drawn before the colleges were built. It shows the isle, the marsh, the water, and at the heart of the isle a small drawing of a beast with two heads, and no name at all. The readers of the college thought it a mapmaker's ornament for three hundred years. Those who have gone down the way under the burned city and come back do not think so. They say the drawing is accurate. They say it was drawn from life.",
+      "The way down is guarded by the Xar, as travellers call them: sentries in the city, elites in the cave. The first account I have of the cave is a letter from a knight of Caer Gothwaite who went down in the winter after the burning with five companies of forty men each. Two of the elites met them at the mouth. The knight writes that it took the space of two prayers. He was the only one who walked out. He wrote that the walls threw his torchlight back at him a hundredfold, cold and many-coloured, and that he could hear something breathing, ahead, in two rhythms.",
+      "He sleeps on a mound of stone that gives back light. When he wakes he rears up, both heads high, and brings his weight down on everything near him; the ground lurches, and those beneath him do not rise. He does this not once but as often as he is hurt, at every fifth part of his strength. At the half his champions begin to come, and they do not stop. They are the dragon's household, and they wear his name, and they will die for him one after another until he dies. The knight who wrote to me said it was like watching a king's guard go to the block.",
+      "The clans in the city above deny that the dragon is their master. Their lords say they came to the isles at the witch's call and that the dragon is only a dragon, sleeping under a city they happened to take. And yet their guards say his name over and over, as soldiers say the name of their king, and the Empowered lord who rules them went down to the cave before any of them and came back drinking fire. I do not think the drakoran found the dragon. I think the dragon called them. I think he had been calling for a very long time.",
+      "When he dies, a light forms on the mound where he lay. I have now three accounts of it from raids that killed him, and they agree: a glow, small at first, that grows, and that none of them dared to touch. One of them, a priest of Camelot, wrote that it looked like the light we saw rise on the third night of the burning. I have thought about that a great deal. If he is right, then whatever woke under Avalon that night is not the dragon at all, and the dragon was only its keeper. I do not know what that means. I am keeping the map."
     ]
   },
   "bosses": [
     "xanxicar"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
   ]
 }

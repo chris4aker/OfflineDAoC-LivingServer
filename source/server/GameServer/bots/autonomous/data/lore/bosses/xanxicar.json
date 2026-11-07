@@ -30,11 +30,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
     }
   ],
-  "story": "Xanxicar is the dragon under Avalon, and the dragon the drakoran follow. He has two heads and a hide like frost on silver, and he sleeps on a mound of crystal at the bottom of the cave, where every light is thrown back a hundred times. Whether the scholars of Avalon built their colleges over him to keep him asleep, or whether he let them, no one alive can say. When he wakes he does not breathe fire like the dragons of the realms. He uses his weight. He rears up with both heads high and brings the whole of himself down on everything near him, and he does it again each time another fifth of his strength is gone. From half his strength his champions come to him, Xanxicarian warriors who are to the drakoran what a king's household knights are to a king, one after another until he dies. He flings men into the air for the pleasure of watching them fall. When he dies a light forms on his mound.",
-  "legend": "Over a hundred, the old guides said; five groups wiped in one go, said another. He stomps at 80, 60, 40 and 20 percent: everyone but the tanking party gets out of range on the warning. From half, champions keep coming; one party kills each away from the tank. Some swear the cave fills with lightning if you take too long.",
+  "story": "Xanxicar is the dragon under Avalon, and the dragon the drakoran follow. He has two heads and a hide like frost on silver, and he sleeps on a mound of crystal at the bottom of the cave, where every light is thrown back a hundred times. Whether the scholars of Avalon built their colleges over him to keep him asleep, or whether he let them, no one alive can say. When he wakes he does not breathe fire like the dragons of the realms. He uses his weight. He rears up with both heads high and brings the whole of himself down on everything near him, and he does it again each time another fifth of his strength is gone. From half his strength his champions come to him, Xanxicarian warriors who are to the drakoran what a king's household knights are to a king, one after another until he dies. He flings men into the air for the pleasure of watching them fall. When he dies a light forms on his mound.\n\nThe sleeper. Xanxicar is older than Avalon. The oldest map of the isle, drawn before the first college, already marks him at its heart. He slept under the isle while the readers built their city on top of him, while Merlin learned his letters overhead, while Morgana learned hers. The crystal of the cave grew around him over the ages, or out of him; even the Camelot loremasters cannot agree.\n\nThe waking. On the third night of the burning the readers saw a light rise from the city's heart, and many think that was Xanxicar waking. The drakoran, who had come to the isles at Morgana's call, went down to him and came up his. The Avalon Isle tales say the dragon-men are led by a huge dragon. He is that dragon, whatever the five lords say, and Dura'ek, who went down first, carries his fire and frost.\n\nHow he fights. He does not breathe like the dragons of the realms. He has two heads, and a hide like frost on silver, and he uses his weight: he rears up with both heads high and brings the whole of himself down on everything near him, and he does it again each time another fifth of his strength is gone. From half his strength his champions come to him, Xanxicarian warriors who are to the drakoran what a king's household knights are to a king, one after another until he dies. He seizes men and flings them into the air for the pleasure of watching them fall, and glares at others. When he dies a light forms on his mound, and nobody knows what it is.",
+  "legend": "Over a hundred, the old guides said; five groups wiped in one go, said another. He stomps at 80, 60, 40 and 20 percent: everyone but the tanking party gets out of range on the warning. From half, champions keep coming; one party kills each away from the tank. Some swear the cave fills with lightning if you take too long.\n\nThe guards on the way in are worse than he is; send a scout, clear the patrols, and arrive with full mana. The old hands say he is the one dragon in Albion who respects a raid that keeps its distance, and kills one that does not.",
   "yells": {
     "aggro": [
-      "Two heads wake. Two hungers."
+      "Two heads wake. Two hungers.",
+      "You walk on my roof. Did you think I would not hear?",
+      "Readers' children. Come closer."
     ],
     "phases": [
       {
@@ -44,18 +46,26 @@
       {
         "trigger": "health<=50",
         "text": "Champions! Your lord calls you!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Champions! Your lord calls you!"
       }
     ],
     "death": [
-      "The mound... remembers... me..."
+      "The mound... remembers... me...",
+      "Under me... is more..."
     ],
     "slay": [
-      "Up, and down. They always come down."
+      "Up, and down. They always come down.",
+      "Crushed, like the colleges.",
+      "Small, and loud, and done."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "Two heads rest on a mound of light. Both are watching."
+      "Two heads rest on a mound of light. Both are watching.",
+      "The ground ripples like the skin of a sleeping beast."
     ],
     "phases": [
       {
@@ -74,28 +84,45 @@
     "briefing": [
       "stomps at 80 60 40 20. on the warning everyone but the tank group runs out",
       "from 50% champions keep spawning. one party per champion, away from the tank",
-      "this is a hundred man fight. the guards on the way in are the hard part"
+      "this is a hundred man fight. the guards on the way in are the hard part",
+      "scout the patrols before we move"
     ],
     "aftermathWin": [
       "xanxicar down. both heads",
-      "there's a light on the mound. nobody touch it"
+      "there's a light on the mound. nobody touch it",
+      "the readers of avalon owe us a drink",
+      "two heads, one kill"
     ],
     "aftermathLoss": [
       "half the raid stood in the 40% stomp",
-      "the champions never stopped and we ran out of healers"
+      "the champions never stopped and we ran out of healers",
+      "the elites wiped us before we got there",
+      "nobody scouted, patrol walked in"
     ],
     "rumour": [
       "a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. [wait too long|dawdle] and the cave fills with lightning",
-      "heard a light forms on xanxicar's mound when he dies. nobody knows what it is"
+      "heard a light forms on xanxicar's mound when he dies. nobody knows what it is",
+      "heard xanxicar is on the oldest map of avalon",
+      "[heard|someone said] xanxicar is the huge dragon the drakoran follow"
     ]
   },
   "loremasterTopic": {
     "keyword": "xanxicar",
     "text": "A dragon with two heads and a hide like frost on silver. When he wakes he rears and crushes all around him, again and again as he weakens. From half his strength his champions come to him, one after another. Keep away from his feet."
   },
-  "bookPage": "He sleeps on a mound of stone that gives back light. When he wakes he rears up, both heads high, and brings his weight down on everything near him; the ground lurches, and those beneath him do not rise. He does this not once but as often as he is hurt, at every fifth part of his strength. At the half his champions begin to come, and they do not stop. When he dies, a light forms on the mound. No one has yet dared to touch it.",
+  "bookPage": "He sleeps on a mound of stone that gives back light. When he wakes he rears up, both heads high, and brings his weight down on everything near him; the ground lurches, and those beneath him do not rise. He does this not once but as often as he is hurt, at every fifth part of his strength. At the half his champions begin to come, and they do not stop. When he dies, a light forms on the mound. A priest of Camelot who saw it wrote to me that it looked like the light we saw rise on the third night of the burning. No one has yet dared to touch it.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} went down under Avalon and brought Xanxicar off his mound in {minutes} minutes.",
     "loss": "Xanxicar's stomp broke {realm}'s raid in the Crystal Cave; {raidLeader} left the dragon on his mound of light."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "duraek-the-empowered",
+      "relation": "his servant, who carries his fire and frost"
+    }
+  ]
 }

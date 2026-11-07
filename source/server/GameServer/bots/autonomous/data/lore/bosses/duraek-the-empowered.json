@@ -25,11 +25,13 @@
       "source": "Middle English dictionaries (to verify)"
     }
   ],
-  "story": "Dura'ek was a war-lord of the dry'ak clan, the halberdiers and doorkeepers of the drakoran host, and no greater than the other four lords until the night Avalon burned. Then he came up from the way under the city changed. Fire and frost, the two breaths of a dragon, no longer harm him; they feed him, and he burns with a flame that is not his own. The other clans call him the Empowered and bow to him, and they whisper that he went down to the Crystal Cave and was given something there. His six avowries, the protectors of his household, never leave his side. He rules the occupied city from the chancellors' court as if he had been born to it.",
-  "legend": "Heat and cold heal him. Leave the fire and ice wizards on his avowries, and bring every other damage type to him: steel, matter, body, spirit, energy. Kill the six protectors first. Empowered by whom? Ask the dragon under the city.",
+  "story": "Dura'ek was a war-lord of the dry'ak clan, the halberdiers and doorkeepers of the drakoran host, and no greater than the other four lords until the night Avalon burned. Then he came up from the way under the city changed. Fire and frost, the two breaths of a dragon, no longer harm him; they feed him, and he burns with a flame that is not his own. The other clans call him the Empowered and bow to him, and they whisper that he went down to the Crystal Cave and was given something there. His six avowries, the protectors of his household, never leave his side. He rules the occupied city from the chancellors' court as if he had been born to it.\n\nBefore the burning. Dura'ek was a war-lord of the dry'ak, the halberdiers and doorkeepers of the drakoran host, and no greater than the other four lords when the clans crossed to the isles at Morgana's call. The dry'ak hold doors; it is what they are for. When the city fell, they held the doors of the chancellors' court, the heart of Avalon, and Dura'ek with them.\n\nThe going down. On the third night of the burning, the readers saw a light rise out of the ground at the city's heart. The clans say Dura'ek went down the way under the court that night, alone, past the Xanxicarian sentries who had already taken the stair, and came back at dawn changed. Fire and frost, the two breaths of a dragon, no longer harm him; they feed him, and he burns with a flame that is not his own, the Flames of Dura'ek that he throws into the ranks of his enemies. The other lords bowed to him that morning. They have not stopped bowing.\n\nWhat he is now. He rules the occupied city from the chancellors' court as though he had been born to it, with six dry'ak avowries, his sworn protectors, never more than a step away. He calls himself the city's lord; his clans call him the Empowered and whisper the question every Albion raider asks: empowered by whom. The Camelot loremasters think they know, and so does the drakoran guard on the stair below him.",
+  "legend": "Heat and cold heal him. Leave the fire and ice wizards on his avowries, and bring every other damage type to him: steel, matter, body, spirit, energy. Kill the six protectors first. Empowered by whom? Ask the dragon under the city.\n\nSteel, body, spirit, matter and energy all hurt him; it is only the dragon's two breaths he drinks. The raids that lost to Dura'ek in 2003 lost because a wizard forgot. Fight him in the court, not the street outside, where the whole dry'ak clan waits. His Flames land in the ranks every few seconds; spread out and keep the casters well back from the chair.",
   "yells": {
     "aggro": [
-      "Avowries! The scholars' children have come home!"
+      "Avowries! The scholars' children have come home!",
+      "This court is mine. The city is mine.",
+      "Burn me. Please. Burn me."
     ],
     "phases": [
       {
@@ -38,15 +40,19 @@
       }
     ],
     "death": [
-      "The power... was never... mine..."
+      "The power... was never... mine...",
+      "Below... he will remember..."
     ],
     "slay": [
-      "Ash, like the libraries."
+      "Ash, like the libraries.",
+      "Another reader for the fire.",
+      "Swept from my court."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "The heart of the burned city. Its lord is empowered."
+      "The heart of the burned city. Its lord is empowered.",
+      "The chancellors' court. A drakoran sits in the chair."
     ],
     "phases": [
       {
@@ -59,27 +65,63 @@
   "botLines": {
     "briefing": [
       "heat and cold heal duraek. wizards on the adds, everyone else on him",
-      "six avowries linked, kill them first"
+      "six avowries linked, kill them first",
+      "heat and cold heal duraek. wizards on the adds, everyone else on him",
+      "fight in the court, not the street",
+      "melee and matter or body casters on him"
     ],
     "aftermathWin": [
       "empowered, sure. dead now",
-      "no fire on him the whole fight, well done"
+      "no fire on him the whole fight, well done",
+      "avalon's heart is ours tonight",
+      "six avowries and their lord"
     ],
     "aftermathLoss": [
-      "somebody kept fireballing him. it heals him"
+      "somebody kept fireballing him. it heals him",
+      "the avowries got the healers",
+      "frost mage on autopilot again",
+      "pulled the street with him"
     ],
     "rumour": [
       "dura'ek the empowered leads the drakoran in avalon city, they say. empowered by whom is the question",
-      "[heard|word is] fire and frost heal dura'ek. bring something else"
+      "[heard|word is] fire and frost heal dura'ek. bring something else",
+      "heard duraek went down to the crystal cave on the third night",
+      "the other drakoran lords bowed to duraek the morning after the burning, [heard|they say]"
     ]
   },
   "loremasterTopic": {
     "keyword": "dura'ek",
     "text": "The Empowered. He rules the city from its heart, and fire and frost only feed him. The clans whisper that his power is not his own. I think they are right, and I think I know whose it is."
   },
-  "bookPage": "My fishermen say the greatest of the dragon-men's lords sits in the court of our chancellors and is called the Empowered, and that his own people do not believe the power is his. One of them saw a wizard of the Inconnu throw fire at him in the street and watched the drakoran lord stand in the flame and grow stronger. Frost the same. Steel, the fisherman said, steel he did not like at all.",
+  "bookPage": "My fishermen say the greatest of the dragon-men's lords sits in the court of our chancellors and is called the Empowered, and that his own people do not believe the power is his. They say he went down the stair under the court on the third night of the burning, when we saw the light rise, and came up at dawn changed. One of them saw a wizard of the Inconnu throw fire at him in the street and watched the drakoran lord stand in the flame and grow stronger. Frost the same. Steel, the fisherman said, steel he did not like at all.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} starved Dura'ek the Empowered of fire and frost and took back Avalon's heart in {minutes} minutes.",
     "loss": "Dura'ek drank the fire {realm}'s raid threw at him; {raidLeader} fell back from the chancellors' court."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "xanxicar",
+      "relation": "the source of his power"
+    },
+    {
+      "id": "draargus-the-mighty",
+      "relation": "a lord who bows to him"
+    },
+    {
+      "id": "syssro-the-ruthless",
+      "relation": "a lord who bows to him"
+    },
+    {
+      "id": "veraerius-the-brave",
+      "relation": "a lord who bows to him"
+    },
+    {
+      "id": "wenoiak-the-enlightened",
+      "relation": "a lord who bows to him"
+    }
+  ]
 }

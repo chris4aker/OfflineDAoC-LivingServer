@@ -21,11 +21,13 @@
       "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
     }
   ],
-  "story": "Dra'argus leads the drau'gyn, the clan of the flamethrowers and flesh-eaters, and he took for his house the tallest of the burned colleges near the way down to the Crystal Cave. On its upper floor he set a great orb of fire, a drau'gyn working that drinks every blow aimed at him, so that nothing reaches the Mighty while it burns. He is proud of it the way a lord is proud of a strong door. Adventurers who meet him in his hall swing and swing and never mark him, and most of them never think to look up the stairs.",
-  "legend": "He cannot be hurt while the flaming orb upstairs burns. Send a group up to break it, expect guards when it goes, and only then put the raid on him. Melee eat his damage shield. Players were puzzling this out in January 2003.",
+  "story": "Dra'argus leads the drau'gyn, the clan of the flamethrowers and flesh-eaters, and he took for his house the tallest of the burned colleges near the way down to the Crystal Cave. On its upper floor he set a great orb of fire, a drau'gyn working that drinks every blow aimed at him, so that nothing reaches the Mighty while it burns. He is proud of it the way a lord is proud of a strong door. Adventurers who meet him in his hall swing and swing and never mark him, and most of them never think to look up the stairs.\n\nThe flame-carriers. The drau'gyn are the flame-carriers of the drakoran host: flesh-eaters and campaigners, thrusters and outcriers, and the flamethrowers who burned the colleges of Avalon first. Dra'argus is their lord, and he took for his house the tallest of the burned colleges, the college of stars, by the way down to the Crystal Cave, so that he could watch the stair.\n\nThe sphere. On the upper floor of the college, where the readers once kept their great astrolabe, he set a sphere of drau'gyn fire, a working of his clan that drinks every blow aimed at him, so that nothing reaches the Mighty while it burns. He wraps himself in a shield that burns those who strike him close, and the sphere's fire bursts in the hall below. He is proud of the sphere the way a lord is proud of a strong door. Adventurers who meet him in his hall swing and swing and never mark him, and most never think to look up the stairs. Players puzzling over him at the turn of 2003 thought he might be a story NPC who could not die; a year later someone named him and the orb. He rivals Dura'ek, and lost; he watches the stair because he means to go down it himself one day.",
+  "legend": "He cannot be hurt while the flaming orb upstairs burns. Send a group up to break it, expect guards when it goes, and only then put the raid on him. Melee eat his damage shield. Players were puzzling this out in January 2003.\n\nPlayers found the orb upstairs in January 2003 and wondered if he was bugged; he is not. Break the orb, expect its guards, and then he dies like anyone. Send three or four to the upper floor: the orb is guarded, and its keepers come down the stair after you when it breaks. Melee on Dra'argus need steady heals for the burning shield.",
   "yells": {
     "aggro": [
-      "Strike, then. Strike all you like."
+      "Strike, then. Strike all you like.",
+      "The stars burned first. You will burn last.",
+      "Outcriers! Flamethrowers!"
     ],
     "phases": [
       {
@@ -34,15 +36,19 @@
       }
     ],
     "death": [
-      "Mighty... only while it burned..."
+      "Mighty... only while it burned...",
+      "I should have gone down... first..."
     ],
     "slay": [
-      "Burned to the bone."
+      "Burned to the bone.",
+      "Ash for the college.",
+      "Another star put out."
     ]
   },
   "atmosphere": {
     "lairEntry": [
-      "A great orb burns upstairs. Its lord cannot be touched."
+      "A great orb burns upstairs. Its lord cannot be touched.",
+      "The tallest burned college. A great orb burns upstairs."
     ],
     "phases": [
       {
@@ -55,27 +61,46 @@
   "botLines": {
     "briefing": [
       "break the orb upstairs first or dra'argus is immune. guards spawn when it dies",
-      "melee watch his damage shield"
+      "melee watch his damage shield",
+      "group up the stairs, rest hold him",
+      "dont nuke him till the orb is gone"
     ],
     "aftermathWin": [
       "someone finally looked up the stairs",
-      "orb first, then the mighty. not so mighty"
+      "orb first, then the mighty. not so mighty",
+      "drau'gyn have no lord tonight",
+      "clean orb kill"
     ],
     "aftermathLoss": [
-      "we hit him for five minutes with the orb still up"
+      "we hit him for five minutes with the orb still up",
+      "the orb guards got the group upstairs",
+      "his shield ate the melee",
+      "nobody went up the stairs"
     ],
     "rumour": [
       "[heard|someone said] you cant hurt dra'argus until you break the big orb upstairs",
-      "heard dra'argus's house is by the flamethrowers near the crystal cave"
+      "heard dra'argus's house is by the flamethrowers near the crystal cave",
+      "heard dra'argus wants to go down to the crystal cave himself",
+      "dra'argus took the college of stars, [heard|they say]"
     ]
   },
   "loremasterTopic": {
     "keyword": "dra'argus",
     "text": "The Mighty, lord of the drau'gyn and their flamethrowers. He cannot be wounded while the great orb in his house burns. Break the orb."
   },
-  "bookPage": "",
+  "bookPage": "The flame-carriers took the college of stars, the tallest of ours, by the way down. Their lord set a sphere of fire where our great astrolabe stood, on the upper floor, and my fishermen say he cannot be wounded while it burns. One of them watched a company of Albion's knights fight him in the hall below for the better part of an hour, and not one blow landed. Then a boy in the company, bored, climbed the stair to look at the view, and saw the sphere, and threw his spear at it. The fisherman says the lord's scream could be heard across the water.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} climbed the stairs, broke the sphere and ended Dra'argus the Mighty in {minutes} minutes.",
     "loss": "{realm}'s raid under {raidLeader} struck Dra'argus the Mighty for nothing; nobody looked up the stairs."
-  }
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "duraek-the-empowered",
+      "relation": "his rival, who went down first"
+    }
+  ]
 }

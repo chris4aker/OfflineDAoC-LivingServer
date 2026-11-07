@@ -5,6 +5,9 @@
   "regions": [
     50
   ],
+  "aliases": [
+    "avalon"
+  ],
   "summary": "The burned seat of Albion's learning on the Shrouded Isles, occupied by five drakoran clans who have taken up the trades of the city they destroyed.",
   "facts": [
     {
@@ -46,14 +49,22 @@
       "text": "Existing bot chat says the drakoran have mystics, medics and sawbones, and asks who empowered Dura'ek.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Albion bot chat: the old guides said the marsh ran right up to the edges of Avalon City; the drakoran have mystics, medics and sawbones.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
     }
   ],
-  "story": "Avalon was the city where Albion kept its learning. Its colleges stood on the isle across the water from the marsh, and the old guides said the marsh ran right up to its edges, because the scholars of Avalon had made the water forget it was there. Merlin was taught there. So was Morgana.\n\nWhen she came back it was at the head of the drakoran, the dragon-men, who are said to follow a dragon of their own, and the city burned. The libraries burned first. The colleges came down, the people fled to Caer Gothwaite and the Isle of Glass, and the drakoran did not leave. That is the strangest thing about Avalon City: it is not a ruin. It is occupied. Five clans of drakoran hold its quarters, each under its own lord, and they have taken up the trades of the city they destroyed. There are drakoran reeves and sutlers, joiners and lorimers, catchpoles to keep order and acaters to buy in the stores, physicians and stall-keepers, as if a city were a coat they could put on.\n\nDura'ek the Empowered rules them all from the heart of the city, and the clans whisper that his power is not his own. Under the city, past the sentries who bear the dragon's name, a way leads down to the Crystal Cave, where something with two heads sleeps on a mound of light. The Inconnu fight in these streets for Arawn. Albion fights in them for its memory. The drakoran fight in them because they live here now.",
-  "legend": "Every lord in Avalon City has a trick, and every trick has killed a raid: Dra'argus cannot be hurt until you break his flaming orb upstairs, Dura'ek drinks fire and frost, Vera'erius drinks spirit and body, Sys'sro throws you into his pit, and Weno'iak rides with his cavalry. The marsh ran right to the city's edges once, the old guides said. Nobody has ever found those edges.",
+  "story": "Avalon was the city where Albion kept its learning. Its colleges stood on the isle across the water from the marsh, and the old guides said the marsh ran right up to its edges, because the scholars of Avalon had made the water forget it was there. Merlin was taught there. So was Morgana.\n\nWhen she came back it was at the head of the drakoran, the dragon-men, who are said to follow a dragon of their own, and the city burned. The libraries burned first. The colleges came down, the people fled to Caer Gothwaite and the Isle of Glass, and the drakoran did not leave. That is the strangest thing about Avalon City: it is not a ruin. It is occupied. Five clans of drakoran hold its quarters, each under its own lord, and they have taken up the trades of the city they destroyed. There are drakoran reeves and sutlers, joiners and lorimers, catchpoles to keep order and acaters to buy in the stores, physicians and stall-keepers, as if a city were a coat they could put on.\n\nDura'ek the Empowered rules them all from the heart of the city, and the clans whisper that his power is not his own. Under the city, past the sentries who bear the dragon's name, a way leads down to the Crystal Cave, where something with two heads sleeps on a mound of light. The Inconnu fight in these streets for Arawn. Albion fights in them for its memory. The drakoran fight in them because they live here now.\n\nThe colleges. Avalon was never a city of soldiers. It was a city of readers, built on its isle across the water from the marsh by scholars who had learned to make the water forget it was there, so that the marsh seemed to run right up to the city's edges and a traveller could walk to the colleges dry-shod at dusk. It had a college for every art: for the stars, for the law, for the old tongues of the isles, for healing, for the magic that Merlin would one day carry to Camelot. Merlin read there as a boy. So did a girl called Morgana, Arthur's sister, the quickest pupil the readers ever had.\n\nThe burning. When Morgana came back she knew where the libraries were, and the drakoran burned them first. The readers watched from their boats as the colleges came down one by one, and on the third night they saw a light rise out of the ground at the heart of the city, cold and many-coloured, as if the earth there were glass. They fled to Caer Gothwaite on the Isle of Glass behind the earthen wall and the three ring-forts, and they have not been home since. Some of them think the light was Xanxicar waking. Some think it was Merlin's own crystal, brought here. Nobody has gone down to check and come back with an answer.\n\nThe occupation. The drakoran did not leave. Five clans of them hold the city's quarters, each under its own lord, and they live as citizens of the place they burned. The drau'gyn, Dra'argus's clan, keep the flamethrowers and the tall burned college by the way down. The dry'ak, Dura'ek's clan, are its halberdiers and doorkeepers and hold the chancellors' court at the heart. The syhr'phint, Sys'sro's clan, are taskers and catchpoles and keep order in the streets and the pit in the cloister garden. The vyr'em, Vera'erius's clan, are the swordsmen. The wi'voron, Weno'iak's clan, are reeves and advisors and the cavalry who stamp in the colleges' yards. Between them they keep a city: reeves and sutlers, joiners and lorimers, tranters and stall-keepers, physicians in the old hospital. Under the heart of it all, Xanxicarian sentries hold the way down to the Crystal Cave.\n\nWhy it matters. Avalon is Albion's memory, and it is occupied by the people who burned it. Arawn's Inconnu fight in its streets because Morgana steals his dead. Albion fights in them because its learning lies under the ashes, and because whatever rose out of the ground on the third night is still down there. The old readers in Caer Gothwaite still keep a list of the colleges, in order, so that someone will know which ruin was which on the day the city is taken back.",
+  "legend": "Every lord in Avalon City has a trick, and every trick has killed a raid, and the Albion guilds who raided it in 2003 learned them the hard way. Dra'argus cannot be hurt until you break the great flaming orb upstairs in his house, and players were puzzling that out at the turn of the year. Dura'ek drinks fire and frost, so leave the wizards on his avowries. Vera'erius drinks body and spirit. Sys'sro throws you into his pit with fifteen beasts. Weno'iak rides with sixteen horsemen and their steeds. The city is a thousand mobs deep, so raids move street by street, and the drakoran sneaks at the back entrance con red to anyone under forty. The old guides said the marsh ran right to the city's edges; nobody has ever found those edges. The readers of Caer Gothwaite still keep a list of the colleges, and some raiders carry a copy so they know which ruin they are standing in. Never call it a ruin to an old reader. They say it is only occupied.",
   "atmosphere": {
     "firstEntry": [
       "Avalon burned. The drakoran live in the ashes now.",
-      "The libraries are gone. Dragon-men keep the streets."
+      "The libraries are gone. Dragon-men keep the streets.",
+      "Ash on the cobbles. The colleges are gone.",
+      "Drakoran reeves keep the streets you were taught in.",
+      "A city of readers, kept by those who burned it."
     ],
     "areas": [
       {
@@ -63,7 +74,9 @@
         "z": 8756,
         "radius": 900,
         "lines": [
-          "The heart of the burned city. Its lord is empowered."
+          "The heart of the burned city. Its lord is empowered.",
+          "Six avowries stand at the chair. Their lord drinks fire.",
+          "The chancellors' court. A drakoran sits in the chair."
         ]
       },
       {
@@ -73,7 +86,9 @@
         "z": 8644,
         "radius": 800,
         "lines": [
-          "A great orb burns upstairs. Its lord cannot be touched."
+          "A great orb burns upstairs. Its lord cannot be touched.",
+          "The college of stars, burned first.",
+          "Look up the stairs."
         ]
       },
       {
@@ -83,7 +98,9 @@
         "z": 8040,
         "radius": 800,
         "lines": [
-          "The ground falls away into a pit. Something moves in it."
+          "The ground falls away into a pit. Something moves in it.",
+          "Fifteen beasts in the old cloister garden.",
+          "If one of yours goes in, go in after them."
         ]
       },
       {
@@ -93,7 +110,9 @@
         "z": 8625,
         "radius": 900,
         "lines": [
-          "Warsteeds stamp in the yards of the colleges."
+          "Warsteeds stamp in the yards of the colleges.",
+          "Sixteen riders and steeds keep the yards.",
+          "The readers' observatory overlooks the yards."
         ]
       },
       {
@@ -103,7 +122,42 @@
         "z": 8676,
         "radius": 1500,
         "lines": [
-          "The sentries here bear a dragon's name."
+          "The sentries here bear a dragon's name.",
+          "The stair under the heart of the city.",
+          "Below, light comes back cold and many-coloured."
+        ]
+      },
+      {
+        "name": "the landing",
+        "x": 31159,
+        "y": 47380,
+        "z": 8314,
+        "radius": 1200,
+        "lines": [
+          "The marsh was meant to run right to these edges.",
+          "Drakoran sneaks watch the landing."
+        ]
+      },
+      {
+        "name": "the back gate",
+        "x": 21094,
+        "y": 42184,
+        "z": 7911,
+        "radius": 1000,
+        "lines": [
+          "The back entrance. Something red watches it.",
+          "The road the readers fled by."
+        ]
+      },
+      {
+        "name": "the swordsmen's quarter",
+        "x": 23752,
+        "y": 28660,
+        "z": 8791,
+        "radius": 900,
+        "lines": [
+          "Swordsmen in ranks. Their lord stands at the front.",
+          "The vyr'em do not hide behind anyone."
         ]
       }
     ]
@@ -114,17 +168,33 @@
       "the drakoran aren't stupid beasts. they have mystics, medics and sawbones. that's an army",
       "[five|5] drakoran clans in avalon city, one lord each. [and they took up the trades|reeves and sutlers and joiners], like it was their city all along",
       "avalon city was where albion kept its learning. merlin studied there. [so did morgana|so did the witch]",
-      "the guards on the way down to the crystal cave are called xanxicarian. [named after the dragon|think about that]"
+      "the guards on the way down to the crystal cave are called xanxicarian. [named after the dragon|think about that]",
+      "avalon city had a college for everything. stars, law, healing, old tongues. [all ash now|burned]",
+      "the readers watched avalon burn from their boats. on the third night a light came up out of the ground",
+      "the readers in caer gothwaite still keep a list of the colleges so someone knows which ruin was which",
+      "five clans in avalon city. drau'gyn, dry'ak, syhr'phint, vyr'em, wi'voron. [one lord each|five lords]",
+      "the drau'gyn keep the flamethrowers in avalon. dra'argus is their lord",
+      "the syhr'phint are the catchpoles in avalon city. [sys'sro runs them|they keep order for the drakoran]",
+      "the drakoran in avalon have reeves and sutlers and joiners. [like a real city|they live there now]",
+      "the wi'voron are the drakoran cavalry. weno'iak rides with them"
     ],
     "rumour": [
       "dura'ek the empowered leads the drakoran in avalon city, they say. empowered by whom is the question",
       "[heard|someone said] you cant hurt dra'argus until you break the big orb upstairs",
-      "[heard|word is] fire and frost heal dura'ek. bring something else"
+      "[heard|word is] fire and frost heal dura'ek. bring something else",
+      "[heard|someone said] the light that came up out of avalon was merlin's crystal",
+      "[heard|someone said] the light that came up out of avalon was xanxicar waking",
+      "never call avalon city a ruin to an old reader. [occupied, they say|its only occupied]",
+      "[heard|word is] the drakoran sneaks at the back gate con red to anyone under forty",
+      "heard the inconnu fight in avalon's streets because morgana steals arawn's dead"
     ],
     "tell": [
       "avalon city? the burned city on the isles. five drakoran lords, dura'ek the empowered at the heart, and the way down to the crystal cave",
       "drakoran occupied city. every lord has a trick, ask before you pull. raid for dura'ek",
-      "burned ruins full of dragon-men. the crystal cave entrance is in the middle"
+      "burned ruins full of dragon-men. the crystal cave entrance is in the middle",
+      "is avalon city hard? its a thousand mobs deep. raid for duraek, groups for the streets",
+      "where is avalon city? on avalon isle in the shrouded isles. boat from the isle of glass",
+      "what's in avalon city? five drakoran lords and the way down to the crystal cave"
     ]
   },
   "loremaster": {
@@ -137,16 +207,23 @@
       "sys'sro": "The Ruthless. Fifteen beasts live in his pit, and he throws men into it. Keep your back to the wall.",
       "vera'erius": "The Brave. Spirit and body magic heal him, and when he is hurt he heals himself. Bring steel.",
       "weno'iak": "The Enlightened. His clan rides warsteeds, and he burns men with a light that is not fire.",
-      "crystal cave": "Under the heart of the city a way goes down, guarded by sentries who carry the name Xanxicarian. At the bottom sleeps a dragon with two heads. I do not think the drakoran found him. I think he called them."
+      "crystal cave": "Under the heart of the city a way goes down, guarded by sentries who carry the name Xanxicarian. At the bottom sleeps a dragon with two heads. I do not think the drakoran found him. I think he called them.",
+      "colleges": "Avalon had a college for every art: stars, law, healing, the old tongues, the magic Merlin carried to Camelot. The readers of Caer Gothwaite keep their list in order, against the day the city is retaken.",
+      "readers": "The scholars of Avalon who fled by boat to Caer Gothwaite. They watched the burning, and on the third night they saw a light rise from the city's heart. Ask about the [crystal cave].",
+      "clans": "Drau'gyn of [Dra'argus], dry'ak of [Dura'ek], syhr'phint of [Sys'sro], vyr'em of [Vera'erius], wi'voron of [Weno'iak]. Each clan keeps its quarter and its trade.",
+      "third night": "On the third night of the burning a cold, many-coloured light rose out of the ground at the city's heart. Some readers say Xanxicar woke. Some say Merlin's crystal was brought there. No one has gone to see and returned.",
+      "inconnu": "Arawn's servants, who fight in Avalon's streets because Morgana steals their lord's dead. Albion's knights fight beside them, uneasily."
     }
   },
   "book": {
     "title": "What the Scholars Left",
     "pages": [
-      "This is set down at Caer Gothwaite by the last of the readers of the college of Avalon, so that something of us is written somewhere. Our city stood across the water from the marsh, and the marsh ran right to its edges, for our masters had made the water forget it was there. Merlin read with us as a boy. So did the girl who came back. We taught her well. That is the whole of our shame, and it is enough.",
-      "She did not come alone. She came with the dragon-men, and they burned the libraries first, because she knew where they were. We fled by boat. From the water we watched the colleges come down one by one, and on the third night we saw something we have not been able to explain: a light rising out of the ground at the heart of the city, cold and many-coloured, as if the earth itself were made of glass.",
-      "Our fishermen go close sometimes. They say the dragon-men did not leave. They live in our houses. They have reeves and sutlers and joiners, catchpoles who keep order in our streets, physicians who tend their wounded in our hospital. There are five clans of them, each with a lord, and the greatest lord sits in the court of our chancellors and is called the Empowered. My fishermen say his own people do not believe the power is his.",
-      "One fisherman went closer than the rest and came back with a word he had heard the guards say over and over, as soldiers say the name of their king: Xanxicar. We have looked for it in what books we saved. It is in none of them. But the oldest map of Avalon in our possession, drawn before the colleges were built, marks the heart of the isle with a small drawing of a beast with two heads, and no name at all."
+      "What the Scholars Left, set down at Caer Gothwaite by Elowen, last of the readers of the college of the old tongues, so that something of us is written somewhere. Our city stood across the water from the marsh, and the marsh ran right to its edges, for our masters had made the water forget it was there. We had a college for every art. Merlin read with us as a boy. So did the girl who came back. We taught her well. That is the whole of our shame, and it is enough. I set down here the colleges in their order, so that someone will know.",
+      "She did not come alone. She came with the dragon-men, and they burned the libraries first, because she knew where they were; she had read in every one of them. We fled by boat. From the water we watched the colleges come down one by one: the stars on the first night, the law and the healing on the second. On the third night we saw something we have not been able to explain, a light rising out of the ground at the heart of the city, cold and many-coloured, as if the earth itself were made of glass. Our master of stars wept. I did not know why until much later.",
+      "Our fishermen go close sometimes. They say the dragon-men did not leave. They live in our houses. They have reeves and sutlers and joiners, catchpoles who keep order in our streets, physicians who tend their wounded in our hospital. There are five clans of them, each with a lord, and the clans have taken our quarters as if by lot: the flame-carriers have the tall college by the way down, the halberdiers have the chancellors' court, the catchpoles the cloister, the swordsmen the old schools, the riders the yards. They are not beasts. That is the worst of it. They are citizens.",
+      "The greatest lord sits in the court of our chancellors and is called the Empowered. My fishermen say his own people do not believe the power is his. One of them saw a wizard of the Inconnu throw fire at him in the street and watched the drakoran lord stand in the flame and grow stronger. Frost the same. Steel, the fisherman said, steel he did not like at all. I have written to Camelot about steel. Camelot has written back that it is aware of steel. I think they are not yet aware of what is under the court.",
+      "One fisherman went closer than the rest and came back with a word he had heard the guards say over and over, as soldiers say the name of their king: Xanxicar. We have looked for it in what books we saved. It is in none of them. But the oldest map of Avalon in our possession, drawn before the colleges were built, marks the heart of the isle with a small drawing of a beast with two heads, and no name at all. Our master of stars said, when he saw it, that we had built our city on a lid.",
+      "The Inconnu come to Caer Gothwaite sometimes, pale and quiet, to speak with the knights. I asked one of them what his lord wanted with our city. He said his lord wanted nothing with our city; his lord wanted the witch, who steals the dead, and the witch's friends were in our city, and so his people would fight there until the witch had no friends. I asked him whether the city would be ours again afterwards. He looked at me for a long time and said that the dead do not keep cities, and that I should keep my list."
     ]
   },
   "bosses": [
@@ -155,5 +232,10 @@
     "syssro-the-ruthless",
     "veraerius-the-brave",
     "wenoiak-the-enlightened"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana"
   ]
 }
