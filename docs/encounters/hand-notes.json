@@ -475,7 +475,7 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
    },
    "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh."
   },
@@ -488,7 +488,7 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -509,7 +509,7 @@
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -526,7 +526,7 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -570,7 +570,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -2369,13 +2369,13 @@
   "tuscaran-glacier/hjalmar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "a2367981ea7a3d1c861c00022dc93b18ab190a4bce6adf2c424cc3faec87c448"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "fb52afca13704d44815be8fa80bdce52807e9b584defb18d831f5839e196b7e0"
    }
   },
   "tuscaran-glacier/hjalmarsuttungcontroller": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "a2367981ea7a3d1c861c00022dc93b18ab190a4bce6adf2c424cc3faec87c448"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "fb52afca13704d44815be8fa80bdce52807e9b584defb18d831f5839e196b7e0"
    }
   },
   "tuscaran-glacier/hord": {
@@ -2437,7 +2437,7 @@
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "e2800f794468fc0e8c8f9dfbaaa6a0367a0598dbcc446a7c6bb3fec5c12e8685"
    },
    "aiTactics": {
     "after": "QueenKula",
@@ -2445,7 +2445,7 @@
     "since": "1.2"
    },
    "rules": {
-    "heal@539": {
+    "heal@540": {
      "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
      "difficulty": "easy for the current raid AI"
     }
@@ -2454,7 +2454,7 @@
   "tuscaran-glacier/kvasir": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "1a09970adb5da75b4298b461c2a289de9c913e7c8ab0fe316bdd48c37d21f092"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "5b4998538d5f3ea491a9d937c1404735a346a20b0a0fd4ab1b4b647bd82a2b73"
    },
    "aiTactics": {
     "summary": "Cold heal (AllowKvasirColdHeal, on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell; casters use their other lines). Scream: from 3 s before his primal scream is due until 4.5 s after his mesmerize (800 around his target, 2 s after the scream), everyone but his target's party stands 1,050 from his target; melee wait there, casters and healers keep casting.",
@@ -2492,23 +2492,23 @@
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "e2800f794468fc0e8c8f9dfbaaa6a0367a0598dbcc446a7c6bb3fec5c12e8685"
    },
    "aiTactics": {
     "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
     "since": "1.2"
    },
    "rules": {
-    "teleport@280": {
+    "heal@75": {
+     "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "teleport@281": {
      "tactic": "Drag to her throne: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for QueenKula). A moved bot lands in her frost circle, waits out the mesmerize or root there like a player (crowd control is no stall; at most 5 minutes) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI"
     },
-    "position_puzzle@293": {
+    "position_puzzle@294": {
      "tactic": "Frost circle: on since 1.2 (AllowPositionPuzzle for QueenKula). In the raid AI (EpicEncounterTactics.Tuscaran): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. A raider she drags there is held by the circle until the crowd control ends, then walks out.",
-     "difficulty": "easy for the current raid AI"
-    },
-    "heal@75": {
-     "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
      "difficulty": "easy for the current raid AI"
     }
    }
@@ -2527,7 +2527,7 @@
   },
   "tuscaran-glacier/suttung": {
    "rules": {
-    "enrage_timer@158": {
+    "enrage_timer@159": {
      "kind": "empowered",
      "summary": "Every 20-35 s in combat he goes berserk for 10-20 s: Strength 850 (hits much harder).",
      "tactic": "Tanks use their defensive abilities and healers focus the tank during berserk; off-tanks ready to take over.",
@@ -2536,7 +2536,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "a2367981ea7a3d1c861c00022dc93b18ab190a4bce6adf2c424cc3faec87c448"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "fb52afca13704d44815be8fa80bdce52807e9b584defb18d831f5839e196b7e0"
    }
   },
   "tuscaran-glacier/torst": {

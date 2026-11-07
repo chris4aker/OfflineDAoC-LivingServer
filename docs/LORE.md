@@ -97,7 +97,16 @@ With `z` set, the area is that floor only (within 800 units of height); `z: 0` m
   | `wake` | a dragon takes to the sky: the yell is said, the atmosphere line is the wake line if `wake` is empty |
   | `partnerDead` | one of its partner encounters dies (the Horsemen, Lord and Lich Lord Sanguis); needs partners in the catalog |
   | `playerDeath` | it kills a player: the yell joins its slay yells, the atmosphere line goes to its zone once a fight |
-  | `teleport`, `berserk`, `breath`, `glare` | accepted, never fired: only the boss's own script sees these moments |
+  | `throw`, `teleport`, `jail`, `pull`, `barrier` | the boss's script moves a raider (`EncounterDisplacement.Displaced`): its kind's own name; `teleport` is also every move's fallback when the file has no line for the kind (Easmarach's push, Krackenschtein's throw) |
+  | `glare` (or `stare`), `stun`, `breath`, `stomp`, `messengers`, `retreat`, `safeSpots` | the script announces the mechanic to the raid (`EncounterSignals.Raised`): the dragons, Xanxicar, Olcasgean |
+  | `berserk`, `scream`, `healed`, `twinHeal` | a lore-only moment (`EncounterSignals.Note`): Suttung's berserker stance, Kvasir's primal scream, Funus healing to full from a hit he does not take, Tuscar's or Kula's twin's damage healing it |
+
+  A mechanic trigger fires when the script says so, for the boss itself, or for the nearest watched boss within 6,000
+  when an add or an object does it (Scurceol's orbs). Its yells come at most once a minute per trigger (and the fight's
+  12 s yell gap); its atmosphere line once a fight, at most two mechanic lines a fight (apart from the two phase lines),
+  and each player's own throttle still decides (one line every 30 s, realm news first). A ten-raider throw is one yell.
+  `tools/lore/mechanic_trigger_coverage.py --check` lists every mechanic trigger the files use and fails if its boss's
+  script never announces it.
 
   The add triggers need adds in the catalog: its adds, the encounters it spawns, a `<Boss>Add` encounter, a dragon's `...SpawnedAdd` (`data/encounter_adds.json`, built from it by
   `tools/lore/build_encounter_adds.py`).
@@ -173,8 +182,9 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 | `realmTakes` | | as for locations (`briefing`, `aftermathWin`, `aftermathLoss`, `rumour` bot lines) |
 
 Phase triggers: `health<=N`, `addsSpawn`, `orbDeath`, `addsDead`, `formChange`, `partnerDead`, `death`, `wake`,
-`playerDeath`; `teleport`, `berserk`, `breath`, `glare` are accepted and never fire. The add and partner triggers need
-adds or partners in the catalog.
+`playerDeath`, and the mechanics `throw`, `teleport`, `jail`, `pull`, `barrier`, `glare`, `stare`, `stun`, `stomp`, `breath`,
+`messengers`, `retreat`, `safeSpots`, `berserk`, `scream`, `healed`, `twinHeal` (fired when the boss's script announces
+them; see above). The add and partner triggers need adds or partners in the catalog.
 
 **History** (`history/<realm>.json`)
 
@@ -254,6 +264,7 @@ players only: bots have no client.
 | A named area | Same look: inside an area's circle | That player, small | Once per session |
 | A boss's lair | Same look: a living lore boss with `lairEntry` lines within 1,500 units | That player, small | Once per session per boss |
 | A boss phase | `LoreBossWatch`, every 2 s while the boss fights | Players in the boss's zone, small | Each trigger once a fight; at most 2 atmosphere lines a fight |
+| A boss mechanic (a throw, a glare, a breath, a berserk) | `LoreBossWatch` hears the script (`EncounterDisplacement.Displaced`, `EncounterSignals.Raised`, `EncounterSignals.Moment`) and says it on the next pulse | Players in the boss's zone, small | Each trigger's line once a fight, at most 2 mechanic lines a fight; its yell at most once a minute |
 | A dragon wakes | The three dragon brains, where they set `IsRestless` | Its zone gold; its realm elsewhere small | At most once an hour per dragon |
 | A realm's first kill | `LoreFirstKills.FirstKill` (the killer's realm, a pet's owner; not staff or the Special Forces) | Everyone, gold, plus a chat line naming the realm | Once ever per realm and boss, in the realm event ledger |
 | A raid forms | `AutonomousRealmRaid`, after the forming notice | That realm, small | Each raid (needs `raidForming` lines) |

@@ -36,6 +36,11 @@ automated tests; nobody has read it in game yet.
 - **Bosses speak their lore.** A boss with a lore file yells its own lines when the fight starts, at its phases, when it
   kills someone and when it dies. A boss whose script already speaks at that moment keeps its own words, and nothing is said
   twice.
+- **Bosses speak at their big moments too.** When a boss throws or ports someone, stares, breathes, goes berserk or heals
+  itself, its lore lines for that moment are said now: Krackenschtein, Cunovinda, Ydenia, the Glacier Giant and the other
+  throwers yell as they throw, Gjalpinulva and Cuuldurach as they stare and breathe, Suttung as he goes berserk, and a short
+  line shows in the middle of the screen for the players in the zone. It is the same for a throw that hits you or a bot. One
+  yell a minute for each moment, one screen line a fight for each, two at most, and the 30-second gap above still holds.
 - **Bots know the stories.** As a raid leaves its muster, its leader tells the realm in /faction what the boss does
   ("storm keeper next. four lights in the corners, kill the lights first"). A minute or two after a raid, a veteran tells
   how it went and then something about the place. Ask a bot "whats in krondon?" or "who is the storm keeper?" and it answers
@@ -215,8 +220,8 @@ automated tests only; not played in game yet.
 - **The dragons throw as high as they did.** Up to about 1,400 units: the fall costs about 60% of your health without
   Safe Fall. Each dragon has a setting to throw lower: `epic_dragon_throw_height_golestandt`, `_gjalpinulva` and
   `_cuuldurach` (0, the original; 712 costs about 34%).
-- **The dragons' messengers are back but switched off.** From half health they send runners out to fetch more
-  monsters. Off until the bots have a way to stop the runners.
+- **The dragons' messengers are back.** From half health they send runners out to fetch more monsters (on since the
+  bots learned to run them down; see the dragons above).
 - **Lich Lord Sanguis can be finished.** At 5% health he can't be targeted. Bots never fight what can't be targeted,
   so a raid could be stuck on his last 5% until he reset. Now spellcasting bots keep casting at him. Melee and archers
   still can't hit him, the same as for you.

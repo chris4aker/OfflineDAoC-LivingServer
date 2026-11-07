@@ -30,7 +30,7 @@
   "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs": "f92eb6d85f0d2b90cee7fb7e836af2faa4869cedb6a970cbab27b8d74295617d",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs": "01037d035afe6761834bbc92154732fc27f2d596680aa686e26e4abdc64b57b5",
   "source/server/GameServer/scripts/namedmobs/BrotherDon.cs": "8964e56930f3d641f924427da766faabeca87ea5d3fcb1cfb62d604e69bb18c7",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "c1a476a3d72055b27936b316dcdfa80ed3b58fee9717cc1ef234a8681f0fe4fb",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "d542dd1cbdb80e979f477a5c38320fc610694471341a665a08deae313b24f26d",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "e2e7619fd86fbe4e47cc123e655884760c8d140a3fd46bd8eeeae5479ac8dc76",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs": "b4037d917fcbfb2c84542097738575f0a806e08b6e0c816825f0831f8b454f42",
@@ -76,7 +76,7 @@
   "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "ebab87b045c8d05df4de0a23b7b05ae3d4678d8f2eda04153b47d799c2c0b111",
   "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
   "source/server/GameServer/scripts/namedmobs/EncounterPacks.cs": "f85b58b56d9582b7029d953040e11f3fb5ed12bfae39e9f92e55abe70ce54cb8",
-  "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "137a8f99707a255afdf4bf720d3992d157eb1b561f8643d06e328786e2ca68ee",
+  "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "28c34dec1840c590c674a26de40d6ac8321c182c004765f3cb553d76c0eca10c",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "b44a93b945d05295ffe93067feeb0951c0046607fbff5e00b30664dd34b6c53e",
@@ -204,17 +204,17 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs": "2b25c53806a59264da80fa2bc3fd0116213e688d2cb49e57989b263298c18b3f",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "a2367981ea7a3d1c861c00022dc93b18ab190a4bce6adf2c424cc3faec87c448",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "fb52afca13704d44815be8fa80bdce52807e9b584defb18d831f5839e196b7e0",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/FallingIce.cs": "c3dadde9c091ee2b698e8e18d2cb1be14a683c63e0c40ccbc2a921e7e7d71aa5",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "902b66c51eecf6e1743f713eae627d606f0ff2e553bf4a9621a0a8ca51faad94",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs": "f21c3e552ea4280627e1dbb87c762a4a5309d9cbec086d099d6231442327abc3",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "968acafc599e2fb740ec84a8df0f79f4c8c2831918dc434648eee93c572b42aa",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "28131ab46a78822da6ec37da3081f5affa4f259ca3106efb0aaf612dc55033e9",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "1a09970adb5da75b4298b461c2a289de9c913e7c8ab0fe316bdd48c37d21f092",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "5b4998538d5f3ea491a9d937c1404735a346a20b0a0fd4ab1b4b647bd82a2b73",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "27b31260d426329c3185bf9a481d6012b3df56789a32e46a4c68cdac1888001b",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3db6dc495cb911f4e8055232b8e2ea7d4ff08dcb29286b6bb1848f583f78c8ef",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "e2800f794468fc0e8c8f9dfbaaa6a0367a0598dbcc446a7c6bb3fec5c12e8685",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "79b05c5cd0d0a976643381cb00c4f121d424a538bf470a481db3dad9f0b4e7ac",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35",
   "source/server/GameServer/scripts/namedmobs/Yar.cs": "9e919f2a641bc86fe7652fe8af16cc736f5f86468873a9b31b7f0eeedb72a058"
@@ -4848,7 +4848,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
    "lines": [
     1902,
-    2061
+    2062
    ],
    "dungeon": "Caer Sidi",
    "region": 60,
@@ -4894,7 +4894,7 @@
      "summary": "Takes no damage while if (!EpicEncounterRestores.FunusAccepts(EpicEncounterRestores.ClassId(source), EpicEncounterRestores.WeaponType(source))).",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
      "line": 1931,
-     "lineEnd": 1935,
+     "lineEnd": 1936,
      "anchor": "{",
      "confidence": "inferred",
      "sourceClass": "Funus",
@@ -4914,8 +4914,8 @@
      "kind": "adds",
      "summary": "Spawns Apocalypse (Apocalypse): on a timer (5000 ms); count 1 spawn call in SpawnApoc",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 1993,
-     "lineEnd": 1993,
+     "line": 1994,
+     "lineEnd": 1994,
      "anchor": "Apocalypse Add = new Apocalypse();",
      "confidence": "inferred",
      "sourceClass": "Funus",
@@ -4929,14 +4929,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@1993"
+     "key": "adds@1994"
     },
     {
      "kind": "adds",
      "summary": "Spawns GameEpicNPC: when it spawns (via SpawnFateBearer); count 1 spawn call in SpawnFateBearer",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2005,
-     "lineEnd": 2005,
+     "line": 2006,
+     "lineEnd": 2006,
      "anchor": "GameEpicNPC Add = new GameEpicNPC();",
      "confidence": "inferred",
      "sourceClass": "Funus",
@@ -4949,14 +4949,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2005"
+     "key": "adds@2006"
     },
     {
      "kind": "tether",
      "summary": "Tether range 3600: drawn further from its spawn it is immune (its TakeDamage) until it is back inside, and walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2026,
-     "lineEnd": 2026,
+     "line": 2027,
+     "lineEnd": 2027,
      "anchor": "TetherRange = 3600;",
      "confidence": "read",
      "sourceClass": "Funus",
@@ -4966,14 +4966,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@2026"
+     "key": "tether@2027"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2079,
-     "lineEnd": 2086,
+     "line": 2080,
+     "lineEnd": 2087,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -4983,14 +4983,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2079"
+     "key": "reset@2080"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2095,
-     "lineEnd": 2096,
+     "line": 2096,
+     "lineEnd": 2097,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -5000,14 +5000,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2095"
+     "key": "reset@2096"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2100,
-     "lineEnd": 2100,
+     "line": 2101,
+     "lineEnd": 2101,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -5017,14 +5017,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2100"
+     "key": "reset@2101"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"FunusBaf\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2111,
-     "lineEnd": 2111,
+     "line": 2112,
+     "lineEnd": 2112,
      "anchor": "if (npc.IsAlive && npc.PackageID == \"FunusBaf\" && npc is GameEpicNPC)",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -5034,7 +5034,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@2111"
+     "key": "linked_pack@2112"
     },
     {
      "kind": "offline_change",
@@ -5060,8 +5060,8 @@
      "kind": "offline_change",
      "summary": "Mechanic change (2026-10-16): out of its tether the horseman drops its fight and walks home but keeps its health; it heals only when the fight is really over. Every excursion past the tether used to restore it to full at once, so a raid that dragged it a step too far started over. The original full heal is behind EpicEncounterMechanics.AllowHorsemenTetherHeal.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2090,
-     "lineEnd": 2093,
+     "line": 2091,
+     "lineEnd": 2094,
      "anchor": "// Mechanic change (2026-10-16): out of its tether the horseman drops its fight and walks home but keeps its",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -5074,7 +5074,7 @@
      "tactic": "On: the original is back (AllowHorsemenTetherHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2090"
+     "key": "offline_change@2091"
     }
    ],
    "spells": [],
@@ -5102,8 +5102,8 @@
    "brain": "ApocalypseBrain",
    "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
    "lines": [
-    2130,
-    2268
+    2131,
+    2269
    ],
    "dungeon": "Caer Sidi",
    "region": 60,
@@ -5134,7 +5134,7 @@
      "maxHealth": 30000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2569
+     "line": 2570
     },
     {
      "class": "RainOfFire",
@@ -5147,7 +5147,7 @@
      "maxHealth": null,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2673
+     "line": 2674
     }
    ],
    "rules": [
@@ -5155,8 +5155,8 @@
      "kind": "adds",
      "summary": "Spawns Harbringer of Fate (HarbringerOfFate): on a timer (500 ms); count 2 (loop)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2477,
-     "lineEnd": 2502,
+     "line": 2478,
+     "lineEnd": 2503,
      "anchor": "HarbringerOfFate Add = new HarbringerOfFate();",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5171,14 +5171,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2477"
+     "key": "adds@2478"
     },
     {
      "kind": "adds",
      "summary": "Spawns Rain of Fire (RainOfFire): from SpawnRainOfFire; count 1 spawn call in SpawnRainOfFire",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2522,
-     "lineEnd": 2522,
+     "line": 2523,
+     "lineEnd": 2523,
      "anchor": "RainOfFire Add = new RainOfFire();",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5192,14 +5192,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2522"
+     "key": "adds@2523"
     },
     {
      "kind": "phase",
      "summary": "At 99/50% health (Think): starts timer FlyPhaseStart; calls Point3D; calls ClearAggroList; calls WalkTo",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2337,
-     "lineEnd": 2407,
+     "line": 2338,
+     "lineEnd": 2408,
      "anchor": "if (ApocAggro == false && Body.HealthPercent <=99)//1st time apoc fly to celling",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5213,14 +5213,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@2337"
+     "key": "phase@2338"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (SpawnHarbringers): spawns HarbringerOfFate",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2489,
-     "lineEnd": 2514,
+     "line": 2490,
+     "lineEnd": 2515,
      "anchor": "if(Body.HealthPercent <= 50 && pop_harbringers==false)/// spawning another 2 harbringers if boss is at 50%",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5230,14 +5230,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@2489"
+     "key": "phase@2490"
     },
     {
      "kind": "tether",
      "summary": "Tether range 3600: drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2220,
-     "lineEnd": 2220,
+     "line": 2221,
+     "lineEnd": 2221,
      "anchor": "TetherRange = 3600;",
      "confidence": "read",
      "sourceClass": "Apocalypse",
@@ -5247,14 +5247,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@2220"
+     "key": "tether@2221"
     },
     {
      "kind": "tether",
      "summary": "Tether range 3000 (Harbringer of Fate (HarbringerOfFate)): drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2629,
-     "lineEnd": 2629,
+     "line": 2630,
+     "lineEnd": 2630,
      "anchor": "TetherRange = 3000;",
      "confidence": "read",
      "sourceClass": "HarbringerOfFate",
@@ -5265,14 +5265,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@2629"
+     "key": "tether@2630"
     },
     {
      "kind": "reset",
      "summary": "Resets after 60 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2297,
-     "lineEnd": 2297,
+     "line": 2298,
+     "lineEnd": 2298,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "ApocalypseBrain",
@@ -5282,14 +5282,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2297"
+     "key": "reset@2298"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in Think when if (Body.IsAlive) && if (ApocAggro == false && Body.HealthPercent <=99)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2341,
-     "lineEnd": 2341,
+     "line": 2342,
+     "lineEnd": 2342,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5298,14 +5298,14 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@2341"
+     "key": "aggro_wipe@2342"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in Think when if (Body.IsAlive) && if(Body.HealthPercent <= 50 && fly_phase1==false)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2388,
-     "lineEnd": 2388,
+     "line": 2389,
+     "lineEnd": 2389,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5314,14 +5314,14 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@2388"
+     "key": "aggro_wipe@2389"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"ApocBaf\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2377,
-     "lineEnd": 2377,
+     "line": 2378,
+     "lineEnd": 2378,
      "anchor": "if (npc.IsAlive && npc.PackageID == \"ApocBaf\" && npc.Brain is HarbringerOfFateBrain)",
      "confidence": "read",
      "sourceClass": "ApocalypseBrain",
@@ -5331,7 +5331,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@2377"
+     "key": "linked_pack@2378"
     }
    ],
    "spells": [
@@ -5346,7 +5346,7 @@
      "value": null,
      "target": "AREA",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2541,
+     "line": 2542,
      "sourceClass": "ApocalypseBrain"
     },
     {
@@ -5360,7 +5360,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2830,
+     "line": 2831,
      "sourceClass": "RainOfFireBrain"
     }
    ],
@@ -31175,8 +31175,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 200,
-     "lineEnd": 206,
+     "line": 201,
+     "lineEnd": 207,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "SuttungBrain",
@@ -31186,14 +31186,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@200"
+     "key": "reset@201"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 210,
-     "lineEnd": 211,
+     "line": 211,
+     "lineEnd": 212,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "SuttungBrain",
@@ -31203,14 +31203,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@210"
+     "key": "reset@211"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 215,
-     "lineEnd": 215,
+     "line": 216,
+     "lineEnd": 216,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "SuttungBrain",
@@ -31220,14 +31220,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@215"
+     "key": "reset@216"
     },
     {
      "kind": "empowered",
      "summary": "Every 20-35 s in combat he goes berserk for 10-20 s: Strength 850 (hits much harder).",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 158,
-     "lineEnd": 158,
+     "line": 159,
+     "lineEnd": 159,
      "anchor": "Body.Strength = 850;",
      "confidence": "inferred",
      "sourceClass": "SuttungBrain",
@@ -31236,7 +31236,7 @@
      "tactic": "Tanks use their defensive abilities and healers focus the tank during berserk; off-tanks ready to take over.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "empowered@158"
+     "key": "empowered@159"
     }
    ],
    "spells": [
@@ -31265,7 +31265,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 252,
+     "line": 253,
      "sourceClass": "SuttungBrain"
     }
    ],
@@ -31289,8 +31289,8 @@
    "brain": "HjalmarBrain",
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
    "lines": [
-    281,
-    398
+    282,
+    399
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -31317,7 +31317,7 @@
      "maxHealth": 1000,
      "level": "(byte)Util.Random(50, 55)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 521
+     "line": 522
     }
    ],
    "rules": [
@@ -31325,8 +31325,8 @@
      "kind": "adds",
      "summary": "Spawns Morkimma (Morkimma): from OnAttackEnemy when if (Util.Chance(20)); count 1 spawn call in SpawnAdds",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 389,
-     "lineEnd": 389,
+     "line": 390,
+     "lineEnd": 390,
      "anchor": "Morkimma npc = new Morkimma();",
      "confidence": "inferred",
      "sourceClass": "Hjalmar",
@@ -31340,14 +31340,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@389"
+     "key": "adds@390"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 443,
-     "lineEnd": 466,
+     "line": 444,
+     "lineEnd": 467,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "HjalmarBrain",
@@ -31357,14 +31357,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@443"
+     "key": "reset@444"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 470,
-     "lineEnd": 471,
+     "line": 471,
+     "lineEnd": 472,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "HjalmarBrain",
@@ -31374,14 +31374,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@470"
+     "key": "reset@471"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 475,
-     "lineEnd": 475,
+     "line": 476,
+     "lineEnd": 476,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "HjalmarBrain",
@@ -31391,14 +31391,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@475"
+     "key": "reset@476"
     },
     {
      "kind": "heal",
      "summary": "Has a heal spell: Morkimma's Heal (Heal, value 200, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 607,
-     "lineEnd": 607,
+     "line": 608,
+     "lineEnd": 608,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "Morkimma",
@@ -31408,7 +31408,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@607"
+     "key": "heal@608"
     }
    ],
    "spells": [
@@ -31423,7 +31423,7 @@
      "value": "200",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 607,
+     "line": 608,
      "sourceClass": "Morkimma"
     }
    ],
@@ -31447,8 +31447,8 @@
    "brain": "HjalmarSuttungControllerBrain",
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
    "lines": [
-    653,
-    710
+    654,
+    711
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -31472,8 +31472,8 @@
      "kind": "adds",
      "summary": "Spawns Suttung: from SpawnSuttung; count 1 spawn call in SpawnSuttung",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 686,
-     "lineEnd": 686,
+     "line": 687,
+     "lineEnd": 687,
      "anchor": "Suttung boss = new Suttung();",
      "confidence": "inferred",
      "sourceClass": "HjalmarSuttungController",
@@ -31487,14 +31487,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@686"
+     "key": "adds@687"
     },
     {
      "kind": "adds",
      "summary": "Spawns Hjalmar: from SpawnHjalmar; count 1 spawn call in SpawnHjalmar",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 700,
-     "lineEnd": 700,
+     "line": 701,
+     "lineEnd": 701,
      "anchor": "Hjalmar boss = new Hjalmar();",
      "confidence": "inferred",
      "sourceClass": "HjalmarSuttungController",
@@ -31508,14 +31508,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@700"
+     "key": "adds@701"
     },
     {
      "kind": "adds",
      "summary": "Spawns Suttung: on a timer (via SpawnBoss); count 1 spawn call in SpawnSuttung",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 764,
-     "lineEnd": 764,
+     "line": 765,
+     "lineEnd": 765,
      "anchor": "Suttung boss = new Suttung();",
      "confidence": "inferred",
      "sourceClass": "HjalmarSuttungControllerBrain",
@@ -31529,14 +31529,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@764"
+     "key": "adds@765"
     },
     {
      "kind": "adds",
      "summary": "Spawns Hjalmar: on a timer (via SpawnBoss); count 1 spawn call in SpawnHjalmar",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 778,
-     "lineEnd": 778,
+     "line": 779,
+     "lineEnd": 779,
      "anchor": "Hjalmar boss = new Hjalmar();",
      "confidence": "inferred",
      "sourceClass": "HjalmarSuttungControllerBrain",
@@ -31550,7 +31550,7 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@778"
+     "key": "adds@779"
     }
    ],
    "spells": [],
@@ -32287,7 +32287,7 @@
      "maxHealth": 10000,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs",
-     "line": 302
+     "line": 303
     }
    ],
    "rules": [
@@ -32451,7 +32451,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs",
-     "line": 245,
+     "line": 246,
      "sourceClass": "KvasirBrain"
     },
     {
@@ -32465,7 +32465,7 @@
      "value": "99",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs",
-     "line": 273,
+     "line": 274,
      "sourceClass": "KvasirBrain"
     }
    ],
@@ -33108,7 +33108,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
    "lines": [
     13,
-    215
+    216
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -33145,8 +33145,8 @@
      "kind": "phase",
      "summary": "At 50% health (OnAttackedByEnemy): casts Cold_DD",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 174,
-     "lineEnd": 178,
+     "line": 175,
+     "lineEnd": 179,
      "anchor": "if(KingTuscar.KingTuscarCount == 0 || HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "QueenKula",
@@ -33156,14 +33156,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@174"
+     "key": "phase@175"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): Strength = 500",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 416,
-     "lineEnd": 419,
+     "line": 417,
+     "lineEnd": 420,
      "anchor": "if (KingTuscar.KingTuscarCount == 0 || Body.HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33173,14 +33173,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@416"
+     "key": "phase@417"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 357,
-     "lineEnd": 366,
+     "line": 358,
+     "lineEnd": 367,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
@@ -33190,14 +33190,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@357"
+     "key": "reset@358"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 369,
-     "lineEnd": 369,
+     "line": 370,
+     "lineEnd": 370,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
@@ -33207,14 +33207,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@369"
+     "key": "reset@370"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 373,
-     "lineEnd": 373,
+     "line": 374,
+     "lineEnd": 374,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
@@ -33224,14 +33224,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@373"
+     "key": "reset@374"
     },
     {
      "kind": "teleport",
      "summary": "Teleports RandomTarget to a fixed spot (MoveTo 160, 34128, 56095, 11898, 2124)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 280,
-     "lineEnd": 280,
+     "line": 281,
+     "lineEnd": 281,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(RandomTarget, 160, 34128, 56095, 11898, 2124, DisplacementKind.Teleport, Body)",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33244,14 +33244,14 @@
      "tactic": "Drag to her throne: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for QueenKula). A moved bot lands in her frost circle, waits out the mesmerize or root there like a player (crowd control is no stall; at most 5 minutes) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "teleport@280"
+     "key": "teleport@281"
     },
     {
      "kind": "position_puzzle",
      "summary": "Switched by EpicEncounterMechanics.AllowPositionPuzzle in PlayerInCenter: see the code",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 293,
-     "lineEnd": 293,
+     "line": 294,
+     "lineEnd": 294,
      "anchor": "if (!EpicEncounterMechanics.AllowPositionPuzzleFor(Body)) return;",
      "confidence": "read",
      "sourceClass": "QueenKulaBrain",
@@ -33262,14 +33262,14 @@
      "tactic": "Frost circle: on since 1.2 (AllowPositionPuzzle for QueenKula). In the raid AI (EpicEncounterTactics.Tuscaran): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. A raider she drags there is held by the circle until the crowd control ends, then walks out.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "position_puzzle@293"
+     "key": "position_puzzle@294"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 350 while if (Body.TargetObject != null && HasAggro) && if(Body.TargetObject != null) && if (KingTuscar.KingTuscarCount == 1)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 414,
-     "lineEnd": 414,
+     "line": 415,
+     "lineEnd": 415,
      "anchor": "Body.Strength = 350;//if king is up it will deal less dmg",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33279,14 +33279,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@414"
+     "key": "empowered@415"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 500 while if (Body.TargetObject != null && HasAggro) && if(Body.TargetObject != null) && if (KingTuscar.KingTuscarCount == 0 || Body.HealthPercent <= 50)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 418,
-     "lineEnd": 418,
+     "line": 419,
+     "lineEnd": 419,
      "anchor": "Body.Strength = 500;//king is dead so more dmg",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33296,14 +33296,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@418"
+     "key": "empowered@419"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: KingTuscarBrain",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 346,
-     "lineEnd": 346,
+     "line": 347,
+     "lineEnd": 347,
      "anchor": "brain.AddToAggroList(target, 10);",
      "confidence": "inferred",
      "sourceClass": "QueenKulaBrain",
@@ -33312,7 +33312,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@346"
+     "key": "linked_pack@347"
     },
     {
      "kind": "heal",
@@ -33362,7 +33362,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 193,
+     "line": 194,
      "sourceClass": "QueenKula"
     },
     {
@@ -33376,7 +33376,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 434,
+     "line": 435,
      "sourceClass": "QueenKulaBrain"
     },
     {
@@ -33390,7 +33390,7 @@
      "value": "99",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 463,
+     "line": 464,
      "sourceClass": "QueenKulaBrain"
     }
    ],
@@ -33426,8 +33426,8 @@
    "brain": "KingTuscarBrain",
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
    "lines": [
-    492,
-    812
+    493,
+    814
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -33446,8 +33446,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is drawn past its tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 529,
-     "lineEnd": 530,
+     "line": 530,
+     "lineEnd": 531,
      "anchor": "{",
      "confidence": "read",
      "sourceClass": "KingTuscar",
@@ -33458,14 +33458,14 @@
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "immune_while@529"
+     "key": "immune_while@530"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (OnAttackEnemy): casts Hammers_aoe; casts Thunder_aoe; casts Bleed",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 607,
-     "lineEnd": 621,
+     "line": 609,
+     "lineEnd": 623,
      "anchor": "if (QueenKula.QueenKulaCount == 0 || (HealthPercent <= 50 && KingTuscarBrain.TuscarRage==true))",
      "confidence": "inferred",
      "sourceClass": "KingTuscar",
@@ -33475,14 +33475,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@607"
+     "key": "phase@609"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): see the block",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 887,
-     "lineEnd": 891,
+     "line": 889,
+     "lineEnd": 893,
      "anchor": "if(Body.HealthPercent<=50 && TuscarRage==false)",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33492,14 +33492,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@887"
+     "key": "phase@889"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (Think): Strength = 500",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 899,
-     "lineEnd": 902,
+     "line": 901,
+     "lineEnd": 904,
      "anchor": "if (QueenKula.QueenKulaCount == 0 || Body.HealthPercent <= 50)",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33509,14 +33509,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@899"
+     "key": "phase@901"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 860,
-     "lineEnd": 869,
+     "line": 862,
+     "lineEnd": 871,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "KingTuscarBrain",
@@ -33526,14 +33526,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@860"
+     "key": "reset@862"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 872,
-     "lineEnd": 872,
+     "line": 874,
+     "lineEnd": 874,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "KingTuscarBrain",
@@ -33543,14 +33543,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@872"
+     "key": "reset@874"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 876,
-     "lineEnd": 876,
+     "line": 878,
+     "lineEnd": 878,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "KingTuscarBrain",
@@ -33560,14 +33560,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@876"
+     "key": "reset@878"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 350 while if (Body.InCombat && HasAggro) && if (Body.TargetObject != null) && if(QueenKula.QueenKulaCount == 1)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 897,
-     "lineEnd": 897,
+     "line": 899,
+     "lineEnd": 899,
      "anchor": "Body.Strength = 350;",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33577,14 +33577,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@897"
+     "key": "empowered@899"
     },
     {
      "kind": "empowered",
      "summary": "Strength becomes 500 while if (Body.InCombat && HasAggro) && if (Body.TargetObject != null) && if (QueenKula.QueenKulaCount == 0 || Body.HealthPercent <= 50)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 901,
-     "lineEnd": 901,
+     "line": 903,
+     "lineEnd": 903,
      "anchor": "Body.Strength = 500;",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33594,14 +33594,14 @@
      "tactic": "Remove what empowers it first, or burn it fast; healers ready for bigger hits.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "empowered@901"
+     "key": "empowered@903"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: QueenKulaBrain",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 849,
-     "lineEnd": 849,
+     "line": 851,
+     "lineEnd": 851,
      "anchor": "brain.AddToAggroList(target, 10);",
      "confidence": "inferred",
      "sourceClass": "KingTuscarBrain",
@@ -33610,14 +33610,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@849"
+     "key": "linked_pack@851"
     },
     {
      "kind": "heal",
      "summary": "Heals: npc.Health += damageAmount + criticalAmount;",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 539,
-     "lineEnd": 539,
+     "line": 540,
+     "lineEnd": 540,
      "anchor": "npc.Health += damageAmount + criticalAmount;",
      "confidence": "inferred",
      "sourceClass": "KingTuscar",
@@ -33625,14 +33625,14 @@
      "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "heal@539"
+     "key": "heal@540"
     },
     {
      "kind": "offline_change",
      "summary": "Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 525,
-     "lineEnd": 526,
+     "line": 526,
+     "lineEnd": 527,
      "anchor": "// Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below",
      "confidence": "read",
      "sourceClass": "KingTuscar",
@@ -33645,7 +33645,7 @@
      "tactic": "On: the original is back (AllowTuscarTwinHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@525"
+     "key": "offline_change@526"
     }
    ],
    "spells": [
@@ -33660,7 +33660,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 669,
+     "line": 671,
      "sourceClass": "KingTuscar"
     },
     {
@@ -33674,7 +33674,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 698,
+     "line": 700,
      "sourceClass": "KingTuscar"
     },
     {
@@ -33688,7 +33688,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 727,
+     "line": 729,
      "sourceClass": "KingTuscar"
     },
     {
@@ -33702,7 +33702,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 756,
+     "line": 758,
      "sourceClass": "KingTuscar"
     },
     {
@@ -33716,7 +33716,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
-     "line": 785,
+     "line": 787,
      "sourceClass": "KingTuscar"
     }
    ],

@@ -16,6 +16,9 @@ namespace DOL.GS;
 /// first hit on it (GameLivingEvent.AttackedByEnemy) until it dies or resets, and looked at every 2 s, never per tick.
 /// The yells are additive: where the boss's script already speaks on a trigger (<see cref="ScriptSpeaks"/>), the file's
 /// lines for that trigger are not used, so nothing is said twice.
+/// The mechanic triggers (1.2: throw, teleport, jail, glare, breath, berserk...) come from the boss scripts' own
+/// announcements: <see cref="EncounterDisplacement.Displaced"/>, <see cref="EncounterSignals.Raised"/> and
+/// <see cref="EncounterSignals.Moment"/>. Each is queued as it happens and said on the next pulse (game loop, about 1 s).
 /// </summary>
 public static class LoreBossWatch
 {
@@ -38,6 +41,26 @@ public static class LoreBossWatch
 
     private static readonly ConcurrentDictionary<GameNPC, Watched> Fights = new();
     private static long _nextLook;
+
+    /// <summary>A mechanic a script announced, waiting for the pulse: who did it and the triggers it fires, best first.</summary>
+    public sealed record PendingMechanic(GameObject Source, string[] Triggers, long At);
+
+    private static readonly ConcurrentQueue<PendingMechanic> Mechanics = new();
+
+    /// <summary>At most this many mechanics wait (a ten-raider throw is ten events); more are dropped.</summary>
+    public const int MechanicQueueMax = 256;
+
+    /// <summary>A mechanic not said within this long is dropped (the pulse stalled).</summary>
+    public const long MechanicStaleMs = 10_000;
+
+    /// <summary>A mechanic from an add or an object (Scurceol's orbs, the Waterfall Antipass) belongs to the nearest watched fight this close.</summary>
+    public const int MechanicOwnerRadius = 6_000;
+
+    /// <summary>Where a mechanic's yell goes (tests replace it).</summary>
+    public static Action<GameNPC, string> MechanicYell = (npc, text) => npc.Yell(text);
+
+    /// <summary>Where a mechanic's atmosphere line goes: the boss's zone, each player throttled (tests replace it).</summary>
+    public static Action<GameNPC, string> MechanicAtmosphere = (npc, text) => LoreAtmosphere.Zone(npc.CurrentZone, text, LoreAtmosphere.PhaseTtlMs);
 
     /// <summary>
     /// Boss scripts that already speak on a trigger (scanned from scripts/namedmobs, 2026-11-06): "aggro" covers lines said
@@ -113,6 +136,62 @@ public static class LoreBossWatch
         GameEventMgr.AddHandler(GameLivingEvent.Dying, new DOLEventHandler(OnDying));
         LoreChannels.LoreFirstKills.FirstKill -= OnFirstKill;
         LoreChannels.LoreFirstKills.FirstKill += OnFirstKill;
+        ListenToMechanics();
+    }
+
+    /// <summary>Hears the scripts' moves, signals and lore moments (Start; tests).</summary>
+    public static void ListenToMechanics()
+    {
+        StopListeningToMechanics();
+        EncounterDisplacement.Displaced += HearDisplaced;
+        EncounterSignals.Raised += HearSignal;
+        EncounterSignals.Moment += HearMoment;
+    }
+
+    public static void StopListeningToMechanics()
+    {
+        EncounterDisplacement.Displaced -= HearDisplaced;
+        EncounterSignals.Raised -= HearSignal;
+        EncounterSignals.Moment -= HearMoment;
+    }
+
+    /// <summary>A raider was thrown, teleported, jailed, pulled or pushed back (one event per raider).</summary>
+    public static void HearDisplaced(DisplacementEvent e)
+    {
+        if (e?.Source != null)
+            Queue(e.Source, LoreFightRules.DisplacementTriggers(e.Kind), e.At);
+    }
+
+    /// <summary>A script announced a mechanic for the raid (glare, stun, breath, stomp, messengers, safe spots...).</summary>
+    public static void HearSignal(EncounterSignal signal)
+    {
+        if (signal?.Boss != null)
+            Queue(signal.Boss, LoreFightRules.SignalTriggers(signal.Mechanic), signal.At);
+    }
+
+    /// <summary>A script said a lore-only moment (berserk, scream, healed, twinHeal).</summary>
+    public static void HearMoment(GameNPC boss, string moment)
+    {
+        if (boss != null)
+            Queue(boss, LoreFightRules.SignalTriggers(moment), GameLoop.GameLoopTime);
+    }
+
+    private static void Queue(GameObject source, string[] triggers, long at)
+    {
+        if (triggers.Length == 0 || Mechanics.Count >= MechanicQueueMax)
+            return;
+        Mechanics.Enqueue(new PendingMechanic(source, triggers, at));
+    }
+
+    /// <summary>Tests: the mechanics waiting for the pulse.</summary>
+    public static PendingMechanic[] PendingMechanics => Mechanics.ToArray();
+
+    /// <summary>Tests: nothing watched, nothing waiting.</summary>
+    public static void ResetForTests()
+    {
+        Fights.Clear();
+        Mechanics.Clear();
+        _nextLook = 0;
     }
 
     /// <summary>
@@ -133,7 +212,9 @@ public static class LoreBossWatch
         GameEventMgr.RemoveHandler(GameLivingEvent.AttackedByEnemy, new DOLEventHandler(OnAttacked));
         GameEventMgr.RemoveHandler(GameLivingEvent.Dying, new DOLEventHandler(OnDying));
         LoreChannels.LoreFirstKills.FirstKill -= OnFirstKill;
+        StopListeningToMechanics();
         Fights.Clear();
+        Mechanics.Clear();
     }
 
     private static void OnAttacked(DOLEvent e, object sender, EventArgs args)
@@ -232,6 +313,8 @@ public static class LoreBossWatch
     /// <summary>Every 2 s (from the atmosphere pulse): each watched fight's health and adds, and the lines they make due.</summary>
     public static void Pulse(long now)
     {
+        if (!Mechanics.IsEmpty)
+            SayMechanics(now);
         if (now < _nextLook || Fights.IsEmpty)
             return;
         _nextLook = now + LookMs;
@@ -289,6 +372,83 @@ public static class LoreBossWatch
                 LoreAtmosphere.Zone(npc.CurrentZone, line.Text, LoreAtmosphere.PhaseTtlMs);
             }
         }
+    }
+
+    #endregion
+
+    #region Mechanics
+
+    /// <summary>Says every waiting mechanic (from the pulse; tests). Returns what each said, in order.</summary>
+    public static List<LoreFightRules.MechanicLines> SayMechanics(long now)
+    {
+        var said = new List<LoreFightRules.MechanicLines>();
+        while (Mechanics.TryDequeue(out PendingMechanic pending))
+        {
+            try
+            {
+                if (now - pending.At > MechanicStaleMs)
+                    continue;
+                (GameNPC npc, LoreBible.Boss boss) = OwnerOf(pending.Source);
+                if (npc == null || boss == null)
+                    continue;
+                if (SayMechanic(npc, boss, pending.Triggers, now) is LoreFightRules.MechanicLines lines)
+                    said.Add(lines);
+            }
+            catch (Exception exception)
+            {
+                Log.Warn($"Lore: mechanic line for {pending.Source?.Name} failed", exception);
+            }
+        }
+        return said;
+    }
+
+    /// <summary>
+    /// The lore boss a mechanic belongs to: its source when that is a lore boss, else the nearest watched fight within
+    /// <see cref="MechanicOwnerRadius"/> in its region (an add or an object casts it for its boss).
+    /// </summary>
+    public static (GameNPC Npc, LoreBible.Boss Boss) OwnerOf(GameObject source)
+    {
+        if (source is GameNPC npc and not GameBot && npc.IsAlive && BossOf(npc) is LoreBible.Boss own)
+            return (npc, own);
+        if (source == null)
+            return (null, null);
+        GameNPC nearest = null;
+        long best = long.MaxValue;
+        foreach ((GameNPC watched, Watched _) in Fights)
+        {
+            if (watched == source || !watched.IsAlive || watched.CurrentRegionID != source.CurrentRegionID)
+                continue;
+            long dx = watched.X - source.X, dy = watched.Y - source.Y, d = dx * dx + dy * dy;
+            if (d <= (long)MechanicOwnerRadius * MechanicOwnerRadius && d < best)
+            {
+                best = d;
+                nearest = watched;
+            }
+        }
+        return nearest != null && Fights.TryGetValue(nearest, out Watched fight) ? (nearest, fight.Boss) : (null, null);
+    }
+
+    /// <summary>
+    /// One mechanic of a watched boss (a boss not yet watched starts its fight here): the trigger its file has a line for,
+    /// its yell (at most one every <see cref="LoreFightRules.MechanicYellGapMs"/> per trigger, and the fight's 12 s yell gap) and
+    /// its atmosphere line to the zone (once a fight per trigger, two a fight, each player's own throttle after that).
+    /// </summary>
+    public static LoreFightRules.MechanicLines SayMechanic(GameNPC npc, LoreBible.Boss boss, string[] triggers, long now)
+    {
+        if (npc == null || boss == null || boss.PhaseYells.Length == 0 && boss.AtmospherePhases.Length == 0)
+            return null;
+        Watched watched = Fights.GetOrAdd(npc, _ => new Watched { Boss = boss });
+        LoreFightRules.MechanicLines lines = LoreFightRules.Mechanic(watched.Fight, boss.PhaseYells, boss.AtmospherePhases, triggers, now);
+        if (lines == null)
+            return null;
+        if (lines.Yells.Length > 0 && now - watched.LastYell >= YellGapMs)
+        {
+            watched.LastYell = now;
+            MechanicYell(npc, LoreText.Pick(lines.Yells[Random.Shared.Next(lines.Yells.Length)], Random.Shared));
+        }
+        if (lines.Atmosphere != null)
+            MechanicAtmosphere(npc, LoreText.Pick(lines.Atmosphere, Random.Shared));
+        return lines;
     }
 
     #endregion

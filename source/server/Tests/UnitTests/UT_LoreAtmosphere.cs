@@ -219,7 +219,7 @@ namespace DOL.GS.Tests
             Assert.That(LoreFightRules.TryParseTrigger("partnerDead", out var t) && t.NeedsPartners && !t.ByEvent, Is.True);
             Assert.That(LoreFightRules.TryParseTrigger("playerDeath", out t) && t.ByEvent, Is.True);
             foreach (string script in new[] { "teleport", "berserk", "breath", "glare" })
-                Assert.That(LoreFightRules.TryParseTrigger(script, out t) && t.Kind == LoreFightRules.Kind.ScriptOnly, Is.True, script);
+                Assert.That(LoreFightRules.TryParseTrigger(script, out t) && t.Kind == LoreFightRules.Kind.Mechanic, Is.True, script + ": fired by its script since 1.2 (UT_LoreMechanicTriggers)");
             var fight = new LoreFightRules.Fight();
             string[] triggers = ["partnerDead", "teleport", "breath"];
             Assert.That(LoreFightRules.Observe(fight, triggers, 100, -1, -1, 4), Is.Empty);

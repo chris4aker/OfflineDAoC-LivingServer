@@ -154,6 +154,7 @@ namespace DOL.AI.Brain
             if (Body.IsAlive && IsBerserker == true && Body.InCombat && HasAggro)
             {
                 BroadcastMessage(String.Format(Body.Name + " goes into berserker stance!"));
+                EncounterSignals.Note(Body, EncounterSignals.Berserk);//Living Server 1.2: the lore's "berserk" lines (LoreBossWatch)
                 Body.Emote(eEmote.MidgardFrenzy);
                 Body.Strength = 850;
                 Body.MaxSpeedBase = 200; //slow under zerk mode

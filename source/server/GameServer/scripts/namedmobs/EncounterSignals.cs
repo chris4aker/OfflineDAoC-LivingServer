@@ -41,6 +41,45 @@ namespace DOL.GS
         public const string Retreat = "retreat";
         public const string SafeSpots = "safeSpots";
 
+        // Lore-only moments (1.2, the lore-mechanic triggers): said through Moment, never Raise. The raid has nothing to
+        // react to in them; only the lore engine listens.
+        /// <summary>Suttung goes into his berserker stance.</summary>
+        public const string Berserk = "berserk";
+        /// <summary>Kvasir's primal scream (his mezz is 2 s away).</summary>
+        public const string Scream = "scream";
+        /// <summary>A boss heals itself to full from a hit it does not accept (Funus's weapon puzzle).</summary>
+        public const string Healed = "healed";
+        /// <summary>Damage to one twin heals the other (King Tuscar and Queen Kula).</summary>
+        public const string TwinHeal = "twinHeal";
+
+        /// <summary>The same moment of the same boss is said at most once in this long (a twin heal comes with every hit).</summary>
+        public const int MomentGapMilliseconds = 5_000;
+
+        private static readonly Dictionary<(GameNPC, string), long> LastMoment = new();
+
+        /// <summary>
+        /// A lore-only moment (<see cref="Berserk"/>, <see cref="Scream"/>, <see cref="Healed"/>, <see cref="TwinHeal"/>): the
+        /// lore engine's hook (LoreBossWatch). Unlike <see cref="Raised"/> it reaches no tactic and no /group call.
+        /// </summary>
+        public static event Action<GameNPC, string> Moment;
+
+        /// <summary>The script says a lore-only moment happened. At most once per <see cref="MomentGapMilliseconds"/> per boss and moment.</summary>
+        public static bool Note(GameNPC boss, string moment) => Note(boss, moment, GameLoop.GameLoopTime);
+
+        public static bool Note(GameNPC boss, string moment, long now)
+        {
+            if (boss == null || string.IsNullOrEmpty(moment) || Moment == null) return false;
+            lock (Sync)
+            {
+                if (LastMoment.TryGetValue((boss, moment), out long last) && now - last < MomentGapMilliseconds && now >= last) return false;
+                if (LastMoment.Count > 256) LastMoment.Clear();
+                LastMoment[(boss, moment)] = now;
+            }
+            try { Moment?.Invoke(boss, moment); }
+            catch (Exception) { /* a listener's fault never breaks the script */ }
+            return true;
+        }
+
         /// <summary>The raid keeps reacting this long after a signal lands (a cast that lands a beat late, a stun's pulse).</summary>
         public const int AftermathMilliseconds = 1_500;
 
@@ -127,12 +166,17 @@ namespace DOL.GS
         /// <summary>Tests: no signals at all.</summary>
         public static void ClearAll()
         {
-            lock (Sync) Live.Clear();
+            lock (Sync)
+            {
+                Live.Clear();
+                LastMoment.Clear();
+            }
         }
 
         /// <summary>
-        /// The lore engine's trigger for a signal (feature/lore-engine's LoreFightRules): "breath", "glare" and "teleport"
-        /// are its script-only triggers, which nothing could fire before; the rest are names it would need to add.
+        /// The lore engine's trigger for a signal or a moment (LoreFightRules.MechanicTriggers, 1.2): the files'
+        /// <c>yells.phases</c> and <c>atmosphere.phases</c> use these names. LoreFightRules.SignalTriggers adds the aliases
+        /// ("stare" for a glare).
         /// </summary>
         public static string LoreTrigger(string mechanic) => mechanic switch
         {
@@ -143,6 +187,10 @@ namespace DOL.GS
             Messengers => "messengers",
             Retreat => "retreat",
             SafeSpots => "safeSpots",
+            Berserk => "berserk",
+            Scream => "scream",
+            Healed => "healed",
+            TwinHeal => "twinHeal",
             _ => mechanic
         };
     }
