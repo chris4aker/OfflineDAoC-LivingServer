@@ -143,22 +143,22 @@ namespace DOL.AI.Brain
 		};
 		#endregion
 		#region Nearsight
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
 		public static bool CanCast = false;
 		public static bool StartCastNS = false;
-		List<GamePlayer> Enemys_To_NS = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_NS = new List<GameLiving>();
 		private int PickRandomTarget(ECSGameTimer timer)
 		{
-			foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
 			{
 				if (player != null)
 				{
-					if (player.IsAlive && player.Client.Account.PrivLevel == 1
+					if (player.IsAlive && EncounterTargets.NotGm(player)
 						&& (!player.effectListComponent.ContainsEffectForEffectType(eEffect.Nearsight) 
 						&& (!player.effectListComponent.ContainsEffectForEffectType(eEffect.NearsightImmunity)))
 						&& !Enemys_To_NS.Contains(player))
@@ -171,7 +171,7 @@ namespace DOL.AI.Brain
 			{
 				if (CanCast == false)
 				{
-					GamePlayer Target = Enemys_To_NS[Util.Random(0, Enemys_To_NS.Count - 1)];//pick random target from list
+					GameLiving Target = Enemys_To_NS[Util.Random(0, Enemys_To_NS.Count - 1)];//pick random target from list
 					RandomTarget = Target;//set random target to static RandomTarget
 					BroadcastMessage(RandomTarget.Name + " can no longer see properly in the vicinity!");
 					new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetDot), 2000);

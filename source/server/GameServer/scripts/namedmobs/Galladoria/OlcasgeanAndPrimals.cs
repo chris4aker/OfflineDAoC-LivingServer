@@ -487,7 +487,7 @@ namespace DOL.GS
 
         public override void OnAttackedByEnemy(AttackData ad)// on Boss being attacked
         {
-            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && ad.Attacker is GamePlayer)
+            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && EncounterTargets.IsRaider(ad.Attacker))
             {
                 if (HealthPercent <= 50)
                 {
@@ -544,8 +544,8 @@ namespace DOL.AI.Brain
             ThinkInterval = 1000;
         }
         public static bool cast1 = true;         
-        private GamePlayer teleporttarget = null;
-        private GamePlayer TeleportTarget//teleport target 
+        private GameLiving teleporttarget = null;
+        private GameLiving TeleportTarget//teleport target 
         {
             get { return teleporttarget; }
             set { teleporttarget = value; }
@@ -558,10 +558,10 @@ namespace DOL.AI.Brain
         public static bool spawn_effect = false;
         public static bool Spawn_Copy = false;
         private bool RemoveAdds = false;
-        List<GamePlayer> player_in_range;
-        List<GamePlayer> player_in_range2;
-        List<GamePlayer> player_to_port;
-        List<GamePlayer> ported_player;
+        List<GameLiving> player_in_range;
+        List<GameLiving> player_in_range2;
+        List<GameLiving> player_to_port;
+        List<GameLiving> ported_player;
 
         public void SpawnAntiPass()
         {
@@ -664,38 +664,38 @@ namespace DOL.AI.Brain
                         spawn_effect = true;
                     }
                     if (player_in_range == null)
-                        player_in_range = new List<GamePlayer>();
+                        player_in_range = new List<GameLiving>();
 
                     if (player_in_range2 == null)
-                        player_in_range2 = new List<GamePlayer>();
+                        player_in_range2 = new List<GameLiving>();
 
                     if (player_to_port == null)
-                        player_to_port = new List<GamePlayer>();
+                        player_to_port = new List<GameLiving>();
 
                     if (ported_player == null)
-                        ported_player = new List<GamePlayer>();
+                        ported_player = new List<GameLiving>();
 
                     if (spawn_antipass == false)//spawn anti pass near waterfall so players cant leave boss area until killed 
                     {
                         SpawnAntiPass();
                         spawn_antipass = true;
                     }
-                    foreach (GamePlayer player in Body.GetPlayersInRadius(1500))//pick teleport player
+                    foreach (GameLiving player in EncounterTargets.InRadius(Body, 1500, bots: EncounterTargets.DisplacesBots(Body)))//pick teleport player
                     {
                         if (player != null)
                         {
-                            if (player.IsAlive && player.Client.Account.PrivLevel == 1 && player != Body.TargetObject)
+                            if (player.IsAlive && EncounterTargets.NotGm(player) && player != Body.TargetObject)
                             {
                                 if (!player_to_port.Contains(player))
                                     player_to_port.Add(player);
                             }
                         }
                     }
-                    foreach (GamePlayer player in Body.GetPlayersInRadius(5000))//pick players to make list of 2 areas
+                    foreach (GameLiving player in EncounterTargets.InRadius(Body, 5000))//pick players to make list of 2 areas
                     {
                         if (player != null)
                         {
-                            if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                            if (player.IsAlive && EncounterTargets.NotGm(player))
                             {
                                 if (player.IsWithinRadius(point1, 200))//location of main boss
                                 {
@@ -727,7 +727,7 @@ namespace DOL.AI.Brain
 
                     if (ported_player.Count > 0)
                     {
-                        GamePlayer port = ((GamePlayer)(player_to_port[Util.Random(0, player_to_port.Count) - 1]));
+                        GameLiving port = player_to_port[Util.Random(0, player_to_port.Count) - 1];
                         TeleportTarget = port;
 
                         if (TeleportTarget != null && TeleportTarget.IsAlive && !teleport_player && Body.HealthPercent <= 50)
@@ -771,7 +771,7 @@ namespace DOL.AI.Brain
                                 if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
                                 {
                                     if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38399, 60893, 12242, 3548);
-                                    TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+                                    EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
                                 }
@@ -782,7 +782,7 @@ namespace DOL.AI.Brain
                                 if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
                                 {
                                     if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38564, 64161, 12242, 2382);
-                                    TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+                                    EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
                                 }
@@ -794,7 +794,7 @@ namespace DOL.AI.Brain
                                 if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
                                 {
                                     if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 41580, 62325, 12242, 890);
-                                    TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+                                    EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
                                 }
@@ -993,7 +993,7 @@ namespace DOL.GS
 
         public override void OnAttackedByEnemy(AttackData ad)// on Boss being attacked
         {
-            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && ad.Attacker is GamePlayer)
+            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && EncounterTargets.IsRaider(ad.Attacker))
             {
                 if (HealthPercent <= 50)
                 {
@@ -1273,11 +1273,11 @@ namespace DOL.AI.Brain
 
         public override void Think()
         {
-            foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
             {
                 if (player != null)
                 {
-                    if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                    if (player.IsAlive && EncounterTargets.NotGm(player))
                         AggroList.TryAdd(player, new(100));
                 }
             }
@@ -1695,22 +1695,22 @@ namespace DOL.AI.Brain
         }
         #region Pick player to port
         public static bool IsTargetTeleported = false;
-        public static GamePlayer teleporttarget = null;
-        public static GamePlayer TeleportTarget
+        public static GameLiving teleporttarget = null;
+        public static GameLiving TeleportTarget
         {
             get { return teleporttarget; }
             set { teleporttarget = value; }
         }
-        List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+        List<GameLiving> Port_Enemys = new List<GameLiving>();
         public int PickTeleportPlayer(ECSGameTimer timer)
         {
             if (Body.IsAlive && HasAggro)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!Port_Enemys.Contains(player))
                             {
@@ -1731,7 +1731,7 @@ namespace DOL.AI.Brain
                 {
                     if (Port_Enemys.Count > 0)
                     {
-                        GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+                        GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
                         TeleportTarget = Target;
                         if (TeleportTarget.IsAlive && TeleportTarget != null)
                         {
@@ -1908,11 +1908,11 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 Body.CastSpell(FireDS, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//cast dmg shield every 60s
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                             AggroList.TryAdd(player, new(100));
                     }
                 }
@@ -3353,13 +3353,13 @@ namespace DOL.AI.Brain
         }
         public override void Think()
         {
-            foreach (GamePlayer player in Body.GetPlayersInRadius((ushort)AggroRange))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort)AggroRange, bots: EncounterTargets.DisplacesBots(Body)))
             {
                 if (player != null)
                 {
                     if (player.IsAlive)
                     {
-                        if (player.Client.Account.PrivLevel == 1)
+                        if (EncounterTargets.NotGm(player))
                             if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 39664, 60792, 11542, 4078);
                     }
                 }

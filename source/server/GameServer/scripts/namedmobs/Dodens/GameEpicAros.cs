@@ -185,7 +185,7 @@ namespace DOL.GS.Scripts
                 GameLiving source = sender as GameLiving;
                 if (e == GameObjectEvent.TakeDamage)
                 {
-                    foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                    foreach (GameLiving player in EncounterTargets.InRadius(this, WorldMgr.VISIBILITY_DISTANCE))
                     {
                         CheckDebuff(player);
                         CheckChanceBomb(player);
@@ -196,7 +196,7 @@ namespace DOL.GS.Scripts
 
         #endregion
 
-        public void SpawnGuardian(GamePlayer enemy)
+        public void SpawnGuardian(GameLiving enemy)
         {
             GameNPC summonedGuard = new GameNPC();
             SetVariables(summonedGuard);
@@ -502,7 +502,7 @@ namespace DOL.GS.Scripts
         {
             CastSpell(Summon, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
             GameLiving target = null;
-            foreach (GamePlayer player in GetPlayersInRadius(1500))
+            foreach (GameLiving player in EncounterTargets.InRadius(this, 1500))
             {
                 if (player == null) continue;
 

@@ -252,16 +252,16 @@ namespace DOL.GS
             {
                 if(FamesBrain.StartedFames==true || BellumBrain.StartedBellum==true || MorbusBrain.StartedMorbus==true || FunusBrain.StartedFunus==true || ApocalypseBrain.StartedApoc==true)
                 {
-                    foreach (GamePlayer player in GetPlayersInRadius(1500))
+                    foreach (GameLiving player in EncounterTargets.InRadius(this, 1500, bots: EncounterTargets.DisplacesBots(this)))
                     {
                         if(player != null)
                         {
                             if(player.IsAlive)
                             {
-                                if(player.IsWithinRadius(point1,150) && player.Client.Account.PrivLevel == 1)//only players will be ported back
+                                if(player.IsWithinRadius(point1,150) && EncounterTargets.NotGm(player))//only players will be ported back
                                 {
                                     if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(60, 29469, 25244, 19490, 2014);
-                                    player.Out.SendMessage("Magic energy moves you to the center of room!", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
+                                    EncounterTargets.Tell(player, "Magic energy moves you to the center of room!", eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
                                 }
                             }
                         }
@@ -2214,7 +2214,7 @@ namespace DOL.GS
         public static int KilledEnemys = 0;
         public override void EnemyKilled(GameLiving enemy)
         {
-            if(enemy is GamePlayer)
+            if(EncounterTargets.IsRaider(enemy))
             {
                 ++KilledEnemys;
             }
@@ -2634,7 +2634,7 @@ namespace DOL.GS
         }
         public override void EnemyKilled(GameLiving enemy)
         {
-            if (enemy is GamePlayer)
+            if (EncounterTargets.IsRaider(enemy))
             {
                 ++Apocalypse.KilledEnemys;
             }
@@ -2708,9 +2708,9 @@ namespace DOL.AI.Brain
             }
             base.Think();
         }
-        List<GamePlayer> ApocPlayerList = new List<GamePlayer>();
-        public GamePlayer dd_Target = null;
-        public GamePlayer DD_Target
+        List<GameLiving> ApocPlayerList = new List<GameLiving>();
+        public GameLiving dd_Target = null;
+        public GameLiving DD_Target
         {
             get { return dd_Target; }
             set { dd_Target = value; }
@@ -2719,7 +2719,7 @@ namespace DOL.AI.Brain
         public static bool reset_cast = false;
         public void PickTarget()
         {
-            foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
             {
                 if (player != null)
                 {
@@ -2736,7 +2736,7 @@ namespace DOL.AI.Brain
             {
                 if (cast_dd == false)
                 {
-                    GamePlayer ptarget = ((GamePlayer)(ApocPlayerList[Util.Random(1, ApocPlayerList.Count) - 1]));
+                    GameLiving ptarget = ApocPlayerList[Util.Random(1, ApocPlayerList.Count) - 1];
                     DD_Target = ptarget;
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastDD), 6000);
                     cast_dd = true;
