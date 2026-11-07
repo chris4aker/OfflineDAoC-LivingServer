@@ -596,6 +596,8 @@ namespace DOL.AI.Brain
 					if (RandomTarget != null && RandomTarget.IsAlive && RandomTarget.IsWithinRadius(Body, Dragon_DD.Range))
 					{
 						BroadcastMessage(String.Format("{0} stares at {1} and prepares a massive attack.", Body.Name, RandomTarget.Name));
+						// 1.2 (epic wave 2): the raid hears it too (EncounterSignals): everyone near the stared raider steps away, healers on him.
+						EncounterSignals.Raise(Body, EncounterSignals.Glare, RandomTarget, Dragon_DD.Radius, true, 6000);
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastGlare), 6000);
 					}
 					else
@@ -671,6 +673,7 @@ namespace DOL.AI.Brain
 							if (player != null)
 								player.Out.SendMessage(String.Format("{0} stares at {1} and prepares a massive attack.", Body.Name, RandomTarget2.Name), eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
 						}
+						EncounterSignals.Raise(Body, EncounterSignals.Glare, RandomTarget2, Dragon_DD2.Radius, true, 3000);
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastGlareRoam), 3000);
 					}
 					else
@@ -715,6 +718,8 @@ namespace DOL.AI.Brain
 			if (!IsRestless && HasAggro && Body.IsAlive)
 			{
 				BroadcastMessage(String.Format("{0} looks mindfully around.", Body.Name));
+				// 1.2: casters, archers and healers step out of the stun's reach until it lands (EncounterSignals).
+				EncounterSignals.Raise(Body, EncounterSignals.Stun, null, Dragon_Stun.Radius, false, 6000);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastStun), 6000);
 			}
 			return 0;
@@ -753,6 +758,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 90 && DragonKaboom1 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom1 = true;
@@ -760,6 +766,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 80 && DragonKaboom2 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom2 = true;
@@ -767,6 +774,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 70 && DragonKaboom3 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom3 = true;
@@ -774,6 +782,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 60 && DragonKaboom4 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom4 = true;
@@ -781,6 +790,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 50 && DragonKaboom5 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom5 = true;
@@ -788,6 +798,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 40 && DragonKaboom6 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom6 = true;
@@ -795,6 +806,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 30 && DragonKaboom7 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom7 = true;
@@ -802,6 +814,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 20 && DragonKaboom8 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom8 = true;
@@ -809,6 +822,7 @@ namespace DOL.AI.Brain
 			if (Body.HealthPercent <= 10 && DragonKaboom9 == false && !Body.IsCasting && !IsRestless)
 			{
 				BroadcastMessage(String.Format(message, Body.Name));
+				EncounterSignals.Raise(Body, EncounterSignals.Breath, null, Dragon_PBAOE.Radius, false, Dragon_PBAOE.CastTime);
 				Body.CastSpell(Dragon_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DragonCastDebuff), 5000);
 				DragonKaboom9 = true;
@@ -850,6 +864,8 @@ namespace DOL.AI.Brain
 				messenger.CurrentRegion = Body.CurrentRegion;
 				messenger.AddToWorld();
 			}
+			// 1.2: the raid's casters and archers run the messengers down (their tactic: ranged adds) and the party calls it.
+			EncounterSignals.Raise(Body, EncounterSignals.Messengers, null, 0, false, 0, 40_000);
 			CanSpawnMessengers = false;
 			return 0;
 		}

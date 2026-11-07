@@ -255,6 +255,8 @@ namespace DOL.AI.Brain
 					if (RandomTarget2.IsAlive && RandomTarget2 != null && HasAggro)
 					{
 						BroadcastMessage("Xanxicar preparing glare at "+ RandomTarget2.Name +"!");
+						// 1.2 (epic wave 2): the raid hears it too (EncounterSignals): off the glared raider, heals on him.
+						EncounterSignals.Raise(Body, EncounterSignals.Glare, RandomTarget2, XanxicarGlare.Radius, true, 5000);
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DoGlare), 5000);
 					}
 				}
@@ -283,6 +285,8 @@ namespace DOL.AI.Brain
 			if (Body.IsAlive && HasAggro)
 			{
 				Body.StopFollowing();
+				// 1.2: the raid's blast rule has the rest of the raid out already; the party he fights tops up (EncounterSignals).
+				EncounterSignals.Raise(Body, EncounterSignals.Stomp, null, XanxicarStomp.Radius, false, XanxicarStomp.CastTime);
 				Body.CastSpell(XanxicarStomp, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
 			}
 			return 0;

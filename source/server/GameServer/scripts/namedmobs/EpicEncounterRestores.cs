@@ -76,6 +76,13 @@ namespace DOL.GS
         /// <summary>The n-th Scaith (0 = Corp, the slash one) can be hurt once every Scaith before it is dead.</summary>
         public static bool ScaithAccepts(int index, bool[] deadInOrder) => AroonOpened(deadInOrder) >= index;
 
+        /// <summary>With AllowGalladoriaBridgeSpot a raider must stand within 350 of the bridge spot to start the last room; a
+        /// raid bot that has stood within 1,500 of it this long starts it all the same (the raid is never held there).</summary>
+        public const long BridgeFallbackMilliseconds = 180_000;
+
+        /// <summary>The bridge fallback is due (pure): a raid bot has been on the bridge since <paramref name="since"/> (0: none is).</summary>
+        public static bool BridgeFallbackDue(long since, long now) => since > 0 && now - since >= BridgeFallbackMilliseconds;
+
         /// <summary>Kvasir: cold heals him a fifth of his health.</summary>
         public static bool KvasirHealedBy(eDamageType type) => type == eDamageType.Cold;
 

@@ -5425,6 +5425,17 @@ namespace DOL.AI.Brain
                 if (displacedPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
             }
 
+            // 1.2 (epic wave 2): the raider a boss mechanic marks (a glare's, the party under Xanxicar's stomp, anyone under
+            // half beside Legion) comes next (EpicEncounterTactics.SignalPatient).
+            GameLiving markedPatient = displacedPatient == null ? EpicEncounterTactics.SignalPatient(BotBody, spellTarget, InSupportReach) : null;
+            if (markedPatient != null)
+            {
+                spellTarget = markedPatient;
+                amountToHeal = Math.Max(amountToHeal, markedPatient.MaxHealth - markedPatient.Health);
+                numNeedHealing = Math.Max(1, numNeedHealing);
+                if (markedPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
+            }
+
             // Emergency heal
             if (numEmergency > 0)
             {

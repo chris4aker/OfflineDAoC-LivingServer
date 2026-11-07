@@ -66,6 +66,9 @@ namespace DOL.GS
             /// <summary>Adds that burst from the boss's body when it dies (Spindler Broodmother's underdeveloped spindlers): the
             /// route clears them at the body before it moves on.</summary>
             public string[] DeathAdds { get; init; } = [];
+            /// <summary>The required adds die one at a time in the catalog's order (Aroon's Scaiths: each is immune until the one
+            /// before it is dead; Xaga's fairies, Beatha first): the whole raid takes the first one alive, not one each.</summary>
+            public bool AddsInOrder { get; init; }
 
             public bool HasHazards => Hazards is { Length: > 0 } && HazardRadius > 0;
         }
@@ -333,7 +336,8 @@ namespace DOL.GS
             GameNPC[] adds = ShieldingAdds(chosen, live);
             // Before the fight is on the raid musters for the boss itself; its adds come once it (or they) fight.
             if (adds.Length == 0 || !FightOn(chosen, live)) return chosen;
-            GameNPC nearest = adds.OrderBy(a => Vector3.DistanceSquared(front, new Vector3(a.X, a.Y, a.Z))).First();
+            GameNPC nearest = For(chosen).AddsInOrder ? adds[0]
+                : adds.OrderBy(a => Vector3.DistanceSquared(front, new Vector3(a.X, a.Y, a.Z))).First();
             reason = (reason == null ? "" : reason + "; ") + $"required-adds of \"{chosen.Name}\" alive={adds.Length}";
             return nearest;
         }
@@ -392,6 +396,8 @@ namespace DOL.GS
             GameNPC fightOwner = RequiredAddOwner(target, live) ?? target;
             if (BrokenOff(fightOwner, now) is Vector3 rally)
                 return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
+            // Epic wave 2 (EpicEncounterTactics.Signals.cs): announced mechanics, close-range and safe-spot rules.
+            if (DecideWaveTwo(raider, target, live, partyIndex, canShootFlyers, now, classId) is Advice waveTwo) return waveTwo;
             if (For(target) is { HasHazards: true } ht)
                 foreach (GameNPC hazard in LiveHazards(target, live))
                     if (HazardEscape(at, new(hazard.X, hazard.Y, hazard.Z), ht.HazardRadius) is Vector3 outOfIt)
@@ -403,6 +409,11 @@ namespace DOL.GS
                 return new(BotAction.Retarget, first, null, $"after \"{first.Name}\": the party \"{target.Name}\" fights holds it");
             if (RequiredAddOwner(target, live) is { } boss && For(boss).KeepAlive > 0 && ShieldingAdds(boss, live).Length == 0)
                 return new(BotAction.Retarget, boss, null, $"keep-alive add of \"{boss.Name}\": fight the boss");
+            // Adds that die in order (Aroon's Scaiths): one that is not the next to die is held by the party it fights, and
+            // everyone else turns to the next one.
+            if (RequiredAddOwner(target, live) is { } orderBoss && For(orderBoss).AddsInOrder && !Holds(raider, target) &&
+                ShieldingAdds(orderBoss, live) is { Length: > 0 } ordered && ordered[0] != target)
+                return new(BotAction.Retarget, ordered[0], null, $"adds in order: \"{ordered[0].Name}\" dies next");
             if (BlastWithdraw(raider, target, now) is Vector3 safe)
                 return new(BotAction.StandOff, target, safe, $"blast at {NextBlast(target)}%: out of {For(target).BlastRadius}");
             // Area hit around the boss's target (Govannon's demon form): everyone outside that target's party stands clear of it.
@@ -439,7 +450,7 @@ namespace DOL.GS
             }
             if (adds.Length > 0)
             {
-                GameNPC add = adds[AssignedIndex(partyIndex, adds.Length)];
+                GameNPC add = For(target).AddsInOrder ? adds[0] : adds[AssignedIndex(partyIndex, adds.Length)];
                 bool flying = (add.Flags & GameNPC.eFlags.FLYING) != 0 &&
                               AutonomousPveTargetPolicy.IsUnreachableFlyer(add.Flags, add.Z, raider.Z);
                 if (!flying || canShootFlyers)
@@ -635,7 +646,8 @@ namespace DOL.GS
         /// </summary>
         public static bool TryHandle(GameBot bot, GameNPC target)
         {
-            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || For(target) == null && !IsTacticPart(target)) return false;
+            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup ||
+                For(target) == null && !IsTacticPart(target) && !HasWaveTwoRule(bot, target, GameLoop.GameLoopTime)) return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
             switch (advice.Action)

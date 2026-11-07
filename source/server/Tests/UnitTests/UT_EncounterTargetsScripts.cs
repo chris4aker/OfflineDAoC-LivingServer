@@ -340,13 +340,14 @@ namespace DOL.UnitTests
         public void EveryMovePickAsksTheSameSwitchAsTheMove()
         {
             // Shipped: the three dragons and Xanxicar move bots; everything else (Legion included) keeps them out of its picks.
-            foreach (Type boss in new[] { typeof(AlbGolestandt), typeof(MidGjalpinulva), typeof(HibCuuldurach), typeof(Xanxicar) })
+            foreach (Type boss in new[] { typeof(AlbGolestandt), typeof(MidGjalpinulva), typeof(HibCuuldurach), typeof(Xanxicar),
+                         typeof(Olcasgean), typeof(WaterPrimal), typeof(SpindlerBroodmother), typeof(WaterfallAntipass) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.True, boss.Name);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.EqualTo(EpicEncounterMechanics.AllowBotDisplacementFor(npc)), boss.Name);
             }
-            foreach (Type boss in new[] { typeof(DOL.GS.Scripts.Legion), typeof(Jailer), typeof(Olcasgean), typeof(SummonerCunovinda),
+            foreach (Type boss in new[] { typeof(DOL.GS.Scripts.Legion), typeof(Jailer), typeof(Easmarach), typeof(SummonerCunovinda),
                          typeof(GrandSummonerGovannon), typeof(Orylle) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);

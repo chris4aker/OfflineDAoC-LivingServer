@@ -66,6 +66,7 @@ namespace DOL.AI.Brain
         public static bool startevent = false;
         public static int DeadPrimalsCount = 0;
         public const int BotTriggerRadius = 1500;
+        private long _botOnBridgeSince;
 
         public void BroadcastMessage(String message)
         {
@@ -81,21 +82,30 @@ namespace DOL.AI.Brain
             point1.X = 39652; point1.Y = 60831; point1.Z = 11893;//loc of waterfall bridge to start event and pop elementars
             if (Body.IsAlive)
             {
+                bool botOnBridge = false;
                 foreach (GameLiving player in EpicEncounterActors.Nearby(Body, 7000))
                 {
                     if (!startevent && EpicEncounterActors.CanTrigger(player))
                     {
                         // Run 12 (2026-10-15): the bot raid held near the bridge for 40 minutes and none of its 250 raiders
                         // stood on the 350-unit spot, so the primals never came. A raid bot anywhere on the bridge starts it.
-                        // The original 350-unit spot for bots too is behind EpicEncounterMechanics.AllowGalladoriaBridgeSpot.
+                        // The original 350-unit spot for bots too is behind EpicEncounterMechanics.AllowGalladoriaBridgeSpot
+                        // (on since 1.2: the raid route stages its first party on the spot); a raid bot that has stood on the
+                        // bridge for EpicEncounterRestores.BridgeFallbackMilliseconds still starts it, so a raid is never held.
+                        bool onBridge = player is GameBot && player.IsWithinRadius(point1, BotTriggerRadius);
+                        botOnBridge |= onBridge;
                         int triggerRadius = player is GameBot && !EpicEncounterMechanics.AllowGalladoriaBridgeSpot ? BotTriggerRadius : 350;
-                        if (player.IsWithinRadius(point1, triggerRadius) && !startevent && DeadPrimalsCount == 0 && !startevent)
+                        if ((player.IsWithinRadius(point1, triggerRadius) ||
+                             onBridge && EpicEncounterRestores.BridgeFallbackDue(_botOnBridgeSince, GameLoop.GameLoopTime)) &&
+                            !startevent && DeadPrimalsCount == 0 && !startevent)
                         {
                             new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(Message1), 5000);//5s to start
                             startevent = true;
                         }
                     }
                 }
+                if (!botOnBridge || startevent) _botOnBridgeSince = 0;
+                else if (_botOnBridgeSince == 0) _botOnBridgeSince = GameLoop.GameLoopTime;
             }
             base.Think();
         }
@@ -626,6 +636,11 @@ namespace DOL.AI.Brain
                 spawn_antipass = false;
                 spawn_effect = false;
                 TeleportTarget = null;
+                // 1.2: a new fight starts with nobody on the spots and nobody thrown.
+                player_in_range?.Clear();
+                player_in_range2?.Clear();
+                player_to_port?.Clear();
+                ported_player?.Clear();
                 if (!RemoveAdds)
                 {
                     foreach (GameNPC npc in Body.GetNPCsInRadius(4000))
@@ -720,17 +735,27 @@ namespace DOL.AI.Brain
                             }
                         }
                     }
+                    // 1.2: a raider who died on a spot no longer holds it.
+                    player_in_range.RemoveAll(p => p == null || !p.IsAlive);
+                    player_in_range2.RemoveAll(p => p == null || !p.IsAlive);
                     if (player_in_range.Count > 0 && player_in_range2.Count > 0)
                     {/* do nothing */}
                     else
-                        Body.CastSpell(OlcasgeanDD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
-
-                    if (ported_player.Count > 0)
                     {
-                        GameLiving port = player_to_port[Util.Random(0, player_to_port.Count) - 1];
-                        TeleportTarget = port;
+                        Body.CastSpell(OlcasgeanDD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                        // 1.2 (epic wave 2): the raid hears it (EncounterSignals): the two parties the spots are given to run to them.
+                        if (EncounterSignals.Active(Body, EncounterSignals.SafeSpots, GameLoop.GameLoopTime) == null)
+                            EncounterSignals.Raise(Body, EncounterSignals.SafeSpots, null, 200, false, 0, 10_000);
+                    }
 
-                        if (TeleportTarget != null && TeleportTarget.IsAlive && !teleport_player && Body.HealthPercent <= 50)
+                    // 1.2: the throw as OpenDAoC-Core 3513bad has it. The fork's copy waited for someone already thrown (it never
+                    // started) and picked index -1 one time in n+1 (an exception): below half health, every 12-20 s, one raider
+                    // within 1,500 who is not his target and was not thrown before.
+                    player_to_port.RemoveAll(p => p == null || !p.IsAlive || ported_player.Contains(p));
+                    if (player_to_port.Count > 0 && !teleport_player && Body.HealthPercent <= 50)
+                    {
+                        TeleportTarget = player_to_port[Util.Random(0, player_to_port.Count - 1)];
+                        if (TeleportTarget != null && TeleportTarget.IsAlive)
                         {
                             new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DoPort), Util.Random(12000,20000));//do teleport every 12-20s
                             teleport_player = true;
@@ -768,7 +793,7 @@ namespace DOL.AI.Brain
                     {
                         case 1:
                             {
-                                if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
+                                if (TeleportTarget != null && TeleportTarget.IsAlive && !ported_player.Contains(TeleportTarget))
                                 {
                                     if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38399, 60893, 12242, 3548, DisplacementKind.Throw, Body);
                                     EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
@@ -779,7 +804,7 @@ namespace DOL.AI.Brain
                             break;
                         case 2:
                             {
-                                if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
+                                if (TeleportTarget != null && TeleportTarget.IsAlive && !ported_player.Contains(TeleportTarget))
                                 {
                                     if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38564, 64161, 12242, 2382, DisplacementKind.Throw, Body);
                                     EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
@@ -791,7 +816,7 @@ namespace DOL.AI.Brain
                             break;
                         case 3:
                             {
-                                if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
+                                if (TeleportTarget != null && TeleportTarget.IsAlive && !ported_player.Contains(TeleportTarget))
                                 {
                                     if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 41580, 62325, 12242, 890, DisplacementKind.Throw, Body);
                                     EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
@@ -1744,7 +1769,7 @@ namespace DOL.AI.Brain
         }
         public int TeleportPlayer(ECSGameTimer timer)
         {
-            if (TeleportTarget.IsAlive && TeleportTarget != null && HasAggro)
+            if (TeleportTarget != null && TeleportTarget.IsAlive && HasAggro)
             {
                 switch (Util.Random(1, 2))
                 {

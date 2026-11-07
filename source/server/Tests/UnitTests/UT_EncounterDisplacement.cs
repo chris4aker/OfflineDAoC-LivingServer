@@ -84,7 +84,7 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void WhatShipsOnIsTheDragonThrowAndTheBotThrowsOfTheDragonsAndXanxicar()
+        public void WhatShipsOnIsWhatTheRaidPlays()
         {
             string[] shipped = EpicEncounterMechanics.PerEncounterValues();
             Assert.That(shipped, Is.EquivalentTo(new[]
@@ -92,13 +92,21 @@ namespace DOL.UnitTests
                 "AllowBotDisplacement@AlbGolestandt=true", "AllowBotDisplacement@HibCuuldurach=true",
                 "AllowBotDisplacement@MidGjalpinulva=true", "AllowBotDisplacement@Xanxicar=true",
                 "AllowDragonThrow@AlbGolestandt=true", "AllowDragonThrow@HibCuuldurach=true", "AllowDragonThrow@MidGjalpinulva=true",
+                // Epic wave 2 (UT_EpicWaveTwo): the messengers, Olcasgean and Galladoria's teleports and close-range rules.
+                "AllowDragonMessengers@AlbGolestandt=true", "AllowDragonMessengers@HibCuuldurach=true",
+                "AllowDragonMessengers@MidGjalpinulva=true",
+                "AllowPositionPuzzle@Olcasgean=true", "AllowDisplacement@Olcasgean=true", "AllowBotDisplacement@Olcasgean=true",
+                "AllowDisplacement@WaterfallAntipass=true", "AllowBotDisplacement@WaterfallAntipass=true",
+                "AllowDisplacement@WaterPrimal=true", "AllowBotDisplacement@WaterPrimal=true",
+                "AllowDisplacement@SpindlerBroodmother=true", "AllowBotDisplacement@SpindlerBroodmother=true",
+                "AllowPositionPuzzle@Conservator=true", "AllowPositionPuzzle@Easmarach=true",
             }));
             foreach (Type dragon in new[] { typeof(AlbGolestandt), typeof(MidGjalpinulva), typeof(HibCuuldurach) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(dragon);
                 Assert.That(EpicEncounterMechanics.AllowDragonThrowFor(npc), Is.True, dragon.Name);
                 Assert.That(EpicEncounterMechanics.AllowBotDisplacementFor(npc), Is.True, dragon.Name);
-                Assert.That(EpicEncounterMechanics.AllowDragonMessengersFor(npc), Is.False, dragon.Name + " messengers stay off");
+                Assert.That(EpicEncounterMechanics.AllowDragonMessengersFor(npc), Is.True, dragon.Name + " messengers (wave 2)");
                 Assert.That(EpicEncounterMechanics.AllowDisplacementFor(npc), Is.False);
             }
             var xanxicar = (GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(Xanxicar));

@@ -1985,6 +1985,8 @@ def render_tactics_cs(data: dict) -> str:
                 init.append(f'ClassRuleSwitch = "{t["classRuleSwitch"]}"')
         if t.get("deathAdds"):
             init.append(f"DeathAdds = {names('deathAdds')}")
+        if t.get("addsInOrder"):
+            init.append("AddsInOrder = true")
         body = (" { " + ", ".join(init) + " }") if init else ""
         rows.append(f'            new("{e["class"]}", "{e["id"]}", [{adds}], {int(t.get("fightAtHomeRadius", 0))}, {dies}{extra}){body},')
     leashes = []
