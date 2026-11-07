@@ -52,7 +52,7 @@
       "source": "Snorri, Gylfaginning; Vafthrudnismal (public domain)"
     },
     {
-      "text": "Living Server's Tuscaran lore calls the town Dellinstad (Asta the fishwife, Ingrid the trader, Orm Kolbeinsson); the world data spells it Dellingstad.",
+      "text": "Dellingstad's people in Living Server's Tuscaran lore: Asta the fishwife, Ingrid the trader, Orm Kolbeinsson and his son.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
@@ -184,7 +184,7 @@
   "loremaster": {
     "intro": "Loremaster Sigrun says, \"Delling, the crater at Aegir's heart. [Dellingstad] keeps its own counsel in the south-west, the [caldera] burns in the middle, the [cliff-watchers] fly the north-east rim, and past them the [giants' watch] guards the way into Tuscaran.\"",
     "topics": {
-      "Dellingstad": "The crater town of its own people, miners and fortifiers and soothsayers with crossbowmen on the walls. It trades on its own terms and treats strangers as enemies until they prove friends. [Weaponmaster Zargin] and [Vorkald] are here. Midgard's older tales spell it Dellinstad.",
+      "Dellingstad": "The crater town of its own people, miners and fortifiers and soothsayers with crossbowmen on the walls. It trades on its own terms and treats strangers as enemies until they prove friends. [Weaponmaster Zargin] and [Vorkald] are here.",
       "caldera": "The crater floor, with its fumes and sulphur clouds, golems of pumice, basalt and obsidian, and steam and vapor elements. The yellowed skeletons there are of those who went down to look. See [the dawn god].",
       "the dawn god": "The skalds say Delling, god of the dawn, came to see where the night goes and struck the crater in anger. The iarn dwarves say it was a mountain that burst. The crater burns either way.",
       "cliff-watchers": "The griffmen of the Klippa Vaktaren, who fly griffons bonded to them from an eyrie on the north-east rim and watch the whole crater. The Remnants say their own griffon-flying began by watching these cliffs.",
