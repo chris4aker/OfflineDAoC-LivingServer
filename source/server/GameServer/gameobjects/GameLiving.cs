@@ -1559,7 +1559,9 @@ namespace DOL.GS
 						Stealth(false);
 				}
 
-				if (this is GameNPC gameNpc && ActiveWeaponSlot is eActiveWeaponSlot.Distance && IsWithinRadius(ad.Attacker, 150))
+				// A bot that fights this attacker with its distance weapon only (Funus) keeps it: a melee swing would heal him.
+				if (this is GameNPC gameNpc && ActiveWeaponSlot is eActiveWeaponSlot.Distance && IsWithinRadius(ad.Attacker, 150) &&
+					!(this is GameBot rangedBot && EpicEncounterTactics.FightsAtRange(rangedBot, ad.Attacker)))
 					gameNpc.StartAttackWithMeleeWeapon(ad.Attacker);
 
 				attackComponent.AddAttacker(ad);

@@ -77,6 +77,13 @@ namespace DOL.GS
             /// <summary>What the raid route fights instead of the monster it chose (the Crypt Lord for one of his court), asked
             /// for every chosen monster whatever <see cref="Targets"/> says.</summary>
             public RouteRule Route { get; init; }
+            /// <summary>This bot fights the target with its distance weapon only (Funus: a scout's longbow, a mercenary's short
+            /// bow, an armsman's or infiltrator's crossbow): BotBrain draws it whatever its class's usual stance, never falls
+            /// back to melee on him, and waits for endurance rather than swing (epic wave 3, 1.2). Every bot, companions too.</summary>
+            public Func<GameBot, GameNPC, bool> FightsAtRange { get; init; }
+            /// <summary>While true, no bot's pet attacks the target, defends its owner against it or takes it from its owner's
+            /// orders (Funus: a pet's hit heals him to full). ControlledMobBrain asks <see cref="PetMustNotHit"/>.</summary>
+            public Func<GameNPC, bool> NoPets { get; init; }
         }
 
         private sealed record RuleSet(DungeonRule[] All, Dictionary<string, DungeonRule[]> ByTarget, DungeonRule[] Routes);
@@ -198,6 +205,44 @@ namespace DOL.GS
             foreach (DungeonRule rule in DungeonRulesFor(npc))
                 if (rule.MustNotHit != null && rule.MustNotHit(bot, npc))
                     return true;
+            return false;
+        }
+
+        /// <summary>This bot fights <paramref name="living"/> with its distance weapon only (a dungeon rule's
+        /// <see cref="DungeonRule.FightsAtRange"/>; BotBrain's weapon choice and the native melee fallbacks ask it).</summary>
+        public static bool FightsAtRange(GameBot bot, GameLiving living)
+        {
+            if (bot == null || living is not GameNPC npc) return false;
+            foreach (DungeonRule rule in DungeonRulesFor(npc))
+            {
+                if (rule.FightsAtRange == null) continue;
+                try
+                {
+                    if (rule.FightsAtRange(bot, npc)) return true;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon range rule {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// A bot's pet (companion bots and autonomous gamebots alike) must not hit <paramref name="living"/>: a dungeon rule of it
+        /// says no pet may (<see cref="DungeonRule.NoPets"/>). A real player's own pet is the player's to command and is never
+        /// held back here. Asked by ControlledMobBrain before a pet takes an attack order, picks a target or defends its owner.
+        /// </summary>
+        public static bool PetMustNotHit(GameNPC pet, GameLiving living)
+        {
+            if (pet == null || pet is GameBot || living is not GameNPC npc) return false;
+            if ((pet.Brain as IControlledBrain)?.GetLivingOwner() is not GameBot) return false;
+            foreach (DungeonRule rule in DungeonRulesFor(npc))
+            {
+                if (rule.NoPets == null) continue;
+                try
+                {
+                    if (rule.NoPets(npc)) return true;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon pet rule {rule.Encounter} failed: {ex.Message}"); }
+            }
             return false;
         }
 

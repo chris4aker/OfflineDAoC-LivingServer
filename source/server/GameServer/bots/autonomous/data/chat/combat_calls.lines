@@ -404,6 +404,39 @@ dont use cold, he eats it
 [cold heals him|frost heals him], use something else
 no ice dd on kvasir pls
 
+# ---- epic_falls: Easmarach heals on the waterfall top, only spells and arrows reach him -----------------------------
+@kind combat
+@topic epic_falls
+@who *
+@needs in_player_group
+hes up the falls, casters and archers shoot from below
+cant reach him up there, ranged on him from the floor
+[nukes|arrows] on him, hes on top of the waterfall
+melee wait at the bottom, ranged burn him down
+dont let him sit up there healing, shoot him
+
+# ---- epic_griffon_pull: a griffon flies its patrol, the ranged pull it down -----------------------------------------
+@kind combat
+@topic epic_griffon_pull
+@who *
+@needs in_player_group
+griffon inc overhead, shoot it down
+pull it when it flies over, melee get it when it lands
+[ranged|archers] hit it as it passes
+its coming round again, ready to pull
+shoot the bird, it'll come down on ya
+
+# ---- epic_legion_wounded: each raider Legion kills heals him ---------------------------------------------------------
+@kind combat
+@topic epic_legion_wounded
+@who *
+@needs in_player_group
+low? back off legion, dont feed him
+get out of his reach if ur low, every death heals him
+[backing off|pulling back], too low to stay in
+no bubbles on the tank, he eats em
+heals on the low ones, dont let him get a kill
+
 # ---- epic_kvasir_scream: Kvasir's scream mezzes around his target ----------------------------------------------------
 @kind combat
 @topic epic_kvasir_scream
@@ -491,12 +524,13 @@ dont turn your back on him
 @topic mech_funus
 @who *
 @needs in_player_group
-only clerics and scouts on {boss}, everyone else off him
-dont touch {boss} unless ur a cleric or a scout, he heals
-{boss} heals off the wrong hits, clerics and scouts only
+only clerics and bows on {boss}, everyone else off him
+dont touch {boss} unless ur a cleric or got ur bow out, he heals
+{boss} heals off the wrong hits, clerics and archers only
 off {boss}! wrong class heals him full
-scouts and clerics on {boss}, rest of us stay back
+mercs and arms get ur bows out, rest of us stay back
 no pets and no aoe near {boss}, he heals off em
+bows only on {boss}, no swinging at him
 
 @kind combat
 @topic mech_sacristan

@@ -215,7 +215,9 @@ namespace DOL.GS
                 {
                     _interval = TICK_INTERVAL_FOR_NON_ATTACK;
                     bot.StopAttack();
-                    SwitchToMeleeAndTick();
+                    // A target fought with the distance weapon only (Funus): wait for endurance, never swing at it.
+                    if (!EpicEncounterTactics.FightsAtRange(bot, _target as GameLiving))
+                        SwitchToMeleeAndTick();
                     return false;
                 }
                 bot.rangeAttackComponent.UpdateAmmo(_weapon);

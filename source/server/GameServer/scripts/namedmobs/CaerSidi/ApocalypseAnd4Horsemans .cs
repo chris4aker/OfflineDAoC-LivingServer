@@ -1936,6 +1936,20 @@ namespace DOL.GS
             base.TakeDamage(source, damageType, damageAmount, criticalAmount);
         }
 
+        /// <summary>
+        /// 1.2 (epic wave 3): the sting of a damage shield on a bot Funus hits is not an attack the bot chose and can't be
+        /// taken off; with the puzzle on, from a bot of a class he takes no damage from, it neither heals nor hurts him
+        /// (EpicEncounterMechanics.FunusShieldStingIgnored, server property epic_funus_bot_shield_guard). A real player's
+        /// shield and every other hit go on as the original.
+        /// </summary>
+        public override void TakeDamage(AttackData ad)
+        {
+            if (ad != null && EpicEncounterMechanics.FunusShieldStingIgnored(ad.Attacker, ad.SpellHandler,
+                    EpicEncounterRestores.FunusAccepts(EpicEncounterRestores.ClassId(ad.Attacker), EpicEncounterRestores.WeaponType(ad.Attacker))))
+                return;
+            base.TakeDamage(ad);
+        }
+
         public override int MeleeAttackRange => 350;
         public override bool HasAbility(string keyName)
         {

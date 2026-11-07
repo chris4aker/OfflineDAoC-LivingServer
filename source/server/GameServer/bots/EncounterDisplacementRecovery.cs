@@ -123,8 +123,13 @@ namespace DOL.GS
                     return new(OrderKind.Land, p.Landing, p.FallPercent);
 
                 case Stage.Landed:
-                    if (p.Kind is DisplacementKind.Pull or DisplacementKind.Barrier)
+                    if (p.Kind == DisplacementKind.Pull)
                         return Finish(p, "nothing to recover from");
+                    // A barrier put it back where it must stay (inside the horsemen's room, in front of the falls): no walk
+                    // back to where it stood, which is the barrier itself. The raid's orders keep it inside from here
+                    // (EpicEncounterTactics.KeepInsideFor); a bot sent to the barrier again and again is logged.
+                    if (p.Kind == DisplacementKind.Barrier)
+                        return Finish(p, "kept inside");
                     if (p.Kind == DisplacementKind.Jail)
                     {
                         p.Stage = Stage.Jailed;
@@ -300,8 +305,41 @@ namespace DOL.GS
                 foreach (var old in Recent.Where(p => e.At - p.Value.At > HealPriorityMilliseconds).Select(p => p.Key).ToList())
                     Recent.TryRemove(old, out _);
             Recent[e.Living] = e;
+            if (e.Kind == DisplacementKind.Barrier && CountBounce(e) is var bounces && bounces >= BounceWarnCount && Log.IsWarnEnabled)
+                Log.Warn($"EPIC_DISPLACEMENT_BOUNCED living=\"{e.Living?.Name}\" bot={e.IsBot} encounter={e.Encounter} " +
+                         $"bounces={bounces} within={BounceWindowMilliseconds / 1000}s at={(int)e.From.X},{(int)e.From.Y},{(int)e.From.Z} " +
+                         $"reason=\"sent to the barrier again and again: its orders lie past it\"");
             if (e.Kind is DisplacementKind.Pull or DisplacementKind.Barrier) return;
             CallOut(e.Living, e.Kind == DisplacementKind.Jail ? "displaced_jail" : "displaced_heal", e);
+        }
+
+        // ---- Barrier bounces -------------------------------------------------------------------------------------------
+
+        /// <summary>A raider moved back by a barrier this many times within <see cref="BounceWindowMilliseconds"/> is logged
+        /// (EPIC_DISPLACEMENT_BOUNCED): something keeps sending it at the barrier.</summary>
+        public const int BounceWarnCount = 3;
+        public const long BounceWindowMilliseconds = 120_000;
+        private static readonly ConcurrentDictionary<(GameLiving, string), List<long>> Bounces = new();
+
+        /// <summary>Counts a barrier move; how many this raider had from this encounter in the window, this one included.</summary>
+        public static int CountBounce(DisplacementEvent e)
+        {
+            if (e.Living == null) return 0;
+            if (Bounces.Count > 512) Bounces.Clear();
+            List<long> times = Bounces.GetOrAdd((e.Living, e.Encounter ?? ""), _ => new List<long>());
+            lock (times)
+            {
+                times.RemoveAll(t => e.At - t > BounceWindowMilliseconds);
+                times.Add(e.At);
+                return times.Count;
+            }
+        }
+
+        /// <summary>The barrier moves of this raider by this encounter in the window ending at <paramref name="now"/> (tests, logs).</summary>
+        public static int BouncesOf(GameLiving living, string encounter, long now)
+        {
+            if (living == null || !Bounces.TryGetValue((living, encounter ?? ""), out List<long> times)) return 0;
+            lock (times) return times.Count(t => now - t <= BounceWindowMilliseconds);
         }
 
         /// <summary>Forgets a bot (it left the world); tests.</summary>
@@ -316,6 +354,7 @@ namespace DOL.GS
         {
             Active.Clear();
             Recent.Clear();
+            Bounces.Clear();
         }
 
         /// <summary>BotBrain's first hook on each turn: true when the turn is used by the recovery.</summary>

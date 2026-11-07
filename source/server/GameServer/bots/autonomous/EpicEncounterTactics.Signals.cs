@@ -143,6 +143,9 @@ namespace DOL.GS
         private static Vector3? AttackFromWithin(GameLiving raider, GameNPC target, Vector3 at)
         {
             if (AttackRuleFor(target) is not { } rule) return null;
+            // A wounded raider stepping out of Legion's reach is not called back in (EpicEncounterTactics.DarknessFalls.cs).
+            if (target is DOL.GS.Scripts.Legion && LegionWoundedAdvice(at, raider.HealthPercent, target.TargetObject == raider, target) != null)
+                return null;
             Vector3 center = rule.FromSpawn ? new(target.SpawnPoint.X, target.SpawnPoint.Y, target.SpawnPoint.Z) : new(target.X, target.Y, target.Z);
             // A boss drawn away from its spawn is led home by the fight-at-home rule; melee beside it are not called back.
             if (rule.FromSpawn && Vector2.Distance(new(target.X, target.Y), new(center.X, center.Y)) > rule.Radius) return null;

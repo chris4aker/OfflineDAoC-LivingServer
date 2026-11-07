@@ -311,7 +311,8 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs": "742a59d2fe8155b2718f766c1fefd50d04932db3ab613dfd8b3c5f7ebcea4d28"
-   }
+   },
+   "notes": "A data fact (1.2 wave 3 audit, not changed): at 30% she calls every NPC with PackageID \"CailleachUragaigBaf\" within 2,500, and the world database has none, so nobody comes."
   },
   "albion-named-mobs-classic-zones/fester": {
    "verified": true,
@@ -328,14 +329,22 @@
   "albion-named-mobs-classic-zones/legendaryafanc": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "f18563d1dcaba8ad1c158601fe1670c3117e5f02491e8b9e570821371a9831d3"
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "fb2cadfac67cd0a6ffad0f9786e4c4ed368f21522af4fa9082e5489b68f0c775"
+   },
+   "notes": "1.2 (wave 3): his throw takes bots too (AllowBotDisplacement for LegendaryAfanc): a thrown bot takes the fall damage (a fifth of its health, as players), walks back from the lake shore 451,486,393,503 or is recalled after 5 s with no path; the pick is made from who stands within 2,500 now (the list was never cleared, so a raider who had left could be thrown). The landing was never checked against the owner's navmesh.",
+   "rules": {
+    "teleport@162": {
+     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for LegendaryAfanc): the bot walks back to its party (EncounterDisplacementRecovery; no path or off the mesh: recalled after 5 s); healers take displaced raiders first.",
+     "difficulty": "easy for the current raid AI"
+    }
    }
   },
   "albion-named-mobs-classic-zones/morgana": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "7e15d7495a65f5404665e4f3051de7435309bea94a895a922a652dd1ff0d03bf"
-   }
+   },
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked."
   },
   "albion-named-mobs-classic-zones/mouth": {
    "verified": true,
@@ -376,14 +385,16 @@
   "albion-named-mobs-shrouded-isles/durval": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs": "a20ffa4999aebfce381e1bdd501352f02ea1b8791013c54161e2c75e6c084bb9"
-   }
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs": "7f0a87ca9c477d6b422c88eda3e5bca9a76c9aab505c08dbe5606e2f35ec5955"
+   },
+   "notes": "1.2 (wave 3): his pack link fires: the script passed 3,500 to WorldMgr.GetNPCsFromRegion as a region id (so it saw no NPC); it now links every DurvalBaf delver and light within 3,500 of him (EncounterPacks.LinkInRadius). OpenDAoC-Core 3513bad has the same slip."
   },
   "albion-named-mobs-shrouded-isles/qanrisduros": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs": "de4ccc8702ba2f5b59cdfa7cf9bf4d3be8fbd0db27e47f92a7a65725ec7dff95"
-   }
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs": "9dec08db3daabd82448a6a51fbdc542a87b687801ce6a476193fbdf8b42ed58b"
+   },
+   "notes": "1.2 (wave 3): his pack link fires: the script passed 3,500 to WorldMgr.GetNPCsFromRegion as a region id (so it saw no NPC and the guards joined only by standing close and sharing a faction); it now links every DurosBaf guard within 3,500 of him (EncounterPacks.LinkInRadius). OpenDAoC-Core 3513bad has the same slip."
   },
   "albion-named-mobs-shrouded-isles/risnircruss": {
    "verified": true,
@@ -464,9 +475,9 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
    },
-   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two."
+   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh."
   },
   "caer-sidi/baneofhope": {
    "verified": true,
@@ -477,7 +488,7 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -498,7 +509,7 @@
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -515,14 +526,14 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
-    "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full, so only clerics, scouts with their longbow (who step back rather than ever swing a melee weapon at him) and a mercenary, armsman or infiltrator already holding its bow or crossbow fight him (bots of those three don't switch weapons, so in practice clerics and scouts). Everyone else drops him, calls its pet off and waits 1,400 away, and never puts an area spell where he stands (EpicEncounterTactics.CaerSidi). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full. Wave 3: clerics fight him as they like; scouts, mercenaries, armsmen and infiltrators who own their listed weapon (longbow, short bow, crossbow: gamebots start with a training one of their class's own kind when they learn the line and earn better ones) draw it and fight with it only: BotBrain never falls back to melee on him (out of endurance they wait), the native close-range melee switch is skipped, and unless they hold him they step back to 700 when he is within 450. Everyone else drops him, calls its pet off and waits 1,400 away (kept inside the room while its door is barred), and never puts an area spell where he stands. No bot's pet attacks him, takes him from an order or defends its owner against him (EpicEncounterTactics.PetMustNotHit). A damage shield's sting from a bot he can't be hurt by neither heals nor hurts him (server property epic_funus_bot_shield_guard, on; real players keep the original). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back. Not played: how many of a raid's mercenaries, armsmen and infiltrators own the weapon depends on their earned gear.",
     "since": "1.2"
    },
-   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics."
+   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics. 1.2 (wave 3): the archer classes switch to their listed weapon."
   },
   "caer-sidi/host": {
    "verified": true,
@@ -559,7 +570,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -704,7 +715,7 @@
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "3fa4df42ab0b47bae8bf1f942a36ea5b222ca9f9c0bb6b2b5dff883b46a18539"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "63fb56e730c0bbc2d4bfdde5c26fbb9e3838de977f6d3ee78f2415a9dd1b3026"
    }
   },
   "darkness-falls/beliathan": {
@@ -754,24 +765,28 @@
    "notes": "1.2: a dead bot heals him by its health too (EncounterTargets). Flood guard (EncounterFloodGuard 'HighLordSaeor.KillHeal'): at most 64 such heals in 5 minutes, Darkness Falls' period raid."
   },
   "darkness-falls/legion": {
-   "notes": "Level 83, 300,000 health. No raid AI: listed for completeness. 1.2: his throw stays on real players only (a bot can't get down from the platform) and companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics); not played.",
+   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. Not played.",
    "rules": {
     "immune_while@243": {
      "summary": "Takes no damage from attackers more than 1,400 from him.",
      "tactic": "Everyone fights within 1,400 of him (casters too).",
      "difficulty": "needs new raid AI"
+    },
+    "teleport@688": {
+     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands on the platform, finds no path back and is recalled to its party after 5 s (EncounterDisplacementRecovery); companions of a thrown player stay down. Real players use the zone point as before.",
+     "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "3fa4df42ab0b47bae8bf1f942a36ea5b222ca9f9c0bb6b2b5dff883b46a18539"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "63fb56e730c0bbc2d4bfdde5c26fbb9e3838de977f6d3ee78f2415a9dd1b3026"
    },
    "aiTactics": {
     "rangedAdds": [
      "LegionAdd"
     ],
     "since": "1.2",
-    "summary": "Tactic rules only (Darkness Falls raid AI as a whole is not implemented). Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first. His throw stays on real players (no way down from his platform)."
+    "summary": "Tactic rules only (Darkness Falls raid AI as a whole is not implemented: no platform positions, no walked way down from the platform, no add-wave assignments). Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first, and since wave 3 a raider under 35% who is not his target steps out to 1,700 until healed. Bubbles (wave 3): he ends the bladeturn on his target every turn and after five casts his soul blast (1,000 body damage within 1,000 of his target, a quarter healing him), so no bot casts a bladeturn (buff, group bubble, pulsing chant, self bubble) within 2,500 of him while he fights. His throw (wave 3): 8-16 raiders below his top five on his aggro list go to his platform every 40-65 s, bots too; a bot has no walked way down, so its recovery recalls it to its party after 5 s."
    }
   },
   "darkness-falls/princeabdin": {
@@ -1062,7 +1077,13 @@
    },
    "aiTactics": {
     "since": "1.2",
-    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) stays off: it blocks the way to the last room while he lives, and the raid cannot finish him yet (below 30% he heals on the waterfall top, where the route skipped him twice on 2026-11-06)."
+    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health each time he is back there under 30%; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Not played; the spots were never checked against the navmesh for sight to the top."
+   },
+   "rules": {
+    "teleport@206": {
+     "tactic": "On since 1.2 wave 3 (AllowDisplacement and AllowBotDisplacement for Easmarach): the route kills him before Galladoria's last room, so the raid doesn't walk into the falls; a pushed bot stays where it lands (a barrier: no walk back into it). Off with epic_encounter_switches \"AllowDisplacement@Easmarach=False\".",
+     "difficulty": "needs new raid AI"
+    }
    }
   },
   "galladoria/fireprimal": {
@@ -2105,9 +2126,9 @@
   "open-world/ofgreenknight": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "edf5f149c1bb47b4bae51448936e8363d0af9f2a33f7a513e2e14d3c78e21f9b"
+    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "d89b0e6d6adae7ee4a944ffcd0a31db5aad5c2152946ccd568d570d7095e386f"
    },
-   "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on."
+   "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on. 1.2 (wave 3): his fight starts by a real player's whisper (\"defend it\") as before, or for a bot raid: eight or more level 50 raiders of an autonomous raid expedition standing within 1,000 of him for 20 s, and the one nearest him challenges him (OFGreenKnight.TryStartFight). Passing bot groups and a player's companions never start him. No raid route goes to him today."
   },
   "open-world/yar": {
    "verified": true,
@@ -2374,20 +2395,20 @@
      "difficulty": "easy for the current raid AI"
     },
     "position_puzzle@428": {
-     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
-     "difficulty": "off today"
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
     },
     "position_puzzle@470": {
-     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
-     "difficulty": "off today"
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
     },
     "position_puzzle@506": {
-     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
-     "difficulty": "off today"
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
     },
     "position_puzzle@616": {
-     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
-     "difficulty": "off today"
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
     }
    }
   },
@@ -2525,20 +2546,20 @@
    },
    "rules": {
     "position_puzzle@50": {
-     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
-     "difficulty": "off today"
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
     },
     "position_puzzle@70": {
-     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
-     "difficulty": "off today"
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
     },
     "position_puzzle@155": {
-     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
-     "difficulty": "off today"
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
     },
     "position_puzzle@284": {
-     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
-     "difficulty": "off today"
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI"
     }
    }
   },

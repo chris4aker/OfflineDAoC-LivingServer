@@ -1069,16 +1069,20 @@ def detect_misc(world: World, cls: CsClass, ctx) -> list[Rule]:
                                    (f" when {condition_summary(mb.conditions_at(pos))}" if condition_summary(mb.conditions_at(pos)) else ""),
                                    "inferred", cls, mb, affects="real players only (bots are never picked)" if pl else None))
         # Linked packs.
-        if not re.search(r"AddAggroListTo\s*\(|AddToAggroList\s*\(", mbody):
+        # EncounterPacks.LinkInRadius(brain, "Package", radius) (1.2) is the same link, within a radius of the boss.
+        if not re.search(r"AddAggroListTo\s*\(|AddToAggroList\s*\(|EncounterPacks\.LinkInRadius\s*\(", mbody):
             pack_iter = []
         else:
-            pack_iter = re.finditer(r"AddAggroListTo\s*\(|AddToAggroList\s*\(|PackageID\s*[!=]=\s*\"([^\"]*)\"", body)
+            pack_iter = re.finditer(r"AddAggroListTo\s*\(|AddToAggroList\s*\(|EncounterPacks\.LinkInRadius\s*\(|"
+                                    r"PackageID\s*[!=]=\s*\"([^\"]*)\"", body)
         for mm in pack_iter:
             pos = mb.open_pos + mm.start()
-            pk = re.search(r"PackageID\s*[!=]=\s*\"([^\"]*)\"", body)
+            linked = re.search(r"EncounterPacks\.LinkInRadius\s*\(\s*\w+\s*,\s*\"([^\"]*)\"\s*,\s*(\d+)", body)
+            pk = linked or re.search(r"PackageID\s*[!=]=\s*\"([^\"]*)\"", body)
+            within = f" within {int(linked.group(2)):,} of it" if linked else ""
             brains = re.findall(r"Brain\s+is\s+(\w+)", body[max(0, mm.start() - 400):mm.start() + 50])
             rules.append(make_rule("linked_pack", src, src.line_of(pos), src.line_of(pos),
-                                   "Brings others into the fight" + (f": every NPC with PackageID \"{pk.group(1)}\"" if pk else "") +
+                                   "Brings others into the fight" + (f": every NPC with PackageID \"{pk.group(1)}\"{within}" if pk else "") +
                                    (f": {', '.join(sorted(set(brains)))}" if brains and not pk else ""), "read" if pk else "inferred",
                                    cls, mb))
             break
@@ -1610,6 +1614,7 @@ def write_world_snapshot(world: World, db_path: str) -> None:
     for src in world.sources.values():
         template_ids |= {int(t) for t in re.findall(r"GetTemplate\s*\(\s*(\d+)\s*\)", src.masked)}
         packages |= set(re.findall(r'PackageID\s*[!=]=\s*"([^"]+)"', src.text))
+        packages |= set(re.findall(r'EncounterPacks\.LinkInRadius\s*\(\s*\w+\s*,\s*"([^"]+)"', src.text))
     template_ids |= {m["npcTemplate"] for rows in mobs.values() for m in rows if m["npcTemplate"]}
     templates = {}
     for tid in sorted(template_ids):

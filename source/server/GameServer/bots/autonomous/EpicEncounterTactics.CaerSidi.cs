@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using DOL.AI.Brain;
+using DOL.Database;
 
 namespace DOL.GS
 {
@@ -18,8 +19,13 @@ namespace DOL.GS
         [
             new(nameof(Funus), [nameof(Funus)], FunusWeaponPuzzle)
             {
-                Summary = "Only clerics and scouts with a longbow fight him (any other hit heals him to full); the rest stand 1,400 off.",
+                Summary = "Only clerics, and scouts, mercenaries, armsmen and infiltrators with their listed bow or crossbow, fight " +
+                          "him (any other hit heals him to full): the archers fight with that weapon and never swing; the rest " +
+                          "stand 1,400 off, and no bot's pet touches him.",
                 MustNotHit = FunusMustNotHit,
+                Act = FunusDrawListedWeapon,
+                FightsAtRange = FunusFightsAtRange,
+                NoPets = _ => EpicEncounterMechanics.AllowFunusWeaponPuzzle,
             },
             new(nameof(DOL.GS.Scripts.SkeletalSacristan), [nameof(DOL.GS.Scripts.SkeletalSacristan)], SacristanAmbush)
             {
@@ -38,6 +44,12 @@ namespace DOL.GS
             {
                 Summary = "His last 5% (untargetable): the casters' call.",
             },
+            new(nameof(ApocInitializator), [], null)
+            {
+                Summary = "While a horseman or Apocalypse fights and the room's barrier is on, the raid stays in the room: its " +
+                          "muster and every stand-off are inside, 800 from the middle, and the route fights the one in combat.",
+                Route = HorsemenRoomHolds,
+            },
         ];
 
         // ---- Funus: only clerics, and mercenaries, armsmen, infiltrators and scouts with their listed weapon ----------------
@@ -53,33 +65,66 @@ namespace DOL.GS
             raider is GameBot bot && bot.Inventory?.GetItem(eInventorySlot.DistanceWeapon) is { } bow &&
             bow.Object_Type == (int)eObjectType.Longbow;
 
+        /// <summary>The distance weapon Funus takes damage from for this class (scout: longbow, mercenary: short bow,
+        /// armsman and infiltrator: crossbow), or GenericItem when the class has none (clerics hurt him with anything).</summary>
+        public static eObjectType FunusListedWeapon(int classId) => (eCharacterClass)classId switch
+        {
+            eCharacterClass.Scout => eObjectType.Longbow,
+            eCharacterClass.Mercenary => eObjectType.Fired,
+            eCharacterClass.Armsman or eCharacterClass.Infiltrator => eObjectType.Crossbow,
+            _ => eObjectType.GenericItem,
+        };
+
+        /// <summary>The bot holds its class's listed weapon (<see cref="FunusListedWeapon"/>) in its distance slot and can use
+        /// it (the ability is trained and the level is right), so it can hurt Funus with it. Gamebots earn that weapon like
+        /// any other: a plain training one when they learn the weapon line (BotRangedCombat.EnsureStarter, in their class's
+        /// own type since 1.2), better ones from loot and merchants.</summary>
+        public static bool OwnsFunusWeapon(GameLiving raider)
+        {
+            if (raider is not GameBot bot) return false;
+            eObjectType listed = FunusListedWeapon(EpicEncounterRestores.ClassId(bot));
+            if (listed == eObjectType.GenericItem) return false;
+            DbInventoryItem item = bot.Inventory?.GetItem(eInventorySlot.DistanceWeapon);
+            if (item == null || item.Object_Type != (int)listed) return false;
+            try { return BotRangedCombat.CanUse(bot, item); }
+            catch (Exception) { return BotRangedCombat.IsUsableWeapon(item); }
+        }
+
         /// <summary>
         /// While <see cref="EpicEncounterMechanics.AllowFunusWeaponPuzzle"/> is on, any hit on Funus from a raider of the
         /// wrong class or weapon (or a pet) heals him to full. So only the ones he takes damage from fight him: clerics (any
-        /// attack), scouts with a longbow (kept at range, where they never swing a melee weapon at him) and the rare mercenary,
-        /// armsman or infiltrator already holding its bow or crossbow (bots of those classes don't switch to one). Everyone
-        /// else stops, drops him from its targets and waits past his aggro range, and its pet is called off (TryHandle);
-        /// their area spells are refused while he is in the blast (<see cref="MustNotHit"/>).
+        /// attack), and scouts, mercenaries, armsmen and infiltrators who own their listed weapon (longbow, short bow,
+        /// crossbow): they draw it (<see cref="FunusDrawListedWeapon"/>), fight with it only (BotBrain asks
+        /// <see cref="FightsAtRange"/>; out of endurance they wait, they never swing) and step back when he is on top of them
+        /// unless they hold him. Everyone else stops, drops him from its targets and waits past his aggro range, and its pet is
+        /// called off (TryHandle) and never takes him (<see cref="PetMustNotHit"/>); their area spells are refused while he
+        /// is in the blast (<see cref="MustNotHit"/>).
         /// </summary>
         private static Advice? FunusWeaponPuzzle(RuleContext c)
         {
             if (!EpicEncounterMechanics.AllowFunusWeaponPuzzle) return null;
             // Drawn too far from home the catalog's fight-at-home rule speaks (nobody hits him; his target leads him back).
             if (OutsideHome(c.Target)) return null;
-            return FunusAdvice(c.Raider, c.Target, c.ClassId, EpicEncounterRestores.WeaponType(c.Raider), HasLongbow(c.Raider));
+            bool owns = (eCharacterClass)c.ClassId == eCharacterClass.Scout ? HasLongbow(c.Raider) : OwnsFunusWeapon(c.Raider);
+            return FunusAdvice(c.Raider, c.Target, c.ClassId, EpicEncounterRestores.WeaponType(c.Raider), owns);
         }
 
-        /// <summary>The Funus rule (pure but for positions): the raider's class and active weapon, and whether it owns a longbow.</summary>
-        public static Advice FunusAdvice(GameLiving raider, GameNPC funus, int classId, eObjectType weapon, bool ownsLongbow)
+        /// <summary>The class has a listed distance weapon Funus takes damage from (scout, mercenary, armsman, infiltrator).</summary>
+        public static bool FunusArcherClass(int classId) => FunusListedWeapon(classId) != eObjectType.GenericItem;
+
+        /// <summary>The Funus rule (pure but for positions): the raider's class and active weapon, and whether it owns its
+        /// class's listed distance weapon (<see cref="FunusListedWeapon"/>).</summary>
+        public static Advice FunusAdvice(GameLiving raider, GameNPC funus, int classId, eObjectType weapon, bool ownsListedWeapon)
         {
             Vector3 at = At(raider), boss = At(funus);
-            bool scout = (eCharacterClass)classId == eCharacterClass.Scout;
-            if (scout && (weapon == eObjectType.Longbow || ownsLongbow))
+            if (FunusArcherClass(classId) && (weapon == FunusListedWeapon(classId) || ownsListedWeapon))
             {
-                if (Flat(at, boss) < FunusArcherClose)
+                string who = ((eCharacterClass)classId).ToString().ToLowerInvariant();
+                // The one he fights can't outrun him (he runs 300): it stands and shoots. Anyone else keeps its distance.
+                if (Flat(at, boss) < FunusArcherClose && funus.TargetObject != raider)
                     return new(BotAction.Reposition, funus, PointAway(at, boss, FunusArcherStepBack),
-                        "funus-puzzle: a scout steps back to shoot, never a melee swing (that heals him)");
-                return new(BotAction.None, funus, null, "funus-puzzle: a scout's longbow hurts him");
+                        $"funus-puzzle: a {who} steps back to shoot, never a melee swing (that heals him)");
+                return new(BotAction.None, funus, null, $"funus-puzzle: a {who}'s {FunusListedWeapon(classId)} hurts him");
             }
             if (EpicEncounterRestores.FunusAccepts(classId, weapon))
                 return new(BotAction.None, funus, null, "funus-puzzle: this class and weapon hurt him");
@@ -94,8 +139,30 @@ namespace DOL.GS
         {
             if (bot == null || funus is not Funus || !EpicEncounterMechanics.AllowFunusWeaponPuzzle) return false;
             int classId = EpicEncounterRestores.ClassId(bot);
-            return !EpicEncounterRestores.FunusAccepts(classId, EpicEncounterRestores.WeaponType(bot)) &&
-                   !((eCharacterClass)classId == eCharacterClass.Scout && HasLongbow(bot));
+            if (EpicEncounterRestores.FunusAccepts(classId, EpicEncounterRestores.WeaponType(bot))) return false;
+            // An archer class that owns its listed weapon may fight him (with that weapon only: FightsAtRange) but no other
+            // way: its melee weapon in hand, nothing of it touches him.
+            return !(FunusArcherClass(classId) && bot.ActiveWeaponSlot == eActiveWeaponSlot.Distance &&
+                     ((eCharacterClass)classId == eCharacterClass.Scout ? HasLongbow(bot) : OwnsFunusWeapon(bot)));
+        }
+
+        /// <summary>The bot fights Funus with its distance weapon only (the rule's <see cref="DungeonRule.FightsAtRange"/>):
+        /// an archer class that owns its listed weapon, while the puzzle is on. A cleric fights as it likes.</summary>
+        private static bool FunusFightsAtRange(GameBot bot, GameNPC funus)
+        {
+            if (bot == null || funus is not Funus || !EpicEncounterMechanics.AllowFunusWeaponPuzzle) return false;
+            int classId = EpicEncounterRestores.ClassId(bot);
+            if (!FunusArcherClass(classId)) return false;
+            return (eCharacterClass)classId == eCharacterClass.Scout ? HasLongbow(bot) : OwnsFunusWeapon(bot);
+        }
+
+        /// <summary>Each turn on Funus (the rule's <see cref="DungeonRule.Act"/>): an archer class that owns its listed weapon
+        /// puts its melee weapon away and draws it, so its first hit on him is already the one that hurts.</summary>
+        private static void FunusDrawListedWeapon(GameBot bot, GameNPC funus, IReadOnlyList<GameNPC> live)
+        {
+            if (!FunusFightsAtRange(bot, funus) || bot.ActiveWeaponSlot == eActiveWeaponSlot.Distance) return;
+            if (bot.attackComponent?.AttackState == true) bot.StopAttack();
+            bot.SwitchWeapon(eActiveWeaponSlot.Distance);
         }
 
         // ---- Skeletal Sacristan: his patrol at 220, never stopping -------------------------------------------------------
@@ -210,5 +277,85 @@ namespace DOL.GS
             FinishableUntargetable(c.Target) && c.Raider is GameBot bot && BotSpellPower.IsOffensiveCaster(bot)
                 ? new Advice(BotAction.None, c.Target, null, "sanguis-finish: untargetable, casters finish him")
                 : null;
+
+        // ---- the horsemen's room: nobody leaves while one of them fights -----------------------------------------------
+
+        /// <summary>A room that bars its door while its fight is on (ApocInitializator.DontAllowLeaveRoom): anyone within
+        /// <see cref="DoorRadius"/> of <see cref="Door"/> is moved back to <see cref="Middle"/> (DisplacementKind.Barrier).</summary>
+        public sealed record RoomBarrier(string Source, ushort Region, Vector3 Middle, Vector3 Door, int DoorRadius, int InsideRadius,
+            string[] Fighters);
+
+        /// <summary>Caer Sidi's final room: the door point and the middle the barrier moves raiders to
+        /// (ApocalypseAnd4Horsemans.cs, DontAllowLeaveRoom), and the encounters fought in it.</summary>
+        public static readonly RoomBarrier HorsemenRoom = new(nameof(ApocInitializator), 60, new(29469, 25244, 19490),
+            new(29459, 26401, 19503), 150, 800,
+            [nameof(Fames), nameof(Bellum), nameof(Morbus), nameof(Funus), nameof(Apocalypse), nameof(MorbusSwarm),
+             nameof(HarbringerOfFate), nameof(WarIncarnateCrush), nameof(WarIncarnateSlash), nameof(WarIncarnateThrust)]);
+
+        /// <summary>The barrier moves bots: both of its switches are on (AllowDisplacement and AllowBotDisplacement for the
+        /// ApocInitializator; shipped on since wave 3, the owner's epic_encounter_switches can turn either off).</summary>
+        public static bool BarrierMovesBots(RoomBarrier room) =>
+            EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDisplacement), room.Source) &&
+            EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowBotDisplacement), room.Source);
+
+        /// <summary>
+        /// A point a raider is sent to while it fights in the room (pure): within <see cref="RoomBarrier.InsideRadius"/> of
+        /// the middle, so never in the door's circle (the door is 1,157 from the middle, the circle 150 around it). A raid
+        /// sent to a muster or a stand-off past the door would be moved back to the middle as it got there, again and again.
+        /// </summary>
+        public static Vector3 KeepInside(RoomBarrier room, Vector3 point)
+        {
+            float d = Flat(point, room.Middle);
+            if (d <= room.InsideRadius) return point;
+            Vector2 dir = Vector2.Normalize(new Vector2(point.X - room.Middle.X, point.Y - room.Middle.Y));
+            Vector2 at = new Vector2(room.Middle.X, room.Middle.Y) + dir * room.InsideRadius;
+            return new Vector3(at.X, at.Y, room.Middle.Z);
+        }
+
+        /// <summary>The barrier room <paramref name="encounter"/> is fought in, while the barrier moves bots; else null.</summary>
+        public static RoomBarrier BarrierRoomOf(GameNPC encounter)
+        {
+            if (encounter == null) return null;
+            RoomBarrier room = HorsemenRoom;
+            if (encounter.CurrentRegionID != room.Region || !BarrierMovesBots(room)) return null;
+            return FighterIndex(room, encounter) >= 0 ? room : null;
+        }
+
+        /// <summary>Where the NPC's class (or a base class) stands in the room's list of fighters; -1: not one of them.</summary>
+        private static int FighterIndex(RoomBarrier room, GameNPC npc)
+        {
+            for (Type t = npc?.GetType(); t != null && t != typeof(GameNPC); t = t.BaseType)
+                if (Array.IndexOf(room.Fighters, t.Name) is var i and >= 0) return i;
+            return -1;
+        }
+
+        /// <summary>Where a raider fighting <paramref name="encounter"/> is sent instead of <paramref name="point"/>: inside its
+        /// barrier room (<see cref="KeepInside"/>) when it has one, else the point itself. The raid route's muster and every
+        /// stand-off of a tactic go through here.</summary>
+        public static Vector3 KeepInsideFor(GameNPC encounter, Vector3 point) =>
+            BarrierRoomOf(encounter) is { } room ? KeepInside(room, point) : point;
+
+        /// <summary>
+        /// The route doesn't walk the raid out of the room mid-fight (the barrier would move every raider back at the door):
+        /// while one of the room's encounters fights and the barrier moves bots, a monster chosen outside the room gives way
+        /// to the one in combat.
+        /// </summary>
+        private static GameNPC HorsemenRoomHolds(GameNPC chosen, IReadOnlyList<GameNPC> live, out string reason)
+        {
+            reason = null;
+            if (chosen == null || chosen.CurrentRegionID != HorsemenRoom.Region || BarrierRoomOf(chosen) != null ||
+                !BarrierMovesBots(HorsemenRoom))
+                return null;
+            GameNPC fighting = RoomFightOn(HorsemenRoom, live);
+            if (fighting == null) return null;
+            reason = $"the room's door is barred while \"{fighting.Name}\" fights";
+            return fighting;
+        }
+
+        /// <summary>The room encounter in combat (a horseman or Apocalypse first, then their adds), or null.</summary>
+        public static GameNPC RoomFightOn(RoomBarrier room, IReadOnlyList<GameNPC> live) =>
+            live?.Where(n => Present(n) && n.InCombat && n.CurrentRegionID == room.Region &&
+                             Flat(PosOf(n), room.Middle) <= 2_500 && FighterIndex(room, n) >= 0)
+                .OrderBy(n => FighterIndex(room, n)).FirstOrDefault();
     }
 }

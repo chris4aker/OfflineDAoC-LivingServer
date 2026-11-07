@@ -7,7 +7,7 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs": "742a59d2fe8155b2718f766c1fefd50d04932db3ab613dfd8b3c5f7ebcea4d28",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Fester.cs": "43e981bf07934f0a8231a81c88448434770946d54cbb70518693ed7e1b10bab3",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/KingOfTheBarfogHills.cs": "95023c311861809f6b79ee8d3f992619fb3d40ad1eb2bc753c8ef16cf78a3027",
-  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "f18563d1dcaba8ad1c158601fe1670c3117e5f02491e8b9e570821371a9831d3",
+  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "fb2cadfac67cd0a6ffad0f9786e4c4ed368f21522af4fa9082e5489b68f0c775",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "7e15d7495a65f5404665e4f3051de7435309bea94a895a922a652dd1ff0d03bf",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs": "ceb60c7908e5a89d8ab4c622bb46dc0d0b6ec4b0ff54076988d57f5a01bf9762",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/SisterBlythe.cs": "892e0fcf04c452655aa6f3ded924b2d2b0945ad6ecbdba24a8714cba41fc5d44",
@@ -15,8 +15,8 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/WrathOfMordred.cs": "327f6a9d9838178ebd77b8bfa490e84a08f6d652b7d034653d9d2cb5cab383c7",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Amphiptere.cs": "bad936cd372529e69f84ba0ebdfbbbd97d8e6a58009314e5237a2cf5ec398ce7",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Colialt.cs": "926b00c2391f2c7ea80abe0e14d74724115575534c8e009b7787a6ff70583b6b",
-  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs": "a20ffa4999aebfce381e1bdd501352f02ea1b8791013c54161e2c75e6c084bb9",
-  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs": "de4ccc8702ba2f5b59cdfa7cf9bf4d3be8fbd0db27e47f92a7a65725ec7dff95",
+  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs": "7f0a87ca9c477d6b422c88eda3e5bca9a76c9aab505c08dbe5606e2f35ec5955",
+  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs": "9dec08db3daabd82448a6a51fbdc542a87b687801ce6a476193fbdf8b42ed58b",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs": "0ffb3debb1332f208f47f8f381f1614559bcbb692b08b3e6f19ad1b580760387",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Sarcondina.cs": "9562d9201b4260ae059916b6eeaa60c0595a4b1fd682b2fbd2dbe2037d6831c2",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs": "9f359d995ad6b6fc5bea2b824cfa459c667761c5379f53ec7e44b09bc4964a71",
@@ -30,7 +30,7 @@
   "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs": "f92eb6d85f0d2b90cee7fb7e836af2faa4869cedb6a970cbab27b8d74295617d",
   "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs": "01037d035afe6761834bbc92154732fc27f2d596680aa686e26e4abdc64b57b5",
   "source/server/GameServer/scripts/namedmobs/BrotherDon.cs": "8964e56930f3d641f924427da766faabeca87ea5d3fcb1cfb62d604e69bb18c7",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "10c05446a105e0865950ac1ec1c49341898f95102e24b10a2048b069dabb5484",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "d542dd1cbdb80e979f477a5c38320fc610694471341a665a08deae313b24f26d",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "e2e7619fd86fbe4e47cc123e655884760c8d140a3fd46bd8eeeae5479ac8dc76",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs": "b4037d917fcbfb2c84542097738575f0a806e08b6e0c816825f0831f8b454f42",
@@ -47,7 +47,7 @@
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "ea20ed907819ebba2dba2dde9703fee62d88d8ea945cf8b5a4edb084cdc2d7b9",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "cd2cfb4f2cdd265bf3061f3a33af97ef034bae88712e1f0ed3a40396e2878691",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "3fa4df42ab0b47bae8bf1f942a36ea5b222ca9f9c0bb6b2b5dff883b46a18539",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "63fb56e730c0bbc2d4bfdde5c26fbb9e3838de977f6d3ee78f2415a9dd1b3026",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4",
@@ -75,10 +75,11 @@
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
   "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "ebab87b045c8d05df4de0a23b7b05ae3d4678d8f2eda04153b47d799c2c0b111",
   "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
+  "source/server/GameServer/scripts/namedmobs/EncounterPacks.cs": "f85b58b56d9582b7029d953040e11f3fb5ed12bfae39e9f92e55abe70ce54cb8",
   "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "137a8f99707a255afdf4bf720d3992d157eb1b561f8643d06e328786e2ca68ee",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "58370ebace30ce863fcb6b51774468f15c9ca913494b7faed1335ad7e7a81d57",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "b44a93b945d05295ffe93067feeb0951c0046607fbff5e00b30664dd34b6c53e",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "6e8792cfc3746a71355607e2335785468792a6e46b468c85054f5732eed190f7",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
@@ -185,7 +186,7 @@
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Valmak.cs": "459dd23c05add851e92b2f6fd78efd957c3af1a068a3377807552a6d9ab9a725",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs": "5a6d0d84e1cea4cb4ccaf5c14e582941a6780b5083e5ba5ca17294d5f7430556",
   "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "faf306406385799b4d8b9b2af801bdb6d7dd4f10ec3ac641a06cd9b038b24583",
-  "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "edf5f149c1bb47b4bae51448936e8363d0af9f2a33f7a513e2e14d3c78e21f9b",
+  "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "d89b0e6d6adae7ee4a944ffcd0a31db5aad5c2152946ccd568d570d7095e386f",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "b1670c27f8287fd476963dcd604ed0c3d6ee926691321f3dca547a4262198f83",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "889fa7d0b06549afa47c2d560e9754906e8d6b345901088efc12d4f24f3eab15",
@@ -234,7 +235,9 @@
     "Jailer=true",
     "Hakr=true",
     "Hurika=true",
-    "BaneOfHope=true"
+    "BaneOfHope=true",
+    "ApocInitializator=true",
+    "Easmarach=true"
    ],
    "about": "Scripted throws, teleports and jails that the fork had switched off (Olcasgean, the Water primal, Easmarach, Spindler, the Horsemen room, Bane of Hope, Jailer Vifil, Hakr, Hurika, Kula, the waterfall)."
   },
@@ -275,15 +278,15 @@
    "name": "AllowGlacierGriffonPatrol",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 31,
+   "line": 33,
    "perEncounter": true,
-   "about": "Torst and Hurika's aerial patrol and pull."
+   "about": "Torst and Hurika's aerial patrol and pull. Off (globally and for both): the raid's pull rule exists since epic wave 3 (EpicEncounterTactics.Griffons.cs) but was never played; the owner turns it on per griffon with epic_encounter_switches."
   },
   {
    "name": "AllowBotDisplacement",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 36,
+   "line": 38,
    "perEncounter": true,
    "shippedFor": [
     "AlbGolestandt=true",
@@ -316,7 +319,11 @@
     "Orylle=true",
     "SyssroRuthless=true",
     "DraugynSphere=true",
-    "MoranTheMighty=true"
+    "MoranTheMighty=true",
+    "LegendaryAfanc=true",
+    "ApocInitializator=true",
+    "Easmarach=true",
+    "Legion=true"
    ],
    "about": "A script's throw, teleport or jail may move a bot (companion bots and autonomous gamebots); off: a bot it picks stays where it is, as before 1.2 (bots were never picked). Real players are moved as before either way. On per encounter where the bots' recovery is proven (EncounterDisplacement, EncounterDisplacementRecovery)."
   },
@@ -324,7 +331,7 @@
    "name": "AllowDragonThrow",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 39,
+   "line": 41,
    "perEncounter": true,
    "shippedFor": [
     "AlbGolestandt=true",
@@ -337,7 +344,7 @@
    "name": "AllowDragonMessengers",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 43,
+   "line": 45,
    "perEncounter": true,
    "shippedFor": [
     "AlbGolestandt=true",
@@ -350,7 +357,7 @@
    "name": "AllowHorsemenTetherHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 78,
+   "line": 80,
    "serverProperty": "npc / epic_horsemen_tether_heal",
    "restores": true,
    "about": "Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over). On since 1.2: the raid fights each horseman within 2,700 of his spawn (catalog fight-at-home) and leads him back."
@@ -359,7 +366,7 @@
    "name": "AllowFunusWeaponPuzzle",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 82,
+   "line": 84,
    "serverProperty": "npc / epic_funus_weapon_puzzle",
    "restores": true,
    "about": "Funus takes damage only from clerics and from mercenaries, armsmen, infiltrators and scouts with their listed weapon; any other attacker (pets included) heals him to full. On since 1.2: only those raiders fight him, everyone else stands clear and never puts an area spell on him (EpicEncounterTactics.CaerSidi)."
@@ -368,7 +375,7 @@
    "name": "AllowSacristanPatrol",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 85,
+   "line": 87,
    "serverProperty": "npc / epic_sacristan_patrol",
    "restores": true,
    "about": "Skeletal Sacristan walks his loop at 220 without stopping, with 70% magic resists. On since 1.2: the raid's parties wait at stations along his loop and hit him as he passes (EpicEncounterTactics.CaerSidi)."
@@ -377,7 +384,7 @@
    "name": "AllowSoulReckonerFullShield",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 88,
+   "line": 90,
    "serverProperty": "npc / epic_soul_reckoner_full_shield",
    "restores": true,
    "about": "Soul Reckoner takes no damage at all while a reckoned soul lives (not a quarter). On since 1.2: the souls are his required adds in the catalog."
@@ -386,7 +393,7 @@
    "name": "AllowSoulReckonerSmallRoom",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 91,
+   "line": 93,
    "serverProperty": "npc / epic_soul_reckoner_small_room",
    "restores": true,
    "about": "Soul Reckoner's room is 900 units from its middle (not 1,500). On since 1.2: the raid keeps him within 700 of it and leads him back (EpicEncounterTactics.CaerSidi)."
@@ -395,7 +402,7 @@
    "name": "AllowAroonDamageOrder",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 94,
+   "line": 96,
    "serverProperty": "npc / epic_aroon_damage_order",
    "restores": true,
    "about": "Aroon takes only the damage types whose Scaith has died, and the Scaiths must die in order (slash, thrust, crush, body, cold, energy, heat, matter, spirit); each Scaith is immune until the one before it is dead."
@@ -404,7 +411,7 @@
    "name": "AllowGalladoriaBridgeSpot",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 97,
+   "line": 99,
    "serverProperty": "npc / epic_galladoria_bridge_spot",
    "restores": true,
    "about": "Galladoria's primals come only when a raider stands within 350 of the waterfall bridge spot (bots too; the original counted real players only, which a bot raid could never meet)."
@@ -413,7 +420,7 @@
    "name": "AllowFullFirePatches",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 100,
+   "line": 102,
    "serverProperty": "npc / epic_full_fire_patches",
    "restores": true,
    "about": "The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300). Off by default (epic_full_fire_patches): on undoes the owner's 2026-10-19 nerf; the raid plays it either way (melee leave the Fire primal to casters)."
@@ -422,7 +429,7 @@
    "name": "AllowEarthmenderClassPuzzle",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 103,
+   "line": 105,
    "serverProperty": "npc / epic_earthmender_class_puzzle",
    "restores": true,
    "about": "Each Earthmender takes damage only from its own class group (pets always); others do nothing. On since 1.2: the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules)."
@@ -431,7 +438,7 @@
    "name": "AllowEarthmendersPassive",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 105,
+   "line": 107,
    "serverProperty": "npc / epic_earthmenders_passive",
    "restores": true,
    "about": "Earthmenders never attack (they only heal)."
@@ -440,7 +447,7 @@
    "name": "AllowEarthmenderQuickReset",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 107,
+   "line": 109,
    "serverProperty": "npc / epic_earthmender_quick_reset",
    "restores": true,
    "about": "An Earthmender heals to full 30 s after its last fight even with raiders in the room."
@@ -449,7 +456,7 @@
    "name": "AllowEarthmenderMutualHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 109,
+   "line": 111,
    "serverProperty": "npc / epic_earthmender_mutual_heal",
    "restores": true,
    "about": "Earthmenders heal each other as well as the Earth primal."
@@ -458,7 +465,7 @@
    "name": "AllowBeathaHealsXaga",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 111,
+   "line": 113,
    "serverProperty": "npc / epic_beatha_heals_xaga",
    "restores": true,
    "about": "Beatha's damage heals Xaga by twice the amount."
@@ -467,7 +474,7 @@
    "name": "AllowFairyFlight",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 113,
+   "line": 115,
    "serverProperty": "npc / epic_fairy_flight",
    "restores": true,
    "about": "Beatha and Tine circle the room even while they are fought."
@@ -476,7 +483,7 @@
    "name": "AllowGovannonFullHealth",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 117,
+   "line": 119,
    "serverProperty": "npc / epic_govannon_full_health",
    "restores": true,
    "about": "Grand Summoner Govannon has 300,000 health (not 200,000). Off by default (epic_govannon_full_health) until a played check: the raid's tactics for him (sacrifice and demon at range, spread in demon form) play either way; a 60-bot raid took 300,000 about 1% a minute (run 18)."
@@ -485,7 +492,7 @@
    "name": "AllowKvasirColdHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 120,
+   "line": 122,
    "serverProperty": "npc / epic_kvasir_cold_heal",
    "restores": true,
    "about": "Cold damage heals Icelord Kvasir by a fifth of his health and does no damage. On since 1.2: no bot casts cold at him (EpicEncounterTactics.ForbidsSpell)."
@@ -494,7 +501,7 @@
    "name": "AllowTuscarTwinHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 123,
+   "line": 125,
    "serverProperty": "npc / epic_tuscar_twin_heal",
    "restores": true,
    "about": "Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health. On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics)."
@@ -503,13 +510,13 @@
    "name": "ResetQuietMilliseconds",
    "value": "8000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 322
+   "line": 349
   },
   {
    "name": "PetDevourIntervalMilliseconds",
    "value": "5000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 330
+   "line": 357
   }
  ],
  "ruleKinds": {
@@ -1056,7 +1063,7 @@
   "Answered by the owner (2026-11-06): throws and other unique triggers target bots too. Since 1.2 the boss scripts pick through EncounterTargets (real players and bots); picks that move their victim include bots once EncounterTargets.BotsCanBeDisplaced is on, and the mechanics still listed under 'Player-only mechanics' are those moves plus the ones left player-only on purpose."
  ],
  "counts": {
-  "scripts": 213,
+  "scripts": 214,
   "encounters": 238,
   "encountersWithRules": 228,
   "rules": 862,
@@ -1273,6 +1280,7 @@
     }
    ],
    "raidAi": "dragon fight",
+   "notes": "A data fact (1.2 wave 3 audit, not changed): at 30% she calls every NPC with PackageID \"CailleachUragaigBaf\" within 2,500, and the world database has none, so nobody comes.",
    "verified": true
   },
   {
@@ -1481,20 +1489,18 @@
      "kind": "teleport",
      "summary": "Teleports Target to a fixed spot (MoveTo Body.CurrentRegionID, 451486, 393503, 2754, 2390)",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs",
-     "line": 159,
-     "lineEnd": 159,
+     "line": 162,
+     "lineEnd": 162,
      "anchor": "EncounterDisplacement.Move(Target, Body.CurrentRegionID, 451486, 393503, 2754, 2390, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "LegendaryAfancBrain",
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "affects": "real players only (bots are never picked)",
+     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for LegendaryAfanc): the bot walks back to its party (EncounterDisplacementRecovery; no path or off the mesh: recalled after 5 s); healers take displaced raiders first.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
-     "key": "teleport@159"
+     "key": "teleport@162"
     }
    ],
    "spells": [],
@@ -1516,6 +1522,7 @@
     }
    ],
    "raidAi": "dragon fight",
+   "notes": "1.2 (wave 3): his throw takes bots too (AllowBotDisplacement for LegendaryAfanc): a thrown bot takes the fall damage (a fifth of its health, as players), walks back from the lake shore 451,486,393,503 or is recalled after 5 s with no path; the pick is made from who stands within 2,500 now (the list was never cleared, so a raider who had left could be thrown). The landing was never checked against the owner's navmesh.",
    "verified": true
   },
   {
@@ -1731,6 +1738,7 @@
    "templateTetherRange": 2000,
    "raids": [],
    "raidAi": "no raid",
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked.",
    "verified": true
   },
   {
@@ -2460,11 +2468,11 @@
     },
     {
      "kind": "linked_pack",
-     "summary": "Brings others into the fight: every NPC with PackageID \"DurvalBaf\" (9 in the world database: 5 corpse delver, 4 white light)",
+     "summary": "Brings others into the fight: every NPC with PackageID \"DurvalBaf\" within 3,500 of it (9 in the world database: 5 corpse delver, 4 white light)",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs",
-     "line": 106,
-     "lineEnd": 106,
-     "anchor": "if (npc != null && npc.IsAlive && npc.PackageID == \"DurvalBaf\")",
+     "line": 105,
+     "lineEnd": 105,
+     "anchor": "EncounterPacks.LinkInRadius(this, \"DurvalBaf\", 3500);",
      "confidence": "read",
      "sourceClass": "DurvalBrain",
      "method": "Think",
@@ -2473,7 +2481,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@106"
+     "key": "linked_pack@105"
     }
    ],
    "spells": [
@@ -2488,7 +2496,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs",
-     "line": 153,
+     "line": 150,
      "sourceClass": "DurvalBrain"
     },
     {
@@ -2502,7 +2510,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs",
-     "line": 183,
+     "line": 180,
      "sourceClass": "DurvalBrain"
     },
     {
@@ -2516,7 +2524,7 @@
      "value": null,
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs",
-     "line": 215,
+     "line": 212,
      "sourceClass": "DurvalBrain"
     },
     {
@@ -2530,7 +2538,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Durval.cs",
-     "line": 242,
+     "line": 239,
      "sourceClass": "DurvalBrain"
     }
    ],
@@ -2547,6 +2555,7 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
+   "notes": "1.2 (wave 3): his pack link fires: the script passed 3,500 to WorldMgr.GetNPCsFromRegion as a region id (so it saw no NPC); it now links every DurvalBaf delver and light within 3,500 of him (EncounterPacks.LinkInRadius). OpenDAoC-Core 3513bad has the same slip.",
    "verified": true
   },
   {
@@ -2589,11 +2598,11 @@
     },
     {
      "kind": "linked_pack",
-     "summary": "Brings others into the fight: every NPC with PackageID \"DurosBaf\" (5 in the world database: 5 drakoran guardsman)",
+     "summary": "Brings others into the fight: every NPC with PackageID \"DurosBaf\" within 3,500 of it (5 in the world database: 5 drakoran guardsman)",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs",
-     "line": 92,
-     "lineEnd": 92,
-     "anchor": "if (npc != null && npc.IsAlive && npc.PackageID == \"DurosBaf\")",
+     "line": 91,
+     "lineEnd": 91,
+     "anchor": "EncounterPacks.LinkInRadius(this, \"DurosBaf\", 3500);",
      "confidence": "read",
      "sourceClass": "QanrisDurosBrain",
      "method": "Think",
@@ -2602,7 +2611,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@92"
+     "key": "linked_pack@91"
     }
    ],
    "spells": [
@@ -2617,7 +2626,7 @@
      "value": null,
      "target": "AREA",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs",
-     "line": 110,
+     "line": 107,
      "sourceClass": "QanrisDurosBrain"
     }
    ],
@@ -2634,6 +2643,7 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
+   "notes": "1.2 (wave 3): his pack link fires: the script passed 3,500 to WorldMgr.GetNPCsFromRegion as a region id (so it saw no NPC and the guards joined only by standing close and sharing a faction); it now links every DurosBaf guard within 3,500 of him (EncounterPacks.LinkInRadius). OpenDAoC-Core 3513bad has the same slip.",
    "verified": true
   },
   {
@@ -4838,7 +4848,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
    "lines": [
     1902,
-    2047
+    2061
    ],
    "dungeon": "Caer Sidi",
    "region": 60,
@@ -4904,8 +4914,8 @@
      "kind": "adds",
      "summary": "Spawns Apocalypse (Apocalypse): on a timer (5000 ms); count 1 spawn call in SpawnApoc",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 1979,
-     "lineEnd": 1979,
+     "line": 1993,
+     "lineEnd": 1993,
      "anchor": "Apocalypse Add = new Apocalypse();",
      "confidence": "inferred",
      "sourceClass": "Funus",
@@ -4919,14 +4929,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@1979"
+     "key": "adds@1993"
     },
     {
      "kind": "adds",
      "summary": "Spawns GameEpicNPC: when it spawns (via SpawnFateBearer); count 1 spawn call in SpawnFateBearer",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 1991,
-     "lineEnd": 1991,
+     "line": 2005,
+     "lineEnd": 2005,
      "anchor": "GameEpicNPC Add = new GameEpicNPC();",
      "confidence": "inferred",
      "sourceClass": "Funus",
@@ -4939,14 +4949,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@1991"
+     "key": "adds@2005"
     },
     {
      "kind": "tether",
      "summary": "Tether range 3600: drawn further from its spawn it is immune (its TakeDamage) until it is back inside, and walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2012,
-     "lineEnd": 2012,
+     "line": 2026,
+     "lineEnd": 2026,
      "anchor": "TetherRange = 3600;",
      "confidence": "read",
      "sourceClass": "Funus",
@@ -4956,14 +4966,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@2012"
+     "key": "tether@2026"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2065,
-     "lineEnd": 2072,
+     "line": 2079,
+     "lineEnd": 2086,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -4973,14 +4983,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2065"
+     "key": "reset@2079"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2081,
-     "lineEnd": 2082,
+     "line": 2095,
+     "lineEnd": 2096,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -4990,14 +5000,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2081"
+     "key": "reset@2095"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2086,
-     "lineEnd": 2086,
+     "line": 2100,
+     "lineEnd": 2100,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -5007,14 +5017,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2086"
+     "key": "reset@2100"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"FunusBaf\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2097,
-     "lineEnd": 2097,
+     "line": 2111,
+     "lineEnd": 2111,
      "anchor": "if (npc.IsAlive && npc.PackageID == \"FunusBaf\" && npc is GameEpicNPC)",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -5024,7 +5034,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@2097"
+     "key": "linked_pack@2111"
     },
     {
      "kind": "offline_change",
@@ -5050,8 +5060,8 @@
      "kind": "offline_change",
      "summary": "Mechanic change (2026-10-16): out of its tether the horseman drops its fight and walks home but keeps its health; it heals only when the fight is really over. Every excursion past the tether used to restore it to full at once, so a raid that dragged it a step too far started over. The original full heal is behind EpicEncounterMechanics.AllowHorsemenTetherHeal.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2076,
-     "lineEnd": 2079,
+     "line": 2090,
+     "lineEnd": 2093,
      "anchor": "// Mechanic change (2026-10-16): out of its tether the horseman drops its fight and walks home but keeps its",
      "confidence": "read",
      "sourceClass": "FunusBrain",
@@ -5064,7 +5074,7 @@
      "tactic": "On: the original is back (AllowHorsemenTetherHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2076"
+     "key": "offline_change@2090"
     }
    ],
    "spells": [],
@@ -5076,10 +5086,10 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics.",
+   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics. 1.2 (wave 3): the archer classes switch to their listed weapon.",
    "aiTactics": {
     "fightAtHomeRadius": 2700,
-    "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full, so only clerics, scouts with their longbow (who step back rather than ever swing a melee weapon at him) and a mercenary, armsman or infiltrator already holding its bow or crossbow fight him (bots of those three don't switch weapons, so in practice clerics and scouts). Everyone else drops him, calls its pet off and waits 1,400 away, and never puts an area spell where he stands (EpicEncounterTactics.CaerSidi). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full. Wave 3: clerics fight him as they like; scouts, mercenaries, armsmen and infiltrators who own their listed weapon (longbow, short bow, crossbow: gamebots start with a training one of their class's own kind when they learn the line and earn better ones) draw it and fight with it only: BotBrain never falls back to melee on him (out of endurance they wait), the native close-range melee switch is skipped, and unless they hold him they step back to 700 when he is within 450. Everyone else drops him, calls its pet off and waits 1,400 away (kept inside the room while its door is barred), and never puts an area spell where he stands. No bot's pet attacks him, takes him from an order or defends its owner against him (EpicEncounterTactics.PetMustNotHit). A damage shield's sting from a bot he can't be hurt by neither heals nor hurts him (server property epic_funus_bot_shield_guard, on; real players keep the original). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back. Not played: how many of a raid's mercenaries, armsmen and infiltrators own the weapon depends on their earned gear.",
     "since": "1.2"
    },
    "verified": true
@@ -5092,8 +5102,8 @@
    "brain": "ApocalypseBrain",
    "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
    "lines": [
-    2116,
-    2254
+    2130,
+    2268
    ],
    "dungeon": "Caer Sidi",
    "region": 60,
@@ -5124,7 +5134,7 @@
      "maxHealth": 30000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2555
+     "line": 2569
     },
     {
      "class": "RainOfFire",
@@ -5137,7 +5147,7 @@
      "maxHealth": null,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2659
+     "line": 2673
     }
    ],
    "rules": [
@@ -5145,8 +5155,8 @@
      "kind": "adds",
      "summary": "Spawns Harbringer of Fate (HarbringerOfFate): on a timer (500 ms); count 2 (loop)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2463,
-     "lineEnd": 2488,
+     "line": 2477,
+     "lineEnd": 2502,
      "anchor": "HarbringerOfFate Add = new HarbringerOfFate();",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5161,14 +5171,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2463"
+     "key": "adds@2477"
     },
     {
      "kind": "adds",
      "summary": "Spawns Rain of Fire (RainOfFire): from SpawnRainOfFire; count 1 spawn call in SpawnRainOfFire",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2508,
-     "lineEnd": 2508,
+     "line": 2522,
+     "lineEnd": 2522,
      "anchor": "RainOfFire Add = new RainOfFire();",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5182,14 +5192,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@2508"
+     "key": "adds@2522"
     },
     {
      "kind": "phase",
      "summary": "At 99/50% health (Think): starts timer FlyPhaseStart; calls Point3D; calls ClearAggroList; calls WalkTo",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2323,
-     "lineEnd": 2393,
+     "line": 2337,
+     "lineEnd": 2407,
      "anchor": "if (ApocAggro == false && Body.HealthPercent <=99)//1st time apoc fly to celling",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5203,14 +5213,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@2323"
+     "key": "phase@2337"
     },
     {
      "kind": "phase",
      "summary": "At 50% health (SpawnHarbringers): spawns HarbringerOfFate",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2475,
-     "lineEnd": 2500,
+     "line": 2489,
+     "lineEnd": 2514,
      "anchor": "if(Body.HealthPercent <= 50 && pop_harbringers==false)/// spawning another 2 harbringers if boss is at 50%",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5220,14 +5230,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@2475"
+     "key": "phase@2489"
     },
     {
      "kind": "tether",
      "summary": "Tether range 3600: drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2206,
-     "lineEnd": 2206,
+     "line": 2220,
+     "lineEnd": 2220,
      "anchor": "TetherRange = 3600;",
      "confidence": "read",
      "sourceClass": "Apocalypse",
@@ -5237,14 +5247,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@2206"
+     "key": "tether@2220"
     },
     {
      "kind": "tether",
      "summary": "Tether range 3000 (Harbringer of Fate (HarbringerOfFate)): drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2615,
-     "lineEnd": 2615,
+     "line": 2629,
+     "lineEnd": 2629,
      "anchor": "TetherRange = 3000;",
      "confidence": "read",
      "sourceClass": "HarbringerOfFate",
@@ -5255,14 +5265,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@2615"
+     "key": "tether@2629"
     },
     {
      "kind": "reset",
      "summary": "Resets after 60 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2283,
-     "lineEnd": 2283,
+     "line": 2297,
+     "lineEnd": 2297,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "ApocalypseBrain",
@@ -5272,14 +5282,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2283"
+     "key": "reset@2297"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in Think when if (Body.IsAlive) && if (ApocAggro == false && Body.HealthPercent <=99)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2327,
-     "lineEnd": 2327,
+     "line": 2341,
+     "lineEnd": 2341,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5288,14 +5298,14 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@2327"
+     "key": "aggro_wipe@2341"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in Think when if (Body.IsAlive) && if(Body.HealthPercent <= 50 && fly_phase1==false)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2374,
-     "lineEnd": 2374,
+     "line": 2388,
+     "lineEnd": 2388,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "ApocalypseBrain",
@@ -5304,14 +5314,14 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@2374"
+     "key": "aggro_wipe@2388"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"ApocBaf\" (none in the world database)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2363,
-     "lineEnd": 2363,
+     "line": 2377,
+     "lineEnd": 2377,
      "anchor": "if (npc.IsAlive && npc.PackageID == \"ApocBaf\" && npc.Brain is HarbringerOfFateBrain)",
      "confidence": "read",
      "sourceClass": "ApocalypseBrain",
@@ -5321,7 +5331,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@2363"
+     "key": "linked_pack@2377"
     }
    ],
    "spells": [
@@ -5336,7 +5346,7 @@
      "value": null,
      "target": "AREA",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2527,
+     "line": 2541,
      "sourceClass": "ApocalypseBrain"
     },
     {
@@ -5350,7 +5360,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs",
-     "line": 2816,
+     "line": 2830,
      "sourceClass": "RainOfFireBrain"
     }
    ],
@@ -5362,7 +5372,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two.",
+   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh.",
    "verified": true
   },
   {
@@ -7963,7 +7973,7 @@
      "maxHealth": 1200,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 731
+     "line": 735
     }
    ],
    "rules": [
@@ -8065,20 +8075,18 @@
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 684,
-     "lineEnd": 684,
+     "line": 688,
+     "lineEnd": 688,
      "anchor": "EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "affects": "real players only (bots are never picked)",
+     "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands on the platform, finds no path back and is recalled to its party after 5 s (EncounterDisplacementRecovery); companions of a thrown player stay down. Real players use the zone point as before.",
+     "difficulty": "needs new raid AI",
      "verified": true,
-     "tactic": "Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
-     "key": "teleport@684"
+     "key": "teleport@688"
     }
    ],
    "spells": [
@@ -8093,7 +8101,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 705,
+     "line": 709,
      "sourceClass": "LegionBrain"
     }
    ],
@@ -8123,13 +8131,13 @@
     }
    ],
    "raidAi": "no raid AI",
-   "notes": "Level 83, 300,000 health. No raid AI: listed for completeness. 1.2: his throw stays on real players only (a bot can't get down from the platform) and companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics); not played.",
+   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. Not played.",
    "aiTactics": {
     "rangedAdds": [
      "LegionAdd"
     ],
     "since": "1.2",
-    "summary": "Tactic rules only (Darkness Falls raid AI as a whole is not implemented). Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first. His throw stays on real players (no way down from his platform)."
+    "summary": "Tactic rules only (Darkness Falls raid AI as a whole is not implemented: no platform positions, no walked way down from the platform, no add-wave assignments). Graspering souls (one per four raiders within 2,000 at each 5% step, at most 16 a step): casters and archers kill them while melee stay on Legion. Close range: he takes no damage from attackers more than 1,400 from him, so a raider farther out steps in to 1,100. Kill heals (2.5% per raider he kills): healers near him heal anyone under half first, and since wave 3 a raider under 35% who is not his target steps out to 1,700 until healed. Bubbles (wave 3): he ends the bladeturn on his target every turn and after five casts his soul blast (1,000 body damage within 1,000 of his target, a quarter healing him), so no bot casts a bladeturn (buff, group bubble, pulsing chant, self bubble) within 2,500 of him while he fights. His throw (wave 3): 8-16 raiders below his top five on his aggro list go to his platform every 40-65 s, bots too; a bot has no walked way down, so its recovery recalls it to its party after 5 s."
    },
    "verified": true
   },
@@ -8141,8 +8149,8 @@
    "brain": "BehemothBrain",
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
    "lines": [
-    815,
-    876
+    819,
+    880
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -8161,8 +8169,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 893,
-     "lineEnd": 897,
+     "line": 897,
+     "lineEnd": 901,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "BehemothBrain",
@@ -8172,7 +8180,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@893"
+     "key": "reset@897"
     }
    ],
    "spells": [],
@@ -10900,11 +10908,9 @@
       "AllowDisplacement"
      ],
      "displacement": "Barrier",
-     "affects": "real players only (bots are never picked)",
+     "tactic": "On since 1.2 wave 3 (AllowDisplacement and AllowBotDisplacement for Easmarach): the route kills him before Galladoria's last room, so the raid doesn't walk into the falls; a pushed bot stays where it lands (a barrier: no walk back into it). Off with epic_encounter_switches \"AllowDisplacement@Easmarach=False\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
-     "tactic": "Off today (AllowDisplacement is false). To play it: recover the moved raider: walk back to the fight, or free them.",
-     "difficulty": "off today",
-     "tacticSource": "default for its kind",
      "key": "teleport@206"
     },
     {
@@ -10961,7 +10967,7 @@
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "aiTactics": {
     "since": "1.2",
-    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) stays off: it blocks the way to the last room while he lives, and the raid cannot finish him yet (below 30% he heals on the waterfall top, where the route skipped him twice on 2026-11-06)."
+    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health each time he is back there under 30%; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Not played; the spots were never checked against the navmesh for sight to the top."
    },
    "verified": true
   },
@@ -27029,8 +27035,8 @@
    "brain": "OFGreenKnightBrain",
    "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
    "lines": [
-    12,
-    261
+    13,
+    287
    ],
    "dungeon": "Open world",
    "region": 1,
@@ -27053,7 +27059,7 @@
      "maxHealth": 800,
      "level": "(byte) Util.Random(47, 49)",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 677
+     "line": 724
     }
    ],
    "rules": [
@@ -27061,8 +27067,8 @@
      "kind": "adds",
      "summary": "Spawns rotting downy felwood (GKTrees): on a timer (Util.Random(25000, 35000) ms); count 1 spawn call in SpawnTrees",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 611,
-     "lineEnd": 611,
+     "line": 658,
+     "lineEnd": 658,
      "anchor": "GKTrees add = new GKTrees();",
      "confidence": "inferred",
      "sourceClass": "OFGreenKnightBrain",
@@ -27077,14 +27083,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@611"
+     "key": "adds@658"
     },
     {
      "kind": "phase",
      "summary": "At 90/80/70/60/50/40/30/20/10% health (Think): starts timer GkTeleport",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 502,
-     "lineEnd": 546,
+     "line": 549,
+     "lineEnd": 593,
      "anchor": "if (Body.HealthPercent <= 90 && walk1 == false && HasAggro)",
      "confidence": "inferred",
      "sourceClass": "OFGreenKnightBrain",
@@ -27105,14 +27111,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@502"
+     "key": "phase@549"
     },
     {
      "kind": "reset",
      "summary": "Resets after 60 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 565,
-     "lineEnd": 565,
+     "line": 612,
+     "lineEnd": 612,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "OFGreenKnightBrain",
@@ -27122,14 +27128,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@565"
+     "key": "reset@612"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 668,
-     "lineEnd": 669,
+     "line": 715,
+     "lineEnd": 716,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "GKTreesBrain",
@@ -27139,14 +27145,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@668"
+     "key": "reset@715"
     },
     {
      "kind": "aggro_wipe",
      "summary": "Clears its aggro list in PickHeal when if (Body.IsAlive) && if (Body.InCombat && Body.IsAlive && HasAggro) && if (Body.TargetObject != null) && if (healer.Count > 0) && if (RandomTarget != null)",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 324,
-     "lineEnd": 324,
+     "line": 350,
+     "lineEnd": 350,
      "anchor": "ClearAggroList(); //clear aggro list or it may still stick to current target",
      "confidence": "inferred",
      "sourceClass": "OFGreenKnightBrain",
@@ -27155,14 +27161,14 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@324"
+     "key": "aggro_wipe@350"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 325,
-     "lineEnd": 325,
+     "line": 351,
+     "lineEnd": 351,
      "anchor": "AddToAggroList(RandomTarget, 550); //set that target big aggro so boss will attack him",
      "confidence": "inferred",
      "sourceClass": "OFGreenKnightBrain",
@@ -27171,14 +27177,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@325"
+     "key": "linked_pack@351"
     },
     {
      "kind": "heal",
      "summary": "Has a heal spell: Heal (Heal, value 400, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 633,
-     "lineEnd": 633,
+     "line": 680,
+     "lineEnd": 680,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "OFGreenKnightBrain",
@@ -27187,7 +27193,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@633"
+     "key": "heal@680"
     }
    ],
    "spells": [
@@ -27202,7 +27208,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 238,
+     "line": 264,
      "sourceClass": "OFGreenKnight"
     },
     {
@@ -27216,7 +27222,7 @@
      "value": "400",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 633,
+     "line": 680,
      "sourceClass": "OFGreenKnightBrain"
     }
    ],
@@ -27238,7 +27244,7 @@
     }
    ],
    "raidAi": "dragon fight",
-   "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on.",
+   "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on. 1.2 (wave 3): his fight starts by a real player's whisper (\"defend it\") as before, or for a bot raid: eight or more level 50 raiders of an autonomous raid expedition standing within 1,000 of him for 20 s, and the one nearest him challenges him (OFGreenKnight.TryStartFight). Passing bot groups and a player's companions never start him. No raid route goes to him today.",
    "verified": true
   },
   {
@@ -33957,8 +33963,8 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
-     "difficulty": "off today",
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "position_puzzle@50"
     },
@@ -33975,8 +33981,8 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
-     "difficulty": "off today",
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "position_puzzle@70"
     },
@@ -33993,8 +33999,8 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
-     "difficulty": "off today",
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "position_puzzle@155"
     },
@@ -34011,8 +34017,8 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "tactic": "Off (AllowGlacierGriffonPatrol): as for Hurika, the raid route can't engage a flying patrol yet.",
-     "difficulty": "off today",
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "position_puzzle@284"
     },
@@ -34186,8 +34192,8 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
-     "difficulty": "off today",
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "position_puzzle@428"
     },
@@ -34204,8 +34210,8 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
-     "difficulty": "off today",
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "position_puzzle@470"
     },
@@ -34222,8 +34228,8 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
-     "difficulty": "off today",
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "position_puzzle@506"
     },
@@ -34240,8 +34246,8 @@
      "switch": [
       "AllowGlacierGriffonPatrol"
      ],
-     "tactic": "Off (AllowGlacierGriffonPatrol): the raid route can't engage a flying patrol yet (no approach to a target 1,000 above the floor; only required adds have a ranged stand). Needs a muster under the perch the loop returns to, a ranged pull as it passes, and the ranged stand for a flying boss.",
-     "difficulty": "off today",
+     "tactic": "Off as shipped (AllowGlacierGriffonPatrol). The pull exists since 1.2 wave 3 (EpicEncounterTactics.Griffons): while the griffon flies, each party waits under its own point of the loop, its casters and archers shoot it from within 1,350 as it passes (it comes down at the shooter and lands), melee fight it where it lands. Not played and the floor under the loop was never checked; the owner turns it on with epic_encounter_switches \"AllowGlacierGriffonPatrol@Torst=True; AllowGlacierGriffonPatrol@Hurika=True\".",
+     "difficulty": "needs new raid AI",
      "verified": true,
      "key": "position_puzzle@616"
     }

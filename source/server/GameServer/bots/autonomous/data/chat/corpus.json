@@ -335233,6 +335233,354 @@
   },
   {
    "kind": "combat",
+   "topic": "epic_falls",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "hes up the falls, casters and archers shoot from below",
+   "id": "369670978a37"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_falls",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cant reach him up there, ranged on him from the floor",
+   "id": "3eba218db881"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_falls",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "nukes on him, hes on top of the waterfall",
+   "family": "936c87d777",
+   "id": "73bd55eb1437"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_falls",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "arrows on him, hes on top of the waterfall",
+   "family": "936c87d777",
+   "id": "86c16d0808b6"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_falls",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "melee wait at the bottom, ranged burn him down",
+   "id": "3939154575ae"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_falls",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont let him sit up there healing, shoot him",
+   "id": "43a26e3399c1"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_griffon_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "griffon inc overhead, shoot it down",
+   "id": "9dade85d80ad"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_griffon_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "pull it when it flies over, melee get it when it lands",
+   "id": "7e68b5d208f7"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_griffon_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "ranged hit it as it passes",
+   "family": "e82fe9e903",
+   "id": "8c60721b2409"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_griffon_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "archers hit it as it passes",
+   "family": "e82fe9e903",
+   "id": "247e187ff862"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_griffon_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "its coming round again, ready to pull",
+   "id": "d0ccee7ff214"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_griffon_pull",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "shoot the bird, it'll come down on ya",
+   "id": "700614297b7c"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_legion_wounded",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "low? back off legion, dont feed him",
+   "id": "8c627a6adebd"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_legion_wounded",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "get out of his reach if ur low, every death heals him",
+   "id": "b0cc05d5ffdd"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_legion_wounded",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "backing off, too low to stay in",
+   "family": "2a4483c55e",
+   "id": "a0849426298f"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_legion_wounded",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "pulling back, too low to stay in",
+   "family": "2a4483c55e",
+   "id": "519b06f3ec2d"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_legion_wounded",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "no bubbles on the tank, he eats em",
+   "id": "faba414a4c94"
+  },
+  {
+   "kind": "combat",
+   "topic": "epic_legion_wounded",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "heals on the low ones, dont let him get a kill",
+   "id": "2b2cb5517943"
+  },
+  {
+   "kind": "combat",
    "topic": "epic_kvasir_scream",
    "who": [],
    "realm": "*",
@@ -336002,8 +336350,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "only clerics and scouts on {boss}, everyone else off him",
-   "id": "9d91aa07a117"
+   "text": "only clerics and bows on {boss}, everyone else off him",
+   "id": "3941658c0942"
   },
   {
    "kind": "combat",
@@ -336021,8 +336369,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "dont touch {boss} unless ur a cleric or a scout, he heals",
-   "id": "a869ed59e2a8"
+   "text": "dont touch {boss} unless ur a cleric or got ur bow out, he heals",
+   "id": "aaddf8f1271a"
   },
   {
    "kind": "combat",
@@ -336040,8 +336388,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{boss} heals off the wrong hits, clerics and scouts only",
-   "id": "ebdf6f0f6587"
+   "text": "{boss} heals off the wrong hits, clerics and archers only",
+   "id": "b296e257f0b0"
   },
   {
    "kind": "combat",
@@ -336078,8 +336426,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "scouts and clerics on {boss}, rest of us stay back",
-   "id": "ee44ceba2673"
+   "text": "mercs and arms get ur bows out, rest of us stay back",
+   "id": "77ddcd09ddd8"
   },
   {
    "kind": "combat",
@@ -336099,6 +336447,25 @@
    "weight": 1.0,
    "text": "no pets and no aoe near {boss}, he heals off em",
    "id": "d2a753328893"
+  },
+  {
+   "kind": "combat",
+   "topic": "mech_funus",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "bows only on {boss}, no swinging at him",
+   "id": "45d02ca68d9d"
   },
   {
    "kind": "combat",

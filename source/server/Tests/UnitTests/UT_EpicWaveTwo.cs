@@ -143,10 +143,10 @@ namespace DOL.UnitTests
             }
             foreach (string boss in new[] { "Olcasgean", "Conservator", "Easmarach" })
                 Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowPositionPuzzle), boss), Is.True, boss);
-            // Stays off: Easmarach's push behind the falls (it would block the last room while the raid can't finish him) and
-            // Legion's throw (no way down from his platform; his own code moves players only).
-            Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDisplacement), "Easmarach"), Is.False);
-            Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowBotDisplacement), "Legion"), Is.False);
+            // On since wave 3 (UT_EpicWave3): Easmarach's push behind the falls (the route kills him before the last room and
+            // shoots him on the waterfall top) and Legion's throw for bots (recalled down from the platform).
+            Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDisplacement), "Easmarach"), Is.True);
+            Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowBotDisplacement), "Legion"), Is.True);
             Assert.That(EpicEncounterMechanics.AllowDisplacement, Is.False, "the global switch is unchanged");
         }
 

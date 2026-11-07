@@ -181,9 +181,9 @@ namespace DOL.UnitTests
             Assembly gs = typeof(GameNPC).Assembly;
             foreach (var (_, encounter, _) in EpicEncounterMechanics.ShippedPerEncounter)
                 Assert.That(gs.GetTypes().Any(t => t.Name == encounter && typeof(GameNPC).IsAssignableFrom(t)), Is.True, encounter);
-            // Still off: the ApocInitializator's room barrier for bots, Legion.
-            Assert.That(EpicEncounterMechanics.On("AllowBotDisplacement", "ApocInitializator"), Is.False);
-            Assert.That(EpicEncounterMechanics.On("AllowBotDisplacement", "Legion"), Is.False);
+            // On since wave 3 (UT_EpicWave3): the ApocInitializator's room barrier for bots, Legion's throw.
+            Assert.That(EpicEncounterMechanics.On("AllowBotDisplacement", "ApocInitializator"), Is.True);
+            Assert.That(EpicEncounterMechanics.On("AllowBotDisplacement", "Legion"), Is.True);
         }
 
         [Test]
@@ -226,9 +226,11 @@ namespace DOL.UnitTests
                     {
                         var a = EpicEncounterTactics.FunusAdvice(raider, funus, (int)c, w, bow);
                         bool hurts = EpicEncounterRestores.FunusAccepts((int)c, w);
+                        // Wave 3: scouts, mercenaries, armsmen and infiltrators owning their listed weapon fight with it only.
+                        bool archer = EpicEncounterTactics.FunusArcherClass((int)c);
                         if (a.Action == EpicEncounterTactics.BotAction.None)
-                            Assert.That(hurts || c == eCharacterClass.Scout && bow, Is.True, $"{c} {w}: told to fight, but its hit heals him");
-                        if (!hurts && c != eCharacterClass.Scout)
+                            Assert.That(hurts || archer && bow, Is.True, $"{c} {w}: told to fight, but its hit heals him");
+                        if (!hurts && !(archer && bow))
                             Assert.That(a.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), $"{c} {w}");
                     }
             // A cleric fights at any range; a scout steps back rather than swing a melee weapon at 233.
