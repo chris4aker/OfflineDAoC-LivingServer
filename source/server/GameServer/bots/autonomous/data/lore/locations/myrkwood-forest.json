@@ -131,7 +131,7 @@
         "z": 5700,
         "radius": 2500,
         "lines": [
-          "Askheim, the werewolves' fort. A crown not theirs.",
+          "Askheim. Baron Falwur wears a crown not his.",
           "Ove Alfevson walks the walls with a crest-piece.",
           "Anakol waits outside the walls. For whom?"
         ]
@@ -268,6 +268,10 @@
     "rumour": [
       "the well on the island east of gna faste is one of the dark places of the soul",
       "the fishermen of galplen say njessi guards the well island. gna faste says shes just hungry",
+      "ove alfevson touches the crest piece at his throat when he fights",
+      "noble werewolf alina never leaves the slope below the askheim tower",
+      "priestess araxia is gentler with her younglings than with anything else",
+      "joseph domr carries the red daggers mark in myrkwood",
       "anakol stands by askheim and wont say who he was waiting for",
       "baron falwur wears a crown that isnt his, darrius wants it back",
       "hyua hides behind a tree at gna faste and has lord lauurs secret in her diary",
@@ -293,6 +297,10 @@
     "tell": [
       "myrkwood is 20 to 30, galplen north east and gna faste in the middle",
       "spindelhalla door is far west of myrkwood among the arachites",
+      "ove alfevson walks the askheim walls, fallen warrior from anrid",
+      "noble werewolf alina is on the slope below the askheim tower, 21",
+      "priestess araxia is at the spindelhalla door, 20",
+      "joseph domr is on the worg slopes south of gna faste, the red dagger",
       "anakol is a 32 by the askheim fort, west",
       "baron falwur is in the werewolf fort of askheim, tale of two trolls",
       "hyua is behind the merchants at gna faste, lord lauurs wife",

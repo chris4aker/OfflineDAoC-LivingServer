@@ -141,7 +141,7 @@
         "z": 4000,
         "radius": 3500,
         "lines": [
-          "Charred skeletons in rank. Their commanders still order.",
+          "A Charred Skeletal Commander still gives orders.",
           "The Shade of Gunnar keeps the fourth piece.",
           "Sentry Incin stands a watch nobody relieves.",
           "Hrodek of the Unsleeping never lay down."
@@ -221,6 +221,8 @@
       "asked if surt is really coming, the dverge say he hasnt ordered anything from them yet"
     ],
     "rumour": [
+      "sentry incin counts the burnt sentries every hour",
+      "a charred skeletal commander still waits for the word to fall back",
       "the young wyrm lord is the one in bollis tale of love and loss. ask him in mularn, he'll cry",
       "lord fire is a raukomaz lord down in the lava, half the time you cant see him",
       "sinyr at the dverge forge is the only smith who can put the grenlock crest back together",
@@ -247,6 +249,8 @@
     "tell": [
       "muspelheim is 20 to 35, up the pass from fort veldon in the vale",
       "no town in muspelheim, the dverge forge is north but their hounds are hostile",
+      "sentry incin is with the charred skeletons east middle, 21",
+      "the charred skeletal commanders are with the lost company in the middle, 26 to 29",
       "young wyrm lord is far east past the wyrms, follow the wall left round, 33",
       "lord fire is east in the lava with the flaming raukomaz, 31",
       "sinyr and armard are at the dverge forge in the north, the crest goes to sinyr",

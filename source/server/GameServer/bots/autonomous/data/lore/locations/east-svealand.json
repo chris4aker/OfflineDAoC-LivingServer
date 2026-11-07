@@ -207,7 +207,7 @@
         "radius": 3500,
         "lines": [
           "Tomte hill. The house-folk keep what they took.",
-          "Dorga the envy drake nests by the hill.",
+          "Envy Drake Dorga nests by the hill.",
           "Smack waits to the east of the hill."
         ]
       },
@@ -276,6 +276,8 @@
     "rumour": [
       "the dirges are old songs nobody finished, walking",
       "lynnleigh on striders isle only comes out at night",
+      "queen major never comes out while her army ant soldiers are many",
+      "envy drake dorga watches every cart on the middle road",
       "ick is just a nasty little biter in the middle fields, not the spraggon one the hibs talk about",
       "the ant queen only shows herself when her soldiers are thin on the ground",
       "olag comes round the dvalin camp at night. aesirdia wants him gone",
@@ -295,6 +297,7 @@
     "tell": [
       "east svealand is 5 to 15, vasudheim is right outside jordheims east gates",
       "audliten is west, dvalin is the fort town north west",
+      "envy drake dorga is north by tomte hill among the envy drakelings",
       "ick is a mite in the fields between audliten and vasudheim, about 8",
       "queen major is in the ant camp north west, kill her soldiers and she comes out",
       "olag is near dvalin at night, covet wiley from aesirdia",
