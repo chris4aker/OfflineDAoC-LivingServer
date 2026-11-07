@@ -40,6 +40,10 @@ namespace DOL.UnitTests
             yield return new("QueenKula", "FrostCircle", 160, EpicEncounterTactics.KulaFrostPoint, "Queen Kula");
             var room = EpicEncounterTactics.HorsemenRoom;
             yield return new("Horsemen", "Door", 60, room.Door, "room middle", room.Middle);
+            // Caer Sidi's way up (play test 2026-11-07: a raid on the lower floor at z 15,100 never reached the horsemen's room).
+            yield return new("Horsemen", "FromEntrance", 60, new(31666, 35982, 18639), "room middle", room.Middle);
+            yield return new("Horsemen", "FromLowerFloor", 60, new(25762, 31265, 15119), "room middle", room.Middle);
+            yield return new("Horsemen", "FromReckonerRoom", 60, EpicEncounterTactics.SoulReckonerRoom, "room middle", room.Middle);
         }
 
         [Test]

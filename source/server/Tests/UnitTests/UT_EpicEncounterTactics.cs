@@ -458,7 +458,7 @@ namespace DOL.UnitTests
         [Test]
         public void EveryRestoredMechanicIsOffByDefaultUntilTheRaidPlaysIt()
         {
-            Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(17));
+            Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(18), "1.2 play test: + AllowEasmarachEndlessFallsHeal (off)");
             foreach (string name in EpicEncounterMechanics.RestoreSwitches)
             {
                 PropertyInfo p = typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static);

@@ -79,7 +79,7 @@
   "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "28c34dec1840c590c674a26de40d6ac8321c182c004765f3cb553d76c0eca10c",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "b44a93b945d05295ffe93067feeb0951c0046607fbff5e00b30664dd34b6c53e",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "1907282adb0de082eeff10f6331a8d8270776eb3abb13d3996734996183d3bb0",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "c29e9841d934758a13259ab0c739e979f14d01e0ebaaf29267ff61d7134e3027",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
@@ -89,7 +89,7 @@
   "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "5d3b338eec35ec06bacef311189dc0066981669f761bf95d88deaf814d987712",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "9f7b96e78af9a1c70b23bd8e099c65f5b704906fec526087baea2d68f7878910",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "3d39abfd2a900d792a7f542914506fc4ff7a11790287e2a2547f082c5721ae0a",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "4548c254242adf0c1e35bb7d0f5c9abf965790a017bd55c7c576de62d2d3e1fa",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "400d91fa752949ea0b928db0e9b9e1b6700f2d9a90cc57bb360e1ea64fb458cb",
   "source/server/GameServer/scripts/namedmobs/Galladoria/EyesWatchingYou.cs": "96531836730ea2454b604c3f728ab63d265576412dc5263dc1b49d3f6a9099d6",
   "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "63d9d69def059a8a1ba2c6182f0ee50d58b96ae7816fda602452f228012ccc79",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "803467b4edadf2428fd2ef50dba29d129204e09353cfd8e8536d9afa4a13e13a",
@@ -489,10 +489,19 @@
    "about": "Grand Summoner Govannon has 300,000 health (not 200,000). Off by default (epic_govannon_full_health) until a played check: the raid's tactics for him (sacrifice and demon at range, spread in demon form) play either way; a 60-bot raid took 300,000 about 1% a minute (run 18)."
   },
   {
+   "name": "AllowEasmarachEndlessFallsHeal",
+   "value": "false",
+   "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
+   "line": 124,
+   "serverProperty": "npc / epic_easmarach_endless_falls_heal",
+   "restores": true,
+   "about": "Easmarach heals an eighth on the waterfall top every time he falls to 30%, and stays up there (the original). Off by default (1.2 play test, 2026-11-07: epic_easmarach_endless_falls_heal): he heals there once a fight, rests, and comes back down to fight on. A bot raid can only shoot him on the top (spells take 70% resists): 42% to 34% in ten minutes, and each fall to 30% healed him back, so he could never die and Galladoria's last room never came."
+  },
+  {
    "name": "AllowKvasirColdHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 122,
+   "line": 133,
    "serverProperty": "npc / epic_kvasir_cold_heal",
    "restores": true,
    "about": "Cold damage heals Icelord Kvasir by a fifth of his health and does no damage. On since 1.2: no bot casts cold at him (EpicEncounterTactics.ForbidsSpell)."
@@ -501,7 +510,7 @@
    "name": "AllowTuscarTwinHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 125,
+   "line": 136,
    "serverProperty": "npc / epic_tuscar_twin_heal",
    "restores": true,
    "about": "Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health. On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics)."
@@ -510,13 +519,13 @@
    "name": "ResetQuietMilliseconds",
    "value": "8000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 349
+   "line": 360
   },
   {
    "name": "PetDevourIntervalMilliseconds",
    "value": "5000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 357
+   "line": 368
   }
  ],
  "ruleKinds": {
@@ -10808,7 +10817,7 @@
    "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs",
    "lines": [
     9,
-    114
+    115
    ],
    "dungeon": "Galladoria",
    "region": 191,
@@ -10846,25 +10855,28 @@
      "kind": "phase",
      "summary": "At 30% health (Think): starts timer StartWalk; calls ClearAggroList",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs",
-     "line": 170,
-     "lineEnd": 176,
-     "anchor": "if (Body.HealthPercent <= 30 && !restphase)",
+     "line": 180,
+     "lineEnd": 186,
+     "anchor": "if (Body.HealthPercent <= 30 && !restphase && (EpicEncounterMechanics.AllowEasmarachEndlessFallsHeal || FallsHeals == 0)) // EpicEncounterMechanics.EasmarachRet",
      "confidence": "inferred",
      "sourceClass": "EasmarachBrain",
      "method": "Think",
      "threshold": 30,
+     "switch": [
+      "AllowEasmarachEndlessFallsHeal"
+     ],
      "verified": true,
-     "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
-     "difficulty": "needs new raid AI",
+     "tactic": "Off today (AllowEasmarachEndlessFallsHeal is false). To play it: follow the mechanic.",
+     "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "phase@170"
+     "key": "phase@180"
     },
     {
      "kind": "phase",
      "summary": "At 30% health (Think): see the block",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs",
-     "line": 187,
-     "lineEnd": 188,
+     "line": 197,
+     "lineEnd": 201,
      "anchor": "if(Body.HealthPercent <= 30)",
      "confidence": "inferred",
      "sourceClass": "EasmarachBrain",
@@ -10874,14 +10886,14 @@
      "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "phase@187"
+     "key": "phase@197"
     },
     {
      "kind": "reset",
      "summary": "Resets after 65 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs",
-     "line": 215,
-     "lineEnd": 215,
+     "line": 228,
+     "lineEnd": 228,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "EasmarachBrain",
@@ -10891,14 +10903,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@215"
+     "key": "reset@228"
     },
     {
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo Body.CurrentRegionID, 40067, 50494, 11708, 1066)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs",
-     "line": 206,
-     "lineEnd": 206,
+     "line": 219,
+     "lineEnd": 219,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 40067, 50494, 11708, 1066, DisplacementKind.Barr",
      "confidence": "inferred",
      "sourceClass": "EasmarachBrain",
@@ -10911,14 +10923,14 @@
      "tactic": "On since 1.2 wave 3 (AllowDisplacement and AllowBotDisplacement for Easmarach): the route kills him before Galladoria's last room, so the raid doesn't walk into the falls; a pushed bot stays where it lands (a barrier: no walk back into it). Off with epic_encounter_switches \"AllowDisplacement@Easmarach=False\".",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "teleport@206"
+     "key": "teleport@219"
     },
     {
      "kind": "aggro_wipe",
-     "summary": "Clears its aggro list in Think when if (Body.HealthPercent <= 30 && !restphase)",
+     "summary": "Clears its aggro list in Think when if (Body.HealthPercent <= 30 && !restphase && (EpicEncounterMechanics.AllowEasmarachEndlessFallsHeal || FallsHeals == 0))",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs",
-     "line": 172,
-     "lineEnd": 172,
+     "line": 182,
+     "lineEnd": 182,
      "anchor": "ClearAggroList();",
      "confidence": "inferred",
      "sourceClass": "EasmarachBrain",
@@ -10927,14 +10939,14 @@
      "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "aggro_wipe@172"
+     "key": "aggro_wipe@182"
     },
     {
      "kind": "heal",
      "summary": "Heals: Body.Health += Body.MaxHealth / 8;",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs",
-     "line": 188,
-     "lineEnd": 188,
+     "line": 199,
+     "lineEnd": 199,
      "anchor": "Body.Health += Body.MaxHealth / 8;",
      "confidence": "inferred",
      "sourceClass": "EasmarachBrain",
@@ -10943,7 +10955,7 @@
      "tactic": "Kill or interrupt whatever heals it first.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "heal@188"
+     "key": "heal@199"
     }
    ],
    "spells": [],
@@ -10967,7 +10979,7 @@
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "aiTactics": {
     "since": "1.2",
-    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health each time he is back there under 30%; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Not played; the spots were never checked against the navmesh for sight to the top."
+    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). He heals there once a fight, rests 50-80 s and walks back down to his spawn (1.2 play test 2026-11-07: up there for good, healing at every fall to 30%, a bot raid wore him from 42% to 34% in ten minutes and could never finish him); the original endless heal is the owner setting epic_easmarach_endless_falls_heal (off). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Container play test 2026-11-07: the close range and the falls stands played as written (all six stands on the navmesh, walked both ways); sight to the top is not checked by the mesh."
    },
    "verified": true
   },

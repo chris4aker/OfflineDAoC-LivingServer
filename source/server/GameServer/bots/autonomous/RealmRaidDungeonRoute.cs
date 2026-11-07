@@ -1435,10 +1435,12 @@ namespace DOL.GS
                 !(n is IGameEpicNpc && _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name)) &&
                 // A neutral expedition goes for its named encounters only; monsters on the way are
                 // fought when they attack (Darkness Falls holds 2,465 spawns).
-                // A play test's focus leaves out the other named encounters (and the final, unless named); the way in is
-                // cleared as in any raid (a focus that skipped the first-hour clear left the Caer Sidi raid fighting the
-                // entrance's monsters and never reaching the horsemen's room, 2026-11-07).
-                !(Focus != null && (n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name)) && !InFocus(Focus, n.Name, n.GetType().Name)) &&
+                // A play test's focus leaves out the other named encounters (and the final, unless named) while they are out of
+                // combat; the way in is cleared as in any raid (a focus that skipped the first-hour clear left the Caer Sidi raid
+                // fighting the entrance's monsters and never reaching the horsemen's room), and a named that fights the raid is
+                // fought (the Host killed 159 raiders on the way up while the focus left him out, 2026-11-07).
+                !(Focus != null && (n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name)) && !n.InCombat &&
+                  !InFocus(Focus, n.Name, n.GetType().Name)) &&
                 (_objectives == null ? now - _routeStartTick < EpicTrashPhaseMilliseconds || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
                         IsEncounterAdd(n, Front, encounters)
                     : RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)))

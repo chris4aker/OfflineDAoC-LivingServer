@@ -1073,14 +1073,14 @@
   "galladoria/easmarach": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "4548c254242adf0c1e35bb7d0f5c9abf965790a017bd55c7c576de62d2d3e1fa"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "400d91fa752949ea0b928db0e9b9e1b6700f2d9a90cc57bb360e1ea64fb458cb"
    },
    "aiTactics": {
     "since": "1.2",
-    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health each time he is back there under 30%; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Not played; the spots were never checked against the navmesh for sight to the top."
+    "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. The waterfall top (wave 3, 1.2): below 30% he clears his aggro, walks up to 37,811,50,342 (about 1,100 above his spawn, no walked path) and heals an eighth of his health; casters, archers and healers go to their party's spot on the floor below (six spots the raid reached on 2026-11-06, each within 1,250 of the top and 2,500 of his spawn) and shoot him from there, melee wait at his spawn (EpicEncounterTactics.Galladoria). He heals there once a fight, rests 50-80 s and walks back down to his spawn (1.2 play test 2026-11-07: up there for good, healing at every fall to 30%, a bot raid wore him from 42% to 34% in ten minutes and could never finish him); the original endless heal is the owner setting epic_easmarach_endless_falls_heal (off). His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) is on since wave 3, for bots too: while he lives the route never sends the raid to the last room (the bridge, the primals, Olcasgean), it fights him first; a bot pushed back stays where the push put it and a repeated push is logged (EPIC_DISPLACEMENT_BOUNCED). Container play test 2026-11-07: the close range and the falls stands played as written (all six stands on the navmesh, walked both ways); sight to the top is not checked by the mesh."
    },
    "rules": {
-    "teleport@206": {
+    "teleport@219": {
      "tactic": "On since 1.2 wave 3 (AllowDisplacement and AllowBotDisplacement for Easmarach): the route kills him before Galladoria's last room, so the raid doesn't walk into the falls; a pushed bot stays where it lands (a barrier: no walk back into it). Off with epic_encounter_switches \"AllowDisplacement@Easmarach=False\".",
      "difficulty": "needs new raid AI"
     }
