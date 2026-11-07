@@ -49,8 +49,8 @@
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "0f44370d05d55a397fbcd0c5b2bbdb0ac7c65c96fb347a1cfbe1b5bf5957a19e",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "8d6fd48ba5adddf2a722a9a766b3f5edb522a25d5d60923155d72a10e90cc3f7",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "ed786219f6c2df5a16b38e5369ff20707444d17685919e1a3e6250245112e096",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "2f464529d3943e2dac47145c3310ec786d1b172f1303582acd0c567bdd5f59b0",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs": "e4979c4b62aaa342d40f11378aad1e1072120cec7bdef3c1e7d771e5b0dc4d63",
   "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
   "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosState.cs": "4a42f12e31066f93f00df4bc2e8cb8fef4ed363aec55e86f0749427a918c3333",
@@ -73,7 +73,7 @@
   "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "b3b4affcb6076765c54bcb3b4446b1c3144baf461e8f494564f9cf363c7cfb31",
   "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "9084052aa6ba81476d14fabd8501cec65039beafd222e21df07b4356aa28a83f",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "58b9aacabb37621d7ffd882fb846f32ad60a84e9f5a82425801c1fa480141c4d",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "47dede9429ce25a534a73793e7b5940c337b6c4314b3b0fe57a6c0e301e96eeb",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
@@ -8055,11 +8055,11 @@
     },
     {
      "kind": "pet_devour",
-     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (a player's or a bot's, never a bot: EpicEncounterMechanics.NearestDevourablePet) dies and he heals by its maximum health.",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs",
-     "line": 111,
-     "lineEnd": 124,
-     "anchor": "if (candidate.Brain is IControlledBrain && candidate.IsAlive && (pet == null || Body.GetDistanceTo(candidate) < Body.GetDistanceTo(pet)))",
+     "line": 110,
+     "lineEnd": 122,
+     "anchor": "GameNPC pet = DOL.GS.EpicEncounterMechanics.NearestDevourablePet(Body, Body.GetNPCsInRadius(2000));",
      "confidence": "inferred",
      "sourceClass": "AsmoienBrain",
      "method": "Think",
@@ -8069,7 +8069,7 @@
      "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "pet_devour@111"
+     "key": "pet_devour@110"
     }
    ],
    "spells": [],
@@ -8142,11 +8142,11 @@
     },
     {
      "kind": "pet_devour",
-     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (a player's or a bot's, never a bot: EpicEncounterMechanics.NearestDevourablePet) dies and he heals by its maximum health.",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs",
-     "line": 110,
-     "lineEnd": 123,
-     "anchor": "if (candidate.Brain is IControlledBrain && candidate.IsAlive && (pet == null || Body.GetDistanceTo(candidate) < Body.GetDistanceTo(pet)))",
+     "line": 109,
+     "lineEnd": 121,
+     "anchor": "GameNPC pet = DOL.GS.EpicEncounterMechanics.NearestDevourablePet(Body, Body.GetNPCsInRadius(2000));",
      "confidence": "inferred",
      "sourceClass": "BaalorienBrain",
      "method": "Think",
@@ -8156,7 +8156,7 @@
      "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull and fight without them.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "pet_devour@110"
+     "key": "pet_devour@109"
     }
    ],
    "spells": [],

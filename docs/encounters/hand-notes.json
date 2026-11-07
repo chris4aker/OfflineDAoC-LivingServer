@@ -680,30 +680,30 @@
   },
   "darkness-falls/princeasmoien": {
    "rules": {
-    "pet_devour@111": {
-     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+    "pet_devour@110": {
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (a player's or a bot's, never a bot: EpicEncounterMechanics.NearestDevourablePet) dies and he heals by its maximum health.",
      "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "ed786219f6c2df5a16b38e5369ff20707444d17685919e1a3e6250245112e096"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc"
    }
   },
   "darkness-falls/princebaalorien": {
    "notes": "Prince of Darkness Falls. Every five seconds he eats the nearest pet within 2,000 and heals by the pet's maximum health (changed from every pet on every brain turn, owner 2026-10-14).",
    "currentRaidAi": "2026-11-04: Albion and Hibernia's Darkness Falls raids were each defeated at him (two wipes each, Special Forces joined). No raid AI for Darkness Falls.",
    "rules": {
-    "pet_devour@110": {
-     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest controlled pet within 2,000 dies and he heals by its maximum health.",
+    "pet_devour@109": {
+     "summary": "Every 5 s (PetDevourIntervalMilliseconds) the nearest summoned pet within 2,000 (a player's or a bot's, never a bot: EpicEncounterMechanics.NearestDevourablePet) dies and he heals by its maximum health.",
      "tactic": "Pet classes leave or park their pets more than 2,000 away before the pull and fight without them.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "2f464529d3943e2dac47145c3310ec786d1b172f1303582acd0c567bdd5f59b0"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4"
    }
   },
   "darkness-falls/princessnahemah": {

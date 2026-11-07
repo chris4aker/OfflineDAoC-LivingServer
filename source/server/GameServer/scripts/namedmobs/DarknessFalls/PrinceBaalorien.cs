@@ -105,10 +105,8 @@ namespace DOL.AI.Brain
             {
                 if (GameLoop.GameLoopTime >= _nextDevourTick)
                 {
-                    GameNPC pet = null;
-                    foreach (GameNPC candidate in Body.GetNPCsInRadius(2000))
-                        if (candidate.Brain is IControlledBrain && candidate.IsAlive && (pet == null || Body.GetDistanceTo(candidate) < Body.GetDistanceTo(pet)))
-                            pet = candidate;
+                    // A summoned pet (of a player or of a bot), never a bot: BotBrain is a controlled brain too.
+                    GameNPC pet = DOL.GS.EpicEncounterMechanics.NearestDevourablePet(Body, Body.GetNPCsInRadius(2000));
                     if (pet != null)
                     {
                         _nextDevourTick = GameLoop.GameLoopTime + DOL.GS.EpicEncounterMechanics.PetDevourIntervalMilliseconds;

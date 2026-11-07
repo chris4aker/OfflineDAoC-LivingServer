@@ -429,6 +429,11 @@ realm that feels like a full server at its busiest. How it works and how to tune
   top up their parties with its own bots. When a party is still refused, `REALM_RAID_SPECIAL_FORCES_FAILED` (and
   `REALM_RAID_FORCED_PARTY_RETRY`) now say why (`refusal="..."`), and raid and Special Forces log lines name Albion as
   Albion, not `_FirstPlayerRealm`. Checked: unit tests (`UT_SpecialForcesJoinFullRaids`); not played in game yet.
+- **The Darkness Falls princes no longer eat bots** (found in the 2026-11-06 overnight test). Princes Asmoien and
+  Ba'alorien devour the nearest pet every five seconds and heal by its health, but their pet test matched a bot's own
+  brain too, so they ate companion bots and gamebots: the overnight raid did no damage for five minutes and never got a
+  prince below 95%. They now eat only summoned pets, a player's or a bot's, never a bot
+  (`EpicEncounterMechanics.IsDevourablePet`). Checked: unit tests (`UT_PrinceDevour`); not played in game yet.
 - Repairing an item never checked the crafter's skill: the gate was written as `(percentNeeded / 100) * craftLevel`,
   integer division, so the 50% a repair asks for became 0 and anyone could start one (with a 0% chance below 44% of the
   item's craft level). A repair now needs half the item's craft level in the skill, a repair in the trade window the
