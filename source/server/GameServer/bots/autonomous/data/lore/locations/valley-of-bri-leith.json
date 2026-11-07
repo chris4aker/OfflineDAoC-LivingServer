@@ -71,8 +71,7 @@
         "lines": [
           "Caille, low in the valley floor.",
           "Ainrebh studies a crystal that ate a man.",
-          "Glare, a fury sprite, at Lysagh's shop door.",
-          "Burned leather on the step."
+          "Glare, a fury sprite, at Lysagh's shop door."
         ]
       },
       {
@@ -164,8 +163,7 @@
         "lines": [
           "A dark druid's high place.",
           "Druids from over the sea, singing to trees.",
-          "Riocard and his Albion druids, listening.",
-          "A tree-song, half heard, on a high place."
+          "Riocard and his Albion druids, listening."
         ]
       },
       {
@@ -276,6 +274,17 @@
         "lines": [
           "Sloithi waits for a late cart.",
           "Siog footpads in the gorse, quiet."
+        ]
+      },
+      {
+        "name": "the Old Hermit's tent (The Blademaster)",
+        "x": 410811,
+        "y": 538011,
+        "z": 4931,
+        "radius": 1000,
+        "lines": [
+          "The Blademaster waits for the first verse.",
+          "Two blades by the tent. Which is which?"
         ]
       },
       {

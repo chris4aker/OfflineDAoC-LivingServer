@@ -46,6 +46,11 @@
       "text": "Living Server lore: the koalinth came up the spring the mist lifted off Hy Brasil; the three accounts (fishermen, Diplomats, Tobryn); 'my arm has been to the koalinth'; the Elder's fungus light; the Alliant as the open sea's envoy; Tobryn's medallion as the seal.",
       "provenance": "original",
       "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of the Koalinth Caverns: two Koalinth Diplomats (27-28; one carries faction Koalinth, one none), Pelagian Alliant (28, faction Koalinth, a crab body like the pelagian guards and crabs round him), Koalinth Elder (27) and Koalinth Castellan (26) (KoalinthElder.cs, KoalinthCastellan.cs: Inflict Suffering, attack speed down 17% for 45 seconds; their call packages are carried by no spawn), Horned Cave Toad (23, among koalinth bouncers in the southern pools), Master of Ceremonies (22, in the fighting cave among spectators and bouncers).",
+      "provenance": "game",
+      "source": "world data Mob table, region 223 (read 2026-11-06)"
     }
   ],
   "story": "The Koalinth came up out of the sea, and the druids of Tir Urphost have never learned why. They are hobgoblins of the deep coast, cold and scaled and quick, and their true home lies somewhere under the waves off the Cliffs of Moher. One tribe of them left it. They took the sea-caves and the old tunnels behind the cliffs, raided the farmsteads above, and settled in as if they meant to stay. They have kept a door open to the sea. Their envoys go down it and come back up, and the druids would very much like to know what is said on the other side.\n\nWhat is plain is that the tribe is a warrior people and the caves are a warrior's hall. There are wrestlers and bouncers, and there are spectators, and the spectators are not there by chance: the Koalinth hold fights in their great cave, as the old Hibernian kings held games, and watch them as keenly. Pelagian crabs scuttle under the benches. Wardens, warders and sentinels keep the doors. Somewhere deep in, the Elder speaks for the tribe and the Castellan holds its keep, and the druids suspect both of them answer to something further down.\n\nWhy would a sea-people leave the sea? Not for the farmland. The druids say it in a low voice: something drove them out, or something sent them up.\n\nThe fishermen of Tir Urphost date it exactly, in their way: the koalinth came up the same spring the mist lifted off Hy Brasil. That year the sea off the Cliffs of Moher ran cold in midsummer, the lobster pots came up empty and scoured, and the first koalinth were seen sitting on the black rocks below the cliffs at low tide, looking at the land the way a family looks at a house it has been told to move into. Within the month they had the sea-caves and the old smugglers' tunnels behind them.\n\nThere are three accounts of why, and each is told by someone with a reason. The fishermen say the koalinth were driven out: whatever woke under the western sea when the isle came out of the mist wanted their halls, and the cold water was its breath. The two Koalinth Diplomats, who will speak to a traveller if he speaks first, say their people came as envoys, to treat with the land, and that the trouble on the farms above is the work of the young and will stop when the land answers. Druid Tobryn of Tir Urphost, who has given more thought to it than anyone, writes that a people who come as envoys do not build a fighting-hall, and that the koalinth were sent.\n\nWhoever is right, the tribe's order is plain to anyone who has been inside. The Elder speaks for the tribe from the deep eastern cave, by the light of a fungus that grows nowhere else on the coast. The Castellan holds the tribe's keep further north and carries a carved stone of aventurine that he will not put down. Neither is a great fighter. Both fight the koalinth way, which is to tire the arm before the blade has to do anything, and the Tir Urphost men say of a long day at the oars that their arm has been to the koalinth. Both still call into the deep caves when they are pressed, the way their people once called home through the sea-door, and nothing answers them any more. The Pelagian Alliant, the open sea's own envoy, keeps the northern landing with his guards and his crabs, an ally who has never said whose ally he is.\n\nNear the mouth the Master of Ceremonies runs the fighting cave: the wrestlers and bouncers, the spectators who take sides, the watery escorts who bring each bout in. A horned toad bigger than the rest squats in the southern pools, and the koalinth feed it as a household feeds a dog.\n\nTobryn did not wait for an answer. With the Castellan's aventurine and the Elder's fungus he made a seal, and set it as a medallion at the mouth of the caves, to lock the koalinth away from the land they were sent to. The seal has been broken and set again more often than the druids admit. The sea-door is still open.",
@@ -89,7 +94,8 @@
         "radius": 800,
         "lines": [
           "A horned toad, fed like a household dog.",
-          "Slugs glisten. Some of them spark."
+          "Slugs glisten. Some of them spark.",
+          "The Horned Cave Toad. Rub the horn for luck."
         ]
       },
       {
@@ -100,7 +106,8 @@
         "radius": 900,
         "lines": [
           "Fungus light, cold and green.",
-          "The Elder calls into the deep. Nothing comes."
+          "The Elder calls into the deep. Nothing comes.",
+          "The Koalinth Elder speaks by fungus-light."
         ]
       },
       {
@@ -111,7 +118,8 @@
         "radius": 900,
         "lines": [
           "A carved green stone he will not set down.",
-          "Your arm grows heavy here. Theirs do not."
+          "Your arm grows heavy here. Theirs do not.",
+          "The Koalinth Castellan holds a green stone."
         ]
       },
       {
@@ -122,7 +130,19 @@
         "radius": 900,
         "lines": [
           "The Pelagian Alliant. Whose ally?",
-          "Crabs and guards from the open sea."
+          "Crabs and guards from the open sea.",
+          "The Pelagian Alliant, a crab with a title."
+        ]
+      },
+      {
+        "name": "the diplomats' hall",
+        "x": 34874,
+        "y": 32656,
+        "z": 16754,
+        "radius": 1000,
+        "lines": [
+          "A Koalinth Diplomat waits to be spoken to.",
+          "Envoys of the sea, and nobody to treat with."
         ]
       }
     ]
@@ -151,7 +171,13 @@
       "[heard|someone said] the horned cave toad [got loose once|ate a crab whole]",
       "someone talked to a koalinth diplomat and [he answered|it was weirdly polite]",
       "[heard|someone said] the castellan sleeps holding his green stone",
-      "[word is|heard] the fomorians and the koalinth [know each other|both came from under the sea]"
+      "[word is|heard] the fomorians and the koalinth [know each other|both came from under the sea]",
+      "[heard|someone said] the koalinth diplomats say they came as envoys and the seal was a door slammed in their face",
+      "[heard|someone said] the pelagian alliant is just a big crab with a title",
+      "[heard|someone said] the koalinth elder calls into the deep for help and nothing ever answers",
+      "[heard|someone said] the koalinth castellan's keep has no garrison. he calls and nobody comes",
+      "[heard|someone said] the koalinth wrestlers rub the horned cave toad's horn for luck",
+      "[heard|someone said] the master of ceremonies has never called a fair bout. thats the point"
     ],
     "tell": [
       "koalinth caverns by the cliffs of moher. sea hobgoblins, crabs, an arena. twenties, decent coin",
@@ -159,7 +185,13 @@
       "is koalinth caverns hard? no, twenties. the elder and castellan slow you, bring a caster",
       "what quest is in koalinth caverns? the broken seal, from druid tobryn southwest of tir urphost",
       "whats in koalinth caverns? koalinth, pelagian crabs and guards, toads, slugs, an arena",
-      "who is the koalinth elder? the tribe's speaker, deep east cave. glowing fungus for tobryn"
+      "who is the koalinth elder? the tribe's speaker, deep east cave. glowing fungus for tobryn",
+      "two koalinth diplomats 27-28 in the caverns. they still attack, envoys or not",
+      "pelagian alliant is a 28 crab at the northern landing with pelagian guards and crabs, about ten round him",
+      "koalinth elder is the 27 in the deep east cave. inflict suffering slows your attacks, bring casters. tobryn wants his fungus",
+      "koalinth castellan is the 26 in the north keep with pelagian crabs. same slow debuff as the elder. tobryn wants his stone",
+      "horned cave toad is a 23 in the southern pools with koalinth bouncers round it",
+      "master of ceremonies is a 22 in the fighting cave with spectators and bouncers round him"
     ]
   },
   "loremaster": {
@@ -172,7 +204,13 @@
       "Castellan": "Holds the tribe's keep in the north and carries a carved green stone of aventurine. He fights the koalinth way: tire the arm first. [Tobryn] wants his stone.",
       "Tobryn": "Druid of Tir Urphost, who keeps by a tree southwest of the village. He made a [seal] from the Castellan's stone and the Elder's fungus to lock the koalinth away.",
       "seal": "A medallion set at the mouth of the caves, of Tobryn's making. It has been broken and set again more often than the druids admit. The sea-door is still open.",
-      "Alliant": "The Pelagian Alliant, envoy of the open sea, keeps the northern landing with guards and crabs. Nobody knows whose ally he is."
+      "Alliant": "The Pelagian Alliant, envoy of the open sea, keeps the northern landing with guards and crabs. Nobody knows whose ally he is.",
+      "Koalinth Diplomat": "There are two Koalinth Diplomats, and they will speak to a traveller if the traveller speaks first, which few do. They say their people came up the spring the isle rose as envoys, to treat with the land, and that the trouble on the farms above the cliffs is the work of the young of the tribe and will stop when the land answers. Druid Tobryn says the land has answered, with a seal. The diplomats say that was not an answer, it was a door being shut.",
+      "Pelagian Alliant": "The Pelagian Alliant is the envoy of the open sea, and keeps the northern landing of the caverns with his guards and his crabs, and the thing nobody tells the young before they go down is that the Alliant is a crab himself. He is an ally of the koalinth, the diplomats say. He has never said whose ally he is. The Tir Urphost fishers say the sea sends crabs ahead of everything it means to take back, the way a landlord sends a bailiff.",
+      "Koalinth Elder": "The Koalinth Elder is the tribe's speaker, in the deep eastern cave by the light of a fungus that grows nowhere else on the coast, with the koalinth guardians about him. He fights the koalinth way, the Tir Urphost fishers say: a touch of his and your arm has been to the koalinth, slow and heavy as if you had been swimming. When he is pressed he calls into the deep for help. Nothing answers now. Druid Tobryn wants his fungus for the seal.",
+      "Koalinth Castellan": "The Koalinth Castellan holds the tribe's keep in the north of the caverns, among the pelagian crabs, and carries a carved piece of green aventurine that Druid Tobryn wants for his seal. He fights as the Elder fights, tiring the arm first, so that the fighters who come against him feel they are swimming in their armour. He calls for his keep's garrison when he is pressed, and no garrison comes. The fishers say the keep was emptier than he admits long before anyone came.",
+      "Horned Cave Toad": "In the southern pools of the caverns, among the koalinth bouncers who keep order at the fighting cave, lives the Horned Cave Toad, a great horned thing the bouncers keep as the fighters' mascot. The wrestlers rub its horn for luck before a bout, the koalinth say, and the ones who lose say they rubbed it wrong. It is not fond of strangers, and the bouncers are less fond of strangers who bother it.",
+      "Master of Ceremonies": "The Master of Ceremonies runs the fighting cave near the mouth of the caverns: the wrestlers and the bouncers, the spectators who take sides, the watery escorts of living water who bring each fighter in. He calls the bouts, and the koalinth say he has never called one fairly, and that this is the point. A stranger who walks into the fighting cave is a bout, as far as he is concerned, and the spectators are already on their feet."
     }
   },
   "book": {

@@ -56,6 +56,11 @@
       "text": "Living Server lore: Conaire the founder and the tomb by the standing stones; Quillan the cousin who studied in Tir na Nog; the herbalist who nursed every Muire for thirty years; the hags as the family's nurses; Ardee's rangers all went down Muire Tomb first; the priests of Ardee and the laying to rest by name.",
       "provenance": "original",
       "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of the Muire Tomb: Quillan Muire (24, QuillanMuire.cs), Muire Hero (19-21, two skeleton spawns), Conaire Muire (20, ghostly), Frang (20, a hobgoblin body, among the mummy hags), Beare Muire (18), Kacey Muire (17), Alsandair Muire (16); named group: seven Muire Champions (19-20, ghostly skeletons). The Muire Champions and Muire Heroes carry no faction, so they bring no friends; they stand close together.",
+      "provenance": "game",
+      "source": "world data Mob table, region 221 (read 2026-11-06)"
     }
   ],
   "story": "The house of Muire was old in the Ardee country before it was rich. Its founder, Conaire Muire, the families of Ardee say, was a cattle-lord of the old kind, who took the land around the standing stones northwest of the town by being harder than his neighbours, one duel at a time at the boundary stones, and dug the family tomb into the hillside there so that his line would lie together on its own ground. His duelling sword went down the house from younger son to younger son, and the Ardee folk say nothing else ever crossed his guard. The house kept the land the same way he had taken it, for generations, and the tomb filled slowly and properly, one Muire at a time, each carried down by the household with the banshee's keen going up from the hill, because the bean sí keens only for the old families and the Muires were one.\n\nThe Muires were rich, and they were cruel, and the serfs who worked their land around Ardee hated them with the long patient hatred of people who cannot do anything about it. Concaire Muire, the last lord of the house, was the worst of them. Then, slowly, he went mad. The servants saw it first: the lord talking to the portraits, the lord counting the silver at night, the lord listening at doors. One winter night he went through the house with a blade, room by room, and when he had finished with his household he finished with himself.\n\nThey were all laid in the family tomb together, the lord and his lady, the heir and the hero, the ladies-in-waiting and the herbalist and the suitors who had come courting the daughters, because there was nobody left to sort them. The banshee keened for the house of Muire that night, the old folk say, and she has not stopped. The tomb is full now of the hungry things that gather wherever the dead are restless: hags that were once the family's nurses, murkmen out of the wet, creepers and devourers in the dark. The Muire hero still stands guard over his kin, loyal to a house that never earned it.\n\nEvery young Hibernian goes down into Muire Tomb sooner or later. Most of them come back up feeling sorry for someone, and are not sure who.\n\nThe last lord was named Concaire, after the founder, with one letter more, and the serfs said afterwards that even his name had been greedy. What lies in the tomb now is the whole household of his last winter, laid down together with the generations below them, and it does not lie still. Quillan Muire, the lord's cousin, who had studied the old words in Tir na Nog and come home with words that burned, is down there among the family, and the Muire herbalist who nursed every Muire for thirty years still goes about the dead with her salves: when one of the family is hurt badly she mends them, and she strengthens the house's fighting men as she always did. Kacey Muire and the two other ladies-in-waiting keep together as they did in life. Beare and Alsandair, the heir and his younger brother, are there, and the Muire heroes, and the seven champions of the house guard, who still come together when one of them is called. Frang, a name the kitchen girl wrote down without saying what he was, is somewhere in the crypts.\n\nAround the family the tomb has filled with the things that gather wherever the dead are restless. The mummy hags of the upper halls were the family's nurses, the Ardee folk say, and still hum to nobody; a hag wizard mutters over the oldest dead in the deep vault. Murkmen rise out of the wet passage, corpse devourers work at the old bones in the crypts, tomb creepers and dwellers move in the dark, and at the bottom a death worm turns, older than anything else down there.\n\nWhy does it matter? Because every young Hibernian of the Ardee country goes down into Muire Tomb first. The rangers of Ardee all did: Fiadh, who found the pass to Sheeroe; Aoife ni Riain, who went to the Summoner's Hall; Echna, who said the word over Avartack. Gogarty Muire, the last of the name, a small farmer of the Connacht side who is afraid of his own blood, sends the young down with his grandfather's journal to lay the family to rest by name: Beare and Alsandair, Conaire with the younger son's own sword, Shyene the daughter whose suitors still answer for her, Kacey once with her charm on her and once without it, and Quillan last. The young come back up having learned what the realm's dead are like when nobody mourns them properly. The banshee mourns the Muires, and she has never stopped, because she is the only one who does.",
@@ -88,7 +93,8 @@
         "radius": 1500,
         "lines": [
           "The family's nurses still keep the halls.",
-          "Hags hum lullabies to nobody."
+          "Hags hum lullabies to nobody.",
+          "Frang, the kitchen hobgoblin, walled in."
         ]
       },
       {
@@ -124,6 +130,53 @@
           "A wizard-hag mutters over the oldest dead.",
           "Something long and slow turns in the dark."
         ]
+      },
+      {
+        "name": "the heir's vault",
+        "x": 38749,
+        "y": 31142,
+        "z": 14541,
+        "radius": 1000,
+        "lines": [
+          "Quillan Muire's words still burn.",
+          "The herbalist hears him, wherever she is.",
+          "A Muire Hero in bone, still on guard.",
+          "Beare Muire, the heir, the first to fall."
+        ]
+      },
+      {
+        "name": "the founder's passage",
+        "x": 33447,
+        "y": 35326,
+        "z": 15523,
+        "radius": 1000,
+        "lines": [
+          "Conaire Muire walks the wet passage.",
+          "Only his own sword lays him."
+        ]
+      },
+      {
+        "name": "the ladies' passage",
+        "x": 35308,
+        "y": 29697,
+        "z": 15523,
+        "radius": 1000,
+        "lines": [
+          "Kacey Muire wears a charm that will not let her rest.",
+          "Ladies-in-waiting, in threes."
+        ]
+      },
+      {
+        "name": "Alsandair's niche",
+        "x": 38449,
+        "y": 31342,
+        "z": 14484,
+        "radius": 1000,
+        "lines": [
+          "Alsandair Muire, with a sword he never drew.",
+          "The founder's blade, handed down.",
+          "A Muire Champion stands guard. Seven, in all."
+        ]
       }
     ]
   },
@@ -151,7 +204,15 @@
       "[word is|heard] the death worm at the bottom of muire tomb is [older than the tomb|bigger every year]",
       "someone fought quillan without killing the herbalist and [the whole family stayed up|it took forever]",
       "[heard|someone said] the mad lord scratched the faces out of the portraits himself",
-      "the muire hero is polite if you are, they say. [still kills you|worth a try]"
+      "the muire hero is polite if you are, they say. [still kills you|worth a try]",
+      "[heard|someone said] quillan muire calls the herbalist from anywhere in the tomb. kill her first",
+      "[heard|someone said] the muire heroes were the only muires anyone in ardee liked",
+      "[heard|someone said] only the muire dueling sword can lay conaire. get it from alsandair first",
+      "[heard|someone said] frang was the muire kitchen hobgoblin, walled up with the family by mistake",
+      "[heard|someone said] beare muire has to be laid to rest first or the rest wont follow",
+      "[heard|someone said] kacey muire's charm keeps her from resting. break it where she lies",
+      "[heard|someone said] alsandair muire never drew the family dueling sword in his life",
+      "[heard|someone said] the muire champions still stand where they stood the night the lord went mad"
     ],
     "tell": [
       "muire tomb near ardee, every hib's first dungeon. undead family, hags, murkmen. teens to twenties, no whistling",
@@ -159,7 +220,15 @@
       "is muire tomb hard? not if you group. kill the herbalist before quillan and mind the ladies in threes",
       "whats in muire tomb? the muire family, hags, murkmen, corpse devourers, tomb creepers, a death worm at the bottom",
       "what level is muire tomb? teens to late twenties. good first dungeon",
-      "who is quillan muire? the family's [caster|mage]. energy blasts, and he calls the herbalist to mend him"
+      "who is quillan muire? the family's [caster|mage]. energy blasts, and he calls the herbalist to mend him",
+      "quillan muire is the 24 down with the heir in the east of muire tomb. energy blasts, and he calls the herbalist",
+      "two muire heroes 19-21 down with quillan and the champions. the herbalist buffs them",
+      "conaire muire is a 20 ghost in the wet passage. rest in peace: kill him with alsandair's dueling sword",
+      "frang is a 20 hobgoblin in the hags' halls of muire tomb with the mummy hags. nobody asks for him",
+      "beare muire is the 18 heir, next to quillan. rest in peace starts with him",
+      "kacey muire is a 17 lady in waiting in the east passages. take her charm, destroy it at her resting place, kill her again",
+      "alsandair muire is the 16 younger son, next to beare. keep his dueling sword for conaire",
+      "seven muire champions 19-20 in muire tomb, they stand in groups. the herbalist buffs them"
     ]
   },
   "loremaster": {
@@ -168,12 +237,20 @@
       "Muire": "A rich house of the Ardee country, hated by its serfs. Lady, heir, hero, ladies-in-waiting, suitors: all laid in one tomb.",
       "lord": "Concaire Muire. He went through his house one winter night with a blade, and then turned it on himself.",
       "banshee": "She keens only for the old families. She keened for the Muires and never stopped. Listen, in the lower halls.",
-      "Quillan": "The lord's cousin, who studied the old words in Tir na Nog and came home with words that burn. He calls the [herbalist] to him when he is pressed. The priests of Ardee want him laid to rest first.",
+      "Quillan": "The lord's cousin, who studied the old words in Tir na Nog and came home with words that burn. He calls the [herbalist] to him when he is pressed. The priests of Ardee want him laid to rest last.",
       "herbalist": "She nursed every Muire for thirty years and nurses them still: she mends any of the family who is badly hurt and strengthens the house's [champions]. Deal with her before her patients.",
       "Conaire": "The founder of the house, a cattle-lord who took the land by the standing stones duel by duel and dug the tomb. His sword went down to the younger sons, and only that blade lays him now. The mad last [lord], Concaire, was named for him.",
       "Kacey": "Kacey Muire, a lady-in-waiting. She and the two others keep together in death as they did in life.",
-      "champions": "The seven champions of the house guard, and the Muire heroes. Loyal to a house that never earned it; call one and the others come.",
-      "rest": "Gogarty Muire, the last living Muire, farms on the Connacht side and fears the family madness. He asks the young to lay his kin to rest by name: Beare the heir, Alsandair the younger son, [Conaire], Shyene the daughter, [Kacey] and [Quillan]. Frang is down there too; nobody asks for him."
+      "champions": "The seven champions of the house guard, and the Muire heroes. Loyal to a house that never earned it; where one stands, the others stand near.",
+      "rest": "Gogarty Muire, the last living Muire, farms on the Connacht side and fears the family madness. He asks the young to lay his kin to rest by name: Beare the heir, Alsandair the younger son, [Conaire], Shyene the daughter, [Kacey] and [Quillan]. Frang is down there too; nobody asks for him.",
+      "Quillan Muire": "Quillan Muire, the last lord's cousin, studied the old words in Tir na Nog and came home with words that burned. He lies in the deep vault with the heir and the house guard, and when he is pressed he calls for the Muire herbalist, wherever in the tomb she is, and she comes. He also calls for others of the house, and nobody else comes. The priests of Ardee want him laid to rest last of all, after the rest of the family, because he will not lie quiet while they walk.",
+      "Muire Hero": "The Muire heroes were the house's own fighters, the sons of the house guard who were raised to the hall and given the name, and there are two of them still, big men in bone, standing guard in the deep vault over kin who never earned it. The herbalist strengthens them as she strengthens the champions, with the same draught she gave them living. The Ardee folk say to be polite to a Muire hero. They were the only Muires anyone liked.",
+      "Conaire Muire": "Conaire Muire was the founder of the house, a cattle-lord of the old kind, who took the land by the standing stones one duel at a time and dug the family tomb. His sword went down to the younger sons. He walks the wet passage of the tomb as a ghost, and Gogarty Muire, the last living Muire, says only that sword lays him: take it from Alsandair, the younger son of the last generation, and bring it to the founder. The mad last lord, Concaire, was named for him.",
+      "Frang": "Frang was the Muires' kitchen hobgoblin, a scullion of the old kind that the great houses kept for the work nobody else would do, and when the last lord went through the house that winter night with his blade, Frang hid in the cold room and was walled up with the family by mistake. He is in the hags' halls now among the mummy hags and the corpse devourers, and nobody asks for him to be laid to rest. The herbalist, who knew him, says to leave it at that.",
+      "Beare Muire": "Beare was the heir of the house, the last lord's eldest, and he lies in the deep vault beside his cousin Quillan and his brother Alsandair with the house guard about them. He is the first of the family Gogarty Muire asks the young to lay to rest, because he was the first to die that winter night, and the Ardee folk say the heir has to go first or none of the rest will follow. He was a seashell-collector as a boy, and kept them all.",
+      "Kacey Muire": "Kacey Muire was a lady-in-waiting of the house, and she and the two others keep together in death as they did in life, in the eastern passages. She wears a charm. Gogarty Muire says she was given it by a suitor who meant it to keep her from harm, and it does: it keeps her from rest. Take it from her, he says, and break it at the foot of the place where she lies, and then she can be laid down properly. She does not thank anyone for it.",
+      "Alsandair Muire": "Alsandair was the younger son of the last generation, and the founder's duelling sword came down to him as it came down to every younger son of the house. He lies in the deep vault beside his brother the heir, and Gogarty Muire asks the young to take the sword from him and keep it, because it is the only blade that lays Conaire the founder. Alsandair, the Ardee folk say, never once drew it in his life. He did not like the family's way with duels.",
+      "Muire Champion": "The seven Muire champions were the house guard, sworn to the Muires for life and kept on afterwards. They stand where they stood the night the last lord went through the house: three about the heir and his cousin in the deep vault, the rest along the passages, close together, as guards stand. The herbalist strengthens them still. They are loyal to a house that never earned it, the Ardee folk say, which is why the Ardee folk pity them."
     }
   },
   "book": {

@@ -116,9 +116,7 @@
         "radius": 4000,
         "lines": [
           "Gales in a mob, small and wild.",
-          "The children chase them. The elders do not.",
-          "Gala blows through, and the gales follow.",
-          "Doors bang. Something passed."
+          "The children chase them. The elders do not."
         ]
       },
       {
@@ -207,6 +205,28 @@
         "lines": [
           "Bran the Giant keeps half a map.",
           "A man grown huge on a heath of wind."
+        ]
+      },
+      {
+        "name": "Gala's run",
+        "x": 275874,
+        "y": 476581,
+        "z": 6390,
+        "radius": 1000,
+        "lines": [
+          "Gala blows through, and the gales follow.",
+          "Doors bang. Something passed."
+        ]
+      },
+      {
+        "name": "the gales' cliff-top",
+        "x": 254535,
+        "y": 478320,
+        "z": 6645,
+        "radius": 1000,
+        "lines": [
+          "Gales in a mob, pale and quick, off the sea.",
+          "Vervain on the wind, from a garden long inland."
         ]
       }
     ]

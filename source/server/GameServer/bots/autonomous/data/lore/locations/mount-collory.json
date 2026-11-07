@@ -39,6 +39,11 @@
       "text": "Living Server lore: Dun Dagda as the cauldron's house and the realm's luck; Dun Scathaig named for the teacher of champions; the setts; the changelings who came up from the valley; the witches' remorse; the stair; Aingeal's book.",
       "provenance": "original",
       "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawn of Mount Collory: Morsmutare Witch (27, faction Necromancers), the only spawn of the name; Season of Remorse asks for two morsmutare witch kills (respawn 300 seconds).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
     }
   ],
   "story": "Mount Collory is the high frontier behind Druim Cain, a country of bare hills and badger setts that the realm would leave to the badgers if it could. It cannot, because Dun Dagda stands on it. The keep is the realm's house for the Cauldron of Dagda, the old god's cauldron that the bards say no company ever walked away from hungry, and the realm keeps it on the frontier because, the chieftains say, a relic kept safe in a capital is a relic nobody fights for. Every realm on the frontier knows where the Cauldron is. Every realm comes for it.\n\nThe keep was built on the oldest ground of the hill, and the Mount Collory folk say the ground was a feasting-place of the old gods before it was anyone's fortress: the hollow in the keep's yard is where the cauldron first stood. When the Cauldron is taken out of Dun Dagda, the cooks of the frontier say, every pot in Hibernia burns its bottom for a week. When it comes home, the realm's companies eat for a night as if the old god himself were serving, and nobody remembers the meal afterwards.\n\nDun Scathaig stands lower down, toward the Breifine side, named for the woman of the old hero-tales who kept a fort over the sea and taught the realm's greatest champion to fight. The chieftain of Scathaig keeps her custom: the young champions of the frontier are sent there to be beaten until they stop flinching. The hosting that took the four doors of Sheeroe mustered under its walls.\n\nThe hills between belong to the setts. The badgers of Mount Collory are not the badgers of Lough Derg: the sett matrons are as large as ponies, the protectors guard the sett mouths with the patience of sentries, and the faerie badgers among them were changed by something in the hill. The hillock changelings came up out of the valley of Bri Leith, the mad ones' cousins, and live in the hillocks they are named for. The speghouls walk the north-east at night. A thing called Eugor, which the mentalists of Caille call an evanescer, appears in the hills only after dark and only rarely, and fades when it is struck too often, and the mentalist Meagane of Druim Cain wants its ruby.\n\nTwo sorrows live here. The morsmutare witches were women of the realm who went into necromancy and came to the hills to do it where nobody would see; the last of them whispers a name as she dies, and the empyrean guardian of the stone ring north of Druim Cain wants to know whose. And beside Dun Dagda a stair goes down into the earth toward the place the three realms call Darkness Falls, and the keep's garrison keeps a watch on it, because what comes up that stair does not care which realm holds the keep.\n\nWhy does it matter? Because the realm's luck is kept here. When the Cauldron is home, Hibernia's casters say their craft comes easier; when it is gone, every druid on the frontier feels the lack. The chieftains of Mount Collory count the Cauldron's absences on a post in the keep's yard. The post is very notched.",
@@ -116,7 +121,8 @@
         "radius": 1500,
         "lines": [
           "A necromancer's hollow in the hills.",
-          "The last one whispers a name."
+          "The last one whispers a name.",
+          "A Morsmutare Witch, the last, whispering."
         ]
       },
       {
@@ -156,7 +162,8 @@
       "[heard|someone said] the df stair by dun dagda was open and things came up",
       "the morsmutare witch whispered someone's name before she died. [creepy|season of remorse]",
       "[word is|heard] the chieftain of scathaig beat a champion until he stopped flinching",
-      "theyre notching the post at dun dagda again. [cauldron gone|sigh]"
+      "theyre notching the post at dun dagda again. [cauldron gone|sigh]",
+      "[heard|someone said] the morsmutare witch only whispers the name the second time she dies"
     ],
     "tell": [
       "mount collory is frontier behind druim cain. dun dagda and dun scathaig are there",
@@ -164,7 +171,8 @@
       "where is the darkness falls entrance? one is right beside dun dagda in mount collory",
       "is mount collory dangerous? its frontier. enemy realms, plus 30s-40s setts and speghouls",
       "whats in mount collory? dun dagda, dun scathaig, badger setts, changelings, speghouls, the df stair",
-      "what does the cauldron do? hib magic relic. lose it and hib casters are weaker"
+      "what does the cauldron do? hib magic relic. lose it and hib casters are weaker",
+      "season of remorse wants two witch kills but theres only one morsmutare witch. wait for her to come back"
     ]
   },
   "loremaster": {
@@ -177,7 +185,8 @@
       "stair": "The stair beside [Dun Dagda] down toward Darkness Falls. The garrison watches it, because what comes up does not care which realm holds the keep.",
       "Eugor": "An evanescer, the mentalists of Caille say: a thing that appears in the hills only at night and only rarely. Meagane of Druim Cain wants its ruby.",
       "witches": "The morsmutare witches, women of the realm who went into necromancy in the hills. The last whispers a name as she dies; the empyrean guardian of the stone ring north of Druim Cain wants it.",
-      "Aingeal": "A woman who lives alone in the hills between the keeps and keeps the frontier's book, because the chieftains are too busy fighting to write anything down."
+      "Aingeal": "A woman who lives alone in the hills between the keeps and keeps the frontier's book, because the chieftains are too busy fighting to write anything down.",
+      "Morsmutare Witch": "The morsmutare witches were women of the realm who went into necromancy and came to the hills of Mount Collory to do it where nobody would watch, and the hill folk say there were many once and now there is one, who dies and comes back. The empyrean guardian at the stone ring north of Druim Cain wants to hear the name she whispers when she dies. She whispers it only the second time, the hill folk say, and the guardian is patient."
     }
   },
   "book": {
