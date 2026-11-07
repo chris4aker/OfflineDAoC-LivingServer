@@ -5,16 +5,7 @@
   "regions": [
     51
   ],
-  "zones": [
-    53,
-    54,
-    55,
-    57
-  ],
-  "aliases": [
-    "inishail"
-  ],
-  "summary": "Avalon's war-torn isles, Caldey, the Dales of Devwy, Gwyddneau and Inishail, where Morgana's dead and the drakoran hold the open ground.",
+  "summary": "Overview of Avalon's isles beyond the sea: the seven isles from the Isle of Glass to Inishail, each with its own file, and the dungeons beneath them.",
   "facts": [
     {
       "text": "Albion's Shrouded Isles are Morgana's and the drakoran's war on Avalon, with Arawn's Inconnu fighting for Albion; Morgana raised the undead remains of Roman soldiers for her army.",
@@ -27,7 +18,7 @@
       "source": "https://camelot.allakhazam.com/zones.html?czone=77"
     },
     {
-      "text": "Named here: Amphiptere, Durval and Vortanos (Caldey); Qan'ris Duros, Ris'nir Cruss and Valnir Mordeth (Dales of Devwy); Coliath (Gwyddneau); Sarcondina and the Spirit of Lord Emthoro (Inishail).",
+      "text": "Region 51 holds seven zones: Isle of Glass (51), Avalon Isle (52), Dales of Devwy (53), Caldey (54), Gwyddneau (55), Aldland (56) and Inishail Island (57); each has its own lore file. Avalon City, Caer Sidi, Krondon and the Crystal Cave are dungeons of their own regions.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
     },
@@ -37,129 +28,49 @@
       "source": "to verify"
     },
     {
-      "text": "Existing bot chat: the Spirit of Lord Emthoro still holds Inishail; the orcs on Inishail fled the ogres; nobody can say what Coliath guards in Gwyddneau.",
+      "text": "The isles' named bosses now live in their zone files: Amphiptere, Durval and Vortanos (Caldey); Qan'ris Duros, Ris'nir Cruss and Valnir Mordeth (Dales of Devwy); Coliath (Gwyddneau); Sarcondina and the Spirit of Lord Emthoro (Inishail Island).",
       "provenance": "original",
-      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+      "source": "LORE"
     }
   ],
-  "story": "Beyond the earthen border at the Isle of Glass lie the isles Albion lost: Avalon, Caldey, the Dales of Devwy, Gwyddneau, Inishail. They were green and scholarly once, the country of the colleges of Avalon. Then Morgana came with the drakoran, and with the dead. She raised the Roman legions who lie buried in every isle's soil and set them marching again, and the open country between the dungeons became a battlefield that no one has won.\n\nThe named things of the isles are the war's leftovers. On Caldey the dead keep their own: a winged serpent that sheds its teeth and raises the ancient dead to fight, a plague-priest with his corpse-delvers and white lights, and Vortanos, who keeps prisoners and walks only by day. In the Dales of Devwy the drakoran hold the high ground under their commanders, and Valnir Mordeth's ghouls feed him. In drowned Gwyddneau, Coliath keeps something no one can name. On Inishail a lord's spirit still holds his land and will not be harmed by anyone who does not stand on it, and Sarcondina's servants crawl in the marsh.\n\nAlbion's adventurers cross to the isles for the dungeons. They stay, often longer than they meant to, for the war.",
-  "legend": "Every isle has its own named and every named its own trick. The Spirit of Lord Emthoro cannot be hurt unless you stand on his ground. Vortanos is not there at night. Valnir's ghouls heal him with their spells. Ris'nir Cruss raises an apparition of everyone he kills. Learn the trick before you pull.",
+  "story": "Beyond the sea from the king's hills lie the isles of Avalon, which the colleges held for longer than Camelot has stood, and which Albion has mostly lost. Morgana came over the water with the drakoran and the dead, the colleges burned, and the isles fell one after another, until Albion held only the southernmost and threw up a wall across it.\n\nRead from the wall outward, the isles run like this. The Isle of Glass is the last firm ground, Caer Gothwaite and its harbour, the three ring-forts on the earth wall. North of it Avalon Isle keeps the colleges' orchards and the burnt city on its lid of glass, and Wearyall's tree. West of Avalon, Aldland, the hall-folk's old land, keeps Krondon's door under its hill and Albion's safe fort. Beyond Avalon to the north the Dales of Devwy were the colleges' farms, where the dead households still keep house and a drakoran wears a dead master's name. Caldey in the far west was Avalon's burying isle, and stood up when the witch called; the turning gaol of Caer Sidi stands on the water off its strand. Gwyddneau, the heights of a drowned country, is the one isle Albion never held, because the lammia of Clifton hold it. And Inishail, the smallest and last, is a dead lord's ground.\n\nEach isle has its own story now, told in its own place. What they share is the war: drakoran on the high ground, Morgana's dead in the old graves, the Inconnu walking between them on errands for their lord, and Albion's companies crossing the water from Gothwaite Harbor to go down into the dungeons the war left behind. They come for the dungeons. They stay, often longer than they meant to, for the war.",
+  "legend": "The Shrouded Isles are Albion's expansion zones, levels 1 to 65, reached by the ship from Camelot Hills to Gothwaite Harbor. Start on the Isle of Glass, then Avalon Isle and Aldland, then the Dales of Devwy, Caldey, Gwyddneau and Inishail for the 50s and 60s. Each isle has its own nameds; check the isle's own lore. Avalon City is under Avalon Isle, Krondon's door is on Aldland, Caer Sidi is off Caldey's western strand, the Crystal Cave is reached from Avalon. Learn the trick of a named before you pull.",
   "atmosphere": {
     "firstEntry": [
       "The Shrouded Isles. The dead here march in Roman step."
     ],
-    "areas": [
-      {
-        "name": "Amphiptere's roost",
-        "x": 348958,
-        "y": 372378,
-        "z": 3856,
-        "radius": 1000,
-        "lines": [
-          "Teeth lie in the grass, long as daggers."
-        ]
-      },
-      {
-        "name": "Durval's barrow",
-        "x": 319043,
-        "y": 406794,
-        "z": 3082,
-        "radius": 1000,
-        "lines": [
-          "White lights hover over fresh-dug earth."
-        ]
-      },
-      {
-        "name": "Vortanos' prison",
-        "x": 366820,
-        "y": 369691,
-        "z": 3048,
-        "radius": 1000,
-        "lines": [
-          "Prisoners sleep in chains. Their keeper wakes by day."
-        ]
-      },
-      {
-        "name": "Qan'ris Duros' camp",
-        "x": 425043,
-        "y": 397100,
-        "z": 3056,
-        "radius": 1000,
-        "lines": [
-          "Drakoran guardsmen stand to. Their commander is near."
-        ]
-      },
-      {
-        "name": "Ris'nir Cruss' field",
-        "x": 430763,
-        "y": 388496,
-        "z": 4870,
-        "radius": 1000,
-        "lines": [
-          "Pale shapes stand here wearing familiar faces."
-        ]
-      },
-      {
-        "name": "Valnir Mordeth's pit",
-        "x": 378390,
-        "y": 398849,
-        "z": 4354,
-        "radius": 1000,
-        "lines": [
-          "Ghouls crouch around a pit, feeding something."
-        ]
-      },
-      {
-        "name": "Coliath's height",
-        "x": 327855,
-        "y": 443917,
-        "z": 7514,
-        "radius": 1000,
-        "lines": [
-          "Something is guarded here. Nobody says what."
-        ]
-      },
-      {
-        "name": "Lord Emthoro's ground",
-        "x": 238081,
-        "y": 434761,
-        "z": 4521,
-        "radius": 600,
-        "lines": [
-          "A lord's ground. Step onto it to face him."
-        ]
-      },
-      {
-        "name": "Sarcondina's marsh",
-        "x": 260656,
-        "y": 456185,
-        "z": 4782,
-        "radius": 1000,
-        "lines": [
-          "The marsh moves. Her servants are coming."
-        ]
-      }
-    ]
+    "areas": []
   },
   "botLines": {
     "lore": [
-      "the spirit of lord emthoro still holds inishail. nobody knows who he was",
-      "coliath rules gwyddneau and nobody can tell me what it guards",
-      "the orcs on inishail fled the ogres, they say. makes you wonder what krondon did to them",
-      "morgana raised the roman legions buried in the isles. [thats why they march in step|old dead, new orders]"
+      "the shrouded isles were avalon's. morgana took them with the drakoran and the dead",
+      "isle of glass is the last bit albion kept, the rest are behind the wall",
+      "morgana raised the roman legions buried in the isles. [thats why they march in step|old dead, new orders]",
+      "seven isles: glass, avalon, aldland, devwy, caldey, gwyddneau, inishail"
     ],
     "rumour": [
-      "[heard|someone said] vortanos isnt even there at night. day only",
-      "[heard|word is] ris'nir cruss makes a ghost of everyone he kills"
+      "[heard|someone said] every isle past the wall has its own named with a trick",
+      "heard gwyddneau is the only isle albion never held"
     ],
     "tell": [
-      "the isles? caldey, devwy, gwyddneau, inishail. drakoran and morganas dead everywhere, a named on every isle. learn the tricks first"
+      "the isles? seven of them. start on the isle of glass, go north and west as you level",
+      "si dungeons? avalon city, krondon, caer sidi, crystal cave. all reached from the isles"
     ]
   },
   "loremaster": {
-    "intro": "The isles Albion lost: Caldey, the Dales of Devwy, Gwyddneau, Inishail. Morgana raised the Roman dead there, and the [named] things of the isles are the war's leftovers.",
+    "intro": "The isles of Avalon, which Albion has mostly lost. Ask of each isle: the [isle of glass], [avalon isle], [aldland], the [dales of devwy], [caldey], [gwyddneau] or [inishail]; or of the dungeons beneath them, [avalon city], [krondon], [caer sidi] and the [crystal cave].",
     "topics": {
-      "named": "On Caldey the Amphiptere, Durval and Vortanos. In the Dales Qan'ris Duros, Ris'nir Cruss and Valnir Mordeth. In Gwyddneau, Coliath. On Inishail, Sarcondina and the Spirit of Lord [Emthoro]. Each has its trick."
+      "isle of glass": "The last firm ground, Albion's foothold: Caer Gothwaite and its harbour, the earth wall and its three ring-forts.",
+      "avalon isle": "The colleges' orchards, Wearyall's tree, and the burnt city on its lid of glass; [avalon city] lies under it.",
+      "aldland": "The hall-folk's old land, west of Avalon: [krondon]'s door under the hill, the Kulaclan orcs, and Caer Diogel, the safe fort.",
+      "dales of devwy": "The colleges' farms, north of Avalon: Fort Gwyntell, the ghost households, the hall of making and the drakoran camp.",
+      "caldey": "Avalon's burying isle in the far west, which stood up when Morgana called; Little Haven, and [caer sidi] off its strand.",
+      "gwyddneau": "The heights of a drowned country, the one isle Albion never held: the lammia town of Clifton and the lich on the height.",
+      "inishail": "The isle of rest, smallest and last: a dead lord's ground, the orcs who ran, and Sarcondina's marsh.",
+      "avalon city": "The colleges' city, burnt, under Avalon Isle, where the drakoran lords hold court.",
+      "krondon": "The hall under the hill on [aldland], held by the thrawn ogres and their queen.",
+      "caer sidi": "Arawn's turning gaol, standing on the water off [caldey]'s western strand.",
+      "crystal cave": "The cave under Avalon where Xanxicar sleeps on the colleges' warm ground."
     }
   },
   "book": {
@@ -169,8 +80,51 @@
       "Each isle has its named terror, and the garrison trades stories of them the way soldiers trade dice. The serpent of Caldey that sheds its teeth. The lord's ghost on Inishail who cannot be hurt by anyone who will not set foot on his ground. The keeper of prisoners who is not there after dark. The thing in Gwyddneau that guards something, though nobody can say what. We have a wager on what it is. Nobody has collected."
     ]
   },
-  "bosses": [
-    "sarcondina",
-    "spirit-of-lord-emthoro"
+  "bosses": [],
+  "related": [
+    {
+      "id": "isle-of-glass",
+      "relation": "an isle of the region, with its own file"
+    },
+    {
+      "id": "avalon-isle",
+      "relation": "an isle of the region, with its own file"
+    },
+    {
+      "id": "aldland",
+      "relation": "an isle of the region, with its own file"
+    },
+    {
+      "id": "dales-of-devwy",
+      "relation": "an isle of the region, with its own file"
+    },
+    {
+      "id": "caldey",
+      "relation": "an isle of the region, with its own file"
+    },
+    {
+      "id": "gwyddneau",
+      "relation": "an isle of the region, with its own file"
+    },
+    {
+      "id": "inishail-island",
+      "relation": "an isle of the region, with its own file"
+    },
+    {
+      "id": "avalon-city",
+      "relation": "a dungeon beneath the isles, with its own file"
+    },
+    {
+      "id": "krondon",
+      "relation": "a dungeon beneath the isles, with its own file"
+    },
+    {
+      "id": "caer-sidi",
+      "relation": "a dungeon beneath the isles, with its own file"
+    },
+    {
+      "id": "crystal-cave",
+      "relation": "a dungeon beneath the isles, with its own file"
+    }
   ]
 }
