@@ -110,7 +110,8 @@
         "radius": 1500,
         "lines": [
           "A stand of trees at the snowline. A curse hangs here.",
-          "Servants wait for a master the deserters left dead."
+          "Servants wait for a master the deserters left dead.",
+          "Three Servant of Kelic, ash in their hands."
         ]
       },
       {
@@ -143,7 +144,8 @@
         "radius": 2500,
         "lines": [
           "Bounty hunters warm their hands. Red Daggers nearby.",
-          "A red-hilted dagger stuck in a stump. A warning."
+          "A red-hilted dagger stuck in a stump. A warning.",
+          "Each Red Dagger here wears the band's red."
         ]
       },
       {
@@ -189,6 +191,10 @@
       "they tell new groups about the wretch of winter to scare them. [it worked on me|works every time]",
       "raumarik is good xp but the revenant sits up in the north west. watch your back",
       "loken is a piece of loki that gets out when the venom bowl spills",
+      "three servant of kelic wait under the snowline trees for their master",
+      "a servant of kelic carries ash from kelics totem",
+      "the red dagger cutthroats sell the back roads to albion",
+      "a red dagger in a stump is the band's warning",
       "a heart that held a sun splinter never goes cold, the menders say",
       "dont carry a sun splinter without a cold iron casket. [it burns through|galplen folk say]",
       "the unicorns in raumarik run from everyone. [never got close|beautiful though]",
@@ -199,6 +205,8 @@
       "raumarik is the far northwest. big nameds, slow spawns, three epics end there",
       "raumarik? wretches of winter, the revenant, oona, loken, kelic. bring a group",
       "its a high level zone, not a camping zone. you go for an epic or a named",
+      "the servants of kelic are at the snowline trees, 48 to 52",
+      "four red daggers stand by the bounty hunters fires in mid raumarik, 46",
       "is raumarik hard? everything is high fifties to seventies. full group",
       "oona is at the river fork in the south, loken in the east, kelic at the northern snowline",
       "the revenant's fortress is in the far north west up high"
@@ -210,6 +218,8 @@
       "Revenant": "He walls in a splinter of the sun that Fenrir spat out in the snow. Win it back in [cold iron], and bring blades, not spells.",
       "Wretch": "The Wretch of Winter has no shape of its own and borrows nine. The old hands rank them, but they are all the one hunger.",
       "epics": "Healers and shamans hunt [Loken], a bit of Loki loose in the snow. Hunters and shadowblades hunt [Oona] of Hibernia at the river fork. The mystics hunt [Kelic], who cursed his own clan. Warriors hunt the [Red Daggers].",
+      "Servant of Kelic": "Three dead servants under the trees at the snowline, waiting for the master the deserters left dead: Kelic, whose household they were. The Galplen tellers say the servants carry his totem's ash in their hands and that they will wait until he comes back, which he does, now and then. They fight anyone who comes to the trees, and they fight beside Kelic when he is there.",
+      "Red Dagger": "The cutthroats of [Hagall]'s band, the Red Daggers, four of them in their red by the bounty hunters' fires, who sell the back roads of the frontier to Albion. A red-hilted dagger stuck in a stump is their warning. The viking epic sends Midgard's young against their chief and his second; the Daggers by the fires are what stands in the way.",
       "cold iron": "Caskets of cold iron, made by Gris of Jordheim, to carry a splinter of the sun out of Raumarik. Galplen's tellers say nothing else will hold it.",
       "Red Daggers": "A band who keep a hold by the bounty hunters' fires in the south-middle of Raumarik, under [Hagall] the Red Dagger; [Red Hagen], his second, keeps their map in the east. Midgard's viking epic means to end them.",
       "fylgjur": "Guardian spirits of the old Norse families. In Raumarik they wander the eastern edge, looking for families that have died out.",

@@ -113,7 +113,30 @@
         "radius": 4000,
         "lines": [
           "Small ghosts in the grass, asking to be carried.",
-          "Whose children were they? Bjarken will not say."
+          "Whose children were they? Bjarken will not say.",
+          "Idette and Loden each keep half a drowned man's map."
+        ]
+      },
+      {
+        "name": "the pelterers' ledge",
+        "x": 309000,
+        "y": 302500,
+        "z": 7600,
+        "radius": 2500,
+        "lines": [
+          "Vaetild counts the pelts at dawn and dusk.",
+          "Pelterer Blegkrak scrapes hides and trusts nobody."
+        ]
+      },
+      {
+        "name": "the strivers' camp",
+        "x": 282046,
+        "y": 281204,
+        "z": 4239,
+        "radius": 2000,
+        "lines": [
+          "Morvalt strebers, the strivers, under Streber Rengo.",
+          "The ones who still mean to get into Trollheim."
         ]
       },
       {
@@ -174,7 +197,12 @@
       "bothrar hadd pays well for tusks",
       "the landflyke are morvalt the other morvalt threw out",
       "the bergklan trust nobody, not even the tradklan",
-      "the crown in bjarken grows a fingernail a year"
+      "the crown in bjarken grows a fingernail a year",
+      "streber rengo still means to get into trollheim, he looks at the gate once a season",
+      "vaetild can tell a stolen pelt by the smell",
+      "pelterer blegkrak makes the best pelts on aegir and has the worst temper",
+      "idette and loden each keep half of modolfs drowned map",
+      "loden and idette were modolfs companions who died on the mountain while he drowned"
     ],
     "tell": [
       "gripklosa is north aegir, bjarken is the town in the southwest",
@@ -182,7 +210,12 @@
       "gripklosa is high 20s to mid 40s, redcaps up north go to 61",
       "mammoth valley is east gripklosa, mammoth hunt quest from bothrar hadd",
       "the old matriarch is a 57 mammoth in ne gripklosa",
-      "stor gothi tarnat in bjarken ports you round the isles"
+      "stor gothi tarnat in bjarken ports you round the isles",
+      "streber rengo is in the west with the morvalt strebers, 33",
+      "vaetild and pelterer blegkrak are on the bergklan ledge east of bjarken",
+      "pelterer blegkrak is the pelterer for otas quest",
+      "idette is in the myling fields with the undead morvalt, lost maps",
+      "loden is in the myling fields east of idette, lost maps"
     ]
   },
   "loremaster": {
@@ -196,7 +229,12 @@
       "redcaps": "The Blood Reavers of the northern heights, who keep their caps red the way the Iarnwood's redcaps do, by dipping them.",
       "Mammoth Valley": "Where the great herd of Aegir passes on its road round the island. Bothrar Hadd buys its tusk and pelt; the morvalt mammoth-hunters camp above it; the [Old Matriarch] leads it.",
       "the crown": "Kula's ice crown in [Bjarken]'s hall, taken by Ragna Steinsdottir's hundred. It has never melted and grows, the town says, a fingernail's width over the years.",
-      "Sigvor": "Sigvor of Bjarken, keeper of the crown's hall, who wrote 'Under the Claw' for travellers who ask what the mountains are."
+      "Sigvor": "Sigvor of Bjarken, keeper of the crown's hall, who wrote 'Under the Claw' for travellers who ask what the mountains are.",
+      "Streber Rengo": "The chief of the morvalt strebers, the strivers, a camp of morvalt in the west of the range who still mean to get into Trollheim when the rest of the [western morvalt] have given up. Bjarken says Rengo goes down to the doorstep once a season and looks at the gate, and comes back angrier. He fights with his strivers round him.",
+      "Vaetild": "A bergklan of the mountain-clan who keeps the clan's providers, pelterers and skinners on a ledge east of Bjarken. The [bergklan] trust nobody, and Vaetild trusts less than that: she counts the pelts at dawn and at dusk, and the pelterers say she can tell a stolen skin by the smell. Ota Yrling of Aegirhamn trades with the pelterers through her, when she allows it.",
+      "Pelterer Blegkrak": "A pelterer of the [bergklan] on the ledge near [Vaetild], who scrapes the hides the hunters bring and is the one Ota Yrling's bag of trade goods goes to. The clan says Blegkrak's pelts are the best on Aegir and his temper the worst. He fights strangers who come to the ledge without trade goods, and some who come with them.",
+      "Idette": "An undead of the myling fields who keeps half of a drowned bergklan's map. Modolf drowned in Munin Sound with the clan's map, and the map was cut in two to be carried; Idette has one half and [Loden] the other, among the undead morvalt. Sinna Redtoes of Aegirhamn wants both halves, and Merja of Bjarken wants to know what Modolf found. Idette fights to keep it.",
+      "Loden": "The other undead of the myling fields with half of Modolf's map, a little east of [Idette], among undead morvalt and a wandering vandarare. The Bjarken folk say Idette and Loden were Modolf's companions, who died on the mountain while he died in the sound, and that each kept the half he gave them. Loden will not give his up without a fight."
     }
   },
   "book": {
