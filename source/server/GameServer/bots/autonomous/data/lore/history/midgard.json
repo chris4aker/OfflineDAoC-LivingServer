@@ -162,6 +162,8 @@
         "hamar",
         "jarl-ormarr",
         "mistress-of-runes",
+        "rottild-the-traitor",
+        "summoned-guardian",
         "summoner-cunovinda",
         "summoner-lossren",
         "summoner-roesia",
@@ -195,11 +197,15 @@
         "odins-gate"
       ],
       "bosses": [
+        "hagall-the-red-dagger",
+        "jango",
         "kelic",
         "loken",
         "oona",
+        "red-hagen",
         "runil",
-        "ulfketill"
+        "ulfketill",
+        "valthjof"
       ]
     },
     {
@@ -257,10 +263,13 @@
         "issorden",
         "jailer-vifil",
         "king-tuscar",
+        "koli",
+        "masher",
         "queen-kula",
         "shredclaw",
         "torst",
         "trollkarl-bonchar",
+        "unok",
         "valmak",
         "vasrem"
       ]
@@ -387,9 +396,11 @@
         "hati",
         "hurjavelen",
         "iarnvidiur",
+        "koli",
         "lydsyg",
         "skoll",
         "stanga",
+        "unok",
         "vasrem"
       ]
     },
@@ -458,6 +469,7 @@
         "hurika",
         "lydsyg",
         "mahattava",
+        "masher",
         "mortufoghus",
         "rotodjur",
         "shredclaw",
@@ -487,7 +499,8 @@
       ],
       "bosses": [
         "mokkurvalve",
-        "ulfketill"
+        "ulfketill",
+        "valthjof"
       ]
     },
     {
@@ -499,9 +512,12 @@
         "raumarik"
       ],
       "bosses": [
+        "hagall-the-red-dagger",
         "issorden",
+        "jango",
         "kelic",
         "raumarik-revenant",
+        "red-hagen",
         "runil",
         "wretch-of-winter"
       ]
@@ -519,6 +535,7 @@
         "hamar",
         "jarl-ormarr",
         "mistress-of-runes",
+        "summoned-guardian",
         "thane-dyggve"
       ]
     },
@@ -628,7 +645,9 @@
       "places": [
         "vanern-swamp"
       ],
-      "bosses": []
+      "bosses": [
+        "rottild-the-traitor"
+      ]
     },
     {
       "id": "raumarik-giants",

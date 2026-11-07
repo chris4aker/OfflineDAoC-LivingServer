@@ -211,7 +211,7 @@
       "Wretch": "The Wretch of Winter has no shape of its own and borrows nine. The old hands rank them, but they are all the one hunger.",
       "epics": "Healers and shamans hunt [Loken], a bit of Loki loose in the snow. Hunters and shadowblades hunt [Oona] of Hibernia at the river fork. The mystics hunt [Kelic], who cursed his own clan. Warriors hunt the [Red Daggers].",
       "cold iron": "Caskets of cold iron, made by Gris of Jordheim, to carry a splinter of the sun out of Raumarik. Galplen's tellers say nothing else will hold it.",
-      "Red Daggers": "A band who keep a hold by the bounty hunters' fires in the south-middle of Raumarik, under Hagall the Red Dagger and Red Hagen. Midgard's viking epic means to end them.",
+      "Red Daggers": "A band who keep a hold by the bounty hunters' fires in the south-middle of Raumarik, under [Hagall] the Red Dagger; [Red Hagen], his second, keeps their map in the east. Midgard's viking epic means to end them.",
       "fylgjur": "Guardian spirits of the old Norse families. In Raumarik they wander the eastern edge, looking for families that have died out.",
       "wolf's people": "The fenrir soldiers, mystics and greater fenrir of the middle valleys, prophets of the day the wolf's chain breaks. See the [Revenant] for the wolf's folly.",
       "frozen web": "The icestriders of the north-east, chillers and frostweavers and interceptors, who weave webs of ice between the rocks.",
@@ -236,6 +236,8 @@
     "oona",
     "kelic",
     "runil",
-    "hugi"
+    "hugi",
+    "hagall-the-red-dagger",
+    "red-hagen"
   ]
 }
