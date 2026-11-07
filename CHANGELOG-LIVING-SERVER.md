@@ -60,6 +60,12 @@ each commit credited to him. They pass automated tests; nobody has played them i
 - Darkness Falls: every keep capture recounts all three realms, so only the realm with strictly the most keeps holds
   the door (a capture with no holder used to hand it to the taker).
 
+- Prima content (prepared, not in a world yet): the scripts of True 1.65's 16 Prima scripted encounters (Cuinn,
+  Talvor's Spirit, Brungar, Zargin, the Unseelie Envoy's convoy, Thergus's ogre war and more) are in the server; they
+  start only on world rows that name them, which only a base-game world update can add. `source/tools/
+  true165_prima_content.py` adds those rows, and the Prima monsters, items, quests and drops a world lacks, to a
+  release's reference world; see docs/TRUE165-CONTENT.md. True 1.65's keep-guard restore is not needed in 1.2's world.
+
 Not taken, because 1.2 already does it its own way: the route-proof cap, Sanguis's last 5%, Govannon's raid calls and
 area spells, the dragon lair circle, the Spectral Provisioner (raid bots already wake it) and the Cunovinda and Shade
 teleports (already behind 1.2's displacement switch). Not taken: the party-pull camp turn (it fixes a
