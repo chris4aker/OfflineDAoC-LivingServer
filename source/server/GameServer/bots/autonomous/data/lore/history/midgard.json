@@ -142,7 +142,8 @@
       ],
       "places": [
         "dodens-gruva",
-        "summoners-hall"
+        "summoners-hall",
+        "vanern-swamp"
       ],
       "bosses": [
         "aros-the-spiritmaster",
@@ -154,7 +155,8 @@
         "summoner-cunovinda",
         "summoner-lossren",
         "summoner-roesia",
-        "thane-dyggve"
+        "thane-dyggve",
+        "ydenia-of-the-seithkona"
       ]
     },
     {
@@ -182,7 +184,9 @@
       "places": [
         "odins-gate"
       ],
-      "bosses": []
+      "bosses": [
+        "ulfketill"
+      ]
     },
     {
       "id": "mid-era-shrouded-isles",
@@ -248,7 +252,9 @@
         }
       ],
       "places": [],
-      "bosses": []
+      "bosses": [
+        "mokkurvalve"
+      ]
     }
   ],
   "factions": [
@@ -409,15 +415,24 @@
       "id": "lokis-mischief",
       "name": "Loki's Mischief",
       "summary": "What gets out when the venom bowl spills: Loken in Raumarik, and the jotuns who do the bound god's work, like Ulfketill.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "vanern-swamp"
+      ],
+      "bosses": [
+        "ulfketill"
+      ]
     },
     {
       "id": "jotuns-of-vanern",
       "name": "The Jotuns of Vanern",
       "summary": "Swamp giants who build in clay and still try to better the clay giant of the old tale.",
-      "places": [],
-      "bosses": []
+      "places": [
+        "vanern-swamp"
+      ],
+      "bosses": [
+        "mokkurvalve",
+        "ulfketill"
+      ]
     },
     {
       "id": "dishonoured-dead",
@@ -529,6 +544,26 @@
       ],
       "bosses": [
         "glacier-giant"
+      ]
+    },
+    {
+      "id": "hagbui",
+      "name": "The Hagbui",
+      "summary": "The mound-dwellers of Vanern: a jarl's dead household that never left its barrows, with its thanes, runemasters, heralds and a forge that still burns.",
+      "places": [
+        "vanern-swamp"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "dark-seithkona",
+      "name": "The Dark Seithkona",
+      "summary": "Seeresses who followed Ydenia out of the Seithkona Circle into Vanern Swamp, and still keep her high seat.",
+      "places": [
+        "vanern-swamp"
+      ],
+      "bosses": [
+        "ydenia-of-the-seithkona"
       ]
     }
   ]
