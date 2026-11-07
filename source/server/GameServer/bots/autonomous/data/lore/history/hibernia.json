@@ -324,7 +324,9 @@
           "source": "Living Server"
         }
       ],
-      "places": [],
+      "places": [
+        "tir-na-nog"
+      ],
       "bosses": []
     }
   ],
@@ -596,6 +598,22 @@
         "mikka",
         "saemus"
       ]
+    },
+    {
+      "id": "druid-court",
+      "name": "The Druid Court of Tir na Nog",
+      "summary": "The druids of the first families, who held court among the Dream Trees before there was a city, and the realm's own people who grew up round them: the palace, its sages and harpers, the halls of every path, and the druid prince Lovernios, who studies what the wilds send him.",
+      "places": [
+        "tir-na-nog"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "siabra",
+      "name": "The Siabra",
+      "summary": "The siabra, cousins of the elves who did not go behind the Veil, and who hold great stretches of the old country against the realm: the dergan furies and enchanters of Lough Derg, the magi of the Cullen bog, the camps of the Silvermine and the Shannon shore.",
+      "places": [],
+      "bosses": []
     },
     {
       "id": "wild-tribes",
