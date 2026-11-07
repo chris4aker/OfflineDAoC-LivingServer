@@ -260,7 +260,9 @@
       "Of the frogs and the singer. The ellyllon keep faerie frogs in the mountain lakes as a lord keeps hounds, and count them, and are angry when one is missing. Their great toad Worry Wort grows his skin back whole each time he loses it, and the wizards of Swanton want a whole one, which means more than one killing. And in the south-east, past the frogs, among the boogies of the mountain, something keens at night that the hill-folk call Soulfear. Nobody in the roll has gone to look at her and come back with the end of the song."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "soulfear"
+  ],
   "era": "alb-the-dark-age",
   "factions": [
     "arawn",

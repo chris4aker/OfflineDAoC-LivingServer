@@ -240,7 +240,9 @@
     ]
   },
   "bosses": [
-    "draco-magnificens"
+    "draco-magnificens",
+    "ellyll-seer",
+    "belgrik"
   ],
   "era": "alb-the-dark-age",
   "factions": [

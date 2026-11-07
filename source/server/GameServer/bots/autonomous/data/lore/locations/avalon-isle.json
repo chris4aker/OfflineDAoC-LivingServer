@@ -260,7 +260,9 @@
       "Of the Inconnu and the voices. Three of Arawn's people keep among us, Honayt'rt in the village and N'chever on its edge, and a third in Caer Diogel, and they have been searching for a lost stone of their master's for years. They drink cider politely and do not finish it. In the ruins past the lone tree on the hill there is a dead thing called Kelsanor who speaks in many voices, and Marden in the village hears them in his sleep. Kelsanor throws those who hurt him out of his sight. I write it down. I do not go there."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "lord-caddug"
+  ],
   "era": "alb-the-shrouded-isles",
   "factions": [
     "morgana",

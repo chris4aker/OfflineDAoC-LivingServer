@@ -327,7 +327,10 @@
       "Of the cold lad. Near the station, in the long dusk, a lad walks who is cold to the touch. The hill-folk say he was a stable boy who was killed for being slow, and that he works at night now in whatever stable will have him, setting it to rights, and that a man who thanks him loses him, and makes him angry. Mathien at the station leaves his stable door open and says nothing. I have never seen the lad at my gate. If he comes, I will ask him the three questions, and I will not thank him for the answers."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "cauld-lad",
+    "leorcelis-grant"
+  ],
   "era": "alb-the-dark-age",
   "factions": [
     "goblins",
