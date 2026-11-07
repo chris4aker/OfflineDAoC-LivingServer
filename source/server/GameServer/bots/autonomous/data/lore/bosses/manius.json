@@ -1,0 +1,88 @@
+{
+  "id": "manius",
+  "name": "Manius",
+  "npcNames": [
+    "Manius"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Manius: level 48, a human body (model 304), at about 404,400/758,900 on the outlaws' island; respawn 80 seconds; a plain spawn. A separate peaceful NPC, 'Fruadan Draoi Manius' (level 50, model 367), stands close by.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Last Heir: 'Find Fruadan Draoi Manius behind Alainn Binn' (after Chieftess Niamh, Kimba, Donnchadh and two dullahans' spirit sword and scabbard).",
+      "provenance": "game",
+      "source": "DataQuest 'Last Heir' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Manius is the outlaws' druid, the one the bog calls the fruadan draoi, and there are two of him, the Alainn Bin folk say: the one who fights for the island, and the one who talks. The one who talks stands a little apart, behind Alainn Bin's side of the island, and the realm's young come to him at the end of the Last Heir's road with a spirit sword and a spirit scabbard taken from the dullahans of Lough Gur. The one who fights is with Ide and Donal on the island, and does not talk at all.\n\nIde says it is the druid's old trick, to stand in two places at once, and that Manius learned it from a druid of Lough Gur before he came to the bog. Donal says Manius is two brothers and has always been two brothers and the druid business is a story they tell to frighten Alainn Bin. Manius, both of him, smiles.",
+  "legend": "Manius (48) is the fighting outlaw druid on the Cullen outlaws' island (about 404k/759k), with Deniela, Jannet, Ide and Donal. Fruadan Draoi Manius (50) beside the island is a separate, peaceful NPC: the end of the Last Heir quest, so do not confuse them. Group of high 40s; interrupt his casts. Plain spawn, 80-second respawn. Talk to the peaceful one; fight the other.",
+  "yells": {
+    "aggro": [
+      "(the outlaw druid raises his staff without a word)",
+      "The other one talks. I do not."
+    ],
+    "phases": [],
+    "death": [
+      "(Manius falls; behind Alainn Bin, the other one smiles)"
+    ],
+    "slay": [
+      "(silence, and the reeds closing)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A druid of the outlaws, silent. Another one nearby, talking."
+    ],
+    "phases": [],
+    "realmFirstKill": "Manius, the outlaws' druid, has fallen. One of him."
+  },
+  "botLines": {
+    "briefing": [
+      "manius is the 48 outlaw druid on the island. caster, interrupt him",
+      "fruadan draoi manius is the peaceful last heir npc, different"
+    ],
+    "aftermathWin": [
+      "manius down. [one of him|lol]",
+      "interrupted every cast. [nice|grats]"
+    ],
+    "aftermathLoss": [
+      "he nuked the healer. [ouch|rip]",
+      "pulled the island. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] there are two maniuses on the outlaws' island. one talks, one doesnt",
+      "donal says manius is two brothers and the druid trick is a story to scare alainn bin"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Manius",
+    "text": "The Cullen outlaws' druid, the fruadan draoi, of whom there are two: one who talks at the end of the Last Heir's road, and one who fights on the island and says nothing."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Manius in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Manius turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "outlaws"
+  ],
+  "related": [
+    {
+      "id": "ide",
+      "relation": "the wise-woman beside him"
+    },
+    {
+      "id": "donal",
+      "relation": "his captain"
+    }
+  ],
+  "aliases": [
+    "Fruadan Draoi Manius"
+  ]
+}

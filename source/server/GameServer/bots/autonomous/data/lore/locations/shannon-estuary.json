@@ -31,7 +31,7 @@
       "source": "world data Mob table, region 200 (read 2026-11-06)"
     },
     {
-      "text": "Named here: Abbadona (45, Siabras; The Lost Relics), Arracht (38), Danderpaw (36), Kaen Kedger, Nasco and Solas (34), Lethe, Muir, Kirwyn and Srandamar; Criofan the Fisherman 'on the bridge north of Connla'; Osier 'at night at the four standing stones'; Ciar 'in the grove of dead trees north of Connla' and her 'Guardian' Lucan 'across the estuary'; Nasco 'at night in the curves of the road to Ceannai'.",
+      "text": "Named here: Abbadona (45, faction Siabras in the world data; 'the demon Abbadona' of The Lost Relics), Arracht (38), Danderpaw (36), Kaen Kedger, Nasco and Solas (34), Lethe, Muir, Kirwyn and Srandamar; Criofan the Fisherman 'on the bridge north of Connla'; Osier 'at night at the four standing stones'; Ciar 'in the grove of dead trees north of Connla' and her 'Guardian' Lucan 'across the estuary'; Nasco 'at night in the curves of the road to Ceannai'.",
       "provenance": "game",
       "source": "DataQuest 'Criofan's Fish', 'Freeing Osier', 'Enchanting Willow', 'Search for Nasco's Spear' (world data); GAPS-hibernia.md"
     },
@@ -46,8 +46,8 @@
       "source": "Living Server"
     }
   ],
-  "story": "The river that comes down past Lough Gur and the Silvermine meets the sea at the Shannon Estuary, and the harpers of Connla sing every visitor the same song about it before they will sing anything else. Sinann went looking for wisdom at Connla's Well, the song goes, where the hazels let fall their nuts into the water and the salmon eat them, and she was greedy, or brave, or only thirsty, and the well rose up out of its banks and drowned her and carried her down to the sea, and the water she rode is the river. The estuary is where she reached the sea. The fishers of Connla say the water still tastes faintly of hazelnut at the turn of the tide, and they do not mean it as a joke.\n\nConnla took the well's name and stands on the estuary's western shore, half on land and half on pontoons over the water, a town of fishers and boatmen and teachers of every path, where the young of the realm learn to swim before they learn anything else, because the pontoons move. Kyli keeps the pontoon end. Criofan the fisherman keeps the bridge north of town and complains about the siabra who steal his catch. The road from Connla runs east past a guard post toward Innis Carthaig and Lough Gur, and south over the hills to Ceannoi, a merchants' stop on the high road, where the armourers sell scale to anyone going further.\n\nThe siabra of the estuary call themselves eriu, after the oldest name of the land itself, the name the first people gave it before any of the rest of us came, and they say it is theirs by right. The eriu henters keep the eastern hills above the river and the eriu fiscere fish the shore south of the stepping-stone bridge, and between them they hold the estuary's east bank as the Cullen siabra hold the bog. Kaen Kedger keeps a house on the hillside of their camp, and Solas walks the road with them, and further up in the high ground Abbadona keeps the relics the bog's geas-bound ghosts were set to guard, or some of them, and Lobais in the palace wants them back.\n\nAt the river's mouth the ollipheist breed. They are the great water-serpents of the old stories, younger and smaller here than the ones in the songs but still longer than a boat, and they come up the shore at the river mouth in the north-west where the water is brackish. Arracht, which the fishers say is only the word for a monster, haunts the hill above them. The far liath rolls in off the sea on the same shore and leads people into the water, and the fishers tie a rope to their belts when they go out in fog.\n\nNorth of Connla there is a grove of dead trees, and in it Ciar, a woman of the willow who died and would not lie down, and across the estuary her guardian Lucan, who cannot rest while she walks; the young of Tir na Nog are sent to cut the willow and let him go. South of Connla four standing stones stand in a field, and at night Osier comes to them, and the women of Ardee send for a bladder of a wolfhound and water from a dew sheerie to free him. On the curves of the road to Ceannoi a thief called Nasco used to walk at night with a spear that was not his, and Aziliz of the lake wants it back for Howth.\n\nWhy does it matter? Because the estuary is where the realm's water ends. Everything the rivers carry out of the hills passes Connla on its way to the sea: silver dust from the Silvermine, peat from the bog, the lake's music on summer nights. The harpers say the river is still Sinann, still carrying away what she drank, and that a wise person drinks from it only once, at the turn of the tide, and only a little.",
-  "legend": "Shannon Estuary, between the Silvermine and Lough Gur, levels 1-38. Connla (west shore) is the town: trainers of every path, channeler, and lots of quests (Harper Cadwr has eleven, including The Touch of Amadan Duhb). Ceannoi on the road south is a merchant stop. Low camps round Connla (mudmen, spraggons, rowdies, beach rats, crabs), then giant ants (28-37), moss sheeries, the eriu siabra on the east bank (henters 31-36, fiscere 26-27, social), walking rocks and spraggonix in the north-east, ollipheist (34-38) at the river mouth in the north-west. Named: Abbadona (45, siabra, The Lost Relics) high in the east, Arracht (38), Danderpaw (36), Kaen Kedger (Criofan's Fish), Nasco (night, Search for Nasco's Spear). The pontoons move: mind your footing. Fishers' custom: tie a rope to your belt in fog, and drink from the river only once.",
+  "story": "The river that comes down past Lough Gur and the Silvermine meets the sea at the Shannon Estuary, and the harpers of Connla sing every visitor the same song about it before they will sing anything else. Sinann went looking for wisdom at Connla's Well, the song goes, where the hazels let fall their nuts into the water and the salmon eat them, and she was greedy, or brave, or only thirsty, and the well rose up out of its banks and drowned her and carried her down to the sea, and the water she rode is the river. The estuary is where she reached the sea. The fishers of Connla say the water still tastes faintly of hazelnut at the turn of the tide, and they do not mean it as a joke.\n\nConnla took the well's name and stands on the estuary's western shore, half on land and half on pontoons over the water, a town of fishers and boatmen and teachers of every path, where the young of the realm learn to swim before they learn anything else, because the pontoons move. Kyli keeps the pontoon end. Criofan the fisherman keeps the bridge north of town and complains about the siabra who steal his catch. The road from Connla runs east past a guard post toward Innis Carthaig and Lough Gur, and south over the hills to Ceannoi, a merchants' stop on the high road, where the armourers sell scale to anyone going further.\n\nThe siabra of the estuary call themselves eriu, after the oldest name of the land itself, the name the first people gave it before any of the rest of us came, and they say it is theirs by right. The eriu henters keep the eastern hills above the river and the eriu fiscere fish the shore south of the stepping-stone bridge, and between them they hold the estuary's east bank as the Cullen siabra hold the bog. Kaen Kedger keeps a house on the hillside of their camp, and Solas walks the road with them, and further up, by four stone slabs north-east of Ceannoi, waits Abbadona, a demon the realm found where a master mentalist's vision said the Dagda's harp would lead.\n\nAt the river's mouth the ollipheist breed. They are the great water-serpents of the old stories, younger and smaller here than the ones in the songs but still longer than a boat, and they come up the shore at the river mouth in the north-west where the water is brackish. Arracht, which the fishers say is only the word for a monster, haunts the hill above them. The far liath rolls in off the sea on the same shore and leads people into the water, and the fishers tie a rope to their belts when they go out in fog.\n\nNorth of Connla there is a grove of dead trees, and in it Ciar, a woman of the willow who died and would not lie down, and across the estuary her guardian Lucan, who cannot rest while she walks; the young of Tir na Nog are sent to cut the willow and let him go. South of Connla four standing stones stand in a field, and at night Osier comes to them, and the women of Ardee send for a bladder of a wolfhound and water from a dew sheerie to free him. On the curves of the road to Ceannoi a thief called Nasco used to walk at night with a spear that was not his, and Aziliz of the lake wants it back for Howth.\n\nWhy does it matter? Because the estuary is where the realm's water ends. Everything the rivers carry out of the hills passes Connla on its way to the sea: silver dust from the Silvermine, peat from the bog, the lake's music on summer nights. The harpers say the river is still Sinann, still carrying away what she drank, and that a wise person drinks from it only once, at the turn of the tide, and only a little.",
+  "legend": "Shannon Estuary, between the Silvermine and Lough Gur, levels 1-38. Connla (west shore) is the town: trainers of every path, channeler, and lots of quests (Harper Cadwr has eleven, including The Touch of Amadan Duhb). Ceannoi on the road south is a merchant stop. Low camps round Connla (mudmen, spraggons, rowdies, beach rats, crabs), then giant ants (28-37), moss sheeries, the eriu siabra on the east bank (henters 31-36, fiscere 26-27, social), walking rocks and spraggonix in the north-east, ollipheist (34-38) at the river mouth in the north-west. Named: Abbadona (45, 'the demon Abbadona' of The Lost Relics, met after you play the Dagda's Harp at the four stone slabs) high in the east, Arracht (38), Danderpaw (36), Kaen Kedger (Criofan's Fish), Nasco (night, Search for Nasco's Spear). The pontoons move: mind your footing. Fishers' custom: tie a rope to your belt in fog, and drink from the river only once.",
   "atmosphere": {
     "firstEntry": [
       "The Shannon Estuary. The river meets the sea.",
@@ -114,14 +114,14 @@
         ]
       },
       {
-        "name": "the relic heights",
+        "name": "the four slabs",
         "x": 342720,
         "y": 658400,
         "z": 6490,
         "radius": 1500,
         "lines": [
-          "High ground, and a siabra with relics.",
-          "Some of what the bog lost is here."
+          "Four stone slabs on the high ground.",
+          "A harp was played here, and a demon answered."
         ]
       },
       {
@@ -183,7 +183,7 @@
       "ciar walks in the dead willow grove north of connla. her guardian lucan cant rest",
       "osier comes to the four standing stones south of connla at night",
       "nasco walked the ceannoi road at night with a stolen spear. aziliz wants it back",
-      "abbadona has some of the relics the bog's geas ghosts guarded. [lost relics|lobais]",
+      "play the dagda's harp at the four slabs north east of ceannoi and a demon called abbadona answers. [lost relics|misled]",
       "criofan on the bridge blames the siabra for every fish he doesnt catch",
       "everything the rivers carry out of the hills passes connla on the way to the sea"
     ],
@@ -212,11 +212,11 @@
       "Sinann": "In the harpers' song, the woman who went to Connla's Well for wisdom and was drowned by it and carried to the sea. The river is her road. The fishers say the water tastes of hazelnut at the turn of the tide.",
       "Connla": "The town on the estuary's western shore, half on pontoons. Fishers, boatmen and teachers of every path. Kyli keeps the pontoon end, Harper Cadwr the songs, Criofan the bridge to the north.",
       "Ceannoi": "A merchants' stop on the high road south of [Connla], where armourers sell scale to anyone going further. Nasco used to walk the road's curves at night.",
-      "eriu": "The siabra of the estuary, who take their name from the land's oldest name and say it is theirs. Henters on the eastern hills, fiscere on the shore; Kaen Kedger and Solas among them, Abbadona above.",
+      "eriu": "The siabra of the estuary, who take their name from the land's oldest name and say it is theirs. Henters on the eastern hills, fiscere on the shore; Kaen Kedger and Solas among them.",
       "ollipheist": "The great water-serpents of the old stories, younger and smaller here than in the songs, breeding at the river mouth in the north-west. Arracht haunts the hill above them.",
       "Ciar": "A woman of the willow who died in the grove of dead trees north of [Connla] and would not lie down. Her guardian Lucan, across the estuary, cannot rest while she walks.",
       "four stones": "Four standing stones in a field south of [Connla]. Osier comes to them at night. The women of Ardee know how to free him: a wolfhound's bladder and a dew sheerie's water.",
-      "Abbadona": "A siabra of the high eastern ground who holds some of the relics the bog's geas-bound ghosts were set to guard. Lobais in the palace wants them back.",
+      "Abbadona": "A demon waiting by four stone slabs on the high ground north-east of [Ceannoi]. The master mentalist's vision sent the seekers of the Dagda's harp there; the harp was played, and Abbadona answered. Lobais was misled, and says so.",
       "Cadwr": "Harper Cadwr of [Connla], who sings [Sinann]'s song to every visitor before anything else, and sends the young to cure the Amadan's touch."
     }
   },
@@ -229,7 +229,11 @@
       "North of town there is a grove of dead willow, and a woman in it who should have lain down long ago, and across the water her guardian waiting for her to stop. South of town there are four stones, and someone who comes to them at night. Everything the rivers carry out of the hills passes us on its way to the sea, and some of it stops. The harpers say drink from the river only once, at the turn of the tide, and only a little. I have done it once."
     ]
   },
-  "bosses": [],
+  "bosses": [
+    "abbadona",
+    "arracht",
+    "danderpaw"
+  ],
   "era": "hib-before-the-names",
   "factions": [
     "siabra"

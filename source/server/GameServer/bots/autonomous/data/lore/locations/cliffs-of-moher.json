@@ -229,7 +229,11 @@
     ]
   },
   "bosses": [
-    "tawi-shon"
+    "tawi-shon",
+    "coimirceoir",
+    "fanged-sinach",
+    "brarn",
+    "aoife"
   ],
   "era": "hib-the-old-families",
   "factions": [

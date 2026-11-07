@@ -1,0 +1,85 @@
+{
+  "id": "jannet",
+  "name": "Jannet",
+  "npcNames": [
+    "Jannet"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Jannet: level 48, a human body (model 365), at about 403,700/759,300 on the outlaws' island; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The Cullen outlaws' island (about 404,000/759,000, east edge of the Bog of Cullen): Ide (52), Donal (50), Deniela, Jannet and Manius (48), and the peaceful 'Fruadan Draoi Manius' (50) of the Last Heir quest.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    }
+  ],
+  "story": "Jannet is Deniela's sister and followed her into the bog, the outlaws say, not because she believed the numbers but because she would not let her sister walk into the reeds alone. She keeps the island's boats, the flat reed-boats the outlaws pole across the pools, and she knows the bog's paths better than anyone since Ysberin, though the paths have moved and keep moving.\n\nShe is the one who poles the outlaws out at night to the Siopa side for what they need, and back before the watch changes. The people of Alainn Bin say they have seen her boat on the eastern pools at dusk, and that she lifts a hand to them, and that they lift a hand back, and that this is the oldest bargain in the Cullen country. When the realm's companies come to the island, it is Jannet's boats that are pushed out first, empty, to confuse the counting of the watch on the shore, and the trick has worked more often than Donal admits.",
+  "legend": "Jannet (48) is a Cullen outlaw on the island at the east edge of the Bog of Cullen (about 404k/759k), next to Deniela and Manius (48), Ide (52) and Donal (50). Pull carefully; they stand close. Group of high 40s. Plain spawn, 80-second respawn. Black wraiths on the eastern pools are nearby too. Pull from the landing side, away from Donal and Ide.",
+  "yells": {
+    "aggro": [
+      "You came by the wrong path.",
+      "Off my island."
+    ],
+    "phases": [],
+    "death": [
+      "Pole... the boat... home..."
+    ],
+    "slay": [
+      "The bog keeps you now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Flat reed-boats drawn up on the island's edge."
+    ],
+    "phases": [],
+    "realmFirstKill": "Jannet, the outlaws' boatwoman, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "jannet is 48 on the outlaws' island",
+      "five outlaws close together, pull one at a time"
+    ],
+    "aftermathWin": [
+      "jannet down. [the boatwoman|grats]",
+      "one of five. [keep going|next]"
+    ],
+    "aftermathLoss": [
+      "pulled three. [rip|ouch]",
+      "wraiths from the pools. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] jannet followed her sister deniela into the bog so she wouldnt go alone",
+      "alainn bin folk wave at jannet's boat on the pools at dusk. she waves back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Jannet",
+    "text": "Deniela's sister and the Cullen outlaws' boatwoman, who poles the reed-boats across the pools and knows the bog's moving paths better than anyone since Ysberin."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Jannet in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Jannet turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "outlaws"
+  ],
+  "related": [
+    {
+      "id": "deniela",
+      "relation": "her sister"
+    },
+    {
+      "id": "donal",
+      "relation": "her captain"
+    }
+  ]
+}
