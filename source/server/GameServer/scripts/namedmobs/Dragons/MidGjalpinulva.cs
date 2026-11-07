@@ -253,10 +253,10 @@ namespace DOL.GS
 
 		public override void EnemyKilled(GameLiving enemy)
 		{
-			if (enemy is GamePlayer player)
+			if (EncounterTargets.AsRaider(enemy) is GameLiving player && EncounterTargets.ClassOf(player) != null)
 			{
 				foreach (GamePlayer otherPlayer in ClientService.Instance.GetPlayersOfZone(CurrentZone))
-					otherPlayer.Out.SendMessage($"{Name} shouts, 'Your soul now belongs to me, {player.CharacterClass.Name}!'", eChatType.CT_Say, eChatLoc.CL_ChatWindow);
+					otherPlayer.Out.SendMessage($"{Name} shouts, 'Your soul now belongs to me, {EncounterTargets.ClassOf(player).Name}!'", eChatType.CT_Say, eChatLoc.CL_ChatWindow);
 			}
 
 			base.EnemyKilled(enemy);
@@ -555,9 +555,9 @@ namespace DOL.AI.Brain
 			"May your corpse rot on Nastrand!",
 			"My aunt has a wonderful place reserved for you in Niflheim!",
 		};
-		List<GamePlayer> Glare_Enemys = new List<GamePlayer>();
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		List<GameLiving> Glare_Enemys = new List<GameLiving>();
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
@@ -567,9 +567,9 @@ namespace DOL.AI.Brain
 			if (!IsRestless && HasAggro && Body.IsAlive)
 			{
 				ushort DragonRange = 2500;
-				foreach (GamePlayer player in Body.GetPlayersInRadius(DragonRange))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, DragonRange))
 				{
-					if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1)
+					if (player != null && player.IsAlive && EncounterTargets.NotGm(player))
 					{
 						if (!Glare_Enemys.Contains(player))
 							Glare_Enemys.Add(player);
@@ -577,7 +577,7 @@ namespace DOL.AI.Brain
 				}
 				if (Glare_Enemys.Count > 0)
 				{
-					GamePlayer Target = Glare_Enemys[Util.Random(0, Glare_Enemys.Count - 1)];
+					GameLiving Target = Glare_Enemys[Util.Random(0, Glare_Enemys.Count - 1)];
 					RandomTarget = Target;
 					if (RandomTarget != null && RandomTarget.IsAlive && RandomTarget.IsWithinRadius(Body, Dragon_DD.Range))
 					{
@@ -600,7 +600,7 @@ namespace DOL.AI.Brain
 				Body.TurnTo(RandomTarget);
 				Body.CastSpell(Dragon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
 				string glaretext = glare_text[Util.Random(0, glare_text.Count - 1)];
-				RandomTarget.Out.SendMessage(glaretext, eChatType.CT_Say, eChatLoc.CL_ChatWindow);
+				EncounterTargets.Tell(RandomTarget, glaretext, eChatType.CT_Say, eChatLoc.CL_ChatWindow);
 			}
 			new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetGlare), 2000);
 			return 0;
@@ -624,9 +624,9 @@ namespace DOL.AI.Brain
 			"May your corpse rot on Nastrand!",
 			"My aunt has a wonderful place reserved for you in Niflheim!",
 		};
-		List<GamePlayer> GlareRoam_Enemys = new List<GamePlayer>();
-		public static GamePlayer randomtarget2 = null;
-		public static GamePlayer RandomTarget2
+		List<GameLiving> GlareRoam_Enemys = new List<GameLiving>();
+		public static GameLiving randomtarget2 = null;
+		public static GameLiving RandomTarget2
 		{
 			get { return randomtarget2; }
 			set { randomtarget2 = value; }
@@ -636,9 +636,9 @@ namespace DOL.AI.Brain
 			if (IsRestless && Body.IsAlive)
 			{
 				ushort DragonRange = 5000;
-				foreach (GamePlayer player in Body.GetPlayersInRadius(DragonRange))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, DragonRange))
 				{
-					if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1)
+					if (player != null && player.IsAlive && EncounterTargets.NotGm(player))
 					{
 						if (!GlareRoam_Enemys.Contains(player))
 							GlareRoam_Enemys.Add(player);
@@ -648,7 +648,7 @@ namespace DOL.AI.Brain
 				}
 				if (GlareRoam_Enemys.Count > 0)
 				{
-					GamePlayer Target = GlareRoam_Enemys[Util.Random(0, GlareRoam_Enemys.Count - 1)];
+					GameLiving Target = GlareRoam_Enemys[Util.Random(0, GlareRoam_Enemys.Count - 1)];
 					RandomTarget2 = Target;
 					if (RandomTarget2 != null && RandomTarget2.IsAlive && RandomTarget2.IsWithinRadius(Body, Dragon_DD2.Range))
 					{
@@ -675,7 +675,7 @@ namespace DOL.AI.Brain
 				Body.TurnTo(RandomTarget2);
 				Body.CastSpell(Dragon_DD2, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);//special roaming glare
 				string glaretextroam = glareroam_text[Util.Random(0, glareroam_text.Count - 1)];
-				RandomTarget2.Out.SendMessage(glaretextroam, eChatType.CT_Say, eChatLoc.CL_ChatWindow);
+				EncounterTargets.Tell(RandomTarget2, glaretextroam, eChatType.CT_Say, eChatLoc.CL_ChatWindow);
 			}
 			new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetGlareRoam), 2000);
 			return 0;

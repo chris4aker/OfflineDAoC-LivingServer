@@ -165,14 +165,14 @@ namespace DOL.AI.Brain
 			ThinkInterval = 1500;
 		}
         #region Check Flags/Port,DD list/broadcast
-        public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
-		public static GamePlayer randomtarget2 = null;
-		public static GamePlayer RandomTarget2
+		public static GameLiving randomtarget2 = null;
+		public static GameLiving RandomTarget2
 		{
 			get { return randomtarget2; }
 			set { randomtarget2 = value; }
@@ -184,8 +184,8 @@ namespace DOL.AI.Brain
 		public static bool Bomb3 = false;
 		public static bool Bomb4 = false;
 		private bool RemoveAdds = false;
-        System.Collections.Generic.List<GamePlayer> Port_Enemys = new System.Collections.Generic.List<GamePlayer>();
-		System.Collections.Generic.List<GamePlayer> DD_Enemys = new System.Collections.Generic.List<GamePlayer>();
+        System.Collections.Generic.List<GameLiving> Port_Enemys = new System.Collections.Generic.List<GameLiving>();
+		System.Collections.Generic.List<GameLiving> DD_Enemys = new System.Collections.Generic.List<GameLiving>();
 		public void BroadcastMessage(String message)
 		{
 			foreach (GamePlayer player in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
@@ -200,11 +200,11 @@ namespace DOL.AI.Brain
 		{
 			if (Body.IsAlive)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.ForDisplacement))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Port_Enemys.Contains(player))
 							{
@@ -216,7 +216,7 @@ namespace DOL.AI.Brain
 				}
 				if (Port_Enemys.Count > 0)
 				{
-					GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+					GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
 					RandomTarget = Target;
 					if (RandomTarget.IsAlive && RandomTarget != null && HasAggro)
 					{
@@ -237,11 +237,11 @@ namespace DOL.AI.Brain
 		{
 			if (Body.IsAlive)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1 && player.CharacterClass.ID != 12)
+						if (player.IsAlive && EncounterTargets.NotGm(player) && EncounterTargets.ClassId(player) != 12)
 						{
 							if (!DD_Enemys.Contains(player))
 									DD_Enemys.Add(player);
@@ -250,7 +250,7 @@ namespace DOL.AI.Brain
 				}
 				if (DD_Enemys.Count > 0)
 				{
-					GamePlayer Target = DD_Enemys[Util.Random(0, DD_Enemys.Count - 1)];
+					GameLiving Target = DD_Enemys[Util.Random(0, DD_Enemys.Count - 1)];
 					RandomTarget2 = Target;
 					if (RandomTarget2.IsAlive && RandomTarget2 != null && HasAggro)
 					{
