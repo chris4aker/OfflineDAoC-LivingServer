@@ -105,6 +105,7 @@
         }
       ],
       "places": [
+        "connacht",
         "marfach-caverns",
         "muire-tomb",
         "treibh-caillte"
@@ -498,6 +499,7 @@
       "name": "The Order of the Azure",
       "summary": "Blue-painted firbolg kin who pray to the open sky and keep a crusade against the Glimmer on Sheeroe's southern slopes; their Voices preach in Connacht.",
       "places": [
+        "connacht",
         "sheeroe-hills"
       ],
       "bosses": [
@@ -511,6 +513,7 @@
       "name": "The Restless Dead",
       "summary": "The dead of Hibernia's older graves who do not lie still: the Muire family's tomb and the giants of the Cursed Forest who are owed a burial.",
       "places": [
+        "connacht",
         "muire-tomb"
       ],
       "bosses": [

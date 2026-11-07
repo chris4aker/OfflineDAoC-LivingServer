@@ -1,0 +1,302 @@
+{
+  "id": "connacht",
+  "name": "Connacht",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    207
+  ],
+  "summary": "The realm's front country below Tir na Nog's south gate: Ardee at the ford, Basar, the fort of Druim Ligen, the Muire tomb and the Amadan's hills.",
+  "facts": [
+    {
+      "text": "Ardee is in Irish Baile Átha Fhirdia, 'the town of Ferdia's ford': in the Táin Bó Cúailnge Cú Chulainn fought his foster-brother Ferdia at a ford for days and killed him there.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Ardee"
+    },
+    {
+      "text": "In Irish folklore the Amadán Dubh ('the dark fool') is a fairy whose touch brings madness or a stroke; the alp-luachra is a newt-like creature said to creep into a sleeper's mouth and eat what he eats.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Amad%C3%A1n"
+    },
+    {
+      "text": "Findias is one of the four cities of the Tuatha Dé Danann in the Lebor Gabála Érenn, from which Nuada's sword came.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Findias"
+    },
+    {
+      "text": "Zone 207 (region 200, x 286,720-352,256, y 417,792-483,328): 1,097 monsters, 132 bot camp goals. Zone points in it: the gate to Tir na Nog (311,643/474,288), the Muire Tomb entrance (322,927/458,013), the Darkness Falls entrance (325,269/433,985) and the housing entrance (297,816/479,928); Druim Ligen (334,342/419,994) is a teleport point.",
+      "provenance": "game",
+      "source": "world data ZonePoint table (read 2026-11-06); world data Teleport table (read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "Ardee holds Larylle, Tethra, Tira, Keara, Eoghan, Nyderra, Evan and trainers; Basar holds Cristin and Eruven; Maeve the Crone has a hut past Ardee and every trainer's first errand (Information is the Key) is to her; Gogarty Muire gives Rest in Peace; Druim Ligen is garrisoned by Master Rangers, Master Enchanters, Champions and Keep Sentinels with a siege merchant (Zrim); the Elder Tidal Sheerie stands near it.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: wind ghouls (7-8) in the ruins northwest of Ardee, streaming wisps (21-26), young irewoods and irewood saplings (21-28) in the west, cluricauns (22-23) and the Enchantress of their village, phantom wickermen (28-30) with Withe near Druim Ligen, six Voices of the Azure (27) with azure idolaters in the northwest, and in the northeast amadan touched (29-35), pookhas (33-35), alp luachra (29-33) and merucha (30-33) around Amadan Dubh (42), Amadan and Touched (39).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Destructive Forces: 'Find the abandoned camp in the forgotten grove by day and slay the wind ghoul Windaille', 'Slay Bas after Fearg falls', give Bas' gem to Cathbad in Howth.",
+      "provenance": "game",
+      "source": "DataQuest 'Destructive Forces' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Ardee as the town of the ford and the rangers' muster; the Connacht barracks; Larylle's book; the Amadan's country; the wickermen of Druim Ligen; House Findias.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Connacht is the first country every young Hibernian walks. The south gate of Tir na Nog opens onto it, and the road runs down from the gate past the guard post to Ardee, and from Ardee the realm goes everywhere else. It is the front room of Hibernia, the old people say: the room where guests are received, where the good chairs are, and where the family keeps the things it does not want guests to see behind a curtain at the back.\n\nArdee is the town of the ford. The songs say a champion of the old hero-tales fought his own foster-brother there for days in the river, and killed him on the last, and wept over him, and the town was named for the dead man rather than the living one. The people of Ardee have kept the habit of the ford ever since. Their quarrels go to single combat at the river's edge, their rangers swear at the water before they go out, and the town is the muster of every company that leaves Connacht for somewhere worse: Fiadh, who found the pass to Sheeroe, was of Ardee; so was Donnchadh, who held the four doors; so was Aoife ni Riain, who walked into the Summoner's Hall. The barracks of Connacht keep their names on the wall and Tadhg Rua's hammer over the door, and the soldiers there have a saying for everything, the best known being that a door held is a courtier kept waiting.\n\nBehind the curtain are the things Connacht does not show guests. Northwest of Ardee, past the standing stones, is the tomb of the house of Muire, and Gogarty Muire, the last of the name, farms within sight of it and sends the young down with his grandfather's journal. Further north the wind ghouls haunt the ruins of a village nobody rebuilt, and in a forgotten grove beyond them there is an abandoned camp where the Order of the Azure once kept a school for its young, and one of its pupils, Bas, did not leave when the camp was given up, nor did the wind ghoul Windaille that came to haunt its ashes. The Order itself still preaches in the northwest: six Voices of the Azure with their idolaters about them, painted blue, calling the open sky to look at Connacht, and the farmers there leave them alone and keep their own counsel about the Glimmer.\n\nThe north is the frontier's door. Druim Ligen stands at the top of the country, a fort with the realm's master rangers and master enchanters on its walls, a siege-wright's yard, and the channelers' fire, and every hosting that rides for the hills of Emain Macha or Breifine musters inside it first. Below its walls the wickermen walk: tall shapes of plaited withy and dry grass that the Druim Ligen garrison says were burned once, in a harvest custom older than the fort, and got up out of the ashes and did not lie down again. Not far from them a stair goes down into the earth, toward the place the three realms call Darkness Falls, and the garrison keeps a watch on that too. Near the fort the Elder Tidal Sheerie keeps a counsel of its own people.\n\nThe northeast is the Amadan's. In the hill-tales the dark fool's touch brings madness, and the hills there are full of the touched: men and women who walked into the Amadan's country and came out laughing at nothing, and now walk it in bands, fighting anyone who is not laughing too. The pookhas run there, and the alp luachra, the small cold things that wait for a sleeper's open mouth. Amadan Dubh himself has a hill of his own, with the one the realm calls only Touched beside him, and the fool's fool, Amadan, on the next rise.\n\nThe west is older and stranger. Irewoods grow there, young and old, and the cluricauns keep a village in the trees with an Enchantress who trades in soul gems. Beyond them a speaker of House Findias keeps a lodge with two attendants, and House Findias, if the bards are right, takes its name from one of the four cities the old gods came from. Nobody in Ardee has been told why it is in Connacht. Chieftain Ultan and his followers camp near it, and say they are guarding it; the speaker says nothing.\n\nThis is why Connacht matters: it is where the realm learns to be a realm. The young walk out of Tir na Nog, do their first errands for Maeve the Crone past Ardee, go down into the Muire tomb, come up sorry for someone, and walk north to Druim Ligen older. The ford is still there, and the rangers still swear at it.",
+  "legend": "Connacht is the newbie zone below Tir na Nog's south gate, levels 1 to the 30s. Ardee is the hub (bind, trainers, Larylle's and Tethra's quests); Basar is the small stop on the road north; Maeve the Crone's hut is just past Ardee and every trainer sends you to her first. Muire Tomb is northwest of Ardee (10-28). Wind ghouls in the ruins northwest of Ardee are 7-8; streaming wisps and irewoods in the west are 20s; the cluricaun village (22-23) has the Enchantress for Morven's Return. Mind the northeast: the Amadan's hills are 29-35 touched, pookhas and alp luachra, with Amadan Dubh (42), Amadan and Touched (39) on their hills, so lowbies should stay south of Basar. The Voices of the Azure (27) preach in the northwest. Druim Ligen is the frontier fort at the top of the zone (teleport point, siege merchant); the Darkness Falls entrance is not far from it, and the housing gate is west of the Tir na Nog road. Superstition: Ardee folk swear at the river before a long trip. Bot chat says it is bad luck to cross the Ardee ford twice in one day without stopping.",
+  "atmosphere": {
+    "firstEntry": [
+      "Connacht. The front room of the realm.",
+      "The road runs down to the ford at Ardee.",
+      "Farm smoke, rangers and river mist.",
+      "Everyone walks Connacht first.",
+      "North, the frontier waits behind Druim Ligen."
+    ],
+    "areas": [
+      {
+        "name": "Ardee",
+        "x": 341200,
+        "y": 468600,
+        "z": 5400,
+        "radius": 2500,
+        "lines": [
+          "Ardee, the town of the ford.",
+          "Rangers swear at the river before they go out.",
+          "Names on the barracks wall, and a hammer."
+        ]
+      },
+      {
+        "name": "the Tir na Nog road",
+        "x": 312500,
+        "y": 472500,
+        "z": 5220,
+        "radius": 2500,
+        "lines": [
+          "The capital's south gate, behind you.",
+          "A guard post, a bard and the long road east."
+        ]
+      },
+      {
+        "name": "Basar",
+        "x": 338200,
+        "y": 445000,
+        "z": 5060,
+        "radius": 1800,
+        "lines": [
+          "Basar: a crossroads and a cup of something.",
+          "The last quiet stop before the north."
+        ]
+      },
+      {
+        "name": "Maeve's hut",
+        "x": 344450,
+        "y": 462240,
+        "z": 4890,
+        "radius": 600,
+        "lines": [
+          "Maeve the Crone. Everyone's first errand.",
+          "Rat tails on a string by the door."
+        ]
+      },
+      {
+        "name": "the Muire stones",
+        "x": 322900,
+        "y": 458000,
+        "z": 6670,
+        "radius": 1500,
+        "lines": [
+          "Standing stones, and a tomb door beyond.",
+          "Gogarty Muire's fields are very quiet."
+        ]
+      },
+      {
+        "name": "the wind-ghoul ruins",
+        "x": 320900,
+        "y": 460800,
+        "z": 5730,
+        "radius": 2500,
+        "lines": [
+          "A village nobody rebuilt. Wind in the doorways.",
+          "The wind ghouls do not like visitors."
+        ]
+      },
+      {
+        "name": "the forgotten grove",
+        "x": 320800,
+        "y": 438700,
+        "z": 5690,
+        "radius": 1200,
+        "lines": [
+          "An abandoned camp, painted blue once.",
+          "A pupil of the Order never left."
+        ]
+      },
+      {
+        "name": "the Voices' ground",
+        "x": 314300,
+        "y": 425400,
+        "z": 5190,
+        "radius": 2000,
+        "lines": [
+          "Blue-painted preachers call the open sky.",
+          "The Voices of the Azure do not want company."
+        ]
+      },
+      {
+        "name": "Druim Ligen",
+        "x": 334300,
+        "y": 420500,
+        "z": 5100,
+        "radius": 2500,
+        "lines": [
+          "Druim Ligen. The frontier's door.",
+          "Master rangers on every wall.",
+          "Hostings muster here before the hills."
+        ]
+      },
+      {
+        "name": "the wickermen",
+        "x": 318200,
+        "y": 423900,
+        "z": 5440,
+        "radius": 1800,
+        "lines": [
+          "Plaited shapes walk below the fort.",
+          "Burned once. They got up again."
+        ]
+      },
+      {
+        "name": "the Amadan's hills",
+        "x": 343500,
+        "y": 434000,
+        "z": 5900,
+        "radius": 5000,
+        "lines": [
+          "The touched laugh at nothing here.",
+          "Do not sleep with your mouth open.",
+          "The dark fool's hills. Turn back."
+        ]
+      },
+      {
+        "name": "the irewoods",
+        "x": 296100,
+        "y": 449100,
+        "z": 6120,
+        "radius": 2500,
+        "lines": [
+          "Irewoods, young and old, in the west.",
+          "Cluricaun lanterns in the trees."
+        ]
+      },
+      {
+        "name": "House Findias",
+        "x": 295700,
+        "y": 427400,
+        "z": 4730,
+        "radius": 1000,
+        "lines": [
+          "A lodge of House Findias. Nobody says why.",
+          "Chieftain Ultan's fires nearby."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "ardee is the town of the ford. some hero killed his foster brother there [in the old tales|for days]",
+      "every trainer in tnn sends you to maeve the crone first. [rat tails|everyone does it]",
+      "the connacht barracks has tadhg rua's hammer over the door. [the olcasar guy|old story]",
+      "fiadh, donnchadh, aoife ni riain: all ardee rangers. [ardee breeds them|the ford town]",
+      "druim ligen is where every hosting musters before the frontier. [master rangers on the walls|big fort]",
+      "the wickermen by druim ligen were burned in some harvest thing and got up again. [creepy|garrison says]",
+      "the voices of the azure preach in north west connacht. [blue paint|sheeroe crusaders]",
+      "the amadan dubh is the dark fool. his touch drives you mad. [the touched|stay away]",
+      "alp luachra crawl in your mouth if you sleep in the amadan's hills. [granny tale|maybe]",
+      "house findias is named after one of the cities the old gods came from, the bards say",
+      "gogarty muire farms right by the tomb. [poor guy|he sends you in]",
+      "bas never left the old azure camp in the forgotten grove. [windaille the wind ghoul haunts it|by day]",
+      "the cluricauns in the west have an enchantress who trades soul gems"
+    ],
+    "rumour": [
+      "[heard|someone said] its bad luck to cross the ardee ford twice in a day without stopping",
+      "the touched in the north east have been coming further south [lately|this week]. stay below basar",
+      "[word is|heard] chieftain ultan is guarding house findias. the speaker wont say from what",
+      "someone saw a wickerman walk right up to the druim ligen gate [last night|again]",
+      "[heard|someone said] the elder tidal sheerie knows more about the azure than it says",
+      "maeve the crone wants rat tails again. [always|lol]",
+      "[word is|heard] the darkness falls stair near druim ligen was open all night",
+      "larylle in ardee has a list of errands as long as the river. [13 of them|busy woman]"
+    ],
+    "tell": [
+      "connacht is the newbie zone below tnn's south gate. ardee is the town, 1 to 30s",
+      "where is ardee? down the road from the tnn south gate, at the river ford",
+      "is connacht safe? south and middle yes. north east is the amadan's hills, 30s and nasty",
+      "whats in connacht? muire tomb, wind ghouls, irewoods, the azure voices, druim ligen, the df stair",
+      "where is druim ligen? top of connacht. frontier fort, teleport point, hostings muster there",
+      "where is muire tomb? north west of ardee past the standing stones"
+    ]
+  },
+  "loremaster": {
+    "intro": "Connacht, the front room of the realm. [Ardee] keeps the ford, [Basar] the crossroads and [Druim Ligen] the frontier's door. Behind the curtain: the [Muire] tomb, the [Azure] preachers, the [wickermen] and the [Amadan]'s hills. Every trainer sends the young to [Maeve] first.",
+    "topics": {
+      "Ardee": "The town of the ford, named for a man killed in the river in the hero-tales by his own foster-brother. Its rangers swear at the water before they go out. The Connacht [barracks] are there, and [Larylle].",
+      "barracks": "The Connacht barracks in Ardee: names of the dead on the wall, Tadhg Rua's hammer over the door, and a saying for everything. A door held is a courtier kept waiting.",
+      "Larylle": "Keeper of the main house in Ardee, upstairs, with a list of errands as long as the river. She writes down the town's book, and sends the young as far as the cliff dwellers for a necklace's sake.",
+      "Basar": "A crossroads hamlet on the road north from Ardee, where Cristin keeps the armour and Eruven pays for a badger's head. The last quiet stop before the [Amadan]'s country.",
+      "Maeve": "Maeve the Crone, in her hut past [Ardee]. Every trainer in Tir na Nog sends the young to her first, for rat tails and a lesson in being sent. She also hides a stolen crown, if the Creeper's tale is true.",
+      "Muire": "The tomb of the house of Muire, northwest of [Ardee] past the standing stones. Gogarty Muire, the last of the name, farms within sight of it and sends the young down to lay his family to rest by name.",
+      "Azure": "The Order of the Azure, blue-painted firbolg kin who crusade against the Glimmer on Sheeroe. Six Voices of the Azure preach in northwest Connacht with their idolaters. Their old school-camp in the forgotten grove still holds Bas, a pupil who never left, and the wind ghoul Windaille that haunts it.",
+      "Druim Ligen": "The fort at the top of Connacht, the frontier's door: master rangers and master enchanters on the walls, a siege-wright's yard, the channelers' fire. Sadhbh of Druim Ligen, who found the Glimmer Prince heals when left, learned her trade on its walls. The [wickermen] walk below it.",
+      "wickermen": "Plaited shapes of withy and dry grass below [Druim Ligen]. The garrison says they were burned once in a harvest custom older than the fort and got up out of the ashes. One of them, Withe, the garrison names.",
+      "Amadan": "The dark fool of the hill-tales, whose touch brings madness. His hills in northeast Connacht are full of the touched, pookhas and alp luachra. Amadan Dubh keeps the highest hill; Touched and Amadan the next ones.",
+      "Findias": "A lodge of House Findias in western Connacht, kept by a speaker and two attendants. The bards say Findias was one of the four cities the old gods came from. Chieftain Ultan camps near it and says he guards it.",
+      "Elder Tidal Sheerie": "An old one of the tidal sheeries, who keeps a counsel near [Druim Ligen]. The garrison brings it questions about the coast; it answers about a quarter of them."
+    }
+  },
+  "book": {
+    "title": "The Book of the Ford: Ardee and the Front Country, kept by Larylle of Ardee",
+    "pages": [
+      "I keep the book of the main house in Ardee, upstairs, where the floor is level and the window looks at the river. My mother kept it before me and her father before her, and the first page is a list of everyone who ever crossed the ford to fight someone on the other side, with the outcome. It is a long list. The town is named for a man who lost, and we have never thought that odd. A ford is where you find out who you are, my grandfather wrote, and the river does not care which of you it keeps.",
+      "The rangers of Ardee swear at the water before they go out, every one, and I write down where they went. Fiadh to the hills that were not there the summer before. Donnchadh to Sheeroe, with a hundred and twenty behind him. Aoife ni Riain north to Druim Ligen and then down, under the frontier, to a hall none of them had a word for. Most of them came back across the ford. The barracks keeps the names of the ones who did not, and Tadhg Rua's hammer hangs over the door because he would not stop talking about it.",
+      "We do not speak much of the Muire tomb, though it is close enough to see from the north road. Gogarty Muire comes in on market days, buys what he needs and goes home before dark, and the young he sends down the hill come to me afterwards and want it written down that they laid someone to rest. I write it down. Some of them have been down three times. The house of Muire does not stay laid, any more than the wind ghouls in the old village leave the doorways, or the Order's last pupil leave his camp.",
+      "North of Basar the country changes. The Amadan's hills are no place for anyone not ready to laugh at nothing for the rest of their life, and the touched walk them in bands. North of that is Druim Ligen, and the wickermen under its walls, and the frontier beyond. I have never been past the fort and do not intend to. Somebody has to keep the book at the ford. When the hostings come back from the hills, they cross the river, and I count them in, and the ones I do not count I write on the barracks list in my own hand, so that the ford knows who it kept."
+    ]
+  },
+  "bosses": [],
+  "era": "hib-the-old-families",
+  "factions": [
+    "order-of-the-azure",
+    "restless-dead"
+  ],
+  "related": [
+    {
+      "id": "tir-na-nog",
+      "relation": "whose south gate opens onto it"
+    },
+    {
+      "id": "muire-tomb",
+      "relation": "the tomb northwest of Ardee"
+    },
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "sheeroe-hills",
+      "relation": "where Ardee's rangers found the pass"
+    },
+    {
+      "id": "lough-derg",
+      "relation": "the lake country west of the capital"
+    }
+  ]
+}
