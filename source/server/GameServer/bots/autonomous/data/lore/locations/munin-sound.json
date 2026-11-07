@@ -58,7 +58,7 @@
       "source": "Snorri, Gylfaginning (public domain); Swedish lexicon (to verify)"
     },
     {
-      "text": "The sound's memory, the sjoalf's ritual stones, the Lettsons of Knarr and Svala's book are Living Server lore.",
+      "text": "The sound's memory, the sjoalf's ritual stones, the Lettsons of Knarr and Herdis's book are Living Server lore.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     }
@@ -204,7 +204,7 @@
     ],
     "rumour": [
       "the trappers of knarr dont go to the north east in families",
-      "svala at the knarr landing lights her drowned fathers lamp every evening the mist comes",
+      "herdis at the knarr landing lights her drowned fathers lamp every evening the mist comes",
       "the lettsons of knarr own half the town and want the other half",
       "the drowning victims arent cruel, theyre choking, and they take air from whoever is nearest",
       "the sjoalf light the dream stones again every time someone puts them out",
@@ -233,7 +233,7 @@
       "shale golems": "Golems of grey slate in the north and middle hills, grown out of the rock like teeth, the dwarves say. They hunt the morvalt renegades; their emissary stands on the quay at Aegirhamn. See [Ghirni].",
       "sjoalf": "Sea-elves of the east of the sound, pale and long-fingered, who pray to something in the deep water. Their cult has sacrificers, purifiers and cleansers, and four [ritual stones] on its shore. See [Urtzi].",
       "ritual stones": "Four stones that glow black, white, grey and brown round a sjoalf shrine on the eastern shore. They send dreams; Gazsi of Aegirhamn has not slept a night through since they were lit. Luikko of Hagall knows the powders that put them out.",
-      "Svala": "Svala the net-maker of Knarr, who keeps the lamp at the town's landing and wrote What the Sound Remembers for her sons, who fish.",
+      "Herdis": "Herdis the net-maker of Knarr, who keeps the lamp at the town's landing and wrote What the Sound Remembers for her sons, who fish.",
       "Edrigu": "A skalklan of the west shore camp near Knarr, among the shellcrafters and shellsplitters, who keeps what Juuso of Dyrfjall needs for his potion. He will deal with someone who comes wearing Juuso's amulet and says Juuso sent them, so long as they have not struck a skalklan while wearing it; the clan's memory for that is long. To everyone else he is a clan-man with a blade.",
       "Modolf": "A bergklan of the mountain-clan who drowned in the sound with a map the clan wanted kept, and whose spirit walks inland from the shore past the skalklan settlement at night, among the drowned. Merja of Bjarken wants to know what became of him; Sinna Redtoes wants the map. He still has it, and will not give it up while he can hold it.",
       "Ghirni": "A morvalt renegade who leads the outcasts the morvalt drove off, camped off the road toward the water where the coral things grow. Yrling of Aegirhamn's missing swords and the shale golem emissary's quarrel both lead to him; the golems want him more than the haven does. He fights like a man nobody will take back."
@@ -242,7 +242,7 @@
   "book": {
     "title": "What the Sound Remembers",
     "pages": [
-      "Svala, net-maker of Knarr, who keeps the lamp at the landing, wrote this for her sons, who fish. Boys, the first thing: say your name at the water after dark. Every Knarr child is taught it and most of them think it is a game. It is not. The sound is called for Odin's raven of memory, and it remembers, and what it remembers comes back. Look at the beaches. Every bone on them was a man once. The sound does not know the living from the dead unless the living tell it. So tell it.",
+      "Herdis, net-maker of Knarr, who keeps the lamp at the landing, wrote this for her sons, who fish. Boys, the first thing: say your name at the water after dark. Every Knarr child is taught it and most of them think it is a game. It is not. The sound is called for Odin's raven of memory, and it remembers, and what it remembers comes back. Look at the beaches. Every bone on them was a man once. The sound does not know the living from the dead unless the living tell it. So tell it.",
       "The drowning victims come up at dusk. They are not cruel; they are choking. They come up the beach looking for air and they take it from the nearest throat they find. The mist menaces are worse, because they move with the mist and you cannot see them until the mist is on you. When the mist comes in, come in. The nets will keep. Your grandfather did not come in once, and I have his net, and I do not have him. The lamp I keep at the landing is his lamp. I light it every evening the mist comes, and I say his name before mine, because the sound should know he is still missed.",
       "The shell-clan are on the west shore and the middle. They are small and quick and they crack shells for a living, and they will trade only with those who come under a token they trust. Never strike one, not even in a quarrel over a conch bed, because they remember it the way the sound remembers its drowned: always, and all of them at once. The golems in the hills are slate grown out of the rock. They hate the morvalt, and especially the renegades the morvalt cast out. Let them. A golem came down to Aegirhamn to look at us, and has stood on the quay since. I think the hills sent him to see whether we remember things too.",
       "Do not fish the east. The sea-elves are there, pale and long-fingered, and they pray to something under the water. They have an island of worshippers, and a shrine on the far shore with four stones that glow, each a different colour. Gazsi in Aegirhamn says the stones send him dreams of drowning; he has not slept a whole night since they were lit. Luikko of Hagall has powders for them. The young of the haven go to put the stones out. The sjoalf light them again. Dreams are cheap, it seems, for those who send them.",
