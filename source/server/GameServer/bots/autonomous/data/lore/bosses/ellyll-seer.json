@@ -12,7 +12,7 @@
   ],
   "facts": [
     {
-      "text": "Ellyll Seer: template 60160431, level 59, a tiny figure (size 23), in the ellyllon's hollow in the western Pennines at 571971, 401903; aggro level 90 within 500, faction Ellyllon, no spells or styles, respawn 600 seconds.",
+      "text": "Ellyll Seer: template 60160431, level 59, a tiny figure (size 23), in the ellyllon's hollow in the western Pennines at 571971, 401903; aggro level 90 within 500, faction Ellyllon (base hostility 100: aggressive to anyone whose standing with them has not improved), no spells or styles, respawn 600 seconds.",
       "provenance": "game",
       "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
     },
@@ -43,7 +43,7 @@
     }
   ],
   "story": "The ellyllon keep a village in a hollow of the western Pennines, small doors in the turf and smoke coming out of the ground, and in the village a seer, the smallest of them and the oldest. The Rider's Book of the Tops says the seer looks at a man as though he were late. The ellyllon say that is exactly what the seer is doing. A seer of their kind does not see what is coming; a seer sees it already come, and is waiting for the rest of the world to arrive at it.\n\nThe seer keeps a journal. The ellyllon say it is written ahead of the day: what the hollow will eat, who will knock, which frog will go missing, which rider of Castle Sauvage will come over the ridge at the wrong hour and what he will say. The seer writes it down in the morning and then watches the day catch up. When a visitor arrives who is in the journal, the seer is not surprised, and is a little annoyed, because the visitor is always late. The custom of the hollow is that a guest who is in the seer's journal is a guest; a guest who is not is a thief. Almost nobody is in the journal. The seer comes at nearly everyone who walks into the hollow, and stops for almost no one.\n\nThe village is close by, but not close. The seer has a voice for calling it, the ellyllon say, and a small trouble at the seer's door is the seer's own; a great crowd of strangers in the hollow is the village's, and the guards come up out of the turf for it.\n\nCaptain Rhodri of Snowdonia Fortress has wanted the journal for a long time, and Sir Tillian of Castle Sauvage sends the realm's young to take it. The riders say there is a name in it, written in a year before the frontier had heard of the deceit that ran through the Isolationists' camps, and that the captain has read the name and not said it. Some of the Academy say the seer saw the lord of that deceit before he was born; the Church says no creature should write a man down before he has done the thing; the ellyllon say nothing at all, because they have read the next page.\n\nWhen the seer is put down, the hollow does not mourn. It waits, and a little while later there is a seer again, with the journal, writing, and looking up at whoever is next as though they were late.",
-  "legend": "The Ellyll Seer is a level 59 ellyll in the ellyllon's hollow village in the western Pennines: tiny, easy to lose in a crowd, and it aggros almost everyone (aggro level 90) from about 500 away. No spells and no styles in the data, just a level 59 hitting you. The village is close but not right next to it: a villager is about 930 away and the ellyll guards (50s) 1,100 to 1,600, so a small group usually kills the seer alone, but a big crowd widens the bring-a-friend call and can drag the guards in. Take one group, not a zerg. It is the journal step of Lord of Deceit (Sir Tillian at Castle Sauvage, then Captain Rhodri upstairs in Snowdonia Fortress). Respawn is about ten minutes.",
+  "legend": "The Ellyll Seer is a level 59 ellyll in the ellyllon's hollow village in the western Pennines: tiny, easy to lose in a crowd, and aggressive from about 500 away to anyone the ellyllon do not count as friends (that is faction standing: the Ellyllon start out hostile). No spells and no styles in the data, just a level 59 hitting you. The village is close but not right next to it: a villager is about 930 away and the ellyll guards (50s) 1,100 to 1,600, so a small group usually kills the seer alone, but a big crowd widens the bring-a-friend call and can drag the guards in. Take one group, not a zerg. It is the journal step of Lord of Deceit (Sir Tillian at Castle Sauvage, then Captain Rhodri upstairs in Snowdonia Fortress). Respawn is about ten minutes.",
   "yells": {
     "aggro": [
       "You are late.",
@@ -81,7 +81,7 @@
   },
   "botLines": {
     "briefing": [
-      "ellyll seer, 59, tiny thing in the ellyllon hollow in west pennines. aggros almost everyone from 500",
+      "ellyll seer, 59, tiny thing in the ellyllon hollow in west pennines. aggros from 500 unless your ellyllon faction is good",
       "no spells. guards are 1100-1600 out, they only come if we bring a crowd. one group, no more",
       "kill it fast, grab the journal for rhodri. lord of deceit people",
       "respawn is about 10 min if we miss the journal"

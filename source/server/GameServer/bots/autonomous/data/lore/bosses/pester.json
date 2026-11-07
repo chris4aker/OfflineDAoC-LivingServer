@@ -1,0 +1,124 @@
+{
+  "id": "pester",
+  "name": "Pester",
+  "npcNames": [
+    "Pester"
+  ],
+  "locationId": "inishail-island",
+  "realm": "Albion",
+  "aliases": [
+    "the great dragonfly of inishail"
+  ],
+  "facts": [
+    {
+      "text": "Pester: template 60164891, level 55, the isle's dragonfly model at size 62, east of the orc camp at 252964, 439915; aggro level 200 within 500, no faction, thrusting attacks, no spells or styles, respawn 80 seconds; nothing else within 800.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "An NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "The buzzing nuisances east of the orc camp carry the stinger for Orcs with Spellbooks; Pester rules the buzzing there (the Inishail file).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Pester as the orcs' name for the lord's rent-collector, the bitten sleepers, the nets and Veena's venom are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "East of the orc camp the air hums. The flies of Inishail breed in the slime marsh in the middle of the island and swarm out over the high ground in summer, and the orcs call the small ones nuisances and the big ones worse, and the biggest of all, a dragonfly as long as a boat with wings like panes of the colleges' coloured glass, they call Pester. The orcs did not name it for a joke. The ones who ran have few jokes.\n\nThe orcs say it is the lord's. Lord Emthoro's ground lies just north of their village, and he takes his tenants' rent in whatever they have; and what the orcs have is blood, and Pester takes it. An orc who sleeps outside the huts on a summer night is bitten, and the bite swells, and the orcs believe that what Pester drinks goes north to the lord's door, the way the dead go. The soothsayers have tried to read the tomes for a charm against it and found none, and the oracles have tried nets of the lammia's weaving, and Pester went through the nets as if they were cobweb.\n\nVeena, on the south-east shore, says the orcs are wrong about the lord and right about the bite. She makes poisons out of the island's flies, and she says Pester's sting is the strongest venom on Inishail and that it is nobody's servant: it is only hungry, and the biggest, and alone. The other flies do not follow it. It does not lead them. It hangs over the humming ground east of the camp and falls on whatever comes near, quick and straight as a thrown spear, and goes back up into the hum.\n\nWhen it is killed, the orcs say, there is a night or two when nobody is bitten; then it is back over the high ground, because the marsh never stops breeding, and the lord never stops collecting.",
+  "legend": "Pester is a level 55 giant dragonfly over the high ground east of the orc camp on Inishail, where the buzzing nuisances for Orcs with Spellbooks are. It is aggressive from about 500 away and stabs (thrust damage), but has no faction and nothing else within 800, so it comes alone; the nuisances do not join it unless you walk into them. No spells or styles in the data: a melee kill for a duo or small group of fifties; cloth wearers feel the stabs. The orc village is west, do not chase it there, or you will have the battlers too. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "A hum, then a dive.",
+      "Wings like coloured glass flash down at you.",
+      "The air screams."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Pester rises into the hum, and falls again."
+      }
+    ],
+    "death": [
+      "The great dragonfly drops out of the air.",
+      "The hum falters."
+    ],
+    "slay": [
+      "Drained.",
+      "Bitten.",
+      "Back up into the hum."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air hums east of the orc camp.",
+      "Something as long as a boat hangs in the air."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Pester dives again, faster."
+      }
+    ],
+    "realmFirstKill": "Pester has fallen. Inishail sleeps unbitten tonight."
+  },
+  "botLines": {
+    "briefing": [
+      "pester, 55 giant dragonfly e of the orc camp. aggros at 500, stabs hard",
+      "no faction, nothing near, it comes alone. the nuisances dont join unless you walk into them",
+      "no spells, melee, duo of 50s works",
+      "dont chase it west into the orc village. 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "pester down, the orcs can sleep outside tonight lol",
+      "came alone like i said",
+      "duo'd it, nice",
+      "back in 80, get your stingers"
+    ],
+    "aftermathLoss": [
+      "chased it into the orc village",
+      "pulled nuisances on the way in",
+      "thrust damage hurts on cloth",
+      "it was back while we got stingers"
+    ],
+    "rumour": [
+      "[heard|someone said] the orcs think pester is emthoro's rent collector",
+      "heard pester's sting is the strongest venom on inishail, veena says",
+      "[heard|someone said] pester went through a lammia net like cobweb",
+      "heard any orc who sleeps outside gets bitten by pester"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "pester",
+    "text": "The greatest of Inishail's flies, a dragonfly as long as a boat, over the humming ground east of the orc camp. The orcs believe it is the dead lord's rent-collector and that what it drinks goes north to his door; Veena, who makes poisons of the isle's flies, says it is nobody's servant, only hungry and alone, and its sting the strongest venom on the island. The other flies do not follow it."
+  },
+  "bookPage": "From the notes Veena keeps on the south-east shore of Inishail, copied for Caer Gothwaite. Inishail fly: venom weak, good for vials. Buzzing nuisance: stinger keeps. Pester: I have had one sting from it, given to me by an orc who brought it to sell, in a jar, and I have not finished learning what it does. It is not a servant's venom. A servant's venom is measured; this is not. It is the venom of a creature that has never once been told to stop. The orcs say it is the lord's. If the lord had a creature like that he would not need tenants.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} brought Pester down out of the hum on Inishail in {minutes} minutes.",
+    "loss": "Pester dropped out of the hum on {raidLeader}'s company of {realm}, and went back up."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "chieftain-toca",
+      "relation": "the orcs of his village are its prey"
+    },
+    {
+      "id": "veena",
+      "relation": "studies its venom"
+    },
+    {
+      "id": "sarcondina",
+      "relation": "the slime marsh where the isle's flies breed"
+    }
+  ]
+}

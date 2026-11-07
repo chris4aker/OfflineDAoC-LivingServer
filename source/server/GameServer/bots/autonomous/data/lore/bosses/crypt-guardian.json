@@ -1,0 +1,121 @@
+{
+  "id": "crypt-guardian",
+  "name": "Crypt Guardian",
+  "npcNames": [
+    "Crypt Guardian"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "the sexton of the gaol door"
+  ],
+  "facts": [
+    {
+      "text": "Crypt Guardian: template 60159516, level 59, a ghoul's model, at the graveyard nearest the Caer Sidi strand at 330800, 382634; aggro level 200 within 500, faction Undead Servants of Morgana, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Eralyne of the same faction stands 607 from it, an ancient zombie 429.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "The guardian as the sexton of the graves nearest Arawn's door, the rowans he planted, his last burial and the keeping turned inside out are Living Server writing; Caldey as Avalon's burying isle is from the Caldey file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Caldey was Avalon's burying isle. The colleges sent their dead across the water to it for longer than they kept count, and the priests of the dead who lived there planted rowans round the graves to keep them lying down. The graveyard on the western strand, nearest the door of Arawn's gaol, was the one the priests feared most, because a grave beside a door is a grave that someone may try to open from the other side. So they set a sexton over it who did not sleep at night, and walked the rows with a lantern, and cut the rowans back when they grew so thick they hid the stones.\n\nThe fishermen of Little Haven remember him only as the sexton. He had a name; it is on a stone in that graveyard, they say, which he cut himself and left blank at the bottom for the year. He kept the strand graves through the plague years and the long quiet, and on the night the colleges burned he was still there, walking the rows, when the boats came over from Avalon with the last of the college dead. He buried them. The last he buried was a girl of the colleges, a young sorceress called Eralyne, who had come over on the boats alive and died on the strand before morning.\n\nThen the witch called, and the isle stood up, and the sexton stood up with it. He keeps the graveyard still. He walks the rows with no lantern and the rowans have grown wild, and what he keeps in is no longer the same as what he kept out. The fishermen say he is the only one of Caldey's dead who still does the work he did alive, and that he does it the wrong way round now: he keeps the living away from the graves, and the dead in them up. He stands over Eralyne most of all, because she was the last one he put down, and the first he failed to keep there.\n\nHe does not sleep, the fishermen say, and the crypt's dead are his, and Eralyne is his; trouble him with more than a pair of hands and she comes up the row to him. When he is put down he is at his rows again before the gulls settle. Ariette of Fort Gwyntell, who wants the girl's soul set free, says the sexton is the harder half of the work, and the sadder.",
+  "legend": "The Crypt Guardian is a level 59 undead at the graveyard by the Caer Sidi strand on Caldey's west coast, with Eralyne (55) about 600 away. Both are Undead Servants of Morgana and aggressive from about 500. A pair can usually pull the guardian alone; a bigger group widens the bring-a-friend call to 600 and up, and then Eralyne walks over to join, so either keep the pull small or plan to fight both. An ancient zombie stands about 430 off. No spells or styles in the data: a straight melee fight with a 59, a full group of fifties. Lost Treasure (Ariette) needs Eralyne; the guardian is in the way. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Back from the graves.",
+      "The rows are kept.",
+      "No one opens the strand graves."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Girl! To me! Up, up from the row!"
+      }
+    ],
+    "death": [
+      "The rows... untended...",
+      "I left... the year... blank..."
+    ],
+    "slay": [
+      "Buried.",
+      "Lie down. Stay down.",
+      "One more for the strand."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Rowans grown wild over the strand graves.",
+      "Something walks the rows without a lantern."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Up the row, a dead girl rises and turns."
+      }
+    ],
+    "realmFirstKill": "The Crypt Guardian is laid. The strand graves are open."
+  },
+  "botLines": {
+    "briefing": [
+      "crypt guardian, 59 undead at the graveyard by the caer sidi strand. aggros at 500",
+      "eralyne is about 600 off, same faction. pair pull = guardian alone, big group = both",
+      "no spells, melee. full group of 50s",
+      "lost treasure folks, eralyne is the one you want. 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "sexton down, eralyne stayed put",
+      "kept it to two, perfect",
+      "now eralyne for ariette",
+      "back in 80, hurry"
+    ],
+    "aftermathLoss": [
+      "whole group charged in and eralyne came",
+      "fought it next to the ancient zombie",
+      "59 hits harder than you think",
+      "it was back while we fought eralyne"
+    ],
+    "rumour": [
+      "[heard|someone said] the crypt guardian was caldey's sexton and still keeps the graves, backwards",
+      "heard the sexton buried eralyne the night the colleges burned. last one he put down",
+      "[heard|someone said] the sexton cut his own gravestone and left the year blank",
+      "heard he never carried a lantern after the isle stood up"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "crypt guardian",
+    "text": "The sexton of the graveyard nearest Caer Sidi's door on [caldey], who kept the strand graves against whatever might open them from the other side. He buried the last of the college dead on the night of the burning, [eralyne] last of all, and stood up with the isle when the witch called. He keeps the rows still, the wrong way round: the living out, the dead up."
+  },
+  "bookPage": "From the Ledger of Little Haven, kept by Mordwywr, enchanter. Paid to nobody, but entered: the fishermen tell me there is a stone in the strand graveyard with the sexton's own name cut on it by his own hand, and the year left blank. I went to see. I found the stone. The name is worn and I could not read it; the bottom of the stone is blank and clean, as though someone keeps it so. The sexton was three rows off, standing over the girl's grave. He did not come for me. I think he was busy. I have entered the stone in the ledger as unpaid, because I do not know who owes what to whom.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} laid the Crypt Guardian in his own rows on Caldey in {minutes} minutes.",
+    "loss": "The Crypt Guardian buried {raidLeader}'s company of {realm} in the strand graves."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "eralyne",
+      "relation": "the last of the college dead he buried, and the first he failed to keep down"
+    },
+    {
+      "id": "caer-sidi",
+      "relation": "the graveyard nearest the gaol's door"
+    }
+  ]
+}

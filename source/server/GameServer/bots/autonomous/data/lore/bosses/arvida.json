@@ -1,0 +1,120 @@
+{
+  "id": "arvida",
+  "name": "Arvida",
+  "npcNames": [
+    "Arvida"
+  ],
+  "locationId": "gwyddneau",
+  "realm": "Albion",
+  "aliases": [
+    "the hand-reader of clifton"
+  ],
+  "facts": [
+    {
+      "text": "Arvida: template 60158093, level 54, a lammia of Clifton at 334380, 465534 with an equipment template; faction Cryptos Mythicos, thrusting melee, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Cryptos Mythicos starts at base hostility 100 (aggressive): the lammia attack a stranger unless his standing with them has improved.",
+      "provenance": "game",
+      "source": "world data: Faction table (base hostility); source/server/GameServer/gameutils/Faction.cs (above 75 aggressive, above 25 neutral) and StandardMobBrain.CanAggroTarget (faction NPCs attack by standing)"
+    },
+    {
+      "text": "Clawed Mummified Hand XP Item is Arvida's turn-in at levels 49-50; a quest giver leaves players in its level range alone.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only); source/server/GameServer/quests/QuestsMgr/QuestTalkTruce.cs (an NPC a player must talk to for a quest step, or that gives a quest in his level range, leaves him alone)"
+    },
+    {
+      "text": "Arvida reading the hands of the dead, the grasp that keeps its shape, the drowned country's last letters and Brother Cynog's account are Living Server writing; that she buys mummified hands is from the Gwyddneau file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The lammia of Clifton keep the memory of the drowned country, the lowland that lay between Gwyddneau's heights before the sea came in, and they keep it the way they keep everything, by trade. A lammia will buy anything that remembers. Cnieda buys the heads of thrawn ogres. Arvida buys hands.\n\nThe hands she wants are the clawed, dried hands of the isle's mummified dead, whom the lammia say were buried in the drowned country's hill-graves before the drowning and have walked since the witch called. Arvida holds that a hand which grasped something for a lifetime keeps the shape of it after death, the way a glove keeps the shape of the hand. She takes each hand the realm's young bring her and opens the fingers one at a time, slowly, and reads what they held: a plough-handle, a child's wrist, a rope, an oar, the hilt of a knife. She writes each one down in a book of the lammia's that no one but a lammia has read. Brother Cynog of Caer Diogel, who has watched her do it, says the book is the drowned country's census, taken from the dead one hand at a time.\n\nThe lammia are not Albion's and do not pretend to be. Clifton welcomes those whose standing with the old beasts of the isles is good, and turns a cold shoulder or a cold blade to those who have hunted its griffins and yales, and Arvida is no kinder than the rest; a stranger who walks up to her stall with the town against him finds out she carries a spear under the counter and knows how to use it. But the young of the realm who come to her with hands and with the town's leave she does not touch, and she pays fairly.\n\nBrother Cynog asked her once what she was looking for in all those hands. She said one that had held a key. The drowned country had a gate in its sea-wall, the lammia say, and the man who kept it fell asleep on the night of the drowning; his hand, when she finds it, will still have the shape of the key he did not turn.",
+  "legend": "Arvida is a level 54 lammia of Clifton in Gwyddneau who buys Clawed Mummified Hands (her turn-in, levels 49 to 50). Like the rest of Clifton she is Cryptos Mythicos: aggressive unless your standing with that faction is good (hunting the isle's griffins and cliff yales makes it worse). In her quest's level band she leaves you alone anyway. If you fight her it is a melee fight with a thrusting spear and no spells, and the other lammia of Clifton share her faction and can come in. There is no quest to kill her; bring her hands instead. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "You come with the town against you.",
+      "The spear is under the counter, stranger.",
+      "Hands. I want hands. Yours will do."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Sisters! A thief at the stall!"
+      }
+    ],
+    "death": [
+      "Open... my fingers...",
+      "Read... what I held..."
+    ],
+    "slay": [
+      "Your hand will remember this.",
+      "One more for the census.",
+      "Opened, finger by finger."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lammia's stall. A book, and a basket of dry hands.",
+      "She opens a dead hand, one finger at a time."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The lammia of Clifton turn toward Arvida's stall."
+      }
+    ],
+    "realmFirstKill": "Arvida has fallen. The census of the drowned is closed."
+  },
+  "botLines": {
+    "briefing": [
+      "arvida, 54 lammia in clifton, buys clawed mummified hands at 49-50. turn-in, not a target",
+      "shes lammia faction. bad standing = she and the town aggro you",
+      "if you fight her: spear, no spells, other lammia can join",
+      "no quest to kill her. dont hunt the griffins if you want clifton friendly"
+    ],
+    "aftermathWin": [
+      "arvida down. clifton hates us now",
+      "why did we kill the hand lady",
+      "lammia came from everywhere",
+      "standing's going to take forever to fix"
+    ],
+    "aftermathLoss": [
+      "walked into clifton with bad faction, she speared me",
+      "the whole town joined",
+      "hunted yales all day then went to turn in hands. no",
+      "never fight in clifton"
+    ],
+    "rumour": [
+      "[heard|someone said] arvida reads the mummified hands like letters, what they held in life",
+      "heard arvida's book is a census of the drowned country, one hand at a time",
+      "[heard|someone said] arvida is looking for a hand that held a key",
+      "heard she keeps a spear under the counter"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "arvida",
+    "text": "A lammia of Clifton in [gwyddneau] who buys the clawed hands of the drowned country's mummified dead, opens the fingers one at a time and reads what they grasped in life into a book that Brother Cynog calls the drowned country's census. She is looking for one that held the key of the sea-wall gate on the night of the drowning. She is kind to those Clifton welcomes, and to no one else."
+  },
+  "bookPage": "From the Road-Book of Brother Cynog of Caer Diogel. I watched Arvida open a dead hand at her stall in Clifton. She did it the way the sisters at Caer Ulfwych lay out the dying, slowly and without hurry. The first finger, the second, the thumb. She said: a rope. She wrote it in her book. The next was a child's wrist; she was a long time writing that one. I asked what she would do with the book when it was full. She said it would not be full until she found the hand that held the key. I asked what key. She said the one that was not turned, and closed the book, and I knew I would get no more.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down Arvida in Clifton in {minutes} minutes, and Clifton saw it.",
+    "loss": "Arvida took her spear from under the counter, and {raidLeader}'s company of {realm} left Clifton the short way."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "larionne",
+      "relation": "another lammia of Clifton, who keeps the sap of the drowned orchard"
+    },
+    {
+      "id": "gwyddneau",
+      "relation": "the lammia town of Clifton on the middle cliffs"
+    }
+  ]
+}

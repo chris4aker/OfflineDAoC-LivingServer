@@ -12,9 +12,14 @@
   ],
   "facts": [
     {
-      "text": "Kez: template 770021 (it replaces the spawn's values), level 53, size 150 (the template gives him a granite giant elder's model), at 358981, 750585 in western Dartmoor; aggro level 200 within 500, faction Stonecrush Clan, evade 10, respawn 80 seconds.",
+      "text": "Kez: template 770021 (it replaces the spawn's values), level 53, size 150 (the template gives him a granite giant elder's model), at 358981, 750585 in western Dartmoor; faction Stonecrush Clan, evade 10, respawn 80 seconds.",
       "provenance": "game",
       "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Stonecrush Clan's base hostility is 50, a neutral standing: its members, Kez included, do not attack a newcomer on sight, though each Stonecrush killed may sour a player's standing.",
+      "provenance": "game",
+      "source": "world data: Faction table; source/server/GameServer/gameutils/Faction.cs (standing above 75 = aggressive, above 25 = neutral) and StandardMobBrain.CanAggroTarget"
     },
     {
       "text": "A Stonecrush rockgrinder of his clan stands about 950 from him.",
@@ -32,11 +37,11 @@
       "source": "LORE"
     }
   ],
-  "story": "The Stonecrush ogres came up out of the Cornish tin workings and onto Dartmoor because there was granite to eat, and they name their young for the sound a stone makes when it breaks. Kel is a pebble cracking under a heel. Kan is a hammer on a block. Kez, Lamont of Grimspound says, is the long dry sound of a slab splitting along its grain, all the way through, and the ogres of the hill say it as a warning, because the Kez of the western diggers has never stopped at the end of anything.\n\nHe is the largest of them. The Grimspound ogres say he grew that size the way the clan grows, by eating, and that he has eaten more granite giants than any ogre since the clan came out of the ground; the hill-folk who have seen him say he looks more like a giant than an ogre now, as if what he ate had stayed in him and come up through his skin. He leads the diggers on the western slopes, near the demolishers, closer to the Bed than any other ogre dares, and his shaft goes down and east toward it. Kan the smith of Grimspound believes he means to dig all the way. A Stonecrush who ate a dragon's bed, Kan says, would not need to eat anything else for a thousand years, and the clan would follow whoever fed them that well.\n\nThe giants know it. The tinners' old law was to stop digging where the ground was warm, and the granite knockers that keep time under the Bed are said to have stopped knocking under Kez's shaft, which the tinners would have read as the worst sign there is. The Grimspound ogres keep their wall between them and him for that reason, Lamont says: not because Kez would eat a Grimspound ogre, but because he would not stop to notice that he had.\n\nHe does not wait for anyone to come to his shaft. Whoever walks near the diggings he comes at, and his diggers leave their picks when they hear him, though not all of them are near enough to hear. When he is broken the clan has him up again almost at once; the ogres say there is always a Kez, because there is always the sound.",
-  "legend": "Kez is the level 53 leader of the Stonecrush diggers on the western slopes of Dartmoor. He is aggressive from about 500 away (the template sets aggro 200, whatever the old notes say), and the template has made him huge, so he is easy to spot. A Stonecrush rockgrinder works about 950 off and can join if a bigger company hits Kez; the diggers' terraces around him are full of his clan, so pull him out rather than fighting in the middle of them. No spells or styles in the data: a melee fight a group of fifties wins. The Grimspound ogres on the north-west hill trade with Albion; Kez's clan does not. He respawns in about 80 seconds.",
+  "story": "The Stonecrush ogres came up out of the Cornish tin workings and onto Dartmoor because there was granite to eat, and they name their young for the sound a stone makes when it breaks. Kel is a pebble cracking under a heel. Kan is a hammer on a block. Kez, Lamont of Grimspound says, is the long dry sound of a slab splitting along its grain, all the way through, and the ogres of the hill say it as a warning, because the Kez of the western diggers has never stopped at the end of anything.\n\nHe is the largest of them. The Grimspound ogres say he grew that size the way the clan grows, by eating, and that he has eaten more granite giants than any ogre since the clan came out of the ground; the hill-folk who have seen him say he looks more like a giant than an ogre now, as if what he ate had stayed in him and come up through his skin. He leads the diggers on the western slopes, near the demolishers, closer to the Bed than any other ogre dares, and his shaft goes down and east toward it. Kan the smith of Grimspound believes he means to dig all the way. A Stonecrush who ate a dragon's bed, Kan says, would not need to eat anything else for a thousand years, and the clan would follow whoever fed them that well.\n\nThe giants know it. The tinners' old law was to stop digging where the ground was warm, and the granite knockers that keep time under the Bed are said to have stopped knocking under Kez's shaft, which the tinners would have read as the worst sign there is. The Grimspound ogres keep their wall between them and him for that reason, Lamont says: not because Kez would eat a Grimspound ogre, but because he would not stop to notice that he had.\n\nHe does not look up from his shaft for a passing man. Men are not granite, and the Stonecrush have never counted Albion's folk as either food or enemy; a drover may walk along the edge of the diggings and Kez will not turn his head. Strike him, though, and he turns, and his diggers leave their picks when they hear him, though not all of them are near enough to hear. And the Grimspound ogres say a man who has broken too many of the clan will find, one day, that Kez looks up. When he is broken the clan has him up again almost at once; the ogres say there is always a Kez, because there is always the sound.",
+  "legend": "Kez is the level 53 leader of the Stonecrush diggers on the western slopes of Dartmoor. Unlike the named giants he is NOT aggressive to a fresh character: the Stonecrush Clan starts neutral, so Kez and his diggers let you walk by (kill enough Stonecrush and your standing can sour). The template has made him huge, so he is easy to spot. A Stonecrush rockgrinder works about 950 off and can join if a bigger company hits Kez; the diggers' terraces around him are full of his clan, so pull him out rather than fighting in the middle of them. No spells or styles in the data: a melee fight a group of fifties wins. The Grimspound ogres on the north-west hill trade with Albion; Kez's clan does not. He respawns in about 80 seconds.",
   "yells": {
     "aggro": [
-      "Meat that walks. Good.",
+      "You strike Kez? Then you are meat.",
       "You stand on my shaft.",
       "Kez eats. Kez does not stop."
     ],
@@ -71,7 +76,7 @@
   },
   "botLines": {
     "briefing": [
-      "kez, 53 stonecrush boss on the west slopes of dartmoor. aggros at 500, hes huge, you cant miss him",
+      "kez, 53 stonecrush boss on the west slopes of dartmoor. stonecrush are neutral, he wont aggro, we pick the pull",
       "rockgrinder about 950 off, bigger group can pull it in. pull kez out of the terraces",
       "no spells, melee. group of 50s",
       "grimspound ogres are friendly, kez's lot arent. 80 sec respawn"
@@ -84,7 +89,7 @@
     ],
     "aftermathLoss": [
       "fought him in the terraces and the whole clan came",
-      "thought the stonecrush were all friendly. only grimspound",
+      "farmed stonecrush all week and now they all aggro me",
       "underestimated him, hes 53",
       "he was back while we were looting"
     ],
