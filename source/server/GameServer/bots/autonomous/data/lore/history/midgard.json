@@ -129,6 +129,7 @@
         "ljornrn",
         "mokerkialfi",
         "raumarik-revenant",
+        "runemistress-shayla",
         "steinolf",
         "ulf",
         "wretch-of-winter",
@@ -206,6 +207,7 @@
         "cargila",
         "fas",
         "fjalar",
+        "freyana",
         "galar",
         "grand-summoner-govannon",
         "gudlaugr",
@@ -214,6 +216,7 @@
         "jarl-ormarr",
         "mistress-of-runes",
         "nagoltooth",
+        "noma-rindasdottir",
         "ond",
         "rottild-the-traitor",
         "stripe",
@@ -255,20 +258,27 @@
         "yggdra-forest"
       ],
       "bosses": [
+        "ajniollia",
         "albion-leader",
+        "ald-the-bruce",
         "fjall",
         "geyra",
         "hagall-the-red-dagger",
         "jango",
         "kelic",
         "loken",
+        "melechan",
+        "mista",
+        "moira-the-quiet",
         "oona",
         "red-hagen",
         "runil",
         "serk",
+        "soulsong",
         "storslange",
         "thorkatla",
         "ulfketill",
+        "undead-patrol",
         "valthjof"
       ]
     },
@@ -693,14 +703,18 @@
         "uppland"
       ],
       "bosses": [
+        "freyana",
         "geyra",
         "hagall-the-red-dagger",
         "issorden",
         "jango",
         "kelic",
+        "noma-rindasdottir",
         "raumarik-revenant",
         "red-hagen",
+        "runemistress-shayla",
         "runil",
+        "soulsong",
         "thorkatla",
         "wretch-of-winter"
       ]
@@ -821,7 +835,9 @@
         "raumarik"
       ],
       "bosses": [
-        "oona"
+        "moira-the-quiet",
+        "oona",
+        "undead-patrol"
       ]
     },
     {
@@ -865,6 +881,8 @@
         "vanern-swamp"
       ],
       "bosses": [
+        "freyana",
+        "mista",
         "ydenia-of-the-seithkona"
       ]
     },
@@ -878,7 +896,13 @@
         "yggdra-forest"
       ],
       "bosses": [
-        "albion-leader"
+        "ajniollia",
+        "albion-leader",
+        "ald-the-bruce",
+        "melechan",
+        "moira-the-quiet",
+        "soulsong",
+        "undead-patrol"
       ]
     },
     {
@@ -968,7 +992,9 @@
       "places": [
         "west-svealand"
       ],
-      "bosses": []
+      "bosses": [
+        "melechan"
+      ]
     },
     {
       "id": "muspel-fire",

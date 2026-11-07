@@ -129,6 +129,7 @@
     ]
   },
   "bosses": [
-    "glacier-giant"
+    "glacier-giant",
+    "melechan"
   ]
 }

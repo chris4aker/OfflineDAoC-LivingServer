@@ -1,0 +1,71 @@
+{
+  "id": "ajniollia",
+  "name": "Ajniollia",
+  "npcNames": [
+    "Ajniollia"
+  ],
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "realm-enemies"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ajniollia is a level-45 elder skogsfru (faction Woodwomen) in Vanern Swamp (668,392/931,182), alone; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The rogue epic 'War Concluded' (Masrim of Fort Atla): 'Find the Hibernian informer Fionnuala in Yggdra Forest and hand her the items. Slay Ajniollia in Vanern Swamp. Give the scrolls to Masrim. Read the scrolls to the blind Masrim.'",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Ajniollia as Hibernia's carrier in the swamp is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Ajniollia is a woodwoman, an elder of the skogsfru, fair from the front and hollow behind, and she carries letters. That is how the blind Masrim of Fort Atla put it to the rogues he sends after her: she is the hand that passes Hibernia's word through Midgard's swamp. The Hibernian informer Fionnuala, who stands among the war dead of Yggdra, gives the realm's shadows the one end of the thread; Ajniollia in the south of Vanern is the other, and on her are the scrolls that say who in Midgard has been listening.\n\nWhy a skogsfru would carry for Hibernia, Masrim does not say. The ferrymen of Vanern say the woodwomen have never cared whose war it is, only whose children wander into the trees, and that Hibernia paid her in the only coin a skogsfru takes. The seeresses of the Circle in Skona say she is older than the swamp's jarl and his barrows, and that she has carried messages for every enemy Midgard ever had. When the rogues read her scrolls to Masrim, he laughs, the stories say, and then goes very still.",
+  "legend": "Ajniollia is a level 45 elder skogsfru (Woodwomen faction) alone in Vanern Swamp, the kill step in War Concluded, the rogue epic: Fionnuala in Yggdra first, then Ajniollia for the scrolls, then read them to Masrim in Fort Atla. She's alone, so no friends to worry about. Plain hitter for her level. Don't follow skogsfru into the trees, the old folk say; they're hollow behind.",
+  "yells": {
+    "aggro": [
+      "You read other people's letters? So do I.",
+      "(She smiles, and turns, and there is nothing behind her face.)"
+    ],
+    "death": [
+      "The scrolls... were never mine..."
+    ],
+    "slay": [
+      "Another letter that will not arrive."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A fair woman waits in the reeds. Her back is hollow."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "ajniollia is the 45 skogsfru in vanern for war concluded",
+      "she's alone, easy for the epic group"
+    ],
+    "aftermathWin": [
+      "got the scrolls, back to masrim",
+      "read them to him, he laughed"
+    ],
+    "rumour": [
+      "ajniollia carries hibernias letters through vanern",
+      "the skogsfru have carried for every enemy midgard ever had"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ajniollia",
+    "text": "An elder skogsfru of southern Vanern who carries Hibernia's letters through Midgard's swamp. The blind Masrim's rogues take her scrolls. See [outcasts]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Hibernia's scrolls from Ajniollia in Vanern in {minutes} minutes."
+  }
+}

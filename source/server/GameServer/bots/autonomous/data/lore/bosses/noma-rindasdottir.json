@@ -1,0 +1,71 @@
+{
+  "id": "noma-rindasdottir",
+  "name": "Noma Rindasdottir",
+  "npcNames": [
+    "Noma Rindasdottir"
+  ],
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Noma Rindasdottir is a level-35 ghost (ghost flag, undead, a woman's model) alone in Vanern Swamp (675,418/912,236); no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'The Three Sisters' (Anrid of Jordheim): Jodis Rindasdottir (Skona), Edonia (Yggdra Forest) and the third sister, 'Norma', in Vanern Swamp, who needs 'a new water skin made from a battle scarred mauler's bladder'. The world data spells her Noma.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The sisters' story is Living Server lore built on that quest.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Rinda had three daughters, and gave each of them a part of a sword. Jodis, the eldest, took the hilt and keeps a hut in Skona; Edonia took the drawings of the blade and the book of how it was made and went to Yggdra; Noma, the youngest, took the water for the quenching, the old smiths' water from a spring nobody else knows, and carried it into Vanern Swamp to hide it. That was the plan. Anrid of Jordheim, who is gathering the Grenlock things together, sends the young after all three.\n\nNoma did not come out of the swamp. Her ghost stands alone in the middle of Vanern by the water, and her water skin is torn, and she will give up nothing until she has a new one: a skin made from a battle-scarred mauler's bladder, the old kind, that does not leak. The ferrymen say she fights all who come without it, and some who come with it, because she has forgotten which of them are her sisters' messengers. The Vasudheim smith forges the sword in the end. Noma does not see it.",
+  "legend": "Noma Rindasdottir (spelled 'Norma' in the quest) is a level 35 ghost alone in the middle of Vanern Swamp, the third sister of Anrid's The Three Sisters: bring her a new water skin made from a battle-scarred mauler's bladder. She's hostile anyway, so expect to fight. No faction, no spells. Then the smith in Vasudheim forges the sword for Anrid.",
+  "yells": {
+    "aggro": [
+      "Where is the skin? The water is spilling!",
+      "(The ghost clutches a torn water skin.)"
+    ],
+    "death": [
+      "Jodis... Edonia... the water..."
+    ],
+    "slay": [
+      "You spilled it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A ghost by the water holds a torn water skin."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "noma rindasdottir is the 35 ghost in mid vanern, three sisters",
+      "the quest calls her norma, same ghost"
+    ],
+    "aftermathWin": [
+      "water done, on to the vasudheim smith",
+      "poor girl never got to see the sword"
+    ],
+    "rumour": [
+      "rinda gave her three daughters a part of a sword each, noma got the water",
+      "noma fights even the ones who bring her the skin, she forgets"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Noma Rindasdottir",
+    "text": "The youngest of Rinda's three daughters, who carried the quenching water for the sisters' sword into Vanern and did not come out. She wants a new water skin. See [ferrymen]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought Noma Rindasdottir her water in Vanern in {minutes} minutes."
+  }
+}
