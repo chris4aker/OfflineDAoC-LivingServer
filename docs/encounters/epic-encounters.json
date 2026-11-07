@@ -78,7 +78,7 @@
   "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "137a8f99707a255afdf4bf720d3992d157eb1b561f8643d06e328786e2ca68ee",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "2dd679af3ee3a7e7bbc9886772c7cd111ea29e6fd9837a0035a8ebb528589174",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "58370ebace30ce863fcb6b51774468f15c9ca913494b7faed1335ad7e7a81d57",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "6e8792cfc3746a71355607e2335785468792a6e46b468c85054f5732eed190f7",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe",
@@ -223,7 +223,7 @@
    "name": "AllowDisplacement",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 19,
+   "line": 20,
    "perEncounter": true,
    "shippedFor": [
     "Olcasgean=true",
@@ -236,13 +236,13 @@
     "Hurika=true",
     "BaneOfHope=true"
    ],
-   "about": "/// Easmarach, Spindler, the Horsemen room, Bane of Hope, Jailer Vifil, Hakr, Hurika, Kula, the waterfall)."
+   "about": "Scripted throws, teleports and jails that the fork had switched off (Olcasgean, the Water primal, Easmarach, Spindler, the Horsemen room, Bane of Hope, Jailer Vifil, Hakr, Hurika, Kula, the waterfall)."
   },
   {
    "name": "AllowPositionPuzzle",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 21,
+   "line": 22,
    "perEncounter": true,
    "shippedFor": [
     "Olcasgean=true",
@@ -256,7 +256,7 @@
    "name": "AllowInvulnerableHazards",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 23,
+   "line": 24,
    "perEncounter": true,
    "about": "Hazards that can't be hurt and must be avoided."
   },
@@ -264,7 +264,7 @@
    "name": "AllowAddShield",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 25,
+   "line": 26,
    "perEncounter": true,
    "shippedFor": [
     "Morbus=true"
@@ -275,7 +275,7 @@
    "name": "AllowGlacierGriffonPatrol",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 30,
+   "line": 31,
    "perEncounter": true,
    "about": "Torst and Hurika's aerial patrol and pull."
   },
@@ -283,7 +283,7 @@
    "name": "AllowBotDisplacement",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 35,
+   "line": 36,
    "perEncounter": true,
    "shippedFor": [
     "AlbGolestandt=true",
@@ -318,111 +318,121 @@
     "DraugynSphere=true",
     "MoranTheMighty=true"
    ],
-   "about": "/// On per encounter where the bots' recovery is proven (EncounterDisplacement, EncounterDisplacementRecovery)."
+   "about": "A script's throw, teleport or jail may move a bot (companion bots and autonomous gamebots); off: a bot it picks stays where it is, as before 1.2 (bots were never picked). Real players are moved as before either way. On per encounter where the bots' recovery is proven (EncounterDisplacement, EncounterDisplacementRecovery)."
   },
   {
    "name": "AllowDragonThrow",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 38,
+   "line": 39,
    "perEncounter": true,
    "shippedFor": [
     "AlbGolestandt=true",
     "MidGjalpinulva=true",
     "HibCuuldurach=true"
    ],
-   "about": "/// the dragon's target) are hurled to one of five spots of the lair. On per dragon since 1.2."
+   "about": "The dragons' wing-gust throw (OpenDAoC-Core 3513bad): every 60-80 s two to five raiders within 2,500 (not the dragon's target) are hurled to one of five spots of the lair. On per dragon since 1.2."
   },
   {
    "name": "AllowDragonMessengers",
    "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 42,
+   "line": 43,
    "perEncounter": true,
    "shippedFor": [
     "AlbGolestandt=true",
     "MidGjalpinulva=true",
     "HibCuuldurach=true"
    ],
-   "about": "/// casters and archers run them down)."
+   "about": "The dragons' messengers (OpenDAoC-Core 3513bad): from 50% health every 80-90 s, four to six messengers run out of the lair and each calls four to six adds where its path ends. Global off; on per dragon since 1.2 (the raid's casters and archers run them down); the server property epic_dragon_messengers (on) turns them off at every dragon."
   },
   {
    "name": "AllowHorsemenTetherHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 70,
+   "line": 78,
+   "serverProperty": "npc / epic_horsemen_tether_heal",
    "restores": true,
-   "about": "/// since 1.2: the raid fights each horseman within 2,700 of his spawn (catalog fight-at-home) and leads him back."
+   "about": "Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over). On since 1.2: the raid fights each horseman within 2,700 of his spawn (catalog fight-at-home) and leads him back."
   },
   {
    "name": "AllowFunusWeaponPuzzle",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 74,
+   "line": 82,
+   "serverProperty": "npc / epic_funus_weapon_puzzle",
    "restores": true,
-   "about": "/// everyone else stands clear and never puts an area spell on him (EpicEncounterTactics.CaerSidi)."
+   "about": "Funus takes damage only from clerics and from mercenaries, armsmen, infiltrators and scouts with their listed weapon; any other attacker (pets included) heals him to full. On since 1.2: only those raiders fight him, everyone else stands clear and never puts an area spell on him (EpicEncounterTactics.CaerSidi)."
   },
   {
    "name": "AllowSacristanPatrol",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 77,
+   "line": 85,
+   "serverProperty": "npc / epic_sacristan_patrol",
    "restores": true,
-   "about": "/// parties wait at stations along his loop and hit him as he passes (EpicEncounterTactics.CaerSidi)."
+   "about": "Skeletal Sacristan walks his loop at 220 without stopping, with 70% magic resists. On since 1.2: the raid's parties wait at stations along his loop and hit him as he passes (EpicEncounterTactics.CaerSidi)."
   },
   {
    "name": "AllowSoulReckonerFullShield",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 80,
+   "line": 88,
+   "serverProperty": "npc / epic_soul_reckoner_full_shield",
    "restores": true,
-   "about": "/// are his required adds in the catalog."
+   "about": "Soul Reckoner takes no damage at all while a reckoned soul lives (not a quarter). On since 1.2: the souls are his required adds in the catalog."
   },
   {
    "name": "AllowSoulReckonerSmallRoom",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 83,
+   "line": 91,
+   "serverProperty": "npc / epic_soul_reckoner_small_room",
    "restores": true,
-   "about": "/// of it and leads him back (EpicEncounterTactics.CaerSidi)."
+   "about": "Soul Reckoner's room is 900 units from its middle (not 1,500). On since 1.2: the raid keeps him within 700 of it and leads him back (EpicEncounterTactics.CaerSidi)."
   },
   {
    "name": "AllowAroonDamageOrder",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 86,
+   "line": 94,
+   "serverProperty": "npc / epic_aroon_damage_order",
    "restores": true,
-   "about": "/// crush, body, cold, energy, heat, matter, spirit); each Scaith is immune until the one before it is dead."
+   "about": "Aroon takes only the damage types whose Scaith has died, and the Scaiths must die in order (slash, thrust, crush, body, cold, energy, heat, matter, spirit); each Scaith is immune until the one before it is dead."
   },
   {
    "name": "AllowGalladoriaBridgeSpot",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 89,
+   "line": 97,
+   "serverProperty": "npc / epic_galladoria_bridge_spot",
    "restores": true,
-   "about": "/// the original counted real players only, which a bot raid could never meet)."
+   "about": "Galladoria's primals come only when a raider stands within 350 of the waterfall bridge spot (bots too; the original counted real players only, which a bot raid could never meet)."
   },
   {
    "name": "AllowFullFirePatches",
-   "value": "true",
+   "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 91,
+   "line": 100,
+   "serverProperty": "npc / epic_full_fire_patches",
    "restores": true,
-   "about": "The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300)."
+   "about": "The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300). Off by default (epic_full_fire_patches): on undoes the owner's 2026-10-19 nerf; the raid plays it either way (melee leave the Fire primal to casters)."
   },
   {
    "name": "AllowEarthmenderClassPuzzle",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 94,
+   "line": 103,
+   "serverProperty": "npc / epic_earthmender_class_puzzle",
    "restores": true,
-   "about": "/// the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules)."
+   "about": "Each Earthmender takes damage only from its own class group (pets always); others do nothing. On since 1.2: the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules)."
   },
   {
    "name": "AllowEarthmendersPassive",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 96,
+   "line": 105,
+   "serverProperty": "npc / epic_earthmenders_passive",
    "restores": true,
    "about": "Earthmenders never attack (they only heal)."
   },
@@ -430,7 +440,8 @@
    "name": "AllowEarthmenderQuickReset",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 98,
+   "line": 107,
+   "serverProperty": "npc / epic_earthmender_quick_reset",
    "restores": true,
    "about": "An Earthmender heals to full 30 s after its last fight even with raiders in the room."
   },
@@ -438,7 +449,8 @@
    "name": "AllowEarthmenderMutualHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 100,
+   "line": 109,
+   "serverProperty": "npc / epic_earthmender_mutual_heal",
    "restores": true,
    "about": "Earthmenders heal each other as well as the Earth primal."
   },
@@ -446,7 +458,8 @@
    "name": "AllowBeathaHealsXaga",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 102,
+   "line": 111,
+   "serverProperty": "npc / epic_beatha_heals_xaga",
    "restores": true,
    "about": "Beatha's damage heals Xaga by twice the amount."
   },
@@ -454,45 +467,49 @@
    "name": "AllowFairyFlight",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 104,
+   "line": 113,
+   "serverProperty": "npc / epic_fairy_flight",
    "restores": true,
    "about": "Beatha and Tine circle the room even while they are fought."
   },
   {
    "name": "AllowGovannonFullHealth",
-   "value": "true",
+   "value": "false",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 107,
+   "line": 117,
+   "serverProperty": "npc / epic_govannon_full_health",
    "restores": true,
-   "about": "/// sacrifice and demon at range and spreads in his demon form (EpicEncounterTactics); the owner tests the win rate."
+   "about": "Grand Summoner Govannon has 300,000 health (not 200,000). Off by default (epic_govannon_full_health) until a played check: the raid's tactics for him (sacrifice and demon at range, spread in demon form) play either way; a 60-bot raid took 300,000 about 1% a minute (run 18)."
   },
   {
    "name": "AllowKvasirColdHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 110,
+   "line": 120,
+   "serverProperty": "npc / epic_kvasir_cold_heal",
    "restores": true,
-   "about": "/// cold at him (EpicEncounterTactics.ForbidsSpell)."
+   "about": "Cold damage heals Icelord Kvasir by a fifth of his health and does no damage. On since 1.2: no bot casts cold at him (EpicEncounterTactics.ForbidsSpell)."
   },
   {
    "name": "AllowTuscarTwinHeal",
    "value": "true",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 113,
+   "line": 123,
+   "serverProperty": "npc / epic_tuscar_twin_heal",
    "restores": true,
-   "about": "/// On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics)."
+   "about": "Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health. On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics)."
   },
   {
    "name": "ResetQuietMilliseconds",
    "value": "8000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 268
+   "line": 322
   },
   {
    "name": "PetDevourIntervalMilliseconds",
    "value": "5000",
    "file": "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs",
-   "line": 276
+   "line": 330
   }
  ],
  "ruleKinds": {
@@ -12795,8 +12812,8 @@
      "restored": true,
      "from": "add",
      "verified": true,
-     "tactic": "On: the original is back (AllowFullFirePatches is true) and the raid AI plays it (see Encounters with raid tactics).",
-     "difficulty": "easy for the current raid AI",
+     "tactic": "Off today (AllowFullFirePatches is false). To play it: follow the mechanic.",
+     "difficulty": "off today",
      "tacticSource": "default for its kind",
      "key": "offline_change@2158"
     }
@@ -12847,7 +12864,7 @@
     ],
     "hazardRadius": 450,
     "since": "1.2",
-    "summary": "Trail of fire (AllowFullFirePatches, on since 1.2: 220 every 2 s in 450): the primal walks its loop and leaves a patch where it stands. Casters and archers shoot it and step out of the patches; melee fight the Water or Earth primal while one lives, and fight the Fire primal in the fire only when it is the last."
+    "summary": "Trail of fire (AllowFullFirePatches, off by default, server property epic_full_fire_patches: 120 every 2 s in 300; on, the original 220 in 450): the primal walks its loop and leaves a patch where it stands. Casters and archers shoot it and step out of the patches; melee fight the Water or Earth primal while one lives, and fight the Fire primal in the fire only when it is the last."
    },
    "verified": true
   },
@@ -27670,8 +27687,8 @@
      ],
      "restored": true,
      "verified": true,
-     "tactic": "On: the original is back (AllowGovannonFullHealth is true) and the raid AI plays it (see Encounters with raid tactics).",
-     "difficulty": "easy for the current raid AI",
+     "tactic": "Off today (AllowGovannonFullHealth is false). To play it: follow the mechanic.",
+     "difficulty": "off today",
      "tacticSource": "default for its kind",
      "key": "offline_change@35"
     }
@@ -27746,7 +27763,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "Level 80, 300,000 health (AllowGovannonFullHealth, on since 1.2; 200,000 with it off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
+   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,

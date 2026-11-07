@@ -14,33 +14,33 @@ Difficulty: *easy for the current raid AI* (it would do this with small changes,
 
 | Switch | Value | Where |
 |---|---|---|
-| `AllowDisplacement` | false (per encounter: Olcasgean=true, WaterfallAntipass=true, WaterPrimal=true, SpindlerBroodmother=true, QueenKula=true, Jailer=true, Hakr=true, Hurika=true, BaneOfHope=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:19` |
-| `AllowPositionPuzzle` | false (per encounter: Olcasgean=true, Conservator=true, Easmarach=true, QueenKula=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:21` |
-| `AllowInvulnerableHazards` | false (settable per encounter) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:23` |
-| `AllowAddShield` | false (per encounter: Morbus=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:25` |
-| `AllowGlacierGriffonPatrol` | false (settable per encounter) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:30` |
-| `AllowBotDisplacement` | false (per encounter: AlbGolestandt=true, MidGjalpinulva=true, HibCuuldurach=true, Xanxicar=true, Olcasgean=true, WaterfallAntipass=true, WaterPrimal=true, SpindlerBroodmother=true, QueenKula=true, Jailer=true, Hakr=true, Hurika=true, SummonerCunovinda=true, ShadeOfAelfgar=true, Iarnvidiur=true, Boligar=true, Mortufoghus=true, Ydenia=true, GlacierGiant=true, Krackenschtein=true, Anurigunda=true, BaneOfHope=true, LyftMihtOne=true, LyftMihtTwo=true, LyftMihtThree=true, LyftMihtFour=true, KrevoRicik=true, Orylle=true, SyssroRuthless=true, DraugynSphere=true, MoranTheMighty=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:35` |
-| `AllowDragonThrow` | false (per encounter: AlbGolestandt=true, MidGjalpinulva=true, HibCuuldurach=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:38` |
-| `AllowDragonMessengers` | false (per encounter: AlbGolestandt=true, MidGjalpinulva=true, HibCuuldurach=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:42` |
-| `AllowHorsemenTetherHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:70` |
-| `AllowFunusWeaponPuzzle` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:74` |
-| `AllowSacristanPatrol` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:77` |
-| `AllowSoulReckonerFullShield` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:80` |
-| `AllowSoulReckonerSmallRoom` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:83` |
-| `AllowAroonDamageOrder` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:86` |
-| `AllowGalladoriaBridgeSpot` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:89` |
-| `AllowFullFirePatches` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:91` |
-| `AllowEarthmenderClassPuzzle` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:94` |
-| `AllowEarthmendersPassive` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:96` |
-| `AllowEarthmenderQuickReset` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:98` |
-| `AllowEarthmenderMutualHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:100` |
-| `AllowBeathaHealsXaga` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:102` |
-| `AllowFairyFlight` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:104` |
-| `AllowGovannonFullHealth` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:107` |
-| `AllowKvasirColdHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:110` |
-| `AllowTuscarTwinHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:113` |
-| `ResetQuietMilliseconds` | 8000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:268` |
-| `PetDevourIntervalMilliseconds` | 5000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:276` |
+| `AllowDisplacement` | false (per encounter: Olcasgean=true, WaterfallAntipass=true, WaterPrimal=true, SpindlerBroodmother=true, QueenKula=true, Jailer=true, Hakr=true, Hurika=true, BaneOfHope=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:20` |
+| `AllowPositionPuzzle` | false (per encounter: Olcasgean=true, Conservator=true, Easmarach=true, QueenKula=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:22` |
+| `AllowInvulnerableHazards` | false (settable per encounter) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:24` |
+| `AllowAddShield` | false (per encounter: Morbus=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:26` |
+| `AllowGlacierGriffonPatrol` | false (settable per encounter) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:31` |
+| `AllowBotDisplacement` | false (per encounter: AlbGolestandt=true, MidGjalpinulva=true, HibCuuldurach=true, Xanxicar=true, Olcasgean=true, WaterfallAntipass=true, WaterPrimal=true, SpindlerBroodmother=true, QueenKula=true, Jailer=true, Hakr=true, Hurika=true, SummonerCunovinda=true, ShadeOfAelfgar=true, Iarnvidiur=true, Boligar=true, Mortufoghus=true, Ydenia=true, GlacierGiant=true, Krackenschtein=true, Anurigunda=true, BaneOfHope=true, LyftMihtOne=true, LyftMihtTwo=true, LyftMihtThree=true, LyftMihtFour=true, KrevoRicik=true, Orylle=true, SyssroRuthless=true, DraugynSphere=true, MoranTheMighty=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:36` |
+| `AllowDragonThrow` | false (per encounter: AlbGolestandt=true, MidGjalpinulva=true, HibCuuldurach=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:39` |
+| `AllowDragonMessengers` | false (per encounter: AlbGolestandt=true, MidGjalpinulva=true, HibCuuldurach=true) | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:43` |
+| `AllowHorsemenTetherHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:78` |
+| `AllowFunusWeaponPuzzle` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:82` |
+| `AllowSacristanPatrol` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:85` |
+| `AllowSoulReckonerFullShield` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:88` |
+| `AllowSoulReckonerSmallRoom` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:91` |
+| `AllowAroonDamageOrder` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:94` |
+| `AllowGalladoriaBridgeSpot` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:97` |
+| `AllowFullFirePatches` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:100` |
+| `AllowEarthmenderClassPuzzle` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:103` |
+| `AllowEarthmendersPassive` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:105` |
+| `AllowEarthmenderQuickReset` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:107` |
+| `AllowEarthmenderMutualHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:109` |
+| `AllowBeathaHealsXaga` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:111` |
+| `AllowFairyFlight` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:113` |
+| `AllowGovannonFullHealth` | false | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:117` |
+| `AllowKvasirColdHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:120` |
+| `AllowTuscarTwinHeal` | true | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:123` |
+| `ResetQuietMilliseconds` | 8000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:322` |
+| `PetDevourIntervalMilliseconds` | 5000 | `source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs:330` |
 
 ## Encounters with raid tactics
 
@@ -68,7 +68,7 @@ The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tacti
 | Conservator (Galladoria) | **1.2 (new)** | Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within 800 of his spawn. A raider farther out steps in to 500; fight him at home: drawn past 600 from his spawn the raid stops hitting him and whoever he chases leads him back. |
 | Easmarach (Galladoria) | **1.2 (new)** | Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within his 2,500 tether of his spawn; a raider farther out steps in. His push behind the falls (raiders within 1,000 of 37,653,52,843 are moved to 40,067,50,494) stays off: it blocks the way to the last room while he lives, and the raid cannot finish him yet (below 30% he heals on the waterfall top, where the route skipped him twice on 2026-11-06). |
 | Olcasgean (Galladoria) | **1.2 (new)** | Safe spots (AllowPositionPuzzle, on since 1.2): unless a raider stands within 200 of 40,170,62,600 (his copy) and one within 200 of 39,237,62,644 (him) he casts his Root DD without pause; the raid's two lowest-numbered parties hold one spot each the whole fight and fight the body that stands there (they share health), everyone else fights where it likes. Below half he throws one raider every 12-20 s who was not thrown before (bots too since 1.2): it walks back (EncounterDisplacementRecovery). The Waterfall Antipass pushes anyone who tries to leave back into the room until he dies. The party calls an empty spot in /group. |
-| Corrupt Primal of Fire (Galladoria) | **1.2 (new)** | Trail of fire (AllowFullFirePatches, on since 1.2: 220 every 2 s in 450): the primal walks its loop and leaves a patch where it stands. Casters and archers shoot it and step out of the patches; melee fight the Water or Earth primal while one lives, and fight the Fire primal in the fire only when it is the last. |
+| Corrupt Primal of Fire (Galladoria) | **1.2 (new)** | Trail of fire (AllowFullFirePatches, off by default, server property epic_full_fire_patches: 120 every 2 s in 300; on, the original 220 in 450): the primal walks its loop and leaves a patch where it stands. Casters and archers shoot it and step out of the patches; melee fight the Water or Earth primal while one lives, and fight the Fire primal in the fire only when it is the last. |
 | Corrupt Primal of Earth (Galladoria) | **1.2 (new)** | Required adds by class: once the fight is on the raid kills the four Earthmenders (they heal the primal 2,000 each) before the primal. With the original class rule on (AllowEarthmenderClassPuzzle, on since 1.2) each raider takes an Earthmender its class hurts: Guardian: blademasters, heroes, champions; Magical: eldritchs, enchanters, mentalists; Natural: bards, druids, wardens; Shadowy: nightshades, rangers; animists and valewalkers any (spread by party); pets hurt all four. A class none of them takes damage from (bainshee, vampiir, mauler) fights the primal and keeps it busy. |
 | Spindler Broodmother (Galladoria) | **1.2 (new)** | Ranged adds: casters and archers kill each newly-born spindler (8,000 health, 1-2 every 25-45 s) as it comes, while melee, tanks and healers stay on her, so newborns never pile on the healers. Death burst: the 20-25 underdeveloped spindlers that burst from her body are cleared there (the route counts them as adds although she is dead) before the raid moves on. |
 | Xaga (Galladoria) | **1.2 (new)** | Fairies first (AllowBeathaHealsXaga and AllowFairyFlight, on since 1.2): Beatha's damage heals Xaga by twice the amount and both fairies circle the room while fought. The raid kills Beatha, then Tine, then Xaga. |
@@ -95,24 +95,24 @@ The raid AI (`EpicEncounterTactics`, autonomous gamebots only) plays these tacti
 
 ## Restored behind switches
 
-Where the fork had changed a mechanic for bots with no switch, the original is back behind an `EpicEncounterMechanics` switch, off by default (the game plays as before). Originals read from OpenDAoC/OpenDAoC-Core 3513bad49912 (2026-11-04) and OpenDAoC/OpenDAoC-Database 7068aef09830, cloned 2026-11-05. Upstream has been refactored since this fork's base (instance fields instead of statics, ProcessDeath), so the behaviour was read, not copied.
+Where the fork had changed a mechanic for bots with no switch, the original is back behind an `EpicEncounterMechanics` switch. Each was off (the game played as before) until the raid AI could play it; the ones it plays are on since 1.2. Each restore switch is its own server property (`/serverproperty`), read live, so it can be changed without a rebuild. Originals read from OpenDAoC/OpenDAoC-Core 3513bad49912 (2026-11-04) and OpenDAoC/OpenDAoC-Database 7068aef09830, cloned 2026-11-05. Upstream has been refactored since this fork's base (instance fields instead of statics, ProcessDeath), so the behaviour was read, not copied.
 
-| Encounter | Places | Original | Fork today | Switch |
-|---|---|---|---|---|
-| caer-sidi/fames, caer-sidi/morbus, caer-sidi/funus | 3 | Out of its tether a horseman heals to full and drops its aggro. | It drops its aggro and keeps its health (heals only when the fight is over). | `AllowHorsemenTetherHeal` |
-| caer-sidi/funus | 1 | Only clerics, and mercenaries with a short bow, armsmen and infiltrators with a crossbow, scouts with a longbow damage Funus; any other attacker (pets too) heals him to full. | Everyone damages him. | `AllowFunusWeaponPuzzle` |
-| caer-sidi/skeletalsacristan | 2 | He walks his loop without stopping (195-250 in this fork's base; upstream now a 220 path) with 70% magic resists. | He walks at 130-160, stands still while hit, 55% magic resists. | `AllowSacristanPatrol` |
-| caer-sidi/soulreckoner | 2 | No damage at all while a reckoned soul lives, or outside a 900 room. | A quarter of the damage while a soul lives; the room is 1,500. | `AllowSoulReckonerFullShield, AllowSoulReckonerSmallRoom` |
-| galladoria/aroon | 9 | The nine Scaiths die in order (slash, thrust, crush, body, cold, energy, heat, matter, spirit): each is immune until the one before is dead, and Aroon takes only the damage types whose Scaith has died (nothing at first). | Any damage type hurts Aroon and every Scaith. | `AllowAroonDamageOrder` |
-| galladoria/olcasgeaninitializator | 1 | The primals come when a real player (not a bot) stands within 350 of the bridge spot. | A raid bot within 1,500 of the spot starts it (players still 350). | `AllowGalladoriaBridgeSpot (bots within 350; a bot-only rule would be unwinnable)` |
-| galladoria/olcasgean | 1 | Split-position and throw puzzle. | Off. | `AllowPositionPuzzle (already a switch; nothing new)` |
-| galladoria/fireprimal | 1 | Trail of fire: 220 damage in a 450 radius. | 120 in 300. | `AllowFullFirePatches` |
-| galladoria/earthprimal | 4 | Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal. | Since 1.2 the class rule is back on (AllowEarthmenderClassPuzzle) and the raid assigns classes to it. Still changed: they fight back; no quick reset while raiders are in the room; they heal the primal only. | `AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal` |
-| galladoria/beatha | 1 | Beatha's damage heals Xaga by twice the amount. | No heal. | `AllowBeathaHealsXaga` |
-| galladoria/beatha, galladoria/tine | 2 | The fairies circle the room (250, flying) even while fought. | They hold still while fought. | `AllowFairyFlight` |
-| summoner-s-hall/grandsummonergovannon | 1 | 300,000 health. | 200,000. | `AllowGovannonFullHealth` |
-| tuscaran-glacier/kvasir | 1 | Cold damage heals him a fifth of his health and does nothing else (upstream has no out-of-tether immunity for him). | Cold hurts him. | `AllowKvasirColdHeal` |
-| tuscaran-glacier/queenkula, tuscaran-glacier/kingtuscar | 2 | Damage to one twin heals the other by the same amount while it is below full health. | No heal. | `AllowTuscarTwinHeal` |
+| Encounter | Places | Original | Fork today | Switch | Default (setting) |
+|---|---|---|---|---|---|
+| caer-sidi/fames, caer-sidi/morbus, caer-sidi/funus | 3 | Out of its tether a horseman heals to full and drops its aggro. | It drops its aggro and keeps its health (heals only when the fight is over). | `AllowHorsemenTetherHeal` | on (`npc / epic_horsemen_tether_heal`) |
+| caer-sidi/funus | 1 | Only clerics, and mercenaries with a short bow, armsmen and infiltrators with a crossbow, scouts with a longbow damage Funus; any other attacker (pets too) heals him to full. | Everyone damages him. | `AllowFunusWeaponPuzzle` | on (`npc / epic_funus_weapon_puzzle`) |
+| caer-sidi/skeletalsacristan | 2 | He walks his loop without stopping (195-250 in this fork's base; upstream now a 220 path) with 70% magic resists. | He walks at 130-160, stands still while hit, 55% magic resists. | `AllowSacristanPatrol` | on (`npc / epic_sacristan_patrol`) |
+| caer-sidi/soulreckoner | 2 | No damage at all while a reckoned soul lives, or outside a 900 room. | A quarter of the damage while a soul lives; the room is 1,500. | `AllowSoulReckonerFullShield, AllowSoulReckonerSmallRoom` | on (`npc / epic_soul_reckoner_full_shield`), on (`npc / epic_soul_reckoner_small_room`) |
+| galladoria/aroon | 9 | The nine Scaiths die in order (slash, thrust, crush, body, cold, energy, heat, matter, spirit): each is immune until the one before is dead, and Aroon takes only the damage types whose Scaith has died (nothing at first). | Any damage type hurts Aroon and every Scaith. | `AllowAroonDamageOrder` | on (`npc / epic_aroon_damage_order`) |
+| galladoria/olcasgeaninitializator | 1 | The primals come when a real player (not a bot) stands within 350 of the bridge spot. | A raid bot within 1,500 of the spot starts it (players still 350). | `AllowGalladoriaBridgeSpot (bots within 350; a bot-only rule would be unwinnable)` | on (`npc / epic_galladoria_bridge_spot`) |
+| galladoria/olcasgean | 1 | Split-position and throw puzzle. | Off. | `AllowPositionPuzzle (already a switch; nothing new)` | off |
+| galladoria/fireprimal | 1 | Trail of fire: 220 damage in a 450 radius. | 120 in 300. | `AllowFullFirePatches` | off (`npc / epic_full_fire_patches`) |
+| galladoria/earthprimal | 4 | Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal. | Since 1.2 the class rule is back on (AllowEarthmenderClassPuzzle) and the raid assigns classes to it. Still changed: they fight back; no quick reset while raiders are in the room; they heal the primal only. | `AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal` | on (`npc / epic_earthmender_class_puzzle`), on (`npc / epic_earthmenders_passive`), on (`npc / epic_earthmender_quick_reset`), on (`npc / epic_earthmender_mutual_heal`) |
+| galladoria/beatha | 1 | Beatha's damage heals Xaga by twice the amount. | No heal. | `AllowBeathaHealsXaga` | on (`npc / epic_beatha_heals_xaga`) |
+| galladoria/beatha, galladoria/tine | 2 | The fairies circle the room (250, flying) even while fought. | They hold still while fought. | `AllowFairyFlight` | on (`npc / epic_fairy_flight`) |
+| summoner-s-hall/grandsummonergovannon | 1 | 300,000 health. | 200,000. | `AllowGovannonFullHealth` | off (`npc / epic_govannon_full_health`) |
+| tuscaran-glacier/kvasir | 1 | Cold damage heals him a fifth of his health and does nothing else (upstream has no out-of-tether immunity for him). | Cold hurts him. | `AllowKvasirColdHeal` | on (`npc / epic_kvasir_cold_heal`) |
+| tuscaran-glacier/queenkula, tuscaran-glacier/kingtuscar | 2 | Damage to one twin heals the other by the same amount while it is below full health. | No heal. | `AllowTuscarTwinHeal` | on (`npc / epic_tuscar_twin_heal`) |
 
 **Scurceol's orbs upstream:** Upstream's Lyft Miht orbs are the same: level 90, 15,000 health, 40/50% resists, AF 250, flying at the same four corners. Upstream only replaced the static orb counters with a per-boss list (a bug fix: our static counters are shared by every Scurceol and can drift).
 
@@ -264,7 +264,7 @@ Rules of Corrupt Primal of Fire (`source/server/GameServer/scripts/namedmobs/Gal
 - **reflect** (verified): Has a damage shield / reflect spell: Fire Primal Damage Shield (DamageShield, damage 80, target SELF) `OlcasgeanAndPrimals.cs:2017`. *needs new raid AI*: Check who it punishes; switch damage type or attacker if it reflects.
 - **adds** (verified): Spawns trail of fire (TrailOfFire): on a timer (1000 ms); count 1 spawn call in SpawnFire `OlcasgeanAndPrimals.cs:1993`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
 - **reset** (verified): Resets after 30 s out of combat: aggro cleared, full health `OlcasgeanAndPrimals.cs:1931`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **offline_change** (verified): Owner 2026-10-19: "nerf the fire patches" (was 220 in a 450 radius every 2 s, a new patch every 2.5 s). The original 220 in 450 is behind EpicEncounterMechanics.AllowFullFirePatches (read when the spell is built). `OlcasgeanAndPrimals.cs:2158`. *easy for the current raid AI*: On: the original is back (AllowFullFirePatches is true) and the raid AI plays it (see Encounters with raid tactics).
+- **offline_change** (verified): Owner 2026-10-19: "nerf the fire patches" (was 220 in a 450 radius every 2 s, a new patch every 2.5 s). The original 220 in 450 is behind EpicEncounterMechanics.AllowFullFirePatches (read when the spell is built). `OlcasgeanAndPrimals.cs:2158`. *off today*: Off today (AllowFullFirePatches is false). To play it: follow the mechanic.
 
 Rules of Olcasgean (`source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs`):
 
@@ -1424,7 +1424,7 @@ Area spells: Mesmerized (Mesmerize, damage None, radius 350).
 | reflect | Has a damage shield / reflect spell: Fire Primal Damage Shield (DamageShield, damage 80, target SELF) | `OlcasgeanAndPrimals.cs:2017` | read, verified |  | needs new raid AI | Check who it punishes; switch damage type or attacker if it reflects. |
 | adds | Spawns trail of fire (TrailOfFire): on a timer (1000 ms); count 1 spawn call in SpawnFire | `OlcasgeanAndPrimals.cs:1993` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
 | reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `OlcasgeanAndPrimals.cs:1931` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| offline_change | Owner 2026-10-19: "nerf the fire patches" (was 220 in a 450 radius every 2 s, a new patch every 2.5 s). The original 220 in 450 is behind EpicEncounterMechanics.AllowFullFirePatches (read when the spell is built). | `OlcasgeanAndPrimals.cs:2158` | read, verified | AllowFullFirePatches | easy for the current raid AI | On: the original is back (AllowFullFirePatches is true) and the raid AI plays it (see Encounters with raid tactics). |
+| offline_change | Owner 2026-10-19: "nerf the fire patches" (was 220 in a 450 radius every 2 s, a new patch every 2.5 s). The original 220 in 450 is behind EpicEncounterMechanics.AllowFullFirePatches (read when the spell is built). | `OlcasgeanAndPrimals.cs:2158` | read, verified | AllowFullFirePatches | off today | Off today (AllowFullFirePatches is false). To play it: follow the mechanic. |
 
 #### Corrupt Primal of Earth (`EarthPrimal`)
 
@@ -2741,7 +2741,7 @@ Area spells: Might of the Forrest (DirectDamageNoVariance, damage 250, radius 35
 
 `source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs` lines 11-208. level 80; npc template 18801; raids: summoners-albion (final), summoners-midgard (final), summoners-hibernia (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-Level 80, 300,000 health (AllowGovannonFullHealth, on since 1.2; 200,000 with it off), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.
+Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to full, strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come again at 80% of the demon form.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2756,7 +2756,7 @@ Level 80, 300,000 health (AllowGovannonFullHealth, on since 1.2; 200,000 with it
 | teleport / fixed_spot | Teleports RandomTarget to a fixed spot (MoveTo Body.CurrentRegionID, 32091, 39684, 16302, 4094) | `GrandSummonerGovannon.cs:689` | inferred, verified |  | easy for the current raid AI | Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group. |
 | empowered | Strength becomes 650 while if (Body.InCombat && Body.IsAlive && HasAggro && Body.TargetObject != null) && if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false) && if (Stage2 == false) | `GrandSummonerGovannon.cs:274` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
 | linked_pack | Brings others into the fight: ShadeOfAelfgarBrain | `GrandSummonerGovannon.cs:266` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
-| offline_change | run 18: 300k fell ~1%/min under 60 raiders (owner permits incremental SH tweaks). The original 300k is behind EpicEncounterMechanics.AllowGovannonFullHealth. | `GrandSummonerGovannon.cs:35` | read, verified | AllowGovannonFullHealth | easy for the current raid AI | On: the original is back (AllowGovannonFullHealth is true) and the raid AI plays it (see Encounters with raid tactics). |
+| offline_change | run 18: 300k fell ~1%/min under 60 raiders (owner permits incremental SH tweaks). The original 300k is behind EpicEncounterMechanics.AllowGovannonFullHealth. | `GrandSummonerGovannon.cs:35` | read, verified | AllowGovannonFullHealth | off today | Off today (AllowGovannonFullHealth is false). To play it: follow the mechanic. |
 
 Area spells: Govannon's Shroud of Agony (DamageOverTime, damage 120, radius 300); Aelfgar's Shout (Stun, damage None, radius 500).
 

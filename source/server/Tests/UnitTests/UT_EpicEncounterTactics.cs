@@ -437,18 +437,18 @@ namespace DOL.UnitTests
 
         // ---- restored mechanics ------------------------------------------------------------------------------------
 
-        /// <summary>The restore switches on by default since 1.2 (the one list; the dungeons' tests check their own).</summary>
+        /// <summary>The restore switches on by default since 1.2 (the one list; the dungeons' tests check their own). Off until
+        /// the owner confirms after a played check: AllowFullFirePatches (keeps his 2026-10-19 nerf) and AllowGovannonFullHealth.</summary>
         internal static readonly string[] OnSince12 =
         [
             nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle),
             // Epic wave 2, Galladoria (UT_EpicWaveTwo.GalladoriaRestoresOn).
             nameof(EpicEncounterMechanics.AllowAroonDamageOrder), nameof(EpicEncounterMechanics.AllowGalladoriaBridgeSpot),
-            nameof(EpicEncounterMechanics.AllowFullFirePatches), nameof(EpicEncounterMechanics.AllowEarthmendersPassive),
+            nameof(EpicEncounterMechanics.AllowEarthmendersPassive),
             nameof(EpicEncounterMechanics.AllowEarthmenderQuickReset), nameof(EpicEncounterMechanics.AllowEarthmenderMutualHeal),
             nameof(EpicEncounterMechanics.AllowBeathaHealsXaga), nameof(EpicEncounterMechanics.AllowFairyFlight),
             // Tuscaran Glacier and Summoner's Hall (UT_EpicWave2MidHib).
             nameof(EpicEncounterMechanics.AllowTuscarTwinHeal), nameof(EpicEncounterMechanics.AllowKvasirColdHeal),
-            nameof(EpicEncounterMechanics.AllowGovannonFullHealth),
             // Caer Sidi (UT_EpicWave2Albion).
             nameof(EpicEncounterMechanics.AllowHorsemenTetherHeal), nameof(EpicEncounterMechanics.AllowFunusWeaponPuzzle),
             nameof(EpicEncounterMechanics.AllowSacristanPatrol), nameof(EpicEncounterMechanics.AllowSoulReckonerFullShield),

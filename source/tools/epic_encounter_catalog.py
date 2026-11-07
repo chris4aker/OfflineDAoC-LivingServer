@@ -1277,6 +1277,28 @@ def read_raids() -> tuple[list[dict], dict]:
     return raids, objectives
 
 
+SERVER_PROPERTIES = Path("source/server/GameServer/serverproperty/ServerProperties.cs")
+
+
+def _server_property(field: str):
+    text = (REPO / SERVER_PROPERTIES).read_text(encoding="utf-8-sig")
+    m = re.search(r'\[ServerProperty\("(\w+)",\s*"(\w+)",[^\n]*\)\]\s*\n\s*public static bool ' + re.escape(field) + r"\s*=\s*(true|false)\s*;", text)
+    if not m:
+        raise SystemExit(f"{SERVER_PROPERTIES}: no bool server property {field}")
+    return m.group(1), m.group(2), m.group(3)
+
+
+def server_property_default(field: str) -> str:
+    """The default ("true"/"false") of a bool server property field (ServerProperties.cs)."""
+    return _server_property(field)[2]
+
+
+def server_property_key(field: str) -> str:
+    """The "section / key" of a server property field, as /serverproperty names it."""
+    section, key, _ = _server_property(field)
+    return f"{section} / {key}"
+
+
 def read_switches() -> list[dict]:
     src = Source(SWITCH_FILE)
     out = []
@@ -1294,16 +1316,30 @@ def read_switches() -> list[dict]:
         if mm:
             out.append({"name": mm.group(1), "value": mm.group(2), "file": rel(src), "line": i})
         mm = re.search(r"public static bool (Allow\w+)\s*\{\s*get;\s*set;\s*\}(?:\s*=\s*(true|false)\s*;)?", line)
-        if mm:
-            doc = src.line(i - 1).strip()
-            doc = re.sub(r"^///\s*<summary>|</summary>$", "", doc).strip()
-            entry = {"name": mm.group(1), "value": mm.group(2) or "false", "file": rel(src), "line": i}
-            if mm.group(1) in restores or not per_encounter and not restores:
+        # 1.2: a restore switch backed by its own server property ({ get => ServerProperties.Properties.X; set => ... }):
+        # its value is the property's default in ServerProperties.cs.
+        mp = None if mm else re.search(r"public static bool (Allow\w+)\s*\{\s*get\s*=>\s*ServerProperties\.Properties\.(\w+);", line)
+        if mm or mp:
+            # The whole <summary> above it (one or more /// lines).
+            j, parts = i - 1, []
+            while j >= 1 and src.line(j).strip().startswith("///"):
+                parts.insert(0, src.line(j).strip()[3:].strip())
+                j -= 1
+            doc = " ".join(parts) if parts else src.line(i - 1).strip()
+            doc = re.sub(r"^<summary>|</summary>$", "", doc).strip()
+            if mp:
+                name, value = mp.group(1), server_property_default(mp.group(2))
+            else:
+                name, value = mm.group(1), mm.group(2) or "false"
+            entry = {"name": name, "value": value, "file": rel(src), "line": i}
+            if mp:
+                entry["serverProperty"] = server_property_key(mp.group(2))
+            if name in restores or not per_encounter and not restores:
                 entry["restores"] = True
-            if mm.group(1) in per_encounter:
+            if name in per_encounter:
                 entry["perEncounter"] = True
-                if mm.group(1) in shipped:
-                    entry["shippedFor"] = shipped[mm.group(1)]
+                if name in shipped:
+                    entry["shippedFor"] = shipped[name]
             entry["about"] = doc if not doc.startswith("//") or doc.startswith("///") else ""
             out.append(entry)
         mm = re.search(r"public const int (\w+)\s*=\s*([\d_]+);", line)
@@ -2088,13 +2124,28 @@ def render_md(data: dict) -> str:
             lines.append(f"| {e['boss']} ({e['dungeon']}) | {mark} | {md_escape(e['aiTactics'].get('summary', ''))} |")
     up = data.get("upstream")
     if up:
+        sw = {x["name"]: x for x in data.get("switches", [])}
+
+        def setting(names: str) -> str:
+            # "On" / "off" by default and the server property that changes it, for each switch the row names.
+            out = []
+            for n in re.findall(r"Allow\w+", names):
+                x = sw.get(n)
+                if not x:
+                    continue
+                state = "on" if x.get("value") == "true" else "off"
+                out.append(f"{state} (`{x['serverProperty']}`)" if x.get("serverProperty") else state)
+            return ", ".join(out)
+
         lines += ["", "## Restored behind switches", "", "Where the fork had changed a mechanic for bots with no switch, the "
-                  "original is back behind an `EpicEncounterMechanics` switch, off by default (the game plays as before). "
+                  "original is back behind an `EpicEncounterMechanics` switch. Each was off (the game played as before) "
+                  "until the raid AI could play it; the ones it plays are on since 1.2. Each restore switch is its own "
+                  "server property (`/serverproperty`), read live, so it can be changed without a rebuild. "
                   "Originals read from " + up["source"], "",
-                  "| Encounter | Places | Original | Fork today | Switch |", "|---|---|---|---|---|"]
+                  "| Encounter | Places | Original | Fork today | Switch | Default (setting) |", "|---|---|---|---|---|---|"]
         for c in up["changes"]:
             lines.append(f"| {', '.join(c['encounters'])} | {c['places']} | {md_escape(c['original'])} | "
-                         f"{md_escape(c['ours'])} | `{c['switch']}` |")
+                         f"{md_escape(c['ours'])} | `{c['switch']}` | {setting(c['switch'])} |")
         lines += ["", "**Scurceol's orbs upstream:** " + up["scurceolOrbs"], "",
                   "**Helper packs upstream:** " + up["helperPacks"]]
     po = [(e, r) for e in data["encounters"] for r in e["rules"] if r.get("affects") and r["kind"] != "offline_change"]

@@ -1259,6 +1259,72 @@ namespace DOL.GS.ServerProperties
 		public static int EPIC_DRAGON_THROW_HEIGHT_CUULDURACH = 0;
 
 		/// <summary>
+		/// Epic encounters (1.2, epic wave 2): the restored original mechanics, each its own setting so the owner can turn one
+		/// off or on without a rebuild (EpicEncounterMechanics reads them live; a boss's health and a spell take the value
+		/// when they are next read or built). Owner defaults 2026-11-07, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_horsemen_tether_heal", "Caer Sidi: Fames, Morbus and Funus heal to full when drawn past their tether, as in the original (True, 1.2). The raid fights each horseman near his room and leads him back.", true)]
+		public static bool EPIC_HORSEMEN_TETHER_HEAL = true;
+
+		[ServerProperty("npc", "epic_funus_weapon_puzzle", "Caer Sidi: Funus takes damage only from clerics, and from mercenaries, armsmen, infiltrators and scouts with their listed weapon; any other hit (pets too) heals him to full (True, 1.2). The raid sends only clerics and scouts with a longbow; other bots never switch weapons, so few raiders can hurt him. False: everyone hurts him, as in 1.1. Test first.", true)]
+		public static bool EPIC_FUNUS_WEAPON_PUZZLE = true;
+
+		[ServerProperty("npc", "epic_sacristan_patrol", "Caer Sidi: the Skeletal Sacristan walks his loop at full speed and never stops, with 70% magic resists (True, 1.2). The raid waits along his loop and hits him as he passes.", true)]
+		public static bool EPIC_SACRISTAN_PATROL = true;
+
+		[ServerProperty("npc", "epic_soul_reckoner_full_shield", "Caer Sidi: Soul Reckoner takes no damage at all while a reckoned soul lives (True, 1.2; False: a quarter).", true)]
+		public static bool EPIC_SOUL_RECKONER_FULL_SHIELD = true;
+
+		[ServerProperty("npc", "epic_soul_reckoner_small_room", "Caer Sidi: Soul Reckoner takes damage only within 900 of his room's middle (True, 1.2; False: 1,500, the 1.1 change).", true)]
+		public static bool EPIC_SOUL_RECKONER_SMALL_ROOM = true;
+
+		[ServerProperty("npc", "epic_aroon_damage_order", "Galladoria: Aroon's Scaiths die in order, each immune until the one before is dead, and Aroon takes only the damage types whose Scaith is dead (True, 1.2).", true)]
+		public static bool EPIC_AROON_DAMAGE_ORDER = true;
+
+		[ServerProperty("npc", "epic_galladoria_bridge_spot", "Galladoria: the primals come when a raider (bots too) stands on the waterfall bridge spot (True, 1.2); a bot raid that waited on the bridge three minutes starts it anyway.", true)]
+		public static bool EPIC_GALLADORIA_BRIDGE_SPOT = true;
+
+		[ServerProperty("npc", "epic_full_fire_patches", "Galladoria: the Fire primal's trail of fire hits 220 in a 450 radius, as in the original (True), or 120 in 300 (False: the owner's 2026-10-19 nerf, kept as the 1.2 default until a played check).", false)]
+		public static bool EPIC_FULL_FIRE_PATCHES = false;
+
+		[ServerProperty("npc", "epic_earthmender_class_puzzle", "Galladoria: each Earthmender takes damage only from its own class group (True, 1.2). The raid sends each raider to one its class hurts.", true)]
+		public static bool EPIC_EARTHMENDER_CLASS_PUZZLE = true;
+
+		[ServerProperty("npc", "epic_earthmenders_passive", "Galladoria: Earthmenders never attack, they only heal (True, 1.2, as in the original).", true)]
+		public static bool EPIC_EARTHMENDERS_PASSIVE = true;
+
+		[ServerProperty("npc", "epic_earthmender_quick_reset", "Galladoria: an Earthmender heals to full 30 s after its last fight even with raiders in the room (True, 1.2, as in the original).", true)]
+		public static bool EPIC_EARTHMENDER_QUICK_RESET = true;
+
+		[ServerProperty("npc", "epic_earthmender_mutual_heal", "Galladoria: Earthmenders heal each other as well as the Earth primal (True, 1.2, as in the original).", true)]
+		public static bool EPIC_EARTHMENDER_MUTUAL_HEAL = true;
+
+		[ServerProperty("npc", "epic_beatha_heals_xaga", "Galladoria: damage to Beatha heals Xaga by twice the amount (True, 1.2). The raid kills Beatha, then Tine, then Xaga.", true)]
+		public static bool EPIC_BEATHA_HEALS_XAGA = true;
+
+		[ServerProperty("npc", "epic_fairy_flight", "Galladoria: Beatha and Tine circle the room even while they are fought (True, 1.2, as in the original).", true)]
+		public static bool EPIC_FAIRY_FLIGHT = true;
+
+		[ServerProperty("npc", "epic_govannon_full_health", "Summoner's Hall: Grand Summoner Govannon has 300,000 health, as in the original (True), or 200,000 (False, the 1.2 default until a played check: a 60-bot raid took him about 1% a minute).", false)]
+		public static bool EPIC_GOVANNON_FULL_HEALTH = false;
+
+		[ServerProperty("npc", "epic_kvasir_cold_heal", "Tuscaran Glacier: cold damage heals Icelord Kvasir by a fifth of his health and does no damage (True, 1.2). No bot casts cold at him.", true)]
+		public static bool EPIC_KVASIR_COLD_HEAL = true;
+
+		[ServerProperty("npc", "epic_tuscar_twin_heal", "Tuscaran Glacier: damage to King Tuscar heals Queen Kula and damage to her heals him while the other is hurt (True, 1.2). The raid kills Kula first; only the King's own tank fights him. Test first.", true)]
+		public static bool EPIC_TUSCAR_TWIN_HEAL = true;
+
+		[ServerProperty("npc", "epic_dragon_messengers", "The dragons: from half health every 80-90 s four to six messengers run out of the lair and each calls four to six adds (True, 1.2). The raid's casters and archers run them down. False: no messengers at any dragon.", true)]
+		public static bool EPIC_DRAGON_MESSENGERS = true;
+
+		/// <summary>
+		/// Epic encounters (1.2): per-encounter switch values that replace the shipped ones (EpicEncounterMechanics.
+		/// ShippedPerEncounter), for any boss and any of its switches, without a rebuild.
+		/// </summary>
+		[ServerProperty("npc", "epic_encounter_switches", "Epic encounters: per-boss switch values that replace what ships, as Switch@Boss=True or False, separated by commas or semicolons. Example: AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=False. Switches: AllowDisplacement, AllowPositionPuzzle, AllowInvulnerableHazards, AllowAddShield, AllowGlacierGriffonPatrol, AllowBotDisplacement, AllowDragonThrow, AllowDragonMessengers. Boss = the script's class name (the catalog docs/encounters/EPIC-ENCOUNTERS.md lists them). Empty: what ships.", "")]
+		public static string EPIC_ENCOUNTER_SWITCHES = "";
+
+		/// <summary>
 		/// Allow Roam
 		/// </summary>
 		[ServerProperty("npc", "allow_roam", "Allow mobs to roam on the server", true)]

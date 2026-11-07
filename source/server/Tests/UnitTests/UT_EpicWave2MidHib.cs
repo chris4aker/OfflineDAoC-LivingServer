@@ -135,8 +135,9 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowGlacierGriffonPatrol), "Hurika"), Is.False);
             Assert.That(EpicEncounterMechanics.AllowDisplacement, Is.False, "the global stays off: only these encounters move raiders");
             Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowBotDisplacement), "Legion"), Is.False);
-            Assert.That(EpicEncounterMechanics.AllowTuscarTwinHeal && EpicEncounterMechanics.AllowKvasirColdHeal &&
-                        EpicEncounterMechanics.AllowGovannonFullHealth, Is.True);
+            Assert.That(EpicEncounterMechanics.AllowTuscarTwinHeal && EpicEncounterMechanics.AllowKvasirColdHeal, Is.True);
+            // Govannon's 300,000 stays off by default until a played check (owner to confirm; epic_govannon_full_health).
+            Assert.That(EpicEncounterMechanics.AllowGovannonFullHealth, Is.False);
             // Every shipped encounter is a real class of the server.
             Assembly gs = typeof(GameNPC).Assembly;
             foreach (var (_, e, _) in EpicEncounterMechanics.ShippedPerEncounter)

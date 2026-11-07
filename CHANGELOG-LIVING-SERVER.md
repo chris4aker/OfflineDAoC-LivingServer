@@ -14,6 +14,16 @@ Older entries below keep the names they were written with.
      last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
      entries below and the Beta 1.1.2 section as they are. -->
 
+**Every restored boss mechanic is a setting you can change** (the epic encounters, wave 2). Each one is its own server
+property (`/serverproperty`, section `npc`), and the game reads it as it plays, so no rebuild is needed:
+`epic_horsemen_tether_heal`, `epic_funus_weapon_puzzle`, `epic_sacristan_patrol`, `epic_soul_reckoner_full_shield`,
+`epic_soul_reckoner_small_room`, `epic_aroon_damage_order`, `epic_galladoria_bridge_spot`, `epic_full_fire_patches`,
+`epic_earthmender_class_puzzle`, `epic_earthmenders_passive`, `epic_earthmender_quick_reset`,
+`epic_earthmender_mutual_heal`, `epic_beatha_heals_xaga`, `epic_fairy_flight`, `epic_govannon_full_health`,
+`epic_kvasir_cold_heal`, `epic_tuscar_twin_heal` and `epic_dragon_messengers`. All are on except the full fire patches
+and Govannon's full health, which stay off until they have been played. `epic_encounter_switches` changes any one boss's
+switch, for example `AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=False`.
+
 **The dragons, Xanxicar and Galladoria play their full mechanics, and the bots play them back** (the epic encounters,
 wave 2). Tested by automated tests only; not played in game yet. These fights are harder than before: try them first.
 - **The dragons send their messengers again.** From half health, every 80-90 seconds, four to six messengers run out of
@@ -27,8 +37,8 @@ wave 2). Tested by automated tests only; not played in game yet. These fights ar
   pause; below half health he throws raiders again (the bots walk back). His throw had a bug that kept it from ever
   starting; it now works as in the original. The current at the waterfall keeps the raid in his room until he dies.
 - **Galladoria's other mechanics are back:** the Water primal's and Spindler Broodmother's teleports (bots too), the
-  full fire trail of the Fire primal (melee fight the other primals while casters shoot it; this undoes the 2026-10-19
-  nerf of the fire patches), Aroon's Scaiths that must die in order (the raid kills them one by one), the original
+  Fire primal's trail of fire (melee fight the other primals while casters shoot it; the patches stay at the 2026-10-19
+  strength by default, and `epic_full_fire_patches` brings back the original's), Aroon's Scaiths that must die in order (the raid kills them one by one), the original
   Earthmenders (they never attack, heal each other and reset when left alone), Beatha healing Xaga (the raid kills
   Beatha, then Tine, then Xaga) and the fairies circling the room. Conservator and Easmarach take damage only from up
   close again; the bots step in. The primals come when a raider stands on the bridge spot again (a bot raid that has
@@ -56,8 +66,9 @@ game yet.
 - **Icelord Hakr's toss and Hurika's gust** now hit bots too; they fall, take the fall damage and run back, and the
   healers see to them first. Torst and Hurika still sit on their perches (their flying patrol stays off: the raid can't
   pull a flying patrol yet).
-- **Grand Summoner Govannon has his full 300,000 health again.** If both his walkers reach the altar, the raid kills the
-  Shade of Aelfgar first; the Shade sends raiders (bots too) to the gallery. Summoner Cunovinda's ledge throw hits bots
+- **Grand Summoner Govannon:** the raid kills his sacrifice and demon at range and spreads in his demon form. He keeps
+  200,000 health by default; `epic_govannon_full_health` gives him the original 300,000. If both his walkers reach the
+  altar, the raid kills the Shade of Aelfgar first; the Shade sends raiders (bots too) to the gallery. Summoner Cunovinda's ledge throw hits bots
   too. At Summoner Lossren, the raider the infected ghoul crawls toward walks away from it while the casters kill it.
 - **Iarnvidiur, Boligar, Mortufoghus, Ydenia and the Glacier Giant** throw and teleport bots too; the bots run back.
 - **Fomor:** Krackenschtein is fought from close by (he only takes damage within 300) and his throw hits bots too; his
@@ -67,8 +78,8 @@ game yet.
   Avartack fights turns to face him (his back strike hurts).
 - **Your group calls it:** a bot in your group calls each mechanic in /group as the raid plays it ("dont touch the king,
   all on kula", "no cold on kvasir, it heals him", "shards first").
-- **Test first:** Govannon at full health with his heal to full at 50%, and Kula and Tuscar with the twin heal, may be
-  much harder than before for a raid of bots.
+- **Test first:** Kula and Tuscar with the twin heal (and Govannon, if you give him his full health) may be much harder
+  than before for a raid of bots.
 
 **Caer Sidi, Krondon, Avalon City and the Darkness Falls princes play their original mechanics, and bots play them
 too** (the epic encounters, wave 2, Albion). Tested by automated tests only; not played in game yet. These fights are

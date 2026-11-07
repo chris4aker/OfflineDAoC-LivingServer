@@ -145,7 +145,8 @@ namespace DOL.UnitTests
                              .Concat(t.After == null ? [] : [t.After]))
                     Assert.That(gs.GetTypes().Any(x => x.Name == type && typeof(GameNPC).IsAssignableFrom(x)), Is.True, type);
             Assert.That(EpicEncounterTactics.SwitchOn(nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle)), Is.True);
-            Assert.That(EpicEncounterTactics.SwitchOn(nameof(EpicEncounterMechanics.AllowGovannonFullHealth)), Is.True, "on since epic wave 2");
+            Assert.That(EpicEncounterTactics.SwitchOn(nameof(EpicEncounterMechanics.AllowGovannonFullHealth)), Is.False,
+                "off by default until a played check (epic_govannon_full_health)");
             Assert.That(EpicEncounterTactics.SwitchOn("NoSuchSwitch"), Is.False);
         }
 

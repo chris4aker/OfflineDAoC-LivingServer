@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DOL.GS
@@ -38,8 +39,13 @@ namespace DOL.GS
         public static bool AllowDragonThrow { get; set; }
         /// <summary>The dragons' messengers (OpenDAoC-Core 3513bad): from 50% health every 80-90 s, four to six messengers run
         /// out of the lair and each calls four to six adds where its path ends. Global off; on per dragon since 1.2 (the raid's
-        /// casters and archers run them down).</summary>
+        /// casters and archers run them down); the server property epic_dragon_messengers (on) turns them off at every dragon.</summary>
         public static bool AllowDragonMessengers { get; set; }
+
+        /// <summary>The owner's switches that turn a mechanic off everywhere, whatever ships per encounter (server properties,
+        /// read live): the dragons' messengers (epic_dragon_messengers).</summary>
+        private static bool Gated(string name) =>
+            name == nameof(AllowDragonMessengers) && !ServerProperties.Properties.EPIC_DRAGON_MESSENGERS;
 
         /// <summary>The encounter switches, by name (for logs, tests and the catalog); each can be set per encounter.</summary>
         public static readonly string[] EncounterSwitches =
@@ -61,56 +67,60 @@ namespace DOL.GS
 
         // Original OpenDAoC mechanics the fork had edited out for bot raids (docs/encounters/EPIC-ENCOUNTERS.md, "Restored
         // behind switches"). Each is off, so the game plays as before, until the raid AI can play it; the ones it plays are on
-        // (1.2, epic wave 2: Galladoria's, the Earthmender class puzzle, Kvasir's cold heal, the Tuscar/Kula twin heal,
-        // Govannon's full health). The values were read
-        // from OpenDAoC-Core 3513bad (2026-11-04). Settable so the tests and the next raid AI step can turn one on.
+        // (1.2, epic wave 2: Galladoria's, the Earthmender class puzzle, Kvasir's cold heal, the Tuscar/Kula twin heal, Caer
+        // Sidi's five). The values were read from OpenDAoC-Core 3513bad (2026-11-04). Each is its own server property
+        // (npc / epic_<name>, ServerProperties.cs), read live, so the owner turns one off or on without a rebuild; settable
+        // so the tests can too. Off by default until a played check (owner to confirm): the full fire patches (keeps the
+        // owner's 2026-10-19 nerf) and Govannon's full health.
 
         /// <summary>Fames, Morbus and Funus heal to full when drawn past their tether (not only when the fight is over). On
         /// since 1.2: the raid fights each horseman within 2,700 of his spawn (catalog fight-at-home) and leads him back.</summary>
-        public static bool AllowHorsemenTetherHeal { get; set; } = true;
+        public static bool AllowHorsemenTetherHeal { get => ServerProperties.Properties.EPIC_HORSEMEN_TETHER_HEAL; set => ServerProperties.Properties.EPIC_HORSEMEN_TETHER_HEAL = value; }
         /// <summary>Funus takes damage only from clerics and from mercenaries, armsmen, infiltrators and scouts with their
         /// listed weapon; any other attacker (pets included) heals him to full. On since 1.2: only those raiders fight him,
         /// everyone else stands clear and never puts an area spell on him (EpicEncounterTactics.CaerSidi).</summary>
-        public static bool AllowFunusWeaponPuzzle { get; set; } = true;
+        public static bool AllowFunusWeaponPuzzle { get => ServerProperties.Properties.EPIC_FUNUS_WEAPON_PUZZLE; set => ServerProperties.Properties.EPIC_FUNUS_WEAPON_PUZZLE = value; }
         /// <summary>Skeletal Sacristan walks his loop at 220 without stopping, with 70% magic resists. On since 1.2: the raid's
         /// parties wait at stations along his loop and hit him as he passes (EpicEncounterTactics.CaerSidi).</summary>
-        public static bool AllowSacristanPatrol { get; set; } = true;
+        public static bool AllowSacristanPatrol { get => ServerProperties.Properties.EPIC_SACRISTAN_PATROL; set => ServerProperties.Properties.EPIC_SACRISTAN_PATROL = value; }
         /// <summary>Soul Reckoner takes no damage at all while a reckoned soul lives (not a quarter). On since 1.2: the souls
         /// are his required adds in the catalog.</summary>
-        public static bool AllowSoulReckonerFullShield { get; set; } = true;
+        public static bool AllowSoulReckonerFullShield { get => ServerProperties.Properties.EPIC_SOUL_RECKONER_FULL_SHIELD; set => ServerProperties.Properties.EPIC_SOUL_RECKONER_FULL_SHIELD = value; }
         /// <summary>Soul Reckoner's room is 900 units from its middle (not 1,500). On since 1.2: the raid keeps him within 700
         /// of it and leads him back (EpicEncounterTactics.CaerSidi).</summary>
-        public static bool AllowSoulReckonerSmallRoom { get; set; } = true;
+        public static bool AllowSoulReckonerSmallRoom { get => ServerProperties.Properties.EPIC_SOUL_RECKONER_SMALL_ROOM; set => ServerProperties.Properties.EPIC_SOUL_RECKONER_SMALL_ROOM = value; }
         /// <summary>Aroon takes only the damage types whose Scaith has died, and the Scaiths must die in order (slash, thrust,
         /// crush, body, cold, energy, heat, matter, spirit); each Scaith is immune until the one before it is dead.</summary>
-        public static bool AllowAroonDamageOrder { get; set; } = true;
+        public static bool AllowAroonDamageOrder { get => ServerProperties.Properties.EPIC_AROON_DAMAGE_ORDER; set => ServerProperties.Properties.EPIC_AROON_DAMAGE_ORDER = value; }
         /// <summary>Galladoria's primals come only when a raider stands within 350 of the waterfall bridge spot (bots too;
         /// the original counted real players only, which a bot raid could never meet).</summary>
-        public static bool AllowGalladoriaBridgeSpot { get; set; } = true;
-        /// <summary>The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300).</summary>
-        public static bool AllowFullFirePatches { get; set; } = true;
+        public static bool AllowGalladoriaBridgeSpot { get => ServerProperties.Properties.EPIC_GALLADORIA_BRIDGE_SPOT; set => ServerProperties.Properties.EPIC_GALLADORIA_BRIDGE_SPOT = value; }
+        /// <summary>The Fire primal's trail of fire hits 220 in a 450 radius (not 120 in 300). Off by default (epic_full_fire_patches):
+        /// on undoes the owner's 2026-10-19 nerf; the raid plays it either way (melee leave the Fire primal to casters).</summary>
+        public static bool AllowFullFirePatches { get => ServerProperties.Properties.EPIC_FULL_FIRE_PATCHES; set => ServerProperties.Properties.EPIC_FULL_FIRE_PATCHES = value; }
         /// <summary>Each Earthmender takes damage only from its own class group (pets always); others do nothing. On since 1.2:
         /// the raid AI sends each raider to an Earthmender its class hurts (EpicEncounterTactics class rules).</summary>
-        public static bool AllowEarthmenderClassPuzzle { get; set; } = true;
+        public static bool AllowEarthmenderClassPuzzle { get => ServerProperties.Properties.EPIC_EARTHMENDER_CLASS_PUZZLE; set => ServerProperties.Properties.EPIC_EARTHMENDER_CLASS_PUZZLE = value; }
         /// <summary>Earthmenders never attack (they only heal).</summary>
-        public static bool AllowEarthmendersPassive { get; set; } = true;
+        public static bool AllowEarthmendersPassive { get => ServerProperties.Properties.EPIC_EARTHMENDERS_PASSIVE; set => ServerProperties.Properties.EPIC_EARTHMENDERS_PASSIVE = value; }
         /// <summary>An Earthmender heals to full 30 s after its last fight even with raiders in the room.</summary>
-        public static bool AllowEarthmenderQuickReset { get; set; } = true;
+        public static bool AllowEarthmenderQuickReset { get => ServerProperties.Properties.EPIC_EARTHMENDER_QUICK_RESET; set => ServerProperties.Properties.EPIC_EARTHMENDER_QUICK_RESET = value; }
         /// <summary>Earthmenders heal each other as well as the Earth primal.</summary>
-        public static bool AllowEarthmenderMutualHeal { get; set; } = true;
+        public static bool AllowEarthmenderMutualHeal { get => ServerProperties.Properties.EPIC_EARTHMENDER_MUTUAL_HEAL; set => ServerProperties.Properties.EPIC_EARTHMENDER_MUTUAL_HEAL = value; }
         /// <summary>Beatha's damage heals Xaga by twice the amount.</summary>
-        public static bool AllowBeathaHealsXaga { get; set; } = true;
+        public static bool AllowBeathaHealsXaga { get => ServerProperties.Properties.EPIC_BEATHA_HEALS_XAGA; set => ServerProperties.Properties.EPIC_BEATHA_HEALS_XAGA = value; }
         /// <summary>Beatha and Tine circle the room even while they are fought.</summary>
-        public static bool AllowFairyFlight { get; set; } = true;
-        /// <summary>Grand Summoner Govannon has 300,000 health (not 200,000). On since 1.2 (epic wave 2): the raid kills his
-        /// sacrifice and demon at range and spreads in his demon form (EpicEncounterTactics); the owner tests the win rate.</summary>
-        public static bool AllowGovannonFullHealth { get; set; } = true;
+        public static bool AllowFairyFlight { get => ServerProperties.Properties.EPIC_FAIRY_FLIGHT; set => ServerProperties.Properties.EPIC_FAIRY_FLIGHT = value; }
+        /// <summary>Grand Summoner Govannon has 300,000 health (not 200,000). Off by default (epic_govannon_full_health) until a
+        /// played check: the raid's tactics for him (sacrifice and demon at range, spread in demon form) play either way; a
+        /// 60-bot raid took 300,000 about 1% a minute (run 18).</summary>
+        public static bool AllowGovannonFullHealth { get => ServerProperties.Properties.EPIC_GOVANNON_FULL_HEALTH; set => ServerProperties.Properties.EPIC_GOVANNON_FULL_HEALTH = value; }
         /// <summary>Cold damage heals Icelord Kvasir by a fifth of his health and does no damage. On since 1.2: no bot casts
         /// cold at him (EpicEncounterTactics.ForbidsSpell).</summary>
-        public static bool AllowKvasirColdHeal { get; set; } = true;
+        public static bool AllowKvasirColdHeal { get => ServerProperties.Properties.EPIC_KVASIR_COLD_HEAL; set => ServerProperties.Properties.EPIC_KVASIR_COLD_HEAL = value; }
         /// <summary>Damage to King Tuscar heals Queen Kula, and damage to her heals him, while the other is below full health.
         /// On since 1.2: the raid kills Kula first and only the King's own target fights him (EpicEncounterTactics).</summary>
-        public static bool AllowTuscarTwinHeal { get; set; } = true;
+        public static bool AllowTuscarTwinHeal { get => ServerProperties.Properties.EPIC_TUSCAR_TWIN_HEAL; set => ServerProperties.Properties.EPIC_TUSCAR_TWIN_HEAL = value; }
 
         /// <summary>Every restore switch, by name (for logs, tests and the catalog).</summary>
         public static readonly string[] RestoreSwitches =
@@ -222,9 +232,53 @@ namespace DOL.GS
 
         public static bool On(string name, string encounter)
         {
-            if (string.IsNullOrEmpty(name)) return false;
-            if (!string.IsNullOrEmpty(encounter) && PerEncounter.TryGetValue((name, encounter), out bool own)) return own;
+            if (string.IsNullOrEmpty(name) || Gated(name)) return false;
+            if (!string.IsNullOrEmpty(encounter))
+            {
+                // The owner's per-boss values (server property epic_encounter_switches) come before what ships.
+                if (OwnerValues().TryGetValue((name, encounter), out bool owner)) return owner;
+                if (PerEncounter.TryGetValue((name, encounter), out bool own)) return own;
+            }
             return Global(name);
+        }
+
+        private static string _ownerText;
+        private static Dictionary<(string, string), bool> _ownerValues = new();
+
+        /// <summary>The per-boss values of the server property epic_encounter_switches, parsed when it changes.</summary>
+        private static Dictionary<(string, string), bool> OwnerValues()
+        {
+            string text = ServerProperties.Properties.EPIC_ENCOUNTER_SWITCHES ?? "";
+            if (ReferenceEquals(text, _ownerText) || text == _ownerText) return _ownerValues;
+            var parsed = ParseOwnerSwitches(text);
+            _ownerValues = parsed;
+            _ownerText = text;
+            return parsed;
+        }
+
+        /// <summary>
+        /// "Switch@Boss=True; Switch@Boss=False" (commas or semicolons; any case for True/False/1/0/on/off) as values (pure).
+        /// An entry with an unknown switch or a malformed part is skipped.
+        /// </summary>
+        public static Dictionary<(string, string), bool> ParseOwnerSwitches(string text)
+        {
+            var d = new Dictionary<(string, string), bool>();
+            if (string.IsNullOrWhiteSpace(text)) return d;
+            foreach (string raw in text.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries))
+            {
+                string[] kv = raw.Split('=', 2);
+                if (kv.Length != 2) continue;
+                string[] se = kv[0].Trim().Split('@', 2);
+                if (se.Length != 2 || se[1].Trim().Length == 0 || !EncounterSwitches.Contains(se[0].Trim())) continue;
+                bool? v = kv[1].Trim().ToLowerInvariant() switch
+                {
+                    "true" or "1" or "on" or "yes" => true,
+                    "false" or "0" or "off" or "no" => false,
+                    _ => null,
+                };
+                if (v is bool value) d[(se[0].Trim(), se[1].Trim())] = value;
+            }
+            return d;
         }
 
         /// <summary>The global value of the switch <paramref name="name"/> (false for an unknown name).</summary>

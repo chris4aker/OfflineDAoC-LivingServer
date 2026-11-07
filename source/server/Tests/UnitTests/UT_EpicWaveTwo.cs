@@ -22,7 +22,8 @@ namespace DOL.UnitTests
         public static readonly string[] GalladoriaRestoresOn =
         [
             nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle), nameof(EpicEncounterMechanics.AllowAroonDamageOrder),
-            nameof(EpicEncounterMechanics.AllowGalladoriaBridgeSpot), nameof(EpicEncounterMechanics.AllowFullFirePatches),
+            // AllowFullFirePatches is off by default (the owner's 2026-10-19 nerf kept until he confirms); the raid plays both.
+            nameof(EpicEncounterMechanics.AllowGalladoriaBridgeSpot),
             nameof(EpicEncounterMechanics.AllowEarthmendersPassive), nameof(EpicEncounterMechanics.AllowEarthmenderQuickReset),
             nameof(EpicEncounterMechanics.AllowEarthmenderMutualHeal), nameof(EpicEncounterMechanics.AllowBeathaHealsXaga),
             nameof(EpicEncounterMechanics.AllowFairyFlight),
