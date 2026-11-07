@@ -223,7 +223,7 @@ namespace DOL.GS
         }
         private static void PlayerKilledByBeliathan(DOLEvent e, object sender, EventArgs args)
         {
-            GamePlayer player = sender as GamePlayer;
+            GameLiving player = EncounterTargets.AsRaider(sender as GameObject);
 
             if (player == null)
                 return;

@@ -159,7 +159,7 @@ namespace DOL.GS.Scripts
         }
         public override void EnemyKilled(GameLiving enemy)
         {
-            if (enemy != null && enemy is GamePlayer)
+            if (enemy != null && EncounterTargets.IsRaider(enemy))
             {
                 BroadcastMessage("Legion says, \"Your soul give me new strength.\"");
                 Health += MaxHealth / 40; //heals if boss kill enemy player for 2.5% of his max health
@@ -597,9 +597,9 @@ namespace DOL.AI.Brain
         {
             if (Body.InCombat && Body.IsAlive && HasAggro)
             {
-                foreach (GamePlayer playerNearby in Body.GetPlayersInRadius(2000))
+                foreach (GameLiving playerNearby in EncounterTargets.InRadius(Body, 2000))
                 {
-                    if (playerNearby != null && playerNearby.Client.Account.PrivLevel == 1)
+                    if (playerNearby != null && EncounterTargets.NotGm(playerNearby))
                     {
                         PlayerCountInLegionLair++;
                     }

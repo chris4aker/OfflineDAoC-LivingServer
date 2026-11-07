@@ -130,7 +130,7 @@ namespace DOL.AI.Brain
             }
             else
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(350))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 350))
                 {
                     player.Mana -= (int) (player.MaxMana * 0.05);
                     player.UpdateHealthManaEndu();
@@ -251,7 +251,7 @@ namespace DOL.AI.Brain
             }
             else
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(350))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 350))
                 {
                     player.Mana -= (int) (player.MaxMana * 0.05);
                     player.UpdateHealthManaEndu();
