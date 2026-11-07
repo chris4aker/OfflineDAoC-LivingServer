@@ -215,9 +215,15 @@
         }
       ],
       "places": [
-        "odins-gate"
+        "jamtland-mountains",
+        "odins-gate",
+        "uppland",
+        "yggdra-forest"
       ],
       "bosses": [
+        "albion-leader",
+        "fjall",
+        "geyra",
         "hagall-the-red-dagger",
         "jango",
         "kelic",
@@ -225,7 +231,9 @@
         "oona",
         "red-hagen",
         "runil",
+        "serk",
         "storslange",
+        "thorkatla",
         "ulfketill",
         "valthjof"
       ]
@@ -548,9 +556,11 @@
         "faraheim",
         "iarnvidiurs-lair",
         "iarnwood",
+        "jamtland-mountains",
         "modernagrav",
         "skona-ravine",
-        "tuscaran-glacier"
+        "tuscaran-glacier",
+        "yggdra-forest"
       ],
       "bosses": [
         "ancient-syver",
@@ -565,6 +575,7 @@
         "mortufoghus",
         "rolf",
         "rotodjur",
+        "serk",
         "shredclaw",
         "torst",
         "valmak"
@@ -577,11 +588,14 @@
       "places": [
         "raumarik",
         "skona-ravine",
+        "uppland",
         "vanern-swamp"
       ],
       "bosses": [
+        "fjall",
         "loken",
         "storslange",
+        "thorkatla",
         "ulfketill"
       ]
     },
@@ -605,9 +619,12 @@
       "summary": "The dead the valkyries passed by: the Cursed Tomb's draugr, Raumarik's deserters and curses, the Wretch of Winter, the Revenant's fortress.",
       "places": [
         "cursed-tomb",
-        "raumarik"
+        "jamtland-mountains",
+        "raumarik",
+        "uppland"
       ],
       "bosses": [
+        "geyra",
         "hagall-the-red-dagger",
         "issorden",
         "jango",
@@ -615,6 +632,7 @@
         "raumarik-revenant",
         "red-hagen",
         "runil",
+        "thorkatla",
         "wretch-of-winter"
       ]
     },
@@ -682,9 +700,13 @@
       "summary": "The varulv of Skona and the court of King Hresvelgr in Varulvhamn, with the old wolfaur.",
       "places": [
         "skona-ravine",
-        "varulvhamn"
+        "varulvhamn",
+        "yggdra-forest"
       ],
-      "bosses": []
+      "bosses": [
+        "fjall",
+        "geyra"
+      ]
     },
     {
       "id": "arachites",
@@ -766,6 +788,19 @@
       ],
       "bosses": [
         "ydenia-of-the-seithkona"
+      ]
+    },
+    {
+      "id": "realm-enemies",
+      "name": "The Realms' Enemies",
+      "summary": "Albion and Hibernia on Midgard's frontier: the war for the keeps, the ghosts of invaders who died in Uppland's snow, and the Albion men in the Jamtland hills who buy the Red Daggers' roads.",
+      "places": [
+        "jamtland-mountains",
+        "uppland",
+        "yggdra-forest"
+      ],
+      "bosses": [
+        "albion-leader"
       ]
     },
     {
