@@ -31,8 +31,10 @@
         "curengkur",
         "elro-the-ancient",
         "gneiss",
+        "ixthiar-broodmother",
         "marfoirwort",
         "mollunero",
+        "monger",
         "queen-cliodna",
         "zytka"
       ]
@@ -206,6 +208,8 @@
       ],
       "bosses": [
         "abomos-the-soultrapper",
+        "adwyth",
+        "anhylaw",
         "anurigunda",
         "aroon-the-urlamhai",
         "balor",
@@ -217,6 +221,7 @@
         "corrupt-primal-of-fire",
         "corrupt-primal-of-water",
         "dremcis-fuiloltair",
+        "drygau",
         "easmarach",
         "giant-sporite-cluster",
         "gnat",
@@ -225,12 +230,14 @@
         "kontar-the-corrupt",
         "krackenschtein",
         "master-of-pain",
+        "milo",
         "myrddraxis",
         "nogoribando",
         "norsob-the-annihilator",
         "olcasar-geomancer",
         "olcasgean",
         "organic-energy-mechanism",
+        "oscar",
         "queen-qunilaria",
         "sargan-the-conqueror",
         "spindler-broodmother",
@@ -343,14 +350,19 @@
       ],
       "bosses": [
         "abomos-the-soultrapper",
+        "adwyth",
+        "anhylaw",
         "anurigunda",
         "balor",
+        "drygau",
         "kierac-the-destroyer",
         "krackenschtein",
         "master-of-pain",
+        "milo",
         "myrddraxis",
         "nogoribando",
         "norsob-the-annihilator",
+        "oscar",
         "queen-qunilaria",
         "sargan-the-conqueror"
       ]
@@ -488,8 +500,10 @@
         "dremcis-fuiloltair",
         "gnat",
         "gneiss",
+        "ixthiar-broodmother",
         "marfoirwort",
         "mollunero",
+        "monger",
         "zytka"
       ]
     },
