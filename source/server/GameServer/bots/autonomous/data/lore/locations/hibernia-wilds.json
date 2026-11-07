@@ -250,6 +250,18 @@
     {
       "id": "hy-brasil",
       "relation": "the isle in the west"
+    },
+    {
+      "id": "lough-derg",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "silvermine-mountains",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "connacht",
+      "relation": "a zone of the region, with its own file"
     }
   ]
 }

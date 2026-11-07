@@ -21,6 +21,7 @@
         }
       ],
       "places": [
+        "allta-fearann",
         "spraggon-den"
       ],
       "bosses": [
@@ -556,6 +557,7 @@
       "name": "The Old Troubles of the Isle",
       "summary": "What was dangerous on Hy Brasil before the Fomorians came: the octonoid mothers of the World's End shore, the walking shrouds of the edge, the rot-flowers, walking stone and killer-plant of Cothrom Gorge, and the hunter of the mantids in Allta Fearann. The Sylvan guides of Domnann name them to every Hibernian company.",
       "places": [
+        "allta-fearann",
         "hy-brasil",
         "shrouded-isles"
       ],

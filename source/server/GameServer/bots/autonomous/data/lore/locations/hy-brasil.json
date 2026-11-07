@@ -229,7 +229,6 @@
     "beomarbhan",
     "gneiss",
     "marfoirwort",
-    "curengkur",
     "milo",
     "oscar",
     "ixthiar-broodmother",
@@ -248,15 +247,25 @@
     "cuinn",
     "tudeg",
     "thuxra-the-cackler",
-    "eimear",
-    "windskimmer",
-    "goldenleaf",
-    "razorbeak",
-    "adar-llwch-gwin"
+    "eimear"
   ],
   "era": "hib-the-shrouded-isles",
   "factions": [
     "sylvan",
     "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "domnann",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "vigilant-rock",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "allta-fearann",
+      "relation": "a zone of the region, with its own file"
+    }
   ]
 }
