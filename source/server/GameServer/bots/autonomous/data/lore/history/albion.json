@@ -193,7 +193,8 @@
         "krondon",
         "albion-shrouded-isles",
         "isle-of-glass",
-        "avalon-isle"
+        "avalon-isle",
+        "aldland"
       ],
       "bosses": [
         "duraek-the-empowered",
@@ -254,7 +255,8 @@
         "crystal-cave",
         "albion-shrouded-isles",
         "isle-of-glass",
-        "avalon-isle"
+        "avalon-isle",
+        "aldland"
       ],
       "bosses": [
         "duraek-the-empowered",
@@ -316,7 +318,8 @@
       "name": "The thrawn ogres of Krondon",
       "summary": "Stubborn, crooked ogres from the deep seams who took the hall of Krondon without burning it and wear its Old English titles; their queen is Orylle.",
       "places": [
-        "krondon"
+        "krondon",
+        "aldland"
       ],
       "bosses": [
         "orylle",
@@ -336,7 +339,8 @@
       "name": "The hall-folk of Krondon",
       "summary": "The people of the isles' oldest hall, whose ghosts still drift there sad of mind; their storm-keeper bargained with the ogres; the rot in their drains learned to walk.",
       "places": [
-        "krondon"
+        "krondon",
+        "aldland"
       ],
       "bosses": [
         "scurceol-hyrde",
