@@ -86,15 +86,19 @@ class CatalogFileTests(unittest.TestCase):
 
     def test_move_picks_include_bots_exactly_where_bot_displacement_ships_on(self):
         # 1.2: EncounterTargets.DisplacesBots asks the move's own switch (AllowBotDisplacement per encounter).
-        # Wave 2 ships more per dungeon: the dragons, Xanxicar, Galladoria's movers and (Midgard/Hibernia wave) Jailer
-        # Vifil among them, Legion never.
+        # Wave 2 ships more per dungeon: the dragons, Xanxicar, Galladoria's movers, (Midgard/Hibernia) Jailer Vifil and
+        # (Albion) Krondon's orbs, Krevo and Orylle, Sys'sro, Moran among them, Legion never.
         shipped = cat.shipped_bot_displacement()
         self.assertTrue({"AlbGolestandt", "MidGjalpinulva", "HibCuuldurach", "Xanxicar",
-                         "Olcasgean", "WaterfallAntipass", "WaterPrimal", "SpindlerBroodmother", "Jailer"} <= shipped)
+                         "Olcasgean", "WaterfallAntipass", "WaterPrimal", "SpindlerBroodmother", "Jailer",
+                         "Orylle", "LyftMihtOne", "SyssroRuthless", "MoranTheMighty"} <= shipped)
         self.assertNotIn("Legion", shipped)
         water = [r for r in {e["id"]: e for e in self.data["encounters"]}["galladoria/waterprimal"]["rules"] if r["kind"] == "teleport"]
         self.assertNotIn("real players only", water[0].get("affects") or "", "the Water primal's teleport picks bots (wave 2)")
         by_id = {e["id"]: e for e in self.data["encounters"]}
+        orylle = [r for r in by_id["krondon/orylle"]["rules"] if r["kind"] == "teleport"]
+        self.assertTrue(orylle)
+        self.assertNotIn("real players only", orylle[0].get("affects") or "", "Orylle's throw picks bots as shipped (wave 2)")
         throw = [r for r in by_id["crystal-cave/xanxicar"]["rules"] if r["kind"] == "teleport"]
         self.assertTrue(throw)
         self.assertNotIn("real players only", throw[0].get("affects") or "", "Xanxicar's throw picks bots as shipped")

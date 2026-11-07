@@ -159,7 +159,8 @@ namespace DOL.UnitTests
                 "Krackenschtein", "Avartack" }));
             Assembly gs = typeof(GameNPC).Assembly;
             foreach (string type in T.AllDungeonRules.SelectMany(r => r.Targets).Distinct())
-                Assert.That(gs.GetTypes().Any(x => x.Name == type && typeof(GameNPC).IsAssignableFrom(x) && x.Namespace == "DOL.GS"), Is.True, type);
+                Assert.That(gs.GetTypes().Any(x => x.Name == type && typeof(GameNPC).IsAssignableFrom(x) && x.Namespace?.StartsWith("DOL.GS") == true),
+                    Is.True, type);
         }
 
         // ---- King Tuscar and Queen Kula -------------------------------------------------------------------------------

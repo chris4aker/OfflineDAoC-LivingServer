@@ -70,6 +70,37 @@ game yet.
 - **Test first:** Govannon at full health with his heal to full at 50%, and Kula and Tuscar with the twin heal, may be
   much harder than before for a raid of bots.
 
+**Caer Sidi, Krondon, Avalon City and the Darkness Falls princes play their original mechanics, and bots play them
+too** (the epic encounters, wave 2, Albion). Tested by automated tests only; not played in game yet. These fights are
+harder than before; tell us where a raid can no longer win.
+- **Funus heals from the wrong hits again.** Only clerics and scouts (with their longbow) hurt him; a hit from anyone
+  else, or a pet, heals him to full, as in the original. The raid's clerics and scouts fight him, everyone else stands
+  well back, calls their pets off and keeps area spells off him. If you play another class, stay off him too.
+- **The horsemen heal when dragged too far again.** The raid keeps each horseman near his room and leads him back
+  before he gets there.
+- **Morbus hides behind his swarm.** While a swarm of his lives he takes no damage; the raid kills the swarm first.
+- **The Skeletal Sacristan walks his round at full speed and never stops.** The raid splits into parties waiting along
+  his loop and hits him as he walks past, instead of chasing him.
+- **Soul Reckoner takes no damage while a soul lives, and only in his small room.** The raid kills his souls first and
+  leads him back into the room when he wanders out.
+- **Bane of Hope ports you (and bots) away again** after his poison; they walk back.
+- **Apocalypse's harbingers come when they should.** The first pair now always comes after the raid's fourth death (it
+  could be skipped when two died at once), and the second pair at half health once the first pair is dead.
+- **The Crypt Lord's court comes as one pull.** The raid no longer pulls his court a few at a time; it gathers and
+  fights him and his whole court together.
+- **Krondon:** Scurceol Hyrde's orbs, Krevo Ricik's toss and Orylle's throw into Orshom's Fire now pick bots as well as
+  you. A bot thrown into the fire walks out of it first. Raiders with cold spells put the fire out (only cold hurts it);
+  with the fire out, Orylle has nothing to throw anyone into. Casters and archers kill Krevo's ghost before it explodes.
+- **Avalon City:** Sys'sro throws bots into his pit too; they walk out, ignoring the pit monsters (which can't be hurt).
+  Dra'argus: casters and archers kill the Drau'gyn Sphere from range while melee wait out of its reach, then everyone
+  fights him. The sphere's pull takes bots too.
+- **Darkness Falls:** raiders with pets keep them away from Princes Asmoien and Ba'alorien, who eat pets to heal.
+  Once the princes and Princess Nahemah are dead and Beliathan wakes, the raid goes for him before Legion.
+- **Moran the Mighty's gust throws one raider into a nearby camp**, as it was meant to. It used to throw everyone near
+  him at once.
+- **Your party calls the mechanics** in /group: "kill the adds first", "out of the fire", "only clerics and scouts on
+  Funus", "casters on the sphere", and so on.
+
 **Boss throws, teleports and jails now hit bots too, and bots get back** (the epic encounters, wave 1). Tested by
 automated tests only; not played in game yet.
 - **Before:** a boss's throw or teleport only ever picked you. Bots were never thrown, so the mechanic either landed on

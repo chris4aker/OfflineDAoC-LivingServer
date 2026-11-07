@@ -94,7 +94,8 @@ namespace DOL.GS
             if (SafeSpotAdvice(raider, target, live, partyIndex, now) is Advice spot) return spot;
             if (AttackFromWithin(raider, target, at) is Vector3 inside)
                 return new(BotAction.Reposition, target, inside, $"close range: \"{target.Name}\" takes damage only from within reach");
-            return DecideGalladoria(raider, target, live, canShootFlyers, classId);
+            // Galladoria's Fire primal is a dungeon rule (EpicEncounterTactics.Galladoria.cs), asked right after these.
+            return null;
         }
 
         /// <summary>

@@ -98,7 +98,7 @@ namespace DOL.AI.Brain
             {
                 foreach (GameNPC npc in princeStatus)
                 {
-                    if (!npc.Name.ToLower().Contains("prince")) continue;
+                    if (!WakesBeliathanWhenGone(npc.Name)) continue;
                     princeCount++;
                 }
 
@@ -110,6 +110,14 @@ namespace DOL.AI.Brain
 
             base.Think();
         }
+
+        /// <summary>
+        /// Beliathan wakes (this check runs every 10 minutes) once no NPC named like a prince is in Darkness Falls: Princes
+        /// Abdin, Asmoien and Ba'alorien and Princess Nahemah ("prince" is in "princess") all dead. The raid route takes him as
+        /// an objective once he is up (RealmRaidNeutralEvents.Objectives).
+        /// </summary>
+        public static bool WakesBeliathanWhenGone(string name) =>
+            name != null && name.ToLowerInvariant().Contains("prince");
 
         public void SpawnBeliathan()
         {

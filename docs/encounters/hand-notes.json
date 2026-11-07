@@ -420,6 +420,13 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "9ff04bbae65b44517567d941c5a5c40efc9a9574a5d5ff3ddb332b87afbdb1fd"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "DraugynSphere"
+    ],
+    "summary": "Required add, from range (1.2): while the Drau'gyn Sphere burns he takes no damage and doesn't attack, and the sphere (10,000 health, floating above the floor) burns everyone within 500 for 300 every 4 s and pulls raiders at its edge into its middle. Casters and archers kill it from at least 650; melee, tanks and healers wait 850 from it, then everyone fights him (EpicEncounterTactics.AvalonCity).",
+    "since": "1.2"
    }
   },
   "avalon-city/duraekempowered": {
@@ -432,6 +439,14 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "28b464259e35602026380f6dbcdd54ced7ef89ca60d2e7fd7268ce7ff23fcb3b"
+   },
+   "aiTactics": {
+    "hazards": [
+     "PitMonster"
+    ],
+    "hazardRadius": 250,
+    "summary": "Hazards (1.2): his 15 pit monsters can't be hurt (and die with him), so nobody attacks them; a raider within 400 of one steps out. His throw (every 10-15 s, a raider other than his target into the pit 1,200 away) takes bots too: a thrown bot walks out of the pit back to its party, ignoring the pit monsters that snare it, or is recalled if it can't.",
+    "since": "1.2"
    }
   },
   "avalon-city/veraeriusbrave": {
@@ -449,8 +464,9 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
-   }
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+   },
+   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two."
   },
   "caer-sidi/baneofhope": {
    "verified": true,
@@ -461,19 +477,33 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 2700,
+    "summary": "Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "since": "1.2"
    }
   },
   "caer-sidi/cryptlord": {
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "e2e7619fd86fbe4e47cc123e655884760c8d140a3fd46bd8eeeae5479ac8dc76"
+   },
+   "aiTactics": {
+    "summary": "His court comes with him (1.2): he never walks home, once he fights his whole court within 10,000 (43 with PackageID CryptLordBaf) joins on his target, and a court monster fighting within 800 of him pulls him in. So the route never takes a court monster as a small pull of its own while he lives: it fights him instead, a mustered encounter (half the raid gathers first), and the court comes with him (EpicEncounterTactics.CaerSidi route rule).",
+    "since": "1.2"
    }
   },
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 2700,
+    "summary": "Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "since": "1.2"
    }
   },
   "caer-sidi/fatechosen": {
@@ -485,8 +515,14 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
-   }
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+   },
+   "aiTactics": {
+    "fightAtHomeRadius": 2700,
+    "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full, so only clerics, scouts with their longbow (who step back rather than ever swing a melee weapon at him) and a mercenary, armsman or infiltrator already holding its bow or crossbow fight him (bots of those three don't switch weapons, so in practice clerics and scouts). Everyone else drops him, calls its pet off and waits 1,400 away, and never puts an area spell where he stands (EpicEncounterTactics.CaerSidi). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "since": "1.2"
+   },
+   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics."
   },
   "caer-sidi/host": {
    "verified": true,
@@ -523,8 +559,17 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "ad51bb9b0d2739a88ec632194b3e5618a87bdd0312576b6e1164b4a6f017eb69"
-   }
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "1dd1b8669bd9c259fc015f6feb2572b0a146ee7270bfbf78cb1d4adc6994eba4"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "MorbusSwarm"
+    ],
+    "fightAtHomeRadius": 2700,
+    "summary": "Required adds (1.2, with his original swarm shield on): while a swarm of morbus lives (6-10 a wave, 15,000 health, weak to cold, every 25-40 s once the last wave is dead) he takes no damage and stops fighting, so the raid kills the swarm (each party takes one) and turns back on him once it is gone. Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
+    "since": "1.2"
+   },
+   "notes": "1.2 (wave 2): his swarm shield is on (AllowAddShield per encounter) and counts the swarm alive within 4,000 (SwarmAlive), not the static count; the raid kills the swarm first (catalog required adds)."
   },
   "caer-sidi/silencer": {
    "verified": true,
@@ -536,6 +581,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/CaerSidi/SkeletalSacristan.cs": "1952d864db5b1b094cb8ad3ab8552d16d49034b7a37c8805f74684699889a2de"
+   },
+   "aiTactics": {
+    "summary": "Ambush stations (1.2, with his original patrol on: 220 without stopping, 70% magic resists; he never attacks): each party waits at one of 11 stations along his loop (its seven corners and the middle of every leg over 2,400) and hits him while he passes (melee within 450 of the station, casters, archers and healers within 1,400), then waits for his next round (EpicEncounterTactics.CaerSidi).",
+    "since": "1.2"
    }
   },
   "caer-sidi/soulreckoner": {
@@ -543,6 +592,13 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "b0b4cc8c6d55ffd5cf29023f221008eeea0e69a0fc007c6f39f49397dae4ce9c"
+   },
+   "aiTactics": {
+    "requiredAdds": [
+     "ReckonedSoul"
+    ],
+    "summary": "Required adds (1.2, with his original full shield on): while a reckoned soul lives (4-6 at the start, 1-2 more every 60-70 s) he takes no damage, so the raid kills the souls first, each party one. His room (1.2, the original 900 from its middle): past 700 from the room's middle the raid stops hitting him, keeping him as its target, and the raider he chases leads him back in (EpicEncounterTactics.CaerSidi).",
+    "since": "1.2"
    }
   },
   "caer-sidi/spectralprovisioner": {
@@ -654,7 +710,7 @@
   "darkness-falls/beliathan": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "b41053d04f15f0debb8a6a6c94ff930b205b7efabc171512b30c072fde09b9e4"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "5265ec39624ceb7e570ecda41a168e7edf51cf58114b03a565fafa7f4ec3cd4c"
    },
    "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid."
   },
@@ -735,6 +791,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc"
+   },
+   "aiTactics": {
+    "summary": "Pets out (1.2): he eats the nearest summoned pet within 2,000 every 5 s and heals by its health (real pets only, never a bot), so a raider with a pet drops him, calls its pet off and waits 2,400 away with it; everyone else fights him (EpicEncounterTactics.DarknessFalls).",
+    "since": "1.2"
    }
   },
   "darkness-falls/princebaalorien": {
@@ -750,6 +810,10 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4"
+   },
+   "aiTactics": {
+    "summary": "Pets out (1.2): he eats the nearest summoned pet within 2,000 every 5 s and heals by its health (real pets only, never a bot), so a raider with a pet drops him, calls its pet off and waits 2,400 away with it; everyone else fights him (EpicEncounterTactics.DarknessFalls).",
+    "since": "1.2"
    }
   },
   "darkness-falls/princessnahemah": {
@@ -1613,6 +1677,13 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "e064a5f8e93f2360c66c6ae74555da16cf04536b27b707c09e7a78baada04617"
+   },
+   "aiTactics": {
+    "rangedAdds": [
+     "KrevolAdd"
+    ],
+    "summary": "Ranged add (1.2): his forgotten ghost (4,000 health, one at a time) explodes 30 s after it appears for 800 matter damage in 700 around it, so the casters and archers kill it as it comes while melee stay on him. His toss (one hit in ten throws its striker 400 straight up) is on for bots too: they land by him and fight on.",
+    "since": "1.2"
    }
   },
   "krondon/lurfosherald": {
@@ -1640,7 +1711,7 @@
     ],
     "hazardRadius": 300,
     "since": "1.2",
-    "summary": "Hazard: Orshom's Fire is never a target (the route skips it and never switches to it; a raider aiming at it fights Orshom or Orylle instead), and a raider within 450 of it steps out to 600 before fighting on."
+    "summary": "Hazard: Orshom's Fire is never a target (the route skips it and never switches to it; a raider aiming at it fights Orshom or Orylle instead), and a raider within 450 of it steps out to 600 before fighting on. Cold casters (1.2): raiders with a cold damage spell put the fire out from outside its radius (it takes only cold, 10,000 health), casting only their cold spells at it; with the fire out Orylle has nothing to throw raiders into (EpicEncounterTactics.Krondon)."
    },
    "rules": {
     "immune_while@365": {
@@ -1672,7 +1743,7 @@
     ],
     "hazardRadius": 300,
     "since": "1.2",
-    "summary": "After Orshom Brong: while Orshom lives the party Orylle fights holds her and everyone else kills Orshom (30,000 health, lower resists) first; the route goes for Orshom before her. Hazard: stay out of Orshom's Fire, as for him."
+    "summary": "After Orshom Brong: while Orshom lives the party Orylle fights holds her and everyone else kills Orshom (30,000 health, lower resists) first; the route goes for Orshom before her. Hazard: stay out of Orshom's Fire, as for him. Cold casters (1.2): raiders with a cold damage spell put the fire out from outside its radius (it takes only cold, 10,000 health), casting only their cold spells at it; with the fire out Orylle has nothing to throw raiders into (EpicEncounterTactics.Krondon)."
    }
   },
   "krondon/scurceolhyrde": {
@@ -2027,8 +2098,9 @@
   "open-world/moranthemighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "1e4281f1e82a152f99318a38e62c74907512296934a5796f2ccfc23df1d11aa7"
-   }
+    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "faf306406385799b4d8b9b2af801bdb6d7dd4f10ec3ac641a06cd9b038b24583"
+   },
+   "notes": "1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran."
   },
   "open-world/ofgreenknight": {
    "verified": true,

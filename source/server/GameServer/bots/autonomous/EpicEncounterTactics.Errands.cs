@@ -214,40 +214,18 @@ namespace DOL.GS
 
         // ---- the party's calls ---------------------------------------------------------------------------------------
 
-        private static readonly ConcurrentDictionary<(Group, string), long> CallsSaid = new();
-        /// <summary>One call of a topic per party this often.</summary>
+        /// <summary>One call of a dungeon rule's topic per party this often (EncounterMechanicCalls books it).</summary>
         public const int MechanicCallGapMilliseconds = 45_000;
 
         public static bool MechanicCallDue(long lastSaid, long now) => lastSaid <= 0 || now - lastSaid >= MechanicCallGapMilliseconds;
 
         /// <summary>
         /// The party calls a mechanic in /group in the bot voice (combat_calls.lines, topic <paramref name="topic"/>; slots
-        /// {boss} and {target}): only in a party with the real player (AutonomousBotGroupChatter.Send), once per topic per party
-        /// every <see cref="MechanicCallGapMilliseconds"/>.
+        /// {boss} and {target}): only in a party with the real player, once per topic per party every
+        /// <see cref="MechanicCallGapMilliseconds"/> (a rule's act calls it; a rule's decision names it in Advice.Call). The
+        /// one speaker and booking is <see cref="EncounterMechanicCalls.Say"/>.
         /// </summary>
-        internal static void MechanicCall(GameBot bot, string topic, GameNPC boss, GameObject other)
-        {
-            try
-            {
-                Group group = bot?.Group;
-                if (group == null || !bot.IsAlive || !bot.IsAutonomousWorldBot || !AutonomousLivingServer.GroupHasPlayer(group)) return;
-                long now = GameLoop.GameLoopTime;
-                if (CallsSaid.TryGetValue((group, topic), out long last) && !MechanicCallDue(last, now)) return;
-                CallsSaid[(group, topic)] = now;
-                if (CallsSaid.Count > 2_000) CallsSaid.Clear();
-                var slots = new Dictionary<string, string>(StringComparer.Ordinal)
-                {
-                    ["boss"] = boss?.Name ?? "the boss",
-                    ["target"] = other?.Name ?? boss?.Name ?? "it",
-                };
-                if (!AutonomousBotVoices.TryLine(bot, "combat", out AutonomousBotVoiceCorpus.Picked picked, topic: topic, slots: slots, relax: true))
-                    return;
-                AutonomousBotGroupChatter.Send(bot, picked.Text, "none");
-            }
-            catch (Exception ex)
-            {
-                Log.Warn($"EPIC_TACTIC call {topic} failed: {ex.Message}");
-            }
-        }
+        internal static void MechanicCall(GameBot bot, string topic, GameNPC boss, GameObject other) =>
+            EncounterMechanicCalls.Say(bot, topic, boss, other, MechanicCallGapMilliseconds);
     }
 }

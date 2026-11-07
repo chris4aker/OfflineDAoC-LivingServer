@@ -70,7 +70,9 @@ namespace DOL.AI.Brain
                 IsUntargetable(living) || !GameServer.ServerRules.IsAllowedToAttack(Body, living, true))
                 return;
             // Mesmerized, or rooted by a root that damage breaks: the blast would free it.
-            _blastCandidates.Add(new(center.GetDistanceTo(living), IsEngagedEnemy(living), IsBreakablyControlled(living)));
+            // A boss this bot must not hit at all (Funus while his puzzle is on) vetoes the blast like a mesmerized monster.
+            _blastCandidates.Add(new(center.GetDistanceTo(living), IsEngagedEnemy(living),
+                IsBreakablyControlled(living) || EpicEncounterTactics.MustNotHit(BotBody, living)));
         }
 
         private bool HasBlastPlayerLike()

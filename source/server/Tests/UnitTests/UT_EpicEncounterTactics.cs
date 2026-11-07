@@ -437,6 +437,24 @@ namespace DOL.UnitTests
 
         // ---- restored mechanics ------------------------------------------------------------------------------------
 
+        /// <summary>The restore switches on by default since 1.2 (the one list; the dungeons' tests check their own).</summary>
+        internal static readonly string[] OnSince12 =
+        [
+            nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle),
+            // Epic wave 2, Galladoria (UT_EpicWaveTwo.GalladoriaRestoresOn).
+            nameof(EpicEncounterMechanics.AllowAroonDamageOrder), nameof(EpicEncounterMechanics.AllowGalladoriaBridgeSpot),
+            nameof(EpicEncounterMechanics.AllowFullFirePatches), nameof(EpicEncounterMechanics.AllowEarthmendersPassive),
+            nameof(EpicEncounterMechanics.AllowEarthmenderQuickReset), nameof(EpicEncounterMechanics.AllowEarthmenderMutualHeal),
+            nameof(EpicEncounterMechanics.AllowBeathaHealsXaga), nameof(EpicEncounterMechanics.AllowFairyFlight),
+            // Tuscaran Glacier and Summoner's Hall (UT_EpicWave2MidHib).
+            nameof(EpicEncounterMechanics.AllowTuscarTwinHeal), nameof(EpicEncounterMechanics.AllowKvasirColdHeal),
+            nameof(EpicEncounterMechanics.AllowGovannonFullHealth),
+            // Caer Sidi (UT_EpicWave2Albion).
+            nameof(EpicEncounterMechanics.AllowHorsemenTetherHeal), nameof(EpicEncounterMechanics.AllowFunusWeaponPuzzle),
+            nameof(EpicEncounterMechanics.AllowSacristanPatrol), nameof(EpicEncounterMechanics.AllowSoulReckonerFullShield),
+            nameof(EpicEncounterMechanics.AllowSoulReckonerSmallRoom),
+        ];
+
         [Test]
         public void EveryRestoredMechanicIsOffByDefaultUntilTheRaidPlaysIt()
         {
@@ -445,12 +463,10 @@ namespace DOL.UnitTests
             {
                 PropertyInfo p = typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
                 Assert.That(p, Is.Not.Null, name);
-                // 1.2: the Earthmenders' class rule is on (UT_EpicEncounterTactics3), Galladoria's others since wave 2
-                // (UT_EpicWaveTwo.GalladoriasRestoredMechanicsAreOn), and the Tuscar/Kula twin heal, Kvasir's cold heal and
-                // Govannon's full health (UT_EpicWave2MidHib).
-                bool played = UT_EpicWaveTwo.GalladoriaRestoresOn.Contains(name) || name is nameof(EpicEncounterMechanics.AllowTuscarTwinHeal) or
-                    nameof(EpicEncounterMechanics.AllowKvasirColdHeal) or nameof(EpicEncounterMechanics.AllowGovannonFullHealth);
-                Assert.That((bool)p.GetValue(null), Is.EqualTo(played), name);
+                // 1.2: the Earthmenders' class rule is on; the raid assigns classes to it (UT_EpicEncounterTactics3). Epic wave 2:
+                // Galladoria's (UT_EpicWaveTwo), Tuscaran's and Summoner's Hall's (UT_EpicWave2MidHib), Caer Sidi's five
+                // (UT_EpicWave2Albion), each with its tactic.
+                Assert.That((bool)p.GetValue(null), Is.EqualTo(OnSince12.Contains(name)), name);
             }
         }
 

@@ -142,7 +142,9 @@ namespace DOL.AI.Brain
         public int TeleportPlayerAway(ECSGameTimer timer)
         {
             string gender;
-            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.DisplacesBots(Body)))
+            // 1.2 (wave 2): one random raider a gust, as the script's own comment ("teleport a random player") and message say. The loop took everyone within
+            // 2,000 (a one-element list each turn), so every gust threw the whole raid into the camps once bots were in the pool.
+            foreach (GameLiving player in WindVictims(EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.DisplacesBots(Body))))
             {
                 if (player == null)
                     return 0;
@@ -177,7 +179,9 @@ namespace DOL.AI.Brain
                             EncounterDisplacement.Move(portPlayer[ranPlayer], 1, 401943, 753091, 222, 3499, DisplacementKind.Throw, Body);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {
-                                npc.StartAttack(portPlayer[ranPlayer]);
+                                // 1.2: the camp's monsters, not the raid's own bots (autonomous gamebots stand in camps too) or Moran.
+                                if (npc != Body && npc is not GameBot && npc.Realm == eRealm.None && npc.IsAlive)
+                                    npc.StartAttack(portPlayer[ranPlayer]);
                             }
                             portPlayer.Clear();
                             break;
@@ -187,7 +191,9 @@ namespace DOL.AI.Brain
                             EncounterDisplacement.Move(portPlayer[ranPlayer], 1, 406787, 749150, 213, 3926, DisplacementKind.Throw, Body);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {
-                                npc.StartAttack(portPlayer[ranPlayer]);
+                                // 1.2: the camp's monsters, not the raid's own bots (autonomous gamebots stand in camps too) or Moran.
+                                if (npc != Body && npc is not GameBot && npc.Realm == eRealm.None && npc.IsAlive)
+                                    npc.StartAttack(portPlayer[ranPlayer]);
                             }
                             portPlayer.Clear();
                             break;
@@ -197,7 +203,9 @@ namespace DOL.AI.Brain
                             EncounterDisplacement.Move(portPlayer[ranPlayer], 1, 401061, 755882, 469, 3050, DisplacementKind.Throw, Body);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {
-                                npc.StartAttack(portPlayer[ranPlayer]);
+                                // 1.2: the camp's monsters, not the raid's own bots (autonomous gamebots stand in camps too) or Moran.
+                                if (npc != Body && npc is not GameBot && npc.Realm == eRealm.None && npc.IsAlive)
+                                    npc.StartAttack(portPlayer[ranPlayer]);
                             }
                             portPlayer.Clear();
                             break;
@@ -208,6 +216,14 @@ namespace DOL.AI.Brain
                 portPlayer.Clear();
             }
             return 0;
+        }
+
+        /// <summary>Who one gust takes: one living raider of the pool, picked at random (none from an empty pool).</summary>
+        public static List<GameLiving> WindVictims(List<GameLiving> pool)
+        {
+            pool?.RemoveAll(l => !EncounterTargets.AliveNotGm(l));
+            GameLiving one = pool is { Count: > 0 } ? EncounterTargets.PickRandom(pool) : null;
+            return one == null ? new List<GameLiving>() : new List<GameLiving> { one };
         }
 
         public override void Notify(DOLEvent e, object sender, EventArgs args)

@@ -128,8 +128,11 @@ namespace DOL.UnitTests
         [Test]
         public void GalladoriasRestoredMechanicsAreOnAndTheMessengersOlcasgeanAndTheTeleportsShip()
         {
+            // Galladoria's are on; every restore switch matches the one list of switches on since 1.2 (the other dungeons' too).
+            foreach (string name in GalladoriaRestoresOn)
+                Assert.That(EpicEncounterMechanics.Global(name), Is.True, name);
             foreach (string name in EpicEncounterMechanics.RestoreSwitches)
-                Assert.That(EpicEncounterMechanics.Global(name), Is.EqualTo(GalladoriaRestoresOn.Contains(name)), name);
+                Assert.That(EpicEncounterMechanics.Global(name), Is.EqualTo(UT_EpicEncounterTactics.OnSince12.Contains(name)), name);
             foreach (string dragon in new[] { "AlbGolestandt", "MidGjalpinulva", "HibCuuldurach" })
                 Assert.That(EpicEncounterMechanics.On(nameof(EpicEncounterMechanics.AllowDragonMessengers), dragon), Is.True, dragon);
             foreach (string boss in new[] { "Olcasgean", "WaterfallAntipass", "WaterPrimal", "SpindlerBroodmother" })

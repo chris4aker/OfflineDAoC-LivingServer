@@ -11,9 +11,20 @@ namespace DOL.GS
         /// radius, dies with; then keep-alive and blasts, and the named rules after them).</summary>
         public static readonly Tactic[] Catalog =
         [
+            new("DraargusMighty", "avalon-city/draargusmighty", ["DraugynSphere"], 0, null),
+            new("SyssroRuthless", "avalon-city/syssroruthless", [], 0, null) { Hazards = ["PitMonster"], HazardRadius = 250 },
+            new("Fames", "caer-sidi/fames", [], 2700, null),
+            new("Bellum", "caer-sidi/bellum", [], 2700, null),
+            new("Morbus", "caer-sidi/morbus", ["MorbusSwarm"], 2700, null),
+            new("Funus", "caer-sidi/funus", [], 2700, null),
+            new("CryptLord", "caer-sidi/cryptlord", [], 0, null),
+            new("SkeletalSacristan", "caer-sidi/skeletalsacristan", [], 0, null),
+            new("SoulReckoner", "caer-sidi/soulreckoner", ["ReckonedSoul"], 0, null),
             new("Xanxicar", "crystal-cave/xanxicar", [], 0, null, 0, [80, 60, 40, 20], 2500),
             new("HibCuuldurach", "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach", [], 0, null) { RangedAdds = ["CuuldurachMessenger"] },
             new("Legion", "darkness-falls/legion", [], 0, null) { RangedAdds = ["LegionAdd"] },
+            new("PrinceAsmoien", "darkness-falls/princeasmoien", [], 0, null),
+            new("PrinceBaalorien", "darkness-falls/princebaalorien", [], 0, null),
             new("Krackenschtein", "fomor-city/krackenschtein", [], 0, null),
             new("Myrddraxis", "fomor-city/myrddraxis", [], 0, null, 0, [80, 75, 60, 50, 40, 25, 20], 2150),
             new("Aroon", "galladoria/aroon", ["CorpScaith", "SpioradScaith", "RopadhScaith", "DamhnaScaith", "FuinneamgScaith", "BruScaith", "FuarScaith", "TaesScaith", "ScorScaith"], 0, null) { AddsInOrder = true },
@@ -27,6 +38,7 @@ namespace DOL.GS
             new("MidGjalpinulva", "gjalpinulva-s-lair-myrkwood/midgjalpinulva", [], 0, null) { RangedAdds = ["GjalpinulvaMessenger"] },
             new("AlbGolestandt", "golestandt-s-lair-dartmoor/albgolestandt", [], 0, null) { RangedAdds = ["GolestandtMessenger"] },
             new("AidonTheArchwizard", "hall-of-the-corrupt/aidonthearchwizard", ["AidonCopyFire", "AidonCopyIce", "AidonCopyAir", "AidonCopyEarth"], 1100, null, 1, null, 0),
+            new("KrevoRicik", "krondon/krevoricik", [], 0, null) { RangedAdds = ["KrevolAdd"] },
             new("Orylle", "krondon/orylle", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300, After = "Orshom" },
             new("Orshom", "krondon/orshom", [], 0, null) { Hazards = ["OrshomFire"], HazardRadius = 300 },
             new("ScurceolHyrde", "krondon/scurceolhyrde", ["LyftMihtOne", "LyftMihtTwo", "LyftMihtThree", "LyftMihtFour"], 1500, null),

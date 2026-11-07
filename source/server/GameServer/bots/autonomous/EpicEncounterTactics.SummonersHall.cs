@@ -25,7 +25,7 @@ namespace DOL.GS
             },
         ];
 
-        private static Advice LossrenGhoulKite(RuleContext c)
+        private static Advice? LossrenGhoulKite(RuleContext c)
         {
             foreach (GameNPC ghoul in c.All("ExplodeUndead"))
                 if (ghoul.TargetObject == c.Raider && AwayFrom(c.At, PosOf(ghoul), GhoulKiteRadius) is Vector3 away)

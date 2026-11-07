@@ -31,7 +31,7 @@ namespace DOL.GS
             {
                 Summary = "He takes damage only from within 300: everyone fights from close by.",
             },
-            new("Avartack", ["Avartack"], _ => default)
+            new("Avartack", ["Avartack"], null)
             {
                 Summary = "The raider he fights faces him (his back style lands on a turned back).",
                 Act = (bot, boss, _) =>

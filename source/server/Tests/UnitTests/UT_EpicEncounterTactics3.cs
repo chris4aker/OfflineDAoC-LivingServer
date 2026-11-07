@@ -451,11 +451,9 @@ namespace DOL.UnitTests
         {
             var on = EpicEncounterMechanics.RestoreSwitches.Where(name =>
                 (bool)typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static).GetValue(null)).ToArray();
-            // Epic wave 2: Galladoria's (UT_EpicWaveTwo) and the three the raid now plays in Tuscaran Glacier and Summoner's
-            // Hall (UT_EpicWave2MidHib).
-            Assert.That(on, Is.EquivalentTo(UT_EpicWaveTwo.GalladoriaRestoresOn.Concat(new[] {
-                nameof(EpicEncounterMechanics.AllowGovannonFullHealth), nameof(EpicEncounterMechanics.AllowKvasirColdHeal),
-                nameof(EpicEncounterMechanics.AllowTuscarTwinHeal) })), "the class rule and wave 2's switches");
+            // Epic wave 2 turned on the ones the raid now plays (Galladoria, Tuscaran Glacier, Summoner's Hall, Caer Sidi): the
+            // one list is UT_EpicEncounterTactics.OnSince12.
+            Assert.That(on, Is.EquivalentTo(UT_EpicEncounterTactics.OnSince12), "the class rule and wave 2's switches");
         }
     }
 }

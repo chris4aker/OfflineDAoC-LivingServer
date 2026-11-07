@@ -310,6 +310,12 @@ namespace DOL.GS
         {
             reason = null;
             if (!Present(chosen)) return chosen;
+            // A dungeon rule's route (DungeonRule.Route: the Crypt Lord's court is pulled as his fight).
+            if (DungeonRoute(chosen, live, out string own) is { } owner0 && owner0 != chosen)
+            {
+                reason = own;
+                chosen = owner0;
+            }
             // A hazard is never the raid's target: the boss it sits beside is.
             if (IsHazard(chosen))
             {
@@ -385,6 +391,17 @@ namespace DOL.GS
             if (raider == null || !Present(target)) return default;
             if (classId < 0) classId = EpicEncounterRestores.ClassId(raider);
             Vector3 at = new(raider.X, raider.Y, raider.Z);
+            // A raid breaking off from the fight (the boss, or the boss of this add or of this hazard) goes to the muster first.
+            GameNPC fightOwner = (IsHazard(target) ? HazardOwner(target, live) : RequiredAddOwner(target, live)) ?? target;
+            if (BrokenOff(fightOwner, now) is Vector3 rally)
+                return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
+            // Epic wave 2 (EpicEncounterTactics.Signals.cs): announced mechanics (out of a glare, a stun, a breath), the safe
+            // spots and the close-range bosses, before any other rule sends the raider anywhere.
+            if (DecideWaveTwo(raider, target, live, partyIndex, canShootFlyers, now, classId) is Advice waveTwo) return waveTwo;
+            // The encounter's own code rules (dungeon rules, EpicEncounterTactics.DungeonRules.cs) come before the catalog's
+            // generic ones, its hazard rule included (cold casters put Orshom's Fire out); null: no opinion.
+            if (DungeonAdvice(new RuleContext(raider, target, live, partyIndex, canShootFlyers, now, classId)) is Advice own)
+                return own;
             // A hazard (Orshom's Fire) is never fought: the boss it sits beside is, from outside its radius.
             if (IsHazard(target))
             {
@@ -394,14 +411,6 @@ namespace DOL.GS
                     return new(BotAction.StandOff, target, clear, $"hazard \"{target.Name}\": out of it, never hit it");
                 return new(BotAction.Retarget, hazardOwner, null, $"hazard of \"{hazardOwner.Name}\": fight it instead");
             }
-            GameNPC fightOwner = RequiredAddOwner(target, live) ?? target;
-            if (BrokenOff(fightOwner, now) is Vector3 rally)
-                return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
-            // Epic wave 2 (EpicEncounterTactics.Signals.cs): announced mechanics, close-range and safe-spot rules.
-            if (DecideWaveTwo(raider, target, live, partyIndex, canShootFlyers, now, classId) is Advice waveTwo) return waveTwo;
-            // The encounter's own code rules (EpicEncounterTactics.<Dungeon>.cs) come before the catalog's generic ones.
-            if (DungeonAdvice(new RuleContext(raider, target, live, partyIndex, canShootFlyers, now, classId)) is { Action: not BotAction.None } own)
-                return own;
             if (For(target) is { HasHazards: true } ht)
                 foreach (GameNPC hazard in LiveHazards(target, live))
                     if (HazardEscape(at, new(hazard.X, hazard.Y, hazard.Z), ht.HazardRadius) is Vector3 outOfIt)
@@ -656,7 +665,8 @@ namespace DOL.GS
             IReadOnlyList<GameNPC> live = Nearby(target);
             DungeonActs(bot, target, live);
             Advice advice = Decide(bot, target, live, PartyIndex(bot), CanShootFlyers(bot));
-            if (advice.Call != null) MechanicCall(bot, advice.Call, RequiredAddOwner(target, live) ?? target, advice.Target);
+            // The party's call for what it plays: the rule's own (Advice.Call) or the one for its reason's tag (mech_*).
+            EncounterMechanicCalls.Consider(bot, RequiredAddOwner(target, live) ?? target, advice);
             switch (advice.Action)
             {
                 case BotAction.Retarget:

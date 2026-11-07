@@ -339,17 +339,18 @@ namespace DOL.UnitTests
         [Test]
         public void EveryMovePickAsksTheSameSwitchAsTheMove()
         {
-            // Shipped: the three dragons and Xanxicar move bots, and since epic wave 2 Galladoria's movers (UT_EpicWaveTwo) and
-            // Vifil, Cunovinda and others (UT_EpicWave2MidHib); the rest (Legion included) keep them out of its picks.
+            // Shipped: the three dragons and Xanxicar move bots, and since epic wave 2 Galladoria's movers (UT_EpicWaveTwo),
+            // Vifil, Cunovinda and others (UT_EpicWave2MidHib) and Albion's (UT_EpicWave2Albion); the rest (Legion included)
+            // keep them out of its picks.
             foreach (Type boss in new[] { typeof(AlbGolestandt), typeof(MidGjalpinulva), typeof(HibCuuldurach), typeof(Xanxicar),
                          typeof(Olcasgean), typeof(WaterPrimal), typeof(SpindlerBroodmother), typeof(WaterfallAntipass),
-                         typeof(Jailer), typeof(SummonerCunovinda) })
+                         typeof(Jailer), typeof(SummonerCunovinda), typeof(Orylle), typeof(KrevoRicik), typeof(MoranTheMighty) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.True, boss.Name);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.EqualTo(EpicEncounterMechanics.AllowBotDisplacementFor(npc)), boss.Name);
             }
-            foreach (Type boss in new[] { typeof(DOL.GS.Scripts.Legion), typeof(Easmarach), typeof(GrandSummonerGovannon), typeof(Orylle) })
+            foreach (Type boss in new[] { typeof(DOL.GS.Scripts.Legion), typeof(Easmarach), typeof(GrandSummonerGovannon), typeof(Orshom) })
             {
                 var npc = (GameNPC)RuntimeHelpers.GetUninitializedObject(boss);
                 Assert.That(EncounterTargets.DisplacesBots(npc), Is.False, boss.Name + ": player-only as before");
@@ -365,7 +366,7 @@ namespace DOL.UnitTests
             // The global switch (the old name too) reaches every boss without its own value.
             EncounterTargets.BotsCanBeDisplaced = true;
             Assert.That(EpicEncounterMechanics.AllowBotDisplacement, Is.True);
-            Assert.That(EncounterTargets.DisplacesBots((GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(Orylle))), Is.True);
+            Assert.That(EncounterTargets.DisplacesBots((GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(Orshom))), Is.True);
         }
 
         [Test]

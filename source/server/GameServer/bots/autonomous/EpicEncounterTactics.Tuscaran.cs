@@ -79,7 +79,7 @@ namespace DOL.GS
 
         // ---- King Tuscar and Queen Kula ---------------------------------------------------------------------------------
 
-        private static Advice TuscarAndKula(RuleContext c)
+        private static Advice? TuscarAndKula(RuleContext c)
         {
             GameNPC king = c.Find("KingTuscar"), queen = c.Find("QueenKula");
             if (queen != null && On(nameof(EpicEncounterMechanics.AllowPositionPuzzle), "QueenKula") &&
@@ -105,7 +105,7 @@ namespace DOL.GS
         public static bool InKvasirScreamWindow(long now, long screamAt) =>
             screamAt > 0 && now >= screamAt - KvasirLeadMilliseconds && now <= screamAt + 2_000 + KvasirAfterMilliseconds;
 
-        private static Advice KvasirScream(RuleContext c)
+        private static Advice? KvasirScream(RuleContext c)
         {
             if (!InKvasirScreamWindow(c.Now, KvasirScreamAt(c.Target)) || c.Target.TargetObject is not GameLiving anchor ||
                 SameParty(c.Raider, anchor))
@@ -184,7 +184,7 @@ namespace DOL.GS
             live.OfType<GameBot>().Where(b => b.IsAlive && b.Group != null && b.Realm == raider.Realm && boss.IsWithinRadius(b, 2_500))
                 .Select(b => b.Group).Distinct().Count();
 
-        private static Advice VifilJailRescue(RuleContext c)
+        private static Advice? VifilJailRescue(RuleContext c)
         {
             if (!JailOn(c.Target) || c.Raider.Group == null || !Rescues.TryGetValue(c.Target, out RescueClaim claim)) return default;
             bool team;
@@ -218,7 +218,7 @@ namespace DOL.GS
 
         // ---- Fornfrusenen ----------------------------------------------------------------------------------------------
 
-        private static Advice FornfrusenenShards(RuleContext c)
+        private static Advice? FornfrusenenShards(RuleContext c)
         {
             GameNPC boss = c.Find("Fornfrusenen");
             if (c.Target == boss)
@@ -244,7 +244,7 @@ namespace DOL.GS
 
         // ---- Council Vagn and Nokkvi -------------------------------------------------------------------------------------
 
-        private static Advice CouncilSplit(RuleContext c)
+        private static Advice? CouncilSplit(RuleContext c)
         {
             if (c.ClassId <= 0) return default;
             bool magic = IsMagicDealer(c.ClassId);

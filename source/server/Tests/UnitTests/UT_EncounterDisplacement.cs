@@ -87,7 +87,7 @@ namespace DOL.UnitTests
         public void WhatShipsOnIsWhatTheRaidPlays()
         {
             string[] shipped = EpicEncounterMechanics.PerEncounterValues();
-            // Wave 2 ships more per dungeon (UT_EpicWave2MidHib and the other dungeons' tests); the dragons' and Xanxicar's stay.
+            // Wave 2 ships more per dungeon (UT_EpicWaveTwo, UT_EpicWave2MidHib, UT_EpicWave2Albion); these are the foundation's.
             Assert.That(shipped, Is.SupersetOf(new[]
             {
                 "AllowBotDisplacement@AlbGolestandt=true", "AllowBotDisplacement@HibCuuldurach=true",

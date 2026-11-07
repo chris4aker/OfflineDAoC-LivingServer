@@ -1368,7 +1368,9 @@ namespace DOL.GS
         {
             if (EpicEncounterActors.IsCombatant(source))
             {
-                if (EpicEncounterMechanics.AllowAddShieldFor(this) && Morbus_Swarm_count > 0)
+                // 1.2: the shield counts the swarm alive near him, not the static count, which a swarm removed without dying
+                // (a reset elsewhere, a despawn) left above zero and kept him immune for good.
+                if (EpicEncounterMechanics.AllowAddShieldFor(this) && SwarmAlive())
                 {
                     if (damageType == eDamageType.Body || damageType == eDamageType.Cold || damageType == eDamageType.Energy || damageType == eDamageType.Heat
                         || damageType == eDamageType.Matter || damageType == eDamageType.Spirit || damageType == eDamageType.Crush || damageType == eDamageType.Thrust
@@ -1446,6 +1448,24 @@ namespace DOL.GS
         }
         public static bool spawn_fate3 = false;
         public static int Morbus_Swarm_count = 0;
+        private long _swarmCheckedTick;
+        private bool _swarmChecked, _swarmAlive;
+        /// <summary>A swarm of his lives near him (looked up at most once a second).</summary>
+        public bool SwarmAlive()
+        {
+            long now = GameLoop.GameLoopTime;
+            if (!_swarmChecked || now - _swarmCheckedTick >= 1000)
+            {
+                _swarmChecked = true;
+                _swarmCheckedTick = now;
+                _swarmAlive = false;
+                foreach (GameNPC npc in GetNPCsInRadius(4000))
+                {
+                    if (npc is MorbusSwarm && npc.IsAlive) { _swarmAlive = true; break; }
+                }
+            }
+            return _swarmAlive;
+        }
         public void SpawnFateBearer()
         {
             INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60160741);
@@ -2198,6 +2218,7 @@ namespace DOL.GS
             ApocalypseBrain.pop_harbringers = false;
             ApocalypseBrain.StartedApoc = false;
             HarbringerOfFate.HarbringersCount = 0;
+            ApocalypseBrain.first_harbingers_done = false;
             ApocUP = true;
 
 
@@ -2269,6 +2290,7 @@ namespace DOL.AI.Brain
                 StartedApoc = false;
                 Apocalypse.KilledEnemys = 0;
                 HarbringerOfFate.HarbringersCount = 0;
+                first_harbingers_done = false;
 
                 if (!RemoveAdds)
                 {
@@ -2412,10 +2434,20 @@ namespace DOL.AI.Brain
 
         #region Spawn Harbringers
         public static bool spawn_harbringers = false;
+        /// <summary>The first pair of harbingers has come this fight.</summary>
+        public static bool first_harbingers_done = false;
+        public const int FirstHarbingersKills = 4;
+        /// <summary>
+        /// The first pair comes once, after he (or his Rain of Fire) has killed four raiders. The original asked "kills == 4"
+        /// on a 2-second check, so a raid losing two at once (4 -> 5, his rain hits 800 around) never got them, and one
+        /// that stayed at 4 got a new pair each time the last pair died (1.2, wave 2).
+        /// </summary>
+        public static bool FirstHarbingersDue(int kills, bool done) => !done && kills >= FirstHarbingersKills;
         public int SpawnHarbringers(ECSGameTimer timer)
         {
-            if (Apocalypse.KilledEnemys == 4)//he doint it only once, spawning 2 harbringers is killed 4 players
+            if (FirstHarbingersDue(Apocalypse.KilledEnemys, first_harbingers_done))//he doint it only once, spawning 2 harbringers is killed 4 players
             {
+                first_harbingers_done = true;
                 foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
                 {
                     if (player != null)
@@ -2537,6 +2569,9 @@ namespace DOL.GS
         }
         public override void Die(GameObject killer)
         {
+            // 1.2: the count of live harbingers falls when one dies. It never did, so once the first pair had come the
+            // 50% pair ("they will need to be replaced") never could: Apocalypse spawns a pair only while none is left.
+            if (HarbringersCount > 0) --HarbringersCount;
             base.Die(killer);
         }
 

@@ -483,3 +483,178 @@ backing off the ghoul, it explodes
 facing him, his back hit hurts
 dont turn your back on him
 [turn around|face him], he hits harder from behind
+
+# ---- epic mechanics (1.2, wave 2; EncounterMechanicCalls): the first time a bot of the party plays a tactic in a fight --
+# {boss} is the encounter, {monster} what the tactic points at (an add, the fire, the sphere). One call a topic per party
+# every two minutes. Albion first; the generic topics (adds first, ranged adds, hazards, fight at home) serve every dungeon.
+@kind combat
+@topic mech_funus
+@who *
+@needs in_player_group
+only clerics and scouts on {boss}, everyone else off him
+dont touch {boss} unless ur a cleric or a scout, he heals
+{boss} heals off the wrong hits, clerics and scouts only
+off {boss}! wrong class heals him full
+scouts and clerics on {boss}, rest of us stay back
+no pets and no aoe near {boss}, he heals off em
+
+@kind combat
+@topic mech_sacristan
+@who *
+@needs in_player_group
+hold your spot, {boss} comes round again
+dont chase {boss}, wait for him to walk past
+{boss} is on his loop, hit him as he goes by
+stay at the post, he comes back round
+let him go, catch him next lap
+
+@kind combat
+@topic mech_reckoner_room
+@who *
+@needs in_player_group
+{boss} is out of his room, stop hitting
+pull {boss} back in the room, he cant be hurt out here
+hold dps, {boss} is outside the room
+drag him back to the middle, no damage outside
+
+@kind combat
+@topic mech_sanguis
+@who *
+@needs in_player_group
+{boss} is untargetable, casters finish him
+casters keep nuking {boss}, melee on the mages
+5% and he cant be targeted, dots and nukes finish him
+nukers finish {boss}, the rest of us grab adds
+
+@kind combat
+@topic mech_cold_fire
+@who *
+@needs in_player_group
+cold spells on the fire, nothing else hurts it
+ice on the fire pls, get it out
+put out {monster}, only cold works on it
+cold casters on the fire, rest stay out of it
+kill the fire with ice or he keeps throwing ppl in
+
+@kind combat
+@topic mech_sphere
+@who *
+@needs in_player_group
+kill the sphere first, {boss} cant be hurt till its down
+casters on the sphere, melee wait out of its range
+stay out of the sphere, it pulls you in and burns
+sphere first! melee hold back
+nukes and arrows on the sphere
+
+@kind combat
+@topic mech_prince_pets
+@who *
+@needs in_player_group
+pets away from {boss}, he eats em
+back off with the pets, {boss} heals off them
+no pets near {boss} pls
+park ur pet, the prince eats it
+
+@kind combat
+@topic mech_adds_first
+@who *
+@needs in_player_group
+adds first, {boss} cant be hurt while they live
+kill {monster} first
+{boss} is shielded, kill the adds
+off the boss, adds first
+take {monster} down then back on {boss}
+
+@kind combat
+@topic mech_ranged_adds
+@who *
+@needs in_player_group
+casters on {monster}, melee stay on {boss}
+ranged kill {monster} before it blows
+arrows and nukes on {monster}
+{monster} up, ranged get it
+
+@kind combat
+@topic mech_hazard
+@who *
+@needs in_player_group
+get out of that
+move out of {monster}
+dont stand in it
+step out, its burning us
+out of the fire!
+
+@kind combat
+@topic mech_fight_home
+@who *
+@needs in_player_group
+too far out, drag {boss} back
+stop hitting, {boss} is leashing, pull him home
+bring {boss} back before he resets
+hold dps, lead {boss} back
+
+# ---- displaced, by encounter: the throw's own lines (EncounterDisplacementRecovery.EncounterTopics) --------------------
+@kind combat
+@topic displaced_heal_fire
+@who *
+@needs in_player_group
+{target} got thrown in the fire, heal em
+{boss} tossed {target} in the fire, heals
+fire toss on {target}, get out of there
+{target} is burning, heals pls
+
+@kind combat
+@topic displaced_self_fire
+@who *
+@needs in_player_group
+thrown in the fire, getting out
+on fire, moving
+ow, out of the fire omw
+
+@kind combat
+@topic displaced_heal_pit
+@who *
+@needs in_player_group
+{target} got tossed in the pit, heal em
+{target} is in the pit, dont bother the pit things, run out
+{boss} threw {target} in the pit, heals
+
+@kind combat
+@topic displaced_self_pit
+@who *
+@needs in_player_group
+in the pit, running out
+pit again, climbing out
+snared in the pit, omw back
+
+@kind combat
+@topic displaced_heal_wind
+@who *
+@needs in_player_group
+{target} got blown into a camp, heal em if u can
+{boss} tossed {target} into the mobs
+{target} went flying, theyre in a camp
+
+@kind combat
+@topic displaced_self_wind
+@who *
+@needs in_player_group
+blown into a camp, fighting my way back
+landed in a camp, omw
+in the mobs, coming back
+
+@kind combat
+@topic displaced_heal_bane
+@who *
+@needs in_player_group
+{target} got ported, theyre dotted, heal em
+{boss} ported {target} away, heals on em
+{target} got sent off with the dot
+
+@kind combat
+@topic displaced_self_bane
+@who *
+@needs in_player_group
+ported away, dotted, running back
+got ported, need a heal
+sent off again, omw
