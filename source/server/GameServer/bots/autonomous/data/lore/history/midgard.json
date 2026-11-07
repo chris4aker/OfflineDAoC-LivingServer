@@ -177,6 +177,7 @@
         "dodens-gruva",
         "east-svealand",
         "gotar",
+        "myrkwood-forest",
         "nisses-lair",
         "skona-ravine",
         "spindelhalla",
@@ -365,6 +366,7 @@
         "jordheim"
       ],
       "bosses": [
+        "gunflor",
         "mokkurvalve"
       ]
     }
@@ -534,11 +536,13 @@
       "summary": "Dark elves: thralls of the arachites in Spindelhalla, dragon-watchers of Svarhamr in Malmohus.",
       "places": [
         "malmohus",
+        "myrkwood-forest",
         "spindelhalla"
       ],
       "bosses": [
         "desukva",
         "eildird",
+        "gunflor",
         "kariig"
       ]
     },
@@ -728,13 +732,15 @@
       "name": "The Werewolves",
       "summary": "The varulv of Skona and the court of King Hresvelgr in Varulvhamn, with the old wolfaur.",
       "places": [
+        "myrkwood-forest",
         "skona-ravine",
         "varulvhamn",
         "yggdra-forest"
       ],
       "bosses": [
         "fjall",
-        "geyra"
+        "geyra",
+        "gunflor"
       ]
     },
     {
@@ -743,9 +749,12 @@
       "summary": "Spider-folk of Spindelhalla who farm silk with svartalf thralls and pray to something in the deep.",
       "places": [
         "gotar",
+        "myrkwood-forest",
         "spindelhalla"
       ],
-      "bosses": []
+      "bosses": [
+        "gunflor"
+      ]
     },
     {
       "id": "tomte",
@@ -855,6 +864,7 @@
         "east-svealand",
         "gotar",
         "jordheim",
+        "myrkwood-forest",
         "vale-of-mularn"
       ],
       "bosses": []
