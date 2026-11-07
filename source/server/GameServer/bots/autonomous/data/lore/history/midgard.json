@@ -170,6 +170,16 @@
           "text": "Living Server: the houses of the gods were given two temple halls in Jordheim, a street apart, by an old peace over Loki's house.",
           "provenance": "original",
           "source": "Living Server writing"
+        },
+        {
+          "text": "The four pieces of the Grenlock crest were kept by Svan's sons and are made whole by Sinyr at the dverge forge in Muspelheim (Anrid's 'Grenlock Clan').",
+          "provenance": "game",
+          "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+        },
+        {
+          "text": "Living Server: Svan's sons are the Alfevsons: Siv and Coplin, spirits; Ove, a werewolf of Askheim; Gunnar, a shade in Muspelheim.",
+          "provenance": "original",
+          "source": "Living Server writing"
         }
       ],
       "places": [
@@ -177,6 +187,7 @@
         "dodens-gruva",
         "east-svealand",
         "gotar",
+        "muspelheim",
         "myrkwood-forest",
         "nisses-lair",
         "skona-ravine",
@@ -662,6 +673,7 @@
         "cursed-tomb",
         "gotar",
         "jamtland-mountains",
+        "muspelheim",
         "raumarik",
         "uppland"
       ],
@@ -875,6 +887,7 @@
         "gotar",
         "jordheim",
         "munin-sound",
+        "muspelheim",
         "myrkwood-forest",
         "vale-of-mularn",
         "west-svealand"
@@ -938,6 +951,15 @@
       "summary": "The blood-fellowship of West Svealand: huscarls, drengs and farmers who swore to each other in their own blood and wolves' blood instead of to a jarl, and keep a fort, witches, warhounds and captives for an oath nobody remembers the purpose of; their agents reach the frontier at Odin's Gate.",
       "places": [
         "west-svealand"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "muspel-fire",
+      "name": "The Fire of Muspelheim",
+      "summary": "What lives in the fire beyond Fort Veldon's pass: the fire giants who came to warm themselves, the raukomaz of the lava and their lord, the fire wyrms and cinder drakes, and the dverge who chose the heat for their forge, where the Grenlock crest is made whole.",
+      "places": [
+        "muspelheim"
       ],
       "bosses": []
     },
