@@ -48,7 +48,12 @@ covered by automated tests; none of it has been seen in game yet.
   holds. Every place and every boss has its own words, and the links lead from one to the next.
 - **Lore books:** one book per place, which you read with "use", a page at a time. The loremasters copy them out for a
   silver, and now and then a book turns up on a monster near the place it tells of. It's rare, never one you already
-  carry, and they never crowd out real loot. The delve says what each book is about.
+  carry, and they never crowd out real loot. The delve says what each book is about. A long book (more than 16 pages)
+  comes in volumes: "..., Volume II", a silver each, sold together; the last page of a volume names the next. Nothing
+  is left out.
+- **Long tales in parts:** the loremaster tells a long story's summary first, then offers its chapters as [names] to
+  ask for one at a time. Each answer comes in short pieces that never break a word and always fit the game's message
+  limit (a message over 2,048 bytes would be lost whole). Bots keep to their own short lines and never recite chapters.
 - **The Herald tells the tale:** each raid in the launcher's Realm Records, and in the Camelot Herald, ends with a sentence
   from its boss's story: who led it, how long it took, won or lost.
 - **The Bestiary:** a new page under Realm Records lists every boss of your realm's places and the neutral ones, with

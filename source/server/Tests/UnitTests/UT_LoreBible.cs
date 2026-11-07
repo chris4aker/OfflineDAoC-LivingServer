@@ -24,7 +24,29 @@ namespace DOL.GS.Tests
             return dir;
         }
 
-        private static string LoreDir(string root) => Path.Combine(root, "source", "server", "GameServer", "bots", "autonomous", "data", "lore");
+        /// <summary>
+        /// The lore data the schema test reads: data/lore as committed, or the folder in LORE_DATA_DIR (to check a writer's
+        /// branch from a checkout of it, read-only). LORE_REPORT names a file for every problem and warning.
+        /// </summary>
+        private static string LoreDir(string root) =>
+            Environment.GetEnvironmentVariable("LORE_DATA_DIR") is { Length: > 0 } other ? other
+                : Path.Combine(root, "source", "server", "GameServer", "bots", "autonomous", "data", "lore");
+
+        private static bool OtherData => !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("LORE_DATA_DIR"));
+
+        /// <summary>What a warning is about, for the counts the schema test prints.</summary>
+        public static string WarningCause(string warning) => warning switch
+        {
+            _ when warning.Contains(": game talk in ") => "game talk in in-world text",
+            _ when warning.Contains("history file yet") => "era/faction link before the realm's history file",
+            _ when warning.Contains("a link to a file not in this set") => "link to a place or boss not in this set",
+            _ when warning.Contains("words (at least") => "shorter than the floor",
+            _ when warning.Contains("words (over") => "long for one sitting",
+            _ when warning.Contains("words (250-700") => "chapter length",
+            _ when warning.Contains("volumes of") => "book bound in volumes",
+            _ when warning.Contains("only summoners") => "faction id in two realms' files",
+            _ => "other",
+        };
 
         /// <summary>
         /// The tests' own Krondon and Scurceol Hyrde (inventory sample 2), so they do not change when the writers' files
@@ -111,7 +133,8 @@ namespace DOL.GS.Tests
         {
             string root = RepoRoot();
             LoreBible bible = LoreBible.Parse(DiskFiles(root));
-            Assert.That(bible.Locations.Length, Is.GreaterThan(0), "no lore locations found");
+            if (!OtherData)
+                Assert.That(bible.Locations.Length, Is.GreaterThan(0), "no lore locations found");
             var warnings = new List<string>();
             List<string> problems = bible.Validate(CatalogFrom(root), warnings);
             // The depth floor (LORE-1.2-DEPTH.md) and short texts are advisory: printed so the depth can be tracked.
@@ -119,14 +142,20 @@ namespace DOL.GS.Tests
                                       $"{warnings.Count} length warnings");
             foreach (string line in bible.DepthReport())
                 TestContext.Out.WriteLine("LORE_DEPTH " + line);
+            foreach (var cause in warnings.GroupBy(WarningCause).OrderByDescending(g => g.Count()))
+                TestContext.Out.WriteLine($"LORE_WARNINGS {cause.Count()} {cause.Key}");
             foreach (string warning in warnings.Take(40))
                 TestContext.Out.WriteLine("LORE_WARNING " + warning);
+            if (Environment.GetEnvironmentVariable("LORE_REPORT") is { Length: > 0 } report)
+                File.WriteAllLines(report, problems.Select(p => "PROBLEM " + p).Concat(warnings.Select(w => $"WARNING [{WarningCause(w)}] {w}")));
             Assert.That(problems, Is.Empty, "docs/LORE.md lists the rules:\n" + string.Join("\n", problems));
         }
 
         [Test]
         public void TheServerCarriesEveryLoreFile()
         {
+            if (OtherData)
+                Assert.Ignore("LORE_DATA_DIR: checking another branch's data, not this build's");
             string root = RepoRoot();
             string[] disk = DiskFiles(root).Select(f => f.Path).ToArray();
             string[] embedded = LoreBible.EmbeddedFiles().Select(f => f.Path).OrderBy(p => p, StringComparer.Ordinal).ToArray();
@@ -226,8 +255,14 @@ namespace DOL.GS.Tests
         {
             Assert.That(ProblemsWith(editBoss: b => b.Replace("\"locationId\": \"krondon\"", "\"locationId\": \"krondun\"")),
                 Has.Some.Contains("locationId \"krondun\""));
-            Assert.That(ProblemsWith(l => l.Replace("\"bosses\": [\"scurceol-hyrde\"]", "\"bosses\": [\"scurceol-hyrde\", \"orylle\"]")),
-                Has.Some.Contains("boss \"orylle\" has no file"));
+            // A boss the location lists that has no file yet (another writer's branch) is a link: a warning, never a failure.
+            var warnings = new List<string>();
+            Assert.That(ProblemsWith(l => l.Replace("\"bosses\": [\"scurceol-hyrde\"]", "\"bosses\": [\"scurceol-hyrde\", \"orylle\"]"), null, null, warnings), Is.Empty);
+            Assert.That(warnings, Has.Some.Contains("boss \"orylle\" has no file").And.Some.Contains("not in this set"));
+            warnings.Clear();
+            Assert.That(ProblemsWith(l => l.Replace("\"bosses\": [\"scurceol-hyrde\"]", "\"bosses\": []"), null, null, warnings), Is.Empty,
+                "a boss names its place; the place's list is an index");
+            Assert.That(warnings, Has.Some.Contains("does not list it in \"bosses\""));
         }
 
         [Test]
@@ -330,13 +365,18 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void ABookHasAtMostSixteenPages()
+        public void ABookOverSixteenPagesIsBoundInVolumesNotRefused()
         {
             string page = "\"" + string.Join(" ", Enumerable.Repeat("page", 110)) + "\"";
-            string seventeen = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 17)) + "]";
+            string forty = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 40)) + "]";
             string sixteen = "\"pages\": [" + string.Join(", ", Enumerable.Repeat(page, 16)) + "]";
-            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", seventeen)), Has.Some.Contains("17 book pages"));
-            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", sixteen)), Is.Empty);
+            var warnings = new List<string>();
+            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", forty), null, null, warnings), Is.Empty);
+            Assert.That(warnings, Has.Some.Contains("40 book pages: bound in 3 volumes of 16"));
+            warnings.Clear();
+            Assert.That(ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[[^\\]]*\\]", sixteen), null, null, warnings), Is.Empty);
+            Assert.That(warnings, Has.None.Contains("volumes"));
+            Assert.That(LoreBible.MaxBookPages, Is.EqualTo(LoreChannels.LoreBooks.VolumePages), "the schema and the binder agree");
         }
 
         #endregion
@@ -398,9 +438,15 @@ namespace DOL.GS.Tests
             Assert.That(ProblemsWith(l => WithChapters(l)), Is.Empty);
             Assert.That(ProblemsWith(editBoss: b => WithChapters(b)), Is.Empty);
             Assert.That(ProblemsWith(l => WithChapters(l).Replace("\"title\": \"Part 2\"", "\"title\": \"Part 1\"")), Has.Some.Contains("\"Part 1\" is there twice"));
-            Assert.That(ProblemsWith(l => WithChapters(l).Replace("\"tier\": \"epic\"", "\"tier\": \"minor\"")), Has.Some.Contains("location's tier"));
+            Assert.That(ProblemsWith(l => WithChapters(l).Replace("\"tier\": \"epic\"", "\"tier\": \"minor\"")), Is.Empty, "a minor place (Tier B zone)");
+            Assert.That(ProblemsWith(l => WithChapters(l).Replace("\"tier\": \"epic\"", "\"tier\": \"legendary\"")), Has.Some.Contains("location's tier"));
             Assert.That(ProblemsWith(editBoss: b => b.Replace("\"bookPage\": \"\"", "\"bookPage\": [\"" + Paragraphs(1, 110) + "\", \"" + Paragraphs(1, 110) + "\"]")), Is.Empty,
                 "bookPage as a list");
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"bookPage\": \"\"", "\"bookPages\": [\"" + Paragraphs(1, 110) + "\", \"" + Paragraphs(1, 110) + "\"]")), Is.Empty,
+                "bookPages, the Neutral writer's spelling");
+            Assert.That(LoreBible.Parse(new[] { ("bosses/x.json", "{\"id\": \"x\", \"bookPages\": [\"one.\", \"two.\"]}") }).Bosses[0].BookPages, Is.EqualTo(new[] { "one.", "two." }));
+            Assert.That(LoreChannels.LoreJson.ParseBoss("{\"id\": \"x\", \"bookPages\": [\"one.\", \"two.\"]}").BookPages, Is.EqualTo(new[] { "one.", "two." }),
+                "the channels read it too");
             string dir = FixtureDir(RepoRoot());
             LoreBible bible = LoreBible.Parse(new[]
             {
@@ -443,10 +489,6 @@ namespace DOL.GS.Tests
             Assert.That(LoreChannels.LorePieces.Split("  ", 100), Is.Empty);
         }
 
-        /// <summary>The bytes WriteCustomTextWindowData would write for a window (PacketLib168.cs).</summary>
-        private static int WindowBytes(string caption, IEnumerable<string> lines) =>
-            3 + Math.Min(255, caption.Length) + 1 + lines.Sum(l => 1 + (l.Length + 254) / 255 * 1 + l.Length + 1) + 1;
-
         [Test]
         public void AnEpicChapterReachesThePlayerInReadablePieces()
         {
@@ -473,9 +515,48 @@ namespace DOL.GS.Tests
             for (int i = 0; i < pages.Count; i++)
             {
                 var (caption, lines) = LoreChannels.LoreBooks.PageWindow("Of the Hall under the Hill, a book of many pages", pages, i);
-                Assert.That(WindowBytes(caption, lines), Is.LessThan(LoreChannels.LorePieces.PacketBytes), $"page {i + 1}");
+                Assert.That(LoreChannels.LorePieces.WindowBytes(caption, lines), Is.LessThan(LoreChannels.LorePieces.PacketBytes), $"page {i + 1}");
                 Assert.That(lines.All(l => l.Length <= 255), Is.True);
             }
+        }
+
+        [Test]
+        public void EveryLoremasterPieceFitsThePopupPacket()
+        {
+            // PacketProcessor.ValidatePacketSize discards any packet over 2,048 bytes whole; SayTo is one Message packet a piece.
+            string chapter = string.Join("\n", Enumerable.Range(0, 8).Select(p => string.Join(" ", Enumerable.Range(0, 140).Select(i => $"word{p}{i}")) + "."));
+            string longWord = new string('x', 2_000);
+            foreach (string speaker in LoreChannels.Loremasters.Definitions.Select(d => d.Name).Append(new string('N', 60)))
+                foreach (string piece in LoreChannels.LoremasterNPC.Pieces(chapter + "\n" + longWord))
+                {
+                    Assert.That(piece.Length, Is.LessThanOrEqualTo(LoreChannels.LorePieces.SayChars));
+                    Assert.That(LoreChannels.LorePieces.SayBytes(speaker, piece), Is.LessThan(LoreChannels.LorePieces.PacketBytes), speaker);
+                }
+            Assert.That(LoreChannels.LorePieces.SayBytes("Loremaster Aldwin", new string('a', LoreChannels.LorePieces.SayChars)), Is.LessThan(600),
+                "a full piece is a quarter of the packet");
+            // A full page window: every line at the wrap width, the longest caption.
+            var (caption, lines) = LoreChannels.LoreBooks.PageWindow(new string('T', 60) + ", Volume XII", [new string('a', 3) + string.Concat(Enumerable.Repeat(" word", LoreChannels.LorePieces.PageChars / 5 - 1))], 0, "Next");
+            Assert.That(LoreChannels.LorePieces.WindowBytes(caption, lines), Is.LessThan(LoreChannels.LorePieces.PacketBytes), "a page at its longest fits one window");
+        }
+
+        [Test]
+        public void GameTalkInChaptersStoryAndBooksIsAWarningNotAFailure()
+        {
+            Assert.That(LoreBible.GameTalkPatterns, Has.Length.EqualTo(38), "the same patterns as the writers' chapter_lint.py");
+            Assert.That(LoreBible.GameTalk("No blade has bitten her away from the Bed; the drovers say the moor takes every blow for her."), Is.Empty,
+                "the world truth behind a mechanic, told as history, passes");
+            Assert.That(LoreBible.GameTalk("The hall stood. That is why raids fight her in the lair. Then night fell.").Single(),
+                Is.EqualTo(("raids", "That is why raids fight her in the lair.")), "the sentence that flags, and the word");
+            var warnings = new List<string>();
+            Assert.That(ProblemsWith(l => WithChapters(l).Replace("{\"title\": \"Part 2\", \"text\": \"", "{\"title\": \"Part 2\", \"text\": \"The healers must stand back. "),
+                b => b.Replace("\"bookPage\": \"\"", "\"bookPage\": [\"" + Paragraphs(1, 110) + " Every fight ends at the lights.\"]"), null, warnings), Is.Empty,
+                "a warning for the writers' review, never a failure");
+            Assert.That(warnings, Has.Some.Contains("game talk in chapter \"Part 2\" ('healers'"));
+            Assert.That(warnings, Has.Some.Contains("game talk in bookPage 1 ('Every fight'"));
+            Assert.That(warnings, Has.None.Contains("game talk in legend"), "fight advice belongs in the legend, unchecked");
+            warnings.Clear();
+            ProblemsWith(l => System.Text.RegularExpressions.Regex.Replace(l, "\"pages\": \\[\\s*\"", "\"pages\": [\"If you go, you must bring a tank. "), null, null, warnings);
+            Assert.That(warnings, Has.Some.Contains("game talk in book page 1 ('If you'"));
         }
 
         #endregion
@@ -493,9 +574,13 @@ namespace DOL.GS.Tests
             Assert.That(bible.BossById("scurceol-hyrde").RelatedTo.Single().Relation, Is.EqualTo("keeps its weather"));
             Assert.That(ProblemsWith(l => l.Replace("\"era\": \"albion-old-halls\"", "\"era\": \"albion-old-hall\"")), Has.Some.Contains("era \"albion-old-hall\" is in no history file"));
             Assert.That(ProblemsWith(editBoss: b => b.Replace("\"factions\": [\"krondon-keepers\"]", "\"factions\": [\"keepers\"]")), Has.Some.Contains("faction \"keepers\""));
-            Assert.That(ProblemsWith(editBoss: b => b.Replace("{\"id\": \"krondon\", \"relation\"", "{\"id\": \"krondun\", \"relation\"")), Has.Some.Contains("related \"krondun\" is no location or boss"));
-            Assert.That(ProblemsWith(null, null, h => h.Replace("\"places\": [\"krondon\"], \"bosses\": [\"scurceol-hyrde\"]}]}", "\"places\": [\"caer-sidi\"], \"bosses\": []}]}"), null),
-                Has.Some.Contains("place \"caer-sidi\" has no location file"));
+            // Links to places and bosses may lead to another writer's branch: warnings until the files meet.
+            var links = new List<string>();
+            Assert.That(ProblemsWith(null, b => b.Replace("{\"id\": \"krondon\", \"relation\"", "{\"id\": \"krondun\", \"relation\""), null, links), Is.Empty);
+            Assert.That(links, Has.Some.Contains("related \"krondun\" is no location or boss"));
+            Assert.That(ProblemsWith(null, null, h => h.Replace("\"places\": [\"krondon\"], \"bosses\": [\"scurceol-hyrde\"]}]}", "\"places\": [\"caer-sidi\"], \"bosses\": []}]}"), links),
+                Is.Empty);
+            Assert.That(links, Has.Some.Contains("place \"caer-sidi\" has no location file"));
             Assert.That(ProblemsWith(null, null, h => h.Replace("\"id\": \"krondon-keepers\"", "\"id\": \"albion-old-halls\""), null), Has.Some.Contains("both an era and a faction"));
         }
 
@@ -511,6 +596,22 @@ namespace DOL.GS.Tests
         {
             var warnings = new List<string>();
             Assert.That(ProblemsWith(null, null, null, warnings, ("history/midgard.json", MidgardHistory)), Is.Empty, "a faction id shared by two realms");
+            Assert.That(warnings, Has.Some.Contains("faction id \"krondon-keepers\" is in history/albion.json, history/midgard.json"),
+                "outside the agreed shared ids it is a warning: one power or two?");
+            // The agreed shared ids (summoners, lords-of-the-undead, sidhe-of-the-hall, dark-ones) pass quietly, and each
+            // realm's readers meet its own telling.
+            warnings.Clear();
+            Func<string, string> summoners = t => t.Replace("krondon-keepers", "summoners");
+            Assert.That(ProblemsWith(summoners, summoners, summoners, warnings, ("history/midgard.json", summoners(MidgardHistory))), Is.Empty);
+            Assert.That(warnings, Has.None.Contains("faction id \"summoners\""));
+            string fixtures = FixtureDir(RepoRoot());
+            var shared = new LoreBibleSource(LoreBible.Parse(new[] { "locations/krondon.json", "bosses/scurceol-hyrde.json", "history/albion.json" }
+                .Select(p => (p, summoners(File.ReadAllText(Path.Combine(fixtures, p))))).Append(("history/midgard.json", summoners(MidgardHistory)))));
+            Assert.That(LoreChannels.LoreSourceExtensions.FindFaction(LoreChannels.LoreRealmView.For(shared, LoreChannels.LoreRealm.Midgard), "summoners")?.Name,
+                Is.EqualTo("the Keepers, as the skalds tell it"));
+            Assert.That(LoreChannels.LoreSourceExtensions.FindFaction(LoreChannels.LoreRealmView.For(shared, LoreChannels.LoreRealm.Albion), "summoners")?.Name,
+                Is.EqualTo("the Keepers of Krondon"));
+            warnings.Clear();
             string dir = FixtureDir(RepoRoot());
             LoreBible bible = LoreBible.Parse(new[] { "locations/krondon.json", "bosses/scurceol-hyrde.json", "history/albion.json" }
                 .Select(p => (p, File.ReadAllText(Path.Combine(dir, p)))).Append(("history/midgard.json", MidgardHistory)));
@@ -521,8 +622,10 @@ namespace DOL.GS.Tests
             Assert.That(midgard.Eras[0].Places, Is.EqualTo(new[] { "krondon" }));
             Assert.That(ProblemsWith(null, null, null, null, ("history/midgard.json", MidgardHistory.Replace("midgard-now", "albion-old-halls"))),
                 Has.Some.Contains("era id \"albion-old-halls\" is also used in"));
-            Assert.That(ProblemsWith(null, null, null, null, ("history/midgard.json", MidgardHistory.Replace("\"places\": [\"krondon\"], \"bosses\": []}],", "\"places\": [\"jordheim\"], \"bosses\": []}],"))),
-                Has.Some.Contains("era \"midgard-ymir\" place \"jordheim\""));
+            var unwritten = new List<string>();
+            Assert.That(ProblemsWith(null, null, null, unwritten, ("history/midgard.json", MidgardHistory.Replace("\"places\": [\"krondon\"], \"bosses\": []}],", "\"places\": [\"jordheim\"], \"bosses\": []}],"))),
+                Is.Empty);
+            Assert.That(unwritten, Has.Some.Contains("era \"midgard-ymir\" place \"jordheim\""));
             var lenient = LoreChannels.LoreJson.ParseHistory(MidgardHistory);
             Assert.That(lenient.Eras.Select(e => e.Id), Is.EqualTo(new[] { "midgard-ymir", "midgard-now" }));
             Assert.That(lenient.Eras[0].Places, Is.EqualTo(new[] { "krondon" }));

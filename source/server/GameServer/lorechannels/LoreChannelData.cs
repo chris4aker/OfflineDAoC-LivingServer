@@ -129,13 +129,17 @@ public sealed record LoreChapter(string Title, string Text);
 /// <summary>
 /// Long lore in readable pieces, never cut inside a word, in order. The limits are the code's own:
 /// <list type="bullet">
-/// <item>A text window (a book page, /lore) is one DetailWindow packet of at most 2,048 bytes (PacketLib168.cs
-/// MAX_PACKET_LENGTH, WriteCustomTextWindowData): what does not fit is dropped silently, and each line is a Pascal string
-/// of at most 255 characters. Text is code page 1252, one byte a character. <see cref="PageChars"/> leaves room for the
-/// caption, the line headers and the footer.</item>
-/// <item>A loremaster's words go out with SayTo, one chat message each (PacketLib1127.SendRawMessage writes the whole
-/// string; the server has no cap). <see cref="SayChars"/> keeps each well inside the packet and readable in the chat
-/// window, as the channels' loremasters did since #92.</item>
+/// <item>The hard limit: every TCP packet the server sends is at most 2,048 bytes. PacketProcessor.ValidatePacketSize
+/// (GameServer/packets/Server/PacketProcessor.cs, "if (packetSize &lt;= 2048)") discards a bigger one whole, with only a
+/// staff message to the player, so an over-long popup or chat message is not shortened but lost.</item>
+/// <item>A loremaster's words go out with GameNPC.SayTo, the popup window: one Message packet each
+/// (PacketLib1127.SendRawMessage: the packet header, the chat type, "##", then "&lt;Name&gt; says, \"...\"" and a
+/// zero; the server itself writes the whole string). <see cref="SayChars"/> keeps each piece far inside the packet
+/// (<see cref="SayBytes"/>) and short enough to read in the popup.</item>
+/// <item>A text window (a book page, /lore) is one DetailWindow packet: PacketLib168.WriteCustomTextWindowData stops at
+/// MAX_PACKET_LENGTH (2,048, PacketLib168.cs) and drops the rest silently, and each line is a Pascal string of at most
+/// 255 characters. Text is code page 1252, one byte a character. <see cref="PageChars"/> leaves room for the caption, the
+/// line headers and the footer (<see cref="WindowBytes"/>).</item>
 /// </list>
 /// </summary>
 public static class LorePieces
@@ -143,6 +147,17 @@ public static class LorePieces
     public const int SayChars = 480;
     public const int PageChars = 1_500;
     public const int PacketBytes = 2_048;
+
+    /// <summary>The bytes of the Message packet SayTo sends for <paramref name="piece"/> (PacketLib1127.SendRawMessage).</summary>
+    public static int SayBytes(string speaker, string piece) =>
+        3 /* size and code */ + 1 /* chat type */ + 2 /* "##" */ + $"{speaker} says, \"{piece}\"".Length + 1 /* zero */;
+
+    /// <summary>
+    /// The bytes SendCustomTextWindow writes for a window (PacketLib181.cs, the biggest form): the header, two flag bytes,
+    /// the caption as a Pascal string, each line as its number and a Pascal string per 255 characters, and the trailing zero.
+    /// </summary>
+    public static int WindowBytes(string caption, IEnumerable<string> lines) =>
+        3 + 2 + 1 + Math.Min(255, (caption ?? "").Length) + lines.Sum(l => Math.Max(1, (l.Length + 254) / 255) * 2 + l.Length) + 1;
 
     private static readonly System.Text.RegularExpressions.Regex Sentence = new(@"(?<=[.!?][""')\]]?)\s+", System.Text.RegularExpressions.RegexOptions.Compiled);
 
@@ -244,7 +259,12 @@ public static class LoreRealm
 /// <summary>A lore source as one realm's readers meet it: every place and boss with that realm's take (LoreRealmTake).</summary>
 public sealed class LoreRealmView : ILoreSource, ILoreHistorySource
 {
-    public IReadOnlyList<LoreHistoryText> Histories => _inner.Histories();
+    /// <summary>
+    /// The histories with this realm's own first, then the neutral one: a faction id several realms share (summoners,
+    /// dark-ones, LoreBible.SharedFactionIds) is found in the reader's realm's telling.
+    /// </summary>
+    public IReadOnlyList<LoreHistoryText> Histories =>
+        _inner.Histories().OrderBy(h => h.RealmId == _realm ? 0 : h.RealmId == LoreRealm.Neutral ? 1 : 2).ToList();
     private readonly ILoreSource _inner;
     private readonly int _realm;
 
@@ -411,8 +431,10 @@ public static class LoreJson
         LoreChronicleText chronicle = null;
         if (e.TryGetProperty("chronicle", out JsonElement c) && c.ValueKind == JsonValueKind.Object)
             chronicle = new LoreChronicleText(Str(c, "win"), Str(c, "loss"));
-        string[] pages = e.TryGetProperty("bookPage", out JsonElement bp) && bp.ValueKind == JsonValueKind.Array ? Strings(e, "bookPage")
-            : Str(e, "bookPage") is { Length: > 0 } one ? [one] : [];
+        // "bookPage" as one page or a list; "bookPages" (the Neutral writer's spelling) the same, after it.
+        string[] PagesIn(string name) => e.TryGetProperty(name, out JsonElement bp) && bp.ValueKind == JsonValueKind.Array ? Strings(e, name)
+            : Str(e, name) is { Length: > 0 } one ? [one] : [];
+        string[] pages = PagesIn("bookPage").Concat(PagesIn("bookPages")).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
         return new LoreBoss(id, Str(e, "name") ?? id, Str(e, "catalogKey"), Str(e, "locationId"), Str(e, "realm") ?? "Neutral",
             Str(e, "story"), Str(e, "legend"), topic, pages.Length == 0 ? null : string.Join(" ", pages), chronicle)
         {

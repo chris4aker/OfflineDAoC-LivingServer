@@ -178,8 +178,12 @@ namespace DOL.GS.LoreChannels
             string bookPrefix = LoreSourceExtensions.Key(BookPrefix);
             if (key.StartsWith(bookPrefix, StringComparison.Ordinal) && _places.TryGetValue(key[bookPrefix.Length..], out LoreLocation forBook) &&
                 HasBook(forBook))
-                return new(Clean($"\"{forBook.Book.Title}\", {LoreBooks.Pages(_source, forBook).Count} pages on {forBook.Name}. I will copy it out for you for {LoreBooks.PriceText}."),
+            {
+                int pages = LoreBooks.Pages(_source, forBook).Count, volumes = LoreBooks.Volumes(_source, forBook).Count;
+                string bound = volumes > 1 ? $", too many for one binding: it comes in {volumes} volumes" : "";
+                return new(Clean($"\"{forBook.Book.Title}\", {pages} pages on {forBook.Name}{bound}. I will copy it out for you for {LoreBooks.PriceFor(volumes)}."),
                     forBook.Id, forBook.Id);
+            }
             if (_places.TryGetValue(key, out LoreLocation place))
                 return LocationReply(place);
             if (_topics.TryGetValue(key, out var entries))

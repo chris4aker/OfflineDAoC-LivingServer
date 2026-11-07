@@ -141,7 +141,7 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 | `facts` | yes (1+) | `{text, provenance, source}`; provenance `mythic`, `game`, `legend`, `myth`, `original`; a source for all but `original` |
 | `story`, `legend` | yes | no maximum; under 130 / 30 words is a warning. Epic tier: `story` is a 300-500 word summary |
 | `chapters` | | `[{title, text}]` in order (epic tier: 4-10 of 250-700 words); each title is a loremaster keyword (60 characters, no brackets, unique in the file) |
-| `tier` | | `"epic"` or left out |
+| `tier` | | `"epic"`, `"major"`, `"minor"` or left out |
 | `era`, `factions` | | ids in the history files |
 | `related` | | `[{id, relation}]`: a location or boss id, and how it is tied ("rival", "servant", "kin") |
 | `aliases` | | other names players use |
@@ -150,7 +150,7 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 | `atmosphere.raidForming` | | realm-only lines when a raid here forms |
 | `botLines.lore`, `.rumour`, `.tell` | tell 1+, 3+ in all | 2003 chat voice |
 | `loremaster` | yes | `{intro, topics: {keyword: text}}`; no limit on topics; every `[keyword]` resolves (here, a boss's `loremasterTopic`, a realm take) |
-| `book` | yes | `{title, pages}`: 1-16 pages; a page too long for one text window becomes more pages |
+| `book` | yes | `{title, pages}`: 1+ pages, no maximum. Over 16 pages the book is bound in volumes of 16 (a warning, never a cut); a page too long for one text window becomes more pages |
 | `bosses` | yes | boss ids; each boss's `locationId` is this location |
 | `realmTakes` | | `{albion|midgard|hibernia: {story, legend, botLines, loremaster, loremasterTopic}}` (any case) |
 
@@ -167,7 +167,7 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 | `atmosphere` | 1+ line | `{lairEntry, phases: [{trigger, text}], realmFirstKill, wake}` |
 | `botLines` | 3+ in all | `{briefing, aftermathWin, aftermathLoss, rumour}` |
 | `loremasterTopic` | | `{keyword, text}` |
-| `bookPage` | | one page as text, or a list of pages (epic bosses: 2-4) |
+| `bookPage` (or `bookPages`) | | one page as text, or a list of pages (epic bosses: 2-4) |
 | `chronicle` | | `{win, loss}` with only `{realm}`, `{raidLeader}`, `{minutes}` |
 | `realmTakes` | | as for locations (`briefing`, `aftermathWin`, `aftermathLoss`, `rumour` bot lines) |
 
@@ -185,23 +185,38 @@ adds or partners in the catalog.
 | `eras` | yes (1+) | `[{id, order, name, when, summary, text, events, facts, places, bosses}]`, sorted by `order`; `events` holds named events `{name, text, places, bosses}` or facts `{text, provenance, source}` |
 | `factions` | | `[{id, name, realm, summary, text, places, bosses, related}]` |
 
-Era ids are unique everywhere and never a faction's id. A faction id may appear in several realms' files (`summoners`,
-`sidhe-of-the-hall`): each realm tells it its way. Every place, boss, era and faction referenced resolves.
+Era ids are unique everywhere and never a faction's id. The shared faction ids are `summoners`, `lords-of-the-undead`,
+`sidhe-of-the-hall` and `dark-ones`: each realm's file may hold its own telling, and each realm's loremaster and codex
+tell its own (then the neutral one). Any other faction id in two realms' files is a warning (one power or two?).
+An era or faction a file names must resolve once that realm's history file exists. A place or boss a history file,
+`related` or a location's `bosses` names may sit on another writer's branch or not be written yet: a warning until the
+files meet; the channels skip a link that leads nowhere.
 
 ## What the files must pass
 
-`UT_LoreBible.EveryLoreFilePassesTheSchema` reads `data/lore` as committed and fails with a list of every problem;
+`UT_LoreBible.EveryLoreFilePassesTheSchema` reads `data/lore` as committed (or the folder in `LORE_DATA_DIR`, to check a
+writer's branch from an export of it; `LORE_REPORT=<file>` writes every problem and warning) and fails with a list of
+every problem;
 `python tools/bot-voices/build_corpus.py --check` (and `--verify`, in CI) runs every bot line through the corpus's era,
 banned-word, place and realm checks. Failures: invalid JSON, a file outside the three folders or not named after its id,
-an unknown field, a duplicate id, `catalogKey` or `npcNames` name, a reference that does not resolve, a bad realm,
-provenance, tier or trigger, a fact without its source, an atmosphere line over 60 characters (or with `[a|b]` or
-slots), a bot line that is not chat voice or over 160 characters, a yell over 200, a dead loremaster `[keyword]`, a
-book over 16 pages, a chronicle slot other than the three, a duplicate chapter title.
+an unknown field, a duplicate id, `catalogKey` or `npcNames` name, a boss whose `locationId` has no file, an era or
+faction missing from its realm's history file, a bad realm, provenance, tier or trigger, a fact without its source, an
+atmosphere line over 60 characters (or with `[a|b]` or slots), a bot line that is not chat voice or over 140
+characters as said, a yell over 200, a dead loremaster `[keyword]`, a chronicle slot other than the three, a duplicate
+chapter title.
 
 **Advisory only** (printed, never failing): lengths (a story, legend, page or chapter shorter than reads well, anything
-over 1,500 words), and the depth report: `LORE_DEPTH` lines with the count of entries below each depth floor of
-LORE-1.2-DEPTH.md (full, minor and epic tiers) and the history files per realm, followed by up to 40 `LORE_WARNING`
-lines.
+over 1,500 words); a book bound in volumes; links to places or bosses not in the set; a faction id two realms use
+outside the shared four; and **game talk** in in-world text. The depth report follows: `LORE_DEPTH` lines with the
+count of entries below each depth floor of LORE-1.2-DEPTH.md (full, minor and epic tiers) and the history files per
+realm, `LORE_WARNINGS <count> <cause>` lines, then up to 40 `LORE_WARNING` lines.
+
+**Game talk** (owner rule 2026-11-06, "chapters are not a fight guide"): `chapters`, `story`, a realm take's `story`,
+`book.pages` and `bookPage` are history told inside the world. A sentence there that matches the writers' lint patterns
+(`chapter_lint.py`, kept the same in `LoreBible.GameTalkPatterns`: raid, healer, tank, pull, aggro, adds, phase,
+immune, loot, drops, spawn, player, server, herald, "the fight", "if you"...) is a warning naming the file, the place
+and the word, for the writer to fix or justify (a smith's guild, "brace the door"). `legend`, bot lines and yells are
+where fight advice belongs and are not checked.
 
 ## The engine
 
@@ -291,13 +306,19 @@ A long story never goes out as one wall of text. `LorePieces.Split` (`lorechanne
 boundaries (a line of the text is a paragraph), then sentences, then words; it never cuts inside a word unless one word
 is longer than a whole piece, and keeps the order. The limits are the code's own:
 
-- **Text windows** (book pages, /lore): one DetailWindow packet of at most 2,048 bytes (`PacketLib168.cs`,
-  `MAX_PACKET_LENGTH` and `WriteCustomTextWindowData`); what does not fit is dropped without a word, and each line is a
+- **The hard limit is 2,048 bytes a packet.** `PacketProcessor.ValidatePacketSize`
+  (`GameServer/packets/Server/PacketProcessor.cs`, `if (packetSize <= 2048)`) discards any bigger TCP packet whole and
+  tells the player only "Oversized packet detected and discarded". An over-long message is not shortened: it is lost.
+- **Loremaster words** go out with `GameNPC.SayTo`, the popup window: one Message packet each
+  (`PacketLib1127.SendRawMessage`: header, chat type, `##`, `<Name> says, "..."`, a zero). Each piece is at most 480
+  characters (`LorePieces.SayChars`), about a quarter of the packet (`LorePieces.SayBytes`) and a readable popup.
+- **Text windows** (book pages, /lore): one DetailWindow packet (`SendCustomTextWindow`, `PacketLib168/175/181.cs`);
+  `WriteCustomTextWindowData` stops at `MAX_PACKET_LENGTH` (2,048) and drops the rest without a word, and each line is a
   Pascal string of at most 255 characters (code page 1252: a byte a character). A book page is therefore at most
-  1,500 characters (`LorePieces.PageChars`); a longer page goes on over the next pages, so a 16-page book may read as
-  more pages and nothing is cut. No page-count limit exists in the item or book code, so books are not split into volumes.
-- **Loremaster words** go out with `SayTo`, one chat message each; `PacketLib1127.SendRawMessage` writes the whole
-  string (no server cap). Each piece is at most 480 characters (`LorePieces.SayChars`, the channels' size since #92).
+  1,500 characters (`LorePieces.PageChars`, checked with `LorePieces.WindowBytes`); a longer page goes on over the next
+  pages, and nothing is cut.
+- **Books** hold 16 pages a volume (`LoreBooks.VolumePages`, `LoreBible.MaxBookPages`); a longer book is bound in
+  volumes (below).
 
 The loremaster offers a place's summary first: "[the tale of Krondon] is long in the telling; ask of it a part at a
 time: [The Making], [The First Raid]". Each chapter title is a keyword; a chapter is sent in pieces and ends with "Then
@@ -341,6 +362,12 @@ All four read the same files and treat the three realms alike. The code is in `s
 ### Lore books
 
 - **One book per location**, with the `book.title` and `book.pages`, followed by each boss's `bookPage`.
+- **Volumes.** A book of more than 16 pages (after long pages are split and the bosses' pages added) is bound in
+  volumes of 16, in order, so every page is in one of them: `ls_lore_book_<location>` (volume I, the same id a
+  one-volume book has, so copies already held still read), then `ls_lore_book_<location>_vol2`, `_vol3`. Each is
+  named "<title>, Volume II" (60 characters at most; a long title loses words at its end, never the volume), its delve
+  says "Volume II of III", and the last page of a volume names the next. The loremaster sells all volumes together
+  (a silver each, room for all checked first); a drop gives the first volume the player does not hold.
 - **Reading.** "Use" opens the text window one page at a time, and each use turns a page. The delve shows the
   location's summary and the page count. Each page is a window of its own, because one window holds about 2,000 bytes.
 - **The item.** A new template per book: `ls_lore_book_<location>`, the client's stock **Book** model 500 (objects.csv;
@@ -418,6 +445,11 @@ All four read the same files and treat the three realms alike. The code is in `s
   catalog; the script-voices list names real boss classes; indexes; each kind of failure the check catches; `[a|b]`;
   answers; corpus lines; briefings; realm takes (parsing, checks, answers, corpus realm, the channels' view and
   loremaster); the channel adapter.
+- `UT_LoreBible` (depth and delivery): chapters and tiers; the summary first, then chapters as keywords; pieces keep
+  every word in order under the limit; every loremaster piece fits the popup packet and every page window the 2,048
+  bytes; game talk is a warning in chapters, story and books and not in legends; books over 16 pages are a warning, not
+  a failure; links across branches are warnings; shared faction ids and each realm's telling; `bookPages`.
+- `UT_LoreChannelBooks`: books in volumes (every page, ids, names, delve, world update, footers, the loremaster's offer).
 - `UT_LoreAtmosphere`: the throttle (30 s gap, newest waits, stale dropped, news first and 10 s quiet, 4 in 5 s); where a
   player is (zones before regions), first entry once a day, area circles; fight triggers (health once, adds spawn, die and
   all die, reset, form changes, partners); the script-only triggers; rate limits; the switch default.

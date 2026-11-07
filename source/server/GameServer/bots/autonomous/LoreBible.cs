@@ -107,9 +107,10 @@ public sealed class LoreBible
         public Related[] RelatedTo { get; init; } = [];
         /// <summary>The long story in order ("chapters", epic tier); "story" is then its summary. Optional.</summary>
         public Chapter[] Chapters { get; init; } = [];
-        /// <summary>"epic" (the epic tier: chapters, a long book) or empty.</summary>
+        /// <summary>"epic" (the epic tier: chapters, a long book), "major", "minor" or empty (the full location floor).</summary>
         public string Tier { get; init; } = string.Empty;
         public bool IsEpic => string.Equals(Tier, "epic", StringComparison.OrdinalIgnoreCase);
+        public bool IsMinor => string.Equals(Tier, "minor", StringComparison.OrdinalIgnoreCase);
         /// <summary>Each realm's own take (a neutral place), by "albion", "midgard", "hibernia". Optional ("realmTakes").</summary>
         public IReadOnlyDictionary<string, RealmTake> RealmTakes { get; init; } = new Dictionary<string, RealmTake>();
         public string File { get; init; } = string.Empty;
@@ -406,11 +407,14 @@ public sealed class LoreBible
             return new Chapter(Str(c, "title"), Str(c, "text"));
         }).ToArray();
 
-    /// <summary>"bookPage": one page as text, or a list of pages.</summary>
+    /// <summary>"bookPage": one page as text, or a list of pages; "bookPages" (the Neutral writer's spelling) the same.</summary>
     private static string[] BookPagesOf(JsonElement root, string file, List<string> problems) =>
-        root.TryGetProperty("bookPage", out JsonElement v) && v.ValueKind == JsonValueKind.Array
-            ? Strs(root, "bookPage", file, problems).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray()
-            : Str(root, "bookPage") is { Length: > 0 } page ? [page] : [];
+        PagesIn(root, "bookPage", file, problems).Concat(PagesIn(root, "bookPages", file, problems)).ToArray();
+
+    private static IEnumerable<string> PagesIn(JsonElement root, string name, string file, List<string> problems) =>
+        root.TryGetProperty(name, out JsonElement v) && v.ValueKind == JsonValueKind.Array
+            ? Strs(root, name, file, problems).Where(p => !string.IsNullOrWhiteSpace(p))
+            : Str(root, name) is { Length: > 0 } page ? [page] : [];
 
     private static Related[] ParseRelated(JsonElement root, string file, List<string> problems) =>
         Objects(root, "related", file, problems).Select(r =>
@@ -426,7 +430,7 @@ public sealed class LoreBible
     private static readonly string[] AreaKeys = ["name", "region", "x", "y", "z", "radius", "lines"];
     private static readonly string[] LocationBotKeys = ["lore", "rumour", "tell"];
     private static readonly string[] BossKeys =
-        ["id", "name", "catalogKey", "locationId", "realm", "aliases", "facts", "story", "legend", "yells", "atmosphere", "botLines", "loremasterTopic", "bookPage", "chronicle", "realmTakes",
+        ["id", "name", "catalogKey", "locationId", "realm", "aliases", "facts", "story", "legend", "yells", "atmosphere", "botLines", "loremasterTopic", "bookPage", "bookPages", "chronicle", "realmTakes",
          "era", "factions", "related", "npcNames", "tier", "chapters"];
     private static readonly string[] TakeKeys = ["story", "legend", "botLines", "loremaster", "loremasterTopic"];
     private static readonly string[] YellKeys = ["aggro", "phases", "death", "slay"];
@@ -688,13 +692,21 @@ public sealed class LoreBible
     /// <summary>As the corpus build (build_corpus.py MAX_RAW): one chat line as written, in every way of saying it.</summary>
     public const int MaxBotLineLength = 140;
     public const int MaxYellLength = 200;
-    /// <summary>A location's book: 16 pages at most (epic tier: 8-16). A page too long for one text window turns into more.</summary>
+    /// <summary>
+    /// The pages one book item holds (epic tier books are 8-16). A longer book is not cut: the books channel binds it in
+    /// volumes of this many pages each (LoreBooks.Volumes), and a page too long for one text window turns into more pages.
+    /// </summary>
     public const int MaxBookPages = 16;
     public const int MaxAdvisedWords = 1_500;
     public static readonly string[] Realms = ["Albion", "Midgard", "Hibernia", "Neutral"];
     /// <summary>"myth": the real-world myth a name comes from, not game canon (Balor, Hati and Skoll). Needs its source too.</summary>
     public static readonly string[] Provenances = ["mythic", "game", "legend", "myth", "original"];
     public static readonly string[] ChronicleSlots = ["realm", "raidLeader", "minutes"];
+    /// <summary>
+    /// The powers every realm tells its own way, the faction ids the writers agreed to share across history files (2026-11-06).
+    /// Any other faction id in two realms' files is most likely two writers' different powers under one id: a warning.
+    /// </summary>
+    public static readonly string[] SharedFactionIds = ["summoners", "lords-of-the-undead", "sidhe-of-the-hall", "dark-ones"];
 
     /// <summary>
     /// Regions that are a whole realm's open world. A location there without "zones" is an umbrella (hibernia-wilds): its
@@ -737,6 +749,14 @@ public sealed class LoreBible
         {
             Need(IdRe.IsMatch(id ?? string.Empty), $"{file}: id \"{id}\" must be lower-case kebab (krondon, scurceol-hyrde)");
             Need(string.Equals(file, $"{folder}/{id}.json", StringComparison.Ordinal), $"{file}: the file must be named {folder}/{id}.json");
+        }
+        // A link to a place or boss (history places/bosses, related, a location's boss list) may name a file another
+        // writer's branch carries or one not written yet: a warning, so the branches can land in any order. The engine and
+        // channels skip a link that leads nowhere. Structure (a boss's own locationId, ids, fields) stays a failure.
+        void Link(bool ok, string message)
+        {
+            if (!ok)
+                warnings.Add(message + " (a link to a file not in this set: another lore branch's, or not written yet)");
         }
         void CheckFacts(Fact[] facts, string file)
         {
@@ -897,15 +917,18 @@ public sealed class LoreBible
                             $"{f}: loremaster keyword [{m.Groups[1].Value}] has no topic here or in one of its bosses' loremasterTopic");
             }
             CheckTakes(l.RealmTakes, f, 60, 460);   // a take is one realm's angle, shorter than the story
-            Need(string.IsNullOrEmpty(l.Tier) || l.IsEpic, $"{f}: a location's tier is \"epic\" or left out, not \"{l.Tier}\"");
+            Need(string.IsNullOrEmpty(l.Tier) || l.IsEpic || l.IsMinor || string.Equals(l.Tier, "major", StringComparison.OrdinalIgnoreCase),
+                $"{f}: a location's tier is \"epic\", \"major\" or \"minor\" (or left out), not \"{l.Tier}\"");
             CheckChapters(l.Chapters, f);
+            CheckGameTalk(InWorldTexts(l.Story, l.Chapters, l.Book?.Pages ?? [], "book page", l.RealmTakes), f, warnings);
             if (l.Book == null)
                 problems.Add($"{f}: a book (title and pages)");
             else
             {
                 Need(!string.IsNullOrWhiteSpace(l.Book.Title), $"{f}: book.title");
                 Need(l.Book.Pages.Length > 0, $"{f}: at least one book page");
-                Need(l.Book.Pages.Length <= MaxBookPages, $"{f}: {l.Book.Pages.Length} book pages (at most {MaxBookPages})");
+                if (l.Book.Pages.Length > MaxBookPages)
+                    warnings.Add($"{f}: {l.Book.Pages.Length} book pages: bound in {(l.Book.Pages.Length + MaxBookPages - 1) / MaxBookPages} volumes of {MaxBookPages}");
                 foreach (string page in l.Book.Pages)
                     CheckWords(page, 50, 160, "a book page", f);
             }
@@ -913,7 +936,7 @@ public sealed class LoreBible
             {
                 Boss boss = BossById(id);
                 if (boss == null)
-                    problems.Add($"{f}: boss \"{id}\" has no file bosses/{id}.json");
+                    Link(false, $"{f}: boss \"{id}\" has no file bosses/{id}.json");
                 else
                     Need(string.Equals(boss.LocationId, l.Id, StringComparison.OrdinalIgnoreCase),
                         $"{f}: boss \"{id}\" says its locationId is \"{boss.LocationId}\"");
@@ -946,7 +969,7 @@ public sealed class LoreBible
                 problems.Add($"{f}: locationId \"{b.LocationId}\" has no file locations/{b.LocationId}.json");
             else
             {
-                Need(home.Bosses.Contains(b.Id, StringComparer.OrdinalIgnoreCase), $"{f}: its location {home.File} does not list it in \"bosses\"");
+                Link(home.Bosses.Contains(b.Id, StringComparer.OrdinalIgnoreCase), $"{f}: its location {home.File} does not list it in \"bosses\"");
                 Need(home.Realm == "Neutral" || home.Realm == b.Realm, $"{f}: realm {b.Realm}, but its location is {home.Realm}");
             }
             CheckFacts(b.Facts, f);
@@ -977,6 +1000,7 @@ public sealed class LoreBible
             Need(string.IsNullOrEmpty(b.Tier) || b.IsMinor || b.IsEpic || string.Equals(b.Tier, "major", StringComparison.OrdinalIgnoreCase),
                 $"{f}: tier \"{b.Tier}\" must be minor, major or epic (or left out)");
             CheckChapters(b.Chapters, f);
+            CheckGameTalk(InWorldTexts(b.Story, b.Chapters, b.BookPages, "bookPage", b.RealmTakes), f, warnings);
             foreach ((string text, string what) in new[] { (b.ChronicleWin, "chronicle.win"), (b.ChronicleLoss, "chronicle.loss") })
                 foreach (Match m in SlotRe.Matches(text ?? string.Empty))
                     Need(ChronicleSlots.Contains(m.Groups[1].Value), $"{f}: {what} slot {{{m.Groups[1].Value}}} (only {{realm}}, {{raidLeader}}, {{minutes}})");
@@ -1012,9 +1036,9 @@ public sealed class LoreBible
             {
                 Need(!string.IsNullOrWhiteSpace(era.Text) || !string.IsNullOrWhiteSpace(era.Summary), $"{f}: era \"{era.Id}\" has no text");
                 foreach (string place in era.Places)
-                    Need(LocationById(place) != null, $"{f}: era \"{era.Id}\" place \"{place}\" has no location file");
+                    Link(LocationById(place) != null, $"{f}: era \"{era.Id}\" place \"{place}\" has no location file");
                 foreach (string boss in era.Bosses)
-                    Need(BossById(boss) != null, $"{f}: era \"{era.Id}\" boss \"{boss}\" has no boss file");
+                    Link(BossById(boss) != null, $"{f}: era \"{era.Id}\" boss \"{boss}\" has no boss file");
                 foreach (Fact fact in era.Facts)
                 {
                     Need(Provenances.Contains(fact.Provenance), $"{f}: provenance \"{fact.Provenance}\" must be one of {string.Join(", ", Provenances)}");
@@ -1024,23 +1048,28 @@ public sealed class LoreBible
                 {
                     Need(!string.IsNullOrWhiteSpace(v.Name) && !string.IsNullOrWhiteSpace(v.Text), $"{f}: an event of era \"{era.Id}\" needs a name and text");
                     foreach (string place in v.Places)
-                        Need(LocationById(place) != null, $"{f}: event \"{v.Name}\" place \"{place}\" has no location file");
+                        Link(LocationById(place) != null, $"{f}: event \"{v.Name}\" place \"{place}\" has no location file");
                     foreach (string boss in v.Bosses)
-                        Need(BossById(boss) != null, $"{f}: event \"{v.Name}\" boss \"{boss}\" has no boss file");
+                        Link(BossById(boss) != null, $"{f}: event \"{v.Name}\" boss \"{boss}\" has no boss file");
                 }
             }
             foreach (Faction faction in h.Factions)
             {
                 Need(!string.IsNullOrWhiteSpace(faction.Text) || !string.IsNullOrWhiteSpace(faction.Summary), $"{f}: faction \"{faction.Id}\" has no text");
                 foreach (string place in faction.Places)
-                    Need(LocationById(place) != null, $"{f}: faction \"{faction.Id}\" place \"{place}\" has no location file");
+                    Link(LocationById(place) != null, $"{f}: faction \"{faction.Id}\" place \"{place}\" has no location file");
                 foreach (string boss in faction.Bosses)
-                    Need(BossById(boss) != null, $"{f}: faction \"{faction.Id}\" boss \"{boss}\" has no boss file");
+                    Link(BossById(boss) != null, $"{f}: faction \"{faction.Id}\" boss \"{boss}\" has no boss file");
                 foreach (Related r in faction.RelatedTo)
-                    Need(LocationById(r.Id) != null || BossById(r.Id) != null || FactionById(r.Id) != null,
+                    Link(LocationById(r.Id) != null || BossById(r.Id) != null || FactionById(r.Id) != null,
                         $"{f}: faction \"{faction.Id}\" related \"{r.Id}\" is no location, boss or faction");
             }
         }
+        foreach (var shared in Histories.SelectMany(h => h.Factions.Where(x => !string.IsNullOrEmpty(x.Id)).Select(x => (x.Id, h.File)))
+                     .GroupBy(p => p.Id, StringComparer.OrdinalIgnoreCase).Where(g => g.Select(p => p.File).Distinct().Count() > 1))
+            if (!SharedFactionIds.Contains(shared.Key, StringComparer.OrdinalIgnoreCase))
+                warnings.Add($"faction id \"{shared.Key}\" is in {string.Join(", ", shared.Select(p => p.File).Distinct())}: only " +
+                             $"{string.Join(", ", SharedFactionIds)} are shared by agreement; is it one power or two?");
         // An era or faction must resolve once its realm's history file exists; before that (a writer still drafting it) it
         // is a warning, so the files can land in any order.
         void CheckHistoryLink(bool found, string realm, string message)
@@ -1061,7 +1090,7 @@ public sealed class LoreBible
             foreach (Related r in related)
             {
                 Need(!string.IsNullOrWhiteSpace(r.Relation), $"{file}: related \"{r.Id}\" needs a relation (rival, servant, kin...)");
-                Need(LocationById(r.Id) != null || BossById(r.Id) != null, $"{file}: related \"{r.Id}\" is no location or boss");
+                Link(LocationById(r.Id) != null || BossById(r.Id) != null, $"{file}: related \"{r.Id}\" is no location or boss");
                 Need(!string.Equals(r.Id, self, StringComparison.OrdinalIgnoreCase), $"{file}: related to itself");
             }
         }
@@ -1149,6 +1178,56 @@ public sealed class LoreBible
     }
 
     private static string Short(string text) => text == null ? string.Empty : text.Length <= 50 ? text : text[..50] + "...";
+
+    /// <summary>
+    /// Fight-guide and game talk (owner rule 2026-11-06 19:26, "chapters are not a fight guide"): the patterns of the
+    /// writers' self-check, scratchpad lore/chapter_lint.py, kept the same. Chapters, story and books are history told
+    /// inside the world; fight advice belongs in legend, bot lines and yells only.
+    /// </summary>
+    public static readonly string[] GameTalkPatterns =
+    [
+        @"\braid(s|ers?|ing)?\b", @"\braid[- ]leaders?\b", @"\bhealers?\b", @"\btanks?\b", @"\bpull(s|ed|ing)?\b",
+        @"\baggro\b", @"\bdebuffs?\b", @"\bresists?\b", @"\bmechanics?\b", @"\bphases?\b", @"\bexperience\b",
+        @"\bxp\b", @"\brespec\b", @"\bloot\b", @"\bdrops?\b", @"\bspawns?\b", @"\bplayers?\b", @"\bserver\b",
+        @"\bper fight\b", @"\ba fight\b", @"\bthe fight\b", @"\bevery fight\b", @"\bthe lesson\b", @"\bfirst rule\b",
+        @"\bbrace\b", @"\bstack(s|ing)?\b", @"\bspread out\b", @"\badds\b", @"\bimmune\b", @"\bimmunity\b",
+        @"\bdamage\b", @"\bhit points?\b", @"\bmindfully\b", @"\bguild(s|halls?)?\b", @"\bherald\b",
+        @"\bwhoever (comes|fights)\b", @"\bif you\b", @"\byou (must|should|will need)\b",
+    ];
+
+    private static readonly Regex GameTalkRe = new(string.Join("|", GameTalkPatterns), RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex SentenceEndRe = new(@"(?<=[.!?])\s+", RegexOptions.Compiled);
+
+    /// <summary>The sentences of a text that read as fight-guide or game talk, with the word that flagged each. Pure.</summary>
+    public static IEnumerable<(string Word, string Sentence)> GameTalk(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            yield break;
+        foreach (string sentence in SentenceEndRe.Split(text))
+            if (GameTalkRe.Match(sentence) is { Success: true } m)
+                yield return (m.Value, sentence.Trim());
+    }
+
+    /// <summary>The in-world texts of a file that must not read as a fight guide: (where, text).</summary>
+    private static IEnumerable<(string Where, string Text)> InWorldTexts(string story, Chapter[] chapters, IEnumerable<string> pages, string pageName,
+        IReadOnlyDictionary<string, RealmTake> takes)
+    {
+        foreach (Chapter chapter in chapters)
+            yield return ($"chapter \"{chapter.Title}\"", chapter.Text);
+        yield return ("story", story);
+        int i = 0;
+        foreach (string page in pages)
+            yield return ($"{pageName} {++i}", page);
+        foreach ((string realm, RealmTake take) in takes)
+            yield return ($"realmTakes.{realm}.story", take.Story);
+    }
+
+    private static void CheckGameTalk(IEnumerable<(string Where, string Text)> texts, string file, List<string> warnings)
+    {
+        foreach ((string where, string text) in texts)
+            foreach ((string word, string sentence) in GameTalk(text))
+                warnings.Add($"{file}: game talk in {where} ('{word}'; chapters, story and books are history, not a fight guide): {(sentence.Length <= 160 ? sentence : sentence[..160] + "...")}");
+    }
 
     #endregion
 

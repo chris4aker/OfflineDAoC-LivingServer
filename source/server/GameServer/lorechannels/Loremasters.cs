@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using DOL.Database;
 using DOL.Events;
 using DOL.GS.PacketHandler;
 using DOL.Logging;
@@ -225,14 +226,15 @@ namespace DOL.GS.LoreChannels
             Say(player, reply.Text);
             if (reply.BookLocationId != null)
             {
-                string title = LoreBooks.Offer(reply.BookLocationId)?.Name;
-                if (title == null)
+                List<DbItemTemplate> volumes = LoreBooks.OfferAll(reply.BookLocationId);
+                if (volumes.Count == 0)
                 {
                     SayTo(player, "My copy is still at the binder's. Ask me another day.");
                     return true;
                 }
+                string title = volumes.Count == 1 ? $"\"{volumes[0].Name}\"" : $"\"{LoreChannelHub.Source.GetLocation(reply.BookLocationId)?.Book?.Title}\" in {volumes.Count} volumes";
                 string location = reply.BookLocationId;
-                player.Out.SendCustomDialog($"Buy \"{title}\" from {Name} for {LoreBooks.PriceText}?", (p, response) =>
+                player.Out.SendCustomDialog($"Buy {title} from {Name} for {LoreBooks.PriceFor(volumes.Count)}?", (p, response) =>
                 {
                     if (response != 0x01 || !IsWithinRadius(p, WorldMgr.INTERACT_DISTANCE)) return;
                     if (LoreBooks.TryBuy(p, location, out string reason))

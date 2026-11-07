@@ -138,6 +138,48 @@ public class UT_LoreChannelBooks
     }
 
     [Test]
+    public void ABookOverOneBindingComesInVolumesWithEveryPage()
+    {
+        LoreLibrary lore = LoreChannelFixtures.Library();
+        LoreLocation krondon = lore.GetLocation("krondon");
+        string[] written = Enumerable.Range(1, 38).Select(i => $"Page {i} of the long book.").ToArray();
+        string title = "Of the Hall under the Hill, as the Old Keepers Told It to Brother Aldric";
+        var big = krondon with { Book = new LoreBookText(title, written) };
+        var library = new LoreLibrary(lore.AllLocations.Select(l => l.Id == "krondon" ? big : l), lore.AllBosses);
+        List<string> pages = LoreBooks.Pages(library, big);
+        Assert.That(pages.Count, Is.EqualTo(39), "38 pages and the boss's page");
+        List<LoreBooks.LoreBookVolume> volumes = LoreBooks.Volumes(library, big);
+        Assert.That(volumes.Select(v => v.Pages.Count), Is.EqualTo(new[] { 16, 16, 7 }));
+        Assert.That(volumes.SelectMany(v => v.Pages), Is.EqualTo(pages), "every page, in order, nothing cut");
+        Assert.That(volumes.Select(v => v.TemplateId), Is.EqualTo(new[] { "ls_lore_book_krondon", "ls_lore_book_krondon_vol2", "ls_lore_book_krondon_vol3" }),
+            "the first volume keeps the one-volume id, so copies already held still read");
+        Assert.That(volumes.All(v => v.Title.Length <= LoreBooks.MaxNameLength), Is.True);
+        Assert.That(volumes[1].Title, Does.EndWith(", Volume II").And.StartWith("Of the Hall under the Hill"));
+        Assert.That(volumes.Select(v => (LoreBooks.LocationIdOf(v.TemplateId), LoreBooks.VolumeOf(v.TemplateId))),
+            Is.EqualTo(new[] { ("krondon", 1), ("krondon", 2), ("krondon", 3) }));
+        Assert.That(LoreBooks.VolumeFor(library, "ls_lore_book_krondon_vol3").Pages[^1], Is.EqualTo(pages[^1]));
+        Assert.That(LoreBooks.VolumeFor(library, "ls_lore_book_krondon_vol4"), Is.Null);
+        Assert.That(LoreBooks.LocationIdOf("ls_lore_book_tur-suil"), Is.EqualTo("tur-suil"));
+
+        DbItemTemplate second = LoreBooks.Template(big, volumes[1]);
+        Assert.That(second.Description, Does.Contain("Volume II of III").And.Contain("(16 pages)"));
+        var store = new MemoryStore();
+        List<LoreBookChange> plan = LoreBooks.Apply(store, library);
+        Assert.That(plan.Count(c => c.TemplateId.StartsWith("ls_lore_book_krondon")), Is.EqualTo(3));
+        Assert.That(store.Rows["ls_lore_book_krondon_vol3"].Name, Does.EndWith("Volume III"));
+        Assert.That(LoreBooks.Apply(store, library).All(c => c.Action == LoreBookAction.Keep), Is.True);
+
+        var (_, lines) = LoreBooks.PageWindow(volumes[0].Title, volumes[0].Pages, 15, LoreBooks.VolumeTitle(title, 2, 3));
+        Assert.That(lines[^1], Does.Contain("goes on in").And.Contain("Volume II"));
+        Assert.That(LoreBooks.PageWindow(volumes[2].Title, volumes[2].Pages, 6).Lines[^1], Does.Contain("The end"));
+
+        var dialogue = new LoremasterDialogue(library, LoreRealm.Albion, "Loremaster");
+        Assert.That(dialogue.Resolve("book of Krondon").Text, Does.Contain("3 volumes").And.Contain("3 silver"));
+        Assert.That(LoreBooks.Volumes(lore, krondon).Count, Is.EqualTo(1), "a short book is one volume");
+        Assert.That(LoreBooks.Template(lore, krondon).Name, Is.EqualTo("Of the Hall under the Hill"), "and keeps its plain title");
+    }
+
+    [Test]
     public void BooksDropOnlyNearTheirPlace()
     {
         LoreLibrary lore = LoreChannelFixtures.Library();

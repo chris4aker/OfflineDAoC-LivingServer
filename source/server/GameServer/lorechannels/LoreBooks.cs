@@ -51,22 +51,105 @@ namespace DOL.GS.LoreChannels
         public const long Price = 100;
         public static string PriceText => "a silver";
 
-        public static string TemplateId(string locationId) => IdPrefix + (locationId ?? "").ToLowerInvariant();
+        /// <summary>
+        /// The pages one book item holds (LoreBible.MaxBookPages). A longer book is never cut: it is bound in volumes of
+        /// this many pages, each its own item (ls_lore_book_&lt;location&gt;, then ..._vol2, ..._vol3), sold together.
+        /// </summary>
+        public const int VolumePages = 16;
+        public const int MaxNameLength = 60;
+        private const string VolumeTag = "_vol";
 
-        public static string LocationIdOf(string templateId) =>
-            templateId != null && templateId.StartsWith(IdPrefix, StringComparison.OrdinalIgnoreCase) ? templateId[IdPrefix.Length..] : null;
+        /// <summary>One bound volume of a location's book: its item id, its name and its pages.</summary>
+        public sealed record LoreBookVolume(string LocationId, int Number, int Count, string TemplateId, string Title, List<string> Pages)
+        {
+            public bool IsLast => Number >= Count;
+        }
+
+        public static string TemplateId(string locationId, int volume = 1) =>
+            IdPrefix + (locationId ?? "").ToLowerInvariant() + (volume > 1 ? VolumeTag + volume : "");
+
+        public static string LocationIdOf(string templateId)
+        {
+            if (templateId == null || !templateId.StartsWith(IdPrefix, StringComparison.OrdinalIgnoreCase)) return null;
+            string rest = templateId[IdPrefix.Length..];
+            int tag = rest.LastIndexOf(VolumeTag, StringComparison.Ordinal);
+            // Location ids are kebab case (no "_"), so "_vol<n>" can only be the volume.
+            return tag > 0 && int.TryParse(rest[(tag + VolumeTag.Length)..], out int n) && n > 1 ? rest[..tag] : rest;
+        }
+
+        /// <summary>The volume a book item is (1 for the first, or a one-volume book).</summary>
+        public static int VolumeOf(string templateId)
+        {
+            string location = LocationIdOf(templateId);
+            if (location == null) return 0;
+            string rest = templateId[(IdPrefix.Length + location.Length)..];
+            return rest.StartsWith(VolumeTag, StringComparison.Ordinal) && int.TryParse(rest[VolumeTag.Length..], out int n) ? n : 1;
+        }
+
+        private static readonly string[] Numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+
+        public static string Numeral(int n) => n >= 1 && n <= Numerals.Length ? Numerals[n - 1] : n.ToString();
+
+        /// <summary>
+        /// The item name: the title, and for a book in volumes ", Volume II". The name stays within
+        /// <see cref="MaxNameLength"/>; a title too long loses words at its end, never the volume.
+        /// </summary>
+        public static string VolumeTitle(string title, int number, int count)
+        {
+            title = (title ?? "").Trim();
+            string suffix = count > 1 ? $", Volume {Numeral(number)}" : "";
+            int room = MaxNameLength - suffix.Length;
+            if (title.Length > room)
+            {
+                int cut = title.LastIndexOf(' ', Math.Max(0, room - 1));
+                title = (cut > room / 2 ? title[..cut] : title[..room]).TrimEnd(' ', ',', ';', ':');
+            }
+            return title + suffix;
+        }
+
+        /// <summary>
+        /// The book in volumes: its pages (<see cref="Pages"/>) bound <see cref="VolumePages"/> to a volume, in order, so
+        /// every page of the lore is in one of them. One volume for most books. Pure.
+        /// </summary>
+        public static List<LoreBookVolume> Volumes(ILoreSource source, LoreLocation location)
+        {
+            var volumes = new List<LoreBookVolume>();
+            List<string> pages = Pages(source, location);
+            if (pages.Count == 0) return volumes;
+            int count = (pages.Count + VolumePages - 1) / VolumePages;
+            for (int i = 0; i < count; i++)
+                volumes.Add(new(location.Id, i + 1, count, TemplateId(location.Id, i + 1), VolumeTitle(location.Book.Title, i + 1, count),
+                    pages.Skip(i * VolumePages).Take(VolumePages).ToList()));
+            return volumes;
+        }
+
+        /// <summary>The volume a book item's id names, or null (no such place, or the book has fewer volumes now).</summary>
+        public static LoreBookVolume VolumeFor(ILoreSource source, string templateId)
+        {
+            LoreLocation location = source.GetLocation(LocationIdOf(templateId));
+            if (location?.Book == null) return null;
+            int number = VolumeOf(templateId);
+            List<LoreBookVolume> volumes = Volumes(source, location);
+            return number >= 1 && number <= volumes.Count ? volumes[number - 1] : null;
+        }
 
         /// <summary>The book's examine text (its delve): what it tells of and how to read it.</summary>
-        public static string Summary(LoreLocation location, int pages) =>
+        public static string Summary(LoreLocation location, int pages, int volume = 1, int volumes = 1) =>
             $"{(string.IsNullOrWhiteSpace(location.Summary) ? $"A book about {location.Name}." : location.Summary.Trim())} " +
+            (volumes > 1 ? $"Volume {Numeral(volume)} of {Numeral(volumes)}. " : "") +
             $"Use the book to read it ({pages} page{(pages == 1 ? "" : "s")}).";
 
-        /// <summary>The template a location's book should have.</summary>
-        public static DbItemTemplate Template(ILoreSource source, LoreLocation location) => new()
+        /// <summary>The template of a location's book (its first volume).</summary>
+        public static DbItemTemplate Template(ILoreSource source, LoreLocation location) =>
+            Volumes(source, location) is { Count: > 0 } volumes ? Template(location, volumes[0]) : Template(location, new(location.Id, 1, 1, TemplateId(location.Id),
+                VolumeTitle(location.Book.Title, 1, 1), []));
+
+        /// <summary>The template a volume of a location's book should have.</summary>
+        public static DbItemTemplate Template(LoreLocation location, LoreBookVolume volume) => new()
         {
-            Id_nb = TemplateId(location.Id),
-            Name = location.Book.Title.Length > 60 ? location.Book.Title[..60] : location.Book.Title,
-            Description = Summary(location, Pages(source, location).Count),
+            Id_nb = volume.TemplateId,
+            Name = volume.Title,
+            Description = Summary(location, volume.Pages.Count, volume.Number, volume.Count),
             Model = BookModel,
             Item_Type = 40,
             Object_Type = (int)eObjectType.GenericItem,
@@ -119,15 +202,16 @@ namespace DOL.GS.LoreChannels
             var changes = new List<LoreBookChange>();
             var wanted = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (LoreLocation location in source.AllLocations.Where(LoremasterDialogue.HasBook))
-            {
-                DbItemTemplate desired = Template(source, location);
-                wanted.Add(desired.Id_nb);
-                DbItemTemplate existing = store.Find(desired.Id_nb);
-                LoreBookAction action = existing == null ? LoreBookAction.Add
-                    : !string.Equals(existing.PackageID, PackageId, StringComparison.Ordinal) ? LoreBookAction.Foreign
-                    : Same(existing, desired) ? LoreBookAction.Keep : LoreBookAction.Update;
-                changes.Add(new(desired.Id_nb, action, location.Book.Title));
-            }
+                foreach (LoreBookVolume volume in Volumes(source, location))
+                {
+                    DbItemTemplate desired = Template(location, volume);
+                    wanted.Add(desired.Id_nb);
+                    DbItemTemplate existing = store.Find(desired.Id_nb);
+                    LoreBookAction action = existing == null ? LoreBookAction.Add
+                        : !string.Equals(existing.PackageID, PackageId, StringComparison.Ordinal) ? LoreBookAction.Foreign
+                        : Same(existing, desired) ? LoreBookAction.Keep : LoreBookAction.Update;
+                    changes.Add(new(desired.Id_nb, action, volume.Title));
+                }
             foreach (DbItemTemplate own in store.Owned(PackageId).Where(t => !wanted.Contains(t.Id_nb)).ToList())
                 changes.Add(new(own.Id_nb, store.InUse(own.Id_nb) ? LoreBookAction.InUse : LoreBookAction.Remove, own.Name));
             return changes;
@@ -140,13 +224,14 @@ namespace DOL.GS.LoreChannels
             foreach (LoreBookChange change in plan)
             {
                 LoreLocation location = source.GetLocation(LocationIdOf(change.TemplateId));
+                LoreBookVolume volume = VolumeFor(source, change.TemplateId);
                 switch (change.Action)
                 {
                     case LoreBookAction.Add:
-                        store.Add(Template(source, location));
+                        store.Add(Template(location, volume));
                         break;
                     case LoreBookAction.Update:
-                        DbItemTemplate row = store.Find(change.TemplateId), desired = Template(source, location);
+                        DbItemTemplate row = store.Find(change.TemplateId), desired = Template(location, volume);
                         row.Name = desired.Name; row.Description = desired.Description; row.Model = desired.Model; row.Price = desired.Price;
                         row.ClassType = desired.ClassType; row.Item_Type = desired.Item_Type; row.Object_Type = desired.Object_Type;
                         row.CanDropAsLoot = desired.CanDropAsLoot;
@@ -177,9 +262,26 @@ namespace DOL.GS.LoreChannels
 
         private static readonly ConcurrentDictionary<string, DbItemTemplate> Offered = new(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>The book template of a location the server offers (added by the world update), or null.</summary>
+        /// <summary>The book template of a location the server offers (added by the world update), or null. Its first volume.</summary>
         public static DbItemTemplate Offer(string locationId) =>
             locationId != null && Offered.TryGetValue(TemplateId(locationId), out DbItemTemplate t) ? t : null;
+
+        /// <summary>Every volume of a location's book, in order, or empty unless the server offers them all.</summary>
+        public static List<DbItemTemplate> OfferAll(string locationId)
+        {
+            var all = new List<DbItemTemplate>();
+            LoreLocation location = LoreChannelHub.Source.GetLocation(locationId);
+            if (location?.Book == null) return all;
+            foreach (LoreBookVolume volume in Volumes(LoreChannelHub.Source, location))
+            {
+                if (!Offered.TryGetValue(volume.TemplateId, out DbItemTemplate t)) return [];
+                all.Add(t);
+            }
+            return all;
+        }
+
+        /// <summary>The price of a book in <paramref name="volumes"/> volumes, in words ("a silver", "3 silver").</summary>
+        public static string PriceFor(int volumes) => volumes <= 1 ? PriceText : $"{volumes} silver";
 
         [GameServerStartedEvent]
         public static void OnServerStarted(DOLEvent e, object sender, EventArgs args)
@@ -211,30 +313,43 @@ namespace DOL.GS.LoreChannels
             }
         }
 
-        /// <summary>Sells a player a location's book: checks room and coin, then takes the coin. False with a reason.</summary>
+        /// <summary>
+        /// Sells a player a location's book, every volume of it: checks room for all and coin for all, then takes the coin.
+        /// False with a reason.
+        /// </summary>
         public static bool TryBuy(GamePlayer player, string locationId, out string reason)
         {
             reason = null;
-            DbItemTemplate template = Offer(locationId);
-            if (player == null || template == null)
+            List<DbItemTemplate> volumes = OfferAll(locationId);
+            if (player == null || volumes.Count == 0)
             {
                 reason = "I have no copy of that one to give.";
                 return false;
             }
+            long price = volumes.Sum(v => v.Price);
             lock (player.Inventory.Lock)
             {
-                if (player.GetCurrentMoney() < template.Price)
+                if (player.GetCurrentMoney() < price)
                 {
-                    reason = $"A copy is {Money.GetString(template.Price)}, and your purse says otherwise.";
+                    reason = $"A copy is {Money.GetString(price)}, and your purse says otherwise.";
                     return false;
                 }
-                if (!player.Inventory.AddTemplate(GameInventoryItem.Create(template), 1, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack))
+                if (!player.Inventory.IsSlotsFree(volumes.Count, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack))
                 {
-                    reason = "Your packs are full. Make room and come back.";
+                    reason = volumes.Count == 1 ? "Your packs are full. Make room and come back."
+                        : $"It is {volumes.Count} volumes, and your packs have not the room. Make room and come back.";
                     return false;
                 }
-                InventoryLogging.LogInventoryAction("(LORE;" + template.Id_nb + ")", player, eInventoryActionType.Merchant, template, 1);
-                player.RemoveMoney(template.Price, $"You pay {{0}} for {template.Name}.", eChatType.CT_Merchant, eChatLoc.CL_SystemWindow);
+                foreach (DbItemTemplate template in volumes)
+                {
+                    if (!player.Inventory.AddTemplate(GameInventoryItem.Create(template), 1, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack))
+                    {
+                        reason = "Your packs are full. Make room and come back.";
+                        return false;
+                    }
+                    InventoryLogging.LogInventoryAction("(LORE;" + template.Id_nb + ")", player, eInventoryActionType.Merchant, template, 1);
+                    player.RemoveMoney(template.Price, $"You pay {{0}} for {template.Name}.", eChatType.CT_Merchant, eChatLoc.CL_SystemWindow);
+                }
             }
             return true;
         }
@@ -243,15 +358,21 @@ namespace DOL.GS.LoreChannels
 
         private static readonly ConcurrentDictionary<(string Player, string Book), int> Reading = new();
 
-        /// <summary>The text window of one page: the caption and its lines (each under the packet's 255-character line).</summary>
-        public static (string Caption, List<string> Lines) PageWindow(string title, IReadOnlyList<string> pages, int page)
+        /// <summary>
+        /// The text window of one page: the caption and its lines (each under the packet's 255-character line). The last
+        /// page of a volume that is not the book's last names the volume that goes on (<paramref name="next"/>).
+        /// </summary>
+        public static (string Caption, List<string> Lines) PageWindow(string title, IReadOnlyList<string> pages, int page, string next = null)
         {
             int count = Math.Max(1, pages.Count);
             page = Math.Clamp(page, 0, count - 1);
             var lines = new List<string>();
             lines.AddRange(Wrap(pages.Count == 0 ? "The pages are blank." : pages[page], 200));
             lines.Add(" ");
-            lines.Add(count == 1 ? "(The end.)" : page + 1 < count ? "(Use the book again to turn the page.)" : "(The end. Use the book again to start over.)");
+            bool last = page + 1 >= count;
+            lines.Add(!last ? "(Use the book again to turn the page.)"
+                : next != null ? $"(The tale goes on in {next}.{(count == 1 ? "" : " Use the book again to start over.")})"
+                : count == 1 ? "(The end.)" : "(The end. Use the book again to start over.)");
             return ($"{title} ({page + 1}/{count})", lines);
         }
 
@@ -280,15 +401,16 @@ namespace DOL.GS.LoreChannels
 
         public static void Read(GamePlayer player, DbInventoryItem item)
         {
-            LoreLocation location = LoreChannelHub.Source.GetLocation(LocationIdOf(item?.Id_nb));
             if (player?.Client == null) return;
-            if (location?.Book == null)
+            ILoreSource source = LoreChannelHub.Source;
+            LoreBookVolume volume = VolumeFor(source, item?.Id_nb);
+            if (volume == null)
             {
                 player.Out.SendMessage("The ink has faded past reading.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return;
             }
-            List<string> pages = Pages(LoreChannelHub.Source, location);
-            var (caption, lines) = PageWindow(location.Book.Title, pages, NextPage(player.InternalID ?? player.Name, location.Id, pages.Count));
+            string next = volume.IsLast ? null : VolumeTitle(source.GetLocation(volume.LocationId).Book.Title, volume.Number + 1, volume.Count);
+            var (caption, lines) = PageWindow(volume.Title, volume.Pages, NextPage(player.InternalID ?? player.Name, volume.TemplateId, volume.Pages.Count), next);
             player.Out.SendCustomTextWindow(caption, lines);
         }
 
@@ -371,11 +493,15 @@ namespace DOL.GS.LoreChannels
                 GamePlayer player = LoreBooks.PlayerOf(killer);
                 if (player?.Client == null || mob == null || mob is GameBot) return loot;
                 LoreLocation location = Near(LoreChannelHub.Source, mob.CurrentRegionID, mob.X, mob.Y, mob.Z);
-                DbItemTemplate template = LoreBooks.Offer(location?.Id);
+                if (location == null) return loot;
+                // A book in volumes drops one at a time: the first volume the player does not hold yet.
+                DbItemTemplate template = LoreBooks.OfferAll(location.Id)
+                    .FirstOrDefault(t => player.Inventory.CountItemTemplate(t.Id_nb, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack) == 0);
+                bool holds = template == null;
+                template ??= LoreBooks.Offer(location.Id);
                 if (template == null) return loot;
                 string key = player.InternalID ?? player.Name;
                 long now = GameLoop.GameLoopTime;
-                bool holds = player.Inventory.CountItemTemplate(template.Id_nb, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack) > 0;
                 if (!Allowed(player.GetConLevel(mob), holds, LastDrop.GetValueOrDefault(key), now, Random.Shared.Next(OneIn)))
                     return loot;
                 LastDrop[key] = now;
