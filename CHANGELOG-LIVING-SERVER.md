@@ -666,7 +666,8 @@ gamebot raids, and these came out of it:
   size (docs/RAID-SIZES.md) instead of 300, and moves the reserved level 50s to the raid's muster hub; from there the raid
   forms, travels, stages and fights as any raid. It goes in when 80% are staged, runs on the automatic raid's clocks (a late
   or short start, the four-hour window) and does not count toward the raid's win-rate record. `focus=` sends the dungeon
-  route only to those encounters (no first-hour trash clear). `/epictest gather`, `status`, `stop`, `list`.
+  route only to those named encounters (the way in is still cleared, and a named that attacks the raid is fought).
+  `/epictest gather`, `reset` (an event's cooldown), `status`, `stop`, `list`.
 - **Commands typed in the server window work again.** The console ran every command without an account, so each one
   failed with an error in the log; it now runs them as an admin named Console.
 - **The server log says what the lore engine says.** Each boss yell and centre-screen line it shows is a `LORE_LINE` line,
@@ -686,6 +687,10 @@ gamebot raids, and these came out of it:
   he healed back to 42%, and so on for good: he could not die, and with his push behind the falls on, Galladoria's last room
   never came. He now heals there once a fight, rests, and walks back down to his spawn to fight on. The original is the
   owner setting `epic_easmarach_endless_falls_heal` (off).
+- **A raid on its way turns on a named that attacks it.** Walking to its next encounter or its final staging with no
+  target of its own, the dungeon route ignored an epic named fighting it: Caer Sidi's raid walked past the Host to the
+  horsemen's room and he killed 40 of it. It now fights the named that attacks it, as it already did while gathering for
+  another encounter.
 - **Soul Reckoner is led back into his room, and hit while he is in it.** The raid stopped hitting him 200 short of his
   room's edge, so with him 790 out (still in his 900 room, taking damage) nobody hit him; and the raider he chased was busy
   with one of his souls, so nobody led him back. The souls spawn where he stands and kept the raid there. Now the raid holds

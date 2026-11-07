@@ -59,6 +59,18 @@ namespace DOL.UnitTests
             Assert.That(DOL.GS.ServerProperties.Properties.EPIC_EASMARACH_ENDLESS_FALLS_HEAL, Is.False);
         }
 
+        // Caer Sidi (run duo3): the raid walked to the horsemen's room ("Final encounter staging", no target) past the Host, who
+        // killed 40 raiders; the route turned on an attacking named only while it had a target of its own.
+        [Test]
+        public void ARaidWithNoTargetTurnsOnTheNamedAttackingIt()
+        {
+            var host = (GameNPC)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
+            var other = (GameNPC)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
+            Assert.That(RealmRaidDungeonRoute.TurnsOnAttacker(null, host), Is.SameAs(host));
+            Assert.That(RealmRaidDungeonRoute.TurnsOnAttacker(null, null), Is.Null, "nobody attacks: walk on");
+            Assert.That(RealmRaidDungeonRoute.TurnsOnAttacker(other, host), Is.Null, "with a target the old switch rule decides");
+        }
+
         [Test]
         public void TheFirstLookIsNoProgressByItself() =>
             Assert.That(RealmRaidDungeonRoute.TargetTookDamage(50_000, 50_000, 0), Is.False);

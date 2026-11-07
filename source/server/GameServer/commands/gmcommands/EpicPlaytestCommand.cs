@@ -18,6 +18,7 @@ namespace DOL.GS.Commands;
     "/epictest list - every raid, its realm, period size and hub",
     "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub",
     "/epictest gather <event> - move the raid's party members still away from its hub to it (before it leaves), or those not yet on its staging ring to the entrance (before it goes in)",
+    "/epictest reset <event> - clear an event's cooldown after a raid ended (the launcher's reset)",
     "/epictest status - the running raids",
     "/epictest stop <event> - end a running raid")]
 public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, ICommandHandler
@@ -47,6 +48,12 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                 return;
             case "start":
                 Start(client, args);
+                return;
+            case "reset":
+                if (args.Length < 3) { DisplaySyntaxOf(client); return; }
+                Say(client, AutonomousRealmRaid.ResetCooldown(args[2])
+                    ? $"{args[2]}: the event cooldown is cleared (the encounter itself must be alive)."
+                    : $"{args[2]} is running: stop it first.");
                 return;
             case "gather":
                 if (args.Length < 3) { DisplaySyntaxOf(client); return; }

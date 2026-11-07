@@ -59,6 +59,10 @@ namespace DOL.GS
         // "no damage for five minutes" with the raid hitting him (play test, 2026-11-07).
         private int _targetLastHealth;
 
+        /// <summary>The named a raid with no target turns on (pure): the one attacking it, if any (while it has a target, the
+        /// old rule switches to an attacker only when the target itself is out of combat).</summary>
+        public static GameNPC TurnsOnAttacker(GameNPC target, GameNPC attacker) => target == null ? attacker : null;
+
         /// <summary>The target took damage since the last look (pure): below its lowest yet, or below the last look's health
         /// (a boss that healed itself being worn down again: Easmarach's eighth on the waterfall top, Grand Summoner Govannon's
         /// full heal when he turns demon at 50%, Funus's full heal from a stray hit). "No damage for five minutes" means that:
@@ -1384,6 +1388,21 @@ namespace DOL.GS
                 }
             }
             _target = null;
+            // A named that attacks the raid while it has no target (walking to its next encounter or its final staging) is
+            // fought, as it is while the raid gathers for another: play test 2026-11-07, Caer Sidi's raid walked to the
+            // horsemen's room past the Host, who killed 40 of it with nobody turning on him.
+            if (TurnsOnAttacker(_target, HostileEncounter(live, participants)) is { } attacking)
+            {
+                bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
+                log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{TargetName}\" to=\"{attacking.Name}\" level={attacking.Level} " +
+                         $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
+                         $"reason=\"it is fighting the raid on its way\"");
+                _target = attacking; TargetName = attacking.Name; TargetLevel = attacking.Level;
+                Front = Destination = approach;
+                _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacking.Health;
+                _targetClosest = float.MaxValue; _targetApproachTick = now;
+                Hold = false; Status = "Clearing " + attacking.Name; return;
+            }
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             if (AdvanceChain(inside, now)) return;
             bool atFront = inside.Any(p => p.IsWithinRadius(new Point3D((int)Front.X, (int)Front.Y, (int)Front.Z), 1000));
