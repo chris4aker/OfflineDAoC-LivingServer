@@ -173,11 +173,14 @@
       ],
       "bosses": [
         "aros-the-spiritmaster",
+        "fas",
         "grand-summoner-govannon",
         "gudlaugr",
         "hamar",
+        "igo",
         "jarl-ormarr",
         "mistress-of-runes",
+        "ond",
         "rottild-the-traitor",
         "summoned-guardian",
         "summoner-cunovinda",
@@ -254,7 +257,9 @@
       ],
       "bosses": [
         "alchemist-phorzbreg",
+        "alivor",
         "apologet-nesnuir",
+        "asutri",
         "basilius",
         "bokko",
         "boligar",
@@ -276,6 +281,8 @@
         "goretooth",
         "gorp",
         "grindvaktare",
+        "grul-mgnuk",
+        "hoden",
         "hurika",
         "icelord-agmundr",
         "icelord-hakr",
@@ -296,6 +303,7 @@
         "overste-callejo",
         "pathfinder-folar",
         "queen-kula",
+        "rolf",
         "sallours",
         "shredclaw",
         "snemel-den-forsumlig",
@@ -401,6 +409,8 @@
         "dagar",
         "fostra-orm",
         "grindvaktare",
+        "grul-mgnuk",
+        "hoden",
         "jarala-den-kvinnlig",
         "magister-kurgol",
         "master-smed",
@@ -478,6 +488,8 @@
         "modernagrav"
       ],
       "bosses": [
+        "alivor",
+        "asutri",
         "chief-tarek"
       ]
     },
@@ -547,6 +559,7 @@
         "masher",
         "morbax",
         "mortufoghus",
+        "rolf",
         "rotodjur",
         "shredclaw",
         "torst",
@@ -745,6 +758,17 @@
       ],
       "bosses": [
         "ydenia-of-the-seithkona"
+      ]
+    },
+    {
+      "id": "deep-ones",
+      "name": "The Deep Ones",
+      "summary": "What holds the deep roads under Spindelhalla's farm: the cave trows and their chief, the deeplurks, and the two old things at the bottom the svartalfar name for evil and dread.",
+      "places": [],
+      "bosses": [
+        "fas",
+        "igo",
+        "ond"
       ]
     }
   ]

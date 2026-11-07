@@ -42,6 +42,11 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     },
     {
+      "text": "Five further named stand on Modernagrav: Hoden (BasiliusBaf) beside Basilius, Grul Mgnuk over the morvalt dig, the Remnants dwarves Alivor and Asutri (aggressive, The Remnants faction) at the post, and Rolf, a living howler.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
       "text": "The morvalt of the dig in the north-west are framkalla, utforska, andakuva, vaktare and blandare; Basilius's household in the north-east is Hoden, a befara, three dodlig, a gravmaniska, an avliden and Rolf.",
       "provenance": "game",
       "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151, Modernagrav zone 158; 0.37b world data)"
@@ -190,6 +195,8 @@
     "rumour": [
       "the crazed morvalt believe that when the mother wakes, trollheim wont be the only thing that falls",
       "[i'm going out to|someone should] pace the ribs on modernagrav. more than a longhouse and you owe me an ale",
+      "the remnants dwarves at the modernagrav post are hostile if your faction is low",
+      "theres a pack of living howlers in the far northeast of modernagrav, the grey one is rolf",
       "[heard|someone said] orri of hagall paced the ribs and never told anyone the count",
       "the morvalt say when the mother wakes trollheim wont be the only thing that falls",
       "the ground on modernagrav hums if you lie down on it. [dont try it near the vigil|tried it once]",
@@ -203,6 +210,7 @@
       "modernagrav is the new island east of faraheim. morvalt dig, undead, and mortufoghus the mammoth",
       "get iarn dwarf faction and minerva flies you over to modernagrav",
       "modernagrav? bones, morvalt and a giant mammoth. bring a group for mortufoghus",
+      "modernagrav nameds: basilius and hoden northeast, grul mgnuk at the dig, alivor and asutri at the dwarf post, rolf the howler",
       "is modernagrav hard? the vigil in the middle is all linked. go as a group",
       "the morvalt dig is north west, basilius is far north east",
       "you can walk in through the gap in faraheims eastern rockwall too"
@@ -213,6 +221,7 @@
     "topics": {
       "morvalt": "The untamed savages of Aegir. Their shamans say the Mother lies on the island and will wake. [Basilius] runs the [dig].",
       "bones": "A skeleton longer than a longhouse, older than the Troll Fathers. The [vigil] of dead beasts stands round it. The oldest tale begins with a cow in the ice; [Mortufoghus] walks round the bones as if they were her calf.",
+      "the watch": "The Remnants' [post] keeps a watch that lets nobody toward the [bones] who has not earned the dwarves' trust: [Alivor] on the road, [Asutri] at the post itself with her chart of the mammoth's round. The griffon flies only friends.",
       "rockwall": "Faraheim's eastern rockwall, which the dwarves' oldest slates call the end of the place one may dig. The [morvalt] broke it in one night. The Remnants are stacking stone at the gap.",
       "vigil": "The dead round the [bones] are beasts: mammoths, howlers, great cats and serpents, all facing inward. The morvalt call them the Mother's household. The dwarves call them the reason nobody dug.",
       "dig": "The [morvalt] camp in the north-west: callers, searchers, watchers and paste-mixers. They clear the [bones] by day and call into them by night.",
@@ -235,6 +244,11 @@
   },
   "bosses": [
     "mortufoghus",
-    "basilius"
+    "basilius",
+    "hoden",
+    "grul-mgnuk",
+    "alivor",
+    "asutri",
+    "rolf"
   ]
 }
