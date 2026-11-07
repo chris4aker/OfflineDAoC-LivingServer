@@ -699,6 +699,27 @@ gamebot raids, and these came out of it:
   jail landing, and the tactics' waiting spots (Easmarach's waterfall stands, the Sacristan's stations, the Vifil tunnel,
   Kula's frost circle, the Apocalypse room), checked both ways, to the boss and back.
 
+**The loading screen says LIVING SERVER** (owner 2026-11-07). The classic client's loading screen
+(`pregame/splash.mpk`) is the Living Server painting with "LIVING SERVER" in gold at the top left, over a gold rule.
+Built and checked by tools; nobody has seen it in the game client yet.
+- **Upgrades get it too.** The installer now replaces the 1.1 loading screen as well as shadowofze's, so every
+  1.1, 1.1.1 and 1.1.2 player gets the new one. A content-patch entry can name earlier Living Server versions of its
+  file ("Replaces"); each is backed up and checked like the released file. Any other loading screen is left alone.
+- **Living Server's loading screen stays** (owner: "I don't want the original splash screens, I want mine"). ROLLBACK.cmd
+  puts back the 1.1 loading screen if that is what the install replaced, but never shadowofze's: after a first install
+  it leaves the new one in place, and puts only the server, launcher and other game-file fixes back.
+  PREPARE-FOR-UPDATE.cmd leaves it too. shadowofze's update tool checks only the files an update replaces or removes,
+  and his loading screen is the same in 0.36, 0.36b and 0.37b, so the 0.37 update never looks at it. (Should a later
+  update ever change it, his tool stops and names the file before changing anything.) The entry's "Keep" says this.
+- PREPARE-FOR-UPDATE.cmd finds a released game file in any install's backup, not only the newest one's, since the newest
+  may hold an earlier Living Server version.
+- The picture is made by `tools/installer/art/make_art.py splash-title` and the archive by
+  `tools/fork-build/make_pregame_splash.py`, both repeatable byte for byte (the archive keeps its files' times, not the
+  time it was packed). The archive is 14,958,372 bytes, SHA-256 `01cfe3e0...c66660`.
+- **Checked:** the installer tests (fake game folders) for shadowofze's loading screen to the new one, the 1.1 one to the
+  new one, an unknown one left alone, ROLLBACK.cmd after each and PREPARE-FOR-UPDATE.cmd. The archive was unpacked again:
+  eight entries, and the picture decodes to the approved image pixel for pixel. Not yet checked: the game client showing it.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
