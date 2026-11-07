@@ -38,14 +38,39 @@ namespace DOL.GS
 
         // ---- the pool ---------------------------------------------------------------------------------------------------
 
-        /// <summary>Every raid member in <paramref name="radius"/> of <paramref name="origin"/> the filter accepts: real
-        /// players first (in <c>GetPlayersInRadius</c> order), then bots.</summary>
+        /// <summary>Every raid member in <paramref name="radius"/> of <paramref name="origin"/> the filter accepts, in a
+        /// random order. (<c>GetPlayersInRadius</c> has no meaningful order either; shuffled, a script that takes "the first
+        /// one" or "the last one" picks any raider, not always the human who happens to be listed first.)</summary>
         public static List<GameLiving> InRadius(GameObject origin, ushort radius, Func<GameLiving, bool> filter = null, bool bots = true)
         {
             if (origin == null || origin.CurrentRegion == null)
                 return [];
             IEnumerable<GameNPC> npcs = bots ? origin.GetNPCsInRadius(radius) : [];
-            return Pool(origin, origin.GetPlayersInRadius(radius), npcs, filter, bots);
+            List<GameLiving> pool = Pool(origin, origin.GetPlayersInRadius(radius), npcs, filter, bots);
+            Shuffle(pool);
+            return pool;
+        }
+
+        /// <summary>Every raid member in the origin's region the filter accepts (for the scripts that used
+        /// <c>ClientService.GetPlayersOfRegion</c>), in a random order.</summary>
+        public static List<GameLiving> InRegion(GameObject origin, Func<GameLiving, bool> filter = null, bool bots = true)
+        {
+            if (origin?.CurrentRegion == null)
+                return [];
+            IEnumerable<GameNPC> npcs = bots ? WorldMgr.GetNPCsFromRegion(origin.CurrentRegionID) : [];
+            List<GameLiving> pool = Pool(origin, ClientService.Instance.GetPlayersOfRegion(origin.CurrentRegion), npcs, filter, bots);
+            Shuffle(pool);
+            return pool;
+        }
+
+        /// <summary>Fisher-Yates with the server's random.</summary>
+        public static void Shuffle(List<GameLiving> pool)
+        {
+            for (int i = pool.Count - 1; i > 0; i--)
+            {
+                int j = Util.Random(0, i);
+                (pool[i], pool[j]) = (pool[j], pool[i]);
+            }
         }
 
         /// <summary>The pool from given candidates (the world-free core of <see cref="InRadius"/>, used by the tests).</summary>
@@ -103,7 +128,7 @@ namespace DOL.GS
             return picked;
         }
 
-        /// <summary>The nearest enemy in radius (ties: real players first, then the pool's order).</summary>
+        /// <summary>The nearest enemy in radius (ties: any of them).</summary>
         public static GameLiving Nearest(GameObject origin, ushort radius, Func<GameLiving, bool> filter = null, bool bots = true)
         {
             GameLiving best = null;
