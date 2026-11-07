@@ -26,15 +26,42 @@
       "text": "Bot chat: the whole house was laid down there together; the Muire hero still guards his kin; never whistle in Muire Tomb; the banshee keened for the Muires and never stopped.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Quillan Muire throws Energy Blast (3.5 s cast, 80 and 70 energy) and puts his target on the aggro list of every Muire herbalist within 4,000; the herbalist heals any NPC within 1,500 below 50% health and casts a strength buff on Muire Heroes, Muire Champions and Quillan within 500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/HiberniaMobs/QuillanMuire.cs (integration/1.2)"
+    },
+    {
+      "text": "Region 221 names in the world data: Quillan Muire (24), Muire Hero (two spawns), Conaire Muire (20), Frang (20), Beare Muire (18), Kacey Muire (17), Alsandair Muire (16) and seven Muire Champions; Quillan, Conaire, Beare, Kacey and Alsandair are targets of the quest Rest in Peace.",
+      "provenance": "game",
+      "source": "GAPS-hibernia.md (world data read 2026-11-06)"
+    },
+    {
+      "text": "In Irish folklore the bean sí (banshee) keens to foretell or lament a death, and is traditionally attached to certain old Irish families.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Banshee"
+    },
+    {
+      "text": "Mythic names the mad last lord Concaire Muire; the world data has a Conaire Muire, whom 2001-2002 players called the founder. Living Server treats them as two men, the last lord named for the founder (to verify against the Rest in Peace quest text).",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Living Server lore: Conaire the founder and the tomb by the standing stones; Quillan the cousin who studied in Tir na Nog; the herbalist who nursed every Muire for thirty years; the hags as the family's nurses; Ardee's rangers all went down Muire Tomb first; the priests of Ardee and the laying to rest by name.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "The Muires were rich, and they were cruel, and the serfs who worked their land around Ardee hated them with the long patient hatred of people who cannot do anything about it. Concaire Muire, the last lord of the house, was the worst of them. Then, slowly, he went mad. The servants saw it first: the lord talking to the portraits, the lord counting the silver at night, the lord listening at doors. One winter night he went through the house with a blade, room by room, and when he had finished with his household he finished with himself.\n\nThey were all laid in the family tomb together, the lord and his lady, the heir and the hero, the ladies-in-waiting and the herbalist and the suitors who had come courting the daughters, because there was nobody left to sort them. The banshee keened for the house of Muire that night, the old folk say, and she has not stopped. The tomb is full now of the hungry things that gather wherever the dead are restless: hags that were once the family's nurses, murkmen out of the wet, creepers and devourers in the dark. The Muire hero still stands guard over his kin, loyal to a house that never earned it.\n\nEvery young Hibernian goes down into Muire Tomb sooner or later. Most of them come back up feeling sorry for someone, and are not sure who.",
-  "legend": "Every Hibernian's first real dungeon. Group up, mind the Hellhag if she is wandering, and pull the ladies-in-waiting carefully because they come in threes. Never whistle down there: the family wakes. And be polite to the Muire hero. You will kill him a dozen times, but be polite.",
+  "story": "The house of Muire was old in the Ardee country before it was rich. Its founder, Conaire Muire, the families of Ardee say, was a cattle-lord of the old kind, who took the land around the standing stones northwest of the town by being harder than his neighbours, and dug the family tomb into the hillside there so that his line would lie together on its own ground. The house kept the land the same way he had taken it, for generations, and the tomb filled slowly and properly, one Muire at a time, each carried down by the household with the banshee's keen going up from the hill, because the bean sí keens only for the old families and the Muires were one.\n\nThe Muires were rich, and they were cruel, and the serfs who worked their land around Ardee hated them with the long patient hatred of people who cannot do anything about it. Concaire Muire, the last lord of the house, was the worst of them. Then, slowly, he went mad. The servants saw it first: the lord talking to the portraits, the lord counting the silver at night, the lord listening at doors. One winter night he went through the house with a blade, room by room, and when he had finished with his household he finished with himself.\n\nThey were all laid in the family tomb together, the lord and his lady, the heir and the hero, the ladies-in-waiting and the herbalist and the suitors who had come courting the daughters, because there was nobody left to sort them. The banshee keened for the house of Muire that night, the old folk say, and she has not stopped. The tomb is full now of the hungry things that gather wherever the dead are restless: hags that were once the family's nurses, murkmen out of the wet, creepers and devourers in the dark. The Muire hero still stands guard over his kin, loyal to a house that never earned it.\n\nEvery young Hibernian goes down into Muire Tomb sooner or later. Most of them come back up feeling sorry for someone, and are not sure who.\n\nThe last lord was named Concaire, after the founder, with one letter more, and the serfs said afterwards that even his name had been greedy. What lies in the tomb now is the whole household of his last winter, laid down together with the generations below them, and it does not lie still. Quillan Muire, the lord's cousin, who had studied the old words in Tir na Nog and come home with words that burned, is down there among the family, and the Muire herbalist who nursed every Muire for thirty years still goes about the dead with her salves: when one of the family is hurt badly she mends them, and she strengthens the house's fighting men as she always did. Kacey Muire and the two other ladies-in-waiting keep together as they did in life. Beare and Alsandair, the heir and his younger brother, are there, and the Muire heroes, and the seven champions of the house guard, who still come together when one of them is called. Frang, a name the kitchen girl wrote down without saying what he was, is somewhere in the crypts.\n\nAround the family the tomb has filled with the things that gather wherever the dead are restless. The mummy hags of the upper halls were the family's nurses, the Ardee folk say, and still hum to nobody; a hag wizard mutters over the oldest dead in the deep vault. Murkmen rise out of the wet passage, corpse devourers work at the old bones in the crypts, tomb creepers and dwellers move in the dark, and at the bottom a death worm turns, older than anything else down there.\n\nWhy does it matter? Because every young Hibernian of the Ardee country goes down into Muire Tomb first. The rangers of Ardee all did: Fiadh, who found the pass to Sheeroe; Aoife ni Riain, who went to the Summoner's Hall; Echna, who said the word over Avartack. The priests of Ardee send the young down to lay the family to rest by name, Quillan and Conaire, Beare and Kacey and Alsandair, and the young come back up having learned what the realm's dead are like when nobody mourns them properly. The banshee mourns the Muires, and she has never stopped, because she is the only one who does.",
+  "legend": "Every Hibernian's first real dungeon. Group up, mind the Hellhag if she is wandering, and pull the ladies-in-waiting carefully because they come in threes. Never whistle down there: the family wakes. And be polite to the Muire hero. You will kill him a dozen times, but be polite. Quillan Muire is the one to plan for: he throws energy blasts (3.5-second casts) and calls the Muire herbalist from across the tomb, and she heals any of the family below half health and buffs the strength of the Muire heroes, the champions and Quillan. Kill the herbalist first, then Quillan. The seven Muire champions are the house guard and come as a group; pull them one room at a time. The ladies-in-waiting (Kacey Muire and two others) come in threes. For the Rest in Peace quest you need Quillan, Conaire, Beare, Kacey and Alsandair. In 2001-2002 players warned that the Hellhag roamed the tomb killing most things it met; keep an eye on the corners anyway.",
   "atmosphere": {
     "firstEntry": [
       "The house of Muire, laid down all together.",
       "Somewhere far below, a woman is keening.",
-      "Do not whistle. The family is sleeping."
+      "Do not whistle. The family is sleeping.",
+      "Faces scratched out of every portrait.",
+      "A herbalist hums over the family's wounds."
     ],
     "areas": [
       {
@@ -44,7 +71,53 @@
         "z": 16239,
         "radius": 1100,
         "lines": [
-          "Old portraits, faces scratched out."
+          "Old portraits, faces scratched out.",
+          "The door was closed from outside. Mostly."
+        ]
+      },
+      {
+        "name": "the hags' halls",
+        "x": 31800,
+        "y": 32000,
+        "z": 16042,
+        "radius": 1500,
+        "lines": [
+          "The family's nurses still keep the halls.",
+          "Hags hum lullabies to nobody."
+        ]
+      },
+      {
+        "name": "the wet passage",
+        "x": 31800,
+        "y": 34300,
+        "z": 15802,
+        "radius": 900,
+        "lines": [
+          "Murkmen rise out of the wet stone.",
+          "Water drips like a clock that lost count."
+        ]
+      },
+      {
+        "name": "the crypts",
+        "x": 31300,
+        "y": 31600,
+        "z": 15300,
+        "radius": 1800,
+        "lines": [
+          "Devourers at the old bones. Do not watch.",
+          "Tomb creepers move when the lamp is off them.",
+          "The seven champions of the house stand guard."
+        ]
+      },
+      {
+        "name": "the deep vault",
+        "x": 35380,
+        "y": 35540,
+        "z": 14768,
+        "radius": 800,
+        "lines": [
+          "A wizard-hag mutters over the oldest dead.",
+          "Something long and slow turns in the dark."
         ]
       }
     ]
@@ -53,30 +126,62 @@
     "lore": [
       "concaire muire went mad and killed his whole house, then himself. [they buried them all together|nobody left to sort them]",
       "the muire hero still guards his family down there. [loyal to a house that didnt deserve it|kinda sad really]",
-      "the serfs around ardee hated the muires. [cant say i blame them|greedy lot]"
+      "the serfs around ardee hated the muires. [cant say i blame them|greedy lot]",
+      "quillan muire has a herbalist with him. she heals the family when they get low. [kill her first|herbalist first]",
+      "the muire herbalist buffs the hero and the champions too. [shes the problem|kill the healer]",
+      "kacey muire was a lady in waiting. [she never comes alone|three of them]",
+      "conaire muire founded the house. concaire was the mad one. [similar names, very different men|confusing i know]",
+      "the mummy hags in muire tomb were the family nurses, they say. [creepy|sad]",
+      "the banshee keens for the old families. she never stopped for the muires",
+      "every ardee ranger went down muire tomb first. [aoife ni riain too|its tradition]",
+      "the muire champions are the house guard. [they come as a group|pull them carefully]",
+      "the ardee priests want the muires laid to rest by name. [quillan, conaire, beare, kacey, alsandair|rest in peace]"
     ],
     "rumour": [
       "[heard|someone said] the hellhag is wandering muire tomb again. [watch the corners|careful down there]",
-      "someone whistled in muire tomb [last night|today] and [the whole family woke up|three ladies came at once]"
+      "someone whistled in muire tomb [last night|today] and [the whole family woke up|three ladies came at once]",
+      "[heard|someone said] the hellhag was seen in the lower crypts again",
+      "[heard|someone said] the kitchen girl who got out through the drain wrote a book about the last winter",
+      "[word is|heard] the death worm at the bottom of muire tomb is [older than the tomb|bigger every year]",
+      "someone fought quillan without killing the herbalist and [the whole family stayed up|it took forever]",
+      "[heard|someone said] the mad lord scratched the faces out of the portraits himself",
+      "the muire hero is polite if you are, they say. [still kills you|worth a try]"
     ],
     "tell": [
-      "muire tomb near ardee, every hib's first dungeon. undead family, hags, murkmen. teens to twenties, no whistling"
+      "muire tomb near ardee, every hib's first dungeon. undead family, hags, murkmen. teens to twenties, no whistling",
+      "where is muire tomb? northwest of ardee in connacht, past the standing stones",
+      "is muire tomb hard? not if you group. kill the herbalist before quillan and mind the ladies in threes",
+      "whats in muire tomb? the muire family, hags, murkmen, corpse devourers, tomb creepers, a death worm at the bottom",
+      "what level is muire tomb? teens to late twenties. good first dungeon",
+      "who is quillan muire? the family's [caster|mage]. energy blasts, and he calls the herbalist to mend him"
     ]
   },
   "loremaster": {
-    "intro": "Muire Tomb, northwest of Ardee. The house of [Muire] was rich and cruel, and its last [lord] went mad. They are all down there together, and the [banshee] has not stopped.",
+    "intro": "Muire Tomb, northwest of Ardee. The house of [Muire] was rich and cruel, and its last [lord] went mad. They are all down there together, [Quillan] and his [herbalist] among them, and the [banshee] has not stopped.",
     "topics": {
       "Muire": "A rich house of the Ardee country, hated by its serfs. Lady, heir, hero, ladies-in-waiting, suitors: all laid in one tomb.",
       "lord": "Concaire Muire. He went through his house one winter night with a blade, and then turned it on himself.",
-      "banshee": "She keens only for the old families. She keened for the Muires and never stopped. Listen, in the lower halls."
+      "banshee": "She keens only for the old families. She keened for the Muires and never stopped. Listen, in the lower halls.",
+      "Quillan": "The lord's cousin, who studied the old words in Tir na Nog and came home with words that burn. He calls the [herbalist] to him when he is pressed. The priests of Ardee want him laid to rest first.",
+      "herbalist": "She nursed every Muire for thirty years and nurses them still: she mends any of the family who is badly hurt and strengthens the house's [champions]. Deal with her before her patients.",
+      "Conaire": "The founder of the house, a cattle-lord who took the land by the standing stones and dug the tomb. The mad last [lord], Concaire, was named for him.",
+      "Kacey": "Kacey Muire, a lady-in-waiting. She and the two others keep together in death as they did in life.",
+      "champions": "The seven champions of the house guard, and the Muire heroes. Loyal to a house that never earned it; call one and the others come.",
+      "rest": "The priests of Ardee ask the young to lay the family to rest by name: [Quillan], [Conaire], Beare the heir, [Kacey], and Alsandair the younger son. Frang is down there too; nobody asks for him."
     }
   },
   "book": {
     "title": "The Last Winter of the House of Muire",
     "pages": [
-      "I was a kitchen girl at the Muire house the winter it ended. The lord had been strange since the harvest. He counted the silver every night and made us count it again in the morning. He stood outside the nursery door and listened. He had the portraits turned to face the wall and then turned back. My mother said a lord like that is a storm coming, and to keep my shawl by the door.",
-      "I was in the scullery when it began and I went out through the drain, which is how I am alive to write this. I heard it go room by room. I heard the hero shout in the hall, the young one who was always so loyal, and then not shout. In the morning the priests came and there was nobody to bury but everyone. They put them all in the tomb. That night I heard the keening from the hill, and every night since."
+      "I was a kitchen girl at the Muire house the winter it ended. The lord had been strange since the harvest. He counted the silver every night and made us count it again in the morning. He stood outside the nursery door and listened. He had the portraits turned to face the wall and then turned back, and one morning their faces were scratched out, all of them, and nobody would say who had done it. My mother said a lord like that is a storm coming, and to keep my shawl by the door.",
+      "I was in the scullery when it began and I went out through the drain, which is how I am alive to write this. I heard it go room by room. I heard the hero shout in the hall, the young one who was always so loyal, and then not shout. In the morning the priests came from Ardee and there was nobody to bury but everyone. They put them all in the tomb by the standing stones, the founder's tomb, with the old Muires below. That night I heard the keening from the hill, and I have heard it every night since.",
+      "I will write down the family as I knew them, because somebody should. Master Quillan, the lord's cousin, who had been to Tir na Nog and come home with words that burned, and frightened the stable boys. The herbalist, who had nursed every Muire for thirty years and nursed me once when I scalded my arm. Mistress Kacey and the two other ladies, always together. Beare the heir and young Alsandair. The heroes, and the seven of the house guard. And Frang, whom I will not describe, because the herbalist told me not to.",
+      "The priests of Ardee send the young people down now, to lay the family to rest by name, and they come up white and quiet and sorry for someone, and are not sure who. I tell them it is the banshee they should be sorry for. She keens only for the old families, and she has keened for the Muires every night since that winter, because she is the only one left who will. I keen with her sometimes, from my door, under my breath. I was the kitchen girl. Somebody should."
     ]
   },
-  "bosses": []
+  "bosses": [],
+  "era": "hib-the-old-families",
+  "factions": [
+    "restless-dead"
+  ]
 }
