@@ -34,7 +34,8 @@
       "bosses": [
         "fornfrusenen",
         "glacier-giant",
-        "mahattava"
+        "mahattava",
+        "mortufoghus"
       ]
     },
     {
@@ -212,9 +213,11 @@
       ],
       "places": [
         "iarnwood",
+        "modernagrav",
         "tuscaran-glacier"
       ],
       "bosses": [
+        "basilius",
         "chief-tarek",
         "council-hord",
         "council-nokkvi",
@@ -320,9 +323,11 @@
       "name": "The Morvalt",
       "summary": "Prehistoric savages who overran Aegir and hold Trollheim; the crazed ones dig for their Mother on Modernagrav.",
       "places": [
+        "modernagrav",
         "trollheim"
       ],
       "bosses": [
+        "basilius",
         "dagar",
         "fostra-orm"
       ]
@@ -373,7 +378,8 @@
       "summary": "The free dwarf clans of Aegir: the Remnants of Faraheim with their griffons, and Chief Tarek's people under the iron trees.",
       "places": [
         "iarnvidiurs-lair",
-        "iarnwood"
+        "iarnwood",
+        "modernagrav"
       ],
       "bosses": [
         "chief-tarek"
@@ -409,6 +415,7 @@
       "places": [
         "iarnvidiurs-lair",
         "iarnwood",
+        "modernagrav",
         "tuscaran-glacier"
       ],
       "bosses": [
@@ -417,6 +424,7 @@
         "hurika",
         "lydsyg",
         "mahattava",
+        "mortufoghus",
         "rotodjur",
         "torst"
       ]
