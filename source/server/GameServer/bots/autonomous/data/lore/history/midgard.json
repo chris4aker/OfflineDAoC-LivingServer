@@ -125,6 +125,7 @@
         "ingardild",
         "kariig",
         "kleng",
+        "leildolf",
         "ljornrn",
         "mokerkialfi",
         "raumarik-revenant",
@@ -201,21 +202,28 @@
       ],
       "bosses": [
         "aros-the-spiritmaster",
+        "captain-gruff",
+        "cargila",
         "fas",
+        "fjalar",
+        "galar",
         "grand-summoner-govannon",
         "gudlaugr",
         "hamar",
         "igo",
         "jarl-ormarr",
         "mistress-of-runes",
+        "nagoltooth",
         "ond",
         "rottild-the-traitor",
+        "stripe",
         "summoned-guardian",
         "summoner-cunovinda",
         "summoner-lossren",
         "summoner-roesia",
         "thane-dyggve",
-        "ydenia-of-the-seithkona"
+        "ydenia-of-the-seithkona",
+        "zrit-zrit"
       ]
     },
     {
@@ -501,6 +509,7 @@
         "iarnvidiur",
         "ingardild",
         "kleng",
+        "leildolf",
         "ljornrn",
         "skoll",
         "steinolf",
@@ -614,6 +623,7 @@
       ],
       "bosses": [
         "ancient-syver",
+        "cargila",
         "dyranapur",
         "goretooth",
         "hurika",
@@ -624,13 +634,16 @@
         "masher",
         "morbax",
         "mortufoghus",
+        "nagoltooth",
         "old-matriarch",
         "rolf",
         "rotodjur",
         "serk",
         "shredclaw",
+        "stripe",
         "torst",
-        "valmak"
+        "valmak",
+        "zrit-zrit"
       ]
     },
     {
@@ -644,7 +657,9 @@
         "vanern-swamp"
       ],
       "bosses": [
+        "fjalar",
         "fjall",
+        "galar",
         "loken",
         "storslange",
         "thorkatla",
@@ -759,6 +774,7 @@
         "yggdra-forest"
       ],
       "bosses": [
+        "captain-gruff",
         "fjall",
         "geyra",
         "gunflor"

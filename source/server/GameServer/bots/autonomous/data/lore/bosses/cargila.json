@@ -1,0 +1,71 @@
+{
+  "id": "cargila",
+  "name": "Cargila",
+  "npcNames": [
+    "Cargila"
+  ],
+  "locationId": "skona-ravine",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "wild-beasts"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Cargila is a level-40 timber cat near the entrance to Varulvhamn (706,047/925,117) among ra of willow; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Cargila's Blessing' (Geiri of Nalliten): 'Discover the secret of Cargila's nine thousand lives. Cargila is a timber cat in Skona Ravine'; players return to tell of 'the magical boots'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The werewolves' tale of Cargila's lives is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Cargila is a timber cat who lives by the mouth of Varulvhamn, and Geiri of Nalliten swears she has nine thousand lives. The werewolves say it is fewer, but not by much. She was a cat of the varulv's own hunting grounds once, the story goes, the favourite of a werewolf lord who wore a pair of boots that let him walk on the trees' own breath; when the lord died in the haven below, Cargila took the boots' luck for herself, as cats do, and has not stayed dead since.\n\nThe hunters of Nalliten have killed her more times than they can count and she is always back by the haven's mouth among the willow-ras, washing her face. Geiri sends the young to find the secret. The ones who come back say it is the boots, and Geiri says it is not boots, it is a cat, and the boots are only how she keeps the secret. The varulv at the haven's mouth step round her.",
+  "legend": "Cargila is a level 40 timber cat near the Varulvhamn entrance in Skona, among the ra of willow (31-34), for Geiri's Cargila's Blessing in Nalliten (the 'magical boots'). No faction, no spells, a plain hard-hitting cat. Watch the willow-ras round her and the werewolf traffic at the haven's mouth. She comes back quickly, which is the joke: nine thousand lives. Go at night or day, she's always there washing her face.",
+  "yells": {
+    "aggro": [
+      "(A long hiss.)",
+      "(Cargila lashes her tail and leaps.)"
+    ],
+    "death": [
+      "(A yowl, and stillness. For now.)"
+    ],
+    "slay": [
+      "(She washes her paw.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A timber cat washes her face by the haven's mouth."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "cargila is the 40 timber cat by the varulvhamn entrance",
+      "willow ras near her, clear them"
+    ],
+    "aftermathWin": [
+      "cargila down, again",
+      "back to geiri about the boots"
+    ],
+    "rumour": [
+      "cargila has nine thousand lives, geiri says",
+      "cargila took the luck of a werewolf lords boots when he died"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cargila",
+    "text": "A timber cat at the mouth of Varulvhamn with nine thousand lives, by Geiri of Nalliten's count: the luck of a dead werewolf lord's boots, taken as cats take things. The [werewolves] step round her."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took one of Cargila's nine thousand lives in Skona in {minutes} minutes."
+  }
+}
