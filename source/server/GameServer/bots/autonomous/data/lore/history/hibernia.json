@@ -141,7 +141,8 @@
       ],
       "places": [
         "coruscating-mine",
-        "hibernia-wilds"
+        "hibernia-wilds",
+        "lough-derg"
       ],
       "bosses": [
         "atur",
@@ -444,7 +445,8 @@
       "name": "The Sidhe",
       "summary": "The people of the mounds and the courts beyond the Veil: fairy queens and lords of the wilds, whose songs and bargains the hill country fears.",
       "places": [
-        "hibernia-wilds"
+        "hibernia-wilds",
+        "lough-derg"
       ],
       "bosses": [
         "badb",
@@ -615,7 +617,9 @@
       "id": "siabra",
       "name": "The Siabra",
       "summary": "The siabra, cousins of the elves who did not go behind the Veil, and who hold great stretches of the old country against the realm: the dergan furies and enchanters of Lough Derg, the magi of the Cullen bog, the camps of the Silvermine and the Shannon shore.",
-      "places": [],
+      "places": [
+        "lough-derg"
+      ],
       "bosses": []
     },
     {
