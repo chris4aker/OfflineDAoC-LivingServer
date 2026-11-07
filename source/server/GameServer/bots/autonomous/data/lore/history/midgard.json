@@ -144,6 +144,7 @@
       ],
       "bosses": [
         "aros-the-spiritmaster",
+        "grand-summoner-govannon",
         "gudlaugr",
         "hamar",
         "jarl-ormarr",
@@ -443,7 +444,9 @@
       "places": [
         "dodens-gruva"
       ],
-      "bosses": []
+      "bosses": [
+        "grand-summoner-govannon"
+      ]
     },
     {
       "id": "lords-of-the-undead",
@@ -452,14 +455,18 @@
       "places": [
         "dodens-gruva"
       ],
-      "bosses": []
+      "bosses": [
+        "grand-summoner-govannon"
+      ]
     },
     {
       "id": "sidhe-of-the-hall",
       "name": "The Sidhe of the Hall",
       "summary": "Sidhe magickers, protectors and a high lord who serve the summoners as if they had forgotten whose they are (shared).",
       "places": [],
-      "bosses": []
+      "bosses": [
+        "grand-summoner-govannon"
+      ]
     },
     {
       "id": "werewolves",
