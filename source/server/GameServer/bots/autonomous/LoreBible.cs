@@ -38,6 +38,14 @@ public sealed class LoreBible
     /// <summary>Another place or boss this one knows ("related": rival, servant, kin, master...).</summary>
     public sealed record Related(string Id, string Relation);
 
+    /// <summary>
+    /// One named member of an order file (tier "order": the Darkness Falls court's knights, inquisitors, mutilators): its own
+    /// post, story, yells, lair line and loremaster topic. Its name is one of the file's npcNames, which is how the engine
+    /// finds the order; the channels speak the order-wide fields, and these are kept and checked for later use.
+    /// </summary>
+    public sealed record Member(string Name, int Level, string Post, string Story, string[] Aggro, string[] Death, string[] Slay,
+        string[] LairEntry, string LoremasterKeyword, string LoremasterText);
+
     /// <summary>An event in a realm's history.</summary>
     public sealed record HistoryEvent(string Name, string Text, string[] Places, string[] Bosses);
 
@@ -139,10 +147,13 @@ public sealed class LoreBible
         public string[] BookPages { get; init; } = [];
         /// <summary>Exact spawn names, for a plain world spawn with no catalog entry or script class (coverage audit). Optional.</summary>
         public string[] NpcNames { get; init; } = [];
-        /// <summary>"minor" (level 35-49, the minor depth floor) or empty (a full boss).</summary>
+        /// <summary>"minor" (level 35-49, the minor depth floor), "epic", "order" (a file of named members) or empty (a full boss).</summary>
         public string Tier { get; init; } = string.Empty;
         public bool IsMinor => string.Equals(Tier, "minor", StringComparison.OrdinalIgnoreCase);
         public bool IsEpic => string.Equals(Tier, "epic", StringComparison.OrdinalIgnoreCase);
+        public bool IsOrder => string.Equals(Tier, "order", StringComparison.OrdinalIgnoreCase);
+        /// <summary>The named members of an order file ("members"). Optional.</summary>
+        public Member[] Members { get; init; } = [];
         /// <summary>Each realm's own take (a neutral boss: Govannon). Optional ("realmTakes").</summary>
         public IReadOnlyDictionary<string, RealmTake> RealmTakes { get; init; } = new Dictionary<string, RealmTake>();
         public string File { get; init; } = string.Empty;
@@ -431,7 +442,8 @@ public sealed class LoreBible
     private static readonly string[] LocationBotKeys = ["lore", "rumour", "tell"];
     private static readonly string[] BossKeys =
         ["id", "name", "catalogKey", "locationId", "realm", "aliases", "facts", "story", "legend", "yells", "atmosphere", "botLines", "loremasterTopic", "bookPage", "bookPages", "chronicle", "realmTakes",
-         "era", "factions", "related", "npcNames", "tier", "chapters"];
+         "era", "factions", "related", "npcNames", "tier", "chapters", "members"];
+    private static readonly string[] MemberKeys = ["name", "level", "post", "story", "yells", "atmosphere", "loremasterTopic"];
     private static readonly string[] TakeKeys = ["story", "legend", "botLines", "loremaster", "loremasterTopic"];
     private static readonly string[] YellKeys = ["aggro", "phases", "death", "slay"];
     private static readonly string[] BossAtmosphereKeys = ["lairEntry", "phases", "realmFirstKill", "wake"];
@@ -482,7 +494,7 @@ public sealed class LoreBible
         return fallback;
     }
 
-    private static ushort[] Ushorts(JsonElement e, string name, string where, List<string> problems)
+    private static ushort[] Ushorts(JsonElement e, string name, string where, List<string> problems, int min = 1)
     {
         if (e.ValueKind != JsonValueKind.Object || !e.TryGetProperty(name, out JsonElement v))
             return [];
@@ -494,7 +506,7 @@ public sealed class LoreBible
         var list = new List<ushort>();
         foreach (JsonElement x in v.EnumerateArray())
         {
-            if (x.ValueKind == JsonValueKind.Number && x.TryGetInt32(out int i) && i is > 0 and <= ushort.MaxValue)
+            if (x.ValueKind == JsonValueKind.Number && x.TryGetInt32(out int i) && i >= min && i <= ushort.MaxValue)
                 list.Add((ushort)i);
             else
                 problems.Add($"{where}: \"{name}\" holds {x}, not a region or zone number");
@@ -637,7 +649,7 @@ public sealed class LoreBible
             book.ValueKind == JsonValueKind.Object ? new Book(Str(book, "title"), Strs(book, "pages", file, problems)) : null,
             Strs(root, "bosses", file, problems))
         {
-            Zones = Ushorts(root, "zones", file, problems),
+            Zones = Ushorts(root, "zones", file, problems, min: 0),
             RaidForming = Strs(atmosphere, "raidForming", file, problems),
             Aliases = Strs(root, "aliases", file, problems),
             RealmTakes = ParseTakes(root, file, LocationBotKeys, problems),
@@ -680,8 +692,42 @@ public sealed class LoreBible
             Era = Str(root, "era"),
             Factions = Strs(root, "factions", file, problems),
             RelatedTo = ParseRelated(root, file, problems),
+            Members = ParseMembers(root, file, problems),
             File = file,
         };
+    }
+
+    private static Member[] ParseMembers(JsonElement root, string file, List<string> problems)
+    {
+        if (!root.TryGetProperty("members", out JsonElement v))
+            return [];
+        if (v.ValueKind != JsonValueKind.Array)
+        {
+            problems.Add($"{file}: \"members\" must be a list");
+            return [];
+        }
+        var members = new List<Member>();
+        foreach (JsonElement m in v.EnumerateArray())
+        {
+            if (m.ValueKind != JsonValueKind.Object)
+            {
+                problems.Add($"{file}: each member must be an object");
+                continue;
+            }
+            string where = $"{file} member \"{Str(m, "name")}\"";
+            Unknown(m, MemberKeys, where, problems);
+            JsonElement yells = Obj(m, "yells");
+            Unknown(yells, ["aggro", "death", "slay"], where + " yells", problems);
+            JsonElement atmosphere = Obj(m, "atmosphere");
+            Unknown(atmosphere, ["lairEntry"], where + " atmosphere", problems);
+            JsonElement topic = Obj(m, "loremasterTopic");
+            Unknown(topic, ["keyword", "text"], where + " loremasterTopic", problems);
+            int level = m.TryGetProperty("level", out JsonElement l) && l.ValueKind == JsonValueKind.Number && l.TryGetInt32(out int i) ? i : 0;
+            members.Add(new Member(Str(m, "name"), level, Str(m, "post"), Str(m, "story"), Strs(yells, "aggro", where, problems),
+                Strs(yells, "death", where, problems), Strs(yells, "slay", where, problems), Strs(atmosphere, "lairEntry", where, problems),
+                Str(topic, "keyword"), Str(topic, "text")));
+        }
+        return members.ToArray();
     }
 
     #endregion
@@ -997,8 +1043,24 @@ public sealed class LoreBible
                 $"{f}: loremasterTopic needs both keyword and text");
             foreach (string page in b.BookPages)
                 CheckWords(page, 50, 160, "bookPage", f);
-            Need(string.IsNullOrEmpty(b.Tier) || b.IsMinor || b.IsEpic || string.Equals(b.Tier, "major", StringComparison.OrdinalIgnoreCase),
-                $"{f}: tier \"{b.Tier}\" must be minor, major or epic (or left out)");
+            Need(string.IsNullOrEmpty(b.Tier) || b.IsMinor || b.IsEpic || b.IsOrder || string.Equals(b.Tier, "major", StringComparison.OrdinalIgnoreCase),
+                $"{f}: tier \"{b.Tier}\" must be minor, major, epic or order (or left out)");
+            Need(b.Members.Length == 0 || b.IsOrder, $"{f}: \"members\" belong to a tier \"order\" file");
+            foreach (Member member in b.Members)
+            {
+                string mf = $"{f} member \"{member.Name}\"";
+                Need(!string.IsNullOrWhiteSpace(member.Name) && b.NpcNames.Contains(member.Name, StringComparer.Ordinal),
+                    $"{mf}: a member's name must be one of the file's npcNames");
+                CheckYells(member.Aggro, "aggro", mf);
+                CheckYells(member.Death, "death", mf);
+                CheckYells(member.Slay, "slay", mf);
+                CheckAtmosphere(member.LairEntry, "lairEntry", mf);
+                Need(string.IsNullOrWhiteSpace(member.LoremasterKeyword) == string.IsNullOrWhiteSpace(member.LoremasterText),
+                    $"{mf}: loremasterTopic needs both keyword and text");
+            }
+            foreach (var group in b.Members.GroupBy(m => m.Name ?? string.Empty, StringComparer.Ordinal).Where(g => g.Count() > 1))
+                problems.Add($"{f}: member \"{group.Key}\" is listed {group.Count()} times");
+            CheckGameTalk(b.Members.Select(m => ($"member \"{m.Name}\" story", m.Story)), f, warnings);
             CheckChapters(b.Chapters, f);
             CheckGameTalk(InWorldTexts(b.Story, b.Chapters, b.BookPages, "bookPage", b.RealmTakes), f, warnings);
             foreach ((string text, string what) in new[] { (b.ChronicleWin, "chronicle.win"), (b.ChronicleLoss, "chronicle.loss") })

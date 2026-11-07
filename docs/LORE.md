@@ -136,7 +136,7 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 |---|---|---|
 | `id`, `name`, `realm` | yes | kebab id = file name; realm Albion, Midgard, Hibernia or Neutral |
 | `regions` | yes (may be `[]`) | region ids; `[]` for a place with no known region (its areas name their own) |
-| `zones` | | zone ids: the location is those zones only (a lair inside an open-world region) |
+| `zones` | | zone ids: the location is those zones only (a lair inside an open-world region). Zone 0 is a zone (Camelot Hills); region 0 is not |
 | `summary` | yes | one sentence |
 | `facts` | yes (1+) | `{text, provenance, source}`; provenance `mythic`, `game`, `legend`, `myth`, `original`; a source for all but `original` |
 | `story`, `legend` | yes | no maximum; under 130 / 30 words is a warning. Epic tier: `story` is a 300-500 word summary |
@@ -160,7 +160,8 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 |---|---|---|
 | `id`, `name`, `realm`, `locationId` | yes | the realm is its location's, or the location is Neutral |
 | `catalogKey` or `npcNames` | one of them | `catalogKey`: the epic-encounters.json id or the script class (`MidGjalpinulva`); `npcNames`: exact spawn names of a plain world spawn (a family may list every member). The engine matches the class first, then the exact name |
-| `tier` | | `"epic"`, `"minor"` (level 35-49, the minor floor) or `"major"`/left out |
+| `tier` | | `"epic"`, `"minor"` (level 35-49, the minor floor), `"order"` (a file of named members, below) or `"major"`/left out |
+| `members` | | tier `"order"` only: `[{name, level, post, story, yells: {aggro, death, slay}, atmosphere: {lairEntry}, loremasterTopic: {keyword, text}}]`, one per named member (the Darkness Falls orders). Each name is one of the file's `npcNames`, which is how a member's spawn finds the file; lines are checked like the boss's own (yells 200, lairEntry 60 characters), stories for game talk. The channels speak the order-wide fields; the members' own lines are kept for later |
 | `facts`, `story`, `legend` | yes | as for locations (warnings under 70 / 30 words) |
 | `chapters`, `era`, `factions`, `related`, `aliases` | | as for locations |
 | `yells` | | `{aggro, phases: [{trigger, text}], death, slay}`, 200 characters each |

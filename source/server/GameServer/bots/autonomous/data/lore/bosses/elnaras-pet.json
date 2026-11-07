@@ -31,12 +31,7 @@
       "(bark like a door turns toward you)",
       "(it steps between you and Elnara)"
     ],
-    "phases": [
-      {
-        "trigger": "partnerDead",
-        "text": "(the great treant bends over its fallen keeper)"
-      }
-    ],
+    "phases": [],
     "death": [
       "(the great treant falls across the ledge)",
       "(a cutting of Treal, uprooted)"
@@ -52,12 +47,7 @@
       "A treant half again the height of any other.",
       "Its crown bends over someone, at dusk."
     ],
-    "phases": [
-      {
-        "trigger": "partnerDead",
-        "text": "Elnara's treant bends over its keeper."
-      }
-    ],
+    "phases": [],
     "realmFirstKill": "Elnara's great treant has fallen across the ledge."
   },
   "botLines": {

@@ -113,7 +113,7 @@
       "story": "To Albion Gnat is a marsh-sprite of Avalon's drowned orchards, burned out by the drakoran, that whistles the old gardeners' frost-warning and brings fire after it. It visits Hy Brasil; it will go home.",
       "legend": "Albions say kill it quickly and tell the Hibernians it is only on loan.",
       "botLines": {
-        "lore": [
+        "rumour": [
           "gnat is avalon's. a marsh sprite [from the drowned orchards|burned out by the drakoran]"
         ]
       }
@@ -122,7 +122,7 @@
       "story": "To Midgard Gnat is a troll-child's pet from Aegir, lost when the Morvalt came, whistling for a master who never answers. It went where the whistling is answered; in Hy Brasil the ants answer.",
       "legend": "Norsemen say it is a lost pet and the kind thing is to finish it fast.",
       "botLines": {
-        "lore": [
+        "rumour": [
           "gnat is a lost troll pet from aegir. [kind thing is kill it quick|poor thing]"
         ]
       }
@@ -131,7 +131,7 @@
       "story": "To Hibernia Gnat is simply ours: it walks the Vale of Balor by Aalid Feie, it was the first thing through the mist, and it chose the vale. The camp never counts its whistles aloud.",
       "legend": "Hibernians say it lives here, which is the one argument nobody else can make.",
       "botLines": {
-        "lore": [
+        "rumour": [
           "gnat lives in the vale of balor. [the albs and norse can argue|its ours]"
         ]
       }

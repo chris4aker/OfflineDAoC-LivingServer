@@ -348,6 +348,45 @@ namespace DOL.GS.Tests
             Assert.That(ProblemsWith(editBoss: b => b.Replace("\"trigger\": \"orbDeath\"", "\"trigger\": \"partnerDead\"")),
                 Has.Some.Contains("needs partners"));
 
+        /// <summary>Neutral writer (PR #98): an order file (tier "order") keeps each named member's post, story, yells, lair line and topic.</summary>
+        [Test]
+        public void OrderFilesKeepTheirNamedMembers()
+        {
+            const string Order = "\"tier\": \"order\", \"npcNames\": [\"Knight Ain\"], \"members\": [{\"name\": \"Knight Ain\", \"level\": 70, " +
+                "\"post\": \"the east ward\", \"story\": \"A knight of the chapter, posted to the east ward.\", \"yells\": {\"aggro\": [\"Kneel.\"], " +
+                "\"death\": [\"The Roll...\"], \"slay\": [\"Struck off.\"]}, \"atmosphere\": {\"lairEntry\": [\"A knight stands in the ward.\"]}, " +
+                "\"loremasterTopic\": {\"keyword\": \"knight ain\", \"text\": \"A knight of the chapter.\"}}], \"locationId\": \"krondon\"";
+            string With(string boss, string order) => boss.Replace("\"locationId\": \"krondon\"", order);
+            Assert.That(ProblemsWith(editBoss: b => With(b, Order)), Is.Empty);
+            Assert.That(ProblemsWith(editBoss: b => With(b, Order.Replace("\"tier\": \"order\", ", ""))), Has.Some.Contains("belong to a tier \"order\" file"));
+            Assert.That(ProblemsWith(editBoss: b => With(b, Order.Replace("[\"Knight Ain\"]", "[\"Knight Haag\"]"))), Has.Some.Contains("one of the file's npcNames"));
+            Assert.That(ProblemsWith(editBoss: b => With(b, Order.Replace("\"post\":", "\"rank\": \"x\", \"post\":"))), Has.Some.Contains("unknown field \"rank\""));
+            Assert.That(ProblemsWith(editBoss: b => With(b, Order.Replace("A knight stands in the ward.", new string('x', 61)))), Has.Some.Contains("lairEntry"));
+            Assert.That(ProblemsWith(editBoss: b => b.Replace("\"locationId\": \"krondon\"", "\"tier\": \"guild\", \"locationId\": \"krondon\"")),
+                Has.Some.Contains("must be minor, major, epic or order"));
+
+            string root = RepoRoot();
+            string dir = FixtureDir(root);
+            LoreBible bible = LoreBible.Parse(new[]
+            {
+                ("locations/krondon.json", File.ReadAllText(Path.Combine(dir, "locations/krondon.json"))),
+                ("bosses/scurceol-hyrde.json", With(File.ReadAllText(Path.Combine(dir, "bosses/scurceol-hyrde.json")), Order)),
+            });
+            LoreBible.Boss order = bible.BossById("scurceol-hyrde");
+            Assert.That(order.IsOrder, Is.True);
+            Assert.That(order.Members.Select(m => (m.Name, m.Level, m.Post, m.LairEntry.Length, m.LoremasterKeyword)),
+                Is.EqualTo(new[] { ("Knight Ain", 70, "the east ward", 1, "knight ain") }));
+            Assert.That(bible.BossForName("Knight Ain")?.Id, Is.EqualTo("scurceol-hyrde"), "the order is found by a member's spawn name");
+        }
+
+        /// <summary>Camelot Hills is zone 0 of region 1: "zones" may hold 0, "regions" may not.</summary>
+        [Test]
+        public void ZoneZeroIsAZoneButRegionZeroIsNot()
+        {
+            Assert.That(ProblemsWith(l => l.Replace("\"regions\": [61]", "\"regions\": [61, 1], \"zones\": [0]")), Is.Empty);
+            Assert.That(ProblemsWith(l => l.Replace("\"regions\": [61]", "\"regions\": [0, 61]")), Has.Some.Contains("holds 0, not a region or zone number"));
+        }
+
         #endregion
 
         #region Depth: lengths, books, history, links (owner 2026-11-06, LORE-1.2-DEPTH.md)

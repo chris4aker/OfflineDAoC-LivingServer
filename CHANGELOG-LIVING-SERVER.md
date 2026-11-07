@@ -12,8 +12,11 @@ Older entries below keep the names they were written with.
 
 **The lore engine: dungeons and bosses with a story.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
-the part that shows it to you. The stories themselves arrive with the lore writers' files; until then only Krondon and its
-storm-keeper, Scurceol Hyrde, are filled in, as the first example.
+the part that shows it to you. All the stories are now in: 107 places and 578 bosses (with 4 realm histories), written for
+Albion, Midgard, Hibernia and the neutral places, from the dragons and epic dungeons down to the named spawns of every zone.
+Where Mythic told a story it is kept (in our own words, with its source); where it did not, the Living Server wrote one. The
+lore's own characters no longer share a name with a trainer, merchant or banker of their realm. The lore is checked by
+automated tests; nobody has read it in game yet.
 
 - **Atmosphere lines.** Short lines in the middle of the screen, like the ones for a keep taken or a relic:
   - the first time each day you walk into a dungeon or epic zone ("Old words are carved here. The ogres cannot read them.");
