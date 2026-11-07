@@ -699,6 +699,14 @@ gamebot raids, and these came out of it:
   jail landing, and the tactics' waiting spots (Easmarach's waterfall stands, the Sacristan's stations, the Vifil tunnel,
   Kula's frost circle, the Apocalypse room), checked both ways, to the boss and back.
 
+**Epic encounter play test, round 2.**
+
+- **A brush with a named monster on the way no longer counts as the raid's wipe.** A dungeon raid counted an attempt as a
+  wipe when the encounter healed back to full after being taken to 85% or lower. In Caer Sidi a calcified manes (a named
+  monster on the way) nicked to 84% and left by 91 of 95 living raiders was counted as the raid's first wipe and called
+  the Special Forces. A reset now counts as a wipe only from 70% or lower (Spindler Broodmother lost at 42% still does);
+  half the raid falling is a wipe as before.
+
 ## Beta 1.1.2 (in development)
 
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized

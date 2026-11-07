@@ -194,11 +194,17 @@ namespace DOL.GS
 
         /// <summary>
         /// An attempt on a named encounter failed when at least eight raiders were in it and half of them fell (dead,
-        /// released or gone from the dungeon), or when the encounter healed back to 95% after being taken to 85% or
-        /// lower (it reset: nobody was left fighting it).
+        /// released or gone from the dungeon), or when the encounter healed back to 95% after being taken to
+        /// <see cref="ResetWipeLowestPercent"/> or lower (it reset: nobody was left fighting it).
         /// </summary>
         public static bool IsWipe(int engaged, int fallen, int healthPercent, int lowestPercent) =>
-            engaged >= MinimumRaidersAtTarget && (fallen * 2 >= engaged || healthPercent >= 95 && lowestPercent <= 85);
+            engaged >= MinimumRaidersAtTarget && (fallen * 2 >= engaged || healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent);
+
+        /// <summary>How low a reset encounter must have been for the reset to count as the raid's wipe: 70% (play test
+        /// 2026-11-07: a calcified manes, a named trash monster on Caer Sidi's way, taken to 84% and left by 91 of 95 living
+        /// raiders, was counted as the raid's first wipe; the next such brush would have defeated a raid that had lost nobody).
+        /// A boss the raid wore down and then lost (Spindler Broodmother from 42%) still counts.</summary>
+        public const int ResetWipeLowestPercent = 70;
 
         /// <summary>
         /// A failed attempt counts against the raid (a wipe: one of its two tries, Special Forces called) only when it was the

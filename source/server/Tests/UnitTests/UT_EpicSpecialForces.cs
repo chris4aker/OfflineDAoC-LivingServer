@@ -21,6 +21,8 @@ namespace DOL.UnitTests
         [TestCase(60, 29, 60, 45, false)]   // most still standing, the encounter still hurt: they broke off
         [TestCase(60, 5, 100, 45, true)]    // it reset to full after being taken to 45%: nobody was left on it
         [TestCase(60, 5, 100, 90, false)]   // barely touched and back to full: not a real attempt
+        [TestCase(95, 4, 95, 84, false)]    // play test 2026-11-07: a named trash monster nicked to 84% and left: no wipe
+        [TestCase(124, 17, 100, 42, true)]  // play test 2026-11-07: Spindler Broodmother worn to 42% and lost: a wipe
         [TestCase(7, 7, 100, 10, false)]    // a handful who wandered in is not the raid
         [TestCase(8, 4, 50, 40, true)]
         public void AWipeIsHalfTheAttemptFallenOrAResetAfterRealDamage(int engaged, int fallen, int health, int lowest, bool wipe) =>
