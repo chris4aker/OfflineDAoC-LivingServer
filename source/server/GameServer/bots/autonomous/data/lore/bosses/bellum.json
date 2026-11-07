@@ -1,0 +1,124 @@
+{
+  "id": "bellum",
+  "name": "Bellum",
+  "catalogKey": "caer-sidi/bellum",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 100,000 health; the second Horseman, a minute after Fames. Grants one minute to prepare for war.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "Raises three 'war incarnate' weapons that strike with crush, slash and thrust; takes 40% less from melee.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Bellum is war, and he is honest about it. When Fames falls he gives the raid a soldier's courtesy, a single minute to prepare, and then he draws every weapon there has ever been. Three of them rise around him on their own, the hammer, the blade and the spear, war incarnate in its oldest shapes, and they fight as soldiers fight, without hatred and without stopping. He shrugs off steel the way a veteran shrugs off a bruise. Of the four riders he is the one the dead of Caer Sidi love best, for most of them died in his service.\n\nWar is the second road to the dead, and the keepers named its rider Bellum. He was the first prisoner Arawn ever locked in Caer Sidi who was not a man: the war-spirit that walks beside every army, given a body so that it could be kept. The dead of the gaol love him, because most of them died in his service, and Warlord Dorinakka in the yard below salutes toward his hall before every drill.\n\nHow he fights. He gives a soldier's courtesy, one minute and no more, and then he draws every weapon there has ever been. Three of them rise around him on their own, war incarnate in its oldest shapes: the hammer that crushes, the blade that slashes, the spear that thrusts. They fight without hatred and without stopping. He himself shrugs off steel as a veteran shrugs off a bruise, and only the casters' spells cut him as they should. When he falls, Morbus comes a minute later, quiet and pale.",
+  "legend": "A minute after Fames. Bellum calls three floating weapons, crush, slash and thrust; groups split to kill them while the tanks hold him, and the melee keep the weapons busy. He takes 40% less from melee than from spells, so the casters do the real work on him. Watch the weapons in the healers; they hit like the weapons they are. Rest after he falls: Morbus is a minute behind. Rotate the off-tanks on the hammer; it hits cloth like a falling wall. The sword and spear are kinder, but not by much. War is honest, the old hands say: what he shows you is what he does.",
+  "yells": {
+    "aggro": [
+      "Prepare yourselves for war. One minute, you are granted.",
+      "Every soldier who ever lived marches behind me.",
+      "To arms, then. To all arms."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Hammer, blade and spear. War has no other shapes."
+      }
+    ],
+    "death": [
+      "War... ends... only for the dead...",
+      "Morbus. They are yours."
+    ],
+    "slay": [
+      "It is the fate of man to know pain and loss.",
+      "Another for the long march.",
+      "Fall in with the rest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Weapons hang in the air, waiting for a hand.",
+      "The air rings like a smithy at war."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Bellum raises the weapons of war!"
+      }
+    ],
+    "realmFirstKill": "Bellum has fallen. War rides no more in Caer Sidi."
+  },
+  "botLines": {
+    "briefing": [
+      "bellum: three weapons spawn, one group each, casters do the work on him",
+      "one minute after fames. be ready",
+      "bellum: three weapons spawn, one group each",
+      "casters on bellum, melee takes 40% less",
+      "watch the weapons near the healers",
+      "a minute rest after him, then morbus"
+    ],
+    "aftermathWin": [
+      "two riders down",
+      "war is over. for now",
+      "the weapons died fast, good groups",
+      "casters carried bellum"
+    ],
+    "aftermathLoss": [
+      "the weapons got loose in the healers",
+      "melee on bellum is a waste, he barely takes it",
+      "we didnt rest after fames and paid for it",
+      "the hammer weapon one shots cloth"
+    ],
+    "rumour": [
+      "heard bellum's weapons fight on their own. hammer, sword and spear",
+      "[someone said|heard] melee barely scratches bellum",
+      "heard dorinakka's knights salute toward bellum's hall",
+      "bellum was a war spirit before he was a horseman, [they say|heard]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bellum",
+    "text": "War, the second rider. He grants you a single minute, then raises the hammer, the blade and the spear to fight beside him. Steel troubles him less than spellcraft."
+  },
+  "bookPage": "War gave us one minute, as Fames had given us two, and I understood then that the riders were not mocking us; they were keeping a rule. When the minute ended the air of the hall rang like a smithy, and three weapons lifted from the floor where no hand had held them: a hammer, a sword, a spear. They fought us as soldiers fight, without anger and without rest. Our sword-arms did little against the rider himself. It was our wizards who brought War down, and they say still that they have never felt anything so heavy fall.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke the weapons of Bellum and unhorsed War in {minutes} minutes.",
+    "loss": "Bellum's war incarnate cut through {realm}'s raid; {raidLeader} lost the second rider."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "fames",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "morbus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "funus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "apocalypse",
+      "relation": "the master they ride before"
+    },
+    {
+      "id": "warlord-dorinakka",
+      "relation": "the warlord below salutes him"
+    }
+  ]
+}

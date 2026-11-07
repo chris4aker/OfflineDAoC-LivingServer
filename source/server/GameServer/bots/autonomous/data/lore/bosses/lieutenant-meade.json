@@ -1,0 +1,99 @@
+{
+  "id": "lieutenant-meade",
+  "name": "Lieutenant Meade",
+  "catalogKey": "hall-of-the-corrupt/lieutenantmeade",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Lieutenant Meade, level 50, 5,000 health; Aching Curse lowers the target's melee damage by 21%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The one who wrote it down. Lieutenant Meade kept the middle corridor of the hall, and he was a thoughtful man who liked to write; the clerk of the watch took several of his reports word for word. In the last winter he wrote that the men had lost the will to fight and could not say why, and that he felt it himself. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nHe found out why. The despair that came up the Summoners' road settled in him first, and it never left. He carries it now like a disease, and passes it on: his Aching Curse saps the will of anyone he strikes, so that their blows land a fifth softer and their arms feel heavy and the fight feels already lost. He is the saddest of the watch, and the one most likely to make a raid feel it is losing when it is not. The bards say that if you listen in his corridor you can hear him, very quietly, asking why anyone fights. Nobody in the hall has an answer for him. Most raids just kill him, which he does not seem to mind.\n\nBefore the last winter he was the cheerful one, the reports say: he wrote verses for the sergeants' birthdays and kept a garden of herbs in a box on the corridor sill. The box is still there. Nothing grows in it, and the soil is grey, and raiders who come to fight him sometimes find themselves staring at it longer than they meant to.",
+  "legend": "His Aching Curse cuts the target's melee damage by about a fifth: cure it if you can, rotate melee if you cannot, and kill him at his post before the despair spreads to the whole front line. He has five thousand health and is level 50, the weakest officer by level, so a small group does it. The danger is morale, not damage: raids that fight him slowly start to feel they are losing, and get careless on the captains after. Old hands kill him quickly and do not listen to what he says. Do not stare at the herb box either.",
+  "yells": {
+    "aggro": [
+      "Why fight? Why does anyone fight?",
+      "You feel it too. Do not pretend.",
+      "Put down your sword. It is heavy."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Why do you keep fighting? Why?"
+      }
+    ],
+    "death": [
+      "There was... a reason... once...",
+      "I wrote it down... I forget where..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "There. Rest.",
+      "It was never worth it.",
+      "You feel lighter now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air here is heavy. Your arms feel tired.",
+      "A writing desk, the ink long dry."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lieutenant Meade is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "meade casts aching curse, melee does 21% less. cure it or rotate",
+      "fight it where it stands, off its post its immune",
+      "small group, kill him fast",
+      "dont listen to him lol",
+      "dont slow down after, the captains are next"
+    ],
+    "aftermathWin": [
+      "lieutenant meade down, one less on the watch",
+      "meade down. i feel better already",
+      "quick kill, no despair",
+      "he finally stopped asking",
+      "on to the captains"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there",
+      "our melee did nothing with the curse on",
+      "we got sloppy after him",
+      "nobody cured the curse"
+    ],
+    "rumour": [
+      "heard meade in the hall of the corrupt saps your will to fight",
+      "[someone said|heard] meade wrote the last report from the watch",
+      "heard you can hear meade asking why anyone fights",
+      "meade is the saddest one in the hall, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "meade",
+    "text": "Lieutenant Meade was the one who wrote in the last reports that the men had lost the will to fight and could not say why."
+  },
+  "bookPage": "Lieutenant Meade asks me to set down his words exactly, so I do. 'The men have lost the will to fight, and cannot say why. I have asked each of them. They say their arms are heavy. They say the road looks very long. They say they do not see the point of a watch when nothing comes. I feel it myself. I find I sit at my desk with the pen in my hand and do not write. I do not know what it is. If it is a sickness, it is not of the body. If it is an enemy, it is already inside.'",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Lieutenant Meade from the Pennine watch in {minutes} minutes.",
+    "loss": "Lieutenant Meade held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "captain-atwell",
+      "relation": "fellow officer of the last winter"
+    }
+  ]
+}

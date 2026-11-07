@@ -1,0 +1,84 @@
+{
+  "id": "cailleach-uragaig",
+  "name": "Cailleach Uragaig",
+  "catalogKey": "albion-named-mobs-classic-zones/cailleachuragaig",
+  "locationId": "lyonesse",
+  "realm": "Albion",
+  "aliases": [
+    "the cailleach"
+  ],
+  "facts": [
+    {
+      "text": "Level 70, 10,000 health; immune when drawn past her tether. She calls 'Father! Lend me your Torch of Light so we may be delivered from these aggressors!' and four Mithra's Torches of Light (level 65) appear; she casts Flame Spear; at 30% she brings everything near into the fight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs"
+    },
+    {
+      "text": "Mithraic mysteries, not game canon: the highest grade of initiate was Pater, 'Father', and the torchbearers Cautes and Cautopates carried torches raised and lowered.",
+      "provenance": "myth",
+      "source": "https://solarspell-dls.sfis.asu.edu/mea/wikipedia/wp/m/Mithraic_mysteries.htm"
+    },
+    {
+      "text": "Gaelic folklore, not game canon: the Cailleach is the hag of winter. Uragaig is a place name on Colonsay (to verify).",
+      "provenance": "myth",
+      "source": "to verify"
+    }
+  ],
+  "story": "The Cailleach is the old hag of winter in the tales of the north, and the Cornish say one came south when Lyonesse drowned, to walk the cold wet land the sea gave back. But the Cailleach of Lyonesse is a stranger thing than the tales. The Romans who held the west built their god Mithras his cave-temples there, and their priests were called by their grades, and the highest grade was Father. When she is pressed, the Cailleach calls on her Father, and the torches of Mithra come burning out of the cold ground to defend her, four of them, like the torchbearers who stood beside the god. Whether she was a priestess of that cult who became a hag, or a hag who swallowed the cult, the Cornish will not say. They will not say her name either.",
+  "legend": "Four Torches of Light come when she calls her Father. Kill the torches, they burn hard, then finish her; she is fragile once alone. Fight her on her ground; drawn too far she cannot be hurt. At 30% she pulls everything nearby, so clear around first.",
+  "yells": {
+    "aggro": [
+      "Cold ground, cold sea, cold you."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The torches of the Father burn for me!"
+      }
+    ],
+    "death": [
+      "Father... the torches... are out..."
+    ],
+    "slay": [
+      "Winter takes you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air turns cold. Torches burn without flame."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Mithra's Torches of Light rise from the cold ground!"
+      }
+    ],
+    "realmFirstKill": "The Cailleach Uragaig is gone. Lyonesse warms."
+  },
+  "botLines": {
+    "briefing": [
+      "cailleach calls 4 torches of light. kill torches, then her",
+      "at 30% she pulls everything near, clear the area first"
+    ],
+    "aftermathWin": [
+      "the hag is down. lyonesse feels warmer already",
+      "torches out, cailleach out"
+    ],
+    "aftermathLoss": [
+      "the torches burned the casters down"
+    ],
+    "rumour": [
+      "cailleach uragaig walks lyonesse. the old folk in cornwall won't say the name",
+      "[heard|someone said] the cailleach calls on her father and torches of mithra come"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "cailleach",
+    "text": "The hag of winter, in the old tales of the north. In Lyonesse she calls on a father, and torches of Mithra answer her. The Cornish will not say her name."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} put out the torches and the Cailleach Uragaig in Lyonesse in {minutes} minutes.",
+    "loss": "the Cailleach Uragaig drove {realm}'s raid out of Lyonesse; {raidLeader} fell back."
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "id": "high-lord-oro",
+  "name": "High Lord Oro",
+  "catalogKey": "darkness-falls/highlordoro",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "100,000 health, immune to crowd control; two High Lord Oro clones (30,000 health each) sit beside him and fight linked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs"
+    }
+  ],
+  "story": "High Lord Oro does not trust his court, and with reason, so he has made himself a court of his own: two more High Lords Oro, sitting either side of him, wearing his face and speaking with his voice. They are lesser than he is and they know it, but they will die for him, which is more than any demon of the court below would do. Visitors to his hall see three high lords and must decide which to fear.",
+  "legend": "Three Oros, two of them clones with less health. Kill the clones first or hold them with off-tanks, then everyone on the real one, who has the most health. None of them can be mezzed, so the crowd control classes help with damage instead.",
+  "yells": {
+    "aggro": [
+      "We welcome you. All three of us."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "My other selves! Where are my other selves?"
+      }
+    ],
+    "death": [
+      "None of us... trusted you..."
+    ],
+    "slay": [
+      "One of us sends his regards."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Three high lords sit here. Two are not real."
+    ],
+    "phases": [],
+    "realmFirstKill": "High Lord Oro has fallen. All three of him."
+  },
+  "botLines": {
+    "briefing": [
+      "three oros, two are clones with 30k. clones first, then the 100k one"
+    ],
+    "aftermathWin": [
+      "all three oros down",
+      "clones first worked. as usual"
+    ],
+    "aftermathLoss": [
+      "we split on all three and nobody died"
+    ],
+    "rumour": [
+      "heard high lord oro made copies of himself because he doesnt trust anyone",
+      "[someone said|heard] two of the three oros are fakes"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "oro",
+    "text": "A high lord who trusts no one in the court, and so made himself a court of his own: two more of him, either side. Break the lesser two first."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke High Lord Oro's two other selves and then the high lord in {minutes} minutes.",
+    "loss": "Three High Lords Oro held their hall against {realm}'s raid; {raidLeader} chose wrongly."
+  }
+}

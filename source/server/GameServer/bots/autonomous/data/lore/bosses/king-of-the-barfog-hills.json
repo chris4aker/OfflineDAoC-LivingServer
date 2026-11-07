@@ -1,0 +1,68 @@
+{
+  "id": "king-of-the-barfog-hills",
+  "name": "King of the Barfog Hills",
+  "catalogKey": "albion-named-mobs-classic-zones/kingbarfog",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "aliases": [
+    "barfog king"
+  ],
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, immune to crowd control; casts Crush.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/KingOfTheBarfogHills.cs"
+    }
+  ],
+  "story": "Nobody crowned the King of the Barfog Hills. He crowned himself, the hill-folk say, the day the ladies of the lake took their cattle home and left the slopes above Llyn Barfog without anyone to keep them. He has kept them since, after his fashion. He walks his hill as a king walks his hall, and the grass lies flat where he has trodden, and anything that comes onto it without bowing is crushed. He cannot be charmed, or mesmerized, or stunned; a king does not take orders.",
+  "legend": "A straight fight with a heavy hitter: his Crush lands hard on whoever he is facing. He cannot be crowd controlled at all, so do not plan around a mez. Tank, heal and burn, and stay off his hill until you mean it.",
+  "yells": {
+    "aggro": [
+      "Kneel on my hill!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A king does not yield his hill!"
+      }
+    ],
+    "death": [
+      "The hill... has no king..."
+    ],
+    "slay": [
+      "Flattened like the grass."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A king's hill. The grass is flattened by his tread."
+    ],
+    "phases": [],
+    "realmFirstKill": "The King of the Barfog Hills is dethroned."
+  },
+  "botLines": {
+    "briefing": [
+      "king of the barfog hills is cc immune, straight fight. tank and burn"
+    ],
+    "aftermathWin": [
+      "long live... nobody. the king is dead",
+      "dethroned"
+    ],
+    "aftermathLoss": [
+      "tried to mez him. he's immune. told you"
+    ],
+    "rumour": [
+      "heard the king of the barfog hills crowned himself",
+      "[someone said|heard] you cant mez the king of the barfog hills"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "king of the barfog hills",
+    "text": "Nobody crowned him. He crowned himself the day the lake ladies took their cattle home. He walks his hill as a king walks his hall, and no charm or stun moves him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} dethroned the King of the Barfog Hills in Llyn Barfog in {minutes} minutes.",
+    "loss": "the King of the Barfog Hills drove {realm}'s raid out of Llyn Barfog; {raidLeader} fell back."
+  }
+}

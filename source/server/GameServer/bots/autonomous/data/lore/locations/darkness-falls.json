@@ -1,0 +1,287 @@
+{
+  "id": "darkness-falls",
+  "name": "Darkness Falls",
+  "realm": "Neutral",
+  "regions": [
+    249
+  ],
+  "aliases": [
+    "df"
+  ],
+  "summary": "The demon kingdom under all three realms, ruled by the arch-demon Legion, whose door opens only for the realm that holds the most keeps.",
+  "facts": [
+    {
+      "text": "Darkness Falls arrived in patch 1.49 (April 2002). Mythic's text described its demons as keeping a strict hierarchy by power, with titles and underlings, the weakest (the Picullus imps) living by hiding and stealing.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/3d68"
+    },
+    {
+      "text": "It is a vast underground kingdom for levels 15-50, dominated by the arch-demon Legion. Only the realm holding more frontier keeps than both others can open its portal; those already inside may stay until they leave or release. Entrances lie in Camelot Hills, the Vale of Mularn and Connacht; realm-versus-realm combat is on inside.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "Its bestiary lists princes, dukes, earls, marquises, a Grand Chancellor, Lilith the Demon Queen and Behemoth at level 99.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+      "text": "In April 2002 Mythic strengthened Legion: proper resists, more frequent reclaiming of souls, and Behemoth, which Legion had been summoning from elsewhere in the dungeon, kept to its own area.",
+      "provenance": "mythic",
+      "source": "https://gamebanshee.com/news/68454-beware-of-legion.html"
+    },
+    {
+      "text": "Players noted (2002-03) that Mythic had made a text game called Darkness Falls before Dark Age of Camelot.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "Named here: Legion (level 83), Behemoth (99), Beliathan, High Lords Baelerdoth, Baln, Oro and Saeor, Princes Abdin, Asmoien and Ba'alorien, and Princess Nahemah.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Period talk: 'as few as about three groups' for Legion (Feb 2003), '4 fg took him out' (Feb 2004).",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Darkness Falls has no raid tactics in Offline DAoC's raid AI; the catalog lists it for completeness.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Under all three realms lies a fourth kingdom, and it is older than any of them. Its people are demons, and they keep a court as strict as any king's: princes and high lords, dukes and earls and marquises, a chancellor and a queen, down to the imps who live by theft because they are too weak to live by anything else. Every demon knows its rank, and every one of them would kill for the next one up.\n\nAt the top of it all sits Legion. Legion is not one demon but many, a court in a single body, and it feeds on souls. Each soul it takes makes it stronger, and it has taken a great many. Behind it, on a ledge above its lair, waits something even the princes will not name aloud, the Behemoth, which the court keeps as a man keeps a chained bear and which has never yet been chained for long.\n\nThe kingdom has three doors, one under each realm, and they do not open freely. They answer to strength in the world above: whichever realm holds the most of the frontier keeps finds its door unbarred, and the others find theirs shut. So the realms fight on the frontier for the right to go down into the dark, and when they get there, they fight each other in it, under the eyes of the demon court, which finds the whole business very entertaining.\n\nEach realm tells the story differently. All three agree on one thing: you go down for glory and for the seals the demons carry, and you do not stay longer than you must.",
+  "legend": "Whoever holds the keeps holds the door, and if the door changes hands while you are inside, you can stay as long as you do not release. Princes, high lords, dukes, earls, marquises: every demon knows its rank. Kill the princes and the worm comes up. Legion falls to four groups who stand close and do not die. The Behemoth falls to nobody.",
+  "atmosphere": {
+    "firstEntry": [
+      "Darkness Falls. Every demon here knows its rank.",
+      "The door shuts behind you. It opens for strength alone."
+    ],
+    "areas": [
+      {
+        "name": "Legion's lair",
+        "x": 45027,
+        "y": 51899,
+        "z": 15468,
+        "radius": 1400,
+        "lines": [
+          "Many voices speak at once. All of them are hungry."
+        ]
+      },
+      {
+        "name": "the Behemoth's ledge",
+        "x": 44490,
+        "y": 49588,
+        "z": 20833,
+        "radius": 1200,
+        "lines": [
+          "Something on the ledge breathes like a forge."
+        ]
+      },
+      {
+        "name": "Prince Abdin's hall",
+        "x": 25647,
+        "y": 17946,
+        "z": 17684,
+        "radius": 800,
+        "lines": [
+          "A prince's hall. He expects you to kneel."
+        ]
+      },
+      {
+        "name": "Prince Asmoien's hall",
+        "x": 24868,
+        "y": 32144,
+        "z": 16086,
+        "radius": 800,
+        "lines": [
+          "Your pet whimpers. Something here is hungry for it."
+        ]
+      },
+      {
+        "name": "Prince Ba'alorien's hall",
+        "x": 36680,
+        "y": 16197,
+        "z": 16051,
+        "radius": 800,
+        "lines": [
+          "Bones of beasts, not men, are piled by the throne."
+        ]
+      },
+      {
+        "name": "Princess Nahemah's hall",
+        "x": 18560,
+        "y": 24840,
+        "z": 17203,
+        "radius": 800,
+        "lines": [
+          "Perfume, and under it, the smell of a storm."
+        ]
+      },
+      {
+        "name": "High Lord Baln's hall",
+        "x": 35351,
+        "y": 39179,
+        "z": 14958,
+        "radius": 800,
+        "lines": [
+          "A high lord, and his servants, and theirs."
+        ]
+      },
+      {
+        "name": "High Lord Oro's hall",
+        "x": 45048,
+        "y": 25215,
+        "z": 15924,
+        "radius": 800,
+        "lines": [
+          "Three high lords sit here. Two are not real."
+        ]
+      },
+      {
+        "name": "High Lord Saeor's hall",
+        "x": 49796,
+        "y": 38134,
+        "z": 15925,
+        "radius": 800,
+        "lines": [
+          "The high lord here grows fat on the fallen."
+        ]
+      },
+      {
+        "name": "High Lord Baelerdoth's hall",
+        "x": 49208,
+        "y": 31993,
+        "z": 15982,
+        "radius": 800,
+        "lines": [
+          "The high lord's aura drinks the light from your wards."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "legion keeps a court down there like a king. princes, high lords, dukes, earls, marquises, and every demon knows its rank",
+      "the imps in df live by stealing, [heard|word is]. too weak for anything else. [the court is strict|its a pecking order]",
+      "kill all the princes in df and the tunnels shake. [the worm comes up|beliathan comes]"
+    ],
+    "rumour": [
+      "[heard|someone said] the df door changes hands with the keeps. dont release if it flips while youre in",
+      "behemoth is level 99, [heard|they say]. nobody kills it. nobody",
+      "mutilator xagalith has the most honest title in the whole of darkness falls"
+    ],
+    "tell": [
+      "darkness falls? the demon dungeon under all three realms. opens for whoever holds the most keeps. legion at the bottom",
+      "demons, seals and other realms all in one place. princes and high lords for groups, legion for a raid",
+      "big shared dungeon. dont release inside if the door changes hands, you cant get back in"
+    ]
+  },
+  "loremaster": {
+    "intro": "Darkness Falls is the kingdom under the three realms, and it keeps a [court] stricter than any king's. Its [door] opens only for strength. At the bottom sits [Legion], and behind Legion, the [Behemoth].",
+    "topics": {
+      "court": "Princes and high lords, dukes and earls and marquises, a chancellor and a queen, and imps at the bottom who live by theft. Every demon knows its rank and would kill for the next. Kill all the [princes] and something else comes up.",
+      "door": "Each realm has one, and each answers to the frontier: the realm that holds the most keeps finds its door open. If the door changes hands while you are below, you may stay, so long as you do not release. Each realm tells it differently: ask of [albion's door], [midgard's door] or [hibernia's door].",
+      "legion": "Not one demon but many, a court in one body, and it feeds on souls. Every soul it takes mends it. Stand close to it, for it cannot be hurt from afar, and do not die, for each death makes it stronger.",
+      "behemoth": "Kept on a ledge above Legion's lair, as a man keeps a chained bear. It is older and larger than anything else in that kingdom. I know of no one who has killed it. I know of many who tried.",
+      "princes": "Abdin, Asmoien and Ba'alorien, and the princess Nahemah. Two of the princes eat the beasts that follow pet-masters, and grow stronger by them. When all four are dead, the tunnels shake and Beliathan comes.",
+      "albion's door": "The Church calls it the Mouth. Its door lies in the castle ruins in Camelot Hills, an hour from the king's seat, and it opens only when Albion holds the frontier. Go down as a crusader if you must. Come back as one.",
+      "midgard's door": "It is no hall of Hel's. Hel keeps her dead and feasts them; down there they are eaten. Our door lies in the snow above Mularn, by the Huldu, and it opens when Midgard holds the frontier. A prince of that court is worth a verse. Legion is worth a saga, if anyone lives to sing it.",
+      "hibernia's door": "The druids say it is a place where the otherworld was torn the wrong way. The Good Folk have their laws; the demon court has only rank. Our door lies in Connacht and opens when Hibernia holds the frontier. Go, because a realm that never goes is a realm that is afraid."
+    }
+  },
+  "book": {
+    "title": "An Order of Precedence of the Court Below",
+    "pages": [
+      "Every court has its order of precedence, and the court below is stricter than most, for a demon who forgets its place is eaten by the one above. I set the order down here as the captured imp gave it to me, in exchange for a candle-end. At the bottom, the imps, who steal. Above them the common devils, then the marquises and earls and dukes, then the high lords, then the princes. Above the princes, the chancellor and the queen. Above all, Legion.",
+      "The imp would not say what Legion is. It said only that Legion is everyone, and that when a demon of the court dies badly, Legion takes what is left, and it is not seen again but is somehow there, in the voice. It said that Legion speaks with every voice it has ever eaten. It said this was an honour. It did not look honoured. I gave it a second candle-end and it told me about the ledge.",
+      "Above Legion's lair, the imp said, is a ledge, and on the ledge lives the Behemoth, which is not of the court at all but older than the court, and which the court keeps as a man keeps a chained bear. Once Legion would call the Behemoth down to fight beside it. Now it stays on its ledge. The imp said this was because the Behemoth once came down and did not stop at the enemy. I did not give it a third candle-end. I did not need to.",
+      "On the matter of the door, the imp was clear. The door opens for strength. Whichever of the three realms above is strongest on the frontier finds its door open, and the court watches the frontier as a gambler watches dice. The princes keep wagers on which realm will come down next. The imp said Prince Abdin had lost a great deal on Albion last season. It seemed to find this very funny. Then it stole the candle-ends back and was gone."
+    ]
+  },
+  "bosses": [
+    "legion",
+    "behemoth",
+    "beliathan",
+    "prince-abdin",
+    "prince-asmoien",
+    "prince-baalorien",
+    "princess-nahemah",
+    "high-lord-baelerdoth",
+    "high-lord-baln",
+    "high-lord-oro",
+    "high-lord-saeor"
+  ],
+  "realmTakes": {
+    "albion": {
+      "story": "Albion's door is in the ruins of the old castle in Camelot Hills, an hour's ride from the king's own seat, and the Church has never forgiven the realm for living so close to it. The priests of Camelot call Darkness Falls the Mouth, and teach that it is the pit the old enemies of the faith were cast into, and that every demon slain in it is a soul spared. Albion's knights go down as crusaders. Its wizards go down for the seals. Its mercenaries go down for the coin, and lie to the priests about it afterwards. Every squire in Camelot Hills has stood at the castle ruins at night and heard something laughing underneath.",
+      "legend": "The Church calls it the Mouth, and the knights say a prayer at the castle ruins before going down. When Albion holds the keeps, every guild in Camelot runs to the Hills at once. Never release inside; the walk back from Camelot is the longest walk in the realm.",
+      "botLines": {
+        "lore": [
+          "the priests in camelot call darkness falls the mouth. [the pit the old enemies got thrown into|a hell under the hills]",
+          "albion's door to df is in the castle ruins in camelot hills. [an hour from the king|right on the king's doorstep]"
+        ],
+        "rumour": [
+          "[heard|someone said] albion has the keeps again. everyone to the hills before the door shuts",
+          "squires dare each other to sleep at the castle ruins in camelot hills. [nobody lasts|nobody does it twice]"
+        ],
+        "tell": [
+          "darkness falls? the demon dungeon, door in the castle ruins in camelot hills. only opens when albion holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "The Church calls it the Mouth. Its door lies in the castle ruins in Camelot Hills, an hour from the king's seat, and it opens only when Albion holds the frontier. Go down as a crusader if you must. Come back as one. Ask about [the mouth].",
+        "topics": {
+          "the mouth": "The Church's name for Darkness Falls: the pit the old enemies of the faith were cast into. Every demon slain there is a soul spared, the priests teach."
+        }
+      }
+    },
+    "midgard": {
+      "story": "Midgard's door is in the snow above the Vale of Mularn, near the Huldu camps, and the skalds of Jordheim do not call it a hell. Hel has her own hall and keeps it in good order; this is something else, a hall of the dead that belongs to no god, where the dead are eaten instead of feasted. The Norse go down for glory, because a demon prince slain is a saga verse, and for the seals, because a warrior must eat. They go down laughing and they come up quieter. The old men of Mularn say the Huldu were first to find the door, and that they have been very careful ever since never to open it.",
+      "legend": "The skalds say it is no hall of Hel's, because Hel keeps her dead and Legion eats them. A demon prince is a verse in your saga; Legion is the whole saga. When Midgard holds the keeps, go, and go in force. The Huldu by the door know more than they say.",
+      "botLines": {
+        "lore": [
+          "the skalds say df isnt hel's hall. [hel keeps her dead|hel feasts hers], legion eats them",
+          "midgard's df door is up in the snow over mularn, by the huldu camps. [the huldu never go in|huldu wont go near it]"
+        ],
+        "rumour": [
+          "[heard|someone said] we have the keeps. df is open, get to mularn",
+          "a demon prince is a verse in your saga, [my gran said|the skalds say]. legion is the whole saga"
+        ],
+        "tell": [
+          "darkness falls? demon kingdom under the world. our door is in the snow above mularn. opens when midgard holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "It is no hall of Hel's. Hel keeps her dead and feasts them; down there they are eaten. Our door lies in the snow above Mularn, by the Huldu, and it opens when Midgard holds the frontier. A prince of that court is worth a verse. Legion is worth a saga, if anyone lives to sing it. Ask about [glutton-hall].",
+        "topics": {
+          "glutton-hall": "The skalds' name for Legion's kingdom: a hall of the dead that eats its guests instead of feasting them. Hel keeps her dead in good order. This is not her hall."
+        }
+      }
+    },
+    "hibernia": {
+      "story": "Hibernia's door is in Connacht, and the druids of Tir na Nog say plainly what it is: a place where the otherworld was torn the wrong way. The Sidhe hills open onto the lands of the Good Folk, who are dangerous but have their own laws; Darkness Falls opens onto a kingdom with no law but rank, and no courtesy but fear. Hibernians go down because the realm must not be the one that never goes, and because the demons' seals buy what nothing above ground can. The bards make songs of it, and every song ends with the singer coming home, because the ones who did not come home are not in a position to complain.",
+      "legend": "The druids say the otherworld was torn the wrong way under Connacht. The Good Folk have laws; the demon court has only rank. When Hibernia holds the keeps, the door in Connacht opens, and the whole realm hears it. Pet classes, mind the princes: some of them eat pets.",
+      "botLines": {
+        "lore": [
+          "the druids say df is the otherworld torn the wrong way. [the sidhe have laws|the good folk have rules], the demons only have rank",
+          "our door to darkness falls is in connacht. [opens when we hold the keeps|only when hibernia holds the frontier]"
+        ],
+        "rumour": [
+          "[heard|someone said] hibernia took the keeps. connacht door is open",
+          "the bards sing df songs where everyone comes home. [funny that|the others dont sing]"
+        ],
+        "tell": [
+          "darkness falls? demon court under the realms. our door is in connacht, it opens when hibernia holds the most keeps"
+        ]
+      },
+      "loremaster": {
+        "intro": "The druids say it is a place where the otherworld was torn the wrong way. The Good Folk have their laws; the demon court has only rank. Our door lies in Connacht and opens when Hibernia holds the frontier. Go, because a realm that never goes is a realm that is afraid. Ask about [torn otherworld].",
+        "topics": {
+          "torn otherworld": "The druids' reading of Darkness Falls: the otherworld torn the wrong way. The Good Folk have laws; the court below has only rank and fear."
+        }
+      }
+    }
+  }
+}

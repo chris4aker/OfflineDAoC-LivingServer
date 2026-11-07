@@ -1,0 +1,286 @@
+{
+  "id": "caer-sidi",
+  "name": "Caer Sidi",
+  "realm": "Albion",
+  "regions": [
+    60
+  ],
+  "aliases": [
+    "sidi",
+    "cs",
+    "the mill"
+  ],
+  "summary": "Arawn's turning gaol on the road to Annwn, where the dead who would not lie down are kept, and the end of all things waits at the top.",
+  "facts": [
+    {
+      "text": "Caer Sidi is a level 50 Shrouded Isles epic dungeon bordering Caldey.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=84"
+    },
+    {
+      "text": "Arawn, lord of the underworld, sent his Inconnu to help Albion because Morgana was taking his dead to serve her.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "In Mythic's Catacombs lore Arawn chose nine Maidens to guard his cauldron, and Morgana stole souls from the Deadlands of Annwn and turned them against him.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/460"
+    },
+    {
+      "text": "Welsh myth, not game canon: in the Welsh poem Preiddeu Annwfn, Caer Siddi is a revolving fortress of the otherworld where Gweir lies chained; three shiploads of Arthur's men sailed in Prydwen and only seven came back; a cauldron there, warmed by nine maidens' breath, will not boil a coward's food.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Caer_Sidi"
+    },
+    {
+      "text": "Its dead include crypt knights, custodians, forerunners, reckoned souls, fate's bearers, calcified manes, an archlich and heralds of trucidation.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Apocalypse and four Horsemen (Fames, Bellum, Morbus, Funus) are the final encounter; the Horsemen speak of fate and ask the raid whether it challenges it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "A February 2003 Albion guide put Apocalypse at a minimum of about a hundred players, the author's lowest kill at 105.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Existing bot chat says Caer Sidi sits on the road to Annwn and holds a prison of souls with something at the bottom that keeps the count.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "The bards of Albion still sing that Arthur sailed Prydwen to Caer Sidi with three shiploads of men and that seven came home. They sing that the fortress turns, so that few ever find its door, and that whoever lies chained there lies chained for good. The bards were closer to the truth than they knew.\n\nCaer Sidi is Arawn's gaol. Every kingdom of the dead must have a place for the ones who will not go quietly: the oath-breakers, the cowards, the warlords who would not lay down their swords, the priests who wanted to come back. Arawn built it on the road between Albion and Annwn and set keepers in it, crypt knights and custodians, a sacristan for the sacred vessels and a provisioner to feed the dead from a cauldron that will not boil a coward's meat. A reckoner kept the count of every soul that went in. None was meant to come out.\n\nThen Morgana began stealing the dead out of Annwn, and the prisoners of Caer Sidi heard that the door of the underworld could be opened from the wrong side. The gaol rose. Its prisoners made themselves its lords: liches who had been priests, a blood-lord who will not stay dead, a warlord who still drills his knights, a host of eight where only one is real. Arawn's keepers turned with them or were turned.\n\nAnd at the top of the turning fortress, in the cell Arawn built first and locked last, waits the thing he could not destroy and would not let loose: the end of the world, and the four riders who go before it. They do not attack. They ask a question. Every raid that has ever climbed Caer Sidi has had to answer it.\n\nThe building of the gaol. The Inconnu say Arawn raised Caer Sidi before there was an Albion to raise it near, out of the same pale stone his servants later quarried from under the realm for their own city. He built it to turn. A gaol whose door stays in one place is a gaol whose prisoners learn the way to it, and so Caer Sidi revolves on the edge between the living world and Annwn, slow as a millstone, and its door is never where the prisoner last saw it. He built it in tiers. At the bottom, the reckoning hall, where every soul is counted in. Above it, the crypts, row on row, where the prisoners sleep between their reckonings. Above those, the galleries and chapels where the worst of them were kept apart, the priests who would not stay dead and the magistrate who bought his years with blood. Above those, the yard where the keepers' knights drilled, and the walk the sacristan kept. And at the very top, the first cell, the one Arawn built before all the rest and locked after all the rest, whose prisoner is not a man at all.\n\nThe rising. Morgana's theft of the dead did not open Caer Sidi. It taught its prisoners that it could be opened. Word goes through a gaol faster than any gaoler, and when the witch began pulling souls out of the Deadlands to march in her armies, the prisoners understood that the door of Annwn swings both ways. They did not break out. Escape would have meant walking into a world that had forgotten them. They broke the keepers instead. The Crypt Lord let them think they had won and then took command of them; the liches took the galleries; the warlord took the yard and drilled Arawn's own knights; the Host, eight bodies and one man, took whatever it liked. Only the Soul Reckoner was left alone, because he never stopped counting, and nobody in Caer Sidi has ever wanted to be counted out.\n\nCaer Sidi now. The gaol is full and busy and turning. Its dead stand in ranks, its lights burn without flame, its custodians and forerunners and crusader's antitheses walk the corridors as if they still had orders. The four riders keep the stair to the top, courteous as ever, and ask their question of anyone who climbs that far. The Inconnu who guide Albion's raids through the fortress will not go past the riders. They say it is not their place.\n\nWhy it matters to Albion. Arawn is Albion's ally in the isles, the lord whose Inconnu fight beside its knights against Morgana, and his own gaol has risen against him. Every raid that climbs Caer Sidi is a debt paid to the lord of the dead, and every raid that fails adds to his prisoners. The bards sing that Arthur came home with seven. Albion's raid leaders count their people at the top of the stair and pray for at least that many.",
+  "legend": "A hundred for Apocalypse, the Albion guides said in 2003, and the lowest kill anyone could claim was a hundred and five; by summer, ninety good players could do it and eighty were brave. Everyone has a Caer Sidi rule. Never wear anything shiny; the dead go for the gilded first. Count your people at the door, because the bards came home with seven. Do not pull the Crypt Lord's court in one piece. Ilron is where most stories end, because most raids hit the wrong Ilron. Fight the Soul Reckoner at his table and nowhere else. Kill Lord Sanguis, then kill him again. Stand in the Sacristan's way, do not chase him. Leave your fire wizards off the Provisioner. At the top, Fames will look at one of you and ask whether you challenge fate, and the raid leader says yes, and then you have two minutes, and everyone remembers those two minutes for the rest of their lives. The old hands call the place the Mill, because it turns, and because it grinds.",
+  "atmosphere": {
+    "firstEntry": [
+      "The walls turn slowly. The door you came by is gone.",
+      "Caer Sidi. Arawn's gaol. Every cell is open.",
+      "The fortress turns. Somewhere a millstone grinds.",
+      "Lights burn here without flame or warmth.",
+      "The dead stand their posts. Their gaoler is gone."
+    ],
+    "areas": [
+      {
+        "name": "the hall of the four riders",
+        "x": 29468,
+        "y": 25235,
+        "z": 19490,
+        "radius": 1200,
+        "lines": [
+          "Four riders wait. They will ask you a question.",
+          "The riders are courteous. They will ask once."
+        ]
+      },
+      {
+        "name": "the reckoning hall",
+        "x": 28967,
+        "y": 35874,
+        "z": 15370,
+        "radius": 900,
+        "lines": [
+          "Someone down here is counting. Out loud.",
+          "Souls stand round a table, waiting to be counted."
+        ]
+      },
+      {
+        "name": "the crypt lord's court",
+        "x": 26567,
+        "y": 40143,
+        "z": 15372,
+        "radius": 900,
+        "lines": [
+          "The dead stand in ranks. Their lord is awake.",
+          "Rows of the dead, waiting for an inspection."
+        ]
+      },
+      {
+        "name": "the blood chapel",
+        "x": 34062,
+        "y": 32787,
+        "z": 14518,
+        "radius": 800,
+        "lines": [
+          "The floor is red. It has been red a long time.",
+          "Lord Sanguis has died here before. Often."
+        ]
+      },
+      {
+        "name": "the lich's gallery",
+        "x": 36385,
+        "y": 37593,
+        "z": 17006,
+        "radius": 800,
+        "lines": [
+          "Four of him. Only one casts a shadow.",
+          "Wait for the shadow that falls true."
+        ]
+      },
+      {
+        "name": "the drill yard",
+        "x": 35625,
+        "y": 41676,
+        "z": 15631,
+        "radius": 800,
+        "lines": [
+          "Dead knights at drill. Their warlord is watching.",
+          "Twelve knights in line. Their warlord corrects them."
+        ]
+      },
+      {
+        "name": "the sacristy walk",
+        "x": 32158,
+        "y": 35804,
+        "z": 16750,
+        "radius": 900,
+        "lines": [
+          "Footsteps on the walk above. Always the same round.",
+          "Do not chase him. Stand in his way."
+        ]
+      },
+      {
+        "name": "the turning gate",
+        "x": 31666,
+        "y": 35982,
+        "z": 18639,
+        "radius": 900,
+        "lines": [
+          "The gate you came by has moved.",
+          "Count your people. The bards came home with seven."
+        ]
+      },
+      {
+        "name": "the silent halls",
+        "x": 31035,
+        "y": 36303,
+        "z": 15621,
+        "radius": 900,
+        "lines": [
+          "Your footsteps make no sound here.",
+          "Something here hates a raised voice."
+        ]
+      },
+      {
+        "name": "the bane's crossing",
+        "x": 31265,
+        "y": 30833,
+        "z": 13954,
+        "radius": 900,
+        "lines": [
+          "Every way out looks like a way in.",
+          "Friends who stood here a moment ago are gone."
+        ]
+      },
+      {
+        "name": "the larders",
+        "x": 30063,
+        "y": 40880,
+        "z": 17004,
+        "radius": 800,
+        "lines": [
+          "Empty larders. Something still guards them.",
+          "A cauldron's rim, cold, and nothing in it."
+        ]
+      },
+      {
+        "name": "the chosen's post",
+        "x": 37500,
+        "y": 30162,
+        "z": 13969,
+        "radius": 800,
+        "lines": [
+          "A watcher stands where fate told it to.",
+          "The riders above will know your names."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "caer sidi [sits on|straddles] the road to annwn. [the souls in there|whatever is in there] [aren't meant to leave|stay locked up]",
+      "caer sidi was arawn's jail. oathbreakers, cowards, warlords who wouldnt lie down. [then morgana opened the door|then somebody opened the door]",
+      "the old poem says the fortress turns so nobody finds the door. [feels like it in there|i believe it]",
+      "something at the bottom of caer sidi [keeps the count|counts every soul]. the soul reckoner, [i think|my guess]",
+      "the four riders at the top of caer sidi ask you if you challenge fate. [say yes|you say yes]. then you have two minutes",
+      "arawn built caer sidi to turn so the prisoners never learn where the door is. [smart|clever] jailer",
+      "the old hands call caer sidi the mill. [it turns and it grinds|because it grinds you up]",
+      "the inconnu guide you through caer sidi but they wont go past the four riders. [not their place|they say its not their place]",
+      "caer sidi has tiers. reckoning hall at the bottom, crypts, galleries, the yard, and the riders at the top",
+      "the prisoners in caer sidi didnt escape, they took over. [why leave a world that forgot you|nowhere to go]",
+      "the soul reckoner is the only keeper in caer sidi who never turned. [he just kept counting|still counting]",
+      "lord sanguis was a roman magistrate. [bought his years with blood|paid for long life in other peoples blood]",
+      "every caer sidi raid is a debt paid to arawn, [my guild leader says|they say]. his own jail rose on him"
+    ],
+    "rumour": [
+      "heard you never wear anything shiny into caer sidi. the dead go for the gilded first",
+      "[heard|someone said] apocalypse needs a hundred. lowest kill anyone bragged about was a hundred and five",
+      "[heard|word is] the host in caer sidi is eight of him and only one is real",
+      "[heard|someone said] you need ninety good people for apoc now. eighty if youre brave",
+      "[heard|word is] the crypt lord's court is forty mobs in one pull",
+      "count your people at the caer sidi door. [the bards came home with seven|seven came home in the song]",
+      "[heard|someone said] the spectral provisioner ignores fire. leave the wizards home",
+      "heard fames picks one person out of the raid and asks them the question. [hope its not you|nerve wracking]"
+    ],
+    "tell": [
+      "caer sidi? albions epic dungeon past caldey. arawns old jail, liches and dead knights, apocalypse and four horsemen on top. raid of 100",
+      "undead fortress in the isles. soul reckoner, lich lords, crypt lord, and the horsemen. bring a hundred and a lot of clerics",
+      "its the big one. you climb the whole fortress and at the top four riders ask you a question",
+      "is caer sidi hard? its albions epic dungeon. a hundred people for apocalypse, and every boss on the way has a trick",
+      "where is caer sidi? across the water past caldey, in the isles. the inconnu guide you in",
+      "caer sidi is a full raid night. reckoner, crypt lord, ilron, sanguis twice, then the four riders and apoc"
+    ]
+  },
+  "loremaster": {
+    "intro": "Caer Sidi? The [bards] sing of it, and the bards are nearly right. It is [Arawn's gaol], and its [prisoners] have made themselves its lords. At the top waits something worse: the [four riders].",
+    "topics": {
+      "bards": "Arthur sailed Prydwen to Caer Sidi with three shiploads of men, the old song says, and seven came home. The fortress turns, so few find its door. Remember the number seven before you go.",
+      "arawn's gaol": "Every kingdom of the dead needs a place for those who will not go quietly. Arawn built his on the road to Annwn and set keepers in it: knights, custodians, a [sacristan], a provisioner, a reckoner who counts.",
+      "prisoners": "When Morgana began stealing Arawn's dead, the prisoners heard that the door of the underworld could be opened from the wrong side, and they rose. Liches, a blood-lord, a warlord, a host of eight. Ask about [Lich Lord Ilron] if you would know where most tales end.",
+      "four riders": "Fames, Bellum, Morbus and Funus: Famine, War, Plague and the Funeral, named in the Roman tongue. They go before [Apocalypse]. They will not attack you first. They will ask you a question. Answer it.",
+      "apocalypse": "The end of the world, locked in the first cell Arawn ever built. He is not angry. He is curious. He will ask you why you came. Bring a hundred, and clerics, and do not lose heart when he takes to the air.",
+      "sacristan": "The keeper of the sacred vessels. He still walks his round on the high walk, though the vessels are long gone. Stand in his way.",
+      "lich lord ilron": "Most of the tales I know end at him. He shows you four of himself; only one is true. Find the one that matters.",
+      "the mill": "The old hands' name for Caer Sidi: it turns, and it grinds. They mean it fondly. Mostly.",
+      "inconnu": "Arawn's pale servants, who guide Albion's raids through the gaol. They will not go past the four riders. Ask about [Arawn's gaol] to know why they come at all.",
+      "tiers": "Reckoning hall at the bottom, then the crypts, the galleries and chapels, the yard and the sacristy walk, and at the top the first cell. Climb in that order; the [four riders] keep the last stair."
+    }
+  },
+  "book": {
+    "title": "The Turning Gaol",
+    "pages": [
+      "The Turning Gaol, set down by Brother Cadoc of Caer Gothwaite, who went up with the third raid of the autumn and came down again. Arthur sailed Prydwen to the fortress that turns, so the old song goes, with three shiploads of men, and seven came home. I always took the song for a riddle. Then I stood on the shore beyond Caldey and watched the walls of Caer Sidi move in the dusk, slow as a millstone, and I understood that the bards had been plain. Its door is never where you left it. The Inconnu who guided us said that was the point. A gaol should not be easy to leave.",
+      "The Inconnu told us what the place was for. Their lord Arawn keeps the dead, and most of the dead go quietly. Some do not: the oath-breaker, the coward, the warlord who would not lay down his sword, the priest who wanted to come back. Arawn built Caer Sidi for them and gave it keepers. A reckoner to count them in. A provisioner to feed them from a cauldron that will not boil a coward's meat. A sacristan to keep the vessels. Knights to keep the doors, and a warden over the crypts where the prisoners sleep between their reckonings.",
+      "When the witch began stealing the dead of Annwn, the Inconnu said, the prisoners learned that a door can be opened from the wrong side. They did not escape. They did something worse. They stayed, and made themselves the masters of their own prison. The liches took the galleries. The blood-lord took the chapel. The warlord took the yard and drilled the keepers' own knights. The warden let them think they had won and then gave them orders. The reckoner went on counting, and no one knows any more for whom he counts. The fortress turns on.",
+      "We went up through the crypts with eighty and lost nine to the warden's court before we learned to pull it in pieces. In the gallery Ilron showed us four of himself, and our wizards spent their fire on the wrong three, and that is where my last raid's story ended. This time our raid leader had us wait until each image moved, and watched for the one whose shadow fell true. We found him. Sanguis we killed twice; the second time the floor of his chapel went from red to grey, and our priests wept, which they will not admit.",
+      "At the top of the fortress is the first cell Arawn built, and the last he locked. Four riders wait before its door, and they are courteous, and they ask a question. The first of them, Fames, looked at our raid leader for a long time and asked whether we would challenge fate. She said yes. He told us we had two minutes. In those two minutes nobody spoke except to call a buff. Then War came, and Plague, and the Funeral, each a minute after the last, and then the door opened, and the end of the world came out of it, and was curious about us.",
+      "I will not write what Apocalypse said to us, because he said it to each of us, and it was not the same. I will write that he rose into the air twice and that both times we nearly broke, and that when we broke his harbingers he praised us and meant it. When he fell, the fortress stopped turning for the space of a breath. Our Inconnu guide, who had waited at the foot of the stair, said afterwards that he felt it below, and that his lord would know. We came home with seventy-one. I have counted them every night since."
+    ]
+  },
+  "bosses": [
+    "apocalypse",
+    "fames",
+    "bellum",
+    "morbus",
+    "funus",
+    "soul-reckoner",
+    "crypt-lord",
+    "lich-lord-ilron",
+    "lord-sanguis",
+    "lich-lord-sanguis",
+    "warlord-dorinakka",
+    "host",
+    "silencer",
+    "bane-of-hope",
+    "fates-chosen",
+    "skeletal-sacristan",
+    "spectral-provisioner"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "caer-sidi-prisoners"
+  ]
+}

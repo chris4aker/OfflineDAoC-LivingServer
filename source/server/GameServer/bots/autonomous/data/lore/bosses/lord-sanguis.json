@@ -1,0 +1,114 @@
+{
+  "id": "lord-sanguis",
+  "name": "Lord Sanguis",
+  "catalogKey": "caer-sidi/lordsanguis",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Blood mages join him (10% chance each turn) and two to four rise when he dies; six seconds after death he returns as Lich Lord Sanguis.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs"
+    },
+    {
+      "text": "Sanguis is Latin for 'blood'. Caer Sidi also holds sanguineous mages and blood mages.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Lord Sanguis was a Roman of the old province, a magistrate who bought his long life with other men's blood and was sent to Caer Sidi when Arawn finally collected the debt. He kept a chapel there, and the floor of it has been red ever since. When the gaol rose, his blood mages gathered to him again. He is not the danger. The danger is that he has died before, many times, and has never once stayed dead: kill Lord Sanguis and, a few breaths later, Lich Lord Sanguis stands up out of the same red floor.\n\nThe magistrate. Lord Sanguis was a Roman of the old province, a magistrate of a western town, who bought long life with other men's blood: first the condemned, then the poor, then anyone. He kept a chapel for it, and blood mages to do the work, and he lived three lifetimes before Arawn collected the debt and sent him to Caer Sidi with his mages in chains behind him.\n\nThe chapel. The keepers gave him a chapel in the gaol, because they believed in fitting punishments, and he has been there ever since. The floor has been red the whole time. When the gaol rose his blood mages gathered to him again, and now a mage comes to his side whenever the fancy takes him, and two to four rise from his body when he falls. He is not the danger. The danger is that he has died before, many times, and has never once stayed dead: kill Lord Sanguis and, a few breaths later, Lich Lord Sanguis stands up out of the same red floor, what is left of the debt with no man around it. Ilron in the next gallery is the only prisoner who will speak to him.",
+  "legend": "He is only the first half. Lord Sanguis calls blood mages now and then while he fights, and two to four more rise when he dies; kill them fast. Six seconds after his death he stands up again as Lich Lord Sanguis, at full strength. Do not rest, do not loot, do not celebrate, do not let the healers wander. Keep the raid in place and the tanks ready for the second pull. Old Albion priests ask the raid to leave his body untouched until the lich has stood up and been put down again; the raids that listen lose fewer healers to the second fight.",
+  "yells": {
+    "aggro": [
+      "Your blood will do very well.",
+      "Mages! We have guests for the chapel.",
+      "Rome paid in blood. So will you."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Mages! Feed the floor!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Mages! Feed the floor!"
+      },
+      {
+        "trigger": "death",
+        "text": "Again, then. Again."
+      }
+    ],
+    "death": [
+      "You think this is the end of me? How Roman of you.",
+      "Again, then. Again."
+    ],
+    "slay": [
+      "Into the floor with the rest.",
+      "A good vintage.",
+      "Your years are mine now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is red. It has been red a long time.",
+      "The floor drinks the lamplight. It is red."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Blood mages rise from the red floor!"
+      }
+    ],
+    "realmFirstKill": "Lord Sanguis has fallen. For a moment."
+  },
+  "botLines": {
+    "briefing": [
+      "lord sanguis comes back as a lich 6 seconds after he dies. dont relax",
+      "blood mages spawn on his death too, kill them",
+      "no looting, no resting, stay in place",
+      "tanks ready for the second pull"
+    ],
+    "aftermathWin": [
+      "round one done. here comes the lich",
+      "blood mages down, sanguis down. now the real fight",
+      "first sanguis was easy, now the hard one",
+      "everyone stayed put, good"
+    ],
+    "aftermathLoss": [
+      "the mages got the healers before the lich even stood up",
+      "people started looting and the lich stood up on them",
+      "we celebrated too early",
+      "blood mages everywhere"
+    ],
+    "rumour": [
+      "heard lord sanguis in caer sidi never stays dead",
+      "[someone said|heard] sanguis means blood. the floor of his room is red",
+      "heard sanguis was a roman magistrate who bought his years in blood",
+      "you kill sanguis twice, [everyone knows|heard]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sanguis",
+    "text": "A Roman magistrate who bought long life with other men's blood. Kill him and, a few breaths later, he rises again from his own red floor as Lich Lord Sanguis. Do not celebrate the first death."
+  },
+  "bookPage": "Sanguis we killed once, and the floor of his chapel trembled, and his blood mages rose out of his body like steam out of a pot. Our raid leader shouted that nobody was to touch his corpse, and nobody did, and six heartbeats later the corpse stood up. It was not the magistrate any more. It was what the magistrate had been paying for all those years, with no man left around it. We fought it in the same red room. When it fell the second time, the floor went from red to grey, and stayed grey.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cut down Lord Sanguis in {minutes} minutes; the red floor stirred.",
+    "loss": "Lord Sanguis fed {realm}'s raid to his chapel floor; {raidLeader} never saw the lich."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners",
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "lich-lord-sanguis",
+      "relation": "what he becomes"
+    },
+    {
+      "id": "lich-lord-ilron",
+      "relation": "the only prisoner who speaks to him"
+    }
+  ]
+}

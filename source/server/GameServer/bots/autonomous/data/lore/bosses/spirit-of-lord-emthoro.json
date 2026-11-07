@@ -1,0 +1,69 @@
+{
+  "id": "spirit-of-lord-emthoro",
+  "name": "Spirit of Lord Emthoro",
+  "catalogKey": "albion-named-mobs-shrouded-isles/spiritoflordemthoro",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "aliases": [
+    "emthoro",
+    "lord emthoro"
+  ],
+  "facts": [
+    {
+      "text": "Level 77, 30,000 health. Takes no damage unless the attacker is within 440 of his spawn; casts Lifedrain Pulse; orc and zombie servants join him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs"
+    }
+  ],
+  "story": "Lord Emthoro held Inishail before the war, the garrison thinks, though no record names him; only his spirit remains, and his spirit has not given up his land. It cannot be harmed by anyone who will not stand on it. Arrows and spells from the edge of his ground pass through him; only those who step onto the ground where he stands can reach him. He pulses with a drain that takes the life of everyone who does, and the orcs and dead of Inishail come to serve him when he calls. He was a lord. He still expects his tenants to come to him.",
+  "legend": "He takes no damage from anyone more than a short step from his spawn point, so everyone, casters too, stands on his ground. His lifedrain pulse hits everyone there; heal through it. Orc and zombie servants come; kill them. Ranged who stay back do nothing at all.",
+  "yells": {
+    "aggro": [
+      "You stand on my land. Kneel."
+    ],
+    "phases": [],
+    "death": [
+      "My land... my land..."
+    ],
+    "slay": [
+      "Buried on my land."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lord's ground. Step onto it to face him."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Lord Emthoro's tenants come to his call!"
+      }
+    ],
+    "realmFirstKill": "The Spirit of Lord Emthoro rests. Inishail is free."
+  },
+  "botLines": {
+    "briefing": [
+      "emthoro only takes damage from people standing next to his spawn. everyone in close",
+      "heal through his lifedrain pulse"
+    ],
+    "aftermathWin": [
+      "spirit of lord emthoro down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "the spirit of lord emthoro still holds inishail. nobody knows who he was",
+      "[heard|someone said] you have to stand on emthoro's ground to hurt him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "emthoro",
+    "text": "A lord of Inishail no record names. His spirit will not be harmed by anyone who will not stand on his ground. He still expects his tenants to come to him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Spirit of Lord Emthoro in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Spirit of Lord Emthoro drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

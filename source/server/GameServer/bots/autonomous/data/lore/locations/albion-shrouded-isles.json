@@ -1,0 +1,186 @@
+{
+  "id": "albion-shrouded-isles",
+  "name": "The Shrouded Isles of Albion",
+  "realm": "Albion",
+  "regions": [
+    51
+  ],
+  "zones": [
+    53,
+    54,
+    55,
+    57
+  ],
+  "aliases": [
+    "caldey",
+    "dales of devwy",
+    "gwyddneau",
+    "inishail"
+  ],
+  "summary": "Avalon's war-torn isles, Caldey, the Dales of Devwy, Gwyddneau and Inishail, where Morgana's dead and the drakoran hold the open ground.",
+  "facts": [
+    {
+      "text": "Albion's Shrouded Isles are Morgana's and the drakoran's war on Avalon, with Arawn's Inconnu fighting for Albion; Morgana raised the undead remains of Roman soldiers for her army.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "Three ring-shaped fortresses on an earthen border at the Isle of Glass hold Albion's side; Morgan's influence shows even there, in headless undead, corpse lights and ghosts.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=77"
+    },
+    {
+      "text": "Named here: Amphiptere, Durval and Vortanos (Caldey); Qan'ris Duros, Ris'nir Cruss and Valnir Mordeth (Dales of Devwy); Coliath (Gwyddneau); Sarcondina and the Spirit of Lord Emthoro (Inishail).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Welsh legend, not game canon: Gwyddno Garanhir ruled a drowned kingdom, Cantre'r Gwaelod; that the zone name echoes him is to verify.",
+      "provenance": "myth",
+      "source": "to verify"
+    },
+    {
+      "text": "Existing bot chat: the Spirit of Lord Emthoro still holds Inishail; the orcs on Inishail fled the ogres; nobody can say what Coliath guards in Gwyddneau.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "Beyond the earthen border at the Isle of Glass lie the isles Albion lost: Avalon, Caldey, the Dales of Devwy, Gwyddneau, Inishail. They were green and scholarly once, the country of the colleges of Avalon. Then Morgana came with the drakoran, and with the dead. She raised the Roman legions who lie buried in every isle's soil and set them marching again, and the open country between the dungeons became a battlefield that no one has won.\n\nThe named things of the isles are the war's leftovers. On Caldey the dead keep their own: a winged serpent that sheds its teeth and raises the ancient dead to fight, a plague-priest with his corpse-delvers and white lights, and Vortanos, who keeps prisoners and walks only by day. In the Dales of Devwy the drakoran hold the high ground under their commanders, and Valnir Mordeth's ghouls feed him. In drowned Gwyddneau, Coliath keeps something no one can name. On Inishail a lord's spirit still holds his land and will not be harmed by anyone who does not stand on it, and Sarcondina's servants crawl in the marsh.\n\nAlbion's adventurers cross to the isles for the dungeons. They stay, often longer than they meant to, for the war.",
+  "legend": "Every isle has its own named and every named its own trick. The Spirit of Lord Emthoro cannot be hurt unless you stand on his ground. Vortanos is not there at night. Valnir's ghouls heal him with their spells. Ris'nir Cruss raises an apparition of everyone he kills. Learn the trick before you pull.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Shrouded Isles. The dead here march in Roman step."
+    ],
+    "areas": [
+      {
+        "name": "Amphiptere's roost",
+        "x": 348958,
+        "y": 372378,
+        "z": 3856,
+        "radius": 1000,
+        "lines": [
+          "Teeth lie in the grass, long as daggers."
+        ]
+      },
+      {
+        "name": "Durval's barrow",
+        "x": 319043,
+        "y": 406794,
+        "z": 3082,
+        "radius": 1000,
+        "lines": [
+          "White lights hover over fresh-dug earth."
+        ]
+      },
+      {
+        "name": "Vortanos' prison",
+        "x": 366820,
+        "y": 369691,
+        "z": 3048,
+        "radius": 1000,
+        "lines": [
+          "Prisoners sleep in chains. Their keeper wakes by day."
+        ]
+      },
+      {
+        "name": "Qan'ris Duros' camp",
+        "x": 425043,
+        "y": 397100,
+        "z": 3056,
+        "radius": 1000,
+        "lines": [
+          "Drakoran guardsmen stand to. Their commander is near."
+        ]
+      },
+      {
+        "name": "Ris'nir Cruss' field",
+        "x": 430763,
+        "y": 388496,
+        "z": 4870,
+        "radius": 1000,
+        "lines": [
+          "Pale shapes stand here wearing familiar faces."
+        ]
+      },
+      {
+        "name": "Valnir Mordeth's pit",
+        "x": 378390,
+        "y": 398849,
+        "z": 4354,
+        "radius": 1000,
+        "lines": [
+          "Ghouls crouch around a pit, feeding something."
+        ]
+      },
+      {
+        "name": "Coliath's height",
+        "x": 327855,
+        "y": 443917,
+        "z": 7514,
+        "radius": 1000,
+        "lines": [
+          "Something is guarded here. Nobody says what."
+        ]
+      },
+      {
+        "name": "Lord Emthoro's ground",
+        "x": 238081,
+        "y": 434761,
+        "z": 4521,
+        "radius": 600,
+        "lines": [
+          "A lord's ground. Step onto it to face him."
+        ]
+      },
+      {
+        "name": "Sarcondina's marsh",
+        "x": 260656,
+        "y": 456185,
+        "z": 4782,
+        "radius": 1000,
+        "lines": [
+          "The marsh moves. Her servants are coming."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the spirit of lord emthoro still holds inishail. nobody knows who he was",
+      "coliath rules gwyddneau and nobody can tell me what it guards",
+      "the orcs on inishail fled the ogres, they say. makes you wonder what krondon did to them",
+      "morgana raised the roman legions buried in the isles. [thats why they march in step|old dead, new orders]"
+    ],
+    "rumour": [
+      "[heard|someone said] vortanos isnt even there at night. day only",
+      "[heard|word is] ris'nir cruss makes a ghost of everyone he kills"
+    ],
+    "tell": [
+      "the isles? caldey, devwy, gwyddneau, inishail. drakoran and morganas dead everywhere, a named on every isle. learn the tricks first"
+    ]
+  },
+  "loremaster": {
+    "intro": "The isles Albion lost: Caldey, the Dales of Devwy, Gwyddneau, Inishail. Morgana raised the Roman dead there, and the [named] things of the isles are the war's leftovers.",
+    "topics": {
+      "named": "On Caldey the Amphiptere, Durval and Vortanos. In the Dales Qan'ris Duros, Ris'nir Cruss and Valnir Mordeth. In Gwyddneau, Coliath. On Inishail, Sarcondina and the Spirit of Lord [Emthoro]. Each has its trick."
+    }
+  },
+  "book": {
+    "title": "Letters from the Isle of Glass",
+    "pages": [
+      "We hold the three ring-forts on the earth wall and look across at what was Avalon. By day the drakoran patrol the border, and they are soldiers, not beasts, with sergeants and surgeons and a proper watch. By night it is worse, because by night the dead come up to the wall. They march in step. Our Inconnu say they are Romans, legionaries of the old province who were buried in the isles three hundred years ago, and that the witch has given them new orders.",
+      "Each isle has its named terror, and the garrison trades stories of them the way soldiers trade dice. The serpent of Caldey that sheds its teeth. The lord's ghost on Inishail who cannot be hurt by anyone who will not set foot on his ground. The keeper of prisoners who is not there after dark. The thing in Gwyddneau that guards something, though nobody can say what. We have a wager on what it is. Nobody has collected."
+    ]
+  },
+  "bosses": [
+    "amphiptere",
+    "durval",
+    "vortanos",
+    "qanris-duros",
+    "risnir-cruss",
+    "valnir-mordeth",
+    "coliath",
+    "sarcondina",
+    "spirit-of-lord-emthoro"
+  ]
+}

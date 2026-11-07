@@ -1,0 +1,111 @@
+{
+  "id": "orshom-brong",
+  "name": "Orshom Brong",
+  "catalogKey": "krondon/orshom",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "aliases": [
+    "orshom"
+  ],
+  "facts": [
+    {
+      "text": "Level 80, 30,000 health, linked with Orylle. Takes no damage except Cold damage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs"
+    },
+    {
+      "text": "Spawns Orshom's Fire; at 50% health he draws the room onto himself.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "That he swallowed the hall's hearth-fire is Living Server writing built on the cold-only immunity.",
+      "provenance": "original",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Orshom Brong was the biggest of the thrawn ogres who followed Orylle up from the seams, and on the night Krondon fell he put his face into the great hearth of the deepest hall and drank the fire. The ogres tell it as a boast. Whatever happened, he has burned inside ever since, and no flame or blade troubles him now. Only cold reaches what is left of him. He stands at the queen's shoulder and fights when she fights, and when he is half spent the fire in him flares, he roars, and the whole room turns to him.\n\nThe night of the hearth. Orshom Brong was the largest of the ogres who followed Orylle up from the seams, and on the night Krondon fell he walked into the deepest hall where the great hearth burned, the fire the hall-folk had kept alight since their founding, and put his face into it and drank. The ogres tell it as a boast; the ghosts tell it as a grief, because that hearth was the hall's oldest keeping and its hyrde the most honoured of all.\n\nWhat it made him. He has burned inside ever since. Fire passes through him and steel finds nothing to cut; only cold reaches what is left of him, as if the hearth inside him were the only real thing and frost the only thing that can quench it. He stands at Orylle's shoulder, her champion and her consort, and fights when she fights, and when he is half spent the fire in him flares and the whole room turns to him. Sometimes the fire spills out of him and burns on the floor of its own accord. The cold casters of Albion's raids are the only ones who have ever made him afraid.",
+  "legend": "Nothing hurts him but cold. Bring ice wizards, cold-damage casters, anything frosty, and put them on him and only him. At half health he pulls the room; healers be ready. He and Orylle go down together or the raid goes down.\n\nBring at least six cold-damage casters and keep them on him alone. When the fire leaves him and burns on the floor, move out of it. At half health he pulls the room: healers stand ready, tanks hold their own targets. Fire wizards can still help: put them on Orylle while the ice-mages work on Orshom. The old guides said the two must fall close together, so pace the damage and do not kill one far ahead of the other.",
+  "yells": {
+    "aggro": [
+      "Fire in me! Fire in all of me!",
+      "The hearth wakes!",
+      "Burn with me!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The hearth wakes! Come closer, little cold ones!"
+      }
+    ],
+    "death": [
+      "Cold... so cold... the fire goes out...",
+      "The hearth... the hearth..."
+    ],
+    "slay": [
+      "Burned through.",
+      "Ash for the hearth.",
+      "Warm now, little one?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The great hearth is dark. Something beside it glows.",
+      "The air is hot beside the queen's chair."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Orshom's fire flares. The room turns to him!"
+      }
+    ],
+    "realmFirstKill": "Krondon's hearth-fire is out. Orshom Brong is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "only cold hurts orshom. if you dont do cold dmg, hes not your target",
+      "orshom pulls everything at half hp, healers watch it",
+      "six cold casters minimum, only on orshom",
+      "move out of the fire on the floor",
+      "at 50% he pulls everyone, heals ready",
+      "fire does nothing to him, wizards stay cold"
+    ],
+    "aftermathWin": [
+      "cold casters carried that, nice frost",
+      "orshom down. who knew ice was good for something",
+      "his fire went out. good riddance",
+      "frost mages mvp tonight"
+    ],
+    "aftermathLoss": [
+      "we had two cold casters for orshom. need six",
+      "people kept hitting orshom with fire. fire does nothing, people",
+      "stood in his floor fire",
+      "the 50% pull caught the healers"
+    ],
+    "rumour": [
+      "[heard|they say] orshom brong drank the fire out of krondon's hearth",
+      "fire doesnt touch orshom. [bring cold|bring ice]",
+      "heard orshom is orylle's consort",
+      "the ghosts in krondon grieve the hearth orshom drank"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "orshom brong",
+    "text": "He drank the hearth-fire of Krondon's deepest hall, the ogres boast, and has burned within ever since. Fire and steel are nothing to him. Only cold. He stands beside Orylle; they fall together."
+  },
+  "bookPage": "On the night Krondon fell, the ogres say, Orshom Brong walked into the deepest hall and put his face into the great hearth and drank it. The ghosts of the hall tell the same story with different words, because that fire had been kept alight since the founding, and its keeper was the most honoured hyrde of all. Whatever happened, Orshom burns within to this day. Our fire wizards might as well have thrown flowers. Our ice-mages put him out, slowly, the way you put out a peat fire, and when he fell the hall grew cold for the first time in a hundred years.",
+  "chronicle": {
+    "win": "{realm}'s cold-casters under {raidLeader} put out the fire in Orshom Brong at Krondon in {minutes} minutes.",
+    "loss": "Orshom Brong burned through {realm}'s raid; {raidLeader} had too little cold for him."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "orylle",
+      "relation": "his queen"
+    }
+  ]
+}

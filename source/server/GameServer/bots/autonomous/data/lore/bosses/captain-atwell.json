@@ -1,0 +1,98 @@
+{
+  "id": "captain-atwell",
+  "name": "Captain Atwell",
+  "catalogKey": "hall-of-the-corrupt/captainatwell",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Atwell's blows bleed for 65 every 3 seconds for 30 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The first cut. Captain Atwell kept the inner gate of the hall, and he was the first of the watch to be touched by what came up the road. He was walking the road at dusk, as he did every night, and something cut him across the forearm that none of the watchmen saw. The Lady Darra bound it four times. It opened four times. He carried it to his post and died of it there, still bleeding. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nNow every wound Atwell gives opens the same way, bleeding steadily for half a minute, as if the cut he took on the road had become a thing he could hand on. He sits at the captains' table beside the clerk who wrote his name in the last reports, and rises when anyone comes in. The bards say he is waiting for the Lady Darra to come and bind his arm one more time.\n\nThe Camelot loremasters think the thing that cut him on the road was the first of the Summoners' visitors, the ones the wizard expected, and that Atwell was simply the first man it met. If so, it was looking for the watch, and it found it. Every raid that kills Atwell finds his forearm bound in fresh linen, though no living hand has bound it in years.",
+  "legend": "Atwell's blows bleed: 65 every three seconds for half a minute, and the bleeds stack on a tank that is not topped up, so keep a healer on whoever he is hitting from the first swing. Fight him at the captains' table where he stands; one step past his post and he cannot be hurt and walks home at full health. The three captains are best killed one at a time, Atwell first, because he is closest to the door and pulls the others if left. Kill Lady Darra before any of them, or she heals them faster than you can bleed them. Old hands also say: look at his arm after he falls. The bandage is always fresh.",
+  "yells": {
+    "aggro": [
+      "The road is held. Turn back.",
+      "Something cut me on the road. Let me show you.",
+      "Bleed, as I bleed."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The cut opens. It always opens."
+      }
+    ],
+    "death": [
+      "The wound... closes...",
+      "At last... it stops..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "Bleed out.",
+      "The cut never closes.",
+      "You too, then."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Captains at their table. Their wounds never closed.",
+      "A clerk sits at the table, pen in hand."
+    ],
+    "phases": [],
+    "realmFirstKill": "Captain Atwell is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "atwell bleeds you, 65 every 3 sec. healers keep the tank topped",
+      "fight it where it stands, off its post its immune",
+      "kill darra first",
+      "atwell first of the captains, closest to the door"
+    ],
+    "aftermathWin": [
+      "captain atwell down, one less on the watch",
+      "atwell down, one less on the watch",
+      "his wound finally closed",
+      "first captain down",
+      "bleeds cured, clean kill"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there",
+      "the bleeds stacked on the tank",
+      "darra kept healing him",
+      "pulled all three captains"
+    ],
+    "rumour": [
+      "heard captain atwell's cuts never stop bleeding",
+      "[someone said|heard] atwell was the first one cut on the summoners road",
+      "heard atwell is waiting for darra to bind his arm",
+      "the clerk who wrote atwell's name still sits next to him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "atwell",
+    "text": "Captain Atwell was the first of the watch to be cut on the Summoners' road, by something no one saw, and the cut never closed."
+  },
+  "bookPage": "To the Constable. Captain Atwell was cut on the road by something none of us saw, walking the road at dusk as he did every night. The cut is across the forearm, not deep, and it will not close. The Lady Darra has bound it four times and it has opened four times. He makes light of it. He says it is only a scratch and that he has had worse from the sergeants at cards. But the bandages are red every morning, and I have seen him looking at the road with an expression I do not like. He says something on the road is looking back at him.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Captain Atwell from the Pennine watch in {minutes} minutes.",
+    "loss": "Captain Atwell held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lady-darra",
+      "relation": "bound his wound four times"
+    }
+  ]
+}

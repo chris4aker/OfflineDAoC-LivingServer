@@ -1,0 +1,106 @@
+{
+  "id": "soul-reckoner",
+  "name": "Soul Reckoner",
+  "catalogKey": "caer-sidi/soulreckoner",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "aliases": [
+    "the reckoner"
+  ],
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. He starts with four to six reckoned souls and raises one or two more every 10-15 seconds; casts Drain Life Essence.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs"
+    },
+    {
+      "text": "While a soul lives and he is in his room he takes a quarter of the damage (the original made him fully immune; that is behind EpicEncounterMechanics.AllowSoulReckonerFullShield). Outside his room he takes none.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The Soul Reckoner was the first of Arawn's keepers and the only one who never turned, because he never stopped doing his work. He counts. Every soul that came into Caer Sidi passed his table, and he wrote it down; every soul that tries to leave passes it again. When the prisoners rose he went on counting, and the souls he had counted gathered round him like a ledger made flesh, and they take the blows meant for him. Draw him out of his hall and he is out of reach entirely, for a reckoner away from his table is not a reckoner. The bards who say something at the bottom of Caer Sidi keeps the count are speaking of him.\n\nThe first keeper. The Soul Reckoner was the first servant Arawn set in Caer Sidi, before the crypts were dug, before the riders were bound: a clerk of the dead with a table and a ledger and an endless patience. Every prisoner passed his table coming in; every soul that tries to leave passes it again. When the gaol rose, nobody touched him. The prisoners feared being counted out more than they feared Arawn.\n\nThe ledger made flesh. He went on counting, and the souls he had counted gathered round him, the reckoned souls, and they take the blows meant for him; while one lives in his hall, a blade reaches him only a quarter as deep, and fresh souls rise every few seconds from his ledger to replace the fallen. He drains the life of those who press him, as if adding it to his tally. And he cannot be harmed at all outside his hall, for a reckoner away from his table is no reckoner. The bards who say something at the bottom of Caer Sidi keeps the count mean him. Some of Albion's priests believe he still counts for Arawn, faithfully, and that killing him is the one thing in the fortress Arawn would not thank them for.",
+  "legend": "Fight him in his own hall and nowhere else: dragged into the corridor he takes no damage at all. He starts with four to six reckoned souls and raises one or two more every 10-15 seconds; while any soul lives he takes a quarter of what you hit him for. Area damage on the souls the whole fight, a solid tank group on him, healers on whoever he drains. Earlier this server had him fully immune with souls up; it was changed so big raids can finish him. The old guides called him the hardest room before the riders because the souls never stop; the raids that won kept two area groups on them from first pull to last.",
+  "yells": {
+    "aggro": [
+      "Name. Deeds. Debts. Step forward to be counted.",
+      "You are not on my ledger. That can be mended.",
+      "Count them in."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Rise, reckoned ones. Stand between me and the uncounted."
+      }
+    ],
+    "death": [
+      "The ledger... is closed...",
+      "Who will count them now?"
+    ],
+    "slay": [
+      "Counted.",
+      "Entered and closed.",
+      "One more to the tally."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Someone down here is counting. Out loud.",
+      "Every soul that comes here is counted. So are you."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Reckoned souls rise to shield the Reckoner!"
+      }
+    ],
+    "realmFirstKill": "The Soul Reckoner's count is done. Caer Sidi forgets."
+  },
+  "botLines": {
+    "briefing": [
+      "fight him in his room, never pull him out. outside he takes zero",
+      "souls cut his damage taken to a quarter. aoe them as they come",
+      "reckoner: never pull him out of his room, zero damage outside",
+      "souls cut damage to a quarter, aoe them nonstop",
+      "new souls every 10-15 sec, keep an aoe group on them",
+      "healers watch the drain target"
+    ],
+    "aftermathWin": [
+      "reckoner down. nobody's counting us now",
+      "kept the souls down the whole time. nice",
+      "aoe groups won that one",
+      "the ledger is closed, gg"
+    ],
+    "aftermathLoss": [
+      "someone pulled him into the corridor. immune out there",
+      "souls stacked up and we did nothing",
+      "not enough aoe for the souls",
+      "his drain kept the tank dying"
+    ],
+    "rumour": [
+      "something at the bottom of caer sidi keeps the count. [i think its the reckoner|the soul reckoner]",
+      "[heard|someone said] the reckoner's souls take the hits for him",
+      "heard the reckoner is the only keeper who never turned",
+      "[heard|someone said] the priests think arawn wont thank us for killing the reckoner"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "reckoner",
+    "text": "The first of Arawn's keepers and the only one who never turned, because he never stopped counting. The souls he counted shield him. Fight him at his table, in his own hall, and clear the souls."
+  },
+  "bookPage": "Every soul that comes into Caer Sidi passes a table at the bottom of the fortress, and behind the table sits the Reckoner, and he writes it down: the name, the deeds, the debt. Brother Cadoc's raid found him at his table still. The souls he had counted stood round him like a ledger made flesh, and took our blows for him, and new ones stood up out of the pages as fast as we cut the old ones down. Our priests did not like killing him. One said afterward that he was the only honest servant left in the place.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} closed the Soul Reckoner's ledger in {minutes} minutes.",
+    "loss": "The Soul Reckoner counted {realm}'s raid among his own; {raidLeader} could not clear the souls."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "crypt-lord",
+      "relation": "the warden above him, who took command of the prisoners"
+    }
+  ]
+}

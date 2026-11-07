@@ -1,0 +1,76 @@
+{
+  "id": "prince-baalorien",
+  "name": "Prince Ba'alorien",
+  "catalogKey": "darkness-falls/princebaalorien",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 78, 100,000 health. Every 5 seconds the nearest controlled pet within 2,000 dies and he heals by its maximum health (changed from every pet every turn, owner 2026-10-14).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs"
+    },
+    {
+      "text": "Albion's and Hibernia's Darkness Falls raids were each defeated at him on 2026-11-04 (two wipes each).",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "Prince Ba'alorien is Asmoien's rival in everything, and in appetite above all. He too eats the servants of mortal masters, and he keeps their bones piled by his throne, beasts and elementals and the cold husks of bound spirits, so that visitors can see the tally. The imps say the two princes keep count against each other. Ba'alorien is ahead. He intends to stay ahead, and every pet-master who walks into his hall with a servant at heel is another point to him.",
+  "legend": "Same as Asmoien: a pet dies every five seconds within two thousand of him and he heals by its health. Pets out of the hall, far away, before anyone pulls. He has wiped more Darkness Falls raids than any other prince for exactly that reason.",
+  "yells": {
+    "aggro": [
+      "Asmoien will be so jealous."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Another servant for the pile."
+      }
+    ],
+    "death": [
+      "Asmoien... wins..."
+    ],
+    "slay": [
+      "Your bones, on my pile."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Bones of beasts, not men, are piled by the throne."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Ba'alorien hungers for your servants!"
+      }
+    ],
+    "realmFirstKill": "Prince Ba'alorien has fallen. His tally ends."
+  },
+  "botLines": {
+    "briefing": [
+      "pets out for baalorien too. same rule, 2000+ away",
+      "he wiped more df raids than any prince. because of pets. dont be that guy"
+    ],
+    "aftermathWin": [
+      "no pets, no heals, dead prince",
+      "baalorien's pile stops growing"
+    ],
+    "aftermathLoss": [
+      "three pets in range. he never dropped below 80"
+    ],
+    "rumour": [
+      "heard ba'alorien and asmoien keep score on how many pets they eat",
+      "[someone said|heard] ba'alorien piles pet bones by his throne"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "ba'alorien",
+    "text": "Asmoien's rival, in appetite above all. He eats the servants of mortal masters and piles their bones by his throne. Leave your servants far outside."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} gave Prince Ba'alorien nothing to eat and ended his tally in {minutes} minutes.",
+    "loss": "Prince Ba'alorien added {realm}'s servants to his pile; {raidLeader}'s raid could not outpace his feasting."
+  }
+}

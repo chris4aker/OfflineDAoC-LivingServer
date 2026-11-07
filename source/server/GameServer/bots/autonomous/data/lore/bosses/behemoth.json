@@ -1,0 +1,72 @@
+{
+  "id": "behemoth",
+  "name": "Behemoth",
+  "catalogKey": "darkness-falls/behemoth",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "aliases": [
+    "behe"
+  ],
+  "facts": [
+    {
+      "text": "Level 99 in Darkness Falls' bestiary.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+      "text": "Until April 2002 Legion summoned Behemoth from elsewhere in the dungeon; Mythic then kept it to its own area.",
+      "provenance": "mythic",
+      "source": "https://gamebanshee.com/news/68454-beware-of-legion.html"
+    },
+    {
+      "text": "Level 99, 600,000 health, partnered with Legion in the catalog, on a ledge above Legion's lair (249: 44490, 49588, 20833). No scripted mechanic beyond its reset.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs"
+    },
+    {
+      "text": "2002 comments describe it one-shotting players during Legion raids; a 2009 Grab Bag answer (post-period) said it cannot be killed.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmob=2862"
+    }
+  ],
+  "story": "The Behemoth is not of the demon court at all. It is older than the court and larger than anything in it, and the princes keep it on a ledge above Legion's lair as a man keeps a chained bear: for show, and for fear. Once Legion would call it down to fight at its side. It does not any more. The imps say the Behemoth came down once and did not stop at the enemy, and that the court has been very careful since. It breathes like a forge. It does not speak. It has killed more adventurers with single blows than any other creature under the three realms, and none of them has ever left a mark on it worth mentioning.",
+  "legend": "Level 99. It kills you in one hit. In the early days it came down during Legion raids and ended them; Mythic sent it back to its ledge. Later they said outright it cannot be killed. People still try. Nobody we know has done it.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something on the ledge breathes like a forge."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Behemoth has fallen. The court below trembles."
+  },
+  "botLines": {
+    "briefing": [
+      "nobody goes up to the behemoth's ledge. nobody. its 99"
+    ],
+    "aftermathWin": [
+      "did we... did we just kill the behemoth",
+      "screenshot it. nobody will believe this"
+    ],
+    "aftermathLoss": [
+      "told you. level 99. one hit each"
+    ],
+    "rumour": [
+      "behemoth is level 99, [heard|they say]. nobody kills it. nobody",
+      "[heard|someone said] legion used to call the behemoth down to fight. not anymore"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "behemoth",
+    "text": "Kept on a ledge above Legion's lair, as a man keeps a chained bear. It is older and larger than anything else in that kingdom. I know of no one who has killed it. I know of many who tried."
+  },
+  "bookPage": "Above Legion's lair, the imp said, is a ledge, and on the ledge lives the Behemoth, which is not of the court at all but older than the court, and which the court keeps as a man keeps a chained bear. Once Legion would call the Behemoth down to fight beside it. Now it stays on its ledge. The imp said this was because the Behemoth once came down and did not stop at the enemy. I did not give it a third candle-end. I did not need to.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} did what no one believed: the Behemoth of Darkness Falls fell in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} climbed to the Behemoth's ledge. The Behemoth was unmoved."
+  }
+}

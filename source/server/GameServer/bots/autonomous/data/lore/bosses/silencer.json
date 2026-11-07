@@ -1,0 +1,91 @@
+{
+  "id": "silencer",
+  "name": "Silencer",
+  "catalogKey": "caer-sidi/silencer",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. For every ten attackers he gains a 1% chance, on each hit, to become almost immune to damage for a short time; he changes form during the fight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/Silencer.cs"
+    }
+  ],
+  "story": "In a gaol of the dead, noise is a kind of hope, and the keepers of Caer Sidi set one of their number to end it. The Silencer walks the inner halls where the prisoners used to call to each other through the stone. He grows harder to harm the more voices are raised against him, as if a crowd only feeds the hush he carries. When the gaol rose, the Silencer did not choose a side. Silence has no side. It simply grew.\n\nThe keeper of the hush. In a gaol of the dead, noise is a kind of hope: prisoners call to each other through the stone, tap messages on the walls, sing. Arawn set one keeper in Caer Sidi to end it, and the keepers who wrote down the gaol's rules called him only the Silencer. He walks the inner halls where the calling used to be loudest, and where he walks, footsteps make no sound.\n\nWhy crowds fail. He grows harder to harm the more voices are raised against him. For every ten hands lifted to strike him, his hush deepens a little, and at any blow he may go still and let almost nothing touch him for a few breaths; a whole raid piled on him only feeds the silence. He changes as he fights, his shape thinning into the quiet. When the gaol rose, the Silencer did not choose a side. Silence has no side. It simply grew, until the prisoners who had risen against their keepers found they could not shout their victory, and some of them still blame him for that more than they blame Arawn.",
+  "legend": "The more people hitting him, the more often he goes nearly immune for a couple of seconds: roughly one percent chance per hit for every ten attackers. A huge zerg on him is wasted. Send a solid core of damage dealers, keep the rest of the raid clearing or guarding around him, and wait out his still moments instead of spending cooldowns into them. He also resets if dragged too far or left alone for half a minute. Ten good damage dealers beat eighty average ones here. Give the rest of the raid something to do: guard the healers, clear the corridors, and above all stay off him, however tempting the long still moments make him look.",
+  "yells": {
+    "aggro": [
+      "Hush.",
+      "So loud. All of you, so loud.",
+      "Be still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "So many voices. So little to say."
+      }
+    ],
+    "death": [
+      "...",
+      "At last... quiet..."
+    ],
+    "slay": [
+      "Quiet now.",
+      "Shh.",
+      "No more calling."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Your footsteps make no sound here.",
+      "The quiet here has weight. It presses on you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Silencer goes still. Blows find nothing."
+      }
+    ],
+    "realmFirstKill": "The Silencer is dead. Caer Sidi can scream again."
+  },
+  "botLines": {
+    "briefing": [
+      "silencer gets immunity windows the more people hit him. core dps only, the rest guard",
+      "wait out his immune bursts, dont waste cds",
+      "everyone else clears adds around him",
+      "dont drag him, he resets"
+    ],
+    "aftermathWin": [
+      "silencer down. it's loud again",
+      "fewer people on him worked. told you",
+      "small team, clean kill",
+      "you can hear your feet again"
+    ],
+    "aftermathLoss": [
+      "the whole raid piled on him and he just kept going immune",
+      "we blew cooldowns into his immune windows",
+      "people stopped clearing and adds came in",
+      "he reset while we argued about who should hit him"
+    ],
+    "rumour": [
+      "heard the silencer gets harder to hurt the more people swing at him",
+      "[someone said|heard] its dead quiet near the silencer",
+      "heard the prisoners blame the silencer for not being able to cheer",
+      "the silencer was the keeper who stopped the prisoners talking through the walls"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "silencer",
+    "text": "The keeper who ended the prisoners' calling through the stone. The more voices raised against him, the deeper his hush. Send your best, not your most."
+  },
+  "bookPage": "In the inner halls our footsteps made no sound, and when our raid leader called the pull, her voice came out of her mouth and went nowhere, as if swallowed by wool. The Silencer was there. We learned quickly that the more of us struck at him the stiller he became, until our blows seemed to fall on deep water. So she sent ten of us in and kept the rest back, and the ten did what eighty could not. I do not know what that teaches. Brother Cadoc says it is a sermon, and that he will preach it when he has decided on what.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke the Silencer's hush in {minutes} minutes.",
+    "loss": "The Silencer stilled {realm}'s raid; {raidLeader} sent too many voices against him."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": []
+}

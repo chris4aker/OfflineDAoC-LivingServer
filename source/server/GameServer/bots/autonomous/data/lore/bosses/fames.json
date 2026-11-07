@@ -1,0 +1,124 @@
+{
+  "id": "fames",
+  "name": "Fames",
+  "catalogKey": "caer-sidi/fames",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "aliases": [
+    "the horsemen",
+    "the four riders"
+  ],
+  "facts": [
+    {
+      "text": "Level 83, 100,000 health; the first Horseman. He speaks first, asks a raider whether they challenge fate, and on 'yes' grants two minutes to prepare.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Fames is Latin for 'hunger, famine'; Bellum 'war', Morbus 'disease', Funus 'funeral, death'.",
+      "provenance": "original",
+      "source": "Latin (standard dictionary glosses)"
+    }
+  ],
+  "story": "Fames is the first of the four riders and the one who speaks for them. Famine in the old Roman tongue, though there is nothing starved about him: he has a scholar's patience and a gaoler's courtesy. He senses a crowd before it reaches the hall, he chooses one face out of it, and he asks the question every raid on Caer Sidi has to answer. Do you come to challenge fate? Say no, and he tells you to go and do what you were meant to do. Say yes, and he grants you a few grains of time, two minutes in your reckoning, to prepare. He is not cruel. He believes that a choice made with open eyes is the only kind worth punishing.\n\nWho he was. The keepers of Caer Sidi gave the riders their names in the Roman tongue, because the Romans buried their dead along every road of Albion and Arawn received a great many of them; Fames, Bellum, Morbus, Funus: hunger, war, plague and the funeral, the four roads by which men come to the dead. Fames is the eldest, because men starved before they fought. He is not gaunt. He is patient, as hunger is patient, and he has learned the courtesy of a gaoler who has had no prisoners to speak to for a long time.\n\nWhat he does. He senses a raid before it reaches the hall: the presence of many, he says, of power and ambition. He chooses one face among them and asks the question. He wants the answer said aloud. He believes a choice made with open eyes is the only one worth punishing, and he will let anyone who says no walk away. When he is spent, Bellum rides a minute after him, and each rider sends a fate's bearer before him into the fight.",
+  "legend": "Someone has to say yes to Fames; the raid leader does it. Then you get two minutes: buff, form up, assign targets, put the clerics where they can see everyone. Fames himself is a straight fight with a fate's bearer at his side; kill the bearer, tank him, burn him. A minute after he falls Bellum comes, then Morbus, then Funus, then Apocalypse five seconds after Funus. Rest and rebuff in every gap. Do not chase him out of the hall. Old hands say: never answer for the raid unless you lead it. Fames remembers the face that said yes.",
+  "yells": {
+    "aggro": [
+      "I sense the presence of many, the presence of power and ambition.",
+      "Do you come to challenge fate?",
+      "You chose. Now bear it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fate is patient. My brothers are more patient still."
+      }
+    ],
+    "death": [
+      "Fate is not hunger. Fate is patient. Bellum...",
+      "My brothers will be more patient still."
+    ],
+    "slay": [
+      "Fate cannot be changed.",
+      "Hunger always wins in the end.",
+      "One fewer at the table."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four riders wait. They will ask you a question.",
+      "The first rider watches one face among you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fames falters. Behind him, Bellum waits."
+      }
+    ],
+    "realmFirstKill": "Fames has fallen. Hunger rides no more in Caer Sidi."
+  },
+  "botLines": {
+    "briefing": [
+      "raid leader says yes to fames, then we get two minutes. buffs and positions",
+      "fames, then a minute, bellum, then morbus, then funus. rest in the gaps",
+      "someone say yes to fames, then 2 minutes. buffs, groups, targets",
+      "fames comes with a fate's bearer, kill it first",
+      "rest between riders, each one is a minute after the last",
+      "dont chase fames out of the hall"
+    ],
+    "aftermathWin": [
+      "fames down, one rider out of four",
+      "the two minutes were enough. told you",
+      "hunger is dead. lol",
+      "nice, nobody died on fames"
+    ],
+    "aftermathLoss": [
+      "we said yes and werent ready. two minutes is two minutes",
+      "the fate's bearer got the healers",
+      "we chased him and he reset",
+      "too slow on fames, no mana for the rest"
+    ],
+    "rumour": [
+      "heard fames asks you if you challenge fate. you have to say yes",
+      "[someone said|heard] if you say no to fames he just lets you leave",
+      "fames means hunger in the old roman tongue, [heard|apparently]",
+      "heard fames picks one face in the raid to ask"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fames",
+    "text": "Famine, in the Roman tongue, and the voice of the four riders. He asks whether you challenge fate. Say yes and he grants you two minutes. He believes a choice made with open eyes is the only kind worth punishing."
+  },
+  "bookPage": "Fames looked along our ranks the way a farmer looks along a fence, and stopped at our raid leader, and asked her whether she had come to challenge fate. He asked it gently. He waited. When she said yes, he inclined his head as if she had passed a test he had not expected her to pass, and told us that we were brave, or foolish, and that while our actions would most likely change nothing, we were granted a few grains of time to prepare. Two minutes, in our terms. He seemed to think that generous. It was.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} told Fames yes and unhorsed him in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} challenged fate at Caer Sidi; Fames answered."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "bellum",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "morbus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "funus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "apocalypse",
+      "relation": "the master they ride before"
+    }
+  ]
+}

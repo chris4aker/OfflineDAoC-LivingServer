@@ -1,0 +1,65 @@
+{
+  "id": "risnir-cruss",
+  "name": "Ris'nir Cruss",
+  "catalogKey": "albion-named-mobs-shrouded-isles/risnircruss",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health. Every player he kills becomes an 'Apparition of <name>' that attacks; casts Thunder Stomp and a mesmerize.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/RisnirCruss.cs"
+    }
+  ],
+  "story": "Ris'nir Cruss is a drakoran war-priest of the Dales, and he has learned something from Morgana that the rest of his kind find distasteful: how to keep the ones he kills. When an enemy falls to him a pale apparition rises where they died, wearing their face and their name, and turns on the friends they came with. His field in the Dales is crowded with them. He stomps the earth like his commander, and he lulls enemies to sleep, so that they wake among apparitions of people they knew.",
+  "legend": "Do not die to him: every player he kills rises as an apparition of that player and attacks the raid. Cure his mesmerize fast, spread for his stomp, and kill apparitions as soon as they stand up. One death becomes two very fast.",
+  "yells": {
+    "aggro": [
+      "Come. I will keep you."
+    ],
+    "phases": [],
+    "death": [
+      "Let them... go..."
+    ],
+    "slay": [
+      "Stand up. You are mine now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Pale shapes stand here wearing familiar faces."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ris'nir Cruss raises the faces of the fallen!"
+      }
+    ],
+    "realmFirstKill": "Ris'nir Cruss is dead. The apparitions fade."
+  },
+  "botLines": {
+    "briefing": [
+      "dont die to risnir, every death becomes an apparition that attacks us",
+      "cure mez, spread for stomp"
+    ],
+    "aftermathWin": [
+      "ris'nir cruss down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "[heard|word is] ris'nir cruss makes a ghost of everyone he kills",
+      "heard ris'nir's apparitions wear your friends' names"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "ris'nir cruss",
+    "text": "A drakoran war-priest who learned from Morgana how to keep the ones he kills. Each who falls to him rises as a pale apparition with their own face."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Ris'nir Cruss in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Ris'nir Cruss drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

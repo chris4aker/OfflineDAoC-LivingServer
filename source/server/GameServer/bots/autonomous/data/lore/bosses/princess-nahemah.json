@@ -1,0 +1,76 @@
+{
+  "id": "princess-nahemah",
+  "name": "Princess Nahemah",
+  "catalogKey": "darkness-falls/princessnahemah",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 71, 100,000 health, tether 2,000. A minion fights linked with her; she casts Maelstrom.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs"
+    },
+    {
+      "text": "The name echoes Naamah, a demoness of later Jewish tradition; to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Princess Nahemah is the youngest of the royal blood below and the one the princes underestimate, which she prefers. Her hall smells of perfume and, beneath it, of a storm about to break. She keeps a single servant at her side, never more, and fights with a whirling maelstrom of her own making. She counts among the court's princes for Beliathan's purpose: while she lives, the worm stays down. The imps say she wants it that way, and that she is waiting for her brothers to die.",
+  "legend": "Kill her servant and stay out of her maelstrom. She counts as a prince for Beliathan, so she has to die too before the worm comes up. Do not drag her far; she walks home past two thousand, and her hall is the far end of the court.",
+  "yells": {
+    "aggro": [
+      "My brothers send such charming visitors."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Let the storm take you!"
+      }
+    ],
+    "death": [
+      "Now... the worm..."
+    ],
+    "slay": [
+      "Swept away."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Perfume, and under it, the smell of a storm."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Nahemah's maelstrom tears through the hall!"
+      }
+    ],
+    "realmFirstKill": "Princess Nahemah has fallen. The storm in her hall is spent."
+  },
+  "botLines": {
+    "briefing": [
+      "nahemah has one linked minion, kill it. spread out for maelstrom",
+      "she counts as a prince for beliathan"
+    ],
+    "aftermathWin": [
+      "princess down. thats the last royal, get ready for the worm",
+      "maelstrom hurt but we held"
+    ],
+    "aftermathLoss": [
+      "we all stood together in the maelstrom"
+    ],
+    "rumour": [
+      "[heard|someone said] nahemah counts as a prince for beliathan",
+      "heard princess nahemah is waiting for her brothers to die"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "nahemah",
+    "text": "The youngest of the royal blood below. Perfume and a coming storm. While she lives, the worm stays down, and the imps say she likes it that way."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} rode out Princess Nahemah's storm and felled her in {minutes} minutes.",
+    "loss": "Princess Nahemah's maelstrom swept {realm}'s raid away; {raidLeader} regrouped at the door."
+  }
+}

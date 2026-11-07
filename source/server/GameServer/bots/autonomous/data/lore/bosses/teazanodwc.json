@@ -1,0 +1,69 @@
+{
+  "id": "teazanodwc",
+  "name": "Teazanodwc",
+  "catalogKey": "albion-named-mobs-classic-zones/teazanodwc",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 63, 30,000 health. When fought she calls four or five Teazanodwc's servants (level 50-53).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Teazanodwc.cs"
+    },
+    {
+      "text": "The name is unglossed here (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Teazanodwc keeps the hollow north of the lake, and keeps servants there: small quick things that move all one way, toward whoever she wants them to move toward. The hill-folk do not agree on what she is, only that she was not there before the lake ladies left and that she has been there every day since. She never fights alone. When she is threatened her servants pour out of the hollow, four and five at a time, and she lets them do most of the work.",
+  "legend": "Four or five servants come out when you pull her. Kill them or hold them, then put everyone on Teazanodwc. Area damage helps. Do not pull her while another Barfog named is up, or the whole hillside joins in. Her hollow is narrow.",
+  "yells": {
+    "aggro": [],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Teazanodwc's servants pour out of the hollow."
+      }
+    ],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Small things stir in the hollow, all one way."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Teazanodwc's servants pour out of the hollow!"
+      }
+    ],
+    "realmFirstKill": "Teazanodwc has fallen. Her hollow is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "teazanodwc calls 4-5 servants. aoe them, then her"
+    ],
+    "aftermathWin": [
+      "servants first, then the boss. clean",
+      "teazanodwc down, the hollow is quiet"
+    ],
+    "aftermathLoss": [
+      "the servants swarmed the healers"
+    ],
+    "rumour": [
+      "heard teazanodwc never fights alone",
+      "[someone said|heard] teazanodwc wasnt there before the lake ladies left"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "teazanodwc",
+    "text": "She keeps the hollow north of the lake, and quick small servants who pour out when she is threatened. She was not there before the lake ladies left."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Teazanodwc in Llyn Barfog in {minutes} minutes.",
+    "loss": "Teazanodwc drove {realm}'s raid out of Llyn Barfog; {raidLeader} fell back."
+  }
+}

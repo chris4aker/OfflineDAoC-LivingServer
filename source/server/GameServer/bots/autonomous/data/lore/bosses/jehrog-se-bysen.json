@@ -1,0 +1,100 @@
+{
+  "id": "jehrog-se-bysen",
+  "name": "Jehrog se Bysen",
+  "catalogKey": "krondon/jehrogbysen",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 76, 30,000 health; fights linked with Ulor se Bysen. Casts Banish Immunities (halves the target's Body resist) and Lance Spirit (83 damage every 4 s for 24 s).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs"
+    },
+    {
+      "text": "Bysen means 'example, pattern, model', and also 'command, precept' (Bosworth-Toller).",
+      "provenance": "original",
+      "source": "https://oldenglishdictionary.net/word/bysen"
+    }
+  ],
+  "story": "Jehrog is the elder of the two brothers called the Example, and the one who learned the hall's old curses. He opens a man's body to harm and then covers it in sores, and he does it slowly, because an example should be watched. Where Ulor takes, Jehrog teaches: every young ogre in Krondon has seen what Jehrog does to the hall's enemies. The two stand side by side in their room because that is the lesson they were made to teach: an ogre of Krondon does not fight alone, and does not fall alone.\n\nThe elder example. Jehrog is the elder of the two brothers called the Example, and the one who learned the hall's old curses. The hall-folk kept a few dark words for their enemies, and Jehrog found them written in the scriptorium and had Drihten's scribes copy them out until he knew them by shape. He opens a man's body to harm, stripping its defence against the body-magic, and then covers it in sores that burn for half a minute.\n\nThe lesson. He does it slowly, because an example should be watched. Where Ulor takes, Jehrog teaches: every young ogre in Krondon has seen what Jehrog does to the hall's enemies, and many of them dream about it. The two stand side by side in their room because that is the lesson they were made to teach. When his brother falls, Jehrog fights angrier, and the young in the doorway learn from that too. Orylle values the brothers above any lord of the hall but Orshom, because they are making her next generation, and she visits their room more often than any other.",
+  "legend": "He halves your body resist and then covers you in sores that tick for half a minute. Cure and heal the sored, put the whole raid on one brother, and only then turn to the other. Split damage and you will be standing in their lesson far too long.\n\nJehrog's sores tick hard; healers who cannot cure should pre-heal the target he picks. If Ulor dies first, Jehrog fights harder: save a cooldown for the second half. The old hands kill Ulor first because his drain feeds him, and then turn every healer loose on the sored while the raid finishes Jehrog. Whatever you do, do it to one brother at a time.",
+  "yells": {
+    "aggro": [
+      "Watch closely. This is the lesson.",
+      "Open, and bleed, and learn.",
+      "Brother, beside me."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ulor! Stand with me!"
+      }
+    ],
+    "death": [
+      "Remember... how we stood...",
+      "Ulor... we fall... together..."
+    ],
+    "slay": [
+      "An example, for the young ones.",
+      "Slowly. So they see.",
+      "That is the lesson."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two ogres stand side by side, like a lesson.",
+      "A dark word is scratched into the floor here."
+    ],
+    "phases": [],
+    "realmFirstKill": "Jehrog se Bysen is dead. No one follows the example now."
+  },
+  "botLines": {
+    "briefing": [
+      "jehrog halves body resist and dots. healers cure, dps stay on one brother",
+      "if ulor dies first, jehrog hits harder",
+      "save a cooldown for the second brother",
+      "pre heal his target"
+    ],
+    "aftermathWin": [
+      "the example has been set. by us",
+      "jehrog down, the sores are gone",
+      "both brothers, no deaths",
+      "orylle lost her favourites tonight"
+    ],
+    "aftermathLoss": [
+      "the dots killed more than the melee did",
+      "we had no curers and he dotted everyone",
+      "split damage again",
+      "second half he got angry and we werent ready"
+    ],
+    "rumour": [
+      "[heard|someone said] jehrog's sores eat you slow. on purpose",
+      "jehrog se bysen is the older brother. meaner too",
+      "heard jehrog learned the old curses from drihten's scribes",
+      "orylle visits the brothers more than any other room, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "jehrog",
+    "text": "The elder of the brothers called the Example. He opens a man's body to harm, then covers it in sores, slowly, so the young ogres can watch."
+  },
+  "bookPage": "The elder brother, Jehrog, learned the hall's dark words from the scriptorium, where Drihten's scribes copied them out for him again and again until he knew them by shape. He spoke one over our raid leader and her body opened to harm like a window opening, and then the sores came, slowly, and he watched them come with the young ogres watching him. When Ulor fell, Jehrog roared for him to stand, and fought on like a man in grief. I had not known ogres could grieve. I know it now. I wish I did not.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} ended Jehrog se Bysen's lesson in {minutes} minutes.",
+    "loss": "Jehrog se Bysen taught {realm}'s raid under {raidLeader} the slow way."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "ulor-se-bysen",
+      "relation": "his younger brother"
+    },
+    {
+      "id": "drihten-elreden",
+      "relation": "his scribes copied Jehrog's curses"
+    }
+  ]
+}

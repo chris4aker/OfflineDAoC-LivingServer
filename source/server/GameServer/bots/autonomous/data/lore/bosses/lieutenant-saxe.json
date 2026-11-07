@@ -1,0 +1,99 @@
+{
+  "id": "lieutenant-saxe",
+  "name": "Lieutenant Saxe",
+  "catalogKey": "hall-of-the-corrupt/lieutenantsaxe",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Lieutenant Saxe, 5,000 health, tether 1,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantSaxe.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The plain soldier. Lieutenant Saxe was a Saxon-born sword raised to lieutenant because he never once left a post he was given. Not for rain, not for fever, not for the sergeants' card games. Lord Gildas valued him above cleverer men for exactly that, and gave him the longest and dullest corridor in the hall to keep, the one that leads nowhere in particular. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nThe corruption needed nothing clever to bind him. It only had to tell him to stay, and he would have stayed anyway. He stands where Lord Gildas put him, with nothing to guard but a stretch of empty corridor, and he will guard it from you as fiercely as if the realm depended on it. He has no tricks and no grudge and no despair; he is the only officer of the watch whom the corruption did not have to change at all. The bards find that the most frightening thing about him. The old soldiers of Albion find it the most admirable, and drink to him.\n\nHe has been dead longer than he was a lieutenant, and he does not know it, and the old soldiers say that this is the one mercy the corruption showed anyone in the hall. Saxe believes he is still keeping his corridor for Lord Gildas on an ordinary night. Raiders who kill him find his face peaceful. Nobody can say that of any other officer of the watch.",
+  "legend": "A straight fight with no tricks to him: tank him, burn him, move on. He has five thousand health and no special blows. The only rule is the Hall's rule: do not drag him. Past his short tether of 1,500 he is immune and walks back to his post at full health, and he will do that as many times as you let him. Old Albion soldiers salute his corridor on the way past, and some raids drink to him after. Some raids walk past him entirely; the corridor leads nowhere you need to go. The old soldiers say that is the most respectful choice.",
+  "yells": {
+    "aggro": [
+      "Post held, my lord. Post held.",
+      "Halt. This corridor is held.",
+      "No further."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I do not move. I have never moved."
+      }
+    ],
+    "death": [
+      "Post... abandoned...",
+      "Forgive me... my lord... I moved..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "Post held.",
+      "Halt means halt.",
+      "Corridor clear."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An empty corridor, and one man guarding it.",
+      "The flagstones are worn in one spot."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lieutenant Saxe is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "saxe is a straight fight. keep him at his post",
+      "fight it where it stands, off its post its immune",
+      "5k hp, no tricks",
+      "dont drag him",
+      "quick kill, move on"
+    ],
+    "aftermathWin": [
+      "lieutenant saxe down, one less on the watch",
+      "saxe down. respect",
+      "quick and clean",
+      "drink to saxe later",
+      "the corridor is open"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there",
+      "we dragged him three times",
+      "pulled him with a sergeant",
+      "how did we wipe on saxe"
+    ],
+    "rumour": [
+      "heard saxe never left a post in his life. or after",
+      "[someone said|heard] the lieutenants in the hall are easy if you dont drag them",
+      "heard the old soldiers drink to saxe",
+      "saxe is the only one the corruption didnt have to change, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "saxe",
+    "text": "Lieutenant Saxe was a plain soldier of the watch, a Saxon-born sword raised to lieutenant because he never once left a post he was given."
+  },
+  "bookPage": "Lieutenant Saxe asked me today what the reports were for, and I told him they were so that the Constable would know what passes on the road. He said that nothing passes on the road. I said that was what the reports said. He thought about that for a long time and then said that he supposed it was good for the Constable to know that nothing passes, and went back to his corridor. He has kept that corridor for eleven years. It leads nowhere. Lord Gildas says he is the best soldier in the hall, and I think Lord Gildas is right.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Lieutenant Saxe from the Pennine watch in {minutes} minutes.",
+    "loss": "Lieutenant Saxe held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lord-gildas",
+      "relation": "the lord who valued him most"
+    }
+  ]
+}

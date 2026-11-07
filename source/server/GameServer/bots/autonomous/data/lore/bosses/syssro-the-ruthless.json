@@ -1,0 +1,101 @@
+{
+  "id": "syssro-the-ruthless",
+  "name": "Sys'sro the Ruthless",
+  "catalogKey": "avalon-city/syssroruthless",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Fifteen Sys'sro's Pit Monsters spawn with him; he throws a random raider into the pit (50: 41489, 40699, 8145). Pulling him brings six syhr'phint alblasters and two dragoons.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Sys'sro leads the syhr'phint, the clan of taskers and catchpoles, the drakoran who keep order in the occupied city and set the conquered to work. His quarter was the scholars' cloister, and in its garden he dug a pit, and in the pit he keeps fifteen beasts that he feeds on whoever displeases him. He is called the Ruthless by his own people, which among the drakoran is a compliment. When he fights he does not need to win. He only needs to throw you in.\n\nThe catchpoles. The syhr'phint are the order-keepers of the drakoran host: taskers who set the conquered to work, catchpoles who keep the streets, stallmen and sutlers and soldiers and veterans, and alblasters and dragoons for when order needs enforcing. Sys'sro is their lord, and his quarter is the scholars' cloister, the quiet garden where the readers of Avalon once walked between lectures.\n\nThe pit. In the middle of the cloister garden he dug a pit, and in the pit he keeps fifteen beasts, and he feeds them on whoever displeases him: thieves, shirkers, the conquered, other drakoran. He is called the Ruthless by his own people, which among the drakoran is a compliment, and his alblasters and dragoons stand at the cloister's edge to make sure nobody climbs out. When he fights he does not need to win. He only needs to throw you in. He seizes whoever he can reach and hurls them down among the beasts, and if no one goes down to help, nobody comes up. The other drakoran lords despise him and need him; a city does not keep order by itself, even one taken by dragon-men.",
+  "legend": "Fifteen pit monsters live under him. He throws people into the pit at random; if it is you, fight your way out with help, do not just die. Kill his alblasters and dragoons first, and keep the healers well back from the edge.\n\nWhen he throws someone into the pit, send a group down after them at once: fifteen pit monsters kill a lone raider in seconds. Kill the alblasters and dragoons at the cloister's edge first, and keep the healers away from the rim. The pit group should be ready before the pull, standing near the rim, with their own healer.",
+  "yells": {
+    "aggro": [
+      "Another for the pit!",
+      "Order! Order in my cloister!",
+      "Catchpoles! Take them!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Feed them! Feed my beasts!"
+      }
+    ],
+    "death": [
+      "The pit... is hungry still...",
+      "Who keeps order... now..."
+    ],
+    "slay": [
+      "Down you go.",
+      "Feed them.",
+      "Order is kept."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground falls away into a pit. Something moves in it.",
+      "The cloister garden. The pit in the middle stinks."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Sys'sro hurls the living into his pit!"
+      }
+    ],
+    "realmFirstKill": "Sys'sro the Ruthless is dead. The pit goes hungry."
+  },
+  "botLines": {
+    "briefing": [
+      "syssro throws people in the pit with 15 monsters. if its you, shout, we come get you",
+      "his archers and dragoons are linked, kill them first",
+      "healers stay back from the pit",
+      "a group ready to jump in the pit"
+    ],
+    "aftermathWin": [
+      "nobody stayed in the pit. good rescue",
+      "ruthless is dead. pit's closed",
+      "the catchpoles are out of a job",
+      "pit group did great"
+    ],
+    "aftermathLoss": [
+      "three people in the pit and nobody went down to help",
+      "healers stood at the rim and got thrown",
+      "the alblasters shot us to bits",
+      "the pit monsters ate the rescue too"
+    ],
+    "rumour": [
+      "heard sys'sro feeds people to the things in his pit",
+      "[someone said|heard] sys'sro's own people call him ruthless like its a compliment",
+      "heard the pit is in the old cloister garden",
+      "the other drakoran lords hate sys'sro but need him, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sys'sro",
+    "text": "The Ruthless. Fifteen beasts live in his pit, and he throws men into it. Keep your back to the wall."
+  },
+  "bookPage": "The catchpoles took the cloister, where we used to walk between lectures, and their lord dug a pit in the middle of the garden where the old pear tree stood. My fishermen say he keeps beasts in it, fifteen at the least, and feeds them on thieves and shirkers and anyone he dislikes, including his own kind. One fisherman saw a knight of Albion thrown in. He says the knight's companions went down after him without a moment's pause, all of them, and came up again with him, bloodied, and that the drakoran lord seemed more astonished than angry. The drakoran, it seems, do not go down after each other.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} climbed out of the pit and ended Sys'sro the Ruthless in {minutes} minutes.",
+    "loss": "Sys'sro fed {realm}'s raid to his pit one by one; {raidLeader} could not pull them out."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "duraek-the-empowered",
+      "relation": "the lord he serves"
+    }
+  ]
+}

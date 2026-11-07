@@ -1,0 +1,59 @@
+{
+  "id": "coliath",
+  "name": "Coliath",
+  "catalogKey": "albion-named-mobs-shrouded-isles/colialt",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Coliath (script class Colialt), level 78, 40,000 health. An ancient zombie spawns with it; at 30% it casts a life drain and follows its target.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Colialt.cs"
+    }
+  ],
+  "story": "Coliath holds the heights of Gwyddneau, the isle the old Welsh tales would call drowned, and guards something there. Nobody on the Isle of Glass can say what, and the garrison has a standing wager on it. An ancient dead thing rises from the ground beside it when it wakes, and when it is badly hurt, at a third of its strength, it fastens on its enemy and drinks the life out of them, following wherever they go. Whatever Coliath guards, it guards it hard enough to be the strongest named on the open isles.",
+  "legend": "The strongest named on the isles' open ground. An ancient zombie wakes with it. At thirty percent it locks onto someone and drains their life while following them; that player keeps moving and the healers keep up. Whatever it guards is not worth dying for, the garrison says.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something is guarded here. Nobody says what."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Coliath fastens on its foe and drinks!"
+      }
+    ],
+    "realmFirstKill": "Coliath has fallen. What it guarded lies open."
+  },
+  "botLines": {
+    "briefing": [
+      "coliath at 30% locks onto one guy and drains him. heal that guy",
+      "kill the zombie that spawns with it"
+    ],
+    "aftermathWin": [
+      "coliath down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "coliath rules gwyddneau and nobody can tell me what it guards",
+      "[heard|someone said] coliath is the toughest thing outside the dungeons on the isles"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "coliath",
+    "text": "It holds the heights of Gwyddneau and guards something no one can name. At a third of its strength it fastens on a foe and drinks."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Coliath in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Coliath drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

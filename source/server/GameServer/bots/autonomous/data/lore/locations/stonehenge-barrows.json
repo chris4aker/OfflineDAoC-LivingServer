@@ -1,0 +1,109 @@
+{
+  "id": "stonehenge-barrows",
+  "name": "Stonehenge Barrows",
+  "realm": "Albion",
+  "regions": [
+    20
+  ],
+  "aliases": [
+    "the barrows",
+    "stonehenge"
+  ],
+  "summary": "The barrows under the stone circle on Salisbury Plains, Merlin's barrow by name, where the dead of kings outrank the living.",
+  "facts": [
+    {
+      "text": "The Stonehenge Barrows are entered within the circles of Stonehenge on Salisbury Plains: a tomb haunted by undead that only highly skilled warriors should enter.",
+      "provenance": "mythic",
+      "source": "https://camelotherald.fandom.com/wiki/Salisbury_Plains"
+    },
+    {
+      "text": "Its dead: megalith, barrow and tomb wights, skeletal druids and druidesses, a skeletal high priestess, saxonbone and redbone skeletons, stone sentinels, petrified grovewood, soul harvesters, sacrificial souls, ossuary guardians, spectral wizards, grave goblins and pendrakes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Medieval British legend, not game canon: Geoffrey of Monmouth has Merlin bring the stones from across the sea as a monument to the slain Britons, and buries Aurelius and Uther there (to verify details).",
+      "provenance": "myth",
+      "source": "Geoffrey of Monmouth, Historia Regum Britanniae (to verify)"
+    },
+    {
+      "text": "Existing bot chat: the heart of the barrows is called the barrow of Merlin; the shade of Uther Pendragon, the king's wight and wizard Lichas walk there; a passage ends in a hollow-sounding wall; touching the stones before a raid is luck.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    }
+  ],
+  "story": "The stones on Salisbury Plain were old before Albion had a name, and the chroniclers of Camelot say Merlin himself brought them over the sea to stand over the graves of kings. Whether he did or not, the kings are there. Under the circle the barrows run down and down, chamber under chamber, and in them the dead of every age of Albion lie in order: the druids who raised the first stones, the Saxons who came later and stayed, the warriors buried with their swords, and at the heart of it all a barrow that has always been called Merlin's.\n\nMerlin is not in it. Those who have walked every hall say so. What walks there instead is the shade of Uther Pendragon, Arthur's father, who the chronicles say was buried inside the ring; a wight who was once a king; and a wizard called Lichas, who the minstrels say was Merlin's pupil and stayed behind to keep a door when his master went away. Somewhere down there a passage ends in a wall that sounds hollow when you knock on it. Nobody has found the way past it. The barrows are the one place in Albion where the dead outrank the living, and they know it.",
+  "legend": "Touch the stones for luck before a big raid; half the realm does. Merlin is not in his barrow, whatever the name says, but Uther's shade is, and it does not like visitors. There is a hollow wall somewhere in the deep halls. If you find the way past it, tell nobody.",
+  "atmosphere": {
+    "firstEntry": [
+      "Under the stones. Here the dead outrank the living."
+    ],
+    "areas": [
+      {
+        "name": "the priestess' hall",
+        "x": 34600,
+        "y": 25331,
+        "z": 14048,
+        "radius": 800,
+        "lines": [
+          "Druid dead keep a rite older than the stones."
+        ]
+      },
+      {
+        "name": "the ossuary",
+        "x": 31023,
+        "y": 21975,
+        "z": 14010,
+        "radius": 900,
+        "lines": [
+          "Bones stacked to the roof. Some of them are standing."
+        ]
+      },
+      {
+        "name": "the megalith chamber",
+        "x": 29872,
+        "y": 23211,
+        "z": 13824,
+        "radius": 800,
+        "lines": [
+          "The stones above are watching through the roof."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "touch the stones at stonehenge for luck before a big raid. half the realm does it",
+      "merlin's barrow lies under salisbury, right under the stones",
+      "the barrows are the only place in albion where the dead outrank the living",
+      "[the shade of uther pendragon|uther's shade] walks the barrows [and not merlin|while merlin is nowhere]. [that tells you something|make of that what you will]"
+    ],
+    "rumour": [
+      "there's a passage in the barrows that ends in a wall that sounds hollow. never found the way past it",
+      "merlin isn't dead. the barrow's [empty|for show], mark me"
+    ],
+    "tell": [
+      "stonehenge barrows? under the stone circle on salisbury plains. wights, druid skeletons, uther's shade. forties, bring a good group"
+    ]
+  },
+  "loremaster": {
+    "intro": "Under the stones of Salisbury lie the barrows of kings, and at their heart the barrow of [Merlin]. He is not in it. [Uther] is.",
+    "topics": {
+      "merlin": "The chroniclers say he brought the stones over the sea for the graves of kings, so the barrow bears his name. Those who have walked every hall say it is empty of him. Ask the minstrels about [Lichas].",
+      "uther": "Arthur's father, whom the chronicles bury inside the ring. His shade walks the barrows and does not like visitors.",
+      "lichas": "A wizard, the minstrels say Merlin's pupil, who stayed behind to keep a door when his master went away. He is a lich now. Whatever door he keeps, he keeps it still."
+    }
+  },
+  "book": {
+    "title": "A Minstrel's Note on the Barrow of Merlin",
+    "pages": [
+      "Every minstrel in Camelot sings that Merlin lies under the stones of Salisbury, and every adventurer who has been down there swears he does not. I went to see. I found the shade of the old king, which I did not like, and a wizard gone to bone and spite who called himself Lichas and asked me whether my master had sent me. I said I had no master. He said that was a pity, because his had been gone a very long time, and he was tired of keeping the door. I did not ask which door. I wish I had."
+    ]
+  },
+  "bosses": []
+}

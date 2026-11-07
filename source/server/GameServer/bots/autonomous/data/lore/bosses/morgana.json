@@ -1,0 +1,82 @@
+{
+  "id": "morgana",
+  "name": "Morgana",
+  "catalogKey": "albion-named-mobs-classic-zones/morgana",
+  "locationId": "lyonesse",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Morgana's forces overran Avalon with the drakoran; Arawn sent the Inconnu against her because she takes his dead.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "Mythic's Catacombs lore: Merlin's honoured apprentice, she trapped him in a crystal in a cave of ley lines, now the Dark Spire, and attacked Avalon with the drakoran horde.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/464"
+    },
+    {
+      "text": "Level 90, at the fallen tower in Lyonesse with the demons Bechard and Silcharde. The Academy epic asks champions to kill the two demons, not her ('you are no match for Morgana herself'). When they die she swears she will return and that Camelot's walls will fall.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs"
+    },
+    {
+      "text": "Her script calls Arthur her brother; in the legends she is his half-sister.",
+      "provenance": "original",
+      "source": "Arthurian legend"
+    }
+  ],
+  "story": "Morgana was Merlin's best pupil, taught in the colleges of Avalon, and Arthur's own sister, and she wanted his throne. When she could not take it she took his teacher: she lured Merlin to a cave where the ley lines meet and shut him in a crystal, and drank his power, and came back at the head of the dragon-men to burn the city that had taught her. She steals the dead from Arawn to fill her armies. In Lyonesse, at the fallen tower by the Telamon road, she is working a ritual that will summon an army onto Albion's own soil, and two demons, Bechard and Silcharde, stand guard over it. The Academy sends its champions to kill the demons and break the ritual. It tells them plainly not to fight her. She is not a thing a group of adventurers can kill. She is a thing they can delay.",
+  "legend": "Do not fight Morgana. Kill Bechard and Silcharde, her two demons, and her ritual breaks; she will curse you, swear to return and leave. Every Academy mage who reached fifty has heard the same advice, and the ones who ignored it are not around to give it.",
+  "yells": {
+    "aggro": [],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "My creations, undone! Heed me: I shall return!"
+      }
+    ],
+    "death": [],
+    "slay": [
+      "Is this all Albion has to offer?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A fallen tower. A woman's voice chants inside."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Morgana's ritual breaks. Her demons are dead!"
+      }
+    ],
+    "realmFirstKill": "Morgana is driven from the fallen tower. For now."
+  },
+  "botLines": {
+    "briefing": [
+      "dont attack morgana. kill bechard and silcharde, thats the job",
+      "the demons drop demonic minions when they die, clean those up"
+    ],
+    "aftermathWin": [
+      "ritual broken. she said she'll be back. they always do",
+      "demons down, morgana gone. academy will be pleased"
+    ],
+    "aftermathLoss": [
+      "someone hit morgana. level 90. what did you think would happen"
+    ],
+    "rumour": [
+      "[heard|someone said] morgana is back in lyonesse, at the ruin by the telamon road. [dont fight her|kill her demons, not her]",
+      "[arawn|the lord of the underworld] [sent|lent] us the inconnu [because|since] morgana steals his dead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "morgana",
+    "text": "King Arthur's sister, who tried to take his throne. She works a ritual at the fallen tower with two demons, Bechard and Silcharde. Kill the demons and the ritual breaks. Do not try to kill her."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s champions under {raidLeader} slew Bechard and Silcharde and broke Morgana's ritual at the fallen tower in {minutes} minutes.",
+    "loss": "Morgana's ritual at the fallen tower held; {raidLeader}'s champions from {realm} were driven off."
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "id": "lyonesse",
+  "name": "Lyonesse",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    10
+  ],
+  "summary": "Albion's drowned and haunted west, where the Cailleach walks, a cult of Arawn holds the broken cathedral and Morgana works her ritual at the fallen tower.",
+  "facts": [
+    {
+      "text": "Albion's level 50 epic quests send the Academy to Morgana's ritual at the fallen tower in Lyonesse, and the Church to Sister Blythe's cult of Arawn in a broken cathedral there.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/epic/Academy50.cs"
+    },
+    {
+      "text": "The Cailleach Uragaig walks Lyonesse too (316218, 664484); Morgana's tower is at 306093, 670120 and Blythe's cathedral at 322231, 671546.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Existing bot chat: the old folk in Cornwall will not say the Cailleach's name.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "Lyonesse is the land the sea took. The old tales of the west say a whole country lay beyond Cornwall once, with towns and churches and a road to the end of the world, and that the sea came up in a night and drowned it. What Albion calls Lyonesse now is what the sea gave back: a grey, wet land of broken walls and old roads that end in marsh, where the Danaoian farmers work fields that remember being seabed.\n\nThree things walk there that the realm would sooner forget. On the open ground the Cailleach Uragaig, the old hag of winter, keeps her own counsel and calls on a father who is not hers to call. In the broken cathedral at the heart of the land, Sister Blythe has gathered a cult of Arawn, the lord of the dead whom Albion counts as its ally in the isles and whose worship the Church of Camelot has never accepted. And at the fallen tower by the Telamon road, Morgana herself has come back to Albion's soil to work a ritual with two demons at her side, an army waiting at the end of it. The realm sends its champions to Lyonesse when they are ready for the hardest work it has. It does not always get them back.",
+  "legend": "The old folk in Cornwall will not say the Cailleach's name. The Church sends its champions against Blythe's cult in the broken cathedral; the Academy sends its own to the fallen tower to break Morgana's ritual, and tells them not to fight Morgana herself. Listen to that advice.",
+  "atmosphere": {
+    "firstEntry": [
+      "Lyonesse. The land the sea gave back."
+    ],
+    "areas": [
+      {
+        "name": "the fallen tower",
+        "x": 306093,
+        "y": 670120,
+        "z": 3116,
+        "radius": 1200,
+        "lines": [
+          "A fallen tower. A woman's voice chants inside."
+        ]
+      },
+      {
+        "name": "the broken cathedral",
+        "x": 322231,
+        "y": 671546,
+        "z": 2762,
+        "radius": 1200,
+        "lines": [
+          "A broken cathedral. The prayers here are not Albion's."
+        ]
+      },
+      {
+        "name": "the Cailleach's ground",
+        "x": 316218,
+        "y": 664484,
+        "z": 2736,
+        "radius": 1200,
+        "lines": [
+          "The air turns cold. Torches burn without flame."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "cailleach uragaig walks lyonesse. the old folk in cornwall won't say the name",
+      "lyonesse is the land the sea took, [my gran said|the old tales say]. what we walk is what it gave back",
+      "theres a cult of arawn in the broken cathedral in lyonesse. [the church hates it|the priests go white when you mention it]"
+    ],
+    "rumour": [
+      "[heard|someone said] morgana is back in lyonesse, at the ruin by the telamon road. [dont fight her|kill her demons, not her]",
+      "[heard|word is] sister blythe calls her executioners four at a time"
+    ],
+    "tell": [
+      "lyonesse? drowned land past cornwall. cailleach uragaig, sister blythes cult in the cathedral, morgana at the ruin by the telamon road",
+      "epic quest country. the church and the academy send their 50s there"
+    ]
+  },
+  "loremaster": {
+    "intro": "Lyonesse is the land the sea took, and gave back broken. Three things walk there: the [Cailleach], the cult of [Sister Blythe], and [Morgana] at the fallen tower.",
+    "topics": {
+      "cailleach": "The hag of winter, in the old tales of the north. In Lyonesse she calls on a father, and torches of Mithra answer her. The Cornish will not say her name.",
+      "sister blythe": "She holds the broken cathedral for Arawn. The realm counts Arawn its friend in the isles; the Church never has. Her executioners come four at a time.",
+      "morgana": "King Arthur's sister, who tried to take his throne. She works a ritual at the fallen tower with two demons, Bechard and Silcharde. Kill the demons and the ritual breaks. Do not try to kill her."
+    }
+  },
+  "book": {
+    "title": "A Sexton's Letter from Lyonesse",
+    "pages": [
+      "To the Bishop at Camelot. I write from what was the parish of the broken cathedral, for I am still its sexton, though there is no parish and the cathedral has no roof. I must tell you it is not empty. A woman calling herself Sister Blythe holds it, with men in executioners' hoods, and they pray at the altar, and they do not pray to God. They pray to Arawn, the lord of the dead. The Inconnu are his, they say, and the Inconnu are our friends. So I am told.",
+      "I asked her why. She said the dead have always had a lord and that Camelot has only just noticed. She said the light of Camelot is a candle and that candles go out. Then her executioners took me to the door and set me outside it, gently, as one might set out a cat. I am writing this from the farm of a Danaoian family who have taken me in. To the north I can see the fallen tower, and there is a light in it at night, and a woman's voice. I do not think it is Sister Blythe's."
+    ]
+  },
+  "bosses": [
+    "cailleach-uragaig",
+    "sister-blythe",
+    "morgana"
+  ]
+}

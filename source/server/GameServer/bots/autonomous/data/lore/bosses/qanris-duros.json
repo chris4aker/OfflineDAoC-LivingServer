@@ -1,0 +1,64 @@
+{
+  "id": "qanris-duros",
+  "name": "Qan'ris Duros",
+  "catalogKey": "albion-named-mobs-shrouded-isles/qanrisduros",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Pulling him brings five drakoran guardsmen; casts Thunder Stomp.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs"
+    }
+  ],
+  "story": "Qan'ris Duros commands the drakoran on the high ground of the Dales of Devwy, the forward camp of the dragon-men's war on Albion's side of the isles. He is a soldier's soldier: five guardsmen stand to around him day and night, and when the camp is attacked they move as one with their commander. He fights with his whole weight, and his thunder stomp throws the front rank off its feet. Albion's garrison has tried his camp a dozen times. The drakoran have rebuilt it a dozen times.",
+  "legend": "Five drakoran guardsmen are linked to him. Pull the camp carefully, kill the guardsmen first, and stay spread for his thunder stomp, which hits everyone around him. Healers stand back. The drakoran rebuild the camp every time, so expect him again.",
+  "yells": {
+    "aggro": [
+      "Guardsmen! Stand to!"
+    ],
+    "phases": [],
+    "death": [
+      "The camp... will be rebuilt..."
+    ],
+    "slay": [
+      "Off the high ground."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Drakoran guardsmen stand to. Their commander is near."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Qan'ris Duros stamps! The ground thunders!"
+      }
+    ],
+    "realmFirstKill": "Qan'ris Duros has fallen. The drakoran camp is broken."
+  },
+  "botLines": {
+    "briefing": [
+      "qanris has 5 guardsmen linked. spread for his stomp"
+    ],
+    "aftermathWin": [
+      "qan'ris duros down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "heard qan'ris duros runs the drakoran camp in the dales",
+      "[someone said|heard] his stomp knocks everyone near him over"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "qan'ris duros",
+    "text": "The drakoran commander on the high ground of the Dales of Devwy. Five guardsmen stand to around him, and his stomp throws the front rank down."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Qan'ris Duros in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Qan'ris Duros drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "vortanos",
+  "name": "Vortanos",
+  "catalogKey": "albion-named-mobs-shrouded-isles/vortanos",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 61, 30,000 health. At night he becomes untargetable and peaceful and his model is hidden; three adds join him (ancient zombie, ghoul desecrator); casts Disintegrating Force.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs"
+    },
+    {
+      "text": "His lines: 'The living can never conquer the eternal darkness of death incarnate!', 'Sleep my unwilling prisoners, you are no longer needed here', 'Your flesh will be mine, one piece at a time!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Vortanos.cs"
+    }
+  ],
+  "story": "Vortanos keeps prisoners on Caldey. Nobody knows where he takes them from. They sleep in chains around his post, unwilling and unmoving, and when strangers come he wakes three of them, the ancient dead and the ghoul desecrators, to fight for him. He tells his enemies that the living can never conquer the eternal darkness of death, and that he will have their flesh one piece at a time. And at night he is simply not there. The garrison says darkness is his own, and that when the sun goes down he goes into it.",
+  "legend": "Fight him by day: at night he is untargetable and gone. Three adds come with him, ancient dead and ghoul desecrators; clear them first. His Disintegrating Force eats armour like acid, so heal through it. Come back at dawn if you are late.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Prisoners sleep in chains. Their keeper wakes by day."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Vortanos wakes his unwilling prisoners!"
+      }
+    ],
+    "realmFirstKill": "Vortanos is dead. His prisoners sleep in peace."
+  },
+  "botLines": {
+    "briefing": [
+      "vortanos is only there in daytime. 3 adds, kill them first"
+    ],
+    "aftermathWin": [
+      "vortanos down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "[heard|someone said] vortanos isnt even there at night. day only",
+      "heard vortanos keeps prisoners on caldey"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "vortanos",
+    "text": "The keeper of prisoners on Caldey, who wakes his chained dead to fight for him. At night he is not there; darkness is his own."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Vortanos in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Vortanos drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

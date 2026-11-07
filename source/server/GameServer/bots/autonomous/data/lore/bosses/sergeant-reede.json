@@ -1,0 +1,99 @@
+{
+  "id": "sergeant-reede",
+  "name": "Sergeant Reede",
+  "catalogKey": "hall-of-the-corrupt/sergeantreede",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Sergeant Reede, 5,000 health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The stair. Sergeant Reede kept the stair between the upper hall and the captains' table. He was the youngest sergeant of the watch, raised from the ranks the year before, and the Lady Darra's sickroom was at the top of his stair. In the last bad winter he carried the wounded up it every night, one at a time, on his back, and down again when they were well, and some of them never came down. Like every officer of the Pennine watch, it is bound to its post: one step past where its captain stood it, no blow lands and it walks home at full health. Fight it where it stands. \n\nHe guards the stair still. The men he carried are on the other side of it, waiting: the dead of the sickroom, and the lady who tends them. Reede fights on the stair as a young man fights, hard and without much skill, and he will not let a stranger up it, because the last time strangers came up the road, the men he carried did not come down. The bards say he is the one officer of the watch who would come away if he could, back to Camelot and his mother, and that he stays only because of the lady at the top of the stair.\n\nThe Constable's answer to the clerk's last report came back in the spring, as the clerk had asked, giving Sergeant Reede leave to go home to his mother. It is still in its seal on the table of the captains' hall, unopened, because there was nobody left to open it. Raiders who find it sometimes leave it on the stair at Reede's feet. He never picks it up.",
+  "legend": "A five-thousand-health sergeant on the stair. Fight him at the top or the bottom where he stands, kill him fast, and do not chase him: past his post he is untouchable and walks back. The stair is narrow; send your tank up first and keep the casters at the bottom where they can see. He is the last officer before Lady Darra's chamber, so rest after him. Old hands leave the letter on the stair. It changes nothing in the fight. They do it anyway, and the healers say a prayer for him before they go up to the lady's chamber.",
+  "yells": {
+    "aggro": [
+      "No one comes up my stair.",
+      "Not up the stair. Not tonight.",
+      "The lady is resting. Go away."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Not up the stair! Not up!"
+      }
+    ],
+    "death": [
+      "Carry them... up...",
+      "Tell my mother... I kept the stair..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "Down the stair you go.",
+      "Not up. Never up.",
+      "Rest at the bottom."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A narrow stair. Someone guards it from both ends.",
+      "Bloodstains on every step, old and brown."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sergeant Reede is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "reede, sergeant. same as the others, kill at his post",
+      "fight it where it stands, off its post its immune",
+      "tank goes up the stair first",
+      "casters at the bottom",
+      "rest after him, darra is next"
+    ],
+    "aftermathWin": [
+      "sergeant reede down, one less on the watch",
+      "reede down, the stair is open",
+      "darra next, rest up",
+      "he held it well, poor kid",
+      "stair cleared"
+    ],
+    "aftermathLoss": [
+      "someone dragged it off its post again. immune out there",
+      "chased him up the stair",
+      "casters stood on the stair and got hit",
+      "pulled darra by accident"
+    ],
+    "rumour": [
+      "heard reede carried the wounded up to lady darra every night",
+      "[someone said|heard] the stair sergeant in the hall is the last before the captains",
+      "heard reede would leave if he could",
+      "reede was the youngest sergeant of the watch, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "reede",
+    "text": "Sergeant Reede kept the stair between the upper Hall and the captains' table."
+  },
+  "bookPage": "Sergeant Reede carries the wounded up to the sickroom every night, on his back, one at a time, and the Lady Darra says she would be lost without him. He is the youngest sergeant in the hall and the kindest. Tonight he asked me, quite seriously, whether I thought the Constable would let him go home in the spring, because his mother is old. I said I would ask. I have asked, in this report, Constable, though I know you have more weighty things to read. He is a good boy. Let him go home in the spring, if there is a spring.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Sergeant Reede from the Pennine watch in {minutes} minutes.",
+    "loss": "Sergeant Reede held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lady-darra",
+      "relation": "carried the wounded up to her"
+    }
+  ]
+}

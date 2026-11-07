@@ -1,0 +1,70 @@
+{
+  "id": "wrath-of-mordred",
+  "name": "Wrath of Mordred",
+  "catalogKey": "albion-named-mobs-classic-zones/wrathofmordred",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "40,000 health, immune to crowd control; its blows carry a Heat proc.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/WrathOfMordred.cs"
+    },
+    {
+      "text": "Mordred is Arthur's son or nephew in the legends, who fell with him at Camlann.",
+      "provenance": "original",
+      "source": "Arthurian legend (common knowledge)"
+    }
+  ],
+  "story": "Mordred betrayed Arthur and died by his hand at Camlann, and the bards say his rage did not die with him. It went looking for somewhere to burn. The hill-folk of Llyn Barfog say it found the lake Arthur once cleansed of its monster and settled there to spite him, on a stretch of ground that has been scorched ever since. The Wrath of Mordred is not Mordred. It is only his anger, standing up, and every blow it lands carries a little of the fire of Camlann.",
+  "legend": "Every hit burns: it has a fire proc on its melee, so the tank wants heat resist and steady heals. No crowd control works on it. It is Albion's oldest grudge, so finish it. The scorched ground marks where it stands.",
+  "yells": {
+    "aggro": [
+      "Arthur's realm! Arthur's dogs!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Camlann was not the end of it!"
+      }
+    ],
+    "death": [
+      "Even now... I hate him..."
+    ],
+    "slay": [
+      "Another of Arthur's."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Scorched earth. A traitor's anger still burns."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Wrath of Mordred is spent. Camlann is over."
+  },
+  "botLines": {
+    "briefing": [
+      "wrath of mordred has a heat proc, tank wants heat resist. no cc"
+    ],
+    "aftermathWin": [
+      "mordred's wrath is out. took long enough",
+      "camlann is finally over"
+    ],
+    "aftermathLoss": [
+      "the heat procs ate the tank"
+    ],
+    "rumour": [
+      "heard the wrath of mordred is just his anger left standing",
+      "[someone said|heard] mordred's rage settled at llyn barfog to spite arthur"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "wrath of mordred",
+    "text": "Not Mordred, only his anger, which did not die at Camlann. It settled at the lake Arthur once cleansed, to spite him. Every blow carries a little of the fire of Camlann."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} quenched the Wrath of Mordred in Llyn Barfog in {minutes} minutes.",
+    "loss": "the Wrath of Mordred drove {realm}'s raid out of Llyn Barfog; {raidLeader} fell back."
+  }
+}

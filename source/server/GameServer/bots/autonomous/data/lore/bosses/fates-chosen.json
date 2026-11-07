@@ -1,0 +1,91 @@
+{
+  "id": "fates-chosen",
+  "name": "Fate's Chosen",
+  "catalogKey": "caer-sidi/fatechosen",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 40,000 health. No scripted mechanic beyond its reset. Caer Sidi also holds 'fate's bearers' and the Horsemen's Harbingers of Fate.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs"
+    }
+  ],
+  "story": "The four riders at the top of Caer Sidi serve fate, and fate keeps servants of its own lower down. Fate's Chosen is the one the riders sent below to keep the fate's bearers in order and to see who climbs. It is not cunning and it is not cruel. It simply stands where it was told to stand, as it has since before the gaol rose, and the riders know the name of everyone who passes it. Some say it was a prisoner once, chosen by the riders to serve; it has never said.\n\nThe riders' servant. The four riders at the top of Caer Sidi serve fate, and fate keeps servants of its own lower down. The fate's bearers who walk the fortress carry the riders' business, and Fate's Chosen keeps them in order: a prisoner, some say, that the riders themselves chose out of the common dead and set at a post halfway up the gaol, to watch who climbs. It has never said. It has never needed to.\n\nIts post. It is not cunning and it is not cruel. It stands where it was told to stand, as it has since before the gaol rose, and every raid that passes it is reported upward: the riders know the name of everyone who comes, and Fames knows which face he will choose before the raid reaches his hall. Albion's raid leaders treat Fate's Chosen as the riders' test. A raid that cannot kill it cleanly is not ready for the four, and the riders, who are courteous, would prefer not to waste their question on it.",
+  "legend": "A straight fight with no tricks: tank it, heal through it and burn it down. Its value is as a test. If your raid cannot kill Fate's Chosen clean, with no deaths and no panic, it is not ready to climb to the riders. Save the big cooldowns for the four; this one should fall to steady work. Use the fight to check your raid: who is late to heal, who stands in the wrong place, who wanders. Fix it here, because the riders are not forgiving, and Fames will choose one of you to answer for everyone. The riders are watching, after all.",
+  "yells": {
+    "aggro": [
+      "The riders will know your names.",
+      "You climb. They watch.",
+      "Halfway is far enough for most."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Halfway is far enough. Turn back."
+      }
+    ],
+    "death": [
+      "It was... foretold...",
+      "The riders... are told..."
+    ],
+    "slay": [
+      "As it was written.",
+      "Not chosen.",
+      "The riders will not need to ask you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A watcher stands where fate told it to.",
+      "Fate's bearers pass here, carrying word upward."
+    ],
+    "phases": [],
+    "realmFirstKill": "Fate's Chosen has fallen. The riders take note."
+  },
+  "botLines": {
+    "briefing": [
+      "fates chosen is a tank and spank. clean kill, save cooldowns",
+      "no deaths here or we're not ready",
+      "this is the test before the riders",
+      "steady dps, no panic"
+    ],
+    "aftermathWin": [
+      "fate's chosen down. on to the riders",
+      "the riders know we're coming now",
+      "clean kill, we're ready",
+      "nobody died, good sign"
+    ],
+    "aftermathLoss": [
+      "if we cant beat fates chosen we're not ready for the top",
+      "three deaths on a tank and spank",
+      "we wasted cooldowns on it",
+      "people got sloppy"
+    ],
+    "rumour": [
+      "heard fate's chosen tells the riders who's coming",
+      "[someone said|heard] fate's chosen is the warmup for the horsemen",
+      "heard the riders picked fate's chosen out of the common dead",
+      "fames already knows who he'll ask by the time you pass fate's chosen, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fate's chosen",
+    "text": "The riders' servant below, set to keep the fate's bearers in order and see who climbs. If your raid cannot pass it cleanly, do not climb further."
+  },
+  "bookPage": "Halfway up the fortress a single figure stood at a post, and the fate's bearers who passed it bowed to it as servants bow to a steward. Our raid leader called it the riders' test, and said that if we could not kill it cleanly we would turn back, and meant it. We killed it cleanly. As it fell it said that the riders would be told, and I felt, as I have felt nowhere else in my life, that someone far above us had just learned my name. When Fames looked along our ranks an hour later, I was not surprised that he knew whom to choose.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} passed Fate's Chosen in {minutes} minutes; the riders took note.",
+    "loss": "Fate's Chosen turned {realm}'s raid back before the riders; {raidLeader} was not ready."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "fames",
+      "relation": "reports to the riders"
+    }
+  ]
+}

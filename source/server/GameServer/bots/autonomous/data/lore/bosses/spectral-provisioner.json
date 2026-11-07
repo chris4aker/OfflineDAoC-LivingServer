@@ -1,0 +1,96 @@
+{
+  "id": "spectral-provisioner",
+  "name": "Spectral Provisioner",
+  "catalogKey": "caer-sidi/spectralprovisioner",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 77, 100,000 health. Immune to Heat, Spirit and Cold damage; strikes back at attackers with Spectral Strike, slowing them by 70%.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SpectralProvisioner.cs"
+    },
+    {
+      "text": "Welsh myth, not game canon: the cauldron of Annwn in Preiddeu Annwfn will not boil a coward's food.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Caer_Sidi"
+    }
+  ],
+  "story": "Even the dead must be fed, in their fashion, and Arawn set a provisioner over the stores of Caer Sidi. He fed the prisoners from the great cauldron, and the old song is right about one thing: it would not boil a coward's portion, and he made sure every prisoner knew it. Fire, frost and prayer were his tools, so they do not touch him now. He is all that is left of the gaol's kitchens, and he is still guarding the stores against hungry hands, slowing anyone who reaches for them.\n\nThe feeder of the dead. Even the dead must be fed, in their fashion, and Arawn set a provisioner over the stores of Caer Sidi. He fed the prisoners from the great cauldron, the one whose rim the Sacristan kept, and the old song is right about one thing: it would not boil a coward's portion, and he made sure every prisoner knew it. Fire to heat the cauldron, frost to keep the stores, and prayer to bless the meal were his tools.\n\nWhy fire fails. So fire and frost and spirit do not touch him now. He is all that is left of the gaol's kitchens, and he still guards the empty larders against hungry hands, and he strikes back at anyone who reaches for them with a blow that slows them to a crawl, as he once slowed the greedy at the serving line. He appears where the larders are when the gaol's working calls him, and when he falls, in time, the working calls him again. Albion's raids that bring all-fire caster groups to him learn something about cauldrons.",
+  "legend": "Heat, cold and spirit do nothing to him; use steel and the other spell types: matter, body and energy casters are the ones he hates. He slows whoever hits him by seventy percent, so rotate the melee and keep the slowed ones healed. Do not bring an all-fire caster group. He resets a minute after the fight leaves him. The old Albion guides warned that he makes even a good melee group look slow and foolish. Rotate every thirty seconds, keep the slowed ones out of the adds, and let the matter and energy casters carry the kill. Steel and lightning, never fire.",
+  "yells": {
+    "aggro": [
+      "No portion for thieves.",
+      "The larders are closed.",
+      "Who reaches for the stores?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "No portion! No portion for any of you!"
+      }
+    ],
+    "death": [
+      "The stores... are open...",
+      "Feed them... someone must feed them..."
+    ],
+    "slay": [
+      "One fewer mouth.",
+      "No portion for you.",
+      "Back of the line."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Empty larders. Something still guards them.",
+      "A cauldron's rim, cold, and nothing in it."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Spectral Provisioner is gone. The larders are bare."
+  },
+  "botLines": {
+    "briefing": [
+      "provisioner is immune to heat, cold and spirit. other damage types only",
+      "he slows melee 70%, rotate",
+      "matter, body and energy casters on him",
+      "heal the slowed melee"
+    ],
+    "aftermathWin": [
+      "provisioner down, nobody's going hungry now",
+      "matter and body casters carried that one",
+      "the larders are ours",
+      "good melee rotation"
+    ],
+    "aftermathLoss": [
+      "we brought fire wizards to the one mob that ignores fire",
+      "the slow made our melee useless",
+      "nobody rotated",
+      "half our damage did nothing"
+    ],
+    "rumour": [
+      "heard the provisioner in caer sidi ignores fire and frost",
+      "[someone said|heard] the old cauldron wont cook a coward's food. the provisioner made sure of it",
+      "heard the provisioner fed the prisoners from arawn's cauldron",
+      "bring steel to the provisioner, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "provisioner",
+    "text": "The keeper of Caer Sidi's stores, who fed the dead from a cauldron that will not boil a coward's portion. Fire, frost and prayer were his tools, so they do not touch him. Bring steel."
+  },
+  "bookPage": "In the larders of Caer Sidi there is nothing to eat and something guarding it. The Provisioner turned on us the moment we stepped among the empty shelves, and our wizards threw fire at him, and frost, and he did not so much as notice, and his blows made our swordsmen move as if through deep water. Our raid leader called for the other spells, the crushing and the withering and the lightning, and those he felt. When he fell he said that someone must feed them. I do not know who he meant. I hope it is not us.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} emptied the larders of Caer Sidi and ended the Spectral Provisioner in {minutes} minutes.",
+    "loss": "The Spectral Provisioner turned {realm}'s raid away from the stores; {raidLeader} brought the wrong fire."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "skeletal-sacristan",
+      "relation": "fellow keeper of the chapel's vessels"
+    }
+  ]
+}

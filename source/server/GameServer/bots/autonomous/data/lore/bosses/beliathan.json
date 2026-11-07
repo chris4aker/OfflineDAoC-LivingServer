@@ -1,0 +1,74 @@
+{
+  "id": "beliathan",
+  "name": "Beliathan",
+  "catalogKey": "darkness-falls/beliathan",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "aliases": [
+    "the worm"
+  ],
+  "facts": [
+    {
+      "text": "Level 70, 100,000 health. It rises only when no prince or princess of Darkness Falls is alive: 'The tunnels rumble and shake..'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs"
+    },
+    {
+      "text": "Every player it kills rises where they fell as a Beliathan minion and attacks.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Players called it the worm and said it spawns after the princes (Allakhazam comments).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    }
+  ],
+  "story": "Beliathan is the thing that comes up when the court is empty. While a single prince or princess of Darkness Falls lives, it stays down in the deep tunnels where even the demons do not go; when the last of them dies, the tunnels rumble and shake, and the worm rises to see what killed its masters. It is less a demon than a hunger with a body, and those it kills do not stay dead in the ordinary way: they get up again where they fell, its creatures now, and turn on their friends.",
+  "legend": "Kill all four princes and the tunnels shake: that is the worm coming. Everyone it kills gets up as one of its minions and attacks the raid, so a wipe on Beliathan snowballs. Do not die, and kill the minions fast if someone does.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The tunnels rumble and shake."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The fallen rise as Beliathan's creatures!"
+      }
+    ],
+    "realmFirstKill": "Beliathan is dead. The deep tunnels are still.",
+    "wake": "The princes are dead. The tunnels rumble and shake."
+  },
+  "botLines": {
+    "briefing": [
+      "beliathan turns our dead into its minions. dont die, kill minions on sight",
+      "it only spawns after every prince is dead"
+    ],
+    "aftermathWin": [
+      "the worm is dead",
+      "nobody died, so no minions. perfect"
+    ],
+    "aftermathLoss": [
+      "one death became three became ten. classic beliathan"
+    ],
+    "rumour": [
+      "kill all the princes in df and the tunnels shake. [the worm comes up|beliathan comes]",
+      "[heard|someone said] whoever beliathan kills gets back up on its side"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "beliathan",
+    "text": "The thing that comes up when the court is empty. When the last prince dies, the tunnels shake and the worm rises. Those it kills rise again as its creatures."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} killed the princes, felt the tunnels shake, and ended Beliathan in {minutes} minutes.",
+    "loss": "Beliathan turned {realm}'s fallen against their own; {raidLeader}'s raid became the worm's."
+  }
+}

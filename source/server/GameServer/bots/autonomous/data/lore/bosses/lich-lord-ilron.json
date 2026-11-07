@@ -1,0 +1,104 @@
+{
+  "id": "lich-lord-ilron",
+  "name": "Lich Lord Ilron",
+  "catalogKey": "caer-sidi/lichlordilron",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "aliases": [
+    "ilron"
+  ],
+  "facts": [
+    {
+      "text": "Level 79, 100,000 health. Raises four images of himself (level 70) that fight linked with him; tether 2,000.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs"
+    },
+    {
+      "text": "Existing bot chat says most Caer Sidi stories end at him.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "Ilron was a priest once, of which god nobody remembers, and he came to Caer Sidi because he would not stay dead and would not say why. When the gaol rose he was among the first to claim a gallery of his own. He studied the one art a prisoner has in plenty, which is waiting, and he learned to be in several places at once: four images of himself walk his gallery, each as solid as the next, and only one casts a true shadow. Most of the tales of Caer Sidi end at Ilron, because most raids spend their strength on the wrong Ilron.\n\nWho he was. Ilron was a priest, of which god nobody now remembers, and he came to Caer Sidi because he would not stay dead and would not say why. The keepers kept him in the galleries, apart from the common prisoners, with the other priests and wizards who had found ways back. He spent the centuries learning the one art a prisoner has in plenty, which is waiting, and from waiting he learned how to be in several places at once.\n\nThe images. When the gaol rose he took a gallery of his own and filled it with himself. Four images of Ilron walk beside the true one when he is threatened, each as solid as the next and each casting its spells, and only one of the five casts a true shadow. A raid that spreads its strength across all five is a raid that dies in his gallery, and so most of the tales of Caer Sidi end at Ilron. He does not hate the living. He finds them predictable. He has a short leash on his gallery; draw him too far from it and he walks home, and his images go with him.",
+  "legend": "Four images of Ilron come with him, and they are real enough to hurt. Do not spread your damage over all five: one group on each image to hold or kill it, and the raid on the true one. He walks home if you drag him more than about two thousand units, so fight him in his gallery. This is where most Caer Sidi raids stopped in 2003; take your time picking the right target. The old hands wait three heartbeats before the first spell and watch which figure's shadow falls true in the lamplight; the raid that rushes Ilron is the raid that writes another story that ends at Ilron.",
+  "yells": {
+    "aggro": [
+      "Which of me will you strike first? Choose well.",
+      "We are all Ilron. Only one of us matters.",
+      "Look closely. Closer."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Behold me. And me. And me."
+      }
+    ],
+    "death": [
+      "One of me... was enough...",
+      "You chose rightly. How tiresome."
+    ],
+    "slay": [
+      "You chose wrongly.",
+      "That was not me.",
+      "The shadow fooled you too."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four of him. Only one casts a shadow.",
+      "Five figures in the gallery. One shadow is true."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Lich Lord Ilron divides into images of himself!"
+      }
+    ],
+    "realmFirstKill": "Lich Lord Ilron is dust. The tales go further now."
+  },
+  "botLines": {
+    "briefing": [
+      "ilron spawns 4 images. one group per image, raid on the real one",
+      "dont drag him, tether is short",
+      "look for the one that's actually him before you nuke",
+      "most caer sidi raids end here, take it slow"
+    ],
+    "aftermathWin": [
+      "ilron down. now we get to see what's past him",
+      "the real one died first. good targeting",
+      "five ilrons and we picked right",
+      "the story doesnt end at ilron tonight"
+    ],
+    "aftermathLoss": [
+      "we spread damage over five ilrons",
+      "classic. caer sidi stories end at ilron",
+      "dragged him and he went home",
+      "nuked an image for two minutes"
+    ],
+    "rumour": [
+      "lich lord ilron is where most of the caer sidi stories i hear end. nobody tells what's past him",
+      "[heard|someone said] ilron makes copies of himself",
+      "heard only one ilron casts a real shadow",
+      "ilron was a priest once, [they say|heard]. nobody knows of what"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lich lord ilron",
+    "text": "Most of the tales I know end at him. He shows you four of himself; only one is true. Find the one that matters."
+  },
+  "bookPage": "In the gallery Ilron showed us four of himself, and they moved as he moved and cast as he cast, and our wizards spent their fire on the wrong three. That is where my last raid's story ended, as so many do. This time our raid leader had us wait until each figure stepped into the lamplight and watched for the one whose shadow fell true. It took the length of three heartbeats. Then she called his name and every spell in the raid went to the same place, and the other four stopped, and stood, and were nothing at all.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} found the true Ilron among his images and ended him in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} struck the wrong Ilron; another Caer Sidi tale ends at the lich."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "lord-sanguis",
+      "relation": "fellow prisoner of the galleries"
+    }
+  ]
+}

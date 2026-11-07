@@ -1,0 +1,113 @@
+{
+  "id": "keltoi-fogou",
+  "name": "Keltoi Fogou",
+  "realm": "Albion",
+  "regions": [
+    22
+  ],
+  "aliases": [
+    "keltoi",
+    "the fogou"
+  ],
+  "summary": "A sacred cave of the Keltoi in Campacorentin Forest, a threshold between worlds where the old priests still chant.",
+  "facts": [
+    {
+      "text": "Keltoi Fogou (levels 15-30) in Campacorentin Forest: the Keltoi, a spiritual people, use it for initiations, teaching and birth and death rites, never for burial. It is held to be a threshold between this world and the next; initiates may have been sealed in to face their fear and come out reborn; its design may be meant to hold forces in rather than keep enemies out.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=24"
+    },
+    {
+      "text": "Its people are keltoi visionaries, spiritualists, eremites, ritualists, recluses, initiates, novitiates, banishers and familiars, gremlins, and muryan emissaries.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Cornish archaeology, not game canon: a fogou is an Iron Age underground passage of west Cornwall whose purpose is unknown.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fogou"
+    },
+    {
+      "text": "Cornish folklore, not game canon: muryan is the Cornish word for ant, and fairies were said to dwindle until they became muryans (to verify).",
+      "provenance": "myth",
+      "source": "to verify"
+    },
+    {
+      "text": "Existing bot chat: the carvings are not Roman, and the Keltoi priests are still chanting.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    }
+  ],
+  "story": "The Keltoi were in Albion before Rome, and before anyone the Romans could name, and they kept their holiest place under the ground in the forest of Campacorentin. They called it a fogou, and they did not bury their dead there. They did something stranger. They brought their young into the dark and shut the door on them, and left them with whatever lives on the far side of fear, and the ones who came out were reborn as Keltoi. The fogou is a threshold, their priests taught: a door between this world and the next, built not to keep enemies out but to keep something in.\n\nThe Keltoi are still there. Visionaries and ritualists chant in its rooms, eremites and recluses keep to its corners, and banishers stand in the great chamber to drive back what comes up from below. Their initiates and novitiates wait by the entrance for a rite that has not been finished in centuries. Gremlins scurry in the passages, and in the far chamber the muryan emissaries wait, small and ancient and patient, the last of the old folk of the land, who have been dwindling for a thousand years and are not yet quite gone. The carvings on the walls are not Roman. They are not anything with a name.",
+  "legend": "The banisher room is the most chaotic place in Albion for its level, and the ant room is the hardest. The gremlins and initiates by the door are for the youngest. The muryans are the oldest thing in there, and the Cornish grannies say they were fairies once, before they got small.",
+  "atmosphere": {
+    "firstEntry": [
+      "A threshold. Built to keep something in."
+    ],
+    "areas": [
+      {
+        "name": "the banisher room",
+        "x": 32596,
+        "y": 32404,
+        "z": 15680,
+        "radius": 900,
+        "lines": [
+          "The banishers chant. Something below answers."
+        ]
+      },
+      {
+        "name": "the muryans' chamber",
+        "x": 37410,
+        "y": 34167,
+        "z": 15680,
+        "radius": 700,
+        "lines": [
+          "Small old things wait here. They were larger once."
+        ]
+      },
+      {
+        "name": "the visionaries' rooms",
+        "x": 35055,
+        "y": 30505,
+        "z": 15731,
+        "radius": 900,
+        "lines": [
+          "The carvings here are not Roman. Not anything."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the keltoi fogou is a holy cave from before rome. [the keltoi are still down there chanting|the priests never left]",
+      "the keltoi didnt bury their dead in the fogou. [they shut their kids in it|they sealed initiates in there]. to be reborn",
+      "the muryans in keltoi fogou were fairies once, my gran said. [they got small|they dwindled]"
+    ],
+    "rumour": [
+      "[heard|someone said] the banisher room in keltoi is the most chaotic room in albion",
+      "the ant room in keltoi is harder than it looks"
+    ],
+    "tell": [
+      "keltoi fogou? the keltoi holy cave in campacorentin. priests, banishers, gremlins and ants. teens to twenties"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Keltoi fogou is a [threshold], and the [Keltoi] still keep it. The oldest thing in it is not Keltoi at all: the [muryans].",
+    "topics": {
+      "threshold": "A door between this world and the next, the priests taught, built to keep something in, not out. Initiates were sealed in the dark and came out reborn.",
+      "keltoi": "A people in Albion before Rome. Their visionaries and ritualists still chant, their banishers still stand in the great chamber, and their initiates still wait by the door.",
+      "muryans": "The old folk of the land, the Cornish say, who have been dwindling a thousand years. Small, ancient and patient. Do not underestimate small things."
+    }
+  },
+  "book": {
+    "title": "What the Initiate Saw",
+    "pages": [
+      "They shut the door on me at dusk and I sat in the dark for what the ritualists said afterward was three days. I did not sleep. Something came up from the lower chamber on the second night and sat beside me, and it was not cruel, and it was not kind, and it asked me who I would be when the door opened. I told it. The banishers drove it back down at dawn. The door opened on the third day, and I came out, and I have been that answer ever since."
+    ]
+  },
+  "bosses": []
+}

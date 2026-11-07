@@ -1,0 +1,91 @@
+{
+  "id": "host",
+  "name": "Host",
+  "catalogKey": "caer-sidi/host",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 79, 30,000 health each. Eight copies of Host appear; one is chosen as the real one, and killing it kills the rest.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs"
+    },
+    {
+      "text": "Linked dead come with him: archliches, black revenants, cursed laculae, forerunners and heralds of trucidation (slaughter).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "The keepers of Caer Sidi called him the Host because there was no other word for what he was: a multitude in one prisoner, a man who had died so many deaths in so many bodies that he came to Arawn's gaol as eight. Only one of the eight is him; the rest are the bodies he wore and could not quite take off. He keeps archliches and revenants around him like a household. Strike the true Host and the other seven drop where they stand, like coats falling off their pegs.\n\nA multitude. The keepers of Caer Sidi called him the Host because there was no other word for what he was: one prisoner who had died so many deaths in so many bodies that he came to Arawn's gaol as eight. He had been a body-thief in life, the Inconnu say, a sorcerer who moved from one stolen body to the next as each wore out, and when Arawn finally caught him he was wearing eight at once and could not take any of them off.\n\nThe eight. Only one of the eight is him; the rest are the bodies he wore, still moving, still fighting, but empty. Strike the true Host and the other seven drop where they stand like coats falling off their pegs. Strike a coat and you only lose time. He keeps archliches and black revenants, cursed laculae and heralds of slaughter around him like a household, because a man of eight bodies needs a large house. When all eight fall, the gaol's own working raises them again, in time, as it raises everything in Caer Sidi.",
+  "legend": "Eight of him, one real; the real one is chosen when they appear. Kill the real Host and the other seven die with him; kill a fake and you have only lost time and mana. Spread out, test each with a little damage, find the one that matters and put everything on it. His household of archliches and heralds comes with him; off-tanks on them. The Inconnu say the true Host is the one that hesitates before it strikes, as a thief hesitates before stepping into a new house. Old hands swear by it. It may even be true. Test each body with one spell before you commit the raid.",
+  "yells": {
+    "aggro": [
+      "We are many. We are one. Guess.",
+      "Eight doors, and only one room.",
+      "Which coat am I wearing?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Seven coats left. Which is me?"
+      }
+    ],
+    "death": [
+      "All of us... at once...",
+      "The coats... fall..."
+    ],
+    "slay": [
+      "Another body. We have room.",
+      "We will wear you for a while.",
+      "Fits well enough."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Eight of the same man. Seven of them are empty.",
+      "A household of the dead keeps its master's house."
+    ],
+    "phases": [],
+    "realmFirstKill": "The true Host is dead. Seven bodies fall with him."
+  },
+  "botLines": {
+    "briefing": [
+      "8 hosts, one is real. kill the real one and the others die",
+      "heralds and archliches linked, off tanks on them",
+      "spread out and test them, dont aoe all 8",
+      "call out the real one when you find it"
+    ],
+    "aftermathWin": [
+      "found the real one. all eight down",
+      "host down. that was a guessing game",
+      "first try on the right host, lucky",
+      "seven coats on the floor"
+    ],
+    "aftermathLoss": [
+      "we killed four fakes and ran out of mana",
+      "nobody called the real one",
+      "the archliches got loose",
+      "aoe on eight hosts does nothing"
+    ],
+    "rumour": [
+      "[heard|word is] the host in caer sidi is eight of him and only one is real",
+      "guests dont get breathed on by the host. [old joke|bad joke], i know",
+      "heard the host was a body thief who got stuck in eight bodies",
+      "kill the real host and the rest drop like coats, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "host",
+    "text": "A multitude in one prisoner. Eight bodies, one man. Strike the true Host and the others fall like coats from their pegs."
+  },
+  "bookPage": "Eight of the same man came at us out of the dark, and our raid leader shouted that only one of them was real, and we did not believe her until we had killed two and the other six kept coming. The Inconnu guide said afterwards that the Host was a body-thief in life, a sorcerer who moved from one stolen body to the next, and that Arawn caught him wearing eight at once. When we found the true one and struck him down, the other seven folded where they stood, like coats falling off pegs when the wall gives way behind them.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} found the true Host among eight and ended all of him in {minutes} minutes.",
+    "loss": "The Host wore {realm}'s raid down body by body; {raidLeader} never found the real one."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": []
+}

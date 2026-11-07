@@ -1,0 +1,121 @@
+{
+  "id": "morbus",
+  "name": "Morbus",
+  "catalogKey": "caer-sidi/morbus",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 83, 100,000 health; the third Horseman. Warns that the smallest things are the most deadly and grants one minute.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "Every 25-40 seconds he looses a swarm of six to ten 'swarm of morbus'; while any swarm lives he takes no damage. His Touch of Death diseases.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Morbus is plague, and he knows the oldest truth of war: that more soldiers have died of the camp than of the field. He grants a minute, as his brothers do, and warns the raid that it is the smallest things that are the most deadly. Then he opens his robes and the swarm comes out of him, clouds of things too small to strike cleanly, and while one of them is on the wing he cannot be touched. He is pale, and quiet, and in no hurry at all.\n\nPlague is the third road, and the oldest truth of war: more soldiers die of the camp than of the field. The keepers named its rider Morbus, and he is the palest of the four and the most quiet. He grants a minute, as his brothers do, and warns the raid in a low voice that it is the smallest things that are the most deadly.\n\nThe swarm. Then he opens his robes and the swarm comes out of him, six or ten at a time, things too small to strike cleanly, and while one of them is on the wing nothing touches the rider at all. Every half minute or so another swarm comes. His touch carries a sickness, and his silence is worse than his brothers' speeches. The Inconnu say that Morbus is the one rider Arawn was glad to lock away, because he had seen what plague does to the Deadlands: it fills them faster than anything. When he falls, Funus comes a minute after him, and the clerics in the hall begin to glow.",
+  "legend": "His swarm makes him immune. Every 25-40 seconds six to ten bugs come out of him, and while any one lives you are hitting a wall. Area damage on the swarm the moment it appears, cure disease on anyone he touches, then everyone on Morbus until the next swarm. Do not waste your big cooldowns while the swarm is up. Funus is a minute behind. Bring two groups who can strike many at once and let them do nothing else; the swarm is the whole fight, and Morbus himself is soft once it is down. Cure disease the moment his touch lands; it stacks with the swarm's misery.",
+  "yells": {
+    "aggro": [
+      "Sometimes it is the smallest things that are the most deadly. Be prepared.",
+      "Sometimes it is the smallest things that are the most deadly.",
+      "Be prepared. You will not be.",
+      "Breathe deep."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Go, little ones. Go and find them."
+      }
+    ],
+    "death": [
+      "...and misery...",
+      "The camp outlasts the field. Remember."
+    ],
+    "slay": [
+      "Fate cannot be changed.",
+      "So small a thing, and so final.",
+      "Cough, and be still."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air hums. Something small is waiting.",
+      "Something small is waiting, a great many of them."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Morbus looses his swarm! He cannot be touched!"
+      }
+    ],
+    "realmFirstKill": "Morbus has fallen. Plague rides no more in Caer Sidi."
+  },
+  "botLines": {
+    "briefing": [
+      "morbus: kill the swarm or he is immune. aoe them, cure disease",
+      "everyone on him between swarms, stop when they come",
+      "morbus: aoe the swarm the moment it comes, hes immune while any bug lives",
+      "cure disease on whoever he touches",
+      "dont burn cooldowns with bugs up",
+      "funus a minute after, rest up"
+    ],
+    "aftermathWin": [
+      "three riders down, one to go",
+      "aoe on the swarm, perfect",
+      "morbus dead, nobody got sick",
+      "bugs died fast, gg"
+    ],
+    "aftermathLoss": [
+      "half the raid was hitting him with bugs up. no damage, people",
+      "nobody had cure disease ready",
+      "the swarm got the clerics",
+      "we burned everything on morbus and had nothing for funus"
+    ],
+    "rumour": [
+      "heard morbus cant be hurt while his bugs are flying",
+      "[someone said|heard] morbus says the smallest things are the most deadly. he means the bugs",
+      "heard morbus is the quiet one of the four",
+      "[heard|word is] arawn was glad to lock morbus up"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "morbus",
+    "text": "Plague, the third rider. More soldiers die of the camp than the field, and he knows it. While his swarm is on the wing, nothing touches him. Kill the small things first."
+  },
+  "bookPage": "Plague said less than his brothers. He told us, softly, that it is often the smallest things that are the most deadly, and gave us a minute. Then the swarm came out of him, and for the length of that swarm no blade and no spell reached him; it was like striking at a man through a wall of moving sand. Our wizards learned to burn the air around him the moment it darkened. When the last of the small things fell, he was only a pale man in a robe, and we killed him, and he did not seem to mind.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} burned the swarm out of the air and unhorsed Morbus in {minutes} minutes.",
+    "loss": "Morbus' swarm shielded him from {realm}'s raid; {raidLeader} could not clear the air."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "fames",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "bellum",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "funus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "apocalypse",
+      "relation": "the master they ride before"
+    }
+  ]
+}

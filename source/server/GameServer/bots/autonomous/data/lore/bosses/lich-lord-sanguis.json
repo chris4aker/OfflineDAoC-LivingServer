@@ -1,0 +1,101 @@
+{
+  "id": "lich-lord-sanguis",
+  "name": "Lich Lord Sanguis",
+  "catalogKey": "caer-sidi/lichlordsanguis",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Rises six seconds after Lord Sanguis dies; at 5% health he becomes almost untouchable 'in his last act of agony'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs"
+    }
+  ],
+  "story": "What stands up out of the red floor is what Sanguis really is: the debt with no man left around it. Lich Lord Sanguis remembers every death he has died and resents each of them. He fights as though he has nothing to lose, which is true, and when the end comes for him at last he clings to the world with everything he has bought, and for a few moments almost nothing can reach him. Then the debt is paid, and the chapel floor is only stone.\n\nThe debt. What stands up out of the red floor when Lord Sanguis falls is what Sanguis really is: the debt itself, three lifetimes of borrowed years with no man left around them. Lich Lord Sanguis remembers every death he has died and resents each of them, and he fights as one who has nothing to lose, which is true.\n\nThe last act. The keepers of Caer Sidi say that when Arawn first collected the debt, Sanguis clung to the world with every year he had bought, and for a long moment Arawn himself could not take him. He does the same now. When the end comes for him at last, at the very bottom of his strength, he clings to life with everything he has stolen, and for a few moments almost nothing can reach him. Then the debt is paid, and the chapel floor is only stone. His blood mages, if any still stand, fall where they are. Albion's priests have asked, more than once, that whoever kills him say a prayer for the people whose years he spent. Most raids forget. The ones that remember say the floor stays grey longer.",
+  "legend": "Right after Lord Sanguis, six seconds later, at full strength. Burn him hard. When he drops to the last five percent he becomes almost immune for a while, his last act of agony; keep hitting and keep healing, it ends. Do not let the casters think the fight is over and wander off, and do not stop to loot the first body. Keep the same tanks you used on the first Sanguis; the second fight is longer, and the healers need to be fresh before he reaches his last act of agony at five percent. Two kills, one room, no rest between.",
+  "yells": {
+    "aggro": [
+      "Again. Always again.",
+      "I have died before. I did not like it.",
+      "My years. Mine!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=5",
+        "text": "No... I paid... I paid for this life!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "The man is gone. The debt remains."
+      }
+    ],
+    "death": [
+      "The debt... is... paid...",
+      "So many years... spent..."
+    ],
+    "slay": [
+      "Your blood. My years.",
+      "Another year bought.",
+      "I will live on you a while."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is red. It has been red a long time.",
+      "The red floor stirs. Something is getting up."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=5",
+        "text": "Sanguis clings to his stolen life!"
+      }
+    ],
+    "realmFirstKill": "The blood-debt of Sanguis is paid. The floor is stone."
+  },
+  "botLines": {
+    "briefing": [
+      "lich sanguis goes almost immune at 5%. keep hitting, it wears off",
+      "same room, full health, burn him",
+      "dont stop at 5 thinking its bugged",
+      "say a prayer if you remember, the priests ask"
+    ],
+    "aftermathWin": [
+      "sanguis really dead this time",
+      "the floor stopped being red. creepy",
+      "got him through the 5% wall",
+      "two sanguis kills, one night"
+    ],
+    "aftermathLoss": [
+      "people stopped at 5% thinking he was bugged. he wasnt",
+      "lich came up and half the raid was looting",
+      "ran out of heals in the immune phase",
+      "the mages from the first one were still up"
+    ],
+    "rumour": [
+      "heard lich lord sanguis gets almost unkillable at the very end",
+      "[someone said|heard] you kill sanguis twice in caer sidi",
+      "heard the floor goes grey when sanguis is really dead",
+      "the priests say pray for the people whose years he spent"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lich lord sanguis",
+    "text": "What rises from the red floor when Lord Sanguis falls: the debt with no man left around it. At the very end he clings to his stolen years and almost nothing touches him. Keep striking."
+  },
+  "bookPage": "The second Sanguis was worse than the first, because the first had been a man who wanted to live and the second was only the wanting. It fought as nothing in that fortress had fought us, as though each of our blows were a creditor. At the very end it clung to the world so hard that our swords seemed to slide off it, and for a long moment I thought we had been wrong and it could not be killed. Then it let go. The floor of the chapel went grey. Our priests said a prayer for the people whose years it had spent.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} paid off the blood-debt of Sanguis for good in {minutes} minutes.",
+    "loss": "Lich Lord Sanguis outlasted {realm}'s raid; {raidLeader} stopped one breath too soon."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "caer-sidi-prisoners",
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "lord-sanguis",
+      "relation": "the man it was"
+    }
+  ]
+}

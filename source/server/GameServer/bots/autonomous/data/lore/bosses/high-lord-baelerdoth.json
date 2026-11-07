@@ -1,0 +1,70 @@
+{
+  "id": "high-lord-baelerdoth",
+  "name": "High Lord Baelerdoth",
+  "catalogKey": "darkness-falls/highlordbaelerdoth",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 80, 100,000 health. Below 25% health every hit on him makes him cast Aura of Baelerdoth, a point-blank absorption debuff on raiders around him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs"
+    }
+  ],
+  "story": "High Lord Baelerdoth is the highest of the high lords and the closest to a prince's title, and he fights like a demon who means to have it. His aura drinks the warding out of armour. While he is strong he keeps it close; when he is near death it pours out of him with every blow he takes, so that the harder you press him at the end, the softer you become. The imps say he has been waiting for a prince to die for a thousand years. He would prefer it to be by his hand.",
+  "legend": "Easy until a quarter health, then every hit you land makes him strip the armour absorb off everyone near him. Burn the last quarter as fast as you can with everything, and healers expect the tanks to take much bigger hits.",
+  "yells": {
+    "aggro": [
+      "A prince's title is a small thing. A prince's head, larger."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Strike me! Every blow strips you bare!"
+      }
+    ],
+    "death": [
+      "No title... no head..."
+    ],
+    "slay": [
+      "Unwarded. Unmade."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The high lord's aura drinks the light from your wards."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Baelerdoth's aura strips the wards from your armour!"
+      }
+    ],
+    "realmFirstKill": "High Lord Baelerdoth has fallen, untitled."
+  },
+  "botLines": {
+    "briefing": [
+      "baelerdoth under 25%: every hit makes him debuff armour on everyone near. burn the last quarter fast"
+    ],
+    "aftermathWin": [
+      "last quarter in thirty seconds. thats how",
+      "baelerdoth down"
+    ],
+    "aftermathLoss": [
+      "we slowed down at 25% and he ate the tanks"
+    ],
+    "rumour": [
+      "heard baelerdoth gets nastier the harder you hit him at the end",
+      "[someone said|heard] baelerdoth wants to be a prince"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "baelerdoth",
+    "text": "The highest of the high lords, who has waited a thousand years for a prince's title. Near death his aura pours out with every blow and drinks the warding from your armour. End him quickly."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} burned through High Lord Baelerdoth's last quarter in {minutes} minutes.",
+    "loss": "High Lord Baelerdoth stripped {realm}'s raid bare at the end; {raidLeader} could not finish him."
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "id": "tomb-of-mithra",
+  "name": "Tomb of Mithra",
+  "realm": "Albion",
+  "regions": [
+    21
+  ],
+  "aliases": [
+    "mithra",
+    "mithras tomb",
+    "the tomb"
+  ],
+  "summary": "The Roman cave-temple under Camelot Hills where Mithra's soldiers and their promises were buried, every squire's first dungeon.",
+  "facts": [
+    {
+      "text": "Mithra's Tomb in Camelot Hills is geared to low-level players and called the best dungeon for new players to level in.",
+      "provenance": "mythic",
+      "source": "https://camelotherald.fandom.com/wiki/Camelot_Hills"
+    },
+    {
+      "text": "A period Allakhazam guide maps its forgotten promise room, the original disciple (crypt) room and the acolyte room, with skeletons, zombies, spectrals and bleeder lizards; it names Acolyte Nerita and Favonius Facilus.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/Mithra_Guide.html"
+    },
+    {
+      "text": "The world here names Acolyte Nascita and Favonius Facilis, and holds malevolent disciples, cursed believers, botched sacrifices, forgotten promises, living entombed, undead builders, fallen paladins and bleeders.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "High Priest Andania's lines: 'The power of Mithra cleanses this holy place. Out! Out! I command you!' and 'Come to me, my servants! Come and serve in the glory of Mithra!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/HighPriestAndania.cs"
+    },
+    {
+      "text": "Roman religion, not game canon: Mithras was worshipped in sunken, windowless cave-temples, much by soldiers, in seven grades of initiation.",
+      "provenance": "myth",
+      "source": "https://solarspell-dls.sfis.asu.edu/mea/wikipedia/wp/m/Mithraic_mysteries.htm"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    }
+  ],
+  "story": "Before Camelot there was a Roman fort in these hills, and under the fort, as under every Roman fort in the west, the soldiers dug a temple to their god. Mithras was a soldier's god. He was worshipped underground, in the dark, by men who swore oaths to him grade by grade, raven and soldier and lion and father, and who were buried near him when they died so that they could keep their oaths.\n\nThey are keeping them still. The Tomb of Mithra is full of the god's servants: disciples who never left, believers cursed for believing, builders who are still building, and the sacrifices the priests got wrong. In the room the squires call the promise room, the oaths themselves seem to walk, forgotten promises that have outlived the men who made them. A high priest of Mithra still commands the deeper halls and orders every stranger out of his holy place, and his acolytes keep the lizards that breed in the warm dark.\n\nEvery squire of Albion goes down into the tomb sooner or later, for the first time, with a sword that is too new and a friend who swears he knows the way. Most of them come back up. The squires say every one of them breaks a promise down there. Nobody says which.",
+  "legend": "Every squire's first dungeon, and the promise room is where we all broke our promises. The skeletons hate a mace, the zombies a blade, the spectrals shrug off both. The acolyte room is the deep end; do not go there at twelve. If the promise room suddenly fills with paladins and clerics, something rare has woken.",
+  "atmosphere": {
+    "firstEntry": [
+      "A soldier's god was worshipped here. His soldiers stayed."
+    ],
+    "areas": [
+      {
+        "name": "the promise room",
+        "x": 28415,
+        "y": 32728,
+        "z": 15576,
+        "radius": 900,
+        "lines": [
+          "The promise room. Oaths walk here without their men."
+        ]
+      },
+      {
+        "name": "the acolyte room",
+        "x": 27762,
+        "y": 32932,
+        "z": 14527,
+        "radius": 800,
+        "lines": [
+          "Warm dark, and lizards breeding in it."
+        ]
+      },
+      {
+        "name": "the disciples' crypt",
+        "x": 28243,
+        "y": 29927,
+        "z": 15487,
+        "radius": 800,
+        "lines": [
+          "Disciples kneel in the crypt. They never rose."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "[mithra's tomb|the tomb of mithra] was every squire's first dungeon, and the promise room [was where|is where] we all broke our promises",
+      "mithra was a soldier's god. makes sense the tomb is full of soldiers who never left",
+      "the romans worshipped mithra underground in the dark. [the tomb is his temple|thats what the tomb was]"
+    ],
+    "rumour": [
+      "we used to meet at the pk bridge before a mithra run. good times",
+      "[heard|someone said] the high priest in mithra still shouts at people to get out of his holy place"
+    ],
+    "tell": [
+      "mithra? the tomb in camelot hills. skeletons, zombies, ghosts and lizards. best first dungeon in albion, bring a mace and a friend"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Tomb of Mithra was a Roman [temple] before it was a tomb, and its [servants] are still at their worship. You will have been there. Everyone has.",
+    "topics": {
+      "temple": "The soldiers of the old fort worshipped Mithras underground, swearing to him grade by grade. They were buried near him to keep their oaths. The squires' promise room is where those oaths still walk.",
+      "servants": "Disciples, believers, builders, failed sacrifices, and a high priest who orders every stranger out of his holy place in the god's name. They do not know Rome has gone."
+    }
+  },
+  "book": {
+    "title": "A Squire's First Descent",
+    "pages": [
+      "Sir Edric took four of us down into Mithra's tomb on the first warm day of spring, as his own master had taken him. He told us the skeletons break under a mace and the dead men under a blade and that the ghosts care for neither, and then he made us each swear a promise at the door of the room the squires call by that name. Mine was never to run. I ran twice before noon. Edric laughed and said that was the point, and that the tomb keeps every promise you leave in it."
+    ]
+  },
+  "bosses": []
+}

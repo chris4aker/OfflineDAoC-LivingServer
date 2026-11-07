@@ -1,0 +1,59 @@
+{
+  "id": "valnir-mordeth",
+  "name": "Valnir Mordeth",
+  "catalogKey": "albion-named-mobs-shrouded-isles/valnirmordeth",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 70, 30,000 health. Two or three essence ghouls (level 62-66) spawn with him, more every 25-35 s and after combat; their spell damage heals him by the same amount. Casts Valnir Modreth's Breath (acid) and a plague.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/ValnirMordeth.cs"
+    }
+  ],
+  "story": "Valnir Mordeth crouches in a pit in the Dales of Devwy with his essence ghouls around him, and the ghouls feed him. Every spell they cast at his enemies mends him by as much as it hurts them, so the longer they live, the longer he does. He breathes an acid that clings and burns, and spreads a plague, and when a fight is over he calls up fresh ghouls to wait for the next one. The garrison calls his pit the larder, and does not say whose.",
+  "legend": "His essence ghouls heal him with every spell they land, so kill the ghouls first, every time, and keep killing them as more come every half minute. Cure his plague and heal his acid breath. Never fight him at the pit's edge.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Ghouls crouch around a pit, feeding something."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Fresh ghouls crawl to Valnir Mordeth's side!"
+      }
+    ],
+    "realmFirstKill": "Valnir Mordeth has fallen. The larder is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "valnir's ghouls heal him when they cast. ghouls first, always",
+      "cure plague, heal the acid"
+    ],
+    "aftermathWin": [
+      "valnir mordeth down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "heard valnir mordeth's ghouls feed him",
+      "[someone said|heard] they call valnir's pit the larder"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "valnir mordeth",
+    "text": "He crouches in a pit in the Dales with his essence ghouls, and every spell they cast mends him. Kill the ghouls first, always."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Valnir Mordeth in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Valnir Mordeth drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

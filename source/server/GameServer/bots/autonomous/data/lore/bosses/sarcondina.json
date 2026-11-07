@@ -1,0 +1,59 @@
+{
+  "id": "sarcondina",
+  "name": "Sarcondina",
+  "catalogKey": "albion-named-mobs-shrouded-isles/sarcondina",
+  "locationId": "albion-shrouded-isles",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health. Every 25-40 s a 'Sarcondina's servant' (level 55-59) joins her; casts an acid damage-over-time (80 every 4 s for 20 s).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Sarcondina.cs"
+    }
+  ],
+  "story": "Sarcondina keeps the marsh of Inishail, where the orcs who fled the ogres of Krondon tried to settle and were driven out again. She is a creature of the wet ground, and her servants, smaller kin of hers, crawl out of the marsh to her every half minute or so while she fights. Her touch burns like an acid cloud that does not lift. The orcs say she was there first, and that the ogres were only the reason they left Krondon, not the reason they left Inishail.",
+  "legend": "Her servants crawl out of the marsh every half minute or so; kill them or they stack up on the healers. Heal through her acid cloud, a twenty-second burn, and do not fight her with the marsh at your back.",
+  "yells": {
+    "aggro": [],
+    "phases": [],
+    "death": [],
+    "slay": []
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The marsh moves. Her servants are coming."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Sarcondina's servants rise from the marsh!"
+      }
+    ],
+    "realmFirstKill": "Sarcondina is dead. Inishail's marsh lies still."
+  },
+  "botLines": {
+    "briefing": [
+      "sarcondina calls servants every 30 sec, kill them",
+      "heal through her acid dot"
+    ],
+    "aftermathWin": [
+      "sarcondina down. one less horror on the isles"
+    ],
+    "aftermathLoss": [
+      "we didnt respect the trick. learn it and come back"
+    ],
+    "rumour": [
+      "the orcs on inishail fled the ogres, they say. makes you wonder what krondon did to them",
+      "heard sarcondina's servants crawl out of the marsh"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sarcondina",
+    "text": "She keeps the marsh of Inishail. Her servants crawl to her from the wet ground, and her touch burns like acid that does not lift."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} brought down Sarcondina in the Shrouded Isles in {minutes} minutes.",
+    "loss": "Sarcondina drove {realm}'s raid out of the Shrouded Isles; {raidLeader} fell back."
+  }
+}

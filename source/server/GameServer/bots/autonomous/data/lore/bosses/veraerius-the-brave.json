@@ -1,0 +1,105 @@
+{
+  "id": "veraerius-the-brave",
+  "name": "Vera'erius the Brave",
+  "catalogKey": "avalon-city/veraeriusbrave",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Spirit and Body damage heal him; at 70% health he casts Vera'erius Heal (400) on himself.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Vera'erius leads the vyr'em, the swordsmen of the drakoran, and of all the five lords he is the one Albion's knights respect, because he fights at the front of his clan and asks no one to take a blow he would not take himself. The vyr'em say he cannot be killed by sorcery, and in a way they are right: the spells that wither and those that strike at the spirit only mend him. When he is hurt he heals himself and keeps coming. He is brave because nothing has ever given him cause to be otherwise.\n\nThe swordsmen. The vyr'em are the swordsmen of the drakoran host: soldiers and swords and combatants, couranteers and honoured swords, the clan that fights at the front. Vera'erius is their lord, and of all the five lords he is the one Albion's knights respect, because he fights at the head of his clan and asks no one to take a blow he would not take himself. He took the old schools of Avalon for his quarter, where the children of the colleges were taught, and drills his swords in the schoolyard.\n\nWhy sorcery fails. The vyr'em say their lord cannot be killed by sorcery, and in a way they are right: the spells that wither the body and those that strike at the spirit only mend him, as if his courage swallowed them. When he is hurt he stops, closes his eyes for a heartbeat, and heals himself, and comes on again. He despises Sys'sro and his pit, and says so; he despises Dura'ek's borrowed power, and does not say so, which is the only cowardice the Albion knights have ever accused him of. The bards of Camelot have made a song about him, which is more than any other drakoran has earned.",
+  "legend": "Spirit and body damage heal him. Bring steel and the other elements. At seventy percent he heals himself, so burn through it. A straight fight otherwise, and the most honourable of the five lords; his swordsmen will not interfere unless you pull them.\n\nThe knights of Albion say it is the only fight in Avalon that feels fair, and some of them salute him before the pull. He takes it as his due. He heals himself once at seventy percent; push your damage just before it so the heal lands on a lower bar. His swordsmen stand around him in the schoolyard and must not be pulled with him.",
+  "yells": {
+    "aggro": [
+      "Face me, then. Steel to steel!",
+      "Vyr'em! Swords!",
+      "No tricks. No pits. Come."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=70",
+        "text": "Not yet! The vyr'em do not fall so easily!"
+      }
+    ],
+    "death": [
+      "A good death... at the front...",
+      "Tell your bards... I stood..."
+    ],
+    "slay": [
+      "You fought well. It was not enough.",
+      "Steel to steel. As it should be.",
+      "Rest, swordsman."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Swordsmen in ranks. Their lord stands at the front.",
+      "The old schoolyard. Swords ring here now."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=70",
+        "text": "Vera'erius mends his own wounds!"
+      }
+    ],
+    "realmFirstKill": "Vera'erius the Brave has fallen at the front of his clan."
+  },
+  "botLines": {
+    "briefing": [
+      "no body or spirit damage on veraerius, it heals him",
+      "he heals himself at 70%, push through it",
+      "melee carries this one",
+      "dont pull his swordsmen"
+    ],
+    "aftermathWin": [
+      "veraerius down. respect though",
+      "melee carried that one, as it should",
+      "the bards will have to add a verse",
+      "steel to steel, we won"
+    ],
+    "aftermathLoss": [
+      "our spirit casters were healing him the whole time",
+      "pulled his swordsmen with him",
+      "his self heal at 70 reset our push",
+      "not enough melee"
+    ],
+    "rumour": [
+      "heard vera'erius fights at the front of his own clan",
+      "[someone said|heard] body and spirit magic heal vera'erius",
+      "heard the bards made a song about veraerius",
+      "veraerius despises sys'sro's pit, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "vera'erius",
+    "text": "The Brave. Spirit and body magic heal him, and when he is hurt he heals himself. Bring steel."
+  },
+  "bookPage": "The swordsmen took the old schools, where our children learned their letters, and drill in the yard where the children played. My fishermen say their lord is the one drakoran the knights of Albion speak of without spitting. He fights at the front. He takes the first blow. He does not use pits or orbs. When an Inconnu wizard struck him with a withering spell, the fisherman says, the drakoran lord simply stood straighter, as though the spell had been a compliment. The knights fought him with steel after that. One of them told me afterwards that it was the only honest fight he had in the whole city.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} met Vera'erius the Brave steel to steel and felled him in {minutes} minutes.",
+    "loss": "Vera'erius the Brave held the front against {realm}'s raid; {raidLeader}'s spells only mended him."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "syssro-the-ruthless",
+      "relation": "despises him"
+    },
+    {
+      "id": "duraek-the-empowered",
+      "relation": "despises his borrowed power, silently"
+    }
+  ]
+}
