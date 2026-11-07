@@ -11,7 +11,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
     },
     {
-      "text": "Raises three 'war incarnate' weapons that strike with crush, slash and thrust; takes 40% less from melee.",
+      "text": "Raises three 'war incarnate' weapons that strike with crush, slash and thrust; heavy armour (AF 350, 20% absorb) soaks melee; he has no spell reduction.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
     },
@@ -22,7 +22,7 @@
     }
   ],
   "story": "Bellum is war, and he is honest about it. When Fames falls he gives the raid a soldier's courtesy, a single minute to prepare, and then he draws every weapon there has ever been. Three of them rise around him on their own, the hammer, the blade and the spear, war incarnate in its oldest shapes, and they fight as soldiers fight, without hatred and without stopping. He shrugs off steel the way a veteran shrugs off a bruise. Of the four riders he is the one the dead of Caer Sidi love best, for most of them died in his service.\n\nWar is the second road to the dead, and the keepers named its rider Bellum. He was the first prisoner Arawn ever locked in Caer Sidi who was not a man: the war-spirit that walks beside every army, given a body so that it could be kept. The dead of the gaol love him, because most of them died in his service, and Warlord Dorinakka in the yard below salutes toward his hall before every drill.\n\nHow he fights. He gives a soldier's courtesy, one minute and no more, and then he draws every weapon there has ever been. Three of them rise around him on their own, war incarnate in its oldest shapes: the hammer that crushes, the blade that slashes, the spear that thrusts. They fight without hatred and without stopping. He himself shrugs off steel as a veteran shrugs off a bruise, and only the casters' spells cut him as they should. When he falls, Morbus comes a minute later, quiet and pale.",
-  "legend": "A minute after Fames. Bellum calls three floating weapons, crush, slash and thrust; groups split to kill them while the tanks hold him, and the melee keep the weapons busy. He takes 40% less from melee than from spells, so the casters do the real work on him. Watch the weapons in the healers; they hit like the weapons they are. Rest after he falls: Morbus is a minute behind. Rotate the off-tanks on the hammer; it hits cloth like a falling wall. The sword and spear are kinder, but not by much. War is honest, the old hands say: what he shows you is what he does.",
+  "legend": "A minute after Fames. Bellum calls three floating weapons, crush, slash and thrust; groups split to kill them while the tanks hold him, and the melee keep the weapons busy. His heavy armour soaks part of every melee blow (spells land in full), so the casters do the real work on him. Watch the weapons in the healers; they hit like the weapons they are. Rest after he falls: Morbus is a minute behind. Rotate the off-tanks on the hammer; it hits cloth like a falling wall. The sword and spear are kinder, but not by much. War is honest, the old hands say: what he shows you is what he does.",
   "yells": {
     "aggro": [
       "Prepare yourselves for war. One minute, you are granted.",
@@ -63,7 +63,7 @@
       "bellum: three weapons spawn, one group each, casters do the work on him",
       "one minute after fames. be ready",
       "bellum: three weapons spawn, one group each",
-      "casters on bellum, melee takes 40% less",
+      "casters on bellum, his armour soaks melee",
       "watch the weapons near the healers",
       "a minute rest after him, then morbus"
     ],
@@ -75,7 +75,7 @@
     ],
     "aftermathLoss": [
       "the weapons got loose in the healers",
-      "melee on bellum is a waste, he barely takes it",
+      "melee on bellum does less, his armour soaks it",
       "we didnt rest after fames and paid for it",
       "the hammer weapon one shots cloth"
     ],

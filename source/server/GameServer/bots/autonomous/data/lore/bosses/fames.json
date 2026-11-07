@@ -26,7 +26,7 @@
     }
   ],
   "story": "Fames is the first of the four riders and the one who speaks for them. Famine in the old Roman tongue, though there is nothing starved about him: he has a scholar's patience and a gaoler's courtesy. He senses a crowd before it reaches the hall, he chooses one face out of it, and he asks the question every raid on Caer Sidi has to answer. Do you come to challenge fate? Say no, and he tells you to go and do what you were meant to do. Say yes, and he grants you a few grains of time, two minutes in your reckoning, to prepare. He is not cruel. He believes that a choice made with open eyes is the only kind worth punishing.\n\nWho he was. The keepers of Caer Sidi gave the riders their names in the Roman tongue, because the Romans buried their dead along every road of Albion and Arawn received a great many of them; Fames, Bellum, Morbus, Funus: hunger, war, plague and the funeral, the four roads by which men come to the dead. Fames is the eldest, because men starved before they fought. He is not gaunt. He is patient, as hunger is patient, and he has learned the courtesy of a gaoler who has had no prisoners to speak to for a long time.\n\nWhat he does. He senses a raid before it reaches the hall: the presence of many, he says, of power and ambition. He chooses one face among them and asks the question. He wants the answer said aloud. He believes a choice made with open eyes is the only one worth punishing, and he will let anyone who says no walk away. When he is spent, Bellum rides a minute after him, and each rider sends a fate's bearer before him into the fight.",
-  "legend": "Someone has to say yes to Fames; the raid leader does it. Then you get two minutes: buff, form up, assign targets, put the clerics where they can see everyone. Fames himself is a straight fight with a fate's bearer at his side; kill the bearer, tank him, burn him. A minute after he falls Bellum comes, then Morbus, then Funus, then Apocalypse five seconds after Funus. Rest and rebuff in every gap. Do not chase him out of the hall. Old hands say: never answer for the raid unless you lead it. Fames remembers the face that said yes.",
+  "legend": "Someone has to say yes to Fames; the raid leader does it. Then you get two minutes: buff, form up, assign targets, put the clerics where they can see everyone. Fames himself is a straight fight with a fate's bearer at his side, and a melee fight: he takes 40% less from melee but 70% less from spells; kill the bearer, tank him, burn him. A minute after he falls Bellum comes, then Morbus, then Funus, then Apocalypse five seconds after Funus. Rest and rebuff in every gap. Do not chase him out of the hall. Old hands say: never answer for the raid unless you lead it. Fames remembers the face that said yes.",
   "yells": {
     "aggro": [
       "I sense the presence of many, the presence of power and ambition.",
@@ -67,7 +67,7 @@
       "raid leader says yes to fames, then we get two minutes. buffs and positions",
       "fames, then a minute, bellum, then morbus, then funus. rest in the gaps",
       "someone say yes to fames, then 2 minutes. buffs, groups, targets",
-      "fames comes with a fate's bearer, kill it first",
+      "fames comes with a fate's bearer, kill it first. melee on fames, spells barely touch him",
       "rest between riders, each one is a minute after the last",
       "dont chase fames out of the hall"
     ],

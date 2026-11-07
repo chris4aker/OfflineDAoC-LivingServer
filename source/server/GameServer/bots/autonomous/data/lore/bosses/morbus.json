@@ -11,6 +11,11 @@
       "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
     },
     {
+      "text": "25-40 s after his last swarm has died he looses six to ten 'swarm of morbus'; while any swarm lives he takes their form and does not attack (the old no-damage shield is behind AllowAddShield, off). His Touch of Death diseases.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
       "text": "The Horsemen come in order: Fames, then Bellum, Morbus and Funus, each a minute after the last falls; Funus calls Apocalypse. Each brings a fate's bearer.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
@@ -22,7 +27,7 @@
     }
   ],
   "story": "Plague is the third road, and the oldest truth of war: more soldiers die of the camp than of the field. The keepers named its rider Morbus, and he is the palest of the four and the most quiet. He grants a grace, as his brothers do, and warns in a low voice that it is the smallest things that are the most deadly.\n\nThe swarm. Then he opens his robes and the swarm comes out of him, things too small to strike cleanly, and it comes again and again for as long as he stands. In the first seasons after the rising, the accounts say, no blade and no spell reached the rider while one of them was on the wing; Brother Cadoc's company struck at him through it as through a wall of moving sand. That wall is gone. The Inconnu say it went out of him when the end of the world fell for the first time and the fortress stopped turning for a breath, and that the riders were never quite whole again. The swarm still flies, and it still carries his misery to the living, and the sick are still the first to fall.\n\nHis touch carries a sickness of its own, and his silence is worse than his brothers' speeches. The Inconnu say Morbus is the one rider Arawn was glad to lock away, because he had seen what plague does to the Deadlands: it fills them faster than anything. When he falls, Funus comes after him, and the clerics in the hall begin to glow.",
-  "legend": "Every 25-40 seconds six to ten bugs come out of him. In the old days he was immune while any bug lived; not here, that is switched off, so you can keep hitting Morbus through the swarm. The bugs still matter: they go for the healers and pile misery on top of his disease. Area damage on the swarm the moment it appears, cure disease on anyone he touches, everyone else stays on Morbus. Bring two groups who can strike many at once and let them do nothing else. Do not waste your big cooldowns: Funus is a minute behind him, and Apocalypse five seconds behind Funus. Bring two groups who can strike many at once and let them do nothing else; the swarm is the whole fight, and Morbus himself is soft once it is down. Cure disease the moment his touch lands; it stacks with the swarm's misery.",
+  "legend": "Six to ten bugs come out of him 25-40 seconds after the last of the previous swarm has died. While any bug lives, Morbus takes their shape, drops his target and does not attack at all; the old immunity is switched off here, so you can keep hitting him. The bugs carry Touch of Death, a disease (a 15% chance per hit, 350 around the target), so cure disease. When the last bug dies he fights again, and the next swarm comes 25-40 seconds later. Area damage on the swarm the moment it appears, everyone else stays on Morbus. Bring two groups who can strike many at once and let them do nothing else. Do not waste your big cooldowns: Funus is a minute behind him, and Apocalypse five seconds behind Funus. Bring two groups who can strike many at once and let them do nothing else; the swarm is the whole fight, and Morbus himself is soft once it is down. Cure disease the moment the swarm's touch lands, and remember the next swarm only comes after the last bug dies.",
   "yells": {
     "aggro": [
       "Sometimes it is the smallest things that are the most deadly. Be prepared.",
@@ -61,9 +66,9 @@
   },
   "botLines": {
     "briefing": [
-      "morbus: aoe the swarm the moment it comes, it goes for the healers",
+      "morbus: aoe the swarm the moment it comes. he stops attacking while bugs live",
       "keep hitting morbus through the swarm, he isnt immune here",
-      "cure disease on whoever he touches",
+      "cure disease on whoever the bugs touch",
       "dont burn cooldowns, funus is a minute after"
     ],
     "aftermathWin": [
