@@ -212,9 +212,14 @@ namespace DOL.AI.Brain
         // whoever stands in them; 145 raiders by the Magical Earthmender were swinging at them and 2 at the Earthmender.
         public static bool IsUntargetable(GameLiving living) => living is GameNPC { Flags: var flags } && (flags & GameNPC.eFlags.CANTTARGET) != 0;
 
+        /// <summary>Untargetable for this bot: as <see cref="IsUntargetable"/>, except a boss meant to be finished by spells for an
+        /// offensive caster (EpicEncounterTactics.FinishedBySpells: Lich Lord Sanguis's last 5%).</summary>
+        public bool IsUntargetableForMe(GameLiving living) => IsUntargetable(living) &&
+            !EpicEncounterTactics.MayFinishUntargetable(BotBody, living);
+
         public void ForceAddToAggroList(GameLiving living, long aggroAmount)
         {
-            if (IsUntargetable(living)) return;
+            if (IsUntargetableForMe(living)) return;
             if (!CompanionEngagementMode.Allows(Body, living)) return;
             if (_autonomousWorldController?.IgnoresTarget(living) == true) return;
             if (CompanionRaidSiege.Ignores(Body as GameBot, living)) return;
@@ -317,7 +322,7 @@ namespace DOL.AI.Brain
         protected virtual bool ShouldBeRemovedFromAggroList(GameLiving living)
         {
             return !living.IsAlive ||
-                   IsUntargetable(living) ||
+                   IsUntargetableForMe(living) ||
                    living.ObjectState != GameObject.eObjectState.Active ||
                    living.CurrentRegion != Body.CurrentRegion ||
                    !Body.IsWithinRadius(living, MAX_AGGRO_LIST_DISTANCE) ||
@@ -1333,6 +1338,10 @@ namespace DOL.AI.Brain
             }
             // Beggars (bot_living_beggars): a few Crafters live on a corner of their capital and do nothing else.
             if (AutonomousBeggars.Think(this))
+                return;
+            // 1.2: thrown, teleported or jailed by an encounter script: land, then get back to the raid (or wait in the jail),
+            // before any follow, pull or rally order of this turn can send it elsewhere.
+            if (EncounterDisplacementRecovery.Think(BotBody))
                 return;
             bool nativeSpeedTravelStarted;
             if (CompanionFollowPolicy.ObserveAndCancelBuffs(BotBody, out nativeSpeedTravelStarted))
@@ -5404,6 +5413,16 @@ namespace DOL.AI.Brain
                     numNeedHealing = Math.Max(1, numNeedHealing);
                     if (raidPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
                 }
+            }
+
+            // 1.2: a raider an encounter just threw, teleported or jailed comes first (EncounterDisplacementRecovery.PreferPatient).
+            GameLiving displacedPatient = EncounterDisplacementRecovery.DisplacedPatient(BotBody, spellTarget, InSupportReach);
+            if (displacedPatient != null)
+            {
+                spellTarget = displacedPatient;
+                amountToHeal = Math.Max(amountToHeal, displacedPatient.MaxHealth - displacedPatient.Health);
+                numNeedHealing = Math.Max(1, numNeedHealing);
+                if (displacedPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
             }
 
             // Emergency heal

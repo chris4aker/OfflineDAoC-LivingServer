@@ -174,7 +174,7 @@ namespace DOL.AI.Brain
                         case 1:
                             BroadcastMessage(String.Format("{0} picked up {1} on gust of winds and tossed {2} away! ", Body.Name, portPlayer[ranPlayer].Name, gender));
                             portPlayer[ranPlayer].Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
-                            portPlayer[ranPlayer].MoveTo(1, 401943, 753091, 222, 3499);
+                            EncounterDisplacement.Move(portPlayer[ranPlayer], 1, 401943, 753091, 222, 3499, DisplacementKind.Throw, Body);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {
                                 npc.StartAttack(portPlayer[ranPlayer]);
@@ -184,7 +184,7 @@ namespace DOL.AI.Brain
                         case 2:
                             BroadcastMessage(String.Format("{0} picked up {1} on gust of winds and tossed {2} away! ", Body.Name, portPlayer[ranPlayer].Name, gender));
                             portPlayer[ranPlayer].Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
-                            portPlayer[ranPlayer].MoveTo(1, 406787, 749150, 213, 3926);
+                            EncounterDisplacement.Move(portPlayer[ranPlayer], 1, 406787, 749150, 213, 3926, DisplacementKind.Throw, Body);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {
                                 npc.StartAttack(portPlayer[ranPlayer]);
@@ -194,7 +194,7 @@ namespace DOL.AI.Brain
                         case 3:
                             BroadcastMessage(String.Format("{0} picked up {1} on gust of winds and tossed {2} away! ", Body.Name, portPlayer[ranPlayer].Name, gender));
                             portPlayer[ranPlayer].Out.SendSpellEffectAnimation(portPlayer[ranPlayer], portPlayer[ranPlayer], 1735, 0, false, 1);
-                            portPlayer[ranPlayer].MoveTo(1, 401061, 755882, 469, 3050);
+                            EncounterDisplacement.Move(portPlayer[ranPlayer], 1, 401061, 755882, 469, 3050, DisplacementKind.Throw, Body);
                             foreach (GameNPC npc in portPlayer[ranPlayer].GetNPCsInRadius(2000))
                             {
                                 npc.StartAttack(portPlayer[ranPlayer]);

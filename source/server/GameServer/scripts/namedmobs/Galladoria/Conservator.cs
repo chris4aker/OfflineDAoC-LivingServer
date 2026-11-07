@@ -34,7 +34,7 @@ namespace DOL.GS
             if (EpicEncounterActors.IsCombatant(source))
             {
                 Point3D spawn = new Point3D(SpawnPoint.X, SpawnPoint.Y, SpawnPoint.Z);
-                if (EpicEncounterMechanics.AllowPositionPuzzle && !source.IsWithinRadius(spawn,800))//dont take any dmg 
+                if (EpicEncounterMechanics.AllowPositionPuzzleFor(this) && !source.IsWithinRadius(spawn,800))//dont take any dmg 
                 {
                     if (damageType == eDamageType.Body || damageType == eDamageType.Cold || damageType == eDamageType.Energy || damageType == eDamageType.Heat
                         || damageType == eDamageType.Matter || damageType == eDamageType.Spirit || damageType == eDamageType.Crush || damageType == eDamageType.Thrust

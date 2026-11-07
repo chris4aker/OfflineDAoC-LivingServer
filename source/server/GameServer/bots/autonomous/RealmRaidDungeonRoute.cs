@@ -1406,7 +1406,8 @@ namespace DOL.GS
             GameNPC[] candidates = live.Where(n => n.IsAlive && n.ObjectState == GameObject.eObjectState.Active && n.Realm == eRealm.None &&
                 n.Level > 0 && n is not GameBot && n is not GameSummonedPet && n.Brain is not IControlledBrain &&
                 n is not GameMerchant && n is not GameTrainer && n is not GameTeleporter && n is not GameTaxi &&
-                (n.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) == 0 && !_cleared.Contains(n) &&
+                ((n.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) == 0 || EpicEncounterTactics.FinishableUntargetable(n)) &&
+                !_cleared.Contains(n) &&
                 // A pet class's charm body (a copy of an overland monster it is charming) is no dungeon monster: a
                 // Hibernian raid stood four minutes by a "grogan" in Galladoria that none of it could attack (run 22).
                 n.TempProperties.GetProperty<bool>(AutonomousPetSupport.SyntheticCharmPetProperty) != true &&

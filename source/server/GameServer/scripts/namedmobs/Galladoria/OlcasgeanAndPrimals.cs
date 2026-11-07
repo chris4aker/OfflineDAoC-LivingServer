@@ -655,7 +655,7 @@ namespace DOL.AI.Brain
                 Point3D point2 = new Point3D();
                 point2.X = 39237; point2.Y = 62644; point2.Z = 11685;
 
-                if (EpicEncounterMechanics.AllowPositionPuzzle && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline raids.
+                if (EpicEncounterMechanics.AllowPositionPuzzleFor(Body) && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline raids.
                 {
                     RemoveAdds = false;
                     if (spawn_effect == false)
@@ -770,7 +770,7 @@ namespace DOL.AI.Brain
                             {
                                 if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
                                 {
-                                    if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38399, 60893, 12242, 3548);
+                                    if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38399, 60893, 12242, 3548, DisplacementKind.Throw, Body);
                                     TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
@@ -781,7 +781,7 @@ namespace DOL.AI.Brain
                             {
                                 if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
                                 {
-                                    if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38564, 64161, 12242, 2382);
+                                    if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38564, 64161, 12242, 2382, DisplacementKind.Throw, Body);
                                     TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
@@ -793,7 +793,7 @@ namespace DOL.AI.Brain
                             {
                                 if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
                                 {
-                                    if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 41580, 62325, 12242, 890);
+                                    if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 41580, 62325, 12242, 890, DisplacementKind.Throw, Body);
                                     TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
@@ -1748,8 +1748,8 @@ namespace DOL.AI.Brain
             {
                 switch (Util.Random(1, 2))
                 {
-                    case 1: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38626, 60891, 11771, 2881); break;
-                    case 2: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 40606, 60868, 11721, 1095); break;
+                    case 1: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38626, 60891, 11771, 2881, DisplacementKind.Teleport, Body); break;
+                    case 2: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 40606, 60868, 11721, 1095, DisplacementKind.Teleport, Body); break;
                 }
                 Port_Enemys.Remove(TeleportTarget);
                 TeleportTarget = null;//reset random target to null
@@ -3192,7 +3192,7 @@ namespace DOL.GS
         public Vortex() : base() { }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            if (!EpicEncounterMechanics.AllowInvulnerableHazards)
+            if (!EpicEncounterMechanics.AllowInvulnerableHazardsFor(this))
             {
                 if (EpicEncounterActors.IsCombatant(source)) base.TakeDamage(source, damageType, damageAmount, criticalAmount);
                 return;
@@ -3360,7 +3360,7 @@ namespace DOL.AI.Brain
                     if (player.IsAlive)
                     {
                         if (player.Client.Account.PrivLevel == 1)
-                            if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 39664, 60792, 11542, 4078);
+                            if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 39664, 60792, 11542, 4078, DisplacementKind.Barrier, Body);
                     }
                 }
             }

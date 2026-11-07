@@ -106,7 +106,7 @@ namespace DOL.AI.Brain
 			if(ad != null && ad.Attacker is GamePlayer && ad.Damage > 0)
             {
 				if(Util.Chance(10))
-					ad.Attacker.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z + 400, Body.Heading);
+					EncounterDisplacement.Move(ad.Attacker, Body.CurrentRegionID, Body.X, Body.Y, Body.Z + 400, Body.Heading, DisplacementKind.Throw, Body);
 				if (Util.Chance(15))
 					SpawnGhost();
             }

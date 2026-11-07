@@ -164,7 +164,7 @@ namespace DOL.AI.Brain
                     if (PortTarget.IsVisibleTo(Body) && Body.TargetInView && PortTarget != null && PortTarget.IsAlive)
                     {
                         AggroList.TryRemove(PortTarget, out _);
-                        if (EpicEncounterMechanics.AllowDisplacement) PortTarget.MoveTo(Body.CurrentRegionID, 16631, 58683, 10858, 2191);
+                        if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(PortTarget, Body.CurrentRegionID, 16631, 58683, 10858, 2191, DisplacementKind.Jail, Body);
                         PortTarget = null;
                     }
                 }
