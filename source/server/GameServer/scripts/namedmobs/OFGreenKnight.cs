@@ -285,13 +285,13 @@ namespace DOL.AI.Brain
                 base.OnAttackedByEnemy(ad);
         }
         #region GK pick random healer
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
-        List<GamePlayer> healer = new List<GamePlayer>();
+        List<GameLiving> healer = new List<GameLiving>();
         public int PickHeal(ECSGameTimer timer)
         {
             if (Body.IsAlive)
@@ -300,14 +300,14 @@ namespace DOL.AI.Brain
                 {
                     if (Body.TargetObject != null)
                     {
-                        foreach (GamePlayer ppl in Body.GetPlayersInRadius(2500))
+                        foreach (GameLiving ppl in EncounterTargets.InRadius(Body, 2500))
                         {
                             if (ppl != null)
                             {
-                                if (ppl.IsAlive && ppl.Client.Account.PrivLevel == 1)
+                                if (ppl.IsAlive && EncounterTargets.NotGm(ppl))
                                 {
                                     //cleric, bard, healer, warden, friar, druid, mentalist, shaman
-                                    if (ppl.CharacterClass.ID is 6 or 48 or 26 or 46 or 10 or 47 or 42 or 28)
+                                    if (EncounterTargets.ClassId(ppl) is 6 or 48 or 26 or 46 or 10 or 47 or 42 or 28)
                                     {
                                         if (!healer.Contains(ppl))
                                             healer.Add(ppl);
@@ -317,7 +317,7 @@ namespace DOL.AI.Brain
                         }
                         if (healer.Count > 0)
                         {
-                            GamePlayer Target =(GamePlayer) healer[Util.Random(0, healer.Count - 1)]; //pick random target from list
+                            GameLiving Target = healer[Util.Random(0, healer.Count - 1)]; //pick random target from list
                             RandomTarget = Target; //set random target to static RandomTarget
                             if (RandomTarget != null) //check if it's not null
                             {
@@ -595,8 +595,8 @@ namespace DOL.AI.Brain
             if (Body.IsAlive && Body.InCombat && HasAggro)
             {
                 //spawning each tree in radius of 4000 on every player
-                List<GamePlayer> player = new List<GamePlayer>();
-                foreach (GamePlayer ppl in Body.GetPlayersInRadius(4000))
+                List<GameLiving> player = new List<GameLiving>();
+                foreach (GameLiving ppl in EncounterTargets.InRadius(Body, 4000))
                 {
                     player.Add(ppl);
 
