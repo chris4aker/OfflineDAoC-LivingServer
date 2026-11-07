@@ -1,0 +1,143 @@
+{
+ "id": "marquis-focalleste",
+ "name": "Marquis Focalleste",
+ "npcNames": [
+  "Marquis Focalleste"
+ ],
+ "aliases": [
+  "focalleste"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baelerdoth",
+   "relation": "his lord, whose thirst he gathers from"
+  },
+  {
+   "id": "duke-aypol",
+   "relation": "the other hoarder the imps cannot rob"
+  },
+  {
+   "id": "duke-harboris",
+   "relation": "shares his hall"
+  },
+  {
+   "id": "earl-fenex",
+   "relation": "shares his hall"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "asks him each Roll what he means to do"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Marquis Focalleste is a level 73 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in High Lord Baelerdoth's hall in the east, near Duke Harboris and Earl Fenex.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Marquis Focalleste among the marquises of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Marquis Focalleste is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Focalor (41) is a duke; Focalleste may read as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "High Lord Baelerdoth, below a quarter of his health, casts an absorption debuff on the raiders around him.",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Every ward a mortal carries into High Lord Baelerdoth's hall grows weaker the nearer it comes to him. Baelerdoth's presence drinks protection, and the east has a saying for it: a wounded Baelerdoth is a thirsty one. The deeper he bleeds, the less any ward near him keeps. The protection has to go somewhere, and in the east the court says it goes to Marquis Focalleste.\n\nFocalleste was Baelerdoth's from the Uncounted Age, a lean, patient demon who served at his master's side and caught what his master's thirst let fall. A ward that Baelerdoth drinks does not vanish all at once. It runs off him like water off a roof, and Focalleste, standing beside him, gathered it, in jars of black glass from the crack under Oro's hall, sealed with wax from the kitchens. He has been gathering for ten Rolls. His rooms in Baelerdoth's hall are lined with jars, and each jar holds a ward: a shield-spell of Albion's clerics, a Midgard shaman's skin of stone, the blessing a Hibernian druid laid on her company before it came down the eastern stair. He labels them by realm and by the name of whoever cast them, when he can find it out.\n\nHe does not use them. He keeps them, as Duke Aypol keeps his metal, and the two of them are the only peers the imps have never managed to rob, because nobody else can carry what Focalleste keeps without it running out through their fingers. The court regards him as harmless and slightly mad. The Chancellor has noted on the Roll that Focalleste is the only demon in the hollow who holds a part of every realm above, and has asked him, once each Roll, what he means to do with it. Focalleste says he is waiting to see which realm's are worth keeping.",
+ "legend": "Focalleste stands in Baelerdoth's hall in the east, close to the high lord and near Duke Harboris and Earl Fenex. He is level 73 with no script. The real danger is that he stands close enough to Baelerdoth for a careless pull to bring the high lord, and Baelerdoth strips your absorption under a quarter health. Pull Focalleste out toward the Ward, after Harboris and Fenex. Players say he keeps your buffs in jars after Baelerdoth eats them, and complain that he is the reason their shields fall off in the east. That is Baelerdoth, but the joke stands. Buff again once Focalleste is down; the high lord is next and you want everything fresh.",
+ "yells": {
+  "aggro": [
+   "Your wards. Let me see them.",
+   "That one is Albion's. I have a jar for it.",
+   "Come nearer my lord. Your shields will come nearer me."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Break the jars? You would let every ward I hold go free."
+   }
+  ],
+  "death": [
+   "My jars... label them...",
+   "Keep the Hibernian ones. They were the best."
+  ],
+  "slay": [
+   "Your ward stays here.",
+   "Labelled and shelved.",
+   "One more jar."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Shelves of black glass jars, each one faintly glowing.",
+   "Your wards feel thin in this hall."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The collector of wards clutches his jars."
+   }
+  ],
+  "realmFirstKill": "Marquis Focalleste has fallen. His jars are breaking."
+ },
+ "botLines": {
+  "briefing": [
+   "focalleste is next to baelerdoth. [pull him out to the ward|pull him away], after harboris and fenex",
+   "73 no tricks. dont bring baelerdoth, [he strips abs|your absorb goes]",
+   "tanks careful with focalleste's pull. [one shot to drag him out|drag him east]",
+   "focalleste then scottiax, then the high lord"
+  ],
+  "aftermathWin": [
+   "focalleste down. [jars smashed|free the wards lol]",
+   "marquis focalleste dead. [scottiax next|on to scottiax]",
+   "focalleste done, [clean pull|nice]",
+   "collector down. [baelerdoth soon|almost at baelerdoth]"
+  ],
+  "aftermathLoss": [
+   "pulled baelerdoth with focalleste. [lost all our absorb|abs gone, wipe]",
+   "focalleste plus harboris, [too much|wipe]",
+   "focalleste got us. [regroup|rez]",
+   "bad pull in baelerdoths hall. [back up|slower]"
+  ],
+  "rumour": [
+   "[heard|word is] marquis focalleste keeps the wards baelerdoth drinks in jars",
+   "focalleste has a jar for every realm's buffs. [ours too|creepy]",
+   "[someone said|my guildie says] the imps cant rob focalleste. [it runs through their fingers|cant carry it]",
+   "the shields falling off in baelerdoths hall is focalleste. [no its baelerdoth|lol]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "focalleste",
+  "text": "A marquis of High Lord [Baelerdoth]'s household who gathers, in black glass jars, the wards his master's thirst strips from the raids. He holds a part of every realm above and says he is waiting to see which realm's are worth keeping."
+ },
+ "bookPage": "From a Hibernian druid's letter to her college: The jars were on shelves from floor to roof, and they glowed, each one a little, the way a ward glows when it is first laid on. On the nearest shelf was a jar with a label in a demon's hand, and I could read it, because it was my own name. It held the blessing I had laid on our company at the head of the eastern stair, not an hour before. I knew it the way you know your own handwriting. When we had killed the marquis I broke the jar, and the blessing went back into me like breath.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} broke Marquis Focalleste's jars in {minutes} minutes.",
+  "loss": "Marquis Focalleste added every ward of {realm}'s raid under {raidLeader} to his shelves."
+ }
+}

@@ -1,0 +1,81 @@
+{
+  "id": "curmie",
+  "name": "Curmie",
+  "npcNames": [
+    "Curmie"
+  ],
+  "locationId": "lough-gur",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Curmie: level 36, a curmudgeon body (model 249), at about 335,800/709,600 just outside Innis Carthaig; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Occupation of Lough Gur (Aziliz): 'Seek out the cluricaun Smidget on the north side of the island in Lough Gur', 'Fight the curmudgeon Curmie outside Innis Carthaig'; its question is why the gurites stay in Lough Gur and do not attack Innis Carthaig.",
+      "provenance": "game",
+      "source": "DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Curmie is a curmudgeon, one of the grumbling hill-folk who fight the siabra over the high country, and he camps just outside Innis Carthaig where the town's guard can see him and cannot be bothered to move him. He complains. He complains about the town's smoke, the lake's damp, the gurites in the hills and the realm's young who come out to fight him on Aziliz's errand, and the town has grown used to it the way a house grows used to a dripping tap.\n\nAziliz says Curmie knows why the gurites stay: the curmudgeons and the siabra have been fighting over the lake country for longer than the town has stood, and he says the gurites stay because they are waiting for something under the lake, and the curmudgeons are waiting to see what. He tells this to anyone who beats him, as a complaint. The town has asked him to move a dozen times. He complains about being asked.",
+  "legend": "Curmie (36) is a named curmudgeon camped just outside Innis Carthaig (about 336k/710k). Occupation of Lough Gur sends you to fight him after Smidget. Easy for a group of mid 30s. Plain spawn, 80-second respawn; he is close enough to town that a bind run is short. Curmudgeon puggards in Cruachan Gorge are his larger cousins. He is alone, so a duo can do him; the town guard will not help or hinder.",
+  "yells": {
+    "aggro": [
+      "Oh, it's you. It's always you.",
+      "Can't a curmudgeon complain in peace?"
+    ],
+    "phases": [],
+    "death": [
+      "Typical... absolutely typical..."
+    ],
+    "slay": [
+      "Serves you right."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A curmudgeon complaining outside the town."
+    ],
+    "phases": [],
+    "realmFirstKill": "Curmie has stopped complaining. For now."
+  },
+  "botLines": {
+    "briefing": [
+      "curmie is 36 right outside innis carthaig",
+      "occupation of lough gur, after smidget"
+    ],
+    "aftermathWin": [
+      "curmie down. [finally quiet|lol]",
+      "he complained the whole fight. [lol|typical]"
+    ],
+    "aftermathLoss": [
+      "he complained us to death. [lol|rip]",
+      "too low for 36. [oops|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] curmie says the gurites are waiting for something under the lake",
+      "curmie complains about everything. innis carthaig doesnt even notice any more"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Curmie",
+    "text": "A curmudgeon camped outside Innis Carthaig who complains about everything. He says the gurites stay in Lough Gur waiting for something under the lake, and the curmudgeons are waiting to see what."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Curmie in Lough Gur in {minutes} minutes.",
+    "loss": "Curmie turned back {realm}'s band under {raidLeader} in Lough Gur after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "siabra"
+  ],
+  "related": [
+    {
+      "id": "smidget",
+      "relation": "on the same errand"
+    }
+  ]
+}

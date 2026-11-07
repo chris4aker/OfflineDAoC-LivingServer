@@ -682,7 +682,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
-    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "bac7bb6f9e76bfbd43b9425d3b172b70b3f570ddcc6ca9eedb0a83c89172e384"
+    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "54537d702ab747d0cf235143161fb02b6fa2f7512d87c0b9284d7f39c2e78cbd"
    },
    "extraRules": [
     {
@@ -1259,7 +1259,7 @@
     "summary": "Fairies first (AllowBeathaHealsXaga and AllowFairyFlight, on since 1.2): Beatha's damage heals Xaga by twice the amount and both fairies circle the room while fought. The raid kills Beatha, then Tine, then Xaga."
    }
   },
-  "gjalpinulva-s-lair-myrkwood/midgjalpinulva": {
+  "gjalpinulva-s-lair-malmohus/midgjalpinulva": {
    "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health.",
    "rules": {
     "heal@338": {
@@ -1275,7 +1275,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
-    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "2c9d426a3ec163bd9937369b62c5affeb7e6888b197fb2e1f4ccc8526b28d1f0"
+    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "0d5dc2b23246ed958880000129cf6e0d9bd4013893ac297fd41f8fa91362592c"
    },
    "extraRules": [
     {
@@ -1320,7 +1320,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "fb282648d45eaf85c441debe256d9729dab4ab6f1e8d0f3577a6fc7b2540951c",
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "a6914efe43f8dfa49237f14d781fe48d797610b6941a0b797a15c3e68728b58f",
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1"
    },
    "extraRules": [

@@ -1,0 +1,137 @@
+{
+  "id": "corrupt-primal-of-earth",
+  "name": "Corrupt Primal of Earth",
+  "catalogKey": "galladoria/earthprimal",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The four Corrupt Primals rise at the waterfall bridge after the voices; Olcasgean wakes only when all four are dead. Their shared line is 'We shall protect.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "Level 83, 125,000 health, tethered within 890 of its spot. Four Earthmenders (Guardian, Magical, Natural, Shadowy) rise with it and each heals it for 2,000.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "For Living Server raids the menders heal only the primal and fight back; the original class puzzle (each mender hurt only by its own class group) is behind a switch.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Stone was the last of the four to fall to the Root and is the hardest to free, because stone does not fall alone. Four menders rise with it, one of each kind the old earth-tenders were: guardian, magical, natural and shadowy. They were the isle's menders once, the Sylvan say, the ones who closed the ground after a landslip. Now they close the Primal's wounds as fast as any blade can open them. The Primal itself barely moves from its place; stone never did. It does not need to. While its menders live, it has all the time in the world.\n\nStone was the last of the four to fall to the Root, and it did not fall alone. When the earth of Hy Brasil was still its own there were earth-tenders among the Sylvan, menders who closed the ground after landslips and healed the scars of floods: guardians, magicians, those of the natural craft and those of the shadowed one. When the Root took the stone, he took them with it, and now the four Earthmenders rise beside the guardian of earth and close its wounds as fast as any blade can open them.\n\nThe guardian itself barely moves. Stone never did, and it is bound within a few paces of its place on the bridge. It does not need to move. While the menders live it has all the time in the world. Each mender can be hurt only by its own kind of craft, as Orlaith found when she sorted her company into four bands to reach them; only beasts, and the Sylvan's own crafts, reach all four. Since they began to fight back nobody on the bridge can pretend they are not there. They heal only the stone now. The Sylvan call their names when they fall, as if they were the Sylvan's own. They were.\n\nThe four Earthmenders were the last earth-tenders of Domnann, who followed the great slip above Cluain Dara down into the hollow. Orlaith's company split into four bands by craft on Cass's word; the Sylvan call the menders' names as they fall.",
+  "legend": "Kill the four Earthmenders first, one party on each, and only then the primal; while they live it heals faster than you hurt it. It will not leave its spot, so do not try to pull it. Bring a tank for each mender, because they fight back now. Experienced raids send one party with a tank at each mender the moment the room starts, and leave the stone itself alone until the last mender falls. Do not try to pull it off its spot; it walks home and heals. Call the mender names as they fall, the Sylvan ask; they were earth-tenders of Domnann once, and their kin like to hear them called.",
+  "yells": {
+    "aggro": [
+      "Stone does not fall alone.",
+      "Stone and its menders rise together: we shall protect.",
+      "The ground of the isle remembers being whole."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The menders are gone. The stone cracks."
+      }
+    ],
+    "death": [
+      "The stone... remembers the sky.",
+      "The stone cracks. Grass pushes through."
+    ],
+    "slay": [
+      "We shall protect.",
+      "Buried.",
+      "The earth closes over you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four voices speak as one: we shall protect.",
+      "Four figures kneel around a mound of stone."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The last Earthmender falls. The stone is bare."
+      }
+    ],
+    "realmFirstKill": "The earth of Hy Brasil is its own again."
+  },
+  "botLines": {
+    "briefing": [
+      "earth primal: kill the four earthmenders first. [one group each|guardian, magical, natural, shadowy]",
+      "dont pull the earth primal, it wont move. [we go to it|fight it on its spot]",
+      "four menders: guardian, magical, natural, shadowy. [one party each|split four ways] at the start",
+      "dont touch the earth primal till all menders are dead. [waste of mana|it just heals]"
+    ],
+    "aftermathWin": [
+      "menders first then the rock. [textbook|exactly like we said]",
+      "four menders down then the rock, [like clockwork|exactly the plan]",
+      "the sylvan said to call the menders' names. [someone did|we did]",
+      "earth down, the bridge is clear. [now the titan|here we go]"
+    ],
+    "aftermathLoss": [
+      "we hit the earth primal with all four menders up and it [never moved off full|healed through everything]",
+      "two menders were still up and the rock [healed to full|never moved]",
+      "the menders fight back now and [our light party died|we sent cloth to a mender]",
+      "someone pulled the earth primal off its spot and it [walked home healed|reset]"
+    ],
+    "rumour": [
+      "[heard|someone said] the earthmenders [fight back now|hit hard]. bring tanks for each",
+      "[heard|someone said] the earthmenders were sylvan once. earth tenders who mended landslips",
+      "[old guides said|my guild leader says] each mender only takes damage from its own classes. [pets hit all four|animists and vales too]",
+      "[heard|word is] the menders fight back now. bring tanks for each"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Primal of Earth",
+    "text": "The stone of the isle, last to fall to the Root. Four menders rise with it and close its wounds. Kill the menders and the stone is bare."
+  },
+  "bookPage": "In Domnann they still keep the names of the earth-tenders who went down with the stone. Aodhan was shown the list, cut on a strip of bark: a guardian, a mage, one of the green craft and one of the shadow craft, the four kinds of menders the Sylvan always had. They closed the ground after landslips, the fire-keeper said, and after floods they sang the scars shut. Now they kneel around the guardian of stone on the bridge and sing its wounds shut instead, and they will not stop until they are cut down. When the realm's companies cut them down, she asked me to tell them, let the names be said. I have written them below, in the Sylvan way, and will not translate them.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Corrupt Primal of Earth; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Earth after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the sleeper it guards"
+    },
+    {
+      "id": "corrupt-primal-of-air",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-fire",
+      "relation": "a fellow guardian"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Earth-Tenders",
+      "text": "Hy Brasil's hills slip. They always have, the Sylvan say; the isle is young rock over old water, and after heavy rain whole slopes come down. For as long as there have been Sylvan there have been earth-tenders, menders of the ground, who closed landslips and sang the scars of floods shut. There were four kinds, and the Sylvan still name them: the guardians, who held a slope while the others worked; the magical, who bound the soil with words; the natural, who planted the roots that kept it bound; and the shadowy, whose craft was the deep earth below the roots, and whom the other three never entirely trusted.\n\nIn Domnann the names of the last four earth-tenders are cut on a strip of bark kept in the fire-keeper's house, one of each kind. Lisín showed it to Aodhan and would not let him copy the names. They went down with the stone, she said, and the names are for the Sylvan to call when they fall.\n\nThe earth-tenders' craft was taught in pairs, an elder and a child, and every Sylvan village had at least one pair. The work was dangerous: a mender who misjudged a slope went down with it. The Sylvan honoured them as they honour fire-keepers, and they have a word for a menders' grave, which is any landslip that never reopened. There are many of those graves on the hills of Domnann, and the Sylvan know where each one is. The last pair to be trained, the Sylvan say, never finished: the child was eight when the four went down."
+    },
+    {
+      "title": "Stone Does Not Fall Alone",
+      "text": "Stone was the last of the four elements the Root took and the hardest. It fell, the Sylvan say, in the year of the great slip above Domnann, when half a hillside came down into the valley of Cluain Dara and the four earth-tenders went out to close it. They followed the slip down to where it had broken through into something hollow below, and they kept going, as menders do, to find the bottom of the wound. The bottom of the wound was Galladoria.\n\nThe Root took the stone of the slip and made it a guardian, and it took the four menders with it and made them the Earthmenders, kneeling around the guardian of stone at the bridge and closing its wounds as they once closed the isle's. The guardian itself barely moves; stone never did, and it is bound within a few paces of its place. It does not need to move. While its menders live it has all the time in the world.\n\nCluain Dara means the meadow of the oak, and before the slip a great oak stood in the middle of it, the oldest in Domnann. The slip took the oak down with it into the hollow. The Sylvan say the Root keeps the oak still, somewhere in Galladoria, and that its heartwood is part of the guardian of stone. Those who have struck the guardian say it rings like old wood under the blade, not like rock. The slip has never been closed. Its scar runs down the hill above Cluain Dara still, raw and red after rain."
+    },
+    {
+      "title": "The Four Bands",
+      "text": "Each Earthmender can be hurt only by those of its own kind of craft, as the earth-tenders' own work could only be undone by its own kind: the guardian by sword-arms, the magical by those who work spells, the natural by the green crafts, the shadowy by those who work in shadow. Two things reach all four. Beasts and summoned things, which have no craft at all, bite any of them; and so do the two crafts the Sylvan taught the realm from their own, the shaper of trees and the walker with the scythe, because those were the earth-tenders' crafts before they were anyone else's. The three hundred and forty did not know it, and spent an hour striking menders that could not feel them. Orlaith divided her hundred and forty into four bands by craft before they ever reached the bridge, on Cass the warden's word, and each band took its own mender.\n\nThe menders have changed since. They once mended each other as well as the stone, so that a mender cut down stood whole again a breath later; now they mend only the guardian. And in recent seasons, since the companies of the realm walked past them one too many times to strike the stone, they have begun to fight back. The Sylvan are not sure whether to be glad. The menders, Lisín said, never once raised a hand in all the ages they tended the isle. If they are fighting now, something has taught them.\n\nCass gave Orlaith the four kinds of craft in the earth-tenders' own words, and she reordered her whole company on the road to the bridge, warriors to the guardian mender, spell-workers to the magical, the green crafts to the natural, and her shadow-workers to the shadowy one. The shadowy mender fell first. The Sylvan were not surprised; they have never entirely trusted the shadow craft, and they say the Root took the shadowy mender easiest because it was already halfway down."
+    },
+    {
+      "title": "Calling the Names",
+      "text": "The Sylvan ask one thing of every company of the realm that goes to the bridge: when each Earthmender falls, its name must be called. The names are on the bark strip in Domnann, and the Sylvan who go down with the companies carry them. Aodhan heard it done once, from the back of a Connacht company: four names, one after another, in the old tongue, and after the fourth the guardian of stone cracked across and something green pushed up through the crack.\n\nThe Sylvan have a hope about it that Aodhan recorded without comment. They believe that if the names are called every time, the menders will one day remember them, and that on that day they will stop closing the stone's wounds and start closing the isle's again, and the slip above Cluain Dara will heal at last. The valley has never been resettled. The Sylvan keep it empty, waiting.\n\nThe Sylvan who carry the bark strip into Galladoria are chosen by the fire-keepers, one for each mender, and they must learn the name in the old tongue perfectly, because a name called wrongly, the Sylvan believe, is worse than a name not called at all. Aodhan asked whether the folk of the realm could call the names. Lisín said yes, if they would learn them properly. Nobody in the realm has yet asked to. Aodhan learned one name by heart before he left Domnann, the natural mender's, and said it once at the bridge, with the next company he went down with. He would not write it down, and he would not say whether anything grew."
+    }
+  ]
+}

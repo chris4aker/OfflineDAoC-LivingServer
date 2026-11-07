@@ -1,0 +1,243 @@
+{
+  "id": "iarnwood",
+  "name": "Iarnwood",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "zones": [
+    156
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "iarn-dwarves",
+    "fenris-brood",
+    "wild-beasts"
+  ],
+  "summary": "Aegir's forest of black iron trees, home of the iarn dwarves and of the lair of the old one, Iarnvidiur.",
+  "facts": [
+    {
+      "text": "The Iarnwood (Iarnwood Forest) is a zone of Aegir; the entrance to Iarnvidiur's Lair is at 28k, 39k.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=90"
+    },
+    {
+      "text": "Its bestiary lists Chief Tarek and the Iarn Dwarf Council, iarn dwarf hunters, etvarg wolves, fengundar, griffolich and spinolich, redcaps, Vasrem and others.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=90"
+    },
+    {
+      "text": "The Remnants iarn dwarves name the Servants of Iarnvidiur among their foes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Reputation/FactionEmissaryRuntime.cs"
+    },
+    {
+      "text": "In the Voluspa an old giantess in the Iron Wood (Jarnvidr) breeds Fenrir's wolf-kin.",
+      "provenance": "myth",
+      "source": "Voluspa, stanza 40 (Poetic Edda, public domain)"
+    },
+    {
+      "text": "The Iarnwood's world data: animus giants, pulverizers, etvarg and etvarg dominators, fengundar and fengundorm, petrifiers, paralyzers, will sappers, spitters, rancoradra, giant greebers, chaotic miasma, griffoliches, wild redcaps and redcap cannibals, forest skrats; two spectral renders on Vasrem's high ground.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151, Iarnwood zone 156; 0.37b world data)"
+    },
+    {
+      "text": "Chief Tarek's encampment holds iarn dwarves, hunters and huntresses, the four iarn dwarf council and the named dwarves Syn and Aage; Tarek, Aage and the dwarves are on The Remnants faction.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151, Iarnwood zone 156; 0.37b world data)"
+    },
+    {
+      "text": "The etvarg, fengundar, fengundorm, rancoradra and animus giants of the wood are on the Servants of Iarnvidiur faction; the redcaps on the Blood Reavers.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151, Iarnwood zone 156; 0.37b world data)"
+    },
+    {
+      "text": "Most griffoliches of the wood carry the ghost flag.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 151, Iarnwood zone 156; 0.37b world data)"
+    },
+    {
+      "text": "Eldrid of Bjarken, the bark-gatherers, the griffoliches as the Remnants' dead griffons and the stockade's one-night custom are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The narfi say the Iarnwood was silver once, and sang. They will not say what happened to it, only that the singing stopped and the rot came, and that the trees went black and hard as forged iron and have stayed that way, sick at the root and unable to die. The dwarves keep a simpler account: the wood was black when their first clan came across the water, and the old one was already under it, and the stone Hjalti Lampbearer's people set at her hollow still stands where the iron bark is closing over it. The skalds of Jordheim say it is the Iron Wood of the old song, where the giantess breeds the wolf's kin, and on Aegir nobody argues with them very hard.\n\nEverything in the wood is something the rot has got into. The etvarg are wolves that run in packs under dominators, and the dwarves say every one of them is a grandchild of the old one's litters, however many times removed. The fengundar and the long fengundorm come up out of the wet ground in the west. The animus giants are not giants at all, in the dwarves' account, but what is left of the giants who came courting the old one long ago: the mind gone out of them, the bulk still walking, herded through the wood as her herd is herded in her halls. Petrifiers and paralyzers and the things the dwarves call will sappers hang in the undergrowth, and where they have fed, the prey stands still for a long time afterward. A chaotic miasma drifts in the low places and is best walked round.\n\nThere are dead griffons in the trees. The Remnants of Faraheim fly griffons, and some of their griffons, over the years, have come down in the Iarnwood and not been recovered. The rot got into them where they fell, and they rose, and now they roost in the high branches as griffoliches, pale and hungry, and the Remnants will not fly low over the wood. In the middle country the redcaps hunt, wild ones and worse ones, and the Blood Reavers they run with take anything that cannot run faster.\n\nThe iarn dwarves live here anyway. The Remnants moved to Faraheim long ago with their griffons, but Chief Tarek's people stayed in their encampment in the north-east of the wood, closest of all to the old one, because it is their wood and they were here first after her. They let a stranger sleep inside their stockade one night, never two. A stranger in a good cloak once stayed a second night, and opened the gate, and the old one's wolves came in. Her Servants walk the wood looking like anyone, and the encampment has lost children to them more than once; Hrefna, who came back, is the only one who ever did.\n\nIn the south-east the ground climbs to a bald height where the iron trees lean away, all of them, as if from a fire. That is where Vasrem sits, the first of the wood's dead to sit up out of the leaf-mould, and the renders that walk beside him there are as dead as he is.\n\nBark-gatherers come from Bjarken and Faraheim every spring for the iron bark, which Ragnheid Grimsdottir first brewed into a draught against the rot, and they bring back the one piece of news the Iarnwood ever gives: no tree has fallen, and no tree has grown. The dwarves have counted. The count never changes. They take it to mean the wood is waiting, and they do not like to guess for what.",
+  "legend": "The Iarnwood is where Aegir gets dark, and it's one of the best hunting woods on the island if you're the right level. Bring cure disease; half the wood carries the rot. The etvarg run in packs with dominators, the animus giants and pulverizers hit like a falling tree, and the petrifiers and paralyzers will hold you in place while something else eats you, so don't fight near them with a pack coming. Walk around the chaotic miasma. The griffoliches up in the high branches are dead Remnant griffons, people say, and the Remnants do not fly low over the wood. Redcaps in the middle country are Blood Reavers; they come in numbers. Be polite at the dwarf encampment in the north-east: killing Chief Tarek or her council costs you Remnants faction, and the Remnants own the griffons. Vasrem sits on the bald hill in the south-east with two spectral renders and drains from very far away. The lair entrance is at about 28k, 39k. Old Aegir joke: the Iarnwood is the only forest where the trees are the least dangerous thing, and they're made of iron.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Iron Wood. The trees are black, and sick at the root.",
+      "Wolves and rot. The old one is near.",
+      "No leaf moves. The trees are iron, and they do not sway.",
+      "Something in the undergrowth is very still.",
+      "The air tastes of rust and old water."
+    ],
+    "areas": [
+      {
+        "name": "the iarn dwarf encampment",
+        "x": 445544,
+        "y": 404441,
+        "z": 5280,
+        "radius": 2000,
+        "lines": [
+          "Dwarves under the iron trees. They do not trust you.",
+          "One night inside the stockade. Never two.",
+          "The council sits round its chief, axes across knees."
+        ]
+      },
+      {
+        "name": "the leaning trees",
+        "x": 451231,
+        "y": 449754,
+        "z": 9121,
+        "radius": 1600,
+        "lines": [
+          "The iron trees lean away from something here.",
+          "Dead renders pace the bald hill like hounds.",
+          "Your strength runs out of you like water downhill."
+        ]
+      },
+      {
+        "name": "the hollow of the old one",
+        "x": 421216,
+        "y": 432216,
+        "z": 6800,
+        "radius": 1500,
+        "lines": [
+          "A hollow under the roots. The bark has grown over a stone.",
+          "The warning stone. Its word is half swallowed."
+        ]
+      },
+      {
+        "name": "the herd's ground",
+        "x": 430072,
+        "y": 437707,
+        "z": 6456,
+        "radius": 3000,
+        "lines": [
+          "Mindless giants wander here, as if herded.",
+          "Something huge walks past you without seeing you."
+        ]
+      },
+      {
+        "name": "the redcap country",
+        "x": 430871,
+        "y": 420737,
+        "z": 7547,
+        "radius": 3500,
+        "lines": [
+          "Red caps bob between the trees. They are not mushrooms.",
+          "Gnawed bones are piled at the foot of an iron tree."
+        ]
+      },
+      {
+        "name": "the etvarg runs",
+        "x": 412352,
+        "y": 437322,
+        "z": 6172,
+        "radius": 3000,
+        "lines": [
+          "Wolf tracks, many of them, and a big one in front.",
+          "The etvarg run here. Her grandchildren, the dwarves say."
+        ]
+      },
+      {
+        "name": "the wet west",
+        "x": 413971,
+        "y": 410662,
+        "z": 5196,
+        "radius": 3500,
+        "lines": [
+          "The ground is soft. Something long moves under it.",
+          "The fengundar come up out of the mud here."
+        ]
+      },
+      {
+        "name": "the griffon dead",
+        "x": 437804,
+        "y": 441755,
+        "z": 8144,
+        "radius": 2500,
+        "lines": [
+          "Pale wings in the high branches. Dead griffons roost.",
+          "A Remnant harness hangs rotting from a bough."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the iarnwood is the iron wood of the old song. the giantess breeds her wolves under it",
+      "the iarn dwarves stayed in the iarnwood. chief tarek won't leave",
+      "the rot in the iron trees makes the dead sit up. thats where the liches come from",
+      "the narfi say the iarnwood was silver once and sang. they wont say what happened",
+      "the etvarg are the old ones grandchildren, the dwarves say, however many times removed",
+      "the animus giants are what is left of the giants who came courting iarnvidiur",
+      "griffoliches are dead remnant griffons. the remnants dont fly low over the wood any more",
+      "tarek's people let you sleep in the stockade one night. never two",
+      "a stranger in a good cloak opened the stockade gate once. the wolves came in",
+      "no tree has grown or fallen in the iarnwood in all the dwarves slates",
+      "bark gatherers come from bjarken every spring. the bark is good against the rot",
+      "the redcaps in the iarnwood run with the blood reavers",
+      "vasrems hill is the only place the iron trees lean. they lean away from him",
+      "hjalti lampbearers stone is still at the hollow. the bark is swallowing it",
+      "the paralyzers dont kill you. they hold you still for something that will"
+    ],
+    "rumour": [
+      "iarnvidiur's servants walk the iarnwood looking like anyone. [the dwarves trust nobody|cant blame them]",
+      "vasrem was the first dead thing in the iarnwood to sit up",
+      "[heard|someone said] the iarnwood is waiting for something. the dwarves wont guess what",
+      "the old ones servants walk the wood looking like anyone. trust nobody in there",
+      "if you see a remnant harness in a tree, theres a griffolich above it",
+      "the chaotic miasma is her breath, my gran says. [walk round it|dont breathe]",
+      "the encampment has lost kids to the servants. only one ever came back",
+      "chief tarek has never left the wood, they say. not once",
+      "the spectral renders on vasrems hill were alive when he sat up. [probably|maybe]",
+      "dont fight near the petrifiers with a pack coming, you wont be moving"
+    ],
+    "tell": [
+      "the iarnwood is southeast aegir. iron trees, wolves, liches, iarn dwarves, and iarnvidiur's lair at 28 39",
+      "iarnwood? dark woods, cure disease, dont upset the dwarves",
+      "thats where iarnvidiur's lair is. the woods themselves are rough too",
+      "is the iarnwood hard? packs and paralyzers. go as a group",
+      "where is chief tarek? the dwarf encampment in the north east of the iarnwood",
+      "vasrem is on the bald hill in the south east, where the trees lean"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"The Iarnwood is the Iron Wood of the [old song], near enough. The [iarn dwarves] live in it anyway, under [Tarek], and the dead sit up out of its leaf-mould.\"",
+    "topics": {
+      "old song": "East in the Iron Wood the old one breeds Fenrir's kin. On Aegir her lair is under the black trees, at 28k, 39k, behind the [warning stone].",
+      "iarn dwarves": "The Remnants moved to Faraheim with their griffons. Chief [Tarek]'s people stayed under the iron trees, closest to the old one, and keep the [stockade] custom.",
+      "stockade": "Tarek's encampment lets a stranger sleep inside one night, never two. A stranger in a good cloak once stayed a second night and opened the gate to the old one's [etvarg].",
+      "warning stone": "The first iarn dwarf clan set a stone at the old one's hollow with the dwarf word for the rot on it. The iron bark is closing over it like a lip.",
+      "etvarg": "The wolves of the wood, running in packs under dominators. The dwarves say every one is a grandchild of the old one's litters.",
+      "animus giants": "Not giants, the dwarves say, but what is left of the giants who came courting the old one: the mind gone, the bulk herded through the wood.",
+      "griffoliches": "Dead griffons of the Remnants that came down in the wood and rose with the rot. They roost high. The Remnants no longer fly low over the Iarnwood.",
+      "redcaps": "Wild redcaps and redcap cannibals of the middle country, running with the Blood Reavers. They hunt in numbers.",
+      "silver wood": "The narfi say the wood was silver and sang before the rot. Nobody else remembers it. [Vasrem] may; he was the first of its dead to sit up.",
+      "bark": "Iron bark from the wood, brewed into a draught against the rot since Ragnheid Grimsdottir's winter in Faraheim. Gatherers from Bjarken come each spring and count the trees.",
+      "waiting": "No tree in the Iarnwood has grown or fallen in all the dwarves' slates. They take it to mean the wood is waiting. See the [bark] gatherers' count."
+    }
+  },
+  "book": {
+    "title": "Under the Iron Trees",
+    "pages": [
+      "I am Eldrid of Bjarken, and I have gathered bark in the Iarnwood for twenty springs, as my mother did, since Ragnheid Grimsdottir showed the island what the bark is good for. We go in a company of six, never fewer, and we come out the same week. We cut bark from the same trees each year, for the trees heal over in a season and are ready again. That is how I know the thing the dwarves know: the trees do not change. Not one has fallen in my twenty springs, and not one sapling has come up. Every tree is where my mother marked it.",
+      "Chief Tarek's people let me sleep one night inside their stockade, and no more. They told me why: a stranger came to them once in a good cloak, with a good story, and in the night he opened the gate, and the old one's wolves came in. Since then nobody stays two nights. I asked how they knew I was not a Servant. They said they did not know, which was why I was sleeping by the gate with an axe on either side of me. In the morning they gave me bread and pointed me out of the wood, and they did not wave.",
+      "The wolves of the wood they call etvarg, and they run behind a big one, a dominator, who decides. The dwarves say every etvarg is the old one's grandchild. The giants that wander the middle wood are another matter. They walk into trees. They walk into each other. One walked past me close enough to touch and did not see me at all. A dwarf hunter told me they had been suitors once, of the old one, and that she had kept them, and that this is what being kept looks like. I have not walked close to one since.",
+      "Look up, in the high wood. I did, my third spring, because a harness strap was hanging from a bough, a Remnant griffon harness with the Faraheim knot still in it. Above it, on the branch, was the griffon, and it was dead, and it turned its head and looked at me. The Remnants told me afterwards that the rot gets into a griffon that falls in the wood the way it gets into everything, and that they lost a great many before they stopped flying low. They do not try to bring them home. They say the wood keeps what it takes.",
+      "Do not go up the bald hill in the south-east. The trees lean away from it, all of them, like grass from a wind, and that is the only place in the Iarnwood where the trees have moved at all. The lich sits at the top. I went near once, with the company, and I felt my arms go weak from further off than I could have thrown a stone, and the drawing of it, like a cord drawn out through my chest. He did not come down to us. He did not need to. We went back down the hill, and I was a week getting my strength back.",
+      "The narfi in the wet hollows say the wood was silver once and sang. I asked one, through a dwarf who had the tongue, what it sang. The narfi said: what a wood sings. I asked what it would sing if it sang again. The narfi said: it is singing. You cannot hear it because it is singing very slowly. I have thought about that answer for ten springs. I still gather the bark. I still count the trees. I have begun, I am ashamed to say, to listen, on the quiet days, with my ear to the bark."
+    ]
+  },
+  "bosses": [
+    "chief-tarek",
+    "vasrem",
+    "masher",
+    "unok",
+    "koli",
+    "sariloc"
+  ]
+}

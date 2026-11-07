@@ -1,0 +1,144 @@
+{
+ "id": "earl-ipostian",
+ "name": "Earl Ipostian",
+ "npcNames": [
+  "Earl Ipostian"
+ ],
+ "aliases": [
+  "ipostian",
+  "the herald"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "mutilators-pit"
+ ],
+ "related": [
+  {
+   "id": "prince-asmoien",
+   "relation": "its prince"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "closed the roads beneath it"
+  },
+  {
+   "id": "field-marshal-nebir",
+   "relation": "took its account for the Gate watch"
+  },
+  {
+   "id": "mutilators",
+   "relation": "watches them from the air"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "respect it alone of the Hook"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Ipostian is a level 71 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands over the Mutilators' pit in the west, near Prince Asmoien.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists Earl Ipostian with the Mutilators, Chaosians, Umbral Aegis and Pale Guardians of the pit, beside Prince Asmoien.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Ipostian is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Earl Ipostian carries the flying flag (32) and uses model 636 at size 137.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In the Ars Goetia, Ipos (22) is an earl and prince who knows things past and to come; Ipostian may read as that name, to verify (Duke Aypol has also been read as Ipos, by its other spelling Ayperos).",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Earl Ipostian has not touched the ground since the Fourth Roll. Before that it was Prince Asmoien's challenge-bearer, a winged demon of the west who flew the prince's challenges to his rivals and came back with their answers, and in the feud of the Blade and the Hook it carried more challenges than any messenger of the court before or since. In the last dark of the Fourth Roll it was flying the Hook's final challenge over the central crossing to Prince Abdin's chapter house when the knights and the Mutilators met beneath it, and Gatekeeper Dommel closed every road out of the crossing at once.\n\nEvery demon of both orders on the ground was shut in the crossing until there were too few of either to matter. Ipostian, overhead, was on no road. It hung above the slaughter for the whole length of it and watched, and when the roads opened again it flew back west with no answer and an account of the end of the feud that nobody else had, because nobody else had seen it from above. Field Marshal Nebir sent for that account when he drew up the Gate watch. Ipostian drew its own conclusion: a road can be closed, but the air above it cannot. It has flown ever since and says it will never land again, so that no one will ever close a road on it.\n\nIt is the overseer of the pit now. It hangs over the Mutilators' pit in the west near Asmoien's hall, above Mutilators Vorazax, Xazbalor and Yooginroth of the prince's guard, and watches the unmaking below as it watched the crossing, from out of reach. The Mutilators find it unsettling to be watched by something that will not come down to their floor, and Mutilator Xagalith, the master of the pit, has complained to the prince that the earl has not set foot in the pit since the feud. Asmoien answers that a messenger's work is to see. The knights of the north-west say Ipostian is the only demon of the Hook they respect, because it is the only one that saw the Blade hold.",
+ "legend": "Ipostian is the flying earl hanging over the Mutilators' pit in the west, under nine hundred units from Prince Asmoien, with Mutilators Vorazax, Xazbalor and Yooginroth of the prince's guard close by. Level 71, flagged as flying, no script. It hovers, so watch where you stand: chasing it over the pit edge drags you into the rest of the Mutilators. Kill the prince's guard first, then the earl, then Asmoien. Players call it the herald or the bat and swear it saw the whole demon civil war from the air. Albion archers like to brag about it, since it is one of the few things in Darkness Falls they can claim they shot down, and Midgard groups like to point out that the archers missed twice.",
+ "yells": {
+  "aggro": [
+   "I see you. I have always seen you.",
+   "Down there, you. Up here, me.",
+   "Close the road, then. I am not on it."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Higher. I will not come down."
+   }
+  ],
+  "death": [
+   "The ground... no... not the ground...",
+   "Tell the prince... I saw it all..."
+  ],
+  "slay": [
+   "Seen.",
+   "Fallen, as everything on the ground falls.",
+   "I watched you go."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Wings beat somewhere above the pit.",
+   "Something circles overhead, watching the floor."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The herald climbs higher, out of reach."
+   }
+  ],
+  "realmFirstKill": "Earl Ipostian has fallen. It touches ground at last."
+ },
+ "botLines": {
+  "briefing": [
+   "ipostian is the flyer over the pit by asmoien. [prince's guard first|kill the guard first]",
+   "dont chase ipostian over the pit edge. [youll pull the pit|stay up top]",
+   "vorazax, xazbalor, yooginroth, then ipostian. [then the prince|asmoien last]",
+   "71 no tricks, it just hovers. [watch where you stand|mind the edge]"
+  ],
+  "aftermathWin": [
+   "ipostian down. [the bat fell|grounded it]",
+   "earl ipostian dead. [asmoien next|on to the prince]",
+   "ipostian done, [stayed off the edge|nobody fell in the pit]",
+   "the herald finally touched ground. [lol|about time]"
+  ],
+  "aftermathLoss": [
+   "chased ipostian into the pit. [pulled half of it|wipe]",
+   "ipostian brought the prince's guard. [too much|mess]",
+   "ipostian got us. [regroup|rez]",
+   "lost the pull over the pit. [slower|stay on the edge]"
+  ],
+  "rumour": [
+   "[heard|word is] earl ipostian hasnt touched the ground since the demon civil war",
+   "ipostian watched the knights and mutilators fight at the gate from the air. [only one who saw it all|so they say]",
+   "[someone said|my guildie says] the mutilators hate being watched by ipostian",
+   "ipostian used to carry asmoien's challenges. [the prince's herald|herald demon]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "ipostian",
+  "text": "Prince [Asmoien]'s herald, which was flying over the crossing when [Dommel] closed its roads at the end of the feud of the Blade and the Hook, and saw the end of it from above. It has not landed since, and oversees the Mutilators' pit from the air."
+ },
+ "bookPage": "From the account of Lieutenant Persun, as an imp repeated it for a price to an Albion scout: The Marshal sent for the winged messenger after the crossing opened and asked it what it had seen. It hung in the air above his table, since it would not come down, and told him. It told him where every knight had stood and where every Mutilator had fallen, and in what order, and for how long. The Marshal had his lieutenants mark it on the table as it spoke. When it had finished he asked how it had kept so calm above so much killing. It said that nothing on the ground could reach it, and that it had never been calm in its life until then.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} brought Earl Ipostian down out of the air in {minutes} minutes.",
+  "loss": "Earl Ipostian watched {realm}'s raid under {raidLeader} fall, from out of reach."
+ }
+}

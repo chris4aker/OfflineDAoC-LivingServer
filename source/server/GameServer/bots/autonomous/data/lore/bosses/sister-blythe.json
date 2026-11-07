@@ -1,0 +1,120 @@
+{
+  "id": "sister-blythe",
+  "name": "Sister Blythe",
+  "catalogKey": "albion-named-mobs-classic-zones/sisterblythe",
+  "locationId": "lyonesse",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 69, 10,000 health, crowd-control immune, armour factor 350 with 20% absorb, 20% resist to everything; drawn past her tether she takes no damage. She is quest-spawned by the Church epic if missing; template 12982 (female), with four spells of her own.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/SisterBlythe.cs"
+    },
+    {
+      "text": "Four fallen executioners (level 51, ghost) stand at the altar (322192, 671493) when she appears. While she fights, whenever fewer than four live she shouts 'Witness the power of Lord Arawn!' 6-10 s later, and 3 s after that the altar is filled back up to four. Every executioner within 2,500 joins on her target. All of them die when she dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/SisterBlythe.cs"
+    },
+    {
+      "text": "Albion's Church level 50 epic (Passage to Eternity): she leads a cult of the 'dark lord Arawn' in a broken cathedral in Lyonesse that strives to break the light of Camelot; her body carries a Statue of Arawn.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/epic/Church50.cs"
+    },
+    {
+      "text": "Eleven Priests of Arawn stand round the broken cathedral.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 1 zone 10 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Arawn sends his Inconnu to help Albion against Morgana in the Shrouded Isles.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    }
+  ],
+  "story": "Sister Blythe took her vows in a convent of the west in the years after Arthur, when the Church still believed the old powers could be preached out of the hills, and she was good at it. She sat with the dying. She washed the dead and wrapped them and said the office over them, and she listened to what the dying said at the end, which was not always what the Church said they should. Many of them, at the last, asked for Arawn.\n\nThen the isles came out of the mist, and the realm made its bargain. Arawn, lord of Annwn, lord of the dead, sent his Inconnu to stand with Albion against Morgana, who steals the dead to fill her armies; and Camelot took the help and thanked him for it, and from every pulpit in the realm went on calling his worshippers damned. Blythe could not hold both. She wrote to her prioress that the Church was asking the realm to accept an ally's gift and despise the ally, and that the dead she had sat with had seen through that sooner than the bishops had. The prioress did not answer. Blythe went west, to the cathedral the sea had left without a parish, and gave it one.\n\nHer congregation is the dead the Church would not keep. Her executioners were men the realm hanged, she says, and Arawn took them back because nobody else would; they wear the hoods they died under. There are always four of them at the altar, as there were four bearers at every bier she ever walked behind, and when one falls she calls on her lord and the old tombs under the altar give up another, until there are four again. When she falls, they lie down with her. The sexton Clemo Penrose, who buried them, says they went down all at once, like men told they might rest. Around them, slow as a procession, eleven priests of Arawn walk the nave.\n\nShe means what the Church says she means: to break the light of Camelot and put another in its place. She would put it differently. The dead have always had a lord, she told Clemo, and Camelot has only just noticed. The Church sends its champions to the cathedral with an order to end her and bring back the statue of Arawn she carries, so that the bishops can be seen to have done something. The cathedral keeps her as the pillars keep the Cailleach: drawn out of it, she cannot be touched.",
+  "legend": "Sister Blythe, level 69, 10k, at the altar of the broken cathedral in the middle of Lyonesse, for the Church epic. Clear the Priests of Arawn round the walls first. Four fallen executioners (51) stand with her. Whenever fewer than four are alive, she shouts 'Witness the power of Lord Arawn!' and about ten seconds later the altar fills back up to four. So killing executioners is endless: off-tank them or keep them busy, burn Blythe, and all of them die with her. She is crowd-control immune and takes no damage if you pull her out of the cathedral. Loot the Statue of Arawn. About half an hour respawn.",
+  "yells": {
+    "aggro": [
+      "Come my pets! Let us show these fools what comes of failure!",
+      "The dead have always had a lord.",
+      "You come into his house with Camelot's candle? Put it out."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Witness the power of Lord Arawn!"
+      }
+    ],
+    "death": [
+      "The dead... have always had a lord...",
+      "Lie down, my four. You may rest."
+    ],
+    "slay": [
+      "Go to him. He is waiting.",
+      "One more for the altar.",
+      "He will take you back. Camelot would not."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A broken cathedral. The prayers here are not Albion's.",
+      "Four hooded men stand at the altar."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The tombs give up another executioner!"
+      }
+    ],
+    "realmFirstKill": "Sister Blythe has fallen. The cathedral's altar is bare."
+  },
+  "botLines": {
+    "briefing": [
+      "blythe, 69, 10k, at the altar. clear the priests of arawn round the walls first",
+      "she keeps 4 executioners up. kill one and the altar refills about 10 sec later",
+      "dont chase executioners, hold them and burn blythe. they all die with her",
+      "cc immune, and outside the cathedral she takes no dmg. stay inside"
+    ],
+    "aftermathWin": [
+      "blythe down. the church can stop worrying",
+      "got the statue of arawn off her",
+      "her four dropped the second she did. told you",
+      "roben will be pleased. or the bishop will"
+    ],
+    "aftermathLoss": [
+      "we kept killing executioners and they kept coming back",
+      "the priests of arawn joined in, should have cleared",
+      "dragged her outside and she was untouchable",
+      "four executioners on the casters, ran out of heals"
+    ],
+    "rumour": [
+      "theres a cult of arawn in the broken cathedral in lyonesse. [the church hates it|the priests go white when you mention it]",
+      "[heard|someone said] sister blythe used to be a real nun",
+      "heard her executioners were hanged men arawn took back",
+      "[heard|someone said] blythe says the church takes arawn's help and curses his priests. she has a point"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sister blythe",
+    "text": "Once a nun who sat with the dying, now the priestess of Arawn in the [broken cathedral] of [lyonesse]. She could not stomach a Church that takes his Inconnu's help and damns his worshippers. Four hanged men stand at her altar, and the tombs keep it at four until she falls; then they lie down with her."
+  },
+  "bookPage": "Of her congregation. There are always four of them at the altar. When the Snowdonia men came last spring and cut two down, she stood at the altar and called on her lord, and before the bell of the hour could have rung twice there were four again, standing up out of the floor where the old tombs are. The men who came after them in the autumn did not try to cut them down. They went for her. And when she fell her four lay down with her, all at once, like men who had been told they might rest. I buried them. They did not object.",
+  "chronicle": {
+    "win": "{realm}'s champions under {raidLeader} ended Sister Blythe at the altar of the broken cathedral in {minutes} minutes.",
+    "loss": "Sister Blythe's four kept her altar; {raidLeader}'s champions of {realm} were set outside the door."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "cailleach-uragaig",
+      "relation": "the old faith across the road, at Rome's pillars"
+    },
+    {
+      "id": "morgana",
+      "relation": "who steals the dead Blythe's lord would keep"
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "id": "orylle",
+  "name": "Orylle",
+  "catalogKey": "krondon/orylle",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "aliases": [
+    "the warrior queen",
+    "the ogre queen"
+  ],
+  "facts": [
+    {
+      "text": "Level 83, 40,000 health. Fights linked with Orshom Brong; drawn past 3,800 she walks home.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs"
+    },
+    {
+      "text": "She throws a random raider to a fixed spot about 1,200 units back up her hall (61: 31406, 69599).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Krondon's final encounter in the raid list; a February 2003 guide put her and Orshom at fifty or more players.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "That she is the 'warrior queen' of the existing bot line is Living Server writing.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Orylle's throw lands on the spot where Orshom's Fire burns (31406, 69599) and needs the fire alive (OrshomFire.FireCount > 0); it picks only real players (GamePlayer, PrivLevel 1).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs"
+    }
+  ],
+  "story": "Orylle is the warrior queen of Krondon. She was born in the Undercroft, the deepest seam of the thrawn ogres who dug under the isles before the hall-folk built on them, and she was the first of her people to climb up and look at what they had been digging under. She found Krondon dying of age: its last elder Eadric counting empty chairs at the high table, three young bysen left, no champions, and an old storm-keeper whose lights were struggling.\n\nShe took the hall in one night without breaking a door. Eadric died asking whether she came as guest or enemy. Then she walked every room while the ghost of Wynflaed, the last teacher, translated the titles over the doors, and she gave every title to an ogre: the scriptorium to Drihten, the stores to Beran, the horn to Deben, the school to Morgus, the road to Lurfos, the name bysen to the brothers Ulor and Jehrog. She bargained with the storm-keeper for his weather and has kept the bargain to the letter. Orshom Brong drank the great hearth on the night of the taking; she made him her champion and consort, and when one of them falls the other roars the name.\n\nHer throw comes from the hall-folk's guest-law: a stranger who entered unannounced was set back on the guest-stone to begin again properly. Orylle hurls challengers down her hall onto that stone, into the fire burning on it, and fights only those who walk back; with the stone cold she throws no one. Sir Cador of the Isle of Glass reached her first with twenty and was swept out; he came back with fifty chosen for stubbornness and ice-mages of the Isle of Glass for the fire on the stone, and they walked back every time. Whether Orylle serves Morgana is disputed. Wenna of Caer Gothwaite, who spoke with her, says the queen wants neither to serve nor to rule, only to keep.",
+  "legend": "Fifty or more, the old February 2003 guide said, and they meant fifty who listen. Orylle is level 83 with 40,000 health, 30% melee / 40% other reduction, CC immune and a 3,800 tether, and Orshom Brong (level 80, 30,000) is linked: pull either and both come. When Orshom engages he lights Orshom's Fire on the floor about 1,200 in front of her chair, on the old hearthstone: 10,000 health, only cold damage hurts it, 500 heat in a 300 radius every 3 seconds. While it burns, every 15 to 20 seconds she throws a random real player within 2,500 straight onto it. Only the human is ever thrown; bots never are. So the cold casters kill the fire first. Once it is out she throws nobody and the floor stops burning. Orshom himself takes normal damage of every kind; the old 'only cold hurts Orshom' was the catalog confusing him with his fire. If you are thrown, get off the fire at once, do not release, and walk back up. Tanks on each of the pair. When one falls the other roars the name, and that is all: no enrage. Walking back is still the trick the old hands teach, but putting the hearth out is the better one.",
+  "yells": {
+    "aggro": [
+      "Who walks into my hall without leave?",
+      "Krondon has a queen. Kneel, or be swept out.",
+      "Orshom! Guests!"
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "Back to the stone with you. Come again, properly."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Orshom! Keep the hearth!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Orshom! No!"
+      }
+    ],
+    "death": [
+      "The hall... was kept... it was kept...",
+      "The hall was kept... it was kept...",
+      "Read them... the titles... someone..."
+    ],
+    "slay": [
+      "Another guest who forgot his manners.",
+      "Swept out, like ash.",
+      "Come again. Properly."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A queen's chair, and a fire on the stone before it.",
+      "The ealdor's chair. A queen sits in it now."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Orylle hurls challengers onto the burning stone!"
+      }
+    ],
+    "realmFirstKill": "The queen of Krondon has fallen. The hall is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "orylle and orshom come together. cold casters kill orshom's fire on the floor first, 10k hp",
+      "while the fire burns she throws the human onto it every 15-20 sec. bots never get thrown",
+      "if you land in the fire get off it at once and walk back, dont release",
+      "once the fire is out nobody flies. then everyone on the pair, one tank each"
+    ],
+    "aftermathWin": [
+      "[gg|gg all], the queen is down. krondon has no queen tonight",
+      "the thrown guys walked back every time. thats the kill right there",
+      "the queen is dead. long live nobody",
+      "everyone walked back every time. proud",
+      "krondon cleared, gg",
+      "fifty and we listened. thats the trick"
+    ],
+    "aftermathLoss": [
+      "we left orshom's fire up and she kept throwing me into it",
+      "all the cold went on orshom instead of the fire",
+      "people wandered off after the throw",
+      "too few healers on the fire spot"
+    ],
+    "rumour": [
+      "heard orylle never kills you first, she throws you out the door",
+      "[someone said|heard] orylle took krondon without burning a thing. smart queen",
+      "heard orylle asked the ghosts what the titles meant before she handed them out",
+      "[someone said|heard] orylle sits in the old ealdor's chair",
+      "heard orylle was the first ogre to climb out of the seams",
+      "orylle took krondon without breaking anything, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "orylle",
+    "text": "The warrior queen of Krondon. She took the hall without burning it and put an ogre in every chair. She hurls the bold back down her hall. Walk back to her; the raids that wandered off are the ones we sing about as lost."
+  },
+  "bookPage": "From the notes of Wenna of Caer Gothwaite. Orylle does not slay a challenger who reaches her chair. She takes him by the elbow and hurls him down her hall onto the old hearthstone, which the hall-folk called the guest-stone, into whatever fire is burning there, and waits to see if he gets up and comes back. I was thrown twice on the first descent and rolled off the stone both times with my sleeves alight. On the second, Magus Tegau's frost put the fire on the stone out, and after that the queen reached for us and her hand fell, as if she had remembered a law. She keeps the hall's laws. Orshom roared for her; they fell together.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} walked back up Orylle's hall as often as she threw them and ended Krondon's queen in {minutes} minutes.",
+    "loss": "Orylle swept {realm}'s raid out of her hall; {raidLeader} lost too many to the long walk back."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "orshom-brong",
+      "relation": "her champion and consort"
+    },
+    {
+      "id": "lurfos-the-herald",
+      "relation": "her herald"
+    },
+    {
+      "id": "scurceol-hyrde",
+      "relation": "bound to her by a bargain"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Undercroft Seam",
+      "text": "The thrawn ogres were under the isles before the hall-folk were on them. Deben se Gecynde says so to anyone who will listen, and the ghosts of Krondon, asked, do not deny it.\n\nThey lived in the deep seams that run under Avalon and Caldey and out beneath the sea, a people of diggers who had never seen the sky and did not want to. The ogres call the deepest of those seams the Undercroft, and it is there that Orylle was born. The ghosts of the hall say the ogres of the Undercroft were already thrawn in the old north sense, stubborn and crooked, before anyone gave them the word: they dug the same tunnels for a thousand years, refused every turning, and killed anything that tried to teach them a new one.\n\nOrylle was the first of them to climb up. The ogres disagree about why. Krevo Ricik says she followed the ghosts, whom she alone of her generation could hear, up a shaft the hall-folk had dug for their dead. Beran says she was looking for a new store of pitch. Orylle herself has said only one thing on the subject to a living mortal, and it was to Wenna of Caer Gothwaite, on Wenna's second descent: that she climbed because she wanted to see what her people had been digging under.\n\nWhat she saw was Krondon, from below: the cellars of the oldest hall on the isles, its foundations laid into the very rock the ogres had been tunnelling, its drains running down into their seams. Above the cellars, she heard voices. They were the voices of a people that had grown few, and she understood, before she had ever seen one of them, that a hall full of so many empty rooms could be taken without being broken."
+    },
+    {
+      "title": "The Empty Chairs",
+      "text": "The hall Orylle found was dying of age.\n\nWenna counted the chairs in the carving of the hall-folk's last feast, over the door of the high table, and there are more empty than full. The ealdor who sat at the table's head in that carving is named in the stone: Eadric, the last elder of Krondon. Beside him sits a woman named Wynflaed, carved with a book, whom the ghosts call the last lareow, the last teacher. At the foot of the table, apart from the rest, sits a hooded figure with small lights carved round his head. The ghosts do not name him. Wenna knew him by the lights, which still burn round the storm-keeper's head in the deeps below the hall.\n\nEadric's Krondon had no champions left. The cempa who should have stood at its doors had died one by one and not been replaced, because there were no young to replace them; the bysen of the last generation, the young who were meant to be the pattern for the next, were Wynflaed's last pupils, and there were three of them. The storms had grown gentle, because the storm-keeper was old and tired and the airs in his chamber had begun to struggle.\n\nWhen Morgana's war came to Avalon and the dragon-men burned the colleges across the water, Eadric sent to Caer Gothwaite for help and none came; the Isle of Glass had its own wall to hold. He sent to Avalon and found it in flames. The ghosts say that in the last winter before the ogres came up, Eadric sat alone at the high table every night and had the empty chairs counted aloud. He was counting the night Orylle walked into his cellars, and the ghosts say she heard the count through the floor and waited until it was finished before she came up."
+    },
+    {
+      "title": "The Walk Through the Titles",
+      "text": "Orylle took Krondon in a single night and did not break a door.\n\nShe came up through the cellars with the ogres of the Undercroft behind her and found the hall-folk too few to stand against her and too proud to run. Eadric met her at the foot of the high table. The ghosts say he asked her, in the old tongue, whether she came as a guest or as an enemy, and that she did not understand the question, and that he died answering it for her.\n\nWhat she did next is the reason Krondon is still kept. She walked every room of the hall, slowly, reading the titles carved over each door, which she could not read, and she asked the dead what they meant. The dead answered her, because the dead of Krondon had never been asked anything by anyone so new. Wynflaed, the last teacher, walked beside her as a ghost and translated: bocere, scribe; scop, poet, called bold; hyrde, keeper; cempa, champion; sceawere, watcher; bysen, example; ealdor, elder.\n\nThen Orylle gave every title to an ogre. The scriptorium to Drihten, who liked the lamps. The stores and their pitch to Beran. The war-horn to Deben, who already believed. The school to Morgus. The road to Lurfos. The title of bysen to two brothers, Ulor and Jehrog, to be the pattern for the young. She kept the high table for herself and took the ealdor's chair. The ghosts of the hall faded into the walls, sad of mind and perishing, as the masons had once carved over their own doors without knowing why. Wynflaed did not fade. The ogres cannot see her. Orylle can, and the ghosts say the queen still asks her, now and then, what a word means."
+    },
+    {
+      "title": "The Storm-Keeper's Bargain",
+      "text": "One master of the old hall kept his chamber, and he kept it by bargain.\n\nThe Scurceol Hyrde, the storm-keeper, did not come to the high table on the night of the taking. He waited in his chamber at the far end of the hall among his lights, the airs he had bound from the sky, and when Orylle's ogres reached his door they could not pass it: the bound wind threw them back down the corridor like leaves. Orylle came herself. The ghosts say she and the storm-keeper talked through the door for a night and a day, and that what was agreed was simple. He would keep his chamber and his lights and his name. She would have his weather.\n\nSince that day the squalls that come off Caldey under a clear sky and wreck the ships of the Isle of Glass have been the storm-keeper's work done for the queen. The sailors of Caldey will not say his name at sea. The ogres call him a traitor to the hall behind his back, and the ghosts call him worse, but none of them say it near his door.\n\nOrylle has kept the bargain to the letter. She has never sent an ogre into the chamber, never asked him to put out a light, never demanded a storm he did not want to raise. The Camelot loremasters who study Krondon think this is the most telling thing about her. The ogres of the Undercroft were never known for keeping bargains. Their queen learned it from the hall she took, the loremasters say, from the oaths carved over its doors, and keeps her word to the storm-keeper because a queen of Krondon would."
+    },
+    {
+      "title": "The Night of the Hearth",
+      "text": "Orshom Brong was the largest ogre of the Undercroft and the first to follow Orylle up the shaft.\n\nOn the night of the taking, after Eadric fell, Orshom walked into the deepest hall where the great hearth burned. The hall-folk had kept that fire alight since their founding; its hyrde was the most honoured keeper of all, and the ghosts say she was the last of the hall-folk to die that night, standing between the ogre and her fire. Orshom put his face into the hearth and drank it.\n\nThe ogres tell it as a boast, and the ghosts as a grief, and they do not agree on what came after. The ogres say the fire went into him and burns there still, and that nothing can hurt him. The ghosts say the fire would not stay in him. Whenever he is roused it comes back up out of him and settles on its own stone below the high table, where it was kept, and burns there of its own accord; steel passes through it and flame only feeds it, and only frost has ever put it out. Orshom himself, the ghosts say, bleeds like any ogre. When he has been hurt deep enough he roars for his queen, and she comes to his shoulder whether she was minded to or not.\n\nOrylle made him her champion and her consort that same night, and set him at her shoulder by the ealdor's chair. They have met every challenger since side by side. The ghosts say that when one of them falls, the other roars the fallen one's name, and that it is the only time anyone in Krondon has heard Orylle raise her voice."
+    },
+    {
+      "title": "The Guest-Stone",
+      "text": "The hall-folk had a law for guests, and Orylle found it carved on the floor.\n\nA little way down the queen's hall from the high table, the great hearth of Krondon was built on a flat stone with words cut round its edge. The ghosts call it the guest-stone. The law it records was the oldest courtesy of the hall: a stranger who walked into the ealdor's presence without being announced was taken by the elbow and set back on the guest-stone, unharmed, to begin again properly. A stranger who came back and was announced was a guest. A stranger who did not come back was nobody's business. And a guest could be turned out only while the hearth burned; with the fire cold, the law said, a host must keep whoever he had. The ghosts say Orylle keeps that part of the law too, and throws no one while the fire is not burning on the stone.\n\nWynflaed explained the stone to Orylle in the first week of her reign, and the queen took it more literally than the hall-folk ever had. When challengers reach her chair she seizes the boldest and hurls him down her hall to land on the guest-stone, in whatever is burning there; the landing is not gentle, and a man who lies in the fire to collect himself may not get up, but it is not meant to kill. She fights only those who walk back. The ogres say she has done this to a hundred men, and that only the ones who returned were worth killing.\n\nThe first man she threw was a tinker of the Black Mountains who had come up the road to sell pots to a hall he did not know had fallen. He landed on the guest-stone, rolled off it beating the sparks out of his coat, and walked back up to the high table because he had not been paid. Orylle bought a pot. The ghosts tell it as the only time they have laughed since the taking, and say the pot is still on the high table. They say the queen watches each thrown man's face as he gets up, and that she can tell before he takes his first step whether he will reach her again."
+    },
+    {
+      "title": "Sir Cador and the Fifty",
+      "text": "The first company of Albion to reach Orylle's chair was twenty strong, and she swept every one of them out.\n\nIt was led by Sir Cador of the Isle of Glass, a knight of the ring-forts, and Wenna of Caer Gothwaite went with it to read the carvings. They fought through Deben's muster and Beran's stores and reached the high table with fourteen. Orylle threw Cador first. He landed on the guest-stone, broke his arm, and walked back, and she threw him again. By the time he walked back the third time, the rest of his company had been thrown one by one, and some had walked back and some had wandered into the side rooms among Krevo's ghosts and not returned. Orshom took the ones who reached the chair. Cador was the last. The ghosts say Orylle let him walk out alive, because he had come back three times.\n\nCador's second company was fifty, chosen, Wenna wrote, not for strength but for stubbornness: men and women who would walk back up a hall no matter how many times they were thrown. He brought Magus Tegau's ice-mages of the Isle of Glass for the fire on the guest-stone, because he had landed in it three times and watched his knights' swords pass through it like light through water. He killed Lurfos first, so that nothing would stand behind him on the road.\n\nThey walked back every time. When Orshom fell, Orylle roared his name; Wenna wrote that the sound shook dust from the carvings. When the queen fell a little after, she said that the hall had been kept, it had been kept, and Wenna, on the way out, read every title over every door aloud, so that the ghosts would hear them spoken by someone who knew what they meant."
+    },
+    {
+      "title": "What the Queen Wants",
+      "text": "Orylle wants a realm, and Krondon is only the first hall of it. On this much, everyone who has studied her agrees.\n\nWhere they divide is on whose realm. The Camelot loremasters believe she took Krondon with Morgana's leave, that the witch opened the way for the ogres as she opened Avalon for the drakoran, and that the queen's storms off Caldey are Morgana's war by other means. The Inconnu disagree. They say Orylle cares nothing for the witch, that she has never sent an ogre to Morgana's armies, and that the storms fall on drakoran ships as often as on Albion's. Wenna of Caer Gothwaite, who has spoken with the queen, sides with the Inconnu and gives a third reason: Orylle, she wrote, does not want to serve anyone, and does not want to rule anyone either. She wants to keep things.\n\nThe orcs of Inishail are the proof the loremasters cite on both sides. They dug in the seams beside the Undercroft before the taking, and within a season of it they had fled to the marsh of Inishail, where Sarcondina's servants crawl. The loremasters say Orylle drove them out to make room. The orcs' own shamans, who will speak of it only drunk, say she did not drive them out at all: she offered them titles, and they ran.\n\nIf she wins, the loremasters agree on the shape of it. The thrawn ogres would come up out of every seam under the isles and take every old hall that has grown few, room by room and title by title, without breaking a door: the ring-forts of the Isle of Glass, the ruins of the colleges, perhaps one day the halls of Caer Gothwaite itself. Nothing would burn. Everything would be kept. That, the Camelot loremasters say, is exactly what makes her the most dangerous queen in the isles."
+    }
+  ]
+}

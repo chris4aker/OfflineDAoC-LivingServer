@@ -1,0 +1,81 @@
+{
+  "id": "sarsoureh",
+  "name": "Sarsoureh",
+  "npcNames": [
+    "Sarsoureh"
+  ],
+  "locationId": "lough-gur",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Sarsoureh: level 35, a dampwood mite body (model 132, shared only with dampwood mites and Ick), size 29, at about 344,600/728,200 east of Innis Carthaig; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Sarsoureh as the queen-mite of the damp woods.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The dampwood mites of Lough Gur eat wet wood, and in the lake country nearly all wood is wet, and the carpenters of Innis Carthaig have fought them for as long as the town has had roofs. The largest of them lives east of the town in the damp woods by the shore, and the carpenters call it Sarsoureh, a name nobody can explain; the oldest of them says his grandfather called it that, and his grandfather would not say why either.\n\nIt is the reason the roofs of Innis Carthaig are slate, the carpenters say, and the reason every beam in the chieftess's hall was brought from the Silvermine dry. The mites follow it. When Sarsoureh moves closer to the town, the carpenters move their timber stores further in, and the young of the realm are sent out to move it back. The children of the town call the mites the roof-eaters and sing a rhyme about them that ends with the hall falling down.",
+  "legend": "Sarsoureh (35) is a big named dampwood mite east of Innis Carthaig (about 345k/728k), among dampwood mites (33-36). Easy for a group of mid 30s; mites are social, so pull it to the shore. Plain spawn, 80-second respawn. Innis Carthaig custom: never leave timber lying out overnight. Mites are slow but come in numbers. Do not fight it near the town's timber stores, which the carpenters will thank you for. Good camp for mid 30s on the way to the luch fields.",
+  "yells": {
+    "aggro": [
+      "(a mite as big as a dog scuttles out of a rotten log)",
+      "(clicking from the damp wood)"
+    ],
+    "phases": [],
+    "death": [
+      "(Sarsoureh curls up like a woodlouse)"
+    ],
+    "slay": [
+      "(the mite returns to its log)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A rotten log, and something large inside it."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sarsoureh, the queen-mite of the damp woods, is down."
+  },
+  "botLines": {
+    "briefing": [
+      "sarsoureh is a 35 dampwood mite east of innis carthaig",
+      "mites are social, pull it to the shore"
+    ],
+    "aftermathWin": [
+      "sarsoureh squished. [lol|grats]",
+      "the carpenters will be happy"
+    ],
+    "aftermathLoss": [
+      "mites everywhere. [rip|gross]",
+      "too many mites. [lol|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] innis carthaig roofs are slate because of sarsoureh",
+      "never leave timber out overnight in innis carthaig. the mites"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Sarsoureh",
+    "text": "The largest dampwood mite of Lough Gur, in the damp woods east of Innis Carthaig, the reason the town's roofs are slate. Nobody knows what its name means."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Sarsoureh in Lough Gur in {minutes} minutes.",
+    "loss": "Sarsoureh turned back {realm}'s band under {raidLeader} in Lough Gur after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "lough-gur",
+      "relation": "its home"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "id": "hagall-the-red-dagger",
+  "name": "Hagall the Red Dagger",
+  "npcNames": [
+    "Hagall the Red Dagger"
+  ],
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "red-hagen",
+      "relation": "his second, who keeps the band's map"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Hagall the Red Dagger is a level-58 humanoid by the bounty hunters' fires in the south-middle of Raumarik (626062, 782515), on the same model as the backwoods marodors; four Red Daggers (level 46) stand nearby.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "In the viking epic 'An End to the Daggers', Lynnleigh sends players to find Hagall and the Red Dagger camp in Raumarik, then to Audun in Jordheim, then to remove the Albions waiting for the Red Daggers.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Hagall is the Old Norse name of the H-rune, 'hail' (the rune poems; to verify); it is also the name of Midgard's town in Faraheim.",
+      "provenance": "myth",
+      "source": "Old Norse rune poems (public domain), to verify"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, and it is not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "The Red Daggers are a band of Norse outlaws, and they have outlived three captains who tried to end them. Their sign is a dagger with a hilt bound in red, left stuck in a stump or a door where they have been, so that the people they have robbed will know whom to fear. Their hold is in the south-middle of Raumarik, by the fires where the realm's bounty hunters sit, which is the Daggers' joke: the hunters are paid to hunt outlaws, and the Daggers pay them more not to.\n\nHagall leads them. He took his name from the rune of hail, which the old poems call the coldest of grains, because hail falls on everyone alike and asks no one's leave. He was a huscarl once, the skalds say, of a jarl on the Jamtland frontier, and he found out there that the frontier paths are worth more than the frontier keeps, and that Albion pays well for them. The Daggers sell the realm's back roads: which passes are watched and which are not, where the Midgard war-bands will be on which night. The Albion men who buy them wait in the Jamtland hills for the Daggers' runners.\n\nLynnleigh of Svealand has been trying to end the band for years, and the viking warriors of the realm go to her when they are ready. She sends them first to the Daggers' lesser men, and to Red Hagen, Hagall's second, who keeps the band's map; and then to Hagall himself, and to Audun in Jordheim with what they find, and at the last to the Albions waiting in the hills.\n\nHagall does not expect to be ended. He fights like the huscarl he was, plainly, with a long blade and a short one, and he believes every Norseman has his price and that the warriors Lynnleigh sends have simply not been offered theirs yet. The skalds say he has made the offer to every one of them, at the start, before the blades come out. The skalds say nobody has taken it. The Daggers say that is because the skalds only sing about the ones who didn't.",
+  "legend": "Hagall the Red Dagger is a viking epic target (An End to the Daggers) in the south-middle of Raumarik, by the bounty hunters' fires. He's level 58, a plain spawn with no special abilities, not CC-immune, but four level 46 Red Daggers stand nearby and the bounty hunters and their leaders camp right there too, so this is a careful pull. Clear the Red Daggers first, keep away from the bounty hunter leaders, then take Hagall. After him, Lynnleigh's chain sends you to Audun in Jordheim and then to Jamtland for the Albion leader the Daggers sell to. Red Hagen, his second, is in the east of Raumarik with the map. Old joke: the Daggers pay the bounty hunters more than the realm does.",
+  "yells": {
+    "aggro": [
+      "Wait. Before the blades. What would it take?",
+      "Lynnleigh sent you? She always sends the honest ones.",
+      "Daggers! We have guests who will not be bought!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hail falls on everyone alike. Even on me."
+      }
+    ],
+    "death": [
+      "Everyone... has a price... I just didn't find yours...",
+      "The roads... will find another seller..."
+    ],
+    "slay": [
+      "Should have taken the silver.",
+      "A red hilt for this one's door.",
+      "The Albions send their thanks."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Red-hilted daggers in every stump. The Daggers' hold.",
+      "Bounty hunters warm their hands and look away."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hagall's men close round him, red hilts drawn."
+      }
+    ],
+    "realmFirstKill": "Hagall the Red Dagger is dead. The back roads are Midgard's."
+  },
+  "botLines": {
+    "briefing": [
+      "clear the four red daggers first",
+      "dont pull the bounty hunter leaders, they camp right there",
+      "hagall is a plain level 58, no tricks",
+      "after him its audun in jordheim, then jamtland"
+    ],
+    "aftermathWin": [
+      "hagall down. daggers next to nothing now",
+      "he tried to bribe us first lol",
+      "on to audun",
+      "bounty hunters didnt even get up"
+    ],
+    "aftermathLoss": [
+      "pulled the bounty hunters too",
+      "the four daggers flanked the casters",
+      "hagall plus two daggers was too much",
+      "wrong side of the fire"
+    ],
+    "rumour": [
+      "the red daggers sell our back roads to albion",
+      "hagall was a huscarl on the jamtland frontier once",
+      "the daggers pay the bounty hunters more not to hunt them",
+      "hagall offers everyone silver before he fights"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hagall",
+    "text": "Captain of the [Red Daggers], named for the hail rune. A huscarl of the Jamtland frontier once, he sells the realm's back roads to Albion. His second, [Red Hagen], keeps the map."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: a man of the Red Daggers came to Galplen once to buy dried fish and paid in Albion silver, and when the fishwife asked where he had it from he laughed and said hail falls on everyone alike. That is their captain's saying. My uncle went to the jarl about it. The jarl's steward said the Daggers had been dealt with three times already. My uncle said: then why do they still have a captain? The steward did not answer, and the fishwife kept the silver.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended Hagall the Red Dagger in Raumarik in {minutes} minutes.",
+    "loss": "Hagall the Red Dagger kept his roads from {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

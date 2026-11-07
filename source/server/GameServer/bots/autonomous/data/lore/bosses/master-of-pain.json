@@ -1,0 +1,134 @@
+{
+  "id": "master-of-pain",
+  "name": "Master of Pain",
+  "catalogKey": "tur-suil/masterofpain",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 74, undead, crushing blows; he appears when Kierac the Destroyer dies. His Vitality Dispersal saps strength and constitution.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as level 74 undead; Tur Suil also holds wall spikes and a rack of spikes.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    }
+  ],
+  "story": "Every tower that holds prisoners has someone who makes them talk, and in Tur Suil it is the Master of Pain. He died long ago and did not notice. The spikes in the walls are his, and the rack, and the long patient silence in the lower halls broken only by humming. He has made many things out of many prisoners; Kierac was his best work, and he lives inside it. When the Destroyer falls the Master is loose in his own room below, by the cells, unhurried, already reaching for the next subject. His touch takes the strength out of a body as a wringer takes water from cloth.\n\nHe died long ago and did not notice, or did not mind. The Master of Pain was the tower's questioner from its first days, the one who made prisoners talk, and the Fomorians found him so useful that when he died they simply let him go on. The spikes in the walls are his. The rack in his hall, which the Allakhazam scholars rated at a level no living warrior has reached, is his favourite thing. He hums while he works.\n\nKierac was his masterpiece, and he lives inside it. When the Destroyer falls the Master is loose in his own room below, unhurried, and takes up the night as though it were a conversation he had been looking forward to. His touch takes the strength out of a body as a wringer takes water from cloth: strength and constitution together, so that warriors feel their armour grow heavy and their wounds deepen. He crushes rather than cuts. He talks to his victims the whole time. The tortured Sylvan spirits in the cells beyond go silent when he speaks, which the Sylvan say is the worst thing anyone has told them about him.\n\nThe Master of Pain was the tower's questioner from its first days; he died and did not notice, set the spikes in the walls, and lives inside Kierac. Bréanainn of Howth's band learned to be ready; the Sylvan wardens change their forest paths each spring, the Master's tithe.",
+  "legend": "He appears fresh in his own room by the cells the moment Kierac dies, and waits there: rest, rebuff and walk in ready. He saps strength and constitution, so buff back and keep the tank healed. His debuff lands on his target and everyone standing close to them, so do not crowd the tank. Rebuff the moment his debuff lands; a tank with no strength and no constitution dies fast. The spikes in his walls are decoration, whatever the old hands say; never walk in on him with half the raid still drinking after Kierac. Superstition: never hum on the stair of Tur Suil. He likes company, the old hibs say, and he will come looking for the tune.",
+  "yells": {
+    "aggro": [
+      "Ah. New subjects. Hold still.",
+      "Ah. New subjects. Hold still.",
+      "Kierac was lovely work. Let me show you more."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Everyone talks in the end."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Kierac is done. Then I will need new work."
+      }
+    ],
+    "death": [
+      "Finally... someone... found the right place...",
+      "Finally... someone found the right place...",
+      "The humming... stops..."
+    ],
+    "slay": [
+      "That one broke too quickly.",
+      "That one broke too quickly.",
+      "Next, please.",
+      "Everyone talks in the end."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The humming stops. Something has noticed you.",
+      "The rack stands ready. It always is."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Master of Pain is enjoying himself."
+      }
+    ],
+    "realmFirstKill": "The Master of Pain is silent. The racks are empty."
+  },
+  "botLines": {
+    "briefing": [
+      "master of pain spawns in his room when kierac dies. [rest first|he waits for us]. he debuffs str and con, rebuff",
+      "his str con debuff hits everyone near his target. [dont stand on the tank|give the tank room]",
+      "rebuff str and con the second it lands, [buffers ready|watch the debuff]",
+      "rebuff fast, the debuff [keeps coming|lands again and again]"
+    ],
+    "aftermathWin": [
+      "the torturer is dead. [nobody is sorry|the sylvan spirits went quiet]",
+      "the humming stopped. [best sound ever|silence at last]",
+      "the sylvan spirits started talking again after he died. [heard them|eerie]",
+      "rebuffed every time. [great buffers|grats]"
+    ],
+    "aftermathLoss": [
+      "nobody was ready when he popped. [tank on him next time|be ready]",
+      "debuff landed and nobody rebuffed. [tank folded|watch it]",
+      "walked in half buffed after kierac. [rest first|be ready]",
+      "everyone stood on the tank and the debuff [hit us all|weakened the lot]"
+    ],
+    "rumour": [
+      "[heard|someone said] the master of pain built every spike in tur suil himself",
+      "[heard|someone said] the master of pain died ages ago and just kept working",
+      "[word is|heard] the tortured sylvan go quiet when he speaks",
+      "the rack of spikes in his hall is his favourite thing, they say. [lovely|ugh]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Master of Pain",
+    "text": "The torturer of Tur Suil, dead and unbothered by it. He lives inside Kierac the Destroyer, and is loose in his own room when Kierac falls."
+  },
+  "bookPage": "From Muirgen's notes, written with some difficulty: the Sylvan spirits in Tur Suil's cells cry all the time, those who have climbed the tower say, a faint sound behind the walls like wind. They stop when the Master of Pain speaks. A Sylvan warden told me this as the worst thing she knew about him: that even the dead are afraid. Bréanainn's four say he hummed the whole time, and talked, and seemed pleased to be busy. When he fell the crying in the walls began again, louder. The warden said: that is not grief. That is them talking to each other, for the first time in a very long while.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down the Master of Pain in {minutes} minutes.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to the Master of Pain after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "balor",
+      "relation": "the king they serve"
+    },
+    {
+      "id": "kierac-the-destroyer",
+      "relation": "his masterpiece and his house"
+    },
+    {
+      "id": "abomos-the-soultrapper",
+      "relation": "the keeper of the cells he empties"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Questioner",
+      "text": "Every tower that holds prisoners has someone who makes them talk, and in Tur Suil it has always been the Master of Pain. He was the tower's questioner from its first days, the Balorians say, a Fomorian of the old kind who had served Balor's household in the land beyond the sea and crossed west with the eye. He was very good at his work. When the Sylvan came to burn the tower in its first years, he questioned the ones who were taken alive, and it was from them that the Fomorians learned the paths of the Sylvan woods that their forays against Domnann still follow.\n\nHe died, the Sylvan say, a long time ago, and he did not notice, or did not mind. The Fomorians found him so useful that they simply let him go on. He is undead now, and crushes rather than cuts, and the realm's scholars who have faced him say he seems pleased to be busy. He hums while he works. The tortured Sylvan spirits in Abomos's cells nearby, who cry all the time in voices too faint to make out, go silent when he speaks; a Sylvan warden told Muirgen that this was the worst thing she knew about him, that even the dead are afraid. The Sylvan call him only the Questioner, and have never learned his Fomorian name. The Balorians, who know it, will not say it on the stair. They think the name itself is one of his instruments, and they do not say it in the grove."
+    },
+    {
+      "title": "The Furniture of the Hall",
+      "text": "The spikes in Tur Suil's walls are his. He set them, a few at a time over long years, so that a prisoner chained to any wall of the lower halls would feel them, and the realm's scholars who catalogued the tower listed them as wall spikes of a strength no warrior could match: not foes, but furniture. The rack in his hall, which the same scholars rated beyond any living fighter, is his favourite thing. The Balorians will not walk near the walls of his room.\n\nHis touch takes the strength out of a body as a wringer takes water from cloth. It saps strength and constitution together, so that warriors feel their armour grow heavy and their wounds deepen, and a shield-bearer whose strength is not given back to him soon folds under it. That, the Sylvan say, is his craft: not pain for its own sake, but weakness, because a weak prisoner talks. He talks to his victims the whole time, kindly. Those who have survived him remember his voice better than his blows. The first Hibernian to describe the hall was a scout of the first company to climb Tur Suil, named Moninne, who went into it alone ahead of Bréanainn's band and came out without speaking. She drew it for the captains afterwards on a slate, instead: the rack, the wall spikes in their rows, the chains, and in the middle of the room an empty chair, set facing the door. The slate has been kept in Tir na Nog ever since. Nobody has ever seen anyone sit in the chair."
+    },
+    {
+      "title": "Out of the Doorway",
+      "text": "His masterpiece is Kierac the Destroyer, and he lives inside it, the Sylvan say, as a worm lives in an apple; but when the apple is cut the worm goes home. When Kierac falls, the Master of Pain is suddenly in his own room below, by the cells, unhurried and already humming, and takes up the night as though it were a conversation he had been looking forward to. The first Hibernian band to find him there, Bréanainn of Howth's party, had spent everything on Kierac and had nothing left. Bréanainn brought four out of twelve.\n\nThose who have felt his touch say the weakness does not stay where he puts it: it spreads to anyone standing at the touched one's shoulder, like a chill through a crowded room, and the bards of Howth say his prisoners were always questioned in pairs. Bréanainn said the torturer is not hard to kill when the living are ready for him, and impossible when they are not, and that this is exactly what he intends: he waits for the moment a tired company relaxes, because that is when prisoners talk.\n\nWhen he finally falls the humming stops. The crying in the walls of Abomos's cells begins again, louder, and the Sylvan warden who went up with the second company said it was not grief: it was the spirits talking to each other, for the first time in a very long while, because he was not there to hear. The four were Bréanainn and three of his menders of wounds. None of the three would ever talk about it."
+    },
+    {
+      "title": "Making It Better",
+      "text": "What the Master of Pain wants is to keep working, the Sylvan say, and that is all. He has no rival like the warlords, no hunger like the queen, no window like the king. He has subjects, and he wants more of them. The druids of Tir na Nog have a darker reading: that he treats Kierac as a trial, a thing to be improved each time the realm breaks it, and that every time the household returns, Kierac is a little harder to break and the Master a little better at stepping out. They say the realm's companies are not killing the torturer; they are teaching him.\n\nThe Sylvan point to the paths. The Fomorian forays against Domnann follow paths that only a captured Sylvan could have told them, and the Sylvan believe the Master of Pain is still questioning prisoners in the lower halls, Sylvan taken on Sargan's forays, and that every season he learns a little more about their woods. The wardens of Domnann change their forest paths each spring for that reason. They call it the Master's tithe: one path given up every year to a questioner they have never met.\n\nMuirgen, who could not bring herself to describe his hall in her book, wrote only one line about him: that a thing which has stopped noticing it is dead will not stop for anything else either, and so the realm must stop it, as often as it takes. The Sylvan have never once seen him leave the tower."
+    }
+  ]
+}

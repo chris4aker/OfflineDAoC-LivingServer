@@ -1,0 +1,120 @@
+{
+  "id": "clan-matron",
+  "name": "Clan Matron",
+  "npcNames": [
+    "Clan Matron"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "the matron of the outpost"
+  ],
+  "facts": [
+    {
+      "text": "Clan Matron: level 54, at the clan outpost beside Little Haven at 353964, 375801; faction Caldey Outpost, aggro level 0, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Caldey Outpost's base hostility is 30, a neutral standing: its people do not attack a newcomer, and how friendly they are depends on a player's standing with them.",
+      "provenance": "game",
+      "source": "world data: Faction table (base hostility); source/server/GameServer/gameutils/Faction.cs (above 75 aggressive, above 25 neutral) and StandardMobBrain.CanAggroTarget (faction NPCs attack by standing)"
+    },
+    {
+      "text": "Barbarian defenders, maidens and the Clan Bard of her faction stand round her (the Bard 481 from her).",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The clan from the northern highlands, the oath at the strand, the graves without rowans, the matron's tally of who crossed the clan and the bard's song are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "In the second summer of Morgana's war a highland clan came down from the north of Albion by sea, in long boats, with their women and their bard and their smith, because the bard had sung that the dead were walking on the colleges' burying isle and the clan had a quarrel with the dead older than the realm. They landed beside Little Haven, the one corner of Caldey the living still held, and built an outpost on the rise above it, and put their defenders on the wall, and have not gone home.\n\nThe Matron leads them. The clan does not have a chief; it has a matron, who decides who comes in and who stays out, and remembers. That is her office, as the highland clans keep it: to remember everyone who has crossed the clan, and how, and whether it was paid. A stranger who has done the clan no harm is let in and sold shields and armour and a song, and a stranger who has hunted the clan's people is not, and the Matron does not need to be told which a man is. Her maidens keep the stalls. Her defenders keep the wall. She keeps the tally.\n\nThe clan buries its own without rowans. The priests of the dead planted rowans round every grave on Caldey to keep the dead lying down, and the clan says that is a lowland custom and a coward's: a highland dead man who gets up will get up on the clan's side, and if he does not, his kin will lay him themselves. The fishermen of Little Haven think the clan is mad, and are very glad of it.\n\nThe Matron has never once struck first. She stands in the outpost among her people, unarmed by the look of her, and lets the world come to the gate; and when the world comes with a blade in its hand, the wall comes down to meet it, because the defenders are hers and she is theirs. The Clan Bard has a song about the night someone tried. It is short, and it has the stranger's name in it, which the Matron supplied.",
+  "legend": "The Clan Matron is the level 54 head of the highland clan's outpost beside Little Haven on Caldey. She never aggros, and the whole Caldey Outpost faction starts neutral, so the clan is safe to walk through; what they sell you and how they treat you depends on your standing with them. Hitting her is a bad idea: the barbarian defenders (50s) and the other clan folk share her faction and come in, and every clan member you kill can sour your standing. No spells or styles in the data. There is no reason to kill her; she is listed here because she is a named 54. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "You strike the Matron? The clan remembers.",
+      "Wall! To me!",
+      "I have your name now."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Bard, mark this. Mark every one."
+      }
+    ],
+    "death": [
+      "The tally... is kept... by another now...",
+      "Remember them..."
+    ],
+    "slay": [
+      "Paid.",
+      "Entered in the tally.",
+      "The clan remembers."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A highland outpost above Little Haven.",
+      "The Matron watches the gate and remembers."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The clan's defenders come down off the wall."
+      }
+    ],
+    "realmFirstKill": "The Clan Matron has fallen. The clan will remember this."
+  },
+  "botLines": {
+    "briefing": [
+      "clan matron, 54, head of the outpost by little haven. never aggros, clan is neutral",
+      "if you hit her the defenders and the rest of the clan come. and your standing tanks",
+      "no spells. there's no quest for her, dont do this",
+      "if you must, full group of 50s and expect the wall"
+    ],
+    "aftermathWin": [
+      "matron down. and now the whole clan hates us",
+      "why did we do that",
+      "defenders were rough",
+      "well, no more shopping at the outpost"
+    ],
+    "aftermathLoss": [
+      "the wall came down on us like the bard sang",
+      "hit her for fun, regretted it",
+      "defenders chased us to the strand",
+      "she never even fought back, the defenders did"
+    ],
+    "rumour": [
+      "[heard|someone said] the clan matron remembers every stranger who ever crossed the clan",
+      "heard the highland clan buries its dead without rowans on purpose",
+      "[heard|someone said] the clan bard has a song about the last man who hit the matron",
+      "heard the clan came down from the north because their bard sang the dead were walking"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "clan matron",
+    "text": "The head of the highland [clan outpost] beside [little haven], come down from the north in the second summer of the war. Her office is to remember everyone who has crossed the clan and whether it was paid. She never strikes first; her defenders do it for her. The clan buries its own without rowans: a highland dead man who gets up gets up on the clan's side."
+  },
+  "bookPage": "From the Ledger of Little Haven, kept by Mordwywr, enchanter. Paid: to the Clan Matron, nothing, because she would not take it, for the clan's word that Little Haven may shelter behind the outpost wall when the dead come over the hill. I asked what the clan wanted in return. She said only that the village keep its tally honest, as she keeps hers. I asked what was in her tally. She said every name that ever owed the clan, and what for, and whether it was paid. I asked whether mine was in it. She said not yet. I have entered that as the best bargain in this ledger.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down the Clan Matron of Caldey in {minutes} minutes. The clan will remember.",
+    "loss": "The Clan Matron's wall came down on {raidLeader}'s company of {realm}, and the clan has their names."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "realm-of-camelot"
+  ],
+  "related": [
+    {
+      "id": "waleron-douglas",
+      "relation": "a man of her clan whose brother went into the water"
+    },
+    {
+      "id": "caldey",
+      "relation": "the clan outpost beside Little Haven"
+    }
+  ]
+}

@@ -10,9 +10,60 @@ Older entries below keep the names they were written with.
 
 ## 1.2 (in development)
 
-<!-- Integration (integration/1.2): the dungeon and boss lore (feature/lore-1.2, PRs #90-#93 and Albion) is merged
-     last. Its entries go here, at the top of this section, as "**Dungeons and bosses have their lore**"; keep the
-     entries below and the Beta 1.1.2 section as they are. -->
+**Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
+boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
+the part that shows it to you. All the stories are now in: 107 places and 578 bosses (with 4 realm histories), written for
+Albion, Midgard, Hibernia and the neutral places, from the dragons and epic dungeons down to the named spawns of every zone.
+Where Mythic told a story it is kept (in our own words, with its source); where it did not, the Living Server wrote one. The
+lore's own characters no longer share a name with a trainer, merchant or banker of their realm. The lore is checked by
+automated tests; nobody has read it in game yet.
+
+- **Atmosphere lines.** Short lines in the middle of the screen, like the ones for a keep taken or a relic:
+  - the first time each day you walk into a dungeon or epic zone ("Old words are carved here. The ogres cannot read them.");
+  - stepping into a boss's room or lair (once a session);
+  - a boss changing phase (at most two a fight: Scurceol Hyrde's last light going out);
+  - a dragon taking to the sky, in gold for everyone in its zone and smaller for its realm elsewhere (at most once an hour,
+    beside the dragon's own bellow in chat);
+  - a realm's first-ever kill of a boss, to the whole world, with a line in your chat naming the realm. It is remembered
+    across restarts, once per realm per boss;
+  - a raid forming, a line about the place for that realm only;
+  - Darkness Falls changing hands is now a gold line in the middle of the screen as well (at most once every 15 minutes;
+    it follows the RvR announcements switch).
+
+  At most one atmosphere line every 30 seconds, never more than four lines on screen at once, and realm news (keeps, relics,
+  raid results, sieges) always comes first: an atmosphere line waits 10 seconds after it. Only you see them; bots never get
+  them. A new switch in the launcher's Living Server tab, **Atmosphere lines** (on by default), turns them off.
+- **Bosses speak their lore.** A boss with a lore file yells its own lines when the fight starts, at its phases, when it
+  kills someone and when it dies. A boss whose script already speaks at that moment keeps its own words, and nothing is said
+  twice.
+- **Bots know the stories.** As a raid leaves its muster, its leader tells the realm in /faction what the boss does
+  ("storm keeper next. four lights in the corners, kill the lights first"). A minute or two after a raid, a veteran tells
+  how it went and then something about the place. Ask a bot "whats in krondon?" or "who is the storm keeper?" and it answers
+  from the lore. The lore and rumour lines join the bots' lore talk, checked like every other bot line.
+- **Fixes.** Gjalpinulva's lair is in Malmohus, not Myrkwood (the encounter catalog said Myrkwood). Bots no longer say Aidon
+  the Archwizard waits in Summoner's Hall: he is in the Hall of the Corrupt.
+- GMs: `/lstest lore` says which lore place you are in and lets its lines show again.
+
+**The lore reaches you beyond bot chat** (Living Server 1.2: every dungeon, dragon and boss gets a story). Built and
+covered by automated tests; none of it has been seen in game yet.
+- **A loremaster in each capital:** Loremaster Aldwin in Camelot's library, Loremaster Sigrun at Jordheim's temple of the
+  gods and Loremaster Eithne by the bards of Tir na Nog. Ask them of the [places] of your realm and the places no realm
+  holds. Every place and every boss has its own words, and the links lead from one to the next.
+- **Lore books:** one book per place, which you read with "use", a page at a time. The loremasters copy them out for a
+  silver, and now and then a book turns up on a monster near the place it tells of. It's rare, never one you already
+  carry, and they never crowd out real loot. The delve says what each book is about. A long book (more than 16 pages)
+  comes in volumes: "..., Volume II", a silver each, sold together; the last page of a volume names the next. Nothing
+  is left out.
+- **Long tales in parts:** the loremaster tells a long story's summary first, then offers its chapters as [names] to
+  ask for one at a time. Each answer comes in short pieces that never break a word and always fit the game's message
+  limit (a message over 2,048 bytes would be lost whole). Bots keep to their own short lines and never recite chapters.
+- **The Herald tells the tale:** each raid in the launcher's Realm Records, and in the Camelot Herald, ends with a sentence
+  from its boss's story: who led it, how long it took, won or lost.
+- **The Bestiary:** a new page under Realm Records lists every boss of your realm's places and the neutral ones, with
+  what the raid leaders say. A boss's full story, your realm's first kill and its raid record open once your realm has
+  brought it down. Raids won before 1.2 count. The Camelot Herald gains a "Bestiary of the Realms".
+- **/lore in either client** shows your realm's places and bosses and what your realm has slain. In the new client the
+  journal's LORE button opens it in its own window, where every name is a link.
 
 **More of the epic fights play in full, and the bots play them** (the epic encounters, wave 3). Tested by automated
 tests only; not played in game yet. Some of these fights get harder: try them first.

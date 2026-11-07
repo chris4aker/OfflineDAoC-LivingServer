@@ -1,0 +1,116 @@
+{
+  "id": "faerie-queen",
+  "name": "Faerie Queen",
+  "npcNames": [
+    "Faerie Queen"
+  ],
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Faerie Queen: level 57, model 387, at about 503,500/509,200 in the Cursed Forest, with five Queen's Maids (56) about her; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The Moonstone Twin (Brigit, Tir na Nog palace) in the world data: Brigit's steps include 'Slay the banshee Rioldna northwest of Alainn Binn' and 'Slay the Faerie Queen in the Cursed Forest'; the trainers' version sends the player to 'Find the faerie court in the Cursed Forest and take the first half-moonstone'.",
+      "provenance": "game",
+      "source": "DataQuest 'The Moonstone Twin' (world data); scripts/quests/Hibernia/epic/Essence50.cs"
+    },
+    {
+      "text": "Living Server lore: the faerie court that stayed in the Cursed Forest when the bargain broke, its queen and her maids, and the half-moonstone she keeps as her share.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "When the Seelie and the Unseelie bargained in the Cursed Forest, neither court came in person. They sent courts of their own: lesser courts, with lesser queens, to sit at the bargaining stones and speak for the great ones beyond the Veil. When the bargain broke, the great courts called their lesser courts home. One did not go. The faerie court of the eastern glade, its queen and her maids, stayed in the wood, and the bards of Tir na Nog say it is because the queen had taken something as her share before the stones cracked, and would not give it back, and could not take it across the Veil.\n\nIt was a moonstone, the bards say, the twin of another, two halves of one stone that a bard of the old realm cut and set for the courts as a pledge: while the halves were apart the bargain held, and when they came together it would be ended. The queen kept her half. The other half went elsewhere, to a dead giant's keeping in the same forest, the bards of Tir na Nog think, which is why the realm's young who carry the moonstone road for Brigit of the palace end up fighting both the queen and the ghost of Giant Caithor before they are done. Rioldna the banshee of the Cullen country is on the same road, for reasons Brigit keeps to herself.\n\nThe Faerie Queen holds her glade with her maids around her, five of them, as tall and pale as she is, and she holds it as a court holds a hall: strangers are received, and judged, and sent away or kept. The edge villagers who have been received say she asked them each a single question, and that none of them will say what it was. Those who were kept are the reason the eastern glade is on every grandmother's list.\n\nThe druids of Lough Gur think that if both halves of the moonstone were ever brought together in Tir na Nog the bargain of the Cursed Forest would be finished for good, debts and all, and the wood would be only a wood. Brigit of the palace has never said that is what she is doing. She has never said it is not.",
+  "legend": "The Faerie Queen (57) holds her glade in the Cursed Forest (about 503k/509k) with five Queen's Maids (56) around her, so you are fighting a court, not a queen: six 56-57s close together. Plain mobs, no scripts, 80-second respawns. Bring a full group and CC, pull maids off the edges first if you can, and kill the queen last. She is a target of The Moonstone Twin (Brigit in the palace: Rioldna the banshee, then the Faerie Queen), the epic road that also runs to Giant Caithor's ghost. The Cursed Forest is crowded with big named, so check the path in and out of the eastern glade.",
+  "yells": {
+    "aggro": [
+      "You are received. Now be judged.",
+      "Maids, a stranger at court.",
+      "One question. You will not like it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The half is mine. It was my share."
+      }
+    ],
+    "death": [
+      "Take it, then... the half... and end it...",
+      "The court... was only waiting..."
+    ],
+    "slay": [
+      "Judged.",
+      "Kept.",
+      "Maids, see this one home. Our home."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pale court in the eastern glade.",
+      "Five maids, as tall and pale as their queen."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Faerie Queen's maids close around her!"
+      }
+    ],
+    "realmFirstKill": "The Faerie Queen has fallen. Her half-moonstone is free."
+  },
+  "botLines": {
+    "briefing": [
+      "faerie queen is 57 with five queen's maids at 56. [its a court|six at once]",
+      "cc and pull maids off the edges first. [queen last|careful]",
+      "moonstone twin target. [brigit's epic|after rioldna]",
+      "plain mobs, full group"
+    ],
+    "aftermathWin": [
+      "faerie queen down. [half moonstone|moonstone twin]",
+      "maids first, queen last. [worked|clean]",
+      "the court is empty. for 80 seconds lol",
+      "brigit will be pleased"
+    ],
+    "aftermathLoss": [
+      "pulled all six. [court|wipe]",
+      "cc broke on two maids. [ouch|oops]",
+      "group too low for 56s",
+      "she asked us a question. [we didnt like it|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] the faerie queen stayed in the cursed forest when the bargain broke",
+      "the faerie queen keeps half a moonstone. [the other half is with caithor|the twin]",
+      "[word is|heard] the faerie queen asks every stranger one question and nobody says what",
+      "the lough gur druids think both halves together would end the cursed forest's bargain"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Faerie Queen",
+    "text": "Queen of the lesser faerie court that stayed in the [Cursed Forest] when the courts' bargain broke, with her five maids. She keeps half of a moonstone pledge; Brigit of the palace sends the young for it."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the eastern glade of the Cursed Forest, at any hour. A faerie court stayed there when the bargain broke, a queen and five maids as tall and pale as she, because she had taken half a moonstone as her share and could not carry it across the Veil. The other half is somewhere else in the wood. While the halves are apart the bargain holds, the bards say. She receives strangers and asks each one a single question. Those who came back will not say what it was. Those who were kept are why the glade is on my list.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Faerie Queen in the Cursed Forest in {minutes} minutes.",
+    "loss": "Faerie Queen turned back {realm}'s band under {raidLeader} in the Cursed Forest after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "melancholic-fairy-queen",
+      "relation": "the other queen of the realm's wilds"
+    },
+    {
+      "id": "giant-caithor",
+      "relation": "his ghost in the same epic's road"
+    },
+    {
+      "id": "cailean",
+      "relation": "another power of the Cursed Forest"
+    }
+  ]
+}

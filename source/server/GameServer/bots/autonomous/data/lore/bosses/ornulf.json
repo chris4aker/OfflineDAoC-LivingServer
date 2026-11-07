@@ -1,0 +1,85 @@
+{
+  "id": "ornulf",
+  "name": "Ornulf",
+  "npcNames": [
+    "Ornulf"
+  ],
+  "locationId": "delling-crater",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "dellingstad"
+  ],
+  "related": [
+    {
+      "id": "smastein",
+      "relation": "keeper of the first key"
+    },
+    {
+      "id": "klippe",
+      "relation": "keeper of the second key"
+    },
+    {
+      "id": "kampestein",
+      "relation": "keeper of the third key"
+    }
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ornulf is a level-47 man of the People of Dellingstad (faction People of Dellingstad; Dellingstad's own model) by a rock just outside Dellingstad (372,712/322,319); aggressive like the rest of the town to strangers.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Gem of the Dwarven King' (Abjorn Onefoot of Hagall): find Ornulf by a rock outside Dellingstad, read the note, kill the golems Smastein, Klippe and Kampestein, then use the three keys on the box in the caldera's steam vent.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Ornulf as the last keeper of the dwarven king's gem story is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Ornulf knows where the dwarven king's gem went. He is a man of Dellingstad, the crater town that treats strangers as enemies until they prove friends, and he sits by a rock outside its walls with a note he has written and rewritten for years: the story of a dwarf king of Aegir who hid his gem in the caldera's steam, in a box with three locks, and gave the three keys to three golems of the crater to keep, a small stone, a cliff and a boulder.\n\nAbjorn Onefoot of Hagall wants the gem, and sends the young to Ornulf for the note. Ornulf gives it, sometimes, and fights, often, because Dellingstad does; the crossbowmen on the walls watch and do not interfere. The town's soothsayers say the dwarf king was Ornulf's own grandfather's master, and that Ornulf is waiting for someone stubborn enough to deserve the gem. He has not met them yet.",
+  "legend": "Ornulf is a level 47 Dellingstad man by a rock just outside Dellingstad, the start of Gem of the Dwarven King (Abjorn Onefoot in Hagall): read his note, kill the three caldera golems Smastein, Klippe and Kampestein for their keys, then open the box in the caldera steam vent. Dellingstad folk are hostile until you're friends with the town, so he may fight. Read the note he gives you; it names the three golems and the box in the steam vent.",
+  "yells": {
+    "aggro": [
+      "Strangers. Always strangers.",
+      "Prove you're a friend. Live."
+    ],
+    "death": [
+      "The gem... is still... in the steam..."
+    ],
+    "slay": [
+      "Not stubborn enough."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A man of Dellingstad waits by a rock with a note."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "ornulf is the 47 by the rock outside dellingstad, gem of the dwarven king",
+      "dellingstad faction, hostile unless the town likes you"
+    ],
+    "aftermathWin": [
+      "got the note",
+      "three golems for three keys next"
+    ],
+    "rumour": [
+      "ornulfs grandfathers master hid the dwarven kings gem in the caldera steam",
+      "ornulf is waiting for someone stubborn enough to deserve the gem"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ornulf",
+    "text": "A man of [Dellingstad] who keeps the story of the dwarven king's gem, hidden in the caldera's steam with three keys given to three golems. See [caldera]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} won Ornulf's note outside Dellingstad in {minutes} minutes."
+  }
+}

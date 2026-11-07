@@ -1,0 +1,276 @@
+{
+  "id": "avalon-isle",
+  "name": "Avalon Isle",
+  "realm": "Albion",
+  "regions": [
+    51
+  ],
+  "zones": [
+    52
+  ],
+  "aliases": [
+    "avalon isle",
+    "the isle of apples",
+    "wearyall"
+  ],
+  "summary": "The isle of apples around the occupied city of Avalon: dead orchard-keepers still picking, walking trees, the dead court of Caer Caddug, the drakoran camps and Wearyall, the one village Albion holds.",
+  "facts": [
+    {
+      "text": "Avalon Isle is zone 52 of region 51, with Wearyall Village and the entrance to Avalon City, and about 1,060 monsters: undead apple harvesters and haunted appletrees (Isle of Apples), drakoran of the dry'ak clan and the legion, gray ghosts and decaying marshmen, lammia, sea hounds and water shucks, and the court of Caer Caddug.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 51 zone 52 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Mythic: Morgana and the drakoran overran Avalon; she raised the undead remains of Roman soldiers to serve in her army.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "Spirits of the Orchard: kill Nalsor in Afal Dyffryn north of Wearyall; Tomos appears when Nalsor dies; return Brent's, Lenor's, Andryw's and Tomos's seeds to their orchards. Voices of the Dead: Kelsanor, in the ruins east past the lone tree on the hill, warps attackers away at low health.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Failing Magic: Lady Eilwen's and Lady Lurlei's spells fail and drakoran magic cuts through their protections; Brishene's pendant is held by the drakoran Barak.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lost Stone of Arawn: Honayt'rt and N'chever in Wearyall Village and O'honat in Caer Diogel search for the Stone of Arawn.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+    },
+    {
+      "text": "Real-world: Avalon is the isle of apples (insula pomorum) of Arthurian legend; Wearyall Hill at Glastonbury is where, in legend, Joseph of Arimathea's staff took root; Black Shuck is the black dog of English coast folklore; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Avalon"
+    },
+    {
+      "text": "Gwilym the cider-man and his book, the colleges' orchards and gift-barrels, the keepers' names on the gate-posts, Tomos standing behind Nalsor, Lord Caddug paying at his own gate, Vask watching the north, Prios as a reader who chose his side and the sign of real fruit are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The isle of apples. Avalon was an orchard before it was a city of colleges, the old songs say, and it is an orchard after. The first readers who came to the isle found apple trees growing wild over the whole of it, and they laid their colleges among the trees and kept the orchards as gardens, and the fruit of Avalon was carried to Camelot as a gift every autumn for as long as there was a Camelot to carry it to. Each college had its orchard, and each orchard its keeper, and the keepers' names were cut on the gate-posts of the walls between them. The valley north of Wearyall, which the old tongue calls Afal Dyffryn, the apple valley, held the oldest trees of all.\n\nThe burning. When Morgana came over the water the colleges burned, and the orchards burned with them, and what she raised from the soil of Avalon to fight for her was not only the Roman dead. The orchard-keepers who died among their trees got up again with their baskets and went back to work, and they are working still: undead harvesters and gatherers and seedsmen walking the rows, picking fruit that is not there, and the trees themselves have woken and walk. Four orchard-keepers of the apple valley, Brent, Lenor, Andryw and Tomos, had their seed-stores carried off by a drakoran called Nalsor, and their spirits cannot rest until the seed is back in their own ground; Tomos appears only when Nalsor is dead, as if he had been waiting behind him.\n\nCaer Caddug and the drakoran. In the north-east of the isle stands Caer Caddug, the castle of a lord of Avalon who held the isle for the colleges, and its court is still at its posts: baille and footsoldiers, knights and equerries, seers and priests and a bodyguard, all dead, all loyal, around a lord who does not lie quiet. The drakoran hold the rest. The dry'ak clan keeps the middle of the isle around the ruins of the city, with fighters and thaumaturges in the north-west and elementalists in the south-east, and the legion's commanders, Vask in the north-west and Bolin and Barak in the south-east, keep their camps where they can watch the shore. Barak has a pendant taken from Brishene of Wearyall, and since he took it, the protections that the magi of Caer Gothwaite raise over the realm's companies fail as often as they hold.\n\nWhat lives there now. The city of Avalon stands in the middle of the isle, roofless and occupied, and its door is the way down into the drakoran's own Avalon. Gray ghosts drift in the eastern ruins, decaying marshmen rise north of the city, lammia enchantresses sing on the western shore, sea hounds and water shucks, the black dogs of the coast, run the southern sands. In the ruins east of the lone tree on the hill, a dead thing called Kelsanor speaks in many voices; the old folk say he once threw those who wounded him out of his sight, and nobody now living has seen it. And Wearyall, the only village Albion holds on the isle, keeps its gate, its ale and its Inconnu: three of Arawn's people, Honayt'rt among them, who have been searching for a lost stone of their master's for years.\n\nWhy it matters to Albion. Avalon was the realm's learning, and the realm wants it back. Every company that goes down into the occupied city goes from Wearyall, past the orchards where the dead are still picking, and the readers of Caer Gothwaite say the orchards will be the sign: when the trees bear real fruit again, Avalon will be Albion's.",
+  "legend": "Avalon Isle is the second SI zone, north-west of the Isle of Glass, levels 20 to 45. Wearyall Village in the south-west is the only town: Lord Bryan Grey, Honayt'rt (starts Lost Stone of Arawn, which goes on to Caer Diogel and Gwyddneau), Karayan and Madilen Anglesey (Spirits of the Orchard, Voices of the Dead), Brishene. The Avalon City dungeon door is in the middle of the isle. Drakoran everywhere: thaumaturges and fighters in the north-west, elementalists and Barak and Bolin in the south-east, Vask in the north-west. Undead harvesters and walking appletrees in the orchards, gray ghosts in the east, lammia on the west shore, sea hounds and water shucks on the southern sand. Caer Caddug in the north-east is a dead castle full of knights and priests around Lord Caddug (68); do not wander in at forty. Nalsor is in Afal Dyffryn north of Wearyall; Tomos appears when he dies. Kelsanor in the eastern ruins past the lone tree: the quest says he warps you away at low health, but here he does not. Barak has Brishene's pendant for Failing Magic.",
+  "atmosphere": {
+    "firstEntry": [
+      "Avalon Isle. Apple trees, and ruins among them.",
+      "Dead harvesters pick fruit that is not there.",
+      "The roofless city in the middle of the isle.",
+      "Drakoran banners where the colleges stood.",
+      "A smell of rotten apples and old smoke."
+    ],
+    "areas": [
+      {
+        "name": "Wearyall Village",
+        "x": 435799,
+        "y": 493970,
+        "z": 3088,
+        "radius": 3000,
+        "lines": [
+          "Wearyall. The only village Albion holds here.",
+          "Honayt'rt and her kin search for a lost stone.",
+          "Lord Bryan Grey keeps the gate and the ale."
+        ]
+      },
+      {
+        "name": "the occupied city",
+        "x": 454964,
+        "y": 475456,
+        "z": 3000,
+        "radius": 3000,
+        "lines": [
+          "Avalon, roofless and occupied.",
+          "The colleges' door. The drakoran's now.",
+          "Somewhere below, the city goes on."
+        ]
+      },
+      {
+        "name": "Afal Dyffryn",
+        "x": 441696,
+        "y": 453344,
+        "z": 3000,
+        "radius": 2500,
+        "lines": [
+          "The apple valley. The oldest trees burned here.",
+          "Nalsor guards stolen seed. Tomos waits behind him."
+        ]
+      },
+      {
+        "name": "the dead orchards",
+        "x": 439042,
+        "y": 454080,
+        "z": 3000,
+        "radius": 4000,
+        "lines": [
+          "Undead harvesters pick fruit that is not there.",
+          "The trees walk between the rows."
+        ]
+      },
+      {
+        "name": "Caer Caddug",
+        "x": 477564,
+        "y": 458828,
+        "z": 3000,
+        "radius": 2500,
+        "lines": [
+          "Caer Caddug. The dead court keeps its posts.",
+          "Knights, equerries and priests, all loyal.",
+          "Lord Caddug does not lie quiet."
+        ]
+      },
+      {
+        "name": "Vask's camp",
+        "x": 435925,
+        "y": 459288,
+        "z": 3000,
+        "radius": 1200,
+        "lines": [
+          "Vask's legion camp in the north-west.",
+          "The drakoran watch the shore from here."
+        ]
+      },
+      {
+        "name": "the south-eastern camps",
+        "x": 472300,
+        "y": 491800,
+        "z": 3000,
+        "radius": 1500,
+        "lines": [
+          "Bolin and Barak keep the south-eastern camps.",
+          "Barak wears a pendant that is not his."
+        ]
+      },
+      {
+        "name": "the eastern ruins",
+        "x": 478193,
+        "y": 487144,
+        "z": 3000,
+        "radius": 2500,
+        "lines": [
+          "Gray ghosts drift in the eastern ruins.",
+          "Prios walks among them, Morgana's servant."
+        ]
+      },
+      {
+        "name": "the lone tree",
+        "x": 453734,
+        "y": 491057,
+        "z": 3600,
+        "radius": 1500,
+        "lines": [
+          "A lone tree on the hill. Ruins past it.",
+          "Many voices speak from one throat here."
+        ]
+      },
+      {
+        "name": "the western shore",
+        "x": 431067,
+        "y": 481468,
+        "z": 3000,
+        "radius": 2500,
+        "lines": [
+          "Lammia sing on the western shore.",
+          "A sweet song. Do not walk toward it."
+        ]
+      },
+      {
+        "name": "the southern sands",
+        "x": 460337,
+        "y": 491418,
+        "z": 3000,
+        "radius": 3500,
+        "lines": [
+          "Sea hounds on the southern sand.",
+          "A black dog with eyes like coals. A shuck."
+        ]
+      },
+      {
+        "name": "the haunted orchard",
+        "x": 479596,
+        "y": 490622,
+        "z": 3000,
+        "radius": 2000,
+        "lines": [
+          "Haunted appletrees, and snatchers among them.",
+          "The fruit here bites back."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "avalon isle is all orchards. the dead harvesters still pick apples that arent there",
+      "wearyall is the only village we hold on avalon isle",
+      "the avalon city door is in the middle of the isle",
+      "caer caddug's dead court is still at its posts. knights, priests, the lot",
+      "the appletrees walk on avalon isle. dont press their apples",
+      "afal dyffryn means apple valley, [heard|the readers say]",
+      "the inconnu in wearyall have been hunting a stone of arawn's for years",
+      "lammia sing on the west shore. dont walk toward the song",
+      "sea hounds and water shucks run the southern sand",
+      "every autumn before the war avalon sent apples to camelot as a gift",
+      "the readers say when the trees bear real fruit again avalon will be ours",
+      "the dry'ak clan holds the middle of the isle round the city"
+    ],
+    "rumour": [
+      "[heard|someone said] tomos only shows up once nalsor is dead",
+      "heard kelsanor used to warp people away at low health. not anymore",
+      "[heard|someone said] barak's pendant is why our protection spells keep failing",
+      "heard bolin and barak quarrel about everything except the shore",
+      "[heard|someone said] vask watches the north like hes scared of something",
+      "heard prios was a reader before the burning and picked morgana",
+      "[heard|someone said] lord caddug used to pay for his cider at the gate in person",
+      "heard the dead court of caer caddug and prios's ghosts wont cross each other"
+    ],
+    "tell": [
+      "avalon isle? nw of the isle of glass. wearyall village in the sw",
+      "is it hard? 20 to 45. drakoran everywhere and caer caddug is way higher",
+      "whats there? wearyall, the avalon city door, orchards, caer caddug, drakoran camps",
+      "bolin and barak are in the se camps, vask in the nw",
+      "prios is with the gray ghosts in the eastern ruins",
+      "nalsor is in afal dyffryn north of wearyall. kelsanor past the lone tree east"
+    ]
+  },
+  "loremaster": {
+    "intro": "Avalon Isle, the isle of apples. Ask of [wearyall], the [orchards] and [afal dyffryn], [caer caddug], the occupied [city], the [inconnu] and their stone, Brishene's [pendant], or of the isle's own: [bolin], [vask], [prios] and [barak].",
+    "topics": {
+      "wearyall": "Wearyall Village in the south-west, the only village Albion holds on the isle: Lord Bryan Grey, Gwilym the cider-man, Karayan, Madilen Anglesey, Brishene, Marden, and the Inconnu Honayt'rt and N'chever.",
+      "orchards": "Avalon was an orchard before it was a city. Each college kept an orchard and each orchard a keeper. The keepers who died in the burning still walk the rows with their baskets, and the trees walk too. See [afal dyffryn].",
+      "afal dyffryn": "The apple valley north of Wearyall, with the oldest trees. Its four keepers, Brent, Lenor, Andryw and Tomos, cannot rest until their seed is back in their own ground; a drakoran, Nalsor, carried it off.",
+      "caer caddug": "The castle of a lord of Avalon in the north-east, whose dead court keeps its posts: baille, footsoldiers, knights, equerries, seers, priests and a bodyguard, around a lord who does not lie quiet.",
+      "city": "Avalon itself, roofless and occupied by the drakoran, in the middle of the isle. Its door is the way down into the drakoran's Avalon City.",
+      "inconnu": "Three of Arawn's people, Honayt'rt, N'chever and O'honat in Caer Diogel, who have searched for a lost Stone of Arawn for years; a demon in the plains of Gwyddneau is part of it.",
+      "pendant": "Brishene's pendant, taken by the drakoran [barak]; since he took it, the magi of Caer Gothwaite say their protections fail as often as they hold.",
+      "bolin": "Bolin is a captain of the drakoran legion who keeps a camp in the south-east of Avalon Isle beside Barak's, where the elementalists of the dry'ak clan gather. He watches the southern shore for boats from the Isle of Glass and has never let one land unseen. The garrison of Wearyall says Bolin is the more careful of the two captains and Barak the more dangerous, and that they quarrel over everything but the shore.",
+      "vask": "Vask is a captain of the drakoran legion who keeps a camp in the north-west of the isle above the dead orchards, among the dry'ak fighters and thaumaturges. He watches the northern water for anything that might come from the lost isles beyond, and Gwilym the cider-man says that is strange, because the lost isles are the drakoran's own. Vask, the cider-man thinks, is watching for something the drakoran are afraid of.",
+      "prios": "Prios is a servant of Morgana who drifts among the gray ghosts in the eastern ruins of the isle, a ghost himself, keeping the ruins for his mistress as the dead court of Caer Caddug keeps its castle for its lord. The two dead households will not cross each other's ground. The readers of Caer Gothwaite say Prios was a reader himself before the burning, and chose his side.",
+      "barak": "Barak is a captain of the drakoran legion who keeps a camp in the south-east of the isle and wears a pendant taken from Brishene of Wearyall. Since he took it, Lady Eilwen and Lady Lurlei of Caer Gothwaite say, their protection spells over the realm's companies fail as often as they hold, and the drakoran's magic cuts through them. Brishene says the pendant was a mother's gift. Barak says it is his now, and keeps his camp east of the great tree of Wearyall Hill where anyone can see him wearing it."
+    }
+  },
+  "book": {
+    "title": "The Cider-Book of Wearyall",
+    "pages": [
+      "The Cider-Book of Wearyall, kept by Gwilym, cider-man of Wearyall Village, whose family pressed the colleges' apples for three hundred years and now presses whatever the village can find. Every autumn before the war the fruit of Avalon went to Camelot as a gift, in barrels with the colleges' marks on them, and my grandfather drove the barrels to the boats. The marks are in this book. So is the last barrel, which never sailed, because the boats were needed for the readers. We drank it on the night the colleges burned. It was a good year.",
+      "Of the orchards. Each college had its orchard and each orchard its keeper, and the keepers' names were cut on the gate-posts between them. Afal Dyffryn, the apple valley north of here, had the oldest trees. When Morgana came, the keepers who died among their trees got up again with their baskets and went back to work. You can see them from the valley road, picking. There is no fruit. They do not notice. The trees have woken too, and walk between the rows, and I do not press their apples, though the snatchers in the eastern orchard steal them and sell them in the harbor.",
+      "Of the four keepers. Brent, Lenor, Andryw and Tomos kept the apple valley, and a drakoran called Nalsor carried off their seed-stores, and their spirits will not rest until the seed is back in their own ground. Karayan in the village has a potion for them. Tomos will not show himself while Nalsor lives; he comes when the drakoran falls, as if he had been standing behind him all along, and he is the one who knows where the seed should go. Madilen Anglesey sends the brave out after it, and was apprenticed to Tomos as a child.",
+      "Of the castle. In the north-east stands Caer Caddug, the castle of a lord of Avalon who held this isle for the colleges, and his court is still at its posts. Baille and footsoldiers on the walls, knights in the yard, equerries at the stables, priests in the chapel, a bodyguard at the door, and all of them dead, and all of them loyal. The lord does not lie quiet. My father carried cider to that castle once, before the war. He said Lord Caddug paid for it at the gate, in person, and asked after every keeper by name.",
+      "Of the drakoran and the pendant. The dry'ak clan holds the middle of the isle and the legion's captains keep camps where they can watch the shore: Vask in the north-west, Bolin and Barak in the south-east. Barak took a pendant from Brishene of this village, and since he took it the magi of Caer Gothwaite say their protections fail as often as they hold, and the drakoran's magic cuts through them like a knife through rind. Lady Eilwen and Lady Lurlei want it back. So does Brishene, for whom it was a mother's gift, and who says so at every table in the village.",
+      "Of the Inconnu and the voices. Three of Arawn's people keep among us, Honayt'rt in the village and N'chever on its edge, and a third in Caer Diogel, and they have been searching for a lost stone of their master's for years. They drink cider politely and do not finish it. In the ruins past the lone tree on the hill there is a dead thing called Kelsanor who speaks in many voices, and Marden in the village hears them in his sleep. My grandmother said he once threw those who hurt him out of his sight. I have never met anyone who saw it. I write it down. I do not go there."
+    ]
+  },
+  "bosses": [
+    "lord-caddug",
+    "kelsanor",
+    "kovos",
+    "nalsor",
+    "torvarg"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "drakoran",
+    "arawn"
+  ]
+}

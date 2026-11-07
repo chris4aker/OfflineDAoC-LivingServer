@@ -1,0 +1,124 @@
+{
+ "id": "malroch-the-cook",
+ "name": "Malroch the Cook",
+ "tier": "minor",
+ "npcNames": [
+  "Malroch the Cook"
+ ],
+ "aliases": [
+  "the cook",
+  "malrock"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "inquisition-below"
+ ],
+ "related": [
+  {
+   "id": "prince-baalorien",
+   "relation": "he cooks for the prince"
+  },
+  {
+   "id": "marquis-dortaleon",
+   "relation": "tried the plague on him"
+  },
+  {
+   "id": "archivist-borath",
+   "relation": "found him the recipe"
+  },
+  {
+   "id": "lecherous-gress",
+   "relation": "carried the dish up"
+  },
+  {
+   "id": "inquisitors",
+   "relation": "his neighbours; Haap examined him"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Malroch the Cook is a level 43 plain GameNPC of the Demon Lords faction in the north of Darkness Falls, about 1,760 units from Inquisitor Haap and 1,770 from Earl Mermer, respawning in 180 seconds.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In Albion's 'Black Plague' Sister Elaydith traces a sickness (a back that burns as if from hot coals, the smell of rotting flesh) to Darkness Falls and sends the player to kill Malroch the Cook.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "In 'Strange Bedfellows' Mystemas says every demon is promised the Master's reward for the head of the mortal who killed Malroch.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "Prima's map key lists 'Malrock the Cook' in the north, near the Inquisitors.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "De Plancy's infernal court has a chief of the kitchen, Nisroch; Malroch may echo that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+  },
+  {
+   "text": "The recipe, Dortaleon and the jar are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Malroch the Cook keeps the kitchen of the north, between Prince Ba'alorien's hall and the cloisters of the Inquisition, and he has fed the questioners and their prince since the First Roll. A kitchen in the court is a strange office, since demons eat what they kill, and Malroch has always said his trade is not feeding but improving: taking what a demon would eat anyway and making it do something on the way down.\n\nThe Black Plague was his finest dish. The court wanted a sickness to send up into the realms after the doors opened, one that would keep the capitals busy with their own beds, and the Archivist found the old recipe in the records and Malroch cooked it. He tried it first on somebody who could not complain to a prince: Marquis Dortaleon, in the Sixth Roll, who began to rot and did not stop. The Inquisitor Haap examined the Cook over it and reports that he answered every question with a recipe. He keeps a stoppered jar of the first batch in his kitchen, which the court says is both the sickness at its strongest and the only thing that will undo it.\n\nAlbion's clerics traced the plague down to him, and Albion killed him for it, and the court has done something for Malroch it has done for nobody else: it mourned. The Master promised every demon of the hollow a reward for the head of the mortal who did it. The kitchen is still warm. Somebody has gone on cooking.",
+ "legend": "Malroch is the Albion target of the Black Plague quest: Sister Elaydith sends you down, and you kill him in his kitchen in the north, between Prince Ba'alorien's hall and the Inquisitors, for the stoppered potion. Level 43, a plain NPC, alone in his room, so a small group does it. He comes back in about three minutes. Inquisitor Haap and Earl Mermer are close, so do not wander into the cloister after. Kill him and every demon in Darkness Falls wants your head, or so Mystemas says.",
+ "yells": {
+  "aggro": [
+   "Out of my kitchen!",
+   "Another taster. Good. Open wide.",
+   "You smell underdone."
+  ],
+  "phases": [],
+  "death": [
+   "The jar... the first batch... it is yours... choke on it..."
+  ],
+  "slay": [
+   "Into the pot.",
+   "Seasoned."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A kitchen that smells of coals and something rotting.",
+   "A pot simmers. Nobody is stirring it."
+  ],
+  "phases": [],
+  "realmFirstKill": "Malroch the Cook is dead. The north's kitchen is cold."
+ },
+ "botLines": {
+  "briefing": [
+   "malroch is in the kitchen in the north, near the cloister. [albion plague quest|black plague]",
+   "43, normal npc, small group is fine. [grab the potion|dont forget the potion]"
+  ],
+  "aftermathWin": [
+   "malroch down. [potion got|got the stoppered potion]",
+   "the cook is dead. [now every demon wants us lol|bounty on our heads now]"
+  ],
+  "aftermathLoss": [
+   "malroch got us. [embarrassing|how]",
+   "pulled the cloister after malroch. [wrong door|wipe]"
+  ],
+  "rumour": [
+   "[heard|word is] malroch the cook made the black plague",
+   "kill the cook and every demon in df wants your head. [so the imp says|mystemas says]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "malroch",
+  "text": "Malroch the Cook, who keeps the kitchen between Prince [Ba'alorien]'s hall and the cloisters. He cooked the Black Plague from the Archivist's recipe, tried it on Marquis [Dortaleon], and keeps a stoppered jar of the first batch. Albion killed him for it, and the court mourned."
+ },
+ "bookPage": "From the daybook of Sister Elaydith's runner, Camelot: The kitchen was warm, the only warm room we found below. There were pots on every fire and nobody stirring them, and a smell I knew from the sickrooms at home. The cook was a squat thing in an apron of hide, and he looked up at us as a cook looks up at boys come to steal tarts. When he fell he held out a stoppered jar and told us to choke on it. We did not. Sister Elaydith says it was the cure. I have not been able to eat a stew since.",
+ "chronicle": {
+  "win": "{realm}'s company under {raidLeader} put out the fires of Malroch's kitchen in {minutes} minutes."
+ }
+}

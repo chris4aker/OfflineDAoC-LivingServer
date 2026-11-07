@@ -1,0 +1,302 @@
+{
+  "id": "lyonesse",
+  "name": "Lyonesse",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    10
+  ],
+  "summary": "The land the sea took beyond Cornwall: the drowned Danaoin still farming, the cailleach sisterhood at Rome's pillars, a cult of Arawn in the broken cathedral, and Morgana's summoning at the fallen tower.",
+  "facts": [
+    {
+      "text": "Albion's level 50 epic quests send the Academy to Morgana's ritual at the fallen tower in Lyonesse, and the Church to Sister Blythe's cult of Arawn in a broken cathedral there.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/epic/Academy50.cs"
+    },
+    {
+      "text": "The Cailleach Uragaig walks Lyonesse too (316218, 664484); Morgana's tower is at 306093, 670120 and Blythe's cathedral at 322231, 671546.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Lyonesse is zone 10 of region 1, about 320 monsters. The Danaoin farmers, fishermen, sailors, clerks and soldiers, the archers, pikemen, footmen, knights and farmers on its roads are ghost-flagged spawns; moorliches, peallaidh, hamadryads, pygmy goblins, bone snappers, dunters, fitful bwca, gabriel hounds and freybugs live there too.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 1 zone 10 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Seven cailleach priests (60-67) and seven cailleach guards (60-66) stand round the Cailleach Uragaig's pillars; eleven Priests of Arawn stand round the broken cathedral; Arawnite shamanesses and warriors (Followers of Arawn) camp in the east.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 1 zone 10 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lidmann Halsey's directions (Feast of the Decadent): follow the road south-west into Lyonesse past the lesser telamon, past the two houses with the pikemen and pygmy goblins, to a clearing straight west with ruins of pillars that the cailleach sisterhood calls home.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/epic/Defenders50.cs"
+    },
+    {
+      "text": "Roben Fraomar (Passage to Eternity): the broken cathedral lies at the heart of Lyonesse, behind the Pikeman, across from the Trees, its walls visible from far off by day; its new occupants worship Arawn and strive to break the light of Camelot.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/epic/Church50.cs"
+    },
+    {
+      "text": "At game hour 18:30 an Unnatural Storm (level 65-70, lightning 200 energy) and four or five smaller storms (40-42) rise over the north-eastern expanse of Lyonesse; any storm not fighting is removed between 07:00 and 18:00.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/UnnaturalStorm.cs"
+    },
+    {
+      "text": "Impossible Mission sends Cornwall Station's men against two undead farmers in Lyonesse and to a ruined temple whose guards are not to be fought.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Cornish legend, not game canon: Lyonesse was a country between Land's End and the Isles of Scilly drowned in a single night.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Lyonesse"
+    },
+    {
+      "text": "Folklore, not game canon: dunters haunt the old peel towers of the Scottish border; the bwca is a Welsh house brownie; the gabriel hounds are spectral hounds of northern England; the freybug is a black dog of Norfolk; the peallaidh is a shaggy water spirit of Perthshire (to verify).",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Dunter"
+    },
+    {
+      "text": "Clemo Penrose and his letters, the Danaoin as the drowned folk, the telamon road, the clerks' ledgers and the storm as 'a debt the sky owes' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The land the sea took. The old songs of the west tell of a country beyond Cornwall, Lyonesse, with towns and churches and a road that ran out towards the islands, and of the night the sea came up over it and did not go back. What Albion calls Lyonesse now is the part the sea gave back: grey grass and salt marsh, roads that stop at the water, walls with nothing behind them. The people who drowned in that night are still there. The Danaoin, they call themselves, and they go on as they went on before: the farmers in the western fields, the fishermen at the shore below the pillars, the sailors on the north-western strand waiting for a tide that will take them home, the clerks in the north-east with their ledgers of debts the sea forgave. Pale soldiers keep the old road posts, pikemen and archers and footmen, and a few knights in the south-east who still ride the bounds of a lord nobody remembers. They do not know that they are dead, or they know it and do not think it a good enough reason to stop.\n\nOlder than the sea. Rome was in Lyonesse before the water. Its soldiers brought their god Mithras with them, the god of the bull and the cave, and built for him west of the road a temple with a ring of pillars, where the torches of the god were carried raised and lowered and the highest of his priests was called Father. Along the road from Cornwall they set up their stone giants, the telamons, figures that hold up a roof that is not there; the lesser telamon still stands by the road where it turns south-west into the drowned country. When Rome went the Church came, and built a cathedral at the heart of the land, so tall that its walls could be seen from the Cornish hills. Then came the night of the sea, and the cathedral lost its parish, and its roof, and in the end its faith.\n\nWho holds it now. Three powers have taken the ruins, and none of them is Albion's. At the pillars of Mithras the cailleach sisterhood keeps house, old women and their guards in grey, and their mistress the Cailleach Uragaig, the hag of the cold, who calls the dead god Father and is answered. In the broken cathedral Sister Blythe, once a nun of the Church, prays to Arawn, lord of the dead, with a congregation of hooded executioners and a ring of priests who walk the nave. Followers of Arawn camp in the east with their shamanesses. And at the fallen tower in the west, where the bone snappers swim in the flooded footings, Morgana has come back to Albion's own soil to work a summoning, with two demons of her making to keep it for her and a swarm of lesser things roosting on the broken top.\n\nWhat else walks there. The moorliches walk the middle moor, lords of the drowned who kept their pride. Peallaidh, the shaggy spirits of running water, crowd the eastern streams, and hamadryads, the souls of trees, keep the high wood on the eastern hills. Pygmy goblins and their tanglers hold the southern heights. Dunters knock in the ruins as they knock in every old house of the border country; fitful bwca, house-spirits with no house left to keep, sulk in the south-west; grey gabriel hounds run the western fields, and a black freybug or two pads the lanes as the black dogs pad every lane in the songs. And on some evenings, without any wind to bring it, a storm gathers over the north-eastern moor at dusk and walks there all night with lightning in its fists, and by morning it is gone.\n\nWhy it matters to Albion. Lyonesse is where the realm sends the people it has finished training. The Church sends its champions to the cathedral to end a heresy that grew out of Albion's own bargain with Arawn, who lends the realm his Inconnu in the isles and is still damned from every pulpit in Camelot. The Academy sends its mages to the fallen tower to undo Morgana's summoning before it is finished, and tells them plainly that they are there to break a ritual, not to end a war. The Defenders send theirs to the pillars. The Danaoin watch them all go by, and go on farming, and the sea, which took the land once, lies at the edge of every field and waits.",
+  "legend": "Lyonesse is the drowned zone south-west of Cornwall, mostly ghosts in the 40s and 50s: Danaoin farmers, fishermen, sailors and clerks, ghost soldiers on the roads, moorliches in the middle, peallaidh in the eastern streams, hamadryads up on the eastern hill. It is epic quest country. The Cailleach Uragaig (70) sits in the ring of pillars west of the road with her sisterhood's priests and guards around her, for the Defenders and Shadows epics. Sister Blythe (69) is in the broken cathedral in the middle, eleven Priests of Arawn round the walls, for the Church epic. Morgana (90) is at the fallen ruin in the west for the Academy epic: you kill her two demons, Bechard and Silcharde, and their minions, and she leaves. You cannot attack Morgana at all. All three are crowd-control immune and cannot be hurt if you drag them off their ground, and all three come back about half an hour after. Watch the north-east at dusk: a storm boss (65-70) with smaller storms comes up out of nowhere around half six game time and hangs about until morning.",
+  "atmosphere": {
+    "firstEntry": [
+      "Lyonesse. The land the sea gave back.",
+      "Salt in the grass. A road ends at the water.",
+      "Pale farmers in the fields do not look up.",
+      "Somewhere a bell rings under the sea.",
+      "Cathedral walls on the skyline, roofless."
+    ],
+    "areas": [
+      {
+        "name": "the pillars of Mithras",
+        "x": 316218,
+        "y": 664484,
+        "z": 2736,
+        "radius": 900,
+        "lines": [
+          "A ring of pillars. Rome's god kept house here.",
+          "The cailleach sisterhood keeps it now.",
+          "The air turns cold. Torches burn without flame."
+        ]
+      },
+      {
+        "name": "the broken cathedral",
+        "x": 322231,
+        "y": 671546,
+        "z": 2762,
+        "radius": 1000,
+        "lines": [
+          "A broken cathedral. The prayers here are not Albion's.",
+          "Priests of Arawn walk the nave.",
+          "The walls still stand. The roof does not."
+        ]
+      },
+      {
+        "name": "the fallen tower",
+        "x": 306093,
+        "y": 670120,
+        "z": 3116,
+        "radius": 1000,
+        "lines": [
+          "A fallen tower. A woman's voice chants inside.",
+          "Things with wings roost on the broken top."
+        ]
+      },
+      {
+        "name": "the western fields",
+        "x": 314192,
+        "y": 657432,
+        "z": 2945,
+        "radius": 1800,
+        "lines": [
+          "Danaoin farmers work fields that were seabed.",
+          "They do not look up as you pass."
+        ]
+      },
+      {
+        "name": "the drowned strand",
+        "x": 303870,
+        "y": 640353,
+        "z": 2710,
+        "radius": 1800,
+        "lines": [
+          "Pale sailors wait for a tide.",
+          "The sea took this land once. It remembers."
+        ]
+      },
+      {
+        "name": "the clerks' houses",
+        "x": 332428,
+        "y": 646798,
+        "z": 3018,
+        "radius": 1500,
+        "lines": [
+          "Danaoin clerks over ledgers the sea forgave.",
+          "Somebody here is still counting."
+        ]
+      },
+      {
+        "name": "the middle moor",
+        "x": 322959,
+        "y": 659900,
+        "z": 2795,
+        "radius": 2000,
+        "lines": [
+          "Moorliches walk the middle moor.",
+          "Drowned lords who kept their pride."
+        ]
+      },
+      {
+        "name": "the eastern streams",
+        "x": 337453,
+        "y": 655894,
+        "z": 2767,
+        "radius": 2000,
+        "lines": [
+          "Shaggy things wade in the streams.",
+          "The peallaidh do not like company."
+        ]
+      },
+      {
+        "name": "the high wood",
+        "x": 344871,
+        "y": 664751,
+        "z": 5424,
+        "radius": 1800,
+        "lines": [
+          "Hamadryads. The trees are watching.",
+          "Every tree here has a face."
+        ]
+      },
+      {
+        "name": "the Arawnite camp",
+        "x": 344050,
+        "y": 660447,
+        "z": 3382,
+        "radius": 900,
+        "lines": [
+          "Followers of Arawn. Shamanesses at the fire.",
+          "The lord of the dead has friends here."
+        ]
+      },
+      {
+        "name": "the storm moor",
+        "x": 333879,
+        "y": 649464,
+        "z": 4634,
+        "radius": 1500,
+        "lines": [
+          "No wind, and yet the sky is gathering.",
+          "Lightning walks the north-east at dusk."
+        ]
+      },
+      {
+        "name": "the riders' bounds",
+        "x": 335470,
+        "y": 681557,
+        "z": 2979,
+        "radius": 1500,
+        "lines": [
+          "Ghost knights ride the bounds of a lost lord.",
+          "Footmen at a post nobody relieves."
+        ]
+      },
+      {
+        "name": "the goblin heights",
+        "x": 328977,
+        "y": 680368,
+        "z": 3562,
+        "radius": 1800,
+        "lines": [
+          "Pygmy goblins. Tanglers in the grass.",
+          "Small, many, and quick with a snare."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "cailleach uragaig walks lyonesse. the old folk in cornwall won't say the name",
+      "lyonesse is the land the sea took, [my gran said|the old tales say]. what we walk is what it gave back",
+      "theres a cult of arawn in the broken cathedral in lyonesse. [the church hates it|the priests go white when you mention it]",
+      "the danaoin in lyonesse are the drowned. they still farm, fish and keep accounts",
+      "the cailleach's pillars in lyonesse were a roman temple to mithras [once|before the sea]",
+      "the romans called mithras' top priest father. thats who the cailleach calls",
+      "sister blythe was a real nun before arawn took her",
+      "the church hates the blythe cult because albion is friends with arawn in the isles. awkward",
+      "morgana's demons at the lyonesse ruin are bechard and silcharde. she made them",
+      "lyonesse ghosts dont know theyre dead [i think|or dont care]",
+      "theres a storm in ne lyonesse at dusk that isnt weather. 65 to 70, brings little ones",
+      "the old sexton of the broken cathedral still signs the danaoin clerks' accounts",
+      "moorliches in lyonesse are drowned lords, [proud as ever|still think they own the place]"
+    ],
+    "rumour": [
+      "[heard|someone said] morgana is back in lyonesse, at the ruin by the telamon road. [dont fight her|kill her demons, not her]",
+      "[heard|word is] sister blythe calls her executioners four at a time",
+      "[heard|someone said] blythe's four executioners stand right back up at the altar",
+      "heard you cant even target morgana. she just watches",
+      "[heard|someone said] the cailleach's torches only burn for a moment",
+      "heard the danaoin sailors on the strand are waiting for a tide that never comes",
+      "[heard|someone said] the priests of arawn walk the cathedral in a ring all day",
+      "heard the storm over lyonesse rolls in at dusk and is gone by morning"
+    ],
+    "tell": [
+      "lyonesse? drowned land past cornwall. cailleach uragaig, sister blythes cult in the cathedral, morgana at the ruin by the telamon road",
+      "epic quest country. the church and the academy send their 50s there",
+      "is lyonesse hard? mostly 40s-50s ghosts. the three epic targets are 69, 70 and morgana at 90",
+      "where's lyonesse? south west out of cornwall, past the stone giant on the road",
+      "where's the cailleach? ring of pillars straight west off the road, her sisterhood round her",
+      "where's blythe? the broken cathedral in the middle. you can see the walls from miles off"
+    ]
+  },
+  "loremaster": {
+    "intro": "[Lyonesse] is the land the sea took, and gave back broken, and the [danaoin] still work it. Ask of the [pillars of mithras] and the [telamon], the [cailleach], the [broken cathedral], [sister blythe] and her [priests of arawn], the [fallen tower], [morgana], [bechard] and [silcharde], the [moorliches], the [hill folk of lyonesse], the [unnatural storm], or [clemo penrose], who is still the sexton.",
+    "topics": {
+      "lyonesse": "The land the sea took, beyond Cornwall. What we walk is what it gave back: salt grass, roads that end at water, and the [danaoin], who drowned and did not stop. Three powers hold its ruins: the [cailleach], [sister blythe] in the [broken cathedral], and [morgana] at the [fallen tower].",
+      "danaoin": "The drowned folk of Lyonesse, as they name themselves; the name's root is to verify. Farmers in the west, fishermen below the pillars, sailors on the strand, clerks in the north-east houses with their ledgers. They are ghosts and they go on working. Clemo Penrose, the last sexton, still signs their accounts.",
+      "pillars of mithras": "West of the road, a ring of pillars where Rome's soldiers kept their god Mithras, whose highest priests were called Father. The cailleach sisterhood holds it now, and their mistress the [cailleach] calls on the Father still.",
+      "telamon": "The stone giants Rome set up along the Cornwall road, figures that hold up a roof that is not there. The lesser telamon stands where the road turns south-west into [lyonesse]; the Defenders' riders give it as the way to the [pillars of mithras].",
+      "broken cathedral": "Built by the Church after Rome, at the heart of the land, so tall it was seen from Cornwall. The sea took its parish and its roof. [Sister blythe] holds it for Arawn now, and [priests of arawn] walk the nave.",
+      "priests of arawn": "Eleven priests of the lord of the dead who walk the [broken cathedral] in a slow ring round [sister blythe]'s altar. The sexton Clemo Penrose learned not to cross their path. They are not her executioners; they are her choir, and they come for anyone who comes for them.",
+      "fallen tower": "In the west, where the bone snappers swim in the flooded footings. [Morgana] works her summoning there with two demons, [bechard] and [silcharde], and a swarm of lesser things roosts on the top.",
+      "bechard": "One of the two demons [morgana] made to keep her summoning at the [fallen tower]. He and [silcharde] answer for each other: wake one and both come. The Academy says his spells feed him.",
+      "silcharde": "[Bechard]'s twin in [morgana]'s work at the [fallen tower]. When either falls, the lesser things on the ruin's top come down, and the summoning is not broken until they are dead too.",
+      "unnatural storm": "On some evenings a storm gathers over the north-eastern moor of [lyonesse] at dusk with no wind to bring it, and walks all night with lightning in its fists, smaller storms beside it. By morning it is gone. The clerks write it in their ledgers as a debt the sky owes.",
+      "moorliches": "The drowned lords of [lyonesse], who kept their pride when they lost their land, and walk the middle moor as if they still owned it.",
+      "hill folk of lyonesse": "Peallaidh, shaggy spirits of running water, in the eastern streams; hamadryads in the high wood; pygmy goblins and their tanglers on the southern heights; dunters knocking in the ruins; fitful bwca with no house left to keep; gabriel hounds and the black freybug in the lanes.",
+      "clemo penrose": "The last sexton of the [broken cathedral], set out of its door by [sister blythe]'s executioners. He lives with a [danaoin] farming family, eats their salt bread, and writes to the Bishop at Camelot asking for a roof, or a new sexton."
+    }
+  },
+  "book": {
+    "title": "A Sexton's Letters from Lyonesse",
+    "pages": [
+      "To the Bishop at Camelot, from Clemo Penrose, sexton of the broken cathedral of Lyonesse. I write because I am still the sexton, though there is no parish, and the cathedral has no roof, and nobody has told me to stop. The parish registers are under the sea with the parish. I have begun new ones. The Danaoin do not come to Mass, but they are parishioners as much as anyone: they farm the west fields as their fathers did, they fish below the old pillars, and the clerks in the north-east houses still bring me their accounts on quarter days, and I sign them, because somebody must.",
+      "I must tell you the cathedral is not empty. A woman calling herself Sister Blythe holds it, with men in executioners' hoods, and they pray at the altar, and they do not pray to God. They pray to Arawn, the lord of the dead. The Inconnu are his, they say, and the Inconnu are our friends in the isles. So I am told. There are priests of his as well, eleven of them, who walk the nave all day in a slow ring, and I have learned not to cross their path while they are walking it.",
+      "I asked her why. She said the dead have always had a lord and that Camelot has only just noticed. She said the light of Camelot is a candle and that candles go out. Then her executioners took me to the door and set me outside it, gently, as one might set out a cat. I am writing this from the farm of a Danaoin family who have taken me in. They feed me bread that tastes of salt. They do not eat it themselves. To the west I can see the fallen tower, and there is a light in it at night, and a woman's voice. It is not Sister Blythe's.",
+      "Of her congregation. There are always four of them at the altar. When the Snowdonia men came last spring and cut two down, she stood at the altar and called on her lord, and before the bell of the hour could have rung twice there were four again, standing up out of the floor where the old tombs are. The men who came after them in the autumn did not try to cut them down. They went for her. And when she fell her four lay down with her, all at once, like men who had been told they might rest. I buried them. They did not object.",
+      "Of the pillars west of the road. The Romans had a god there before we had one, and the cailleach sisterhood keeps his house now. Their mistress is the old hag of the cold. When she is threatened she calls on the Father, and four torches stand up round her in the air, and they all throw at once at the one she has chosen, and then they go out. The Father lends his torches, the fishermen say; he does not give them. After that she throws her own fire, and it takes her a long breath to make each spear of it.",
+      "Of the fallen tower, last. I went near it once. There were two great winged things on the stones below it, of a kind I have no name for, and more on the broken top, small and many. A Danaoin sailor told me the lady inside is Arthur's sister, and that nobody can lay a hand on her, and that the two below her are her work, not her servants. Break the work and she goes, he said. She always comes back. My lord Bishop, I would like a new roof for the cathedral. I would settle for a new sexton."
+    ]
+  },
+  "bosses": [
+    "cailleach-uragaig",
+    "sister-blythe",
+    "morgana"
+  ],
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers",
+    "arawn",
+    "morgana"
+  ]
+}

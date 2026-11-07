@@ -1,0 +1,137 @@
+{
+  "id": "corrupt-primal-of-fire",
+  "name": "Corrupt Primal of Fire",
+  "catalogKey": "galladoria/fireprimal",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The four Corrupt Primals rise at the waterfall bridge after the voices; Olcasgean wakes only when all four are dead. Their shared line is 'We shall protect.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
+    },
+    {
+      "text": "Level 83, 125,000 health, a damage shield of 80, and a trail of fire left on the ground every second.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The fire patches were softened for Living Server raids (owner, 2026-10-19); the original strength is behind a switch.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Hy Brasil burns rarely, and the Sylvan fear fire more than any other thing, so it grieves them most that the Root has a fire of his own. It is the heat of rot, the kind that wakes inside a wet haystack: slow, sour and relentless. The Primal of Fire carries it on its skin, so that every blade that bites it is bitten back, and it leaves its footprints burning on the stone. The Sylvan say that anyone who stands still near it ends standing in what it has left.\n\nHy Brasil is a wet country and burns rarely, and the Sylvan fear fire above every other thing, because a Sylvan can burn. So it grieves them most of all that the Root has a fire of his own. It is not the bright fire of a hearth. It is the heat of rot, the warmth that wakes inside a wet haystack in autumn and smoulders for weeks until the rick goes up: slow, sour and relentless.\n\nThe guardian of fire carries that heat on its skin, so that every blade that bites it is bitten back, and it leaves its footsteps burning on the bridge stones behind it, a new patch at every step. The druids of Tir na Nog say the patches burn lower than they did in the first years, but they still burn. The fire guardian does not chase and does not hurry. It walks, and the floor it has walked on burns, and those who circled it in the first years ended standing in its fire. The Sylvan say that when it dies a smell of cut grass comes up out of the stones, as if the bridge remembered being a meadow.\n\nOf the four, fire is the one the Root did not steal but made from his own decay, in the hay of a meadow the hollow closed over. Senan of Ardee found his way through by dragging it in a straight line; the fire-keepers let their rings burn down the night it dies.",
+  "legend": "It burns whoever hits it, so melee needs steady heals. It leaves fire on the floor behind it: drag it in a line, never in circles, and step out of the patches. A raid that fights it in a ring ends up standing in its own fire. Veterans drag it in a long straight line along the bridge with one tank, rotate melee so no one eats the shield for too long, and keep the casters on the far side of the patches. The Sylvan add one piece of advice of their own: when it dies, do not cheer on the bridge. Say nothing, and let the stones cool.",
+  "yells": {
+    "aggro": [
+      "Rot is a fire too. Slow. Patient.",
+      "The stones under it begin to smoulder: we shall protect.",
+      "The heat of rot, given legs."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The bridge burns where the rot-fire walks."
+      }
+    ],
+    "death": [
+      "The fire... goes out.",
+      "A smell of cut grass rises from the stones."
+    ],
+    "slay": [
+      "We shall protect.",
+      "Smouldered away.",
+      "Rot takes everything in the end."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four voices speak as one: we shall protect.",
+      "The bridge stones are scorched in a long trail."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The stones of the bridge are burning."
+      }
+    ],
+    "realmFirstKill": "The rot-fire of Galladoria is quenched."
+  },
+  "botLines": {
+    "briefing": [
+      "fire primal shields back on melee. [healers on the tanks|keep the melee topped]. and get out of the fire on the floor",
+      "fire primal: one tank drags it in a straight line. [no circles|never circle it]",
+      "melee rotate, its shield bites back. [swap in and out|dont sit on it]",
+      "casters on the far side of the patches, never between. [range it|stay back]"
+    ],
+    "aftermathWin": [
+      "fire down. [nobody stood in it|only three of you stood in it]",
+      "fire down and nobody stood in a patch. [miracle|first time ever]",
+      "dragged it the length of the bridge, textbook. [love this raid|grats]",
+      "smelled grass when it died. [like the sylvan said|weird]"
+    ],
+    "aftermathLoss": [
+      "we fought the fire primal in a circle and [stood in our own patches|cooked ourselves]",
+      "we circled it and [cooked in our own fire|stood in patches]",
+      "the melee sat on it and [the shield killed them|burned themselves out]",
+      "healers stood in fire healing people standing in fire. [move|please move]"
+    ],
+    "rumour": [
+      "[heard|someone said] the fire on the bridge burns slower now. still burns",
+      "[heard|someone said] the fire primal is the heat inside a rotting haystack. sylvan fear it most",
+      "the druids [softened|tamed] the fire patches at the bridge. they still burn though",
+      "[heard|someone swears] the bridge smells like a meadow after the fire primal dies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Primal of Fire",
+    "text": "The heat of the Root's rot, given a body. It bites back every blade that bites it and leaves its footsteps burning. Keep moving."
+  },
+  "bookPage": "Aodhan's note: I have never seen a Sylvan afraid of anything but fire, and I saw one afraid of a story about fire. The fire-keeper of Domnann, of all people, told it: the Root's fire is the slow kind, the fire that sleeps in a wet rick of hay and wakes when no one is watching. It walks at the bridge now, she said, and wherever it walks the stones burn. Senan of Ardee, who fought it in the first spring, told me he lived by leading it in a straight line, never round, so that the fire it left was behind him. The fire-keeper nodded and said that is the way with most things.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Corrupt Primal of Fire; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Fire after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the sleeper it guards"
+    },
+    {
+      "id": "corrupt-primal-of-air",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "a fellow guardian"
+    },
+    {
+      "id": "corrupt-primal-of-earth",
+      "relation": "a fellow guardian"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Fire the Sylvan Fear",
+      "text": "A Sylvan can burn. That single fact, Lisín told Aodhan, explains more about her people than anything else. Their houses have no hearths inside; their fire-keepers, of whom she was one, tend fires in stone rings outside every village and are among the most honoured of Sylvan, because they are trusted with the thing that can kill them all. Hy Brasil is a wet country and burns rarely, and the Sylvan have a word for a forest fire that they will not say aloud indoors.\n\nSo it grieved them most of all that the Root has a fire of his own. It is not the bright fire of the stone rings. It is the heat of rot: the slow warmth that wakes inside a wet haystack in autumn and smoulders for weeks, unseen, until the rick goes up. Of the four guardians at the bridge, fire is the only one the Root did not take from the isle. The Sylvan say he made it out of himself, out of the heat of his own decay, and set it beside the three he had stolen so that his guard would be complete.\n\nThe Sylvan have one great forest fire in their memory, and they call it the Red Summer. It came in the years after the hollow closed, out of the ground at the edge of World's End, and burned for a season before rain put it out. Three villages are gone from the maps of Hy Brasil because of it. Lisín's people do not say it was the Root's fire. They do not say it was not."
+    },
+    {
+      "title": "The Burning Trail",
+      "text": "The guardian of fire carries that heat on its skin, so that every blade that bites it is bitten back, and it leaves its footsteps burning behind it on the bridge stones, a new patch at every step. In the first years the patches burned fiercely and wide, and the three hundred and forty lost more of their number to the floor than to the guardian. A warrior of Ardee named Senan, one of the survivors, found his way through on the bridge itself, by accident, when he dragged the guardian away from his wounded friends in a long straight line: the fire was all behind him, and none of it under anyone he cared for. He told Orlaith so before her going-down, in a line of the bridge's length drawn in the ash of her camp-fire.\n\nThe fire on the bridge burns lower now than it did in Senan's day. The druids of Tir na Nog believe every company that has gone down since has worn it down a little, as a fire is worn down by being beaten. The Sylvan believe the Root has simply found that a smaller fire does as well. Either way it still burns, and the Sylvan say of anyone who walks in circles that he will end standing in his own fire.\n\nSenan carried a burn across his back for the rest of his life in the exact shape of the bridge's flagstones, and he would show it to anyone who asked about the bridge. He became captain of Ardee's own company afterward, and the saying the Ardee folk put on his cairn is his: the fire was behind me, or it was under me, and there was no third place."
+    },
+    {
+      "title": "The Smell of Cut Grass",
+      "text": "When the fire guardian dies, a smell of cut grass rises from the bridge stones, as though the bridge remembered being a meadow. The Sylvan believe it does. Lisín told Aodhan that before the hollow there was a meadow where the bridge now stands, open to the sky through a gap in the hills, and that the Sylvan of the old days mowed it every summer and dried the hay on the slopes above. The heat of rot that the Root made into a guardian, she said, began in that hay, the summer the hollow closed over the meadow and the cut hay lay in the dark and did not dry.\n\nThe fire-keepers of Domnann have a custom for the night after the fire guardian falls. They let the stone rings outside every village burn down to embers and do not feed them until morning, so that for one night the only fires on the isle are the clean ones going out. Aodhan asked why. Lisín said: so that it knows which kind of fire is welcome.\n\nThe meadow had a name too: Cluain an Fhéir, the hay meadow, and the Sylvan who mowed it every summer were the same families who now keep the stone rings. They say the hay they left drying on the slopes above it the summer the hollow closed was never brought in. The bridge, Lisín said, is built on the bones of their last harvest. When the smell of cut grass comes up through the stones, the old families of Domnann say it is the hay, still waiting to be carried home."
+    },
+    {
+      "title": "What the Rot-Fire Wants",
+      "text": "The Sylvan say each of the four guardians wants what its element always wanted, turned. The wind wants to go everywhere and is kept in one place. The water wants the sea and is kept in a pool. Stone wants to be still and is made to fight. The fire wants what fire always wants, which is more, and it is the only one of the four that is not being made to act against its nature.\n\nThat is why the fire-keepers fear it most. If the Root ever woke fully, Lisín said, the other three might be freed by his waking, as servants are freed when a house burns down; the fire would only grow. The Sylvan point to the burned trees at the edge of World's End, older than any company of the realm, where something smouldered under the ground for a season and came up through the roots. They believe the rot-fire was there first, before it was set at the bridge, testing the isle. They believe it will test it again.\n\nThe burned trees at World's End stand in a ring the Sylvan call An Fáinne Dóite, the burned ring, a day's walk from where Elro keeps the edge. Nothing has grown inside it since the Red Summer. Elro, the Sylvan say, will not look at it. The realm's scouts who cross it report that the ground is warm underfoot in winter. The fire-keepers of Domnann tend a ring of their own stones around its edge, and keep a fire burning there, a small clean one, as a challenge."
+    }
+  ]
+}

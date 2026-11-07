@@ -1,0 +1,137 @@
+{
+  "id": "amphiptere",
+  "name": "Amphiptere",
+  "catalogKey": "albion-named-mobs-shrouded-isles/amphiptere",
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "the serpent of caldey"
+  ],
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else; faction Undead Servants of Morgana.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Amphiptere.cs"
+    },
+    {
+      "text": "When it takes damage it has a 20% chance to broadcast 'A blow knocks one of Amphiptere's tooths to the ground' and, 5 s later, raise one ancient zombie (level 61-63, 3,000 health) within 500; it cannot do so again for 25-35 s. The zombies join its target and die when it dies or resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Amphiptere.cs"
+    },
+    {
+      "text": "35% of its melee hits add a 350 heat strike. It casts Amphiptere's Venom (80 matter every 4 s for 40 s, only on an unpoisoned target), Amphiptere's Infection (a 120 s disease, only on an undiseased target) and Shield of Feathers (a 10 s bladeturn on itself, recast 10 s); it stops meleeing while it casts.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Amphiptere.cs"
+    },
+    {
+      "text": "It walks home at full health when nobody is left on its aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "An amphiptere is a winged serpent of heraldry, often shown feathered.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Amphiptere"
+    },
+    {
+      "text": "The serpent older than the graves, the teeth sown like the dragon's teeth of the old tale, Durval's 'blessing' and the clan's habit of gathering the teeth are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The amphiptere of Caldey is older than the graves. The priests of the dead who kept the burying isle for the colleges found it already roosting on the northern heights when the first barrow was dug, a great winged serpent with feathers on its wings and a mouth full of teeth as long as daggers, and they let it be, because it let them be. The colleges' heralds put a winged serpent in the arms of the burying isle for it. The fishermen of Little Haven say it was there when the sea came in over the drowned country, and that it watched.\n\nIt was not the witch's. It is not dead, and Morgana did not raise it. But the readers of Avalon had a story from the far south, of a hero who sowed a dragon's teeth in a field and reaped armed men, and when the war came the priests learned that the old story was true of Caldey's serpent too. Its teeth are loose in its jaw. A hard blow knocks one out, and where a tooth falls into the burying isle's ground, the dead who lie there come up, ancient and slow, and stand beside the serpent. They do not come up quickly or in crowds; a tooth, then a while, then another; but they keep coming as long as the serpent is struck, and they lie down again when it does. Durval the priest called the falling teeth a blessing. The garrison on the Isle of Glass says Morgana did not have to raise the dead on Caldey; the serpent had been doing it for her.\n\nIt is a fighter of the old kind and does not trust its teeth alone. Its bite burns as if it had been in the fire. It spits a venom that clings and eats for a long while, and breathes a sickness into those near it that makes wounds slow to close, and when it is pressed it folds its feathers over itself for a moment and the next blow slides off them. While it spits and breathes it does not bite, and the clan's spearmen have learned to watch its head.\n\nThe highland clan at Little Haven gathers the teeth after every hunt and buries them at sea, far out, where there are no dead to wake. The clan bard says the serpent will run out of teeth before Caldey runs out of dead, and that is the only comfort the song has.",
+  "legend": "The Amphiptere, level 71, 30k health, in the north of Caldey near Little Haven. When it is hit there is a chance you see 'A blow knocks one of Amphiptere's tooths to the ground', and 5 seconds later an ancient zombie (61-63, 3k) pops within 500 and joins in; then nothing for 25 to 35 seconds. So expect a zombie about every half minute: an off-tank or a dps picks each up as it arrives. Its melee procs a 350 heat hit, so tank with heat resist; cure its 120 s disease so heals land, and heal through the 40 s venom. It throws a 10 s bladeturn on itself, so the first hit after the shimmer does nothing. It cannot be mezzed or stunned, stops meleeing while it casts, and all zombies die with it. A wipe resets it; respawn about an hour.",
+  "yells": {
+    "aggro": [
+      "The serpent rears, feathers spread.",
+      "A hiss like a forge quenched.",
+      "The amphiptere uncoils from its roost."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "A tooth falls. The ground gives up its dead."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The serpent folds its feathers and hisses."
+      }
+    ],
+    "death": [
+      "The great serpent sinks into the heather.",
+      "Its teeth lie scattered in the grass."
+    ],
+    "slay": [
+      "The serpent shakes its prey.",
+      "Another for the burying isle.",
+      "Burned, bitten, buried."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Teeth lie in the grass, long as daggers.",
+      "The oldest thing on Caldey is not dead."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "A tooth falls. The ancient dead climb out!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The amphiptere folds its feathers over itself."
+      }
+    ],
+    "realmFirstKill": "The Amphiptere of Caldey has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "amphiptere, 71, 30k. when you see the tooth message a zombie spawns 5 sec later. one every 30ish sec",
+      "off tank grabs each zombie as it pops. theyre 3k, kill them fast",
+      "its melee procs 350 heat, tank wants heat resist. cure the disease, heal through the venom",
+      "it bladeturns itself for 10 sec, dont waste a big style on the shimmer"
+    ],
+    "aftermathWin": [
+      "amphiptere down. gather the teeth like the clan does",
+      "zombies never got ahead of us. nice",
+      "nobody forgot the cure this time",
+      "the oldest thing on caldey. not anymore"
+    ],
+    "aftermathLoss": [
+      "let three zombies stack on the healers",
+      "nobody cured the disease and the heals stopped landing",
+      "tank had no heat resist and the procs ate him",
+      "ran out of time, zombies kept coming"
+    ],
+    "rumour": [
+      "[heard|someone said] the amphiptere was on caldey before the first grave",
+      "heard the clan at little haven buries the teeth at sea",
+      "[heard|someone said] morgana never had to raise caldey, the serpent did it",
+      "heard it isnt even undead, just old"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "amphiptere",
+    "text": "The winged serpent of [caldey], older than the graves, roosting north of Little Haven. It is not dead and Morgana did not raise it, but where its knocked-out teeth fall the ancient dead come up and stand beside it, one after another. Its bite burns, its venom clings, and it folds its feathers when pressed."
+  },
+  "bookPage": "From the Ledger of Little Haven, kept by Mordwywr. Paid nothing. The clan came back from the serpent's roost at dusk carrying their two dead and a sack, and the sack was teeth, each as long as my forearm. The matron had them rowed out past the last rock and dropped in deep water, where there are no graves to wake. I asked their bard why not keep one, for the ledger, as proof. He said a tooth of that serpent on Caldey is not proof of anything; it is a seed. I have left the serpent's page blank. Under it I have written that the clan lost two, that the dead came up one at a time and kept coming, and that the serpent is still on its roost.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} brought down the Amphiptere of Caldey in {minutes} minutes.",
+    "loss": "The Amphiptere sowed its teeth; {raidLeader}'s company of {realm} left Caldey's roost."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "durval",
+      "relation": "the priest of the dead who called the serpent's teeth a blessing"
+    },
+    {
+      "id": "vortanos",
+      "relation": "keeps the isle's other dead; the serpent raises its own"
+    }
+  ]
+}

@@ -1,0 +1,297 @@
+{
+  "id": "dodens-gruva",
+  "name": "Dodens Gruva",
+  "realm": "Midgard",
+  "regions": [
+    246
+  ],
+  "aliases": [
+    "the mine of death",
+    "gruva",
+    "dodens"
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound",
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "tier": "epic",
+  "summary": "Jarl Ormarr's mine of death under the Jamtland frontier, whose cold seam opens on the Summoner's Hall below.",
+  "facts": [
+    {
+      "text": "Dodens Gruva is Swedish for 'the mine of death'.",
+      "provenance": "original",
+      "source": "Swedish glossary"
+    },
+    {
+      "text": "It is a level 40-50 dungeon on the hill east of Glenlock Faste in the Jamtland Mountains, between Fensalir and Glenlock (62k, 48k). It no longer exists after New Frontiers.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=68"
+    },
+    {
+      "text": "Its bestiary lists Aros the Spiritmaster, Jarl Ormarr, Thane Dyggve, the Mistress of Runes, Gudlaugr, phantom huscarls, decayed dire wolves, icebound moribund, pained spirits, undead guards, cavernous yetis, snow vendo and the neutral Innocents.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=68"
+    },
+    {
+      "text": "A 2002 visitor said the entrance Innocents are neutral and buff passers-by with a 40-minute disease called Leprosy; a 2003 reply said its dark 'second floor' is a different dungeon.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=68"
+    },
+    {
+      "text": "Asked how to reach Summoner's Hall from Midgard, a December 2003 player answered: from Dodens Gruva, after the hard parts.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=74"
+    },
+    {
+      "text": "A guild beat Aros with three groups in January 2003 after an earlier three-group defeat; Living Server sizes the raid at 40.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/dodens-gruva-named-mobs-etc.110133/"
+    },
+    {
+      "text": "Allakhazam's bestiary for the mine also lists 'Aros the Spiritmater' (sic), a lower-level variant, phantom and plasma huscarls and widow claws.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=68"
+    },
+    {
+      "text": "A 2002 visitor said the mine's mobs all help each other and grow to level 60+ quickly; another found its lower floor dark and like Darkness Falls.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=68"
+    },
+    {
+      "text": "When Hamar is first fought, the snow vendo within 1,000 of him join in against a nearby real player (GameBots are never chosen).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/Hamar.cs"
+    },
+    {
+      "text": "Gudlaugr lies as a small white pup until he is fought; then he becomes a demon wolf the height of a troll (heals to full the first time he changes), and his bite bleeds and slows.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/Gudlaugr.cs"
+    },
+    {
+      "text": "The Mistress of Runes drops a flaming spear (Odin's Hatred, 650 energy damage in a 450 radius around her target) every 10-15 seconds and dims a random real player's sight (nearsight) every 20-25 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs"
+    },
+    {
+      "text": "Thane Dyggve calls Command Mjollnir about every 30 seconds: lightning hammers in a 350 radius around his target, announced with 'You feel your energy draining'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs"
+    },
+    {
+      "text": "Jarl Ormarr has no scripted mechanic; now and then when struck he boasts 'You call that a hit?' or 'I am a warrior, you can't kill me!'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/JarlOrmarr.cs"
+    },
+    {
+      "text": "Jarnhaug ('iron hill'), the steadings' name for the hill, Ashild of Glenlock and Asgerd are Living Server inventions.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Dodens Gruva, the mine of death, is the hole Jarl Ormarr cut into the hill east of Glenlock in the age of the jarls, when the Jamtland frontier had no keeps and only the shepherds' name for the hill, Jarnhaug, the iron hill. Snow lay late on its north side and the sheep would not graze there, and on its crown stood an old stone cut in letters nobody in Jamtland could read.\n\nOrmarr opened it with thunder. His thane Dyggve called Thor's lightning down on the hillside and split it, his Mistress of Runes laid out the galleries by her marks, and his spiritmaster Aros read the names of the shift at the shaft every morning. Hamar the foreman fed the snow vendo who came down begging in the hard winters, and they took him for one of their own. For years the iron went out to the steadings and the hill-forts, and the mine was the richest thing on the frontier.\n\nThen the Mistress cut her marks toward the last seam and they told her not here, and the jarl dug anyway. Behind the seam lay smooth stone no hill had made, the roof of the Summoner's Hall, and voices calling in three tongues. The shift died and walked downward, and the jarl went after them with forty huscarls, and Aros bound them all to the mine rather than let the calling have them. The families who came looking went in with bread and never came out; they wander the upper galleries as the Innocents, pressing a sickness on passers-by as a guest-gift. The cold that came up through the seam drew wolves, yetis and vendo down from the heights and froze the dead half into the walls, and in the gruva nothing has been alone since.\n\nThe war of the realms gave the hill-forts their names, and Glenlock's garrison has watched the hill ever since and listened for the picks. The stair at the bottom, past the jarl's hound Gudlaugr, goes down out of Midgard into the hall below, the same floor Albion and Hibernia reach by their own stairs. The gothar call the mine a grave Hel was cheated of, the spiritmasters a fold that keeps the flock from the wolf, and the steadings only a shift that has not been told it is over. All three agree on one thing: when the calling stops, the picks will stop, and not before.",
+  "chapters": [
+    {
+      "title": "Jarnhaug",
+      "text": "Before it was the mine of death it was a hill, and the shepherds of the Jamtland steadings had a name for it: Jarnhaug, the iron hill, because the stream that came off its southern face ran red after rain and stained the stones it touched. It stands east of the place where Glenlock stands now, a long grey back of rock between that keep and Fensalir, and in the age of the jarls there were no keeps on it or near it, only summer pastures, a few steadings in the valleys, and the hill-forts of whichever jarl held the most of the mountains that year.\n\nThe shepherds did not like the hill's north side. Snow lay there long after the rest of the frontier was green, and the sheep would not graze it; a flock driven onto the north slope would turn round of itself and come back down, every animal at once, as if called home by a voice the herdsmen could not hear. The steadings said the cold on that side came from inside the hill. Nobody went to see.\n\nOn the crown of Jarnhaug stood a stone. It was taller than a man and older than any steading, and it was cut with letters, though not the runes every Jamtland child could read, but older ones, straight-sided and close together, in lines that ran downward instead of across. The shepherds said it marked a grave, and that a giant was buried under it. The wise-women of the valleys said it was a warning, and that it had been put there by someone who knew what was under the hill and wanted it left alone. The stone has fallen since. Its pieces lie in the heather above the mine's mouth, and the runemasters of Jordheim who have looked at them say the letters are the same as the oldest marks the Mistress of Runes ever cut, the ones she cut last.\n\nJarl Ormarr came to the frontier in the years when the jarls of Jamtland were fighting each other for the high pastures and the iron that made spears. He was a big red-bearded man who had won two hill-forts and wanted a third, and he needed iron to keep the huscarls who had won them for him. A shepherd's boy showed him the red stream. Ormarr walked up the hill with his thane and his runecarver, looked at the stain on the stones, kicked over a turf to see the rust underneath, and said the hill was his. Nobody on the frontier was in a position to tell him otherwise, and the old stone on the crown, as the steadings point out, said nothing at all."
+    },
+    {
+      "title": "Thunder at the First Shaft",
+      "text": "The mine was opened in a single afternoon, and every account of it agrees on how. Ormarr's thane Dyggve, a troll of the old frontier who wore the harness of a thane of Thor, stood on the southern slope where the red stream came out, raised his hammer to the sky and called the lightning. The thanes of Jamtland still sing that it was the greatest calling of Thor any troll ever made. The sky came down on the hillside in a white stroke, the rock split from the turf to the roots of the hill, and when the smoke cleared there was a cleft in Jarnhaug wide enough to drive a cart into. The miners cheered. They said the mountain had opened for him like a door.\n\nDyggve called the lightning every working day after that, to split the faces the picks could not, and the mine grew used to it. The thunder came at his call in long, even breaths, never two strokes close together, and the haulers in the galleries took to timing their loads by it, the way a farmhand times his work by the church bell. It fell where the thane looked, in a ring about that spot, and the miners kept out of his eye when he had his hammer raised. In the gallery where he worked, the walls are still streaked with the marks of it.\n\nThe Mistress of Runes laid out the rest. A runecarver who knows her craft can read a mountain: the right marks, cut in the right places, tell her where the ore runs, where the rock is sound and where the water lies waiting, and the Mistress read Jarnhaug better than anyone on the frontier. Her marks run through the whole mine still, at the height of a man's eyes, one every few paces, ore and sound rock and water and danger, and the galleries follow them as faithfully as sheep follow a bell-wether. The upper galleries where the Innocents walk now, the long passages down to the rock face, the side-galleries where the thane worked, the deep hall at the end where the jarl later moved his hearth: every one of them was cut where her runes said.\n\nAros came to the mine in its first summer, hired for the price of a ring to keep the dead of the shaft from haunting the jarl's hall. He set up his custom at the shaft-head on the first morning, reading the names of the shift aloud from a slate before they went down and making each man answer, and the custom became so much a part of the mine that the steadings came to think of it as the mine's own. Of the four men who died below in those first years, in a fall and a flood, not one was ever seen walking. The jarl thought the ring well spent."
+    },
+    {
+      "title": "The Working Years",
+      "text": "For a generation Dodens Gruva was the richest thing on the frontier, though it was not yet called by that name; the steadings called it the jarl's mine, or simply the gruva. Its iron went down the valleys on pack-ponies to the smiths of the hill-forts, and came back as spearheads and mail rings and the arm-rings Ormarr gave his huscarls at midwinter. The jarl moved his household to the hill. He built a hall inside the mine itself, deep in the rock at the end of the eastern galleries where the iron ran thickest, because he liked to hear the picks while he ate, and his hound bitch whelped her litters by its hearth.\n\nHamar was foreman of the face for most of those years. He had worked the Jamtland mines since he was a boy and never done anything else, a big quiet man who did not argue with jarls or runecarvers and dug where he was told. In the hard winters the snow vendo came down off the high passes, the hairy white cousins of the vendo of Vendo Caverns, hungry and howling at the mine's mouth, and the miners threw stones at them. Hamar did not. He set out the scraps of the shift's bread at the face where the cold came in, and the vendo came into the mine to eat them, a few at first and then a whole family, and by the end they slept in the side-caves by the face and would let no one near the foreman. The miners joked that Hamar had a second shift that worked for crusts. They stopped joking when a hauler who struck Hamar in a quarrel was dragged off by three vendo before anyone could move. The snow vendo of the gruva are their grandchildren, and they have not changed their minds about the foreman: anyone who lays a hand on Hamar finds them at his side.\n\nThe lamp-boys were the miners' sons, carrying the seal-oil lamps down the galleries and fetching water. The jarl's own son, Ulf, asked to be one of them, because he wanted to know the mine from the bottom as his father knew the hill from the top, and he lost two fingers in a fall of rock in his first year and was called Ulf Half-hand after it, and was proud of the name. In the last winter of the working years the jarl's bitch whelped by the hearth again, and Ulf chose the smallest grey pup of the litter and called him Gudlaugr, which is the name of a great man in the old songs. The jarl laughed and let it stand.\n\nThe steadings' songs of those years are cheerful ones. The picks rang, the iron went down the valleys, the thunder came at the thane's call, the names were read at the shaft every morning, and nobody in the mine had any reason to think about the north side of the hill, where the snow still lay late and the sheep still would not go."
+    },
+    {
+      "title": "Not Here",
+      "text": "The Mistress of Runes cut her marks toward the north in the last year, because the iron ran that way, and the marks went wrong. The runemasters of Jordheim who have copied her last gallery describe what happened on its walls. The ordinary marks run on, ore and sound rock and water, and then they begin to fail: a mark cut and cut again, a mark scratched out, a mark for danger cut three times in a row. Then the ordinary runes stop altogether, and there is one more, cut deeper than all the others and in the straight-sided letters of the fallen stone on the crown of the hill. It means not here. The Mistress told the jarl, and when he laughed she told him again in front of his huscarls, which a jarl's runecarver does not do. He sent the shift north anyway.\n\nShe has stood at that rune ever since, and the gallery has kept her anger. Its ceiling is scorched in rings, each one a spear's breadth across and more, where the flaming spears of Odin's Hatred have come down out of the rock above the heads of those who stood before her; the runemasters who go down to copy the last marks do it one at a time, standing well apart, and say it is a courtesy to the Mistress, who never liked to be crowded. Those who stare too long at her rune, they add, go dim-eyed for a while after, as if the mark had been cut to keep anyone from reading what came after it.\n\nWhat came after it was the cold seam. The picks broke through at midday, at the far end of the northern gallery, and the hewers who lived long enough to cut their names on a slate say it was not rock behind the face but something laid. The stone beyond was smooth, dark and close-fitted, cold enough to frost a lamp-glass from an arm's length away, and it was not a wall but a roof: through the hole the picks had made, the hewers looked down into a hall wider than any jarl's, with a floor older than the hill and lights moving on it, and heard the voices calling in three tongues.\n\nThe cold came up through the hole that day and has never stopped. The steadings below saw it before they heard any news. By evening the snow on the north side of Jarnhaug had crept down the slope past the place where it always stopped, and in the morning the red stream off the southern face was running clear and thin with ice at its edges in the middle of summer. The shepherds drove their flocks off the hill without being told. The old women of the valleys went up to the fallen pieces of the stone on the crown and stood looking at them and came back down and would not say what they had been thinking."
+    },
+    {
+      "title": "The Shift That Did Not Come Up",
+      "text": "Nobody at the shaft-head knew what had happened below until the shift did not come up. The women who brought the evening bread waited, and the lamp-boys who had been sent up early with the empty baskets waited with them, and the light went, and no one climbed the ladder. Then the picks began again, down in the dark, at a time of night when no shift had ever worked, steady and unhurried, and went on until morning. The steadings say that was when the women knew.\n\nThe jarl went down the next day with forty huscarls in mail and his thane at his side, to bring his son and his miners back, and the skalds have sung what happened to him; he came back up the stair dead, behind Aros's voice, and so did the forty, and so did the thane. The steadings remember it differently from the skalds. They remember that the jarl's hall in the mine was never closed after that, that its hearth was cold and its doors stood open, and that on still nights the huscarls could be heard in the galleries, walking their rounds in mail, as if the jarl had told them to keep watch and nobody had told them to stop.\n\nThe families went in on the third day. Asgerd, the hewer Kol's wife, went first, with a basket of bread on her arm, because she said a man who had worked a night shift and a day would be hungry whatever else he was. The others followed her: wives, mothers, the old fathers of the hewers, children who had been told to stay at the shaft-head and had not. They went in at the mouth, and down into the upper galleries, and they did not come out.\n\nThey are still there, in the upper galleries near the mouth, and the frontier calls them the Innocents. They are not bound as the shift is bound; they never reached the seam. Something reached them first, the cold or the calling or the binding as it spread upward through the galleries, and stopped them where they stood, smiling, still carrying what they had brought. They walk among passers-by without harm and press a gift on each one, because in Jamtland a guest is always given something at the door. What they give now is a sickness, a slow rot of the skin that the frontier calls the leprosy of the mine, and they give it with the same smile Asgerd wore going in. The steadings say it is not their fault, and that the bread went bad first."
+    },
+    {
+      "title": "What the Cold Let In",
+      "text": "A mine with a cold seam open in it is a cave with its door left open in winter, and the cold of Dodens Gruva drew things in from the heights for a long way around. The wolves came first. Ice wolves off the high passes, and the big dire wolves of the frontier forests, came into the upper galleries for shelter and stayed for the cold, and the cold did to them what it does to meat: they decayed on their feet without dying, and walk the galleries still, grey and half-flayed, smelling of an old larder.\n\nThe yetis came after the wolves and took the deep caverns off the side-galleries for their dens. The snow vendo were already there, Hamar's vendo, and they did not leave when the foreman died; they stayed with him at the face, and they come to his side yet. Spiders of the cold, the widow claws, spun in the dead lamp-niches. The cold went into the walls themselves, and some of the dead who walked toward the seam in the first days froze into the rock as they passed, half in and half out, and the frontier calls them the icebound moribund. They are still trying to finish the step.\n\nThere are pained spirits in the upper galleries too, drifting where the Innocents walk, and they are not on any tally. The gothar of Jordheim say they are the dead the calling drew up from older graves under the hill, the people of the fallen stone perhaps, caught halfway between the voice below and the binding above, and that their pain is the pain of being drawn two ways at once. Aros set undead guards at the passages, dead men in old mail who keep their posts and turn back anything that tries to go down without his leave, and anything that tries to come up.\n\nEverything in the mine knows everything else. The steadings put it in a saying: nothing in the gruva is alone. The miners were a shift and are still a shift, the huscarls a war-band and still a war-band, the vendo a family and still a family, the wolves a pack, and the binding has woven them all into one household that answers when any of it is touched. The Glenlock garrison, who have been down more often than anyone, say the same thing with fewer words: wake one thing in Dodens Gruva and the next one wakes with it, and the one after that."
+    },
+    {
+      "title": "Glenlock's Hill",
+      "text": "The age of the jarls ended and the war of the realms began, and the frontier changed around the hill. Midgard raised keeps on the high passes against Albion and Hibernia, and the war gave them their names: Glenlock to the west of Jarnhaug, Fensalir to its east, Hlidskialf and Blendrake and Nottmoor along the Jamtland ridges. The hill itself was never walled. It stood between the keeps like a grave in a field that the ploughman goes round, and the garrisons of Glenlock looked out at it from their walls every day and heard the picks on still nights.\n\nGlenlock made a custom of it. One sentry on the keep's eastern wall, every night, is the hill-watch: his task is to listen. As long as the picks are ringing on Jarnhaug, the hill is as it always is. When they stop, someone has gone down the mine and put out its spiritmaster's voice, and the hill-watch wakes the captain, and the captain marks the night on the post by the eastern gate. The post is cut nearly from top to bottom with marks now. The garrison say every mark is a season of quiet, and that none of them has ever lasted longer than a season.\n\nThe first marks on the post are Sigthrud Thorgautsdottir's, the captain who went down twice with three companies, lost the first winter and won the second, and wrote Aros's name on the wall of the hall afterwards. After her the keep became the place where Midgard's companies gathered before they went down. They meet at the muster stone outside Glenlock's eastern gate, a flat grey slab that is the largest of the pieces of the fallen stone from the hill's crown, carried down by some captain who wanted the old letters where he could watch them. Each company that goes in touches the slab on the way out of the gate and touches it again coming home, and the steadings say a company that forgets the second touch has left someone in the mine.\n\nThe war made other changes. Albion and Hibernia have their own old frontier dungeons, Albion its Hall of the Corrupt and Hibernia, the druids say, its Marfach Caverns, and in the war years their companies went down them as Midgard's went down the gruva, and met Midgard's at the bottom. The frontier did not need to be told what that meant. Three realms had dug, each on its own frontier, and found the same floor."
+    },
+    {
+      "title": "The Stair, and Three Accounts",
+      "text": "At the bottom of the mine, past the jarl's hall, a stair goes down. The miners did not cut it; they broke into its top when they broke the seam, and the dead of the shift went down it in the first days, toward the voices, until Aros turned them. Its steps are the smooth dark stone of the hall's roof, and its walls carry no runes at all. The jarl's hound lies at its head. Gudlaugr is a pup still, small and white with cold, curled where the stair begins as if waiting for Ulf to come back up it, and the frontier says he has been listening to the voice below for longer than anything else in the mine. He grows into what the voice has made of him the moment steel is drawn near him, a wolf the height of a troll, and the bite of that wolf holds a man back and keeps him bleeding.\n\nBelow the stair the mine is not the mine any more. The companies who went down found a floor that was dark, wide and laid out like the halls of Darkness Falls, and understood only afterwards that it was another place entirely, the Summoner's Hall, the hall under all three frontiers, where the Grand Summoner Govannon and his summoners call the dead of every realm. Gudlaugr's stair is Midgard's way into it. The way out is the same stair, past the same hound.\n\nMidgard does not agree about what the mine is. The gothar of Jordheim say it is a grave that Hel was cheated of. The dead of the shift belonged to her, and Aros, a servant of her craft, took them from her and kept them for himself; the mine is cold, in their account, because Hel's own cold has come up the seam to look for what is hers. The spiritmasters say it is a fold. A shepherd who sees a wolf at the edge of the pasture drives the flock into the fold and shuts the gate, and it is a poor sort of life for the sheep, but it is life, and the wolf is still at the gate. The steadings say it is a shift that has not been told it is over, and that Hamar at the face is the one the rest are waiting for.\n\nAll three agree on what would end it. When the calling stops, the picks will stop. The companies that have gone down Gudlaugr's stair and come back have each bought the miners a season of quiet, and every season the voice below has started again. The skalds say that one day the voice will stop for good, and that on that morning the steadings will go up to the shaft and read the names of the last shift one last time, and the picks will fall silent, and Aros will find, at last, that he has nothing left to read."
+    }
+  ],
+  "legend": "The old frontier dungeon: every realm had one, and every one led down to the same hall. Everything in Dodens Gruva helps everything else, so pull clean; the mobs grow to sixty-plus quickly and the phantom huscarls gave great experience in 2002. The Innocents at the door are harmless, and their gift is leprosy. Aros took three groups, the second time; the first three groups got their butts kicked. Jarl Ormarr talks a lot and dies all the same. Interrupt Dyggve's hammers. Spread for the Mistress's spears. Don't pet the puppy by the stair. Superstitions: never read the names aloud, and never say a dead friend's name inside, or Aros learns it. Nicknames: the mine, the gruva, the stair (the way down to Summoner's Hall).",
+  "atmosphere": {
+    "firstEntry": [
+      "Picks ring in the dark. No living hand swings them.",
+      "The mine of death. Its miners never left.",
+      "Innocents wander here, smiling, offering gifts.",
+      "Cold rises from below. Something calls."
+    ],
+    "areas": [
+      {
+        "name": "the entrance",
+        "x": 36500,
+        "y": 39500,
+        "z": 15500,
+        "radius": 1500,
+        "lines": [
+          "Innocents wander here, smiling, offering gifts.",
+          "Families came looking. They stayed."
+        ]
+      },
+      {
+        "name": "Aros's chamber",
+        "x": 39061,
+        "y": 36970,
+        "z": 15495,
+        "radius": 900,
+        "lines": [
+          "A voice in the cold is counting names.",
+          "Names are scratched on every stone of this chamber."
+        ]
+      },
+      {
+        "name": "the stair down",
+        "x": 43652,
+        "y": 31972,
+        "z": 13437,
+        "radius": 900,
+        "lines": [
+          "The stair goes down out of Midgard. Something calls.",
+          "A puppy waits by the stair. Its eyes are wrong."
+        ]
+      },
+      {
+        "name": "the jarl's hall",
+        "x": 45432,
+        "y": 37768,
+        "z": 13966,
+        "radius": 900,
+        "lines": [
+          "A cold hearth. A jarl who will not lie down.",
+          "Phantom huscarls stand at the walls in mail."
+        ]
+      },
+      {
+        "name": "the thane's gallery",
+        "x": 35169,
+        "y": 33571,
+        "z": 13937,
+        "radius": 900,
+        "lines": [
+          "Scorch-marks of lightning streak the walls.",
+          "The thunder here comes cold and late."
+        ]
+      },
+      {
+        "name": "the last runes",
+        "x": 29728,
+        "y": 42388,
+        "z": 12912,
+        "radius": 800,
+        "lines": [
+          "The runes end here. The last one says: not here.",
+          "Flaming spears have scorched the ceiling."
+        ]
+      },
+      {
+        "name": "the rock face",
+        "x": 32017,
+        "y": 41854,
+        "z": 15484,
+        "radius": 800,
+        "lines": [
+          "A pick rings against stone, steady and endless.",
+          "The foreman is still at the face."
+        ]
+      }
+    ],
+    "raidForming": [
+      "Midgard gathers at Glenlock to go down the mine."
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "dodens gruva means the mine of death. [whoever named it|the dwarves who named it] [wasnt joking|knew]",
+      "the jarl dug for iron and broke into the summoner's hall. thats why the dead down there walk",
+      "aros bound the dead miners to the mine so the summoners couldnt have them. [mercy|or not]",
+      "the innocents at the door of dodens gruva are harmless. they give you leprosy as a present",
+      "jarl ormarr dug dodens gruva for iron back when the frontier keeps didnt have names yet",
+      "the mistress of runes warned the jarl off the cold seam. he dug anyway",
+      "thane dyggve swung the first hammer in dodens gruva. called lightning to split the rock",
+      "the miners of dodens gruva heard voices in three tongues when they broke through",
+      "the innocents at the door of dodens gruva are the families who came looking for the miners",
+      "the jarl's huscarls still patrol dodens gruva as phantoms",
+      "every realm had an old frontier dungeon and every one leads down to the summoner's hall",
+      "the cold seam let the cold in. thats why theres yetis and ice wolves in a mine",
+      "the dodens gruva hill was called jarnhaug, the iron hill. the stream off it ran red",
+      "glenlock keeps a hill-watch who listens for the picks in dodens gruva. when they stop, aros is dead"
+    ],
+    "rumour": [
+      "[never say|dont say] a dead friends name in dodens gruva. aros [collects|keeps] them",
+      "the puppy by the stair isnt a puppy. [ask anyone|trust me]",
+      "the stair at the bottom of dodens gruva goes all the way to the summoner's hall. albs and hibs come up the other side",
+      "aros reads the names of the dead every morning still, they say",
+      "hamar the foreman is still swinging at the rock face",
+      "the phantom huscarls gave crazy xp back in the day",
+      "if you say a name in dodens gruva the picks stop for a moment. [creepy|i tried it]",
+      "the lower floor of dodens gruva looks like darkness falls. its actually summoner's hall",
+      "touch the muster stone at glenlock going out and coming back, or you left someone in the mine",
+      "hamar fed the snow vendo when he was alive. touch hamar and they all come"
+    ],
+    "tell": [
+      "dodens gruva is the old frontier mine east of glenlock. undead miners, a jarl, a thane, a runecarver, and aros at the end",
+      "its the mine of death in jamtland. bring three groups for aros. the stair at the bottom goes down to summoner's hall",
+      "dodens gruva? dead miners and their spiritmaster. everything adds to everything, pull clean",
+      "is dodens gruva hard? the trash links everything. aros needs three groups",
+      "where is dodens gruva? old frontier, jamtland, on the hill east of glenlock",
+      "whats in dodens gruva? dead miners, phantom huscarls, a jarl, a thane, a runecarver, a demon puppy, and aros",
+      "is dodens gruva big? not really, but nothing in there is alone. wake one thing and the next wakes too"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Dodens Gruva. Jarl [Ormarr] dug it for [iron] and found the [cold seam] instead. His spiritmaster [Aros] made the miners a promise, and he is keeping it still.\"",
+    "topics": {
+      "Ormarr": "A jarl of the old Jamtland frontier. He went down at the head of his huscarls when the seam opened, and believes still that he cannot be killed.",
+      "iron": "A jarl needs iron to stay a jarl. The mine gave good iron for a while. The Mistress of Runes read the mountain and warned him off the last seam. He dug anyway.",
+      "cold seam": "It did not open on rock. It opened on a hall, older than Midgard, where something calls the dead of every realm. We call it the Summoner's Hall. The stair is still there, at the bottom, past a puppy you should not pet.",
+      "Aros": "He promised every man who died below would be remembered. When the dead began walking down toward the call, he bound them to the mine so it could not have them. The skalds say a good name never dies. Aros kept the names and forgot the word good. Take three groups, hold his champion while you kill him, and do not tell him yours.",
+      "the Innocents": "The families who came looking for the miners, and stayed. They are harmless, and smile, and press a sickness on you as a gift. Leprosy, the old raiders called it.",
+      "the huscarls": "Ormarr's housecarls, who went down with him to fetch the dead. They patrol the galleries as phantoms in mail.",
+      "Glenlock": "Glenlock Faste, the keep on the old Jamtland frontier from whose walls you can see the hill of the mine.",
+      "the stair": "At the bottom of the mine, past the puppy [Gudlaugr], a stair goes down out of Midgard to the Summoner's Hall. Albion and Hibernia come up the other sides.",
+      "the calling": "What the miners heard when they broke through: voices in three tongues, calling the dead down. The summoners of the hall below are still calling.",
+      "Jarnhaug": "The steadings' old name for the hill of the mine: the iron hill, for the red stream off its south face. Snow lay late on its north side and the sheep would not graze there. A stone in old letters stood on its crown; the largest piece is the muster stone at [Glenlock].",
+      "the snow vendo": "The white vendo of the high passes. The foreman [Hamar] fed them in the hard winters, and they took him for one of their own. Their grandchildren sleep by the face still, and they come to his side if anyone lays a hand on him.",
+      "the hill-watch": "A Glenlock sentry who listens for the picks on the hill every night. When they stop, someone has silenced [Aros], and the night is marked on the post by the eastern gate. No mark has bought more than a season."
+    }
+  },
+  "book": {
+    "title": "The Tally of Dodens Gruva, gathered by Ashild of Glenlock",
+    "pages": [
+      "The Tally of Dodens Gruva, gathered and copied by Ashild of Glenlock, tally-keeper of the keep. I keep the post by the eastern gate, where the hill-watch marks every night the picks stop on Jarnhaug, and I have kept it long enough to wonder what the marks are for. So I have gathered what the mine has given up: the slates the miners cut while they died, the ones found in the jarl's hall and at the stair, and what the steadings say. I have copied them as they are. Where I could not read a word I have left a gap, and where the hand changes I have said so. The miners would want their own words kept, not mine.",
+      "A miner's slate, found near the shaft. Here are the names of the shift that went down to the cold seam: Hamar the foreman, Bjorn the Younger, Kol, Ulf Half-hand, and the jarl's hound Gudlaugr, who would not be left behind. The spiritmaster read them out at the shaft and said none would be forgotten. That was the last tally. Whoever finds this slate: we are not forgotten. We are still digging. Do not read our names aloud. Do not say your own, either. He is listening for it. The spiritmaster says a name is a rope.",
+      "Second side of the slate, in another hand. The Mistress says the seam is not rock. She says there is a hall under it with a floor older than the hill, and lights moving, and voices calling in three tongues, ours and two others. The jarl laughed and sent us down. When we broke through I heard the voices. They knew my name. Then Aros was beside me, reading names, louder than they were. I do not know which of them I am listening to now. I am still digging. The rope holds. For now it holds.",
+      "A third slate, found by a Midgard warband at the jarl's hall, cut with a knife. Ormarr went down at the head of the huscarls to bring us back. He said a jarl does not send men where he will not go. He went through the seam with forty men and the voices took them one by one, and Aros came down the stair behind them shouting names, and the jarl stopped, and turned, and came back up, and he was not alive any more, and neither were the forty. He still says he cannot be killed. I think he believes it. I think it is the only thing he has left.",
+      "The last slate, found at the stair. It is Aros's own hand. 'I promised them they would be remembered. I did not know what was calling. I knew only that if they answered, they would be its, and no one would remember them at all. So I kept them. I read their names every morning, so that they hear their own names louder than its voice. I will read them every morning until someone stops the voice below. When it stops, they may go. I will not. I have forgotten how.' Someone stop the voice. Then read their names one last time, and let them go.'",
+      "Of the Innocents, as the steadings tell it to me. Asgerd, Kol's wife, went in first on the third day with a basket of bread, and the rest followed her. They never reached the seam. Something reached them first, and stopped them in the upper galleries with their gifts still in their hands. The steadings ask me to write that they mean no harm. In Jamtland a guest is given something at the door, and the Innocents remember that, though they remember nothing else. What they give now is the rot of the mine, and they give it smiling. The old women say the bread went bad first, and that Asgerd did not notice. I have written it as they asked.",
+      "Of the custom at the shaft. On the morning of the year when the seam opened, the steadings go up Jarnhaug, the old ones and the children together, and stand at the shaft-head where Aros used to stand. One of them reads the names of the last shift aloud, Hamar and Bjorn the Younger and Kol and Ulf Half-hand, and the pup Gudlaugr last, and the rest answer each name as the miners once answered. Then they go home. Nobody goes into the mine. The picks below do not stop for it. The steadings do not expect them to; they say the reading is not for the miners. It is so that Aros does not have to say the names alone.",
+      "Of the stair. I have not been down it, but the companies that go in from Glenlock all pass the pup at its head, and each one brings me the same account of him: small and white and curled up as if asleep, and listening. They say he changes the moment steel comes near him, and that what he becomes holds a man back with its bite and keeps him bleeding long after. They say the first time he changed he stood up whole, every old wound gone. Below him the mine is the mine no longer. I have asked them what is down there, and they say a hall, and voices, and they look at the eastern wall, where the hill-watch stands listening for the picks."
+    ]
+  },
+  "bosses": [
+    "aros-the-spiritmaster",
+    "jarl-ormarr",
+    "thane-dyggve",
+    "mistress-of-runes",
+    "gudlaugr",
+    "hamar",
+    "summoned-guardian"
+  ]
+}

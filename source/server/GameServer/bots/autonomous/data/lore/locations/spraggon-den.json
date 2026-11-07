@@ -1,0 +1,208 @@
+{
+  "id": "spraggon-den",
+  "name": "Spraggon Den",
+  "realm": "Hibernia",
+  "regions": [
+    222
+  ],
+  "summary": "The rocky warren of the spraggons near Howth and Ardagh, a little kingdom of earth that never stops arguing.",
+  "facts": [
+    {
+      "text": "A Hibernian dungeon listed for levels 20-25, a rocky warren near the watch tower between Howth and Ardagh, full of spraggons, worms, rock sprites and earth sprites; about half root or snare, and most attacks are earth-based.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=55"
+    },
+    {
+      "text": "A 2003 comment tells of a named that looks like a giant spraggon, near 'Tabor', whose ghost attacks with spells after it dies.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=55"
+    },
+    {
+      "text": "Region 222 holds spraggon springers, pit spraggons, spraggonixes, spraggonotes, spraggon cutters, spraggonales, spraggon runners, pit bosses, root worms and rock and earth sprites.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Bot chat: earthquakes caved in part of the den and the spraggons picked a new leader.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Tabor: Earth Blast (3.5 s cast, 100 and 80 matter), Poison and Acid damage over time; on death 'you feel a breeze in the air. A swirl of dirt covers the area' and a Swirl of Dirt raises the Ghost of Tabor at the same point with the same spells; the ghost is removed when Tabor returns.",
+      "provenance": "game",
+      "source": "scripts/mobs/HiberniaMobs/Tabor.cs (integration/1.2)"
+    },
+    {
+      "text": "Dramacus and Yadda each pull the other into the fight within 4,000 units.",
+      "provenance": "game",
+      "source": "scripts/mobs/HiberniaMobs/DramacusAndYadda.cs (integration/1.2)"
+    },
+    {
+      "text": "Ruckus casts Earthen Fury (damage add on himself) and, on a 25% chance, announces a stunning blow and stuns his target 2 seconds later (4 s stun, then a 20 s wait); Spriggit 'crackles as he attacks', casts Frost Blast (90 cold, 3 s) and a 99% speed decrease for 30 s; his call for help names a package (SpriggitBaf) no spawn carries.",
+      "provenance": "game",
+      "source": "scripts/mobs/HiberniaMobs/Ruckus.cs, Spriggit.cs (integration/1.2); world data Mob table"
+    },
+    {
+      "text": "Eraliwyr (35) is the alchemist hidden deep in the Spraggon Den in the quest Viraniel's Plague; Viraniel, given a potion, 'turns into a skeleton warrior and flies off'.",
+      "provenance": "game",
+      "source": "DataQuest \"Viraniel's Plague\" (world data)"
+    },
+    {
+      "text": "Living Server lore: the den grown not dug, Tabor the old leader who died when the deep galleries fell, the saying 'the dust gets up after him', Dramacus and Yadda as the quarrelling new leadership, Spriggit's cold from Eraliwyr.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of the Spraggon Den: Dramacus (30) and Yadda (27), linked (each pulls the other within 4,000), Tabor (28, faction Spraggons; a Ghost of Tabor rises on his death), Ruckus (26) and Spriggit (26); all scripted on integration/1.2 (HiberniaMobs).",
+      "provenance": "game",
+      "source": "world data Mob table, region 222 (read 2026-11-06)"
+    }
+  ],
+  "story": "The spraggons are the earth's own small folk, knobbled and grey as the stones they live among, and their den under the hills between Howth and Ardagh is the closest thing they have to a kingdom. It is not a quiet kingdom. Spraggons argue about everything: who digs, who guards, who runs messages, who is a springer and who is merely a spraggonote, and above all who is boss. There are pit bosses. There are cutters who answer to no pit boss. There are sprites of rock and earth who are not spraggons at all and live there anyway because nobody can agree to throw them out.\n\nSome years ago the earth shook and a part of the den fell in, and with it, the spraggons say, their old leader, a great spraggon bigger than any of them. They picked a new one, after a great deal of argument. The old one has not entirely accepted this: groups that kill the big spraggon in the deep part of the den say its ghost gets up afterwards and keeps fighting with spells, as if it had never heard it was over.\n\nFor young Hibernians the den is a lesson in earth magic, because almost everything in it can make the ground hold a stranger's feet, and a lesson in politics, because lay a hand on one spraggon and its whole faction comes.\n\nThe druids of Howth say the spraggons were in the hills before anyone named the hills, and that the den is not dug so much as grown: the spraggons ask the stone to move and, being earth themselves, are sometimes answered. That is why so much of what lives in the den can make the ground hold a stranger's feet, and why the root worms and the sprites of rock and earth, who are not spraggons, will not leave. The den is the one place in Hibernia where the earth takes sides.\n\nIts great old leader was Tabor, the largest spraggon anyone in Howth had seen, who could speak a word that made the stone burst outward and another that made it sour in a wound. When the earth shook and the deep galleries fell in, Tabor was in them. The spraggons dug him out, dead, and laid him in the fallen gallery where they found him, and that should have been the end of his reign. It was not. Whenever Tabor is brought down a wind goes through the den where no wind can reach, the dust of the fallen gallery stands up in a swirl, and out of it comes the old leader again, thinner, and as hard with his words as he ever was. The spraggons have a saying for a quarrel that will not end: the dust gets up after him.\n\nThe new leadership, as far as anyone outside can tell, is two: Dramacus and Yadda, who keep neighbouring pits in the eastern den, and who argue with each other from one season's end to the next. Nobody has ever got between them. Lay a hand on one and the other is there before the argument is finished, and the Howth druids say that is the whole of spraggon government: they quarrel among themselves until a stranger walks in, and then they are one people.\n\nTwo others never accepted the new pair. Ruckus, in the western passages, is all temper; the earth's anger goes into his fists, and the den knows the sound of him going quiet and setting his feet, because what follows it puts a grown man on the floor. Spriggit keeps the northern crossing and crackles with a cold no other spraggon has, and the den says he got it from the stranger he lives beside. That stranger is Eraliwyr, an alchemist who came into the den years ago to work where nobody would watch him. In the druids' grove of Tir na Nog they blame him for the sickness of a woman named Viraniel, which their own best draught could not mend: she became a thing of bones and flew away; Eraliwyr will talk to anyone who finds him, politely, right up until he does not.\n\nFor the realm the den matters for the reason the druids of Howth give their students: a people who are the earth itself, who live on the realm's doorstep, and who argue about everything except whether you belong there.",
+  "legend": "Bring a healer and a tank, and expect to be rooted: half the den roots or snares. Some of them call for help, so pull carefully. The earthen gear is worth having at your level. And if you kill the big one at the back, do not loot too fast: its ghost is not finished. A 20s dungeon with five scripted spraggons and an alchemist. Dramacus (30) and Yadda (27) are linked: pull one and the other comes from across the eastern pits, so plan for both. Tabor (28) in the fallen gallery casts Earth Blast (3.5 s casts, about 80-100) and stacks poison and acid DoTs; when he dies the Ghost of Tabor rises from a swirl of dirt on the same spot with the same spells, so keep mana for round two. Spriggit (26) at the northern crossing casts Frost Blast and a 30-second root: bring purges. Ruckus (26) warns 'Ruckus begins saving energy for a stunning blow' and then stuns; he also buffs himself with Earthen Fury. Eraliwyr (35) hides deep in the den for Viraniel's Plague: he talks, then attacks. Half the trash roots or snares.",
+  "atmosphere": {
+    "firstEntry": [
+      "The stones are arguing. Some of them are spraggons.",
+      "The earth holds your feet. It does not want you here.",
+      "Two voices argue in the eastern pits.",
+      "Somewhere, a spraggon has gone very quiet."
+    ],
+    "areas": [
+      {
+        "name": "the den mouth",
+        "x": 32722,
+        "y": 34761,
+        "z": 15179,
+        "radius": 1100,
+        "lines": [
+          "Small grey faces vanish into the rock.",
+          "The stone takes sides here."
+        ]
+      },
+      {
+        "name": "the eastern pits",
+        "x": 34650,
+        "y": 34320,
+        "z": 14960,
+        "radius": 900,
+        "lines": [
+          "Dramacus and Yadda, arguing. Always.",
+          "Touch one and the argument ends at once.",
+          "Dramacus argues. Yadda answers. Always.",
+          "Yadda answers Dramacus, always."
+        ]
+      },
+      {
+        "name": "the fallen gallery",
+        "x": 37256,
+        "y": 32460,
+        "z": 14437,
+        "radius": 900,
+        "lines": [
+          "Tabor's gallery. The dust lies too still.",
+          "A wind where no wind can reach.",
+          "The dust gets up after him.",
+          "Tabor lies where the gallery fell. Not still."
+        ]
+      },
+      {
+        "name": "the western passages",
+        "x": 29579,
+        "y": 33492,
+        "z": 14741,
+        "radius": 800,
+        "lines": [
+          "Ruckus is listening to the stone.",
+          "When Ruckus goes quiet, mind your feet."
+        ]
+      },
+      {
+        "name": "the northern crossing",
+        "x": 31300,
+        "y": 27000,
+        "z": 14446,
+        "radius": 900,
+        "lines": [
+          "Frost on the stones. Spriggit crackles.",
+          "An alchemist's lamp, deeper in.",
+          "Eraliwyr is polite. Until he is not."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "spraggons argue about everything. [who digs, who guards, who is boss|even their pit bosses have bosses]",
+      "an earthquake caved in the old spraggon king. [they picked a new one|his ghost still fights]",
+      "half the spraggon den roots or snares. [bring purges|you will be stuck]",
+      "tabor was the old spraggon king. [died in the cave in|the quake got him] and his ghost still fights",
+      "kill tabor and a swirl of dirt [spits out his ghost|brings him back]. same spells. [save mana|round two]",
+      "dramacus and yadda argue all day but [hit one and both come|they always help each other]",
+      "spriggit is cold. [frost blast and a root|bring a purge]. got it from the alchemist they say",
+      "ruckus says hes saving energy for a stunning blow. [believe him|he means it]",
+      "eraliwyr the alchemist hides in spraggon den. [viraniels plague|he talks then attacks]",
+      "viraniel got sick, drank the grove potion and [turned into a skeleton|flew off]. eraliwyr's fault they say",
+      "spraggons are the earth itself, the howth druids say. [thats why everything roots|the stone takes sides]",
+      "root worms and earth sprites live in the den too. [nobody threw them out|not spraggons]",
+      "spraggon den is [the 20s spot|good for 20s] near howth. lots of roots"
+    ],
+    "rumour": [
+      "[heard|someone said] the big spraggon at the back of the den [came back as a ghost|gets up after it dies]",
+      "[heard|someone said] tabor's ghost came up twice in one night. [the dust gets up after him|stubborn]",
+      "[word is|heard] dramacus and yadda had a fight and the whole den [shook|took sides]",
+      "[heard|someone said] eraliwyr is brewing something for the unseelie",
+      "someone pulled yadda alone once. [once|never again]",
+      "[heard|someone said] spriggit wasnt always cold. [the alchemist|he drank something]",
+      "[word is|heard] ruckus wants to be leader. [he hits like it|nobody votes for him]",
+      "[heard|someone said] the spraggons ask the stone to move and it [listens|sometimes does]",
+      "[heard|someone said] dramacus and yadda argue all day but touch one and the other comes running",
+      "[heard|someone said] yadda has never once agreed with dramacus. except about you",
+      "[heard|someone said] when tabor dies his ghost gets up out of the dust and keeps going",
+      "[heard|someone said] when ruckus goes quiet hes about to stun you. step back",
+      "[heard|someone said] spriggit got his frost from eraliwyr's bench. he calls for help and nobody comes"
+    ],
+    "tell": [
+      "spraggon den between howth and ardagh. twenties, earth magic, lots of roots. good earthen gear",
+      "where is spraggon den? silvermine, between howth and ardagh, by the old watch post",
+      "is spraggon den hard? not at 20s with a group. the named ones have scripts, read up first",
+      "whats in spraggon den? spraggons, root worms, rock and earth sprites, five named spraggons and an alchemist",
+      "who is tabor? the old leader in the fallen gallery. kill him and his ghost gets up. same spells",
+      "who is eraliwyr? the alchemist for viraniels plague. deep in the den, near spriggit",
+      "dramacus 30 and yadda 27 are in the eastern pits of the spraggon den. pull one, get both",
+      "yadda is the 27 in the eastern pits, linked with dramacus. plan for both",
+      "tabor is the 28 in the fallen gallery. earth blast and dots, then his ghost rises with the same spells",
+      "ruckus is a 26 in the western passages. he warns, then stuns, and buffs himself with earthen fury",
+      "spriggit is a 26 at the northern crossing. frost blast and a long root, eraliwyr is right behind him"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Spraggon Den, between Howth and Ardagh. The [spraggons] are the earth's own small folk, and they have a kingdom of sorts, and a [quarrel] about who rules it: [Tabor], who died, against [Dramacus and Yadda].",
+    "topics": {
+      "spraggons": "Knobbled and grey as stones. Springers, cutters, runners, pit bosses. Every one of them has an opinion.",
+      "quarrel": "The earth shook and their old leader fell in with half the den. They chose a new one. The old one's [ghost] disagrees.",
+      "ghost": "Kill the great spraggon in the deep den and it rises again as a ghost and fights with spells.",
+      "Tabor": "Tabor was the great old leader of the spraggons, the largest anyone in Howth had seen, who could speak a word that made the stone burst outward and another that made it sour in a wound. When the earth shook and the deep galleries fell in, he was in them, and the spraggons laid him in the fallen gallery where they found him. Bring him down and a wind goes through the den, the dust stands up in a swirl, and he comes out of it again, thinner, as hard with his words as ever. The spraggons say of a quarrel that will not end: the dust gets up after him.",
+      "Dramacus and Yadda": "The new leadership of the den, as far as anyone outside can tell, is two: Dramacus and Yadda, who keep neighbouring pits in the eastern den and argue with each other from one season's end to the next. Nobody has ever got between them. Lay a hand on one and the other is there before the argument is finished, from anywhere in the eastern pits, and the Howth druids say that is the whole of spraggon government: they quarrel among themselves until a stranger walks in, and then they are one people.",
+      "Ruckus": "Ruckus keeps the western passages, and he never accepted the new pair in the eastern pits. He is all temper: the earth's anger goes into his fists, and when he is angriest he goes quiet, and sets his feet, and the den knows that sound, because what follows it puts a grown man on the floor. The rock sprites of the western passages stay out of his way. The Howth druids say a spraggon who goes quiet is a spraggon to step back from, and that this is the only spraggon law they have ever been sure of.",
+      "Spriggit": "Spriggit keeps the northern crossing and crackles with a cold no other spraggon has, and the den says he caught it from his neighbour, the alchemist [Eraliwyr], whose bench is a few strides deeper in. The cold has got into everything he does: the frost he throws, and the frost that holds a stranger's feet to the floor of the crossing while he throws more. He calls for help too, the den says, the way spraggons do. Nobody has ever answered him; he is not well liked.",
+      "Eraliwyr": "An alchemist who came into the den to work unwatched. The druids' grove of Tir na Nog blames him for Viraniel's sickness, which ended with her a thing of bones. He is courteous, until he is not."
+    }
+  },
+  "book": {
+    "title": "Notes on Spraggon Politics",
+    "pages": [
+      "A druid of Howth who spent a summer watching the den writes: the spraggons have more ranks than the court of Tir na Nog. A springer outranks a spraggonote, unless the spraggonote is a cutter. A pit boss rules his pit, except when the runners say he does not. The rock sprites are not spraggons and are not consulted, and they consider this an outrage. I found it restful, in its way. Nobody was trying to kill me who was not also trying to kill someone else. I left my name with a pit boss, as a courtesy. He gave it to the runners, who gave it back.",
+      "They do not dig, as we dig. I watched a cutter put both hands flat on a wall and talk to it for most of an afternoon, and in the morning there was a passage there. When I asked how, my interpreter said the stone owed him a favour. I think this is why the ground in the den grips a stranger's ankles. It is not a spell, or not only. It is the den disliking you, and the den is made of the same stuff as its people. I learned to stand still when it gripped, and to wait to be let go, which is not advice I would give a soldier.",
+      "After the earthquake the den was in uproar for a month. Tabor, their great old leader, had gone down with the deep galleries, and they dug him out dead and laid him where they found him. Then there was an election, if that is the word for it. Two were chosen, Dramacus and Yadda, who have not agreed about anything since. I asked why two. One said, through my interpreter: so there is always someone to argue with, and always someone to help. I have seen a stranger lay hands on one of them. The other was there before he had finished, still arguing.",
+      "I saw Tabor fall once, to a band of young Howth swords who had come down for him. The air moved in the fallen gallery, though there is no air to move down there, and the dust rose up in a column and turned, and the old leader stepped out of it, grey and thin, with the same words in his mouth. The spraggons with me did not cheer or mourn. One said: he always did. They have a saying for a quarrel that never ends. The dust gets up after him.",
+      "Last, a warning I was given and pass on. There is a man in the den who is not a spraggon. His name is Eraliwyr and he keeps a lamp and a table of jars beyond the northern crossing, where the spraggon Spriggit crackles with frost. He was very civil to me. He offered me a cup. I did not drink it, and I am alive. The grove in Tir na Nog says the woman Viraniel took a cup from him once, and is not. Be civil back, and keep your hands empty."
+    ]
+  },
+  "bosses": [
+    "eraliwyr"
+  ],
+  "era": "hib-before-the-names",
+  "factions": [
+    "wild-tribes"
+  ]
+}

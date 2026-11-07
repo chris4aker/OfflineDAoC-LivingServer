@@ -1,0 +1,150 @@
+{
+  "id": "lord-sanguis",
+  "name": "Lord Sanguis",
+  "catalogKey": "caer-sidi/lordsanguis",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Blood mages join him (10% chance each turn) and two to four rise when he dies; six seconds after death he returns as Lich Lord Sanguis.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs"
+    },
+    {
+      "text": "Sanguis is Latin for 'blood'. Caer Sidi also holds sanguineous mages and blood mages.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Lord Sanguis: level 81, 100,000 health, GetResist 40 melee / 70 other, calls blood mages (level 70, 8,000 health) on a 10% chance per think when fewer than two live, more on death; Lich Lord Sanguis spawns 6 s after he dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs"
+    },
+    {
+      "text": "Sanguis as a magistrate of Venta (Caerwent), the red stone and the children's story, the red chapel, Brother Anarawd, 'do not count the money until the second man has paid' and the twice-rung bell are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world history, not game canon: Venta Silurum, at modern Caerwent in Monmouthshire, was the Roman market town of the Silures.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Caerwent"
+    }
+  ],
+  "story": "Lord Sanguis was a magistrate of Venta, the Roman town the realm calls Caerwent, who bought his long life with other men's blood: first the condemned, then more condemned, then the poor, at the end anyone. He learned the art from a priest of an eastern god the legions brought to the Wall, and bought three lifetimes, paying each in full in other men's years. Caerwent still tells children of the judge who never grew old and the red stone under his chair, and Titus Senecio's granary daybook records that nobody would enter the old basilica after dark. Arawn keeps the accounts of the dead, and a debt paid in another man's blood is not paid; the keepers took him to Caer Sidi.\n\nThey gave him a chapel of his own in the middle tiers, whose floor has been red since he came, to sit in judgement on himself until the debt runs out. When the gaol rose his blood mages came to him as his clerks had in Venta; when he is pressed he calls them, and when he falls they rise from the floor. The floor began to drip. He fights like a judge, soft, and takes a sword like any fat man in a toga, while spells go into him like bribes into a purse.\n\nDame Ysolde's company killed him twice. He asked what charge they brought and said he had never acquitted anyone. He fell easily; then more mages rose, and as the company knelt to his body something stood up out of the red floor at full height, and they had to begin again. Ysolde dragged Brother Anarawd off the floor by his collar. Caer Gothwaite's priests now ask that his body be left untouched until what comes after him is put down: do not count the money until the second man has paid.\n\nThe Church calls him a usurer of souls; the Inconnu, Arawn's most exact punishment. Caerwent rings the old basilica's bell twice when a company climbs.",
+  "legend": "Lord Sanguis is only the first half. Level 81, 100,000 health, crowd-control immune, and a melee kill: 40% less from slash, crush and thrust, 70% less from everything else. While you fight him he keeps calling blood mages (level 70, 8,000 health) whenever fewer than two are up, and more rise when he dies; off-tanks and area damage on them. He himself is soft and goes down to steady melee. Then, six seconds after he dies, Lich Lord Sanguis stands up out of the same floor at full strength. Do not rest, do not loot the body, do not let the healers wander or sit; keep the raid in place and the tanks ready, with the new mages still to kill. Save your area groups' mana for the mages across both fights. Old Albion priests ask the raid to leave his body alone until the lich is down too, and Caerwent rings its bell twice for you.",
+  "yells": {
+    "aggro": [
+      "Your blood will do very well.",
+      "Mages! We have guests for the chapel.",
+      "Rome paid in blood. So will you."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Mages! Feed the floor!"
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "Mages! Feed the floor!"
+      },
+      {
+        "trigger": "death",
+        "text": "Again, then. Again."
+      }
+    ],
+    "death": [
+      "You think this is the end of me? How Roman of you.",
+      "Again, then. Again."
+    ],
+    "slay": [
+      "Into the floor with the rest.",
+      "A good vintage.",
+      "Your years are mine now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is red. It has been red a long time.",
+      "The floor drinks the lamplight. It is red."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Blood mages rise from the red floor!"
+      }
+    ],
+    "realmFirstKill": "Lord Sanguis has fallen. For a moment."
+  },
+  "botLines": {
+    "briefing": [
+      "sanguis: melee kill, spells do little. he keeps calling blood mages, aoe them",
+      "more mages rise when he dies, and the lich lord stands up 6 sec later",
+      "no resting, no looting after the first one. tanks stay ready",
+      "save aoe mana for the mages across both fights"
+    ],
+    "aftermathWin": [
+      "round one done. here comes the lich",
+      "blood mages down, sanguis down. now the real fight",
+      "first sanguis was easy, now the hard one",
+      "everyone stayed put, good"
+    ],
+    "aftermathLoss": [
+      "the mages got the healers before the lich even stood up",
+      "people started looting and the lich stood up on them",
+      "we celebrated too early",
+      "blood mages everywhere"
+    ],
+    "rumour": [
+      "heard lord sanguis in caer sidi never stays dead",
+      "[someone said|heard] sanguis means blood. the floor of his room is red",
+      "heard sanguis was a roman magistrate who bought his years in blood",
+      "you kill sanguis twice, [everyone knows|heard]",
+      "heard caerwent rings a bell twice when a group goes up for sanguis",
+      "[heard|someone said] sanguis was a roman judge who bought years with blood"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sanguis",
+    "text": "A magistrate of Roman [Caerwent] who bought three lifetimes with other men's blood. The keepers of [Caer Sidi] gave him a chapel with a red floor to judge himself in. He has never once stayed dead: what stands up after him is [Lich Lord Sanguis]."
+  },
+  "bookPage": "Sanguis we killed once, and the floor of his chapel trembled, and his blood mages rose out of his body like steam out of a pot. Dame Ysolde shouted that nobody was to touch his corpse, and nobody did, and six heartbeats later the corpse stood up. It was not the magistrate any more. It was what the magistrate had been paying for all those years, with no man left around it. We fought it in the same red room. When it fell the second time, the floor went from red to grey, and stayed grey.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cut down Lord Sanguis in {minutes} minutes; the red floor stirred.",
+    "loss": "Lord Sanguis fed {realm}'s raid to his chapel floor; {raidLeader} never saw the lich."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "lich-lord-sanguis",
+      "relation": "what he becomes"
+    },
+    {
+      "id": "lich-lord-ilron",
+      "relation": "the only prisoner who speaks to him"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Magistrate of Venta",
+      "text": "Lord Sanguis was a Roman of the old province, a magistrate of a western town, and he bought his long life with other men's blood.\n\nThe Inconnu name the town as Venta, the market town of the Silures that the realm now calls Caerwent, and they say he sat in its basilica as a judge for longer than any judge should live. He learned the art from a priest of a god of the east whom the legions had brought to the Wall: that a life may be lengthened by the blood of another life, given at the right hour with the right words. He began with the condemned, because the condemned were his to dispose of. When there were not enough of them, he condemned more. When the town began to notice, he took the poor, who were not counted. At the end, the Inconnu say, he took anyone.\n\nCaerwent remembers him without his name. The town has a story, told to children, of the judge who never grew old and the red stone under his chair, and its old women still will not sit on a red step. The prefect of the town's granary in the year the legions sailed, Titus Senecio, wrote in his daybook that the old basilica stood empty and that nobody would go in it after dark, and that he had been told why and did not believe it.\n\nHe had bought, the Inconnu say, three lifetimes, and he had been careful to pay for each in full. What he had not understood was that Arawn keeps the accounts of the dead as well as the living, and that a debt paid in other men's blood is not paid at all. When his third lifetime ran out, the keepers came up the road to Caerwent for him themselves, and took him not to the Deadlands but to Caer Sidi, with the others who had cheated."
+    },
+    {
+      "title": "The Red Chapel",
+      "text": "The keepers of Caer Sidi believed in fitting punishments, and they gave the magistrate a chapel of his own.\n\nIt lies in the middle tiers of the fortress, a small chapel of the pale stone with a single altar and no window, and its floor has been red since the day he came. Not painted, the Inconnu say, and not stained: red, through and through, as the stone under his chair in the basilica had been. The keepers set him there to sit in judgement on himself for as long as his debt ran, and the debt was three lifetimes of other men's years, and it has not run out yet.\n\nWhen the gaol rose, the blood mages of the middle tiers came to him again, as the clerks of his court had come to him in Venta. They were sorcerers who had dabbled in his art in life and been sent to Caer Sidi for it, and they knew him for their master the moment they saw the floor. They serve him now as his clerks served him, coming and going about his chapel while he sits in judgement, and when he is pressed he calls them to his side, and when he falls they rise out of the red floor around him. And on the night of the rising the floor, which had been red and dry for ages, began to drip.\n\nHe is not cunning in combat, the Inconnu say. He was a judge, not a soldier; he sat while other men did the killing. His robes are a magistrate's and his body is a magistrate's, soft, and the knights of Caer Gothwaite say he takes a sword like any fat man in a toga. It is his spells' counterparts that go into him and vanish, as bribes went into his purse. And he is not frightened of dying. He has died before, many times. He has never once stayed dead."
+    },
+    {
+      "title": "Killed Twice",
+      "text": "Dame Ysolde's company killed Sanguis twice in the red chapel, and Brother Cadoc's account of it is the one that the Church of Camelot reads at Lent.\n\nThe magistrate sat at his altar when they came in, with his blood mages about the chapel, and he looked up and asked the company, quite courteously, what charge it brought. Ysolde said none. He said that was a pity, because he had never yet acquitted anyone. Then he called his clerks.\n\nHe fell as the Inconnu said he would, without much trouble, to the knights' swords; he was a judge, and fought like one. The trouble came after. As he fell, more of his mages rose out of the floor around him, and the company turned on them, and some of the company knelt to see what the magistrate had on him, rings, a seal, a purse. Ennyn had warned them. Cadoc had not listened. In the space of a few breaths something stood up out of the red floor where the body lay, at its full height, with no man left around it, and the company had to begin again with the mages still at its back.\n\nCadoc wrote that the priest who had knelt by the body nearest the floor was Brother Anarawd of Caer Gothwaite, his own novice master, and that Anarawd lived, because Ysolde dragged him off the floor by his collar before the thing stood up. Since that day the priests of Caer Gothwaite have asked every company that climbs to leave the magistrate's body untouched until what comes after him has been put down too. The Church calls it a custom of reverence. The knights call it common sense. The garrison has a saying for it that it uses of any debt: do not count the money until the second man has paid."
+    },
+    {
+      "title": "The Debt",
+      "text": "The realm's readings of Lord Sanguis are readings of his debt, and they agree on nothing but that it is still owed.\n\nThe Church of Camelot says he is a usurer of souls, and that the red floor of his chapel is the Church's oldest teaching made visible: that the wages of sin are paid in blood, and not always the sinner's. The Inconnu say he is Arawn's most exact punishment, a man who believed every debt could be paid by someone else, set to sit until he pays his own. The bards of Caerwent say he is the judge in their children's story, and that the story ends with the judge getting up off his red stone one day and going looking for the next town.\n\nWhat he wants, all three agree, is more time. He has always wanted more time, and he has always paid for it with someone else's. In the red chapel he cannot buy it, because there is no one to sell it to him but his own mages and the companies who come in at his door; and so the Inconnu say he does the only thing left to him. When he is struck down, he pays the last of his borrowed years all at once, and stands up again as what the debt has made him. The magistrate is only the first half of Lord Sanguis. The second is the debt with no man left around it, and the companies of Albion call it the lich lord.\n\nCaerwent has kept a custom since Ysolde's company came home. On the morning a company of Caer Gothwaite goes up to the turning gaol, the town's bell-ringer rings the old basilica's bell twice, once for the judge and once for what comes after him. The town council has twice voted to stop it, and twice the old women have come to the meeting and the vote has been put off."
+    }
+  ]
+}

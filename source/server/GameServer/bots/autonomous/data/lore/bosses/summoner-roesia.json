@@ -1,0 +1,158 @@
+{
+  "id": "summoner-roesia",
+  "name": "Summoner Roesia",
+  "catalogKey": "summoner-s-hall/summonerroesia",
+  "locationId": "summoners-hall",
+  "realm": "Neutral",
+  "era": "mid-era-jarls",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "her master"
+    },
+    {
+      "id": "summoner-cunovinda",
+      "relation": "fellow student"
+    },
+    {
+      "id": "summoner-lossren",
+      "relation": "fellow student"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Summoner Roesia is a level-75 summoner with 100,000 health, one of the three objectives before the Grand Summoner.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She wears a damage shield (Roesia Damage Shield), casts Summoner Pain over a wide area and, at 25%, heals herself over time; she cannot be hurt past her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam comments: a vicious area energy damage-over-time, so set resists; three Albion players took her in about 45 minutes (2003-2005).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/3958"
+    },
+    {
+      "text": "Roesia is a medieval Anglo-Norman woman's name (to verify).",
+      "provenance": "original",
+      "source": "name glossary, to verify"
+    },
+    {
+      "text": "Summoner Pain (spirit damage over time, 150 every 3 seconds for 36 seconds, radius 1,000) is cast on a random real player within 2,000, recast every 20 seconds; GameBots are never its centre but take it if they stand near.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs"
+    },
+    {
+      "text": "She often raises a heat damage shield (80 per hit, 5 minutes), and below 25% health she casts Summoner Heal on herself (heal over time).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs"
+    },
+    {
+      "text": "She takes 40% less melee and 70% less magic damage, cannot be crowd-controlled, and cannot be hurt past her tether.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs"
+    }
+  ],
+  "story": "Roesia is the keeper of pain, the third of the Grand Summoner's students: the one who makes sure that every bargain the hall strikes costs the one who strikes it. The magicker says Govannon pays his own debts and Roesia sees that everyone else pays theirs. Her name is a Camelot name, of the Norman lords' kind, and she curses Albion's knights in their own tongue as if she remembered it. Camelot's priests say she was a lady of the Pennine marches who bargained with the summoners to save a dying son and lost him anyway, and came down the road to collect what she was owed; the druids say it is the kind of story Camelot tells about its women; the skalds say it does not matter, because pain has no realm.\n\nHer pain is not aimed at the one she is fighting. It chooses someone in her chamber and spreads from them a long way, so that a company that has drawn together aches as one. A ward of fire stands around her that burns the hand that strikes her, which she calls the receipt. And when she is nearly undone she stops and knits herself together with a patience the other two have never had, and the companies who have killed her say they did it by keeping everything they had for that moment.\n\nWhat she wants, the magicker says, is to be told she is needed. Govannon has never told her, and she has never asked. When she dies she says the pain is hers at last, and the air of her chamber goes on aching for a long time after. Her fellow students mock her ward of fire; she answers that neither of them has ever been touched, and that she has. The skalds say she is the only one in the hall who still flinches.",
+  "chapters": [
+    {
+      "title": "A Camelot Name",
+      "text": "Roesia is a Camelot name, of the kind the Norman lords of the marches gave their daughters, and the hall's sidhe say she curses Albion's knights in their own tongue, with the right oaths in the right order, as if she remembered how. Camelot has a story for her. The priests of the Pennine chapels say she was a lady of the marches in the first years after Camlann, when the road under the hills was already known and already feared, and that her son lay dying of a wasting sickness no physician could name. She went to the Summoners. She offered them anything, the priests say, and they asked her for the one thing she had not thought to keep back, which was her son's pain: they would take it from him, and he would die easy.\n\nHe died easy. She went down the road afterwards to ask for him back, and the Grand Summoner told her she had been paid in full, and she asked what she had been paid with, and he showed her. Her son's pain was in the hall, kept, with the pain of every bargain the hall had ever made. The priests say she has been keeping it since, and that she took the work because it was the only way to stay near what was left of him.\n\nThe druids say it is the kind of story Camelot tells about its women, and that she is more likely a Camelot witch who went looking for the summoners and found exactly what she was looking for. The skalds of Jordheim say neither account matters, because pain has no realm, and the keeper of it belongs to whoever is hurting."
+    },
+    {
+      "title": "The Keeper of Pain",
+      "text": "Every bargain has a price, the magicker says, and Govannon always pays his. But a bargain has two sides, and the other side pays too, and someone must see that it does. That is Roesia's work. When the hall strikes a bargain, with a dead soul or a living guest or a keening Lady under Breifine, Roesia is the one who makes sure it hurts the one who struck it, a little and for a long time, so that he does not forget he made it. Govannon pays his debts, the magicker says; Roesia sees that everyone else pays theirs.\n\nHer pain is not aimed at the one in front of her. The companies who have fought her say it chooses someone in the chamber, often someone who has not come near her at all, and spreads out of him a long way across the room, so that the men around him cry out with him. A company that has drawn close together, as companies do when they are frightened, aches as one. The druids say she does it because pain shared is pain multiplied, and that she had it from her son, though the druids do not believe in her son.\n\nHer chamber is the room where the air aches. It ached before the companies came and it aches after they go, a dull pain in the breath like the first day of a fever. The stewards do not go in. The magicker says the ache is everything Roesia keeps, leaking."
+    },
+    {
+      "title": "The Receipt",
+      "text": "A ward of fire stands around her, low and humming, and it burns the hand that strikes her. She calls it the receipt. The magicker says it is the oldest of her crafts, older than her service to the summoner: a ward that makes every blow cost the one who gives it, so that nobody can hurt her without being hurt in turn. She casts it often, and it lasts. The companies of every realm have come home with their sword-hands blistered, and Albion's knights call it the toll.\n\nLike her master and her fellow students she cannot be held still by any craft the living know, and the spells of the realms' casters run off her as off a slate roof. It is the companies' steel that has always told against her, and their steel that the receipt is for. The skalds say she made it for exactly that reason, and that a woman who keeps the pain of a whole hall knows better than anyone where it is cheapest to make a man pay.\n\nHer fellow students mock the ward, the stewards say. Cunovinda never lets anyone close enough to need one, and Lossren lets his crowd take the blows. Roesia answers that neither of them has ever been touched in her life, and that she has. The magicker, who has heard the quarrel more than once, says Roesia is the only one of the three who remembers what it was to be hurt by someone she loved, and that the ward was made the year she stopped wanting to remember it."
+    },
+    {
+      "title": "The Mending",
+      "text": "When she is nearly undone, Roesia stops. The companies who have brought her to the edge say she steps back from the fighting and begins to mend, slowly, with a patience the other two students have never had, knitting herself back together the way a woman sits up through the night darning by a fire, and that if she is let alone at it she will mend whole. The druids say she mends because she was a mother, and mothers do not stop. The skalds say she mends because the pain she keeps is not finished with her.\n\nThe companies made a habit of it, each in its own way. Albion's knights keep the last of their strength for the toll-woman, they say, and spend it all at once when she steps back. Hibernia's rangers save their best arrows. Midgard's companies have a saying from Glenlock, used of any task left half done: don't let her darn. The skalds say the companies that have killed Roesia all did it in the breath after she began to mend, and those that lost to her lost it there too.\n\nWhat she wants from her master, the magicker says, is to be told she is needed. He has never told her. She has never asked. When she dies she says the pain is hers at last, and the companies who hear it are never sure whether she means it as a curse or a relief. The air of her chamber goes on aching after she falls, and is still aching when she comes back."
+    }
+  ],
+  "legend": "Roesia's Summoner Pain is spirit damage, not energy whatever the old guides said: a long damage-over-time in a huge ring around one person, recast every twenty seconds, so stay spread out and keep spirit resists up. She wears a heat damage shield most of the time, so melee watch their health. Under 25% she starts healing herself over time: save your burst for that and push straight through it, because that's where every win and every wipe on her happens. Like the other masters she shrugs off most magic, nothing mezzes or stuns her, and she can't be hurt past her tether. A small group can take her slowly; a raid takes her fast.",
+  "yells": {
+    "aggro": [
+      "Every bargain has a price. I am the price.",
+      "Strike me, then. The receipt is free.",
+      "Every blow you give me, you will pay for."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Not yet. I mend. I always mend."
+      }
+    ],
+    "death": [
+      "The pain... is... mine at last...",
+      "I kept it... all of it... for him..."
+    ],
+    "slay": [
+      "Paid in full.",
+      "Paid. In full. As promised.",
+      "Your pain will be kept. I keep everything."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air of this chamber aches.",
+      "Every breath here aches like the first day of a fever."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Roesia begins to mend herself!"
+      },
+      {
+        "trigger": "death",
+        "text": "Roesia falls. The ache in the air lingers."
+      }
+    ],
+    "realmFirstKill": "Summoner Roesia is slain. The ache fades."
+  },
+  "botLines": {
+    "briefing": [
+      "roesia: spirit resists, her pain is spirit. melee watch the damage shield. burst at 25% when she starts healing",
+      "roesia's pain hits a big ring around one person. stay spread, dont clump",
+      "melee: her damage shield is heat, watch your health",
+      "under 25% she heals. everyone burst then, dont let her darn"
+    ],
+    "aftermathWin": [
+      "roesia down, nice burst at the end",
+      "roesia down. [the ache is gone|still aches in there tho]",
+      "we burst her right through the heal. gg",
+      "three summoners down. govannon next"
+    ],
+    "aftermathLoss": [
+      "she healed through our burst at 25",
+      "everyone clumped and her pain hit the whole raid",
+      "she healed back up from 20%",
+      "melee burned themselves out on her damage shield"
+    ],
+    "rumour": [
+      "heard roesia is the one who makes sure the summoners' bargains hurt",
+      "the albs say roesia was a lady of the marches who sold her son's pain",
+      "the glenlock lot say dont let her darn. means finish the job",
+      "roesia calls her damage shield the receipt"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Roesia",
+    "text": "The keeper of pain among the summoners. She makes sure every bargain hurts, and mends herself when she is hurt in turn."
+  },
+  "bookPage": "From Vigfus Hallason's notes. The magicker would not tell me the story of Roesia's son; she said it was Camelot's story and Camelot could keep it. She told me instead what Roesia says to the Grand Summoner when he comes into her chamber, which is nothing. She keeps her eyes on the floor and waits for him to leave. I asked whether she hated him. The magicker said no. She said Roesia keeps the pain of every bargain the hall has ever made, and that if she began to hate anyone for it, she would have to begin with herself. Then she asked me whether I had ever made a bargain. I said no. She said that was what everyone says.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Summoner Roesia in {minutes} minutes.",
+    "loss": "Summoner Roesia made {raidLeader}'s raid from {realm} pay in full after {minutes} minutes."
+  }
+}

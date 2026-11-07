@@ -1,0 +1,132 @@
+{
+  "id": "jehrog-se-bysen",
+  "name": "Jehrog se Bysen",
+  "catalogKey": "krondon/jehrogbysen",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 72-77, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800, two-handed crush, parry 60, no spells; linked with Ulor se Bysen.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs"
+    },
+    {
+      "text": "Bysen means 'example, pattern, model', and also 'command, precept' (Bosworth-Toller).",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/"
+    },
+    {
+      "text": "Jehrog carrying Ulor, the carved guards over the muster door, the hall-folk's name-day room, the three scuffs and Sir Rhydian's account are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Jehrog was the first-born of his litter in the Undercroft and the largest, and he carried his small brother Ulor on his back from seam to seam, standing in front of him whenever the old diggers came to cuff him for asking questions. He asked none of his own; he had Ulor for that. When Orylle gave the brothers the title over the door of their bare room, bysen, the example, Jehrog took it as the honour of his life and has never left the room. The ghosts are gentle about him: he has never harmed one, and one told Wenna of Caer Gothwaite he would have made a good hall-folk cempa.\n\nHe never learned a word of the hall's tongue. He learned its guard instead, off the muster-room door, where the hall-folk carved their cempa in a row, a man for every stance of the door-ward's art. The carvings show no stroke at all, only the blade that comes in and is turned aside. A cempa of the hall turned more steel than he ever struck, and Jehrog, with the body of three of them, turns it better; Sir Cador wrote that half his knights' strokes went past the ogre as though he were water. The carvings say nothing about spells. That is why his brother stands behind him.\n\nIn the hall-folk's time the room of the example was for name-days, where a child chose one of the bysen to follow. Now the young ogres watch from the doorway and copy both brothers at once, the arm and the voice, growing up thinking a fighter is two people. An example must be followed whole, or not at all: a man who comes to one has come to both.\n\nSir Rhydian of Caer Gothwaite led the first company to kill the brothers. His knights held Jehrog and turned his maul while wizards of the Isle of Glass burned him, because spells went into him as though the carvings had never been made. Rhydian wrote that when Ulor died the elder did not change, and went down in the last stance of the carvings. Father Collen says he saw the ogre's face. Wenna wrote that a guard is a kind of grief.",
+  "legend": "Jehrog is the melee brother: level 72 to 77, 30,000 health, CC immune, 20% melee / 30% other reduction, 3,800 tether, a big two-handed crusher, and parry 60, so most melee from his front goes nowhere. He casts nothing; the curses and sores the old guides blamed on him are Ulor's. Pull either brother and you get both. Usual plan: tanks hold Jehrog and keep him off the casters while the raid interrupts and kills Ulor, then everyone turns on Jehrog. Against him, spells and archery do the work, or melee from behind where he cannot parry. He does not enrage or hit harder when Ulor dies, whatever you heard. Fight them in their room: past 3,800 they walk home at full health.",
+  "yells": {
+    "aggro": [
+      "Brother, behind me.",
+      "Stand. Turn. Stand.",
+      "Watch, little ones. This is the guard."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ulor! Stand with me!"
+      }
+    ],
+    "death": [
+      "Remember... how we stood...",
+      "Ulor... we fall... together..."
+    ],
+    "slay": [
+      "Turned.",
+      "An example, for the young ones.",
+      "That is the guard."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two ogres stand together, one before the other.",
+      "Three small scuffs on the wall, at a child's height."
+    ],
+    "phases": [],
+    "realmFirstKill": "Jehrog se Bysen is dead. No one follows the example now."
+  },
+  "botLines": {
+    "briefing": [
+      "jehrog is pure melee, no spells. parry 60, hit him with spells or from behind",
+      "tanks hold jehrog away from the casters while we kill ulor",
+      "pull one brother, get both. ulor first, then jehrog",
+      "he doesnt enrage when ulor dies. just finish him"
+    ],
+    "aftermathWin": [
+      "the example has been set. by us",
+      "jehrog down. the casters carried that",
+      "both brothers, no deaths",
+      "orylle lost her favourites tonight"
+    ],
+    "aftermathLoss": [
+      "melee stood in front of jehrog and he parried all of it",
+      "jehrog got loose on the casters",
+      "we split dps between the brothers again",
+      "pulled them out of their room and they walked home full"
+    ],
+    "rumour": [
+      "heard jehrog learned to fight off the carvings over a door",
+      "[heard|someone said] jehrog carried his brother on his back down the seams",
+      "jehrog se bysen is the older brother, [heard|they say]. never says a word",
+      "orylle visits the brothers more than any other room, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "jehrog",
+    "text": "The elder of the brothers called the Example in [Krondon], the arm of the pair. He learned the hall-folk's door-ward guard off the carvings over the muster door, and steel goes past him as if he were water; spells do not. He stands in front of [Ulor] wherever Ulor goes. See [bysen]."
+  },
+  "bookPage": "From the account of Sir Rhydian of Caer Gothwaite to the Constable. The elder brother fights as the carvings over the muster door of that hall stand: every guard of the old door-wards' art, one after another, and no stroke that I saw him aim. Half of what my knights threw at him went past him. My wizards did the rest; spells went into him as into any man. The younger brother died first. The elder did not roar, nor fight harder, nor look round. He went down in the last guard of the carvings, the haft across his body. I had expected grief. Father Collen says I was looking at the wrong place.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} ended Jehrog se Bysen's lesson in {minutes} minutes.",
+    "loss": "Jehrog se Bysen taught {realm}'s raid under {raidLeader} the slow way."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "ulor-se-bysen",
+      "relation": "his younger brother"
+    },
+    {
+      "id": "drihten-elreden",
+      "relation": "his scribes copied Jehrog's curses"
+    },
+    {
+      "id": "ulor-se-bysen",
+      "relation": "his younger brother, the voice of the pair; he stands in front of him"
+    },
+    {
+      "id": "deben-se-gecynde",
+      "relation": "learned his guard under Deben's muster door, to Deben's annoyance"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Elder Who Carried",
+      "text": "Jehrog was the first-born of his litter in the Undercroft, and the largest, and from the day his brother was born he had something to carry.\n\nThe thrawn ogres of the seams do not raise their young gently. A litter is born in the dark of a worked-out tunnel and left to follow the crews as best it can, and the small ones that cannot keep up are not waited for. Ulor was small. Jehrog put him on his back, the ogres say, before Ulor could walk, and carried him from seam to seam for years, and stood in front of him whenever the old diggers came to cuff him for asking questions. The diggers learned to go round. It is the first thing anyone in the Undercroft remembers about Jehrog, and nearly the only thing. He did not ask questions of his own. He did not need to. He had Ulor for that.\n\nHe climbed the shaft behind Orylle with his brother on his back, though Ulor was long since grown, because Ulor said he wanted to see the hall from as high as possible. On the night of the taking the brothers took a room that nobody else wanted, a bare room off the great hall with a single word over its door, and when Orylle asked the ghost of Wynflaed what the word meant and was told example, she gave it to them as a title. Jehrog took it as the honour of his life, and the ogres say he has never once since left the room.\n\nThe ghosts of Krondon, who are mostly gentle, are gentle about Jehrog too, in a way they are not about the other ogres of the hall. He has never harmed one of them. He has never shouted at one. A ghost of the room of the example told Wenna of Caer Gothwaite that Jehrog was the only ogre in Krondon who would have made a good hall-folk cempa, and that it was a pity he had come to the door from the wrong side."
+    },
+    {
+      "title": "The Guard on the Muster Door",
+      "text": "Jehrog never learned a word of the hall-folk's tongue. He learned their guard instead, off a door, the way the ogres of Krondon learn everything.\n\nOver the muster-room door the hall-folk carved their cempa, the champions of the hall, in a long row: a man for every stance of the door-ward's art, from the first guard to the last, so that a young cempa coming to the muster could see his whole craft laid out above him in stone. Jehrog found it in the first week. The ghosts say he stood under the carving for days with the maul he had taken from the stores, putting himself into each stance in turn, slowly, badly, then less badly, until he could go from the first to the last without stopping. Deben se Gecynde, who keeps the muster, threw things at him for blocking the door. Jehrog did not notice.\n\nThe door-ward's art was the art of turning a blow. The cempa of the hall were few and their enemies many, and the carvings show no stroke at all, only guards: the haft across the body, the blade that comes in and is turned aside and goes past. The ghosts say a cempa of the hall in his prime turned more steel than he ever struck, and that Jehrog, who has the body of three of them, turns it better. Wenna's companions found that out at the door of the room of the example. Sir Cador wrote afterwards that half his knights' strokes had gone past the ogre as though he were made of water, and that he did not think the ogre had been trying.\n\nThe carvings say nothing about spells. The cempa of the hall did not need to know about spells; the hall had its ealdor for that, and its book. Jehrog does not know about them either. The ghosts of the room say that is why his brother stands behind him, and why he stands in front."
+    },
+    {
+      "title": "The Room of the Example",
+      "text": "In the hall-folk's time the room of the example was a room for name-days, and the young of the hall came there to be shown what they were for.\n\nThe ghosts told Wenna how it went. On a child's name-day, the bysen of the generation above, the young who had been chosen as the pattern, stood in the bare room in their working clothes, the scribe with her pen, the cempa with his spear, the keeper with her keys, and the child walked along the row and chose one to follow. The room had no other use. The hall-folk thought a pattern should be seen standing still, and from close to, and only on purpose. Wynflaed's three pupils were the last bysen of the hall. Their marks are still on the wall where they stood, three small scuffs at a child's shoulder height.\n\nThe young ogres of Krondon come to the room now, and stand in the doorway, and watch the brothers, because Orylle has told them to. They do not choose. There are only two patterns in the room and they never separate, and the young ones copy both at once, the guard and the pointing, the arm and the voice. The ghosts say the young ogres are growing up thinking that a fighter is two people, one in front and one behind, and that a single ogre alone is only half of one.\n\nThe hall-folk had a saying cut over the door, under the title: an example must be followed whole, or not at all. The brothers have never been followed by halves. A man who comes to one has come to both; that is the custom of the room, and the ghosts think Jehrog keeps it for no reason more complicated than that he has never once been more than a few strides from his brother in his life. When Ulor moves, Jehrog moves to stand in front of him. The young in the doorway move with them."
+    },
+    {
+      "title": "Rhydian's Account",
+      "text": "Sir Rhydian of Caer Gothwaite led the first company to kill the brothers, and his account of it has no stones in it.\n\nHe wrote it for the Constable, and it is a knight's account: the order of march, the names of the dead, the number of strokes. He put his best knights on Jehrog and held him, he wrote, because someone had to hold him, and the ogre's guard turned their swords until his men's arms were dead from the shoulder. He had brought wizards of the Isle of Glass because Sir Cador had told him that steel went past the elder brother like water, and the wizards did what the knights could not. Spells went into Jehrog as if the carvings over the muster door had never been made. Rhydian's knights stood in front of the ogre and turned his maul, and the wizards behind them burned him, and the elder brother never once looked round at the men who were killing him, because the carvings had never taught him to.\n\nHe writes that the younger brother died first and that the elder did not change. That was the thing Rhydian could not get over. Jehrog did not roar. He did not fight harder. He went on putting himself into each guard in turn, as he had under the muster door, and when the wizards had done with him he went down in the last stance of the carvings, the haft across his body. Rhydian had expected grief. He wrote that he had seen more grief in a dog.\n\nFather Collen's account of the same night says Rhydian is wrong, and that he was standing at the back and saw the elder brother's face when the younger died. The readers of Caer Gothwaite keep both. Wenna, who was not there, read them side by side and wrote in the margin that a guard is a kind of grief, if it is all a man has been taught. The ghosts of the room say the young ogres in the doorway were silent for a whole day afterwards, and then went back to their game."
+    }
+  ]
+}

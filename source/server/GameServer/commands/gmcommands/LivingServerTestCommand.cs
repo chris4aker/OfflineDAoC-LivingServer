@@ -23,7 +23,8 @@ namespace DOL.GS.Commands;
     "/lstest holiday <name|off> - bots treat today as that holiday (newyear valentines stpatricks aprilfools easter midsummer halloween thanksgiving christmas)",
     "/lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid",
     "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once",
-    "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)")]
+    "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)",
+    "/lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     public void OnCommand(GameClient client, string[] args)
@@ -118,6 +119,9 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                     : $"No {GlobalConstants.RealmToName(raidRealm)} raid: {why}.");
                 return;
             }
+            case "lore":
+                Say(client, LoreAtmosphere.TestHere(gm));
+                return;
             default:
                 DisplaySyntax(client);
                 return;

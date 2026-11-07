@@ -1,0 +1,86 @@
+{
+  "id": "shaman-saelonna",
+  "name": "Shaman Saelonna",
+  "npcNames": [
+    "Shaman Saelonna"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Shaman Saelonna: NPC template 60165930, level 46, the Arawnite shamaness model, no faction, aggro 200 (range 500), no spells, respawn 300 s, in Snowdonia's middle valley at 521626, 349668 with six cyclopes (41) nearby.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Symbol of the Broken (Master Gerol): seek out the Arawnite shaman Saelonna and retrieve her Book of Arawn, then return it to Master Ferowl in Cotswold.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Saelonna reading the Book of Arawn to the dead, and the dead leaning in to listen, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Arawnite shamanesses of Snowdonia keep the old faith of the lord of the dead as the hill-folk kept it before the Church came up the valleys: not as worship, they say, but as manners, the courtesy a sensible people pays to the host whose house they will all one day sleep in. Saelonna is the eldest of them, and she has the book.\n\nThe Book of Arawn is the shamanesses' own: the names of the dead of the valleys, the roads they took, the debts they left, and the words the lord of the dead likes to hear. Saelonna reads it aloud in the middle valley, every day, slowly, from where she left off, and the dead of the valley lean in to listen as an old man leans toward a fire. The cyclopes the Followers pay stand round her while she reads. She does not need them. The dead would not let her come to harm before she finished.\n\nMaster Gerol of the Academy, who is too weak now to travel, says Morgana has taken an interest in the book, and in what the right words read to enough of the dead might raise. He wants it brought to Master Ferowl in Cotswold. Saelonna says the book was never Morgana's to want, and that Albion's wizards have never once asked to borrow it politely.",
+  "legend": "Shaman Saelonna, level 46, in the middle valley of Snowdonia with half a dozen cyclopes (41) around her. She has no faction so the cyclopes do not come just because you hit her, but they are aggressive and close: clear them first. Plain melee in the data. Take her Book of Arawn to Master Ferowl in Cotswold for Symbol of the Broken.",
+  "yells": {
+    "aggro": [
+      "You interrupt the reading.",
+      "The dead are listening. So am I."
+    ],
+    "phases": [],
+    "death": [
+      "The page... I had not finished the page..."
+    ],
+    "slay": [
+      "Your name goes in the book.",
+      "Read out. Next."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Shaman Saelonna reads the Book of Arawn aloud."
+    ],
+    "phases": [],
+    "realmFirstKill": "Shaman Saelonna has fallen. The reading stops."
+  },
+  "botLines": {
+    "briefing": [
+      "saelonna in the middle valley, clear the cyclopes round her first",
+      "take her book of arawn to master ferowl in cotswold, symbol of the broken"
+    ],
+    "aftermathWin": [
+      "got the book of arawn",
+      "saelonna down. the dead stopped listening"
+    ],
+    "aftermathLoss": [
+      "the cyclopes came while we were on her"
+    ],
+    "rumour": [
+      "[heard|someone said] saelonna reads the names of the dead out of that book every day",
+      "heard morgana wants the book of arawn to raise something"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "saelonna",
+    "text": "Shaman Saelonna, eldest of the Arawnite shamanesses of [snowdonia], who reads the Book of Arawn aloud to the dead of the middle valley. Master Gerol says Morgana wants the book."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} closed Shaman Saelonna's Book of Arawn in Snowdonia in {minutes} minutes.",
+    "loss": "Saelonna read on; {raidLeader} of {realm} left the middle valley without the book."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "eye-of-arawn",
+      "relation": "the Followers of Arawn pay the cyclopes round both"
+    }
+  ],
+  "tier": "minor"
+}

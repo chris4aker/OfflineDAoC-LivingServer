@@ -1,0 +1,17 @@
+{
+  "id": "albion",
+  "realm": "Albion",
+  "title": "A History of Albion",
+  "intro": "Albion remembers its kings, but the isles remember what came before them.",
+  "eras": [
+    {"id": "albion-old-halls", "name": "the Old Halls", "summary": "Before Camelot, the keepers' halls under the hills.",
+     "text": "Before any king, the isles kept their halls under the hills and their words in an older tongue.",
+     "events": [{"name": "The keepers' bargain", "text": "When the ogres came, the keepers of Krondon made their bargains.", "places": ["krondon"], "bosses": ["scurceol-hyrde"]}]},
+    {"id": "albion-war-of-the-isles", "name": "the War of the Isles", "summary": "Morgana's war on Avalon.",
+     "text": "Morgana's war broke on Avalon, and the old halls fell one by one."}
+  ],
+  "factions": [
+    {"id": "krondon-keepers", "name": "the Keepers of Krondon", "summary": "The old masters of weather and law.",
+     "text": "They counted wealth in weather, not gold.", "places": ["krondon"], "bosses": ["scurceol-hyrde"]}
+  ]
+}

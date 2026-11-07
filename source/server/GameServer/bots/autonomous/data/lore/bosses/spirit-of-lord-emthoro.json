@@ -1,0 +1,130 @@
+{
+  "id": "spirit-of-lord-emthoro",
+  "name": "Spirit of Lord Emthoro",
+  "catalogKey": "albion-named-mobs-shrouded-isles/spiritoflordemthoro",
+  "locationId": "inishail-island",
+  "realm": "Albion",
+  "aliases": [
+    "emthoro",
+    "lord emthoro"
+  ],
+  "facts": [
+    {
+      "text": "Level 77, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else; ghost, on the soultorn model.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs"
+    },
+    {
+      "text": "He takes no damage from an attacker more than 440 from his spawn point; players and pets get 'is immune to your damage'. Attackers are players, pets and bots (NamedMobDamage.CountsAsAttacker).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs; source/server/GameServer/gameutils/NamedMobDamage.cs"
+    },
+    {
+      "text": "While his target is more than 420 from his spawn he cannot move (MaxSpeedBase 0).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs"
+    },
+    {
+      "text": "Lifedrain Pulse: 80 spirit to everyone within 440 of him, recast 10 s; every point of his spell damage heals him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs"
+    },
+    {
+      "text": "While he fights a 'Spirit of Lord Emthoro's servant' (orc or zombie model, level 55-59) appears at his spawn every 25-40 s; servants die when he dies or resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/SpiritOfLordEmthoro.cs"
+    },
+    {
+      "text": "He walks home at full health when nobody is left on his aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "His lost name, the lord who held land by standing on it, the messengers made to walk up from the shore, the tenancy past death and the orcs as his tenants are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Lord Emthoro held Inishail in the last years before the war, and the colleges' rolls have lost his name, or never had it; his people called him by it and that is the only record. He held the isle the old way, by being on it. He walked his bounds every season. He heard his tenants at his own door. And he would not take an order, a summons or a letter from anyone who would not first come up and stand on his ground to give it: the college of the old tongues wrote, with some irritation, that its messengers were twice obliged to walk up from the shore. To those who did, he was courteous.\n\nWhen the war came he would not leave. When it reached the island he was standing before his door, and he is standing there now, a spirit on the patch of ground that was the last thing he held. Morgana did not raise him; he was already there when her dead came, and the readers at Caer Gothwaite think he is the only dead thing in the isles that her war did not make. She counts him among her own anyway. He has not been asked.\n\nHis old way holds. Nothing reaches him from beyond his ground. Arrows from the edge fall as if they had nothing to say, spells pass through him like light through glass, and the orcs say a thrown stone is not even noticed. Only those who come up and stand on his ground can lay a hand on him, and they find he can lay one on them: something goes out of everyone who stands there, a little at a time, and comes to him. The more who stand there, the more comes. He does not step off his ground to follow anyone. He never had to. A lord does not chase his tenants down the road; he waits at his door, and they come.\n\nThey do come. By the old custom of Inishail, a tenant owes the lord service after death as well as before, and the lord's household has always included the dead. When the orcs who ran from Krondon built their village beside his ground, they became his tenants without being asked, and their dead come to his door when he calls, with the older dead of the isle beside them. Chieftain Toca's soothsayers read stolen Avalonian books by firelight, looking for the words that end a tenancy. The lammia say the words are simple: you go up, and stand on his ground, and you do not leave until he does.",
+  "legend": "The Spirit of Lord Emthoro, level 77, 30k health, just north of the orc village on Inishail. The whole trick: he takes NO damage from anyone more than 440 units from his spawn point. That counts players, pets and bots alike, so everyone, casters and archers included, stands on his ground or does nothing. He cannot move while his target is off his ground, so do not kite. His Lifedrain Pulse hits everyone within 440 of him for 80 spirit every 10 seconds and heals him for every point it does, so a big group heals him more each pulse: heal through it and keep the dps high. Every 25 to 40 seconds a servant (an orc or a zombie, 55-59) appears at his spawn, right in the middle of you; kill it. No mez or stun on him. Servants die with him. A wipe resets him; respawn about an hour.",
+  "yells": {
+    "aggro": [
+      "You stand on my land. Kneel.",
+      "You came up to my door. Good. Speak.",
+      "Tenants. Attend me."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "My household. To your lord's door."
+      }
+    ],
+    "death": [
+      "My land... my land...",
+      "Let them... rest..."
+    ],
+    "slay": [
+      "Buried on my land.",
+      "You owe me service now.",
+      "Another tenant for Inishail."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lord's ground. Step onto it to face him.",
+      "Beyond the bounds, nothing you do will reach him."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Lord Emthoro's tenants come to his call!"
+      }
+    ],
+    "realmFirstKill": "The Spirit of Lord Emthoro rests. Inishail is free."
+  },
+  "botLines": {
+    "briefing": [
+      "emthoro, 77, 30k. he takes zero damage from anyone more than 440 from his spawn. everyone in close, casters too",
+      "that includes bots and pets. if youre at range youre doing nothing",
+      "his pulse is 80 spirit to everyone on his ground every 10 sec and heals him. heal through, keep dps up",
+      "a servant pops at his spawn every 25-40 sec, right on top of us. kill it fast"
+    ],
+    "aftermathWin": [
+      "emthoro down. inishail is free for an hour",
+      "everyone stood on the ground, thats all it takes",
+      "servants never got going. nice",
+      "the orcs should send us a thank you"
+    ],
+    "aftermathLoss": [
+      "half the casters stood back and did nothing",
+      "the pulse healed him faster than we hit, not enough dps",
+      "tried to kite him off his ground, he just stood there",
+      "servants on the healers"
+    ],
+    "rumour": [
+      "[heard|someone said] emthoro's servants are the dead of the inishail orcs",
+      "heard the colleges never wrote lord emthoro's name down",
+      "[heard|someone said] the orcs read stolen books to get out of his service",
+      "heard morgana didnt raise emthoro, he was already there"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "emthoro",
+    "text": "The lord of [inishail island] whose name the colleges' rolls have lost. He held the isle by standing on it and would take no order from anyone who would not first stand on his ground. His spirit still does: nothing from beyond his bounds reaches him, and those who stand there feel him drink. His tenants, the orcs and the old dead, come to his door when he calls."
+  },
+  "bookPage": "From Of the Isle of Rest, the reader's description recovered from Toca's hut. Of what the tenants owe. The tenants of the isle owe the lord their labour in the season, their presence at his door when he calls, and, by the old custom of Inishail, their service after death; the lord's household has always included the dead. I set this down as a curiosity. There is no margin note on this page. The vellum has been read so often that the word dead is worn through, and someone has tried to scrape away the word always and stopped halfway, so that the custom now reads that the lord's household has al included the dead, which the orcs may think is a different word.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} stood on Lord Emthoro's ground and laid his spirit to rest in {minutes} minutes.",
+    "loss": "The Spirit of Lord Emthoro kept his ground; {raidLeader}'s company of {realm} are his tenants now."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "sarcondina",
+      "relation": "the marsh he never walked"
+    }
+  ]
+}

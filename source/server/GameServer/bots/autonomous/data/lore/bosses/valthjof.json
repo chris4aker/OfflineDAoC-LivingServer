@@ -1,0 +1,117 @@
+{
+  "id": "valthjof",
+  "name": "Valthjof",
+  "npcNames": [
+    "Valthjof"
+  ],
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "jotuns-of-vanern"
+  ],
+  "related": [
+    {
+      "id": "mokkurvalve",
+      "relation": "the clay giant of the yards he oversees"
+    },
+    {
+      "id": "ulfketill",
+      "relation": "fellow clay-builder of the Vanern jotuns"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Valthjof is a level-56 giant on the clay jotuns' runner model, standing among clay jotuns in the clay yards of Vanern Swamp (642498, 903076).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "In the mystic epic 'Saving the Clan', Cnute of Audliten asks players to bring back the body of his son from the jotun Valthjof, with a bag of plants, before Danica is shown the engraved totem.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, and it is not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Valthjof is an Old Norse personal name (to verify the elements, perhaps 'chosen thief').",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify"
+    }
+  ],
+  "story": "The clay yards in the middle of Vanern have a foreman, and his name is Valthjof. He did not build Mokkurvalve; he was a boy when the hundred jotuns gave the clay giant their summer. But he has kept the yards since, and he decides what clay is dug and which pit is fired and which of the finished figures walks out to the swamp and which is set aside for the broken bank. The jotuns say he has never once unmade a figure. The jotuns say that about everyone they respect.\n\nHe has a theory, and it is an old argument of the yards. The first clay giant failed because it had a mare's heart; Mokkurvalve sheds because a jotun's heart is too big for clay to hold evenly. Somewhere between, Valthjof believes, is a heart small enough to fire true and brave enough not to run. A man's, perhaps. He has been looking for one.\n\nThe clan of Kelic's curse sent a young man into Vanern to gather the plants the elders needed for a draught against the sickness: Cnute's son, of Audliten. He filled his bag. He came too near the yards on the way out. Valthjof took him, and the young man died, and the jotun kept the body, as a potter keeps a good piece of clay, to see. Cnute wants his son back to burn him properly, and the bag of plants with him, because the clan still needs the draught. Danica sends the mystics to fetch both.\n\nValthjof does not understand why anyone would want the body back. It is not doing anything. He would explain this, at length, if anyone stood still long enough. Nobody does. He is a jotun of the yards and fights like one, with his hands, and the clay jotuns standing round him come to his side when the quarrel starts.",
+  "legend": "Valthjof is the jotun foreman in the clay yards in the middle of Vanern Swamp, level 56, a target of the mystic epic Saving the Clan: Cnute in Audliten wants his son's body back from him, along with the bag of plants. He's a plain spawn with no special abilities and isn't CC-immune. The catch is the clay jotuns standing around him in the yards: pull carefully or you get two or three of them with him. Clear the nearest clay jotuns first, then take Valthjof. A small group at the level of the epic can do it. Don't wander east toward Rottild or north-east into the outcasts while you're there.",
+  "yells": {
+    "aggro": [
+      "Another small heart. Let me look at it.",
+      "The yards are closed. Unless you are clay.",
+      "Clay! Up! The foreman is working."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A small heart, and stubborn. Perhaps it would hold after all."
+      }
+    ],
+    "death": [
+      "Fire me... evenly...",
+      "The yards... will find another foreman..."
+    ],
+    "slay": [
+      "Too soft for the pit.",
+      "Set that one aside.",
+      "A small heart. Not brave enough."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The clay yards. A foreman counts the figures.",
+      "A man's boots stand neatly by a firing pit."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The clay jotuns of the yards stop and watch their foreman."
+      }
+    ],
+    "realmFirstKill": "Valthjof the foreman is broken. Cnute's son goes home."
+  },
+  "botLines": {
+    "briefing": [
+      "valthjof is in the clay yards, pull the clay jotuns off him first",
+      "plain mob, no tricks, mez works",
+      "bring the bag of plants back for cnute too",
+      "dont drift east to rottild"
+    ],
+    "aftermathWin": [
+      "got cnutes sons body back",
+      "clay jotuns first, then him. fine",
+      "the yards are quiet now",
+      "cnute will burn him properly"
+    ],
+    "aftermathLoss": [
+      "pulled three clay jotuns with him",
+      "he hits like a falling wall",
+      "the outcasts wandered in",
+      "lost the bag of plants, had to come back"
+    ],
+    "rumour": [
+      "valthjof wanted to see if a mans heart would hold clay together",
+      "hes the yard foreman, he never unmakes anything",
+      "cnute in audliten wants his son back",
+      "valthjof was a boy when they built mokkurvalve"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Valthjof",
+    "text": "Foreman of the [jotuns]' clay yards. He thinks a heart small enough to fire true might be a man's, and kept Cnute of Audliten's son to see. See [mare's heart] and [Mokkurvalve]."
+  },
+  "bookPage": "From the count of Arnkel the ferryman: the foreman of the yards asked me once, through the kobold, how big a man's heart is. I showed him my fist. He looked at it a long time and said that it was very small, and that small things fire evenly, and that the first giant's trouble was a heart too timid and the second's a heart too large. I did not know then what he meant. I knew the next spring, when a boy from Audliten with a bag of herbs did not come down to my boat, and a pair of boots stood by the pits.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Valthjof the foreman and brought Cnute's son home in {minutes} minutes.",
+    "loss": "Valthjof kept {raidLeader}'s party from {realm} out of the clay yards after {minutes} minutes."
+  }
+}

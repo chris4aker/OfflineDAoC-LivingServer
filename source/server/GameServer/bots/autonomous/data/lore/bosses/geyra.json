@@ -1,0 +1,123 @@
+{
+  "id": "geyra",
+  "name": "Geyra",
+  "npcNames": [
+    "Geyra"
+  ],
+  "locationId": "yggdra-forest",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "werewolves",
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "red-hagen",
+      "relation": "the Red Dagger who keeps the map she carries messages for"
+    },
+    {
+      "id": "fjall",
+      "relation": "the leader of the pack she runs beside and does not stay with"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Geyra is a level-52 fenrir (the fenrir model) standing alone in the far west of Yggdra Forest (660632, 727746), about 3,300 units from Fjall and his pack.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60161273)"
+    },
+    {
+      "text": "Her template puts her in the Fenrir Pack faction: attacking her can bring nearby Fenrir Pack into the fight once (bring-a-friend), though nothing stands close to her.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "In the viking epic 'An End to the Daggers', after Elizabeth in Mularn and Lynnleigh on Strider Island, players slay Geyra in Yggdra Forest, return to Lynnleigh, and then slay Red Hagen in Raumarik.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Living Server's Red Hagen file already says Geyra carried the Red Daggers' messages for the Fenrir Pack.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "A pack that waits for the end of the world in a frozen forest still needs to know what is happening outside it, and the fenrir of Yggdra have Geyra for that. She is their runner, the one fenrir who goes out of the far west of the forest and comes back, and she does not live with the pack. She stands alone a little way off, near enough to hear Fjall's prophets and far enough not to be counted among them.\n\nThe fenrir say a messenger must not belong to anyone, or she carries only one side of every message. Geyra has taken that further than the pack meant. She carries messages for the fenrir to the werewolves of Skona and back, for the bone-eaters, for anyone in the frontier with something to say and a way to pay, and some seasons ago she began to carry them for the Red Daggers. The band that sells Midgard's back roads to Albion needed a runner who could cross the frontier between the Raumarik heights and the Jamtland hills without being seen, and a fenrir who goes everywhere and belongs nowhere was exactly that. Red Hagen pays her in the band's own way, with marks on his map.\n\nThat is how the trail found her. A warrior of Mularn brought Elizabeth one of the Daggers' red-hilted blades, Elizabeth knew the hand that had bound its hilt, Lynnleigh on Strider Island knew the road it had travelled, and the road ran through Geyra. The viking epic sends Midgard's warriors to her in the forest before it sends them to Red Hagen, because without her the map is only a map: nothing on it reaches the Albion men waiting in the hills.\n\nShe fights alone, as she lives. The pack would come if it were near, because she is still of it, but it is not near, and she has never asked it to be. The fenrir prophets, asked about her after she has been killed and another runner has taken her place, say only that a messenger who carries for everyone is owed by no one. Fjall, Jana says, says nothing at all.",
+  "legend": "Geyra is a level 52 Fenrir Pack werewolf (fenrir) standing alone in the far west of Yggdra Forest, about 3,300 from Fjall's pack. The viking epic An End to the Daggers sends you to slay her after Elizabeth in Mularn and Lynnleigh on Strider Island, before Red Hagen in Raumarik. She's Fenrir Pack faction, so bring-a-friend could pull fenrir if any were close, but nothing stands near her: as long as you don't fight her on top of Fjall's pack it's a clean one-on-one. No special abilities, not CC-immune. A small group at the epic level kills her easily, then it's back to Lynnleigh.",
+  "yells": {
+    "aggro": [
+      "Message for you: you are dead.",
+      "I carry for everyone. Today, for no one.",
+      "Who paid you? I can pay better."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The pack will hear of this. Eventually. From someone else."
+      }
+    ],
+    "death": [
+      "Owed... by no one...",
+      "Tell Hagen... the road is closed..."
+    ],
+    "slay": [
+      "Delivered.",
+      "No reply needed.",
+      "Another message for the frontier."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A fenrir alone, a little way from the pack.",
+      "The runner of the forest. She belongs to no one."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Geyra glances toward the pack. It does not come."
+      }
+    ],
+    "realmFirstKill": "Geyra the runner falls. The Daggers' road is cut."
+  },
+  "botLines": {
+    "briefing": [
+      "geyra is 52, alone, west yggdra, viking epic",
+      "fenrir pack faction but nothing near her",
+      "dont fight her near fjalls pack",
+      "easy one on one"
+    ],
+    "aftermathWin": [
+      "geyra down, back to lynnleigh",
+      "easy",
+      "red hagen next",
+      "the daggers lose their runner"
+    ],
+    "aftermathLoss": [
+      "dragged her toward fjall, the pack came",
+      "too few of us",
+      "she hits harder than a 52",
+      "bad pull"
+    ],
+    "rumour": [
+      "geyra carries messages for the red daggers across the frontier",
+      "red hagen pays geyra in marks on his map",
+      "a messenger who carries for everyone is owed by no one, the fenrir say",
+      "geyra lives apart from the fenrir pack on purpose"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Geyra",
+    "text": "The runner of the [fenrir], who belongs to no one and carries for everyone, the Red Daggers among them. The viking epic sends Midgard to her before Red Hagen. See [Fjall]."
+  },
+  "bookPage": "From The Wind Through the Ash, by Arnhild of Grallarhorn: there is a fenrir who comes to the edge of the keep's ground sometimes at dusk and stands there with something in her hand, a folded skin or a strip of bark, waiting. My father said she was waiting for someone from the hills, and once I saw a man come down to her from the south, in a red-dyed cloak, and take the strip and give her something small, and go. My father sent a rider to Vasudheim that night. He said the frontier has more roads than keeps, and some of them walk.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut the Daggers' road through Geyra in Yggdra in {minutes} minutes.",
+    "loss": "Geyra carried her message past {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

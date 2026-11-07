@@ -140,6 +140,8 @@ func _on_world(kind: String, d: Dictionary) -> void:
 			if viewer and viewer.ui:
 				if String(d.caption).to_upper().begins_with("QUEST GUIDE"):   # the guide pages: their own window
 					viewer.ui.show_server_guide(d.lines)
+				elif String(d.caption).begins_with("Lore: "):  # Living Server 1.2: the /lore codex (LoreCodex.cs)
+					viewer.ui.show_lore(String(d.caption), d.lines)
 				else:
 					viewer.ui.show_lines(String(d.caption), d.lines)
 					if Server.info_item_slot >= 0:               # the item you right-clicked: SALVAGE / REPAIR under it

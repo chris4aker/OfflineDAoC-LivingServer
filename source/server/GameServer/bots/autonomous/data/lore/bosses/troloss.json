@@ -1,0 +1,117 @@
+{
+  "id": "troloss",
+  "name": "Troloss",
+  "npcNames": [
+    "Troloss"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "magister-kurgol",
+      "relation": "the magister whose chaos warriors he stands among"
+    },
+    {
+      "id": "dagar",
+      "relation": "the counter of days, to whom he once swore and from whom he walked away"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Troloss is a level-54 morvalt in Trollheim (33228, 40437), north of Dagar's hall, among chaos warriors (kaos krigsman, level 62), morvalt bowmen and seasoned soldiers.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template sets aggro level 0: it does not attack first, but anything standing near it may. The chaos warriors and bowmen around him are aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60167301)"
+    },
+    {
+      "text": "Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Troloss may render Swedish trolös, 'faithless, perfidious'; to verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "The morvalt have few names, and the ones they have are mostly earned, and Troloss earned his the hard way. The Valkyn read it as the morvalt's form of an old word for faithless, and the morvalt use it the same way. He has sworn to every war-chief in Trollheim and kept faith with none of them.\n\nHe swore first to Dagar, the Valkyn say, when Dagar was young and had only begun to count the days to the Mother's waking. Troloss counted with him for a season and then walked away, saying the Mother could count her own days. He swore to the butchers of the kitchens, and left them when the food ran short. He swore to Bonchar, when the Rift was new and Bonchar's shamans were the power in the lower city, and left him when the Rift began to eat shamans. Now he stands among the chaos warriors in the galleries north of Dagar's hall, the ones who carry Kurgol's wordless blades, and the Valkyn say it is only a matter of time.\n\nStrangely, the morvalt do not kill him for it. A faithless morvalt is useful, the Valkyn explain: he always knows who is strongest, because he has always just left the one who was not. War-chiefs who want to know how the city stands watch where Troloss is standing. He does not pick quarrels. He watches strangers walk through the galleries and lets them go by, because he has not decided yet whose side they are on, and the chaos warriors around him, who have no such doubts, are the ones who come.\n\nThe trolls of Dyrfjall tell a story about him that the Valkyn will not confirm. They say that when Midgard's first companies came into Trollheim with their Valkyn guides, Troloss watched them from the galleries for a long time, and was seen once, alone, at the edge of the bridge, looking across at the Valkyn on the far side as if weighing them; and that he went back to the chaos warriors afterwards without a word. The trolls say even Troloss could not bring himself to swear to his uncles' tame cousins. The Valkyn say he has simply not been asked.",
+  "legend": "Troloss is a level 54 morvalt north of Dagar's hall in Trollheim, standing among chaos warriors (62), bowmen and seasoned soldiers. He's PASSIVE (aggro 0) with no faction, so he never starts it and never brings anyone; the chaos warriors around him are the danger, and they're aggressive and much higher level than he is. Clear the chaos warriors with care, then he's an easy kill. No special abilities, not CC-immune, no quest. The chaos warriors (kaos krigsman) are the same wordless-blade lot found in the galleries around Kurgol's workshop, so if you've cleared those you know the drill. Check for the bowmen on the edges; they add up.",
+  "yells": {
+    "aggro": [
+      "Wrong side. You chose the wrong side.",
+      "I was going to join you. Not now.",
+      "Who is strongest here? Let us find out."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Perhaps... we could come to terms?"
+      }
+    ],
+    "death": [
+      "Should have... sworn to you...",
+      "Faithless... to the end..."
+    ],
+    "slay": [
+      "Weaker. As I thought.",
+      "Not worth swearing to.",
+      "Next."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A morvalt watches from the galleries, weighing you.",
+      "Chaos warriors stand about one who swore to all."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Troloss looks for the stronger side."
+      }
+    ],
+    "realmFirstKill": "Troloss the faithless falls. Nobody mourns."
+  },
+  "botLines": {
+    "briefing": [
+      "troloss is passive, its the chaos warriors round him that kill you",
+      "kaos krigsman are 62, careful",
+      "clear them, troloss is easy after",
+      "no faction, no friends"
+    ],
+    "aftermathWin": [
+      "troloss down, the chaos warriors were the fight",
+      "easy 54 once the 62s were dead",
+      "faithless and dead",
+      "good clear"
+    ],
+    "aftermathLoss": [
+      "the chaos warriors chewed us",
+      "pulled two 62s at once",
+      "bowmen joined",
+      "shouldnt have bothered"
+    ],
+    "rumour": [
+      "troloss swore to dagar and bonchar and the butchers and left them all",
+      "the war chiefs watch where troloss stands to see whos strongest",
+      "troloss might mean faithless",
+      "troloss once looked across the bridge at the valkyn for a long time"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Troloss",
+    "text": "The faithless morvalt who has sworn to every war-chief in the city, [Dagar] and [Trollkarl Bonchar] among them, and kept faith with none. He stands now among the chaos warriors of [Magister Kurgol]'s blades."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: there is a morvalt in the galleries who does not attack. He watched us pass with his head on one side, and the chaos warriors round him started toward us, and he said something and they stopped. The Valkyn guide said he was deciding whether we were worth it. I asked her what he decided. She said that we were still alive, and that I should not ask that question twice in Trollheim, because the answer can change. Then she walked faster, and so did I, and neither of us said why.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} settled Troloss's loyalties in Trollheim in {minutes} minutes.",
+    "loss": "Troloss chose the other side against {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

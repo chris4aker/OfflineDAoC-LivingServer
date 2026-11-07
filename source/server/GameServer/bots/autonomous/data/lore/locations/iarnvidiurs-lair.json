@@ -1,0 +1,301 @@
+{
+  "id": "iarnvidiurs-lair",
+  "name": "Iarnvidiur's Lair",
+  "realm": "Midgard",
+  "regions": [
+    161
+  ],
+  "aliases": [
+    "the lair",
+    "the iarnwood lair",
+    "the kennel"
+  ],
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "fenris-brood",
+    "iarn-dwarves",
+    "wild-beasts"
+  ],
+  "tier": "epic",
+  "summary": "The plague-den under Aegir's Iarnwood where the giantess Iarnvidiur breeds her wolves, guarded by Hati and Skoll.",
+  "facts": [
+    {
+      "text": "Iarnvidiur's Lair is a level 45-50 Shrouded Isles dungeon in Iarnwood Forest on Aegir, at 28k, 39k.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=93"
+    },
+    {
+      "text": "Its bestiary lists 21 creatures: animus giants (rondjur, syndig), egilvarg and grymvarg wolves, syver of every age, skuggande, fjarskafinn, narfi and the nameds.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=93"
+    },
+    {
+      "text": "Every named in the lair casts a Black Plague disease; most bring a pack (BAF) of their kind.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A May 2003 player said a named in the lair 'wiped about 4fg of us'; Living Server sizes the raid at 64.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/lair-vs-iarnvidur-vs-trollhiem.127197/"
+    },
+    {
+      "text": "The Remnants iarn dwarves of Faraheim name the Servants of Iarnvidiur among their foes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Reputation/FactionEmissaryRuntime.cs"
+    },
+    {
+      "text": "In the Voluspa an old giantess in the Iron Wood (Jarnvidr) breeds Fenrir's wolf-kin.",
+      "provenance": "myth",
+      "source": "Voluspa, stanza 40 (Poetic Edda, public domain): the old one in the Iron Wood breeds Fenrir's kin"
+    },
+    {
+      "text": "Allakhazam comments place Dyranapur in the waterfall room, Mahattava in the room with the single waterfall and lake, Stanga on the passage to the Ancient Syver and Delegalt on the path to Iarnvidiur among animus and dogs.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=93"
+    },
+    {
+      "text": "A 2004 thread says Iarnvidiur teleports players into the water under the bridge, where they climb the pillars past red-con aggro mobs, and recommends cure disease items.",
+      "provenance": "legend",
+      "source": "https://forums.tomshardware.com/threads/iarnvidiur.168029"
+    },
+    {
+      "text": "The Atlas monthly quest giver Jarek asks Midgard to kill Nosdoden and Iarnvidiur.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/AtlasQuests/DailyQuests/Midgard/PvE/Monthly/MonthlyEpicPvEQuestMid.cs"
+    },
+    {
+      "text": "Killing Dyranapur raises faction with the Arachite, the Svartalfar Outcasts and the Varulv, and lowers it with the Svartalfar.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4665"
+    },
+    {
+      "text": "In Snorri's Gylfaginning, Narfi is a son of Loki; after Baldr's death the gods bound Loki with his son's entrails.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning 50 (public domain)"
+    }
+  ],
+  "story": "Iarnvidiur's Lair is the house of the old one under the Iarnwood of Aegir, a run of caves and halls that goes down beneath the iron trees with the roots of the trees for its ceiling. The first iarn dwarf clan to cross to Aegir found its mouth in their first autumn on the island. Hjalti Lampbearer went down alone and came back with his lamp blackened on the inside, and died the next spring of the sickness that the dwarves name with her name. The clan set a stone at the hollow with that word on it, and the iron bark has since closed over its top like a lip.\n\nThe dwarves call the place the kennel. Below the hollow is the waterfall room, where the skuggande hang in the spray around their queen Dyranapur, and west of it the cave where Lydsyg sings the drone of the rotting trees. Beyond lies the lake under the single fall, where Mahattava and the fjarskafinn were living before the old one came and have never bowed to her; since the night the lake took a pup of her first litter, no wolf of hers has drunk from it. In the long hall the giants who came courting stand among their own rotted gifts, minded by Delegalt. In a wet hollow the narfi chant around Droom, and it was from that hollow that Hrefna, one of the nine children the Servants took, walked out three springs later, no older than when she went in. The dead wolf Stanga keeps the passage to the Ancient Syver and scores its wall with every season he stands there, and Hurjavelen runs further than any of the brood and brings home shields from under the frontier. Then comes the bridge over the black water, which the dwarves believe was Delegalt's courting gift, and the door, where Hati and Skoll lie like hounds at a hall.\n\nThe peoples of Aegir disagree about what the lair is for. The dwarves say a kennel, the skalds of Jordheim a nursery for the end of the world, the narfi a sickroom where the old one lies as sick as her wood. Midgard came to it with the Valkyn, guided by the Remnants, and has gone down to the door in every age since. The dwarves note one thing no one else does: the Iarnwood has not grown by a single tree in all their slates. They take that to mean it is waiting.",
+  "chapters": [
+    {
+      "title": "The Hole Under the Roots",
+      "text": "The first clan of iarn dwarves to cross to Aegir came in a single long boat, the slates say, forty-one of them and a cow, in a summer when the sea ice went out early. They landed on the eastern shore and walked inland looking for stone, because a dwarf clan without stone is only a family, and on the third day they came to the edge of the Iarnwood. The trees stopped them. The trunks were black and hard as forged bars and rang faintly when the wind leaned on them, and when the clan's smith struck one with a hammer to see what it was made of, the hammer-head cracked and the tree did not. The slate that records it is the one that begins: the old one was already in the wood.\n\nThey found the hole in their first autumn. In the thick of the wood, where the iron trees grow closest, the ground falls away into a hollow, and the roots of the trees go down into it like the fingers of a hand pushed into wet clay. Under the roots there is a mouth in the rock, wide enough to drive a cart through, and the air that comes out of it is warm and smells of wet fur and of something sweet and wrong, like meat kept too long in a cellar. The roots run on into the dark as the ceiling of the passage beyond. Every room of the lair has iron roots overhead, the dwarves say, and the old one lives in her wood the way a worm lives in an apple: under it, through it, and on it.\n\nHjalti Lampbearer went down first, because he was the clan's youngest and because his name, he said, made it his task. He carried a lamp of seal oil and a coil of rope and went alone, which the oldest slates call brave and the dwarves of Faraheim, who are older now, call the usual mistake. He came back up before dark and would not say what he had seen. He held out the lamp, and the clan saw that its glass was black on the inside, as if it had hung in smoke for a year, though the flame had never gone out. Hjalti died the next spring of a sickness that turned his fingernails black first. The clan's word for that sickness is the same as the word for the old one, and it was Hjalti's lamp that gave it to them.\n\nAfter Hjalti the clan cut a stone and set it at the edge of the hollow, and on it they cut the word. It stands there still, though the roots have grown round it and the iron bark has closed over its top like a lip. Every dwarf of Aegir knows where it is, and no dwarf child is taken to see it, because the dwarves believe the old one remembers the face of anyone who reads it. Chief Tarek's people, whose encampment still stands under the iron trees, give the stone a wide road. The Remnants, who moved their camp to Faraheim, keep the word cut over the door of their slate-house, so that they need never go back to read it.\n\nThe dwarves have never called the place a lair. That is Midgard's word, and the skalds'. The iarn dwarves call it the kennel, and when they are being careful, the old one's house, and when they are frightened, nothing at all."
+    },
+    {
+      "title": "The Swarm in the Spray",
+      "text": "Below the hollow the passage goes down through two turns of iron root and opens into the first great room, where a fall of water comes down out of the rock and breaks on the floor in a white noise that fills the whole hall. The dwarves call it the waterfall room. Its spray catches whatever light is carried into it and throws it back in a hundred pieces, and in the corners, where the spray does not reach, the skuggande hang. They are the shadowing things, insects with wings like smoke and bodies of polished horn, big as dogs, and there are more of them here than anywhere else under the wood, because the water is warm and the noise covers the sound of their wings.\n\nTheir queen is Dyranapur. The dwarves say she was the first of the swarm to drink from the fall, and that the water has been warm ever since because something of her is in it. She drinks everything else as well. Her mouth is a hollow spike, and what she touches grows weaker while she grows stronger, and the sickness she leaves in the blood is still there long after the hum has faded behind.\n\nShe has more friends outside the kennel than in it, which the dwarves find funny. At night the swarm goes up through the roots and hunts in the Iarnwood and beyond it, and what it hunts are the peoples who hunt in the dark themselves: the arachites of Spindelhalla, whose young it drinks out of the egg-sacs; the outcast svartalfar at the wood's edges; the varulv who run under the moon. All three want her dead and will pay for it. The svartalfar of Aegir, who are enemies of all three, count her an ally for that very reason, and on the night of the dark moon they set a cup of blood at the edge of the hollow for the queen of the spray. The dwarves have watched them do it and have never interfered. Dwarves keep out of the svartalfar's religion the way the fish keep out of the wolves' water.\n\nWest of the waterfall room the passages narrow to a cave that the swarm keeps for something else. Lydsyg hangs there, larger and paler than the rest, a thing more light than horn, and it does not hum; it sings, a drone that gets into the teeth. The skuggande gather around it like a congregation and fall silent only when it does. The dwarves of Faraheim, who lie awake listening to the iron trees at night, say Lydsyg makes the same note the trees make when the rot works in them, and that the cave is the throat the whole wood sings through. When Lydsyg dies the drone stops, and for one night Faraheim sleeps. The next night another singer hangs itself in the cave, and the skuggande gather, and the drone begins again.\n\nThorgrim of Faraheim once asked the slate-keepers whether the swarm belonged to the old one or to itself. The answer is on a slate: the swarm was here before the wolves and will be here after them, and it does not care whose house it lives in so long as the water stays warm."
+    },
+    {
+      "title": "The Lake That Was There First",
+      "text": "Past the swarm the floor goes down in wet steps to a lake under a single fall, a long black water with a far shore no lantern reaches. The fjarskafinn live in it, finned and scaled with the muck of the bottom, slow and old and very many, and the greatest of them is Mahattava, as big as a boat, with a fin on its back like a sail. The narfi say the lake was clear when the iron trees were silver. The dwarves say it has no bottom, or rather that its bottom is very far down and goes out under Aegir to the sea, and that the fish came up from there long before any wolf came down.\n\nThe lake is the only part of the kennel that has never been hers. The dwarves date the treaty to a single night in the second winter of her first litter. A pup of that litter, one whose name nobody kept, went down the wet steps to drink, and the water stood up and took it. The old one came to the shore. She stood there, the slate says, from one meal to the next, and the lake stood there too, black and still, with nothing showing on it but the fin. Then she turned and went back up the steps, and since that night no wolf of hers has drunk from the lake. Her plague does not touch the fish, or if it does they do not care, and Mahattava has never come out of the water. The dwarves say it eats whatever falls in, and that the old one makes sure enough falls in.\n\nThe lake does not end at the lake. It runs out at its lower end through a cleft in the rock and goes on under the lair as a slow black stream, and the stream is the black water under the bridge at the far end of the kennel. Things live in it that have gone downstream out of the lake and lost their eyes in the dark. The dwarves call them the lake's lost children, and say that on the night of the treaty the old one learned to use them.\n\nThe first shield of Mahattava's scale came out of the lake on a line. Thorgerd Netmaker of Chief Tarek's encampment, who mended the camp's nets and was not afraid of water, went down to the wet steps in the winter of a famine and let down a line with a whole salted syver on the hook, and sat the night out with her back to the wall. At dawn the line came up without the syver and with a scale on the hook the size of a door. She carried it home on her back. It hangs over the door of her house in the encampment still, and in the fire that burned half the encampment in her grandson's time, it was the only thing on that wall that did not char. Every shield made of Mahattava's scale since is said to have the lake's cold in it. Thorgerd left one saying to the encampment with the scale, and the dwarves still use it of a quarrel with a big family: throw a stone at the fin, and the whole lake throws back."
+    },
+    {
+      "title": "The Herd's Hall",
+      "text": "Beyond the lake the passages rise into the long hall that leads toward the old one's door, and the hall is full of giants. They stand in it as cattle stand in a byre in winter, great slow shapes with nothing in their eyes, and among their feet lie heaps of what they brought her: iron from the Gripklosa gone black with the rot, gold dulled under a skin of mould, furs that were once enough to carpet a mountain and are now a black felt underfoot. The suitors set their gifts down in this hall, one after another, in the age when the dwarf clans were young on Aegir. The gifts have never been moved. Neither have the suitors.\n\nThe bestiaries of Midgard call them the animus, the soul-things, because there is no soul left in them; the old one's own names for them are rondjur and syndig, the round ones and the sinful ones, given as jokes while they could still be insulted. The grymvarg, the cruel wolves of her brood, lie between them like sheepdogs, and Delegalt walks among them with a stick and a word for each. Every night, the dwarves say, he counts them. The count has not changed since the last suitor came.\n\nThey stand quietly enough. But if anyone lays a hand on the herdsman, the whole hall moves at once, giants and wolves together, as if a single body had been struck. The dwarves have an explanation for it that is also a joke about marriage. The suitors came to win her from one another, they say, and in all the years of their courting they agreed on only one thing: that no one else should touch what was theirs. When Delegalt is struck, that one thing is all of them that is left, and it remembers.\n\nDelegalt laughs when the herd moves. The dwarves who have heard it say it is the laugh of a man who has not laughed in a hundred years and has forgotten how it should sound, so that it comes out of him in pieces. He is the only one of the suitors who kept his wits, or half of them, by a bargain whose price nobody has ever agreed on. The dwarves of Faraheim think they know what he paid. They say it is at the far end of the kennel, and that every living thing that has reached the old one's door has walked across it."
+    },
+    {
+      "title": "The Dreaming Hollow",
+      "text": "Off the herd's hall a side passage dips into a wet hollow where Droom grows, a great pale cap on a stalk as thick as a tree, breathing slow clouds of spores into the dark. The narfi tend it. They are small grey things of the deep places, older than the dwarves and quieter, and they sit around the cap in a ring and chant, the way monks sit around a shrine. They believe the dreams of the Iron Wood rise through Droom's stalk from the roots of the trees, and that whoever lies under the cap sees the wood as it was, silver and full of birds, and the old one young.\n\nTheir name is older than they are. In the songs of the gods Narfi is a son of Loki, and when Loki was bound under the earth for Baldr's death, it was with his own son's entrails. The narfi of the hollow say nothing about the name. The dwarves think the old one gave it to them as she gave the herd its names, as a joke, and that a people who chant all their lives at the root of a binding have every reason not to laugh at it.\n\nThe narfi do not speak to dwarves. They spoke for a dwarf once. In the winter the Servants took nine children of the camps in nine nights, and the Remnants' war-party brought back only Torvald, one of the nine was a girl of seven named Hrefna. Three springs after the war-party came home, she walked out of the hollow at the edge of the Iarnwood at dawn, barefoot, with a narfi holding her hand. It led her as far as the warning stone, let go, and went back down. She was no older than the night she was taken. Her hair was full of spores.\n\nShe said she had been asleep under the cap the whole time, in the silver wood, and that it had been summer there. She said the other eight had not been asleep. They had been given to the old one's litter of that year, and when she last saw them they had been learning to run on four legs, and had seemed happy. The Remnants did not tell her parents that part until she was grown. Hrefna grew up to keep the slates of Faraheim, and it was from her slates that Thorgrim of Faraheim read most of what Midgard knows of the kennel. She never once slept without a lamp. When she was old, a scholar asked her why the narfi had let her go. She said she thought it was because she was the only one who had dreamed of the wood instead of the wolves.\n\nDroom dies and grows again in the same hollow, a season apart, and the narfi sit back down. The dwarves have tried to learn from them whether the dreaming wood is real. The narfi, when they answer at all, ask the dwarves the same about Aegir."
+    },
+    {
+      "title": "The Dead Wolf's Passage",
+      "text": "Past the hollow, a narrow passage runs off toward the oldest beast in the kennel, and across its mouth lies the dead wolf Stanga, who was set there by his mother in the first winters and died at his post of her rot and was not allowed to leave it. He stands there still with his pack of egilvarg, butting at anything that tries to pass, and the walls of the passage are scored from the floor to the height of a wolf's shoulder with the marks of his head.\n\nHrefna counted them. In the summer she turned forty she went down as far as the passage with a war-band of the Remnants, and while they held the mouth she sat with a lamp and a slate and counted the scores, and found them in rows of four, one row to a year, one score to a season, as neat as a tally-stick. The rows ran back further than the slates of the first clan. On the oldest rows the scores are deep and clean, made by a living wolf in his strength. On the newest they are shallow and ragged, and the dwarves say that is how they know which seasons he has stood there dead. Here and there in the rows a season is missing. The dwarves say those are the seasons Hurjavelen stood in his place, and that the old one let Stanga sleep at her feet.\n\nWhat he guards is the Ancient Syver. The syver are the kennel's other brood, scaled and woolly at once, kept for the wolves to hunt the way a jarl keeps deer in a park, and the oldest of them grew too big and too clever and too sick ever to be hunted. It lies at the end of the passage with its own kind around it, and when it is roused it pounds the ground so hard that the dwarves who have heard it say they felt it in their knees. The iarn dwarves make their best spears from the scales of syver that die of age, and the petrified spear of the Ancient Syver's kind is the hardest of all. They say a ring from its hoard keeps the rot off, and they do not say how they know.\n\nHurjavelen is the brood's traveller. The thief-wolf runs further than any of his kin, past the Iarnwood and past Aegir, and comes home with things that are not the old one's: the demonwolf shields that are found on him are older than the kennel and tainted with something else. The dwarves of Faraheim say there is only one place he could be bringing them from. Under the old frontiers of the three realms there is a hall where the dead of every land are called, and its summoners keep wolves of the deep at their doors. Somewhere under the earth, the dwarves believe, Hurjavelen has found the stair down to the Summoner's Hall, and comes back up it with whatever he can carry in his teeth."
+    },
+    {
+      "title": "The Bridge and the Door",
+      "text": "At the far end of the kennel the black stream from the lake runs across the floor of a high cave, and over it stands a bridge of iron, wide as a road and built to a giant's stride, on pillars that go down into the water. Around it, on the rocks and on ledges at the water's edge, are smooth hollows worn into the stone, the sleeping places of her first litter when they were pups. Beyond the bridge is the door, and before the door lie Hati and Skoll like hounds at a hall.\n\nThe old one did not build the bridge, and the dwarves did not. Its iron is Gripklosa iron, and its rivets are as big as a dwarf's head. The dwarves of Faraheim say it was Delegalt's courting gift: that in his last winter with a whole mind, the cleverest of the suitors saw what the rot was doing to the others and built her a way across the black water, so that she might go to her pups dry-footed, and that it was the only gift of all the hundred she ever used. In return, they say, she left him half of himself. The skalds of Jordheim prefer a darker telling, in which the bridge was built by all the suitors together as a cage, and Delegalt was the one who held the key. The narfi, asked, said only that the bridge was not there when the wood was silver.\n\nNo dwarf goes past the bridge, and the dwarves say that no dwarf comes back past it on his own feet. The guides who went down with Ragnheid Grimsdottir's warband asked to be carried back over it, and were. The custom is older than Ragnheid. It began, the slates say, with Torvald, who climbed out of the black water by the pillars past the lake's lost children and was carried over the bridge by his father's war-party because his legs would not hold him, and who said afterwards that his feet had never touched it and never would.\n\nHati and Skoll have lain at the door since the first litter. The dwarves say the door itself is the only iron tree that was ever cut: the one that broke the first clan's hammer. She had it felled, they say, the winter after the clan came, and split, and hung across the mouth of her own room, so that every dwarf who comes to her comes to a door their own clan could not mark. Nobody alive has seen the stump."
+    },
+    {
+      "title": "The Kennel, the Nursery and the Sickroom",
+      "text": "The peoples of Aegir have never agreed on what the old one's house is for, and each of their names for it is an argument. The iarn dwarves call it the kennel. To them it is a place where a mother keeps her dogs: Stanga at one passage, Hurjavelen wherever he likes, the cruel wolves among the herd, Hati and Skoll at her door, the two-headed ones running to her like dogs to a hearth. Everything else in it, the swarm, the fish, the narfi, the giants, lives there on sufferance, the way rats live in a kennel and are tolerated for keeping down the fleas.\n\nThe skalds of Jordheim call it a nursery. In the song the old one of the Iron Wood breeds Fenrir's kin for the end of the world, and the skalds say every room of her house is part of the breeding: the syver are the pups' first prey, the herd their first quarry too big to bring down, the lake their first sight of a thing that does not fear them, the bridge the place they are put back when they wander. When the wolves run at the end of the world, the skalds say, they will have been raised in this house.\n\nThe narfi call it nothing, but when Thorgrim of Faraheim asked the one narfi who spoke to him what the house was, it said: where she lies sick. The narfi hold that the old one is as sick as her wood, that the rot came into her as it came into the trees, and that she went down under the roots to lie in the dark as sick animals do. Everything in the kennel that hurts the living, the plague in every bite, the drone, the dreaming spores, is in the narfi telling only her fever leaking into the house.\n\nMidgard came to the house with the Valkyn, when the realm crossed to Aegir to take the island back from the morvalt, and the Remnants of Faraheim were the ones who told the realm where the door was. Vemund's thirty went down first and came back without her; Ragnheid's warband went down later with Torvald's grandsons and killed her, and she came back, as the dwarves said she would. The Remnants count the realm among their friends now, as they count their friends: by the clans' foes that have been killed.\n\nThe dwarves keep one fact about the Iarnwood that nobody else seems to have noticed. In all the slates since the first clan came, the wood has not grown by a single tree, nor lost one. Tuscaran Glacier creeps down Delling's walls every year; the rot in the iron trees never moves an inch. The dwarves of Faraheim do not find that comforting. A thing that does not grow, they say, is not dying either. It is waiting, and it knows what for."
+    }
+  ],
+  "legend": "Bring cure disease or don't go. Every named in the lair carries Black Plague, and so does she. Clear Delegalt's room before you touch him, or fifteen come at once. Count the fish at Mahattava: twenty-eight. Kill Hati and Skoll before you open her door. From half health she throws people into the water under the bridge; climb the pillars, mind the red cons down there, and come back. Thirty players couldn't outdamage her healing in 2004, so bring the full raid. A named in the lair wiped four groups in May 2003 before they came back with four groups and won. Superstitions: the iarn dwarves don't say her name after dark, and you shouldn't either. Some grandmothers say she is the dragon's mother, and that the drakulv and the two-headed wolves are cousins. Nicknames: the old one, the kennel, the plague den.",
+  "atmosphere": {
+    "firstEntry": [
+      "The iron trees are sick at the root. So is the air.",
+      "Somewhere below, an old woman is breeding wolves.",
+      "Black rot hangs in the air like smoke.",
+      "Wolves howl far below. They are calling her."
+    ],
+    "areas": [
+      {
+        "name": "the door",
+        "x": 14170,
+        "y": 14500,
+        "z": 18120,
+        "radius": 900,
+        "lines": [
+          "Two wolves lie at a door. They are not asleep.",
+          "A sunstone gleams on one wolf's collar."
+        ]
+      },
+      {
+        "name": "the old one's chamber",
+        "x": 13848,
+        "y": 11523,
+        "z": 18263,
+        "radius": 1000,
+        "lines": [
+          "The kennel of the Iron Wood. Something old nursing here.",
+          "An old woman sits by the water. She sees you."
+        ]
+      },
+      {
+        "name": "the bridge over the water",
+        "x": 14400,
+        "y": 13350,
+        "z": 18537,
+        "radius": 1600,
+        "lines": [
+          "Black water waits under the bridge.",
+          "Pillars rise from the water. Something swims."
+        ]
+      },
+      {
+        "name": "Delegalt's herd",
+        "x": 17956,
+        "y": 17650,
+        "z": 17976,
+        "radius": 1200,
+        "lines": [
+          "Mindless giants stand like cattle in the dark.",
+          "A herdsman watches over his herd."
+        ]
+      },
+      {
+        "name": "the dreaming hollow",
+        "x": 22055,
+        "y": 21795,
+        "z": 14903,
+        "radius": 900,
+        "lines": [
+          "A great cap breathes. The air tastes of dreams.",
+          "Small grey narfi chant around a fungus."
+        ]
+      },
+      {
+        "name": "the waterfall room",
+        "x": 31731,
+        "y": 24137,
+        "z": 15602,
+        "radius": 1100,
+        "lines": [
+          "A hum rises under the waterfall. Wings like smoke.",
+          "Spray and shadow. The swarm is near."
+        ]
+      },
+      {
+        "name": "the waterfall lake",
+        "x": 17361,
+        "y": 29203,
+        "z": 12962,
+        "radius": 1400,
+        "lines": [
+          "A single waterfall. Fins move in the lake.",
+          "The lake is older than the old one."
+        ]
+      },
+      {
+        "name": "the singing cave",
+        "x": 15652,
+        "y": 30474,
+        "z": 17483,
+        "radius": 900,
+        "lines": [
+          "A drone fills the cave. Your teeth ache.",
+          "The skuggande gather here as at worship."
+        ]
+      },
+      {
+        "name": "the syver passage",
+        "x": 21500,
+        "y": 33500,
+        "z": 16513,
+        "radius": 1600,
+        "lines": [
+          "A dead wolf stands guard. It has stood here long.",
+          "The floor is churned by something very heavy.",
+          "Scaled young scurry from your light."
+        ]
+      }
+    ],
+    "raidForming": [
+      "Midgard gathers to go down to the old one's door."
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "iarnvidiur is the giantess in the iron wood from the old song. she breeds the wolves that eat the sun",
+      "everything in the lair has black plague. [bring cures|cure disease or go home]",
+      "hati and skoll lie at iarnvidiur's door like guard dogs. [the sun and moon chasers|the songs make them sound bigger]",
+      "the animus in the lair were giants who came courting iarnvidiur. [she took their minds|they stayed too long]",
+      "the voluspa says east in the iron wood an old one breeds fenrir's kin. on aegir she's real",
+      "the iarn dwarves call iarnvidiur the old one. they dont say her name after dark",
+      "stanga died at his post of the plague and iarnvidiur wouldnt let him leave it",
+      "hurjavelen stole a dagger from iarnvidiur and she let him keep it. that scared the others more than anything",
+      "delegalt herds the animus like cattle. the animus were giants who came courting her",
+      "the narfi in the lair tend a dreaming mushroom called droom",
+      "mahattava's lake was there before iarnvidiur. the fish never bowed to her",
+      "the iarn dwarves wont burn the iron trees. the smoke carries the plague"
+    ],
+    "rumour": [
+      "[my gran said|heard] iarnvidiur is gjalpinulva's mother. [look at the wolves|the family look is there]",
+      "the iarn dwarves dont say her name after dark. [neither do i now|fair]",
+      "she ports you into the water under the bridge. [climb the pillars|thats where the reds are]",
+      "when a dwarf child goes missing in the iarnwood they say the old one wanted another pup",
+      "hati and skoll carry the names of the wolves that chase the moon and sun. [never caught anything|no luck so far]",
+      "[heard|they say] skoll's sunstone collar was stolen from the sky. thats why aegir's winters are long",
+      "the servants of iarnvidiur walk the woods looking like anyone",
+      "she sets you elsewhere like a pup back in its basket. [usually the water|wet basket]"
+    ],
+    "tell": [
+      "iarnvidiur's lair is under the iarnwood on aegir. wolves, plague, giants, fish. iarnvidiur herself at the end",
+      "its a plague den. bring cure disease. hati and skoll at the door, then the old giantess",
+      "the lair? 64 people for the end, cures for everyone, and dont pull delegalt with his room up",
+      "is the lair hard? the trash is fine with cures, iarnvidiur needs a raid. 30 wasnt enough back in the day",
+      "where is iarnvidiur's lair? iarnwood on aegir, about 28k 39k",
+      "whats in the lair? wolves, syver, animus giants, mushrooms, bugs, fish, and the old giantess at the end"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Under the Iarnwood an old woman breeds [wolves], as the [old song] says. The iarn dwarves call her the old one. We call her [Iarnvidiur]. Take cures. Everything down there is sick.\"",
+    "topics": {
+      "old song": "The seeress's song: east in the Iron Wood the old one sits and breeds Fenrir's kin, and one of them will swallow the sun. On Aegir the iron trees are real, and so is she.",
+      "wolves": "Her brood. The two-headed ones, the dead guard Stanga, the thief Hurjavelen, and at her door Hati and Skoll, the moon-chaser and sun-chaser.",
+      "Iarnvidiur": "The woman of the Iarnwood. Her plague closes her wounds faster than most raids open them, and when you become a nuisance she sets you elsewhere. Some grandmothers say she is Gjalpinulva's mother. I say only that the [wolves] look alike.",
+      "the plague": "The black rot of the iron trees. Every named in the lair carries it, and the old one most of all. It closes her wounds and halves your heals. The dwarves will not even burn the trees, because the smoke carries it.",
+      "the Remnants": "The last free iarn dwarf clans, in Faraheim with their griffons. They fight the Servants of Iarnvidiur and lose children to them.",
+      "the herd": "The animus, giants who came to court the old one long ago and stayed too long in her rot. [Delegalt] herds them like cattle.",
+      "the lake": "The fjarskafinn and their mighty one, [Mahattava], were in the lake before the old one came. They keep to their water and she to hers.",
+      "the dragon's mother": "Some grandmothers say Iarnvidiur bore Gjalpinulva to the Fenris wolf, and that the dragon and the two-headed wolves are kin. Hearsay. The [wolves] do look alike."
+    }
+  },
+  "book": {
+    "title": "The Old One of the Iarnwood, by Thorgrim of Faraheim",
+    "pages": [
+      "The iarn dwarves of the Remnants have a word for the black rot in the iron trees, and it is the same word as her name. They do not cut those trees. They do not burn them either, because the smoke carries the sickness. They walk around them, and their children learn to walk around them before they learn to walk straight. When a child is taken in the night, the camp does not say that wolves took it. The camp says the old one wanted another pup, and then the camp is very quiet.",
+      "I asked an old dwarf why they did not leave Aegir. He said his clan was here before the morvalt and before the trolls' fathers' fathers, and that the old one was here before his clan, and that leaving would only change which of them was the guest. Then he showed me a dagger-shaped scar on his arm and said a wolf with a stolen blade in its mouth had given it to him, and that the wolf's mother had watched and let it happen, the way a mother watches a pup learn. He was not angry. He said it was her wood.",
+      "Tarek's people took me as far as the hollow but would not go to the stone. I went alone and found it by the shape: a hump under the roots with the iron bark closed over the top of it like a lip, and below the lip, cut deep, the dwarf word. I did not read it aloud. When I came back to the camp an old woman asked me whether I had read it. I said I had looked at it. She said that was the same thing to the old one, and gave me a cup of something bitter, and told me to drink it every morning until the moon was new. I did. My fingernails stayed the colour they were. I have never been so glad of anything.",
+      "He told me the lair's rooms the way a farmer tells his fields. The waterfall room, where the shadowing bugs hum and the big one drinks. The lake under the single fall, where the fish are older than she is and will not bow. The herd's hall, where the giants who came courting stand with nothing in their eyes. The passage of the dead wolf, and past it the old syver who grew too big to be hunted. The bridge over the black water. And the door, with the two wolves lying at it like hounds at a hall. He said: no dwarf goes past the bridge. Then he said: no dwarf comes back past the bridge.",
+      "On the night of the dark moon I saw svartalfar at the hollow. There were three of them, in grey, and they set a cup on the ground at the lip of the hollow and stood back from it with their hands open. Nothing came up out of the dark that I saw. But the hum under the ground rose while they stood there, and fell again when they turned away, and in the morning the cup was dry. The dwarves of the camp say it is for the queen of the spray. They say the svartalfar have done it every dark moon since before the camp was built, and that the dwarves have never once asked them why, because they would be told.",
+      "Over the door of a house in Tarek's encampment hangs a scale the size of the door itself, grey-green and caked with old muck, and nobody has ever scraped it clean. A woman named Thorgerd Netmaker drew it out of the old one's lake on a line, in a famine winter, with a salted syver for bait. Her grandson's grandson lives in the house now. He let me touch it. It was cold, though the fire was lit, and it smelled of deep water. He said that when half the camp burned, the scale was the only thing on that wall that did not char, and that his family has had the smiths cut shields from scales like it ever since.",
+      "I met Hrefna the slate-keeper in Faraheim in her last year. She kept a lamp lit by her bed in daylight. She told me of the silver wood, and the summer there, and the eight children who were learning to run on four legs. I asked if she had ever wanted to go back. She said every night of her life. I asked why she had not. She said because she knew the way, and that was exactly the trouble: a child who dreams of the wood instead of the wolves is let go once, and the old one does not make the same mistake twice. Then she showed me her slates, and I copied them for a winter, and most of this book is hers.",
+      "Last page. The night before I left Faraheim the wolves howled from the east for a long time, all together, the way dogs howl when someone in the house has died. In the morning a griffon came in from the Iarnwood with the scout of a Midgard warband on its back, half dead of the plague, and he said they had been to the door and through it, and that the old one had looked at them the way a woman looks at weather. I asked if they had won. He said he did not know. He said he had spent the end of the battle in the water under the bridge."
+    ]
+  },
+  "bosses": [
+    "iarnvidiur",
+    "hati",
+    "skoll",
+    "ancient-syver",
+    "stanga",
+    "hurjavelen",
+    "delegalt",
+    "droom",
+    "dyranapur",
+    "lydsyg",
+    "mahattava"
+  ]
+}

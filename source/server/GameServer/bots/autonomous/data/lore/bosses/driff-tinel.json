@@ -1,0 +1,85 @@
+{
+  "id": "driff-tinel",
+  "name": "Driff Tinel",
+  "npcNames": [
+    "Driff Tinel"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Driff Tinel: level 40, a person's body (model 351, size 71) like the ursine thralls round him (models 351, 357, 359: the bodies of the realm's own folk, the same as Hervelina's), at about 34,680/26,690 in the eastern tunnels among ursine thralls (34-35); respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Immortal Gift (Kinney, Ascatinius in Connla): kill the befuddled rock golem on the golem teleporters to reach Hervelina; 'Kill Driff Tinel.' (his blood to Hervelina); 'Kill Ceracor.' (a piece of rock golem); 'Kill Pericolias the Dreaded.' (his fang); 'Find the alchemy book in Hursk the Alchemist's room.' and read it; kill the Dreaded Ursine to reach the forge; use the forge to obtain the Faqist.",
+      "provenance": "game",
+      "source": "DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "When the druids say that the ursine of Treibh Caillte keep their own kind in collars, the firbolg of Lough Derg point to Driff Tinel. Look at him, they say. He is broad and tall, taller than the thralls of the eastern tunnels round him, with a face like a farmer's and hands like a quarryman's, and he looks no more like a bear than they do. None of them do. The thralls of Treibh Caillte look like the people of the realm, because they are.\n\nThe firbolg account is the old one: a clan of theirs went into the hills in a hard winter and did not come out. The ursine found them in the snow, and took them in, and have kept them since, and their children after them, and the bowl of milk left at the long tunnel's mouth on the first night of winter is left for them. The druids answer that a collar changes what a people sees when it looks at itself. The firbolg answer that the druids have never looked.\n\nThe eastern thralls say Driff Tinel was the first of them to raise his hand against the masters, long ago, and the masters let him live, and gave him the thralls to keep, and he has kept them since more harshly than any ursine. Hervelina wants his blood for the Faqist. The blood of the tribe, she says, and when she is asked which tribe, she does not say.",
+  "legend": "Driff Tinel (40) stands with a knot of ursine thralls (34-35) in the eastern tunnels of Treibh Caillte (about 34.7k/26.7k). He has the thralls' look, a person in a collar, not a bear, only bigger. Immortal Gift: kill him and take his blood to Hervelina. The thralls are hostile and close; a group of high 30s to 40ish clears it. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "Back to the stone, all of you. And you.",
+      "I raised my hand once. Look where it got me."
+    ],
+    "phases": [],
+    "death": [
+      "Tell the... the milk... was ours..."
+    ],
+    "slay": [
+      "Collar him."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tall man in a collar keeps the thralls at work."
+    ],
+    "phases": [],
+    "realmFirstKill": "Driff Tinel, keeper of the thralls, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "driff tinel is 40 in the east tunnels with thralls round him",
+      "immortal gift: his blood for hervelina"
+    ],
+    "aftermathWin": [
+      "driff down. [blood for hervelina|grats]",
+      "the thralls look like hibs. [weird|grim]"
+    ],
+    "aftermathLoss": [
+      "all the thralls joined. [rip|ouch]",
+      "too many thralls. [oops|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] the thralls in treibh are a firbolg clan that got lost in the snow",
+      "driff tinel was the first thrall to fight back. now he keeps the others"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Driff Tinel",
+    "text": "The tall keeper of the thralls in Treibh Caillte's eastern tunnels. The firbolg say he and the thralls are their lost clan, people of the realm and no kin of the bears; Hervelina wants his blood."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Driff Tinel in Treibh Caillte in {minutes} minutes.",
+    "loss": "Driff Tinel turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "treibh-caillte",
+      "relation": "the thralls of the eastern tunnels"
+    },
+    {
+      "id": "lough-derg",
+      "relation": "the firbolg who left the bowl of milk"
+    }
+  ]
+}

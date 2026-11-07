@@ -1,0 +1,224 @@
+{
+  "id": "aros-the-spiritmaster",
+  "name": "Aros the Spiritmaster",
+  "catalogKey": "dodens-gruva/spiritmasteraros",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "aliases": [
+    "aros",
+    "the spiritmaster"
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "jarl-ormarr",
+      "relation": "his jarl"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the caller he holds his dead back from"
+    },
+    {
+      "id": "hamar",
+      "relation": "first name on his last tally"
+    },
+    {
+      "id": "gudlaugr",
+      "relation": "the jarl's hound he bound with the shift"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Aros the Spiritmaster is the level-72 final of Dodens Gruva with 40,000 health.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He raises a spirit champion that fights beside him and stuns; both are linked, so pulling one brings the other.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He performs rituals, debuffs spirit resistance (Negate Spirit), casts Extinguish Lifeforce and detonates Soul Annihilation (1,400 damage in an 800 radius).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "As he dies he cries 'You will remember my name!' (or, half the time, trips and falls on the hard stone floor).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs"
+    },
+    {
+      "text": "He never fights in melee and cannot be crowd-controlled; his cold bolt, Extinguish Lifeforce, heals him by a sixth of the damage it does.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs"
+    },
+    {
+      "text": "He opens with Soul Annihilation: a five-second ritual that cannot be interrupted, 1,400 spirit damage to everyone within 800 of him, again every 35-45 seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs"
+    },
+    {
+      "text": "Negate Spirit (a spirit-resist debuff, radius 500) is laid on a random real player within 2,000 who is not his target, and on everyone near them; GameBots are never picked as its centre.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs"
+    },
+    {
+      "text": "The spirit champion (8,000 health, 40% block, a 5-second stun on a quarter of its hits) is summoned again whenever none is alive while Aros fights, and dies when he dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs"
+    },
+    {
+      "text": "Allakhazam lists him at level 72 in Dodens Gruva; a later visitor remembered him as 'insta death' and sprinting through his room.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/7330"
+    },
+    {
+      "text": "A guild beat Aros with three full groups in January 2003, after an earlier three-group defeat.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/dodens-gruva-named-mobs-etc.110133/"
+    },
+    {
+      "text": "The Havamal says cattle die and kin die, but a good name never dies.",
+      "provenance": "myth",
+      "source": "Havamal, stanzas 76-77 (Poetic Edda, public domain)"
+    },
+    {
+      "text": "Aros is also an old Swedish and Danish place name, meaning a river mouth (to verify).",
+      "provenance": "original",
+      "source": "Scandinavian place-name glossary, to verify"
+    },
+    {
+      "text": "Midgard's spiritmasters are, in Dark Age of Camelot's class lore, followers of Hel who command spirits (to verify the exact Mythic wording).",
+      "provenance": "mythic",
+      "source": "Dark Age of Camelot class descriptions (to verify)"
+    }
+  ],
+  "story": "Aros was Jarl Ormarr's spiritmaster, trained in the craft of Hel's servants, who bind spirits to serve them. He came to Jamtland from a river-mouth town whose name he carried, and he held one belief above every other: the Havamal's word that a good name never dies, and his own teaching that a name said aloud is a rope that holds a soul to the world. Every morning at the shaft of Dodens Gruva he read the names of the shift and promised none would be forgotten.\n\nWhen the Mistress of Runes' warning was ignored and the picks broke into the cold seam, the miners heard voices in three tongues calling from the hall below, and died, and their dead began to walk down toward the call. Aros bound them. He stripped their spirits of the guard every soul has, the curse he still lays on the living, and made each of them say his name so they would hear his voice louder than the calling, which is why he still cries it at every enemy. He raised Bjorn the Younger, the strongest of the shift, as his champion. He holds the bound souls in himself, and when he spends them they burst out in a storm that empties the room. When the jarl went down after the dead with forty huscarls, Aros followed him down the stair shouting names and turned him back, dead.\n\nThe mine has been kept ever since: the Innocents at the door, the huscarls in the galleries, the jarl's hound by the stair. Glenlock's garrison went in three companies under Sigthrud Thorgautsdottir and lost, and came back in three companies and won. Aros reads the names every morning. When the calling below stops, the miners may go; he says he has forgotten how. He learns new names from whoever falls in the mine, and keeps them.",
+  "chapters": [
+    {
+      "title": "Hel's Craft",
+      "text": "Midgard's spiritmasters serve Hel, the keeper of Niflheim, the daughter of Loki, and their craft is hers: the binding of spirits, the calling of the dead to stand and serve. It is an old craft and a feared one, and a jarl who keeps a spiritmaster keeps him at a little distance, the way a farmer keeps a good dog that has bitten once. Aros was the best of them in the Jamtland of his age.\n\nHe came to the frontier hills from a river-mouth town on the coast, a place whose old name was Aros, which means the mouth of the river, and he took the town's name because he would not use his father's. The other spiritmasters said he had a strange teaching. Spirits, they held, are bound by force: by the will of the binder, by blood, by the old words of Hel. Aros held that they are bound by names. A name said aloud, he taught, is a rope that holds a soul to the world; the more often it is said, the stronger the rope, and a soul whose name is no longer said by anyone drifts away into the cold and is lost. He had read the Havamal as every child does, that cattle die and kinsmen die and you yourself will die, but a good name never dies for the one who earns it, and he believed it more literally than any skald.\n\nThe gothar of Jordheim distrusted the teaching, because it made a spiritmaster's voice as strong as a god's. Jarl Ormarr did not care about teachings. He had a mine to dig on the hill east of Glenlock, and men would die in it, and he wanted someone to keep them from haunting his hall. He hired Aros for the price of a ring."
+    },
+    {
+      "title": "The Reading at the Shaft",
+      "text": "Every morning before the shift went down, Aros stood at the shaft of Dodens Gruva with a slate and read the names aloud: the foreman, the hewers, the haulers, the boys who carried the lamps. He made each miner answer to his name. Then he promised them, every morning, the same thing: that if any man died below, he would be remembered, and that his name would be said at the shaft until the mine closed.\n\nIt was not a kindness. Aros believed that the dead of a mine are dangerous, because they die in the dark far from their kin, where no one says their names, and drift, and come back up the tunnels looking for someone to remember them. A spiritmaster who keeps the names keeps the dead quiet. In the first years of the mine four men died below, in a fall and a flood, and Aros read their names at the shaft with the living every morning, and none of the four was ever seen again, and the jarl thought the ring well spent.\n\nThe last tally on his slate is the one Midgard knows. Hamar the foreman, who had worked the Jamtland mines since he was a boy. Bjorn the Younger, the strongest man on the hill, who could carry a full ore-basket up the shaft ladder one-handed. Kol, a hewer. Ulf Half-hand, the jarl's own boy, who wanted to learn the mine from the bottom. And Gudlaugr, the jarl's hound, a pup that would not be left behind, whose name the boy had given him as a joke. Aros read the pup's name with the rest, because a soul is a soul, he said, and a dog's soul is easier to lose than a man's."
+    },
+    {
+      "title": "The Three Tongues",
+      "text": "The Mistress of Runes had read the mountain for the jarl since the first hammer, and for years the mine went where her runes said and prospered. Then she cut her marks toward the last seam and the runes told her not here, and she told the jarl, twice, the second time in front of his huscarls. Ormarr laughed. He had never been afraid of a hill. Aros said nothing; the slate shows he read the names of the last shift that morning as on every other.\n\nThe picks broke through at midday. The seam was not rock. Below it was a hall, wide and dark, with a floor older than the hill and lights moving in it, and voices. The voices were calling, and they called in three tongues: the tongue of Midgard, which every miner understood, and two others, one harsh and one musical, which no one in the mine had heard before. Ulf Half-hand, who wrote the second side of the tally slate as he died, said the voices knew his name.\n\nThe Mistress understood more than the miners did. She knew one of the strange tongues from the oldest runestones of Midgard, the ones no one cuts any more, and she understood that the voices were calling the dead, and that the dead who answered would belong to whatever was calling, and that no one would ever say their names again. She did not go down. She went to the last gallery she had marked and cut one more rune, deeper than all the others, and has stood in front of it since.\n\nThe skalds of a later age, who knew what the hall below was, say the two other tongues were Albion's and Hibernia's. The hall under the three frontiers calls the dead of every realm at once. Dodens Gruva was only the first of Midgard's mines to dig deep enough to hear it."
+    },
+    {
+      "title": "The Binding of the Shift",
+      "text": "The miners died where they stood, in the cold that came up through the seam, and then they stood up again and began to walk downward, toward the calling, with their picks still in their hands. Aros came down the shaft ladder with his slate and saw them going, and understood at once what it meant. If they reached the voices, they would be lost: no one in Midgard would ever say their names again, and the ropes would break, and they would belong to the hall below. He had promised them they would be remembered.\n\nSo he bound them. Every craft he has used since was born in that hour. He stripped away the guard every soul keeps against the spirit world, the ward that keeps a dead man from being taken by any binder who wants him; it was the only way to take them out of the calling's hands, and it is the curse he still lays on the living who come before him, so that his binding finds them open. He made each of the dead say his own name, Aros, so that they would hear his voice louder than the calling, because a name is a rope and his would be the strongest rope in the mine; that is why he still cries his name at every enemy who comes to him: you will remember my name. He chose the strongest of them, Bjorn the Younger, and raised him at his side as a champion to hold the others while he worked. Bjorn still rises beside him and still strikes men senseless, and when he is cut down he stands up again at his master's side, as often as he falls; the binding that holds him is Aros's, and only Aros falling lets it go.\n\nAnd he took the souls into himself to hold them, because there was nowhere else to put them. He carries them still. When enemies stand before him the first thing he does is perform the old ritual and spend them, and they burst out of him in a storm that fells everyone standing close about him, and then they creep back into him, because the binding holds, and when they have all come home he spends them again. Between times he puts out the life of one enemy at a time, and keeps a little of every life he puts out. He has never once lifted a hand to strike anyone; a binder's craft is all in the voice. Nor can anything hold him still, for the old reason the spiritmasters give: a binder cannot be bound. He bound himself to the mine with the shift, because a binding must be held by someone, and he was the only one left to hold it."
+    },
+    {
+      "title": "The Jarl Goes Down",
+      "text": "When Ormarr heard that his shift was walking downward dead, with his own son among them, he did what a jarl of the old frontier does: he went to fetch them. He took forty huscarls in mail and went down the shaft and through the seam, with his thane Dyggve at his side calling lightning and his hound's empty collar on his belt. The voices took the huscarls one by one in the cold beyond the seam.\n\nAros went after them. He came down the stair that the miners had broken open, from the mine into the edge of the hall below, shouting names: the jarl's, the thane's, every huscarl's, the names he had read at the shaft for years at the feasts and the musters. The jarl stopped. He turned. He came back up the stair, toward the voice that was saying his name, and so did the forty, and so did the thane. They were not alive any more. Aros bound them as he had bound the shift.\n\nThe jarl does not seem to have noticed that he died. He holds his hall at the end of the galleries by a cold hearth and boasts that he cannot be killed, and whatever Aros did to him has made that almost true. The forty walk the galleries as phantom huscarls. Dyggve's lightning comes slow and cold. The pup Gudlaugr lies at the head of the stair, where Aros found him on the way back up, looking down toward the voices, and the binding holds him there too.\n\nAros stopped at the top of the stair and looked down into the hall below. He did not go further. He wrote, on the last slate, that he had seen lights there, and robed figures among them, and that one of them had looked up at him and smiled, as one craftsman smiles at another. Then he went back to his chamber in the middle of the mine and began to read the names."
+    },
+    {
+      "title": "The Mine Kept",
+      "text": "Word reached the frontier steadings that the jarl's mine had gone silent, and the families came looking for their men: wives, mothers, children, the old fathers of the hewers. They went in at the entrance and did not come out. The calling took them, or the cold did, or Aros did when he heard new names in his mine; the accounts differ. They wander the upper galleries still, smiling, harmless, and they press a sickness on every passer-by as if it were a gift, the leprosy of the mine, because they have nothing else to give and they remember that guests should be given something. The frontier calls them the Innocents.\n\nThe cold seam let other things in. Ice wolves and dire wolves came down from the heights and decayed in it. Yetis made the caverns their dens. Snow vendo from the high passes came down and stayed. Some of the dead froze half-way into the walls, the icebound moribund, and pained spirits drift through the galleries who are not on any slate. The dead guards Aros set at the passages keep their posts.\n\nThe war of the realms came to Jamtland. The keeps of the frontier rose and took the names the war gave them, Glenlock and Fensalir and the rest, and from Glenlock's walls the garrison could see the hill of the mine and hear, on still nights, the picks. Hamar is still at the face. The Mistress still stands at her rune. And every morning, in his chamber, Aros reads the names, all of them, the shift and the huscarls and the Innocents and the pup, so that each of them hears his own name louder than the voice below. He has added new names over the years. He learns them from whoever falls in the mine. The frontier says never to say a dead friend's name inside, because he will learn it, and add it, and keep it."
+    },
+    {
+      "title": "Sigthrud's Companies",
+      "text": "Glenlock's garrison went into the mine in the years of the war, because the hill was the realm's and the picks kept the sentries awake. Sigthrud Thorgautsdottir, the keep's captain, took three companies down, nearly thirty, and they cut their way through the huscarls and the Innocents' gifts and the thane's cold lightning and reached the chamber in the middle of the mine.\n\nAros cried his name at them and began the ritual before the last of them was through the door. None of Sigthrud's companies knew what the ritual was. When the bound souls burst out of him, those who had pressed in closest fell in a breath. Bjorn the Younger rose at his side and struck Sigthrud's shield-men senseless one after another, and twice they cut him down and twice he stood up again, unmarked, before his master had finished a name. Aros laid his curse on the survivors, stripping their guard against the spirit world, and began the ritual again. The rest carried Sigthrud out.\n\nShe came back the next winter with the same three companies and every ward against the spirit world that Glenlock's runemasters could carve. Glenlock's skald, who went down with them, made a song of it that names every one of the thirty and says nothing of how it was done; Sigthrud asked that of him, and he kept his word. The garrison kept only a saying from that winter, which the sentries still use of any man who talks too much: stand back from the one who reads the names. They won. When Aros fell, the picks stopped for the first time since the cold seam opened, and the garrison stood in the silence and did not know what to do with it.\n\nThe silence did not last. In a season Aros was in his chamber again, reading, because the binding holds itself now, and the mine has never once been without its spiritmaster. Sigthrud wrote his name on the wall of Glenlock's hall, with a note that the realm should remember it. The garrison says that is exactly what he wanted."
+    },
+    {
+      "title": "Until the Calling Stops",
+      "text": "The last slate in the mine is Aros's own, found at the head of the stair down. He promised them they would be remembered, it says. He did not know what was calling. He knew only that if they answered, they would be its, and no one would remember them at all. So he kept them. He reads their names every morning so that they hear their own names louder than its voice, and he will read them every morning until someone stops the voice below. When it stops, the slate says, they may go. He will not. He has forgotten how.\n\nThe voice below is the Summoner's Hall, and the robed figure who smiled at him from its floor was, the skalds believe, the Grand Summoner Govannon, who calls the dead of every realm and makes bargains with what answers. Midgard's warbands have gone down the stair past Gudlaugr into the summoners' hall, and some of them for that reason only: to stop the calling, so that the miners of Dodens Gruva may rest. None of them has stopped it for longer than a season.\n\nThe skalds disagree about what Aros is. The gothar of Jordheim say he is a binder who broke Hel's law by taking souls that were not given to him, and that his punishment is to hold them forever. The spiritmasters say he did the only thing a spiritmaster could, and better than any of them would have. The miners' descendants on the Jamtland steadings say nothing about him at all, but on the morning of the year when the seam opened, they go up to the hill east of Glenlock and stand at the shaft and say the names of the last shift aloud, so that Aros does not have to say them alone."
+    }
+  ],
+  "legend": "Three groups beat him, but only the second time; the first three groups got their butts kicked, the Freddyshouse thread said. He opens with the ritual: Soul Annihilation is a five-second cast you can't interrupt and it hits everyone near him for a lot of spirit damage, then again every forty seconds or so, so the casters and healers stand well back and the melee step out when he starts it. Negate Spirit drops spirit resist on someone and everyone around them, so keep spirit resist buffs up and don't clump. His spirit champion stuns on hit and stands right back up if you kill it, so hold it and burn Aros; it dies with him. He never melees and you can't mez or stun him, and his cold bolt heals him a little, so damage beats everything. A player remembered him as insta-death and sprinted through his room. Say a dead friend's name aloud down there and Aros will learn it. Pull from the edge of his chamber.",
+  "yells": {
+    "aggro": [
+      "You will remember my name! Aros! Say it!",
+      "I read the names at the shaft. I will read yours.",
+      "Say it! Aros! Say it so they hear it!"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Stand up, first of the shift. We have visitors."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "None will be forgotten. None will be gone. None!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "The voice below is louder. I must read louder!"
+      }
+    ],
+    "death": [
+      "Read... the names... someone read the names...",
+      "Now they can go... but I cannot..."
+    ],
+    "slay": [
+      "I have your name now. You will not be forgotten.",
+      "Another for the tally.",
+      "I will read your name tomorrow."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A voice in the cold is counting names.",
+      "Names are scratched on every stone of this chamber."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Aros calls the dead to stand beside him!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Aros reads louder. The names on the walls frost over."
+      },
+      {
+        "trigger": "death",
+        "text": "Aros is silent. Far below, the calling stops."
+      }
+    ],
+    "realmFirstKill": "Aros the Spiritmaster is silent. The picks stop."
+  },
+  "botLines": {
+    "briefing": [
+      "aros + his spirit champion come together. tanks hold the champion, rest burn aros",
+      "he opens with the ritual. get away from him when he starts it, soul annihilation hits everyone close",
+      "spirit resist buffs up. negate spirit lands on someone and everyone around them, then the ritual hurts more",
+      "three groups for aros, the first three groups always lose lol",
+      "dont waste time killing his champion, it just stands up again. hold it and burn aros"
+    ],
+    "aftermathWin": [
+      "aros down!! [i will remember his name|ok i'll remember his name]",
+      "picks went quiet when he died. [creepy|chills]",
+      "did the picks stop? i swear the picks stopped",
+      "aros's carved ice belt dropped"
+    ],
+    "aftermathLoss": [
+      "soul annihilation, half the raid gone",
+      "his champion stunlocked the mt. [again|next time stun break]",
+      "negate spirit then soul annihilation, half dead",
+      "the champion stunned the mt and aros nuked the healers"
+    ],
+    "rumour": [
+      "[never say|dont say] a dead friends name down in dodens gruva. aros [collects them|keeps them], [my gran said|the skalds say]",
+      "aros the spiritmaster [promised|swore] the miners theyd be remembered. [so he never let them leave|now they dig forever]",
+      "aros bound the miners so the summoners couldnt have them",
+      "aros reads the names every morning so the miners hear their own names louder than the voice below"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Aros",
+    "text": "Jarl [Ormarr]'s spiritmaster, who read the names of the shift at the shaft and promised each man he would be remembered. When the dead began walking down toward a call from below, he bound them to the mine, and himself with them. The skalds say a good name never dies. Aros kept the names and forgot the word good."
+  },
+  "bookPage": "Here are the names of the shift that went down to the cold seam: Hamar, Bjorn the Younger, Kol, Ulf Half-hand, and the jarl's hound Gudlaugr, who would not be left behind. The spiritmaster read them out at the shaft and said none would be forgotten. That was the last tally. Whoever finds this slate: we are not forgotten. We are still digging. Something below is calling us, and Aros will not let us answer. We do not know which of them to thank. Do not read our names aloud. Do not say your own either. He is listening for new ones.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Aros the Spiritmaster in {minutes} minutes; the picks of Dodens Gruva stopped.",
+    "loss": "Aros the Spiritmaster added {raidLeader}'s raid from {realm} to his tally after {minutes} minutes."
+  }
+}

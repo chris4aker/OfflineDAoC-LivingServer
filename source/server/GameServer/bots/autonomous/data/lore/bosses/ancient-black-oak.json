@@ -1,0 +1,151 @@
+{
+  "id": "ancient-black-oak",
+  "name": "Ancient Black Oak",
+  "catalogKey": "marfach-caverns/ancientblackoak",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 68, 40,000 health, raised by the Black Lady when she spawns and killed when she dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "It never pulls itself (aggro level 0); it fights only whoever attacks it. Half its blows release Ancient Root: 700 body damage over 800 with a long snare.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "It cannot be hurt outside its tether; its linked pack (AncientOakBaf) has no NPCs in the release world.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Patch 1.66zd made Marfach's withered oaks a plant type.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/k69yq"
+    },
+    {
+      "text": "Ancient Root: on about half of its melee hits it casts 700 body damage with a 60% snare for 30 s, radius 800 around its target. Its brain has aggro level 0 (it never attacks first).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs (integration/1.2)"
+    },
+    {
+      "text": "Bog oak is sub-fossil oak preserved for centuries or millennia in peat bogs; it comes up black and very hard and has long been prized for furniture and carving.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Bog-wood"
+    },
+    {
+      "text": "Living Server lore: Móin na Darach ('bog of the oak'; móin 'bog', darach genitive of dair 'oak', to verify); the turf-cutters' rules (never burn bog oak, never plant a bog acorn); Fionnán of Lough Gur's night in the grove; the warm bog oak; the black chair in the Cullen farmhouse.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Ancient Black Oak stands over Caimheul's grave in the caves under Breifine. The eldest keener, the Black Lady, planted it from an acorn on the first night of the keen. The turf-cutters say the acorn came from Móin na Darach, the bog of the oak in the high country, where a buried forest lies black and hard as iron in the peat, and that a seed from a buried tree remembers being buried and grows toward it. Bog oak is never burned in Breifine and is cut only for chieftains' halls; Caimheul's black shield and his judgement-seat came from that bog.\n\nThe tree grew down before it grew up, through the chieftain's bones toward the road, and on the fourth night the eldest gave it her breath, so that it stands when she returns and stops, without a sound, when she falls. Fionnán of Lough Gur sat beside it from dusk to dawn and wrote that it does not want anything of anyone who does not want anything of it. The withered oaks of the upper halls are its seedlings, and when it is struck none of them comes to it.\n\nCathal of Howth's company was the first to strike it. Its roots came up in a ring wider than a hall around the one it struck back at, tearing at everyone inside and winding about their feet so that they walked as through a bog for a long while, and nearly every blow it struck called them again. A burning word laid on the ogre-women among its roots, or a wide song of hurting, it remembered as well as any edge. Drawn off its ground, it walked away into the grave-peace and back to its place whole.\n\nWhen the Lady falls it is a dead tree until her keen rises again, and each time she returns the bog oak of Móin na Darach comes up warm for a season. The keeners' daughters ask that nobody take a piece of it; a black chair in a Cullen farmhouse has not been sat in for three generations. Its crown is in the rock below Evern's ring of stones, and if the singer is left long enough, the hill country says, it will break the hill, not out of malice, only growing toward what it was planted to remember.",
+  "legend": "Don't hit it. It never starts anything: it only comes in on whoever damages it, so watch your AoEs, songs and pets near the grove, because anything that touches the bark brings it in. It dies the moment the Black Lady dies, so the plan is always her. If it does get hit: about half its swings release Ancient Root, 700 body damage to everyone within 800 of its target plus a 60% snare for 30 seconds, so everyone but its target gets well away from that player. 40,000 health, no CC lands on it, and off its tether it takes no damage and walks home full. Nothing comes to help it when it is hit (it was scripted to bring friends; none exist in this world). The only raids that ever fought the oak were the ones that lost the Lady and turned on the nearest big thing. The keeners' daughters ask one more thing: when it dies, do not cut a piece for a trophy. Bog oak from Marfach comes up warm, they say, and it does not cool.",
+  "yells": {
+    "aggro": [
+      "The black wood groans. The roots rise.",
+      "Roots shift under the floor like sleepers turning.",
+      "Something black and very old notices you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "Roots burst from the floor and drag at every foot."
+      }
+    ],
+    "death": [
+      "The black oak stops, like a held breath.",
+      "The roots let go of the bones."
+    ],
+    "slay": [
+      "The roots close over the fallen.",
+      "Held fast. Held forever.",
+      "Into the roots.",
+      "The tree takes what is given."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Bark like wet coal. It does not move. Yet.",
+      "Its roots are wrapped around a chieftain's bones."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "Ancient roots tear up through the floor!"
+      }
+    ],
+    "realmFirstKill": "The Ancient Black Oak is felled at last."
+  },
+  "botLines": {
+    "briefing": [
+      "the oak is not the target. it dies with the black lady. [hands off|leave it]",
+      "no aoe and no pets near the oak. [if it takes a point of damage it joins|it only fights who hits it]",
+      "if it does join, everyone but its target [gets 800 away|out of the roots]. 700 dmg and a long snare",
+      "the oak dies when the black lady does. [kill her|thats the whole plan]"
+    ],
+    "aftermathWin": [
+      "oak dropped when the lady did. [never touched it|zero damage on the tree, perfect]",
+      "the roots let go of the bones, i swear i saw it. [creepy|cool]",
+      "not one point of damage on the tree. [discipline|proud]",
+      "nobody took a piece of it. [good|the keeners daughters would be pleased]"
+    ],
+    "aftermathLoss": [
+      "someone's pbae clipped the oak and the roots [snared the whole raid|got us all]",
+      "we fought the tree for twenty minutes. [it was never the target|why]",
+      "snared in the roots while the ogresses ate the healers. [dont hit the tree|ugh]",
+      "dragged the oak off its spot and it [went immune|walked home full]"
+    ],
+    "rumour": [
+      "[heard|someone said] the withered oaks upstairs are the black oak's seedlings. [they never help it tho|nothing comes]",
+      "[heard|someone said] the black oak is bog oak that never fell. her grief keeps it standing",
+      "turf cutters say bog oak near marfach comes up warm. [creepy|nope]",
+      "theres a black chair in a cullen farmhouse nobody sits in. made from a marfach branch, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "black oak",
+    "text": "Planted green on the chieftain's grave from a bog acorn, black now as bog oak. Fionnán of Lough Gur wrote that it wants nothing of anyone who wants nothing of it. Strike it, or let a careless spell touch its bark, and its roots come up around whoever it answers. It dies when the Black Lady dies."
+  },
+  "bookPage": "From Nóra's book: the turf-cutters of Breifine will not dig within sight of the Marfach hills, because the bog oak there comes up warm. I have seen a piece. It was black and hard and it was warm in my hand, as if it had been held a long time. My mother said all the bog oak in those hills is the black tree's kin, its roots run so far. The great oak itself stands over the chieftain's grave in the dark and does nothing unless struck. It is the Lady's grief, she said. Grief does nothing unless you strike it. Then it will not let you walk away.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced the Ancient Black Oak in {minutes} minutes.",
+    "loss": "{realm} lost {raidLeader}'s raid to the roots of the Ancient Black Oak in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "black-lady",
+      "relation": "the keener whose grief it is"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the chieftain whose grave it grows from"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Móin na Darach",
+      "text": "High in the bog country above Breifine, where the turf-cutters go in spring, there is a bog the hill people call Móin na Darach, the bog of the oak, and it is called that because there is no oak in it. There was once. A whole forest stood on that ground before the bog came, the druids of Lough Gur say, before the hills had names, and when the water rose and the moss closed over it the trees lay down in the peat and did not rot. The turf-cutters find them still, whole trunks black as coal and hard as iron, three spits down. They call it bog oak, and it is the most precious wood in Hibernia, because nobody can grow more of it.\n\nThe turf-cutters keep rules about it that are older than anything else they do. Bog oak is never burned, though it would burn for a week; a family that burns it will have a death in the house before the year turns. It is cut only for a chieftain's hall: his high seat, his door-posts, the rims of his drinking-horns and, in Breifine, his shield. Caimheul's black shield was cut from a trunk of Móin na Darach, and so was the chair he sat in to give judgement. And no seed of a bog tree is ever planted, though acorns turn up in the peat sometimes, sound as the day they fell. The cutters say a seed from a buried tree remembers being buried, and grows toward it.\n\nThat is the turf-cutters' account of where the eldest keener's acorn came from, and the druids of Lough Gur have come round to it. Nóra's family hold that the acorn came from the green oak in the yard of Caimheul's dún. The cutters answer that the oak in the yard was itself grown from a bog acorn by Caimheul's grandfather, who wanted a tree nobody else had, and that the hills were warned at the time. Either way, the tree on the grave remembered something. It grew down before it grew up."
+    },
+    {
+      "title": "What Grows in the Dark",
+      "text": "The druids of Lough Gur were the first to look at the black tree closely, in the years when the realm first went down into Marfach, and the one they remember is Fionnán, an old druid who asked to sit with it alone. He took a lamp down past the champion's floor by a way the dead of the road do not use, and sat on the floor of the grove a spear's length from the trunk from dusk to dawn, and wrote down what it did. It did nothing. Its roots did not stir toward him. Its branches did not move. The ogre-women at the grove's edge rocked and wept and paid him no attention, and the singer was away at the far side of her grave. In the morning he wrote a single line that the druids of Lough Gur still copy into their books: it does not want anything of anyone who does not want anything of it.\n\nHe wrote down what it was, too, as near as he could make out. It is a plant, and hungry, with roots that went down through the chieftain's bones and on through the rock toward the road; its bark is wet and black and warm to the hand. It is enormous, far beyond any oak that grows in daylight, and he thought it would take a whole company a whole night to fell it, if it could be felled at all, which it never has been.\n\nThe withered oaks that lean in the upper halls of Marfach are its seedlings, from acorns dropped in the dark and carried up the passages by the dead. Fionnán thought at first that they were its children in the way the ogre-women are the Lady's, and would come to it if it were hurt. He was wrong, as the realm found later: when the black tree has been struck, nothing has ever come up the passages to stand with it. The druids say a seedling owes its parent nothing. The turf-cutters say the seedlings are only bog oak that never got the chance to lie down.\n\nFionnán asked to be buried at Lough Gur under a rowan, against anything that might grow toward him, and he was."
+    },
+    {
+      "title": "The Roots Under the Floor",
+      "text": "Cathal of Howth's company was the first to strike it, and the hill country tells their night from the tree's side as well as the Lady's. It did not move when they came into the grove. It moved when the first edge went into its bark. The roots came up through the floor of the grove in a ring around the spearman it struck back at, a ring wider than a chieftain's hall, and they tore at everyone standing in it, and wound about the feet of everyone they did not tear, so that they walked afterwards as men walk through a bog, slowly and with great effort, for a long while. Then the tree struck again, at the nearest of them, and the roots came up again around that one. Nearly every blow it struck called them.\n\nCathal's company did not understand at first that the tree only answered blows. A druid of the company sang a burning word over the ogre-women where they knelt among its roots, and the fire caught the bark as well as the women, and the roots came up under the druid. A bard sang a wide song of hurting over the grove, and the tree heard it, and came for the bard. Anything laid on the black tree, edge or word or song, the tree remembered, and it came for the one who laid it and for all who stood around them.\n\nThey drew it off its ground at the last, as they had drawn the Lady, and it walked out of their reach into the grave-peace as she had, and went back whole to its place over the chieftain's grave. The grave-peace of the fourth night covers the household's tree as it covers the household. On its own ground it can be cut. Off it, nothing bites.\n\nCathal brought them home before dawn, as the Black Lady's story tells, and some of them were still walking slowly a week after; one, a spearman of Howth, said that when he lay down at night he could feel the roots round his ankles. The keeners' daughters say the tree was never what Cathal's company had to fear. It is the Lady's grief, they say, and grief does nothing unless it is struck, and then it will not let a body walk away."
+    },
+    {
+      "title": "Breath Held",
+      "text": "Its life is the Lady's, as her own story tells: she breathed into it on the fourth night, and it stands when she returns and stops when she falls. The turf-cutters have one thing to add. Each time she returns under Breifine, they say, the bog oak of Móin na Darach comes up warm out of the peat for a season, warm as a hand, and they leave it where it lies until it cools, because it is not theirs.\n\nWhen she falls, the tree does not fall. It stops. Those who have been in the grove at that moment say there is no sound, no crack, no rush of leaves; the black branches only become still in a way that is different from how they were still before, as a held breath is different from a breath let go. The ogre-women at the grove's edge stop rocking. Then it is a dead tree standing in the dark, and the next time the keen rises it is standing alive again beside her, as if it had only been listening.\n\nThe keeners' daughters ask one thing of anyone who is in the grove when it stops: take nothing of it. Bog oak from Marfach comes up warm, they say, and it does not cool, and a piece of it carried home brings the keen into the house. There is a chair of black wood in a farmhouse in the Cullen country that a Connacht spearman made from a branch he took, and nobody has sat in it in three generations.\n\nWhat it wants is nothing, Fionnán wrote, and the druids of Lough Gur still believe him. The old soldiers of Breifine are less sure. They point out that its crown is already in the rock below Evern's ring of stones on the heights, and that a thing that wants nothing can still be used. If the singer is ever left long enough, the keeners' daughters say, the tree will break the hill; and it will not do it out of malice, any more than a root means to split a wall. It will only be growing toward what it was planted to remember."
+    }
+  ]
+}

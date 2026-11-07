@@ -1,0 +1,117 @@
+{
+  "id": "old-matriarch",
+  "name": "Old Matriarch",
+  "npcNames": [
+    "Old Matriarch"
+  ],
+  "locationId": "gripklosa-mountains",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "mortufoghus",
+      "relation": "the dead mammoth of the old ice on Modernagrav, of the same great kind"
+    },
+    {
+      "id": "vorkald",
+      "relation": "the man of Dellingstad who takes the whisker of the herd"
+    }
+  ],
+  "facts": [
+    {
+      "text": "The Old Matriarch is a level-57 mammoth of great size in the north-east of Gripklosa (330677, 252261), with three mammoth bulls (44) and two mammoth matriarchs (45-49) within a few hundred units and a young mammoth nearby.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60164631)"
+    },
+    {
+      "text": "Her template gives her no faction (the herd around her is Mammoth Migration): she never brings friends, but the bulls and matriarchs stand close enough to see any fight.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The quest 'Mammoth Hunt' (Bothrar Hadd in Bjarken) sends players to Mammoth Valley for bull and matriarch tusks and pelts; Volkstad in Dellingstad sends them to wipe out the morvalt mammut jagare camp above the valley; a last whisker from a matriarch or bull is returned in Dellingstad, to Vorkald.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    }
+  ],
+  "story": "The great herd of Aegir walks the island round, the bergklan say, on a road older than any of the clans, and it has walked it since before the Troll Fathers dug Trollheim. Every year it comes through the valley in the east of Gripklosa, the woolly bulls and the matriarchs of the families and the calves between them, and every year the oldest cow of all leads it. Bjarken calls her the Old Matriarch. The bergklan have an older name for her that means the one who remembers the road.\n\nShe is the largest living thing in the mountains, larger than any bull of her herd, and older than Bjarken. The iarn dwarves of the Remnants say mammoths of her kind lived on Aegir before the ice came and after, and that the great beasts of the vigil on Modernagrav, the dead mammoths standing round the bones, are her kind too, gone to keep a watch she has not yet joined. Mortufoghus, the mammoth of the old ice who walks round the bones as if they were her calf, is the one the dwarves compare her to. The Old Matriarch's calf is the herd.\n\nEveryone wants the herd. Bothrar Hadd of Bjarken buys bull tusk and matriarch pelt from the young men who go up to the valley for them; the morvalt mammoth-hunters squat above the valley and take what they can; the folk of Dellingstad, in the crater, pay to have the morvalt cleared from the heights and take a whisker of the herd as their due, which Vorkald of Dellingstad keeps. The Old Matriarch keeps the herd moving. When the hunters come down, she does not run. She stands in the north-east of the valley with her bulls and her matriarchs around her and lets the herd go past behind her, and the bulls and the matriarchs come in when she is struck, because a herd defends its leader the way a family defends its grandmother, without being asked.\n\nThe bergklan say she has got the herd through the valley every year of her life, and that the year she does not, the herd will turn off the road and scatter, and Aegir will have no more mammoths that remember where they are going. They do not hunt her. They say a clan that kills the one who remembers the road deserves to be lost.",
+  "legend": "The Old Matriarch is a level 57 mammoth in the north-east of Gripklosa, near Mammoth Valley, with three mammoth bulls (44) and two mammoth matriarchs (45-49) standing within a few hundred units. She has no faction, so she doesn't call anyone, but the bulls and matriarchs are right there and will see the fight; they're Mammoth Migration, so they can bring each other. Clear or pull the bulls and matriarchs first (they also count for Bothrar Hadd's Mammoth Hunt tusks and pelts), then her. No abilities, not CC-immune, just a big mammoth. A group at 50 handles it. The bergklan say not to kill her, for what that's worth.",
+  "yells": {
+    "aggro": [
+      "(The Old Matriarch lifts her trunk and trumpets once.)",
+      "(She plants her feet. The herd keeps moving behind her.)",
+      "(Tusks like felled pines swing toward you.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(The Old Matriarch trumpets, and the bulls turn back toward her.)"
+      }
+    ],
+    "death": [
+      "(The Old Matriarch kneels in the valley grass, slowly.)",
+      "(Somewhere behind her, the herd stops walking.)"
+    ],
+    "slay": [
+      "(She stands over you, then turns back to the road.)",
+      "(The herd walks on.)",
+      "(One trumpet, low.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The oldest mammoth on Aegir stands guard.",
+      "She remembers the road. The herd follows her."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The bulls of the herd turn back for their leader."
+      }
+    ],
+    "realmFirstKill": "The Old Matriarch falls. The herd stands still."
+  },
+  "botLines": {
+    "briefing": [
+      "old matriarch is a 57 mammoth, ne gripklosa",
+      "3 bulls and 2 matriarchs right next to her, clear them first",
+      "she has no faction but the herd does",
+      "the bulls and matriarchs count for bothrar hadds tusks"
+    ],
+    "aftermathWin": [
+      "old matriarch down",
+      "got tusks and pelts on the way",
+      "big but simple",
+      "the bergklan wont be happy"
+    ],
+    "aftermathLoss": [
+      "pulled her with all five",
+      "the bulls hit hard",
+      "tried to duo it",
+      "herd joined"
+    ],
+    "rumour": [
+      "the old matriarch has led the herd through the valley every year of her life",
+      "the bergklan call her the one who remembers the road",
+      "if she dies the herd will scatter and forget the road, the bergklan say",
+      "the dwarves say mortufoghus is her kind"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Old Matriarch",
+    "text": "The oldest mammoth of Aegir, who leads the great herd through [Mammoth Valley] every year. The [bergklan] call her the one who remembers the road, and will not hunt her."
+  },
+  "bookPage": "From Under the Claw, by Sigvor of Bjarken: I went up to the valley once to see the herd come through. It took all day. The bulls came first and the families after, the matriarchs with the calves under them, and at the end, when the dust had gone past, one great cow stood alone at the head of the valley and watched the last of them go by. Then she turned and followed. A bergklan hunter beside me put his spear down on the grass while she passed. I asked him why. He said: so she knows.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down the Old Matriarch in Gripklosa in {minutes} minutes. The herd stands still.",
+    "loss": "The Old Matriarch got her herd through past {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

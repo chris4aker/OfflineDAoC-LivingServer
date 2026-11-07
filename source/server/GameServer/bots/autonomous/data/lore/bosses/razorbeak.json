@@ -1,0 +1,107 @@
+{
+  "id": "razorbeak",
+  "name": "Razorbeak",
+  "npcNames": [
+    "Razorbeak"
+  ],
+  "locationId": "allta-fearann",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Razorbeak: level 55, model 765 (the fearann wyvern body: fearann wyvern hatchlings 45-50 and ancients 48-50), size 163, at about 399,500/170,300 in the far north-east of Allta Fearann; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Razorbeak as the mother-wyvern of the northern cliffs whose beak the Necht Sylvan use for their oldest oath.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Allta Fearann, the wild land, is the high country north of Vigilant Rock where the forest gives out into scrub and stone and the wind never stops. The mantids hold the ground, and the sky belongs to the things that nest on the crags: skimmers and mantas that ride the updraughts, the fearann wyverns of the northern cliffs, the long-legged waterstrider birds of the high pools. The Sylvan of Necht keep a custom for travellers going north: name the four great ones of the wild land before you go, so that they know you know them. Windskimmer, Goldenleaf, Razorbeak, and the bird the Sylvan call by a name they say came over the sea with the mist.\n\nRazorbeak is the third, and the one the Sylvan of Necht are most careful to name properly. She is the eldest of the fearann wyverns, the lean grey wyverns of the north-eastern cliffs, and she is larger than any of them by half again. The wyvern ancients of the cliffs, who are old enough, are her children; the hatchlings in the cliff nests are their children. She has nested on the same ledge over the northern sea for as long as the Sylvan have records of the north, and her beak, which the Sylvan say is the colour of a new blade, has a notch in it that every Necht child can draw.\n\nThe notch is the oldest story of the wild land. A Sylvan of Necht, the story says, in the first generations, climbed the north-eastern cliffs to take a wyvern egg, because a wyvern raised from the egg would carry a rider; and Razorbeak came back to the ledge as he reached the nest, and he struck at her with a bronze knife and broke a piece off her beak, and she let him go. Nobody knows why. The Sylvan who tell it say she let him go because he had faced her and not run. The mantids, who also tell it, say she let him go because the piece of beak was worth more to her than he was, and she went back for it later.\n\nWhichever is true, the Sylvan of Necht swear their oldest oath on the notch, the one a Necht warden takes on the day she is named: may I face what I must, as the egg-thief faced the mother. Hibernian companies who go north after Razorbeak are told the story at Necht before they leave. The ones who come back say they understood it better on the ledge.",
+  "legend": "Razorbeak is a level 55 fearann wyvern of great size (163) on the north-eastern cliffs of Allta Fearann (about 400k/170k). Plain mob, no script, 80-second respawn. The wyvern ancients and hatchlings (45-50) nest along the same cliffs, so clear the ledges as you go or they will join in. A 50s group with a solid tank handles her. The Necht wardens swear their oldest oath on the notch in her beak: may I face what I must. She drops off her ledge to meet you, so pull from below the cliff, not along it, and keep healers off the narrow ledges where a fall would hurt. Count her as one of the four great ones of the wild land.",
+  "yells": {
+    "aggro": [
+      "(a shriek like a blade drawn across stone)",
+      "(Razorbeak drops off her ledge toward you)",
+      "(the notched beak opens)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Razorbeak screams over the northern sea)"
+      }
+    ],
+    "death": [
+      "(the mother of the cliffs falls toward the sea)",
+      "(the notched beak closes for the last time)"
+    ],
+    "slay": [
+      "(Razorbeak returns to her ledge)",
+      "(the cliffs are kept)",
+      "(another egg-thief, gone)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Grey wyverns on every ledge of the cliffs.",
+      "A ledge over the northern sea. A great nest."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Razorbeak screams over the northern sea!"
+      }
+    ],
+    "realmFirstKill": "Razorbeak, mother of the northern cliffs, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "razorbeak is a 55 wyvern on the north east cliffs of allta fearann. [plain mob|no script]",
+      "clear the wyvern ancients and hatchlings on the ledges. [45-50|they join]",
+      "50s group with a solid tank",
+      "80 sec respawn. [move off after|dont rest]"
+    ],
+    "aftermathWin": [
+      "razorbeak down. [the mother of the cliffs|got her]",
+      "cleared the ledges first. [clean|nice]",
+      "three of the four great ones done",
+      "we faced what we must lol"
+    ],
+    "aftermathLoss": [
+      "pulled the whole cliff of wyverns. [too many|oops]",
+      "fell off a ledge. [ouch|lol]",
+      "tank couldnt hold her",
+      "group too low. [55 big wyvern|need more]"
+    ],
+    "rumour": [
+      "[heard|someone said] the notch in razorbeak's beak is from a necht egg-thief's knife",
+      "the necht wardens swear their oath on razorbeak's notch. [may i face what i must|old oath]",
+      "[word is|heard] the wyvern ancients on the cliffs are razorbeak's children",
+      "the mantids say razorbeak went back for the broken piece of beak"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Razorbeak",
+    "text": "The mother-wyvern of the north-eastern cliffs of [Allta Fearann], third of the four great ones. The notch in her beak is the oldest story of the wild land; Necht's wardens swear their oath on it."
+  },
+  "bookPage": "From Coll of the Domnann guides: the third great one is Razorbeak, eldest of the fearann wyverns, on her ledge over the northern sea. Every Necht child can draw the notch in her beak. In the first generations a Sylvan climbed the cliffs for a wyvern egg, and she came back as he reached the nest, and he struck at her with a bronze knife and broke a piece from her beak, and she let him go. We say because he faced her. The mantids say she went back for the piece. Necht's wardens swear on the notch: may I face what I must.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Razorbeak in Allta Fearann in {minutes} minutes.",
+    "loss": "Razorbeak turned back {realm}'s band under {raidLeader} in Allta Fearann after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "windskimmer",
+      "relation": "another of the four great ones"
+    },
+    {
+      "id": "adar-llwch-gwin",
+      "relation": "another of the four great ones"
+    }
+  ]
+}

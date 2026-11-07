@@ -1,0 +1,279 @@
+{
+  "id": "cornwall",
+  "name": "Cornwall",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    6
+  ],
+  "aliases": [
+    "kernow",
+    "the far west"
+  ],
+  "summary": "The far west: moors and beech woods, the dwindling old folk, the drakes of the western cliffs, the Roman legion's door, the broken towers, and the Cornish who remember everything Albion has lost.",
+  "facts": [
+    {
+      "text": "Cornwall is zone 6 of region 1, with Cornwall Station and about 500 monsters: beeches, rooters, bears, moor wolves, muryans, bucca, boogeys, Cornwall Drakes, giant skeletons, skeletal legionnaires and ghostly clerics and paladins.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 6 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The entrance to the Catacombs of Cardova lies in the south of the zone.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 6 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Impossible Mission sends players to Edmond upstairs in Cornwall Station to investigate the disappearance of Lyonesse; a moor bogey called Yog ambushed Edmond's men by the road to the Catacombs.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Quests also name Cirfans (Symbol of the Broken: slay the drake and take its heart), Brother Jarrel (on the broken bridge east of the Fallen Tower), Aricoer (at the broken tower in Cornwall) and Centurion Favius (Animare il morti).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Tusker (level 45, a boar) and Kalnraw (level 40-45, a great cat) have aggro level 0: they do not start fights.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 6 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Mythic: a shepherd boy found an opening in a small crypt inside a ring of standing stones in Cornwall, leading to the halls of a legion that travelled with an emperor no one can name.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/quests.html?cquest=508"
+    },
+    {
+      "text": "Cornish folklore, not game canon: the bucca is a Cornish sea or storm spirit; muryan is the Cornish word for ant, and fairies were said to dwindle into muryans (to verify); Lyonesse is the drowned land off Cornwall in Arthurian legend.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Bucca_(mythology)"
+    },
+    {
+      "text": "Tamsin Hext and the Hext Road-Book, the bucca who forgot which way the water goes, Yog's patience, Favius's inspection, Brother Jarrel still crossing and the drovers' account of Kalnraw and Tusker are Living Server writing; the Hexts, Penhallow and the spreading moor come from the other Albion files.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The far west. Beyond the marsh the land rises again into Cornwall: moors and beech woods, granite under thin soil, and cliffs where the drakes nest above a sea that has eaten a kingdom. The Cornish say their country is older than Albion and will outlast it, and they mean it as a courtesy. The old folk of the land are still here, the muryans, who were the Good Folk once and have been dwindling for a thousand years until they are hardly bigger than the ants their name means; the bucca of the coves, who were spirits of the sea and are not sure what they are now; and the boogeys of the moor, who were never anything but trouble. The tinners worked the granite here before Rome, and the drovers of the Cornish road, the Hext family among them, have driven cattle east along it to the king's markets since Uther's day.\n\nRome and the legion. The Romans came to Cornwall for its tin and built roads and a few cold forts, and one of their legions marched into the west behind an emperor no chronicle of Camelot can name, and went underground. A shepherd boy found the way in, generations later, through a little crypt inside a ring of standing stones in the south of the country, and the Catacombs of Cardova have been Cornwall's worst neighbour ever since. The legion's dead keep the ground above the door as they keep the halls below it, in good order, with a centurion called Favius walking the line; Master Vismer of Camelot, who is trying to learn how the dead are raised, wants Favius's death for a rite he will not describe.\n\nWhat went wrong. Cornwall has lost a great deal and remembers all of it. To the west, Lyonesse went under the sea in a single night, and the Church at Cornwall Station still sends the brave to find out why, and the old folk will not say the name of the hag who keeps its ruins. To the south, the moor began to spread, and the Church's clerks have drawn the burnt line of Dartmoor a little further north on every map since Arthur. In the north of the country a tower fell, and the bridge east of it broke, and the clerics and paladins who were crossing it at the time are still crossing it, Brother Jarrel among them, whom Calya of Caer Ulfwych wants laid. In the west another tower stands broken where a man called Aricoer keeps captured souls and a sealed box the Church wants. And the house of Penhallow, which sent the realm a lord who held a breach for a night and a day and is holding a post under the Pennines yet, has not had good news from the north in a long time.\n\nWhat lives there now. The beech woods are full of the great rooting boars, and the greatest of them, an old tusker the hunters of the Station call by that name, roots in the south-west and has never been known to charge a man who left him alone. In the north woods a great cat the hunters call Kalnraw lies up in the beeches above the road and watches the drovers pass. The moor wolves hunt in packs with their leaders and den mothers. On the western cliffs the Cornwall drakes nest, brown and heavy and old, and the hunters say the greatest of them, Cirfans, nests above the giants' valley in the far south-west and has a heart the Lethantis Association wants. A boogey called Yog lies in wait by the road to the Catacombs and has ambushed the Church's own men.\n\nWhy it matters to Albion. Cornwall is the realm's western shield and its oldest memory. Every road west, to Lyonesse, to Dartmoor and to the legion's door, starts at Cornwall Station, and every warning the realm has had from the west has come from Cornish mouths first. The Cornish say Camelot has never once listened to them in time. Camelot says the Cornish never stop talking.",
+  "legend": "Cornwall is the western zone past Avalon Marsh, levels 25 to 45 with a few harder things. Cornwall Station in the north-east is the hub: Roben Fraomar (the Church's epic), Commander Hayward and Edmond upstairs (Impossible Mission, the Lyonesse chain). The Catacombs of Cardova entrance is in the south, in the ring of stones, with skeletal legionnaires and Centurion Favius outside it. Good camps: giant rooters and bears in the woods, moor wolves on the moor, muryans, giant skeletons in the south-west. The Cornwall Drakes on the western cliffs are low forties and hit hard; Cirfans, the level 50 drake above the Cornish giants in the far south-west, is a Symbol of the Broken target, bring a group. Tusker the giant boar (45) in the south-west and Kalnraw the great cat (40 to 45) in the north woods never aggro, so you can walk past them. Yog the boogey sits by the road to the Catacombs. Brother Jarrel's ghost is on the broken bridge in the north with the ghostly clerics and paladins; Aricoer is at the broken tower in the west.",
+  "atmosphere": {
+    "firstEntry": [
+      "Cornwall. Moor, beech and granite.",
+      "Salt on the wind. A kingdom drowned out there.",
+      "Drakes over the western cliffs.",
+      "Small spiteful eyes in the beech leaves.",
+      "The Cornish road. The herds go east. Still."
+    ],
+    "areas": [
+      {
+        "name": "Cornwall Station",
+        "x": 408357,
+        "y": 652122,
+        "z": 4944,
+        "radius": 1500,
+        "lines": [
+          "Cornwall Station. Every road west starts here.",
+          "Edmond, upstairs, still asks after Lyonesse.",
+          "Roben Fraomar waits for the Church's own."
+        ]
+      },
+      {
+        "name": "the legion's door",
+        "x": 384005,
+        "y": 681415,
+        "z": 6839,
+        "radius": 1500,
+        "lines": [
+          "A ring of stones, and a crypt, and a door under it.",
+          "Skeletal legionnaires keep the line in good order."
+        ]
+      },
+      {
+        "name": "Favius's line",
+        "x": 406265,
+        "y": 681116,
+        "z": 5500,
+        "radius": 1200,
+        "lines": [
+          "Centurion Favius walks the line. Still.",
+          "Rome's dead, on parade above their own graves."
+        ]
+      },
+      {
+        "name": "the broken bridge",
+        "x": 400100,
+        "y": 645700,
+        "z": 5500,
+        "radius": 1200,
+        "lines": [
+          "Ghostly clerics and paladins crossing a broken bridge.",
+          "Brother Jarrel is still crossing. He always will be."
+        ]
+      },
+      {
+        "name": "the broken tower in the west",
+        "x": 371646,
+        "y": 671756,
+        "z": 5500,
+        "radius": 1200,
+        "lines": [
+          "Aricoer's broken tower. Captured souls wail inside.",
+          "A sealed box, and a man who will not give it up."
+        ]
+      },
+      {
+        "name": "Yog's road",
+        "x": 396256,
+        "y": 670784,
+        "z": 5500,
+        "radius": 1000,
+        "lines": [
+          "The road to the Catacombs. Yog waits in the heather.",
+          "A boogey's grin in the dusk. Then teeth."
+        ]
+      },
+      {
+        "name": "the drake cliffs",
+        "x": 370692,
+        "y": 667729,
+        "z": 5500,
+        "radius": 3000,
+        "lines": [
+          "Cornwall Drakes on the western cliffs. Old and heavy.",
+          "The sea that ate a kingdom, below the nests."
+        ]
+      },
+      {
+        "name": "the giants' valley",
+        "x": 356500,
+        "y": 675000,
+        "z": 5500,
+        "radius": 3500,
+        "lines": [
+          "Cornish giants in the far south-west valley.",
+          "Above them, on the high nest, Cirfans."
+        ]
+      },
+      {
+        "name": "Tusker's beeches",
+        "x": 371178,
+        "y": 682007,
+        "z": 5500,
+        "radius": 1200,
+        "lines": [
+          "Tusker roots under the beeches. Leave him be.",
+          "Earth turned like a plough. A very big plough."
+        ]
+      },
+      {
+        "name": "Kalnraw's woods",
+        "x": 392925,
+        "y": 653904,
+        "z": 5500,
+        "radius": 1200,
+        "lines": [
+          "Kalnraw lies up in the beeches, watching the road.",
+          "Yellow eyes in the leaves. It does not blink."
+        ]
+      },
+      {
+        "name": "the muryan woods",
+        "x": 391658,
+        "y": 664551,
+        "z": 5500,
+        "radius": 2500,
+        "lines": [
+          "Muryans in the beech woods. The Good Folk, dwindled.",
+          "Bucca by the water, unsure what they are now."
+        ]
+      },
+      {
+        "name": "the moor",
+        "x": 384000,
+        "y": 683000,
+        "z": 5500,
+        "radius": 3500,
+        "lines": [
+          "Moor wolves, boogeys and the long grass.",
+          "South, the moor is spreading. The Church says so."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "cornwall station is where the lyonesse chain starts. edmond upstairs",
+      "the cardova door is in the ring of stones in south cornwall",
+      "muryans used to be the good folk. now theyre the size of ants",
+      "the hext family have driven cattle on the cornish road since uther",
+      "the old folk in cornwall wont say the cailleach's name",
+      "cornwall drakes nest on the western cliffs over the sea that ate lyonesse",
+      "the legion's dead keep their line above the cardova door",
+      "the church in cornwall says the dartmoor burnt line moves north every map",
+      "lord gildas was a penhallow, a cornish house",
+      "bucca used to be sea spirits. now they just sit by streams",
+      "the ghostly clerics on the broken bridge are still crossing it",
+      "every warning albion ever got from the west came from the cornish first"
+    ],
+    "rumour": [
+      "[heard|someone said] yog will lie in the same heather for a week waiting for one guy",
+      "heard centurion favius walks the line like hes expecting an inspection",
+      "[heard|someone said] brother jarrel is still crossing that broken bridge every night",
+      "heard aricoer has souls shut up in his broken keep. you can hear them from the road",
+      "[heard|someone said] cirfans has a heart the lethantis lot want and they wont say why",
+      "heard tusker and kalnraw have never charged anyone who left them alone",
+      "[heard|someone said] the young cornwall drakes come back with salt on their wings",
+      "heard a station lad went up after kalnraw. kalnraw was still there in autumn"
+    ],
+    "tell": [
+      "cornwall? west past avalon marsh. cornwall station in the ne",
+      "is it hard? 25 to 45. the drakes on the western cliffs hit hard",
+      "whats there? cardova, lyonesse next door, drakes, muryans, wolves, cirfans",
+      "yog is by the road to cardova. favius is with the skeletal legionnaires outside the door",
+      "brother jarrel is on the broken bridge in the north. aricoer is at the broken keep in the west",
+      "cornwall drakes are on the western cliffs. cirfans above the giants in the far sw",
+      "tusker is in the sw beeches, kalnraw in the north woods. neither aggros"
+    ]
+  },
+  "loremaster": {
+    "intro": "Cornwall, the far west. Ask of [cornwall station] and [lyonesse], of the [muryans] and the [bucca], of the [hext] drovers and the house of [penhallow], of the [catacombs], or of Cornwall's own: the [cornwall drakes], [yog], [centurion favius], [brother jarrel], [aricoer], [kalnraw] and [tusker].",
+    "topics": {
+      "cornwall station": "The hub of the west: Roben Fraomar of the Church, Commander Hayward, and Edmond upstairs, who sends the brave into [lyonesse] to learn how a city vanished.",
+      "lyonesse": "The drowned kingdom to the west, which went under the sea in a single night. The old folk of Cornwall will not say the name of the hag who keeps its ruins.",
+      "muryans": "The old folk of the land, the Good Folk once, dwindled until they are hardly bigger than the ants their name means. They keep the beech woods and are spiteful.",
+      "bucca": "Spirits of the coves who were the sea's once and sit by the streams now, unsure what they are.",
+      "hext": "The Hext family have driven cattle along the Cornish road since Uther's day and kept a road-book of what the road is doing. Tamsin Hext keeps it now.",
+      "catacombs": "Under the ring of stones in the south lies the door of the Catacombs of Cardova, where a Roman legion followed an emperor no one can name underground. The legion's dead keep their line above the door.",
+      "penhallow": "The house of Penhallow in Cornwall sent the realm Lord Gildas, who held the breach at Castle Sauvage for a night and a day and holds a post under the Pennines still.",
+      "cornwall drakes": "The Cornwall drakes nest on the western cliffs above the sea that ate Lyonesse: brown, heavy and very old, and they do not come inland. The drovers say they were there before the Romans and will be there after Camelot. The greatest of them, Cirfans, nests on the high cliff over the giants' valley in the far south-west, and the Lethantis Association wants his heart for a working it will not explain. The young drakes learn to fly over the drowned country and come back with salt on their wings.",
+      "yog": "Yog is a moor boogey who lies in the heather by the road to the Catacombs and takes men off it; he ambushed Edmond's own men from Cornwall Station when they came back from Lyonesse. The boogeys of the moor were never anything but trouble, the Cornish say, and Yog is the worst of them because he is patient: he will lie in the same patch of heather for a week for one traveller worth the trouble.",
+      "centurion favius": "Centurion Favius walks the line of the legion's dead above the door of the Catacombs of Cardova, in front of the skeletal legionnaires, as if the legion were still on campaign and expecting an inspection. Master Vismer of Camelot wants Favius slain and words of power spoken over the circle of summoning at night, for his long study of how the dead are raised. Favius would approve of the discipline, the drovers say, and of nothing else.",
+      "brother jarrel": "Brother Jarrel was a cleric of the Church who was crossing the bridge east of the fallen tower in northern Cornwall when the tower came down and the bridge broke. He is still crossing it, every night, with the ghostly clerics and paladins who were with him. Calya of Caer Ulfwych wants his spirit laid for her brother Contyth's hammer, and the drovers say laying him is a kindness.",
+      "aricoer": "Aricoer keeps the broken tower in western Cornwall with captured souls shut up in it, and a sealed box that the Church in Camelot wants returned. Sir Gwyn of Snowdonia knows where the tower lies. The drovers do not know what Aricoer is and do not ask. The souls can be heard from the road on still nights.",
+      "kalnraw": "A great cat of the north woods above the road. See the loremaster's own page on [kalnraw].",
+      "tusker": "A giant boar of the south-western beeches. See the loremaster's own page on [tusker]."
+    }
+  },
+  "book": {
+    "title": "The Hext Road-Book",
+    "pages": [
+      "The Hext Road-Book, kept by Tamsin Hext, widow of a drover of the Cornish road, who took over the herds and the book when her husband did not come back from the moor. A Hext has driven cattle east along this road since Uther's day, and every Hext has kept this book, so that the next one knows what the road is doing. My husband's grandfather told Sir Arward three things about the moor and Sir Arward laughed at two of them. We do not laugh at the road. We write it down. This is what it is doing in my time.",
+      "Of the old folk. The muryans are smaller every year. My grandmother remembered them as tall as a child; I have never seen one bigger than my hand. They keep the beech woods and they are spiteful, and I do not blame them. The bucca of the coves were sea spirits when the sea was theirs; now they sit by the streams and look at the water as if they had forgotten which way it goes. The boogeys of the moor were always trouble. One of them, Yog, has been taking men off the road to the Catacombs, and the Church's own were among them.",
+      "Of the beasts. There is a boar in the south-western beeches that the hunters call Tusker, as big as a hay-cart, and there is a cat in the north woods above the road that they call Kalnraw, and both of them are old, and both of them have watched my herds go by every season of my life and never once come down. The hunters say that is because nobody ever went up after them. A young man of the Station went up after Kalnraw last spring. We drove past the place in the autumn. Kalnraw was still there.",
+      "Of the drakes. On the western cliffs, above the sea that ate Lyonesse, the Cornwall drakes nest, brown and heavy and very old, and they do not come inland. The greatest of them nests on the high cliff over the giants' valley in the far south-west. The hunters call him Cirfans. Magi of the Lethantis Association came all the way from the forest to ask me where he nests, and wanted his heart, and would not say why. I told them. I did not tell them the cliff path is bad in the wet. They will find out.",
+      "Of the legion. Under the ring of stones in the south there is a door, and under the door there are the dead of Rome in their halls, and above the door the legion keeps its line as if it were still on campaign: skeletons in harness, standing in rows, and a centurion called Favius walking up and down in front of them. We drive the herds a long way round. A scholar of Camelot came asking for Favius too, and spoke words over the ring at night that I would not want spoken over my grave.",
+      "Of the broken places. In the north a tower fell long ago and broke the bridge east of it, and there were clerics and paladins of the Church on the bridge, and they are still on it, crossing, every night. One of them is Brother Jarrel. In the west a man called Aricoer keeps another broken tower with souls shut up in it, and a box the Church wants. And south, always south, the moor is spreading; the Church's clerks draw its burnt edge a little nearer on every map. My husband went south to look. This book is mine now."
+    ]
+  },
+  "bosses": [
+    "kalnraw",
+    "tusker",
+    "cirfans"
+  ],
+  "era": "alb-the-province",
+  "factions": [
+    "old-powers",
+    "dead-legions"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "id": "declan",
+  "name": "Declan",
+  "npcNames": [
+    "Declan"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Declan: level 40, an outlander body of the garda kind (model 737), faction Outland Residents, at about 336,800/316,000 in Altan Garran; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Altan Garran's people are faction Outland Residents (garda, conaitheoir, bardach, asarlai) in the walled town at about 336,600/315,500 in Cothrom Gorge.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Declan is the youngest garda on Altan Garran's walls, and the only one with a mainland name. The outlanders say his mother was Aodhnait's friend, a spear of the first Hibernian companies who lost her company in the gorge and was taken in, and that she died in the town before he could remember her. He has her name for him and nothing else.\n\nHe is fiercer than the others because he has to be. A garda with a Hibernian name has to prove whose side he is on every day, and Declan proves it on every Hibernian who comes near the wall. Aodhnait, who also came from the mainland, is the only one in the town he will not argue with. The two of them stand apart at the town's feasts, and do not talk, and the outlanders let them be. The garda captain says Declan will make a better captain than any of them, once he stops having to prove it.",
+  "legend": "Declan (40) is the lowest of the named outlanders in Altan Garran (about 337k/316k), close to Fachtna and Zinsya. Alone he is easy for a group of 40s; the problem is everyone near him. Pull from the edge of the town, never from the middle. Plain spawn, 80-second respawn. Hostile to Hibernians like the whole town. Pull from the gate side of the town, where fewer garda stand.",
+  "yells": {
+    "aggro": [
+      "I am of Altan Garran. Not yours.",
+      "Garda! Hibernians at the wall!"
+    ],
+    "phases": [],
+    "death": [
+      "Mother... was one of you..."
+    ],
+    "slay": [
+      "Whose side now?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The youngest garda, with a mainland name."
+    ],
+    "phases": [],
+    "realmFirstKill": "Declan the young garda has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "declan is 40, youngest named garda in altan garran",
+      "easy alone, pull from the town edge"
+    ],
+    "aftermathWin": [
+      "declan down. [easy|grats]",
+      "clean pull from the edge. [nice|good]"
+    ],
+    "aftermathLoss": [
+      "fachtna and zinsya joined. [rip|ouch]",
+      "pulled from the middle. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] declan's mother was a hib spear who stayed in altan garran",
+      "declan wont argue with aodhnait. the only one in town he wont"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Declan",
+    "text": "The youngest garda of Altan Garran, with a mainland name from a mother he never knew, a Hibernian spear taken in by the town. He proves whose side he is on every day."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Declan in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Declan turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "aodhnait",
+      "relation": "the other who came from the mainland"
+    },
+    {
+      "id": "fedail",
+      "relation": "his chief"
+    }
+  ]
+}

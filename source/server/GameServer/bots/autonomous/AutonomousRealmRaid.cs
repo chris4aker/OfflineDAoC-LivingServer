@@ -383,6 +383,8 @@ namespace DOL.GS
                         raid.Forced ? 0 : GameLoop.GameLoopTime - raid.Created, raid.Required);
                     raid.HubDeparted |= departing;
                     if (departing) raid.HubDepartedTick = GameLoop.GameLoopTime;
+                    // Living Server 1.2: the raid leader briefs the realm on the boss as the raid leaves the muster (docs/LORE.md).
+                    if (departing) LoreChat.Briefing(raid.Parties.Keys.Select(g => g.LivingLeader).OfType<GameBot>().FirstOrDefault(), raid.Definition.BossType);
                     if (departing) RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
                         $"{presentAtHub} adventurers present at {raid.Hub.Name}; departing together for {raid.Definition.Name}. Late arrivals will join the expedition directly.",
                         "raid_forming", RaidSlots(raid.Definition.Name, null));
@@ -651,6 +653,9 @@ namespace DOL.GS
                 // One quiet top-of-screen line for the realm's players (automatic and launcher-forced alike),
                 // so a player can join the bots at the rally point.
                 RealmEventNotices.QueueScreen(id, realm, $"A {definition.Name} raid is forming at {raid.Hub.Name}.", AnnouncementKind.PveRealmEvent);
+                // Living Server 1.2: the place's own line for the realm, after the forming notice (docs/LORE.md).
+                if (GameWideAnnouncements.Enabled(AnnouncementKind.PveRealmEvent))
+                    LoreAtmosphere.RaidForming(realm, definition.Region, definition.Name);
                 RealmEventNotices.Queue(id, realm, forced
                     ? $"{definition.Name}: {recruits.Sum(p => p.Length)} level-50 adventurers reserved; gather at {raid.Hub.Name}. {startCondition}"
                     : $"{definition.Name}: recruiting up to {raid.RecruitCap} level-50 adventurers via {raid.Hub.Name}; at least {raid.Required} must arrive before assault.",
@@ -1505,9 +1510,11 @@ namespace DOL.GS
             // And the size it ran at, so the next raid here carries on from it (2026-11-05).
             double? sizePercent = raid.Sizing?.RecordedPercent;
             // And how many wipes it took: a time-out without one stays out of the record (owner, 2026-11-05).
-            RealmEventRecords.Finish(raid.Definition.Id, outcome, RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
+            // And who led it, for the Herald's chronicle sentence (Living Server 1.2, LoreChronicle): the first party's leader.
+            string raidLeader = raid.Parties.Keys.Select(g => g?.LivingLeader?.Name).FirstOrDefault(n => !string.IsNullOrWhiteSpace(n));
+            RealmEventRecords.Finish(raid.Definition.Id, outcome, LoreChannels.LoreChronicle.WithRaidLeader(RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
                 RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes),
-                specialForcesJoined), sizePercent), raid.Support.Length);
+                specialForcesJoined), sizePercent), raidLeader), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
             AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id, AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes),
                 raid.Forced, sizePercent);
@@ -1547,6 +1554,9 @@ namespace DOL.GS
                 AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, bossName, newsTopic == "raid_won");
             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidOutcome(raid.Definition.Name, outcome),
                 newsTopic, RaidSlots(raid.Definition.Name, bossName));
+            // Living Server 1.2: a veteran's tale of the win or the loss, then a lore line about the place (docs/LORE.md).
+            if (newsTopic != null)
+                LoreChat.Aftermath(recipients, raid.Definition.BossType, raid.Definition.Region, newsTopic == "raid_won");
             string leeroyName = raid.LeeroyName ?? raid.DungeonRoute?.LeeroyName;
             if (leeroyName != null && newsTopic != null)
                 // The raiders as they were (raid.Support is emptied above when the parties are released: in-game check

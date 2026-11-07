@@ -1,0 +1,109 @@
+{
+  "id": "snemel-den-forsumlig",
+  "name": "Snemel den Forsumlig",
+  "npcNames": [
+    "Snemel den Forsumlig",
+    "Snemel den Forsumlig"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "olen-den-bartender",
+      "relation": "the bartender whose drinkers he was meant to keep sober"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Snemel den Forsumlig is a level-65 morvalt in Trollheim's upper city (38442, 43248), among bloodthirsty butchers and drunken watchmen, about 1,800 units from Olen's bar. The world data spells his name with a trailing space.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive (aggro 200, range 200), Morvalt Samhalle faction, so he can bring nearby morvalt (bring-a-friend).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60166278)"
+    },
+    {
+      "text": "Swedish försumlig means 'negligent, remiss'.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "When the morvalt took the upper city, the war-chiefs set a guard on the hall of counsel, and they set a captain over the guard, and the captain's name was Snemel. Every morvalt in Trollheim knows what happened next, and the morvalt, who have little use for names, gave him a second one for it. Snemel den Forsumlig: the negligent.\n\nHis watch went into the hall of counsel to hold it, and found Olen pouring the Fathers' ale, and did not come out. Snemel went in after them to bring them back to their posts, the Valkyn say, and Olen poured for him too, and Snemel drank, and the next thing he knew the watch had become the drunken watch and the war-chiefs were calling him by his new name in front of the butchers. He has not been back to the bar since. He stands outside the hall among the bloodthirsty butchers, who despise the watch, and glares at the door, and the drunken watchmen who wander out are as likely to meet his blade as anyone's.\n\nThe Valkyn find him funny, and the trolls of Dyrfjall find him sad, and the skalds of Jordheim, who have heard the story from both, say it is the oldest story of a conquered city: the conquerors find the cellars. Snemel's shame has made him dangerous. He is quick to anger and quicker to shout, and the butchers around him come when he shouts, because shouting is the one thing his watch never did for him.\n\nThe morvalt say a captain who lost his watch to a bar has only one way to get a new name, and Snemel has been waiting for a stranger to come through the upper city who is worth killing in front of the butchers. A Valkyn guide who heard that said Snemel should be careful what he wishes for, and that the Fathers had a word for a guard who drinks at his post, and that the word did not mean negligent.",
+  "legend": "Snemel den Forsumlig is a level 65 morvalt captain in Trollheim's upper city, outside the hall of counsel among bloodthirsty butchers (53-60) and some drunken watchmen. He's aggressive at short range (200) and Morvalt Samhalle, so when you hit him the butchers next to him can come in too. No special abilities, not CC-immune, just a high-level morvalt with friends. Pull from range, mez the butchers, and keep the fight away from Olen's bar, which is about 1,800 units off. No quest needs him. The Valkyn joke is that he's the only morvalt in the upper city who wants you to come to him. If the bar's drunks start wandering over, back off east and let them reset.",
+  "yells": {
+    "aggro": [
+      "At last! Someone worth a name!",
+      "Butchers! Watch this! Watch me!",
+      "Snemel the negligent? Not today!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Not like this. Not in front of the butchers."
+      }
+    ],
+    "death": [
+      "They'll say... negligent... still...",
+      "Should have... stayed sober..."
+    ],
+    "slay": [
+      "Did you see that? Did you SEE?",
+      "Call me negligent now.",
+      "One for my new name."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A morvalt captain glares at the door of the hall.",
+      "Butchers stand guard where the watch should be."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Snemel looks to the butchers. They are watching."
+      }
+    ],
+    "realmFirstKill": "Snemel the Negligent falls. The butchers laugh."
+  },
+  "botLines": {
+    "briefing": [
+      "snemel is 65, outside the bar with butchers",
+      "he brings the butchers, mez them",
+      "keep away from olens bar",
+      "no tricks, not cc immune"
+    ],
+    "aftermathWin": [
+      "snemel down, nobody came from the bar",
+      "mezzed two butchers, fine",
+      "snemel the negligent indeed",
+      "clean pull"
+    ],
+    "aftermathLoss": [
+      "butchers came with him",
+      "drifted toward the bar and the drunks joined",
+      "65 hits hard",
+      "too many butchers"
+    ],
+    "rumour": [
+      "snemel was captain of the watch that got drunk at olens bar",
+      "forsumlig means negligent, the morvalt named him for it",
+      "snemel wants a stranger to kill in front of the butchers to earn a new name",
+      "snemel kills drunken watchmen who wander out"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Snemel den Forsumlig",
+    "text": "Captain of the watch that went into [Olen den Bartender]'s bar and never came out. The morvalt named him the negligent. He stands outside among the butchers, waiting for a better name. See [Olen]."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: there is a morvalt outside the hall of counsel who shouts at the door. The Valkyn guide said his name and laughed, which is the only time I heard her laugh in the city. Then she told me the Fathers had kept a watch on that hall too, and that once in a long age one of them was found asleep at his post, and the Fathers did not punish him, but took his cloak and gave it to a child going out, and he never had one again. She said that was worse.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} killed Snemel the Negligent outside Trollheim's hall of counsel in {minutes} minutes.",
+    "loss": "Snemel the Negligent finally earned a better name against {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

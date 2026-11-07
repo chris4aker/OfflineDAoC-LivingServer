@@ -1,0 +1,112 @@
+{
+  "id": "boligar",
+  "name": "Boligar",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/boligar",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "skogsra"
+  ],
+  "related": [
+    {
+      "id": "dalgo",
+      "relation": "the warden who keeps closed the paths Boligar leads strangers down"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Boligar is a level-64 named with 30,000 health in Faraheim. He mesmerizes his target and everyone within 450 of it for 72 seconds, and every 25-45 s moves a random real player within 1,500 who is not his target to one of four spots beside his camp.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a named skogsra whose camp is north near the Iarnwood border; a 2003 party watched helplessly under his long area mez while he ran down the one who resisted. Killing him lowers faction with the Skogsra Shade Seekers.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/5762"
+    },
+    {
+      "text": "In Scandinavian folklore the skogsra is a forest spirit, fair from the front and hollow behind, who leads travellers astray.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (public domain), to verify details"
+    },
+    {
+      "text": "Mesmerize: 72 s, radius 450 round his target, 3 s, uninterruptible, recast 60 s (spirit). Every 25-45 s he moves a random REAL player within 1,500 who is not his target (bots are never picked) to one of four spots beside his camp, 3 s after picking them. 30,000 health, CC-immune, reach 350, 20% melee / 30% magic resist; resets at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Boligar.cs"
+    }
+  ],
+  "story": "The skogsra of the old tales are forest women, fair from the front and hollow behind, who lead travellers off the path and leave them to the wood. The skogsra of Aegir are a whole people of such folk, men and women both, and they do not think of it as a deceit. They think of it as hospitality. A traveller who is led astray in Faraheim is a traveller the wood has agreed to keep, and the skogsra are only the wood's hands.\n\nBoligar is the best of them, and he is a seeker of shades: one of the order the skogsra call the Shade Seekers, who go after the lost dead of the wood and lead them home as they lead the living away. He keeps his clearing near the Iarnwood border, close enough to the old one's shadow that the shades come to him on their own.\n\nHe does not fight so much as rearrange. When he is roused he sings, and the one in front of him and everyone standing close beside that one go still and dreaming for a long minute, and while they dream he does as he likes. The song carries on whatever is done to him; nothing breaks it. And now and again, at no rhythm the dwarves can name, he looks past the front of the crowd to someone at its edge who has not yet come close, and makes a small gesture, and that one is suddenly somewhere else in the trees beside his clearing, lost, a short walk and a long fright away. He has never sent off the one in front of him. That one he keeps for the song.\n\nNo rope or charm has ever held him, and the Shade Seekers say none ever will, because a skogsra is hollow and there is nothing in him to hold. The iarn dwarves say he is only hollow behind, like the rest, and that a dwarf who walks round him to look will see it. None of them has managed to walk round him.",
+  "legend": "Boligar is the skogsra named by the Iarnwood border in Faraheim, level 64, 30,000 health. His mez is the killer: 72 seconds, radius 450 around whoever he's targeting, uninterruptible, every 60 seconds. Everyone stacked on his tank gets mezzed, so spread out, keep only the tank close, and have purge or spirit resist ready. Every 25-45 seconds he also moves a random real player who isn't his target to one of four spots right next to his camp; bots are never moved, so if you're the only human, it's you. Just walk back in. He's CC-immune, reach 350, and resets full if you all leave. Killing him costs Skogsra Shade Seekers faction.",
+  "yells": {
+    "aggro": [
+      "Hush. Sleep. The path goes the other way.",
+      "The wood has agreed to keep you.",
+      "Stay a while. Stay a long while."
+    ],
+    "phases": [
+      {
+        "trigger": "teleport",
+        "text": "You. Over there. Lose your way."
+      }
+    ],
+    "death": [
+      "The woods... are hollow... behind...",
+      "Lead me... home..."
+    ],
+    "slay": [
+      "Lost in the woods.",
+      "One more shade to bring home.",
+      "The wood keeps what I give it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The path here bends where no path should.",
+      "Someone hums in the trees. The path is moving."
+    ],
+    "realmFirstKill": "Boligar of the skogsra will lead no one astray again.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Boligar's song grows louder. The trees lean in."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "boligar: 72 sec aoe mez round his target, dont stack on the tank. he ports real players who arent his target around his camp",
+      "his mez hits everyone within 450 of his target for 72 sec. only the tank close",
+      "he moves a real player who isnt his target every 25-45 sec. walk back in",
+      "purge or spirit resist for the mez",
+      "cc immune, dont bother"
+    ],
+    "aftermathWin": [
+      "boligar down without a full mez wipe. [miracle|gg]",
+      "spread out worked, only the tank got mezzed",
+      "the path stopped moving when he died",
+      "only one guy got ported and he walked right back"
+    ],
+    "aftermathLoss": [
+      "we all stood there mezzed watching him kill the healer",
+      "everyone stacked on the tank, gg",
+      "i got ported three times and ran in circles",
+      "forgot purge"
+    ],
+    "rumour": [
+      "the skogsra lead travellers off the path. boligar's the best at it",
+      "the skogsra think leading you astray is hospitality",
+      "boligar is a shade seeker. he leads the dead home and the living away",
+      "nobody has ever walked round boligar to look at his back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Boligar",
+    "text": "The best of the skogsra at the old trick of leading travellers astray. A song and you dream; a gesture and you are elsewhere in the woods."
+  },
+  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: the dwarves pointed out the seeker's clearing to me from griffon-back and would not land within a bowshot of it. A hunting party had gone in that morning. From above I saw the front of them go still all at once, standing in the ferns like posts, and the seeker walking among them. Then one who had hung back was suddenly among the trees beside the clearing, alone, turning round and round. He had not walked there. The dwarf beside me said: that one is lucky. The ones who stand still are the ones he keeps.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} found the path past Boligar in {minutes} minutes.",
+    "loss": "Boligar led {raidLeader}'s party from {realm} astray for {minutes} minutes."
+  }
+}

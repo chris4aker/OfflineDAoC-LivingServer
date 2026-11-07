@@ -1,0 +1,86 @@
+{
+  "id": "prototype-guard",
+  "name": "Prototype Guard",
+  "npcNames": [
+    "Prototype Guard"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Prototype Guard: NPC template 60165052, level 49, model 831, no faction, aggro 200 (range 500), no spells, respawn 80 s, below the hall of making at 406096, 431655 with two scorchers (44) and a sentry mark II.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The guard the old master never finished and the cabalist's borrowed improvements are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Master Meical of the school of making died in the burning, and a drakoran answers to his name over the door of the hall now, and drives the servants he left. Most of those servants were finished. The Prototype Guard was not.\n\nIt was the old master's last piece, the readers of Caer Gothwaite say, a guard for the colleges' gates that would never sleep and never take a bribe and never let the wrong person in, and he never decided who the wrong person was. It stood half-made in the workshop when the burning came. The drakoran cabalist found it there and finished it the drakoran way, quickly, with pieces taken from the sentries and the scorchers, and set it below the hall to keep the slope.\n\nIt still does not know who the wrong person is. It treats everyone as the wrong person. The scorchers and the sentry stand near it as apprentices stand near a master, and Adelon on the hill outside the fort says the cabalist means to make more of it, which is the reason Adelon watches.",
+  "legend": "Prototype Guard, level 49 construct below Meical's hall of making, with two scorchers (44) and a sentry mark II close by. No faction of its own, but the constructs near it are aggressive: pull the scorchers off first. Plain melee, no spells, hard-hitting for its level. Respawn 80 seconds. Mind the hall's other servants and Cabalist Meical up the slope.",
+  "yells": {
+    "aggro": [
+      "Halt. You are the wrong person.",
+      "Gate held. Gate held."
+    ],
+    "phases": [],
+    "death": [
+      "Gate... open..."
+    ],
+    "slay": [
+      "Wrong person. Removed.",
+      "Gate held."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A half-made guard, finished the drakoran way."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Prototype Guard has fallen. The slope is open."
+  },
+  "botLines": {
+    "briefing": [
+      "prototype guard below meical's hall, two scorchers next to it, pull them first",
+      "49 construct, hits hard, plain melee"
+    ],
+    "aftermathWin": [
+      "prototype guard down. one less of meical's toys",
+      "got the prototype. adelon will want to hear"
+    ],
+    "aftermathLoss": [
+      "the scorchers burned us while we were on the guard"
+    ],
+    "rumour": [
+      "[heard|someone said] the prototype guard was the old master's last piece, never finished",
+      "heard meical wants to build more prototype guards"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "prototype guard",
+    "text": "The old master's last, half-made gate-guard, finished by the drakoran cabalist with pieces of the sentries and set below the hall of making in the [dales of devwy]. It treats everyone as the wrong person."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} broke the Prototype Guard below the hall of making in {minutes} minutes.",
+    "loss": "The Prototype Guard held its gate against {raidLeader}'s company of {realm}."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "cabalist-meical",
+      "relation": "its finisher"
+    },
+    {
+      "id": "eyes-of-the-crafter",
+      "relation": "kin of the hall"
+    }
+  ],
+  "tier": "minor"
+}

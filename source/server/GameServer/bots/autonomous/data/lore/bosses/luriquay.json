@@ -1,0 +1,101 @@
+{
+  "id": "luriquay",
+  "name": "Luriquay",
+  "catalogKey": "hibernia-named-mobs-classic-zones/luriquay",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 10,000 health, in the Cursed Forest; when he dies a Flame (level 64) rises from him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Flame.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat: he haunts the cursed forest and has ended more groups than the werewolves.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Luriquay looks like nothing much, which is how he has ended more bands than anything else in the Cursed Forest. The Ardee folk say he is a lurikeen gone wrong, one of the small quick folk who stayed in the court wood when the bargain broke and drank from its fires. He carries one of them inside him now. Kill him and the fire comes out, a new Flame, as hungry as the old one. Bands who cheer his death too early learn this the warm way.\n\nThe lurikeens are the small quick folk who helped the elves raise the Veil, the Catacombs lore says, and most of them went behind it. Luriquay did not. He stayed in the court wood, the Ardee folk say, because he liked the bargaining and the fires and the company, and when the bargain broke he drank from the hearth-fire to keep warm through the long bad night that followed. A spark of it stayed in him.\n\nHe looks like nothing much, which is how he has ended more bands than the werewolves of the forest. He is quick and hard and mocking, and when he falls the spark comes out, a new Flame as hungry as the old one, and the bands who cheer early learn the warm way. The lurikeens of Tir na Nog do not talk about him. When asked, they say he was always the clever one.\n\nThe lurikeen lore of Tir na Nog is silent about what they owe him. Some say he held the court wood's door for them the night they went behind the Veil.",
+  "legend": "He looks easy and is not: bring a proper group. When he dies a Flame rises from his body at once, so be ready for a second fight and keep heat resists up. The bands who cheer early are the ones the old hibs tell stories about. Proper group, not a duo. Be ready for the Flame that rises from his body. Superstition: never call a lurikeen small within earshot of the Cursed Forest. Nicknames: 'the clever one', 'little luri'. The lurikeens of Tir na Nog leave a cup of milk out the night he is killed, and will not say whether it is for him or against him.",
+  "yells": {
+    "aggro": [
+      "Not as small as I look, am I?",
+      "Big folk! In my wood!",
+      "Not as small as I look, am I?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Something inside Luriquay starts to glow."
+      }
+    ],
+    "death": [
+      "The fire... is getting out...",
+      "The fire... is getting out..."
+    ],
+    "slay": [
+      "Too slow, big folk.",
+      "Too slow, big folk.",
+      "Small, was I?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tiny footprints in the ash, going in circles.",
+      "Tiny footprints in the ash, going in circles."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "A Flame bursts out of Luriquay's body!"
+      }
+    ],
+    "realmFirstKill": "Luriquay is dead, and so is the fire he carried."
+  },
+  "botLines": {
+    "briefing": [
+      "luriquay is harder than he looks. when he dies [a flame spawns|fire comes out of him], be ready",
+      "luriquay is harder than he looks. [full group|no duos]",
+      "a flame comes out when he dies, [be ready|second fight]",
+      "he dodges and parries a lot, [casters help|nukes land]"
+    ],
+    "aftermathWin": [
+      "luriquay and his flame both down. [two for one|nice]",
+      "luriquay and his flame. [two for one|nice]",
+      "nobody cheered early. [learning|grats]",
+      "the clever one is down. [sorry lurikeens|ha]"
+    ],
+    "aftermathLoss": [
+      "we cheered when luriquay died and [the flame ate the healer|then the fire came]",
+      "duo'd him and [died|bad idea]",
+      "cheered, then the flame. [classic|every time]",
+      "he dodged everything. [quick little thing|ugh]"
+    ],
+    "rumour": [
+      "[heard|someone said] luriquay is a lurikeen who drank from the court wood's fires",
+      "[heard|someone said] luriquay stayed behind when the lurikeens went through the veil",
+      "the lurikeens of tir na nog say luriquay was always the clever one",
+      "[word is|heard] luriquay drank from the court wood's fire"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Luriquay",
+    "text": "A small quick one who stayed in the court wood and drank its fire. He carries a Flame inside him, and it comes out when he dies."
+  },
+  "bookPage": "From Derbáil of Ardee's list: grandmother knew a lurikeen in Tir na Nog, an old one, and asked him once about Luriquay. He was quiet for a long time, which lurikeens never are. Then he said: when our people went behind the Veil, he stayed, because he liked the bargaining and the fires. He was always the clever one. He drank from the court hearth on the bad night, to keep warm, and it stayed in him. Grandmother asked if that made him wicked. The lurikeen said: it made him warm. Then he changed the subject.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Luriquay in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Luriquay's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "flame",
+      "relation": "the hearth-fire whose spark he carries"
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+ "id": "field-marshal-nebir",
+ "name": "Field Marshal Nebir",
+ "tier": "epic",
+ "npcNames": [
+  "Field Marshal Nebir"
+ ],
+ "aliases": [
+  "nebir",
+  "the marshal",
+  "the field marshal"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "host-of-the-marshal"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baln",
+   "relation": "keeps the hall the host musters in"
+  },
+  {
+   "id": "lieutenants",
+   "relation": "his officers"
+  },
+  {
+   "id": "director-kobil",
+   "relation": "despises his Army of Shadows"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "designed the Gate watch after Dommel closed the crossing"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "refused his four letters"
+  },
+  {
+   "id": "duke-alloc",
+   "relation": "a duke of his hall"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Field Marshal Nebir is level 70 and stands with Lieutenants Gargantan and Loran in the south of Darkness Falls, in High Lord Baln's hall.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "The Grand Grimoire names Nebiros marshal and inspector general of the infernal hosts.",
+   "provenance": "myth",
+   "source": "https://en.wikipedia.org/wiki/Grand_Grimoire"
+  },
+  {
+   "text": "Allakhazam lists Field Marshal Nebir at level 70.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "High Lord Baln summons minions on a timer (Baln Fanatics in Mythic's bestiary).",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs"
+  },
+  {
+   "text": "He is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "His war table, the Marshal's officer in the knights' house and his feud with Director Kobil are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The counter of hosts",
+   "text": "In the Uncounted Age Nebir was not a lord. He was what the lords kept to tell them how many they had: a counter of hosts, who walked the lines of another demon's followers before a battle and came back with a number. He served High Lord Baln, whose hall in the south of the hollow has always bred more followers than it can feed. Baln's fanatics come out of the walls of his hall in their dozens, and they have always needed somebody to stand them in rows. Nebir was that somebody. He did not go to the Feast of Thrones, because he was not invited, and he has said since that it was the only battle of his life he was glad to miss.\n\nWhen the First Roll was cut, the Master needed what Nebir did. A court that may not eat its own has to keep its strength somewhere, and the somewhere was a host: the common demons, the umbral hulks and plated fiends and chaosians, and above them the three new orders. Adremal wrote Nebir's line as Field Marshal and Inspector of the Host, with his seat in Baln's hall, where the host musters, and his master the Master himself. Baln kept the hall. Nebir took the army in it. Neither of them has ever said what they think of the arrangement, which the court takes to mean that both think about it a great deal.\n\nThe Marshal inspects every new sworn knight, Inquisitor and Mutilator before they take their posts. He walks down the line and looks at each one for exactly as long as it takes to count it, and that is the whole of the inspection. The orders say he is the only demon in the court who can look at a Mutilator and not flinch, because he is not looking at it. He is counting."
+  },
+  {
+   "title": "The war table",
+   "text": "Nebir's seat is a war table at the southern end of Baln's hall, a slab of black stone with the whole hollow cut into its top: the four quarters of the Blood, the eastern halls, the Gate, the approach and the Master's door. On either side of it stand his two lieutenants. Lieutenant Gargantan is the larger, a heavy, slow demon who moves the pieces. Lieutenant Loran is the smaller and keeps the count. A third, Lieutenant Persun, does not stand at the table. After the feud of the Blade and the Hook, the Marshal asked each order to take one of his officers into its house, so that he would always know what the orders were planning. The Inquisition refused, politely. The Mutilators refused in a way that cost the officer sent to ask. Prince Abdin's Chthonic Knights accepted, on condition the officer swore to the deep earth like a knight, and Persun has lived in the knights' chapter house in the north-west since, as the Marshal's eye.\n\nWhen the three doors opened, Nebir had the top of the table recut. The edge of the slab now carries the frontier above, as well as the court has been able to learn it: the keeps of the three realms, with pieces of three colours on them. Gargantan moves them when word comes down. Every time a door opens below, the Marshal can show on the table which realm's keeps opened it. He cannot show where the court's own pieces stand on the frontier, because there are none, and that is the grievance of his life."
+  },
+  {
+   "title": "The war that cannot be fought",
+   "text": "The doors answer to the frontier. Whichever realm holds more keeps than both the others finds its door unbarred, and nothing else opens them. The court holds no keep. So the host Nebir has spent ten Rolls building can go nowhere. It can fight the realms when they come down, and it does. It cannot go up. Nebir has written to the Chancellor four times proposing that the court take a keep of its own, and has had the same answer each time: that a keep is a thing of the realms above, and the Roll has no line for one.\n\nHe has watched the princes try other ways. Princess Nahemah sent Ambassador Mannam up to argue with Albion's king, which Nebir calls a war fought with adjectives. The kitchens and the records and the rocot rooms sent up a plague, which he calls a war fought by cooks. Prince Abdin has set his Director, Kobil, to raising an Army of Shadows in the chambers above the Gate, and Nebir calls that theatre, because he has inspected it and it cannot be counted: every time he walks the line there is a different number. The Marshal does not hide his opinion of the Director. When the realms began coming down to break the Army of Shadows, Nebir let them through his hall without hindrance, and the knights noticed.\n\nDuring the feud of the Blade and the Hook it was Nebir who designed the watch that has kept the Gate since, the three orders standing together in equal number so that none can hold the crossing alone. Gatekeeper Dommel had already closed every road out of the crossing to end the fighting. Nebir supplied the arithmetic for what came after."
+  },
+  {
+   "title": "The inspector of the visitors",
+   "text": "Since the doors opened, Nebir has inspected one more kind of host: the mortals'. When a realm's company comes down, his lieutenants count it at the Gate and bring the number to the table, and the Marshal works out what it would take to kill it and where. The court says he has never been wrong about the number and often been wrong about the result, which he blames on the mortals' gods, who in his view give back what has already been counted.\n\nThe realms each have a version of him. Albion's knights say the Marshal keeps a copy of Camelot's own muster rolls and knows every knight by name before he comes down; their sergeants tell recruits to give a false name at the Gate. Midgard's huscarls say Nebir is a jarl's war-chief who lost his jarl, and that a war-chief without a lord is the most dangerous thing in any hall. Hibernia's druids say he is the one demon in the court who is honest, because a number cannot lie, and that this is exactly what makes him terrible.\n\nWhat he wants is simple and impossible. He wants a door to open for the court. He keeps the host mustered and inspected, the lieutenants at the table and the pieces in place, on the day the Roll gains a line for a keep and the host can finally march up the stair. Until then he fights the visitors in Baln's hall with whatever is in the hall, and when his lieutenants fall he counts them too."
+  }
+ ],
+ "story": "Field Marshal Nebir commands the court's army. In the Uncounted Age he was not a lord but a counter of hosts, serving High Lord Baln, whose southern hall breeds more fanatics than it can feed, and his work was to stand them in rows. He did not attend the Feast of Thrones. When the First Roll was cut, Adremal wrote him as Field Marshal and Inspector of the Host, seated in Baln's hall and answerable to the Master. He inspects every new knight, Inquisitor and Mutilator by counting it.\n\nHis seat is a war table cut with the whole hollow, between Lieutenant Gargantan, who moves the pieces, and Lieutenant Loran, who keeps the count. After the feud of the Blade and the Hook he asked each order to take one of his officers; only Prince Abdin's knights agreed, and Lieutenant Persun has lived in their chapter house since as the Marshal's eye. When the doors opened he had the frontier above cut into the table's edge.\n\nHis grievance is that the doors answer only to the frontier, and the court holds no keep, so his host cannot go up. Four letters to the Chancellor proposing the court take a keep have had the same answer: the Roll has no line for one. He despises the court's other wars, Mannam's embassy, the plague sent up from the kitchens, and above all Director Kobil's Army of Shadows, which he cannot count. He designed the three-of-each watch at the Gate after Dommel closed the crossing.\n\nHe counts the mortal companies that come down. Albion's knights say he knows Camelot's muster rolls; Midgard's huscarls call him a war-chief without a jarl; Hibernia's druids call him the court's one honest demon, because numbers do not lie. He waits for a door to open for the court.",
+ "legend": "Nebir stands at the south end of Baln's hall with Lieutenants Gargantan and Loran within a couple of hundred units of him: expect all three named at once. He is level 70 with no script. The lieutenants are 68 and go down faster; kill them first so the marshal stands alone, and keep the fight away from High Lord Baln, who brings out minions every half minute or so once he is fighting. Dukes Alloc, Aypol and Eligar and Earl Zh'alzhak sit in the same hall, so clear the hall from the edges in. Old hands say the marshal counts your raid at the Gate before you get to him, and that if you give a false name at the Gate he gets the number wrong. It does not help.",
+ "yells": {
+  "aggro": [
+   "Counted at the Gate. You are fewer than you think.",
+   "Gargantan, move a piece. Loran, mark the number.",
+   "Stand in your rows. It will save us time."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Lieutenants! Close the line. They are fewer every breath."
+   },
+   {
+    "trigger": "health<=20",
+    "text": "The count is wrong. The healers. Always the healers."
+   }
+  ],
+  "death": [
+   "Count me among the fallen. Correctly.",
+   "The host is mustered... and it cannot march."
+  ],
+  "slay": [
+   "One fewer. Loran, the number.",
+   "Counted.",
+   "Your realm sent too few. It always does."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A war table. The whole hollow is cut into it.",
+   "Pieces of three colours stand on the table's edge.",
+   "Two officers flank the table. Someone is counting you."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Field Marshal shouts the count to his officers."
+   },
+   {
+    "trigger": "health<=20",
+    "text": "The Marshal's count is failing."
+   }
+  ],
+  "realmFirstKill": "Field Marshal Nebir has fallen. The host has no count."
+ },
+ "botLines": {
+  "briefing": [
+   "nebir comes with two lieutenants. pull one you get all three. [lieutenants first|kill gargantan and loran first]",
+   "stay off baln while we do the marshal, his fanatics [never stop|keep coming]",
+   "dukes alloc aypol eligar are in the same hall. [edges in|clear from the edges]",
+   "marshal is 70, lieutenants 68. no tricks, just three hard hitters at once"
+  ],
+  "aftermathWin": [
+   "marshal down. [count that|thats one for the table]",
+   "nebir and both lieutenants dead. [clean|textbook]",
+   "field marshal done, the hall of war is ours [for now|till respawn]",
+   "nebir down. [nobody gave him a false name lol|he counted wrong]"
+  ],
+  "aftermathLoss": [
+   "nebir and the lieutenants wiped us. three nameds at once is too much",
+   "pulled baln's fanatics into the marshal fight. [never again|my fault]",
+   "marshal counted us right that time. [regroup|rez up]",
+   "too few for the hall of war. [need more groups|come back with more]"
+  ],
+  "rumour": [
+   "[heard|word is] the field marshal counts every raid at the gate before it reaches him",
+   "nebir wants to march the demon army up one of the doors. [cant|the doors only open for whoever holds keeps]",
+   "the marshal has a war table with our keeps on it. [creepy|they watch the frontier]",
+   "[someone said|my guildie says] nebir hates the director kobil. [calls his army theatre|cant count it]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "nebir",
+  "text": "Field Marshal and Inspector of the Host, seated in High Lord [Baln]'s hall with his lieutenants [Gargantan] and Loran at a war table cut with the whole hollow and, since the doors opened, the frontier above. He wants a door to open for the court, and none ever will. He despises Director [Kobil]'s Army of Shadows."
+ },
+ "bookPage": "From The Marshal's Table, a page in a Midgard skald's hand: The table is a slab as long as a longship and as black as the bottom of a well. Cut into its top is everything under the world: four quarters for the four of the Blood, the halls of the east, the crossing they call the Gate, and a long slope running down to a door. Around the edge, newer and paler, they have cut our frontier. I saw Mjollner Faste on it and Bledmeer, and the Albion keeps, and the Hibernian ones, with stones of three colours standing on them as our keeps stood that week. The big lieutenant moved one while I watched. He moved it the right way.",
+ "bookPages": [
+  "From The Marshal's Table, a page in a Midgard skald's hand: The table is a slab as long as a longship and as black as the bottom of a well. Cut into its top is everything under the world: four quarters for the four of the Blood, the halls of the east, the crossing they call the Gate, and a long slope running down to a door. Around the edge, newer and paler, they have cut our frontier. I saw Mjollner Faste on it and Bledmeer, and the Albion keeps, and the Hibernian ones, with stones of three colours standing on them as our keeps stood that week. The big lieutenant moved one while I watched. He moved it the right way.",
+  "The skald went on: There is a place on the table's edge where the stone is worn smooth, as if a hand had rested there a very long time. It is beside the keeps, and empty. I asked a captured imp what it was. It said it was where the Marshal puts his own hand, on the frontier, where the court has no keep, and that he stands like that for hours with his officers saying nothing. Then it asked me whether a keep could be bought. I did not answer. I have thought about the question since, and I do not like any of the answers I can think of."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} broke the Field Marshal and his lieutenants in {minutes} minutes.",
+  "loss": "Field Marshal Nebir counted {realm}'s raid under {raidLeader} and was right."
+ }
+}

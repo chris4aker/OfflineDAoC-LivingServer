@@ -1,0 +1,72 @@
+{
+  "id": "urtzi",
+  "name": "Urtzi",
+  "npcNames": [
+    "Urtzi"
+  ],
+  "locationId": "munin-sound",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "sjoalf"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Urtzi is a level-42 sjoalf (faction Sjoalf) on the eastern shore of Munin Sound (353,647/420,230), with a sjoalf disciple beside him; aggressive (200 at range 500), no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 155 (0.37b world data)"
+    },
+    {
+      "text": "'Gazsi's Nightmares' (Luikko of Hagall): kill Urtzi 'west-southwest of Hagall along the zone wall to the shore', then drop the black, white, grey and brown powders where the ritual stones glow.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Urtzi as the keeper of the four dream-stones is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Urtzi keeps the stones. He is a sjoalf of the eastern shore, a sea-elf of the cult that prays to what lives under Munin Sound, and the cult gave him the four stones round the shrine to tend: black and white and grey and brown, each glowing with its own colour, each sending its own dream out over the water and the islands. The dreams go where they are sent. Gazsi of Aegirhamn has had them every night since the stones were lit, dreams of drowning in the sound with the cult watching from the shore, and wakes choking.\n\nThe dwarves of Hagall say the stones are a net, and the dreams are the bait, and what the cult is fishing for is sleepers: minds open enough to let something from the deep come up through them. Luikko of Hagall has worked out four powders, one for each stone. The young who carry them east have to get past Urtzi first, because he does not leave the stones, and his disciple does not leave him. When they have put the stones out he comes back, as the sjoalf do, and lights them again, and Gazsi's nights begin again. The cult can afford to be patient. The sound is.",
+  "legend": "Urtzi is a level 42 sjoalf on the eastern shore of Munin Sound, the kill in Gazsi's Nightmares (Luikko in Hagall). Head west-southwest of Hagall along the zone wall to the shore. He has a disciple right beside him and is on the Sjoalf faction, with the cult close by, so expect company from the cult nearby. No spells. He respawns fast, so drop the four powders on the four glowing stones right after the kill.",
+  "yells": {
+    "aggro": [
+      "You walk on the shore of the dreaming. Sleep.",
+      "The stones are lit. You will not put them out."
+    ],
+    "death": [
+      "The deep... still dreams..."
+    ],
+    "slay": [
+      "Another sleeper for the sound."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Four stones glow on the shore. A sea-elf tends them."
+    ],
+    "realmFirstKill": "Urtzi falls. The stones dim, for a night."
+  },
+  "botLines": {
+    "briefing": [
+      "urtzi is the 42 sjoalf on the east shore, gazsis nightmares",
+      "kill him then drop the four powders on the glowing stones fast, he respawns quick"
+    ],
+    "aftermathWin": [
+      "stones are out, back to luikko",
+      "gazsi might sleep tonight"
+    ],
+    "rumour": [
+      "urtzis stones send dreams of drowning",
+      "the sjoalf are fishing for sleepers with those stones, the hagall dwarves say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Urtzi",
+    "text": "A [sjoalf] of the eastern shore who tends the four [ritual stones] and lights them again whenever they are put out. Gazsi of Aegirhamn dreams of drowning because of him."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out Urtzi's dream-stones in Munin Sound in {minutes} minutes."
+  }
+}

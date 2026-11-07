@@ -1,0 +1,131 @@
+{
+  "id": "fuladl",
+  "name": "Fuladl",
+  "catalogKey": "krondon/fuladl",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 77, 30,000 health, CC immune, tether 3,800. On engage 4-5 Part of Fuladl (level 65-68, 3,000 health) appear; while any part lives Fuladl's resists are 95% for every damage type, otherwise 20 melee / 30 other; a reset removes the parts.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs"
+    },
+    {
+      "text": "Ful 'foul' and adl 'disease, sickness' are standard glosses; the reading 'foul sickness' is to verify.",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/"
+    },
+    {
+      "text": "Hrothwyn the leech and the book of the sick, the Foreman of the Wall, the sickened eel-beds of the Avalon shore and Sister Gwerful of Caer Ulfwych are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Fuladl, the foul sickness, grew in the lowest passage of Krondon's drains, where the seepage of the whole hill gathers before it runs to the sea. The hall-folk's leech, Hrothwyn, followed her sick down the water to it, and sat three nights in front of it with a lamp on her knee, writing in the hall's book of the sick. A sickness, she wrote, is many small things that agree to be one: a great body, with pieces of itself crawling out into the side drains and home again.\n\nThe sweepers had thrust torches into the body and it took fire as wet peat does; hooks went into it as into water. Hrothwyn saw why. While the pieces crawled, whatever went into the body the pieces bore; the rot lived in its pieces, and the body was only where they came home. So the sweepers burned the pieces first, one by one down the side drains, and then the body burned like dry heather in a night. Every scrap is burned, the small first: the ghosts keep the custom still. Because the rot comes out of the stone itself, the hall-folk bricked the passage and cut its name over the bricks.\n\nThe ogres broke the bricks in their first summer looking for a storeroom. The Foreman of the Wall went in first and came out alone with the grey crust on his hands. The ogres throw their rubbish down the drain-mouths, feeding what they fear, and below the hill the eel-beds of the Avalon shore sickened and the fishermen's hands crusted.\n\nThe first company to kill Fuladl came from the hospice of Caer Ulfwych. Sister Gwerful, who had buried three crusted fishermen, went down with the harbor's torch-bearers and knights of the Isle of Glass, found Hrothwyn's page wedging a door, and read it by her lamp. The knights put up their swords while the torch-bearers burned every piece; then the body took the fire. The hospice sends a sister to the shore every summer. The rot came back within the season, out of the stone.",
+  "legend": "Fuladl is level 77 with 30,000 health, CC immune, and a 3,800 tether. The moment it is engaged, four or five Parts of Fuladl (level 65 to 68, 3,000 health each) crawl out beside it. While even one part is alive, Fuladl takes 95% less from everything, so hitting the big rot is wasted effort. Kill every part first, with area damage and a couple of off-tanks, while one tank just holds the big one. When the last part dies Fuladl drops to normal 20% melee / 30% other and goes down fast. The parts are ordinary mobs: they can be mezzed or rooted if you need time. If you leave and it resets, the parts vanish and a fresh set comes on the next pull. It sits in the lowest drain passage under the stores and guards nothing on the way to the queen, so some raids skip it.",
+  "yells": {
+    "aggro": [
+      "...",
+      "The drains gurgle.",
+      "Something wet moves in the dark."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The foulness splits and crawls."
+      }
+    ],
+    "death": [
+      "The rot... lies still.",
+      "Only filth remains."
+    ],
+    "slay": [
+      "Swallowed.",
+      "Taken into the rot.",
+      "The drains are fed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The drains of the old hall. Something here is alive.",
+      "The stench is old. Older than the ogres."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Fuladl splits apart. Its pieces crawl!"
+      }
+    ],
+    "realmFirstKill": "Fuladl is scoured from Krondon's drains."
+  },
+  "botLines": {
+    "briefing": [
+      "fuladl takes 95% less dmg while any of its 4-5 parts live. parts first",
+      "one tank holds the big rot, everyone else kills the parts",
+      "aoe the parts, mez or root them if they spread out",
+      "last part dies, then everything on fuladl. it melts after that"
+    ],
+    "aftermathWin": [
+      "fuladl gone. somebody wash that off",
+      "pieces down first, then the big rot. good",
+      "the drains are clean, sort of",
+      "no healer died to the pieces"
+    ],
+    "aftermathLoss": [
+      "half the raid was hitting the big rot with parts still up. 95% reduction, people",
+      "one part crawled off and we forgot it. fuladl never went soft",
+      "we left the passage, it reset and spat out a fresh set of parts",
+      "nobody held the big one while we cleared parts"
+    ],
+    "rumour": [
+      "the old hall had a name for the rot in its drains. fuladl, [foul sickness|the foul sickness]",
+      "[heard|someone said] fuladl comes apart when you hit it",
+      "heard the ogres feed fuladl their garbage",
+      "the hall folk walled fuladl up and the ogres let it out",
+      "heard the hall folk had a physician who sat and watched fuladl for three nights",
+      "[heard|someone said] the avalon shore fishermen got a crust on their hands from krondon's drains"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fuladl",
+    "text": "The foul sickness of [Krondon]'s lowest drains. The hall-folk's leech Hrothwyn found that it lives in its pieces, not its body: while any piece crawls, nothing hurts the body. Burn the small first. Sister Gwerful of Caer Ulfwych did. See [sweepers] and [fulafeallan]."
+  },
+  "bookPage": "From the book of the sick of the hospice of Caer Ulfwych, copied from the hall-folk's own by Sister Gwerful. The leech of Krondon wrote: it is many small things that agree to be one. While they crawl, the great body bears nothing, for they bear it all. Burn the small first, every one, and then the body will take the fire. Below it Gwerful added in her own hand: so we did, and so it was. The knights put up their swords and the torch-bearers went down the side drains, and when the last piece was ash the rot burned like heather. Pray for the fishermen of the Avalon shore, and for Hrothwyn, who sat still.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} scoured Fuladl from Krondon's drains in {minutes} minutes.",
+    "loss": "Fuladl split and swallowed {realm}'s raid; {raidLeader} lost them in the drains."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "krondon-hall-folk"
+  ],
+  "related": [
+    {
+      "id": "fulafeallan",
+      "relation": "its kin, or its other half"
+    },
+    {
+      "id": "fulafeallan",
+      "relation": "the other rot the hall-folk bricked up; one thing or two, nobody agrees"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Leech of the Low Passages",
+      "text": "The hall-folk of Krondon had a leech, a physician, and in the hall's last centuries she spent more of her life in the drains than in the sickrooms.\n\nThe ghosts call her Hrothwyn. She was the keeper of the hall's sick, and she went down into the low passages because the sick were coming from there: the sweepers of the drains, first, with a grey crust on their hands that would not wash off, and then the children of the sweepers, and then whoever had drunk from the cisterns below the stores. Hrothwyn followed the water down. She found, in the lowest passage, where the seepage of the whole hill gathers before it runs out to the sea, a rot that filled the passage from wall to wall and moved, slowly, towards her lamp.\n\nShe did not run. The ghosts say she sat down on the step of the passage and watched it for three nights, with the lamp on her knee, and wrote what she saw in the hall's book of the sick, and that what she wrote is the reason the hall-folk knew how to deal with it at all. A sickness, she wrote, is never one thing. It is many small things that agree to be one. The rot in the low passage was the same: a great body, and around it, coming and going, smaller pieces of itself, crawling out into the side drains and back again, and the great body grew when they came home.\n\nThe hall-folk named it as they named everything, plainly, in her words. Ful, foul; adl, sickness. The Camelot loremasters accept the gloss and mark the reading to be checked. Hrothwyn's page in the book of the sick is the oldest thing in Krondon that the ghosts say was written about something that could kill the hall, and it was written by a woman sitting still in front of it with a lamp, which the ghosts think is the only reason it did not."
+    },
+    {
+      "title": "Where the Rot Lives",
+      "text": "On the fourth night Hrothwyn sent for the sweepers and told them where to put their fire.\n\nNot in the body. The sweepers had tried that already, and the ghosts say they had thrust their torches into the great grey mass of it again and again, and that it took the fire as wet peat takes it, smoking and hissing and not burning, and that their hooks and spades went into it as into water. Hrothwyn had watched what the sweepers had not. While the small pieces crawled in the side drains, the body could not be hurt; whatever went into it, the pieces bore. The rot did not live in its body, she wrote. It lived in its pieces, and the body was only the place they came home to.\n\nSo the sweepers burned the pieces first. They hunted them down the side drains one by one with brands and buckets of lamp-oil from the stores, and burned each to nothing, and only when the last of them was ash did they turn on the body. It burned then like dry heather, the ghosts say, in a single night. The sweepers kept the custom ever after, and the ghosts keep it still: every scrap is burned, the small first.\n\nThey did not burn all of it. Hrothwyn had found that the rot came out of the stone itself, where the hill's water seeped through the old ogre tunnels below, and that it would come again whatever the sweepers did, as damp comes back to a cellar wall. The hall-folk did the next best thing. They bricked up the low passage and cut its name over the bricks, and the sweepers went down once a year with their brands to see that nothing had come through. The year the ogres came was the first year the sweepers did not go down. There were no sweepers left."
+    },
+    {
+      "title": "The Foreman's Crew",
+      "text": "The ogres opened the low passage in the first summer of their reign, looking for another storeroom, and the ogre who gave the order is still in Krondon.\n\nHe is one of the thrawn ogre foremen who keep the hall's work crews, a great scarred brute with a mason's mallet whom the ghosts call the Foreman of the Wall. He had been told that the bricks over the low passage hid something, and he could not read the name cut on them, and the ogres of the Undercroft have never in their history left a wall standing that might have something behind it. His crew broke the bricks in an afternoon. The ghosts say the Foreman went in first, and came out again a long time later, alone, with the grey crust on his hands, and has never gone below the stores since.\n\nThe rot came out into the passage it had been bricked from and stayed there, where the water gathers. It does not climb. The ogres of Krondon give the low passages a wide berth and throw their rubbish down the drain-mouths into them, and the ghosts say that this is the only thing the ogres have ever done in the hall that the old sweepers would have called stupid without being unkind, because it feeds the thing they are afraid of.\n\nWhere the drains run out into the sea, below the hill, the eel-beds of the Avalon shore began to sicken the second summer after the bricks were broken. Morfudd Fisher's people stopped setting their traps at the drain-mouth, and the shore's children were told not to paddle there, and then the fishermen's own hands began to crust. Lleucu the eel-seller of the Caerwent quay, whose eels came from that shore, was the first to carry the word to the mainland. She said the eels tasted of the inside of a hill."
+    },
+    {
+      "title": "Sister Gwerful's Fire",
+      "text": "The first company of Albion to kill Fuladl was sent by the hospice of Caer Ulfwych, because of the fishermen's hands.\n\nSister Gwerful of the hospice had nursed the crusted fishermen of the Avalon shore through a winter and buried three of them, and she went to Caer Gothwaite and asked the readers whether anything was known of the sickness. The readers had Wenna's rubbings of the bricks. They had no physician. Gwerful went down to Krondon herself, with a company of the harbor's torch-bearers and six knights of the Isle of Glass, carrying a copy of the hall-folk's word for the thing and nothing else, because nobody yet had read Hrothwyn's page.\n\nShe read it in the low passage. The ghost of the oldest sweeper, the one with the broom carved on his door, met her at the broken bricks and led her to the book of the sick, which the ogres had used to wedge a door, and she read it by her own lamp while the knights held the passage. Then she gave the order the sweepers had given. The knights put their swords up. The torch-bearers went after the pieces in the side drains, one by one, and burned each to nothing, and while a single piece still crawled Gwerful would not let anyone touch the body. When the last was ash, the body took the fire as Hrothwyn had promised, and the knights finished what the fire left.\n\nGwerful wrote to the prioress that the old leech had done the work and she had only carried a lamp. The prioress had Hrothwyn's page copied into the hospice's own book of the sick, and the hospice has sent a sister to the Avalon shore every summer since. The fishermen's hands healed. The eels did not come back to the drain-mouth for years. The rot did, as Hrothwyn had said it would, within the season, out of the stone."
+    }
+  ]
+}

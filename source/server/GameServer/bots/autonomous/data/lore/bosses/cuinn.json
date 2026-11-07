@@ -1,0 +1,112 @@
+{
+  "id": "cuinn",
+  "name": "Cuinn",
+  "npcNames": [
+    "Cuinn"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Cuinn: level 65, model 946 (the treant body), size 48 (small for a treant), at about 335,000/315,300 on the western ledge of Altan Garran near Treal; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Altan Garran (about 336,000/315,500 in Cothrom Gorge) is a walled outlander town of faction Outland Residents: Outland garda (49-53), conaitheoir (48-51), bardach (48-53) and asarlai (49-57), merchants (Egomas the smith, Halwyn, Paili, Noirin the enchanter, Forsa, Gearoidin the healer, Alastair and Luiseach Erea) and garran treants; its named are Fedail, Elnara Erea, Ulicia, Aodhnait, Ansol, Fachtna, Zinsya and Declan, all set aggressive (200) in the world data.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Cuinn as the small, hard treant who guards Treal's roots.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The outlanders of Altan Garran have two great treants beside Treal, the old tree their town is built around, and they are opposites. Elnara Erea's is enormous, half again the height of anything in the gorge, and gentle with its keeper. Cuinn is small, barely taller than a man, knotted and dense and grey as old iron, and gentle with nobody. The Ereas say he is the oldest of Treal's own offspring, a seedling that fell among the old tree's roots before the town was built and grew there in the shade, slowly, with nothing to do but get harder.\n\nHis name in the outlanders' speech is close to the word for a quiet man, and he is quiet; the Ereas say he has never once spoken, not even to Treal. What he does is guard. He stands at the foot of Treal's ledge, where the roots go down into the stone and where Treal buries the roots of Marfoirwort that strangers bring him, and nothing goes near that ground. The garda give him a wide berth. Elnara's treant, which follows its keeper everywhere else in the town, will not cross Cuinn's patch either.\n\nNoirin the enchanter thinks Cuinn is the reason Treal's burying works at all. Something has to keep the worts' own runners from coming up through the stone to take back what Treal is holding, she says, and the worts have tried: the outlanders have found tendrils torn out of the ledge at Cuinn's feet, in the mornings, torn up and broken as if by hand. Every one of those mornings the little treant was standing exactly where he always stands.\n\nHe is the hardest thing in Altan Garran, harder than any garda or asarlai, and the outlanders know it. When a Hibernian company comes down the ledge toward Treal, the town's people watch to see whether it will walk round Cuinn. The ones who do not are a story the bards tell.",
+  "legend": "Cuinn is a level 65 treant, small in size (48) but hard, at the foot of Treal's ledge in Altan Garran. Plain melee, no script, 80-second respawn. At 65 he is much harder than Treal (52) beside him: a full group of 50s will struggle, so bring a strong group or leave him. Pull Treal away from him if you want Treal alone. The town is set aggressive (Outland Residents); keep the garda out of it. Elnara's huge treant stands on the western edge a short way off. Do not chain the three treants of the garran into one pull.",
+  "yells": {
+    "aggro": [
+      "(the small grey treant does not move, then does)",
+      "(bark like iron grinds)",
+      "(Cuinn steps onto the root-ground)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Cuinn tears a tendril out of the ledge and keeps coming)"
+      }
+    ],
+    "death": [
+      "(the little treant falls, and the ledge is unguarded)",
+      "(something under the roots stirs)"
+    ],
+    "slay": [
+      "(Cuinn returns to his patch)",
+      "(still, again, at the foot of the ledge)",
+      "(the root-ground is kept)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small grey treant at the foot of the ledge.",
+      "Torn tendrils on the stone at his feet."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cuinn does not give ground. He never has."
+      }
+    ],
+    "realmFirstKill": "Cuinn, the guard of Treal's roots, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "cuinn is 65 even though hes small. [hard|dont underestimate him]",
+      "plain melee, no script. [strong group|or skip]",
+      "treal is next to him at 52. [pull treal away|separate]",
+      "town is aggro. [watch the garda|careful]"
+    ],
+    "aftermathWin": [
+      "cuinn down. [small but hard|got him]",
+      "the root ground is unguarded now. [uh oh|hope treal is fine]",
+      "65 treant, nice job",
+      "pulled treal away first, then cuinn. [clean|good plan]"
+    ],
+    "aftermathLoss": [
+      "thought he was a sapling. [65|ouch]",
+      "pulled him and treal together. [no|wipe]",
+      "garda joined. [aggro town|ugh]",
+      "not enough dps for a 65"
+    ],
+    "rumour": [
+      "[heard|someone said] cuinn has never spoken, not even to treal",
+      "the outlanders find wort tendrils torn out of the ledge at cuinn's feet in the mornings",
+      "[word is|heard] cuinn guards the ground where treal buries marfoirwort's roots",
+      "even elnara's giant treant wont cross cuinn's patch"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cuinn",
+    "text": "The small, iron-grey treant at the foot of Treal's ledge in Altan Garran, [Cothrom Gorge]. He guards the ground where [Treal] buries what he holds, and tears up the worts' tendrils when they come for it."
+  },
+  "bookPage": "Noirin the enchanter of Altan Garran: there are two treants beside Treal and they are opposites. Elnara's is enormous and gentle with her. Cuinn is barely taller than a man, grey as old iron, and gentle with nobody. He grew in Treal's shade with nothing to do but get harder. He guards the ground where Treal buries the roots the strangers bring, and the worts have tried to take them back: we find tendrils torn out of the ledge at his feet in the mornings, torn up as if by hand. He has never spoken. Not even to Treal.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Cuinn in Altan Garran in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Cuinn turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "treal",
+      "relation": "the old tree he guards"
+    },
+    {
+      "id": "elnaras-pet",
+      "relation": "the other great treant of the garran"
+    }
+  ]
+}

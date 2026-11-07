@@ -1,0 +1,112 @@
+{
+  "id": "anhylaw",
+  "name": "Anhylaw",
+  "npcNames": [
+    "Anhylaw"
+  ],
+  "locationId": "vale-of-balor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Drygau (51), Adwyth (50) and Anhylaw (49) share model 825, a Fomorian body (as do the vale's fomorian condlers and gristlers), and stand within about 800 units of each other at about 319,500/356,700 in the eastern Vale of Balor, by the gap in the zone wall east of Aalid Feie; plain spawns with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "The three names read as Welsh: drygau 'evils, harms', adwyth 'misfortune, woe', anhylaw 'unruly, unmanageable'; 'morwynol gan yr llais' as roughly 'maidenly song of the voice' (all to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Living Server lore: Anhylaw as the unruly one of the three, who wanders from the gap and is always back when Drygau calls.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The tree maidens of Hy Brasil are the Sylvan's own spirits of the old trees, the singers inside the bark, and the Sylvan of Necht say that once every great tree on the isle had a voice in it that sang at dusk. The eye's one look at Gleann Glas burned the trees of the vale and their voices with them, all but one. The last tree with a maiden in it stands east of Aalid Feie, past the gap in the old wall that the Sylvan built across the vale to keep the Fomorians to the west, and the Fomorians took the gap.\n\nAnhylaw is the third and youngest of them, and his name, in the borrowed tongue, means the unruly one, the one who cannot be managed. The Sylvan of Necht find that funny, because he is the only one of the three who does exactly what he is told. When Drygau calls, Anhylaw comes. When Drygau does not call, Anhylaw wanders: along the old Sylvan wall, out into the heather where Gnat whistles, down to the edge of the ixthiar nests and back, and the traders of Aalid Feie have learned to look for him on the skyline before they take the east road, because the one place they can be sure of not meeting him is the gap.\n\nThe Domnann wardens think he was given the name as a warning to himself, the way a Sylvan child who will not sit still is called after the wind. The Necht singers think it is a joke the three share, and that Fomorians, who live in households and fight as families, find a young warrior who wanders the funniest thing in the world. Either way, he is always back at Drygau's side before a stranger has crossed the wall. Nobody has ever seen him late.\n\nHe has no part in the binding. He does not sing at the roots, as Adwyth does, or stand in the gap, as Drygau does. Tieru of Aalid Feie says that is why he wanders: there is nothing for him to do at the gap but wait for Drygau's call, and a young Fomorian with nothing to do goes looking for something. The old traders of the camp have a saying for a boy like that. Unruly, and always first to the door.",
+  "legend": "Anhylaw (49) is the third Fomorian guard of the gap east of Aalid Feie, with Drygau (51) and Adwyth (50), within about 800 units: pull any of them and expect all three. Plain melee, no script. He is the weakest of the three, so a common plan is to burn him first and cut the incoming damage. Not a named Tree Maidens target himself, but you will fight him anyway. A full group of high 40s to 50s. He stands a few hundred units apart from the other two, on the east side, and still comes when Drygau is pulled.",
+  "yells": {
+    "aggro": [
+      "Drygau called! I am here!",
+      "First to the door. Always.",
+      "You crossed the wall. Bad idea."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Unruly? I came when he called!"
+      }
+    ],
+    "death": [
+      "Late... for once...",
+      "I came... when he called..."
+    ],
+    "slay": [
+      "First to the door.",
+      "Unruly, and still here.",
+      "Next one."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A young Fomorian on the skyline, wandering.",
+      "Footprints along the old Sylvan wall."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Anhylaw shouts for Drygau."
+      }
+    ],
+    "realmFirstKill": "Anhylaw is dead. He was first to the door."
+  },
+  "botLines": {
+    "briefing": [
+      "anhylaw is the weakest of the three at the gap. [burn him first|49]",
+      "all three come together. [drygau calls|plan for three]",
+      "plain melee, no script",
+      "high 40s to 50s full group"
+    ],
+    "aftermathWin": [
+      "anhylaw down first like we planned. [less damage|nice]",
+      "all three guards dead. [gap open|go to the tree]",
+      "unruly but not hard",
+      "drygau next. [then adwyth|keep going]"
+    ],
+    "aftermathLoss": [
+      "burned drygau first and [the other two ate us|wrong order]",
+      "only one tank. [three fomorians|no]",
+      "pulled him while he wandered and [the other two came anyway|they always come]",
+      "out of mana. [rest more|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] anhylaw wanders the wall when drygau isnt calling",
+      "anhylaw means the unruly one, [i think|my guild says]. hes the only one who does what hes told",
+      "[word is|heard] nobody has ever seen anhylaw late to drygau's call",
+      "the aalid feie traders watch the skyline for anhylaw before taking the east road"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Anhylaw",
+    "text": "The youngest of the three Fomorian guards of the gap east of Aalid Feie, with [Drygau] and [Adwyth]. The unruly one, who wanders the old wall and is always first back when Drygau calls."
+  },
+  "bookPage": "Tieru of Aalid Feie: the third of them is called the unruly one, and he is the only one of the three who does exactly what he is told. When Drygau calls, he comes. When Drygau does not, he wanders the old wall, out to the heather where Gnat whistles, down to the edge of the nests. We watch the skyline for him before we take the east road. He has nothing to do at the gap but wait, and a young Fomorian with nothing to do goes looking. The old traders have a saying for a boy like that: unruly, and always first to the door.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Anhylaw in the gap east of Aalid Feie in {minutes} minutes.",
+    "loss": "Anhylaw turned back {realm}'s band under {raidLeader} in the gap east of Aalid Feie after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "drygau",
+      "relation": "the eldest guard, whom he obeys"
+    },
+    {
+      "id": "adwyth",
+      "relation": "the second guard of the gap"
+    }
+  ]
+}

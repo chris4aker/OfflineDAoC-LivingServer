@@ -1,0 +1,81 @@
+{
+  "id": "tegbuk",
+  "name": "Tegbuk",
+  "npcNames": [
+    "Tegbuk"
+  ],
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Tegbuk: NPC template 770031, level 47, the granite giant model at size 129, faction Granite Giants of Dartmoor, template aggro 200 (range 500), which replaces the spawn row's 0, so he attacks on sight; no spells, respawn 80 s, alone in the north of Dartmoor at 386088, 719565, the nearest named giant to the drove road.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Tegbuk as the drovers' giant, his count of the herds and the Hext custom are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The granite giants of Dartmoor stand on the moor so still that the drovers of the Cornish road have driven past them for generations thinking them tors, and five of them have names the drovers know. Tegbuk is the one they see most often, because he stands in the north of the moor nearest the drove road, and he is the one they like best, because in the memory of every Hext he has never once come at a drove that kept to the road. Step off it toward him and he comes like the rest of the five; the Hexts do not step off it.\n\nHe watches the herds go by. Old Jory Hext, who drove the road for fifty years, swore that Tegbuk counts them: that when a drove came through a beast short, the giant's head turned a little further after the last of them, as a drover's does when the tally will not come right. The Hexts took to leaving a stone on the roadside cairn below him each time they passed, one stone for a full drove and none for a short one, and the pile is waist-high now, and the drovers say Tegbuk has not complained.\n\nTamsin Hext's road-book has his name on every page. The last page in her husband's hand, before he went south to look at the moor and did not come back, says only: Tegbuk turned his head. Tamsin has never decided whether it was meant as a warning.",
+  "legend": "Tegbuk, level 47 granite giant in the north of Dartmoor near the drove road. He aggros on sight (his template's aggro 200, range 500), like every named giant on the moor, so give him room when you pass. If you want him, he is a plain melee giant with no spells; other Granite Giants of Dartmoor nearby are his faction. A group in the mid forties kills him. Respawn about 80 seconds. The drovers will not thank you.",
+  "yells": {
+    "aggro": [
+      "You had a full drove. You did.",
+      "Count again."
+    ],
+    "phases": [],
+    "death": [
+      "Settle... the count..."
+    ],
+    "slay": [
+      "One short.",
+      "Onto the pile."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A giant by the drove road. He is counting."
+    ],
+    "phases": [],
+    "realmFirstKill": "Tegbuk has fallen. The drovers' giant settles."
+  },
+  "botLines": {
+    "briefing": [
+      "tegbuk by the drove road in north dartmoor aggros on sight like the other named giants",
+      "plain melee giant, mid forties group"
+    ],
+    "aftermathWin": [
+      "tegbuk down. the drovers wont like that",
+      "got tegbuk. he'll settle back up"
+    ],
+    "aftermathLoss": [
+      "cut the corner past tegbuk on the way north and he came for us"
+    ],
+    "rumour": [
+      "[heard|someone said] the drovers leave a stone on a cairn by the road for tegbuk, one for every full drove",
+      "heard tegbuk counts the herds going past on the cornish road"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tegbuk",
+    "text": "The granite giant of north [dartmoor] nearest the drove road, who has never come at a drover on the road and, the Hexts say, counts their herds. They leave a stone on the roadside cairn below him for every full drove."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} brought down Tegbuk by the drove road in {minutes} minutes.",
+    "loss": "Tegbuk kept his count; {raidLeader}'s company of {realm} came up one short."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "brannoc",
+      "relation": "kin of the moor"
+    }
+  ],
+  "tier": "minor"
+}

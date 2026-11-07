@@ -1,0 +1,85 @@
+{
+  "id": "tusker",
+  "name": "Tusker",
+  "npcNames": [
+    "Tusker"
+  ],
+  "locationId": "cornwall",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Tusker: NPC template 12819, level 45, the boars' model at size 78, aggro level 0 (it does not start fights), no spells or styles, respawn interval 80, at 371178, 682007 in Cornwall.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 6 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Tusker's age, the drovers' and hunters' account of it and its watch over the road are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Welsh myth, not game canon: Twrch Trwyth is the great boar that Arthur's hunt chased across Wales and into Cornwall in Culhwch and Olwen.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Twrch_Trwyth"
+    }
+  ],
+  "story": "Tusker is a boar of the south-western beeches of Cornwall as big as a hay-cart, and the ground under the beeches where he roots is turned as if a plough had been through it. The hunters of Cornwall Station named him for his tusks, which are as long as a man's forearm and yellow with age, and they have never agreed on anything else about him: how old he is, what he eats besides beech-mast, or whether the giant rooters of the woods are his children.\n\nThe Cornish say the great boars are the oldest beasts of the west. In their songs a boar runs ahead of the king's hunt across the whole of the land and cannot be caught, and leaves the valleys behind him where his tusks went through the hills. The drovers do not say Tusker is that boar. They do not say he is not.\n\nHe has never charged a herd or a man who left him to his rooting, and the Hexts drive their cattle within a spear's throw of him every season. The hunters who did not leave him alone have a saying: Tusker turns the ground for the beeches, and for anyone who interrupts him.",
+  "legend": "Tusker is a giant boar in the south-western beeches of Cornwall, level 45. He never aggros, so you can walk past him. If you want him, he is a plain melee mob with no spells, a solid fight at 45: bring a group in the mid forties with a tank who can hold him. The giant rooters around him are easy but do aggro, so clear them. He comes back fast (the data says 80 seconds).",
+  "yells": {
+    "aggro": [
+      "Tusker looks up from the mast. He is not pleased.",
+      "The great boar lowers his tusks."
+    ],
+    "phases": [],
+    "death": [
+      "Tusker goes down, and the ground shakes."
+    ],
+    "slay": [
+      "Tusker turns the ground over someone."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Earth turned like a plough. Tusker is rooting here."
+    ],
+    "phases": [],
+    "realmFirstKill": "Tusker, the great boar of Cornwall, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "tusker, sw beeches, level 45 boar. wont aggro, hits hard, plain melee",
+      "clear the rooters first, they do aggro"
+    ],
+    "aftermathWin": [
+      "tusker down. look at those tusks",
+      "the hexts will drive past an empty patch of beech now. for a minute"
+    ],
+    "aftermathLoss": [
+      "tank couldnt hold him, we were too low for a 45"
+    ],
+    "rumour": [
+      "[heard|someone said] the giant rooters are tusker's kids",
+      "heard the hexts drive cattle a spear's throw from tusker every season"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tusker",
+    "text": "A boar of the south-western beeches of Cornwall as big as a hay-cart, with tusks yellow with age, who turns the ground under the beeches like a plough and has never charged anyone who left him to his rooting. The Cornish songs have a boar the king's hunt could not catch; the drovers do not say Tusker is that boar."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} brought down Tusker in Cornwall in {minutes} minutes.",
+    "loss": "Tusker is still in the Cornish woods; {raidLeader} of {realm} came away without it."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "kalnraw",
+      "relation": "the other old beast of the Cornish woods; the drovers name them together"
+    }
+  ],
+  "tier": "minor"
+}

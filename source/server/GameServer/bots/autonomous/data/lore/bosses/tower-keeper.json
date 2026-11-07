@@ -1,0 +1,120 @@
+{
+  "id": "tower-keeper",
+  "name": "Tower Keeper",
+  "npcNames": [
+    "Tower Keeper"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the keeper of the hall"
+  ],
+  "facts": [
+    {
+      "text": "Tower Keeper: template 60167196, level 55, a construct at size 251, at 411086, 429387 by the hall of making; aggro level 200 within 500, no spells or styles, respawn 80 seconds; nothing within 1,000 of it.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Its template gives it no faction (the Mob row's Chaotic Constructs is overridden), so it never calls the hall's servants.",
+      "provenance": "game",
+      "source": "source/server/GameServer/gameobjects/GameNPC.cs (LoadTemplate: ReplaceMobValues templates set faction, aggro, level, model)"
+    },
+    {
+      "text": "An NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "The keeper of the stores, the master's inventory it still keeps, the servants who will not go near it and Gracien Adamson's entry are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Guardian keeps the tower stair; the Keeper keeps everything else. Master Meical of the school of making built it after the Guardian, from what the households say was the oak of the same felling, as large again as a man on a man's shoulders, and gave it the hall's stores to keep: the iron in its bars, the oak in its planks, the copper and the glass and the strange spheres the master put at the hearts of his servants, every one counted and every one in its place.\n\nIt kept them well. It keeps them still. The households say that when the colleges burned and the master did not come out of the smoke, the Keeper went on counting, and that it counts now, at the edge of the hall, alone, an inventory that has not changed since the night of the burning because nothing has been taken out of its care and nothing put in. The drakoran who came to the hall and took the master's name found that he could set the lesser servants going again with the master's books, but that the Keeper would give him nothing. Not a bar, not a sphere. What the new Meical builds, he builds from what the forged servants bring in from the dales, which is why Thulin, uncle of Achae Smith, came home as a bundle.\n\nThe other servants do not go near it. The fort's registrar thinks they have learned that the Keeper counts them too, and that a servant that wanders off is a thing missing from its stores. When it is troubled, none of them comes to its help, and it does not call; a keeper of stores keeps them alone. It stands in its place at the hall's edge, so tall that it is seen from the fort road, and it comes at anyone who walks into its sight as a storeman comes at a thief.\n\nWhen it is broken it is back before the dust is down, and the households say its count starts again from the first bar, and comes out the same.",
+  "legend": "The Tower Keeper is a level 55 construct, nearly as huge as the Tower Guardian, standing alone at the edge of Meical's Hall in the south of the Dales. It is aggressive from about 500 away, but its template gives it no faction, so none of the hall's constructs come when you hit it, and nothing else stands within 1,000. No spells or styles in the data: a straight melee kill for a group of fifties, the easiest of the big constructs. It respawns in about 80 seconds. Do not drag it into the hall proper, where the Guardian and its helpers are.",
+  "yells": {
+    "aggro": [
+      "Not on the inventory.",
+      "Thief in the stores.",
+      "Count. Count. One too many."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The count is short. The count is short."
+      }
+    ],
+    "death": [
+      "Inventory... unchanged...",
+      "Count... begins again..."
+    ],
+    "slay": [
+      "Removed from stock.",
+      "Counted.",
+      "One fewer."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A huge construct stands alone, counting.",
+      "No servant of the hall comes near this one."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Tower Keeper's count falters."
+      }
+    ],
+    "realmFirstKill": "The Tower Keeper is broken. The stores are unwatched."
+  },
+  "botLines": {
+    "briefing": [
+      "the keeper at the edge of meical's hall, 55, huge, alone. aggros at 500",
+      "no faction on it, nothing joins. nothing within 1000 either",
+      "plain melee, group of 50s. easiest big construct in the dales",
+      "dont pull it into the hall proper. 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "keeper down, nobody came, like i said",
+      "easy big one",
+      "80 sec respawn, move before it's back",
+      "the stores are open lol, not that we can get in"
+    ],
+    "aftermathLoss": [
+      "dragged it into the hall and pulled the guardian",
+      "hes 55 not 45, read the con",
+      "duo wasnt enough for that thing",
+      "came back while we were looting"
+    ],
+    "rumour": [
+      "[heard|someone said] the keeper still counts the hall's stores from the night of the burning",
+      "heard the keeper wont give the drakoran meical a single bar of iron",
+      "[heard|someone said] the other constructs stay away from the keeper because it counts them too",
+      "heard that's why the forged servants steal everything they find in the dales"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tower keeper",
+    "text": "The second great servant of the hall of [meical], built to keep its stores: iron, oak, copper, glass and the spheres the old master put at his servants' hearts. It still counts them, alone at the hall's edge, an inventory unchanged since the burning, and it gives the drakoran who wears the master's name nothing, which is why the forged servants take what they find in the dales. No other servant comes near it."
+  },
+  "bookPage": "From the second book of Gracien Adamson, name registrar of Fort Gwyntell. Achae Smith asked me why the things from the hall took her uncle, and I told her what the households told me. The one who calls himself Meical has the master's books but not the master's stores, because the Keeper will not give him so much as a nail. So he sends the forged servants out into the dales to bring him what they find, and they found Thulin. She asked me whether the Keeper would have given her uncle back. I said the Keeper does not give anything back. It only counts. She said then somebody should count her uncle, and I have, in this book, with no mark beside him.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} broke the Tower Keeper at the edge of the hall of making in {minutes} minutes.",
+    "loss": "The Tower Keeper counted {raidLeader}'s company of {realm} out of its stores."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "tower-guardian",
+      "relation": "the other great servant: the Guardian keeps the stair, the Keeper the stores"
+    },
+    {
+      "id": "cabalist-meical",
+      "relation": "refuses the drakoran who wears the master's name a single bar"
+    }
+  ]
+}

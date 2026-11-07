@@ -1,0 +1,256 @@
+{
+  "id": "munin-sound",
+  "name": "Munin Sound",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "zones": [
+    155
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "sjoalf",
+    "aegir-clans",
+    "morvalt",
+    "houses-of-midgard"
+  ],
+  "summary": "The sound in the south-west of the Shrouded Isles that remembers its drowned: Knarr the trading town, the shell-clan's camps, the shale golems' hills, and the sea-elves' cult on the eastern island.",
+  "facts": [
+    {
+      "text": "Munin Sound is zone 155 of region 151. Its town is Knarr (Area, 302,561/433,648, radius 3,500) in the south-west, with Troll, Kobold, Dwarven and Valkyn guards, a Chieftess and a Chieftain Guard (Hnef), Stor Gothi Carnoid and a vault keeper.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 155 (0.37b world data)"
+    },
+    {
+      "text": "Its folk: sea daubers, washed-up skeletons and drowning victims in great numbers, shale golems and young shale golems, fisher grips, tidal grips (Vind Ryttaren), mist menaces, little greebers, coral things, ingesters, bobbing and wading boobries, sea and marine skrats, water cats, scimitar cats, greater mylings and vanvettig djur in the north-east, and the skalklan (shellcrafters, shellsplitters, conch-gatherers, oyster-harvesters, trailfinders, ancestral skalklan).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 155 (0.37b world data)"
+    },
+    {
+      "text": "The sjoalf (faction Sjoalf) hold the east: worshippers, disciples, cultists, ritualists, cleansers, purifiers and sacrificers; Urtzi (level 42) is one of them.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 155 (0.37b world data)"
+    },
+    {
+      "text": "'Gazsi's Nightmares' (Luikko of Hagall): powders for a ritual, then 'Kill Urtzi in Munin Sound, west-southwest of Hagall along the zone wall to the shore' and drop four powders where four ritual stones glow.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "'Juuso's Potion': wearing Juuso's amulet ('Do not attack any skalklan while wearing it'), tell the skalklan Edrigu that Juuso sent you. 'Lost Maps': 'the drowned walk at night'; find Modolf's spirit inland from the shore and take the map, then tell Merja of Bjarken that Modolf drowned.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "'Helping the Weaponsmith' (Yrling of Aegirhamn): a shale golem emissary appears; find 'the morvalt renegade Ghirni off the road toward the water where the coral things spawn'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Ulif (level 36) stands among skalklan conch-gatherers and oyster-harvesters; his template puts him in the Skalklan Tribe.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 155 (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth Huginn and Muninn are Odin's ravens, thought and memory; a knarr is a Norse ocean-going merchant ship; Swedish sjo = sea (sjoalf, 'sea-elf'), vanvettig = insane, djur = beast.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain); Swedish lexicon (to verify)"
+    },
+    {
+      "text": "The sound's memory, the sjoalf's ritual stones, the Lettsons of Knarr and Herdis's book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The skalds named the sound for Odin's raven of memory, and the island folk say the name was a warning. Munin Sound remembers. It lies in the south-west of the isles, a long water between islands where the tide runs hard and the mist comes in off the sea most evenings, and everything that has ever drowned in it comes back. The beaches are covered in washed-up skeletons, more than the oldest fisherman of Knarr can count, and at dusk the drowning victims walk up out of the shallows still choking. The mist menaces move with the mist. Nobody in Knarr goes down to the water after dark without a lamp and a name to call out, so that the sound knows who is alive.\n\nKnarr was built for trade, and named for the ship that carries it. It stands in the south-west where the sound opens to the sea, a town of merchants and guards of every people the isles have: trolls and kobolds and dwarves and Valkyn, a chieftess and a chieftain. The Lettson family has kept half the town's trade for as long as there has been a town, and the other half pretends not to mind. Stor Gothi Carnoid keeps the gods' word there, and keeps it short.\n\nThe sound's shores belong to others. The skalklan, the shell-clan, keep their camps along the west and the middle: shellcrafters and shellsplitters, conch-gatherers and oyster-harvesters, small clan-folk like the mussel-clan of Aegir's Landing and no friends of them. They trade with those who come under a token they trust and kill the rest. The shale golems hold the hills in the north and middle, golems of grey slate that the dwarves say grew out of the rock like teeth, and that have a reckoning of their own with the morvalt; the golems' emissary in Aegirhamn came down from these hills. Morvalt renegades the morvalt themselves cast out keep to the roads toward the coral, and the golems hunt them.\n\nThe east is the sjoalf's. The sea-elves came up out of the sound, the island folk say, or were always in it, pale and long-fingered, and they worship something in the deep water with rituals that need sacrificers and purifiers and cleansers. Their island east of Knarr is thick with their worshippers, and the ingesters and fisher grips serve them. Four stones glow round one of their shrines on the eastern shore, black and white and grey and brown, and the dwarves of Hagall say the stones send dreams: Gazsi of Aegirhamn has not slept a night through since the sjoalf lit them. Luikko of Hagall knows the powders that put them out.\n\nIn the north-east beyond the golems' hills the land goes strange. Greater mylings walk there, the dead children of the old stories, and the vanvettig djur, the mad beasts, which the island folk say went mad from listening to the sound remember. Marine skrats and coral things crowd the north shore. The trappers of Knarr do not go there in families.\n\nMunin Sound matters because it is where the isles keep their dead, and the dead do not keep quiet. The bergklan's Modolf drowned in it with a map of the mountain-clan's that Merja of Bjarken wants back, and walks inland at night with it still in his hand. The sjoalf pray to what is under it. The skalds say that if Munin ever forgets, the drowned will lie down; and that it never will, because remembering is the only thing it was made to do.",
+  "legend": "Munin Sound is the 25-45 Shrouded Isles zone south-west of Faraheim, with Knarr in the far south-west as the town (vault keeper, healer, smith, merchants, Stor Gothi Annark port). Washed-up skeletons (37-43) and sea daubers everywhere on the shore, shale golems 21-28 in the hills, skalklan camps west and middle (they're a reputation faction; Juuso's amulet lets you talk to Edrigu), the sjoalf cult in the east on the island east of Knarr (worshippers and cultists 30s-40s, sacrificers and purifiers to 48). Urtzi (42, sjoalf) is the Gazsi's Nightmares kill from Luikko in Hagall: west-southwest of Hagall along the zone wall to the shore, then four powders on four glowing stones. Ulif (36) stands in a skalklan camp in the middle. Vanvettig djur up to 48 in the north-east. Knarr folk carry a lamp and say their name at the water after dark so the sound knows they're alive.",
+  "atmosphere": {
+    "firstEntry": [
+      "Munin Sound. The raven of memory, and it remembers.",
+      "Bones on every beach. More come in with the tide.",
+      "Mist off the sea, and voices in it.",
+      "Say your name at the water, so it knows you live."
+    ],
+    "areas": [
+      {
+        "name": "Knarr",
+        "x": 302561,
+        "y": 433648,
+        "z": 3700,
+        "radius": 3500,
+        "lines": [
+          "Knarr, named for the ship that carries trade.",
+          "The Lettsons keep half of Knarr's trade.",
+          "Stor Gothi Carnoid keeps the gods' word short."
+        ]
+      },
+      {
+        "name": "the drowned beaches",
+        "x": 353658,
+        "y": 407813,
+        "z": 3500,
+        "radius": 9000,
+        "lines": [
+          "Washed-up skeletons, more than anyone can count.",
+          "The drowning victims walk up out of the shallows."
+        ]
+      },
+      {
+        "name": "the skalklan west",
+        "x": 316000,
+        "y": 400000,
+        "z": 3800,
+        "radius": 6000,
+        "lines": [
+          "The shell-clan's camps. Shells crack under foot.",
+          "Edrigu waits for someone Juuso sent."
+        ]
+      },
+      {
+        "name": "the conch beds",
+        "x": 330500,
+        "y": 395000,
+        "z": 4400,
+        "radius": 2500,
+        "lines": [
+          "Conch-gatherers and oyster-harvesters at work.",
+          "Ulif keeps the beds for the shell-clan.",
+          "Modolf's spirit walks inland of here at night."
+        ]
+      },
+      {
+        "name": "the golem hills",
+        "x": 323214,
+        "y": 392133,
+        "z": 4300,
+        "radius": 7000,
+        "lines": [
+          "Shale golems, grown from the rock like teeth.",
+          "The golems have a reckoning with the morvalt."
+        ]
+      },
+      {
+        "name": "the renegades' road",
+        "x": 343000,
+        "y": 414800,
+        "z": 3648,
+        "radius": 2000,
+        "lines": [
+          "Morvalt the morvalt cast out. Ghirni leads them.",
+          "The coral things crowd the water beyond."
+        ]
+      },
+      {
+        "name": "the sjoalf island",
+        "x": 347000,
+        "y": 408000,
+        "z": 3500,
+        "radius": 8000,
+        "lines": [
+          "The sea-elves' island. They pray to the deep.",
+          "Sacrificers, purifiers, cleansers. A cult at work."
+        ]
+      },
+      {
+        "name": "the ritual shore",
+        "x": 353647,
+        "y": 420230,
+        "z": 3557,
+        "radius": 2000,
+        "lines": [
+          "Four stones glow: black, white, grey, brown.",
+          "Urtzi tends the stones. Gazsi does not sleep."
+        ]
+      },
+      {
+        "name": "the mist shore",
+        "x": 315000,
+        "y": 418000,
+        "z": 3600,
+        "radius": 5000,
+        "lines": [
+          "The mist menaces move with the mist.",
+          "Wading boobries in the shallows, watching."
+        ]
+      },
+      {
+        "name": "the mad north-east",
+        "x": 355494,
+        "y": 387030,
+        "z": 4000,
+        "radius": 6000,
+        "lines": [
+          "Vanvettig djur: the mad beasts.",
+          "Greater mylings, the dead children, walk here."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "munin sound is named for odins raven of memory, and the sound remembers",
+      "everything that drowned in munin sound comes back, look at the beaches",
+      "knarr folk carry a lamp and call their name at the water after dark so the sound knows theyre alive",
+      "knarr is named for the trading ship, the lettsons have half its trade",
+      "the skalklan are the shell clan, cousins of the mussel clan and no friends of them",
+      "the shale golems grew out of the rock like teeth, the dwarves say",
+      "the shale golems hunt the morvalt renegades, the golem in aegirhamn came from these hills",
+      "the sjoalf are sea elves who pray to something in the deep water",
+      "four stones glow on the sjoalf shore and gazsi in aegirhamn hasnt slept since they were lit",
+      "luikko of hagall knows the powders that put the sjoalf stones out",
+      "the vanvettig djur went mad listening to the sound remember",
+      "if munin ever forgets the drowned will lie down. it wont, its what it was made for"
+    ],
+    "rumour": [
+      "the trappers of knarr dont go to the north east in families",
+      "herdis at the knarr landing lights her drowned fathers lamp every evening the mist comes",
+      "the lettsons of knarr own half the town and want the other half",
+      "the drowning victims arent cruel, theyre choking, and they take air from whoever is nearest",
+      "the sjoalf light the dream stones again every time someone puts them out",
+      "modolf drowned with the bergklans map in his hand and still has it",
+      "edrigu the skalklan will trade with you if juuso sent you and you havent hit a skalklan",
+      "modolfs spirit walks inland from the shore at night with a map nobody can read",
+      "ghirni is a morvalt renegade. even the morvalt dont want him, the shale golems want him less"
+    ],
+    "tell": [
+      "munin sound is 25 to 45, knarr in the far south west is the town",
+      "the shale golems are in the hills north and middle of munin, 21 to 28",
+      "washed up skeletons on the munin beaches are high 30s to 43, good xp in a group",
+      "the sjoalf cult is east, on the island east of knarr",
+      "edrigu is at the skalklan camp on the west shore near knarr, juusos potion",
+      "modolf is a bergklan spirit inland past the skalklan settlement, at night, lost maps",
+      "ghirni is with the morvalt renegades off the road toward the coral things, helping the weaponsmith"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Munin Sound, named for the raven of memory. It [remembers] its drowned. [Knarr] trades on it, the [skalklan] keep its shores, the [shale golems] its hills, and the [sjoalf] pray to what is under it.\"",
+    "topics": {
+      "remembers": "Everything that has drowned in the sound comes back: the washed-up skeletons on the beaches, the drowning victims who walk up out of the shallows at dusk. Knarr folk carry a lamp and say their name at the water after dark.",
+      "Knarr": "The trading town in the south-west, named for the merchant ship, with guards of every people of the isles. The [Lettsons] keep half its trade. Stor Gothi Carnoid keeps the gods' word.",
+      "Lettsons": "The Lettson family of Knarr, Skakli, Meklorka, Katrena, Haarek and Edla, who have kept half the town's trade as long as there has been a town. The other half pretends not to mind.",
+      "skalklan": "The shell-clan of the sound's west and middle shores, small clan-folk who trade under a token they trust and kill the rest. See [Edrigu], [Ulif].",
+      "shale golems": "Golems of grey slate in the north and middle hills, grown out of the rock like teeth, the dwarves say. They hunt the morvalt renegades; their emissary stands on the quay at Aegirhamn. See [Ghirni].",
+      "sjoalf": "Sea-elves of the east of the sound, pale and long-fingered, who pray to something in the deep water. Their cult has sacrificers, purifiers and cleansers, and four [ritual stones] on its shore. See [Urtzi].",
+      "ritual stones": "Four stones that glow black, white, grey and brown round a sjoalf shrine on the eastern shore. They send dreams; Gazsi of Aegirhamn has not slept a night through since they were lit. Luikko of Hagall knows the powders that put them out.",
+      "Herdis": "Herdis the net-maker of Knarr, who keeps the lamp at the town's landing and wrote What the Sound Remembers for her sons, who fish.",
+      "Edrigu": "A skalklan of the west shore camp near Knarr, among the shellcrafters and shellsplitters, who keeps what Juuso of Dyrfjall needs for his potion. He will deal with someone who comes wearing Juuso's amulet and says Juuso sent them, so long as they have not struck a skalklan while wearing it; the clan's memory for that is long. To everyone else he is a clan-man with a blade.",
+      "Modolf": "A bergklan of the mountain-clan who drowned in the sound with a map the clan wanted kept, and whose spirit walks inland from the shore past the skalklan settlement at night, among the drowned. Merja of Bjarken wants to know what became of him; Sinna Redtoes wants the map. He still has it, and will not give it up while he can hold it.",
+      "Ghirni": "A morvalt renegade who leads the outcasts the morvalt drove off, camped off the road toward the water where the coral things grow. Yrling of Aegirhamn's missing swords and the shale golem emissary's quarrel both lead to him; the golems want him more than the haven does. He fights like a man nobody will take back."
+    }
+  },
+  "book": {
+    "title": "What the Sound Remembers",
+    "pages": [
+      "Herdis, net-maker of Knarr, who keeps the lamp at the landing, wrote this for her sons, who fish. Boys, the first thing: say your name at the water after dark. Every Knarr child is taught it and most of them think it is a game. It is not. The sound is called for Odin's raven of memory, and it remembers, and what it remembers comes back. Look at the beaches. Every bone on them was a man once. The sound does not know the living from the dead unless the living tell it. So tell it.",
+      "The drowning victims come up at dusk. They are not cruel; they are choking. They come up the beach looking for air and they take it from the nearest throat they find. The mist menaces are worse, because they move with the mist and you cannot see them until the mist is on you. When the mist comes in, come in. The nets will keep. Your grandfather did not come in once, and I have his net, and I do not have him. The lamp I keep at the landing is his lamp. I light it every evening the mist comes, and I say his name before mine, because the sound should know he is still missed.",
+      "The shell-clan are on the west shore and the middle. They are small and quick and they crack shells for a living, and they will trade only with those who come under a token they trust. Never strike one, not even in a quarrel over a conch bed, because they remember it the way the sound remembers its drowned: always, and all of them at once. The golems in the hills are slate grown out of the rock. They hate the morvalt, and especially the renegades the morvalt cast out. Let them. A golem came down to Aegirhamn to look at us, and has stood on the quay since. I think the hills sent him to see whether we remember things too.",
+      "Do not fish the east. The sea-elves are there, pale and long-fingered, and they pray to something under the water. They have an island of worshippers, and a shrine on the far shore with four stones that glow, each a different colour. Gazsi in Aegirhamn says the stones send him dreams of drowning; he has not slept a whole night since they were lit. Luikko of Hagall has powders for them. The young of the haven go to put the stones out. The sjoalf light them again. Dreams are cheap, it seems, for those who send them.",
+      "And the north-east: the mad beasts are there, which went mad, the old men say, from listening to the sound remember, and the dead children the songs call mylings. Do not take your own children there. Your father's brother went to look at the mad beasts once, for a wager, and came back and would not say what he had seen, and never wagered again. That is all, boys. Say your name. Come in with the mist. Keep away from the sea-elves. And when you come home, I will be at the landing with the lamp, saying mine."
+    ]
+  },
+  "bosses": [
+    "urtzi",
+    "ulif"
+  ]
+}

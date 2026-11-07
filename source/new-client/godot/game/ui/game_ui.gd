@@ -58,6 +58,7 @@ var _info_buttons: Array = []
 var exchange: ExchangeWindow
 var journal: JournalWindow
 var guide: ClassicWindow
+var lore: ClassicWindow
 var quest_abandon: Callable                               # QuestEngine.abandon (set by the zone viewer)
 signal item_dropped_on_world(slot: int, screen_pos: Vector2)   # zone viewer: an NPC under it (smith repair, sell)
 var map_window: MapWindow
@@ -68,7 +69,7 @@ var _cast_name: Label
 var _effects_bar: HBoxContainer
 var npc_dialog: NpcDialog
 var trainer: TrainerWindow
-const TRANSIENT := ["npc_dialog", "trainer", "merchant", "vault", "exchange", "guide", "info", "release", "siege", "emblem",
+const TRANSIENT := ["npc_dialog", "trainer", "merchant", "vault", "exchange", "guide", "lore", "info", "release", "siege", "emblem",
 		"craft", "timer"]
 const INFO_W := 160.0                                     # the information window's width (interact.bmp is 300)
 const INFO_WIDE := 320.0                                  # ... for a server text with long lines (/stables routes)
@@ -361,6 +362,7 @@ func _build() -> void:
 		if quest_abandon.is_valid():
 			quest_abandon.call(id))
 	_build_guide()
+	_build_lore()
 	map_window = MapWindow.new()                          # M: the zone map (owner request; post-1.65 feature)
 	map_window.resizable = true
 	map_window.max_size = Vector2(1100, 1100)
@@ -1399,6 +1401,74 @@ func _build_guide() -> void:
 	body.offset_bottom = -40.0
 	title.anchor_right = 1.0
 	title.offset_right = -40.0
+
+
+## Living Server 1.2: the LORE codex (the journal's LORE button, or /lore): the server's pages of the realm's places and
+## bosses with the realm's first kills (LoreCodex.cs; the same data the server ships, so nothing is read from files
+## here). Every [name] in a page is a link that asks the server for that page ("/lore <name>"); "More: [Krondon 2]"
+## turns the page.
+func _build_lore() -> void:
+	lore = ClassicWindow.new()
+	lore.resizable = true
+	lore.patch = [6, 19, 13, 33]
+	lore.min_size = Vector2(220, 140)
+	lore.size = Vector2(400, 360)
+	lore.setup("lore", "interact", Rect2(), client_pos(300, 50))
+	_add(lore, client_pos(300, 50), false)
+	lore.visible = false
+	var title := UiArt.label("LORE", 11, UiArt.GOLD_HI)
+	title.name = "Title"
+	title.position = Vector2(12, 21)
+	title.size = Vector2(360, 16)
+	title.clip_text = true
+	title.anchor_right = 1.0
+	title.offset_right = -40.0
+	lore.add_child(title)
+	var body := RichTextLabel.new()
+	body.name = "Body"
+	body.position = Vector2(12, 40)
+	body.size = Vector2(370, 280)
+	body.bbcode_enabled = true
+	body.add_theme_font_override("normal_font", UiArt.font(false))
+	body.add_theme_font_size_override("normal_font_size", 10)
+	body.add_theme_color_override("default_color", UiArt.CREAM)
+	body.add_theme_font_override("bold_font", UiArt.font(true))
+	body.add_theme_font_size_override("bold_font_size", 10)
+	body.meta_clicked.connect(func(m): Server.command("/lore " + String(m)))
+	UiArt.themed(body)
+	lore.add_child(body)
+	body.anchor_right = 1.0
+	body.anchor_bottom = 1.0
+	body.offset_right = -18.0
+	body.offset_bottom = -40.0
+
+
+## One codex page from the server: the caption without its "Lore: " prefix as the title, section headings in gold,
+## [names] as links.
+static func lore_bbcode(lines: Array) -> String:
+	const HEADINGS := ["The story", "What players say", "Who waits there", "Story", "What the raid leaders say",
+			"The places no realm holds:"]
+	var link := RegEx.create_from_string("\\[([^\\[\\]]+)\\]")
+	var out: Array = []
+	for raw in lines:
+		var l := String(raw)
+		if l.strip_edges() == "":
+			out.append("")
+			continue
+		var bb := l.replace("[", "[lb]")
+		bb = link.sub(l, "[url=$1][color=#f0c060]$1[/color][/url]", true) if link.search(l) else bb
+		if HEADINGS.has(l) or (l.begins_with("The places of ") and l.ends_with(":")):
+			bb = "[b][color=#f0c060]%s[/color][/b]" % l
+		out.append(bb)
+	return "\n".join(out)
+
+
+func show_lore(caption: String, lines: Array) -> void:
+	(lore.get_node("Title") as Label).text = caption.trim_prefix("Lore: ").to_upper()
+	var body := lore.get_node("Body") as RichTextLabel
+	body.text = lore_bbcode(lines)
+	body.scroll_to_line(0)
+	lore.show_window()
 
 
 func show_guide(quest_id: String) -> void:

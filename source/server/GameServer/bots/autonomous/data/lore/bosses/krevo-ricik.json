@@ -1,0 +1,131 @@
+{
+  "id": "krevo-ricik",
+  "name": "Krevo Ricik",
+  "catalogKey": "krondon/krevoricik",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 72-75, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800. Only on damage from a GamePlayer: 10% the attacker is moved to his position 400 units up; 15% a 'forgoten ghost' (level 62-64, 4,000 health) appears if none is alive.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs"
+    },
+    {
+      "text": "A forgoten ghost alive 30 s casts Dark Explosion (800 matter, radius 700) and dies; ghosts die with Krevo.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs"
+    },
+    {
+      "text": "The runt of the shafts, 'the one who lands', the passage of the forgotten and the reading of titles at burial, the ghosts that burst, Sir Elgan of the Isle of Glass and his priest are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "In the Undercroft Krevo Ricik was the runt the young ogres threw up the air-shafts for sport; he learned to land and nothing else, and ricik, the ghosts think, means the one who lands. In Krondon he found the dead, whom the other ogres walk through without seeing. He saw them, shouted at one, and saw it flinch: the first thing in his life that was afraid of him. Orylle gave him no title and let him have the passage where the ghosts were thickest, to keep him away from Wynflaed.\n\nThat passage, the ghost walk, holds the doors of the forgotten: the hall-folk whose titles were never read aloud at their burial, the drowned, the lost, the many who died when no one was left to read. Krevo puts his fist into the wall and drags a forgotten ghost out of the stone and sets it on whoever has struck him; he can hold only one at a time. And the dead cannot bear to be held: a nameless ghost held outside its wall swells with fear for about as long as a man can hold his breath, then bursts and throws the stone of the passage about like a cask of pitch.\n\nHe does to men what the seams did to him, and to the ones who hurt him: now and then a man who has wounded him is in the air above the ogre's head, wherever he stood when he struck, an archer at the far end of the walk as surely as a knight, and then on the floor. Krevo laughs while they fall. The young ogres fear him; Orylle has never sent for him.\n\nThe first company to kill him came for the men Sir Cador lost on his first descent. Sir Elgan of the Isle of Glass, brother of one of them, found them at the foot of the walls. His company got up quickly after each throw, and killed each dragged ghost fast or ran from it before it swelled, while the forgotten whispered warnings through the stone. His priest read the titles and the lost men's names aloud, badly; three ghosts went back into their walls with a name.",
+  "legend": "Krevo is level 72 to 75 with 30,000 health, CC immune, 20% melee / 30% other reduction and a 3,800 tether, a plain melee brute with two tricks, and both trigger only on hits from a real player. Each time the human damages him, melee or spell, there is a 10% chance the human is yanked onto Krevo's spot 400 units up and falls, and a 15% chance he drags a forgotten ghost out of the wall (level 62 to 64, 4,000 health), only one at a time. A ghost that is still alive 30 seconds after it appears explodes for 800 matter in a 700 radius and dies. Kill each ghost fast or get 700 away from it. Bots hitting him trigger nothing, so a bot raid with the human healing or staying off him sees no ghosts and no throws. Ghosts die when he dies. The old hands still read a title on a ghost door aloud before they leave the ghost walk.",
+  "yells": {
+    "aggro": [
+      "Up you go!",
+      "Ghosts! Out of the walls! Fight!",
+      "I see you, dead things."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Get up, dead thing! Fight for Krevo!"
+      }
+    ],
+    "death": [
+      "The dead... laugh at me now...",
+      "Let them... go..."
+    ],
+    "slay": [
+      "Down you come.",
+      "Ha! The floor wins.",
+      "Another for the walls."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ghosts here keep to the walls. Something scares them.",
+      "The ghosts press flat to the walls here."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Krevo Ricik drags a forgotten ghost into the fight!"
+      }
+    ],
+    "realmFirstKill": "Krevo Ricik is dead. Krondon's ghosts are left in peace."
+  },
+  "botLines": {
+    "briefing": [
+      "krevo only throws or calls ghosts when the human hits him. bots hitting him trigger nothing",
+      "a ghost explodes 30 sec after it shows up, 800 matter 700 radius. kill it fast or run",
+      "one ghost at a time, off tank grabs it and burns it",
+      "if you get thrown you land on krevo from 400 up, heal and get back to your spot"
+    ],
+    "aftermathWin": [
+      "krevo down, the ghosts can rest",
+      "landed every throw. gg",
+      "the ghosts went back in the walls",
+      "nobody died to a fall"
+    ],
+    "aftermathLoss": [
+      "the ghost sat there 30 sec and blew up on the healers",
+      "i kept nuking him and he kept yanking me onto his head",
+      "nobody picked up the ghost",
+      "ran him past his tether and he walked home full"
+    ],
+    "rumour": [
+      "heard krevo ricik in krondon bullies the ghosts into fighting for him",
+      "[someone said|heard] krevo throws you at the roof",
+      "heard krevo is the only ogre who can see the ghosts",
+      "the ghosts hate krevo most of all, [heard|they say]",
+      "heard krevo was the runt the other ogres threw up shafts",
+      "[heard|someone said] the ghosts in krondon whisper when one of them is about to burst"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "krevo",
+    "text": "Krevo Ricik, the runt of the shafts, the one who lands: the only ogre of [Krondon] who sees the dead. He drags the forgotten out of the walls of the ghost walk, and a ghost held too long bursts; he throws whoever wounds him. Read a title aloud there before you leave. See [hall's dead]."
+  },
+  "bookPage": "From the account of Sir Elgan of the Isle of Glass, who went down to find the men Sir Cador lost. We found them in the passage the ghosts haunt, at the foot of the walls. We found the ogre too. He throws whoever wounds him, near or far; my bowman at the end of the passage was in the air above the brute before he had lowered his bow. He drags the nameless dead out of the stone to fight for him, and they cannot bear it, and they burst. The other ghosts whispered to my priest when one was close to it. We ran when they whispered. Afterwards my priest read our dead men's names aloud. Three ghosts went home.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} put down Krevo Ricik and his borrowed ghosts in {minutes} minutes.",
+    "loss": "Krevo Ricik flung {realm}'s raid at the roof until {raidLeader} called it."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "orylle",
+      "relation": "gave him no title and keeps him away from Wynflaed's ghost"
+    },
+    {
+      "id": "morgus-urgalorg",
+      "relation": "threw him up into the vault of the old school"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Runt of the Shafts",
+      "text": "In the Undercroft, Krevo Ricik was the runt that the other ogres threw.\n\nThe thrawn ogres of the seams cut air-shafts up through the rock to keep their deep tunnels breathing, narrow chimneys that rise into the dark for the height of a hall, and the young ogres of the clan had a game with the smallest of their litter-mates: they threw him up the shafts and watched him fall. Krevo was small and quick and could not be made to cry, and so he was thrown more than any ogre the clan remembers. He learned to land. The ogres say he learned nothing else in the seams, and that he climbed up into Krondon behind Orylle with the scars of every landing on his back and nobody in the world that he was not afraid of.\n\nThen he found the dead. The ghosts of the hall-folk were everywhere in Krondon in the first week, walking the corridors and the empty rooms, and the ogres could not see them; they walked through the ghosts without knowing, and felt only a coldness. Krevo saw them. The ogres do not know why, and the ghosts will not say, though the Inconnu who looked in at the hall's door once said that a creature thrown often enough into the dark comes to see what lives there. Orylle could hear the ghosts. Krevo could see them, and he saw, the first time he shouted at one, that it flinched.\n\nIt was the first time anything in his life had been afraid of him. The ghosts say he stood in the corridor laughing at it for an hour. Ricik is not a word of the hall-folk's tongue and not a title off any door; it is what the ogres of the seams called him when he was small, and it means, the ghosts think, something like the one who lands. Orylle gave him no title. He did not want one. He wanted the passage where the ghosts were thickest, and the queen let him have it, because she did not want him anywhere near Wynflaed."
+    },
+    {
+      "title": "The Forgotten in the Walls",
+      "text": "The passage the ghosts call the ghost walk runs between the living quarters and the road, and in the hall's time it was the passage of the forgotten.\n\nThe hall-folk kept a title over every door, and a person who had a title was remembered by it; and when a person of the hall died, the title over his door was read aloud once by the ealdor at his burial, so that the hall would hear it said. The forgotten were those whose titles were never read: the drowned whose bodies the sea kept, the lost in the deep cellars, and in the hall's last years the many who died when there was no one left to read. Their doors are in the ghost walk, and their ghosts with them, pressed into the walls, and most of them do not remember their own names. Wenna of Caer Gothwaite spoke to one of them, and it asked her only whether the hall still kept its titles.\n\nKrevo drags them out. He puts his fist into the wall and drags a forgotten ghost out of the stone as a man hauls a drowned dog out of a ditch, and he sets it on whoever has struck him, and it fights for him because it is afraid of him. He can hold only one at a time, the ghosts say; his fist is not big enough for two.\n\nAnd the dead cannot bear to be held. The ghosts of the hall are thin things, the leech Hrothwyn once wrote, kept together by a name or by grief, and a forgotten ghost has no name to keep it. Held outside its wall it swells with fear, for about as long as a man can hold his breath, and then it bursts, and the burst throws the dead stone of the passage about like a cask of Beran's pitch. Krevo does not care. He drags out another. The ghosts of the walk say that a forgotten ghost let go quickly goes back into its wall, and that one held until it bursts does not go back anywhere, and that this is the thing they hate him for."
+    },
+    {
+      "title": "The One Who Lands",
+      "text": "Krevo does to men what the young ogres of the seams did to him, and he does it to the ones who hurt him.\n\nThe ghosts of the walk have watched it for as long as he has kept the passage. A man strikes him, and now and then, not always, Krevo reaches out and takes him, and the man is in the air above the ogre's head with nothing under him, and then he is on the floor. It does not matter where the man was standing when he struck. An archer at the far end of the walk who puts a shaft into Krevo can find himself above the ogre a heartbeat later, falling, as surely as a knight with a sword at his belt. The ghosts think Krevo reaches through the dead to do it. The Inconnu think the dead reach for him. Either way, the ones who are thrown are the ones who wounded him, and the ones who did not are left alone.\n\nHe laughs while they fall. That is what Wenna's companions remembered afterwards, more than the falls: the runt of the shafts laughing at the bottom of a shaft that he has made out of the air, at men who do not know how to land. He knows how. The ghosts say he lands on his feet every time he is knocked down, and that he has never once in Krondon been seen to lie on the floor.\n\nThe young ogres of the hall are afraid of him, the ghosts say, more than of any other ogre but Orylle. They do not play his game. Beran will not sit with him; Deben has never called him to the muster; the brothers called the Example do not let him into their room. Morgus once tried to make him a learner, and Krevo threw him up into the vault of the old school and laughed. Orylle has never sent for him in all the years of her reign. He is the only ogre of Krondon the queen has kept nothing for, and the only one who has never asked."
+    },
+    {
+      "title": "Sir Elgan's Search",
+      "text": "The first company of Albion to kill Krevo Ricik did not come for him. It came for the men Sir Cador lost.\n\nOn Cador's first descent, when Orylle threw his company out one by one, some of the thrown got up and walked back, and some wandered into the side passages among the ghosts and did not return. Sir Elgan of the Isle of Glass was the brother of one of them. He raised a company of the ring-forts the next spring to find them, and he took with him Wenna's account of the ghost walk and a priest of Caer Gothwaite who could read the hall-folk's letters a little, because Wenna would not go down a third time.\n\nThey found the lost men in the ghost walk, at the foot of the walls, where they had fallen. They found Krevo there too. Elgan's account says the company learned two things in the first hour and paid for both. The first was that the ogre threw whoever wounded him, and that the thrown were safest if they got up quickly and went straight back to where they had been standing, because the floor under the ogre was the worst place in the passage to lie and think. The second was that the ghosts he dragged out of the walls were not to be fought where they stood. The forgotten dead of the passage told Elgan's priest, in whispers through the stone, when one of their own was about to burst, and Elgan's men learned to kill each one quickly or run from it before it swelled, the length of the walk if they had to.\n\nThey killed Krevo at the foot of his own walls. Elgan's priest read the titles over the nearest doors aloud afterwards, badly, in a Gothwaite accent, and then the names of Cador's lost men, one by one, and Elgan's brother's last. The ghosts of the walk listened, the priest wrote, and three of them went back into their walls with a name. Krevo was in the walk again by the next new moon. The ghosts say he looked for those three first and could not find them."
+    }
+  ]
+}

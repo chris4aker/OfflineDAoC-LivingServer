@@ -1,0 +1,107 @@
+{
+  "id": "kunsgnos",
+  "name": "Kunsgnos",
+  "npcNames": [
+    "Kunsgnos"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Kunsgnos: level 52, model 341 (the siabra waterwalker body), size 51, at about 386,400/733,400 in the Bog of Cullen, between Madawg and Saemus; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Kunsgnos as Madawg's apprentice, a siabra waterwalker learning the bog-oak craft.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Bog of Cullen lies under Sheeroe, and the people of Alainn Binn and of the Siopa fruit stand on its edge say the bog has been bad since the sky tore over the ridge, and was bad before that too, only more quietly.\n\nThe siabra waterwalkers are the bog's own siabra, the ones who walk the Cullen marsh's black water as if it were a road, and Kunsgnos is the waterwalker who walked furthest. He came to Madawg the season after Ysberin died, the people of Alainn Binn say, when word went round the siabra of the Cullen country that the magus on the eastern rise had woken something in the path-keeper's staff and would teach it to those who came. Most who came went home again. Kunsgnos stayed, and learned.\n\nHe keeps the middle of the bog now, on a hummock of drowned oak between Madawg's rise and the place where Saemus stands alone with his crystal, and the Alainn Binn folk think that is not chance. Madawg keeps the craft; Saemus is what the craft does to someone who takes it too quickly; Kunsgnos stands between them, taking it slowly, and watching both. The druids who have watched him from the edge of the marsh say he spends his nights walking out to the western edge to look at Saemus, and back to the eastern rise to work with Madawg, as a careful apprentice studies both his master and his master's failures.\n\nHis name is not one the Hibernians know, and the siabra do not say what it means. The Alainn Binn children, who have heard it shouted across the water, think it is the sound the black water makes when a waterwalker steps on it. If Madawg falls, the druids of Lough Gur think, Kunsgnos will be the magus of the Cullen country by the next spring, and a more patient one.",
+  "legend": "Kunsgnos is a level 52 siabra waterwalker named in the middle of the Bog of Cullen (about 386k/733k), between Madawg and Saemus. Plain mob, no script, 80-second respawn; a 50 group handles him. Siabra waterwalkers (52-56) are around the bog's water, so clear the approach. He is not a quest target in this world's data, but he sits on the path between the Unnatural Powers kills, so you will likely meet him either way. Fight him on his hummock rather than chasing him out over the black water, where the waterwalkers of the bog will join. A 50 group with a healer does it.",
+  "yells": {
+    "aggro": [
+      "(black water ripples where he steps)",
+      "Slowly. Slowly is how it is learned.",
+      "You came for the staff? Wrong hummock."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Saemus learned too fast. I will not."
+      }
+    ],
+    "death": [
+      "The craft... slowly... someone...",
+      "(the black water closes over the hummock)"
+    ],
+    "slay": [
+      "Slowly.",
+      "The water holds you now.",
+      "Another lesson."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hummock of drowned oak in the middle of the bog.",
+      "Someone walks on the black water."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Kunsgnos walks out across the black water."
+      }
+    ],
+    "realmFirstKill": "Kunsgnos the waterwalker has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "kunsgnos is a 52 siabra waterwalker in the middle of the bog. [plain mob|no script]",
+      "between madawg and saemus. [youll meet him anyway|on the path]",
+      "clear the siabra waterwalkers around him",
+      "50 group fine"
+    ],
+    "aftermathWin": [
+      "kunsgnos down. [one fewer apprentice|got him]",
+      "clean pull on the hummock",
+      "madawg next. [east rise|go]",
+      "easy"
+    ],
+    "aftermathLoss": [
+      "pulled waterwalkers too. [faction|oops]",
+      "fell in the black water lol",
+      "group too low",
+      "he nuked the healer"
+    ],
+    "rumour": [
+      "[heard|someone said] kunsgnos is madawg's apprentice",
+      "kunsgnos walks out to look at saemus every night, they say. [learning what not to do|creepy]",
+      "[word is|heard] if madawg dies kunsgnos will take his place by spring",
+      "the alainn binn kids think kunsgnos is the sound the black water makes"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kunsgnos",
+    "text": "A siabra waterwalker of the Bog of Cullen who came to learn [Madawg]'s craft and stayed. He keeps the middle of the bog between Madawg and Saemus, studying the master and the master's failure."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the middle of the Cullen bog, if someone is walking on the black water. That is Kunsgnos, the siabra who came to learn Madawg's craft after Ysberin died, and stayed when the others went home. He keeps a hummock of drowned oak between Madawg's rise and the place where Saemus stands with his crystal, and walks out to look at Saemus most nights. The druids say he is learning both lessons, the craft and what it does to those who take it too quickly. If Madawg falls, he will be the magus by spring.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Kunsgnos in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Kunsgnos turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "madawg",
+      "relation": "the magus he learns from"
+    },
+    {
+      "id": "saemus",
+      "relation": "who learned the same craft too fast"
+    }
+  ]
+}

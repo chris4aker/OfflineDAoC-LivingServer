@@ -1,0 +1,120 @@
+{
+  "id": "dremcis-fuiloltair",
+  "name": "Dremcis Fuiloltair",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/dremcisfuiloltair",
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Irish fuil 'blood' + óltóir 'drinker': Fuiloltair, blood-drinker; fuilslathach may be 'blood-slime' (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Dremcis Fuiloltair: level 70, 30,000 health, resists 20% melee and 30% other. When engaged he creates 4-6 fuilslathach (level 51-59, 2,500 health) and his stag Beomarbhan (once per Dremcis life: the flag is reset only when Dremcis is added to the world again), and pulls both into the fight within 5,000; the fuilslathach are removed if he resets; when he dies the fuilslathach are removed and Beomarbhan dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/DremcisFuiloltair.cs (integration/1.2)"
+    },
+    {
+      "text": "Dremcis stands at about 307,900/294,900 in Cothrom Gorge.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Irish fuil 'blood'; 'Fuiloltair' read as 'blood-drinker' (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Dremcis Fuiloltair was a hunter of the gorge Sylvan, the best of them, in the years when the clans of Cothrom still hunted the red deer that came down the gorge in autumn. The gorge folk tell that he went further into the split earth than any hunter had gone, after a white stag that kept just ahead of him for nine days, and that on the ninth night he killed it at the bottom of the gorge, among the rot-flowers, and was so thirsty that he drank from the wound. Whatever was in the gorge was in the stag. He came home on the tenth day and his name had changed: fuil is blood in the old tongue, and the gorge folk say the rest of the name is the drinking.\n\nHe still hunts. He rides out of the deep gorge on a stag of his own, Beomarbhan, which was the finest beast in the clan's herd before Dremcis rode it to death and kept riding. Wherever he has fed, the spilled blood does not soak away into the gorge floor. It gathers itself into clots the size of a dog, the fuilslathach, and when Dremcis is troubled they crawl up out of the stones around him as hounds come to a horn. The gorge folk say they come only once for any one trouble: once he has called them they are spent, and if the trouble goes away they sink back into the stones, and when Dremcis dies they go into the ground with him and do not crawl again.\n\nThe stag comes to him the first time he is troubled and not again, whatever happens to it, until Dremcis himself has died and come back; and it does not outlive him. Every account agrees on that. The gorge folk who have seen Dremcis brought down say Beomarbhan dropped in the same breath, as if the rider had been holding it up all along, and they say it as the one mercy of the story. Nobody on the isle has ever seen the stag felled first and walked away pleased with the trade.\n\nFor the gorge clans he is the warning they give their young hunters, and the reason they do not drink from anything they kill in Cothrom. For the Domnann wardens he is worse: the first Sylvan the gorge took for itself, years before Kontar drank at the edge. They count the corruption of their own people from him.",
+  "legend": "Do not fight the stag. When Dremcis is engaged he brings 4-6 fuilslathach blood blobs (51-59, 2,500 health) and his stag Beomarbhan, who is CC immune and resists 40% melee and 70% magic on 30,000 health. Kill Dremcis and Beomarbhan dies with him and the blobs vanish. Beomarbhan only comes once per Dremcis spawn, so if you wipe after somehow killing the stag it will not be back for the retry, but nobody should plan on that. Off-tank the stag, AoE or tank the blobs, burn Dremcis. Dremcis himself has no spells: it is all melee and numbers. Tether 2,600 like the rest; Gneiss's granidons are not far off, so watch your approach.",
+  "yells": {
+    "aggro": [
+      "Blood. I smell it in you.",
+      "Up, my clots. Up, Beomarbhan!",
+      "The hunt never ended."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Up out of the stones, my blood. Hunt!"
+      }
+    ],
+    "death": [
+      "Thirsty... still...",
+      "Beomarbhan... with me..."
+    ],
+    "slay": [
+      "Drained.",
+      "The gorge drinks, and so do I.",
+      "Lie down, and bleed for me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Blood on the stones that will not soak away.",
+      "Hoofprints of a stag, and none of them bleed."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Blood crawls up from the stones to Dremcis!"
+      },
+      {
+        "trigger": "death",
+        "text": "The stag falls with its rider. The blood sinks."
+      }
+    ],
+    "realmFirstKill": "Dremcis Fuiloltair is dead. The gorge drinks him."
+  },
+  "botLines": {
+    "briefing": [
+      "kill dremcis, not the stag. [beomarbhan dies when he dies|the stag drops with him]",
+      "the stag resists 70% magic and 40% melee. [offtank it|dont dps it]",
+      "4-6 blood blobs, 2.5k each. [aoe them|tank them]",
+      "dremcis has no spells, just melee. [burn him|tank and spank with friends]"
+    ],
+    "aftermathWin": [
+      "dremcis down and the stag dropped in the same breath. [told you|clean]",
+      "blobs went into the ground with him",
+      "never touched beomarbhan. [smart|why bother]",
+      "the gorge folk say thats the one mercy in the story"
+    ],
+    "aftermathLoss": [
+      "we killed the stag first. [took forever|70% resists lol]",
+      "blobs on the casters while we [fought the stag|messed around]",
+      "offtank died to the stag and it [ran through us|ate the healers]",
+      "pulled him with gneiss's granidons nearby. [bad|no]"
+    ],
+    "rumour": [
+      "[heard|someone said] dremcis drank from a white stag at the bottom of the gorge",
+      "the gorge sylvan never drink from anything they kill in cothrom. [dremcis is why|smart]",
+      "[word is|heard] beomarbhan was the finest stag in the clan's herd",
+      "the domnann wardens count the corruption of the sylvan from dremcis"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dremcis",
+    "text": "Dremcis Fuiloltair, the blood-drinker of [Cothrom Gorge], once the best hunter of the gorge clans. He rides the dead stag Beomarbhan, and the stag does not outlive him."
+  },
+  "bookPage": "From Coll of the Domnann guides: the gorge clans teach their young hunters one thing before any other: do not drink from what you kill in Cothrom. Dremcis did, from a white stag at the bottom of the split earth, and came home with a new name. He rides out still on Beomarbhan, ridden to death and never let down, and spilled blood crawls up out of the stones to him when he is troubled. When he falls the stag falls in the same breath and the blood sinks back. The gorge folk call that the one mercy of the story. The wardens of Domnann count our people's corruption from him.",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Dremcis Fuiloltair in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Dremcis Fuiloltair after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "old-troubles",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "beomarbhan",
+      "relation": "his stag, ridden to death"
+    },
+    {
+      "id": "marfoirwort",
+      "relation": "the other drinker of the gorge"
+    }
+  ]
+}

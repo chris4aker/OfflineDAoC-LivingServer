@@ -1,0 +1,153 @@
+{
+  "id": "lord-gildas",
+  "name": "Lord Gildas",
+  "catalogKey": "hall-of-the-corrupt/lordgildas",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "aliases": [
+    "gildas"
+  ],
+  "facts": [
+    {
+      "text": "Level 75, 40,000 health; one of the raid's two finals. He fights with sword and shield; below 50% he changes to a two-handed polearm and his Strength rises to 340.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LordGildas.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "No count found for him in period sources.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "The house of Penhallow, the breach at Castle Sauvage, the Constable's letter, the poleaxe of Penhallow, Dame Morwen Penhallow and the formula of relief are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Lord Gildas was the second son of the house of Penhallow, a squire of Castle Sauvage who once held a breach in its wall for a night and a day because nobody had told him he could leave. The Constable chose him for the Pennine watch because he would hold the road to the Summoner's Hall, report what he saw and never act on his own judgment, which the letter of appointment called his great virtue. For twenty years nothing came up the road that his watch could not turn back. He married Darra, a sister of the Church, in the eighth year. The watch set its hours by his evening round.\n\nIn the twentieth year the realm sent Aidon, and Gildas trusted him because the realm had sent him; he doubled the watch and overruled Captain Bardalph. In the last winter, when his men began wandering from their posts, he gave the order that bound them: no man leaves his post for any reason. The Summoners only had to keep his order for him, forever. That is why the dead watch cannot be hurt a step past its posts, and why Gildas himself is bound to the lowest point of the road.\n\nHe died there on the last night, shield up, facing the Summoners' hall, waiting for visitors who were already behind him, and turned to face Albion. Pressed near the end, he takes up the Penhallow poleaxe, as his family's saying demands when only honour is left to guard; it has been carried home three times and is always back at his post by spring. He and Lady Darra are held at two posts that cannot meet. His grand-niece Dame Morwen Penhallow led the first company to bring him down, called the frontier's formula of relief to him, and goes back every spring until he knows her.",
+  "legend": "Easy at first, then not. Above half he turtles behind a shield and hits like a careful knight; below half he throws it aside, takes up a two-handed polearm and his strength jumps, so the main tank takes far bigger hits. Save the best heals and the cooldowns for the second half, and have a second tank ready to take over if the first goes down. Fight him at his post, the lowest point of the hall: past his tether he is immune and walks home. He is the last thing in the Hall, so spend everything you have left.",
+  "yells": {
+    "aggro": [
+      "No man leaves his post! Hold the road!",
+      "Shields! Shields up!",
+      "I held this road twenty years."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The shield is broken. Bring me my poleaxe!"
+      }
+    ],
+    "death": [
+      "Relieved... of my post... at last...",
+      "Darra... tell Darra..."
+    ],
+    "slay": [
+      "Stand your post, dead man.",
+      "Hold, then. Forever.",
+      "Another for the watch."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The old lord stands his post. His shield is up.",
+      "The lowest point of the hall. The old lord's last stand."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Lord Gildas casts down his shield! The poleaxe!"
+      }
+    ],
+    "realmFirstKill": "Lord Gildas is relieved of his post. The Hall is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "gildas swaps to polearm at 50% and hits way harder. save heals for the second half",
+      "fight him at his post, dont kite him",
+      "second tank ready for the switch",
+      "spend everything, he's the last one"
+    ],
+    "aftermathWin": [
+      "gildas down. the old lord can rest",
+      "the poleaxe half was rough but we held",
+      "relieved of his post. gg",
+      "hall of the corrupt cleared"
+    ],
+    "aftermathLoss": [
+      "main tank folded the second he picked up the polearm",
+      "we kited him off his post and he went immune",
+      "no cooldowns left for the second half",
+      "we came down tired and the polearm half ate us"
+    ],
+    "rumour": [
+      "[heard|word is] gildas drops his shield at half and picks up a polearm",
+      "heard lord gildas ordered nobody leave their post. they still havent",
+      "heard gildas knows what was done to the watch",
+      "gildas's last words are always the same, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lord gildas",
+    "text": "He held the Hall for Albion with his lady, Darra. He holds it still, the other way about. He fights behind his shield until he knows he is losing, then takes up his poleaxe and hits twice as hard."
+  },
+  "bookPage": "Lord Gildas held the Pennine road for twenty years, and in all that time nothing came up from the Summoners that his watch could not turn back. When the corruption came he gave the only order he had, the order a careful lord gives: no man leaves his post for any reason. The corruption used it. When we reached him at the bottom of the hall he fought behind his shield, patiently, as he had fought all his life. At the end he threw the shield down and took up the poleaxe, and said, before he fell, that he was relieved of his post at last.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} relieved Lord Gildas of his last post in {minutes} minutes.",
+    "loss": "Lord Gildas took up his poleaxe and {realm}'s raid under {raidLeader} broke on it."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lady-darra",
+      "relation": "his lady"
+    },
+    {
+      "id": "aidon-the-archwizard",
+      "relation": "the wizard he trusted"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Shield First",
+      "text": "Gildas was the second son of the house of Penhallow in Cornwall, which means he was raised to be useful rather than to inherit, and he took it to heart.\n\nHe went to the old frontier at sixteen as a squire at Castle Sauvage, where the road out of Albion runs through the Green Knight's forest, and the armsmen there taught him the frontier's oldest saying: shield first, sword second, and never a step back from where you were put. He was not brilliant. His captains' reports, kept at Castle Sauvage, call him steady, slow to anger, slow to advance and impossible to move once he had stopped. He held a breach in the wall of Sauvage for a night and a day against a Midgard warband, with eleven men, because nobody had told him he could leave, and when the relief came he was still standing in the gap with his shield up and three of the eleven alive.\n\nThat night is why the Constable chose him. The Pennine watch needed a lord who would not be clever. The Constable's letter of appointment survives in Camelot's archive: Albion wanted a man at the end of the Summoners' road who would hold it, report what he saw and do nothing on his own judgment that could start a war in the one hall where the three realms met. Gildas of Penhallow, the letter says, has no judgment of his own that he would trust above an order, and this is his great virtue.\n\nThe Penhallow family kept that letter for three generations as a point of pride. After the watch died, Gildas's grand-niece Morwen burned it."
+    },
+    {
+      "title": "Twenty Years on the Road",
+      "text": "Gildas held the hall under the Pennines for twenty years, and in that time nothing came up the Summoners' road that his watch could not turn back.\n\nThings did come. The road ran down to the only hall the three realms shared, and the realms' champions met on its lower reaches more often than any treaty allowed: Midgard war-bands that had come in by their own road under the Jamtland hills and tried Albion's way out, Hibernians from Breifine looking for a back door into Camelot, and things the Summoners sent up to test the watch, dead men who had promised something once. Gildas's tallies of them fill a book at Camelot, in the clerk Tobias's hand: who came, how many, how turned back. The book does not record a single pursuit. Gildas did not chase. He held.\n\nIn the eighth year he married Darra, a sister of the Church sent to keep the hall's sickroom, and the watch said it was the only impulsive thing the lord ever did. In the twelfth year Captain Heathyr had the upper gate rehung and Gildas paid for it himself. In the fifteenth year Sergeant Reede came to the watch as a recruit of seventeen, and Gildas made her a sergeant within three years, because the girl had never once been late to her post.\n\nThe watch was not a happy place, the clerk wrote, but it was an ordered one. The sergeants played cards; Lieutenant Meade wrote verses for their birthdays; Lieutenant Saxe guarded a corridor that led nowhere. Every evening Lord Gildas walked the posts from the upper gate to the lowest point of the road and back. The watch set its hours by his footsteps."
+    },
+    {
+      "title": "The Wizard the Realm Sent",
+      "text": "In the twentieth year the realm sent a wizard, and Lord Gildas trusted him, because the realm had sent him.\n\nAidon came with the Constable's commission to study the Summoners' wards, and Gildas gave him the tower at the end of the captains' corridor and everything he asked for. When the wizard asked for candles, Gildas sent to Camelot for candles. When the wizard asked for the watch to be doubled because he expected visitors, Gildas doubled it, and had Sergeant Eddison draw up the new roster overnight, and signed it in the morning without reading what the wizard wrote at the bottom.\n\nCaptain Bardalph objected at table. A wizard who expects visitors on a road that has been quiet for twenty years, she said, knows something he is not telling his lord. The clerk recorded what Gildas answered, and it is the sentence the Camelot loremasters quote whenever they teach the story: that the realm had sent the wizard, and that it was not the watch's place to judge the realm's choices, only to hold the road. Gildas sent Bardalph back to her gate that same night. The clerk believed the lord regretted it by morning. He did not reverse it.\n\nThe Academy has never blamed Gildas for trusting Aidon; it trusted Aidon too. The Church has, and the Church's priests in Cornwall preached a sermon on the Pennine watch for a generation, on the text that obedience is a virtue only when the order is good. The house of Penhallow has always answered that a lord who second-guessed the realm's envoys would not have been a lord the Constable would have sent. Both are right, the bards say. That is why the song is sad."
+    },
+    {
+      "title": "No Man Leaves His Post",
+      "text": "The order that bound the watch was Lord Gildas's own, and he gave it to save them.\n\nIn the last winter the men began to want to leave. Captain Atwell's cut would not close; Lieutenant Meade wrote that the watch had lost the will to fight and could not say why; watchmen walked away from their posts in the night and were found at dawn standing in the snow on the upper road, facing Camelot, with no memory of having left. Gildas understood that whatever was coming wanted the watch scattered, and he did the one thing a careful lord knows how to do against an enemy he cannot see. He gave an order. No man leaves his post for any reason.\n\nThe men obeyed him. The clerk recorded that the wandering stopped that same night, and that the men said, in the morning, that they could not leave now even if they wanted to. Gildas took it as discipline. It was the corruption, finding the shape it needed in the order he had given. When the visitors came, the Summoners did not have to bind the watch to its posts. Lord Gildas already had.\n\nSo the order outlived the men who were given it. Each officer of the dead watch is bound to where his captain stood him; Tobias's last report says that a step past it no blow could land on them, and that they walked back to their places whole, as if they had been called. The Inconnu put it precisely. The Summoners did not lay a new binding on the watch, they say; they only kept Lord Gildas's order for him, forever, past the point where a living lord could have lifted it. Gildas obeys it too. He stands at his own post, the lowest point of Albion's road, and cannot be harmed a step beyond it."
+    },
+    {
+      "title": "The Lowest Point",
+      "text": "On the last night, when the wizard came down from his tower with four of himself and told the watch to stand to, Lord Gildas went down to meet the visitors himself.\n\nHis post had always been the lowest point of Albion's side of the road, the stretch of paved floor where the road leaves the hall and goes on down toward the Summoner's Hall, and he went there with his shield and his sword and the Penhallow poleaxe slung on his back, as he went every evening on his round. He told the clerk to note the hour. The clerk did not live to note it.\n\nNothing came up the road. That is the part of the story the riders from Camelot could never understand when they pieced it together: there was no battle at the lowest point, no breach, no visitors from below. Gildas stood at his post with his shield up, facing down the road, waiting for an enemy who was already behind him in the hall, and at some hour of that night he died there, standing, of whatever killed the rest of the watch, and did not fall.\n\nThe riders found him so in the spring: the lord of the Pennine watch at the lowest point of the road, shield up, facing the Summoners' hall, dead. When they came near him he turned around. He had turned to face the other way, as every man of the watch had turned, so that he now guarded the road against Albion. The riders' captain wrote to the Constable that the worst of it was that Gildas still stood exactly as he had been taught at Castle Sauvage, shield first. Only the direction had changed."
+    },
+    {
+      "title": "The Poleaxe of Penhallow",
+      "text": "Gildas fights behind his shield until he knows the day is lost. Then he takes up the poleaxe.\n\nThe poleaxe was his grandfather's, a long-hafted armsman's weapon that had hung over the hearth of Penhallow since the house was granted its land, and Gildas's father gave it to him when he left for the frontier, with the family's saying: a Penhallow fights with his shield while there is something to guard, and with the poleaxe when there is nothing left to guard but his honour. Gildas carried it slung on his back for twenty-five years and never once took it down in anger. The Castle Sauvage reports remark on it. So does the clerk Tobias, who wrote that the watch used to joke that the lord's poleaxe was the only member of the watch who had never been on duty.\n\nIt is on duty now. When the dead lord is pressed so hard that only honour is left to guard, he does as his father told him. He throws the shield aside, swings the poleaxe off his back, and fights two-handed, and every account agrees on what changes: he stops defending and starts killing, and his blows land like a falling gate. Albion's armsmen, who know the custom, say the dead lord has decided in that moment that the watch is lost and only his honour is left to hold.\n\nThe Penhallow family asked the Constable, after the first company brought Gildas down, for the poleaxe to be returned to the hearth. The Constable agreed. The company that went back for it reported that the poleaxe was in the dead lord's hands again, at his post, as if it had never been taken. It has been brought home three times since. It is always back at the lowest point of the road by the next spring."
+    },
+    {
+      "title": "Two Posts",
+      "text": "Lord Gildas has not seen his lady since the last winter, and the bards of Albion say that is the cruellest part of the whole corruption.\n\nLady Darra's post is the sickroom at the top of Sergeant Reede's stair, where she was when the watch died, bending over the cot of a wounded watchman. Gildas's post is the lowest point of the road, at the far end of the hall. Neither may leave. The four knights of her household keep her in her sickroom as she once kept the watch, mending her as she mended them; he holds his post below and knows, the Inconnu think, that his own order is what keeps her there.\n\nThe Inconnu say Gildas is the only one of the dead watch who understands what was done to them, because he gave the order that made it possible, and that this is why he fights hardest of all of them. The Church's priests say he does not understand anything, that he is only a dead man doing as he was taught, and that the bards should leave him be. Albion's companies who have fought him side with the Inconnu. They say he looks up the hall toward the stair between blows.\n\nThe Constable ordered the road sealed at the Albion end after the riders came home. The order was never carried out, because no one would go back to carry it, and so the road is open still, and the hall is still kept by its watch, facing the wrong way. The Summoners have never sent anything up it since. The Camelot loremasters think they do not need to. Albion's own watch holds it for them."
+    },
+    {
+      "title": "Relieved of the Post",
+      "text": "The first company to bring Lord Gildas down was led by his grand-niece.\n\nDame Morwen Penhallow was a knight of Castle Sauvage, as Gildas had been a squire there, and she had grown up with the Constable's letter of appointment framed in the hall at Penhallow and the poleaxe gone from the hearth. When she was old enough she burned the letter and asked the Constable for leave to take a company down the Pennine road. She went with the first company that cleared the hall after Magus Alun's companies broke Aidon, six companies in all, and she insisted that the officers be killed in the order the watch's own customs would have relieved them: Lady Darra first, then the captains one by one, then the lieutenants and sergeants, and the lord last.\n\nShe fought him herself at the lowest point. When he cast down his shield and took up the poleaxe, she called out to him in the words of the frontier's formula of relief, the words a captain says to a man at his post when the watch changes: you are relieved, my lord. Go and rest. The company's accounts say he hesitated. Then he fought on, harder, because a dead man cannot accept relief from a stranger, and she was a stranger to him. When he fell, he said what he always says: relieved of my post, at last.\n\nWhat he wants is that: relief. If the watch is never relieved, the Inconnu say, the road stays the Summoners' and Albion's own dead hold it for them, and the realm's oldest shame from the frontier wars goes on kept forever by the best soldiers it ever had. Morwen goes back every spring. She says she will keep going until he recognises her."
+    }
+  ]
+}

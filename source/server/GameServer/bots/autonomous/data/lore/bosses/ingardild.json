@@ -1,0 +1,117 @@
+{
+  "id": "ingardild",
+  "name": "Ingardild",
+  "npcNames": [
+    "Ingardild"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "geirolf",
+      "relation": "the spear-wolf of the next armguard camp, her rival"
+    },
+    {
+      "id": "steinolf",
+      "relation": "the runner, whose western stopping place is beside her camp"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Ingardild is a level-52 or -55 drakulv among drakulv armguards in the west of Malmohus (706637, 998596); one of Steinolf's four spawn places (705562, 999511) is about a thousand units from her.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60162426)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Ingardild looks like a woman's name built on Old Norse 'hildr' (battle), perhaps from Ingigerdr or Ingihildr; to verify.",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "The armguards are the drakulv who hold the camps, and in the west of Malmohus there are two camps of them within sight of each other. One answers to Geirolf. The other answers to Ingardild, and the svartalfar say there has not been a winter in living memory when the two were not quarrelling.\n\nHer name has a woman's ending, a battle-name of the kind Midgard's own families give their daughters, and the beam-cutters of Svarhamr say she took it from a woman of the last steadings: a farmwife who stayed when her household walked north to Fort Atla with their doors on their backs, and held her steading's yard against the drakulv for three days with a hay-fork. The drakulv killed her, and the one who killed her asked the hollow for her name instead of a name of its own. The hollow, which liked the request, gave it.\n\nThe quarrel with Geirolf is about the runner. Steinolf goes between the camps and tells each what the court thinks, and in the west he stops beside Ingardild's fires, never Geirolf's. Geirolf's armguards say this is because Ingardild flatters the court. Ingardild's say it is because Geirolf's holding is the larger and louder and a runner cannot hear himself think there. The svartalfar say both are true and that the two camps have fought three times over it, once so badly that Svarhamr cut four names in a single night and none of them was killed by anyone of Midgard.\n\nShe keeps the farmwife's habit, the svartalfar say. Her armguards stand in a ring around a patch of the ruins as if it were a yard, and she will not leave it to chase anything beyond, and anything that comes into it she meets with all her armguards at once.",
+  "legend": "Ingardild is a named drakulv in the west of Malmohus with a few drakulv armguards around her; she rolls level 52 or 55. No special abilities, not CC-immune, but Pack Drakulv, and the armguards are right there, so expect them when you hit her. Armguards are only 44-51, so a 50 group can take the lot; pull her out with range if you want it cleaner. Watch for Steinolf: one of his four spawn spots is a thousand units from her, and Geirolf's big armguard camp is close too. There's no quest here; people kill her on the way to the bigger names in the south.",
+  "yells": {
+    "aggro": [
+      "Out of my yard!",
+      "Armguards! The yard!",
+      "I held this ground before I had a name. I hold it now."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Three days she held it. I can hold it longer."
+      }
+    ],
+    "death": [
+      "The yard... is open...",
+      "Give the name... to someone stubborn..."
+    ],
+    "slay": [
+      "Off my ground.",
+      "The yard keeps its own.",
+      "Not past the ring."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Armguards in a ring, as if round a farmyard.",
+      "A drakulv yard in the west. Keep out of it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ingardild's armguards close the ring."
+      }
+    ],
+    "realmFirstKill": "Ingardild falls. Her yard stands open."
+  },
+  "botLines": {
+    "briefing": [
+      "ingardild has armguards round her, they'll come",
+      "she's 52 or 55, armguards are only mid 40s",
+      "pull with range if you can",
+      "geirolfs camp is next door, dont drift"
+    ],
+    "aftermathWin": [
+      "ingardild and her armguards down",
+      "easy enough with a full group",
+      "no steinolf this time",
+      "yard cleared"
+    ],
+    "aftermathLoss": [
+      "steinolf was up at the spot next to her",
+      "drifted into geirolfs camp",
+      "the whole ring came",
+      "she was the 55 one"
+    ],
+    "rumour": [
+      "ingardild took her name from a farmwife who held her yard three days with a hayfork",
+      "ingardild and geirolf quarrel over which camp the runner stops at",
+      "the west camps once killed four of each other in a night",
+      "her armguards stand in a ring like a farmyard"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ingardild",
+    "text": "Captain of one of the two western armguard camps, named for a farmwife who held her yard. She quarrels with [Geirolf] over the runner [Steinolf]. See [the names]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: there is a night on the beam with four names cut together, two of Geirolf's armguards and two of Ingardild's, and no Midgard mark beside any of them. My teacher cut them. She said she stood on the wall and listened to it, the two western camps tearing at each other over a runner, and thought how glad she was, and then thought that we svartalfar of Svarhamr had once quarrelled the same way over a foreman's chair, before the cold came, and was not glad any more.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Ingardild's yard in western Malmohus in {minutes} minutes.",
+    "loss": "Ingardild's armguards held their yard against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

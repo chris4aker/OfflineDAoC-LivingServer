@@ -1,0 +1,628 @@
+{
+ "about": "Boss script class -> add script classes, and -> partner encounters (lower case), from docs/encounters/epic-encounters.json. Written by tools/lore/build_encounter_adds.py; do not edit.",
+ "adds": {
+  "abomossoultrapper": [
+   "abomosadd"
+  ],
+  "aidonthearchwizard": [
+   "aidoncopyair",
+   "aidoncopyearth",
+   "aidoncopyfire",
+   "aidoncopyice"
+  ],
+  "albgolestandt": [
+   "golestandtmessenger",
+   "golestandtspawnedadd"
+  ],
+  "amphiptere": [
+   "amphiptereadds"
+  ],
+  "anurigunda": [
+   "anurigundaadds"
+  ],
+  "apocalypse": [
+   "harbringeroffate",
+   "rainoffire"
+  ],
+  "aroon": [
+   "bruscaith",
+   "corpscaith",
+   "damhnascaith",
+   "fuarscaith",
+   "fuinneamgscaith",
+   "ropadhscaith",
+   "scorscaith",
+   "spioradscaith",
+   "taesscaith"
+  ],
+  "badb": [
+   "badbwraith"
+  ],
+  "balere": [
+   "balereadd"
+  ],
+  "balor": [
+   "baloreye"
+  ],
+  "beliathan": [
+   "beliathanminion"
+  ],
+  "bellum": [
+   "morbus",
+   "warincarnatecrush",
+   "warincarnateslash",
+   "warincarnatethrust"
+  ],
+  "beransupplymaster": [
+   "barrelexplosive"
+  ],
+  "blacklady": [
+   "ancientblackoak",
+   "ogress"
+  ],
+  "blight": [
+   "fireblight",
+   "fleshblight",
+   "lateblight"
+  ],
+  "blightcontroller": [
+   "blight"
+  ],
+  "bluelady": [
+   "blueladyaxeadd",
+   "blueladyswordadd"
+  ],
+  "cailean": [
+   "walkingtree",
+   "walkingtree2"
+  ],
+  "cailleachuragaig": [
+   "torchoflight"
+  ],
+  "colialt": [
+   "colialtadds"
+  ],
+  "cronwort": [
+   "breanwort"
+  ],
+  "curengkur": [
+   "curengkurnest"
+  ],
+  "debensegecynde": [
+   "debenfighter",
+   "debenmage"
+  ],
+  "develin": [
+   "develinadd"
+  ],
+  "draargusmighty": [
+   "draugynsphere"
+  ],
+  "dremcisfuiloltair": [
+   "beomarbhan",
+   "fuilslathach"
+  ],
+  "earthprimal": [
+   "guardianearthmender",
+   "magicalearthmender",
+   "naturalearthmender",
+   "shadowyearthmender"
+  ],
+  "evern": [
+   "evernfairy"
+  ],
+  "fames": [
+   "bellum"
+  ],
+  "fireprimal": [
+   "trailoffire"
+  ],
+  "fornfrusenen": [
+   "fornfrusenenshard"
+  ],
+  "fuladl": [
+   "fuladladd"
+  ],
+  "fulafeallan": [
+   "fulafeallanadd"
+  ],
+  "funus": [
+   "apocalypse"
+  ],
+  "ghostofcaithor": [
+   "caithor"
+  ],
+  "giantsporitecluster": [
+   "gscadds"
+  ],
+  "gnat": [
+   "gnatants"
+  ],
+  "gneiss": [
+   "gneissadd"
+  ],
+  "grandsummonergovannon": [
+   "shadeofaelfgar",
+   "summoneddemon",
+   "summonedsacrifice"
+  ],
+  "greenmaw": [
+   "greenmawadd",
+   "greenmawadd2",
+   "greenmawadd3"
+  ],
+  "guthlac": [
+   "frozenbomb"
+  ],
+  "hakr": [
+   "hakradd"
+  ],
+  "hibcuuldurach": [
+   "cuuldurachmessenger",
+   "cuuldurachspawnedadd"
+  ],
+  "highlordbaln": [
+   "balnminion"
+  ],
+  "hjalmar": [
+   "morkimma"
+  ],
+  "hjalmarsuttungcontroller": [
+   "hjalmar",
+   "suttung"
+  ],
+  "jailer": [
+   "jaileradd"
+  ],
+  "kieracdestroyer": [
+   "masterofpain"
+  ],
+  "kontarcorrupt": [
+   "corruptorbodyguard"
+  ],
+  "krevoricik": [
+   "krevoladd"
+  ],
+  "kvasir": [
+   "tunnels"
+  ],
+  "ladydarra": [
+   "spectralpaladin"
+  ],
+  "legion": [
+   "legionadd"
+  ],
+  "lichlordilron": [
+   "ilronimages"
+  ],
+  "loken": [
+   "lokenwolf"
+  ],
+  "lordsanguis": [
+   "bloodmage",
+   "lichlordsanguis"
+  ],
+  "luriquay": [
+   "flamenormal"
+  ],
+  "melancholicfairyqueen": [
+   "mfqguards"
+  ],
+  "midgjalpinulva": [
+   "gjalpinulvamessenger",
+   "gjalpinulvaspawnedadd"
+  ],
+  "mokkurvalve": [
+   "mokkurvalveadds"
+  ],
+  "mollunero": [
+   "molluneroadd"
+  ],
+  "morbus": [
+   "funus",
+   "morbusswarm"
+  ],
+  "morgana": [
+   "bechard",
+   "demonicminion",
+   "silcharde"
+  ],
+  "myrddraxis": [
+   "myrddraxisfifthhead",
+   "myrddraxisfourthhead",
+   "myrddraxissecondhead",
+   "myrddraxisthirdhead"
+  ],
+  "nosdoden": [
+   "ghostskeletalcommander",
+   "ghostspiritchampion",
+   "nosdodenghostadd",
+   "nosdodensummonedadds",
+   "skeletalcommanderhealer"
+  ],
+  "ofgreenknight": [
+   "gktrees"
+  ],
+  "olcasargeomancer": [
+   "ogadds"
+  ],
+  "olcasgean": [
+   "olcasgean2",
+   "olcasgeaneffect",
+   "waterfallantipass"
+  ],
+  "olcasgeaninitializator": [
+   "airprimal",
+   "earthprimal",
+   "fireprimal",
+   "vortex",
+   "waterprimal"
+  ],
+  "oona": [
+   "oonaundeadadd"
+  ],
+  "organicenergymechanism": [
+   "oemadd"
+  ],
+  "orshom": [
+   "orshomfire"
+  ],
+  "otrygg": [
+   "otryggadd"
+  ],
+  "princessnahemah": [
+   "nahemahminion"
+  ],
+  "queenqunilaria": [
+   "qunilariaadd",
+   "qunilariaadd2"
+  ],
+  "redlady": [
+   "specialinnocent"
+  ],
+  "rift": [
+   "morkenhet"
+  ],
+  "rotoddjur": [
+   "rotoddjuradd"
+  ],
+  "scurceolhyrde": [
+   "lyftmihtfour",
+   "lyftmihtone",
+   "lyftmihtthree",
+   "lyftmihttwo"
+  ],
+  "sisterblythe": [
+   "fallenexecutioner"
+  ],
+  "soulreckoner": [
+   "reckonedsoul"
+  ],
+  "spectralprovisionerspawner": [
+   "spectralprovisioner"
+  ],
+  "spindlerbroodmother": [
+   "sbadds",
+   "sbdeadadds"
+  ],
+  "spiritmasteraros": [
+   "spiritmasterarospet"
+  ],
+  "steinvor": [
+   "effectmob",
+   "hrimthursaseer"
+  ],
+  "summonerlossren": [
+   "explodeundead",
+   "torturedsouls"
+  ],
+  "syssroruthless": [
+   "pitmonster"
+  ],
+  "teazanodwc": [
+   "teazanodwcadd"
+  ],
+  "torst": [
+   "torsteddies"
+  ],
+  "ulfketill": [
+   "ulfketilladds"
+  ],
+  "valnirmordeth": [
+   "valnirmordethadd"
+  ],
+  "vortanos": [
+   "vortanosadd"
+  ],
+  "xaga": [
+   "beatha",
+   "tine"
+  ],
+  "xanxicar": [
+   "xanxicarianchampion"
+  ],
+  "yar": [
+   "yaradd",
+   "yaradd2",
+   "yaradd3"
+  ],
+  "zytka": [
+   "zytkaadd"
+  ]
+ },
+ "partners": {
+  "airprimal": [
+   "earthprimal",
+   "fireprimal",
+   "olcasgean",
+   "olcasgean2",
+   "waterprimal"
+  ],
+  "apocalypse": [
+   "bellum",
+   "fames",
+   "funus",
+   "morbus"
+  ],
+  "beatha": [
+   "tine",
+   "xaga"
+  ],
+  "behemoth": [
+   "legion"
+  ],
+  "bellum": [
+   "apocalypse",
+   "fames",
+   "funus",
+   "morbus"
+  ],
+  "beomarbhan": [
+   "dremcisfuiloltair"
+  ],
+  "birghir": [
+   "guthlac"
+  ],
+  "blightcontroller": [
+   "blight"
+  ],
+  "dremcisfuiloltair": [
+   "beomarbhan"
+  ],
+  "earthprimal": [
+   "airprimal",
+   "fireprimal",
+   "olcasgean",
+   "olcasgean2",
+   "waterprimal"
+  ],
+  "fames": [
+   "apocalypse",
+   "bellum",
+   "funus",
+   "morbus"
+  ],
+  "fireprimal": [
+   "airprimal",
+   "earthprimal",
+   "olcasgean",
+   "olcasgean2",
+   "waterprimal"
+  ],
+  "funus": [
+   "apocalypse",
+   "bellum",
+   "fames",
+   "morbus"
+  ],
+  "guthlac": [
+   "birghir"
+  ],
+  "highlordoroclone": [
+   "highlordoro"
+  ],
+  "hjalmar": [
+   "suttung"
+  ],
+  "hjalmarsuttungcontroller": [
+   "hjalmar",
+   "suttung"
+  ],
+  "hurika": [
+   "torst"
+  ],
+  "jehrogbysen": [
+   "ulorbysen"
+  ],
+  "kieracdestroyer": [
+   "masterofpain"
+  ],
+  "kingtuscar": [
+   "queenkula"
+  ],
+  "legion": [
+   "behemoth"
+  ],
+  "lichlordsanguis": [
+   "lordsanguis"
+  ],
+  "lordsanguis": [
+   "lichlordsanguis"
+  ],
+  "masterofpain": [
+   "kieracdestroyer"
+  ],
+  "morbus": [
+   "apocalypse",
+   "bellum",
+   "fames",
+   "funus"
+  ],
+  "nokkvi": [
+   "vagn"
+  ],
+  "norsobannihilator": [
+   "sarganconqueror"
+  ],
+  "olcasgean": [
+   "airprimal",
+   "earthprimal",
+   "fireprimal",
+   "olcasgean2",
+   "waterprimal"
+  ],
+  "olcasgean2": [
+   "airprimal",
+   "earthprimal",
+   "fireprimal",
+   "olcasgean",
+   "waterprimal"
+  ],
+  "olcasgeaninitializator": [
+   "airprimal",
+   "earthprimal",
+   "fireprimal",
+   "olcasgean",
+   "olcasgean2",
+   "waterprimal"
+  ],
+  "orshom": [
+   "orylle"
+  ],
+  "orylle": [
+   "orshom"
+  ],
+  "queenkula": [
+   "kingtuscar"
+  ],
+  "sarganconqueror": [
+   "norsobannihilator"
+  ],
+  "skuf": [
+   "steinvor"
+  ],
+  "spectralprovisionerspawner": [
+   "spectralprovisioner"
+  ],
+  "steinvor": [
+   "skuf"
+  ],
+  "suttung": [
+   "hjalmar"
+  ],
+  "tine": [
+   "beatha",
+   "xaga"
+  ],
+  "torst": [
+   "hurika"
+  ],
+  "ulorbysen": [
+   "jehrogbysen"
+  ],
+  "vagn": [
+   "nokkvi"
+  ],
+  "waterprimal": [
+   "airprimal",
+   "earthprimal",
+   "fireprimal",
+   "olcasgean",
+   "olcasgean2"
+  ],
+  "wrethofwinterarachite": [
+   "wrethofwintercrab",
+   "wrethofwinterice",
+   "wrethofwinterjotun",
+   "wrethofwinterlich",
+   "wrethofwinterogre",
+   "wrethofwinterraumarik",
+   "wrethofwinterscorp",
+   "wrethofwinterspider"
+  ],
+  "wrethofwintercrab": [
+   "wrethofwinterarachite",
+   "wrethofwinterice",
+   "wrethofwinterjotun",
+   "wrethofwinterlich",
+   "wrethofwinterogre",
+   "wrethofwinterraumarik",
+   "wrethofwinterscorp",
+   "wrethofwinterspider"
+  ],
+  "wrethofwinterice": [
+   "wrethofwinterarachite",
+   "wrethofwintercrab",
+   "wrethofwinterjotun",
+   "wrethofwinterlich",
+   "wrethofwinterogre",
+   "wrethofwinterraumarik",
+   "wrethofwinterscorp",
+   "wrethofwinterspider"
+  ],
+  "wrethofwinterjotun": [
+   "wrethofwinterarachite",
+   "wrethofwintercrab",
+   "wrethofwinterice",
+   "wrethofwinterlich",
+   "wrethofwinterogre",
+   "wrethofwinterraumarik",
+   "wrethofwinterscorp",
+   "wrethofwinterspider"
+  ],
+  "wrethofwinterlich": [
+   "wrethofwinterarachite",
+   "wrethofwintercrab",
+   "wrethofwinterice",
+   "wrethofwinterjotun",
+   "wrethofwinterogre",
+   "wrethofwinterraumarik",
+   "wrethofwinterscorp",
+   "wrethofwinterspider"
+  ],
+  "wrethofwinterogre": [
+   "wrethofwinterarachite",
+   "wrethofwintercrab",
+   "wrethofwinterice",
+   "wrethofwinterjotun",
+   "wrethofwinterlich",
+   "wrethofwinterraumarik",
+   "wrethofwinterscorp",
+   "wrethofwinterspider"
+  ],
+  "wrethofwinterraumarik": [
+   "wrethofwinterarachite",
+   "wrethofwintercrab",
+   "wrethofwinterice",
+   "wrethofwinterjotun",
+   "wrethofwinterlich",
+   "wrethofwinterogre",
+   "wrethofwinterscorp",
+   "wrethofwinterspider"
+  ],
+  "wrethofwinterscorp": [
+   "wrethofwinterarachite",
+   "wrethofwintercrab",
+   "wrethofwinterice",
+   "wrethofwinterjotun",
+   "wrethofwinterlich",
+   "wrethofwinterogre",
+   "wrethofwinterraumarik",
+   "wrethofwinterspider"
+  ],
+  "wrethofwinterspider": [
+   "wrethofwinterarachite",
+   "wrethofwintercrab",
+   "wrethofwinterice",
+   "wrethofwinterjotun",
+   "wrethofwinterlich",
+   "wrethofwinterogre",
+   "wrethofwinterraumarik",
+   "wrethofwinterscorp"
+  ],
+  "xaga": [
+   "beatha",
+   "tine"
+  ]
+ }
+}

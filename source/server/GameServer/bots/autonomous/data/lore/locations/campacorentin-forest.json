@@ -1,0 +1,364 @@
+{
+  "id": "campacorentin-forest",
+  "name": "Campacorentin Forest",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    8
+  ],
+  "aliases": [
+    "campacorentin",
+    "campa",
+    "the old wood"
+  ],
+  "summary": "Albion's oldest wood: Caer Ulfwych and its hospice, the Lethantis Association, the Keltoi Fogou, the grove-folk, and a forest full of goblins, ogres, druids and the dead.",
+  "facts": [
+    {
+      "text": "Campacorentin Forest is zone 8 of region 1, with Caer Ulfwych, Campacorentin Station and the Lethantis Association, the Keltoi Fogou entrance and about 1,860 monsters.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 8 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Its factions include Sylvan Goblins, Spriggarns, the druids of southern Albion, wood ogres, the Ancient Grove (oak men), undead knights (ghostly knights, phantom pages and the Pixie Queen) and the Green Witch's mindless minions.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 8 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Heretical Hermit quest: Sirelian, once a student at the Lethantis Association, learned black magic from Morgana, was spurned by her and lives as a hermit in Campacorentin Forest.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Quests name Ciraron Webweaver (a slow spawn among the bloated spiders), Granddaddy Longlegs (rare, just north of Keltoi Fogou), Elithralia Nodith (next to the fogou), the Pixie Queen (south of the road to Avalon Marsh), Urfgrat the Green (between the goblin and ogre camps), the Oaken Knight, Ormgarth (north-east of the Ring of Sentasil, with a dozen snakes) and the Green Witch (a wizard-locked box).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Gral Bermorn reads the ley atop Caer Ulfwych (Weakened Bonds); the Lethantis house has platforms used in Arc of Ages.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Mythic: Keltoi Fogou in Campacorentin Forest is used by the Keltoi for initiations, teaching and rites.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=24"
+    },
+    {
+      "text": "Real-world: a verderer is an officer of a royal forest; a fogou is an underground passage of Iron Age Cornwall; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fogou"
+    },
+    {
+      "text": "Bleddri the verderer and his book, the grove's tally of taken trees, the society older than the Academy, the Pixie Queen's pact with the dead knights, Grizzletooth taken from a trap, Urfgrat as the ogres' lucky go-between, Ormgarth as a society outcast and the hermit who answers with questions are Living Server writing; the hospice of Caer Ulfwych and its customs come from the other Albion files.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The old wood. Campacorentin is the oldest forest in Albion, and the realm has been cutting it for as long as there has been a realm. Its oaks went into Arthur's hall and into half the doors of Cotswold; the joiners of the king's hills still walk down every autumn to choose the trees they will want next winter. The forest did not mind the cutting for a long time. The Keltoi kept their holiest place under its south-eastern corner, the fogou where their priests still chant, and the grove-folk of the old wood kept the rest: the dryads who sleep in the trees, the oak men who are trees that have learned to walk, the fellwood, and the old elder of the fellwood who stands in a clearing of the north-eastern wood and has not moved in the memory of anyone at Caer Ulfwych. The verderers of the forest say the grove keeps a tally of every tree the realm has taken, and that one day it will ask for them back.\n\nThe castle, the station and the society. Three places of the realm stand in the forest. Caer Ulfwych is the oldest, a castle on the river in the middle of the wood, and its hospice of the sisters is older than its walls: the sisters nursed the plague when the towns would not, and they send their sisters to the frontier with four knights each, and the prioress keeps her three customs still. Gral Bermorn climbs to the top of the castle every evening to read the lines of the ley that run south to the Plains. In the north-west, Campacorentin Station keeps the road and its trainers, and beside it the Lethantis Association keeps its rooms: a society of mages older than the Academy, the magi say, though the Academy says the reverse, with a tall house of platforms where its members stand at the turnings of the year to watch the sky. Olorustos keeps the society's door and knows more about Merlin than he will say to anyone not sent by Lady Nimue.\n\nWhat went wrong. The society took a student called Sirelian who was cleverer than his masters and hungrier, and who found his way, nobody knows how, to Morgana's own teaching. He learned what she would give him, and then she would give him no more, and spurned him; he lives in the forest now as a hermit and a dead thing, among the undead druids of the north-east. He was the first of the forest's troubles and not the worst. The sylvan goblins came into the wood from the west and built their camps near the castle, and the wood ogres came with them or after them, with a lord and seers and scourges. A company of knights who rode into the forest in the old wars died in a ruin east of Caer Ulfwych and are still keeping it, with their pages, and the Pixie Queen of the southern wood has made her peace with them, which the faeries of every other wood find shocking. A Green Witch in the eastern forest keeps mindless men about her and a wizard's box she should not have. And the druids of southern Albion, who had prayed in Campacorentin since before the Keltoi, began, after the diggers opened the Plains, to sacrifice in it.\n\nWhat lives there now. The forest is busy and dangerous and full of the realm's young, who come down from the station to learn the wood as their fathers did. Bloated spiders hang in the eastern trees, and one of them, Ciraron Webweaver, spins a web the society would pay for. Lions hunt the east, a black pride among them. Will o' wisps lead travellers into the western bogs. A hermit who was not always a hermit keeps two wolves in the south-west. The fellwood walk at night. And the Waleldens of Caer Ulfwych, a fletcher and his wife who makes jewels for nobles, send the brave out for eyes: a leaper's, a basilisk's and the eye of the great spider north of the fogou.\n\nWhy it matters to Albion. Campacorentin feeds the realm's carpenters and its sick. Its oak makes Albion's doors and its hospice makes Albion's nurses, and the sisters of Caer Ulfwych have buried more of the realm's knights than any other house in the land. The verderers say that when the grove asks for its trees back, it will ask the castle first.",
+  "legend": "Campacorentin Forest is the big wood south-west of Salisbury, levels 15 to 30. Campacorentin Station and the Lethantis Association in the north-west have trainers, a teleporter and a lot of quests (Olorustos, Mairi Ralilden, Kealan); Caer Ulfwych in the middle has more trainers, the healer and Gral Bermorn's ley-line chain. Keltoi Fogou is in the south-east corner. Good camps: sylvan goblins and wood ogres around Caer Ulfwych, oak men in the north-east, ghostly knights at the ruin east of the castle, bloated spiders in the east. Ciraron Webweaver is a slow spawn among the bloated spiders; Granddaddy Longlegs is just north of the fogou and also rare. Sirelian the hermit is in the north-east with the undead druids. The Green Witch in the east has mindless minions all round her. Ormgarth comes with a dozen snakes, so do not pull him alone. Elithralia Nodith stands by the fogou door. The Pixie Queen is south of the road toward Avalon Marsh and the ghostly knights count her as one of theirs. Will o' wisps in the west are a Cloak of Shades component.",
+  "atmosphere": {
+    "firstEntry": [
+      "Campacorentin. The oldest wood in Albion.",
+      "Oaks older than the realm. Some of them walk.",
+      "Chanting under the roots, far off.",
+      "Smoke from goblin fires between the trees.",
+      "The forest is counting. It has always counted."
+    ],
+    "areas": [
+      {
+        "name": "Caer Ulfwych",
+        "x": 521295,
+        "y": 617155,
+        "z": 1793,
+        "radius": 2000,
+        "lines": [
+          "Caer Ulfwych. The sisters' hospice, and its walls.",
+          "Gral Bermorn climbs the castle to read the ley.",
+          "Bed-lengths apart, bitter herb first. The customs."
+        ]
+      },
+      {
+        "name": "the Lethantis Association",
+        "x": 497482,
+        "y": 587753,
+        "z": 4154,
+        "radius": 1750,
+        "lines": [
+          "The Lethantis Association. Older than the Academy?",
+          "Olorustos keeps the door. He knows of Merlin.",
+          "Platforms high on the house, for watching the sky."
+        ]
+      },
+      {
+        "name": "Campacorentin Station",
+        "x": 493703,
+        "y": 592523,
+        "z": 1808,
+        "radius": 1750,
+        "lines": [
+          "Campacorentin Station. The forest road starts here.",
+          "Archibald Oakheart asks after a lost dagger."
+        ]
+      },
+      {
+        "name": "the fogou door",
+        "x": 544022,
+        "y": 635904,
+        "z": 1800,
+        "radius": 1300,
+        "lines": [
+          "The Keltoi Fogou. Chanting under the roots.",
+          "Elithralia Nodith keeps the door. She says so."
+        ]
+      },
+      {
+        "name": "the spider wood north of the fogou",
+        "x": 532328,
+        "y": 628632,
+        "z": 1800,
+        "radius": 1200,
+        "lines": [
+          "Webs as wide as a cart. Granddaddy Longlegs.",
+          "Legs in the dark between the trees."
+        ]
+      },
+      {
+        "name": "the bloated wood",
+        "x": 534613,
+        "y": 610429,
+        "z": 1800,
+        "radius": 1500,
+        "lines": [
+          "Bloated spiders in every tree.",
+          "Ciraron Webweaver spins, slow and patient."
+        ]
+      },
+      {
+        "name": "the knights' ruin",
+        "x": 531489,
+        "y": 609651,
+        "z": 1800,
+        "radius": 1500,
+        "lines": [
+          "Ghostly knights keep the ruin. Their pages too.",
+          "Armour rattles. No one is wearing it."
+        ]
+      },
+      {
+        "name": "the hermit's hollow",
+        "x": 535600,
+        "y": 599495,
+        "z": 1800,
+        "radius": 1200,
+        "lines": [
+          "Undead druids. Sirelian the hermit among them.",
+          "Morgana taught him. Then she would not."
+        ]
+      },
+      {
+        "name": "the elder's clearing",
+        "x": 529473,
+        "y": 600108,
+        "z": 1800,
+        "radius": 1000,
+        "lines": [
+          "The Elder Fellwood stands. It has always stood.",
+          "Bark like a face, and the face is listening."
+        ]
+      },
+      {
+        "name": "the oak men's wood",
+        "x": 541409,
+        "y": 590522,
+        "z": 1800,
+        "radius": 2000,
+        "lines": [
+          "Oak men walk the northern edge. The grove's own.",
+          "The Oaken Knight keeps the road's edge."
+        ]
+      },
+      {
+        "name": "the Green Witch's glade",
+        "x": 539085,
+        "y": 621371,
+        "z": 1800,
+        "radius": 1300,
+        "lines": [
+          "Mindless men stand in rows. The Green Witch smiles.",
+          "A wizard's box, locked, in a witch's hands."
+        ]
+      },
+      {
+        "name": "the goblin and ogre camps",
+        "x": 512000,
+        "y": 625000,
+        "z": 1800,
+        "radius": 3500,
+        "lines": [
+          "Sylvan goblins and wood ogres, close to the castle.",
+          "Urfgrat the Green walks between the camps."
+        ]
+      },
+      {
+        "name": "the southern druid camp",
+        "x": 530383,
+        "y": 636990,
+        "z": 1800,
+        "radius": 1300,
+        "lines": [
+          "Aonghas Prirerd's druids at their fires.",
+          "Knives at the stones. Old prayers, new blood."
+        ]
+      },
+      {
+        "name": "the pixie court",
+        "x": 516691,
+        "y": 640274,
+        "z": 1800,
+        "radius": 1300,
+        "lines": [
+          "The Pixie Queen keeps faith with the dead knights.",
+          "Pixie scouts with ghost-pale banners."
+        ]
+      },
+      {
+        "name": "the hermit's wolves",
+        "x": 497300,
+        "y": 628800,
+        "z": 1800,
+        "radius": 1300,
+        "lines": [
+          "A Heretical Hermit and two wolves. Thornpaw growls.",
+          "Grizzletooth watches the path. Teeth like knives."
+        ]
+      },
+      {
+        "name": "the Ring of Sentasil",
+        "x": 503500,
+        "y": 587000,
+        "z": 1800,
+        "radius": 1500,
+        "lines": [
+          "Snakes in the grass by the ring. Ormgarth's snakes.",
+          "An outcast's camp north-east of the ring."
+        ]
+      },
+      {
+        "name": "the wisp bogs",
+        "x": 501483,
+        "y": 620471,
+        "z": 1800,
+        "radius": 2000,
+        "lines": [
+          "Will o' wisps over the bog. Do not follow.",
+          "Swamp rats and slime, and lights that move."
+        ]
+      },
+      {
+        "name": "the black pride",
+        "x": 542000,
+        "y": 607800,
+        "z": 1800,
+        "radius": 1000,
+        "lines": [
+          "Black lions in the eastern grass.",
+          "The pride does not hurry. It does not need to."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "campacorentin is the oldest wood in albion. the oak for camelot came from here",
+      "caer ulfwych's hospice is older than the castle walls",
+      "the lethantis association says its older than the academy. the academy disagrees",
+      "the keltoi fogou is in the se corner of campacorentin",
+      "oak men are trees that learned to walk, [heard|the verderers say]",
+      "the elder fellwood hasnt moved in anyones memory. dont cut near it",
+      "sirelian learned black magic from morgana and she dumped him",
+      "the ghostly knights east of caer ulfwych died in some old war and stayed",
+      "the pixie queen made a pact with the dead knights. the other faeries are ashamed of her",
+      "the sisters at caer ulfwych keep a bed's length between the sick",
+      "gral bermorn reads the ley lines from the top of caer ulfwych",
+      "the verderers say the grove counts every tree we cut and will want them back"
+    ],
+    "rumour": [
+      "[heard|someone said] ciraron webweaver hardly ever comes out. camp the bloated spiders",
+      "heard granddaddy longlegs is rare too, just north of the fogou",
+      "[heard|someone said] grizzletooth was pulled out of a trap as a cub by the hermit",
+      "heard thornpaw would die for the old hermit",
+      "[heard|someone said] the hermit in the sw isnt sirelian. he keeps saying so",
+      "heard elithralia nodith says the fogou door was the nodiths' before the keltoi dug it",
+      "[heard|someone said] urfgrat the green is the only goblin the ogres listen to",
+      "heard aonghas prirerd says every oak we cut is a debt",
+      "[heard|someone said] the oaken knight keeps the road edge like a bridge",
+      "heard ormgarth walks with a dozen snakes. never pull him solo",
+      "[heard|someone said] the green witch has a box that might say where merlin went",
+      "heard the pixie queen's scouts carry pale banners for the dead knights",
+      "[heard|someone said] the elder fellwood's bark moves like a face",
+      "heard sirelian walks with the dead druids in the ne now"
+    ],
+    "tell": [
+      "campacorentin? the big forest sw of salisbury. caer ulfwych in the middle",
+      "is it hard? 15 to 30. goblins, ogres, spiders, druids. watch the ghostly knights",
+      "whats there? caer ulfwych, the lethantis association, keltoi fogou, tons of camps",
+      "ciraron is in the bloated spider wood east of caer ulfwych. slow spawn",
+      "granddaddy longlegs is just north of the fogou. elithralia's at the fogou door",
+      "sirelian is ne with the undead druids. the elder fellwood is in a clearing near there",
+      "the pixie queen is south of the road toward avalon marsh",
+      "urfgrat walks between the goblin and ogre camps by caer ulfwych",
+      "aonghas prirerd is at the druid camp in the southern wood",
+      "oaken knight is at the forest's northern edge by the road",
+      "ormgarth is ne of the ring of sentasil near the station. bring friends for the snakes",
+      "the hermit with thornpaw and grizzletooth is in the sw",
+      "green witch is in the eastern wood with her mindless minions"
+    ]
+  },
+  "loremaster": {
+    "intro": "Campacorentin, the old wood. Ask of [caer ulfwych] and [gral bermorn], of the [lethantis] society and [olorustos], of the [station], of the [grove] and the [keltoi fogou], of the [knights' ruin], or of the forest's own: the [pixie queen], [ciraron webweaver], [granddaddy longlegs], [sirelian], the [heretical hermit] and his wolves [thornpaw] and [grizzletooth], the [elder fellwood], [elithralia nodith], [urfgrat the green], [aonghas prirerd], the [oaken knight], [ormgarth] and the [green witch].",
+    "topics": {
+      "caer ulfwych": "The castle on the river in the middle of the forest, with the hospice of the sisters older than its walls. Captain Falron keeps the garrison, Brother Eurius the sick, and [gral bermorn] the ley. The sisters keep their prioress's three customs and send their own to the frontier with four knights.",
+      "gral bermorn": "A reader of the ley who climbs to the top of Caer Ulfwych every evening and watches the lines run south to the Plains. He says Archdruid Glasan is weakening the bonds of the barrows' dead ring by ring.",
+      "lethantis": "The Lethantis Association, a society of mages by Campacorentin Station, older than the Academy by its own account. Its house has high platforms where members stand at the turnings of the year. [olorustos] keeps the door. Its worst pupil was [sirelian].",
+      "olorustos": "Keeper of the Lethantis Association's door, who knows more about Merlin than he will tell anyone not sent by Lady Nimue, and who wants Ormgarth dead for reasons of his own.",
+      "station": "Campacorentin Station keeps the north-western road with its trainers, Kealan and Archibald Oakheart, who asks after the dagger Lisreen and the heart of an ebony fellwood.",
+      "grove": "The grove-folk of the old wood: dryads who sleep in the trees, the oak men who are trees that learned to walk, the fellwood and the [elder fellwood]. The verderers say the grove keeps a tally of every tree the realm has taken.",
+      "keltoi fogou": "The Keltoi's holiest place, under the south-eastern corner of the forest, where their priests still chant; [elithralia nodith] keeps its door.",
+      "knights' ruin": "A ruin east of Caer Ulfwych where a company of knights died in an old war and still keep watch with their pages. The [pixie queen] keeps faith with them.",
+      "pixie queen": "The Pixie Queen holds the faerie court of the southern wood, south of the road from Caer Ulfwych to Avalon Marsh, and has made a pact with the dead knights of the ruin east of the castle: her court will not fight the knights' dead, and the dead will not fight her court, and her scouts carry pale banners in their honour. She has a purple spell scroll stolen from Vadri Pade's Magic Shoppe. The faeries of every other wood in Albion are ashamed of her.",
+      "ciraron webweaver": "Ciraron Webweaver is a spinner of the bloated wood east of Caer Ulfwych, among the bloated spiders but not quite one of them, and it is slow to come out: the verderers say days can pass with no sign of it. Its webs hold an opaque glass disc that Fianya Walelden needs for an amulet, and the Lethantis Association would pay for the silk alone. Nobody has ever seen it hurry.",
+      "grizzletooth": "Grizzletooth is the greater of the two wolves who walk the paths of the hermit in the south-west, grey in the muzzle and broad as a pony. The verderers say the hermit found him as a cub in a trap and took him out of it with his hands, and that Grizzletooth has never let anyone else near the hut since. He watches the path. Thornpaw is the one who growls.",
+      "sirelian": "Sirelian was a student of the Lethantis Association, the cleverest it ever had, who found his way to Morgana's teaching and learned black magic from her until she spurned him. He came back to Campacorentin with no masters left and lives as a hermit among the undead druids of the north-east, dead himself, or near enough. Aiellana of Adribard's Retreat wants him eliminated. The society does not speak his name.",
+      "thornpaw": "Thornpaw is the lesser of the hermit's two wolves in the south-west, a lean black wolf who growls at everything and walks the hermit's paths ahead of Grizzletooth. The verderers say he is the hermit's own sworn beast, bound to him by whatever wrong faith the hermit keeps, and that he would die for the old man before he let a stranger reach the hut.",
+      "elder fellwood": "The Elder Fellwood stands in a clearing of the north-eastern wood and has not moved in the memory of anyone at Caer Ulfwych. It is the eldest of the fellwood, and the walking trees bow to it when they pass. Bleddri the verderer says its bark moves like a face that is listening, and that he will not cut within a mile of it. The grove-folk say it keeps the tally.",
+      "elithralia nodith": "Elithralia Nodith is a druid who keeps the door of the Keltoi Fogou in the south-east, and she has a blue spell scroll stolen from Vadri Pade's Magic Shoppe. Her kinswoman Zelsania keeps a camp in the north-west of Salisbury Plains. The Nodith women have been druids since before the Romans, they say, and Elithralia says the fogou's door was theirs to keep before the Keltoi dug it.",
+      "granddaddy longlegs": "Granddaddy Longlegs is a great spider of the wood just north of the Keltoi Fogou, rare and slow to show himself, with legs like a cart's shafts and eyes that the Waleldens of Caer Ulfwych want for a noble's jewel. The verderers say he has been in that wood longer than the fogou has had a door, and that the Keltoi priests leave him alone because he leaves them alone.",
+      "urfgrat the green": "Urfgrat the Green is a sylvan goblin who walks with his cronies between the goblin camp and the ogre camp near Caer Ulfwych, carrying messages and trade, and Dugan Advien's carving kit, which he stole and cannot use. The goblins say he is the only one of them the ogres will listen to, because he is green all through and the ogres think that is lucky.",
+      "aonghas prirerd": "Aonghas Prirerd leads the druids at the camp in the southern wood, where the knives come out at the stones. He is a druid of southern Albion of the old line, and he says the forest's grove and the druids' faith were one thing before the realm came with its axes, and that every oak taken from Campacorentin is a debt the druids are collecting.",
+      "oaken knight": "The Oaken Knight is the eldest of the oak men of the forest's northern edge, a walking tree that keeps the side of the road as a knight keeps a bridge. Calya, the apprentice smith of Caer Ulfwych, wants bark from him for a pair of oaken boots; the verderers say he gives none willingly. The oak men walk the edge as if waiting for someone to come out of the wood.",
+      "ormgarth": "Ormgarth is an outcast who keeps a camp north-east of the Ring of Sentasil and never walks alone: a dozen snakes go with him. Olorustos of the Lethantis Association wants him killed and will not say what Ormgarth did to the society. The station's guards say he was a member once, of a sort, and that the snakes were his studies.",
+      "heretical hermit": "A hermit of some wrong faith keeps a hut in the south-west of the forest with two great wolves, Thornpaw and Grizzletooth, who walk his paths for him. He is not Sirelian, he tells every traveller, and the verderers believe him. He does not say what he is instead, and the sisters of Caer Ulfwych, who have tried, say he answers every question about his god with a question about theirs.",
+      "green witch": "The Green Witch keeps a glade in the eastern wood with mindless men about her, standing in rows. She has a wizard-locked box that Magess Islia of Merlin's house wants back, because it may hold word of where Merlin went; Lady Nimue sends the young to fetch it. The witch says she found the box. The mindless men say nothing at all."
+    }
+  },
+  "book": {
+    "title": "The Verderer's Book of Campacorentin",
+    "pages": [
+      "The Verderer's Book of Campacorentin, kept by Bleddri, verderer of the forest under Caer Ulfwych, in the thirtieth year of his keeping. A verderer counts trees. I have counted every oak the realm has taken from this wood in my time, for the joiners of Cotswold, for the shipwrights of the coast and for the king's own beams, and I have marked every one in this book, and the grove has counted them too. My master told me so, and his master told him. The grove keeps a tally, he said, and one day it will ask for them back.",
+      "Of the grove. The dryads sleep in the trees and wake when you cut them. The oak men are trees that learned to walk, and they walk the northern edge of the wood as if they were waiting for someone to come out of it. The Oaken Knight is the eldest of them and keeps the edge of the road. In the north-eastern clearing the Elder Fellwood stands, and has stood since before the castle, and I have seen its bark move like a face listening. I do not cut within a mile of it. I do not let my men.",
+      "Of the society. The Lethantis Association keeps its rooms by the station, and its members stand on the high platforms of their house at the turnings of the year and watch the sky. They took a student called Sirelian once, the cleverest they ever had, and he found his way to Morgana's teaching. She taught him until she tired of him and then turned him out, and he came back to the forest with no masters left. He is dead now, or as good as, and walks with the dead druids in the north-east. Aiellana of Adribard's Retreat wants him finished.",
+      "Of the dead knights. East of the castle there is a ruin where a company of knights died in some old war, and they keep it still, with their pages behind them, and their armour rattles when the wind is in the east. The Pixie Queen of the southern wood keeps faith with them. Her scouts carry pale banners and her court will not fight the knights' dead, and the knights' dead will not fight her court. The faeries of every other wood in Albion say this is the most shameful thing they have ever heard of. The Queen does not care.",
+      "Of the witch and the hermit. A Green Witch keeps a glade in the eastern wood with mindless men standing round her in rows, and she has a box locked by a wizard that the magess at Merlin's own house wants back. In the south-west a hermit of some wrong faith keeps a hut with two great wolves, Thornpaw and Grizzletooth, who walk his paths for him. He is not Sirelian. He says so to everyone and I believe him, because Sirelian would not trouble to say it. He does not say what he is instead, and when the sisters came out from the castle to ask after his god, he asked after theirs until they went home.",
+      "Of the eyes. Eiddin Walelden is a fletcher of Caer Ulfwych and his wife Fianya makes jewels for nobles, and every year a noble wants a jewel with eyes in it. A leaper's eye from the marsh bridge. A basilisk's eye from the Plains. And the eye of Granddaddy Longlegs, the great spider in the wood north of the fogou, who comes out seldom and is not easily found when he does. Ciraron Webweaver in the bloated wood is the same: slow to come and hard to find. I have told the Waleldens their trade is the worst in the forest. They have told me mine is."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-first-stones",
+  "factions": [
+    "keltoi",
+    "old-powers",
+    "morgana"
+  ]
+}

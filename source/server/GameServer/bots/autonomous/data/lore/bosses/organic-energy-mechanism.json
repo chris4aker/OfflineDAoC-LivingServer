@@ -1,0 +1,133 @@
+{
+  "id": "organic-energy-mechanism",
+  "name": "Organic-Energy Mechanism",
+  "catalogKey": "galladoria/organicenergymechanism",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 79, 100,000 health, a 150 damage shield (Shield of World Soul), and three to five Summoned Bottom Feeders every ten seconds.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It marks a target ('looks sickly... powerfull magic essense will errupt'), slows, and saps strength and constitution.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs"
+    },
+    {
+      "text": "It resets after 40 seconds out of combat.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    }
+  ],
+  "story": "Deep in the hollow something beats. The Sylvan call it a heart; the first Hibernians to see it called it a mechanism, because it looks made: a knot of root and stone and wet tissue that pumps the world soul through Galladoria as a heart pumps blood. It was grown, not built, but grown to a purpose, and the purpose is to keep the Root's sap moving. It wraps itself in that sap like armour, so that every blow on it is paid back. It calls the bottom feeders out of the pools to clean whatever it kills. And when it singles someone out, they sicken visibly, a moment before the essence bursts out of them.\n\nSomebody made it. That is what frightens the Sylvan most. Everything else in the hollow grew, or was bent, or went bad; the mechanism looks built. It is a knot of root and stone and wet tissue in a chamber of its own, and it beats, slow as a heart, and with each beat the sap of the isle, the world soul as the Sylvan call it, moves through the galleries of Galladoria. The Sylvan believe the Root grew it to a purpose, the way a tree grows a seed to a purpose. The first Hibernians to see it called it a mechanism because they had no better word.\n\nIt wears the world soul as armour, so that every blow on it is paid back. Every few heartbeats it calls the bottom feeders up out of the pools to clean what it kills. When it singles out a foe, the foe sickens visibly, and a moment later the essence bursts out of him over everyone near. It saps the strength of those who fight it and slows their feet. It is not angry. It is doing its work. Its work is the Root's blood, and the Conservator downstream hoards what it pumps.\n\nThe mechanism is the one thing in the hollow that looks made, the heart that pumps the world soul to the Conservator's purse; Cronán of Bri Leith named it, and the warden Feidhlim's death taught the realm to call the sickening.",
+  "legend": "Kill the bottom feeders as they come or they pile up. Melee takes damage back from its shield: rotate and heal. When someone 'looks sickly', they run away from the group before it erupts. Keep the fight going or it resets. The mechanism fight rewards discipline: one person calls the sickly mark, the marked one leaves at once, the AoE classes keep the feeders down, melee rotates against the shield. Keep the fight going or it resets. Old hands call it the heart and count its beats to time the feeders: every tenth beat, more come. Kill the heart and the whole hollow goes quiet for a moment, they say.",
+  "yells": {
+    "aggro": [
+      "The beat in the stone quickens.",
+      "The beat in the stone quickens.",
+      "Thud. Thud. The chamber tightens around you."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Bottom feeders crawl from the pools to its call."
+      },
+      {
+        "trigger": "health<=40",
+        "text": "The essence of the world soul gathers in a victim."
+      }
+    ],
+    "death": [
+      "The beat... falters... stops.",
+      "The beat falters... and stops."
+    ],
+    "slay": [
+      "The pools will have you.",
+      "The pools will have you.",
+      "Feed the feeders."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A pulse in the stone, slow as a heart.",
+      "Root, stone and wet flesh, all one engine."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Mechanism pumps faster. The walls throb."
+      }
+    ],
+    "realmFirstKill": "The heart of Galladoria has stopped beating."
+  },
+  "botLines": {
+    "briefing": [
+      "mechanism spawns bottom feeders every few seconds, [kill them as they come|aoe them]. if youre marked sickly, run out",
+      "if youre marked sickly [run away from the group|get out] right now",
+      "melee rotate, it has a big damage shield. [swap|dont sit on it]",
+      "call the sickly mark on voice, [one caller|i will call it]"
+    ],
+    "aftermathWin": [
+      "the heart stopped. [the whole cave went quiet|you could hear it]",
+      "the heart stopped. [you could hear the whole cave go quiet|silence]",
+      "nobody popped in the group this time. [well run|grats]",
+      "feeders down, heart down. [conservator next|on to the pool]"
+    ],
+    "aftermathLoss": [
+      "the sickly guy ran into the healers [instead of away|and popped]",
+      "the marked guy ran into the healers and [popped|took them all]",
+      "feeders piled up while we hit the heart. [aoe them|kill feeders]",
+      "melee sat on the shield and [died|burned out]"
+    ],
+    "rumour": [
+      "[heard|swear] you can hear the mechanism beating from the galladoria entrance on a quiet night",
+      "[heard|someone said] the sylvan think the root grew the mechanism on purpose, like a seed",
+      "[word is|heard] you can hear it beating from the entrance on a still night",
+      "the conservator hoards whatever the mechanism pumps, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "mechanism",
+    "text": "A heart grown out of root and stone that pumps the world soul through Galladoria. It wears the sap as armour and calls the bottom feeders."
+  },
+  "bookPage": "Aodhan writes: of all the things in the hollow the Sylvan fear the mechanism most, and they could not tell me why until the fire-keeper said it plainly. Everything else down there grew, she said, or went bad. That one was made. It sits in its chamber and beats like a heart, and the isle's sap moves with every beat, and the Conservator downstream keeps what it sends. Who makes a heart for a hollow? The Root, she said, as a tree makes a seed. Or something that taught the Root how. I asked what she meant. She said she hoped she was wrong.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Organic-Energy Mechanism; {raidLeader}'s raid finished it in {minutes} minutes. The heart of the hollow stopped.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Organic-Energy Mechanism after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "conservator",
+      "relation": "the miser that hoards what it pumps"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose blood it moves"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Thing That Was Made",
+      "text": "Everything else in Galladoria grew, the Sylvan say, or was bent, or went bad. The mechanism was made. That is why they fear it most of all the things in the hollow, more than the Root himself, and it took Aodhan a whole winter in Domnann to get Lisín to say so. It sits in a chamber of its own in the northern galleries, a knot of root and stone and wet tissue the size of a house, and it beats. With every beat the sap of the isle, the world soul as the Sylvan call it, moves through the halls of Galladoria, as blood moves through a body.\n\nThe first Hibernians to see it were a scouting band of Orlaith's, led by a ranger of the Valley of Bri Leith named Cronán, and it was Cronán who called it a mechanism. He said afterward that he had no other word: it was too regular to be a creature, too alive to be a machine, and it looked built, with parts that fitted, as a mill wheel fits its race. The realm's scholars have kept his word. The Sylvan call it the heart, and refuse to call it anything else.\n\nWho made it, nobody agrees. The Sylvan believe the Root grew it to a purpose, as a tree grows a seed: he needed his sap to move through the hollow, and so a heart formed. The druids of Tir na Nog believe something else taught the Root how, something older or stranger than he is, and they point to its regularity, which nothing else in the hollow has. Lisín's answer, when Aodhan pressed her, was that she hoped the druids were wrong."
+    },
+    {
+      "title": "The World Soul",
+      "text": "The Sylvan word that the realm translates as world soul means, more exactly, the green strength: the living force that runs in sap and in spring water alike, that makes a seed push up and a wound close. The Sylvan believe the whole isle runs on it, and that the Root's theft of it is the true wound of Hy Brasil, worse than any rot. The mechanism moves it. Downstream the Conservator keeps what it sends. The Sylvan call the two of them the heart and the purse, and they believe that while both stand the Root does not need to wake to feed.\n\nThe mechanism wears the world soul as armour, a Shield of the World Soul that wounds every hand that strikes it, so that the green strength of the isle is turned against those who come to free it. When it singles out an enemy, the enemy sickens visibly, grey and sweating, and a moment later the essence of the world soul erupts out of him over everyone near. Cronán's scouts learned this the worst way: one of them, a young warden named Feidhlim, sickened in the middle of the band and did not understand what was happening until it was too late. Cronán set one of his band to do nothing but watch the others' faces for the grey and call out the name of whoever sickened. Feidhlim was nineteen. The wardens of Domnann have called that duty Feidhlim's watch ever since. His name is cut first on the warden-stone at the mouth of the hollow."
+    },
+    {
+      "title": "The Bottom Feeders",
+      "text": "Every few beats the heart calls up the bottom feeders, the pale scavengers of the hollow's pools, a handful at a time, to clean whatever it kills. They come up out of the water in the chamber's floor and crawl toward the living. The Sylvan say the heart does not command them; it feeds them, and they come as gulls come to a fishing boat. Cronán's band let them pile up the first time, while they struck at the heart, and found themselves fighting a crowd.\n\nIt slows those who stand before it, too, and saps the strength and constitution of their bodies, so that a long struggle against it becomes a struggle against weariness. The heart is in no hurry. If the fighting stops for even a few breaths it settles back to its slow beat, whole, as a heart steadies when the danger passes.\n\nCronán came back to it twice more, and the wardens say he spent the winter between in the grove at Domnann listening to the springs, because he wanted to know what kind of heart he was fighting. Cronán's band killed it on their third attempt, and the survivors said that when it died the whole hollow went silent, and that they had not known until then that they had been hearing it beat the whole time. Cronán kept count of its beats while the band fought it, a habit of a ranger who counts paces, and said the feeders came on a beat as steady as a ranger's paces, so that a careful counter always knew when to look down."
+    },
+    {
+      "title": "A Missed Beat",
+      "text": "When the Conservator downstream dies, the heart's beat stumbles: wardens in the northern galleries have heard it, a missed pulse in the stone. When the heart dies, the Conservator's pool goes still. The Sylvan take this as proof that the two are one organ, purse and heart, and that killing both on the same night is the nearest the realm can come to bleeding the Root without waking him.\n\nThe druids of Tir na Nog draw a darker conclusion from the same proof. If the heart and the purse are one organ, they say, then Galladoria is a body, and a body that has a heart can be wounded but can also heal; and they note that the heart has always been found whole again by the next company to go down, as if it had never been cut. Something, the druids say, makes it again. They would very much like to know what. They would not like to find out by going to look.\n\nFeidhlim, the young warden who sickened, is the first name cut on the Domnann list of the hollow's dead after Fionnuala's band. The Sylvan cut a mark beside it that they use for no other name, which means, Lisín said, that he died of the green strength and not of the Root. She said the distinction mattered. It is the isle's own strength that killed him, she said, and the isle's own strength that the realm is going down to take back. Cronán went home to Bri Leith and never went back down."
+    }
+  ]
+}

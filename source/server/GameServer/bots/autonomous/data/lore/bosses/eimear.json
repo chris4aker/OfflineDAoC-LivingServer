@@ -1,0 +1,112 @@
+{
+  "id": "eimear",
+  "name": "Eimear",
+  "npcNames": [
+    "Eimear"
+  ],
+  "locationId": "worlds-end",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Eimear: level 50, model 705 (a body used elsewhere only by one Outland garda), faction Krrzck, aggro 99, at about 366,900/262,600 by the mantid town of Krrzck in World's End; Zuraspa (46) of the same faction stands near her; respawn 320 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Krrzck is the mantid settlement of World's End (quests: 'Corruptors, Botonids, and Trade' raises standing with the mantids of Krrzck; 'The Sylvan's Pain' sends the player to Xcrzrk 'outside Krrzck').",
+      "provenance": "game",
+      "source": "DataQuest (world data)"
+    },
+    {
+      "text": "Living Server lore: Eimear as the one Sylvan the mantids of Krrzck took in, who speaks for them.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The mantids are not friendly and not enemies; they are busy. The Sylvan have said it of them for as long as there have been Sylvan, and the mantids of Krrzck, the settlement on the high ground of World's End, have never given them reason to say anything else. They trade when trade is useful, through a single go-between at a time, and they keep their town shut. In all the generations of the isle exactly one outsider has been let inside, and she is still there. Her name is Eimear.\n\nShe was an outlander girl of Altan Garran, the gorge folk say, who walked out of the town at fifteen after a quarrel with her family and walked west along the coast until she reached the edge of the world, and sat down outside the mantids' wall, and did not leave. They let her in after a season. Nobody knows why. The Domnann wardens think the mantids wanted someone who could speak to the Sylvan in their own tongue; the outlanders think the mantids simply admired her stubbornness, which is the one quality the mantids are known to admire. Eimear has lived among them since, and wears their colours, and is counted by them as one of the town.\n\nShe speaks for Krrzck now, when it speaks. The Sylvan of Necht who trade with the mantids deal with her, and say that she has become more mantid than they would like: patient, cold, very exact about prices, and quick to strike at anyone who comes too close to the town without having earned the right. A traveller of good standing with the mantids, who has hunted the corrupt Sylvan and the bark-strippers that trouble them, she lets pass. Anyone else she treats as the mantids treat a stranger. Zuraspa, a mantid of the town, is never far from her.\n\nThe mantids have one fear, and Eimear has taken it on with the rest: she will not say the name of the hunter of Allta Fearann aloud, and the Sylvan who have heard her refuse say she has gone pale doing it.",
+  "legend": "Eimear (50) stands by the mantid town of Krrzck in World's End, faction Krrzck, with Zuraspa (46) nearby. Her aggro level is 99 rather than the usual 200, so standing with the Krrzck faction matters: raising mantid faction (the 'Corruptors, Botonids, and Trade' quest talks of killing treecutters and barkstrippers for them) is the polite way past her. As a fight she is a plain level 50 with no script, a quick kill for a 50 group, with a 320-second respawn. Killing her will not help your mantid standing, and mantid faction is useful in World's End: the mantids trade, and their town is a safe spot if they like you.",
+  "yells": {
+    "aggro": [
+      "You have not earned the wall.",
+      "Krrzck is shut. Go back.",
+      "Zuraspa! A stranger."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The mantids taught me patience. Not mercy."
+      }
+    ],
+    "death": [
+      "Tell Altan Garran... I stayed...",
+      "The wall... keep it shut..."
+    ],
+    "slay": [
+      "Shut.",
+      "The mantids will not trade with your kind now.",
+      "Back to the wall."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A Sylvan face among mantid colours.",
+      "The wall of Krrzck. Shut."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Eimear calls to the mantids of Krrzck."
+      }
+    ],
+    "realmFirstKill": "Eimear, the voice of Krrzck, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "eimear is 50 by krrzck in world's end. [krrzck faction|zuraspa nearby]",
+      "her aggro is lower, faction matters. [raise mantid faction|or fight her]",
+      "plain 50, no script. [quick kill|easy for 50s]",
+      "killing her wont help your mantid faction lol"
+    ],
+    "aftermathWin": [
+      "eimear down. [the mantids wont like that|oops faction]",
+      "quick one. [50s group|easy]",
+      "zuraspa too? [shes right there|sure]",
+      "the only sylvan in krrzck, and we killed her"
+    ],
+    "aftermathLoss": [
+      "didnt expect zuraspa. [two of them|ugh]",
+      "pulled a mantid patrol with her. [too many|oops]",
+      "group too low for 50. [need 45+|ouch]",
+      "faction went down. [never mind|whatever]"
+    ],
+    "rumour": [
+      "[heard|someone said] eimear walked out of altan garran at fifteen and sat outside the mantids' wall",
+      "eimear is the only outsider the mantids ever let into krrzck",
+      "[word is|heard] eimear wont say curengkur's name either",
+      "the necht traders say eimear is more mantid than sylvan now"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Eimear",
+    "text": "The one outsider the mantids of Krrzck in [World's End] ever let inside, an outlander girl of Altan Garran who sat outside their wall until they opened it. She speaks for them now, coldly."
+  },
+  "bookPage": "From Coll of the Domnann guides: the mantids are busy, we say, and Krrzck keeps its wall shut. One outsider has been let in, ever. Eimear walked out of Altan Garran at fifteen after a quarrel and walked to the edge of the world and sat down outside the mantids' wall, and after a season they opened it. The wardens think they wanted someone who could speak to us. The outlanders think the mantids admired her stubbornness. She speaks for Krrzck now, and is exact about prices, and will not say the hunter's name, not even to me.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Eimear in World's End in {minutes} minutes.",
+    "loss": "Eimear turned back {realm}'s band under {raidLeader} in World's End after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "kontar-the-corrupt",
+      "relation": "the World's End chieftain the mantids watch"
+    },
+    {
+      "id": "curengkur",
+      "relation": "the hunter of the mantids"
+    }
+  ]
+}

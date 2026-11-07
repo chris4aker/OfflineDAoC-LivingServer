@@ -1,0 +1,96 @@
+{
+  "id": "wyvernic-wraith",
+  "name": "Wyvernic Wraith",
+  "catalogKey": "hibernia-named-mobs-classic-zones/wyvernicwraith",
+  "locationId": "cursed-forest",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 74, 30,000 health, in the Cursed Forest. It casts Elements Strike, 400 energy.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/WyvernicWraith.cs"
+    }
+  ],
+  "story": "There were wyverns over the court wood once, the Sylvan say, before the bargain broke, kept by the courts as lords keep hawks. When the wood went bad they died in their roosts, and one of them did not stay dead. The Wyvernic Wraith is the ghost of that wyvern, still circling the place where its masters fed it. It strikes with a crackle of raw elements, the court magic it was fed on, and it does not seem to know that its masters are gone. Perhaps it is waiting for them. Perhaps that is why it is so angry.\n\nThe courts kept wyverns as lords keep hawks, the Sylvan say, and flew them over the court wood on bargaining days to show off. When the wood went bad they died in their roosts, sickened by the same thing that turned the trees. One did not stay dead. The Wyvernic Wraith is the ghost of that wyvern, still circling the place where its masters fed it.\n\nIt strikes with a crackle of raw elements, the court magic it was fed on as a hatchling, and it does not seem to know that its masters are gone. It does not range far. It circles, and dives, and circles again. The Sylvan think it is waiting for someone to whistle it home, and that this is why it is so angry: nobody ever does.\n\nSome frontier scouts claim to have seen two wraiths circling on clear nights. The druids say there was only ever one wyvern that came back; the scouts say the druids were not there.",
+  "legend": "A straight fight with a sharp energy strike: energy resists help, healers watch whoever it picks. Kill it where it circles; it does not range far. Clear the walking trees around first, or they wander in while everyone is looking up. Energy resists; heal whoever it picks. Clear the walking trees around it first. Superstition: never whistle in the Cursed Forest; the wraith may think you are its master, and be disappointed. Nicknames: 'the hawk', 'old wing'. Superstition: never keep a hawk in Ardee. The wraith might hear it, and come to see who has replaced it. Nobody has ever kept a hawk since.",
+  "yells": {
+    "aggro": [
+      "A ghostly wyvern shrieks and dives.",
+      "A ghostly wyvern shrieks and dives.",
+      "Master? No. Prey."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The wraith crackles with the court's old magic."
+      }
+    ],
+    "death": [
+      "The wraith scatters on the wind.",
+      "The wraith scatters on the wind."
+    ],
+    "slay": [
+      "Prey.",
+      "Prey.",
+      "Dropped."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A ghostly wing passes overhead without a sound.",
+      "A ghostly wing passes overhead without a sound."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Wyvernic Wraith crackles with raw elements!"
+      }
+    ],
+    "realmFirstKill": "The Wyvernic Wraith has flown its last circle."
+  },
+  "botLines": {
+    "briefing": [
+      "wyvernic wraith hits with energy. [resists up|energy resist], heal whoever it targets",
+      "energy resists, [heal its target|watch who it picks]",
+      "clear the walking trees around first. [clean pull|look]",
+      "it dives at range, [casters watch|heal the targets]"
+    ],
+    "aftermathWin": [
+      "wraith down. [it just blew away|gone like smoke]",
+      "wraith blew away like smoke. [gone|nice]",
+      "energy resists did it. [grats|good]",
+      "nobody whistled. [learning|ha]"
+    ],
+    "aftermathLoss": [
+      "it picked the cleric twice and [nobody healed him|he dropped]",
+      "it picked the cleric twice. [heal him|watch]",
+      "pulled a walking tree too. [clear first|ugh]",
+      "someone whistled. [why|always someone]"
+    ],
+    "rumour": [
+      "[heard|someone said] the wyvernic wraith was a court wyvern that died in its roost",
+      "[heard|someone said] the courts flew wyverns over the cursed forest on bargaining days",
+      "the wraith waits to be whistled home, the sylvan say",
+      "[word is|heard] never whistle in the cursed forest"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Wyvernic Wraith",
+    "text": "The ghost of a court wyvern that died when the wood went bad. It still circles the place its masters fed it."
+  },
+  "bookPage": "From Derbáil of Ardee's list: grandmother said the courts kept wyverns, as lords keep hawks, and flew them over the court wood when they met. When the wood went bad the wyverns died in their roosts. One came back as a ghost, still circling where it was fed. Never whistle in that forest, she said, because it will think you are its master and come down to you, and when it sees you are not, it will be very disappointed. A disappointed wyvern, grandmother said, is worse than an angry one, because an angry one at least expected you.",
+  "chronicle": {
+    "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Wyvernic Wraith in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Wyvernic Wraith's head after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "juggernaut",
+      "relation": "a neighbour in the broken wood"
+    }
+  ]
+}

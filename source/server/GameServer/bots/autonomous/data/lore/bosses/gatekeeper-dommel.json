@@ -1,0 +1,180 @@
+{
+ "id": "gatekeeper-dommel",
+ "name": "Gatekeeper Dommel",
+ "tier": "epic",
+ "npcNames": [
+  "Gatekeeper Dommel"
+ ],
+ "aliases": [
+  "dommel",
+  "the gatekeeper"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "the-gate-watch"
+ ],
+ "related": [
+  {
+   "id": "field-marshal-nebir",
+   "relation": "designed his watch"
+  },
+  {
+   "id": "director-kobil",
+   "relation": "the Army of Shadows never paid his toll"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "three keep his Gate"
+  },
+  {
+   "id": "inquisitors",
+   "relation": "three keep his Gate"
+  },
+  {
+   "id": "mutilators",
+   "relation": "three keep his Gate"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "refuses to let his Army of Shadows pass"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Gatekeeper Dommel is level 65 (Allakhazam lists 58) and stands at the crossing near the Albion entrance's way down, with three Chthonic Knights, three Inquisitors and three Mutilators of level 60.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Gatekeeper Dommel among the court's officials.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "The bot chat already names him in two lines.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/chat (whole-word count, coverage audit)"
+  },
+  {
+   "text": "Below level 70, the Gate watch are ordinary grind targets for gamebots, not raid-reserved demons.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "No source found for the name Dommel in the demonologies checked; to verify.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "The toll, the closing of the crossing and the watch of three orders are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The toll at the crossing",
+   "text": "Every tunnel in the hollow comes, sooner or later, to one place: a crossing below the hall the Albion door now opens into, where the roads to the four quarters of the Blood and the halls of the east and south all meet. In the Uncounted Age a demon called Dommel sat down in the middle of it and refused to move. He was not strong enough to hold a throne, and he did not want one. What he wanted was the crossing, and from the crossing he wanted a toll. Every demon who passed paid him something, and those who would not pay found that every road out of the crossing was suddenly very long. He did not go to the Feast of Thrones. He sat at the crossing while the thirty lords went past him to the deep chamber, and he charged each of them, and he says that eleven of them paid on the way back.\n\nWhen Adremal cut the First Roll, he had no wish to argue with a demon who controlled every road to the Master's door. He wrote Dommel's line as Gatekeeper, with his seat at the crossing and his master the Master, and made the toll law. The court calls the crossing the Gate, though for most of the court's history there was no gate in it. Dommel did not need one. The imps say the roads out of the crossing bend for him, and that a demon he has not let through can walk all night and come back to where it started."
+  },
+  {
+   "title": "The closing",
+   "text": "In the Fourth Roll the feud of the Blade and the Hook broke into open war. Prince Abdin's Chthonic Knights came down from the north-west and Prince Asmoien's Mutilators came up from the western pit, and they met where every road meets, in Dommel's crossing, because there was nowhere else to meet. The Gatekeeper watched for a while to see whether either side would pay his toll. Neither did. So he closed the Gate.\n\nHe closed every road out of the crossing at once. Knights and Mutilators fought in the crossing until the deep fires dimmed twice, which in the court's reckoning is a long time, and when they stopped there were too few of either order left to matter. Dommel then opened one road, the one to the Marshal's hall, and let out the survivors in single file, charging each of them. The orders still argue over who won. The Gatekeeper says he did.\n\nAfterwards Field Marshal Nebir came to the crossing with a proposal, and Dommel accepted it, because it cost him nothing. The Gate would be kept from that Roll on by all three orders standing together in equal number, so that none of them could ever hold the crossing alone and none could fight another there without the third order joining in. The first of the watch were the Chthonic Knights Exte, Ibeko and Obarus, the Inquisitors Irawn, Lokis and Medebo, and the Mutilators Axtanax, Okabi and Zurabo. Their successors have kept their names, as every new nine has taken the names of the first, and the orders now send their youngest sworn to the Gate to learn that there are other orders."
+  },
+  {
+   "title": "The Albion stair",
+   "text": "When the three doors opened in the age of the realm wars, the stair from the Albion hall came down beside Dommel's crossing, and the first visitors who ever walked into the court from above walked into his toll. He let them through, and when the court asked him why, his answer became a saying among the demons: the mortals pay going in. Whatever the Albion stair has brought down since, Dommel counts the dead it left at the Gate, to the watch or to the Gatekeeper himself, as toll paid, and the living as owing him nothing more. The first company ever to come down, a column of Albion's knights under a captain the court remembers only as the one with the white shield, lost eleven at the Gate. Dommel cut a notch in the crossing's floor for each of them, and he has cut one for every mortal since. The floor of the crossing is more notch than stone now.\n\nThe realms each tell it their own way. Albion's knights, who meet him first, say Dommel is a gate-ward who has forgotten whose gate it was, and that he lets them through because the Albion door belongs, in some old law, to Albion. Midgard's huscarls say he is the troll at the bridge in the grandmothers' tale, who lets a traveller over who answers and eats one who does not, and that the answer is a sword. Hibernia's druids say he is a doorkeeper of the otherworld who went bad, one of the guardians who once stood at the mouths of the Sidhe hills and kept them, and they make the sign against him."
+  },
+  {
+   "title": "The shadows that would not pay",
+   "text": "Above the Gate, in the chambers over the crossing, Prince Abdin's Director, Kobil, raises the Army of Shadows. The Army has never paid Dommel's toll, because shadows have nothing to pay with, and it cannot be counted, as Field Marshal Nebir has complained, so Dommel cannot even charge it by the head. The Gatekeeper has made his position plain: when the Army of Shadows is finished and comes down out of Kobil's chambers to march, it will find every road out of the crossing very long. Prince Abdin has not yet tested him openly. Kobil once sent a single shadow down into the crossing to try the roads; it walked them for a whole Roll and came back to the foot of the Director's own stair, and Kobil has not sent another. The court expects that he will, and has opened a wager.\n\nSo when the realms began coming down to break the Blade, to kill Kobil in his chambers and then Abdin in his hall, they did the Gatekeeper's work for him, and Dommel let them pass with something the imps describe as courtesy. He does not care who wins anything. He cares that nobody passes without paying, and that the crossing stays where it is. Mortal steel has struck him down at his post more than once, the imps say, and each time the Chancellor wrote him back at the crossing within the day, because the court has never found anyone else who could keep it. The newest sworn of the watch say he sits so still between visitors that they forget he is there, and that this is the moment he likes best."
+  }
+ ],
+ "story": "Every road in the hollow meets at one crossing, below the hall the Albion door opens into, and in the Uncounted Age a demon called Dommel sat down in the middle of it and charged a toll. He was too weak to hold a throne and did not want one. Demons who would not pay found every road out of the crossing very long. He skipped the Feast of Thrones and charged the thirty lords on their way past; eleven, he says, paid on the way back. Adremal, unwilling to argue with the demon who held every road to the Master's door, wrote him onto the First Roll as Gatekeeper and made the toll law.\n\nIn the Fourth Roll the feud of the Blade and the Hook came to the crossing: Prince Abdin's knights and Prince Asmoien's Mutilators met there because there was nowhere else to meet. Neither side paid, so Dommel closed every road at once and let them fight until too few of either were left to matter. Field Marshal Nebir then proposed the watch that has kept the Gate since: the three orders together in equal number, so that none can hold it alone. The first nine were Knights Exte, Ibeko and Obarus, Inquisitors Irawn, Lokis and Medebo, and Mutilators Axtanax, Okabi and Zurabo; every nine since has taken their names.\n\nWhen the doors opened, the Albion stair came down beside the crossing. Dommel let the first company through and has let the realms through since; the dead they leave at the Gate are their toll. Albion's knights call him a gate-ward who forgot whose gate it was; Midgard's huscarls, the troll at the bridge; Hibernia's druids, an otherworld doorkeeper gone bad.\n\nAbove the Gate, Director Kobil raises Prince Abdin's Army of Shadows, which has never paid and cannot be counted. Dommel has said it will find the roads very long when it tries to march, and he lets the realms through to break it.",
+ "legend": "Dommel holds the crossing below the Albion hall with his nine: three Chthonic Knights, three Inquisitors and three Mutilators, all level 60, standing close together. Pull carefully, because the watch comes in threes and the Gatekeeper (65) joins anything near him. Take the watch apart from the edges and leave Dommel for last, alone. He has no script. For Albion this is the first named fight of every trip down; for Midgard and Hibernia it is the crossing you pass on the way to the princes. Players say a raid always loses someone at the Gate, and call it paying the toll. Pay it with a rez, not a release.",
+ "yells": {
+  "aggro": [
+   "Toll. You will pay it going in.",
+   "Every road meets here. Every road can be long.",
+   "Nine of mine, and one of me. Pay."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Watch! The toll is not yet paid."
+   },
+   {
+    "trigger": "health<=20",
+    "text": "You have paid enough. Go through. If you can."
+   }
+  ],
+  "death": [
+   "The crossing... stays where it is.",
+   "Write me back before the next ones come."
+  ],
+  "slay": [
+   "Toll paid.",
+   "One of you stays at the Gate. One always does.",
+   "Counted, and charged."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Every road in the hollow meets at this crossing.",
+   "Nine stand watch here. Three of each order.",
+   "Someone in the middle of the crossing is very still."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Gatekeeper's voice rolls down every road."
+   },
+   {
+    "trigger": "health<=20",
+    "text": "The Gate stands open. The toll is paid."
+   }
+  ],
+  "realmFirstKill": "Gatekeeper Dommel has fallen. The Gate stands open."
+ },
+ "botLines": {
+  "briefing": [
+   "gate first. dommel plus nine, three of each order. [pull from the edges|edges in], dommel last",
+   "the gate watch are 60s, dommel 65. [easy if we pull right|easy unless we pull it all]",
+   "dont fight in the middle of the crossing, [everything joins|the watch links]",
+   "someone always dies at the gate. [rez, dont release|dont release, we rez]"
+  ],
+  "aftermathWin": [
+   "gate clear. [toll paid|we paid the toll]",
+   "dommel down. [on to the princes|roads are open]",
+   "gatekeeper and his nine dead. [nice pulls|clean]",
+   "gate done, nobody released. [good|thats how you do it]"
+  ],
+  "aftermathLoss": [
+   "pulled the whole gate. [ten nameds lol|nine plus dommel, gg]",
+   "wiped at the gate, [rough start|not a good sign]",
+   "the toll was the whole raid that time. [regroup at the stair|rez up]",
+   "too many adds at the crossing. [one at a time next time|slower pulls]"
+  ],
+  "rumour": [
+   "[heard|word is] dommel closed every road out of the crossing once and let two demon orders kill each other",
+   "the gate watch is three knights three inquisitors three mutilators [so no order can hold it|so nobody owns the gate]",
+   "[someone said|my guildie says] dommel lets raids through because the dead are his toll",
+   "dommel and the director hate each other. the army of shadows never paid the toll"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "dommel",
+  "text": "The Gatekeeper of the crossing where every road in the hollow meets, below the Albion hall. He charges a toll; the raids pay it in their dead. In the Fourth Roll he closed the crossing on the warring [chthonic knights] and [mutilators], and since then three of each order, with three [inquisitors], keep the Gate together."
+ },
+ "bookPage": "From the account of Sister Elaydith's runner, who went down the Albion stair to fetch a ladle and lived: At the bottom of the stair the tunnel opens into a crossing, and every road in that place runs out of it, north and west and east and south. A ring of demons stood there, knight beside flayer beside questioner, and they did not look at each other, and in the middle of them sat one more who did not move at all. When we came down, the one in the middle looked up and said a word I did not know, and the ring came for us. We lost Brother Aldric there. Afterwards the tenth let us pass and said that we had paid.",
+ "bookPages": [
+  "From the account of Sister Elaydith's runner, who went down the Albion stair to fetch a ladle and lived: At the bottom of the stair the tunnel opens into a crossing, and every road in that place runs out of it, north and west and east and south. A ring of demons stood there, knight beside flayer beside questioner, and they did not look at each other, and in the middle of them sat one more who did not move at all. When we came down, the one in the middle looked up and said a word I did not know, and the ring came for us. We lost Brother Aldric there. Afterwards the tenth let us pass and said that we had paid.",
+  "The runner went on: On the way back we came through the crossing again with the ladle, fewer than we had been, and the one in the middle did not even stand. I asked the knight beside me why, and he said the Gatekeeper had been paid going in. I thought that was the end of it. But when we reached the stair I looked back, and the roads out of the crossing behind us were longer than they had been, much longer, and I could see the watch standing at the far end of every one of them."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} paid Gatekeeper Dommel's toll and broke the Gate in {minutes} minutes.",
+  "loss": "Gatekeeper Dommel collected his toll from {realm}'s raid under {raidLeader}: all of it."
+ }
+}

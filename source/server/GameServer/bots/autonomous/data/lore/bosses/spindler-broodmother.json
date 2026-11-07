@@ -1,0 +1,139 @@
+{
+  "id": "spindler-broodmother",
+  "name": "Spindler Broodmother",
+  "catalogKey": "galladoria/spindlerbroodmother",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. One or two newly-born spindlers hatch every few seconds while she fights.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "When she dies, 20-25 underdeveloped spindlers burst from her body.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "She mesmerises a random target every 20-30 seconds; her teleport is off for bot raids.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The Hibernian epic raid wiped at her once on 2026-11-05 (build 8d7baa3).",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    }
+  ],
+  "story": "The spindlers of Galladoria all come from one mother, and she has never stopped. The Broodmother is bloated past moving far, a sac of eggs on legs, and she does not need to hunt: the hollow brings her food. When she is roused her young fall from her one by one and run at the nearest living thing. She lulls the strongest foe to stillness with a slow sway, as she lulls her eggs. And at the end, when her body fails, she gives the hollow everything she was still carrying, all at once. Those who celebrated her death too early had a short celebration.\n\nEvery spindler in Galladoria is her child, and she has never stopped. The Sylvan think she came into the hollow as an ordinary cave-spinner, small and quick, and that the sap made her into a mother and nothing else. She is bloated past moving far now, a sac of eggs on legs, and she does not hunt: the hollow brings her food, and her children bring her more.\n\nWhen she is roused her young fall from her one after another, newly born and already hungry, and run at the nearest living thing. With a slow sway of her body she lulls her strongest foe into stillness, as she lulls her eggs. A Connacht company that came to her in a later season lost to her, and had to be brought out by the best spears of Tir na Nog. And at the end, when her body fails, she does the last thing a mother can do. She gives the hollow everything she was still carrying, a flood of half-formed young spilling out of her at once to avenge her. Pádraigín's five, who cheered her death too early, had a very short celebration.\n\nShe was a little cave-spinner of Domnann, made by the sap into nothing but a mother; the lurikeen Pádraigín of Howth, sole survivor of the first six, taught the realm to prepare for her death before striking her.",
+  "legend": "Kill the hatchlings as they drop, steadily, and never forget the last part: when she dies twenty or more young spill out of her at once. Healers ready, AoE casters stacked on her corpse before the killing blow. Break the mezz on whoever she lulls. Stack the AoE casters behind the tank before the last tenth of her health, with healers ready on the melee. When she bursts, everything dies in the first two volleys or not at all. Superstition says never kill her while standing on an egg sac. Nobody remembers why; everybody steps off one when she gets low.",
+  "yells": {
+    "aggro": [
+      "The broodmother's sac shudders. Something inside moves.",
+      "The broodmother's sac shudders. Something inside moves.",
+      "Hundreds of small eyes open in the dark."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "A newly-born spindler drops from her and runs."
+      },
+      {
+        "trigger": "health<=10",
+        "text": "The broodmother swells. Something is about to come out."
+      }
+    ],
+    "death": [
+      "Her body splits. The brood pours out!",
+      "Her last children pour out of her, screaming."
+    ],
+    "slay": [
+      "The young feed.",
+      "The young feed.",
+      "Food for the brood.",
+      "Into the sac with you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is soft. It moves.",
+      "Egg-sacs hang from the roof like fruit."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "The Broodmother bursts. Her brood pours out!"
+      },
+      {
+        "trigger": "health<=10",
+        "text": "The Broodmother swells. Ready yourselves!"
+      }
+    ],
+    "realmFirstKill": "The Spindler Broodmother is dead. Her brood is not."
+  },
+  "botLines": {
+    "briefing": [
+      "broodmother drops babies the whole fight, kill them steady. when she dies [twenty more pop out|she bursts]",
+      "aoe casters on her corpse before the kill. [healers ready|dont celebrate early]",
+      "mezz breaks on whoever she lulls. [cure mezz|wake them up]",
+      "dont celebrate when she dies, [thats when it starts|the brood comes then]"
+    ],
+    "aftermathWin": [
+      "she popped and the aoe [ate every baby|cleaned it up]. perfect",
+      "she popped and nothing reached the healers. [perfect|well done aoe]",
+      "two volleys and the brood was gone. [lovely|nice]",
+      "broodmother down, the floor stopped moving. [finally|thank goodness]"
+    ],
+    "aftermathLoss": [
+      "we killed her and then [the brood killed us|wiped to the babies]. classic",
+      "we cheered and [the babies killed us|wiped to the brood]",
+      "aoe casters were out of mana when she popped. [save mana|plan it]",
+      "the realm raid wiped here again. [the special forces will have to come|ugh]"
+    ],
+    "rumour": [
+      "[heard|someone said] the broodmother [wiped a whole raid|got the realm raid] with her babies after she died",
+      "[heard|someone said] the broodmother was a little cave spinner before the sap got her",
+      "[word is|heard] the realm raid lost to her once and the special forces had to save them",
+      "every spindler in galladoria is hers. every single one"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Broodmother",
+    "text": "The mother of every spindler in Galladoria. Her young drop from her as she fights, and when she dies she gives up all she was carrying at once."
+  },
+  "bookPage": "Aodhan writes: the Sylvan do not hate the broodmother as they hate the rest. They pity her. She was a little cave-spinner once, they say, quick and clever, and the sap made her into a mother and nothing else, as it makes everything down there into one thing only. She cannot move far for the weight of her eggs. Her young fall from her when she is roused, and when she dies she gives them all up at once. The fire-keeper told me that the Sylvan sing a lullaby when they hear she is dead, not for her, but for the ones that never hatched.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Spindler Broodmother; {raidLeader}'s raid finished it in {minutes} minutes. Her last brood died on her corpse.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Spindler Broodmother's brood after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose sap made her a mother of hundreds"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "A Cave-Spinner of Domnann",
+      "text": "The spindlers of Hy Brasil were small things once, the Sylvan say: cave-spinners, quick and clever, that lived in the dry caves under the hills of Domnann and ate the moths that came in at dusk. Sylvan children kept them, the way children of other realms keep crickets, in little cages of woven reed. The children of Domnann still sing a rhyme about them, about a spinner who spun a bridge across a well, and the rhyme is older than the hollow.\n\nOne of them went down. The Sylvan do not know which, or when, but they know where, because the brood chamber in the south-western galleries of Galladoria lies directly below the old spinner caves of Domnann, a long way down. The sap of the hollow ran over her. It did to her what it does to everything that drinks it: it made her into one thing and nothing else. The Olcasar became hatred; the Uaimh became digging; the cave-spinner became a mother.\n\nShe is bloated past moving far now, a sac of eggs on legs as big as a cart, and she does not hunt. The hollow brings her food, and her children bring her more. Every spindler in Galladoria is hers. The companies of the realm have killed thousands of them in the galleries, and not one has been anything but her child. The rhyme ends with the spinner's bridge holding a child who fell, which is why Sylvan mothers stopped singing the last verse after the hollow came."
+    },
+    {
+      "title": "Newly Born",
+      "text": "When she is roused, her young fall from her one after another, newly born and already hungry. They run at the nearest living thing. Each is a little stronger than the last, as if she were learning how to make them. The Sylvan say she is, and that every brood she has lost has taught her the next. With a slow sway of her great body she lulls her strongest foe into stillness, as she lulls her eggs, and the one she lulls stands smiling, the Sylvan say, like the child in the spinner's rhyme. In the first years she could also draw a man across her chamber to her, as a spider draws in a line; she does not do that now.\n\nThe first Hibernians to come against her were not a company at all. They were a band of six from Howth, led by a lurikeen named Pádraigín, who had heard that the brood chamber was the richest hunting in the hollow and went down to see. They killed the mother and stood over her body congratulating each other, and Pádraigín, the only one who came home, said afterward that the body moved under their feet like a sack of grain being poured. The five who died with her were Sylvan and Hibernian both, and Pádraigín carried their names to Domnann herself. She went back down the next season with forty, and they cheered nothing until the floor was still. Pádraigín kept their names on a cord at her belt for the rest of her life."
+    },
+    {
+      "title": "The Last Gift",
+      "text": "At the end, when her body fails, the Broodmother does the last thing a mother can do. She gives the hollow everything she was still carrying, a flood of half-formed young spilling out of her at once, underdeveloped and furious, to avenge her. That is what killed Pádraigín's five. The Sylvan call it the last gift, and say it is the reason the spinner caves above the brood chamber have never been dug out: nobody in Domnann will open a door onto a mother's last gift.\n\nA Connacht company that went down in a later season learned it again. It reached her chamber tired, cheered her death, and was overwhelmed by the brood, and Tir na Nog had to send its best spears down after it to bring the survivors out. Pádraigín, old by then, went with them, and carried the Connacht dead up the stair herself. There were nine of them. Their families sent nine smooth river stones out to Domnann the next spring, and the Sylvan set them in a row beside the spinner caves, where nobody had thought to put a grave before.\n\nThe Sylvan say a superstition grew up in the realm after that night, which they find touching: that nobody should strike her last blow while standing on one of her egg-sacs. Nobody remembers why. The Sylvan think it is the realm learning, in its own way, to respect a mother. Pádraigín's own saying, carved over the barracks door at Howth, is shorter: do not cheer until the floor is still. The realm learned it the same way twice."
+    },
+    {
+      "title": "The Lullaby",
+      "text": "The Sylvan do not hate the Broodmother as they hate the other things in the hollow. They pity her. She was a cave-spinner, quick and clever, and the sap took everything she was except the part that makes more of herself. When the news comes up from Galladoria that the realm has killed her, the mothers of Domnann sing a lullaby, the old one about the spinner and the well, and they sing it not for her but for the ones that never hatched.\n\nThe druids of Tir na Nog have a harder view, and say so: that every spindler that reaches the upper galleries is a danger to the isle, and that the brood chamber lies directly under the spinner caves of Domnann, and that if her children ever dig upward they will find themselves at home. The Sylvan do not dispute it. They have stopped letting their children keep spinners in reed cages. Lisín said it was the saddest thing the hollow ever did to Domnann, to take away a children's game.\n\nShe always returns. A new mother, the Sylvan think, or the same one, grown again from an egg her last brood left behind. Pádraigín, who became a captain of Howth in time, used to say that she had stood over the Broodmother more times than any Hibernian living, and that every time she stepped off the egg-sacs first. She is buried in Domnann, at her own wish, beside the spinner caves, with the nine Connacht stones at her feet and the cord of five names in her hands."
+    }
+  ]
+}

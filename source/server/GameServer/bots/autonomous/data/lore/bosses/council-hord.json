@@ -1,0 +1,161 @@
+{
+  "id": "council-hord",
+  "name": "Council Hord",
+  "catalogKey": "tuscaran-glacier/hord",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "council-ozur",
+      "relation": "fellow councillor of the outer seats"
+    },
+    {
+      "id": "council-otrygg",
+      "relation": "fellow councillor of the outer seats"
+    },
+    {
+      "id": "elder-council-birghir",
+      "relation": "the councillor he listened to"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Hord is a level-77 Council member with 100,000 health who heals himself with Minor Emendation.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as social, level 77, in Tuscaren Glacier.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4688"
+    },
+    {
+      "text": "When Hord takes damage there is a 3% chance that, a second later, he casts Minor Emendation on himself: an instant, uninterruptible 250-point heal. He has no other spells. 100,000 health, CC-immune, reach 350; he resets only when his aggro list is empty.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs"
+    },
+    {
+      "text": "Hord's mendings of the citadel's giants, the gifts of carved bone and Hrimgrim's arm are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs"
+    }
+  ],
+  "story": "Hord was the Council's mender in the years when the Council believed it would never need one. The citadel was young, and the giants who cut it got hurt in the ordinary ways: hands split by the cold, feet frozen in the deep tunnels, ribs cracked by falling ice. Hord mended them, with a giant's hands and a dwarf's patience, and the sculptors and icesplitters loved him for it. They still leave him gifts of carved bone on the seat beside his own.\n\nHe could not mend everything. He sat with the young icesplitter Hrimgrim for a winter after Guthlac's first spike and could not save the arm, and he never forgot it. The splitters say Hord's mendings were always small ones, a crack closed here, a frostbite eased there, given quietly while he talked of something else, and never once enough to undo a real wound. He knew it. He said a mender's craft was mostly sitting with people.\n\nWhen the peace held, Hord had little to do on the Council but listen, and he listened mostly to Birghir. When the peace broke he did not march and did not speak; he went to his seat in the outer hall and waited for the wounded, and none came, because the strangers who came up the road did not leave wounded giants behind them. He fights now as he always lived, steadily, and now and then, the companies say, he lays a hand on his own side and mends a small hurt, absently, while the large ones go on. The splitters leave carved bone on his seat in the outer hall, small figures of hands and feet and ribs, and lately of a giant sitting down; the fishwife Jorunn's granddaughters leave seal fat at the foot of the crater road for him.",
+  "chapters": [
+    {
+      "title": "Hands and Feet and Ribs",
+      "text": "When the giants first cut down into Delling's ice they had no menders, because in the north they had never needed many. A giant of the hrimthursa is a hard thing to hurt. But the cutting of a citadel is a hard thing too, and the young citadel hurt its builders in the ordinary ways of ice-work: hands split open by the cold, feet frozen in the deep tunnels where the splitters stood all day, ribs cracked by ice falling from ceilings that were not yet woven.\n\nHord mended them. He had been a rook's boy, a carrier like Skuf and Hakr, and he had a giant's hands and a dwarf's patience, the sculptors say, and he found when he was young that if he sat with a hurt giant long enough and kept his hands on the hurt, it closed. Not quickly. Not much at a time. But it closed. He went from tunnel to tunnel in the first years with a bag of snow-moss and a jar of seal fat, sitting with the injured, and by the time the citadel was finished there was not a splitter or sculptor in Tuscaran he had not mended at least once.\n\nThe queen gave him a seat on the Council for it, in the outer seats, because she said a council that had a mender would remember that its votes had consequences. The sculptors and splitters still leave him gifts of carved bone on the empty seat beside his own, small figures of hands and feet and ribs, and he has never once refused one. The seat is heaped with them."
+    },
+    {
+      "title": "Hrimgrim's Arm",
+      "text": "He could not mend everything, and he knew it. When the young icesplitter Hrimgrim broke Guthlac's first spike with his fist in the fortieth winter, and came away frostbitten to the elbow, they carried him to Hord, and Hord sat with him for a winter.\n\nThe sculptors tell it carefully. Hord kept his hands on the arm every day of that winter, and every day the arm was a little better, and every night the cold that the spike had put into it crept back a little further, and in the spring the arm was no better than it had been in the autumn. Hrimgrim carried it across his chest for the rest of his life. Hord went back to the outer seats and did not speak at the next council, or the one after.\n\nThe splitters say it taught them what Hord's craft was. His mendings were small ones, they say: a crack closed here, a frostbite eased there, given quietly, often while he talked of something else, as a grandmother darns while she tells a story. They were never enough to undo a real wound. A giant with a real wound got better because Hord sat with him, and kept him warm, and talked, and the wound did the rest or did not.\n\nHord said so himself, when a young seer asked him what the secret of his craft was. Mostly, he said, it is sitting with people. Hrimgrim, who sits by the crack in the council floor to this day, says Hord was right, and that it was the sitting he remembers."
+    },
+    {
+      "title": "The Listener of the Outer Seats",
+      "text": "When the peace held, Hord had little to do on the Council but listen, and he listened mostly to Birghir. He struck his rib for every one of the old councillor's votes for peace, the sculptors say, not because he understood the lid, which he did not, but because Birghir's peace meant fewer giants carried to his seat.\n\nHe was not much of a councillor otherwise. He did not argue. He did not carry votes, as Vagn and Nokkvi did, or count threats, as Ozur did, or keep a pack, as Otrygg did. He sat on his seat with the bone gifts heaped beside it, and when a giant came to the outer hall hurt, he got down off it and went to sit with them. The councillors of the outer seats teased him for it. Otrygg called him the only councillor who voted with his hands.\n\nThe fishwife Jorunn of Dellingstad, on her day at the ribs, met him. She had cut her hand on the ice of the crater road, a small thing, and the big quiet councillor of the outer seats saw it and came over and held her hand in his for a long time while Birghir and Hjalmar argued, and when he let go the cut was closed. She said he did not say a word. She said it was the warmest she had been since she left the town. Her granddaughters, who still leave salt at the foot of the crater road for Birghir, leave a little seal fat beside it as well, and say it is for the other one."
+    },
+    {
+      "title": "None Came",
+      "text": "When the second crossed mark was cut on Birghir's rib and the strangers were already in the tunnels, Hord did not march and did not speak. He went to his seat in the outer hall, with his bag of snow-moss and his jar of seal fat, and waited for the wounded to be carried to him, as they always had been.\n\nNone came. The strangers who came up the crater road did not leave wounded giants behind them, the cast-out sculptors say, and Hord sat in the outer hall for a long time and nobody was carried in. The sculptors say that was when he understood what the vote had meant, and that he was the last of the Council to understand it.\n\nHe fights now as he always lived. The companies of Midgard who reach the outer seats find him steady and patient and hard to wear down, a big giant with a long reach who does not hurry, and now and then, they say, in the middle of it all, he lays a hand on his own side, absently, as if someone had cut a hand on the ice, and a small hurt closes. It is the same small mending it always was. The large hurts go on.\n\nThe splitters who still leave carved bone on his seat leave one more piece every season now, and the companies say the new pieces are not hands or feet or ribs. They are small carved figures of a giant sitting down."
+    }
+  ],
+  "legend": "Hord is the easy councillor, and the old guides oversell his healing. He has no spells except a tiny self-heal: when he takes damage there's a 3% chance he heals himself for 250 a second later, instantly, and it can't be interrupted, so don't waste interrupts or stuns on it (he's CC-immune anyway). 250 is nothing against 100,000 health, so steady damage wins. He hits hard with a long reach (about 350), so a real tank holds him. He's social with the giants around him, so clear the room first, and keep him apart from Ozur's seat. Good belts and tinctures drop. Some people feel bad about this one.",
+  "yells": {
+    "aggro": [
+      "I mended your kind once. I remember the way bones knit.",
+      "Let me see that wound. Ah. You meant it for me.",
+      "I am a healer. I will not let you win.",
+      "Are you hurt? No. Not yet."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A small mending. Again. And again."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Again. And again. The wound does not win."
+      }
+    ],
+    "death": [
+      "No more... mending...",
+      "My hands... could not mend this...",
+      "None came... none..."
+    ],
+    "slay": [
+      "Beyond mending.",
+      "I could have saved that one. Once.",
+      "Rest. I will not mend you.",
+      "Let me sit with you a while."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Old poultices and bone-needles lie by a seat of ice.",
+      "Carved bone gifts are heaped beside a healer's seat.",
+      "A seat heaped with small carved bones."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Council Hord knits his own wounds closed!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Hord keeps mending. Keep hitting!"
+      }
+    ],
+    "realmFirstKill": "The mender of the outer seats is still at last."
+  },
+  "botLines": {
+    "briefing": [
+      "hord self heals now and then, its tiny. just keep dps on",
+      "hord: steady dps, his heal is small and instant",
+      "clear the social adds around hord first",
+      "hord first, steady dps",
+      "hords heal is tiny and instant, dont bother interrupting",
+      "hord: steady dps, real tank, clear his room first",
+      "hord is cc immune, save your stuns"
+    ],
+    "aftermathWin": [
+      "hord down, steady dps",
+      "hord down, nobody wandered off",
+      "the healer giant is dead. felt bad tbh",
+      "hord's braided belt dropped",
+      "hord down. felt bad again",
+      "his heal never mattered",
+      "braided belt!"
+    ],
+    "aftermathLoss": [
+      "we stopped to fight the socials and hord ticked back up a bit",
+      "we stopped dps for the adds and hord got a few heals in",
+      "too many adds pulled with hord",
+      "we pulled hord and ozur together",
+      "wasted every interrupt on a heal you cant interrupt",
+      "pulled hord with ozur"
+    ],
+    "rumour": [
+      "heard the council has its own healer. [figures|of course it does]",
+      "the sculptors still leave carved bone gifts on hord's seat",
+      "hord mended the giants who cut the glacier. [nice guy|for a giant]",
+      "hord put salve on a cast-out sculptor's hands before they sent him away",
+      "the giant healer hord sat a winter with a splitter and couldnt save his arm",
+      "the splitters still leave carved bones on hords seat",
+      "a dellingstad fishwife cut her hand at the council and hord closed it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hord",
+    "text": "The mender of the outer seats, who mended the giants who cut the citadel with his hands and a great deal of patience. His mendings were always small; he sat a winter with Hrimgrim and could not save the arm. He said his craft was mostly sitting with people. When the peace broke he waited for the wounded, and none came."
+  },
+  "bookPage": "From the sculptor's account, the last part. When they cast me out, he said, it was Hord who came to the tunnel mouth to see me go. He looked at my hands, which were cracked from the cold, and he put salve on them without asking, and he said that a carver needs his hands even in exile. Then he went back up to the ribs. He was the only councillor who came. I asked the sculptor what he would carve if he could carve one more thing in the glacier. He said: Hord's hands. Not his face. His hands. I asked why not the face. He said the face was only a giant's face, and the hands were the councillor.",
+  "chronicle": {
+    "win": "Council Hord's mending ran out under {raidLeader} of {realm} after {minutes} minutes.",
+    "loss": "Council Hord mended faster than {raidLeader}'s raid from {realm} could hurt him, for {minutes} minutes."
+  }
+}

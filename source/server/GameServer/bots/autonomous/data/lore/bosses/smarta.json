@@ -1,0 +1,72 @@
+{
+  "id": "smarta",
+  "name": "Smarta",
+  "npcNames": [
+    "Smarta"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "svartalfar",
+    "arachites"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Smarta is a level-37 svartalf (faction The Svartalfar) in Spindelhalla (32,040/30,839), larger than the rest, among svartalf arbetare and thralls, blindsnakes and arachite tunnelhosts; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish smarta (smärta) is 'pain'.",
+      "provenance": "myth",
+      "source": "Old Norse/Swedish (to verify)"
+    },
+    {
+      "text": "Smarta as the thralls' own overseer is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Smarta is a svartalf, and a thrall, and the spiders' overseer of thralls, all three. The arachites found long ago that svartalfar work harder for one of their own than for a spider, and so they chose the hardest of the thralls and gave her the arbetare, the workers, to drive. Her name means pain. The thralls gave it to her. She keeps it.\n\nThe silk-frames have more prayers about Smarta than about any arachite. Some ask for her death. Some ask for her forgiveness, because she drives the workers so the spiders will not, and fewer of them are husked when Smarta is watching. Odell of Svarhamr has her name on both sides of his list, the thralls and the ones who went over, and has never decided which line is the true one. She fights strangers with the workers behind her, because strangers mean trouble, and trouble means the spiders come down.",
+  "legend": "Smarta is a level 37 svartalf overseer in Spindelhalla among svartalf arbetare and thralls (36-41), blindsnakes and arachite tunnelhosts. She's on The Svartalfar faction, and the workers stand all round her, so plan for more than one. Lots of bodies in that room; bring a full group or pull carefully. Te'Bui is close by. Kill her first and the workers are just workers.",
+  "yells": {
+    "aggro": [
+      "Back to work! All of you!",
+      "Strangers bring the spiders. Get out!"
+    ],
+    "death": [
+      "Who will... drive them now..."
+    ],
+    "slay": [
+      "Back to work."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Svartalf thralls at work. One drives the rest."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "smarta is the 37 svartalf overseer among the workers in spindelhalla",
+      "svartalfar faction, the workers join"
+    ],
+    "aftermathWin": [
+      "smarta down",
+      "the workers didnt know whether to cheer"
+    ],
+    "rumour": [
+      "smarta means pain, the thralls named her",
+      "fewer thralls get husked when smarta is watching, so some of them pray for her"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Smarta",
+    "text": "A svartalf thrall the arachites made overseer of the workers. Her name means pain; the [thralls] gave it to her. Odell has her on both sides of his list."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Smarta's whip in Spindelhalla in {minutes} minutes."
+  }
+}

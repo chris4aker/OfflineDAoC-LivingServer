@@ -1,0 +1,85 @@
+{
+  "id": "viewer-etol",
+  "name": "Viewer Etol",
+  "npcNames": [
+    "Viewer Etol"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Viewer Etol: level 49, at about 29,400/24,500 (z 13,955), the lowest point of the deep workings, among coerced groovers (45-49) and lode protectors (48-50); the same body as Overman Regnal (model 373); no faction on the spawn; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Viewer Etol's NPC template carries faction 86, Guardians of the Blackthorn (the Lough Derg blackthorn faction); the spawn row itself has faction 0.",
+      "provenance": "game",
+      "source": "world data NpcTemplate table (read 2026-11-06)"
+    }
+  ],
+  "story": "A viewer, in a mine, is the officer who walks the workings and says where the next seam will be cut and where the rock is too poor to trouble with. Etol is the court's viewer, and the captives call him the listener, because he puts his ear to the rock and taps it with a knuckle, and the coerced groovers dig where he points. The Howth men say the old viewers of their own shift could hear silver in the stone. Etol, they say, hears something else, because wherever he points the vein runs deeper and colder.\n\nLough Derg has its own account. The guardians of the blackthorn, who keep the old truce of the thorn on the lake shore, count Etol as one of theirs who went over: a guardian who listened to the hedges so long that one night he heard the Glitter ringing under the Silvermine and walked to it, and did not come back. They say his name is still cut into the thorn with theirs, and that no one has been willing to scratch it out, in case he is listening.\n\nHe stands lower than the overman, at the bottom of the deep workings among the lode protectors the court struck out of the seam itself, and they do not trouble him. Rock, the groovers say, knows a friend.",
+  "legend": "Viewer Etol (49) is at the bottom of the deep workings in Coruscating Mine (about 29.4k/24.5k), a little below Overman Regnal and within about 1,400 of the Overseer of the Silver Hand. Coerced groovers (45-49) and lode protectors (48-50) are thick round him: clear them first and do not drift west. A group of high 40s. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "The rock told me you were coming.",
+      "Listen. Do you hear it ring?"
+    ],
+    "phases": [],
+    "death": [
+      "The vein... still ringing..."
+    ],
+    "slay": [
+      "Poor stone. Not worth the cutting."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Someone is tapping the rock, and listening."
+    ],
+    "phases": [],
+    "realmFirstKill": "Viewer Etol has fallen. The listener is silent."
+  },
+  "botLines": {
+    "briefing": [
+      "etol is 49 in the bottom of the deep, groovers and lode protectors all round",
+      "clear the protectors first and dont drift west into the overseer"
+    ],
+    "aftermathWin": [
+      "etol down. [nice|grats]",
+      "the lode protectors were worse than him lol"
+    ],
+    "aftermathLoss": [
+      "lode protectors joined. [rip|ouch]",
+      "drifted into the overseer. [wipe|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] etol was one of the blackthorn guardians at lough derg once",
+      "etol puts his ear to the rock and taps. the groovers dig where he points"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Viewer Etol",
+    "text": "The court's viewer in the Coruscating Mine, called the listener: he taps the rock and the groovers dig where he points. The blackthorn guardians of Lough Derg say he was one of theirs who heard the Glitter ring and walked to it."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Viewer Etol in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Viewer Etol turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "overman-regnal",
+      "relation": "the overman above him"
+    },
+    {
+      "id": "lough-derg",
+      "relation": "the blackthorn country he is said to have left"
+    }
+  ]
+}

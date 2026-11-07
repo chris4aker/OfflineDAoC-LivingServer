@@ -61,6 +61,9 @@
         <EmbeddedResource Include=".\bots\autonomous\data\chat\voices.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\places.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\chat-budget.json" />
+        <!-- Living Server 1.2: the lore bible (docs/LORE.md), read by the lore engine and the lore channels. Keep one include (CS1508). -->
+        <EmbeddedResource Include=".\bots\autonomous\data\lore\**\*.json" />
+        <EmbeddedResource Include=".\bots\autonomous\data\encounter_adds.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\classic165_restored_spawn_ids.txt" />
         <EmbeddedResource Include=".\bots\autonomous\data\classic165_period_restored_spawn_ids.txt" />
         <EmbeddedResource Include=".\bots\autonomous\data\dungeon_navigation_points.json" />

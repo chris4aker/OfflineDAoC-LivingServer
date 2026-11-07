@@ -1,0 +1,140 @@
+{
+  "id": "sergeant-reede",
+  "name": "Sergeant Reede",
+  "catalogKey": "hall-of-the-corrupt/sergeantreede",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Sergeant Reede, 5,000 health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Reede is female in her template (7715, Gender 2; model 7), level 50-51, 5,000 health, template evade 50 and tether 1,400; half a second after her target is stunned she steps to its side and uses side styles; she has no stun of her own.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs"
+    },
+    {
+      "text": "In the world data Lieutenant Meade's post is about 540 from Sergeant Reede's, and ghostly knights stand about 200-500 from her.",
+      "provenance": "game",
+      "source": "OfflineDAoC 0.37b world database, Mob table (region 277)"
+    },
+    {
+      "text": "Reede's Camelot wash-house origin, her mother Edith, Reede's kneel, the kneeling mark and the laundresses' custom are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Sergeant Reede was a laundress's daughter of Camelot's wash-house lane. Her mother Edith had washed the king's linen for thirty years and her hands were failing, so at seventeen Reede chalked the sums on the wash-house wall, found that the frontier's pay would keep them both if she sent all of it home, and signed on at Prydwen Keep without giving her age. She came north in the fifteenth year of the watch with a wash-house cough, and Lady Darra kept her a week in the sickroom and taught her to read the jars because she asked; by the end of the winter she read the lady's books and had sent home every penny.\n\nDarra taught her to lift the wounded from the side, kneeling at a hurt man's shoulder where his arm could not reach, never from the front: Reede's kneel. In Atwell's yard she fought with a short blade and a dagger, quick rather than strong, and whenever a man was dazed she was at his flank before he knew where he was, from habit, with the point at his ribs. Atwell said she could not help winning by being kind; Meade said she had stolen his turn; she said she had stolen it from the lady. Her mark at the foot of the stair is a small kneeling figure.\n\nLord Gildas made her a sergeant in the eighteenth year and gave her the stair to the sickroom, a few strides from Meade's card table. In the last winter she carried the wounded up it every night, slower as the despair lay on her too, and asked Tobias to ask the Constable to let her go home to her mother in the spring. The answer came with Sir Hamon's riders, giving her leave, and lies in its seal on the captains' table.\n\nShe keeps her stair still, and kneels in from the flank on any man struck senseless near her. Edith lived eleven more winters on the pay, and the laundresses of the lane still never let the woman who washed the last basket carry it home.",
+  "legend": "Reede is the sergeant at the foot of the sickroom stair, level 50-51, 5,000 health, with a blade and a dagger. She evades a lot, and if her target is stunned by anyone she steps round to its side half a second later and hits it with side styles, which hurt. She has no stun of her own; the stuns come from Lieutenant Meade, whose table is only about 540 away, so never fight the two together: kill Meade first on his own, or fight Reede at her stair with the tank stun-immune. Ghostly knights stand close around her too; clear them. She takes a third less from melee and a quarter less from magic. Off her post she takes no damage and walks back whole. Rest after her: the stair leads up to Lady Darra's sickroom. Old hands leave the Constable's letter at her feet. It changes nothing. They do it anyway.",
+  "yells": {
+    "aggro": [
+      "Not up the stair. Not up.",
+      "The lady has enough to tend.",
+      "Down. Go back down."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Not up the stair! Not up!"
+      }
+    ],
+    "death": [
+      "Carry them... up...",
+      "Tell my mother... I kept the stair..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "Down the stair you go.",
+      "Not up. Never up.",
+      "Rest at the bottom."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small kneeling figure is cut on the stair's stone.",
+      "A sealed letter lies on the table, unopened."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sergeant Reede is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "reede flanks anyone who gets stunned, side styles hurt. stun immune tank",
+      "kill meade first, his stuns feed reede. never both at once",
+      "clear the ghostly knights round the stair",
+      "fight her at her stair, off it shes immune",
+      "rest after her, darra is up the stair"
+    ],
+    "aftermathWin": [
+      "sergeant reede down. she held the stair well",
+      "reede down, the letter is still on the table",
+      "stair clear, rest before darra",
+      "she held it well, poor kid"
+    ],
+    "aftermathLoss": [
+      "someone dragged her off her post again. immune out there",
+      "pulled meade and reede together, stun flank stun flank",
+      "chased her up the stair",
+      "pulled darra by accident"
+    ],
+    "rumour": [
+      "heard reede carried the wounded up to lady darra every night",
+      "[someone said|heard] reede was a laundress's girl from camelot",
+      "heard the constable's letter giving reede leave is still sealed on the table",
+      "reede was the youngest sergeant of the watch, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "reede",
+    "text": "Sergeant Reede was a laundress's daughter of [Camelot] who came north at seventeen, learned to read [Lady Darra]'s jars and carried the wounded up the sickroom stair. The Constable's letter giving her leave to go home is still sealed on the [captains' table]. Ask the laundresses about [Reede's kneel]."
+  },
+  "bookPage": "Sergeant Reede carries the wounded up to the sickroom every night, on her back, one at a time, and the Lady Darra says she would be lost without her. She is the youngest sergeant in the hall and the kindest. Tonight she asked me, quite seriously, whether I thought the Constable would let her go home in the spring, because her mother is old and her hands are bad. I said I would ask. I have asked, in this report, Constable, though I know you have more weighty things to read. She sends all her pay home. She is a good girl. Let her go home in the spring, if there is a spring. Tobias, clerk.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Sergeant Reede from the Pennine watch in {minutes} minutes.",
+    "loss": "Sergeant Reede held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lady-darra",
+      "relation": "carried the wounded up to her; the lady taught her to read and to kneel"
+    },
+    {
+      "id": "lieutenant-meade",
+      "relation": "the lieutenant whose table is a few strides from her stair"
+    },
+    {
+      "id": "lord-gildas",
+      "relation": "made her a sergeant for never being late"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Laundress's Girl",
+      "text": "Reede was a laundress's daughter of Camelot, born in the wash-house lane under the castle wall, and she went to the Pennine watch at seventeen because the watch paid a shilling a week more than the castle laundry and her mother's hands had begun to fail.\n\nHer mother was Edith of the wash-house, who had washed the linen of the king's household for thirty years and had the cracked, swollen knuckles of every woman in the lane. The castle laundry paid by the basket. Edith could carry fewer baskets every winter, and Reede, who carried the rest, worked out with a stub of chalk on the wash-house wall that the frontier's pay would keep them both, if she sent home all of it. The recruiting sergeant at Prydwen Keep, who had a quota to fill, did not ask how old she was, and she did not tell him. She went north in the fifteenth year of the watch with a draft of Camelot Hills recruits and a cough she had had since the autumn, from the steam of the wash-house.\n\nThe cough was why Lady Darra kept her. The lady heard it on the stair the night the draft came in, and had the girl brought up to the sickroom, and kept her there a week on broth and steam of a better kind, and found in that week that she was quick and kind and could not read. Reede asked to be taught the labels on the jars, because she wanted to know what she was being given. Darra taught her. By the end of the week she could read every jar in the sickroom, and by the end of the winter she could read the lady's books, and she had sent home every penny of her pay.\n\nEdith of the wash-house kept the letters that came with the money. Reede wrote them herself, in the round careful hand the lady had taught her, and every one ends the same way: that the watch was quiet, that the lady was good to her, and that her mother was not to carry the heavy baskets."
+    },
+    {
+      "title": "Reede's Kneel",
+      "text": "Lady Darra taught her new orderly to lift the wounded, and the way she taught it became the thing the watch knew Reede by.\n\nA hurt man on the floor, the lady said, is a man who does not know where he is, and he will strike out at whatever is in front of him. You do not go to him from the front. You come round to his side, kneel by his shoulder where his arm cannot reach you, get your own arm under him, and lift him from there. The hospice of Caer Ulfwych had taught it to Darra; Darra taught it to Reede on the sickroom floor with Sergeant Darryn, who had volunteered to be the wounded man and regretted it. The dalesmen of the watch saw the girl do it on the stair a hundred times in her first winter, and they called it Reede's kneel.\n\nShe learned to fight in Captain Atwell's practice yard as the recruits all did, with a short blade and a dagger, and she was not strong but she was quick, and she slipped the officers' blows more often than they liked. What the yard noticed about her was the kneel. When a man in the yard was knocked down or stood dazed from a blow to the head, Reede was at his side before he knew where he was, from habit, as she would have been on the stair; and in the yard, being at a man's side meant having the point at his ribs where his guard was not. Captain Atwell said she was the only recruit he had ever seen who could not help winning by being kind. Lieutenant Meade, whose own game was to daze a man and step to his flank, said she had stolen it from him. She said she had stolen it from the lady.\n\nHer mark on the stone at the foot of the stair, when she came to cut it, was a small kneeling figure, which the masons of Camelot who have since seen a rubbing of it say is better cut than any other mark in the hall."
+    },
+    {
+      "title": "The Stair in the Last Winter",
+      "text": "Lord Gildas made Reede a sergeant in the eighteenth year of the watch, because in three years the girl had never once been late to her post, and gave her the stair between the upper hall and the captains' table, with the sickroom at the top of it. Lady Darra had meant to ask him to do it. She was told it was already done.\n\nIn the last winter the stair was the busiest place in the hall. The officers came to the sickroom with Captain Atwell's cuts, which would not close, and the sergeants came from the card table in the lieutenants' corridor, at the foot of Reede's stair, with arms they could not lift; and Reede carried those who could not climb, one at a time, on her back, every night, and down again when they were well. Some of them did not come down. The clerk Tobias, whose own post was at the captains' table at the top of the hall, recorded the numbers carried up and down in his reports, and the numbers going down grow smaller through the winter.\n\nHer stair was only a few strides from Lieutenant Meade's table, and the despair that lay on Meade lay on her too, whenever she went down among the sergeants to fetch a man. Darra's last letter to the prioress says that her orderly's arms had grown heavy like the others', and that she carried the wounded anyway, slower, and that she had asked the lady whether it was the cough come back. It was not the cough.\n\nNear the end of the winter Reede asked Tobias, quite seriously, whether he thought the Constable would let her go home in the spring, because her mother was old. Tobias said he would ask, and asked, in that night's report, and added a line of his own that the Constable's office has kept: let her go home in the spring, if there is a spring."
+    },
+    {
+      "title": "The Letter in Its Seal",
+      "text": "The Constable's answer to the clerk's last report came north with Sir Hamon Brede's riders in the spring. It gave Sergeant Reede leave to go home to her mother. It is still in its seal on the table of the captains' hall, because there was nobody left to open it.\n\nSergeant Reede is on her stair. She stands on her stone at its foot, between the strangers in the hall and the sickroom where the lady tends the cots, and the companies who have faced her say that she fights as she fought in the yard, slipping the blow, quick with the blade and the dagger, and that whenever a man near her is struck senseless, by her or by anyone, she is at his side before he can stand, kneeling in from the flank as the lady taught her, with the point where the lift used to be. With Meade's table so close, the companies say, a man dazed at the foot of the stair has two officers to fear, and the second is the kind one.\n\nThe companies who know the story sometimes take the letter from the table and leave it on the stair at her feet. She never picks it up. The Church's sisters say she cannot see it, because the dead do not read. The bards say she sees it and will not take leave while the lady still needs her. The laundresses of the wash-house lane in Camelot say neither. They say she sent home all her pay, and that a girl who sent home all her pay does not need a letter to know she would have been allowed.\n\nEdith of the wash-house lived eleven more winters, on the pay, which the Constable's roll still sent because no one had sealed her daughter relieved or dead. She did not carry the heavy baskets. The laundresses of the lane still keep a custom for her: the last basket of the day is never carried by the woman who washed it. Someone else takes it, and says Reede's name, and takes it home."
+    }
+  ]
+}

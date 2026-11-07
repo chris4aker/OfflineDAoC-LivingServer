@@ -1,0 +1,66 @@
+{
+  "id": "danin",
+  "name": "Danin",
+  "npcNames": [
+    "Danin"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "deep-ones"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Danin is a level-41 duegar (faction Duegar; a dwarf's model) in Spindelhalla (28,140/32,377) among arachite tunnelhosts, cave trows and their trollkarls, hallaratta and crushers; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Danin as the duegar who bought the trows' road is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Danin is a duegar, one of the dwarf thieves who come into Spindelhalla from the edges after silk, and he is the one who made the deal. The arachites will not let a dwarf near the silksters, and the cave trows of the deep roads will not let a dwarf past the edge, but Danin found something the trows wanted more than they wanted him dead, and now the duegar come up the trows' road and the trows look the other way. The tailors of Jordheim have never sold Spindelhalla silk. The duegar have, the thralls' frames say, and Danin keeps the count.\n\nWhat he paid the trows nobody knows. Odell of Svarhamr suspects it was names: that the duegar tell the trows which svartalfar on the upper farm are sick, and the trows come up for the husks first. Danin stands among the tunnelhosts and the trows as if he belonged there, which, the thralls say, he now does. He fights for his road.",
+  "legend": "Danin is a level 41 duegar in Spindelhalla among arachite tunnelhosts (36-43), cave trows and trollkarls (48-52), hallaratta and crushers (49-50). He's on the Duegar faction. The trows and crushers around him are the dangerous part; pull Danin out to you. He's lower than the trows by a fair bit, so the trick is getting him alone. Don't get close to the trows while you set up the pull. Good for a group in the mid 40s.",
+  "yells": {
+    "aggro": [
+      "The road is bought and paid. You are not on the list.",
+      "(The duegar draws a short, ugly blade.)"
+    ],
+    "death": [
+      "The trows... will want... a new one..."
+    ],
+    "slay": [
+      "Silk's worth more than you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dwarf stands at ease among the trows."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "danin is the 41 duegar among the trows in spindelhalla",
+      "pull him away from the 50ish trows and crushers"
+    ],
+    "aftermathWin": [
+      "danin down",
+      "the trows didnt care"
+    ],
+    "rumour": [
+      "danin bought the duegar a road past the cave trows, nobody knows with what",
+      "odell thinks the duegar pay the trows in the names of the sick thralls"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Danin",
+    "text": "The duegar who bought his people a road up past the cave trows to Spindelhalla's silk, and keeps the count of what they sell. See [duegar]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} closed Danin's road in Spindelhalla in {minutes} minutes."
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "id": "hurjavelen",
+  "name": "Hurjavelen",
+  "catalogKey": "iarnvidiur-s-lair/hurjavelen",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "his mother, whose dagger he stole"
+    },
+    {
+      "id": "stanga",
+      "relation": "whose post he sometimes takes"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Hurjavelen is a level-68 named with 30,000 health; seven grymvarg come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His bite damages and snares in a 350 radius for 30 seconds, and he spreads Black Plague.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a rare spawn in Stanga's place who spams area disease and hit a spiritmaster for 600+; he drops Iarnvidiur's Pilfered Dagger and demonwolf shields.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4668"
+    },
+    {
+      "text": "On 35% of his hits Hurjavelen casts Hurjavelen's Bite (200 damage and a 40% snare for 30 s, radius 350 round his target, range 600), and he casts Black Plague (disease, radius 450 round HIMSELF, 120 s, recast 20 s) whenever it is ready. Seven grymvarg (HurjavelenBaf) join when he is engaged. He has his own spawn about 2,400 from Stanga; both are always present. 30,000 health, 20% melee / 30% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hurjavelen.cs"
+    },
+    {
+      "text": "The stolen dagger, the demonwolf shields and the stair to the Summoner's Hall come from the existing lair lore; the Glenlock sighting and 'the thief-wolf brings the road with him' are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hurjavelen.cs"
+    }
+  ],
+  "story": "Hurjavelen is the wolf who stole from his mother. Long ago, when he was young and quick and the old one was dozing by the water, he took a dagger from her own hand, a dwarf-made blade she had taken from some long-dead dwarf, and ran with it in his jaws out of the lair and into the iron trees. The brood waited for her to punish him. She did not. She watched him go, and when he came back days later with the dagger still in his teeth she let him keep it, and licked his ears, and went back to sleep.\n\nHe has been the brood's traveller ever since. He runs further than any of his kin, past the Iarnwood and past Aegir, and comes home with things that are not the old one's: the demonwolf shields found on him are older than the kennel and tainted with something else, and the dwarves of Faraheim say there is only one place he could be bringing them from, the hall under the frontiers where the dead of every land are called. Somewhere under the earth, they believe, he has found the stair down to the Summoner's Hall.\n\nHe brings the road home with him. His bite drags at the legs of everyone round the one he bites, so that they move as if through deep snow; the plague of the deep hall hangs round him wherever he stands, and comes again soon after it fades, and every remedy works at half its strength in it. Seven grymvarg run with him, the cruel wolves of the herd. He keeps the side passage near his brother Stanga's, and the missing seasons on Stanga's wall are, the dwarves say, the nights the thief stood his brother's post. The dwarves of Faraheim would very much like the dagger back.",
+  "chapters": [
+    {
+      "title": "The Dagger",
+      "text": "The old one sleeps by the black water under her bridge, and in her claw, when she sleeps, she holds what she likes best. The iarn dwarves say that in the first winters it was a dagger: a dwarf-made blade, older than the first clan, which she had taken from some long-dead dwarf of a people the slates do not name, and which she turned over and over in her claw as a child turns a pebble.\n\nHurjavelen was the quickest of her first litter, a lean dark pup with a thief's eyes, and one evening while she dozed he crept up to her claw and took the dagger out of it in his teeth and ran. Out of the lair, past Stanga at his passage, past the hollow, out into the iron trees and gone. The brood waited for the old one to wake and go after him. The dwarves say every wolf in the kennel lay with its ears flat for three days.\n\nShe did not go after him. When he came back, thin and wild-eyed, with the dagger still in his teeth, she let him keep it. She licked his ears and went back to sleep. The Remnants say that is the only kindness the old one has ever been seen to do, and that it has never been explained.\n\nHis name is the dwarves' word, or something like it: the one who goes off, the wanderer. He has been the brood's traveller ever since, and the dagger is still on him. The companies of Midgard who have killed him have found it, and the dwarves say they would very much like it back."
+    },
+    {
+      "title": "The Road Down",
+      "text": "He runs further than any of his kin. The Remnants have seen him at the edge of the Iarnwood and past it, on the shore of Aegir, on the ice of Delling's Crater; once, the slates say, a dwarf trader saw him on the beach at the far end of the island, looking out to sea. He comes home each time with something in his teeth that is not the old one's.\n\nThe demonwolf shields are the strangest of it. They are found on him, or near his passage, and the dwarves of Faraheim say they are older than the kennel, of a make no smith on Aegir knows, and tainted with something that is not the old one's rot. There is only one place he could be bringing them from, the dwarves say. Under the old frontiers of the three realms there is a hall where the dead of every land are called, and its summoners keep wolves of the deep at their doors. Somewhere under the earth, the dwarves believe, Hurjavelen has found the stair down to the Summoner's Hall, and comes back up it with whatever he can carry.\n\nA sentry on the eastern wall of Glenlock once reported a lean dark wolf at the muster stone at dawn, sniffing the old letters on it, and then gone toward Jarnhaug. Ashild of Glenlock wrote it on her tally with a mark beside it that she uses for things she does not believe and will not cross out. The Remnants say they believe it."
+    },
+    {
+      "title": "He Brings the Road With Him",
+      "text": "He comes home carrying the road, the dwarves say: the cold and the dark and the sickness of wherever he has been. The plague of the deep hall hangs round him wherever he stands, a grey air that settles on everything near him and dulls every remedy given to those it settles on, and fades, and comes again soon after. The Remnants' war-parties that went near his passage came home with it on them and said it was not the old one's rot. It smelled, they said, like a cellar where something had been buried and dug up.\n\nHis bite drags. The one he bites, and those close round that one, find their legs heavy, as if they were walking through deep snow, for a long while after; and a dwarf with heavy legs cannot get out of a grey air. The Remnants say it is the thief's way, brought home from a long road: he does not chase his prey, he slows it, and lets the plague do the rest.\n\nSeven grymvarg run with him, the cruel wolves of the old one's herd, who will follow anything that runs far. They come when he is roused. The dwarves say the grymvarg are the only ones of the brood who have been with him on the road, and that they come home thinner and stranger each time. The Remnants keep the grymvarg's tracks off their slates, because nobody can draw where they go, and the slate-keepers say a map of the thief-wolf's roads would be a map of everywhere under Aegir."
+    },
+    {
+      "title": "His Brother's Post",
+      "text": "He keeps a side passage near his brother Stanga's, when he is home, and the two of them are the only wolves of the first litter still standing in the old one's house apart from the hounds at her door. The dwarves say they are close, in the way such wolves are close, which is to say that Stanga would let no other wolf of the brood take his post, and Hurjavelen is the only one who has.\n\nHrefna's count of the marks on Stanga's wall found seasons missing, here and there in the rows. The dwarves say those are the nights Hurjavelen stood his brother's post and let the dead wolf sleep at the old one's feet. They say the thief comes home from the road for that, more than for anything he brings back.\n\nThe skalds of Jordheim, who call the lair a nursery for the end of the world, say Hurjavelen is the one the old one is raising to find the way. When the wolves run at the end of everything, they say, someone will have to know the roads, and the thief-wolf already knows the one that goes down. The Remnants say the skalds give the old one too much credit for planning.\n\nThe companies of Midgard who come to the side passage find him there, or do not. The dwarves say that when he is not there he is on the road, and that when he comes back he will have something in his teeth."
+    }
+  ],
+  "legend": "Hurjavelen has his own spawn in the side passage near Stanga; both are always there (the old 'he's up instead of Stanga' line is wrong here). He comes with seven grymvarg. His Black Plague is a disease cloud within 450 of HIMSELF that lasts two minutes, halves heals and comes back every 20 seconds or so, so healers and casters stay out of that ring and cure disease on the melee. On a third of his hits his bite does 200 and snares everyone within 350 of his target by 40% for 30 seconds, which keeps your melee stuck in his plague: purge or speed help. 30,000 health, 20% melee and 30% magic resists, CC-immune. The pilfered dagger and the demonwolf shields are worth the trip.",
+  "yells": {
+    "aggro": [
+      "(A wolf with a dagger in its jaws grins at you.)",
+      "(Grymvarg slink out behind him.)",
+      "(Hurjavelen laughs. Wolves do not laugh.)",
+      "(Hurjavelen comes out of the side passage, something in his teeth.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Hurjavelen's bite drags you down.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Hurjavelen snaps, and the plague thickens.)"
+      }
+    ],
+    "death": [
+      "(The stolen dagger falls ringing to the floor.)",
+      "(The grymvarg scatter into the dark.)",
+      "(Hurjavelen drops what he was carrying.)"
+    ],
+    "slay": [
+      "(Hurjavelen trots off with something shiny.)",
+      "(He goes for the softest of you next.)",
+      "(He drops the dagger to bite, then picks it up again.)",
+      "(The thief-wolf noses through the fallen one's pack.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Tonight a different wolf stands in Stanga's place.",
+      "Something laughs in the passage. Wolves do not laugh.",
+      "A cellar smell. Something has been dug up.",
+      "Strange shields lie in the side passage."
+    ],
+    "realmFirstKill": "The thief-wolf of the old one's brood has fallen.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "Hurjavelen's plague fills the passage!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "hurjavelen: 7 grymvarg, snare round the tank, plague round him. cure everything",
+      "purge the snare on hurjavelen or you're stuck in his disease",
+      "hurjavelen plague is 450 round him every 20s, heals stay out, cure disease",
+      "his bite snares everyone near the tank, purge or speed",
+      "7 grymvarg with him",
+      "hes on his own spawn near stanga, both are up"
+    ],
+    "aftermathWin": [
+      "got the pilfered dagger!!",
+      "luminous demonwolf shield!",
+      "rare spawn and we got him",
+      "iarnvidiur's pilfered dagger!!",
+      "pilfered dagger!",
+      "demonwolf shield dropped",
+      "nobody got stuck in the plague"
+    ],
+    "aftermathLoss": [
+      "snared in the disease, [wiped|gg]",
+      "he went straight for the spiritmaster",
+      "seven grymvarg was too many",
+      "snared in the plague ring",
+      "snared in the plague and couldnt get out",
+      "healers stood next to him"
+    ],
+    "rumour": [
+      "heard there's a wolf in the lair that stole a dagger from iarnvidiur and she let him keep it",
+      "hurjavelen runs further than the iarnwood. the demonwolf shields are what he brings home",
+      "iarnvidiur licked hurjavelen's ears after he stole her dagger. the brood was terrified",
+      "hurjavelen laughs. thats how you know its him",
+      "hurjavelen stole a dagger from iarnvidiur herself and she let him keep it",
+      "the dwarves think hurjavelen found the stair to summoners hall",
+      "a glenlock sentry saw a dark wolf at the muster stone once"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hurjavelen",
+    "text": "The thief-wolf of [Iarnvidiur]'s first litter, who stole a dagger from her claw and was let keep it. He roams further than any of the brood and comes home with shields from somewhere deep; the dwarves think he has found the stair to the Summoner's Hall. The plague of the road hangs round him. The missing seasons on [Stanga]'s wall are his."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. A dwarf showed me the scar the thief-wolf gave him: a clean cut, the shape of a blade, on the forearm. He said the wolf had come out of the trees with the dagger in its jaws and cut him the way a man cuts, not the way a wolf bites. He said the wolf's eyes laughed. He said he has fought wolves all his life and never seen one laugh before, and that he does not want to see it again. He said the old one was watching from somewhere. He did not see her. He knew.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took back Iarnvidiur's pilfered dagger from Hurjavelen in {minutes} minutes.",
+    "loss": "Hurjavelen ran down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

@@ -51,6 +51,8 @@ public sealed record SocialExpansionSettings
     /// <summary>Holiday chatter and Leeroy in raids (Beta 1.1). On by default.</summary>
     public bool LivingHolidays { get; init; } = true;
     public bool LivingLeeroy { get; init; } = true;
+    /// <summary>The lore's screen-centre atmosphere lines (Living Server 1.2, docs/LORE.md). On by default.</summary>
+    public bool LivingAtmosphere { get; init; } = true;
     public string PlayerXpByLevel { get; init; } = "";
     public string BotXpByLevel { get; init; } = "";
     /// <summary>
@@ -91,7 +93,7 @@ public sealed record SocialExpansionSettings
         LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true, LivingNemesis = true,
         ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingDeeds = true,
         LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, LivingLeeroy = true,
-        PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
+        LivingAtmosphere = true, PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
     };
 
@@ -127,6 +129,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_rumours", "bots", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see."),
         ("bot_living_holidays", "bots", "Server life: around Halloween, Thanksgiving, Christmas, New Year and other holidays on your PC's calendar, bots talk about them like 2003 players did and answer your holiday wishes."),
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
+        ("living_atmosphere_lines", "bots", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn companions out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
         ("bot_led_group_join_mode", "bots", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back)."),
@@ -173,6 +176,7 @@ public sealed record SocialExpansionSettings
         ["bot_living_rumours"] = Bool(LivingRumours),
         ["bot_living_holidays"] = Bool(LivingHolidays),
         ["bot_living_leeroy"] = Bool(LivingLeeroy),
+        ["living_atmosphere_lines"] = Bool(LivingAtmosphere),
         ["xp_rate_by_level"] = PlayerXpByLevel.Trim(),
         ["bot_xp_rate_by_level"] = BotXpByLevel.Trim(),
         ["mana_regen_amount_modifier"] = ManaRegenModifier.ToString("0.##", CultureInfo.InvariantCulture),
@@ -338,6 +342,7 @@ public sealed record SocialExpansionSettings
             LivingRumours = ReadBool("bot_living_rumours", d.LivingRumours),
             LivingHolidays = ReadBool("bot_living_holidays", d.LivingHolidays),
             LivingLeeroy = ReadBool("bot_living_leeroy", d.LivingLeeroy),
+            LivingAtmosphere = ReadBool("living_atmosphere_lines", d.LivingAtmosphere),
             // Kept as written: an invalid range setting shows its own error in the tab (the server ignores it).
             PlayerXpByLevel = stored.TryGetValue("xp_rate_by_level", out string? player) ? player?.Trim() ?? "" : "",
             BotXpByLevel = stored.TryGetValue("bot_xp_rate_by_level", out string? bots) ? bots?.Trim() ?? "" : "",
@@ -356,7 +361,8 @@ public sealed record SocialExpansionSettings
     /// <summary>True when any Living Server part is on.</summary>
     public bool AnyLiving => LivingMemory || LivingGrats || LivingFirsts || LivingDeath || LivingAlarms || LivingNemesis ||
                              ScheduleMode != "off" || LivingBreaks || LivingBodyLanguage || LivingBeggars ||
-                             LivingDeeds || LivingStorylines || LivingCharacters || LivingRumours || LivingHolidays || LivingLeeroy;
+                             LivingDeeds || LivingStorylines || LivingCharacters || LivingRumours || LivingHolidays || LivingLeeroy ||
+                             LivingAtmosphere;
 
     /// <summary>
     /// "All off": the three features, every Living Server part, bot leaders' invites and both XP ranges off. The share, lowest level
@@ -369,7 +375,7 @@ public sealed record SocialExpansionSettings
         LivingMemory = false, LivingGrats = false, LivingFirsts = false, LivingDeath = false, LivingAlarms = false,
         LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false, LivingBeggars = false,
         LivingDeeds = false, LivingStorylines = false, LivingCharacters = false, LivingRumours = false,
-        LivingHolidays = false, LivingLeeroy = false, BotGroupInvites = false, BotRaidInvites = false,
+        LivingHolidays = false, LivingLeeroy = false, LivingAtmosphere = false, BotGroupInvites = false, BotRaidInvites = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>

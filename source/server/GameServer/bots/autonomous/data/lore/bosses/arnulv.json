@@ -1,0 +1,117 @@
+{
+  "id": "arnulv",
+  "name": "Arnulv",
+  "npcNames": [
+    "Arnulv"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "gunnolf",
+      "relation": "the captain he stands near in the east, and whose western camp he once came from"
+    },
+    {
+      "id": "geirolf",
+      "relation": "the spear-wolf of the west, near whose camp the other Arnulv stands"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Two drakulv named Arnulv stand in Malmohus at once, level 51: one in the east among drakulv armguards, about 1,500 units from the eastern Gunnolf (738822, 1009792), the other in the west near an armguard (704203, 1000927).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60158072)"
+    },
+    {
+      "text": "His template gives an evade chance of 10.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Arnulfr (Arnolfr), 'eagle-wolf', is an attested Old Norse and Germanic personal name.",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "Arnulv is the eagle-wolf, and the svartalfar say the name was given for his eyes. He is the court's lookout: where Wyulv on his rise watches the sky, the Arnulvs watch the ground, the roads into the ruins and the passes from Skona, and see what comes long before the camps do. They are quick on their feet and quicker to step out of the way of a blow, and Midgard's scouts, who have had to deal with them on the road south, say there is no creeping past an Arnulv in daylight.\n\nThere are two of them because the court once split, and the eagle-wolf split with it. When Gunnolf of the western camps refused the dragon's runners, the svartalfar say, the hollow gave Gunnolf's name a second time to a drakulv in the east, to keep a holding that would answer, and the western Arnulv of that winter was sent east with the new Gunnolf to be his eyes. The old west did not let its lookout go without a quarrel. It made a new Arnulv for itself the same moon, and so the name has been held twice ever since: one in the east beside the Gunnolf the hollow made, one in the west among the armguards near Geirolf, who watches the passes the old west watches.\n\nThe two eagle-wolves have never met, the svartalfar say, and do not need to. Each reports what it sees to its own side and nothing to the other. The beam-cutters of Svarhamr find that the most interesting thing about them: the court of Malmohus has two pairs of eyes on the same roads, and the halves of it do not share what they see. Brisa the beam-cutter says that a company of Midgard's warriors coming down from Skona has a better chance by the western road than the eastern, because the eastern Arnulv's news goes to the hollow, and the western Arnulv's goes no further than Gunnolf, who does not pass it on.",
+  "legend": "Two Arnulvs are up in Malmohus, both level 51: one in the east among drakulv armguards (1,500 from the eastern Gunnolf), one in the west near an armguard by Geirolf's area. He evades a bit, otherwise a plain drakulv: no abilities, not CC-immune. Pack Drakulv, so the armguards around the eastern one will come when you hit him; the western one is usually alone with a single armguard and is an easy kill. Neither is a quest target. If you're heading south to Gjalpinulva or Yar, the western road past the west Arnulv is the quieter way in. Svarhamr's folk say the eagle-wolves see you coming; really they just stand where the roads meet.",
+  "yells": {
+    "aggro": [
+      "I saw you at the pass. I see you now.",
+      "Eyes of the court! Here!",
+      "Nothing creeps past the eagle-wolf."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I see the way out. I see you too."
+      }
+    ],
+    "death": [
+      "Tell... the other one... what I saw...",
+      "My eyes... to someone..."
+    ],
+    "slay": [
+      "Seen and done.",
+      "I watched you come. I watched you go.",
+      "Report: one fewer."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A drakulv on watch. The roads are seen from here.",
+      "The eagle-wolf turns its head before you do."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Arnulv looks to the pass, then back to you."
+      }
+    ],
+    "realmFirstKill": "An Arnulv falls. The other still watches."
+  },
+  "botLines": {
+    "briefing": [
+      "two arnulvs, both 51, one east one west",
+      "eastern one has armguards with him, they come",
+      "western one is basically solo",
+      "he evades a bit, no other tricks"
+    ],
+    "aftermathWin": [
+      "arnulv down",
+      "the west one was a quick one",
+      "lots of evades but fine",
+      "one less lookout"
+    ],
+    "aftermathLoss": [
+      "eastern arnulv brought five armguards",
+      "ran into gunnolf",
+      "he saw us before we saw him lol",
+      "too many evades for a duo"
+    ],
+    "rumour": [
+      "arnulv is the eagle wolf, the courts lookout",
+      "theres two because the court split when gunnolf refused the runners",
+      "the two arnulvs never share what they see",
+      "go south by the western road, its news goes no further than gunnolf"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Arnulv",
+    "text": "The eagle-wolf, lookout of the [drakulv] court; there are two since the court split over [Gunnolf] and the runners, one in each half, and they do not share what they see. See [the names]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: the eagle-wolf is cut twice on the beam, two lines that start on the same winter, side by side, and my teacher marked the start of the second with the sign we use for a crack in a beam. She said that was the winter the court of Malmohus split, and that most of the trouble Midgard has had in the ruins since and most of the luck has come out of that crack. When I asked which, trouble or luck, she said: it depends which road you came in by.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out one of the eagle-wolf's eyes in Malmohus in {minutes} minutes.",
+    "loss": "Arnulv saw {raidLeader}'s party from {realm} coming, and the camp was ready, after {minutes} minutes."
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "id": "rotodjur",
+  "name": "Rotodjur",
+  "catalogKey": "trollheim/rotoddjur",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "troll-fathers",
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "trollheim",
+      "relation": "the east halls, the Fathers' gardens"
+    },
+    {
+      "id": "nosdoden",
+      "relation": "the worm on the Fathers' mound, far below"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Rotodjur (script Rotoddjur) is a level-71 named with 10,000 health that raises four or five Rotoddjur's Servants and poisons.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "A June 2003 Allakhazam comment describes it as a big mushroom whose 4-5 smaller mushrooms killed a level 50 warrior in about eight seconds.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/6010"
+    },
+    {
+      "text": "Swedish rot means root or rot, and djur animal or beast (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "When first engaged it raises 4-5 Rotoddjur's Servants (3,000 health, 35% resists, hard-hitting) once, around itself; they are removed when it dies or resets. It casts Orm Poison (80 body every 3 s for 30 s) on its target if the target has no damage-over-time on it. 10,000 health, reach 350, immune only to confusion and nearsight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs"
+    },
+    {
+      "text": "The gardener's charge, the morvalt shaman Ugrak and the saying 'nothing the gardener grows outlives it' are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs"
+    }
+  ],
+  "story": "In the far east halls of Trollheim, where no troll has lived since the Fathers left, the floor grows. It is soft underfoot and faintly warm, and it smells of earth after rain, and in places it rises in pale caps and gills and rootlets that move when no one is looking. The Valkyn say these were the Fathers' gardens: halls lit by stones that shone, where the Fathers grew food under the mountain, and that the gardener who kept them was neither troll nor beast. Rotodjur is the gardener. Root-beast or rot-beast, the northern tongue makes of its name, and both fit.\n\nWhen the Fathers went down, they told the gardener to keep the halls for family until they came home. It has kept them. It does not move. When something that is not family comes close, the whole bed wakes with it at once: the small caps round its foot stand up on legs, a handful of them, all together, and they are hungry, and far stronger than anything that size should be. The great cap itself breathes a slow poison on the one who stands before it.\n\nThe morvalt went into the gardens once, in the first years. A war-band of them cut through the walking caps and lost half its number doing it, until the shaman Ugrak put his fire into the great cap itself and it slumped; and as it slumped every walking cap in the hall fell down at once and went to rot. In a season the gardener stood up again, whole, and the morvalt have never gone back. Their saying is the one the Valkyn use too: nothing the gardener grows outlives it.\n\nThe trolls of Dyrfjall want the gardens back, and some of them have gone in wearing the runed cloaks, believing the gardener would know them for family. It did not. The Valkyn say it knows family by something older than cloth. Hallveig's grandmother said the gardener does not know the Fathers are not coming back, and that no one should tell it, because then it would have nothing to do.",
+  "chapters": [
+    {
+      "title": "Gardens Under the Mountain",
+      "text": "The Fathers did not live on what they could carry down from the surface. The Valkyn say they grew their food under the mountain, in the east halls of the upper city, in long rooms lit by stones that shone with a light like an overcast noon, where the floors were deep with earth carried down basket by basket in the first years of the city and the walls ran with warm water from the forges.\n\nWhat grew there was not barley or kale. The Valkyn grandmothers' accounts agree on that, though not on much else: pale things, with caps and gills, and roots that went down into the earth further than the earth went, and the Fathers ate them and brewed from them and made their lamp-oil from them. Olen's jars, the Valkyn say, were filled from the east halls once. The trolls of Bjarken say something less pleasant about what the roots went down into, and the Valkyn do not argue with them.\n\nThe gardens had a keeper. It was not a Father and not a troll and not a beast, the grandmothers say; it was something the Fathers grew, the first and largest of everything in the east halls, rooted at the heart of the oldest garden, and the Fathers spoke to it and it answered by growing. They called it the gardener. The morvalt, who got the name from Remandun's readings, call it Rotodjur, and the northern tongue makes of that something like root-beast or rot-beast. The Valkyn say both fit and neither is fair."
+    },
+    {
+      "title": "The Gardener's Charge",
+      "text": "When the Fathers went down by roads only they knew, they did not leave the east halls empty. The Valkyn say the last Father to leave the gardens stood in front of the gardener for a whole day and told it what it was to do: keep the halls for family until the Fathers came home. Let nobody in who was not theirs. Let nothing be taken. It answered, as it always had, by growing.\n\nIt has grown ever since. The earth of the east halls is all one root now, the Valkyn say, and the gardener is in all of it, and the floor is soft and faintly warm and moves when no one is looking. The shining stones went dim long ago. The gardens are dark, and smell of earth after rain, and nothing walks in them.\n\nNothing walks until something comes that is not family. Then the whole bed wakes with the gardener at once. The small caps round its foot stand up on legs, a handful of them, all together, as a farmer's sons get up from the table when there is a knock at night; and they are hungry, and they hit far harder than anything their size has any right to. The great cap does not move. It breathes, slowly, and its breath is a poison that settles on the one who stands in front of it and eats at him while the walking caps do the rest.\n\nThe trolls of Dyrfjall say that is not a gardener but a guard. The Valkyn say that to the Fathers there was never any difference."
+    },
+    {
+      "title": "Ugrak's Fire",
+      "text": "The morvalt went into the east halls once, in the first years after the gates, when they were taking every hall of the upper city in turn. A war-band of them went in at the western door with torches, and the floor woke under them, and the walking caps stood up round the great one in the middle of the hall.\n\nThe Valkyn have the story from the morvalt themselves, who tell it as a warning to their young, which is rare among them. The war-band cut at the walking caps and the caps did not die easily, and every morvalt who stopped to finish one was set on by two more. Half the war-band was down in the soft earth before their shaman, a morvalt called Ugrak whose name the morvalt still say, stopped fighting the small things at all. He walked through them to the great cap and put his fire into it, and kept putting it in.\n\nIt slumped. The great cap folded down into itself like a tent with its pole drawn out, and as it went, every walking cap in the hall went with it. They fell where they stood, the morvalt say, all at once, the ones still fighting and the ones that had been about to, and went to rot in the time it takes to draw a breath. The war-band picked up its dead and walked out through the soft dark, and nothing stood up to stop it.\n\nIn a season the gardener was standing again at the heart of the hall, whole, and the floor round it was soft and warm, and the small caps were back at its foot. The morvalt have never gone into the east halls since. They kept one thing from Ugrak's day, and the Valkyn use it too: nothing the gardener grows outlives it."
+    },
+    {
+      "title": "Nothing to Do",
+      "text": "The trolls of Dyrfjall want the gardens back more than they want anything else in the city, because the gardens are what would let them live in Trollheim again instead of visiting it. Some of them have gone into the east halls in the runed cloaks the Fathers sewed for their children, believing that the gardener would know the runes and let family pass. The walking caps stood up anyway. The trolls who came back said the gardener had not even paused.\n\nThe Valkyn say it knows family by something older than cloth, and that the trolls, who left the city so long ago, no longer have whatever it is. They say this sadly. They do not go into the gardens either, though they are the Fathers' own tamed children, because they are not sure what the gardener would think of them, and they would rather not know.\n\nJordheim's runemasters think the gardener is the oldest living thing in Midgard's part of Aegir, and that it may be older than the city, and that the Fathers did not grow it but found it and dug Trollheim round it. Nobody has asked the gardener.\n\nHallveig's grandmother Ragnfrid had the last word on it, and the Valkyn guides repeat it to Midgard's companies at the door of the east halls. The gardener does not know the Fathers are not coming back, she said, and no one should tell it. If it knew, it would have nothing to do, and a thing that has had one task for that long does not know how to stop. It would only go on growing, and then the whole mountain would be the garden."
+    }
+  ],
+  "legend": "Rotodjur, the giant mushroom in the east halls. The moment it's engaged it raises 4 or 5 Rotoddjur's Servants around itself, once: 3,000 health each, 35% resists, and they hit absurdly hard (one killed a level 50 warrior in about eight seconds in 2003). They don't come back during the fight, and they all vanish the instant Rotodjur dies. So you have two choices: lock the servants down (they're not CC-immune, so mez, stun and root work, and so does area damage while they're bunched) and kill them, or hold them off and burn the big cap, which only has 10,000 health, and let them wither with it. Rotodjur poisons its target for 80 body every 3 seconds for 30 seconds, so cure poison on the tank. Clear the back of the room first so you don't add it by accident. If you all die or leave it resets to full with the servants cleared, so there's no chipping it down. Its cap helms are the drops. Don't fight it tired.",
+  "yells": {
+    "aggro": [
+      "(The great cap shudders and splits.)",
+      "(Rootlets lift from the floor like hair standing up.)",
+      "(A deep, wet sound, like breathing.)",
+      "(The whole floor shivers, and the small caps stand up together.)"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "(Spores burst. Small caps stand up and walk.)"
+      }
+    ],
+    "death": [
+      "(Rotodjur slumps into rot.)",
+      "(The floor of the east halls goes still.)",
+      "(Every walking cap in the hall falls at once, and rots.)"
+    ],
+    "slay": [
+      "(Rootlets close over the fallen.)",
+      "(The floor grows a little.)",
+      "(The buds settle back into the soil.)",
+      "(The soft earth closes over the fallen. It is family now.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor here is soft, and it is growing.",
+      "The floor is soft underfoot. It is alive.",
+      "Dim stones in the ceiling once shone like noon."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Rotodjur buds, and its buds stand up!"
+      },
+      {
+        "trigger": "death",
+        "text": "The walking caps fall with the gardener."
+      }
+    ],
+    "realmFirstKill": "The gardener of the east halls slumps. Its children rot."
+  },
+  "botLines": {
+    "briefing": [
+      "rotodjur spawns 4-5 little mushrooms that hit like trucks. [kill them|cc them] first",
+      "clear the back of the room before rotodjur",
+      "two groups at least, the buds are mean",
+      "add group outside the ring for rotodjur's buds",
+      "rotodjur raises 4-5 servants once on pull. they die when it dies",
+      "servants hit stupid hard but they arent cc immune",
+      "either cc the servants or burn the big cap, its only 10k",
+      "cure poison on whoever is on rotodjur"
+    ],
+    "aftermathWin": [
+      "killed the giant mushroom. [lol|what a sentence]",
+      "rotodjur's helm of motion dropped",
+      "giant mushroom dead lol",
+      "nobody died to the buds this time",
+      "burned the cap and all the little ones dropped dead",
+      "nothing the gardener grows outlives it [lol|true]",
+      "cap helm!"
+    ],
+    "aftermathLoss": [
+      "the little mushrooms killed our warrior in like 8 seconds",
+      "baffed it by accident clearing the back",
+      "the buds ate the warrior in seconds. again",
+      "the cap's poison wore down the main tank",
+      "we chased the little caps and the healer died",
+      "baffed it clearing the back again"
+    ],
+    "rumour": [
+      "theres a mushroom the size of a house in trollheim. [im serious|not joking]",
+      "the valkyn think the east halls were the fathers' gardens",
+      "the morvalt wont go into the east halls at all",
+      "rotodjur is the fathers' gardener, the valkyn say. still keeping the halls",
+      "trolls went into the east halls in the runed cloaks. the mushroom didnt care",
+      "a morvalt shaman burned the big cap once and every little cap rotted on the spot",
+      "valkyn say never tell the gardener the troll fathers arent coming back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Rotodjur",
+    "text": "The gardener of the [Troll Fathers]' east halls, told to keep them for family until the Fathers came home. When strangers come the whole bed wakes with it and its small caps stand up together; when the morvalt shaman Ugrak burned the great cap, every walking cap fell with it. Nothing the gardener grows outlives it. The runed cloaks do not fool it."
+  },
+  "bookPage": "From the notes of Hallveig, the Valkyn guide. My grandmother said the Fathers grew food under the mountain, in halls lit by stones that shone, and that they had a gardener there who was not a troll and not a beast. When the morvalt came the gardener was told to keep the halls until the Fathers returned. The morvalt went into the gardens once. They do not talk about what happened. My grandmother said the gardener does not know the Fathers are not coming back, and that no one should tell it, because then it would have nothing to do.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down Rotodjur in Trollheim's east halls in {minutes} minutes.",
+    "loss": "Rotodjur's buds overran {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

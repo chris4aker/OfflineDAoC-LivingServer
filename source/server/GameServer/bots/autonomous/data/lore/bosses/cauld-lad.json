@@ -1,0 +1,121 @@
+{
+  "id": "cauld-lad",
+  "name": "Cauld Lad",
+  "npcNames": [
+    "Cauld Lad"
+  ],
+  "locationId": "black-mountains-north",
+  "realm": "Albion",
+  "aliases": [
+    "the cold lad",
+    "the stable ghost"
+  ],
+  "facts": [
+    {
+      "text": "Cauld Lad: template 12074, level 53-55, a small human model (size 35) flagged as a ghost, east of Snowdonia Station at 528347, 406555 in Black Mountains North; aggro level 0, no faction, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A template with ReplaceMobValues sets the spawn's faction, aggro and level; an NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Real-world folklore: the Cauld Lad of Hylton is an English household ghost, a stable boy killed by his master, who tidied the house at night and left when he was given a cloak; he sang that he waited for an acorn to grow into the tree for the cradle of the one who would lay him. Not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Cauld_Lad_of_Hylton"
+    },
+    {
+      "text": "The Roman posting-house under the station, the ostler Gwas, the master's pitchfork and the horse-pond, the rule of the stable (say nothing, give nothing, strike nothing), Mathien's oak and the four accounts of what he is are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Before there was a station in the middle valley there was a posting-house, and before that a Roman one, with a stable for the post horses on the road north to the mines. In Uther's day it was kept by a man the hill-folk do not name, and his stable boy was a lad called Gwas, which in the hill speech is only \"boy\", so perhaps he had no other name. Gwas was slow. One night a rider of the king's came up the valley in the rain shouting for a fresh horse, and the lad was slow to bring it, and the master struck him with the pitchfork that stood by the door and put the body in the horse-pond behind the stable and told the rider the boy had run off.\n\nHe did not run far. That winter the grooms found the stable mucked out each morning before they woke, the tack hung straight, the horses quiet. When they left it in a mess it was set to rights. When they left it tidy, to see what he would do, they found it thrown about, the harness in the straw, as if he could not bear to have nothing to do. A groom's wife left a cloak on the corn-bin to thank him, and in the morning the cloak was gone and the stable was a ruin, and the lad has never worked in that stable since. Ever after he has wandered the road east of the station in the long dusk, cold as the pond, and works at night in whatever stable will have him.\n\nThe station keeps a custom for him that it calls the rule of the stable: say nothing to him, give him nothing, and strike nothing. He has never once laid a hand on anyone who kept it. And no other spirit in the valley answers when he is troubled; the ghost miners on the hill do not come down for him, the dead of the druids' ground do not know him. He is a household's ghost, and his household is a stable.\n\nThere are four accounts of what he is. The hill-folk say he is the boy, and angry. The ostlers of the station say he was the master's own son, which is why the master hid him. The priest at Ludlow says he is held by his own anger and will go when he forgives. The loremasters of Camelot say he is one of the old household spirits, like the bwca of the Pennine farms, and the only one who never turned ugly, because his house never left. All four agree on one thing, because the lad sings it himself: the acorn has not yet fallen from the tree that will make the cradle of the child who will lay him. Mathien of the station planted an oak by his stable thirty years ago. When the lad is put down he is back by the next feed, and the station says that is because the oak is not yet tall enough.",
+  "legend": "The Cauld Lad is a level 53-55 ghost on the road east of Snowdonia Station in Black Mountains North, a 10-30 zone. He never aggros (aggro level zero), so lowbies can ride right past him; leave him alone below fifty. He has no spells or styles in the data and no faction, so nothing comes to help him: a straight melee kill for two or three fifties or a small group. He is small and see-through, and wanders a little. He respawns in about 80 seconds, so do not park a lowbie on his road after you kill him. The old hands at the station say never thank him and never give him anything, or he wrecks the stable; Mathien leaves his stable door open for him and says nothing.",
+  "yells": {
+    "aggro": [
+      "You should not have struck.",
+      "Too slow, was I? Too slow?",
+      "Nobody thanks the stable boy."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The tack is in the straw! Who put it there?"
+      }
+    ],
+    "death": [
+      "Not yet... the acorn... not yet...",
+      "The horses are... quiet now..."
+    ],
+    "slay": [
+      "Lie in the pond. It is cold.",
+      "Mucked out.",
+      "Hung up straight, like the harness."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The road is cold here, colder than the dusk.",
+      "Somewhere a stable door creaks open."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Cauld Lad howls. Every horse in the valley wakes."
+      }
+    ],
+    "realmFirstKill": "The Cauld Lad is laid. The acorn has not yet fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "cauld lad, 53-55 ghost on the road east of the station. never aggros, no spells, nothing comes with him",
+      "straight melee kill, two or three 50s is plenty. hes small, dont lose him in the trees",
+      "he respawns in like 80 sec so dont leave lowbies standing on that road",
+      "and nobody thank him in say. old station joke but do it anyway"
+    ],
+    "aftermathWin": [
+      "cold lad down. stable's safe for a minute",
+      "easy, he never even swung till we hit him",
+      "back in 80 sec, move on",
+      "mathien's oak still isnt big enough apparently"
+    ],
+    "aftermathLoss": [
+      "he's 55 and we're not, should have checked",
+      "lost him in the dusk, he's see-through",
+      "someone aoe'd near the road and woke the whole hill",
+      "he came back before we'd rezzed, whatever"
+    ],
+    "rumour": [
+      "[heard|someone said] the cauld lad was a stable boy killed with a pitchfork for being slow",
+      "heard if you thank the cold lad he wrecks the stable and leaves",
+      "[heard|someone said] the station has a rule for him. say nothing, give nothing, hit nothing",
+      "heard he sings about an acorn. the tree for the cradle of whoever lays him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "cauld lad",
+    "text": "The cold lad of the road east of [snowdonia station]: a stable boy killed in Uther's day for being slow, who works at night in any stable that will have him and wrecks it if he is thanked. The station's rule for him is say nothing, give nothing, strike nothing, and he has never harmed anyone who kept it. He sings that the acorn has not yet fallen for the cradle of the one who will lay him. [leorcelis grant] once asked him his name."
+  },
+  "bookPage": "From the Gate-Book of Swanton Keep, in the hand of Cadwgan, gate-warden. Mathien came up from the station for salt and told me the necromancer from the burying ground had been down to his stable at dusk, asking the cold lad his name for a book. The lad gave him none. In the morning the necromancer's books were in the horse-pond and the stable was the tidiest Mathien has ever seen it. Mathien says that is the only time the lad has been thanked and not minded, because the necromancer was not thanking him; he was asking. I have written it here because a gate is a kind of stable door, and I would like to know what to do if he comes.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} laid the Cauld Lad on the station road in {minutes} minutes.",
+    "loss": "The Cauld Lad set {raidLeader}'s company of {realm} to rights on the station road."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "leorcelis-grant",
+      "relation": "asked him his name for a register and found his books in the horse-pond"
+    },
+    {
+      "id": "black-mountains-north",
+      "relation": "the ghost of the old posting-house under Snowdonia Station"
+    }
+  ]
+}

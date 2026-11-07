@@ -1,0 +1,120 @@
+{
+  "id": "wrath-of-mordred",
+  "name": "Wrath of Mordred",
+  "catalogKey": "albion-named-mobs-classic-zones/wrathofmordred",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 71, 40,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 30% of melee and 40% of everything else; ghost flag.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/WrathOfMordred.cs"
+    },
+    {
+      "text": "It fights with two-handed styles: a taunt, an after-parry style with a parry follow-up, and a side style with a side follow-up. 15% of its hits add a heat blast of 600 to everyone within 300 of its target.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/WrathOfMordred.cs"
+    },
+    {
+      "text": "It walks home at full health when nobody is left on its aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "Mordred is Arthur's son or nephew in the legends, who fell with him at Camlann.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Mordred"
+    },
+    {
+      "text": "The Wrath as Mordred's anger only, its settling below Arthur's lake, the soldier's training it kept and the scorched ground are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Mordred betrayed Arthur and died by his hand at Camlann, and the bards say his rage did not die with him. It went looking for somewhere to burn. The old men of Barfog say it found the lake Arthur once cleansed of its monster, the lake of the king's first great deed, and settled below it to spite him, on a stretch of ground south of the water that has been scorched ever since and will not grow grass.\n\nThe Wrath of Mordred is not Mordred. The Church is clear on that, and so are the old men, who say Mordred's soul went wherever traitors' souls go and his body went into the ground at Camlann. This is only his anger, standing up. But anger remembers what it was taught. Mordred was a knight of the Round Table before he was a traitor, trained in the yards of Camelot with the rest, and the thing on the scorched ground fights the way he was taught to fight: a great two-handed blade, a goad to draw a man's eye, a turn when a blow is turned aside, a cut from the flank when the man in front of it is not quick enough. The knights who have faced it say it is like fighting the best swordsman of the yards with his temper lost, which is to say like fighting Mordred.\n\nEvery blow it lands carries a little of the fire of Camlann. Not every one, but often enough, the struck man and everyone close beside him are wrapped in fire, as the field of Camlann burned round the king and the traitor at the end. The knights of Camelot say you do not stand shoulder to shoulder against the Wrath; you stand where you can see it, and not where its fire can reach you through a friend.\n\nIt cannot be charmed, held or put to sleep. Anger never could. Some of the Church say Morgana sent it there, being in some tellings Mordred's mother; the old men of Barfog say no one sends anger anywhere, and that it chose Arthur's lake by itself, and that it will go out only when someone of Arthur's realm stands on the scorched ground and puts it out.",
+  "legend": "The Wrath of Mordred, level 71, 40k health, on the scorched ground south of the lake. The toughest of the Barfog six: it resists 30% of melee and 40% of magic, and it cannot be crowd controlled. It fights with real two-handed styles, including an after-parry chain and a side chain, so the tank wants good parry and block and should not let melee stand on its flank. 15% of its hits add a 600 heat blast to everyone within 300 of its target, so nobody stacks on the tank, and the tank wants heat resist and big heals. No adds. A wipe resets it to full; it respawns about an hour after death.",
+  "yells": {
+    "aggro": [
+      "Arthur's realm! Arthur's dogs!",
+      "Come, then. I learned in the same yards you did.",
+      "Camlann is not finished."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Camlann was not the end of it!"
+      }
+    ],
+    "death": [
+      "Even now... I hate him...",
+      "The fire... goes out..."
+    ],
+    "slay": [
+      "Another of Arthur's.",
+      "Burn, as the field burned.",
+      "Badly taught. Badly fought."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Scorched earth. A traitor's anger still burns.",
+      "Grass will not grow here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Wrath of Mordred burns as Camlann burned!"
+      }
+    ],
+    "realmFirstKill": "The Wrath of Mordred is spent. Camlann is over."
+  },
+  "botLines": {
+    "briefing": [
+      "wrath of mordred, 71, 40k. 30% melee and 40% magic resists, no cc at all",
+      "15% of its hits do 600 heat to everyone within 300 of the tank. nobody stacks on the tank",
+      "it uses real 2h style chains incl after parry and side. dont stand on its flank",
+      "tank wants heat resist and big heals"
+    ],
+    "aftermathWin": [
+      "mordred's wrath is out. took long enough",
+      "camlann is finally over",
+      "nobody stacked, the heat only hit the tank. nice",
+      "best swordsman in the yards, they said. not today"
+    ],
+    "aftermathLoss": [
+      "the heat procs ate the tank",
+      "melee stacked behind the tank and the fire hit all of them",
+      "it parried and chained the tank to death",
+      "not enough dps through those resists"
+    ],
+    "rumour": [
+      "heard the wrath of mordred is just his anger left standing",
+      "[someone said|heard] mordred's rage settled at llyn barfog to spite arthur",
+      "heard it fights like a round table knight with his temper lost",
+      "[heard|someone said] grass wont grow where the wrath stands"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "wrath of mordred",
+    "text": "Not Mordred, only his anger, which did not die at Camlann. It settled on scorched ground below Llyn Barfog to spite the king who cleansed the lake, and fights the way Mordred was taught in Camelot's yards. Its blows carry the fire of Camlann to everyone near the struck man."
+  },
+  "bookPage": "From the Barfog Book of Twr ap Alsig. Of the scorched ground. Grass does not grow south of the lake where the Wrath stands, and has not in my lifetime. A knight of Camelot who went down there and came back told me it fought like the best swordsman of the yards with his temper lost, a goad and a turn and a cut from the side before you saw it coming, and that every so often the man it struck went up in fire and so did whoever stood at his shoulder. He said at Camlann the field burned. He said you do not stand shoulder to shoulder against it, which is a hard thing to tell a knight. He went down again the next spring.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} put out the Wrath of Mordred below Llyn Barfog in {minutes} minutes.",
+    "loss": "The Wrath of Mordred burned on; {raidLeader}'s company of {realm} fell on the scorched ground."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "mordred"
+  ],
+  "related": [
+    {
+      "id": "legendary-afanc",
+      "relation": "the beast of the lake Arthur cleansed, which the Wrath settled beside to spite him"
+    },
+    {
+      "id": "morgana",
+      "relation": "Mordred's mother in some tellings; the Wrath answers to nobody"
+    }
+  ]
+}

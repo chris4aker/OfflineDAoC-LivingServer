@@ -1,0 +1,144 @@
+{
+ "id": "marquis-almen",
+ "name": "Marquis Almen",
+ "npcNames": [
+  "Marquis Almen"
+ ],
+ "aliases": [
+  "almen",
+  "the prophet"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-saeor",
+   "relation": "his lord, who never believed him"
+  },
+  {
+   "id": "duke-zepor",
+   "relation": "stands with him at Saeor's door"
+  },
+  {
+   "id": "earl-oraxus",
+   "relation": "stands with him at Saeor's door"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "records the wagers he is consulted on"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "bets against him and loses"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Marquis Almen is a level 70 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands outside High Lord Saeor's hall at the far east, with Duke Zepor and Earl Oraxus.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Marquis Almen among the marquises of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Marquis Almen is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Amon (7) is a marquis; Almen may read as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Marquis Almen spawns at size 200, the largest of the marquises.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Marquis Almen is the largest peer on the Roll and the court's only prophet, and the court has never once believed him. He belongs to High Lord Saeor's household at the far east end of the hollow, and he is so big that he stands outside his lord's hall because he does not fit easily in it. In the Uncounted Age he told the lords of the east what was going to happen to them, accurately, and they ignored him, and it happened. At the Feast of Thrones he told High Lord Saeor that the hungry one would eat nineteen and the rest would kneel, before the first lord was eaten. Saeor did not believe him then either, and knelt.\n\nAlmen sees the shapes of things before they come. He does not see them clearly. He said, in the Fourth Roll, that the roof of the hollow would open in three places and that the light coming down would be the colour of the frontier; nobody knew what a frontier was. The court remembered it when the doors opened in the age of the realm wars, and still did not believe him about anything else. He says now that the Master will one day be fought by mortals who do not come down a door. Nobody knows what that means either.\n\nThe princes do one thing with him. When they keep their wagers on which realm will hold the frontier next, they send to Almen to ask, and then bet against what he tells them, since he is never believed and they assume he must be wrong. They lose. The Chancellor records the wagers at his table and has noted that the princes have lost every wager Almen was consulted on. Almen stands outside Saeor's hall with Duke Zepor and Earl Oraxus, and since the doors opened he has told the mortals who reach him how many of them will go back up the eastern stair. The first he told, a Hibernian company out of Tir na Nog in the first winter, did not believe him, and the bards who came home said afterwards that they should have.",
+ "legend": "Almen is huge and stands just outside High Lord Saeor's hall at the far east, with Duke Zepor and Earl Oraxus. Level 70, no script. His size makes him easy to target and hard to see past, so watch the pull and do not let him body-block your view of Saeor's room. Kill Zepor, Oraxus and Almen before Saeor, who heals by a whole player's health every time he kills one. Players say he tells each raid how many will come back, and Hibernian raids, who meet him early from the eastern stair, have started keeping count of whether he is right. He is, they say, more often than they would like.",
+ "yells": {
+  "aggro": [
+   "Nine of you will go back up the stair. Not you.",
+   "I told the last raid. They did not believe me either.",
+   "You will not believe this: you lose."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "I said this would happen. Nobody listens."
+   }
+  ],
+  "death": [
+   "I knew. I said so.",
+   "The Master will be fought... not from a door..."
+  ],
+  "slay": [
+   "As I said.",
+   "Eight, now.",
+   "Nobody ever believes the count."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A demon too big for the hall stands outside it.",
+   "Something is counting how many of you will return."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The prophet marquis is not surprised."
+   }
+  ],
+  "realmFirstKill": "Marquis Almen has fallen. He said he would."
+ },
+ "botLines": {
+  "briefing": [
+   "almen is huge, outside saeors hall. [dont let him block your view|watch the angle]",
+   "70 no tricks. zepor, oraxus, almen, then saeor",
+   "dont pull saeor with almen. [saeor heals off every kill|nobody dies to saeor]",
+   "almen says how many of us come back. [ignore him|dont listen lol]"
+  ],
+  "aftermathWin": [
+   "almen down. [he said that would happen|prophet called it]",
+   "marquis almen dead. [saeor next|on to saeor]",
+   "almen done. [how many did he say|he was wrong this time]",
+   "the big marquis is down. [clean|nice]"
+  ],
+  "aftermathLoss": [
+   "almen called it. [exactly that many came back|creepy]",
+   "pulled saeor with almen. [people died and he healed|wipe]",
+   "almen got us. [regroup|rez]",
+   "lost line of sight behind almen. [bad angle|move next time]"
+  ],
+  "rumour": [
+   "[heard|word is] marquis almen tells each raid how many will come back. [he's usually right|creepy]",
+   "the princes in df bet against almen's prophecies and lose every time",
+   "[someone said|my guildie says] almen foretold the df doors before there were doors",
+   "almen says legion will be fought by a raid that doesnt come down a door. [what does that mean|no idea]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "almen",
+  "text": "The prophet of High Lord [Saeor]'s household, too big for his lord's hall, who sees the shape of things before they come and is never believed. He foretold the three doors. The princes bet against him and lose every time. He tells each raid how many will go back up the stair."
+ },
+ "bookPage": "From a Hibernian captain's tally, notched on a hazel stick and kept at the College of Bards in Tir na Nog: Almen at the east, first night: he said eleven of us would go back up. Eleven did. Second night: he said thirty. Twenty-nine; the bard went back for a dropped harp and came up after, so I am counting him as right. Third night: he said none, and we turned back at the Ward and went up the stair, every one of us, out of spite. I do not know whether that proves him wrong, or whether that was what he meant all along.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} slew Marquis Almen in {minutes} minutes, as he had said they would.",
+  "loss": "Marquis Almen told {realm}'s raid under {raidLeader} how many would return, and was right."
+ }
+}

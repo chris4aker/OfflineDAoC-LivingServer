@@ -1,0 +1,121 @@
+{
+  "id": "uaimh-lairmaster",
+  "name": "Uaimh Lairmaster",
+  "catalogKey": "galladoria/uaimhlairmaster",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. On aggro he 'feels threatened and appears more menacing'; at 60% health he 'starts fleeing' back to his spawn.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The Uaimh of Galladoria are diggers, delvers and foragers. Irish uaimh means 'cave'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "The Uaimh were cave-folk, diggers and foragers who lived in the hollow before it was the Root's, and their lairmaster was the strongest of them, the one who kept the den. When the sap rose in the tunnels the Uaimh drank it like everyone else and began to dig where the cave told them. Their master still keeps the den. He swells when threatened, as cornered beasts do, and when he is hurt he does what every den-keeper does: he runs home, back to the heart of his lair, where his kin and his bones are. Those who chase him are fighting on his ground.\n\nUaimh is only the old word for a cave, and the Uaimh were only cave-folk, diggers and foragers who lived in the hollow before it belonged to the Root. They kept dens between the stones, ate what the pools gave, and buried their dead in niches in the walls. Their lairmaster was the strongest of them, the one who kept the den and settled the quarrels.\n\nWhen the sap rose in the tunnels the Uaimh drank it like everyone else, and began to dig where the cave told them to: down, toward the roots, endlessly. Their diggers and delvers work the deep galleries still, and their foragers bring back what they find, and some of what they find is Hibernian. The lairmaster still keeps the den. He swells when threatened, as cornered beasts do, all bristles and teeth, and when he is hurt he does what every den-keeper does. He runs home, back to the heart of his lair, where his kin and his bones are stacked with care. Those who follow him home fight on his ground, among his family.\n\nThe Uaimh were cave-folk who traded crystals for Sylvan honey until the sap made them into nothing but digging; the trader Cuach saw it first. Lorcán's band chased the fleeing lairmaster into his den in ones and twos, and three of eleven came out.",
+  "legend": "At sixty he breaks and runs back to his lair. Do not panic and do not scatter after him: the raid moves to his spot as a body and finishes him there. Clear the Uaimh diggers around his den before you pull. When he breaks at sixty the raid leader calls the move and everyone goes together, tanks first, healers behind; clear his diggers and delvers from the den before the fight so his home has no one left to help him. The Uaimh say a den-keeper never leaves his den twice, and he does not: once he is home, he stays home, and the fight ends there one way or the other.",
+  "yells": {
+    "aggro": [
+      "Uaimh Lairmaster feels threatened and appears more menacing!",
+      "Uaimh Lairmaster feels threatened and appears more menacing!",
+      "The den-keeper bristles and bares his teeth."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=60",
+        "text": "Uaimh Lairmaster starts fleeing!"
+      }
+    ],
+    "death": [
+      "The den... is empty now.",
+      "The den is empty now."
+    ],
+    "slay": [
+      "Drag it to the den.",
+      "Drag it to the den.",
+      "Bones for the niches.",
+      "Mine. My den. Mine."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gnawed bones, stacked with care.",
+      "The den-keeper's smell is everywhere."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=60",
+        "text": "The Lairmaster flees to his den!"
+      }
+    ],
+    "realmFirstKill": "The Uaimh Lairmaster's den is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "lairmaster runs home at sixty. [dont chase in ones and twos|move together] and finish him at his den",
+      "clear the uaimh diggers around his den first. [no friends for him|empty den]",
+      "when he runs, [we all move|everyone together], tanks first",
+      "his den is stacked with bones, [dont loot them|leave the bones], nothing in them anyway"
+    ],
+    "aftermathWin": [
+      "chased him home and killed him in his own bed. [rude but effective|grats]",
+      "chased him home as a raid, not a rabble. [proud|good]",
+      "his den is empty now. [poor thing|good riddance]",
+      "lairmaster down at his own bones. [grim|grats]"
+    ],
+    "aftermathLoss": [
+      "he ran, half of us chased, half didnt. [split raid, dead raid|never again]",
+      "he ran, ten people chased, forty didnt. [move together|call it]",
+      "we left diggers in the den and [they jumped us|it was a mess]",
+      "the healers got left behind when he ran. [stay together|move as one]"
+    ],
+    "rumour": [
+      "[heard|someone said] the uaimh were just cave folk before olcasgean's sap got into them",
+      "[heard|someone said] the uaimh buried their dead in the cave walls before the root came",
+      "[word is|heard] the uaimh dig toward the roots and never stop",
+      "uaimh just means cave in the old tongue. [they were cave folk|simple name]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lairmaster",
+    "text": "The keeper of the Uaimh den, cave-folk turned by the Root's sap. Wounded, he runs home to his lair, and he is worse there."
+  },
+  "bookPage": "Aodhan's note on the Uaimh: the Sylvan call them by the old word for a cave, as one might call a people the hill-folk or the river-folk. They were never the Sylvan's friends, but they were never enemies either; they kept to their dens and dug. Since the sap rose they dig toward the roots and do not stop, and their lairmaster, who used to settle their quarrels, now only guards the den. Lorcán of Tir na Nog told me he runs home when he is hurt. Of course he does, said the fire-keeper. Where else would a creature go to die?",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Uaimh Lairmaster's den; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Uaimh Lairmaster after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose sap made his folk dig"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Cave-Folk",
+      "text": "Uaimh is only the old Hibernian word for a cave, and the Uaimh were only cave-folk. They lived in the caves under Hy Brasil long before those caves were Galladoria: diggers, delvers and foragers, broad-handed and short-sighted, who ate what the pools gave them and traded little with anyone. The Sylvan knew them as neighbours of a sort. They were never friends, Lisín told the bard Aodhan, but they were never enemies either, and in the good years Sylvan traders went down to the upper caves once a year to trade honey for the pale crystals the Uaimh dug.\n\nThey buried their dead in niches cut in the cave walls, each family with its own wall, and they kept the bones neatly, cleaned and stacked. Every den had a keeper, the strongest of the clan, who settled quarrels, guarded the family wall, and led the others when something came down the tunnels that should not have. The Sylvan traders called the keeper of the greatest den the lairmaster, and the name stuck to him and to every keeper after.\n\nThe last Sylvan trader to go down was a woman named Cuach, in the season the rivers began to bend. She came back up with her honey unsold and said the Uaimh had not come to the trading place. She had gone further in to look, and found them digging, all of them, in silence, at a wall of rock that led nowhere. They had not looked up when she called. The lairmaster, standing over them, had looked at her for a long moment and then turned back to watch them dig."
+    },
+    {
+      "title": "Digging Toward the Roots",
+      "text": "The sap rose in the tunnels and the Uaimh drank it, as everything in the hollow drank it, and it did to them what it does: it made them one thing. The Uaimh became digging. Their diggers and delvers work the deep galleries of Galladoria to this day, cutting down toward the Root's roots, and their foragers go out along the galleries and bring back what they find. Some of what they find, the wardens have learned, is Hibernian.\n\nThe lairmaster still keeps the den. It lies in the middle rings of the hollow, below the sporite gallery and above the falls, and it is the last place in Galladoria that still looks like the Uaimh's own: the family walls are there, the bones are stacked with care, and the niches are kept clean. The Sylvan believe the lairmaster is the only one of the Uaimh in whom something of the old clan survives, because he is the only one who does not dig. He guards. When anything comes near the den he swells, as cornered beasts do, all bristles and teeth, and those who have faced him say he looks, at the first moment, more menacing than any creature his size should.\n\nCuach, who was very old by the time the realm came to Hy Brasil, told the first Hibernian band to go down that if they met him they should not fight him in his den. They did not understand her. They learned. The crystals they once traded are gone from their tunnels; they dig past them now."
+    },
+    {
+      "title": "Running Home",
+      "text": "The first to come against him were a party of Orlaith's company, sent to clear the middle rings, under a warrior of Tir na Nog named Lorcán. They found him at the edge of his territory and fought him there, and when they had him badly hurt he broke and ran. Lorcán's band did what any war-band does with a fleeing enemy: they chased. They chased him in ones and twos down the tunnels to the den, and in the den, among the family walls and the stacked bones, he turned on them. Lorcán came out with three of his eleven.\n\nThe Uaimh, while they still traded with the Sylvan, had a saying for it: the den-keeper never leaves his den twice. Once he is home he stays home, and whatever follows him there ends there, one way or the other. His den is never empty when he reaches it; the diggers and delvers of his clan are there before him, as a family is at home when its father comes in hurt. Orlaith's company went down after him the next morning, all of them together, and found him in the den among his family, and finished it there. The Sylvan say she ordered the bones on the family walls left as they lay, and that her company stepped round them in the dark.\n\nCuach's warning, the realm decided afterward, had been exactly right. She had meant that nobody should let him lead them there. Lorcán's band had heard that nobody should begin there. Lorcán's sword-arm never healed, and he told the story against himself for the rest of his life."
+    },
+    {
+      "title": "The Family Wall",
+      "text": "The den's walls hold the Uaimh's dead, cleaned and stacked by family, and the Sylvan beg every company of the realm never to disturb them. There is nothing in them anyway, the old hands say; the Sylvan say that is not the point. The lairmaster has kept those walls through everything the hollow has done to his people. The Uaimh who dig in the deep galleries have forgotten their dead. He has not. When he is finished among them, it is, the Sylvan think, the last of the clan's memory dying.\n\nThere are two accounts of what that means. The Sylvan believe that when he dies, the Uaimh in the deep galleries stop digging for a moment and look up, as Cuach once wished they would. Wardens in the deep galleries have reported it: a moment of stillness among the diggers, all of them at once, and then the picks again. The druids of Tir na Nog say the opposite: that the lairmaster is the reason the Uaimh have not dug upward into Domnann, because he keeps the clan's old den as the boundary of their world, and that if the realm ever killed him for good, the diggers would have no reason to stop going wherever the cave told them.\n\nCuach's family still keeps a jar of the old trading honey in Domnann, sealed. They say they will open it the day the Uaimh come back to the trading place. They have no expectation of opening it. Cuach's grandson keeps it on his own hearth."
+    }
+  ]
+}

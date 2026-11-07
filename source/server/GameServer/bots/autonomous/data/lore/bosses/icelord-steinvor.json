@@ -1,0 +1,162 @@
+{
+  "id": "icelord-steinvor",
+  "name": "Icelord Steinvor",
+  "catalogKey": "tuscaran-glacier/steinvor",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "related": [
+    {
+      "id": "icelord-skuf",
+      "relation": "the anvil to his hammer"
+    },
+    {
+      "id": "icelord-hakr",
+      "relation": "icelord of the weavers' halls beside his"
+    },
+    {
+      "id": "tuscaran-glacier",
+      "relation": "the middle tunnel"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Steinvor is a level-80 icelord with 100,000 health, linked to Icelord Skuf.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He picks a player and raises a Pillar of Ice under them (Pillar of Frost, 750 damage), telling them they are not going anywhere.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs"
+    },
+    {
+      "text": "When he dies two hrimthursa seers appear.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Steinvor adds every real player within 1,100 to his list and, roughly every 20-25 s, names one random real player on it ('<name>, you are not going anywhere') and raises a Pillar of Ice at that player's spot; 3.5 s later it casts Pillar of Frost there (750 cold, radius 350). Bots are never chosen. On his death two hrimthursa seers (level 73-75) appear and walk to his hall. He and Skuf bring each other in. 100,000 health, 40% melee / 70% magic resists, CC-immune, reach 350.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs"
+    },
+    {
+      "text": "Steinvor (Steinvor) is attested in Old Norse as a woman's name, stone + vor (to verify); the grandmother's-name custom that explains it is Living Server lore, as are the seers Ylfa and Alof.",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    }
+  ],
+  "story": "Steinvor and Skuf hold the middle tunnel of Tuscaran as a pair, the hammer and the anvil of the icelords, and nothing has come down that tunnel without meeting both; strike one and the other is already turning. Steinvor carries a woman's name. The giants of the old houses name sons for their grandmothers when the grandmother asks it, and his did; she was a stone-reader of the north, and he grew up as patient as stone.\n\nHe chooses. He looks over a war-band the way a woodsman looks over a stand of trees, and settles on one, and says to that one by name that he is not going anywhere; and a breath later the ice under the named one rises in a pillar of frost sharp enough to split mail. The first time was the winter the morvalt came over the rim, when he named the war-chief of the band that broke into the middle tunnel. The war-chief stood his ground and the pillar took him. A morvalt beside him who had heard the name and jumped was the only one of his band who got out of the tunnel. Steinvor names only strangers, and only the living; he has never named a giant.\n\nTwo seers of the middle tunnel, Ylfa and Alof, have read the runes for him since his first watch, from a reading room in the wall. They swore to come out when he fell, and they do: when Steinvor dies, the two of them walk out of the reading room and down to his hall, fresh and angry. He has said one long thing in his life that the giants remember: that peace is a matter for those who do not have a tunnel to hold. He and Skuf never argued about the Council, the sculptors say, because they never discussed it. They discussed the tunnel.",
+  "chapters": [
+    {
+      "title": "A Grandmother's Name",
+      "text": "Among the old houses of the hrimthursa a grandmother may ask for her name to be given to a grandson, and when she asks, it is given, whatever the father thinks of it. Steinvor's grandmother asked. She was a stone-reader of the north, from the halls the giants left before they came to Delling's Crater, a seer who read the rock instead of the ice, and she had outlived three husbands and most of her children. She held the baby up, the cast-out sculptors say, and looked at him for a long time, and said he would need a patient name.\n\nSo the icelord of the middle tunnel carries a woman's name, and has never once been heard to complain of it. The giants who might have mocked him for it did so once, when he was young, and he looked at them for a while, in no hurry, and then asked which of them had a grandmother who would want to hear about it. Nobody did.\n\nHe grew up as patient as the stone his grandmother read. The sculptors say he would watch a thing for a whole day before he moved, the way a woodsman walks round a stand of trees deciding which to fell first, and that when he moved it was once, and finally. The rooks who worked under him in his youth said he never shouted an order twice. He never needed to, because he only ever gave one.\n\nKula saw it. When the citadel was finished and the middle tunnel needed holding, she did not give it to the strongest icelord or the loudest. She gave it to the patient one, and put the strongest beside him."
+    },
+    {
+      "title": "The First Pillar",
+      "text": "Steinvor and Skuf were given the middle tunnel together, the tunnel from the outer halls toward the inner citadel, and they have held it as one ever since. Skuf stands in front; Steinvor chooses. When anything lays a hand on one of them, the other is already turning, and the giants of the middle tunnel cannot remember seeing either of them fight alone.\n\nThe first time Steinvor chose was the winter the morvalt came over the crater rim, the winter of the first crossed mark on Birghir's rib. A war-band of forty broke into the middle tunnel, howling, and Skuf stood in its mouth and the morvalt broke round him like a stream round a stone. Steinvor stood behind his brother icelord and watched the war-band for a long time, in his way. Then he picked out the war-chief, a big painted morvalt with a dwarf's skull on his belt, and said to him, by the name the morvalt had shouted, that he was not going anywhere.\n\nA breath later the ice under the war-chief rose. It came up out of the floor in a pillar, blue and sharp and very cold, as tall as a giant, and it took the war-chief and the morvalt round him. The sculptors say the pillar stood in the tunnel for a moment and then fell back into the floor as if it had never been.\n\nOne morvalt of that war-band got out of the tunnel alive. He had been standing next to the war-chief when Steinvor spoke, and he heard the name, and something in the icelord's voice made him jump sideways without thinking. He was taken alive further up the tunnel and lived out his life as a carrier in the citadel, and the giants say he would flinch whenever anyone said a name near him. The middle tunnel has a saying from him: when the hammer names you, do not be standing where you stood."
+    },
+    {
+      "title": "Ylfa and Alof",
+      "text": "Behind the hall of the middle tunnel there is a reading room cut into the wall, and two seers of the hrimthursa have lived in it for as long as Steinvor has held the tunnel. Their names are Ylfa and Alof. They are not the seers of the western watch, who read for Agmundr; they are older, and they read for Steinvor alone, the runes on the floor of their room telling them, they say, which strangers will come down the tunnel and which of them the hammer will name.\n\nThey never come out. The Valkyn scout who lay in a crack in the middle tunnels with his face to the ice heard them through the wall, reading, very slowly, two old voices taking turns. He never saw them. Nobody did, in all the years of the watch, except Steinvor, who went to the reading room every evening and sat with them, the sculptors say, and asked them nothing at all.\n\nThey swore him an oath in the first year, which the middle tunnel knows by heart. While the hammer stands, the seers read. When the hammer falls, the seers come out.\n\nThey keep it. Midgard's companies who have put Steinvor down have seen it happen: the hall goes quiet, the anvil bellows, and then two old giants in seers' robes walk out of the wall at the back of the hall, down the passage from the reading room, slowly, fresh and furious, and come at the strangers who killed the one they read for. The companies say they come late and they come rested, and that a company which has spent everything on the hammer has nothing left for them."
+    },
+    {
+      "title": "Not Going Anywhere",
+      "text": "He names strangers still. The companies of Midgard who reach the middle tunnel say he looks them over in his patient way and picks one, and says to that one, by name, that they are not going anywhere, and a breath later the ice rises where the named one stood. Then he picks another. He is never in a hurry, and he never stops.\n\nHe names only strangers. The giants of the citadel, who have been in the middle tunnel with him in every kind of fight, say he has never named a giant in his life, nor any of the dead who wander the lower halls, nor the iceweavers or the beasts. The hammer names the living who have come to the glacier uninvited, they say, because those are the ones he has been set to stop.\n\nHe has said one long thing in his life that the giants remember, and it was to the Council, the only time he went to the ribs. Birghir had asked him what he thought of the century of peace. Steinvor stood for a while and then said that peace was a matter for those who did not have a tunnel to hold, and went back to his tunnel. The sculptors cut no mark for it, because it was not a vote, but they say it is the most often repeated thing ever said in the council chamber, Guthlac's silences aside.\n\nWhen he falls he says nothing at all. The anvil bellows for him, and the seers walk out of the wall, and the middle tunnel's saying goes round the companies that have heard it: when the hammer names you, do not be standing where you stood."
+    }
+  ],
+  "legend": "Steinvor and Skuf are linked: hit one and both come. Steinvor's thing is the pillar: about every 20 to 25 seconds he says '<name>, you are not going anywhere' and a Pillar of Ice appears under that person; three and a half seconds later it erupts for 750 cold in a 350 radius. It only ever picks REAL players, never bots, so if you're the only human it's always you: the moment you see your name, step well out and keep the healers out of the circle. He has 100,000 health, 40% melee and 70% magic resists, is CC-immune and reaches about 350. When he dies, two hrimthursa seers (level 73-75) walk into the hall, so keep something in reserve for them. Kill whichever icelord your raid burns faster, and don't drag either out of the hall or they reset. Steinvor's axe is a good drop.",
+  "yells": {
+    "aggro": [
+      "Skuf, the anvil. I will be the hammer.",
+      "Let me look at you. Yes. You first.",
+      "You are not going anywhere.",
+      "Wait. Let me look at you all."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "You are not going anywhere."
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "Skuf. Then I am hammer and anvil both."
+      }
+    ],
+    "death": [
+      "Seers... come out... avenge me...",
+      "Seers... out of the walls... now...",
+      "Ylfa... Alof... come out..."
+    ],
+    "slay": [
+      "Pinned and finished.",
+      "Not going anywhere. As I said.",
+      "Who is next? You.",
+      "You were not going anywhere."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Pillars of frost rise here and there like old graves.",
+      "Two icelords stand watch, one choosing faces.",
+      "Old voices read slowly, somewhere behind the wall."
+    ],
+    "phases": [
+      {
+        "trigger": "death",
+        "text": "Two seers step out of the walls!"
+      }
+    ],
+    "realmFirstKill": "The hammer of the middle tunnel falls. The seers come."
+  },
+  "botLines": {
+    "briefing": [
+      "steinvor and skuf together. if steinvor names you, move, pillar comes up under you",
+      "save mana, two seers pop when steinvor dies",
+      "steinvor and skuf reset if dragged, fight them in the hall",
+      "kill whichever dies faster but keep mana for the seers",
+      "steinvor pillar only ever picks real players. see your name, step out, 3 seconds",
+      "pillar is 750 cold in 350, keep heals out of it",
+      "steinvor and skuf linked. two seers walk in when steinvor dies, save something",
+      "fight them in the hall or they reset"
+    ],
+    "aftermathWin": [
+      "steinvor and skuf done. seers too",
+      "hammer and anvil down, seers too",
+      "nobody stood on a pillar twice. good job",
+      "steinvor's axe dropped",
+      "you were not going anywhere. i went somewhere",
+      "seers down too. clean",
+      "hammer and anvil both"
+    ],
+    "aftermathLoss": [
+      "seers popped and we had nothing left",
+      "the pillar killed both healers in a row",
+      "he named the main healer three times in a row",
+      "you saw your name and didnt move",
+      "blew everything on steinvor and the seers walked in fresh"
+    ],
+    "rumour": [
+      "heard steinvor's pillar hits for 750. [stand somewhere else|move your feet]",
+      "steinvor picks one of you by name. creepy",
+      "two seers watch every steinvor fight from inside the walls",
+      "steinvor said peace is for those who dont have a tunnel to hold. longest thing he ever said",
+      "steinvor carries his grandmothers name. nobody mocks him for it twice",
+      "middle tunnel saying: when the hammer names you, dont be standing where you stood",
+      "two old seers live in the wall behind steinvor. they come out when he dies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Steinvor",
+    "text": "The hammer of the middle tunnel, who carries his grandmother's name and her patience. He names a stranger and the ice rises where that one stood; the morvalt who heard his name and jumped was the only one of his band to live. The seers Ylfa and Alof read for him from the wall and come out when he falls. His anvil is [Skuf]."
+  },
+  "bookPage": "Overheard by a Valkyn scout in the middle tunnels, as he lay in a crack with his face pressed to the ice. Two giants talking, very slowly. The first said: they will come down the tunnel. The second said nothing. The first said: we will stop them. The second said nothing. The first said: the Council says we should let them pass. The second said: the Council does not have a tunnel. Then they both stood there for the rest of the day, and so did the scout, because he did not dare to move.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke the hammer and the anvil, Steinvor and Skuf, in {minutes} minutes.",
+    "loss": "Icelord Steinvor's pillars held {raidLeader}'s raid from {realm} in place for {minutes} minutes, and then for good."
+  }
+}

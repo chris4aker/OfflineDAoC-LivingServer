@@ -1,0 +1,149 @@
+{
+  "id": "blue-lady",
+  "name": "Blue Lady",
+  "catalogKey": "marfach-caverns/bluelady",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Players in 2002 said she summons about five swords and resummons them; in 2003 that after a wipe the swords roam the whole dungeon.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=70"
+    },
+    {
+      "text": "She cannot be hurt outside her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Level 65, 30,000 health, melee reach 450. Every 25-45 seconds she raises summoned swords and axes (up to ten of each; level 50-55, 500 health, reach 450, no experience or loot). Mana Bomb: 5 s cast, 800 cold, radius 550 centred on herself (range 0), recast 25-35 s. Her blades are removed when she dies and when she resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlueLady.cs (integration/1.2)"
+    },
+    {
+      "text": "Living Server lore: the keen for iron (blades sung over, bent double and buried in the bog); her love for Avartack; the first wrong note (keening unbroken weapons); the long note ('gol', the keening cry: to verify); Gobnait of Howth and her husband's bent sword; the Howth smiths' anvil custom.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Blue Lady was the youngest of the three keeners, named for the colour of new iron and remembered for the sweetest voice in the hills. Her trade was the keen for iron: a broken blade was laid on rushes in the smithy and sung over, then bent double in the forge so that no other hand could take it up, and buried in the black water of the bog. For twenty years most of what she sang over came out of Avartack's fords, and the druids of Lough Gur say that is how she came to love the champion, though nobody told him. At Caimheul's bier she sang over his shield, sword and spear, which were not broken: the first wrong note of the keen.\n\nOn the fourth night she looked back toward the smithy and the bog, and the iron she had sung under the water came back whole, without hands. Swords and axes rise in her room, a war-band's worth, and come again until the room is full. A blade with no hand behind it falls to one good blow, but they reach further than their size and go for anything living near her, and every one falls when she falls. In the first seasons, when a company was lost in her room, the blades wandered the upper halls; now they lie down when nobody is left standing there, and the hill children's tale of swords walking the Breifine road is out of date. Only the chieftain's three weapons on his wall do not answer her.\n\nHer long note, the gol of the old keen, has the cold of every grave in the hill in it. She draws it a long time and lets it out all at once in a great ring around herself; those who stood well back felt it pass like a draught, and those who stood close felt it go through. The keeners' daughters say: step back from the long note. Gobnait of Howth, a smith's widow, ended her song with only her spears close and everyone else on the edges of the room, and laid her husband's bent sword before her. What the youngest wants is to finish the keen. When she falls, the smiths of Howth leave a bent blade on the anvil for her.",
+  "legend": "Every 25-45 seconds she raises summoned swords and axes, up to ten of each. They are weak (500 health each, so AoE drops them fast, and mezz works) but they hit from further away than you expect and go for anyone near her. They all drop when she dies and vanish if she resets. Her Mana Bomb is the killer: a 5-second cast, then 800 cold to everyone within 550 of her, every 25-35 seconds. Casters, healers and archers stand well back from her the whole fight; she can cast it on the move, so the tanks take it, and the healers top them up while the cast bar runs. Her own reach is long too. Fight her in her room: off her tether she takes no damage and walks home at full health. No CC on her. In 2003 players said that after a wipe her swords roamed the dungeon; here the blades vanish when she resets. Superstition: a sword found lying loose in Marfach belongs to her. Leave it, or she comes looking for it.",
+  "yells": {
+    "aggro": [
+      "Rise, blades. Your masters are gone, but the fight is not.",
+      "I sang for your swords. Now they sing for me.",
+      "Step back from the long note. No one ever does."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Steel rises from the floor without a hand."
+      }
+    ],
+    "death": [
+      "Lie down, blades... lie down...",
+      "The steel... is cold... at last..."
+    ],
+    "slay": [
+      "Your sword will keep fighting for me.",
+      "A blade for the walls.",
+      "Another name for the steel."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Blades lie on the floor. They are not still.",
+      "A sweet voice is singing to iron."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Swords and axes rise around the Blue Lady!"
+      }
+    ],
+    "realmFirstKill": "The Blue Lady's blades lie down at last."
+  },
+  "botLines": {
+    "briefing": [
+      "blue lady mana bomb: 5 sec cast then 800 cold on everyone within 550 of her. [casters way back|only tanks close]",
+      "swords and axes every 30 sec or so, up to 10 of each. [aoe them|500 hp each, burn them]",
+      "top the tanks up while she casts the bomb. [watch her cast bar|5 sec warning]",
+      "fight her in her room. off it shes immune and walks home full",
+      "her blades all drop when she dies. [burn her if its close|dont chase blades at the end]"
+    ],
+    "aftermathWin": [
+      "blue lady down and every blade [dropped|clattered to the floor] at once",
+      "nobody but the tanks ate a bomb. [discipline|textbook]",
+      "aoe on the blades was perfect, [not one got to the back|clean]",
+      "howth smiths leave a bent blade on the anvil tonight, [they say|old custom]"
+    ],
+    "aftermathLoss": [
+      "the bomb caught the whole back line. [stay out of 550|way back]",
+      "blades piled up because nobody aoe'd them. [500 hp each|burn the blades]",
+      "tanks ate the bomb at half health. [top them while she casts|watch the cast]",
+      "we wiped. at least the blades [vanished|went with her reset] this time"
+    ],
+    "rumour": [
+      "[heard|old timers say] her loose swords used to roam the upper halls after a wipe. [not anymore|they vanish now]",
+      "[heard|someone said] the farm kids in breifine think the clinking at night is the blue lady's swords walking",
+      "the blue lady sings to caimheul's own weapons through the wall, they say",
+      "[word is|heard] some of her blades are the ones avartack broke at the ford",
+      "a howth smith's widow carried a bent sword down to her once. [nobody says what happened|creepy]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Blue Lady",
+    "text": "The youngest keener, who sang for the weapons broken in the chieftain's wars, Avartack's above all. They rise around her without hands, weak alone and many together, and fall when she falls. Her long note carries the cold of every grave in the hill; the keeners' daughters say step back from the long note."
+  },
+  "bookPage": "From Nóra's book: in my grandmother's day a sword was half a warrior's name, and when it broke, someone sang for it. The Blue Lady was the youngest of the three and sang only for weapons, and my mother said she had the sweetest voice in the hills. When her song changed, the broken blades came back without hands. If you hear clinking on the Breifine road at night, my mother said, do not go out. Wait for the morning. In the morning a blade with no hand is only a blade lying in the road, and you may pick it up and give it a burial.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced the Blue Lady in {minutes} minutes. Her blades fell to the floor together.",
+    "loss": "{realm} lost {raidLeader}'s raid to the Blue Lady's blades in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "black-lady",
+      "relation": "her eldest sister keener"
+    },
+    {
+      "id": "red-lady",
+      "relation": "her sister keener"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the chieftain they sang back"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the power below that changed their song"
+    },
+    {
+      "id": "avartack-the-champion",
+      "relation": "the champion whose broken blades she sang for"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Keen for Iron",
+      "text": "In the old hill country a warrior's weapon was half his name. A sword was given a name when it was forged and a lineage when it was handed down, and when one broke in a lord's service the lord paid for it to be keened, as he would have paid for a man. The youngest of the three keeners had that trade. The hill country calls her the Blue Lady, after the blue-grey of new iron, and remembers her for her voice, which Nóra's mother said was the sweetest in the hills: men who heard her at a sword's burial wept for the sword and did not know why.\n\nThe keen for iron was its own craft. The blade was laid on a bier of rushes in the smithy, with the smith beside it, and the youngest sang its forging and its fights and the hand that had held it, and at the end the smith put it in the forge-fire until it was soft and bent it double, so that no other hand could take it up. Then it was buried in the bog, in the black water, where iron does not rust for an age. The turf-cutters of Breifine still find them, bent double and bright in the peat, and put them back.\n\nThe youngest sang for Caimheul's wars for twenty years, and most of what she sang over came out of one man's water. Avartack broke more iron in the fords of Breifine than any war-band, his own and other men's, and the smith of the dún brought every piece of it to her. Nóra's family say she knew the champion's broken weapons better than she knew the champion. The druids of Lough Gur say that is how she came to love him, and that nobody ever told him.\n\nWhen the chieftain died, the eldest brought her, and she sang over the chieftain's three weapons as they lay beside him on the bier, the bog-oak shield, the sword and the long spear, which were not broken, and which she had never been asked to sing for before. The keeners' daughters say that was the first wrong note of the whole keen. A keen for iron is for iron that is finished. Those three were not."
+    },
+    {
+      "title": "Blades Without Hands",
+      "text": "On the fourth night, when her sisters looked back, the youngest looked back toward the smithy and the bog, and the iron she had sung under the black water came back to her. It came back whole, the bent blades straight again, the broken ones mended, and without the hands that had held them.\n\nThey rise in her room still, swords and axes together, lifting off the floor point-first and turning in the air as a hand would turn them, and they fight on their own. They come in great numbers when they come, a war-band's worth of iron, and after a while the youngest sings and they come again, until her room is full of them; but a blade with no hand behind it has nothing to hold it up, and one good blow puts it on the floor, where it lies still. They reach further than a man would think for their size, as a thrown blade does, and they go for anything living near her. When she falls, every one of them falls with her, together, with a sound the hill country compares to a smithy roof coming down.\n\nIn the first seasons after the realm began to go down into Marfach, the blades did not lie down when a company was lost in her room. They went out of it. They wandered the upper halls cutting at anything living, Hibernian or ogre or the dead of the road, and the clinking of them in the passages was the first thing the next company heard. The hill children of Breifine are still told that the clinking on the road at night is the Blue Lady's swords, walking. It is not true any more, and the keeners' daughters say it stopped because she learned to call them home. When there is nobody left standing in her room, the blades lie down where they are, as iron lies in the bog, and do not wake until she sings again.\n\nThe bog-oak shield, the sword and the long spear she sang over on the bier hang in Caimheul's hall. They are the only iron under Breifine that does not answer her. The druids of Lough Gur say she sings to them through the wall, and they do not come, because there is a hand that still takes them down."
+    },
+    {
+      "title": "The Long Note",
+      "text": "Every keen has its long note, the gol, the held cry at the height of the grief, when the keener throws back her head and lets the whole of it out at once. In the old keening it was the moment the mourners waited for, and the youngest's was the one the hill country talked about: she would draw it out until the listeners forgot to breathe, and when it broke, men in the next valley stopped work.\n\nUnder Breifine the long note has the cold of the caves in it. She draws it a long time, her head back and her hood fallen, and while she draws it there is a stillness around her that those who have been in her room say they could feel in their teeth. Then it breaks, and the cold of every grave in the hill comes out of her all at once, in a great ring around where she stands, and falls on everyone inside it. It does not reach the walls. Those who stood well back from her when she threw her head back felt it go past them as a draught goes past a door. Those who stood close felt it go through.\n\nThe keeners' daughters have a saying for it, from the old keening and not from Marfach, that they use of any grief too big to stand near: step back from the long note. A good keener's long note was never meant for those at the head of the bier, they say; it was for the hills.\n\nHer own blade, which she carries as her sisters carry theirs, is long for a woman's arm and reaches further than it looks, and those who have faced her say that between her long notes she fights like a smith's daughter, with the whole weight of the shoulder. The hill country does not agree whose blade it is. Nóra's family say it was the first she ever keened, a sword her own father broke, and that she took it back up on the fourth night because she could not bear to hear it called by anyone but her. The smiths of Howth say it is Avartack's, the first weapon he ever broke in the Erne, and that is why she keeps it."
+    },
+    {
+      "title": "Gobnait's Bundle",
+      "text": "The first company of the realm to end the Blue Lady's song was led by a smith's widow of Howth named Gobnait, who had buried her husband's broken sword in the bog with the old keen two winters before and had not been able to find a keener who knew it properly. She went down into Marfach, she told the bards, to hear it sung right once more.\n\nHer company had heard what the blades and the long note had done to the companies before them, and Gobnait set them as a smith sets a forge. Only her spears went close to the youngest. Everyone else stood well back on the edges of the room, the menders and the singers and those who work with words, and laid the blades on the floor as they rose. When the youngest threw back her head for the long note, the cold went through the spears, who knew it was coming, and past everyone else, who was not there to be found. When the youngest fell, every blade in the room fell with her, and the sound brought the dust down from the roof.\n\nGobnait had carried something down in a bundle on her back, and the company did not know what it was until afterwards: a bent sword, her husband's, dug up out of the bog at Howth for the purpose. She laid it in front of the youngest where she lay and asked her to sing for it. Nobody in the company would ever say what happened next. The bards of Howth say only that Gobnait came home without the sword and never asked a keener for anything again.\n\nWhat the youngest wants, the keeners' daughters say, is to finish the keen. The keen for iron ends when the blade is bent and buried and no hand can take it up again, and she has never been able to end hers, because the three on the wall of the chieftain's hall are still taken down. The druids of Tir na Nog think the voice below promised her a keen without an end, as it promised her eldest sister, and that every blade it lends her is a blade it keeps. When word comes that the Blue Lady has fallen, the smiths of Howth bank their forges for the night and leave one blade on the anvil, bent double, for her."
+    }
+  ]
+}

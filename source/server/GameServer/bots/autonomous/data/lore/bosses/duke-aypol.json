@@ -1,0 +1,174 @@
+{
+ "id": "duke-aypol",
+ "name": "Duke Aypol",
+ "tier": "epic",
+ "npcNames": [
+  "Duke Aypol"
+ ],
+ "aliases": [
+  "aypol",
+  "the duke of the seals"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "host-of-the-marshal",
+  "picullus-imps"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baln",
+   "relation": "his lord"
+  },
+  {
+   "id": "duke-alloc",
+   "relation": "shares the hall"
+  },
+  {
+   "id": "duke-eligar",
+   "relation": "shares the hall"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "drew the seals he strikes"
+  },
+  {
+   "id": "field-marshal-nebir",
+   "relation": "would not hold the stairs for him"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Duke Aypol is a level 75 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in the east of High Lord Baln's hall, between Duke Alloc and Duke Eligar.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Duke Aypol among the dukes of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Duke Aypol is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Each realm's entrance hall has Emerald, Sapphire and Diamond seal merchants, all imps (Debo, Kodo, Pico and others), selling for seals.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Mythic: the imps avenge themselves on the larger demons by stealing from hoards their owners thought safe.",
+   "provenance": "mythic",
+   "source": "https://www.gamebanshee.com/3d68"
+  },
+  {
+   "text": "No demonology source found for the name Aypol; Ipos (also spelled Ayperos in some lists) is a possible root, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "His seat, master, feuds and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The hoard under the south",
+   "text": "Every lord of the Uncounted Age kept a hoard, but Aypol kept the deepest. Under the eastern end of Baln's hall a crack runs down toward the fires, and in its walls the deep metals come up in seams: a green that does not tarnish, a blue that rings when you strike it, and a white, harder than either, that cuts glass. Aypol found the crack in the first ages and dug out his vault in its side, and filled it with the three metals, and sat on them. He did not use them. He did not trade them. He counted them, one piece at a time, and the court says he could tell by the weight of the vault when a single sliver had gone.\n\nHe was one of Baln's three great followers, with Alloc and Eligar, and the quietest. At the Feast of Thrones he stood behind his master with the vault's key in his fist and watched the Master eat nineteen lords, and he thought, as he has always said, not about the Master at all, but about what was going to happen to the dead lords' hoards. Nobody else at the Feast thought of it. By the time the eleven survivors had knelt and gone home, Aypol's vault was heavier by the weight of three of the nineteen. He has never said which three, and the Chancellor has never asked. Imps were already stealing from him then. The first of the Picullus thieves lost a hand to Aypol's door in the first ages, and the hand is still nailed above it, holding a single green sliver, as a warning nobody has ever heeded."
+  },
+  {
+   "title": "The seals",
+   "text": "The First Roll made the court a single kingdom, and a kingdom needs coin. Adremal drew the pattern of the seals himself: a disc stamped on one face with the line of the bargain and on the other with the rank of the court that struck it. They were to be struck in three metals, the green, the blue and the white, which the realms above call emerald, sapphire and diamond, and there was only one demon in the hollow who held enough of all three to strike them. So Aypol's line on the Roll reads Duke, of High Lord Baln's household, Keeper of the Seals, and the court has paid its debts in his metal ever since. Each seal is struck at the lip of the crack, where the heat from below softens the metal, and the duke strikes them himself with a hammer made from the jaw of one of the three lords whose hoards he took at the Feast. He has never said which lord, and the hammer does not say.\n\nIt was the worst thing that ever happened to him. A hoard is for keeping. Seals are for spending. Every seal the court spends is a sliver gone from the vault, and Aypol feels the weight of each one go. He strikes them because the Roll says he must, and he strikes them slowly, and he weighs every seal that comes back into the hall from the other quarters to make sure it has not been clipped. The peers of the court joke that the surest way to see the Duke of the Seals smile is to pay him a debt. They also say that nobody has ever seen it."
+  },
+  {
+   "title": "The imps' war",
+   "text": "The court's oldest saying about the imps is plain: too weak to fight back, they took to sneaking, and they get their revenge on the great demons by robbing hoards the great demons never thought anyone would dare to touch. Aypol's was the greatest hoard in the hollow. It has been robbed in every Roll.\n\nThe worst theft came in the Sixth Roll. A family of imps from the bottom of the Roll got into the vault through a vent too small for a duke's hand, and they did not take seals. They took the raw metal, green and blue and white, a sliver at a time, all through one long dark, and carried it out in their mouths. Aypol felt the vault grow lighter all night and could not find the vent. In the morning he went to the Chancellor and demanded that every imp in the hollow be struck from the Roll. Adremal ruled that he could not strike them: the imps are at the bottom already, and a demon cannot fall from the bottom. The duke has hunted imps with his own claws since, and the imps have robbed him since, and the court regards the whole affair as the longest-running entertainment it has. The imps have their own account of the Sixth Roll. In theirs, the theft was led by a demon who was not yet an imp, one of the strongest in the Master's army, who showed the family the vent in exchange for a share and then took all of it. The court notes that Mystemas, who now stands at the bottom of the Roll in the Albion hall, has never denied it, and that Aypol has never once looked at him."
+  },
+  {
+   "title": "The seals above",
+   "text": "When the three doors opened and the realms began coming down, the imps found a use for what they had stolen that Aypol had never imagined. In each realm's entrance hall high above the court, they set up stalls, emerald and sapphire and diamond, and began selling the court's own armour and weapons to the mortals for the court's own seals. The seals the mortals carry out of the hollow are Aypol's metal, stamped with Adremal's bargain, and every one that goes up a stair is gone from the hollow for good. The duke has watched his vault lighten by a whole seam since the doors opened, and the imps who keep the stalls, Kodo and Pico and the others, wave to him.\n\nHe has asked the Chancellor to close the stalls. Adremal says that seals going up the stair are seals spent, and spent seals are the Roll working as written. Aypol has asked the Field Marshal to hold the stairs. Nebir says the stairs are not his. So the Duke of the Seals waits in the eastern end of Baln's hall, beside the crack that runs down to his vault, and weighs every mortal who comes in reach for the seals they are carrying.\n\nThe realms each notice something. Camelot's moneychangers say the seals are heavier than any coin of their size should be. Jordheim's say they are always cold. Tir na Nog's druids will not touch them at all, and make the seal-merchants of their own hall leave them on the floor."
+  }
+ ],
+ "story": "Duke Aypol keeps the court's coin. In the Uncounted Age he found the crack under the eastern end of High Lord Baln's hall where three deep metals come up in seams, green, blue and white, and dug his vault beside it. He counted his hoard one piece at a time and could feel a single sliver go. At the Feast of Thrones he stood behind Baln and thought about the hoards of the lords the Master was eating; by the time the survivors went home his vault was heavier by three of them.\n\nThe First Roll needed coin. Adremal drew the seals, a disc stamped with the bargain on one face and a rank on the other, to be struck in the three metals the realms call emerald, sapphire and diamond, and only Aypol held enough of all three. His line reads Keeper of the Seals. It was the worst thing that ever happened to him: every seal spent is a sliver gone from his vault.\n\nThe imps, who live by robbing the great demons' hoards, have robbed his in every Roll. In the Sixth Roll a family of them carried raw metal out of a vent in their mouths all night. Aypol demanded every imp be struck off, and the Chancellor ruled that no demon can fall from the bottom of the Roll. He has hunted them with his own claws since.\n\nWhen the doors opened the imps set up stalls in the three entrance halls and began selling the court's armour to the mortals for the court's own seals, which then leave the hollow forever. The Chancellor calls that the Roll working as written. Aypol weighs every mortal who comes within reach for the seals they carry. Camelot's moneychangers say the seals are too heavy, Jordheim's that they are cold; Tir na Nog's druids will not touch them.",
+ "legend": "Aypol stands in the eastern part of Baln's hall, between Alloc to the west and Eligar to the north-east. He is level 75 and has no script. He does not drop seals any more than the others do, whatever your guild's crafter says. Pull him east, away from High Lord Baln and his fanatics, and away from Dortaleon and the Field Marshal's table further east again. Players say he looks at your bags before he looks at you, and that he goes for whoever has spent the most at the imps; it is a joke, his aggro is ordinary. The imp merchants in your entrance hall are said to cheer when he dies.",
+ "yells": {
+  "aggro": [
+   "You are carrying my metal.",
+   "Empty your bags on my floor. Then die on it.",
+   "Every seal you hold was mine first."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Lighter. You are making me lighter."
+   }
+  ],
+  "death": [
+   "Count it. Someone count it before the imps come.",
+   "The vault... is open."
+  ],
+  "slay": [
+   "Weigh that one.",
+   "Your seals stay here.",
+   "One sliver back."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The air smells of hot metal and old coin.",
+   "A crack in the floor runs down toward a red glow.",
+   "Someone here is weighing you."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Duke of the Seals clutches at his vault key."
+   }
+  ],
+  "realmFirstKill": "Duke Aypol has fallen. The imps are already at his vault."
+ },
+ "botLines": {
+  "briefing": [
+   "aypol next, east side of balns hall. [pull him east|east], away from baln and dortaleon",
+   "75 no tricks. he doesnt drop seals, [stop asking|dont ask]",
+   "keep it tight, the marshal's table is further east. [dont overpull|careful]",
+   "aypol, then eligar. [buff check|mana check] first"
+  ],
+  "aftermathWin": [
+   "aypol down. [the imps will be happy|bet the imps cheer]",
+   "duke of the seals dead. [no seals dropped lol|told you no seals]",
+   "aypol done, east side is clear",
+   "two dukes down in balns hall. [one to go|eligar next]"
+  ],
+  "aftermathLoss": [
+   "aypol wiped us, [too close to baln|baln's adds came in]",
+   "pulled dortaleon with aypol. [bad pull|my bad]",
+   "aypol 1 us 0. [regroup|rez up]",
+   "lost it on aypol, [healers ran dry|out of mana]"
+  ],
+  "rumour": [
+   "[heard|word is] the df seals are struck from a demon dukes hoard. aypol",
+   "the imps rob aypol's hoard every chance they get, [and sell us his seals|we buy with his coin]",
+   "[someone said|my guildie says] seals are heavier than they should be. [demon metal|from under the world]",
+   "aypol cant get the imps struck off. [cant fall from the bottom|theyre already at the bottom]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "aypol",
+  "text": "The Duke of the Seals, of High Lord [Baln]'s household. He strikes the court's seals from his own hoard of three deep metals and feels every one that is spent. The imps rob him every Roll and now sell the court's gear to the realms for his coin, at the seal stalls in each entrance hall."
+ },
+ "bookPage": "From a moneychanger's daybook, Camelot, the second season after the door opened: Took in eleven seals of the green from a knight of the Defenders, and weighed them, and they weighed as much as nine of our crowns though they are half the size. Took in four of the blue from a wizard, and they rang when I set them down, and went on ringing after I had put my hand on them to stop it. The white I would not take. The knight said the seals are struck under the world from a demon's hoard, and that the demon misses each one. I put the green in the strongbox and did not sleep.",
+ "bookPages": [
+  "From a moneychanger's daybook, Camelot, the second season after the door opened: Took in eleven seals of the green from a knight of the Defenders, and weighed them, and they weighed as much as nine of our crowns though they are half the size. Took in four of the blue from a wizard, and they rang when I set them down, and went on ringing after I had put my hand on them to stop it. The white I would not take. The knight said the seals are struck under the world from a demon's hoard, and that the demon misses each one. I put the green in the strongbox and did not sleep.",
+  "The moneychanger went on, a season later: I have sold all the seals I held to a Hibernian factor at a loss. They did not tarnish, and they did not rust, and they did not grow lighter, but the strongbox did. Each morning it was lighter by a sliver, though nothing was missing from it. The factor asked me why I was selling so cheap and I told him. He laughed and said in Tir na Nog the druids make the seal-merchants leave them on the floor, and that now he knew why, and paid me anyway, and went off whistling. I have not seen him since."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} opened Duke Aypol's vault in {minutes} minutes; the imps got there next.",
+  "loss": "Duke Aypol kept his vault and every seal {realm}'s raid under {raidLeader} carried into Baln's hall."
+ }
+}
